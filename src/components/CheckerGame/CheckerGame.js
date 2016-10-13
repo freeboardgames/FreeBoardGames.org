@@ -1,7 +1,7 @@
 import React from 'react'
 import CheckerBoard from '../CheckerBoard/CheckerBoard'
 import CheckerPiece from '../CheckerPiece/CheckerPiece'
-import TurnHUD from '../TurnHUD/TurnHUD'
+import TurnHUD from '../../TurnHUD/TurnHUD'
 
 export const CheckerGame = () => {
   let mock_state = [[-1, 0, -1, 0, -1, 0, -1, 0],
