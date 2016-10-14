@@ -9,7 +9,6 @@ export const TurnHUD = ({playerName='test', playerColor='red', action='PLAY', is
     }
   }
   let messages_els = [];
-  console.log("REDRAW: " + JSON.stringify(messages));
   for (var i =0; i<messages.length; i++) {
     let m = messages[i];
     messages_els.push(
