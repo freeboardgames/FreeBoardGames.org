@@ -25,7 +25,17 @@ export const CheckerGame = ({boardState,
   //Handling pan
   let handlePan = (panType, x, y) => {
     if (panType == 'SELECT') {
-      selectPiece(Math.floor(x), Math.floor(y));
+      var tryX = Math.floor(x);
+      var tryY = Math.floor(y);
+      if (boardState[tryY][tryX] != 0) {
+        selectPiece(tryX, tryY);
+      } else {
+          tryX = Math.round(x);
+          tryY = Math.round(y);
+          if (boardState[tryY][tryX] != 0) {
+            selectPiece(tryX, tryY);
+          }
+      }
     } else if (panType == 'MOVE') {
       movePiece(x,y);
     } else if (panType == 'RELEASE') {
