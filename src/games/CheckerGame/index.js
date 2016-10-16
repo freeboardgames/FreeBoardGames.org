@@ -12,12 +12,10 @@ export default (store) => ({
       const CheckerGame = require('./containers/CheckerGameContainer').default
       const MessageReducer = require('../../TurnHUD/modules/message').default
       const CheckerGameReducer = require('./modules/checkerGameState').default
-      const CheckerSelectedPieceReducer = require('./modules/checkerSelectedPiece').default
 
       /*  Add the reducer to the store on key 'counter'  */
       injectReducer(store, { key: 'messages', reducer:  MessageReducer})
       injectReducer(store, { key: 'checkerGameState', reducer:  CheckerGameReducer})
-      injectReducer(store, { key: 'checkerSelectedPiece', reducer:  CheckerSelectedPieceReducer})
 
 
       /*  Return getComponent   */

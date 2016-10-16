@@ -1,16 +1,13 @@
 import { connect } from 'react-redux'
-import { selectPiece, movePiece, releasePiece } from '../modules/checkerSelectedPiece.js'
+import { sendClick } from '../modules/checkerGameState'
 import CheckerGame from '../components/CheckerGame'
 
 const mapDispatchToProps = {
-  selectPiece,
-  movePiece,
-  releasePiece
+  sendClick
 }
 
 const mapStateToProps = (state) => ({
-  boardState: state.checkerGameState,
-  selectedPiece: state.checkerSelectedPiece
+  state: state.checkerGameState
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckerGame)
