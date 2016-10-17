@@ -17,9 +17,9 @@ export const CheckerGame = ({state, sendClick}) => {
     for (var i=0; i<boardState_col.length; i++) {
       if (boardState_col[i]) {
         let piece = boardState_col[i];
-        let color = "red";
+        let color = "yellow";
         if (piece.player == 0) {
-          color = "#FFFFFF";
+          color = "white";
         }
         pieces.push(
           (<CheckerPiece color={color} double={piece.double}
@@ -33,9 +33,11 @@ export const CheckerGame = ({state, sendClick}) => {
   <TurnHUD/>
   <CheckerBoard
     feasible={state.feasible} selected={state.selected}
-    onClick={onClick}>
+    onClick={onClick}
+    key="999">
     {pieces}
   </CheckerBoard>
+
   </div>
 )}
 

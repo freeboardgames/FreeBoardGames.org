@@ -1,50 +1,69 @@
 import React from 'react'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import './CheckerBoard.scss'
 
-export const Checkerboard = ({width= 8, height= 8, primaryColor="#1A5612",
-  secondaryColor="#F4D500", feasibleColor="green", feasible={},
-  selected=null, selectedColor="blue", onClick,children}) => {
+class Checkerboard extends React.Component {
 
-  // Add tiles
-  let rects = [];
-  let key = 0;
-  for (var j=0; j<height; j++) {
-    for (var i=0; i<width; i++) {
-      let color = secondaryColor;
-      if ((i+j)%2 == 0) {
-        color = primaryColor;
-      }
-      for (let k in feasible) {
-        let f = feasible[k];
-        if (f.x == i && f.y == j) {
-          color = feasibleColor;
+  render() {
+    // Add tiles
+    let rects = [];
+    let key = 0;
+    for (var j=0; j<this.props.height; j++) {
+      for (var i=0; i<this.props.width; i++) {
+        let color = this.props.secondaryColor;
+        if ((i+j)%2 == 0) {
+          color = this.props.primaryColor;
         }
-      }
-      if (selected && selected.x == i && selected.y == j) {
-        color = selectedColor;
-      }
-      rects.push((<rect
-        height="1"
-        style={{fill: color}}
-        width="1"
-        x={i}
-        y={j}
-        key={key}
-        onClick={onClick(i,j)}/>));
-      key++;
+        for (let k in this.props.feasible) {
+          let f = this.props.feasible[k];
+          if (f.x == i && f.y == j) {
+            color = this.props.feasibleColor;
+          }
+        }
+        if (this.props.selected && this.props.selected.x == i && this.props.selected.y == j) {
+          color = this.props.selectedColor;
+        }
+        rects.push((<rect
+          height="1"
+          style={{fill: color}}
+          width="1"
+          x={i}
+          y={j}
+          key={key}
+          onClick={this.props.onClick(i,j)}/>));
+        key++;
+      };
     };
+    return (
+      <svg style={{width: "100%", position: "fixed",
+      left: "0px", right:"0px", bottom: "0px",
+      maxWidth: "500px", marginLeft: "auto", marginRight: "auto"}}
+      viewBox={"0 0 8 8"}
+      id="CheckerBoard">
+        <g>
+          {rects}
+        </g>
+        <ReactCSSTransitionGroup
+          transitionName="example"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={200}
+          component="g">
+        {this.props.children}
+       </ReactCSSTransitionGroup>
+      </svg>
+    );
   };
-  return (
-    <svg style={{width: "100%", position: "fixed",
-    left: "0px", right:"0px", bottom: "0px",
-    maxWidth: "500px", marginLeft: "auto", marginRight: "auto"}}
-    viewBox={"0 0 8 8"}
-    id="CheckerBoard">
-      <g>
-        {rects}
-      </g>
-      {children}
-    </svg>
-  );
+};
+
+Checkerboard.defaultProps = {
+  width: 8,
+  height: 8,
+  primaryColor: 'sienna',
+  secondaryColor: 'tan',
+  feasibleColor: 'palegreen',
+  feasible: {},
+  selected: null,
+  selectedColor: 'green'
 };
 
 export default Checkerboard
