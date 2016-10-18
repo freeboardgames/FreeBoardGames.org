@@ -1,6 +1,7 @@
 import React from 'react'
 import CheckerBoard from './CheckerBoard'
 import CheckerPiece from './CheckerPiece'
+import './CheckerGame.scss'
 import TurnHUD from '../../../TurnHUD/containers/TurnHUDContainer'
 
 /*
