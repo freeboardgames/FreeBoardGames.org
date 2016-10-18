@@ -30,7 +30,7 @@ export const CheckerGame = ({state, sendClick}) => {
     }
   }
   return (
-  <div>
+  <div style={{backgroundColor: "black", height: "100%"}}>
   <TurnHUD/>
   <CheckerBoard
     feasible={state.feasible} selected={state.selected}
