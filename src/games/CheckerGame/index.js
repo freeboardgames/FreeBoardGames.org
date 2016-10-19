@@ -13,6 +13,7 @@ export default (store) => ({
       const CheckerGame = require('./containers/CheckerGameContainer').default
       const MessageReducer = require('../../TurnHUD/modules/message').default
       const CheckerGameReducer = require('./modules/checkerGameState').default
+      const requireAuthentication = require('../../AuthenticatedComponent/AuthenticatedComponent').requireAuthentication
 
       /*  Add the reducer to the store on key 'counter'  */
       injectReducer(store, { key: 'messages', reducer:  MessageReducer})
@@ -20,7 +21,7 @@ export default (store) => ({
 
 
       /*  Return getComponent   */
-      cb(null, CheckerGame)
+      cb(null, requireAuthentication(CheckerGame))
 
     /* Webpack named bundle   */
   }, 'checker')
