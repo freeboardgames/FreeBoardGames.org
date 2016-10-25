@@ -1,9 +1,11 @@
 import React from 'react'
 import TurnatoBar from '../../../TurnatoBar/TurnatoBar'
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import { browserHistory } from 'react-router'
 
 var Login =  React.createClass({
   componentWillMount: function() {
@@ -15,6 +17,9 @@ var Login =  React.createClass({
     });
   },
   componentWillReceiveProps: function(nextProps) {
+    if (nextProps.loggedIn) {
+      browserHistory.push(this.props.location.query.next);
+    }
     this.setState({
       emailError: nextProps.emailError,
       passwordError: nextProps.passwordError,
@@ -31,8 +36,7 @@ var Login =  React.createClass({
       password: event.target.value});
   },
   doLogin: function () {
-    //Check valid/invalid email and password, then call props function
-    window.alert("Email: "+this.state.email+" password: "+this.state.password);
+    this.props.login(this.state.email, this.state.password);
   },
   render: function () {
     return (
@@ -45,37 +49,48 @@ var Login =  React.createClass({
       "It seems that you have been here before." :
       "So we can let you know when it is your turn!"}
   />
-
-  <CardText style={{textAlign: "center"}}>
-    <TextField
-      id="email"
-      hintText="Your e-mail address"
-      floatingLabelText="E-mail"
-      onChange={this.onEmailChange}
-      errorText={this.state.emailError}
-      value={this.state.email}
-    /><br />
-    {(this.props.needsPassword) ?
-    (<div><TextField
-      hintText="Your password"
-      floatingLabelText="Password"
-      onChange={this.onPasswordChange}
-      errorText={this.state.passwordError}
-    /><br /></div>) : null}
-  </CardText>
-  <CardActions style={{textAlign: "right"}}>
-    {(this.props.needsPassword) ?
-      (<FlatButton label="I forgot my password"
-        onClick= {this.props.forgotPassword}/>) :
-      null}
-    <RaisedButton label="Play" secondary={true}
-      onClick={this.doLogin} />
-  </CardActions>
+  {(!this.props.loading) ? (
+  <div>
+    <CardText style={{textAlign: "center"}}>
+      <TextField
+        id="email"
+        hintText="Your e-mail address"
+        floatingLabelText="E-mail"
+        onChange={this.onEmailChange}
+        errorText={this.state.emailError}
+        value={this.state.email}
+      /><br />
+      {(this.props.needsPassword) ?
+      (<div><TextField
+        hintText="Your password"
+        floatingLabelText="Password"
+        onChange={this.onPasswordChange}
+        errorText={this.state.passwordError}
+      /><br /></div>) : null}
+    </CardText>
+    <CardActions style={{textAlign: "right"}}>
+      {(this.props.needsPassword) ?
+        (<FlatButton label="I forgot my password"
+          onClick= {this.props.forgotPassword}/>) :
+        null}
+      <RaisedButton label="Play" secondary={true}
+        onClick={this.doLogin} />
+    </CardActions>
+  </div>
+  ) : (
+    <CardText style={{textAlign: "center"}}>
+      <CircularProgress size={80} thickness={5} />
+    </CardText>)}
   </TurnatoBar>
 )
 }
 })
 Login.defaultProps = {
-  needsPassword: false
+  needsPassword: true,
+  loading: false,
+  emailError: null,
+  passwordError: null,
+  loggedIn: false,
+  login: null
 };
 export default Login

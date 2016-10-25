@@ -76,18 +76,15 @@ const ACTION_HANDLERS = {
         let f = state.feasible[i];
         if (f.x == x && f.y == y) {
           if (f.movement == 'WALK') {
-            (new Audio('/move2.mp3')).play();
             state.board[y][x] = state.board[f.from.y][f.from.x]
             state.board[f.from.y][f.from.x] = null
           } else if (f.movement = 'EAT') {
-            (new Audio('/move.wav')).play();
             state.board[y][x] = state.board[f.from.y][f.from.x]
             state.board[f.from.y][f.from.x] = null
             state.board[f.eaten.y][f.eaten.x] = null
           }
           if ((y == 0 || y == state.board.length - 1) &&
               !state.board[y][x].double) {
-            (new Audio('/success.wav')).play();
             state.board[y][x].double = true;
           }
           break;

@@ -20,6 +20,13 @@ var CheckerPiece = React.createClass({
         originX: this.props.x,
         originY: this.props.y,
       });
+      if (nextProps.double && !this.props.double) {
+        (new Audio('/success.wav')).play();
+      } else if (Math.abs(nextProps.x - this.props.x) == 1) {
+        (new Audio('/move2.mp3')).play();
+      } else {
+        (new Audio('/move.wav')).play();
+      }
       requestAnimationFrame(this.animate)
     }
   },
