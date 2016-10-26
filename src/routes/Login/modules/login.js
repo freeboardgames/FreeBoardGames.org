@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch'
+
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -11,12 +13,12 @@ export const LOGIN_ERROR = 'LOGIN_ERROR'
 
 export const login = (email,password) => (dispatch, getState) => {
   dispatch({type: LOGIN_REQUEST, email, password});
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      dispatch({type: LOGIN_ERROR, needsPassword: true})
-      resolve()
-    }, 2000)
-  })
+  return fetch(`/api/login`,
+    { method: 'POST',
+	    body: JSON.stringify({ email, password})
+    })
+      .then(response => response.json())
+      .then(json => dispatch(json))
 }
 
 export const actions = {
