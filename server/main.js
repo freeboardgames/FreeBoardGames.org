@@ -17,8 +17,7 @@ const paths = config.utils_paths
 
 
 
-const MONGO_URI = process.env.MONGOLAB_URI ||
-                  process.env.MONGOHQ_URL ||
+const MONGO_URI = process.env.MONGODB_URI ||
                   'mongodb://localhost/turnato';
 
 app.use(compression())
