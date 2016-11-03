@@ -80,7 +80,7 @@ app.post('/api/login', (req, res) => {
       if (users.length == 0) {
         if (validator.isEmail(user.email)) {
           //Generate random password
-          let pwd = randomstring.generate(10);
+          var pwd = randomstring.generate(10);
           //Save to the db
           user.password = hashPassword(pwd);
           usersCollection.insert(user);
