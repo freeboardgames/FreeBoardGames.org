@@ -4,5 +4,5 @@
 node_modules
 
 coverage
-
+.env
 .idea/

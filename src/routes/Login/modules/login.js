@@ -15,6 +15,7 @@ export const login = (email,password) => (dispatch, getState) => {
   dispatch({type: LOGIN_REQUEST, email, password});
   return fetch(`/api/login`,
     { method: 'POST',
+      headers: {'content-type': 'application/json'},
 	    body: JSON.stringify({ email, password})
     })
       .then(response => response.json())
@@ -54,7 +55,7 @@ const ACTION_HANDLERS = {
         needsPassword: true};
   },
   ['AUTH_SUCCESS'] : (state, action) => {
-    return {loggedIn: true}
+    return {token: action.payload.token}
   }
 }
 

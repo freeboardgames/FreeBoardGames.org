@@ -17,7 +17,8 @@ var Login =  React.createClass({
     });
   },
   componentWillReceiveProps: function(nextProps) {
-    if (nextProps.loggedIn) {
+    if (nextProps.token) {
+      localStorage.setItem('token', nextProps.token);
       browserHistory.push(this.props.location.query.next);
     }
     this.setState({
@@ -62,6 +63,7 @@ var Login =  React.createClass({
       /><br />
       {(this.props.needsPassword) ?
       (<div><TextField
+        type="password"
         hintText="Your password"
         floatingLabelText="Password"
         onChange={this.onPasswordChange}
@@ -90,7 +92,7 @@ Login.defaultProps = {
   loading: false,
   emailError: null,
   passwordError: null,
-  loggedIn: false,
+  token: null,
   login: null
 };
 export default Login
