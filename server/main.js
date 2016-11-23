@@ -163,8 +163,8 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-/*app.get('*', (req,res) => {
+app.get('*', (req,res) => {
   res.sendFile('index.html', {root: paths.dist()});
-});*/
+});
 
 module.exports = app
