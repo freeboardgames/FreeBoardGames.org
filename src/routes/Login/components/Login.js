@@ -19,7 +19,11 @@ var Login =  React.createClass({
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.token) {
       localStorage.setItem('token', nextProps.token);
-      browserHistory.push(this.props.location.query.next);
+      if (this.props.location.query) {
+        browserHistory.push(this.props.location.query.next);
+      } else {
+        browserHistory.push('/');
+      }
     }
     this.setState({
       emailError: nextProps.emailError,

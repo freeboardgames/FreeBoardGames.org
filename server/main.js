@@ -19,6 +19,8 @@ const paths = config.utils_paths
 
 const MONGO_URI = process.env.MONGODB_URI ||
                   'mongodb://localhost/turnato';
+const JWT_TOKEN_SECRET = process.env.JWT_TOKEN_SECRET ||
+                         'zwxnizRjZ99hLsgris6k';
 
 app.use(compression())
 app.use( bodyParser.json() );
@@ -59,10 +61,42 @@ var hashPassword = (pwd) => {
 };
 
 var jwtTokenize = (payload) => {
-  return jwt.sign(payload, 'zwxnizRjZ99hLsgris6k', {
+  return jwt.sign(payload, JWT_TOKEN_SECRET, {
     expiresIn: 60*60*24*365
   });
 };
+
+app.get('/api/parties', (req, res) => {
+  mongo.MongoClient.connect(MONGO_URI, (err, db) => {
+    //Check for DB
+    if (err) {
+      console.log('ERROR CONNECTING TO MONGO');
+      res.send('ERROR CONNECTING TO DB');
+      return;
+    }
+    //Check for login
+    var jwt_token = req.query.token;
+    try {
+      var user = jwt.verify(jwt_token, JWT_TOKEN_SECRET);
+    } catch (err) {
+      console.log('ERROR DECODING JWT: ' + err);
+      res.send('ERROR INVALID JWT');
+      return;
+    }
+    //Login OK
+    var partiesCollection = db.collection('parties');
+    var partiesCur = partiesCollection.find({users: { $in: [user.email]}});
+    partiesCur.toArray(function(err, parties) {
+      var result = [];
+      parties.map(function (party) {
+        result.push({id: party._id, name: party.name});
+      });
+      res.send(JSON.stringify({type: 'PARTIES_RESULT',
+                      result: result}));
+    });
+
+  });
+});
 
 app.post('/api/login', (req, res) => {
   mongo.MongoClient.connect(MONGO_URI, (err, db) => {
@@ -129,8 +163,8 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-app.get('*', (req,res) => {
+/*app.get('*', (req,res) => {
   res.sendFile('index.html', {root: paths.dist()});
-});
+});*/
 
 module.exports = app

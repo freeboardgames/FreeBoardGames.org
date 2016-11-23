@@ -1686,7 +1686,7 @@ webpackJsonp([1],{
 	                return _react2.default.createElement(
 	                    'div',
 	                    null,
-	                    this.props.isAuthenticated === true ? _react2.default.createElement(Component, this.props) : null
+	                    this.props.auth.isAuthenticated ? _react2.default.createElement(Component, this.props) : null
 	                );
 	            }
 	        }]);
@@ -1705,4 +1705,4 @@ webpackJsonp([1],{
 /***/ }
 
 });
-//# sourceMappingURL=1.checker.85e4367058af20ce0196.js.map
+//# sourceMappingURL=1.checker.13cb9a2b9c952f270d51.js.map
