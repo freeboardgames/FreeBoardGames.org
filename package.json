@@ -25,6 +25,7 @@
     "compile": {
       "command": "node bin/compile",
       "env": {
+        "NODE_ENV": "production",
         "DEBUG": "app:*"
       }
     },
