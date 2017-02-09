@@ -14,62 +14,88 @@ import Checkbox from 'material-ui/Checkbox';
 import { browserHistory } from 'react-router'
 
 
-export const PartyView = ({}) => {
-  let playCheckers = () => {
-    browserHistory.push('/games/checker');
-  };
-  return (<TurnatoBar>
-    <br />
-    <Card>
-    <CardHeader
-      title="Mermões"
-      subtitle="4 members - 0 games"
-    />
-    <CardText>
-      Members: felizardow, rafaelplonghi, vitorpfr, curvorj
-    </CardText>
+export const PartyView = React.createClass({
+  render: function () {
+    let playCheckers = () => {
+      browserHistory.push('/games/checker');
+    };
+    // PARTY
+    let partyName = this.props.party.name;
+    let partyMemberCount = this.props.party.members.length;
+    let partyMemberList = this.props.party.members.join(', ');
 
-    <CardActions style={{textAlign: "right"}}>
-      <FlatButton label="Share" />
-      <RaisedButton label="Copy Link" secondary={true}  />
-    </CardActions>
-    </Card>
-    <List>
-      <Subheader>Recent games</Subheader>
-      <ListItem
-        primaryText="felizardow, vitorpfr"
-        secondaryText="Checkers - Finished"
-        rightIcon={<NavigationChevronRight />}
-        style={{WebkitAppearance: 'inherit'}}
-        onClick={playCheckers}
-      />
-      <ListItem
-        primaryText="rafaelplonghi, curvorj"
-        secondaryText="Checkers - Going on"
-        rightIcon={<ImageRemoveRedEye />}
-        style={{WebkitAppearance: 'inherit'}}
-        onClick={playCheckers}
-      />
+    //MATCHES: TODO
 
-      <Subheader>Im down for</Subheader>
-      <ListItem
-        primaryText="Checkers"
-        secondaryText="0/2 players"
-        leftCheckbox={<Checkbox />}
+    // GAMES
+    let gamesList = [];
+    this.props.games.map((game) => {
+      let downList = this.props.downMapping[game.code];
+      let downCount = downList.length;
+      let isChecked = downList.indexOf(this.props.currentUser) > -1;
+      gamesList.push((<ListItem
+        key={game.code}
+        primaryText={game.name}
+        secondaryText={downCount+"/"+game.maxPlayers+" players"}
         rightIcon={<PlacesCasino />}
+        leftCheckbox={<Checkbox checked={isChecked}/>}
         style={{WebkitAppearance: 'inherit'}}
         onClick={playCheckers}
+      />));
+    })
+
+    return (<TurnatoBar>
+      <br />
+      <Card>
+      <CardHeader
+        title={partyName}
+        subtitle={partyMemberCount+" members"}
       />
-      <ListItem
-        primaryText="Chess"
-        secondaryText="0/2 players"
-        rightIcon={<PlacesCasino />}
-        leftCheckbox={<Checkbox />}
-        style={{WebkitAppearance: 'inherit'}}
-        onClick={playCheckers}
-      />
-    </List>
-    </TurnatoBar>)
-}
+      <CardText>
+        Members: {partyMemberList}
+      </CardText>
+
+      <CardActions style={{textAlign: "right"}}>
+        <RaisedButton label="Invite Friends" secondary={true}  />
+      </CardActions>
+      </Card>
+      <List>
+        <Subheader>Recent matches</Subheader>
+        <ListItem
+          primaryText="felizardow, vitorpfr"
+          secondaryText="Checkers - Finished"
+          rightIcon={<NavigationChevronRight />}
+          style={{WebkitAppearance: 'inherit'}}
+          onClick={playCheckers}
+        />
+        <ListItem
+          primaryText="rafaelplonghi, curvorj"
+          secondaryText="Checkers - Going on"
+          rightIcon={<ImageRemoveRedEye />}
+          style={{WebkitAppearance: 'inherit'}}
+          onClick={playCheckers}
+        />
+
+        <Subheader>Im down for</Subheader>
+        {gamesList}
+
+      </List>
+      </TurnatoBar>)
+    }
+  })
+
+PartyView.defaultProps = {
+  loading: false,
+  currentUser: "felizardow",
+  party: {code: 'UEHueoajeokaw', name: "Mermões",
+  members: ["felizardow", "rafaelplonghi", "vitorpfr", "curvorj"]},
+  matches:    [{game_code: 'checkers', game: "Checkers", status: "Going on",
+                  players: ["felizardow, vitorpfr"]},
+                 {game_code: 'chess', game: "Chess", status: "Finished",
+                  players: ["rafaelplonghi, curvorj"]}
+                ],
+  games: [{code: 'chess', name: 'Checkers', maxPlayers: 2},
+                   {code: 'checkers', name: 'Chess', maxPlayers: 2}],
+  downMapping: {'chess': ['vitorpfr'], 'checkers': ['felizardow']}
+};
 
 export default PartyView
