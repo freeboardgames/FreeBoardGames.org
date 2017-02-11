@@ -13,6 +13,7 @@ const mapStateToProps = (state) => ({
   matches: state.party.matches,
   games: state.party.games,
   downMapping: state.party.downMapping,
+  token: state.auth.token,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PartyView)

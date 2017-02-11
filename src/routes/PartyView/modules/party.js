@@ -25,8 +25,10 @@ export const down = (party, user, game) => (dispatch, getState) => {
       .then(json => dispatch(json))*/
 }
 
-export const connectToParty = (party) => (dispatch, getState) => {
+export const connectToParty = (token, party_code) => (dispatch, getState) => {
   var socket = io();
+  socket.emit('login', token);
+  socket.emit('listen-party', party_code);
   socket.on('party', (message) => {
     dispatch(message);
   });

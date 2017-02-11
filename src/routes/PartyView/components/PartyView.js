@@ -17,7 +17,7 @@ import { browserHistory } from 'react-router'
 
 export const PartyView = React.createClass({
   componentDidMount: function () {
-    this.props.connectToParty(this.props.info.code)
+    this.props.connectToParty(this.props.token, this.props.params.id)
   },
   down: function (game) {
     return () => {
@@ -44,8 +44,8 @@ export const PartyView = React.createClass({
     }
     // PARTY
     let partyName = this.props.info.name;
-    let partyMemberCount = this.props.info.members.length;
-    let partyMemberList = this.props.info.members.join(', ');
+    let partyMemberCount = this.props.info.users.length;
+    let partyMemberList = this.props.info.users.join(', ');
 
     //MATCHES
     let matchesList = [];
@@ -120,11 +120,13 @@ export const PartyView = React.createClass({
 PartyView.defaultProps = {
   connectToParty: () => {},
   down: () => {},
+  token: '',
   currentUser: '',
   info: {loading: true},
   matches: [],
   games: [],
-  downMapping: {}
+  downMapping: {},
+  params: {}
 };
 
 export default PartyView

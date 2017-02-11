@@ -7,6 +7,7 @@ const webpackConfig = require('../build/webpack.config')
 const config = require('../config')
 const bodyParser = require('body-parser')
 const loginHandle = require('./login-handle.js')
+const ioHandle = require('./io-handle.js')
 const partiesHandle = require('./parties-handle.js')
 const randomstring    = require('randomstring');
 const postmark = require("postmark")(process.env.POSTMARK_API_TOKEN)
@@ -84,21 +85,4 @@ debug(`Server is now running at http://localhost:${port}.`)
 
 const io = socketIO(http)
 
-io.on('connection', (socket) => {
-  console.log('Client connected');
-
-  let info = {loading: false, code: 'UEHueoajeokaw', name: "Mermões",
-               members: ["felizardow", "rafaelplonghi", "vitorpfr", "curvorj"]}
-  let matches = [{id: 'awjdjdaw', game_code: 'checkers', game_name: "Checkers",
-                  status: "Going on", players: ["felizardow", "vitorpfr"]},
-                 {id: 'poqweqep', game_code: 'chess', game_name: "Chess",
-                  status: "Finished", players: ["rafaelplonghi", "curvorj"]}]
-  let games = [{code: 'chess', name: 'Chess', maxPlayers: 2},
-               {code: 'checkers', name: 'Checkers', maxPlayers: 2}]
-  let downMapping = {'chess': ['vitorpfr'], 'checkers': ['felizardow']}
-  socket.emit('party', {type: 'SET_DOWN_MAPPING', downMapping});
-  socket.emit('party', {type: 'SET_GAMES', games});
-  //socket.emit('party', {type: 'SET_MATCHES', matches});
-  socket.emit('party', {type: 'SET_INFO', info});
-  socket.on('disconnect', () => console.log('Client disconnected'));
-});
+io.on('connection', ioHandle(mongo.MongoClient, MONGO_URI));
