@@ -10,12 +10,13 @@ const loginHandle = require('./login-handle.js')
 const partiesHandle = require('./parties-handle.js')
 const randomstring    = require('randomstring');
 const postmark = require("postmark")(process.env.POSTMARK_API_TOKEN)
+const socketIO = require('socket.io');
 
 const app = express()
 const paths = config.utils_paths
 
 
-
+const port = config.server_port
 const MONGO_URI = process.env.MONGODB_URI ||
                   'mongodb://localhost/turnato';
 app.use(compression())
@@ -78,4 +79,26 @@ app.get('*', (req,res) => {
   res.sendFile('index.html', {root: paths.dist()});
 });
 
-module.exports = app
+const http = app.listen(port)
+debug(`Server is now running at http://localhost:${port}.`)
+
+const io = socketIO(http)
+
+io.on('connection', (socket) => {
+  console.log('Client connected');
+
+  let info = {loading: false, code: 'UEHueoajeokaw', name: "Mermões",
+               members: ["felizardow", "rafaelplonghi", "vitorpfr", "curvorj"]}
+  let matches = [{id: 'awjdjdaw', game_code: 'checkers', game_name: "Checkers",
+                  status: "Going on", players: ["felizardow", "vitorpfr"]},
+                 {id: 'poqweqep', game_code: 'chess', game_name: "Chess",
+                  status: "Finished", players: ["rafaelplonghi", "curvorj"]}]
+  let games = [{code: 'chess', name: 'Chess', maxPlayers: 2},
+               {code: 'checkers', name: 'Checkers', maxPlayers: 2}]
+  let downMapping = {'chess': ['vitorpfr'], 'checkers': ['felizardow']}
+  socket.emit('party', {type: 'SET_DOWN_MAPPING', downMapping});
+  socket.emit('party', {type: 'SET_GAMES', games});
+  //socket.emit('party', {type: 'SET_MATCHES', matches});
+  socket.emit('party', {type: 'SET_INFO', info});
+  socket.on('disconnect', () => console.log('Client disconnected'));
+});

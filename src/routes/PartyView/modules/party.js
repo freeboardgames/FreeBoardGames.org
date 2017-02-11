@@ -26,19 +26,10 @@ export const down = (party, user, game) => (dispatch, getState) => {
 }
 
 export const connectToParty = (party) => (dispatch, getState) => {
-  let info = {loading: false, code: 'UEHueoajeokaw', name: "Mermões",
-               members: ["felizardow", "rafaelplonghi", "vitorpfr", "curvorj"]}
-  let matches = [{id: 'awjdjdaw', game_code: 'checkers', game_name: "Checkers",
-                  status: "Going on", players: ["felizardow", "vitorpfr"]},
-                 {id: 'poqweqep', game_code: 'chess', game_name: "Chess",
-                  status: "Finished", players: ["rafaelplonghi", "curvorj"]}]
-  let games = [{code: 'chess', name: 'Chess', maxPlayers: 2},
-               {code: 'checkers', name: 'Checkers', maxPlayers: 2}]
-  let downMapping = {'chess': ['vitorpfr'], 'checkers': ['felizardow']}
-  dispatch({type: SET_DOWN_MAPPING, downMapping});
-  dispatch({type: SET_GAMES, games});
-  dispatch({type: SET_MATCHES, matches});
-  dispatch({type: SET_INFO, info});
+  var socket = io();
+  socket.on('party', (message) => {
+    dispatch(message);
+  });
 }
 
 export const actions = {
