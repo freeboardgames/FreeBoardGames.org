@@ -8,7 +8,6 @@ const config = require('../config')
 const bodyParser = require('body-parser')
 const loginHandle = require('./login-handle.js')
 const ioHandle = require('./io-handle.js')
-const partiesHandle = require('./parties-handle.js')
 const randomstring    = require('randomstring');
 const postmark = require("postmark")(process.env.POSTMARK_API_TOKEN)
 const socketIO = require('socket.io');
@@ -53,36 +52,25 @@ if (config.env === 'development') {
 }
 app.use(express.static(paths.dist()))
 
-
-app.get('/api/parties', (req, res) => {
-  mongo.MongoClient.connect(MONGO_URI, (err, db) => {
-    if (err) {
-      console.log('ERROR CONNECTING TO MONGO');
-      res.status(500).send()
-      return
-    }
-    partiesHandle(db, req, res)
-  })
-});
-
-app.post('/api/login', (req, res) => {
-  mongo.MongoClient.connect(MONGO_URI, (err, db) => {
-    if (err) {
-      console.log('ERROR CONNECTING TO MONGO');
-      res.status(500).send()
-      return
-    }
-    loginHandle(db, req, res)
-  })
-});
-
 app.get('*', (req,res) => {
   res.sendFile('index.html', {root: paths.dist()});
 });
 
 const http = app.listen(port)
-debug(`Server is now running at http://localhost:${port}.`)
 
 const io = socketIO(http)
 
-io.on('connection', ioHandle(mongo.MongoClient, MONGO_URI));
+io.on('connection', (socket) => {
+  let dispatch = (message) => {
+    socket.emit('socketIoMiddleware', message)
+  }
+  mongo.MongoClient.connect(MONGO_URI, (err, db) => {
+    if (err) {
+      console.log('ERROR CONNECTING TO MONGO');
+      return
+    }
+    ioHandle(db, socket, dispatch)
+  });
+});
+
+debug(`Server is now running at http://localhost:${port}.`)

@@ -1,35 +1,42 @@
-const ObjectId = require('mongodb').ObjectId;
 const turnatoLogin = require('./turnato-login.js');
+const partiesHandle = require('./parties-handle.js');
+const partyHandle = require('./party-handle.js').partyHandle;
+const downHandle = require('./party-handle.js').downHandle;
+const loginHandle = require('./login-handle.js');
 
-var ioHandle = (mongo, mongo_uri) => (socket) => {
+var ioHandle = (db, socket, dispatch) => {
   console.log('Client connected');
   var user = null;
   socket.on('login', (token) => {
-    user = turnatoLogin.getLoggedUser(token);
-  });
-  socket.on('listen-party', (party_code) => {
-    if (!user) return
-    let handlePartyDb = (party, matches, games) => {
-      let info = {name: party.name, users: party.users, code: party_code,
-        loading: false};
-      socket.emit('party', {type: 'SET_DOWN_MAPPING',
-                            downMapping: party.downMapping});
-      socket.emit('party', {type: 'SET_GAMES', games});
-      socket.emit('party', {type: 'SET_MATCHES', matches});
-      socket.emit('party', {type: 'SET_INFO', info});
-      socket.join('party-' + party._id)
+    try {
+      user = turnatoLogin.getLoggedUser(token);
+    } catch (err) {
+      console.error(err)
     }
-    //Do Mongo DB request
-    let db = mongo.connect(mongo_uri, (err, db) => {
-      db.collection('parties').findOne(ObjectId(party_code), (err, party) => {
-        db.collection('matches').find({party_id:  ObjectId(party_code)})
-          .toArray((err, matches) => {
-          db.collection('games').find().toArray((err, games) => {
-            handlePartyDb(party, matches, games);
-          })
-        })
-      })
-    });
+  });
+  socket.on('socketIoMiddleware', (message) => {
+    try {
+      if (message.type == 'LOGIN_REQUEST') {
+        loginHandle(socket, dispatch, db, message.email, message.password)
+      }
+      if (!user)
+        return;
+      switch (message.type) {
+        case 'PARTIES_REQUEST':
+          partiesHandle(socket, dispatch, db, user);
+          break;
+        case 'PARTY_REQUEST':
+          partyHandle(socket, dispatch, db, user, message.code);
+          break;
+        case 'DOWN_REQUEST':
+          console.log('DOWN_REQUEST')
+          //TODO: UNDERSTAND WHY DOWN REQUEST IS DOING NOTHING
+          downHandle(socket, dispatch, db, user, message.party, message.game);
+          break;
+      }
+    } catch (err) {
+      console.error(err)
+    }
   })
   socket.on('disconnect', () => console.log('Client disconnected'));
 }

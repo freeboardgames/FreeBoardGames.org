@@ -23,8 +23,7 @@ export const PartyView = React.createClass({
     return () => {
       if (game.loading)
         return
-      this.props.down(this.props.info.code,
-        this.props.currentUser, game.code)
+      this.props.down(this.props.info.code, game.code)
     }
   },
   render: function () {
@@ -55,7 +54,7 @@ export const PartyView = React.createClass({
         match.status != 'Finished';
 
       matchesList.push((<ListItem
-        key={match.id}
+        key={match._id}
         primaryText={players}
         secondaryText={match.game_name + " - " + match.status}
         rightIcon={(active) ? <NavigationChevronRight /> :

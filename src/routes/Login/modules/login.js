@@ -13,13 +13,6 @@ export const LOGIN_ERROR = 'LOGIN_ERROR'
 
 export const login = (email,password) => (dispatch, getState) => {
   dispatch({type: LOGIN_REQUEST, email, password});
-  return fetch(`/api/login`,
-    { method: 'POST',
-      headers: {'content-type': 'application/json'},
-	    body: JSON.stringify({ email, password})
-    })
-      .then(response => response.json())
-      .then(json => dispatch(json))
 }
 
 export const actions = {

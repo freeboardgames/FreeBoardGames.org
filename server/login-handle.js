@@ -2,9 +2,9 @@ const validator = require('validator');
 const turnatoLogin = require('./turnato-login.js');
 
 
-module.exports = (db, req, res) => {
+module.exports = (socket, dispatch, db, email, password) => {
   var usersCollection = db.collection('users');
-  var user = {email: req.body.email, password: req.body.password};
+  var user = {email, password};
   var usersCur = usersCollection.find({email: user.email});
   usersCur.toArray((err, users) => {
     //NEW USER, REGISTER
@@ -32,8 +32,7 @@ module.exports = (db, req, res) => {
             console.info("Sent to postmark for delivery")
         });
       } else {
-        res.send(JSON.stringify({ type: 'LOGIN_ERROR',
-                                  emailError: 'Invalid e-mail address.'}));
+        dispatch({ type: 'LOGIN_ERROR', emailError: 'Invalid e-mail address.'});
         return
       }
     //USER EXISTS
@@ -41,8 +40,7 @@ module.exports = (db, req, res) => {
       //PASSWORD PROVIDED
       if (user.password) {
         if (users[0].password != turnatoLogin.hashPassword(user.password)) {
-          res.send(JSON.stringify({ type: 'LOGIN_ERROR',
-                                    passwordError: 'Wrong password.'}));
+          dispatch({ type: 'LOGIN_ERROR', passwordError: 'Wrong password.'});
           return
         } else {
           //Log in successful, keep going
@@ -50,13 +48,14 @@ module.exports = (db, req, res) => {
         }
       //PASSWORD NOT PROVIDED
       } else {
-        res.send(JSON.stringify({ type: 'LOGIN_ERROR',
-                                  needsPassword: true}));
+        dispatch({ type: 'LOGIN_ERROR', needsPassword: true});
         return
       }
     };
     delete user.password;
-    res.send(JSON.stringify({type: 'AUTH_SUCCESS',
-                    payload: { token: turnatoLogin.jwtTokenize(user) }}));
+    dispatch({type: 'AUTH_SUCCESS', payload: {
+        token: turnatoLogin.jwtTokenize(user)
+      }
+    });
   });
 }

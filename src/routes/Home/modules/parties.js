@@ -10,14 +10,8 @@ export const PARTIES_RESULT = 'PARTIES_RESULT'
 // Actions
 // ------------------------------------
 
-export const requestParties = (token) => (dispatch, getState) => {
+export const requestParties = (token) => (dispatch) => {
   dispatch({type: PARTIES_REQUEST});
-  return fetch('/api/parties?token='+token,
-    { method: 'GET',
-      headers: {'content-type': 'application/json'}
-    })
-    .then(response => response.json())
-    .then(json => dispatch(json))
 }
 
 export const actions = {

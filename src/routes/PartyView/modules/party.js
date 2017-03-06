@@ -4,6 +4,7 @@ import fetch from 'isomorphic-fetch'
 // Constants
 // ------------------------------------
 export const DOWN_REQUEST = 'DOWN_REQUEST'
+export const PARTY_REQUEST = 'PARTY_REQUEST'
 export const SET_INFO = 'SET_INFO'
 export const SET_GAMES = 'SET_GAMES'
 export const SET_MATCHES = 'SET_MATCHES'
@@ -13,25 +14,12 @@ export const SET_DOWN_MAPPING = 'SET_DOWN_MAPPING'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const down = (party, user, game) => (dispatch, getState) => {
-  dispatch({type: DOWN_REQUEST, party, user, game});
-  /*
-  return fetch(`/api/parties/` + party + `/down`,
-    { method: 'POST',
-      headers: {'content-type': 'application/json'},
-	    body: JSON.stringify({ game, user })
-    })
-      .then(response => response.json())
-      .then(json => dispatch(json))*/
+export const down = (party, game) => (dispatch, getState) => {
+  dispatch({type: DOWN_REQUEST, party, game});
 }
 
 export const connectToParty = (token, party_code) => (dispatch, getState) => {
-  var socket = io();
-  socket.emit('login', token);
-  socket.emit('listen-party', party_code);
-  socket.on('party', (message) => {
-    dispatch(message);
-  });
+  dispatch({type: PARTY_REQUEST, code: party_code});
 }
 
 export const actions = {
@@ -51,8 +39,16 @@ const ACTION_HANDLERS = {
             games: action.games}
   },
   [SET_DOWN_MAPPING] : (state, action) => {
+    let games = []
+    if (state.games) {
+      for (let i=0; i<state.games.length; i++) {
+        let game = state.games[i]
+        games.push({...game, loading: false})
+      }
+    }
     return {...state,
-            downMapping: action.downMapping}
+            downMapping: action.downMapping,
+            games}
   },
   [SET_MATCHES] : (state, action) => {
     return {...state,
