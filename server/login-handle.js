@@ -1,6 +1,7 @@
 const validator = require('validator');
 const turnatoLogin = require('./turnato-login.js');
-
+const randomstring    = require('randomstring');
+const postmark = require("postmark")(process.env.POSTMARK_API_TOKEN)
 
 module.exports = (socket, dispatch, db, email, password) => {
   var usersCollection = db.collection('users');

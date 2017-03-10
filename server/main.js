@@ -8,8 +8,6 @@ const config = require('../config')
 const bodyParser = require('body-parser')
 const loginHandle = require('./login-handle.js')
 const ioHandle = require('./io-handle.js')
-const randomstring    = require('randomstring');
-const postmark = require("postmark")(process.env.POSTMARK_API_TOKEN)
 const socketIO = require('socket.io');
 
 const app = express()
@@ -64,12 +62,15 @@ io.on('connection', (socket) => {
   let dispatch = (message) => {
     socket.emit('socketIoMiddleware', message)
   }
+  let dispatchRoom = (room, message) => {
+    io.in(room).emit('socketIoMiddleware', message)
+  }
   mongo.MongoClient.connect(MONGO_URI, (err, db) => {
     if (err) {
       console.log('ERROR CONNECTING TO MONGO');
       return
     }
-    ioHandle(db, socket, dispatch)
+    ioHandle(db, socket, dispatchRoom, dispatch)
   });
 });
 

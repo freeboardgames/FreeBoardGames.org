@@ -8,6 +8,7 @@ let partyHandle = (socket, dispatch, db, user, party_code) => {
     dispatch({type: 'SET_GAMES', games});
     dispatch({type: 'SET_MATCHES', matches});
     dispatch({type: 'SET_INFO', info});
+    console.log('party-' + party._id);
     socket.join('party-' + party._id)
   }
   //Do Mongo DB request
@@ -21,8 +22,9 @@ let partyHandle = (socket, dispatch, db, user, party_code) => {
   })
 }
 
-let downHandle = (socket, dispatch, db, user, party_code, game_code) => {
-  db.collection('parties').findOne(ObjectId(party_code), (err, party) => {
+let downHandle = (socket, dispatchRoom, dispatch, db,
+                  user, party_code, game_code) => {
+  db.collection('parties').findOne({_id: ObjectId(party_code)}, (err, party) => {
     db.collection('games').findOne({code: game_code}, (err, game) => {
       let maxPlayers = game.maxPlayers;
       let downMapping = party.downMapping;
@@ -42,20 +44,25 @@ let downHandle = (socket, dispatch, db, user, party_code, game_code) => {
           }, (err, result) => {
             db.collection('matches').find({party_id:  ObjectId(party_code)})
               .toArray((err, matches) => {
-                socket.emit('party-' + party._id,
-                            {type: 'SET_MATCHES', matches});
+                dispatchRoom('party-' + party._id,
+                             {type: 'SET_MATCHES', matches});
             })
           })
           downMapping[game_code] = []
-        } else {
-          downMapping[game_code].push(user.email)
         }
-        db.collection('parties').updateOne(ObjectId(party_code), party);
-        socket.emit('party-' + party._id,
-                    {type: 'SET_DOWN_MAPPING', downMapping: downMapping});
       } else { //Removing player
-        downMapping[game].splice(downMapping[game].indexOf(user.email), 1)
+        downMapping[game_code].splice(
+          downMapping[game_code].indexOf(user.email), 1)
       }
+
+      db.collection('parties').updateOne({_id: ObjectId(party_code)},
+        { $set: {downMapping: downMapping} },
+      (err, results) => {
+        if (err)
+          console.log(err)
+      });
+      dispatchRoom('party-' + party._id,
+                   {type: 'SET_DOWN_MAPPING', downMapping: downMapping});
   })
 })
 }

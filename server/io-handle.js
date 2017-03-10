@@ -4,7 +4,7 @@ const partyHandle = require('./party-handle.js').partyHandle;
 const downHandle = require('./party-handle.js').downHandle;
 const loginHandle = require('./login-handle.js');
 
-var ioHandle = (db, socket, dispatch) => {
+var ioHandle = (db, socket, dispatchRoom, dispatch) => {
   console.log('Client connected');
   var user = null;
   socket.on('login', (token) => {
@@ -30,8 +30,8 @@ var ioHandle = (db, socket, dispatch) => {
           break;
         case 'DOWN_REQUEST':
           console.log('DOWN_REQUEST')
-          //TODO: UNDERSTAND WHY DOWN REQUEST IS DOING NOTHING
-          downHandle(socket, dispatch, db, user, message.party, message.game);
+          downHandle(socket, dispatchRoom, dispatch, db, user,
+            message.party, message.game);
           break;
       }
     } catch (err) {
