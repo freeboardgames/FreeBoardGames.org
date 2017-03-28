@@ -1,9 +1,9 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
-const CLICK = 'MATCH_ACTION_REQUEST'
-const JOIN_MATCH = 'MATCH_JOIN_REQUEST'
-const MATCH_SET_STATE = 'MATCH_SET_STATE'
+export const CLICK = 'MATCH_ACTION_REQUEST'
+export const JOIN_MATCH = 'MATCH_JOIN_REQUEST'
+export const MATCH_SET_STATE = 'MATCH_SET_STATE'
 
 // ------------------------------------
 // Actions

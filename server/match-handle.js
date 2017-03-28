@@ -1,9 +1,9 @@
 const ObjectId = require('mongodb').ObjectId;
-//const checkersReducer = require('../src/games/CheckerGame/modules/checkerGameState').default;
+const checkersReducer = require('./games/checkerGameState.js').default;
 
 function genericReducer (game_code, state, action) {
   if (game_code == 'checkers') {
-    //return checkersReducer(state, action);
+    return checkersReducer(state, action);
   }
 }
 
@@ -16,7 +16,6 @@ matchJoinHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
       let result = { type: 'MATCH_SET_STATE' };
       state.loading = false;
       result.payload = state;
-      console.log(JSON.stringify(result));
       dispatch(result);
     }
   })

@@ -30,7 +30,7 @@
       }
     },
     "dev": {
-      "command": "nodemon server/main --ignore dist --ignore coverage --ignore tests --ignore src",
+      "command": "babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/CheckerGame/modules/checkerGameState.js --out-file server/games/checkerGameState.js && nodemon server/main --ignore dist --ignore coverage --ignore tests --ignore src",
       "env": {
         "NODE_ENV": "development",
         "DEBUG": "app:*"
@@ -133,6 +133,8 @@
     "babel-core": "^6.17.0",
     "babel-eslint": "^6.0.0-beta.6",
     "babel-plugin-istanbul": "^2.0.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.3.0",
     "chai-enzyme": "^0.5.0",
