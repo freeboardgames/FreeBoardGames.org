@@ -2,6 +2,7 @@ const turnatoLogin = require('./turnato-login.js');
 const partiesHandle = require('./parties-handle.js');
 const partyHandle = require('./party-handle.js').partyHandle;
 const downHandle = require('./party-handle.js').downHandle;
+const matchJoinHandle = require('./match-handle.js').matchJoinHandle;
 const loginHandle = require('./login-handle.js');
 
 var ioHandle = (db, socket, dispatchRoom, dispatch) => {
@@ -29,9 +30,15 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
           partyHandle(socket, dispatch, db, user, message.code);
           break;
         case 'DOWN_REQUEST':
-          console.log('DOWN_REQUEST')
           downHandle(socket, dispatchRoom, dispatch, db, user,
             message.party, message.game);
+          break;
+        case 'MATCH_JOIN_REQUEST':
+          matchJoinHandle(socket, dispatchRoom, dispatch, db, user,
+            message.match_code);
+          break;
+        default:
+          console.log('UNKNOWN: ' + message.type)
           break;
       }
     } catch (err) {

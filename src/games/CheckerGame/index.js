@@ -2,7 +2,7 @@ import { injectReducer } from '../../store/reducers'
 // import { MessageReducer } from './modules/message'
 
 export default (store) => ({
-  path: 'games/checker',
+  path: 'g/checkers/:id',
   /*  Async getComponent is only invoked when route matches   */
   getComponent (nextState, cb) {
     /*  Webpack - use 'require.ensure' to create a split point

@@ -1,16 +1,26 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const CLICK = 'CLICK'
+const CLICK = 'MATCH_ACTION_REQUEST'
+const JOIN_MATCH = 'MATCH_JOIN_REQUEST'
+const MATCH_SET_STATE = 'MATCH_SET_STATE'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function sendClick (x, y) {
+export function sendClick (match_code, x, y) {
   return {
     type    : CLICK,
+    match_code: match_code,
     payload : {x: x,
               y: y}
+  }
+}
+
+export function joinMatch (match_code) {
+  return {
+    type : JOIN_MATCH,
+    match_code : match_code
   }
 }
 
@@ -68,6 +78,11 @@ function calculateFeasible (board, x, y) {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
+  [MATCH_SET_STATE] : (state, action) => {
+    return {
+      ...action.payload
+    }
+  },
   [CLICK] : (state, action) => {
     let x = action.payload.x;
     let y = action.payload.y;
@@ -135,6 +150,8 @@ const initialState = {board: [
   [null, {player: 1, key:20}, null, {player: 1, key:21}, null,
     {player: 1, key:22}, null, {player: 1, key:23}]
   ],
+  loading: true,
+  match_code: null,
   selected: null,
   feasible: null};
 export default function messageReducer (state = initialState, action) {

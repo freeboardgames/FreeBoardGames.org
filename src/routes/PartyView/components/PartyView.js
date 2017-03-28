@@ -27,8 +27,8 @@ export const PartyView = React.createClass({
     }
   },
   render: function () {
-    let playCheckers = () => {
-      browserHistory.push('/games/checker');
+    let joinMatch = (match) => () => {
+      browserHistory.push('/g/' + match.game_code + '/' + match._id);
     };
 
     if (this.props.info.loading) {
@@ -60,7 +60,7 @@ export const PartyView = React.createClass({
         rightIcon={(active) ? <NavigationChevronRight /> :
                               <ImageRemoveRedEye />}
         style={{WebkitAppearance: 'inherit'}}
-        onClick={playCheckers}
+        onClick={joinMatch(match)}
       />))
     });
 
