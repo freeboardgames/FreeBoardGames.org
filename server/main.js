@@ -62,8 +62,11 @@ io.on('connection', (socket) => {
   let dispatch = (message) => {
     socket.emit('socketIoMiddleware', message)
   }
-  let dispatchRoom = (room, message) => {
-    io.in(room).emit('socketIoMiddleware', message)
+  let dispatchRoom = (room, message, include_self=false) => {
+    if (include_self) {
+      socket.emit('socketIoMiddleware', message)
+    }
+    socket.broadcast.to(room).emit('socketIoMiddleware', message)
   }
   mongo.MongoClient.connect(MONGO_URI, (err, db) => {
     if (err) {

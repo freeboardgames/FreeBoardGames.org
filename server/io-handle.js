@@ -3,6 +3,7 @@ const partiesHandle = require('./parties-handle.js');
 const partyHandle = require('./party-handle.js').partyHandle;
 const downHandle = require('./party-handle.js').downHandle;
 const matchJoinHandle = require('./match-handle.js').matchJoinHandle;
+const matchActionRequest = require('./match-handle.js').matchActionRequest;
 const loginHandle = require('./login-handle.js');
 
 var ioHandle = (db, socket, dispatchRoom, dispatch) => {
@@ -14,6 +15,9 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
     } catch (err) {
       console.error(err)
     }
+  });
+  var LAST_ACTION_PROMISE = new Promise((resolve, reject) => {
+    resolve();
   });
   socket.on('socketIoMiddleware', (message) => {
     try {
@@ -36,6 +40,10 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
         case 'MATCH_JOIN_REQUEST':
           matchJoinHandle(socket, dispatchRoom, dispatch, db, user,
             message.match_code);
+          break;
+        case 'MATCH_ACTION_REQUEST':
+          matchActionRequest(socket, dispatchRoom,
+              dispatch, db, user, message.match_code, message);
           break;
         default:
           console.log('UNKNOWN: ' + message.type)

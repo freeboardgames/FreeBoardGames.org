@@ -45,7 +45,7 @@ let downHandle = (socket, dispatchRoom, dispatch, db,
             db.collection('matches').find({party_id:  ObjectId(party_code)})
               .toArray((err, matches) => {
                 dispatchRoom('party-' + party._id,
-                             {type: 'SET_MATCHES', matches});
+                             {type: 'SET_MATCHES', matches}, true);
             })
           })
           downMapping[game_code] = []
@@ -62,7 +62,7 @@ let downHandle = (socket, dispatchRoom, dispatch, db,
           console.log(err)
       });
       dispatchRoom('party-' + party._id,
-                   {type: 'SET_DOWN_MAPPING', downMapping: downMapping});
+                   {type: 'SET_DOWN_MAPPING', downMapping: downMapping}, true);
   })
 })
 }
