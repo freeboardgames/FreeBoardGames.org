@@ -8,12 +8,13 @@ export const MATCH_SET_STATE = 'MATCH_SET_STATE'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function sendClick (match_code, x, y) {
+export function sendClick (match_code, x, y, player) {
   return {
     type    : CLICK,
     match_code: match_code,
     payload : {x: x,
-              y: y}
+              y: y},
+    player: player
   }
 }
 
@@ -37,11 +38,12 @@ function isValidCell(board, x, y) {
   return x >= 0 && x < boardWidth &&
     y >= 0 && y < boardHeight;
 }
-function calculateFeasible (board, x, y) {
+function calculateFeasible (board, x, y, player, turn) {
   let piece = board[y][x];
-  if (!piece)
+  if (!piece || piece.player != player || turn%2 != player)
     return []
   let feasible = [];
+  let eat_movements = [];
   //UP OR DOWN
   for (let directionY = -1; directionY <= 1; directionY +=2) {
     if (directionY == 1 && piece.player == 1 && !piece.double) {
@@ -64,14 +66,19 @@ function calculateFeasible (board, x, y) {
           board[y+directionY][x+directionX] &&
           board[y+directionY][x+directionX].player != piece.player &&
           !board[y+2*directionY][x+2*directionX]) {
-            feasible.push({movement: 'EAT',
+            let movement = {movement: 'EAT',
                           x: x+2*directionX, y: y+2*directionY,
                           eaten: {x: x+directionX, y: y+directionY},
-                          from: {x: x, y: y}});
+                          from: {x: x, y: y}};
+            eat_movements.push(movement);
       }
     }
   }
-  return feasible;
+  if (eat_movements.length > 0) {
+    return eat_movements;
+  } else {
+    return feasible;
+  }
 }
 
 // ------------------------------------
@@ -93,10 +100,21 @@ const ACTION_HANDLERS = {
           if (f.movement == 'WALK') {
             state.board[y][x] = state.board[f.from.y][f.from.x]
             state.board[f.from.y][f.from.x] = null
+            state.turn += 1;
           } else if (f.movement = 'EAT') {
-            state.board[y][x] = state.board[f.from.y][f.from.x]
-            state.board[f.from.y][f.from.x] = null
-            state.board[f.eaten.y][f.eaten.x] = null
+            state.board[y][x] = state.board[f.from.y][f.from.x];
+            state.board[f.from.y][f.from.x] = null;
+            state.board[f.eaten.y][f.eaten.x] = null;
+
+            let next_feasible = calculateFeasible(state.board, x,y,
+                                state.player, state.turn)
+            let can_eat_next = false;
+            next_feasible.forEach((f2) => {
+              if (f2.movement == 'EAT')
+                can_eat_next = true;
+            });
+            if (!can_eat_next)
+              state.turn += 1;
           }
           if ((y == 0 || y == state.board.length - 1) &&
               !state.board[y][x].double) {
@@ -110,14 +128,17 @@ const ACTION_HANDLERS = {
         selected: null,
         feasible: null
       };
-    } else if (state.selected && state.selected.x == x && state.selected.y == y) {
+    } else if (state.selected &&
+               state.selected.x == x &&
+               state.selected.y == y) {
       return {
         ...state,
         selected: null,
         feasible: null
       };
     } else {
-      let feasible = calculateFeasible(state.board,x,y);
+      let feasible = calculateFeasible(state.board,x,y, action.player,
+        state.turn);
       if (feasible.length > 0) {
         return {
           ...state,
@@ -151,7 +172,7 @@ const initialState = {board: [
     {player: 1, key:22}, null, {player: 1, key:23}]
   ],
   loading: true,
-  match_code: null,
+  turn: 0,
   selected: null,
   feasible: null};
 export default function messageReducer (state = initialState, action) {

@@ -19,12 +19,13 @@ const MATCH_SET_STATE = exports.MATCH_SET_STATE = 'MATCH_SET_STATE';
 // ------------------------------------
 // Actions
 // ------------------------------------
-function sendClick(match_code, x, y) {
+function sendClick(match_code, x, y, player) {
   return {
     type: CLICK,
     match_code: match_code,
     payload: { x: x,
-      y: y }
+      y: y },
+    player: player
   };
 }
 
@@ -47,10 +48,11 @@ function isValidCell(board, x, y) {
   let boardWidth = board[0].length;
   return x >= 0 && x < boardWidth && y >= 0 && y < boardHeight;
 }
-function calculateFeasible(board, x, y) {
+function calculateFeasible(board, x, y, player, turn) {
   let piece = board[y][x];
-  if (!piece) return [];
+  if (!piece || piece.player != player || turn % 2 != player) return [];
   let feasible = [];
+  let eat_movements = [];
   //UP OR DOWN
   for (let directionY = -1; directionY <= 1; directionY += 2) {
     if (directionY == 1 && piece.player == 1 && !piece.double) {
@@ -68,14 +70,19 @@ function calculateFeasible(board, x, y) {
       }
       //EAT
       if (isValidCell(board, x + directionX, y + directionY) && isValidCell(board, x + 2 * directionX, y + 2 * directionY) && board[y + directionY][x + directionX] && board[y + directionY][x + directionX].player != piece.player && !board[y + 2 * directionY][x + 2 * directionX]) {
-        feasible.push({ movement: 'EAT',
+        let movement = { movement: 'EAT',
           x: x + 2 * directionX, y: y + 2 * directionY,
           eaten: { x: x + directionX, y: y + directionY },
-          from: { x: x, y: y } });
+          from: { x: x, y: y } };
+        eat_movements.push(movement);
       }
     }
   }
-  return feasible;
+  if (eat_movements.length > 0) {
+    return eat_movements;
+  } else {
+    return feasible;
+  }
 }
 
 // ------------------------------------
@@ -95,10 +102,18 @@ const ACTION_HANDLERS = {
           if (f.movement == 'WALK') {
             state.board[y][x] = state.board[f.from.y][f.from.x];
             state.board[f.from.y][f.from.x] = null;
+            state.turn += 1;
           } else if (f.movement = 'EAT') {
             state.board[y][x] = state.board[f.from.y][f.from.x];
             state.board[f.from.y][f.from.x] = null;
             state.board[f.eaten.y][f.eaten.x] = null;
+
+            let next_feasible = calculateFeasible(state.board, x, y, state.player, state.turn);
+            let can_eat_next = false;
+            next_feasible.forEach(f2 => {
+              if (f2.movement == 'EAT') can_eat_next = true;
+            });
+            if (!can_eat_next) state.turn += 1;
           }
           if ((y == 0 || y == state.board.length - 1) && !state.board[y][x].double) {
             state.board[y][x].double = true;
@@ -116,7 +131,7 @@ const ACTION_HANDLERS = {
         feasible: null
       });
     } else {
-      let feasible = calculateFeasible(state.board, x, y);
+      let feasible = calculateFeasible(state.board, x, y, action.player, state.turn);
       if (feasible.length > 0) {
         return _extends({}, state, {
           feasible: feasible,
@@ -133,7 +148,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = { board: [[{ player: 0, key: 0 }, null, { player: 0, key: 1 }, null, { player: 0, key: 2 }, null, { player: 0, key: 3 }, null], [null, { player: 0, key: 4 }, null, { player: 0, key: 5 }, null, { player: 0, key: 6 }, null, { player: 0, key: 7 }], [{ player: 0, key: 8 }, null, { player: 0, key: 9 }, null, { player: 0, key: 10 }, null, { player: 0, key: 11 }, null], [null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null], [null, { player: 1, key: 12 }, null, { player: 1, key: 13 }, null, { player: 1, key: 14 }, null, { player: 1, key: 15 }], [{ player: 1, key: 16 }, null, { player: 1, key: 17 }, null, { player: 1, key: 18 }, null, { player: 1, key: 19 }, null], [null, { player: 1, key: 20 }, null, { player: 1, key: 21 }, null, { player: 1, key: 22 }, null, { player: 1, key: 23 }]],
   loading: true,
-  match_code: null,
+  turn: 0,
   selected: null,
   feasible: null };
 function messageReducer(state = initialState, action) {

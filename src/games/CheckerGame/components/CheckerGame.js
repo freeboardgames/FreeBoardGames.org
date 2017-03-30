@@ -12,10 +12,10 @@ export const CheckerGame = React.createClass({
     this.props.joinMatch(this.props.params.id)
   },
   render: function () {
-    let onClick = (x,y) => () => {
-      this.props.sendClick(this.props.params.id, x,y);
-    };
     let state = this.props.state;
+    let onClick = (x,y) => () => {
+      this.props.sendClick(this.props.params.id, x,y, state.player);
+    };
     if (state.loading) {
       return (
         <TurnatoBar>
@@ -45,9 +45,14 @@ export const CheckerGame = React.createClass({
         }
       }
     }
+    let current_player = state.turn%2;
     return (
     <div style={{backgroundColor: "black", height: "100%"}}>
-      <TurnHUD/>
+      <TurnHUD
+        playerName={state.players[current_player]}
+        playerColor={(current_player==0) ? 'grey' : '#CCCC00'}
+        action={(current_player == state.player) ? 'YOUR TURN' : 'WAITING'}
+        isUserTurn={current_player == state.player}/>
       <CheckerBoard
         feasible={state.feasible} selected={state.selected}
         onClick={onClick}
