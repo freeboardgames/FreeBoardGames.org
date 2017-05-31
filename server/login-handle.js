@@ -1,7 +1,8 @@
 const validator = require('validator');
 const turnatoLogin = require('./turnato-login.js');
 const randomstring    = require('randomstring');
-const postmark = require("postmark")(process.env.POSTMARK_API_TOKEN)
+const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
+const sg_helper = require('sendgrid').mail;
 
 module.exports = (socket, dispatch, db, email, password) => {
   var usersCollection = db.collection('users');
@@ -13,24 +14,38 @@ module.exports = (socket, dispatch, db, email, password) => {
       if (validator.isEmail(user.email)) {
         //Generate random password
         var pwd = randomstring.generate(10);
-        //Save to the db
-        user.password = turnatoLogin.hashPassword(pwd);
-        usersCollection.insert(user);
+
         //Send email
-        postmark.send({
-            "From": "bot@turnato.com",
-            "To": user.email,
-            "Subject": "Welcome to Turnato",
-            "TextBody": "A new Turnato account was created for you.\n" +
-            "If you need to login from another device, " +
-            "use the password below.\n\n" +
-            "PASSWORD: " + pwd
-        }, (error, success) => {
-            if (error) {
-                console.error("Unable to send postmark: " + error.message);
-               return;
-            }
-            console.info("Sent to postmark for delivery")
+        var from_email = new sg_helper.Email('bot@turnato.com');
+        var to_email = new sg_helper.Email(user.email);
+        var subject = 'Welcome to Turnato';
+        var content = new sg_helper.Content('text/plain',
+        "A new Turnato account was created for you.\n" +
+        "If you need to login from another device, " +
+        "use the password below.\n\n" +
+        "PASSWORD: " + pwd);
+        var mail = new sg_helper.Mail(from_email, subject, to_email, content);
+        var request = sg.emptyRequest({
+          method: 'POST',
+          path: '/v3/mail/send',
+          body: mail.toJSON(),
+        });
+
+        sg.API(request, (error, response) => {
+          if (error) {
+            console.error('Unable to send e-mail, account cancel: ' +
+              error.response.statusCode);
+            dispatch({ type: 'LOGIN_ERROR', emailError: 'Internal error.'});
+            return
+          } else {
+            //Save to the db
+            user.password = turnatoLogin.hashPassword(pwd);
+            usersCollection.insert(user);
+            delete user.password;
+            dispatch({type: 'AUTH_SUCCESS', payload: {
+                token: turnatoLogin.jwtTokenize(user)
+              }});
+          }
         });
       } else {
         dispatch({ type: 'LOGIN_ERROR', emailError: 'Invalid e-mail address.'});
@@ -53,10 +68,5 @@ module.exports = (socket, dispatch, db, email, password) => {
         return
       }
     };
-    delete user.password;
-    dispatch({type: 'AUTH_SUCCESS', payload: {
-        token: turnatoLogin.jwtTokenize(user)
-      }
-    });
   });
 }

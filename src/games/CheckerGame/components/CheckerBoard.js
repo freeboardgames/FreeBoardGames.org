@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import './CheckerBoard.scss'
 
 class Checkerboard extends React.Component {
@@ -43,13 +43,13 @@ class Checkerboard extends React.Component {
         <g>
           {rects}
         </g>
-        <ReactCSSTransitionGroup
+        <CSSTransitionGroup
           transitionName="example"
           transitionEnterTimeout={500}
           transitionLeaveTimeout={200}
           component="g">
         {this.props.children}
-       </ReactCSSTransitionGroup>
+       </CSSTransitionGroup>
       </svg>
     );
   };
