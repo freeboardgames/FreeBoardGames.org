@@ -20,6 +20,9 @@ var Home =  React.createClass({
     let viewParty = (id) => () => {
       browserHistory.push('/p/'+id);
     };
+    let newParty = () => {
+      browserHistory.push('/newParty');
+    };
     let partiesList = [];
     if (this.props.parties.length > 0) {
       this.props.parties.map((party) => {
@@ -60,7 +63,7 @@ var Home =  React.createClass({
       </List>)}
       <br/><br/>
       <RaisedButton label="Create party" secondary={true}
-      onClick={viewParty(0)}
+      onClick={newParty}
       style={{position: "fixed", bottom: "0px",
        width: "100%", maxWidth: "500px"}}/>
       </TurnatoBar>)

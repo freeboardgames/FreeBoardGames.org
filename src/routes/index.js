@@ -5,6 +5,7 @@ import HomeRoute from './Home'
 import PartyViewRoute from './PartyView'
 import CounterRoute from './Counter'
 import LoginRoute from './Login'
+import NewPartyRoute from './NewParty'
 
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -18,7 +19,8 @@ export const createRoutes = (store) => ({
     CounterRoute(store),
     CheckerGameRoute(store),
     PartyViewRoute(store),
-    LoginRoute(store)
+    LoginRoute(store),
+    NewPartyRoute(store)
   ]
 })
 

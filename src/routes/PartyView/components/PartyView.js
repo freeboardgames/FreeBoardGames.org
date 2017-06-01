@@ -105,10 +105,12 @@ export const PartyView = React.createClass({
         </CardActions>
       </Card>
       <List>
-        <Subheader>Recent matches</Subheader>
+        {(matchesList.length > 0) ?
+          <Subheader>Recent matches</Subheader> :
+          null }
         {matchesList}
 
-        <Subheader>Im down for</Subheader>
+        <Subheader>I&rsquo;m down for</Subheader>
         {gamesList}
 
       </List>

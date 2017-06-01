@@ -5,6 +5,7 @@ const downHandle = require('./party-handle.js').downHandle;
 const matchJoinHandle = require('./match-handle.js').matchJoinHandle;
 const matchActionRequest = require('./match-handle.js').matchActionRequest;
 const loginHandle = require('./login-handle.js');
+const newPartyHandle = require('./newParty-handle.js');
 
 var ioHandle = (db, socket, dispatchRoom, dispatch) => {
   console.log('Client connected');
@@ -29,6 +30,9 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
       switch (message.type) {
         case 'PARTIES_REQUEST':
           partiesHandle(socket, dispatch, db, user);
+          break;
+        case 'NEW_PARTY_REQUEST':
+          newPartyHandle(socket, dispatch, db, user, message.name);
           break;
         case 'PARTY_REQUEST':
           partyHandle(socket, dispatch, db, user, message.code);
