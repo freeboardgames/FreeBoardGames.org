@@ -10,13 +10,14 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const NewParty = require('./containers/NewPartyContainer').default
+      const requireAuthentication = require('../../AuthenticatedComponent/AuthenticatedComponent').requireAuthentication
       const reducer = require('./modules/newParty').default
 
       /*  Add the reducer to the store on key 'counter'  */
       injectReducer(store, { key: 'newParty', reducer })
 
       /*  Return getComponent   */
-      cb(null, NewParty)
+      cb(null, requireAuthentication(NewParty))
 
     /* Webpack named bundle   */
   }, 'newParty')

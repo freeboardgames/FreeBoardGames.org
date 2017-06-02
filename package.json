@@ -111,6 +111,7 @@
     "postcss-loader": "^0.13.0",
     "randomstring": "^1.1.5",
     "react": "^15.0.0",
+    "react-copy-to-clipboard": "^5.0.0",
     "react-dom": "^15.0.0",
     "react-flip-move": "^2.6.0",
     "react-hammerjs": "^0.5.0",

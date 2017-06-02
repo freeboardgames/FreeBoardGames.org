@@ -1,15 +1,24 @@
 const ObjectId = require('mongodb').ObjectId;
 
-let partyHandle = (socket, dispatch, db, user, party_code) => {
+let partyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
   let handlePartyDb = (party, matches, games) => {
+    let new_user = false;
+    if (party.users.indexOf(user.email) == -1) {
+      new_user = true;
+      party.users.push(user.email);
+    }
     let info = {name: party.name, users: party.users, code: party_code,
       loading: false};
     dispatch({type: 'SET_DOWN_MAPPING', downMapping: party.downMapping});
     dispatch({type: 'SET_GAMES', games});
     dispatch({type: 'SET_MATCHES', matches});
-    dispatch({type: 'SET_INFO', info});
-    console.log('party-' + party._id);
+    let set_info_message = {type: 'SET_INFO', info};
+    dispatch(set_info_message);
     socket.join('party-' + party._id)
+    if (new_user) {
+      dispatchRoom('party-' + party._id,
+                   set_info_message);
+    }
   }
   //Do Mongo DB request
   db.collection('parties').findOne(ObjectId(party_code), (err, party) => {
@@ -17,6 +26,7 @@ let partyHandle = (socket, dispatch, db, user, party_code) => {
       .toArray((err, matches) => {
       db.collection('games').find().toArray((err, games) => {
         handlePartyDb(party, matches, games);
+        db.collection('parties').save(party);
       })
     })
   })

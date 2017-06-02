@@ -23,6 +23,9 @@ var Home =  React.createClass({
     let newParty = () => {
       browserHistory.push('/newParty');
     };
+    let login = () => {
+      browserHistory.push('/login');
+    };
     let partiesList = [];
     if (this.props.parties.length > 0) {
       this.props.parties.map((party) => {
@@ -38,8 +41,11 @@ var Home =  React.createClass({
     } else {
       partiesList.push(
         (<p key="0" style={{paddingLeft: "16px",
-        paddingRight: "16px"}}>You do not belong to any party yet.
-          Create one and invite your friends!</p>));
+        paddingRight: "16px"}}>You do not belong to any party yet.<br /><br />
+        <a onClick={login}
+          href="#">Login</a> or <a
+          onClick={newParty}
+          href="#">create one</a> and invite your friends!</p>));
     }
     return (<TurnatoBar>
       <Card>

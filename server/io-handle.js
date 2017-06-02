@@ -24,6 +24,7 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
     try {
       if (message.type == 'LOGIN_REQUEST') {
         loginHandle(socket, dispatch, db, message.email, message.password)
+        return;
       }
       if (!user)
         return;
@@ -35,7 +36,7 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
           newPartyHandle(socket, dispatch, db, user, message.name);
           break;
         case 'PARTY_REQUEST':
-          partyHandle(socket, dispatch, db, user, message.code);
+          partyHandle(socket, dispatchRoom, dispatch, db, user, message.code);
           break;
         case 'DOWN_REQUEST':
           downHandle(socket, dispatchRoom, dispatch, db, user,

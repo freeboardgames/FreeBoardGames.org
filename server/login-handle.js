@@ -45,6 +45,7 @@ module.exports = (socket, dispatch, db, email, password) => {
             dispatch({type: 'AUTH_SUCCESS', payload: {
                 token: turnatoLogin.jwtTokenize(user)
               }});
+            return
           }
         });
       } else {
@@ -61,6 +62,11 @@ module.exports = (socket, dispatch, db, email, password) => {
         } else {
           //Log in successful, keep going
           user = users[0];
+          delete user.password;
+          dispatch({type: 'AUTH_SUCCESS', payload: {
+              token: turnatoLogin.jwtTokenize(user)
+            }});
+          return
         }
       //PASSWORD NOT PROVIDED
       } else {

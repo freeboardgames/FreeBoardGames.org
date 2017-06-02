@@ -19,7 +19,9 @@ var Login =  React.createClass({
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.token) {
       localStorage.setItem('token', nextProps.token);
-      if (this.props.location.query) {
+      if ('location' in this.props &&
+          'query' in this.props.location &&
+          'next' in this.props.location.query) {
         browserHistory.push(this.props.location.query.next);
       } else {
         browserHistory.push('/');

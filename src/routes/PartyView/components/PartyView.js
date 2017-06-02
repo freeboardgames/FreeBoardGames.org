@@ -1,6 +1,7 @@
 import React from 'react'
 import TurnatoBar from '../../../TurnatoBar/TurnatoBar'
 import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
@@ -12,10 +13,15 @@ import ImageRemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
 import PlacesCasino from 'material-ui/svg-icons/places/casino';
 import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { browserHistory } from 'react-router'
 
 
 export const PartyView = React.createClass({
+  componentWillMount: function () {
+    this.setState({link: window.location.href,
+                   linkCopied: false})
+  },
   componentDidMount: function () {
     this.props.connectToParty(this.props.token, this.props.params.id)
   },
@@ -91,6 +97,12 @@ export const PartyView = React.createClass({
     })
     return (<TurnatoBar>
       <br />
+      <Snackbar
+        open={this.state.linkCopied}
+        message="Link copied to clipboard"
+        onRequestClose={() => this.setState({linkCopied: false})}
+        autoHideDuration={4000}
+      />
       <Card>
         <CardHeader
           title={partyName}
@@ -101,7 +113,10 @@ export const PartyView = React.createClass({
         </CardText>
 
         <CardActions style={{textAlign: "right"}}>
-          <RaisedButton label="Invite Friends" secondary={true}  />
+          <CopyToClipboard text={this.state.link}
+            onCopy={() => this.setState({linkCopied: true})}>
+            <RaisedButton label="Copy Invite Link" secondary={true} />
+          </CopyToClipboard>
         </CardActions>
       </Card>
       <List>
