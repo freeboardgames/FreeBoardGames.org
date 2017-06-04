@@ -45,6 +45,11 @@ var Login =  React.createClass({
   doLogin: function () {
     this.props.login(this.state.email, this.state.password);
   },
+  onKeyPress: function (e) {
+    if (e.key === 'Enter') {
+      this.doLogin()
+    }
+  },
   render: function () {
     return (
   <TurnatoBar>
@@ -65,6 +70,7 @@ var Login =  React.createClass({
         floatingLabelText="E-mail"
         onChange={this.onEmailChange}
         errorText={this.state.emailError}
+        onKeyPress={this.onKeyPress}
         value={this.state.email}
       /><br />
       {(this.props.needsPassword) ?
@@ -73,6 +79,7 @@ var Login =  React.createClass({
         hintText="Your password"
         floatingLabelText="Password"
         onChange={this.onPasswordChange}
+        onKeyPress={this.onKeyPress}
         errorText={this.state.passwordError}
       /><br /></div>) : null}
     </CardText>

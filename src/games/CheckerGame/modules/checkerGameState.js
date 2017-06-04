@@ -107,7 +107,7 @@ const ACTION_HANDLERS = {
             state.board[f.eaten.y][f.eaten.x] = null;
 
             let next_feasible = calculateFeasible(state.board, x,y,
-                                state.player, state.turn)
+                                action.player, state.turn)
             let can_eat_next = false;
             next_feasible.forEach((f2) => {
               if (f2.movement == 'EAT')
