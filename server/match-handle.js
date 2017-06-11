@@ -35,6 +35,7 @@ matchJoinHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
     if (match.log && match.log.length > 0) {
       current_state = match.log[0].state;
     }
+    // We pass a NOOP to the reducer in case current_state = undefined.
     let next_state = genericReducer(match.game_code, current_state,
        {type: 'NOOP'});
     next_state.players = match.players;
@@ -70,6 +71,17 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
   let next_state = genericReducer(match.game_code, current_state, action);
   if (next_state && !_.isEqual(next_state, current_state)) {
     match.log.unshift({state: next_state, action: action});
+    //We have a winner! Game is over, GG.
+    if (next_state.winner != null) {
+      match.status = 'FINISHED';
+      match.winner = match.players[match.winner];
+      LAST_DB.collection('matches').updateOne({_id: ObjectId(match_code)},
+        { $set: {status: match.status, winner: match.winner} },
+      (err, results) => {
+        if (err)
+          console.log(err)
+      });
+    }
     dispatchRoom('match-' + match_code, action);
     cache.put(match_code, match, CACHE_DURATION, saveAfterExpire);
   }

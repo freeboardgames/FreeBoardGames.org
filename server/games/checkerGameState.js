@@ -109,7 +109,6 @@ function getWinner(board) {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [MATCH_SET_STATE]: (state, action) => {
-    console.log('SET STATE');
     return _extends({}, action.payload);
   },
   [CLICK]: (state, action) => {
@@ -173,7 +172,12 @@ const initialState = { board: [[{ player: 0, key: 0 }, null, { player: 0, key: 1
   winner: null,
   selected: null,
   feasible: null };
-function messageReducer(state = initialState, action) {
+function messageReducer(state, action) {
+  if (!state) {
+    //Have to do a deep copy because that on the server, the initialState was
+    //being modified by following actions.
+    state = JSON.parse(JSON.stringify(initialState));
+  }
   const handler = ACTION_HANDLERS[action.type];
 
   return handler ? handler(state, action) : state;

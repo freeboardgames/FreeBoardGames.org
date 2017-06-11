@@ -105,7 +105,6 @@ function getWinner (board) {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [MATCH_SET_STATE] : (state, action) => {
-    console.log('SET STATE');
     return {
       ...action.payload
     }
@@ -197,7 +196,12 @@ const initialState = {board: [
   winner: null,
   selected: null,
   feasible: null};
-export default function messageReducer (state = initialState, action) {
+export default function messageReducer (state, action) {
+  if (!state) {
+    //Have to do a deep copy because that on the server, the initialState was
+    //being modified by following actions.
+    state = JSON.parse(JSON.stringify(initialState));
+  }
   const handler = ACTION_HANDLERS[action.type];
 
   return handler ? handler(state, action) : state;
