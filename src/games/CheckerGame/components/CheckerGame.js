@@ -45,6 +45,19 @@ export const CheckerGame = React.createClass({
         }
       }
     }
+    let winLayer = null;
+    if (state.winner != null) {
+      winLayer = (<div style={{position: 'absolute', left: 0, top: 0,
+        right:0, height: '100%', background: 'rgba(255,255,255,.85)',
+        zIndex: 9000, display: 'block', textAlign: 'center'}}>
+        <div style={{transform: 'translateX(-50%) translateY(-50%)',
+          left: '50%', top: '50%', position: 'absolute'}}>
+          <h1>{state.players[state.winner]} WON!!!
+          </h1>
+          <a href="/">Go Back</a>
+        </div>
+      </div>)
+    }
     let current_player = state.turn%2;
     return (
     <div style={{backgroundColor: "black", height: "100%"}}>
@@ -59,6 +72,7 @@ export const CheckerGame = React.createClass({
         key="999">
         {pieces}
       </CheckerBoard>
+      {winLayer}
     </div>)
   }
 })

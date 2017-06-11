@@ -38,6 +38,7 @@ function isValidCell(board, x, y) {
   return x >= 0 && x < boardWidth &&
     y >= 0 && y < boardHeight;
 }
+
 function calculateFeasible (board, x, y, player, turn) {
   let piece = board[y][x];
   if (!piece || piece.player != player || turn%2 != player)
@@ -81,11 +82,30 @@ function calculateFeasible (board, x, y, player, turn) {
   }
 }
 
+function getWinner (board) {
+  for (let player = 0; player <= 1; player++) {
+    let isPlayerLoser = true;
+    for (let y = 0; y < board.length; y++) {
+      for (let x = 0; x < board[y].length; x++) {
+        let possible_moves = calculateFeasible(board, x, y, player, player);
+        if (possible_moves.length > 0) {
+          isPlayerLoser = false;
+        }
+      }
+    }
+    if (isPlayerLoser) {
+      return (player+1)%2;
+    }
+  }
+  return null;
+}
+
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
   [MATCH_SET_STATE] : (state, action) => {
+    console.log('SET STATE');
     return {
       ...action.payload
     }
@@ -126,7 +146,8 @@ const ACTION_HANDLERS = {
       return {
         ...state,
         selected: null,
-        feasible: null
+        feasible: null,
+        winner: getWinner(state.board)
       };
     } else if (state.selected &&
                state.selected.x == x &&
@@ -173,6 +194,7 @@ const initialState = {board: [
   ],
   loading: true,
   turn: 0,
+  winner: null,
   selected: null,
   feasible: null};
 export default function messageReducer (state = initialState, action) {
