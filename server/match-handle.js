@@ -2,12 +2,15 @@ const ObjectId = require('mongodb').ObjectId;
 const cache = require('memory-cache');
 const _ = require('underscore');
 const checkersReducer = require('./games/checkerGameState.js').default;
+const chessReducer = require('./games/chessGameState.js').default;
 var LAST_DB = null;
 const CACHE_DURATION = 30 * 60 * 1000;
 
 function genericReducer (game_code, state, action) {
   if (game_code == 'checkers') {
     return checkersReducer(state, action);
+  } else if (game_code == 'chess') {
+    return chessReducer(state, action);
   }
 }
 

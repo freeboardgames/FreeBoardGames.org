@@ -30,7 +30,7 @@
       }
     },
     "dev": {
-      "command": "babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/CheckerGame/modules/checkerGameState.js --out-file server/games/checkerGameState.js && nodemon server/main --ignore dist --ignore coverage --ignore tests --ignore src",
+      "command": "babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/CheckerGame/modules/checkerGameState.js --out-file server/games/checkerGameState.js && babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/ChessGame/modules/chessGameState.js --out-file server/games/chessGameState.js && nodemon server/main --ignore dist --ignore coverage --ignore tests --ignore src",
       "env": {
         "NODE_ENV": "development",
         "DEBUG": "app:*"
