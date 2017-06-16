@@ -2,6 +2,9 @@ import React from 'react'
 import KingPiece from './KingPiece.js'
 import BishopPiece from './BishopPiece.js'
 import QueenPiece from './QueenPiece.js'
+import PawnPiece from './PawnPiece.js'
+import KnightPiece from './KnightPiece.js'
+import RookPiece from './RookPiece.js'
 const MOVE_TIME = 750;
 
 var ChessPiece = React.createClass({
@@ -59,13 +62,13 @@ var ChessPiece = React.createClass({
   },
 
   render: function() {
-    let type = 'q';
+    let type = 'p';
     if (this.props.type) {
       type = this.props.type;
     }
     let primaryColor = '#000000';
     let secondaryColor = '#ffffff';
-    if (this.props.color == 'white') {
+    if (this.props.color == 'light') {
       primaryColor = '#ffffff';
       secondaryColor = '#000000';
     }
@@ -77,7 +80,12 @@ var ChessPiece = React.createClass({
          piece_drawing = KingPiece(primaryColor, secondaryColor); break;
       case 'q': //queen
         piece_drawing = QueenPiece(primaryColor, secondaryColor); break;
-      //TODO: rook, knight, pawn from https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
+      case 'p':
+        piece_drawing = PawnPiece(primaryColor, secondaryColor); break;
+      case 'r':
+        piece_drawing = RookPiece(primaryColor, secondaryColor); break;
+      case 'n':
+        piece_drawing = KnightPiece(primaryColor, secondaryColor); break;
     }
     return (
       <g transform={"translate("+this.state.x+","+this.state.y+")"} onClick={this.props.onClick(this.props.x,this.props.y)}>

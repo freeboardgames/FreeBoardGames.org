@@ -32,15 +32,17 @@ export const ChessGame = React.createClass({
     for (var j =0; j<state.board.length; j++) {
       let boardState_col = state.board[j];
       for (var i=0; i<boardState_col.length; i++) {
-        if (boardState_col[i]) {
-          let piece = boardState_col[i];
-          let color = "white";
-          if (piece.player == 0) {
-            color = "black";
+        let piece = boardState_col[i];
+        if (piece != '') {
+          let piece_id = parseInt(piece.split('_')[1]);
+          let piece_color = "light";
+          if (piece.indexOf('d') > 0) {
+            piece_color = "dark";
           }
+          let piece_type = piece[0];
           pieces.push(
-            (<ChessPiece color={color} double={piece.double}
-              x={i} y={j} key={piece.key} onClick={onClick}/>));
+            (<ChessPiece color={piece_color} type={piece_type}
+              x={i} y={j} key={piece_id} onClick={onClick}/>));
           key++;
         }
       }
