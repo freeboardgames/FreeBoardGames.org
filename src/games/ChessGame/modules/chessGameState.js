@@ -39,6 +39,46 @@ function isValidCell(board, x, y) {
     y >= 0 && y < boardHeight;
 }
 
+function isCellEmpty(cell) {
+  return (cell.indexOf('d') == -1 &&
+          cell.indexOf('l') == -1);
+}
+
+function getCellPlayer(cell) {
+  return isCellEmpty(cell) ? null :
+         (cell.indexOf('d') >= 0 ? 0 : 1);
+}
+
+function isCellSelected(cell) {
+  return cell.indexOf('@') >= 0;
+}
+
+function toggleCellSelected(board, x, y, player) {
+  if (isValidCell(board, x, y) && getCellPlayer(board[y][x]) == player) {
+    if (board[y][x].indexOf('@') >= 0) {
+      board[y][x] = board[y][x].replace('@', '');
+    } else {
+      board[y][x] += '@';
+    }
+  }
+}
+
+function isCellMovable(cell) {
+  return cell.indexOf('*') >= 0;
+}
+
+function toggleCellMovable(board, x, y, player) {
+  if (isValidCell(board, x, y)) {
+    if (board[y][x].indexOf('*') >= 0) {
+      board[y][x] = board[y][x].replace('*', '');
+    } else {
+      if (isCellEmpty(board[y][x]) ||
+          player == getCellPlayer(board[y][x])) {
+        board[y][x] += '*';
+      }
+    }
+  }
+}
 
 // ------------------------------------
 // Action Handlers
@@ -50,6 +90,71 @@ const ACTION_HANDLERS = {
     }
   },
   [CLICK] : (state, action) => {
+    let target = state.board[action.payload.y][action.payload.x];
+    let isTargetEmpty = isCellEmpty(target);
+    let targetPlayer = getCellPlayer(target);
+    let isTargetSelected = isCellSelected(target);
+    let isTargetMovable = isCellMovable(target);
+    let targetPiece = '';
+    if (!isTargetEmpty) {
+      targetPiece = target[0];
+    }
+
+    if (isTargetMovable) {
+
+    } else {
+      switch (targetPiece) {
+        case 'k':
+          for (let deltaY=-1; deltaY <= 1; deltaY++) {
+            for (let deltaX=-1; deltaX <= 1; deltaX++) {
+              if (deltaX == 0 && deltaY ==0) {
+                toggleCellSelected(state.board,
+                                   action.payload.x,
+                                   action.payload.y,
+                                   action.player);
+              } else {
+                toggleCellMovable(state.board,
+                                  action.payload.x+deltaX,
+                                  action.payload.y+deltaY,
+                                  action.player);
+
+              }
+            }
+          }
+        break;
+        case 'q':
+          for (let delta=-7; delta <= 7; delta++) {
+            if (delta == 0) {
+              toggleCellSelected(state.board,
+                                 action.payload.x,
+                                 action.payload.y,
+                                 action.player);
+            } else {
+              toggleCellMovable(state.board,
+                                action.payload.x+delta,
+                                action.payload.y+delta,
+                                action.player);
+              toggleCellMovable(state.board,
+                                action.payload.x-delta,
+                                action.payload.y+delta,
+                                action.player);
+              toggleCellMovable(state.board,
+                                action.payload.x,
+                                action.payload.y+delta,
+                                action.player);
+              toggleCellMovable(state.board,
+                                action.payload.x+delta,
+                                action.payload.y,
+                                action.player);
+
+            }
+          }
+        break;
+      }
+    }
+    return {
+      ...state
+    }
   }
 }
 
