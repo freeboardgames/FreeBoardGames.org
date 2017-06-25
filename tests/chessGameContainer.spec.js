@@ -4,19 +4,80 @@ import {
 } from 'games/ChessGame/modules/chessGameState'
 
 describe('Chess', () => {
-  it('should start with correct board configuration', () => {
-    let initialBoard = chessReducer(null, {type: 'NOOP'}).board;
-    let expectedBoard = [
-      ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
-      ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
-      ['', '', '', '', '', '', '', ''],
-      ['', '', '', '', '', '', '', ''],
-      ['', '', '', '', '', '', '', ''],
-      ['', '', '', '', '', '', '', ''],
-      ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
-      ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
-    ];
-    expect(initialBoard).to.eql(expectedBoard);
+
+  describe('General', () => {
+    it('should start with correct board configuration', () => {
+      let initialBoard = chessReducer(null, {type: 'NOOP'}).board;
+      let expectedBoard = [
+        ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
+        ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
+        ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
+      ];
+      expect(initialBoard).to.eql(expectedBoard);
+    })
+    it('should not allow moving opponents piece', () => {
+      let state = chessReducer(null, {type: 'NOOP'});
+      let state2 = chessReducer(state, sendClick(null, 0, 6, 0));
+      expect(state).to.eql(state2);
+    })
+    it('should not allow moving pieces in opponent\'s turn', () => {
+      let state = chessReducer(null, {type: 'NOOP'});
+      let state2 = chessReducer(state, sendClick(null, 0, 6, 1));
+      expect(state).to.eql(state2);
+    })
+    it('should allow moving its piece on the first turn', () => {
+      let state = chessReducer(null, {type: 'NOOP'});
+      let state2 = chessReducer(state, sendClick(null, 1, 0, 0));
+      expect(state2.board).to.eql([
+        ['rd_00', 'nd_01@', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
+        ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
+        ['*', '', '*', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
+        ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
+      ]);
+    })
+    it('should actually move in the first turn', () => {
+      let state = chessReducer(null, {type: 'NOOP'});
+      let state2 = chessReducer(state, sendClick(null, 1, 0, 0));
+      let state3 = chessReducer(state2, sendClick(null, 0, 2, 0));
+      expect(state3.board).to.eql([
+        ['rd_00', '', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
+        ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
+        ['nd_01', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
+        ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
+      ]);
+      expect(state3.turn).to.equal(1);
+    })
+    it('should actually move in the first turn and second turn', () => {
+      let state = chessReducer(null, {type: 'NOOP'});
+      let state2 = chessReducer(state, sendClick(null, 1, 0, 0));
+      let state3 = chessReducer(state2, sendClick(null, 0, 2, 0));
+      let state4 = chessReducer(state3, sendClick(null, 0, 6, 1));
+      let state5 = chessReducer(state4, sendClick(null, 0, 4, 1));
+      expect(state3.board).to.eql([
+        ['rd_00', '', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
+        ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
+        ['nd_01', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['pl_16', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
+        ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
+      ]);
+      expect(state3.turn).to.equal(1);
+    })
   })
 
   describe('King', () => {
@@ -133,121 +194,433 @@ describe('Chess', () => {
         ]);
     })
   })
-  /*
-  it('Should export a constant COUNTER_INCREMENT.', () => {
-    expect(COUNTER_INCREMENT).to.equal('COUNTER_INCREMENT')
+
+
+  describe('Bishop', () => {
+    it('should move correctly in the middle', () => {
+      let initialState = {board: [
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', 'bd_01', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ],
+        loading: false,
+        turn: 0,
+        winner: null};
+        let action = sendClick(null, 4, 4, 0);
+        let afterClick = chessReducer(initialState, action);
+        expect(afterClick.board).to.eql([
+          ['*', '', '', '', '', '', '', ''],
+          ['', '*', '', '', '', '', '', '*'],
+          ['', '', '*', '', '', '', '*', ''],
+          ['', '', '', '*', '', '*', '', ''],
+          ['', '', '', '', 'bd_01@', '', '', ''],
+          ['', '', '', '*', '', '*', '', ''],
+          ['', '', '*', '', '', '', '*', ''],
+          ['', '*', '', '', '', '', '', '*'],
+        ]);
+    })
+    it('should move correctly in the border', () => {
+      let initialState = {board: [
+        ['', '', '', '', '', '', '', 'bd_01'],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ],
+        loading: false,
+        turn: 0,
+        winner: null};
+        let action = sendClick(null, 7, 0, 0);
+        let afterClick = chessReducer(initialState, action);
+        expect(afterClick.board).to.eql([
+          ['', '', '', '', '', '', '', 'bd_01@'],
+          ['', '', '', '', '', '', '*', ''],
+          ['', '', '', '', '', '*', '', ''],
+          ['', '', '', '', '*', '', '', ''],
+          ['', '', '', '*', '', '', '', ''],
+          ['', '', '*', '', '', '', '', ''],
+          ['', '*', '', '', '', '', '', ''],
+          ['*', '', '', '', '', '', '', ''],
+        ]);
+    })
   })
 
-  describe('(Reducer)', () => {
-    it('Should be a function.', () => {
-      expect(counterReducer).to.be.a('function')
-    })
 
-    it('Should initialize with a state of 0 (Number).', () => {
-      expect(counterReducer(undefined, {})).to.equal(0)
-    })
-
-    it('Should return the previous state if an action was not matched.', () => {
-      let state = counterReducer(undefined, {})
-      expect(state).to.equal(0)
-      state = counterReducer(state, { type: '@@@@@@@' })
-      expect(state).to.equal(0)
-      state = counterReducer(state, increment(5))
-      expect(state).to.equal(5)
-      state = counterReducer(state, { type: '@@@@@@@' })
-      expect(state).to.equal(5)
-    })
-  })
-
-  describe('(Action Creator) increment', () => {
-    it('Should be exported as a function.', () => {
-      expect(increment).to.be.a('function')
-    })
-
-    it('Should return an action with type "COUNTER_INCREMENT".', () => {
-      expect(increment()).to.have.property('type', COUNTER_INCREMENT)
-    })
-
-    it('Should assign the first argument to the "payload" property.', () => {
-      expect(increment(5)).to.have.property('payload', 5)
-    })
-
-    it('Should default the "payload" property to 1 if not provided.', () => {
-      expect(increment()).to.have.property('payload', 1)
-    })
-  })
-
-  describe('(Action Creator) doubleAsync', () => {
-    let _globalState
-    let _dispatchSpy
-    let _getStateSpy
-
-    beforeEach(() => {
-      _globalState = {
-        counter : counterReducer(undefined, {})
-      }
-      _dispatchSpy = sinon.spy((action) => {
-        _globalState = {
-          ..._globalState,
-          counter : counterReducer(_globalState.counter, action)
-        }
+    describe('Rook', () => {
+      it('should move correctly in the middle', () => {
+        let initialState = {board: [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', 'rd_01', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 4, 4, 0);
+          let afterClick = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['', '', '', '', '*', '', '', ''],
+            ['', '', '', '', '*', '', '', ''],
+            ['', '', '', '', '*', '', '', ''],
+            ['', '', '', '', '*', '', '', ''],
+            ['*', '*', '*', '*', 'rd_01@', '*', '*', '*'],
+            ['', '', '', '', '*', '', '', ''],
+            ['', '', '', '', '*', '', '', ''],
+            ['', '', '', '', '*', '', '', ''],
+          ]);
       })
-      _getStateSpy = sinon.spy(() => {
-        return _globalState
+      it('should move correctly in the border', () => {
+        let initialState = {board: [
+          ['', '', '', '', '', '', '', 'rd_01'],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 7, 0, 0);
+          let afterClick = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['*', '*', '*', '*', '*', '*', '*', 'rd_01@'],
+            ['', '', '', '', '', '', '', '*'],
+            ['', '', '', '', '', '', '', '*'],
+            ['', '', '', '', '', '', '', '*'],
+            ['', '', '', '', '', '', '', '*'],
+            ['', '', '', '', '', '', '', '*'],
+            ['', '', '', '', '', '', '', '*'],
+            ['', '', '', '', '', '', '', '*'],
+          ]);
+      })
+      it('castling - king side', () => {
+        let initialState = {board: [
+          ['', '', '', 'qd_01', 'kd_02', '', '', 'rd_03'],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 7, 0, 0);
+          let state = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['', '', '', 'qd_01', 'kd_02', '*', '*', 'rd_03@'],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+          ]);
+          action = sendClick(null, 5, 0, 0);
+          state = chessReducer(state, action);
+          expect(afterClick.board).to.eql([
+            ['', '', '', 'qd_01', 'rd_03', 'kd_02', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+          ]);
+          expect(afterClick.turn).to.eql(1);
+      })
+      it('castling - queen side', () => {
+        let initialState = {board: [
+          ['rd_03', '', '', 'qd_01', 'kd_02', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 0, 0, 0);
+          let state = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['rd_03@', '*', '*', 'qd_01', 'kd_02', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+          ]);
+          action = sendClick(null, 2, 0, 0);
+          state = chessReducer(state, action);
+          expect(afterClick.board).to.eql([
+            ['', '', 'qd_01', 'rd_03', 'kd_02', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+          ]);
+          expect(afterClick.turn).to.eql(1);
       })
     })
 
-    it('Should be exported as a function.', () => {
-      expect(doubleAsync).to.be.a('function')
+
+    describe('Knight', () => {
+      it('should move correctly in the middle', () => {
+        let initialState = {board: [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', 'nd_01', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 4, 4, 0);
+          let afterClick = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '*', '', '*', '', ''],
+            ['', '', '*', '', '', '', '*', ''],
+            ['', '', '', '', 'nd_01@', '', '', ''],
+            ['', '', '*', '', '', '', '*', ''],
+            ['', '', '', '*', '', '*', '', ''],
+            ['', '', '', '', '', '', '', ''],
+          ]);
+      })
+      it('should move correctly in the border', () => {
+        let initialState = {board: [
+          ['', '', '', '', '', '', '', 'nd_01'],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 7, 0, 0);
+          let afterClick = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['', '', '', '', '', '', '', 'nd_01@'],
+            ['', '', '', '', '', '*', '', ''],
+            ['', '', '', '', '', '', '*', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+          ]);
+      })
     })
 
-    it('Should return a function (is a thunk).', () => {
-      expect(doubleAsync()).to.be.a('function')
-    })
 
-    it('Should return a promise from that thunk that gets fulfilled.', () => {
-      return doubleAsync()(_dispatchSpy, _getStateSpy).should.eventually.be.fulfilled
+    describe('Pawn', () => {
+      it('should walk two or one places on the first move', () => {
+        let initialState = {board: [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', 'pd_01', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 4, 1, 0);
+          let afterClick = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', 'pd_01@', '', '', ''],
+            ['', '', '', '', '*', '', '', ''],
+            ['', '', '', '', '*', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+          ]);
+      })
+      it('should walk one place after the first move', () => {
+        let initialState = {board: [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', 'pd_01', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 2, 3, 0);
+          let afterClick = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', 'pd_01@', '', '', '', '', ''],
+            ['', '', '*', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+          ]);
+      })
+      it('should allow eating adjacent pieces', () => {
+        let initialState = {board: [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', 'pd_01', ''],
+          ['', '', '', '', '', 'pl_02', '', 'pl_03'],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 6, 5, 0);
+          let afterClick = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', 'pd_01@', ''],
+            ['', '', '', '', '', 'pl_02*', '*', 'pl_03*'],
+            ['', '', '', '', '', '', '', ''],
+          ]);
+      })
+      it('should actually eat adjacent pieces', () => {
+        let initialState = {board: [
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', 'pd_01@', ''],
+          ['', '', '', '', '', 'pl_02*', '*', 'pl_03*'],
+          ['', '', '', '', '', '', '', ''],
+          ],
+          loading: false,
+          turn: 0,
+          winner: null};
+          let action = sendClick(null, 5, 6, 0);
+          let afterClick = chessReducer(initialState, action);
+          expect(afterClick.board).to.eql([
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', 'pd_01', '', 'pl_03'],
+            ['', '', '', '', '', '', '', ''],
+          ]);
     })
-
-    it('Should call dispatch and getState exactly once.', () => {
-      return doubleAsync()(_dispatchSpy, _getStateSpy)
-        .then(() => {
-          _dispatchSpy.should.have.been.calledOnce
-          _getStateSpy.should.have.been.calledOnce
-        })
-    })
-
-    it('Should produce a state that is double the previous state.', () => {
-      _globalState = { counter: 2 }
-
-      return doubleAsync()(_dispatchSpy, _getStateSpy)
-        .then(() => {
-          _dispatchSpy.should.have.been.calledOnce
-          _getStateSpy.should.have.been.calledOnce
-          expect(_globalState.counter).to.equal(4)
-          return doubleAsync()(_dispatchSpy, _getStateSpy)
-        })
-        .then(() => {
-          _dispatchSpy.should.have.been.calledTwice
-          _getStateSpy.should.have.been.calledTwice
-          expect(_globalState.counter).to.equal(8)
-        })
-    })
+    it('en passant', () => {
+      let initialState = {board: [
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', 'pd_01', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', 'pl_02', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ],
+        loading: false,
+        turn: 0,
+        winner: null};
+        let action = sendClick(null, 5, 1, 0);
+        let state = chessReducer(initialState, action);
+        expect(state.board).to.eql([
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', 'pd_01@', '', ''],
+          ['', '', '', '', '', '*', '', ''],
+          ['', '', '', '', 'pl_02', '*', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+        ]);
+        action = sendClick(null, 5, 3, 0);
+        state = chessReducer(state, action);
+        expect(state.board).to.eql([
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', 'pl_02', 'pd_01', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+        ]);
+        expect(state.turn).to.equal(1);
+        action = sendClick(null, 4, 3, 1);
+        expect(state.board).to.eql([
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '*', '*', '', ''],
+          ['', '', '', '', 'pl_02@', 'pd_01', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+        ]);
+        action = sendClick(null, 5, 2, 1);
+        expect(state.board).to.eql([
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', 'pl_02', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+        ]);
+        expect(state.turn).to.equal(0);
   })
-
-  // NOTE: if you have a more complex state, you will probably want to verify
-  // that you did not mutate the state. In this case our state is just a number
-  // (which cannot be mutated).
-  describe('(Action Handler) COUNTER_INCREMENT', () => {
-    it('Should increment the state by the action payload\'s "value" property.', () => {
-      let state = counterReducer(undefined, {})
-      expect(state).to.equal(0)
-      state = counterReducer(state, increment(1))
-      expect(state).to.equal(1)
-      state = counterReducer(state, increment(2))
-      expect(state).to.equal(3)
-      state = counterReducer(state, increment(-3))
-      expect(state).to.equal(0)
-    })
-  })*/
+  })
 })

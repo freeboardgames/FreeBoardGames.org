@@ -63,6 +63,26 @@ function toggleCellSelected(board, x, y, player) {
   }
 }
 
+function findSelectedCell(board) {
+  for (let j=0; j<board.length; j++) {
+    for (let i=0; i<board[j].length; i++) {
+      if (isCellSelected(board[j][i])) {
+        return {x: i, y: j};
+      }
+    }
+  }
+  return null;
+}
+
+function clearBoardFlags(board) {
+  for (let j=0; j<board.length; j++) {
+    for (let i=0; i<board[j].length; i++) {
+      board[j][i] = board[j][i].replace('@', '');
+      board[j][i] = board[j][i].replace('*', '');
+    }
+  }
+}
+
 function isCellMovable(cell) {
   return cell.indexOf('*') >= 0;
 }
@@ -73,7 +93,7 @@ function toggleCellMovable(board, x, y, player) {
       board[y][x] = board[y][x].replace('*', '');
     } else {
       if (isCellEmpty(board[y][x]) ||
-          player == getCellPlayer(board[y][x])) {
+          player != getCellPlayer(board[y][x])) {
         board[y][x] += '*';
       }
     }
@@ -99,12 +119,24 @@ const ACTION_HANDLERS = {
     if (!isTargetEmpty) {
       targetPiece = target[0];
     }
+    //Check if it is correct turn
+    if (action.player != state.turn%2)
+      return { ...state };
 
     if (isTargetMovable) {
-
+      //Find selected cell
+      let selectedCellCord = findSelectedCell(state.board);
+      let selectedCell = state.board[selectedCellCord.y][selectedCellCord.x];
+      state.board[action.payload.y][action.payload.x] = selectedCell;
+      state.board[selectedCellCord.y][selectedCellCord.x] = '';
+      state.turn++;
+      clearBoardFlags(state.board);
     } else {
+      //Check if trying to move its own piece
+      if (action.player != targetPlayer)
+        return { ...state };
       switch (targetPiece) {
-        case 'k':
+        case 'k': //KING
           for (let deltaY=-1; deltaY <= 1; deltaY++) {
             for (let deltaX=-1; deltaX <= 1; deltaX++) {
               if (deltaX == 0 && deltaY ==0) {
@@ -122,7 +154,7 @@ const ACTION_HANDLERS = {
             }
           }
         break;
-        case 'q':
+        case 'q': //QUEEN
           for (let delta=-7; delta <= 7; delta++) {
             if (delta == 0) {
               toggleCellSelected(state.board,
@@ -148,6 +180,106 @@ const ACTION_HANDLERS = {
                                 action.player);
 
             }
+          }
+        break;
+        case 'b': //BISHOP
+          for (let delta=-7; delta <= 7; delta++) {
+            if (delta == 0) {
+              toggleCellSelected(state.board,
+                                 action.payload.x,
+                                 action.payload.y,
+                                 action.player);
+            } else {
+              toggleCellMovable(state.board,
+                                action.payload.x+delta,
+                                action.payload.y+delta,
+                                action.player);
+              toggleCellMovable(state.board,
+                                action.payload.x-delta,
+                                action.payload.y+delta,
+                                action.player);
+
+            }
+          }
+        break;
+        case 'r': //ROOK
+          for (let delta=-7; delta <= 7; delta++) {
+            if (delta == 0) {
+              toggleCellSelected(state.board,
+                                 action.payload.x,
+                                 action.payload.y,
+                                 action.player);
+            } else {
+              toggleCellMovable(state.board,
+                                action.payload.x+delta,
+                                action.payload.y,
+                                action.player);
+              toggleCellMovable(state.board,
+                                action.payload.x,
+                                action.payload.y+delta,
+                                action.player);
+
+            }
+          }
+        break;
+        case 'n': //KNIGHT
+          toggleCellSelected(state.board,
+                             action.payload.x,
+                             action.payload.y,
+                             action.player);
+          for (let deltaY=-1; deltaY <= 1; deltaY+=2) {
+            for (let deltaX=-1; deltaX <= 1; deltaX+=2) {
+              toggleCellMovable(state.board,
+                                action.payload.x+2*deltaX,
+                                action.payload.y+1*deltaY,
+                                action.player);
+              toggleCellMovable(state.board,
+                                action.payload.x+1*deltaX,
+                                action.payload.y+2*deltaY,
+                                action.player);
+            }
+          }
+        break;
+        case 'p': //PAWN
+          toggleCellSelected(state.board,
+                             action.payload.x,
+                             action.payload.y,
+                             action.player);
+          let direction = 1;
+          if (action.player == 1)
+            direction = -1;
+          toggleCellMovable(state.board,
+                            action.payload.x,
+                            action.payload.y+direction,
+                            action.player);
+          let initialRow = 1 + 5 * action.player;
+          if (initialRow == action.payload.y) {
+            toggleCellMovable(state.board,
+                              action.payload.x,
+                              action.payload.y+2*direction,
+                              action.player);
+          }
+          //Left adjacent cell
+          if (isValidCell(state.board,
+                          action.payload.x-1,
+                          action.payload.y+direction) &&
+              !isCellEmpty(state.board[action.payload.y+direction]
+                                      [action.payload.x-1])) {
+            toggleCellMovable(state.board,
+                              action.payload.x-1,
+                              action.payload.y+direction,
+                              action.player);
+          }
+          //Right adjacent cell
+          if (isValidCell(state.board,
+                          action.payload.x+1,
+                          action.payload.y+direction) &&
+              !isCellEmpty(state.board[action.payload.y+direction]
+                                      [action.payload.x+1])) {
+            toggleCellMovable(state.board,
+                              action.payload.x+1,
+                              action.payload.y+direction,
+                              action.player);
           }
         break;
       }
