@@ -87,6 +87,30 @@ function isCellMovable(cell) {
   return cell.indexOf('*') >= 0;
 }
 
+function isEnPassantRisk(state, x, y, y2, player) {
+  if (!state.enPassantRisk)
+    return false;
+  let isInRisk = false;
+  for (let i=0; i<state.enPassantRisk.length; i++) {
+    if (state.enPassantRisk[i][0] == x &&
+        state.enPassantRisk[i][1] == y) {
+      isInRisk = true;
+    }
+  }
+  if (!isInRisk)
+    return false;
+  let direction = 1;
+  if (player == 1)
+    direction = -1;
+  if (!isValidCell(state.board, x, y2))
+    return false;
+  if (getCellPlayer(state.board[y2][x]) != (player+1)%2)
+    return false;
+  if (state.board[y2][x][0] == 'p')
+    return true;
+  return false;
+}
+
 function toggleCellMovable(board, x, y, player) {
   if (isValidCell(board, x, y)) {
     if (board[y][x].indexOf('*') >= 0) {
@@ -129,6 +153,41 @@ const ACTION_HANDLERS = {
       let selectedCell = state.board[selectedCellCord.y][selectedCellCord.x];
       state.board[action.payload.y][action.payload.x] = selectedCell;
       state.board[selectedCellCord.y][selectedCellCord.x] = '';
+
+      //Add En passant risk
+      if (selectedCell[0] == 'p' &&
+          Math.abs(selectedCellCord.y - action.payload.y) == 2) {
+        if (!state.enPassantRisk) {
+          state.enPassantRisk = [];
+        }
+        state.enPassantRisk.push([action.payload.x,
+                                  (selectedCellCord.y + action.payload.y)/2]);
+      }
+      //Check for en passant
+      if (selectedCell[0] == 'p' &&
+          isEnPassantRisk(state, action.payload.x, action.payload.y,
+            selectedCellCord.y, action.player)) {
+        state.board[selectedCellCord.y][action.payload.x] = '';
+      }
+
+      //Do castling
+      let firstRow = 0 + 7 * action.player;
+      if (selectedCell[0] == 'r' &&
+          action.payload.y == firstRow &&
+          [0,7].indexOf(selectedCellCord.x) != -1) {
+            //Queen-side castling
+            if (action.payload.x == 2 && state.board[firstRow][3][0] == 'q') {
+              let temp = state.board[firstRow][3];
+              state.board[firstRow][3] = selectedCell;
+              state.board[action.payload.y][action.payload.x] = temp;
+            //King-side castling
+            } else if (action.payload.x == 5 &&
+                       state.board[firstRow][4][0] == 'k') {
+               let temp = state.board[firstRow][4];
+               state.board[firstRow][4] = selectedCell;
+               state.board[action.payload.y][action.payload.x] = temp;
+            }
+      }
       state.turn++;
       clearBoardFlags(state.board);
     } else {
@@ -154,71 +213,33 @@ const ACTION_HANDLERS = {
             }
           }
         break;
-        case 'q': //QUEEN
-          for (let delta=-7; delta <= 7; delta++) {
-            if (delta == 0) {
-              toggleCellSelected(state.board,
-                                 action.payload.x,
-                                 action.payload.y,
-                                 action.player);
-            } else {
-              toggleCellMovable(state.board,
-                                action.payload.x+delta,
-                                action.payload.y+delta,
-                                action.player);
-              toggleCellMovable(state.board,
-                                action.payload.x-delta,
-                                action.payload.y+delta,
-                                action.player);
-              toggleCellMovable(state.board,
-                                action.payload.x,
-                                action.payload.y+delta,
-                                action.player);
-              toggleCellMovable(state.board,
-                                action.payload.x+delta,
-                                action.payload.y,
-                                action.player);
-
-            }
-          }
-        break;
         case 'b': //BISHOP
-          for (let delta=-7; delta <= 7; delta++) {
-            if (delta == 0) {
-              toggleCellSelected(state.board,
-                                 action.payload.x,
-                                 action.payload.y,
-                                 action.player);
-            } else {
-              toggleCellMovable(state.board,
-                                action.payload.x+delta,
-                                action.payload.y+delta,
-                                action.player);
-              toggleCellMovable(state.board,
-                                action.payload.x-delta,
-                                action.payload.y+delta,
-                                action.player);
-
-            }
-          }
-        break;
         case 'r': //ROOK
-          for (let delta=-7; delta <= 7; delta++) {
-            if (delta == 0) {
-              toggleCellSelected(state.board,
-                                 action.payload.x,
-                                 action.payload.y,
-                                 action.player);
-            } else {
-              toggleCellMovable(state.board,
-                                action.payload.x+delta,
-                                action.payload.y,
-                                action.player);
-              toggleCellMovable(state.board,
-                                action.payload.x,
-                                action.payload.y+delta,
-                                action.player);
+        case 'q': //QUEEN
+          toggleCellSelected(state.board,
+                             action.payload.x,
+                             action.payload.y,
+                             action.player);
+          let vectors = [];
+          if (targetPiece == 'b') {
+            vectors = [[1,1], [-1,-1], [-1,1], [1,-1]];
+          } else if (targetPiece == 'r') {
+            vectors = [[0,1], [0,-1], [1,0], [-1,0]];
+          } else if (targetPiece == 'q') {
+            vectors = [[0,1], [0,-1], [1,0], [-1,0],
+                       [1,1], [-1,-1], [-1,1], [1,-1]];
+          }
 
+          for (let i = 0; i < vectors.length; i++) {
+            for (let delta=1; delta <= 7; delta++) {
+              let x = action.payload.x+delta*vectors[i][0];
+              let y = action.payload.y+delta*vectors[i][1];
+              toggleCellMovable(state.board, x, y, action.player);
+              if (isValidCell(state.board, x, y) &&
+                  !isCellEmpty(state.board[y][x])
+                  ) {
+                break;
+              }
             }
           }
         break;
@@ -248,38 +269,28 @@ const ACTION_HANDLERS = {
           let direction = 1;
           if (action.player == 1)
             direction = -1;
-          toggleCellMovable(state.board,
-                            action.payload.x,
-                            action.payload.y+direction,
-                            action.player);
-          let initialRow = 1 + 5 * action.player;
-          if (initialRow == action.payload.y) {
-            toggleCellMovable(state.board,
-                              action.payload.x,
-                              action.payload.y+2*direction,
-                              action.player);
+          let x = action.payload.x;
+          let y = action.payload.y+direction;
+          if (isValidCell(state.board, x, y) &&
+              isCellEmpty(state.board[y][x])) {
+                toggleCellMovable(state.board, x, y,
+                                  action.player);
+                let initialRow = 1 + 5 * action.player;
+                y = action.payload.y+2*direction;
+                if (initialRow == action.payload.y &&
+                    isCellEmpty(state.board[y][x])) {
+                  toggleCellMovable(state.board, x, y, action.player);
+                }
           }
           //Left adjacent cell
-          if (isValidCell(state.board,
-                          action.payload.x-1,
-                          action.payload.y+direction) &&
-              !isCellEmpty(state.board[action.payload.y+direction]
-                                      [action.payload.x-1])) {
-            toggleCellMovable(state.board,
-                              action.payload.x-1,
-                              action.payload.y+direction,
-                              action.player);
-          }
-          //Right adjacent cell
-          if (isValidCell(state.board,
-                          action.payload.x+1,
-                          action.payload.y+direction) &&
-              !isCellEmpty(state.board[action.payload.y+direction]
-                                      [action.payload.x+1])) {
-            toggleCellMovable(state.board,
-                              action.payload.x+1,
-                              action.payload.y+direction,
-                              action.player);
+          for (let delta=-1; delta<=1; delta+=2) {
+            x = action.payload.x+delta;
+            y = action.payload.y+direction;
+            if (isValidCell(state.board, x, y) &&
+                (!isCellEmpty(state.board[y][x]) ||
+                isEnPassantRisk(state, x, y, y-direction, action.player))) {
+              toggleCellMovable(state.board, x, y, action.player);
+            }
           }
         break;
       }
