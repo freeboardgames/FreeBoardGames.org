@@ -60,6 +60,20 @@ export const ChessGame = React.createClass({
         </div>
       </div>)
     }
+    let feasible = [];
+    let selected = [];
+    for (let y=0; y<state.board.length; y++) {
+      for (let x=0; x<state.board[y].length; x++) {
+        let cell = state.board[y][x];
+        if (cell.indexOf('@') != -1) {
+          selected.push({x: x, y: y});
+        }
+        if (cell.indexOf('*') != -1) {
+          feasible.push({x: x, y: y});
+        }
+      }
+    }
+
     let current_player = state.turn%2;
     return (
     <div style={{backgroundColor: "black", height: "100%"}}>
@@ -69,7 +83,7 @@ export const ChessGame = React.createClass({
         action={(current_player == state.player) ? 'YOUR TURN' : 'WAITING'}
         isUserTurn={current_player == state.player}/>
       <CheckerBoard
-        feasible={state.feasible} selected={state.selected}
+        feasible={feasible} selected={selected}
         onClick={onClick}
         key="999">
         {pieces}
