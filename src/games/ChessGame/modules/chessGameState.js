@@ -335,6 +335,7 @@ const ACTION_HANDLERS = {
     return deepCopy(action.payload);
   },
   [CLICK] : (state, action) => {
+    state = deepCopy(state);
     let target = state.board[action.payload.y][action.payload.x];
     let isTargetEmpty = isCellEmpty(target);
     let targetPlayer = getCellPlayer(target);
@@ -342,7 +343,7 @@ const ACTION_HANDLERS = {
     let isTargetMovable = isCellMovable(target);
     //Check if it is correct turn
     if (action.player != state.turn%2)
-      return deepCopy(state);
+      return state;
 
     if (isTargetMovable) {
       let stateCopy = deepCopy(state);
@@ -364,13 +365,18 @@ const ACTION_HANDLERS = {
     } else {
       //Check if trying to move its own piece
       if (action.player != targetPlayer)
-        return deepCopy(state);
-      selectPiece(state,
-                  action.payload.x,
-                  action.payload.y,
-                  action.player);
+        return state;
+      let selectedCell = findSelectedCell(state.board);
+      if (!selectedCell) {
+        selectPiece(state,
+                    action.payload.x,
+                    action.payload.y,
+                    action.player);
+      } else {
+        selectPiece(state, selectedCell.x, selectedCell.y, action.player);
+      }
     }
-    return deepCopy(state);
+    return state;
   }
 }
 

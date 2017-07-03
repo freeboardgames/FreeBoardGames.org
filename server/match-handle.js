@@ -28,6 +28,7 @@ function saveAfterExpire (match_code, match) {
 
 matchJoinHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
   LAST_DB = db;
+  console.log('MATCH JOIN');
   db.collection('matches').findOne(ObjectId(match_code), (err, match) => {
     let match_cache = cache.get(match_code);
     if (match_cache) {
@@ -45,6 +46,7 @@ matchJoinHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
     next_state.loading = false;
     next_state.player = match.players.indexOf(user.email);
     if (next_state) {
+      console.log('JOIN ' + 'match-' + match_code);
       socket.join('match-' + match_code);
       let result = { type: 'MATCH_SET_STATE' };
       result.payload = next_state;
@@ -85,8 +87,11 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
           console.log(err)
       });
     }
+    console.log('DISPATCH ' + 'match-' + match_code);
     dispatchRoom('match-' + match_code, action);
     cache.put(match_code, match, CACHE_DURATION, saveAfterExpire);
+  } else {
+    console.log('IGNORED!!!');
   }
 }
 

@@ -78,6 +78,12 @@ describe('Chess', () => {
       ]);
       expect(state5.turn).to.equal(2);
     })
+    it('should unselect piece if clicked cell other than movable', () => {
+      let state = chessReducer(null, {type: 'NOOP'});
+      let state2 = chessReducer(state, sendClick(null, 1, 1, 0));
+      let state3 = chessReducer(state2, sendClick(null, 0, 1, 0));
+      expect(state3.board).to.eql(state.board);
+    })
   })
 
   describe('King', () => {
