@@ -9,7 +9,7 @@ describe('Chess', () => {
     it('should start with correct board configuration', () => {
       let initialBoard = chessReducer(null, {type: 'NOOP'}).board;
       let expectedBoard = [
-        ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
+        ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
         ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
@@ -34,7 +34,7 @@ describe('Chess', () => {
       let state = chessReducer(null, {type: 'NOOP'});
       let state2 = chessReducer(state, sendClick(null, 1, 0, 0));
       expect(state2.board).to.eql([
-        ['rd_00', 'nd_01@', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
+        ['rd_00', 'nd_01@', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
         ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
         ['*', '', '*', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
@@ -49,7 +49,7 @@ describe('Chess', () => {
       let state2 = chessReducer(state, sendClick(null, 1, 0, 0));
       let state3 = chessReducer(state2, sendClick(null, 0, 2, 0));
       expect(state3.board).to.eql([
-        ['rd_00', '', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
+        ['rd_00', '', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
         ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
         ['nd_01', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
@@ -67,7 +67,7 @@ describe('Chess', () => {
       let state4 = chessReducer(state3, sendClick(null, 0, 6, 1));
       let state5 = chessReducer(state4, sendClick(null, 0, 4, 1));
       expect(state5.board).to.eql([
-        ['rd_00', '', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
+        ['rd_00', '', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
         ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
         ['nd_01', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
@@ -851,6 +851,70 @@ describe('Chess', () => {
         expect(state.turn).to.equal(2);
         expect(state.check).to.equal(true);
         expect(state.winner).to.equal(1);
+    })
+    it('should NOT detect check mate - regression test 1', () => {
+      let initialState = {board: [
+        ['', '', 'bd_02', '', 'kd_04', '', '', 'rd_07'],
+        ['', '', '', '', '', '', '', 'pd_15'],
+        ['', '', '', '', '', '', 'pd_14', ''],
+        ['', 'pd_09', '', '', '', 'pd_13', '', ''],
+        ['qd_03', '', '', 'pd_11', '', 'pl_21', '', 'pl_23'],
+        ['rd_00', '', '', '', '', 'bl_29', '', ''],
+        ['', '', '', 'bl_26', 'kl_28', '', 'pl_22', 'rl_31'],
+        ['', '', '', '', '', '', '', 'ql_27'],
+        ],
+        loading: false,
+        turn: 0,
+        winner: null};
+        let action = sendClick(null, 0, 4, 0);
+        let state = chessReducer(initialState, action);
+        action = sendClick(null, 2, 4, 0);
+        state = chessReducer(state, action);
+        expect(state.board).to.eql([
+          ['', '', 'bd_02', '', 'kd_04', '', '', 'rd_07'],
+          ['', '', '', '', '', '', '', 'pd_15'],
+          ['', '', '', '', '', '', 'pd_14', ''],
+          ['', 'pd_09', '', '', '', 'pd_13', '', ''],
+          ['', '', 'qd_03', 'pd_11', '', 'pl_21', '', 'pl_23'],
+          ['rd_00', '', '', '', '', 'bl_29', '', ''],
+          ['', '', '', 'bl_26', 'kl_28', '', 'pl_22', 'rl_31'],
+          ['', '', '', '', '', '', '', 'ql_27'],
+        ]);
+        expect(state.turn).to.equal(1);
+        expect(state.check).to.equal(true);
+        expect(state.winner).to.equal(null);
+    })
+    it('should NOT detect check mate - regression test 2', () => {
+      let initialState = {board: [
+        ['', '', 'bd_02', '', 'kd_04', 'bd_05', '', ''],
+        ['', 'pd_09', 'pd_10', '', 'pd_12', 'pd_13', '', 'pd_15'],
+        ['', '', 'rd_00', '', '', '', '', ''],
+        ['pd_08', 'pl_17', '', '', '', '', 'pd_14', ''],
+        ['pl_16', 'qd_03', '', '', '', '', 'pl_22', ''],
+        ['rl_24', '', '', '', '', 'pl_21', '', ''],
+        ['', 'pl_17', '', 'bl_26', '', 'kl_28', '', 'pl_23'],
+        ['', 'nl_25', '', 'ql_27', '', 'bl_29', '', 'rl_31'],
+        ],
+        loading: false,
+        turn: 0,
+        winner: null};
+        let action = sendClick(null, 1, 4, 0);
+        let state = chessReducer(initialState, action);
+        action = sendClick(null, 3, 4, 0);
+        state = chessReducer(state, action);
+        expect(state.board).to.eql([
+          ['', '', 'bd_02', '', 'kd_04', 'bd_05', '', ''],
+          ['', 'pd_09', 'pd_10', '', 'pd_12', 'pd_13', '', 'pd_15'],
+          ['', '', 'rd_00', '', '', '', '', ''],
+          ['pd_08', 'pl_17', '', '', '', '', 'pd_14', ''],
+          ['pl_16', '', '', 'qd_03', '', '', 'pl_22', ''],
+          ['rl_24', '', '', '', '', 'pl_21', '', ''],
+          ['', 'pl_17', '', 'bl_26', '', 'kl_28', '', 'pl_23'],
+          ['', 'nl_25', '', 'ql_27', '', 'bl_29', '', 'rl_31'],
+        ]);
+        expect(state.turn).to.equal(1);
+        expect(state.check).to.equal(true);
+        expect(state.winner).to.equal(null);
     })
   })
 })

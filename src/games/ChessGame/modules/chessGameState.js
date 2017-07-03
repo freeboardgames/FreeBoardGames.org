@@ -174,11 +174,12 @@ function isCheckmated (state, player) {
       if (isCellEmpty(selectedCell) ||
           getCellPlayer(selectedCell) !== player)
         continue;
-      let stateCopy = deepCopy(state);
-      clearBoardFlags(stateCopy.board);
-      selectPiece(stateCopy, x0, y0, player);
-      for (let y1=0; y1<stateCopy.board.length; y1++) {
-        for (let x1=0; x1<stateCopy.board[y1].length; x1++) {
+      for (let y1=0; y1<state.board.length; y1++) {
+        for (let x1=0; x1<state.board[y1].length; x1++) {
+          let stateCopy = deepCopy(state);
+          clearBoardFlags(stateCopy.board);
+          selectPiece(stateCopy, x0, y0, player);
+
           let targetCell = stateCopy.board[y1][x1];
           if (!isCellMovable(targetCell))
             continue;
@@ -385,7 +386,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {board: [
-    ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_005', 'nd_06', 'rd_07'],
+    ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
     ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
     ['', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', ''],
