@@ -15,17 +15,6 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-function registerServiceWorker() {
-  return navigator.serviceWorker.register('service-worker.js')
-  .then((registration) => {
-    console.log('Service worker successfully registered.');
-    return registration;
-  })
-  .catch((err) => {
-    console.error('Unable to register service worker.', err);
-  });
-}
-
 function askPermission() {
   return new Promise((resolve, reject) => {
     const permissionResult = Notification.requestPermission((result) => {
@@ -39,7 +28,8 @@ function askPermission() {
 }
 
 function subscribeUserToPush() {
-  return registerServiceWorker()
+  navigator.serviceWorker.register('/sw.js');
+  return navigator.serviceWorker.ready
   .then((registration) => {
     if (!registration) {
       console.log('FAILED TO GET SERVICE WORKER REGISTRATION');
