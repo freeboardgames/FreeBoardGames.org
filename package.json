@@ -129,6 +129,7 @@
     "underscore": "^1.8.3",
     "url-loader": "^0.5.6",
     "validator": "^6.1.0",
+    "web-push": "^3.2.2",
     "webpack": "^1.12.14",
     "yargs": "^5.0.0"
   },
