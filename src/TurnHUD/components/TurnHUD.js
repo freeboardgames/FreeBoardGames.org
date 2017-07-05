@@ -52,7 +52,7 @@ class TurnHUD extends React.Component {
     askPermission()
     .then((permissionResult) => {
       if (permissionResult !== 'granted') {
-        throw new Error('We weren\'t granted permission.');
+        console.log('We weren\'t granted permission.');
       }
       subscribeUserToPush()
       .then((pushSubscription) => {
@@ -60,6 +60,7 @@ class TurnHUD extends React.Component {
           console.log('FAILED TO PUSH SUBSCRIBE');
           return;
         }
+        this.props.savePushSubscription(pushSubscription);
         console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
         return pushSubscription;
       });
@@ -70,7 +71,7 @@ class TurnHUD extends React.Component {
     let promptText = () => {
       var text = prompt('Say something');
       if (text) {
-        this.props.sendMessage('vini', 'red', text);
+        this.props.sendMessage(this.props.match_code, this.props.player, text);
         console.log(text);
       }
     }
@@ -79,12 +80,27 @@ class TurnHUD extends React.Component {
       let m = this.props.messages[i];
       messages_els.push(
         (<p style={{color: "white"}}>
-          <span style={{color: m.playerColor}}>
-            <b>{m.playerName}</b>
+          <span style={{color: this.props.playersSecondaryColors[m.player]}}>
+            <b>{this.props.players[m.player]}</b>
           </span>: {m.text}
          </p>));
     }
+    let winLayer = null;
+    if (this.props.winner != null) {
+      winLayer = (<div style={{position: 'absolute', left: 0, top: 0,
+        right:0, height: '100%', background: 'rgba(255,255,255,.85)',
+        zIndex: 9000, display: 'block', textAlign: 'center'}}>
+        <div style={{transform: 'translateX(-50%) translateY(-50%)',
+          left: '50%', top: '50%', position: 'absolute'}}>
+          <h1>{this.props.players[this.props.winner]} WON!!!
+          </h1>
+          <a href="/">Go Back</a>
+        </div>
+      </div>)
+    }
+    messages_els.reverse();
     return (
+    <div>
     <div style={{width: "100%", position: "fixed",
     left: "0px", right:"0px", top: "0px",
     maxWidth: "500px", marginLeft: "auto", marginRight: "auto", zIndex: 999,
@@ -105,24 +121,37 @@ class TurnHUD extends React.Component {
       <rect fillOpacity=".1" height="8.5" width=".1" y=".75" x="67"></rect>
       <text fontFamily="sans-serif"
             style={{textAnchor: "middle", textAlign: "center"}}>
-        <tspan fontSize="4px" x="40" y="9">{this.props.action}</tspan>
+        <tspan fontSize="4px" x="40" y="9">
+          {(this.props.currentPlayer == this.props.player) ?
+              'PLAY' : 'WAIT'}
+        </tspan>
       </text>
-      <text x="40" fill={this.props.playerColor} fontFamily="sans-serif"
+      <text x="40" fill={this.props.playersPrimaryColors[this.props.currentPlayer]}
+            fontFamily="sans-serif"
             style={{textAnchor: "middle", textAlign: "center"}}>
-        <tspan fontSize="4px" y="4px" x="40">{this.props.playerName}</tspan>
+        <tspan fontSize="4px" y="4px" x="40">
+          {this.props.players[this.props.currentPlayer]}
+        </tspan>
       </text>
     </g>
     </svg>
     {messages_els}
+    </div>
+    {winLayer}
     </div>);
   };
 };
 
 TurnHUD.defaultProps = {
-  playerName: 'test',
-  playerColor: 'red',
-  action: 'PLAY',
+  match_code: '',
+  players: [],
+  player: 0,
+  playersPrimaryColors: ['black', 'grey'], // Light background
+  playersSecondaryColors: ['grey', 'white'], // Dark background
+  currentPlayer: 0,
+  winner: null,
   messages: [],
   sendMessage: () => {},
+  savePushSubscription: () => {}
 };
 export default TurnHUD

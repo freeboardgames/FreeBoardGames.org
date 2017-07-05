@@ -1,9 +1,10 @@
 import { connect } from 'react-redux'
-import { sendMessage } from '../modules/message.js'
+import { sendMessage, savePushSubscription } from '../modules/message.js'
 import TurnHUD from '../components/TurnHUD'
 
 const mapDispatchToProps = {
-  sendMessage
+  sendMessage,
+  savePushSubscription
 }
 
 const mapStateToProps = (state) => ({

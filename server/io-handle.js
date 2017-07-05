@@ -5,6 +5,8 @@ const downHandle = require('./party-handle.js').downHandle;
 const matchJoinHandle = require('./match-handle.js').matchJoinHandle;
 const matchActionRequest = require('./match-handle.js').matchActionRequest;
 const loginHandle = require('./login-handle.js');
+const sendMessageHandle = require('./hud-handle.js').sendMessageHandle;
+const savePushSubscriptionHandle = require('./hud-handle.js').savePushSubscriptionHandle;
 const newPartyHandle = require('./newParty-handle.js');
 
 var ioHandle = (db, socket, dispatchRoom, dispatch) => {
@@ -48,7 +50,15 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
           break;
         case 'MATCH_ACTION_REQUEST':
           matchActionRequest(socket, dispatchRoom,
-              dispatch, db, user, message.match_code, message);
+            dispatch, db, user, message.match_code, message);
+          break;
+        case 'SEND_MESSAGE_REQUEST':
+          sendMessageHandle(socket, dispatchRoom, dispatch, db, user,
+            message.payload.match_code, message);
+          break;
+        case 'SAVE_PUSH_SUBSCRIPTION_REQUEST':
+          savePushSubscriptionHandle(socket, dispatchRoom, dispatch, db, user,
+            message);
           break;
         default:
           console.log('UNKNOWN: ' + message.type)

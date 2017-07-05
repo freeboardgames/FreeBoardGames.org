@@ -51,6 +51,10 @@ matchJoinHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
       let result = { type: 'MATCH_SET_STATE' };
       result.payload = next_state;
       dispatch(result);
+      if (!match.messages) {
+        match.messages = [];
+      }
+      dispatch({ type: 'SET_MESSAGES', payload: match.messages });
     }
   })
 }

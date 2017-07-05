@@ -36,7 +36,7 @@ class Checkerboard extends React.Component {
     };
     return (
       <svg style={{width: "100%", position: "fixed",
-      left: "0px", right:"0px", bottom: "0px",
+      left: "0px", right:"0px", bottom: "0px", zIndex: 8999,
       maxWidth: "500px", marginLeft: "auto", marginRight: "auto"}}
       viewBox={"0 0 8 8"}
       id="CheckerBoard">
