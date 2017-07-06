@@ -28,7 +28,7 @@ function askPermission() {
 }
 
 function subscribeUserToPush() {
-  navigator.serviceWorker.register('/sw.js');
+  navigator.serviceWorker.register('/sw2.js');
   return navigator.serviceWorker.ready
   .then((registration) => {
     if (!registration) {
