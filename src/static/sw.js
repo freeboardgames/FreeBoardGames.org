@@ -1,7 +1,25 @@
 self.addEventListener('push', function(event) {
-  if (event.data) {
-    console.log('This push event has data: ', event.data.text());
-  } else {
-    console.log('This push event has no data.');
+  if (!event.data) {
+    console.log('ERROR, NO DATA FROM PUSH');
+    return;
   }
+  let data = event.data.json();
+  self.registration.showNotification('It\'s your turn. Play now!', {
+        body: 'Click here to play your '+data.game+' turn! ' +
+        'Your friend is waiting for you. ',
+        requireInteraction: true,
+        data: {
+          match_code: data.match_code,
+          game: data.game
+        }
+      });
+});
+
+self.addEventListener('notificationclick', function(event) {
+  const clickedNotification = event.notification;
+  clickedNotification.close();
+  const url = '/g/' + clickedNotification.data.game + '/' +
+    clickedNotification.data.match_code;
+  const promiseChain = clients.openWindow(url);
+  event.waitUntil(promiseChain);
 });
