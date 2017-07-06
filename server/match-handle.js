@@ -4,7 +4,14 @@ const _ = require('underscore');
 const checkersReducer = require('./games/checkerGameState.js').default;
 const chessReducer = require('./games/chessGameState.js').default;
 var LAST_DB = null;
+var NOTIFICATION_TIMERS = {};
+const webpush = require('web-push');
 const CACHE_DURATION = 30 * 60 * 1000;
+const vapidKeys = {
+  publicKey:
+  'BAN72E3hbQ14KDaYyr9tSTXewOB9CvN-sSyQuk0vPq-V755kPnoCivqUZvP8ib1p_MFgIiLgNYb_eT6N0uYYIuo',
+  privateKey: '***REMOVED***'
+};
 
 function genericReducer (game_code, state, action) {
   if (game_code == 'checkers') {
@@ -59,6 +66,29 @@ matchJoinHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
   })
 }
 
+notifyToPlay = (db, email, game_code, match_code) => () => {
+  db.collection('users').findOne({email: email}, (err, user) => {
+    if (!user.pushSubscription)
+      return;
+    webpush.setVapidDetails(
+      'mailto:felizardow@gmail.com',
+      vapidKeys.publicKey,
+      vapidKeys.privateKey
+    );
+    let notificationData = JSON.stringify({action: 'PLAY',
+                                       game: game_code,
+                                       match_code: match_code});
+    console.log('SEND NOTIFICATION ' + user.email + ' ' + notificationData);
+    webpush.sendNotification(user.pushSubscription, notificationData)
+    .then((r) => {
+      console.log('SUCCESS SENDING NOTIFICATION');
+    })
+    .catch((err) => {
+      console.log('ERROR SENDING NOTIFICATION: ' + err);
+    });
+  });
+}
+
 matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, action) => {
   LAST_DB = db;
   console.log('MATCH ACTION REQUEST');
@@ -76,6 +106,7 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
     current_state = match.log[0].state;
   } else {
     match.log = [];
+    current_state = genericReducer(match.game_code, undefined, {type: 'NOOP'});
   }
   let next_state = genericReducer(match.game_code, current_state, action);
   if (next_state && !_.isEqual(next_state, current_state)) {
@@ -90,6 +121,15 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
         if (err)
           console.log(err)
       });
+    } else {
+      if (match_code in NOTIFICATION_TIMERS) {
+        console.log('CLEARING NOTIFICATION TIMER FOR ' + match_code);
+        clearTimeout(NOTIFICATION_TIMERS[match_code]);
+      }
+      let current_player = next_state.turn % match.players.length;
+      console.log('SETTING UP NOTIFICATION TIMER FOR ' + match_code);
+      NOTIFICATION_TIMERS[match_code] = setTimeout(notifyToPlay(db,
+        match.players[current_player], match.game_code, match_code), 5 * 1000);
     }
     console.log('DISPATCH ' + 'match-' + match_code);
     dispatchRoom('match-' + match_code, action);
