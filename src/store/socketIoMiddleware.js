@@ -1,4 +1,5 @@
 var socket = io({transports: ['websocket'], upgrade: false});
+console.log('SOCKET CREATED!!!');
 var middlewareDispatch = null;
 var auth_token = null;
 var last_join = null;
@@ -7,6 +8,9 @@ socket.on('socketIoMiddleware', (message) => {
     message.FROM_SERVER = true;
     middlewareDispatch(message);
   }
+});
+socket.on('connect', () => {
+  console.log('SOCKET CONNECTED!!!');
 });
 socket.on('disconnect', () => {
   console.log('DISCONNECT!!!');
