@@ -1,6 +1,6 @@
 const ObjectId = require('mongodb').ObjectId;
 
-let partyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
+let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
   let handlePartyDb = (party, matches, games) => {
     let new_user = false;
     if (party.users.indexOf(user.email) == -1) {
@@ -30,6 +30,10 @@ let partyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
       })
     })
   })
+}
+
+let leavePartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
+  socket.leave('party-' + party_code)
 }
 
 let downHandle = (socket, dispatchRoom, dispatch, db,
@@ -77,4 +81,4 @@ let downHandle = (socket, dispatchRoom, dispatch, db,
 })
 }
 
-module.exports = { partyHandle, downHandle }
+module.exports = { joinPartyHandle, leavePartyHandle, downHandle }

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
-import { sendClick, joinMatch } from '../modules/chessGameState'
+import { sendClick, joinMatch, leaveMatch } from '../modules/chessGameState'
 import ChessGame from '../components/ChessGame'
 
 const mapDispatchToProps = {
-  sendClick, joinMatch
+  sendClick, joinMatch, leaveMatch
 }
 
 const mapStateToProps = (state) => ({

@@ -32,7 +32,7 @@ var NewParty =  React.createClass({
   },
   render: function () {
     return (
-  <TurnatoBar>
+  <TurnatoBar disconnected={this.props.disconnected}>
   <CardHeader style={{paddingBottom: '0px'}}
     title="Give a name to your party."
     subtitle="Pick a memorable name!"
@@ -63,6 +63,7 @@ var NewParty =  React.createClass({
 }
 })
 NewParty.defaultProps = {
+  disconnected: false,
   loading: false,
   error: null,
   name: null,

@@ -47,7 +47,7 @@ var Home =  React.createClass({
           onClick={newParty}
           href="#">create one</a> and invite your friends!</p>));
     }
-    return (<TurnatoBar>
+    return (<TurnatoBar disconnected={this.props.disconnected}>
       <Card>
         <CardMedia
           overlay={<CardTitle title="Fun with friends."
@@ -76,6 +76,7 @@ var Home =  React.createClass({
   }});
 
   Home.defaultProps = {
+    disconnected: false,
     parties: [],
     partiesLoading: false,
     token: null,

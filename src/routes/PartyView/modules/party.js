@@ -4,7 +4,8 @@ import fetch from 'isomorphic-fetch'
 // Constants
 // ------------------------------------
 export const DOWN_REQUEST = 'DOWN_REQUEST'
-export const PARTY_REQUEST = 'PARTY_REQUEST'
+export const JOIN_PARTY_REQUEST = 'JOIN_PARTY_REQUEST'
+export const LEAVE_PARTY_REQUEST = 'LEAVE_PARTY_REQUEST'
 export const SET_INFO = 'SET_INFO'
 export const SET_GAMES = 'SET_GAMES'
 export const SET_MATCHES = 'SET_MATCHES'
@@ -18,12 +19,16 @@ export const down = (party, game) => (dispatch, getState) => {
   dispatch({type: DOWN_REQUEST, party, game});
 }
 
-export const connectToParty = (token, party_code) => (dispatch, getState) => {
-  dispatch({type: PARTY_REQUEST, code: party_code});
+export const joinParty = (token, party_code) => (dispatch, getState) => {
+  dispatch({type: JOIN_PARTY_REQUEST, code: party_code});
+}
+
+export const leaveParty = (token, party_code) => (dispatch, getState) => {
+  dispatch({type: LEAVE_PARTY_REQUEST, code: party_code});
 }
 
 export const actions = {
-  down, connectToParty
+  down, joinParty, leaveParty
 }
 
 // ------------------------------------

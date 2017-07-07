@@ -8,7 +8,8 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = (state) => ({
-  messages: state.messages
+  messages: state.turnHUD.messages,
+  disconnected: state.connection.disconnected
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TurnHUD)

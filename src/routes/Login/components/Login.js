@@ -52,7 +52,7 @@ var Login =  React.createClass({
   },
   render: function () {
     return (
-  <TurnatoBar>
+  <TurnatoBar disconnected={this.props.disconnected}>
   <CardHeader style={{paddingBottom: '0px'}}
     title={(this.props.needsPassword) ?
       "We need your password." :
@@ -101,6 +101,7 @@ var Login =  React.createClass({
 }
 })
 Login.defaultProps = {
+  disconnected: false,
   needsPassword: true,
   loading: false,
   emailError: null,

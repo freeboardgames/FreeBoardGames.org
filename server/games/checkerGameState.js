@@ -8,12 +8,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.sendClick = sendClick;
 exports.joinMatch = joinMatch;
+exports.leaveMatch = leaveMatch;
 exports.default = messageReducer;
 // ------------------------------------
 // Constants
 // ------------------------------------
 const CLICK = exports.CLICK = 'MATCH_ACTION_REQUEST';
-const JOIN_MATCH = exports.JOIN_MATCH = 'MATCH_JOIN_REQUEST';
+const JOIN_MATCH = exports.JOIN_MATCH = 'JOIN_MATCH_REQUEST';
+const LEAVE_MATCH = exports.LEAVE_MATCH = 'LEAVE_MATCH_REQUEST';
 const MATCH_SET_STATE = exports.MATCH_SET_STATE = 'MATCH_SET_STATE';
 
 // ------------------------------------
@@ -36,8 +38,15 @@ function joinMatch(match_code) {
   };
 }
 
+function leaveMatch(match_code) {
+  return {
+    type: LEAVE_MATCH,
+    match_code: match_code
+  };
+}
+
 const actions = exports.actions = {
-  sendClick
+  sendClick, joinMatch, leaveMatch
 };
 
 // ------------------------------------

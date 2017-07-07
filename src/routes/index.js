@@ -4,7 +4,6 @@ import CheckerGameRoute from '../games/CheckerGame'
 import ChessGameRoute from '../games/ChessGame'
 import HomeRoute from './Home'
 import PartyViewRoute from './PartyView'
-import CounterRoute from './Counter'
 import LoginRoute from './Login'
 import NewPartyRoute from './NewParty'
 
@@ -17,7 +16,6 @@ export const createRoutes = (store) => ({
   component   : CoreLayout,
   indexRoute  : HomeRoute(store),
   childRoutes : [
-    CounterRoute(store),
     CheckerGameRoute(store),
     ChessGameRoute(store),
     PartyViewRoute(store),

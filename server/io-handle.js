@@ -1,8 +1,10 @@
 const turnatoLogin = require('./turnato-login.js');
 const partiesHandle = require('./parties-handle.js');
-const partyHandle = require('./party-handle.js').partyHandle;
+const joinPartyHandle = require('./party-handle.js').joinPartyHandle;
+const leavePartyHandle = require('./party-handle.js').leavePartyHandle;
 const downHandle = require('./party-handle.js').downHandle;
-const matchJoinHandle = require('./match-handle.js').matchJoinHandle;
+const joinMatchHandle = require('./match-handle.js').joinMatchHandle;
+const leaveMatchHandle = require('./match-handle.js').leaveMatchHandle;
 const matchActionRequest = require('./match-handle.js').matchActionRequest;
 const loginHandle = require('./login-handle.js');
 const sendMessageHandle = require('./hud-handle.js').sendMessageHandle;
@@ -28,8 +30,10 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
         loginHandle(socket, dispatch, db, message.email, message.password)
         return;
       }
-      if (!user)
+      if (!user) {
+        console.log('LACK OF LOGIN, IGNORING!');
         return;
+      }
       switch (message.type) {
         case 'PARTIES_REQUEST':
           partiesHandle(socket, dispatch, db, user);
@@ -37,15 +41,22 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
         case 'NEW_PARTY_REQUEST':
           newPartyHandle(socket, dispatch, db, user, message.name);
           break;
-        case 'PARTY_REQUEST':
-          partyHandle(socket, dispatchRoom, dispatch, db, user, message.code);
+        case 'JOIN_PARTY_REQUEST':
+          joinPartyHandle(socket, dispatchRoom, dispatch, db, user, message.code);
+          break;
+        case 'LEAVE_PARTY_REQUEST':
+          leavePartyHandle(socket, dispatchRoom, dispatch, db, user, message.code);
           break;
         case 'DOWN_REQUEST':
           downHandle(socket, dispatchRoom, dispatch, db, user,
             message.party, message.game);
           break;
-        case 'MATCH_JOIN_REQUEST':
-          matchJoinHandle(socket, dispatchRoom, dispatch, db, user,
+        case 'JOIN_MATCH_REQUEST':
+          joinMatchHandle(socket, dispatchRoom, dispatch, db, user,
+            message.match_code);
+          break;
+        case 'LEAVE_MATCH_REQUEST':
+          leaveMatchHandle(socket, dispatchRoom, dispatch, db, user,
             message.match_code);
           break;
         case 'MATCH_ACTION_REQUEST':

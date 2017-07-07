@@ -11,6 +11,9 @@ export const CheckerGame = React.createClass({
   componentDidMount: function () {
     this.props.joinMatch(this.props.params.id)
   },
+  componentWillUnmount: function () {
+    this.props.leaveMatch(this.props.params.id)
+  },
   render: function () {
     let state = this.props.state;
     let onClick = (x,y) => () => {

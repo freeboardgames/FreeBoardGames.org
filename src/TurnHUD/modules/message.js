@@ -34,19 +34,19 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [SEND_MESSAGE] : (state, action) => {
-    state.push(action.payload)
-    return state.slice(0)
+    state.messages.push(action.payload)
+    state.messages = state.messages.slice(0)
+    return { ...state }
   },
   ['SET_MESSAGES'] : (state, action) => {
-    return action.payload.slice(0);
+    return { ...state, messages: action.payload.slice(0) };
   }
-
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = []
+const initialState = {messages: [], disconnected: false}
 export default function messageReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
 

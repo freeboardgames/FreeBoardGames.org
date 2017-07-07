@@ -1,10 +1,10 @@
 import { connect } from 'react-redux'
-import { down, connectToParty } from '../modules/party'
+import { down, joinParty, leaveParty } from '../modules/party'
 
 import PartyView from '../components/PartyView'
 
 const mapDispatchToProps = {
-  down, connectToParty
+  down, joinParty, leaveParty
 }
 
 const mapStateToProps = (state) => ({
@@ -14,6 +14,7 @@ const mapStateToProps = (state) => ({
   games: state.party.games,
   downMapping: state.party.downMapping,
   token: state.auth.token,
+  disconnected: state.connection.disconnected,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PartyView)

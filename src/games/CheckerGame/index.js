@@ -11,12 +11,12 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const CheckerGame = require('./containers/CheckerGameContainer').default
-      const MessageReducer = require('../../TurnHUD/modules/message').default
+      const TurnHUDReducer = require('../../TurnHUD/modules/message').default
       const CheckerGameReducer = require('./modules/checkerGameState').default
       const requireAuthentication = require('../../AuthenticatedComponent/AuthenticatedComponent').requireAuthentication
 
       /*  Add the reducer to the store on key 'counter'  */
-      injectReducer(store, { key: 'messages', reducer:  MessageReducer})
+      injectReducer(store, { key: 'turnHUD', reducer:  TurnHUDReducer})
       injectReducer(store, { key: 'checkerGameState', reducer:  CheckerGameReducer})
 
 

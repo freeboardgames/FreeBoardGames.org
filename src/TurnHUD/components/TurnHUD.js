@@ -94,7 +94,19 @@ class TurnHUD extends React.Component {
           left: '50%', top: '50%', position: 'absolute'}}>
           <h1>{this.props.players[this.props.winner]} WON!!!
           </h1>
-          <a href="/">Go Back</a>
+          <a href="javascript:history.back();">Go Back</a>
+        </div>
+      </div>)
+    }
+    let disconnectedLayer = null;
+    if (this.props.disconnected) {
+      disconnectedLayer = (<div style={{position: 'absolute', left: 0, top: 0,
+        right:0, height: '100%', background: 'rgba(255,255,255,.85)',
+        zIndex: 9001, display: 'block', textAlign: 'center'}}>
+        <div style={{transform: 'translateX(-50%) translateY(-50%)',
+          left: '50%', top: '50%', position: 'absolute'}}>
+          <h1>Connection lost</h1>
+          <h2>Reconnecting...</h2>
         </div>
       </div>)
     }
@@ -138,6 +150,7 @@ class TurnHUD extends React.Component {
     {messages_els}
     </div>
     {winLayer}
+    {disconnectedLayer}
     </div>);
   };
 };
@@ -151,6 +164,7 @@ TurnHUD.defaultProps = {
   currentPlayer: 0,
   winner: null,
   messages: [],
+  disconnected: false,
   sendMessage: () => {},
   savePushSubscription: () => {}
 };

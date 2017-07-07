@@ -2,7 +2,8 @@
 // Constants
 // ------------------------------------
 export const CLICK = 'MATCH_ACTION_REQUEST'
-export const JOIN_MATCH = 'MATCH_JOIN_REQUEST'
+export const JOIN_MATCH = 'JOIN_MATCH_REQUEST'
+export const LEAVE_MATCH = 'LEAVE_MATCH_REQUEST'
 export const MATCH_SET_STATE = 'MATCH_SET_STATE'
 
 // ------------------------------------
@@ -25,8 +26,15 @@ export function joinMatch (match_code) {
   }
 }
 
+export function leaveMatch (match_code) {
+  return {
+    type : LEAVE_MATCH,
+    match_code : match_code
+  }
+}
+
 export const actions = {
-  sendClick
+  sendClick, leaveMatch, joinMatch
 }
 
 // ------------------------------------

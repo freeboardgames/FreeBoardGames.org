@@ -23,7 +23,10 @@ export const PartyView = React.createClass({
                    linkCopied: false})
   },
   componentDidMount: function () {
-    this.props.connectToParty(this.props.token, this.props.params.id)
+    this.props.joinParty(this.props.token, this.props.params.id)
+  },
+  componentWillUnmount: function () {
+    this.props.leaveParty(this.props.token, this.props.params.id)
   },
   down: function (game) {
     return () => {
@@ -39,7 +42,7 @@ export const PartyView = React.createClass({
 
     if (this.props.info.loading) {
       return (
-        <TurnatoBar>
+        <TurnatoBar disconnected={this.props.disconnected}>
           <Card>
             <CardText style={{textAlign: "center"}}>
               <CircularProgress size={80} thickness={5} />
@@ -95,7 +98,7 @@ export const PartyView = React.createClass({
         onClick={this.down(game)}
       />));
     })
-    return (<TurnatoBar>
+    return (<TurnatoBar disconnected={this.props.disconnected}>
       <br />
       <Snackbar
         open={this.state.linkCopied}
@@ -134,7 +137,9 @@ export const PartyView = React.createClass({
   })
 
 PartyView.defaultProps = {
-  connectToParty: () => {},
+  joinParty: () => {},
+  leaveParty: () => {},
+  disconnected: false,
   down: () => {},
   token: '',
   currentUser: '',

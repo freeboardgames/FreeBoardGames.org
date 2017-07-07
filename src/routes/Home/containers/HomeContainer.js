@@ -10,7 +10,8 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   token: state.auth.token,
   parties: state.parties.list,
-  partiesLoading: state.parties.loading
+  partiesLoading: state.parties.loading,
+  disconnected: state.connection.disconnected,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

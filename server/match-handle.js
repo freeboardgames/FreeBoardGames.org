@@ -33,7 +33,7 @@ function saveAfterExpire (match_code, match) {
   }
 };
 
-matchJoinHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
+joinMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
   LAST_DB = db;
   console.log('MATCH JOIN');
   db.collection('matches').findOne(ObjectId(match_code), (err, match) => {
@@ -64,6 +64,10 @@ matchJoinHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
       dispatch({ type: 'SET_MESSAGES', payload: match.messages });
     }
   })
+}
+
+leaveMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
+  socket.leave('match-' + match_code);
 }
 
 notifyToPlay = (db, email, game_code, match_code) => () => {
@@ -139,4 +143,4 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
   }
 }
 
-module.exports = { matchActionRequest, matchJoinHandle }
+module.exports = { matchActionRequest, joinMatchHandle, leaveMatchHandle }
