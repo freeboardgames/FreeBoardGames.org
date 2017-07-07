@@ -6,10 +6,8 @@ const JWT_TOKEN_SECRET = process.env.JWT_TOKEN_SECRET ||
 var getLoggedUser = (jwt_token) => {
   try {
     var user = jwt.verify(jwt_token, JWT_TOKEN_SECRET);
-    console.log('LOGIN SUCCESS');
     return user
   } catch (err) {
-    console.log('LOGIN ERROR');
     return null
   }
 }
