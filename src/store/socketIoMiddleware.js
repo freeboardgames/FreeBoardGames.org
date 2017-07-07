@@ -11,6 +11,9 @@ socket.on('socketIoMiddleware', (message) => {
 });
 socket.on('connect', () => {
   console.log('SOCKET CONNECTED!!!');
+  //TODO(felizardo): FIX THIS HACK
+  socket.emit('login', auth_token);
+  socket.emit('socketIoMiddleware', last_join);
 });
 socket.on('disconnect', () => {
   console.log('DISCONNECT!!!');
