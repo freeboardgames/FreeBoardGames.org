@@ -1,4 +1,4 @@
-var socket = io();
+var socket = io({transports: ['websocket'], upgrade: false});
 var middlewareDispatch = null;
 var auth_token = null;
 var last_join = null;

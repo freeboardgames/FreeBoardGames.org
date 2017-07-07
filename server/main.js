@@ -58,7 +58,7 @@ app.get('*', (req,res) => {
 const http = app.listen(port)
 
 const io = socketIO(http)
-
+io.set('transports', ['websocket']);
 io.on('connection', (socket) => {
   let dispatch = (message) => {
     socket.emit('socketIoMiddleware', message)
