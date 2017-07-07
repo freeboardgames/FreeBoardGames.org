@@ -31,7 +31,7 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
         return;
       }
       if (!user) {
-        console.log('LACK OF LOGIN, IGNORING!');
+        console.log('LACK OF LOGIN, IGNORING: ' + message.type);
         return;
       }
       switch (message.type) {
