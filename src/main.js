@@ -13,6 +13,7 @@ const store = createStore(initialState)
 
 let token = localStorage.getItem('token');
 if (token !== null) {
+    console.log('SENDING AUTH_SUCCESS TOKEN');
     store.dispatch({type: 'AUTH_SUCCESS',
                     payload: { token: token}});
 }
