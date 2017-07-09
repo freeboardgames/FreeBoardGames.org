@@ -6,7 +6,7 @@ const chessReducer = require('./games/chessGameState.js').default;
 var LAST_DB = null;
 var NOTIFICATION_TIMERS = {};
 const webpush = require('web-push');
-const CACHE_DURATION = 30 * 60 * 1000;
+const CACHE_DURATION = 5 * 60 * 1000;
 const vapidKeys = {
   publicKey:
   'BAN72E3hbQ14KDaYyr9tSTXewOB9CvN-sSyQuk0vPq-V755kPnoCivqUZvP8ib1p_MFgIiLgNYb_eT6N0uYYIuo',
@@ -133,7 +133,7 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
       let current_player = next_state.turn % match.players.length;
       console.log('SETTING UP NOTIFICATION TIMER FOR ' + match_code);
       NOTIFICATION_TIMERS[match_code] = setTimeout(notifyToPlay(db,
-        match.players[current_player], match.game_code, match_code), 30 * 1000);
+        match.players[current_player], match.game_code, match_code), 10 * 1000);
     }
     console.log('DISPATCH ' + 'match-' + match_code);
     dispatchRoom('match-' + match_code, action);

@@ -57,7 +57,7 @@ app.get('*', (req,res) => {
 
 const http = app.listen(port)
 
-const io = socketIO(http)
+const io = socketIO(http, {'pingInterval': 1000, 'pingTimeout': 3000})
 io.on('connection', (socket) => {
   let dispatch = (message) => {
     socket.emit('socketIoMiddleware', message)
