@@ -57,6 +57,7 @@ export const CheckerGame = React.createClass({
       playersSecondaryColors={['white', 'yellow']}
       player={state.player}
       winner={state.winner}
+      resign={this.props.resign}
       currentPlayer={state.turn%2}/>
       <CheckerBoard
         feasible={state.feasible} selected={state.selected}
@@ -72,6 +73,7 @@ export const CheckerGame = React.createClass({
 CheckerGame.defaultProps = {
   sendClick: () => {},
   joinMatch: () => {},
+  resign: () => {},
   state: []
 };
 

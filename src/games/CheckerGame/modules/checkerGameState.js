@@ -1,7 +1,7 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const CLICK = 'MATCH_ACTION_REQUEST'
+export const MATCH_ACTION_REQUEST = 'MATCH_ACTION_REQUEST'
 export const JOIN_MATCH = 'JOIN_MATCH_REQUEST'
 export const LEAVE_MATCH = 'LEAVE_MATCH_REQUEST'
 export const MATCH_SET_STATE = 'MATCH_SET_STATE'
@@ -11,10 +11,20 @@ export const MATCH_SET_STATE = 'MATCH_SET_STATE'
 // ------------------------------------
 export function sendClick (match_code, x, y, player) {
   return {
-    type    : CLICK,
+    type    : MATCH_ACTION_REQUEST,
+    subtype : 'CLICK',
     match_code: match_code,
     payload : {x: x,
               y: y},
+    player: player
+  }
+}
+
+export function resign(match_code, player) {
+  return {
+    type    : MATCH_ACTION_REQUEST,
+    subtype : 'RESIGN',
+    match_code: match_code,
     player: player
   }
 }
@@ -34,7 +44,7 @@ export function leaveMatch (match_code) {
 }
 
 export const actions = {
-  sendClick, joinMatch, leaveMatch
+  sendClick, joinMatch, leaveMatch, resign
 }
 
 // ------------------------------------
@@ -117,65 +127,72 @@ const ACTION_HANDLERS = {
       ...action.payload
     }
   },
-  [CLICK] : (state, action) => {
-    let x = action.payload.x;
-    let y = action.payload.y;
-    if (state.feasible) {
-      for (var i =0; i < state.feasible.length; i++) {
-        let f = state.feasible[i];
-        if (f.x == x && f.y == y) {
-          if (f.movement == 'WALK') {
-            state.board[y][x] = state.board[f.from.y][f.from.x]
-            state.board[f.from.y][f.from.x] = null
-            state.turn += 1;
-          } else if (f.movement = 'EAT') {
-            state.board[y][x] = state.board[f.from.y][f.from.x];
-            state.board[f.from.y][f.from.x] = null;
-            state.board[f.eaten.y][f.eaten.x] = null;
-
-            let next_feasible = calculateFeasible(state.board, x,y,
-                                action.player, state.turn)
-            let can_eat_next = false;
-            next_feasible.forEach((f2) => {
-              if (f2.movement == 'EAT')
-                can_eat_next = true;
-            });
-            if (!can_eat_next)
+  [MATCH_ACTION_REQUEST] : (state, action) => {
+    if (action.subtype == 'CLICK') {
+      let x = action.payload.x;
+      let y = action.payload.y;
+      if (state.feasible) {
+        for (var i =0; i < state.feasible.length; i++) {
+          let f = state.feasible[i];
+          if (f.x == x && f.y == y) {
+            if (f.movement == 'WALK') {
+              state.board[y][x] = state.board[f.from.y][f.from.x]
+              state.board[f.from.y][f.from.x] = null
               state.turn += 1;
+            } else if (f.movement = 'EAT') {
+              state.board[y][x] = state.board[f.from.y][f.from.x];
+              state.board[f.from.y][f.from.x] = null;
+              state.board[f.eaten.y][f.eaten.x] = null;
+
+              let next_feasible = calculateFeasible(state.board, x,y,
+                                  action.player, state.turn)
+              let can_eat_next = false;
+              next_feasible.forEach((f2) => {
+                if (f2.movement == 'EAT')
+                  can_eat_next = true;
+              });
+              if (!can_eat_next)
+                state.turn += 1;
+            }
+            if ((y == 0 || y == state.board.length - 1) &&
+                !state.board[y][x].double) {
+              state.board[y][x].double = true;
+            }
+            break;
           }
-          if ((y == 0 || y == state.board.length - 1) &&
-              !state.board[y][x].double) {
-            state.board[y][x].double = true;
-          }
-          break;
         }
-      }
-      return {
-        ...state,
-        selected: null,
-        feasible: null,
-        winner: getWinner(state.board)
-      };
-    } else if (state.selected &&
-               state.selected.x == x &&
-               state.selected.y == y) {
-      return {
-        ...state,
-        selected: null,
-        feasible: null
-      };
-    } else {
-      let feasible = calculateFeasible(state.board,x,y, action.player,
-        state.turn);
-      if (feasible.length > 0) {
         return {
           ...state,
-          feasible: feasible,
-          selected: {x: x, y: y}
+          selected: null,
+          feasible: null,
+          winner: getWinner(state.board)
+        };
+      } else if (state.selected &&
+                 state.selected.x == x &&
+                 state.selected.y == y) {
+        return {
+          ...state,
+          selected: null,
+          feasible: null
+        };
+      } else {
+        let feasible = calculateFeasible(state.board,x,y, action.player,
+          state.turn);
+        if (feasible.length > 0) {
+          return {
+            ...state,
+            feasible: feasible,
+            selected: {x: x, y: y}
+          }
         }
       }
+      return state;
+    } else if (action.subtype == 'RESIGN') {
+      return {
+        ...state,
+        winner: (action.player+1)%2
+      }
     }
-    return state;
   }
 }
 

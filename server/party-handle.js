@@ -22,7 +22,8 @@ let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => 
   }
   //Do Mongo DB request
   db.collection('parties').findOne(ObjectId(party_code), (err, party) => {
-    db.collection('matches').find({party_id:  ObjectId(party_code)})
+    db.collection('matches').find({party_id:  ObjectId(party_code),
+                                   status: 'ACTIVE'})
       .toArray((err, matches) => {
       db.collection('games').find().toArray((err, games) => {
         handlePartyDb(party, matches, games);
@@ -48,7 +49,7 @@ let downHandle = (socket, dispatchRoom, dispatch, db,
         downMapping[game_code] = [];
       }
       if (downMapping[game_code].indexOf(user.email) == -1) { //New player
-        downMapping[game_code].push(user.email)
+        downMapping[game_code].unshift(user.email)
         if (downMapping[game_code].length == maxPlayers) {
           db.collection('matches').insertOne({party_id: ObjectId(party_code),
             game_code,

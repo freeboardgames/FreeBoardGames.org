@@ -1,7 +1,7 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const CLICK = 'MATCH_ACTION_REQUEST'
+export const MATCH_ACTION_REQUEST = 'MATCH_ACTION_REQUEST'
 export const JOIN_MATCH = 'JOIN_MATCH_REQUEST'
 export const LEAVE_MATCH = 'LEAVE_MATCH_REQUEST'
 export const MATCH_SET_STATE = 'MATCH_SET_STATE'
@@ -11,10 +11,20 @@ export const MATCH_SET_STATE = 'MATCH_SET_STATE'
 // ------------------------------------
 export function sendClick (match_code, x, y, player) {
   return {
-    type    : CLICK,
+    type    : MATCH_ACTION_REQUEST,
+    subtype : 'CLICK',
     match_code: match_code,
     payload : {x: x,
               y: y},
+    player: player
+  }
+}
+
+export function resign(match_code, player) {
+  return {
+    type    : MATCH_ACTION_REQUEST,
+    subtype : 'RESIGN',
+    match_code: match_code,
     player: player
   }
 }
@@ -343,49 +353,56 @@ const ACTION_HANDLERS = {
   [MATCH_SET_STATE] : (state, action) => {
     return deepCopy(action.payload);
   },
-  [CLICK] : (state, action) => {
-    state = deepCopy(state);
-    let target = state.board[action.payload.y][action.payload.x];
-    let isTargetEmpty = isCellEmpty(target);
-    let targetPlayer = getCellPlayer(target);
-    let isTargetSelected = isCellSelected(target);
-    let isTargetMovable = isCellMovable(target);
-    //Check if it is correct turn
-    if (action.player != state.turn%2)
-      return state;
-
-    if (isTargetMovable) {
-      let stateCopy = deepCopy(state);
-      movePiece(stateCopy, action.payload.x, action.payload.y, action.player);
-
-      let newCheckState = detectCheck(stateCopy);
-
-      if (!newCheckState[action.player]) {
-        state.board = stateCopy.board;
-        state.enPassantRisk = stateCopy.enPassantRisk;
-        state.turn++;
-        let opponent = (action.player+1)%2;
-        state.check = newCheckState[opponent];
-        if (state.check && isCheckmated(state, opponent)) {
-          state.winner = action.player;
-        }
-        clearBoardFlags(state.board);
-      }
-    } else {
-      //Check if trying to move its own piece
-      if (action.player != targetPlayer)
+  [MATCH_ACTION_REQUEST] : (state, action) => {
+    if (action.subtype == 'CLICK') {
+      state = deepCopy(state);
+      let target = state.board[action.payload.y][action.payload.x];
+      let isTargetEmpty = isCellEmpty(target);
+      let targetPlayer = getCellPlayer(target);
+      let isTargetSelected = isCellSelected(target);
+      let isTargetMovable = isCellMovable(target);
+      //Check if it is correct turn
+      if (action.player != state.turn%2)
         return state;
-      let selectedCell = findSelectedCell(state.board);
-      if (!selectedCell) {
-        selectPiece(state,
-                    action.payload.x,
-                    action.payload.y,
-                    action.player);
+
+      if (isTargetMovable) {
+        let stateCopy = deepCopy(state);
+        movePiece(stateCopy, action.payload.x, action.payload.y, action.player);
+
+        let newCheckState = detectCheck(stateCopy);
+
+        if (!newCheckState[action.player]) {
+          state.board = stateCopy.board;
+          state.enPassantRisk = stateCopy.enPassantRisk;
+          state.turn++;
+          let opponent = (action.player+1)%2;
+          state.check = newCheckState[opponent];
+          if (state.check && isCheckmated(state, opponent)) {
+            state.winner = action.player;
+          }
+          clearBoardFlags(state.board);
+        }
       } else {
-        selectPiece(state, selectedCell.x, selectedCell.y, action.player);
+        //Check if trying to move its own piece
+        if (action.player != targetPlayer)
+          return state;
+        let selectedCell = findSelectedCell(state.board);
+        if (!selectedCell) {
+          selectPiece(state,
+                      action.payload.x,
+                      action.payload.y,
+                      action.player);
+        } else {
+          selectPiece(state, selectedCell.x, selectedCell.y, action.player);
+        }
+      }
+      return state;
+    } else if (action.subtype == 'RESIGN') {
+      return {
+        ...state,
+        winner: (action.player+1)%2
       }
     }
-    return state;
   }
 }
 

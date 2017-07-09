@@ -72,6 +72,7 @@ export const ChessGame = React.createClass({
         playersPrimaryColors={['black', 'grey']}
         playersSecondaryColors={['grey', 'white']}
         player={state.player}
+        resign={this.props.resign}
         winner={state.winner}
         currentPlayer={state.turn%2}/>
       <CheckerBoard
@@ -89,6 +90,7 @@ ChessGame.defaultProps = {
   sendClick: () => {},
   joinMatch: () => {},
   leaveMatch: () => {},
+  resign: () => {},
   state: []
 };
 

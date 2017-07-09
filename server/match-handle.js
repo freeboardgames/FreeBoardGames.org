@@ -98,7 +98,7 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
   console.log('MATCH ACTION REQUEST');
   let match = cache.get(match_code);
   if (!match) {
-    console.log('ERROR: ACTION CACHE EXPIRED :(');
+    console.log('ERROR: ACTION CACHE EXPIRED : '+ match_code);
     return;
   }
   if (match.players.indexOf(user.email) == -1) { //User not in the match
