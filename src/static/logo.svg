@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1000"
+   height="1000"
+   viewBox="0 0 999.99997 999.99997"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="/home/felizardo/playground/turnato/src/static/icon_260.png"
+   inkscape:export-xdpi="23.4"
+   inkscape:export-ydpi="23.4">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.45254834"
+     inkscape:cx="1318.9579"
+     inkscape:cy="806.26201"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     showguides="false"
+     inkscape:window-width="3840"
+     inkscape:window-height="2127"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-52.3622)">
+    <path
+       sodipodi:type="star"
+       style="fill:none;stroke-width:100;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4.30000019;stroke-dasharray:none"
+       id="path4156"
+       sodipodi:sides="5"
+       sodipodi:cx="690.43927"
+       sodipodi:cy="966.49922"
+       sodipodi:r1="118.11444"
+       sodipodi:r2="59.05722"
+       sodipodi:arg1="1.7950311"
+       sodipodi:arg2="2.4233496"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 664.1753,1081.6566 -18.20394,-76.294 -73.16929,-28.25632 66.93461,-40.88913 4.26277,-78.3198 59.5718,51.02316 75.80383,-20.14802 -30.11721,72.42318 42.58658,65.86763 -78.18527,-6.2632 z"
+       inkscape:transform-center-x="8.1160116"
+       inkscape:transform-center-y="3.2777662" />
+    <path
+       sodipodi:type="spiral"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:99.99590302;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4172"
+       sodipodi:cx="332.34018"
+       sodipodi:cy="334.64877"
+       sodipodi:expansion="0.44999999"
+       sodipodi:revolution="1.3667676"
+       sodipodi:radius="293.07697"
+       sodipodi:argument="-17.11529"
+       sodipodi:t0="0"
+       d="M 332.34018,334.64877 C 314.21828,444.51724 206.87943,391.50797 197.70351,312.44157 186.89878,219.34015 275.4626,148.88062 362.67612,150.72966 477.34826,153.16087 560.64858,260.26478 553.07351,371.05691 544.04393,503.12261 419.95177,597.79244 290.90007,585.88968 143.85068,572.32695 39.148879,433.35761 54.560895,288.83137 62.064949,218.46208 96.647508,152.51984 149.50539,105.59519"
+       transform="matrix(1.6652723,0,0,1.7188792,-5.0794868,-42.390792)" />
+    <path
+       sodipodi:type="spiral"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path4178"
+       sodipodi:cx="-244.45691"
+       sodipodi:cy="260.40262"
+       sodipodi:expansion="0.44999999"
+       sodipodi:revolution="1.36677"
+       sodipodi:radius="2.8571429"
+       sodipodi:argument="-7.8022714"
+       sodipodi:t0="0"
+       d="m -244.45691,260.40262 c 0.0561,-1.08411 1.15364,-0.68726 1.3285,0.0688 0.2059,0.89021 -0.57549,1.66911 -1.42243,1.74602 -1.11358,0.10113 -2.03704,-0.84592 -2.08411,-1.92751 -0.0561,-1.28926 1.04316,-2.34134 2.30635,-2.36634 1.43935,-0.0285 2.60479,1.20401 2.61262,2.62093 0.004,0.68991 -0.25954,1.36637 -0.72062,1.87844" />
+  </g>
+</svg>

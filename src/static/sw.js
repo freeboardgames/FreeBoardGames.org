@@ -15,6 +15,8 @@ self.addEventListener('push', function(event) {
   self.registration.showNotification('It\'s your turn. Play now!', {
         body: 'Click here to play your '+data.game+' turn! ' +
         'Your friend is waiting for you. ',
+        icon: '/icon_512.png',
+        badge: '/icon_128.png',
         requireInteraction: true,
         data: {
           match_code: data.match_code,
