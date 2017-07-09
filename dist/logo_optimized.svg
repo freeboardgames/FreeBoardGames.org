@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   id="svg2"
+   viewBox="0 0 999.99997 999.99997"
+   height="1000"
+   width="1000">
+  <defs
+     id="defs4" />
+  <g
+     transform="translate(0,-52.3622)"
+     id="layer1">
+    <path
+       transform="matrix(1.6652723,0,0,1.7188792,-5.0794868,-42.390792)"
+       d="M 332.34018,334.64877 C 314.21828,444.51724 206.87943,391.50797 197.70351,312.44157 186.89878,219.34015 275.4626,148.88062 362.67612,150.72966 477.34826,153.16087 560.64858,260.26478 553.07351,371.05691 544.04393,503.12261 419.95177,597.79244 290.90007,585.88968 143.85068,572.32695 39.148879,433.35761 54.560895,288.83137 62.064949,218.46208 96.647508,152.51984 149.50539,105.59519"
+       id="path4172"
+       style="fill:none;fill-rule:evenodd;stroke:white;stroke-width:99.99590302;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+</svg>
