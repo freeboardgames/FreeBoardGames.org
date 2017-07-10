@@ -133,7 +133,7 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
       let current_player = next_state.turn % match.players.length;
       console.log('SETTING UP NOTIFICATION TIMER FOR ' + match_code);
       NOTIFICATION_TIMERS[match_code] = setTimeout(notifyToPlay(db,
-        match.players[current_player], match.game_code, match_code), 10 * 1000);
+        match.players[current_player], match.game_code, match_code), 60 * 1000);
     }
     console.log('DISPATCH ' + 'match-' + match_code);
     dispatchRoom('match-' + match_code, action);
