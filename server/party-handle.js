@@ -57,7 +57,8 @@ let downHandle = (socket, dispatchRoom, dispatch, db,
             status: 'ACTIVE',
             players: downMapping[game_code]
           }, (err, result) => {
-            db.collection('matches').find({party_id:  ObjectId(party_code)})
+            db.collection('matches').find({party_id:  ObjectId(party_code),
+                                           status: 'ACTIVE'})
               .toArray((err, matches) => {
                 dispatchRoom('party-' + party._id,
                              {type: 'SET_MATCHES', matches}, true);

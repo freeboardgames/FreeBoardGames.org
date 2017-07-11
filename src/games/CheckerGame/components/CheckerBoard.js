@@ -8,10 +8,14 @@ class Checkerboard extends React.Component {
     // Add tiles
     let rects = [];
     let key = 0;
+    let inv = 0;
+    if (this.props.inverted) {
+      inv = 1;
+    }
     for (var j=0; j<this.props.height; j++) {
       for (var i=0; i<this.props.width; i++) {
         let color = this.props.secondaryColor;
-        if ((i+j)%2 == 0) {
+        if ((i+j+inv)%2 == 0) {
           color = this.props.primaryColor;
         }
         for (let k in this.props.feasible) {
@@ -63,6 +67,7 @@ Checkerboard.defaultProps = {
   feasibleColor: 'palegreen',
   feasible: {},
   selected: null,
+  inverted: false,
   selectedColor: 'green'
 };
 

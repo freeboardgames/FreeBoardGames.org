@@ -16,8 +16,12 @@ export const ChessGame = React.createClass({
   },
   render: function () {
     let state = this.props.state;
+    let inverted = state.player == 1;
     let onClick = (x,y) => () => {
-      this.props.sendClick(this.props.params.id, x,y, state.player);
+      let real_y = y;
+      if (inverted)
+        real_y = 7 - y;
+      this.props.sendClick(this.props.params.id, x, real_y, state.player);
     };
     if (state.loading) {
       return (
@@ -43,9 +47,12 @@ export const ChessGame = React.createClass({
             piece_color = "dark";
           }
           let piece_type = piece[0];
+          let fake_j = j;
+          if (inverted)
+            fake_j = 7 - j;
           pieces.push(
             (<ChessPiece color={piece_color} type={piece_type}
-              x={i} y={j} key={piece_id} onClick={onClick}/>));
+              x={i} y={fake_j} key={piece_id} onClick={onClick}/>));
           key++;
         }
       }
@@ -55,11 +62,14 @@ export const ChessGame = React.createClass({
     for (let y=0; y<state.board.length; y++) {
       for (let x=0; x<state.board[y].length; x++) {
         let cell = state.board[y][x];
+        let fake_y = y;
+        if (inverted)
+          fake_y = 7 - y;
         if (cell.indexOf('@') != -1) {
-          selected.push({x: x, y: y});
+          selected.push({x: x, y: fake_y});
         }
         if (cell.indexOf('*') != -1) {
-          feasible.push({x: x, y: y});
+          feasible.push({x: x, y: fake_y});
         }
       }
     }
@@ -69,14 +79,15 @@ export const ChessGame = React.createClass({
       <TurnHUD
         match_code={this.props.params.id}
         players={state.players}
-        playersPrimaryColors={['black', 'grey']}
-        playersSecondaryColors={['grey', 'white']}
+        playersPrimaryColors={['grey', 'black']}
+        playersSecondaryColors={['white', 'grey']}
         player={state.player}
         resign={this.props.resign}
         winner={state.winner}
         currentPlayer={state.turn%2}/>
       <CheckerBoard
         feasible={feasible} selected={selected}
+        inverted={inverted}
         onClick={onClick}
         key="999">
         {pieces}
