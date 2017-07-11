@@ -9,14 +9,14 @@ describe('Chess', () => {
     it('should start with correct board configuration', () => {
       let initialBoard = chessReducer(null, {type: 'NOOP'}).board;
       let expectedBoard = [
-        ['rd_00', 'nd_01', 'bd_02', 'kd_03', 'qd_04', 'bd_05', 'nd_06', 'rd_07'],
+        ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
         ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
-        ['rl_24', 'nl_25', 'bl_26', 'kl_27', 'ql_28', 'bl_29', 'nl_30', 'rl_31']
+        ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
       ];
       expect(initialBoard).to.eql(expectedBoard);
     })
@@ -34,14 +34,14 @@ describe('Chess', () => {
       let state = chessReducer(null, {type: 'NOOP'});
       let state2 = chessReducer(state, sendClick(null, 1, 7, 0));
       expect(state2.board).to.eql([
-        ['rd_00', 'nd_01', 'bd_02', 'kd_03', 'qd_04', 'bd_05', 'nd_06', 'rd_07'],
+        ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
         ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['*', '', '*', '', '', '', '', ''],
         ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
-        ['rl_24', 'nl_25@', 'bl_26', 'kl_27', 'ql_28', 'bl_29', 'nl_30', 'rl_31']
+        ['rl_24', 'nl_25@', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
       ]);
     })
     it('should actually move in the first turn', () => {
@@ -49,14 +49,14 @@ describe('Chess', () => {
       let state2 = chessReducer(state, sendClick(null, 1, 7, 0));
       let state3 = chessReducer(state2, sendClick(null, 0, 5, 0));
       expect(state3.board).to.eql([
-        ['rd_00', 'nd_01', 'bd_02', 'kd_03', 'qd_04', 'bd_05', 'nd_06', 'rd_07'],
+        ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
         ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['nl_25', '', '', '', '', '', '', ''],
         ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
-        ['rl_24', '', 'bl_26', 'kl_27', 'ql_28', 'bl_29', 'nl_30', 'rl_31']
+        ['rl_24', '', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
       ]);
       expect(state3.turn).to.equal(1);
     })
@@ -67,14 +67,14 @@ describe('Chess', () => {
       let state4 = chessReducer(state3, sendClick(null, 0, 1, 1));
       let state5 = chessReducer(state4, sendClick(null, 0, 3, 1));
       expect(state5.board).to.eql([
-        ['rd_00', 'nd_01', 'bd_02', 'kd_03', 'qd_04', 'bd_05', 'nd_06', 'rd_07'],
+        ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
         ['', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
         ['', '', '', '', '', '', '', ''],
         ['pd_08', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['nl_25', '', '', '', '', '', '', ''],
         ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
-        ['rl_24', '', 'bl_26', 'kl_27', 'ql_28', 'bl_29', 'nl_30', 'rl_31']
+        ['rl_24', '', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
       ]);
       expect(state5.turn).to.equal(2);
     })
@@ -423,7 +423,7 @@ describe('Chess', () => {
             ['', '', '', '', '*', '', '', ''],
           ]);
       })
-      it('castling - light queen side', () => {
+      it('castling - light king side', () => {
         let initialState = {board: [
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -432,7 +432,7 @@ describe('Chess', () => {
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
-          ['', '', '', 'kl_01', 'ql_02', '', '', 'rl_03'],
+          ['', '', '', 'ql_01', 'kl_02', '', '', 'rl_03'],
           ],
           loading: false,
           turn: 0,
@@ -447,7 +447,7 @@ describe('Chess', () => {
             ['', '', '', '', '', '', '', '*'],
             ['', '', '', '', '', '', '', '*'],
             ['', '', '', '', '', '', '', '*'],
-            ['', '', '', 'kl_01', 'ql_02', '*', '*', 'rl_03@'],
+            ['', '', '', 'ql_01', 'kl_02', '*', '*', 'rl_03@'],
           ]);
           action = sendClick(null, 5, 7, 0);
           state = chessReducer(state, action);
@@ -459,13 +459,13 @@ describe('Chess', () => {
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
-            ['', '', '', 'kl_01', 'rl_03', 'ql_02', '', ''],
+            ['', '', '', 'ql_01', 'rl_03', 'kl_02', '', ''],
           ]);
           expect(state.turn).to.eql(1);
       })
-      it('castling - dark king side', () => {
+      it('castling - dark queen side', () => {
         let initialState = {board: [
-          ['rd_03', '', '', 'kd_01', 'qd_02', '', '', ''],
+          ['rd_03', '', '', 'qd_01', 'kd_02', '', '', ''],
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
           ['', '', '', '', '', '', '', ''],
@@ -480,7 +480,7 @@ describe('Chess', () => {
           let action = sendClick(null, 0, 0, 1);
           let state = chessReducer(initialState, action);
           expect(state.board).to.eql([
-            ['rd_03@', '*', '*', 'kd_01', 'qd_02', '', '', ''],
+            ['rd_03@', '*', '*', 'qd_01', 'kd_02', '', '', ''],
             ['*', '', '', '', '', '', '', ''],
             ['*', '', '', '', '', '', '', ''],
             ['*', '', '', '', '', '', '', ''],
@@ -492,7 +492,7 @@ describe('Chess', () => {
           action = sendClick(null, 2, 0, 1);
           state = chessReducer(state, action);
           expect(state.board).to.eql([
-            ['', '', 'kd_01', 'rd_03', 'qd_02', '', '', ''],
+            ['', '', 'qd_01', 'rd_03', 'kd_02', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],
             ['', '', '', '', '', '', '', ''],

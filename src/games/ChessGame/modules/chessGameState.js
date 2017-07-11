@@ -332,13 +332,13 @@ function movePiece(state, x, y, player) {
       y == firstRow &&
       [0,7].indexOf(selectedCellCord.x) != -1) {
         //King-side castling
-        if (x == 2 && board[firstRow][3][0] == 'k') {
+        if (x == 2 && board[firstRow][3][0] == 'q') {
           let temp = board[firstRow][3];
           board[firstRow][3] = selectedCell;
           board[y][x] = temp;
         //Queen-side castling
         } else if (x == 5 &&
-                   board[firstRow][4][0] == 'q') {
+                   board[firstRow][4][0] == 'k') {
            let temp = board[firstRow][4];
            board[firstRow][4] = selectedCell;
            board[y][x] = temp;
@@ -411,14 +411,14 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {board: [
-    ['rd_00', 'nd_01', 'bd_02', 'kd_03', 'qd_04', 'bd_05', 'nd_06', 'rd_07'],
+    ['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'],
     ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'],
     ['', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', ''],
     ['', '', '', '', '', '', '', ''],
     ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
-    ['rl_24', 'nl_25', 'bl_26', 'kl_27', 'ql_28', 'bl_29', 'nl_30', 'rl_31']
+    ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
   ],
   loading: true,
   turn: 0,
