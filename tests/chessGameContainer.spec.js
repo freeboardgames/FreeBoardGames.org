@@ -84,6 +84,33 @@ describe('Chess', () => {
       let state3 = chessReducer(state2, sendClick(null, 0, 6, 0));
       expect(state3.board).to.eql(state.board);
     })
+    it('should not show possibility of move that would check king', () => {
+      let initialState = {board: [
+        ['', '', '', 'rd_02', '', 'rd_03', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', 'kl_01', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ],
+        loading: false,
+        turn: 0,
+        winner: null};
+        let action = sendClick(null, 4, 4, 0);
+        let afterClick = chessReducer(initialState, action);
+        expect(afterClick.board).to.eql([
+          ['', '', '', 'rd_02', '', 'rd_03', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '*', '', '', ''],
+          ['', '', '', '', 'kl_01@', '', '', ''],
+          ['', '', '', '', '*', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+        ]);
+    })
   })
 
   describe('King', () => {

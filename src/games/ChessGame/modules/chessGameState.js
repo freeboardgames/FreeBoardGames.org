@@ -184,6 +184,22 @@ function detectCheck (state) {
   return result;
 }
 
+function clearInCheckMovableCells (state, player) {
+  for (let y=0; y<state.board.length; y++) {
+    for (let x=0; x<state.board[y].length; x++) {
+      let cell = state.board[y][x];
+      if (isCellMovable(cell)) {
+        let stateCopy = deepCopy(state);
+        movePiece(stateCopy, x, y, player);
+        let checkState = detectCheck(stateCopy);
+        if (checkState[player]) {
+          toggleCellMovable(state.board, x, y, player);
+        }
+      }
+    }
+  }
+}
+
 function isCheckmated (state, player) {
   //First loop will select a player piece.
   for (let y0=0; y0<state.board.length; y0++) {
@@ -366,22 +382,18 @@ const ACTION_HANDLERS = {
         return state;
 
       if (isTargetMovable) {
+        movePiece(state, action.payload.x, action.payload.y, action.player);
+
         let stateCopy = deepCopy(state);
-        movePiece(stateCopy, action.payload.x, action.payload.y, action.player);
-
-        let newCheckState = detectCheck(stateCopy);
-
-        if (!newCheckState[action.player]) {
-          state.board = stateCopy.board;
-          state.enPassantRisk = stateCopy.enPassantRisk;
-          state.turn++;
-          let opponent = (action.player+1)%2;
-          state.check = newCheckState[opponent];
-          if (state.check && isCheckmated(state, opponent)) {
-            state.winner = action.player;
-          }
-          clearBoardFlags(state.board);
+        state.board = stateCopy.board;
+        state.enPassantRisk = stateCopy.enPassantRisk;
+        state.turn++;
+        let opponent = (action.player+1)%2;
+        state.check = detectCheck(stateCopy)[opponent];
+        if (state.check && isCheckmated(state, opponent)) {
+          state.winner = action.player;
         }
+        clearBoardFlags(state.board);
       } else {
         //Check if trying to move its own piece
         if (action.player != targetPlayer)
@@ -392,7 +404,9 @@ const ACTION_HANDLERS = {
                       action.payload.x,
                       action.payload.y,
                       action.player);
+          clearInCheckMovableCells(state, action.player);
         } else {
+          //Unselect selectedCell, because target is not movable
           selectPiece(state, selectedCell.x, selectedCell.y, action.player);
         }
       }
