@@ -387,8 +387,7 @@ const ACTION_HANDLERS = {
           selectPiece(state, action.payload.x, action.payload.y, action.player);
           clearInCheckMovableCells(state, action.player);
         } else {
-          //Unselect selectedCell, because target is not movable
-          selectPiece(state, selectedCell.x, selectedCell.y, action.player);
+          clearBoardFlags(state.board);
         }
       }
       return state;
