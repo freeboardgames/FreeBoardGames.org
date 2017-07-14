@@ -228,6 +228,7 @@ function isCheckmated(state, player) {
 function selectPiece(state, x, y, player) {
   let board = state.board;
   let target = board[y][x];
+  let firstRow = 7 - 7 * player;
   let isTargetEmpty = isCellEmpty(target);
   let targetPiece = '';
   if (!isTargetEmpty) {
@@ -244,6 +245,16 @@ function selectPiece(state, x, y, player) {
           } else {
             toggleCellMovable(board, x + deltaX, y + deltaY, player);
           }
+        }
+      }
+      if (y == firstRow && x == 4) {
+        // Original position
+        // Queen side
+        if (!isCellEmpty(board[y][0]) && board[y][0][0] == 'r' && getCellPlayer(board[y][0]) == player && isCellEmpty(board[y][1]) && isCellEmpty(board[y][2]) && isCellEmpty(board[y][3])) {
+          toggleCellMovable(board, 2, y, player);
+        }
+        if (!isCellEmpty(board[y][7]) && board[y][7][0] == 'r' && getCellPlayer(board[y][7]) == player && isCellEmpty(board[y][6]) && isCellEmpty(board[y][5])) {
+          toggleCellMovable(board, 6, y, player);
         }
       }
       break;
@@ -333,17 +344,25 @@ function movePiece(state, x, y, player) {
 
   //Do castling
   let firstRow = 7 - 7 * player;
-  if (selectedCell[0] == 'r' && y == firstRow && [0, 7].indexOf(selectedCellCord.x) != -1) {
+  if (y == firstRow && selectedCellCord.y == firstRow && selectedCell[0] == 'k' && selectedCellCord.x == 4) {
+    let selectedKing = selectedCell;
     //King-side castling
-    if (x == 2 && board[firstRow][3][0] == 'q') {
-      let temp = board[firstRow][3];
-      board[firstRow][3] = selectedCell;
-      board[y][x] = temp;
-      //Queen-side castling
-    } else if (x == 5 && board[firstRow][4][0] == 'k') {
-      let temp = board[firstRow][4];
-      board[firstRow][4] = selectedCell;
-      board[y][x] = temp;
+    if (x == 6) {
+      //move king
+      board[firstRow][6] = selectedKing;
+      board[firstRow][4] = '';
+      //move rook
+      board[firstRow][5] = board[firstRow][7];
+      board[firstRow][7] = '';
+    }
+    //Queen-side castling
+    if (x == 2) {
+      //move king
+      board[firstRow][2] = selectedKing;
+      board[firstRow][4] = '';
+      //move rook
+      board[firstRow][3] = board[firstRow][0];
+      board[firstRow][0] = '';
     }
   }
 }
@@ -387,6 +406,7 @@ const ACTION_HANDLERS = {
           selectPiece(state, action.payload.x, action.payload.y, action.player);
           clearInCheckMovableCells(state, action.player);
         } else {
+          //Unselect selectedCell, because target is not movable
           clearBoardFlags(state.board);
         }
       }
