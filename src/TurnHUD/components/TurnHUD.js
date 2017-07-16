@@ -80,6 +80,20 @@ class TurnHUD extends React.Component {
         this.props.resign(this.props.match_code, this.props.player);
       }
     }
+    // WARNING
+    let svg_height = '10';
+    let warning_el = null;
+    if (this.props.warning) {
+      svg_height = '15';
+      warning_el = (<g>
+        <rect height="5" width="80" y="10" x="0" fill="yellow"></rect>
+        <text fontFamily="sans-serif"
+              style={{textAnchor: 'middle', textAlign: 'center'}}>
+              <tspan fontSize="4px" x="40" y="14">{this.props.warning}</tspan>
+        </text>
+      </g>)
+    }
+    // MESSAGES
     let messages_els = [];
     for (var i =0; i<this.props.messages.length; i++) {
       let m = this.props.messages[i];
@@ -90,6 +104,9 @@ class TurnHUD extends React.Component {
           </span>: {m.text}
          </p>));
     }
+    messages_els.reverse();
+
+    // WIN LAYER
     let winLayer = null;
     if (this.props.winner != null) {
       winLayer = (<div style={{position: 'absolute', left: 0, top: 0,
@@ -103,6 +120,8 @@ class TurnHUD extends React.Component {
         </div>
       </div>)
     }
+
+    // DISCONNECT LAYER
     let disconnectedLayer = null;
     if (this.props.disconnected) {
       disconnectedLayer = (<div style={{position: 'absolute', left: 0, top: 0,
@@ -115,14 +134,13 @@ class TurnHUD extends React.Component {
         </div>
       </div>)
     }
-    messages_els.reverse();
     return (
     <div>
     <div style={{width: "100%", position: "fixed",
     left: "0px", right:"0px", top: "0px",
     maxWidth: "500px", marginLeft: "auto", marginRight: "auto", zIndex: 999,
     pointerEvents: "none"}}>
-    <svg viewBox="0 0 80 10">
+    <svg viewBox={"0 0 80 "+svg_height}>
      <g>
        <rect height="10" width="80" y="0" x="0" fill="white"></rect>
        <rect height="10" width="13.9" y="0" x="0" fill="white"
@@ -153,6 +171,7 @@ class TurnHUD extends React.Component {
         </tspan>
       </text>
     </g>
+    {warning_el}
     </svg>
     {messages_els}
     </div>
@@ -171,6 +190,7 @@ TurnHUD.defaultProps = {
   currentPlayer: 0,
   winner: null,
   messages: [],
+  warning: null,
   disconnected: false,
   sendMessage: () => {},
   savePushSubscription: () => {}
