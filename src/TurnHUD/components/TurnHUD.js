@@ -1,4 +1,6 @@
 import React from 'react'
+import LinearProgress from 'material-ui/LinearProgress';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -140,6 +142,9 @@ class TurnHUD extends React.Component {
     left: "0px", right:"0px", top: "0px",
     maxWidth: "500px", marginLeft: "auto", marginRight: "auto", zIndex: 999,
     pointerEvents: "none"}}>
+    {this.props.sendingMessage ? (<MuiThemeProvider>
+    <LinearProgress mode="indeterminate" />
+    </MuiThemeProvider>) : null}
     <svg viewBox={"0 0 80 "+svg_height}>
      <g>
        <rect height="10" width="80" y="0" x="0" fill="white"></rect>
@@ -191,6 +196,7 @@ TurnHUD.defaultProps = {
   winner: null,
   messages: [],
   warning: null,
+  sendingMessage: false,
   disconnected: false,
   sendMessage: () => {},
   savePushSubscription: () => {}

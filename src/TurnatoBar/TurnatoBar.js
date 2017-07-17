@@ -30,7 +30,9 @@ class TurnatoBar extends React.Component {
           <a href="/">
             <AppBar
               title="Turnato"
-              iconElementLeft={<img src="/logo_optimized.svg" style={{color:'white', width: '48px', height: '48px'}}></img>}
+              iconElementLeft={<img src="/logo_optimized.svg"
+              style={{color:'white', width: '32px', height: '32px',
+              marginTop: '8px'}}></img>}
               iconElementRight={<IconButton><ActionAccountCircle /></IconButton>}
             />
           </a>

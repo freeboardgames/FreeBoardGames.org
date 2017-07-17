@@ -24,7 +24,10 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
   var LAST_ACTION_PROMISE = new Promise((resolve, reject) => {
     resolve();
   });
-  socket.on('socketIoMiddleware', (message) => {
+  socket.on('socketIoMiddleware', (message, ackFn) => {
+    if (ackFn) {
+      ackFn();
+    }
     try {
       if (message.type == 'LOGIN_REQUEST') {
         loginHandle(socket, dispatch, db, message.email, message.password)

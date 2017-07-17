@@ -9,7 +9,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => ({
   messages: state.turnHUD.messages,
-  disconnected: state.connection.disconnected
+  disconnected: state.connection.disconnected,
+  sendingMessage: state.connection.sendingMessage,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TurnHUD)
