@@ -3,9 +3,10 @@ const ObjectId = require('mongodb').ObjectId;
 let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
   let handlePartyDb = (party, matches, games) => {
     let new_user = false;
-    if (party.users.indexOf(user.email) == -1) {
+    if (party.users.indexOf(user._id) == -1) {
       new_user = true;
-      party.users.push(user.email);
+      //TODO(felizardo) show nickname instead
+      party.users.push(user._id);
     }
     let info = {name: party.name, users: party.users, code: party_code,
       loading: false};
@@ -43,13 +44,13 @@ let downHandle = (socket, dispatchRoom, dispatch, db,
     db.collection('games').findOne({code: game_code}, (err, game) => {
       let maxPlayers = game.maxPlayers;
       let downMapping = party.downMapping;
-      if (party.users.indexOf(user.email) == -1) // User not in the party
+      if (party.users.indexOf(user._id) == -1) // User not in the party
         return;
       if (!(game_code in downMapping)) {
         downMapping[game_code] = [];
       }
-      if (downMapping[game_code].indexOf(user.email) == -1) { //New player
-        downMapping[game_code].unshift(user.email)
+      if (downMapping[game_code].indexOf(user._id) == -1) { //New player
+        downMapping[game_code].unshift(user._id)
         if (downMapping[game_code].length == maxPlayers) {
           db.collection('matches').insertOne({party_id: ObjectId(party_code),
             game_code,
@@ -68,7 +69,7 @@ let downHandle = (socket, dispatchRoom, dispatch, db,
         }
       } else { //Removing player
         downMapping[game_code].splice(
-          downMapping[game_code].indexOf(user.email), 1)
+          downMapping[game_code].indexOf(user._id), 1)
       }
 
       db.collection('parties').updateOne({_id: ObjectId(party_code)},

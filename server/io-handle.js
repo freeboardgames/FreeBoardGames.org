@@ -6,7 +6,7 @@ const downHandle = require('./party-handle.js').downHandle;
 const joinMatchHandle = require('./match-handle.js').joinMatchHandle;
 const leaveMatchHandle = require('./match-handle.js').leaveMatchHandle;
 const matchActionRequest = require('./match-handle.js').matchActionRequest;
-const loginHandle = require('./login-handle.js');
+const newUserHandle = require('./new-user-handle.js');
 const sendMessageHandle = require('./hud-handle.js').sendMessageHandle;
 const savePushSubscriptionHandle = require('./hud-handle.js').savePushSubscriptionHandle;
 const newPartyHandle = require('./newParty-handle.js');
@@ -29,8 +29,8 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
       ackFn();
     }
     try {
-      if (message.type == 'LOGIN_REQUEST') {
-        loginHandle(socket, dispatch, db, message.email, message.password)
+      if (message.type == 'NEW_USER_REQUEST') {
+        newUserHandle(socket, dispatch, db, message.nickname)
         return;
       }
       if (!user) {

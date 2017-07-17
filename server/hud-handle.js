@@ -2,10 +2,10 @@ const ObjectId = require('mongodb').ObjectId;
 
 sendMessageHandle = (socket, dispatchRoom, dispatch, db, user, match_code, action) => {
   db.collection('matches').findOne(ObjectId(match_code), (err, match) => {
-    if (match.players.indexOf(user.email) == -1) { //User not in the match
+    if (match.players.indexOf(user._id) == -1) { //User not in the match
       return;
     }
-    action.payload.player = match.players.indexOf(user.email);
+    action.payload.player = match.players.indexOf(user._id);
     dispatchRoom('match-' + match_code, action);
     if (!match.messages) {
       match.messages = [];

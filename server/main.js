@@ -6,7 +6,6 @@ const mongo = require('mongodb')
 const webpackConfig = require('../build/webpack.config')
 const config = require('../config')
 const bodyParser = require('body-parser')
-const loginHandle = require('./login-handle.js')
 const ioHandle = require('./io-handle.js')
 const socketIO = require('socket.io');
 

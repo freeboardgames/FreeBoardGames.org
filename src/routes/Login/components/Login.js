@@ -10,15 +10,12 @@ import { browserHistory } from 'react-router'
 var Login =  React.createClass({
   componentWillMount: function() {
     this.setState({
-      emailError: this.props.emailError,
-      passwordError: this.props.passwordError,
-      email: this.props.email,
-      password: this.props.password
+      nickname: this.props.nickname
     });
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.token) {
-      localStorage.setItem('token', nextProps.token);
+      localStorage.setItem('token2', nextProps.token);
       if ('location' in this.props &&
           'query' in this.props.location &&
           'next' in this.props.location.query) {
@@ -27,69 +24,46 @@ var Login =  React.createClass({
         browserHistory.push('/');
       }
     }
-    this.setState({
-      emailError: nextProps.emailError,
-      passwordError: nextProps.passwordError,
-      email: nextProps.email,
-      password: nextProps.password
-    });
+    if (nextProps.nickname) {
+      this.setState({
+        nickname: nextProps.nickname
+      });
+    }
   },
-  onEmailChange: function(event) {
+  onNicknameChange: function(event) {
     this.setState({...this.state,
-      email: event.target.value});
+      nickname: event.target.value});
   },
-  onPasswordChange: function(event) {
-    this.setState({...this.state,
-      password: event.target.value});
-  },
-  doLogin: function () {
-    this.props.login(this.state.email, this.state.password);
+  doNewUser: function () {
+    this.props.newUser(this.state.nickname);
   },
   onKeyPress: function (e) {
     if (e.key === 'Enter') {
-      this.doLogin()
+      this.doNewUser()
     }
   },
   render: function () {
     return (
   <TurnatoBar disconnected={this.props.disconnected}>
   <CardHeader style={{paddingBottom: '0px'}}
-    title={(this.props.needsPassword) ?
-      "We need your password." :
-      "What is your e-mail?"}
-    subtitle={(this.props.needsPassword) ?
-      "It seems that you have been here before." :
-      "So we can let you know when it is your turn!"}
+    title="What is your nickname?"
+    subtitle="So players can know who you are!"
   />
   {(!this.props.loading) ? (
   <div>
     <CardText style={{textAlign: "center"}}>
       <TextField
-        id="email"
-        hintText="Your e-mail address"
-        floatingLabelText="E-mail"
-        onChange={this.onEmailChange}
-        errorText={this.state.emailError}
+        id="nickname"
+        hintText="Your nickname"
+        onChange={this.onNicknameChange}
+        floatingLabelText="Nickname"
         onKeyPress={this.onKeyPress}
-        value={this.state.email}
+        value={this.state.nickname}
       /><br />
-      {(this.props.needsPassword) ?
-      (<div><TextField
-        type="password"
-        hintText="Your password"
-        floatingLabelText="Password"
-        onChange={this.onPasswordChange}
-        onKeyPress={this.onKeyPress}
-        errorText={this.state.passwordError}
-      /><br /></div>) : null}
     </CardText>
     <CardActions style={{textAlign: "right"}}>
-      {(this.props.needsPassword) ?
-        (<FlatButton label="I forgot my password"
-          onClick= {this.props.forgotPassword}/>) :
-        null}
       <RaisedButton label="Play" secondary={true}
-        onClick={this.doLogin} />
+        onClick={this.doNewUser} />
     </CardActions>
   </div>
   ) : (
@@ -102,11 +76,9 @@ var Login =  React.createClass({
 })
 Login.defaultProps = {
   disconnected: false,
-  needsPassword: true,
   loading: false,
-  emailError: null,
-  passwordError: null,
+  nickname: '',
   token: null,
-  login: null
+  newUser: null
 };
 export default Login

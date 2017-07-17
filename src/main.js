@@ -11,7 +11,7 @@ injectTapEventPlugin();
 const initialState = window.___INITIAL_STATE__
 const store = createStore(initialState)
 
-let token = localStorage.getItem('token');
+let token = localStorage.getItem('token2');
 if (token !== null) {
     console.log('SENDING AUTH_SUCCESS TOKEN');
     store.dispatch({type: 'AUTH_SUCCESS',

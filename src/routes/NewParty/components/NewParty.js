@@ -66,7 +66,7 @@ NewParty.defaultProps = {
   disconnected: false,
   loading: false,
   error: null,
-  name: null,
+  name: '',
   newParty: null,
   id: null
 };

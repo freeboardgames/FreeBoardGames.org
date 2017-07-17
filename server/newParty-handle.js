@@ -2,7 +2,7 @@ module.exports = (socket, dispatch, db, user, name) => {
   let partiesCollection = db.collection('parties');
   let party =  {
     name: name,
-    users: [ user.email ],
+    users: [ user._id ],
     downMapping: {}
   };
   var result = partiesCollection.insert(party, (err) => {

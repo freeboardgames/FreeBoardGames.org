@@ -8,7 +8,7 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = (state) => ({
-  currentUser: state.auth.email,
+  currentUser: state.auth._id,
   info: state.party.info,
   matches: state.party.matches,
   games: state.party.games,

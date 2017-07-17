@@ -51,7 +51,7 @@ joinMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
        {type: 'NOOP'});
     next_state.players = match.players;
     next_state.loading = false;
-    next_state.player = match.players.indexOf(user.email);
+    next_state.player = match.players.indexOf(user._id);
     if (next_state) {
       console.log('JOIN ' + 'match-' + match_code);
       socket.join('match-' + match_code);
@@ -70,8 +70,8 @@ leaveMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
   socket.leave('match-' + match_code);
 }
 
-notifyToPlay = (db, email, game_code, match_code) => () => {
-  db.collection('users').findOne({email: email}, (err, user) => {
+notifyToPlay = (db, user_id, game_code, match_code) => () => {
+  db.collection('users').findOne({_id: user_id}, (err, user) => {
     if (!user.pushSubscription)
       return;
     webpush.setVapidDetails(
@@ -82,7 +82,6 @@ notifyToPlay = (db, email, game_code, match_code) => () => {
     let notificationData = JSON.stringify({action: 'PLAY',
                                        game: game_code,
                                        match_code: match_code});
-    console.log('SEND NOTIFICATION ' + user.email + ' ' + notificationData);
     webpush.sendNotification(user.pushSubscription, notificationData)
     .then((r) => {
       console.log('SUCCESS SENDING NOTIFICATION');
@@ -106,10 +105,10 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
     });
     return;
   }
-  if (match.players.indexOf(user.email) == -1) { //User not in the match
+  if (match.players.indexOf(user._id) == -1) { //User not in the match
     return;
   }
-  action.player = match.players.indexOf(user.email);
+  action.player = match.players.indexOf(user._id);
   let current_state = undefined;
   if (match.log && match.log.length > 0) {
     current_state = match.log[0].state;
