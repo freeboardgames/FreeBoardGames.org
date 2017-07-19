@@ -1,15 +1,17 @@
 const ObjectId = require('mongodb').ObjectId;
 
 let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
-  let handlePartyDb = (party, matches, games) => {
+  let handlePartyDb = (party, matches, games, all_users) => {
     let new_user = false;
-    if (party.users.indexOf(user._id) == -1) {
+    let current_user = party.users.indexOf(user._id);
+    if (current_user == -1) {
       new_user = true;
-      //TODO(felizardo) show nickname instead
+      current_user = party.users.length;
       party.users.push(user._id);
     }
-    let info = {name: party.name, users: party.users, code: party_code,
-      loading: false};
+    users_nickname = all_users.map((u) => { return u.nickname; });
+    let info = {name: party.name, users: party.users, currentUser: current_user,
+      code: party_code, loading: false, usersNickname: users_nickname };
     dispatch({type: 'SET_DOWN_MAPPING', downMapping: party.downMapping});
     dispatch({type: 'SET_GAMES', games});
     dispatch({type: 'SET_MATCHES', matches});
@@ -23,12 +25,17 @@ let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => 
   }
   //Do Mongo DB request
   db.collection('parties').findOne(ObjectId(party_code), (err, party) => {
-    db.collection('matches').find({party_id:  ObjectId(party_code),
-                                   status: 'ACTIVE'})
-      .toArray((err, matches) => {
-      db.collection('games').find().toArray((err, games) => {
-        handlePartyDb(party, matches, games);
-        db.collection('parties').save(party);
+    let party_users_id = party.users.map((id) => { return ObjectId(id); });
+    db.collection('users').find({_id: {$in: party_users_id}}, (err, users_cur) => {
+      users_cur.toArray((err, all_users) => {
+        db.collection('matches').find({party_id:  ObjectId(party_code),
+                                       status: 'ACTIVE'})
+          .toArray((err, matches) => {
+          db.collection('games').find().toArray((err, games) => {
+            handlePartyDb(party, matches, games, all_users);
+            db.collection('parties').save(party);
+          })
+        })
       })
     })
   })

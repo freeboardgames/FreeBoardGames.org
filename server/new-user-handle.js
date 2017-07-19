@@ -7,6 +7,8 @@ const sg_helper = require('sendgrid').mail;
 module.exports = (socket, dispatch, db, nickname) => {
   var usersCollection = db.collection('users');
   var user = {nickname};
+  if (!nickname || nickname.length == 0 || nickname.length > 15)
+    return;
   //Save to the db
   usersCollection.insert(user, (err, new_user) => {
     dispatch({type: 'AUTH_SUCCESS', payload: {

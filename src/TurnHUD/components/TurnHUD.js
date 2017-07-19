@@ -102,7 +102,7 @@ class TurnHUD extends React.Component {
       messages_els.push(
         (<p style={{color: "white"}}>
           <span style={{color: this.props.playersSecondaryColors[m.player]}}>
-            <b>{this.props.players[m.player]}</b>
+            <b>{this.props.playersNickname[m.player]}</b>
           </span>: {m.text}
          </p>));
     }
@@ -116,7 +116,7 @@ class TurnHUD extends React.Component {
         zIndex: 9000, display: 'block', textAlign: 'center'}}>
         <div style={{transform: 'translateX(-50%) translateY(-50%)',
           left: '50%', top: '50%', position: 'absolute'}}>
-          <h1>{this.props.players[this.props.winner]} WON!!!
+          <h1>{this.props.playersNickname[this.props.winner]} WON!!!
           </h1>
           <a href="javascript:history.back();">Go Back</a>
         </div>
@@ -172,7 +172,7 @@ class TurnHUD extends React.Component {
             fontFamily="sans-serif"
             style={{textAnchor: "middle", textAlign: "center"}}>
         <tspan fontSize="4px" y="4px" x="40">
-          {this.props.players[this.props.currentPlayer]}
+          {this.props.playersNickname[this.props.currentPlayer]}
         </tspan>
       </text>
     </g>
@@ -189,6 +189,7 @@ class TurnHUD extends React.Component {
 TurnHUD.defaultProps = {
   match_code: '',
   players: [],
+  playersNickname: [],
   player: 0,
   playersPrimaryColors: ['black', 'grey'], // Light background
   playersSecondaryColors: ['grey', 'white'], // Dark background

@@ -88,6 +88,7 @@ export const ChessGame = React.createClass({
       <TurnHUD
         match_code={this.props.params.id}
         players={state.players}
+        playersNickname={state.playersNickname}
         playersPrimaryColors={['grey', 'black']}
         playersSecondaryColors={['white', 'grey']}
         player={state.player}

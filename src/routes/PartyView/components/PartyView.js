@@ -52,14 +52,21 @@ export const PartyView = React.createClass({
     }
     // PARTY
     let partyName = this.props.info.name;
+    let currentUser = this.props.info.currentUser;
+    let currentUserId = this.props.info.users[currentUser];
     let partyMemberCount = this.props.info.users.length;
-    let partyMemberList = this.props.info.users.join(', ');
+    let usersNickname = this.props.info.usersNickname;
+    let users = this.props.info.users;
 
+    let idToNickname = (player_id) => {
+      return usersNickname[users.indexOf(player_id)];
+    };
+    let partyMemberList = this.props.info.users.map(idToNickname).join(', ');
     //MATCHES
     let matchesList = [];
     this.props.matches.map((match) => {
-      let players = match.players.join(', ');
-      let active = match.players.indexOf(this.props.currentUser) > -1 &&
+      let players = match.players.map(idToNickname).join(', ');
+      let active = match.players.indexOf(currentUserId) > -1 &&
         match.status != 'Finished';
 
       matchesList.push((<ListItem
@@ -83,7 +90,7 @@ export const PartyView = React.createClass({
       let isChecked = false;
       if (downList) {
         downCount = downList.length;
-        isChecked = downList.indexOf(this.props.currentUser) > -1;
+        isChecked = downList.indexOf(currentUserId) > -1;
       }
 
       gamesList.push((<ListItem
@@ -142,7 +149,6 @@ PartyView.defaultProps = {
   disconnected: false,
   down: () => {},
   token: '',
-  currentUser: '',
   info: {loading: true},
   matches: [],
   games: [],

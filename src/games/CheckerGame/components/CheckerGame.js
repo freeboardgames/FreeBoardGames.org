@@ -53,6 +53,7 @@ export const CheckerGame = React.createClass({
     <TurnHUD
       match_code={this.props.params.id}
       players={state.players}
+      playersNickname={state.playersNickname}
       playersPrimaryColors={['grey', '#CCCC00']}
       playersSecondaryColors={['white', 'yellow']}
       player={state.player}

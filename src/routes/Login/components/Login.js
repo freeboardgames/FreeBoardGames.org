@@ -31,8 +31,10 @@ var Login =  React.createClass({
     }
   },
   onNicknameChange: function(event) {
-    this.setState({...this.state,
-      nickname: event.target.value});
+    if (event.target.value.length <= 15) { 
+      this.setState({...this.state,
+        nickname: event.target.value});
+    }
   },
   doNewUser: function () {
     this.props.newUser(this.state.nickname);
@@ -63,7 +65,8 @@ var Login =  React.createClass({
     </CardText>
     <CardActions style={{textAlign: "right"}}>
       <RaisedButton label="Play" secondary={true}
-        onClick={this.doNewUser} />
+        onClick={this.doNewUser}
+        disabled={!this.state.nickname || this.state.nickname.length == 0} />
     </CardActions>
   </div>
   ) : (

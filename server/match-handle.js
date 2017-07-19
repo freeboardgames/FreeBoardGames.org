@@ -37,32 +37,39 @@ joinMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
   LAST_DB = db;
   console.log('MATCH JOIN');
   db.collection('matches').findOne(ObjectId(match_code), (err, match) => {
-    let match_cache = cache.get(match_code);
-    if (match_cache) {
-      match.log = match_cache.log;
-    }
-    cache.put(match_code, match, CACHE_DURATION, saveAfterExpire);
-    let current_state = undefined;
-    if (match.log && match.log.length > 0) {
-      current_state = match.log[0].state;
-    }
-    // We pass a NOOP to the reducer in case current_state = undefined.
-    let next_state = genericReducer(match.game_code, current_state,
-       {type: 'NOOP'});
-    next_state.players = match.players;
-    next_state.loading = false;
-    next_state.player = match.players.indexOf(user._id);
-    if (next_state) {
-      console.log('JOIN ' + 'match-' + match_code);
-      socket.join('match-' + match_code);
-      let result = { type: 'MATCH_SET_STATE' };
-      result.payload = next_state;
-      dispatch(result);
-      if (!match.messages) {
-        match.messages = [];
-      }
-      dispatch({ type: 'SET_MESSAGES', payload: match.messages });
-    }
+    let match_players_id = match.players.map((id) => { return ObjectId(id); });
+    db.collection('users').find({_id: {$in: match_players_id}}, (err, players_cur) => {
+      players_cur.toArray((err, all_players) => {
+        let match_cache = cache.get(match_code);
+        if (match_cache) {
+          match.log = match_cache.log;
+        }
+        match.playersNickname = all_players.map((p) => { return p.nickname; });
+        cache.put(match_code, match, CACHE_DURATION, saveAfterExpire);
+        let current_state = undefined;
+        if (match.log && match.log.length > 0) {
+          current_state = match.log[0].state;
+        }
+        // We pass a NOOP to the reducer in case current_state = undefined.
+        let next_state = genericReducer(match.game_code, current_state,
+           {type: 'NOOP'});
+        next_state.players = match.players;
+        next_state.playersNickname = match.playersNickname;
+        next_state.loading = false;
+        next_state.player = match.players.indexOf(user._id);
+        if (next_state) {
+          console.log('JOIN ' + 'match-' + match_code);
+          socket.join('match-' + match_code);
+          let result = { type: 'MATCH_SET_STATE' };
+          result.payload = next_state;
+          dispatch(result);
+          if (!match.messages) {
+            match.messages = [];
+          }
+          dispatch({ type: 'SET_MESSAGES', payload: match.messages });
+        }
+      })
+    })
   })
 }
 
@@ -71,7 +78,8 @@ leaveMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
 }
 
 notifyToPlay = (db, user_id, game_code, match_code) => () => {
-  db.collection('users').findOne({_id: user_id}, (err, user) => {
+  console.log('NOTIFYING ' + user_id);
+  db.collection('users').findOne({_id: ObjectId(user_id)}, (err, user) => {
     if (!user.pushSubscription)
       return;
     webpush.setVapidDetails(
