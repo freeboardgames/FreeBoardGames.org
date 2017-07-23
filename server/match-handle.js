@@ -1,4 +1,3 @@
-const ObjectId = require('mongodb').ObjectId;
 const cache = require('memory-cache');
 const _ = require('underscore');
 const checkersReducer = require('./games/checkerGameState.js').default;
@@ -24,7 +23,7 @@ function genericReducer (game_code, state, action) {
 function saveAfterExpire (match_code, match) {
   if (LAST_DB) {
     console.log('EXPIRED... SAVING');
-    LAST_DB.collection('matches').updateOne({_id: ObjectId(match_code)},
+    LAST_DB.collection('matches').updateOne({_id: match_code},
       { $set: {log: match.log} },
     (err, results) => {
       if (err)
@@ -36,15 +35,19 @@ function saveAfterExpire (match_code, match) {
 joinMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
   LAST_DB = db;
   console.log('MATCH JOIN');
-  db.collection('matches').findOne(ObjectId(match_code), (err, match) => {
-    let match_players_id = match.players.map((id) => { return ObjectId(id); });
-    db.collection('users').find({_id: {$in: match_players_id}}, (err, players_cur) => {
+  db.collection('matches').findOne({_id: match_code}, (err, match) => {
+    db.collection('users').find({_id: {$in: match.players}}, (err, players_cur) => {
       players_cur.toArray((err, all_players) => {
         let match_cache = cache.get(match_code);
         if (match_cache) {
           match.log = match_cache.log;
         }
-        match.playersNickname = all_players.map((p) => { return p.nickname; });
+        match.playersNickname = match.players.map((u_code) => {
+          return all_players.filter(
+            (u) => { return u._id == u_code; })[0].nickname;
+        });
+
+        all_players.map((p) => { return p.nickname; });
         cache.put(match_code, match, CACHE_DURATION, saveAfterExpire);
         let current_state = undefined;
         if (match.log && match.log.length > 0) {
@@ -79,7 +82,7 @@ leaveMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => {
 
 notifyToPlay = (db, user_id, game_code, match_code) => () => {
   console.log('NOTIFYING ' + user_id);
-  db.collection('users').findOne({_id: ObjectId(user_id)}, (err, user) => {
+  db.collection('users').findOne({_id: user_id}, (err, user) => {
     if (!user.pushSubscription)
       return;
     webpush.setVapidDetails(
@@ -106,7 +109,7 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
   let match = cache.get(match_code);
   if (!match) {
     console.log('ACTION CACHE EXPIRED : '+ match_code);
-    db.collection('matches').findOne(ObjectId(match_code), (err, match_db) => {
+    db.collection('matches').findOne({_id: match_code}, (err, match_db) => {
       cache.put(match_code, match_db, CACHE_DURATION, saveAfterExpire);
       matchActionRequest(socket, dispatchRoom, dispatch, db, user, match_code,
         action);
@@ -131,7 +134,7 @@ matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, acti
     if (next_state.winner != null) {
       match.status = 'FINISHED';
       match.winner = match.players[match.winner];
-      LAST_DB.collection('matches').updateOne({_id: ObjectId(match_code)},
+      LAST_DB.collection('matches').updateOne({_id: match_code},
         { $set: {status: match.status, winner: match.winner} },
       (err, results) => {
         if (err)

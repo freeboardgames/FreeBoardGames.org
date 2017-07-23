@@ -1,6 +1,9 @@
+const shortid = require('shortid');
+
 module.exports = (socket, dispatch, db, user, name) => {
   let partiesCollection = db.collection('parties');
   let party =  {
+    _id: shortid.generate(),
     name: name,
     users: [ user._id ],
     downMapping: {}

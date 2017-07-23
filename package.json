@@ -124,6 +124,7 @@
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.0",
     "sendgrid": "^4.2.0",
+    "shortid": "^2.2.8",
     "socket.io": "^1.7.4",
     "style-loader": "^0.13.1",
     "underscore": "^1.8.3",

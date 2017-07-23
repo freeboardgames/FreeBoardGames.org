@@ -1,3 +1,4 @@
+const shortid = require('shortid');
 const validator = require('validator');
 const turnatoLogin = require('./turnato-login.js');
 const randomstring    = require('randomstring');
@@ -6,7 +7,7 @@ const sg_helper = require('sendgrid').mail;
 
 module.exports = (socket, dispatch, db, nickname) => {
   var usersCollection = db.collection('users');
-  var user = {nickname};
+  var user = {_id: shortid.generate(), nickname};
   if (!nickname || nickname.length == 0 || nickname.length > 15)
     return;
   //Save to the db

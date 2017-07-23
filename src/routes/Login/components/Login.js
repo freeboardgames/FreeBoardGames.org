@@ -15,7 +15,7 @@ var Login =  React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.token) {
-      localStorage.setItem('token2', nextProps.token);
+      localStorage.setItem('token3', nextProps.token);
       if ('location' in this.props &&
           'query' in this.props.location &&
           'next' in this.props.location.query) {
@@ -31,7 +31,7 @@ var Login =  React.createClass({
     }
   },
   onNicknameChange: function(event) {
-    if (event.target.value.length <= 15) { 
+    if (event.target.value.length <= 15) {
       this.setState({...this.state,
         nickname: event.target.value});
     }

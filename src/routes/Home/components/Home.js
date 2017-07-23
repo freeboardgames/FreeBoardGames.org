@@ -42,10 +42,9 @@ var Home =  React.createClass({
       partiesList.push(
         (<p key="0" style={{paddingLeft: "16px",
         paddingRight: "16px"}}>You do not belong to any party yet.<br /><br />
-        <a onClick={login}
-          href="#">Login</a> or <a
+        <a
           onClick={newParty}
-          href="#">create one</a> and invite your friends!</p>));
+          href="#">Create one</a> and invite your friends!</p>));
     }
     return (<TurnatoBar disconnected={this.props.disconnected}>
       <Card>
