@@ -7,14 +7,14 @@ import CircularProgress from 'material-ui/CircularProgress';
 import './CheckerGame.scss'
 import TurnHUD from '../../../TurnHUD/containers/TurnHUDContainer'
 
-export const CheckerGame = React.createClass({
-  componentDidMount: function () {
+class CheckerGame extends React.Component {
+  componentDidMount () {
     this.props.joinMatch(this.props.params.id)
-  },
-  componentWillUnmount: function () {
+  }
+  componentWillUnmount () {
     this.props.leaveMatch(this.props.params.id)
-  },
-  render: function () {
+  }
+  render () {
     let state = this.props.state;
     let onClick = (x,y) => () => {
       this.props.sendClick(this.props.params.id, x,y, state.player);
@@ -68,7 +68,7 @@ export const CheckerGame = React.createClass({
       </CheckerBoard>
     </div>)
   }
-})
+}
 
 
 CheckerGame.defaultProps = {

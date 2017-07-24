@@ -20,6 +20,8 @@ let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => 
   }
   //Do Mongo DB request
   db.collection('parties').findOne({_id: party_code}, (err, party) => {
+    if (!party)
+      return;
     let new_user = false;
     let current_user = party.users.indexOf(user._id);
     if (current_user == -1) {

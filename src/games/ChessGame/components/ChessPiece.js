@@ -7,8 +7,8 @@ import KnightPiece from './KnightPiece.js'
 import RookPiece from './RookPiece.js'
 const MOVE_TIME = 750;
 
-var ChessPiece = React.createClass({
-  componentWillMount: function() {
+class ChessPiece extends React.Component {
+  componentWillMount() {
     this.setState({
       x: this.props.x,
       y: this.props.y,
@@ -17,8 +17,8 @@ var ChessPiece = React.createClass({
       stepY: 0,
       animate: null
     });
-  },
-  componentWillReceiveProps: function (nextProps) {
+  }
+  componentWillReceiveProps (nextProps) {
     if (nextProps.x != this.props.x || nextProps.y != this.props.y) {
       this.setState({
         ...this.state,
@@ -33,16 +33,16 @@ var ChessPiece = React.createClass({
       } else {
         (new Audio('/move.wav')).play();
       }
-      requestAnimationFrame(this.animate)
+      requestAnimationFrame((this.animate).bind(this))
     }
-  },
-  easeInOutCubic: function (t, b, c, d) {
+  }
+  easeInOutCubic (t, b, c, d) {
 	  t /= d/2;
 	  if (t < 1) return c/2*t*t*t + b;
 	  t -= 2;
 	  return c/2*(t*t*t + 2) + b;
-  },
-  animate: function() {
+  }
+  animate() {
     let elapsed = Date.now() - this.state.originTime;
     if (elapsed < MOVE_TIME) {
       let perc_done = this.easeInOutCubic(elapsed, 0, 1, MOVE_TIME);
@@ -51,7 +51,7 @@ var ChessPiece = React.createClass({
         x: (this.props.x-this.state.originX)*perc_done + this.state.originX,
         y: (this.props.y-this.state.originY)*perc_done + this.state.originY,
       });
-      requestAnimationFrame(this.animate)
+      requestAnimationFrame((this.animate).bind(this))
     } else {
       this.setState({
         ...this.state,
@@ -59,9 +59,9 @@ var ChessPiece = React.createClass({
         y: this.props.y
       });
     }
-  },
+  }
 
-  render: function() {
+  render() {
     let type = 'p';
     if (this.props.type) {
       type = this.props.type;
@@ -95,7 +95,7 @@ var ChessPiece = React.createClass({
       </g>
     )
   }
-});
+};
 
 
 export default ChessPiece

@@ -7,13 +7,13 @@ import TextField from 'material-ui/TextField';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import { browserHistory } from 'react-router'
 
-var Login =  React.createClass({
-  componentWillMount: function() {
+class Login extends React.Component {
+  componentWillMount() {
     this.setState({
       nickname: this.props.nickname
     });
-  },
-  componentWillReceiveProps: function(nextProps) {
+  }
+  componentWillReceiveProps(nextProps) {
     if (nextProps.token) {
       localStorage.setItem('token3', nextProps.token);
       if ('location' in this.props &&
@@ -29,22 +29,22 @@ var Login =  React.createClass({
         nickname: nextProps.nickname
       });
     }
-  },
-  onNicknameChange: function(event) {
+  }
+  onNicknameChange(event) {
     if (event.target.value.length <= 15) {
       this.setState({...this.state,
         nickname: event.target.value});
     }
-  },
-  doNewUser: function () {
+  }
+  doNewUser() {
     this.props.newUser(this.state.nickname);
-  },
-  onKeyPress: function (e) {
+  }
+  onKeyPress(e) {
     if (e.key === 'Enter') {
       this.doNewUser()
     }
-  },
-  render: function () {
+  }
+  render() {
     return (
   <TurnatoBar disconnected={this.props.disconnected}>
   <CardHeader style={{paddingBottom: '0px'}}
@@ -76,7 +76,7 @@ var Login =  React.createClass({
   </TurnatoBar>
 )
 }
-})
+}
 Login.defaultProps = {
   disconnected: false,
   loading: false,

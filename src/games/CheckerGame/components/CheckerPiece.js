@@ -1,8 +1,8 @@
 import React from 'react'
 const MOVE_TIME = 750;
 
-var CheckerPiece = React.createClass({
-  componentWillMount: function() {
+class CheckerPiece extends React.Component {
+  componentWillMount() {
     this.setState({
       x: this.props.x,
       y: this.props.y,
@@ -11,8 +11,8 @@ var CheckerPiece = React.createClass({
       stepY: 0,
       animate: null
     });
-  },
-  componentWillReceiveProps: function (nextProps) {
+  }
+  componentWillReceiveProps(nextProps) {
     if (nextProps.x != this.props.x || nextProps.y != this.props.y) {
       this.setState({
         ...this.state,
@@ -27,16 +27,16 @@ var CheckerPiece = React.createClass({
       } else {
         (new Audio('/move.wav')).play();
       }
-      requestAnimationFrame(this.animate)
+      requestAnimationFrame((this.animate).bind(this))
     }
-  },
-  easeInOutCubic: function (t, b, c, d) {
+  }
+  easeInOutCubic (t, b, c, d) {
 	  t /= d/2;
 	  if (t < 1) return c/2*t*t*t + b;
 	  t -= 2;
 	  return c/2*(t*t*t + 2) + b;
-  },
-  animate: function() {
+  }
+  animate() {
     let elapsed = Date.now() - this.state.originTime;
     if (elapsed < MOVE_TIME) {
       let perc_done = this.easeInOutCubic(elapsed, 0, 1, MOVE_TIME);
@@ -45,7 +45,7 @@ var CheckerPiece = React.createClass({
         x: (this.props.x-this.state.originX)*perc_done + this.state.originX,
         y: (this.props.y-this.state.originY)*perc_done + this.state.originY,
       });
-      requestAnimationFrame(this.animate)
+      requestAnimationFrame((this.animate).bind(this))
     } else {
       this.setState({
         ...this.state,
@@ -53,9 +53,9 @@ var CheckerPiece = React.createClass({
         y: this.props.y
       });
     }
-  },
+  }
 
-  render: function() {
+  render() {
     let star = null;
     if (this.props.double == true) {
       star = (<polygon stroke="#000000" points="50,33.034549713134766 53.87126159667969,44.171669006347656 65.65957641601562,44.411895751953125 56.263832092285156,51.535240173339844 59.67815017700195,62.820831298828125 50,56.086181640625 40.32184982299805,62.820831298828125 43.736167907714844,51.535240173339844 34.340423583984375,44.411895751953125 46.12873840332031,44.171669006347656 50,33.034549713134766 53.87126159667969,44.171669006347656 " strokeWidth="3"  fill="#000000" orient="point" r="16.465452" shape="star" cy="48.5" cx="49"/>);
@@ -71,7 +71,7 @@ var CheckerPiece = React.createClass({
       </g>
     )
   }
-});
+};
 
 
 export default CheckerPiece

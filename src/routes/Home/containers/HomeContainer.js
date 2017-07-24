@@ -1,16 +1,18 @@
 import { connect } from 'react-redux'
-import { requestParties } from '../modules/parties'
+import { requestHome } from '../modules/home'
 
 import Home from '../components/Home'
 
 const mapDispatchToProps = {
-  requestParties
+  requestHome
 }
 
 const mapStateToProps = (state) => ({
   token: state.auth.token,
-  parties: state.parties.list,
-  partiesLoading: state.parties.loading,
+  parties: state.home.parties,
+  games: state.home.games,
+  matches: state.home.matches,
+  loading: state.home.loading,
   disconnected: state.connection.disconnected,
 })
 

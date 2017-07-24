@@ -17,25 +17,25 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { browserHistory } from 'react-router'
 
 
-export const PartyView = React.createClass({
-  componentWillMount: function () {
+class PartyView extends React.Component {
+  componentWillMount() {
     this.setState({link: window.location.href,
                    linkCopied: false})
-  },
-  componentDidMount: function () {
+  }
+  componentDidMount() {
     this.props.joinParty(this.props.token, this.props.params.id)
-  },
-  componentWillUnmount: function () {
+  }
+  componentWillUnmount() {
     this.props.leaveParty(this.props.token, this.props.params.id)
-  },
-  down: function (game) {
+  }
+  down(game) {
     return () => {
       if (game.loading)
         return
       this.props.down(this.props.info.code, game.code)
     }
-  },
-  render: function () {
+  }
+  render() {
     let joinMatch = (match) => () => {
       browserHistory.push('/g/' + match.game_code + '/' + match._id);
     };
@@ -141,7 +141,7 @@ export const PartyView = React.createClass({
       </List>
       </TurnatoBar>)
     }
-  })
+}
 
 PartyView.defaultProps = {
   joinParty: () => {},

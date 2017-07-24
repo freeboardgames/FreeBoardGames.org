@@ -1,5 +1,5 @@
 const turnatoLogin = require('./turnato-login.js');
-const partiesHandle = require('./parties-handle.js');
+const homeHandle = require('./home-handle.js');
 const joinPartyHandle = require('./party-handle.js').joinPartyHandle;
 const leavePartyHandle = require('./party-handle.js').leavePartyHandle;
 const downHandle = require('./party-handle.js').downHandle;
@@ -28,19 +28,21 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
     if (ackFn) {
       ackFn();
     }
+    console.log(message.type);
     try {
-      if (message.type == 'NEW_USER_REQUEST') {
-        newUserHandle(socket, dispatch, db, message.nickname)
-        return;
+      switch (message.type) {
+        case 'NEW_USER_REQUEST':
+          newUserHandle(socket, dispatch, db, message.nickname);
+          return;
+        case 'HOME_REQUEST':
+          homeHandle(socket, dispatch, db, user);
+          return;
       }
       if (!user) {
         console.log('LACK OF LOGIN, IGNORING: ' + message.type);
         return;
       }
       switch (message.type) {
-        case 'PARTIES_REQUEST':
-          partiesHandle(socket, dispatch, db, user);
-          break;
         case 'NEW_PARTY_REQUEST':
           newPartyHandle(socket, dispatch, db, user, message.name);
           break;

@@ -6,17 +6,23 @@ import {List, ListItem} from 'material-ui/List';
 import {Card, CardMedia, CardTitle} from 'material-ui/Card';
 import Subheader from 'material-ui/Subheader';
 import SocialGroup from 'material-ui/svg-icons/social/group';
+import PlacesCasino from 'material-ui/svg-icons/places/casino';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { browserHistory } from 'react-router'
 
 
-var Home =  React.createClass({
-  componentDidMount: function () {
-    if (this.props.token) {
-      this.props.requestParties(this.props.token)
-    }
-  },
-  render: function () {
+class Home extends React.Component {
+  componentDidMount() {
+    this.props.requestHome(this.props.token)
+  }
+
+  render() {
+    let joinMatch = (match) => () => {
+      browserHistory.push('/g/' + match.game_code + '/' + match._id);
+    };
+    let viewGame = (game) => () => {
+      browserHistory.push('/g/' + game.code);
+    };
     let viewParty = (id) => () => {
       browserHistory.push('/p/'+id);
     };
@@ -26,6 +32,33 @@ var Home =  React.createClass({
     let login = () => {
       browserHistory.push('/login');
     };
+    // MATCHES
+    let matchesList = [];
+    this.props.matches.map((match) => {
+      matchesList.push((<ListItem
+        key={match._id}
+        primaryText={match.playersNickname.join(', ')}
+        secondaryText={match.game_name + " - " + match.status}
+        rightIcon={<NavigationChevronRight />}
+        style={{WebkitAppearance: 'inherit'}}
+        onClick={joinMatch(match)}
+      />))
+    });
+
+    // GAMES
+    let gamesList = [];
+    this.props.games.map((game) => {
+      gamesList.push((<ListItem
+        key={game.code}
+        primaryText={game.name}
+        leftIcon={<PlacesCasino />}
+        rightIcon={<NavigationChevronRight />}
+        onClick={viewGame(game)}
+        style={{WebkitAppearance: 'inherit'}}
+      />));
+    })
+
+    // Parties
     let partiesList = [];
     if (this.props.parties.length > 0) {
       this.props.parties.map((party) => {
@@ -34,8 +67,8 @@ var Home =  React.createClass({
           primaryText={party.name}
           rightIcon={<NavigationChevronRight />}
           style={{WebkitAppearance: 'inherit'}}
-          onClick={viewParty(party.id)}
-          key={party.id}
+          onClick={viewParty(party._id)}
+          key={party._id}
         />));
       });
     } else {
@@ -55,7 +88,7 @@ var Home =  React.createClass({
         <img src="intro.jpg" />
       </CardMedia>
       </Card>
-      { (this.props.partiesLoading) ? (
+      { (this.props.loading) ? (
         <div style={{textAlign: "center"}}>
           <br/>
           <CircularProgress size={80} thickness={5} />
@@ -63,22 +96,38 @@ var Home =  React.createClass({
       ) :
       (
       <List>
+
+        {(matchesList.length > 0) ? (
+          <Subheader>Matches</Subheader>) : null}
+        {matchesList}
         <Subheader>Parties</Subheader>
         {partiesList}
+        <RaisedButton label="+ party" secondary={true}
+        onClick={newParty}
+        style={{float: 'right', marginTop: '8px', marginRight: '16px'}}/>
+        <br />
+        <Subheader style={{marginTop: '16px'}}>Games</Subheader>
+        {gamesList}
       </List>)}
       <br/><br/>
-      <RaisedButton label="Create party" secondary={true}
-      onClick={newParty}
-      style={{position: "fixed", bottom: "0px",
-       width: "100%", maxWidth: "500px"}}/>
+      <p style={{fontSize: '12px', textAlign: 'center'}}>
+      <a href="https://discord.gg/S2wfpCW" target="_blank">Discord</a>
+      &nbsp;-&nbsp;
+      <a href="https://www.facebook.com/turnatodotcom/"
+        target="_blank">Facebook</a>
+      </p>
+      <br/><br/>
       </TurnatoBar>)
-  }});
+    }
+};
 
   Home.defaultProps = {
     disconnected: false,
     parties: [],
-    partiesLoading: false,
+    loading: false,
+    matches: [],
+    games: [],
     token: null,
-    requestParties: null
+    requestHome: null
   };
 export default Home
