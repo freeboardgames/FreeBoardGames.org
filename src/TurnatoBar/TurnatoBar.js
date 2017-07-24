@@ -29,7 +29,10 @@ class TurnatoBar extends React.Component {
                        marginRight: "auto"}}>
           <a href="/">
             <AppBar
-              style={{position: 'fixed'}}
+              style={{position: 'fixed',
+                      maxWidth: "500px",
+                      marginLeft: "auto",
+                      marginRight: "auto"}}
               title="Turnato"
               iconElementLeft={<img src="/logo_optimized.svg"
               style={{color:'white', width: '32px', height: '32px',
