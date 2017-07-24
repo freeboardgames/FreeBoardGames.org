@@ -29,12 +29,14 @@ class TurnatoBar extends React.Component {
                        marginRight: "auto"}}>
           <a href="/">
             <AppBar
+              style={{position: 'fixed'}}
               title="Turnato"
               iconElementLeft={<img src="/logo_optimized.svg"
               style={{color:'white', width: '32px', height: '32px',
               marginTop: '8px'}}></img>}
             />
           </a>
+          <div style={{height: '64px'}}></div>
           {this.props.children}
           </div>
         </MuiThemeProvider>
