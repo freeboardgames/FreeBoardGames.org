@@ -54,7 +54,8 @@ class GameView extends React.Component {
           subtitle={gameSubtitle}
         />
         <CardText>
-          <img src={gameScreenshot} style={{width: '100%'}} />
+          <img src={gameScreenshot} style={{width: '60%', marginLeft:'20%',
+                                            marginRight: '20%'}} />
           <br /><br />
           {gameDescription}
         </CardText>
