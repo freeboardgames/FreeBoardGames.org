@@ -48,14 +48,14 @@ class NewParty extends React.Component {
             id="name"
             hintText="Party's name"
             floatingLabelText="Name"
-            onChange={this.onNameChange}
+            onChange={this.onNameChange.bind(this)}
             errorText={this.state.error}
             value={this.state.name}
           />
         </CardText>
         <CardActions style={{textAlign: "right"}}>
           <RaisedButton label="Create" secondary={true}
-            onClick={this.doNewParty} />
+            onClick={this.doNewParty.bind(this)} />
         </CardActions>
       </div>
       ) : (
