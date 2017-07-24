@@ -33,7 +33,6 @@ class TurnatoBar extends React.Component {
               iconElementLeft={<img src="/logo_optimized.svg"
               style={{color:'white', width: '32px', height: '32px',
               marginTop: '8px'}}></img>}
-              iconElementRight={<IconButton><ActionAccountCircle /></IconButton>}
             />
           </a>
           {this.props.children}

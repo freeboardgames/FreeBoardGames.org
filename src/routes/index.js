@@ -2,6 +2,7 @@
 import CoreLayout from '../layouts/CoreLayout/CoreLayout'
 import CheckerGameRoute from '../games/CheckerGame'
 import ChessGameRoute from '../games/ChessGame'
+import GameRoute from './Game'
 import HomeRoute from './Home'
 import PartyViewRoute from './PartyView'
 import LoginRoute from './Login'
@@ -20,6 +21,7 @@ export const createRoutes = (store) => ({
     ChessGameRoute(store),
     PartyViewRoute(store),
     LoginRoute(store),
+    GameRoute(store),
     NewPartyRoute(store)
   ]
 })

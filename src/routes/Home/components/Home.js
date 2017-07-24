@@ -98,7 +98,7 @@ class Home extends React.Component {
       <List>
 
         {(matchesList.length > 0) ? (
-          <Subheader>Matches</Subheader>) : null}
+          <Subheader>Active Matches</Subheader>) : null}
         {matchesList}
         <Subheader>Parties</Subheader>
         {partiesList}

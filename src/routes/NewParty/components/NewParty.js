@@ -39,7 +39,7 @@ class NewParty extends React.Component {
       <TurnatoBar disconnected={this.props.disconnected}>
       <CardHeader style={{paddingBottom: '0px'}}
         title="Give a name to your party."
-        subtitle="Pick a memorable name!"
+        subtitle="You will be able to invite friends to join you"
       />
       {(!this.props.loading) ? (
       <div>

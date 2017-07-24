@@ -1,5 +1,6 @@
 const turnatoLogin = require('./turnato-login.js');
 const homeHandle = require('./home-handle.js');
+const gameHandle = require('./game-handle.js');
 const joinPartyHandle = require('./party-handle.js').joinPartyHandle;
 const leavePartyHandle = require('./party-handle.js').leavePartyHandle;
 const downHandle = require('./party-handle.js').downHandle;
@@ -36,6 +37,9 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
           return;
         case 'HOME_REQUEST':
           homeHandle(socket, dispatch, db, user);
+          return;
+        case 'GAME_INFO_REQUEST':
+          gameHandle(socket, dispatch, db, message.code);
           return;
       }
       if (!user) {

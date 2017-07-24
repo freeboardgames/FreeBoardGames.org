@@ -131,7 +131,7 @@ class PartyView extends React.Component {
       </Card>
       <List>
         {(matchesList.length > 0) ?
-          <Subheader>Recent matches</Subheader> :
+          <Subheader>Active Matches</Subheader> :
           null }
         {matchesList}
 
