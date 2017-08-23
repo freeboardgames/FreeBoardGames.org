@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
       console.log('ERROR CONNECTING TO MONGO');
       return
     }
-    ioHandle(db, socket, dispatchRoom, dispatch)
+    ioHandle(db, socket, dispatchRoom, dispatch, io)
   });
 });
 

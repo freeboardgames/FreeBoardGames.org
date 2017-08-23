@@ -11,8 +11,9 @@ const newUserHandle = require('./new-user-handle.js');
 const sendMessageHandle = require('./hud-handle.js').sendMessageHandle;
 const savePushSubscriptionHandle = require('./hud-handle.js').savePushSubscriptionHandle;
 const newPartyHandle = require('./newParty-handle.js');
+const joinLobbyHandle = require('./lobby-handle.js');
 
-var ioHandle = (db, socket, dispatchRoom, dispatch) => {
+var ioHandle = (db, socket, dispatchRoom, dispatch, io) => {
   console.log('Client connected');
   var user = null;
   socket.on('login', (token) => {
@@ -47,6 +48,9 @@ var ioHandle = (db, socket, dispatchRoom, dispatch) => {
         return;
       }
       switch (message.type) {
+        case 'JOIN_LOBBY_REQUEST':
+          joinLobbyHandle(io, socket, dispatch, db, user, message.code);
+          break;
         case 'NEW_PARTY_REQUEST':
           newPartyHandle(socket, dispatch, db, user, message.name);
           break;

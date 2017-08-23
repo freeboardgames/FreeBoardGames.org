@@ -6,6 +6,7 @@ import GameRoute from './Game'
 import HomeRoute from './Home'
 import PartyViewRoute from './PartyView'
 import LoginRoute from './Login'
+import LobbyRoute from './Lobby'
 import NewPartyRoute from './NewParty'
 
 
@@ -22,6 +23,7 @@ export const createRoutes = (store) => ({
     PartyViewRoute(store),
     LoginRoute(store),
     GameRoute(store),
+    LobbyRoute(store),
     NewPartyRoute(store)
   ]
 })

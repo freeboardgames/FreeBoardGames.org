@@ -1,19 +1,11 @@
 import React from 'react'
 import TurnatoBar from '../../../TurnatoBar/TurnatoBar'
 import RaisedButton from 'material-ui/RaisedButton';
-import Snackbar from 'material-ui/Snackbar';
 import CircularProgress from 'material-ui/CircularProgress';
-import {List, ListItem} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import { Link } from 'react-router'
-import Subheader from 'material-ui/Subheader';
 import ActionGroupWork from 'material-ui/svg-icons/action/group-work';
-import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import ImageRemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
-import PlacesCasino from 'material-ui/svg-icons/places/casino';
 import FlatButton from 'material-ui/FlatButton';
-import Checkbox from 'material-ui/Checkbox';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { browserHistory } from 'react-router'
 
 

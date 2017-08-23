@@ -57,15 +57,15 @@ class Login extends React.Component {
       <TextField
         id="nickname"
         hintText="Your nickname"
-        onChange={this.onNicknameChange}
+        onChange={this.onNicknameChange.bind(this)}
         floatingLabelText="Nickname"
-        onKeyPress={this.onKeyPress}
+        onKeyPress={this.onKeyPress.bind(this)}
         value={this.state.nickname}
       /><br />
     </CardText>
     <CardActions style={{textAlign: "right"}}>
       <RaisedButton label="Play" secondary={true}
-        onClick={this.doNewUser}
+        onClick={this.doNewUser.bind(this)}
         disabled={!this.state.nickname || this.state.nickname.length == 0} />
     </CardActions>
   </div>
