@@ -10,13 +10,14 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const Lobby = require('./containers/LobbyViewContainer').default
+      const requireAuthentication = require('../../AuthenticatedComponent/AuthenticatedComponent').requireAuthentication
       const reducer = require('./modules/lobby').default
 
       /*  Add the reducer to the store on key 'counter'  */
       injectReducer(store, { key: 'lobby', reducer })
 
       /*  Return getComponent   */
-      cb(null, Lobby)
+      cb(null, requireAuthentication(Lobby))
 
     /* Webpack named bundle   */
   }, 'lobby')
