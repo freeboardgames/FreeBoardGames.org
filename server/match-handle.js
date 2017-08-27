@@ -2,12 +2,12 @@ const cache = require('memory-cache');
 const _ = require('underscore');
 const checkersReducer = require('./games/checkerGameState.js').default;
 const chessReducer = require('./games/chessGameState.js').default;
-const secrets = require('./secrets.js').default;
+const secrets = require('./secrets.js');
 var LAST_DB = null;
 var NOTIFICATION_TIMERS = {};
 const webpush = require('web-push');
 const CACHE_DURATION = 5 * 60 * 1000;
-const vapidKeys = {
+var vapidKeys = {
   publicKey:
   'BAN72E3hbQ14KDaYyr9tSTXewOB9CvN-sSyQuk0vPq-V755kPnoCivqUZvP8ib1p_MFgIiLgNYb_eT6N0uYYIuo',
   privateKey: secrets.vapid_private_key
