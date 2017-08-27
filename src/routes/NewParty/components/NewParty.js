@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import { browserHistory } from 'react-router'
+import ReactGA from 'react-ga'
 
 class NewParty extends React.Component {
   componentWillMount() {
@@ -31,6 +32,10 @@ class NewParty extends React.Component {
   }
 
   doNewParty() {
+    ReactGA.event({
+        category: 'NewParty',
+        action: 'do',
+    });
     this.props.newParty(this.state.name);
   }
 

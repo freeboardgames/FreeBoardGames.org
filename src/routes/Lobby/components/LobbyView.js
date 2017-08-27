@@ -5,6 +5,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router'
+import ReactGA from 'react-ga'
 
 const TICK_INTERVAL = 1000;
 
@@ -13,6 +14,10 @@ class LobbyView extends React.Component {
     this.joinLobby()
   }
   joinLobby() {
+    ReactGA.event({
+        category: 'Lobby',
+        action: 'join',
+    });
     if (this.timer)
       clearInterval(this.timer);
     this.state = { elapsed: 0 };
@@ -27,9 +32,17 @@ class LobbyView extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.lobby.status === 'FOUND'  &&
        this.props.lobby.status != 'FOUND') {
+       ReactGA.event({
+           category: 'Lobby',
+           action: 'found',
+       });
       browserHistory.push(nextProps.lobby.link);
     }
     if (nextProps.lobby.status === 'WAITING') {
+      ReactGA.event({
+          category: 'Lobby',
+          action: 'waiting',
+      });
       this.timer = setInterval(this.tick.bind(this), TICK_INTERVAL);
     }
   }
@@ -39,6 +52,11 @@ class LobbyView extends React.Component {
     switch (this.props.lobby.status) {
       case 'WAITING':
         if (this.state.elapsed > this.props.lobby.wait) {
+          clearInterval(this.timer);
+          ReactGA.event({
+              category: 'Lobby',
+              action: 'failed',
+          });
           progress = (<span>
             <p>Failed to find someone. Retry?</p>
             <RaisedButton label="Retry" onClick={this.joinLobby.bind(this)}
@@ -55,8 +73,6 @@ class LobbyView extends React.Component {
               <p>{mins}:{secs < 10 ? 0 : null }{secs}</p>
             </span>);
         }
-        break;
-      case 'FAILED':
         break;
     }
     if (this.props.lobby.loading) {

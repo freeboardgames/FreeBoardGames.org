@@ -114,6 +114,7 @@
     "react-copy-to-clipboard": "^5.0.0",
     "react-dom": "^15.0.0",
     "react-flip-move": "^2.6.0",
+    "react-ga": "^2.2.0",
     "react-hammerjs": "^0.5.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.0",

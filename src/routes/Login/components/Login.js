@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import { browserHistory } from 'react-router'
+import ReactGA from 'react-ga'
 
 class Login extends React.Component {
   componentWillMount() {
@@ -15,6 +16,10 @@ class Login extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.token) {
+      ReactGA.event({
+          category: 'Login',
+          action: 'success',
+      });
       localStorage.setItem('token3', nextProps.token);
       if ('location' in this.props &&
           'query' in this.props.location &&
@@ -37,10 +42,18 @@ class Login extends React.Component {
     }
   }
   doNewUser() {
+    ReactGA.event({
+        category: 'Login',
+        action: 'do',
+    });
     this.props.newUser(this.state.nickname);
   }
   onKeyPress(e) {
     if (e.key === 'Enter') {
+      ReactGA.event({
+          category: 'Login',
+          action: 'enter',
+      });
       this.doNewUser()
     }
   }

@@ -6,6 +6,7 @@ import ChessPiece from './ChessPiece'
 import CircularProgress from 'material-ui/CircularProgress';
 import './ChessGame.scss'
 import TurnHUD from '../../../TurnHUD/containers/TurnHUDContainer'
+import ReactGA from 'react-ga'
 
 class ChessGame extends React.Component {
   componentDidMount () {
@@ -24,6 +25,10 @@ class ChessGame extends React.Component {
         real_x = 7 - x;
         real_y = 7 - y;
       }
+      ReactGA.event({
+          category: 'ChessGame',
+          action: 'click',
+      });
       this.props.sendClick(this.props.params.id, real_x, real_y, state.player);
     };
     if (state.loading) {

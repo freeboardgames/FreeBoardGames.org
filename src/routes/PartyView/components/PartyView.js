@@ -15,6 +15,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { browserHistory } from 'react-router'
+import ReactGA from 'react-ga'
 
 
 class PartyView extends React.Component {
@@ -23,16 +24,34 @@ class PartyView extends React.Component {
                    linkCopied: false})
   }
   componentDidMount() {
+    ReactGA.event({
+        category: 'PartyView',
+        action: 'visit',
+    });
     this.props.joinParty(this.props.token, this.props.params.id)
   }
   componentWillUnmount() {
     this.props.leaveParty(this.props.token, this.props.params.id)
   }
   down(game) {
+    ReactGA.event({
+        category: 'PartyView',
+        action: 'down',
+        label: game.code,
+    });
     return () => {
       if (game.loading)
         return
       this.props.down(this.props.info.code, game.code)
+    }
+  }
+  copyLink() {
+    return () => {
+      this.setState({linkCopied: true});
+      ReactGA.event({
+          category: 'PartyView',
+          action: 'copyLink',
+      });
     }
   }
   render() {
@@ -124,7 +143,7 @@ class PartyView extends React.Component {
 
         <CardActions style={{textAlign: "right"}}>
           <CopyToClipboard text={this.state.link}
-            onCopy={() => this.setState({linkCopied: true})}>
+            onCopy={this.copyLink()}>
             <RaisedButton label="Copy Invite Link" secondary={true} />
           </CopyToClipboard>
         </CardActions>

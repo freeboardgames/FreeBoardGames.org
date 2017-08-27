@@ -6,6 +6,7 @@ import CheckerPiece from './CheckerPiece'
 import CircularProgress from 'material-ui/CircularProgress';
 import './CheckerGame.scss'
 import TurnHUD from '../../../TurnHUD/containers/TurnHUDContainer'
+import ReactGA from 'react-ga'
 
 class CheckerGame extends React.Component {
   componentDidMount () {
@@ -18,6 +19,10 @@ class CheckerGame extends React.Component {
     let state = this.props.state;
     let onClick = (x,y) => () => {
       this.props.sendClick(this.props.params.id, x,y, state.player);
+      ReactGA.event({
+          category: 'CheckerGame',
+          action: 'click',
+      });
     };
     if (state.loading) {
       return (

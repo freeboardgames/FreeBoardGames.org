@@ -1,6 +1,7 @@
 import React from 'react'
 import LinearProgress from 'material-ui/LinearProgress';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import ReactGA from 'react-ga'
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -18,6 +19,10 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function askPermission() {
+  ReactGA.event({
+      category: 'TurnHUD',
+      action: 'askNotificationPermission',
+  });
   return new Promise((resolve, reject) => {
     const permissionResult = Notification.requestPermission((result) => {
       resolve(result);
@@ -54,15 +59,27 @@ class TurnHUD extends React.Component {
     askPermission()
     .then((permissionResult) => {
       if (permissionResult !== 'granted') {
+        ReactGA.event({
+            category: 'TurnHUD',
+            action: 'notificationPermissionDenied',
+        });
         console.log('We weren\'t granted permission.');
       }
       subscribeUserToPush()
       .then((pushSubscription) => {
         if (!pushSubscription) {
+          ReactGA.event({
+              category: 'TurnHUD',
+              action: 'notificationFailedPushSubscribe',
+          });
           console.log('FAILED TO PUSH SUBSCRIBE');
           return;
         }
         this.props.savePushSubscription(pushSubscription);
+        ReactGA.event({
+            category: 'TurnHUD',
+            action: 'notificationSuccessPushSubscription',
+        });
         console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
         return pushSubscription;
       });
@@ -71,14 +88,30 @@ class TurnHUD extends React.Component {
 
   render() {
     let promptText = () => {
+      ReactGA.event({
+          category: 'TurnHUD',
+          action: 'promptText',
+      });
       var text = prompt('Say something');
       if (text) {
+        ReactGA.event({
+            category: 'TurnHUD',
+            action: 'text',
+        });
         this.props.sendMessage(this.props.match_code, this.props.player, text);
       }
     }
     let promptResign = () => {
+      ReactGA.event({
+          category: 'TurnHUD',
+          action: 'promptResign',
+      });
       var resign = confirm('Are you sure you want to resign?');
       if (resign) {
+        ReactGA.event({
+            category: 'TurnHUD',
+            action: 'resign',
+        });
         this.props.resign(this.props.match_code, this.props.player);
       }
     }
@@ -111,6 +144,10 @@ class TurnHUD extends React.Component {
     // WIN LAYER
     let winLayer = null;
     if (this.props.winner != null) {
+      ReactGA.event({
+          category: 'TurnHUD',
+          action: 'endGame',
+      });
       winLayer = (<div style={{position: 'absolute', left: 0, top: 0,
         right:0, height: '100%', background: 'rgba(255,255,255,.85)',
         zIndex: 9000, display: 'block', textAlign: 'center'}}>
