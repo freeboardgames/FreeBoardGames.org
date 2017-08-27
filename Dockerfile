@@ -1,4 +1,6 @@
 FROM node:boron
+ENV NODE_ENV production
+ENV MONGODB_URI mongodb://mongo/turnato
 
 # Create app directory
 WORKDIR /usr/src/app

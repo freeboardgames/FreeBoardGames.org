@@ -1,3 +1,5 @@
+const GAMES = require('./games.js');
+
 module.exports = (socket, dispatch, db, user) => {
   if (user) {
     db.collection('matches').find({players:  { $in: [user._id]},
@@ -37,7 +39,5 @@ module.exports = (socket, dispatch, db, user) => {
     });
   }
 
-  db.collection('games').find().toArray((err, games) => {
-    dispatch({type: 'SET_GAMES', games});
-  });
+  dispatch({type: 'SET_GAMES', games: GAMES.list});
 }

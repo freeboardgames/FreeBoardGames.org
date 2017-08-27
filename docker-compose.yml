@@ -1,0 +1,9 @@
+version: "2"
+services:
+  mongo:
+    image: mongo
+  web:
+    image: felizardo/turnato
+    command: npm start
+    ports:
+      - "8080:3000"
