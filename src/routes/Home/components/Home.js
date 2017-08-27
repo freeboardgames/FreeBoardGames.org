@@ -111,10 +111,8 @@ class Home extends React.Component {
       </List>)}
       <br/><br/>
       <p style={{fontSize: '12px', textAlign: 'center'}}>
-      <a href="https://discord.gg/S2wfpCW" target="_blank">Discord</a>
-      &nbsp;-&nbsp;
-      <a href="https://www.facebook.com/turnatodotcom/"
-        target="_blank">Facebook</a>
+      <a href="https://github.com/Felizardo/turnato" target="_blank">Fork me on
+      GitHub</a>
       </p>
       <br/><br/>
       </TurnatoBar>)
