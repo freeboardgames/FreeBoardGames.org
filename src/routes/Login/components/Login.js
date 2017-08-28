@@ -20,7 +20,7 @@ class Login extends React.Component {
           category: 'Login',
           action: 'success',
       });
-      localStorage.setItem('token3', nextProps.token);
+      localStorage.setItem('token4', nextProps.token);
       if ('location' in this.props &&
           'query' in this.props.location &&
           'next' in this.props.location.query) {
