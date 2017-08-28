@@ -58,12 +58,11 @@ function leaveMatch(match_code) {
 
 const actions = exports.actions = {
   sendClick, joinMatch, leaveMatch, resign
-};
 
-// ------------------------------------
-// FUNCTIONS
-// ------------------------------------
-function isValidCell(board, x, y) {
+  // ------------------------------------
+  // FUNCTIONS
+  // ------------------------------------
+};function isValidCell(board, x, y) {
   let boardHeight = board.length;
   let boardWidth = board[0].length;
   return x >= 0 && x < boardWidth && y >= 0 && y < boardHeight;
@@ -187,12 +186,11 @@ const ACTION_HANDLERS = {
       });
     }
   }
-};
 
-// ------------------------------------
-// Reducer
-// ------------------------------------
-const initialState = { board: [[{ player: 0, key: 0 }, null, { player: 0, key: 1 }, null, { player: 0, key: 2 }, null, { player: 0, key: 3 }, null], [null, { player: 0, key: 4 }, null, { player: 0, key: 5 }, null, { player: 0, key: 6 }, null, { player: 0, key: 7 }], [{ player: 0, key: 8 }, null, { player: 0, key: 9 }, null, { player: 0, key: 10 }, null, { player: 0, key: 11 }, null], [null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null], [null, { player: 1, key: 12 }, null, { player: 1, key: 13 }, null, { player: 1, key: 14 }, null, { player: 1, key: 15 }], [{ player: 1, key: 16 }, null, { player: 1, key: 17 }, null, { player: 1, key: 18 }, null, { player: 1, key: 19 }, null], [null, { player: 1, key: 20 }, null, { player: 1, key: 21 }, null, { player: 1, key: 22 }, null, { player: 1, key: 23 }]],
+  // ------------------------------------
+  // Reducer
+  // ------------------------------------
+};const initialState = { board: [[{ player: 0, key: 0 }, null, { player: 0, key: 1 }, null, { player: 0, key: 2 }, null, { player: 0, key: 3 }, null], [null, { player: 0, key: 4 }, null, { player: 0, key: 5 }, null, { player: 0, key: 6 }, null, { player: 0, key: 7 }], [{ player: 0, key: 8 }, null, { player: 0, key: 9 }, null, { player: 0, key: 10 }, null, { player: 0, key: 11 }, null], [null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null], [null, { player: 1, key: 12 }, null, { player: 1, key: 13 }, null, { player: 1, key: 14 }, null, { player: 1, key: 15 }], [{ player: 1, key: 16 }, null, { player: 1, key: 17 }, null, { player: 1, key: 18 }, null, { player: 1, key: 19 }, null], [null, { player: 1, key: 20 }, null, { player: 1, key: 21 }, null, { player: 1, key: 22 }, null, { player: 1, key: 23 }]],
   loading: true,
   turn: 0,
   winner: null,

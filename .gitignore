@@ -1,5 +1,6 @@
 .DS_STORE
 *.log
+docker-compose-aws.yml
 
 node_modules
 

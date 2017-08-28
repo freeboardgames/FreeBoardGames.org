@@ -58,12 +58,11 @@ function leaveMatch(match_code) {
 
 const actions = exports.actions = {
   sendClick, leaveMatch, joinMatch
-};
 
-// ------------------------------------
-// FUNCTIONS
-// ------------------------------------
-function isValidCell(board, x, y) {
+  // ------------------------------------
+  // FUNCTIONS
+  // ------------------------------------
+};function isValidCell(board, x, y) {
   let boardHeight = board.length;
   let boardWidth = board[0].length;
   return x >= 0 && x < boardWidth && y >= 0 && y < boardHeight;
@@ -417,12 +416,11 @@ const ACTION_HANDLERS = {
       });
     }
   }
-};
 
-// ------------------------------------
-// Reducer
-// ------------------------------------
-const initialState = { board: [['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'], ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'], ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']],
+  // ------------------------------------
+  // Reducer
+  // ------------------------------------
+};const initialState = { board: [['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'], ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'], ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']],
   loading: true,
   turn: 0,
   winner: null,
