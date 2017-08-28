@@ -5,7 +5,7 @@ mongo:
   volumes:
     - mongoTurnatoData:/data/db
 web:
-  image: felizardo/turnato
+  image: turnato
   command: npm start
   cpu_shares: 100
   mem_limit: 262144000
