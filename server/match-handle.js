@@ -10,7 +10,7 @@ const CACHE_DURATION = 5 * 60 * 1000;
 var vapidKeys = {
   publicKey:
   'BAN72E3hbQ14KDaYyr9tSTXewOB9CvN-sSyQuk0vPq-V755kPnoCivqUZvP8ib1p_MFgIiLgNYb_eT6N0uYYIuo',
-  privateKey: secrets.vapid_private_key
+  privateKey: secrets.vapid_private_key || 'create secrets.js' 
 };
 
 function genericReducer (game_code, state, action) {

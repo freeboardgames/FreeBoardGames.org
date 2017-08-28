@@ -1,7 +1,7 @@
 const jwt    = require('jsonwebtoken');
 const crypto = require('crypto');
-const JWT_TOKEN_SECRET = process.env.JWT_TOKEN_SECRET ||
-       'zwxnizRjZ99hLsgris7k';
+const secrets = require('./secrets.js');
+const JWT_TOKEN_SECRET = secrets.jwt_token_secret || 'create secrets.js';
 
 var getLoggedUser = (jwt_token) => {
   try {
