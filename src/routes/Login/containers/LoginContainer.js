@@ -1,15 +1,15 @@
-import { connect } from 'react-redux'
-import { newUser } from '../modules/login'
+import { connect } from 'react-redux';
+import { newUser } from '../modules/login';
 
-import Login from '../components/Login'
+import Login from '../components/Login';
 
 const mapDispatchToProps = {
-  newUser
-}
+    newUser
+};
 
 const mapStateToProps = (state) => ({
-  ...state.login,
-  disconnected: state.connection.disconnected,
-})
+    ...state.login,
+    disconnected: state.connection.disconnected,
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

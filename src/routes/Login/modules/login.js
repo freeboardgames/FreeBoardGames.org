@@ -1,9 +1,9 @@
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch';
 
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const NEW_USER_REQUEST = 'NEW_USER_REQUEST'
+export const NEW_USER_REQUEST = 'NEW_USER_REQUEST';
 
 
 // ------------------------------------
@@ -11,31 +11,31 @@ export const NEW_USER_REQUEST = 'NEW_USER_REQUEST'
 // ------------------------------------
 
 export const newUser = (nickname) => (dispatch, getState) => {
-  dispatch({type: NEW_USER_REQUEST, nickname});
-}
+    dispatch({type: NEW_USER_REQUEST, nickname});
+};
 
 export const actions = {
-  newUser
-}
+    newUser
+};
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [NEW_USER_REQUEST] : (state, action) => {
-    return {...state,
-      loading: true} },
-  ['AUTH_SUCCESS'] : (state, action) => {
-    return {token: action.payload.token}
-  }
-}
+    [NEW_USER_REQUEST] : (state, action) => {
+        return {...state,
+            loading: true}; },
+    ['AUTH_SUCCESS'] : (state, action) => {
+        return {token: action.payload.token};
+    }
+};
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {loading: false}
+const initialState = {loading: false};
 export default function loginReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
+    const handler = ACTION_HANDLERS[action.type];
 
-  return handler ? handler(state, action) : state
+    return handler ? handler(state, action) : state;
 }

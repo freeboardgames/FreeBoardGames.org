@@ -1,32 +1,32 @@
 // We only need to import the modules necessary for initial render
-import CoreLayout from '../layouts/CoreLayout/CoreLayout'
-import CheckerGameRoute from '../games/CheckerGame'
-import ChessGameRoute from '../games/ChessGame'
-import GameRoute from './Game'
-import HomeRoute from './Home'
-import PartyViewRoute from './PartyView'
-import LoginRoute from './Login'
-import LobbyRoute from './Lobby'
-import NewPartyRoute from './NewParty'
+import CoreLayout from '../layouts/CoreLayout/CoreLayout';
+import CheckerGameRoute from '../games/CheckerGame';
+import ChessGameRoute from '../games/ChessGame';
+import GameRoute from './Game';
+import HomeRoute from './Home';
+import PartyViewRoute from './PartyView';
+import LoginRoute from './Login';
+import LobbyRoute from './Lobby';
+import NewPartyRoute from './NewParty';
 
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
 export const createRoutes = (store) => ({
-  path        : '/',
-  component   : CoreLayout,
-  indexRoute  : HomeRoute(store),
-  childRoutes : [
-    CheckerGameRoute(store),
-    ChessGameRoute(store),
-    PartyViewRoute(store),
-    LoginRoute(store),
-    GameRoute(store),
-    LobbyRoute(store),
-    NewPartyRoute(store)
-  ]
-})
+    path        : '/',
+    component   : CoreLayout,
+    indexRoute  : HomeRoute(store),
+    childRoutes : [
+        CheckerGameRoute(store),
+        ChessGameRoute(store),
+        PartyViewRoute(store),
+        LoginRoute(store),
+        GameRoute(store),
+        LobbyRoute(store),
+        NewPartyRoute(store)
+    ]
+});
 
 /*  Note: childRoutes can be chunked or otherwise loaded programmatically
     using getChildRoutes with the following signature:
@@ -46,4 +46,4 @@ export const createRoutes = (store) => ({
     when the route exists and matches.
 */
 
-export default createRoutes
+export default createRoutes;

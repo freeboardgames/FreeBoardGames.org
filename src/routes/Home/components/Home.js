@@ -1,5 +1,5 @@
-import React from 'react'
-import TurnatoBar from '../../../TurnatoBar/TurnatoBar'
+import React from 'react';
+import TurnatoBar from '../../../TurnatoBar/TurnatoBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem} from 'material-ui/List';
@@ -8,47 +8,47 @@ import Subheader from 'material-ui/Subheader';
 import SocialGroup from 'material-ui/svg-icons/social/group';
 import PlacesCasino from 'material-ui/svg-icons/places/casino';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
 
 
 class Home extends React.Component {
-  componentDidMount() {
-    this.props.requestHome(this.props.token)
-  }
+    componentDidMount() {
+        this.props.requestHome(this.props.token);
+    }
 
-  render() {
-    let joinMatch = (match) => () => {
-      browserHistory.push('/g/' + match.game_code + '/' + match._id);
-    };
-    let viewGame = (game) => () => {
-      browserHistory.push('/g/' + game.code);
-    };
-    let viewParty = (id) => () => {
-      browserHistory.push('/p/'+id);
-    };
-    let newParty = () => {
-      browserHistory.push('/newParty');
-    };
-    let login = () => {
-      browserHistory.push('/login');
-    };
+    render() {
+        let joinMatch = (match) => () => {
+            browserHistory.push('/g/' + match.game_code + '/' + match._id);
+        };
+        let viewGame = (game) => () => {
+            browserHistory.push('/g/' + game.code);
+        };
+        let viewParty = (id) => () => {
+            browserHistory.push('/p/'+id);
+        };
+        let newParty = () => {
+            browserHistory.push('/newParty');
+        };
+        let login = () => {
+            browserHistory.push('/login');
+        };
     // MATCHES
-    let matchesList = [];
-    this.props.matches.map((match) => {
-      matchesList.push((<ListItem
+        let matchesList = [];
+        this.props.matches.map((match) => {
+            matchesList.push((<ListItem
         key={match._id}
         primaryText={match.playersNickname.join(', ')}
-        secondaryText={match.game_name + " - " + match.status}
+        secondaryText={match.game_name + ' - ' + match.status}
         rightIcon={<NavigationChevronRight />}
         style={{WebkitAppearance: 'inherit'}}
         onClick={joinMatch(match)}
-      />))
-    });
+      />));
+        });
 
     // GAMES
-    let gamesList = [];
-    this.props.games.map((game) => {
-      gamesList.push((<ListItem
+        let gamesList = [];
+        this.props.games.map((game) => {
+            gamesList.push((<ListItem
         key={game.code}
         primaryText={game.name}
         leftIcon={<PlacesCasino />}
@@ -56,13 +56,13 @@ class Home extends React.Component {
         onClick={viewGame(game)}
         style={{WebkitAppearance: 'inherit'}}
       />));
-    })
+        });
 
     // Parties
-    let partiesList = [];
-    if (this.props.parties.length > 0) {
-      this.props.parties.map((party) => {
-        partiesList.push((<ListItem
+        let partiesList = [];
+        if (this.props.parties.length > 0) {
+            this.props.parties.map((party) => {
+                partiesList.push((<ListItem
           leftIcon={<SocialGroup />}
           primaryText={party.name}
           rightIcon={<NavigationChevronRight />}
@@ -70,16 +70,16 @@ class Home extends React.Component {
           onClick={viewParty(party._id)}
           key={party._id}
         />));
-      });
-    } else {
-      partiesList.push(
-        (<p key="0" style={{paddingLeft: "16px",
-        paddingRight: "16px"}}>You do not belong to any party yet.<br /><br />
+            });
+        } else {
+            partiesList.push(
+        (<p key="0" style={{paddingLeft: '16px',
+            paddingRight: '16px'}}>You do not belong to any party yet.<br /><br />
         <a
           onClick={newParty}
           href="#">Create one</a> and invite your friends!</p>));
-    }
-    return (<TurnatoBar disconnected={this.props.disconnected}>
+        }
+        return (<TurnatoBar disconnected={this.props.disconnected}>
       <Card>
         <CardMedia
           overlay={<CardTitle title="Fun with friends."
@@ -89,7 +89,7 @@ class Home extends React.Component {
       </CardMedia>
       </Card>
       { (this.props.loading) ? (
-        <div style={{textAlign: "center"}}>
+        <div style={{textAlign: 'center'}}>
           <br/>
           <CircularProgress size={80} thickness={5} />
         </div>
@@ -115,11 +115,11 @@ class Home extends React.Component {
       <a href="https://github.com/Felizardo/turnato" target="_blank">GitHub</a>
       </p>
       <br/><br/>
-      </TurnatoBar>)
+      </TurnatoBar>);
     }
-};
+}
 
-  Home.defaultProps = {
+Home.defaultProps = {
     disconnected: false,
     parties: [],
     loading: false,
@@ -127,5 +127,5 @@ class Home extends React.Component {
     games: [],
     token: null,
     requestHome: null
-  };
-export default Home
+};
+export default Home;

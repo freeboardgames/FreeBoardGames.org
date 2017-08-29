@@ -14,15 +14,15 @@ const ACTION_HANDLERS = {
             'token': action.payload.token,
             'userName': jwtDecode(action.payload.token).userName,
             'email': jwtDecode(action.payload.token).email,
-        }
+        };
     },
     ['AUTH_LOGOUT']: (state, payload) => {
-        return {...initialState}
+        return {...initialState};
     }
 };
 
 export default function authReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type];
+    const handler = ACTION_HANDLERS[action.type];
 
-  return handler ? handler(state, action) : state;
+    return handler ? handler(state, action) : state;
 }

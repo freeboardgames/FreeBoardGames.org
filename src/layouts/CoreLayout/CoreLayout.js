@@ -1,11 +1,11 @@
-import React from 'react'
-import './CoreLayout.scss'
-import '../../styles/core.scss'
+import React from 'react';
+import './CoreLayout.scss';
+import '../../styles/core.scss';
 
 export const CoreLayout = ({ children }) => (
-  <div style={{height: "100%"}}>
+  <div style={{height: '100%'}}>
     {children}
   </div>
-)
+);
 
-export default CoreLayout
+export default CoreLayout;

@@ -1,13 +1,13 @@
-import { connect } from 'react-redux'
-import { sendClick, joinMatch, leaveMatch, resign } from '../modules/checkerGameState'
-import CheckerGame from '../components/CheckerGame'
+import { connect } from 'react-redux';
+import { sendClick, joinMatch, leaveMatch, resign } from '../modules/checkerGameState';
+import CheckerGame from '../components/CheckerGame';
 
 const mapDispatchToProps = {
-  sendClick, joinMatch, leaveMatch, resign
-}
+    sendClick, joinMatch, leaveMatch, resign
+};
 
 const mapStateToProps = (state) => ({
-  state: state.checkerGameState
-})
+    state: state.checkerGameState
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(CheckerGame)
+export default connect(mapStateToProps, mapDispatchToProps)(CheckerGame);

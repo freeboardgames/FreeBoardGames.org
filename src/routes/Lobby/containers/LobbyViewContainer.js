@@ -1,16 +1,16 @@
-import { connect } from 'react-redux'
-import { joinLobby } from '../modules/lobby'
+import { connect } from 'react-redux';
+import { joinLobby } from '../modules/lobby';
 
-import LobbyView from '../components/LobbyView'
+import LobbyView from '../components/LobbyView';
 
 const mapDispatchToProps = {
-  joinLobby
-}
+    joinLobby
+};
 
 const mapStateToProps = (state) => ({
-  lobby: state.lobby,
-  token: state.auth.token,
-  disconnected: state.connection.disconnected,
-})
+    lobby: state.lobby,
+    token: state.auth.token,
+    disconnected: state.connection.disconnected,
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(LobbyView)
+export default connect(mapStateToProps, mapDispatchToProps)(LobbyView);

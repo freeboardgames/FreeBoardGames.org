@@ -1,18 +1,18 @@
 import React from 'react';
 const RookPiece = (primaryColor, secondaryColor) => {
-  if (primaryColor == '#000000') {
-    return (
+    if (primaryColor == '#000000') {
+        return (
       <g style={{opacity: 1,
-                 fill: '#000000',
-                 fillOpacity: 1,
-                 fillRule: 'evenodd',
-                 stroke: '#000000',
-                 strokeWidth: 1.5,
-                 strokeLinecap: 'round',
-                 strokeLinejoin: 'round',
-                 strokeMiterlimit: 4,
-                 strokeDasharray: 'none',
-                 strokeOpacity: 1}}>
+          fill: '#000000',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: '#000000',
+          strokeWidth: 1.5,
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          strokeMiterlimit: 4,
+          strokeDasharray: 'none',
+          strokeOpacity: 1}}>
         <path
           d="M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z "
           style={{strokeLinecap: 'butt'}} />
@@ -25,7 +25,7 @@ const RookPiece = (primaryColor, secondaryColor) => {
         <path
           d="M 14,29.5 L 14,16.5 L 31,16.5 L 31,29.5 L 14,29.5 z "
           style={{strokeLinecap: 'butt',
-                  strokeLinejoin: 'miter'}} />
+              strokeLinejoin: 'miter'}} />
         <path
           d="M 14,16.5 L 11,14 L 34,14 L 31,16.5 L 14,16.5 z "
           style={{strokeLinecap: 'butt'}} />
@@ -35,48 +35,48 @@ const RookPiece = (primaryColor, secondaryColor) => {
         <path
           d="M 12,35.5 L 33,35.5 L 33,35.5"
           style={{fill: 'none',
-                  stroke: '#ffffff',
-                  strokeWidth: 1,
-                  strokeLinejoin: 'miter'
-                  }} />
+              stroke: '#ffffff',
+              strokeWidth: 1,
+              strokeLinejoin: 'miter'
+          }} />
         <path
           d="M 13,31.5 L 32,31.5"
           style={{fill: 'none',
-                  stroke: '#ffffff',
-                  strokeWidth: 1,
-                  strokeLinejoin: 'miter'}} />
+              stroke: '#ffffff',
+              strokeWidth: 1,
+              strokeLinejoin: 'miter'}} />
         <path
           d="M 14,29.5 L 31,29.5"
           style={{fill: 'none',
-                  stroke: '#ffffff',
-                  strokeWidth: 1,
-                  strokeLinejoin: 'miter'}} />
+              stroke: '#ffffff',
+              strokeWidth: 1,
+              strokeLinejoin: 'miter'}} />
         <path
           d="M 14,16.5 L 31,16.5"
           style={{fill: 'none',
-                  stroke: '#ffffff',
-                  strokeWidth: 1,
-                  strokeLinejoin: 'miter'}} />
+              stroke: '#ffffff',
+              strokeWidth: 1,
+              strokeLinejoin: 'miter'}} />
         <path
           d="M 11,14 L 34,14"
           style={{fill: 'none',
-                  stroke: '#ffffff',
-                  strokeWidth: 1,
-                  strokeLinejoin: 'miter'}} />
+              stroke: '#ffffff',
+              strokeWidth: 1,
+              strokeLinejoin: 'miter'}} />
       </g>);
-  } else {
-    return  (
+    } else {
+        return  (
       <g style={{opacity: 1,
-                 fill: '#ffffff',
-                 fillOpacity: 1,
-                 fillRule: 'evenodd',
-                 stroke: '#000000',
-                 strokeWidth: 1.5,
-                 strokeLinecap: 'round',
-                 strokeLinejoin: 'round',
-                 strokeMiterlimit: 4,
-                 strokeDasharray: 'none',
-                 strokeOpacity: 1}}>
+          fill: '#ffffff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: '#000000',
+          strokeWidth: 1.5,
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          strokeMiterlimit: 4,
+          strokeDasharray: 'none',
+          strokeOpacity: 1}}>
     <path
       d="M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z "
       style={{strokeLinecap: 'butt'}} />
@@ -91,16 +91,16 @@ const RookPiece = (primaryColor, secondaryColor) => {
     <path
       d="M 31,17 L 31,29.5 L 14,29.5 L 14,17"
       style={{strokeLinecap: 'butt',
-              strokeLinejoin: 'miter'}} />
+          strokeLinejoin: 'miter'}} />
     <path
       d="M 31,29.5 L 32.5,32 L 12.5,32 L 14,29.5" />
     <path
       d="M 11,14 L 34,14"
       style={{fill: 'none',
-              stroke: '#000000',
-              strokeLinejoin: 'miter'}} />
+          stroke: '#000000',
+          strokeLinejoin: 'miter'}} />
   </g>);
-  }
+    }
 };
 
-export default RookPiece
+export default RookPiece;

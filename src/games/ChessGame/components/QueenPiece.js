@@ -2,17 +2,17 @@ import React from 'react';
 
 const QueenPiece = (primaryColor, secondaryColor) => (
   <g style={{opacity: 1,
-             fill: primaryColor,
-             fillOpacity: 1,
-             fillRule: 'evenodd',
-             stroke: '#000000',
-             strokeWidth: 1.5,
-             strokeLinecap: 'round',
-             strokeLinejoin: 'round',
-             strokeMiterlimit: 4,
-             strokeDasharray: 'none',
-             strokeOpacity: 1
-           }}>
+      fill: primaryColor,
+      fillOpacity: 1,
+      fillRule: 'evenodd',
+      stroke: '#000000',
+      strokeWidth: 1.5,
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round',
+      strokeMiterlimit: 4,
+      strokeDasharray: 'none',
+      strokeOpacity: 1
+  }}>
     <path
       d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
       transform="translate(-1,-1)" />
@@ -37,11 +37,11 @@ const QueenPiece = (primaryColor, secondaryColor) => (
     <path
       d="M 11.5,30 C 15,29 30,29 33.5,30"
       style={{fill: 'none',
-    stroke: secondaryColor}} />
+          stroke: secondaryColor}} />
     <path
       d="M 12,33.5 C 18,32.5 27,32.5 33,33.5"
       style={{fill: 'none',
-    stroke: secondaryColor}} />
+          stroke: secondaryColor}} />
   </g>);
 
 export default QueenPiece;
