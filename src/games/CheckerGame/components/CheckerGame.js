@@ -7,6 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import './CheckerGame.scss';
 import TurnHUD from '../../../TurnHUD/containers/TurnHUDContainer';
 import ReactGA from 'react-ga';
+import PropTypes from 'prop-types';
 
 class CheckerGame extends React.Component {
     componentDidMount () {
@@ -36,7 +37,6 @@ class CheckerGame extends React.Component {
         }
     //Positioning pieces
         let pieces = [];
-        let key = 0;
         for (var j =0; j<state.board.length; j++) {
             let boardState_col = state.board[j];
             for (var i=0; i<boardState_col.length; i++) {
@@ -49,7 +49,6 @@ class CheckerGame extends React.Component {
                     pieces.push(
             (<CheckerPiece color={color} double={piece.double}
               x={i} y={j} key={piece.key} onClick={onClick}/>));
-                    key++;
                 }
             }
         }
@@ -75,6 +74,15 @@ class CheckerGame extends React.Component {
     }
 }
 
+
+CheckerGame.propTypes = {
+    sendClick: PropTypes.func,
+    leaveMatch: PropTypes.func,
+    joinMatch: PropTypes.func,
+    resign: PropTypes.func,
+    params: PropTypes.object,
+    state: PropTypes.array
+};
 
 CheckerGame.defaultProps = {
     sendClick: () => {},

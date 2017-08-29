@@ -128,6 +128,7 @@
     "sendgrid": "^4.2.0",
     "shortid": "^2.2.8",
     "socket.io": "^1.7.4",
+    "socket.io-client": "^2.0.3",
     "style-loader": "^0.13.1",
     "underscore": "^1.8.3",
     "url-loader": "^0.5.6",

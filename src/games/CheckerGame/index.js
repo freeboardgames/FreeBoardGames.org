@@ -21,7 +21,7 @@ export default (store) => ({
 
 
       /*  Return getComponent   */
-            cb(null, CheckerGame);
+            cb(null, requireAuthentication(CheckerGame));
 
     /* Webpack named bundle   */
         }, 'checker');

@@ -43,10 +43,6 @@ export function leaveMatch (match_code) {
     };
 }
 
-export const actions = {
-    sendClick, leaveMatch, joinMatch
-};
-
 // ------------------------------------
 // FUNCTIONS
 // ------------------------------------
@@ -130,9 +126,6 @@ function isEnPassantRisk(board, enPassantRisk, x, y, y2, player) {
     }
     if (!isInRisk)
         return false;
-    let direction = 1;
-    if (player == 1)
-        direction = -1;
     if (!isValidCell(board, x, y2))
         return false;
     if (getCellPlayer(board[y2][x]) != (player+1)%2)
@@ -173,8 +166,7 @@ function detectCheck (state) {
           opponentPlayer);
                 if (!opponentKingCords)
                     continue;
-                let opponentKingCell = stateCopy.board[opponentKingCords.y]
-                                              [opponentKingCords.x];
+                let opponentKingCell = stateCopy.board[opponentKingCords.y][opponentKingCords.x];
                 if (isCellMovable(opponentKingCell)) {
                     result[opponentPlayer] = true;
                 }
@@ -272,7 +264,7 @@ function selectPiece(state, x, y, player) {
         break;
     case 'b': //BISHOP
     case 'r': //ROOK
-    case 'q': //QUEEN
+    case 'q': { //QUEEN
         toggleCellSelected(board, x, y, player);
         let vectors = [];
         if (targetPiece == 'b') {
@@ -296,6 +288,7 @@ function selectPiece(state, x, y, player) {
             }
         }
         break;
+    }
     case 'n': //KNIGHT
         toggleCellSelected(board, x, y, player);
         for (let deltaY=-1; deltaY <= 1; deltaY+=2) {
@@ -305,7 +298,7 @@ function selectPiece(state, x, y, player) {
             }
         }
         break;
-    case 'p': //PAWN
+    case 'p': { //PAWN
         toggleCellSelected(board, x, y, player);
         let direction = 1;
         if (player == 0)
@@ -333,6 +326,7 @@ function selectPiece(state, x, y, player) {
             }
         }
         break;
+    }
     }
 }
 
@@ -398,9 +392,7 @@ const ACTION_HANDLERS = {
         if (action.subtype == 'CLICK') {
             state = deepCopy(state);
             let target = state.board[action.payload.y][action.payload.x];
-            let isTargetEmpty = isCellEmpty(target);
             let targetPlayer = getCellPlayer(target);
-            let isTargetSelected = isCellSelected(target);
             let isTargetMovable = isCellMovable(target);
       //Check if it is correct turn
             if (action.player != state.turn%2)

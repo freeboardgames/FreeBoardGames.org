@@ -16,7 +16,7 @@ const ACTION_HANDLERS = {
             'email': jwtDecode(action.payload.token).email,
         };
     },
-    ['AUTH_LOGOUT']: (state, payload) => {
+    ['AUTH_LOGOUT']: () => {
         return {...initialState};
     }
 };

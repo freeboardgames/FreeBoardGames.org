@@ -43,10 +43,6 @@ export function leaveMatch (match_code) {
     };
 }
 
-export const actions = {
-    sendClick, joinMatch, leaveMatch, resign
-};
-
 // ------------------------------------
 // FUNCTIONS
 // ------------------------------------
@@ -139,7 +135,7 @@ const ACTION_HANDLERS = {
                             state.board[y][x] = state.board[f.from.y][f.from.x];
                             state.board[f.from.y][f.from.x] = null;
                             state.turn += 1;
-                        } else if (f.movement = 'EAT') {
+                        } else if (f.movement == 'EAT') {
                             state.board[y][x] = state.board[f.from.y][f.from.x];
                             state.board[f.from.y][f.from.x] = null;
                             state.board[f.eaten.y][f.eaten.x] = null;

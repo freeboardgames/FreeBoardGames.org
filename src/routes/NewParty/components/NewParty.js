@@ -2,10 +2,10 @@ import React from 'react';
 import TurnatoBar from '../../../TurnatoBar/TurnatoBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import {CardActions, CardHeader, CardText} from 'material-ui/Card';
 import { browserHistory } from 'react-router';
+import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 class NewParty extends React.Component {
@@ -71,6 +71,14 @@ class NewParty extends React.Component {
         );
     }
 }
+NewParty.propTypes = {
+    disconnected: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    newParty: PropTypes.func.isRequired,
+    id: PropTypes.number.isRequired,
+};
 NewParty.defaultProps = {
     disconnected: false,
     loading: false,

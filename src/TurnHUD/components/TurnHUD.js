@@ -1,6 +1,7 @@
 import React from 'react';
 import LinearProgress from 'material-ui/LinearProgress';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 function urlBase64ToUint8Array(base64String) {
@@ -39,7 +40,6 @@ function subscribeUserToPush() {
     return navigator.serviceWorker.ready
   .then((registration) => {
       if (!registration) {
-          console.log('FAILED TO GET SERVICE WORKER REGISTRATION');
           return;
       }
       const subscribeOptions = {
@@ -63,7 +63,6 @@ class TurnHUD extends React.Component {
                 category: 'TurnHUD',
                 action: 'notificationPermissionDenied',
             });
-            console.log('We weren\'t granted permission.');
         }
         subscribeUserToPush()
       .then((pushSubscription) => {
@@ -72,7 +71,6 @@ class TurnHUD extends React.Component {
                   category: 'TurnHUD',
                   action: 'notificationFailedPushSubscribe',
               });
-              console.log('FAILED TO PUSH SUBSCRIBE');
               return;
           }
           this.props.savePushSubscription(pushSubscription);
@@ -80,7 +78,6 @@ class TurnHUD extends React.Component {
               category: 'TurnHUD',
               action: 'notificationSuccessPushSubscription',
           });
-          console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
           return pushSubscription;
       });
     });
@@ -222,7 +219,23 @@ class TurnHUD extends React.Component {
     </div>);
     }
 }
-
+TurnHUD.propTypes = {
+    match_code: PropTypes.string.isRequired,
+    players: PropTypes.array.isRequired,
+    playersNickname: PropTypes.array.isRequired,
+    player: PropTypes.number.isRequired,
+    playersPrimaryColors: PropTypes.array.isRequired, // Light background
+    playersSecondaryColors: PropTypes.array.isRequired, // Dark background
+    currentPlayer: PropTypes.number.isRequired,
+    winner: PropTypes.number,
+    messages: PropTypes.array.isRequired,
+    warning: PropTypes.string,
+    sendingMessage: PropTypes.bool.isRequired,
+    disconnected: PropTypes.bool.isRequired,
+    sendMessage: PropTypes.func.isRequired,
+    savePushSubscription: PropTypes.func.isRequired,
+    resign: PropTypes.func.isRequired
+};
 TurnHUD.defaultProps = {
     match_code: '',
     players: [],
@@ -237,6 +250,7 @@ TurnHUD.defaultProps = {
     sendingMessage: false,
     disconnected: false,
     sendMessage: () => {},
-    savePushSubscription: () => {}
+    savePushSubscription: () => {},
+    resign: () => {}
 };
 export default TurnHUD;

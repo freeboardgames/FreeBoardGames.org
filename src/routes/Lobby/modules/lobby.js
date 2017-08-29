@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-fetch';
-
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -9,10 +7,10 @@ export const SET_LOBBY_INFO = 'SET_LOBBY_INFO';
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const joinLobby = (code) => (dispatch, getState) => {
+export const joinLobby = (code) => (dispatch) => {
     dispatch({type: JOIN_LOBBY, code});
 };
-export const fail = () => (dispatch, getState) => {
+export const fail = () => (dispatch) => {
     dispatch({type: SET_LOBBY_INFO, payload: { status: 'FAILED' }});
 };
 

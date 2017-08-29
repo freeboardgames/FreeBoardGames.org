@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-fetch';
-
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -9,7 +7,7 @@ export const SET_GAME_INFO = 'SET_GAME_INFO';
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const requestGameInfo = (code) => (dispatch, getState) => {
+export const requestGameInfo = (code) => (dispatch) => {
     dispatch({type: GAME_INFO_REQUEST, code});
 };
 

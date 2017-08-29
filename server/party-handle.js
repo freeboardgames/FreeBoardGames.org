@@ -3,7 +3,7 @@ const GAMES = require('./games.js');
 
 let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
     let handlePartyDb = (party, matches, games, all_users, current_user, new_user) => {
-        users_nickname = party.users.map((u_code) => {
+        let users_nickname = party.users.map((u_code) => {
             return all_users.filter((u) => { return u._id == u_code; })[0].nickname;
         });
         let info = {name: party.name, users: party.users, currentUser: current_user,
@@ -68,7 +68,7 @@ let downHandle = (socket, dispatchRoom, dispatch, db,
                     game_name: game.name,
                     status: 'ACTIVE',
                     players: downMapping[game_code]
-                }, (err, result) => {
+                }, () => {
                     db.collection('matches').find({party_id:  party_code,
                         status: 'ACTIVE'})
             .toArray((err, matches) => {
@@ -84,11 +84,7 @@ let downHandle = (socket, dispatchRoom, dispatch, db,
         }
 
         db.collection('parties').updateOne({_id: party_code},
-      { $set: {downMapping: downMapping} },
-    (err, results) => {
-        if (err)
-            console.log(err);
-    });
+      { $set: {downMapping: downMapping} });
         dispatchRoom('party-' + party._id,
                  {type: 'SET_DOWN_MAPPING', downMapping: downMapping}, true);
     });

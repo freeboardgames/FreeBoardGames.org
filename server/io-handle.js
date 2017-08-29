@@ -14,23 +14,19 @@ const newPartyHandle = require('./newParty-handle.js');
 const joinLobbyHandle = require('./lobby-handle.js');
 
 var ioHandle = (db, socket, dispatchRoom, dispatch, io) => {
-    console.log('Client connected');
     var user = null;
     socket.on('login', (token) => {
         try {
             user = turnatoLogin.getLoggedUser(token);
         } catch (err) {
-            console.error(err);
+            console.error(err); // eslint-disable-line
         }
-    });
-    var LAST_ACTION_PROMISE = new Promise((resolve, reject) => {
-        resolve();
     });
     socket.on('socketIoMiddleware', (message, ackFn) => {
         if (ackFn) {
             ackFn();
         }
-        console.log(message.type);
+        console.log(message.type); // eslint-disable-line
         try {
             switch (message.type) {
             case 'NEW_USER_REQUEST':
@@ -44,7 +40,7 @@ var ioHandle = (db, socket, dispatchRoom, dispatch, io) => {
                 return;
             }
             if (!user) {
-                console.log('LACK OF LOGIN, IGNORING: ' + message.type);
+                console.log('LACK OF LOGIN, IGNORING: ' + message.type); // eslint-disable-line
                 return;
             }
             switch (message.type) {
@@ -85,14 +81,14 @@ var ioHandle = (db, socket, dispatchRoom, dispatch, io) => {
             message);
                 break;
             default:
-                console.log('UNKNOWN: ' + message.type);
+                console.log('UNKNOWN: ' + message.type); // eslint-disable-line
                 break;
             }
         } catch (err) {
-            console.error(err);
+            console.error(err); // eslint-disable-line
         }
     });
-    socket.on('disconnect', () => console.log('Client disconnected'));
+    socket.on('disconnect', () => console.log('Client disconnected')); // eslint-disable-line
 };
 
 module.exports = ioHandle;

@@ -1,5 +1,5 @@
 import React from 'react';
-const RookPiece = (primaryColor, secondaryColor) => {
+const RookPiece = (primaryColor) => {
     if (primaryColor == '#000000') {
         return (
       <g style={{opacity: 1,

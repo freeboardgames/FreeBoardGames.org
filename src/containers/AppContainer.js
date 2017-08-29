@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { browserHistory, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import ReactGA from 'react-ga';
+import PropTypes from 'prop-types';
 ReactGA.initialize('UA-105391878-1');
 
 class AppContainer extends Component {
@@ -26,5 +27,10 @@ class AppContainer extends Component {
         );
     }
 }
+
+AppContainer.propTypes = {
+    routes: PropTypes.object.isRequired,
+    store: PropTypes.object.isRequired
+};
 
 export default AppContainer;

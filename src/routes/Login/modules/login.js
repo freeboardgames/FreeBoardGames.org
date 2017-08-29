@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-fetch';
-
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -10,7 +8,7 @@ export const NEW_USER_REQUEST = 'NEW_USER_REQUEST';
 // Actions
 // ------------------------------------
 
-export const newUser = (nickname) => (dispatch, getState) => {
+export const newUser = (nickname) => (dispatch) => {
     dispatch({type: NEW_USER_REQUEST, nickname});
 };
 
@@ -22,7 +20,7 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-    [NEW_USER_REQUEST] : (state, action) => {
+    [NEW_USER_REQUEST] : (state) => {
         return {...state,
             loading: true}; },
     ['AUTH_SUCCESS'] : (state, action) => {

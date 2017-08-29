@@ -1,6 +1,6 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
@@ -56,13 +56,10 @@ function leaveMatch(match_code) {
     };
 }
 
-const actions = exports.actions = {
-    sendClick, leaveMatch, joinMatch
-
-  // ------------------------------------
-  // FUNCTIONS
-  // ------------------------------------
-};function isValidCell(board, x, y) {
+// ------------------------------------
+// FUNCTIONS
+// ------------------------------------
+function isValidCell(board, x, y) {
     let boardHeight = board.length;
     let boardWidth = board[0].length;
     return x >= 0 && x < boardWidth && y >= 0 && y < boardHeight;
@@ -135,8 +132,6 @@ function isEnPassantRisk(board, enPassantRisk, x, y, y2, player) {
         }
     }
     if (!isInRisk) return false;
-    let direction = 1;
-    if (player == 1) direction = -1;
     if (!isValidCell(board, x, y2)) return false;
     if (getCellPlayer(board[y2][x]) != (player + 1) % 2) return false;
     if (board[y2][x][0] == 'p') return true;
@@ -198,7 +193,7 @@ function clearInCheckMovableCells(state, player) {
 }
 
 function isCheckmated(state, player) {
-  //First loop will select a player piece.
+    //First loop will select a player piece.
     for (let y0 = 0; y0 < state.board.length; y0++) {
         for (let x0 = 0; x0 < state.board[y0].length; x0++) {
             let selectedCell = state.board[y0][x0];
@@ -235,100 +230,104 @@ function selectPiece(state, x, y, player) {
     }
 
     switch (targetPiece) {
-    case 'k':
-      //KING
-        for (let deltaY = -1; deltaY <= 1; deltaY++) {
-            for (let deltaX = -1; deltaX <= 1; deltaX++) {
-                if (deltaX == 0 && deltaY == 0) {
-                    toggleCellSelected(board, x, y, player);
-                } else {
-                    toggleCellMovable(board, x + deltaX, y + deltaY, player);
+        case 'k':
+            //KING
+            for (let deltaY = -1; deltaY <= 1; deltaY++) {
+                for (let deltaX = -1; deltaX <= 1; deltaX++) {
+                    if (deltaX == 0 && deltaY == 0) {
+                        toggleCellSelected(board, x, y, player);
+                    } else {
+                        toggleCellMovable(board, x + deltaX, y + deltaY, player);
+                    }
                 }
             }
-        }
-        if (y == firstRow && x == 4) {
-        // Original position
-        // Queen side
-            if (!isCellEmpty(board[y][0]) && board[y][0][0] == 'r' && getCellPlayer(board[y][0]) == player && isCellEmpty(board[y][1]) && isCellEmpty(board[y][2]) && isCellEmpty(board[y][3])) {
-                toggleCellMovable(board, 2, y, player);
+            if (y == firstRow && x == 4) {
+                // Original position
+                // Queen side
+                if (!isCellEmpty(board[y][0]) && board[y][0][0] == 'r' && getCellPlayer(board[y][0]) == player && isCellEmpty(board[y][1]) && isCellEmpty(board[y][2]) && isCellEmpty(board[y][3])) {
+                    toggleCellMovable(board, 2, y, player);
+                }
+                if (!isCellEmpty(board[y][7]) && board[y][7][0] == 'r' && getCellPlayer(board[y][7]) == player && isCellEmpty(board[y][6]) && isCellEmpty(board[y][5])) {
+                    toggleCellMovable(board, 6, y, player);
+                }
             }
-            if (!isCellEmpty(board[y][7]) && board[y][7][0] == 'r' && getCellPlayer(board[y][7]) == player && isCellEmpty(board[y][6]) && isCellEmpty(board[y][5])) {
-                toggleCellMovable(board, 6, y, player);
-            }
-        }
-        break;
-    case 'b': //BISHOP
-    case 'r': //ROOK
-    case 'q':
-      //QUEEN
-        toggleCellSelected(board, x, y, player);
-        let vectors = [];
-        if (targetPiece == 'b') {
-            vectors = [[1, 1], [-1, -1], [-1, 1], [1, -1]];
-        } else if (targetPiece == 'r') {
-            vectors = [[0, 1], [0, -1], [1, 0], [-1, 0]];
-        } else if (targetPiece == 'q') {
-            vectors = [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [-1, -1], [-1, 1], [1, -1]];
-        }
+            break;
+        case 'b': //BISHOP
+        case 'r': //ROOK
+        case 'q':
+            {
+                //QUEEN
+                toggleCellSelected(board, x, y, player);
+                let vectors = [];
+                if (targetPiece == 'b') {
+                    vectors = [[1, 1], [-1, -1], [-1, 1], [1, -1]];
+                } else if (targetPiece == 'r') {
+                    vectors = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+                } else if (targetPiece == 'q') {
+                    vectors = [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [-1, -1], [-1, 1], [1, -1]];
+                }
 
-        for (let i = 0; i < vectors.length; i++) {
-            for (let delta = 1; delta <= 7; delta++) {
-                let x2 = x + delta * vectors[i][0];
-                let y2 = y + delta * vectors[i][1];
-                toggleCellMovable(board, x2, y2, player);
-                if (isValidCell(board, x2, y2) && !isCellEmpty(board[y2][x2])) {
-                    break;
+                for (let i = 0; i < vectors.length; i++) {
+                    for (let delta = 1; delta <= 7; delta++) {
+                        let x2 = x + delta * vectors[i][0];
+                        let y2 = y + delta * vectors[i][1];
+                        toggleCellMovable(board, x2, y2, player);
+                        if (isValidCell(board, x2, y2) && !isCellEmpty(board[y2][x2])) {
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+        case 'n':
+            //KNIGHT
+            toggleCellSelected(board, x, y, player);
+            for (let deltaY = -1; deltaY <= 1; deltaY += 2) {
+                for (let deltaX = -1; deltaX <= 1; deltaX += 2) {
+                    toggleCellMovable(board, x + 2 * deltaX, y + 1 * deltaY, player);
+                    toggleCellMovable(board, x + 1 * deltaX, y + 2 * deltaY, player);
                 }
             }
-        }
-        break;
-    case 'n':
-      //KNIGHT
-        toggleCellSelected(board, x, y, player);
-        for (let deltaY = -1; deltaY <= 1; deltaY += 2) {
-            for (let deltaX = -1; deltaX <= 1; deltaX += 2) {
-                toggleCellMovable(board, x + 2 * deltaX, y + 1 * deltaY, player);
-                toggleCellMovable(board, x + 1 * deltaX, y + 2 * deltaY, player);
+            break;
+        case 'p':
+            {
+                //PAWN
+                toggleCellSelected(board, x, y, player);
+                let direction = 1;
+                if (player == 0) direction = -1;
+                let x2 = x;
+                let y2 = y + direction;
+                if (isValidCell(board, x2, y2) && isCellEmpty(board[y2][x2])) {
+                    toggleCellMovable(board, x2, y2, player);
+                    let initialRow = 6 - 5 * player;
+                    y2 = y + 2 * direction;
+                    if (initialRow == y && isCellEmpty(board[y2][x2])) {
+                        toggleCellMovable(board, x2, y2, player);
+                    }
+                }
+                //Left adjacent cell
+                for (let delta = -1; delta <= 1; delta += 2) {
+                    x2 = x + delta;
+                    y2 = y + direction;
+                    if (isValidCell(board, x2, y2) && (!isCellEmpty(board[y2][x2]) || isEnPassantRisk(state.board, state.enPassantRisk, x2, y2, y2 - direction, player))) {
+                        toggleCellMovable(board, x2, y2, player);
+                    }
+                }
+                break;
             }
-        }
-        break;
-    case 'p':
-      //PAWN
-        toggleCellSelected(board, x, y, player);
-        let direction = 1;
-        if (player == 0) direction = -1;
-        let x2 = x;
-        let y2 = y + direction;
-        if (isValidCell(board, x2, y2) && isCellEmpty(board[y2][x2])) {
-            toggleCellMovable(board, x2, y2, player);
-            let initialRow = 6 - 5 * player;
-            y2 = y + 2 * direction;
-            if (initialRow == y && isCellEmpty(board[y2][x2])) {
-                toggleCellMovable(board, x2, y2, player);
-            }
-        }
-      //Left adjacent cell
-        for (let delta = -1; delta <= 1; delta += 2) {
-            x2 = x + delta;
-            y2 = y + direction;
-            if (isValidCell(board, x2, y2) && (!isCellEmpty(board[y2][x2]) || isEnPassantRisk(state.board, state.enPassantRisk, x2, y2, y2 - direction, player))) {
-                toggleCellMovable(board, x2, y2, player);
-            }
-        }
-        break;
     }
 }
 
 function movePiece(state, x, y, player) {
     let board = state.board;
     let enPassantRisk = state.enPassantRisk;
-  //Find selected cell
+    //Find selected cell
     let selectedCellCord = findSelectedCell(board);
     let selectedCell = board[selectedCellCord.y][selectedCellCord.x];
     board[y][x] = selectedCell;
     board[selectedCellCord.y][selectedCellCord.x] = '';
 
-  //Add En passant risk
+    //Add En passant risk
     if (selectedCell[0] == 'p' && Math.abs(selectedCellCord.y - y) == 2) {
         if (!enPassantRisk) {
             state.enPassantRisk = [];
@@ -336,30 +335,30 @@ function movePiece(state, x, y, player) {
         }
         enPassantRisk.push([x, (selectedCellCord.y + y) / 2]);
     }
-  //Check for en passant
+    //Check for en passant
     if (selectedCell[0] == 'p' && isEnPassantRisk(board, enPassantRisk, x, y, selectedCellCord.y, player)) {
         board[selectedCellCord.y][x] = '';
     }
 
-  //Do castling
+    //Do castling
     let firstRow = 7 - 7 * player;
     if (y == firstRow && selectedCellCord.y == firstRow && selectedCell[0] == 'k' && selectedCellCord.x == 4) {
         let selectedKing = selectedCell;
-    //King-side castling
+        //King-side castling
         if (x == 6) {
-      //move king
+            //move king
             board[firstRow][6] = selectedKing;
             board[firstRow][4] = '';
-      //move rook
+            //move rook
             board[firstRow][5] = board[firstRow][7];
             board[firstRow][7] = '';
         }
-    //Queen-side castling
+        //Queen-side castling
         if (x == 2) {
-      //move king
+            //move king
             board[firstRow][2] = selectedKing;
             board[firstRow][4] = '';
-      //move rook
+            //move rook
             board[firstRow][3] = board[firstRow][0];
             board[firstRow][0] = '';
         }
@@ -377,11 +376,9 @@ const ACTION_HANDLERS = {
         if (action.subtype == 'CLICK') {
             state = deepCopy(state);
             let target = state.board[action.payload.y][action.payload.x];
-            let isTargetEmpty = isCellEmpty(target);
             let targetPlayer = getCellPlayer(target);
-            let isTargetSelected = isCellSelected(target);
             let isTargetMovable = isCellMovable(target);
-      //Check if it is correct turn
+            //Check if it is correct turn
             if (action.player != state.turn % 2) return state;
 
             if (isTargetMovable) {
@@ -398,14 +395,14 @@ const ACTION_HANDLERS = {
                 }
                 clearBoardFlags(state.board);
             } else {
-        //Check if trying to move its own piece
+                //Check if trying to move its own piece
                 if (action.player != targetPlayer) return state;
                 let selectedCell = findSelectedCell(state.board);
                 if (!selectedCell) {
                     selectPiece(state, action.payload.x, action.payload.y, action.player);
                     clearInCheckMovableCells(state, action.player);
                 } else {
-          //Unselect selectedCell, because target is not movable
+                    //Unselect selectedCell, because target is not movable
                     clearBoardFlags(state.board);
                 }
             }
@@ -416,11 +413,12 @@ const ACTION_HANDLERS = {
             });
         }
     }
+};
 
-  // ------------------------------------
-  // Reducer
-  // ------------------------------------
-};const initialState = { board: [['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'], ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'], ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']],
+// ------------------------------------
+// Reducer
+// ------------------------------------
+const initialState = { board: [['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'], ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'], ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']],
     loading: true,
     turn: 0,
     winner: null,
@@ -428,8 +426,8 @@ const ACTION_HANDLERS = {
     feasible: null };
 function messageReducer(state, action) {
     if (!state) {
-    //Have to do a deep copy because that on the server, the initialState was
-    //being modified by following actions.
+        //Have to do a deep copy because that on the server, the initialState was
+        //being modified by following actions.
         state = JSON.parse(JSON.stringify(initialState));
     }
     const handler = ACTION_HANDLERS[action.type];

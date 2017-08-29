@@ -21,7 +21,7 @@ export default (store) => ({
 
 
       /*  Return getComponent   */
-            cb(null, ChessGame);
+            cb(null, requireAuthentication(ChessGame));
 
     /* Webpack named bundle   */
         }, 'chess');

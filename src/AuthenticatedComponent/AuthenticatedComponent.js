@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
+import PropTypes from 'prop-types';
 
 export function requireAuthentication(Component) {
 
@@ -11,7 +12,7 @@ export function requireAuthentication(Component) {
             this.checkAuth();
         }
 
-        componentWillReceiveProps(nextProps) {
+        componentWillReceiveProps() {
             this.checkAuth();
         }
 
@@ -38,6 +39,11 @@ export function requireAuthentication(Component) {
 
         }
     }
+
+    AuthenticatedComponent.propTypes = {
+        location: PropTypes.object.isRequired,
+        auth: PropTypes.object.isRequired
+    };
 
     const mapStateToProps = (state) => ({
         auth: state.auth,

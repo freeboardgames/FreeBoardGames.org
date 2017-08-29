@@ -8,7 +8,6 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('push', function(event) {
     if (!event.data) {
-        console.log('ERROR, NO DATA FROM PUSH');
         return;
     }
     let data = event.data.json();
@@ -31,6 +30,7 @@ self.addEventListener('notificationclick', function(event) {
     const url = '/g/' + clickedNotification.data.game + '/' +
     clickedNotification.data.match_code;
     const urlToOpen = new URL(url, self.location.origin).href;
+    const clients = self.clients;
     const promiseChain = clients.matchAll({
         type: 'window',
         includeUncontrolled: true

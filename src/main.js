@@ -13,7 +13,6 @@ const store = createStore(initialState);
 
 let token = localStorage.getItem('token4');
 if (token !== null) {
-    console.log('SENDING AUTH_SUCCESS TOKEN');
     store.dispatch({type: 'AUTH_SUCCESS',
         payload: { token: token}});
 }
@@ -35,14 +34,14 @@ let render = () => {
 // ========================================================
 // Developer Tools Setup
 // ========================================================
-if (__DEV__) {
+if (__DEV__) { // eslint-disable-line no-undef
     if (window.devToolsExtension) {
         window.devToolsExtension.open();
     }
 }
 
 // This code is excluded from production bundle
-if (__DEV__) {
+if (__DEV__) { // eslint-disable-line no-undef
     if (module.hot) {
     // Development render functions
         const renderApp = render;

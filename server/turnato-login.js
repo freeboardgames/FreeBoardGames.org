@@ -1,5 +1,4 @@
 const jwt    = require('jsonwebtoken');
-const crypto = require('crypto');
 const secrets = require('./secrets.js');
 const JWT_TOKEN_SECRET = secrets.jwt_token_secret || 'create secrets.js';
 

@@ -2,10 +2,8 @@ import React from 'react';
 import TurnatoBar from '../../../TurnatoBar/TurnatoBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import PropTypes from 'prop-types';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import ActionGroupWork from 'material-ui/svg-icons/action/group-work';
-import ImageRemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
-import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
 
 
@@ -36,7 +34,6 @@ class GameView extends React.Component {
         let gameSubtitle = this.props.info.subtitle;
         let gameScreenshot = this.props.info.screenshot;
         let gameDescription = this.props.info.description;
-        let gameRules = this.props.info.rules;
 
         return (<TurnatoBar disconnected={this.props.disconnected}>
       <br />
@@ -63,6 +60,14 @@ class GameView extends React.Component {
     }
 }
 
+GameView.propTypes = {
+    requestGameInfo:PropTypes.func.isRequired,
+    disconnected: PropTypes.bool.isRequired,
+    token: PropTypes.string,
+    info: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
+    params: PropTypes.object.isRequired
+};
 GameView.defaultProps = {
     requestGameInfo: () => {},
     disconnected: false,

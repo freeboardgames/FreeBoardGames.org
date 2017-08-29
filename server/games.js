@@ -1,4 +1,4 @@
-GAMES = {
+var GAMES = {
     'chess': {
         'code': 'chess',
         'name': 'Chess',

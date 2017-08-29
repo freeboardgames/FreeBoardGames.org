@@ -8,14 +8,12 @@ module.exports = (io, socket, dispatch, db, user, game_code) => {
         lobbyQueue[game_code] = [];
     }
     let game = GAMES.map[game_code];
-    let minPlayers = game.minPlayers;
     let timestamp = new Date().getTime();
     lobbyQueue[game_code] = lobbyQueue[game_code].filter((entry) => {
         return (entry.timestamp >= timestamp - MAX_WAIT_TIME);
     });
     lobbyQueue[game_code].push({user, socket, timestamp});
     if (lobbyQueue[game_code].length === game.minPlayers) {
-        console.log('D');
         let players = [];
         let sockets = [];
         lobbyQueue[game_code].forEach((entry) => {
@@ -31,8 +29,7 @@ module.exports = (io, socket, dispatch, db, user, game_code) => {
             game_name: game.name,
             status: 'ACTIVE',
             players
-        }, (err, result) => {
-            console.log('E');
+        }, () => {
             sockets.forEach((socket) => {
                 socket.emit('socketIoMiddleware',
                     {type: 'SET_LOBBY_INFO', payload:
@@ -45,7 +42,6 @@ module.exports = (io, socket, dispatch, db, user, game_code) => {
             });
         });
     } else {
-        console.log('F');
         dispatch(
             {type: 'SET_LOBBY_INFO', payload:
             {

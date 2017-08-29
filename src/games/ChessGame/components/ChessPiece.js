@@ -5,6 +5,7 @@ import QueenPiece from './QueenPiece.js';
 import PawnPiece from './PawnPiece.js';
 import KnightPiece from './KnightPiece.js';
 import RookPiece from './RookPiece.js';
+import PropTypes from 'prop-types';
 const MOVE_TIME = 750;
 
 class ChessPiece extends React.Component {
@@ -26,9 +27,7 @@ class ChessPiece extends React.Component {
                 originX: this.props.x,
                 originY: this.props.y,
             });
-            if (nextProps.double && !this.props.double) {
-                (new Audio('/success.wav')).play();
-            } else if (Math.abs(nextProps.x - this.props.x) == 1) {
+            if (Math.abs(nextProps.x - this.props.x) == 1) {
                 (new Audio('/move2.mp3')).play();
             } else {
                 (new Audio('/move.wav')).play();
@@ -37,10 +36,10 @@ class ChessPiece extends React.Component {
         }
     }
     easeInOutCubic (t, b, c, d) {
-	  t /= d/2;
-	  if (t < 1) return c/2*t*t*t + b;
-	  t -= 2;
-	  return c/2*(t*t*t + 2) + b;
+        t /= d/2;
+        if (t < 1) return c/2*t*t*t + b;
+        t -= 2;
+        return c/2*(t*t*t + 2) + b;
     }
     animate() {
         let elapsed = Date.now() - this.state.originTime;
@@ -96,6 +95,13 @@ class ChessPiece extends React.Component {
         );
     }
 }
+ChessPiece.propTypes = {
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+    color: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+};
 
 
 export default ChessPiece;

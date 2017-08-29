@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-fetch';
-
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -11,7 +9,7 @@ export const NEW_PARTY_ERROR = 'NEW_PARTY_ERROR';
 // Actions
 // ------------------------------------
 
-export const newParty = (name) => (dispatch, getState) => {
+export const newParty = (name) => (dispatch) => {
     dispatch({type: NEW_PARTY_REQUEST, name});
 };
 

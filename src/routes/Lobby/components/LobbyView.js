@@ -2,9 +2,9 @@ import React from 'react';
 import TurnatoBar from '../../../TurnatoBar/TurnatoBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import {Card, CardText} from 'material-ui/Card';
 import { browserHistory } from 'react-router';
+import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 const TICK_INTERVAL = 1000;
@@ -92,6 +92,14 @@ class LobbyView extends React.Component {
     }
 }
 
+LobbyView.propTypes = {
+    joinLobby: PropTypes.func.isRequired,
+    fail: PropTypes.func.isRequired,
+    disconnected: PropTypes.bool.isRequired,
+    token: PropTypes.string.isRequired,
+    lobby: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired
+};
 LobbyView.defaultProps = {
     joinLobby: () => {},
     fail: () => {},

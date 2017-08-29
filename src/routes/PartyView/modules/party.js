@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-fetch';
-
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -15,15 +13,15 @@ export const SET_DOWN_MAPPING = 'SET_DOWN_MAPPING';
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const down = (party, game) => (dispatch, getState) => {
+export const down = (party, game) => (dispatch) => {
     dispatch({type: DOWN_REQUEST, party, game});
 };
 
-export const joinParty = (token, party_code) => (dispatch, getState) => {
+export const joinParty = (token, party_code) => (dispatch) => {
     dispatch({type: JOIN_PARTY_REQUEST, code: party_code});
 };
 
-export const leaveParty = (token, party_code) => (dispatch, getState) => {
+export const leaveParty = (token, party_code) => (dispatch) => {
     dispatch({type: LEAVE_PARTY_REQUEST, code: party_code});
 };
 

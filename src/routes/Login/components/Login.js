@@ -2,10 +2,10 @@ import React from 'react';
 import TurnatoBar from '../../../TurnatoBar/TurnatoBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import {CardActions, CardHeader, CardText} from 'material-ui/Card';
 import { browserHistory } from 'react-router';
+import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 class Login extends React.Component {
@@ -90,6 +90,14 @@ class Login extends React.Component {
         );
     }
 }
+Login.propTypes = {
+    disconnected: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
+    nickname: PropTypes.string.isRequired,
+    token: PropTypes.string,
+    newUser: PropTypes.func.isRequired,
+    location: PropTypes.object,
+};
 Login.defaultProps = {
     disconnected: false,
     loading: false,

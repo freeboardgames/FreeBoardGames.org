@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 const MOVE_TIME = 750;
 
 class CheckerPiece extends React.Component {
@@ -31,10 +32,10 @@ class CheckerPiece extends React.Component {
         }
     }
     easeInOutCubic (t, b, c, d) {
-	  t /= d/2;
-	  if (t < 1) return c/2*t*t*t + b;
-	  t -= 2;
-	  return c/2*(t*t*t + 2) + b;
+        t /= d/2;
+        if (t < 1) return c/2*t*t*t + b;
+        t -= 2;
+        return c/2*(t*t*t + 2) + b;
     }
     animate() {
         let elapsed = Date.now() - this.state.originTime;
@@ -72,6 +73,14 @@ class CheckerPiece extends React.Component {
         );
     }
 }
+
+CheckerPiece.propTypes = {
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+    double: PropTypes.bool.isRequired,
+    color: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+};
 
 
 export default CheckerPiece;

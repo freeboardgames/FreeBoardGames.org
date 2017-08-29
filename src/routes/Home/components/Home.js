@@ -7,6 +7,7 @@ import {Card, CardMedia, CardTitle} from 'material-ui/Card';
 import Subheader from 'material-ui/Subheader';
 import SocialGroup from 'material-ui/svg-icons/social/group';
 import PlacesCasino from 'material-ui/svg-icons/places/casino';
+import PropTypes from 'prop-types';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { browserHistory } from 'react-router';
 
@@ -28,9 +29,6 @@ class Home extends React.Component {
         };
         let newParty = () => {
             browserHistory.push('/newParty');
-        };
-        let login = () => {
-            browserHistory.push('/login');
         };
     // MATCHES
         let matchesList = [];
@@ -119,6 +117,15 @@ class Home extends React.Component {
     }
 }
 
+Home.propTypes = {
+    disconnected: PropTypes.bool.isRequired,
+    parties: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+    matches: PropTypes.array.isRequired,
+    games: PropTypes.array.isRequired,
+    token: PropTypes.string,
+    requestHome: PropTypes.func.isRequired
+};
 Home.defaultProps = {
     disconnected: false,
     parties: [],

@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-fetch';
-
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -12,7 +10,7 @@ export const SET_GAMES = 'SET_GAMES';
 // Actions
 // ------------------------------------
 
-export const requestHome = (token) => (dispatch) => {
+export const requestHome = () => (dispatch) => {
     dispatch({type: HOME_REQUEST});
 };
 

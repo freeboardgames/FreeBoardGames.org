@@ -6,6 +6,7 @@ import ChessPiece from './ChessPiece';
 import CircularProgress from 'material-ui/CircularProgress';
 import './ChessGame.scss';
 import TurnHUD from '../../../TurnHUD/containers/TurnHUDContainer';
+import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 class ChessGame extends React.Component {
@@ -43,7 +44,6 @@ class ChessGame extends React.Component {
         }
     //Positioning pieces
         let pieces = [];
-        let key = 0;
         for (var j =0; j<state.board.length; j++) {
             let boardState_col = state.board[j];
             for (var i=0; i<boardState_col.length; i++) {
@@ -64,7 +64,6 @@ class ChessGame extends React.Component {
                     pieces.push(
             (<ChessPiece color={piece_color} type={piece_type}
               x={fake_i} y={fake_j} key={piece_id} onClick={onClick}/>));
-                    key++;
                 }
             }
         }
@@ -111,13 +110,22 @@ class ChessGame extends React.Component {
     }
 }
 
+ChessGame.propTypes = {
+    sendClick: PropTypes.func,
+    joinMatch: PropTypes.func,
+    leaveMatch: PropTypes.func,
+    resign: PropTypes.func,
+    state: PropTypes.object,
+    params: PropTypes.object
+};
 
 ChessGame.defaultProps = {
     sendClick: () => {},
     joinMatch: () => {},
     leaveMatch: () => {},
     resign: () => {},
-    state: []
+    state: [],
+    params: {}
 };
 
 

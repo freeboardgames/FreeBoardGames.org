@@ -1,6 +1,7 @@
 import React from 'react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import './CheckerBoard.scss';
+import PropTypes from 'prop-types';
 
 class Checkerboard extends React.Component {
 
@@ -54,6 +55,19 @@ class Checkerboard extends React.Component {
         );
     }
 }
+
+Checkerboard.propTypes = {
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    primaryColor: PropTypes.string.isRequired,
+    secondaryColor: PropTypes.string.isRequired,
+    feasibleColor: PropTypes.string.isRequired,
+    feasible: PropTypes.array.isRequired,
+    selected: PropTypes.array.isRequired,
+    onClick: PropTypes.func,
+    children: PropTypes.node,
+    selectedColor: PropTypes.string.isRequired
+};
 
 Checkerboard.defaultProps = {
     width: 8,

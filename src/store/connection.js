@@ -2,10 +2,10 @@
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-    ['SOCKET_RECONNECT'] : (state, action) => {
+    ['SOCKET_RECONNECT'] : (state) => {
         return { ...state, disconnected: false };
     },
-    ['SOCKET_DISCONNECT'] : (state, action) => {
+    ['SOCKET_DISCONNECT'] : (state) => {
         return { ...state, disconnected: true };
     },
     ['SOCKET_ACK_COUNT'] : (state, action) => {

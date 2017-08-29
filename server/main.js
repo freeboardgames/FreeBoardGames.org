@@ -16,7 +16,6 @@ const paths = config.utils_paths;
 const port = config.server_port;
 const MONGO_URI = process.env.MONGODB_URI ||
                   'mongodb://localhost/turnato';
-const PRIVATE_KEY_PUSH = '';
 app.use(compression());
 app.use( bodyParser.json() );
 // This rewrites all routes requests to the root /index.html file
@@ -69,7 +68,6 @@ io.on('connection', (socket) => {
     };
     mongo.MongoClient.connect(MONGO_URI, (err, db) => {
         if (err) {
-            console.log('ERROR CONNECTING TO MONGO');
             return;
         }
         ioHandle(db, socket, dispatchRoom, dispatch, io);

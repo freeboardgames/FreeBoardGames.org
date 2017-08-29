@@ -8,7 +8,7 @@ module.exports = (socket, dispatch, db, user, name) => {
         users: [ user._id ],
         downMapping: {}
     };
-    var result = partiesCollection.insert(party, (err) => {
+    partiesCollection.insert(party, (err) => {
         if (err) {
             dispatch({type: 'NEW_PARTY_ERROR', error: err});
         } else {

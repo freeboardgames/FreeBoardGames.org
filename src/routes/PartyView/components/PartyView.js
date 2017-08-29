@@ -5,16 +5,14 @@ import Snackbar from 'material-ui/Snackbar';
 import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import { Link } from 'react-router';
 import Subheader from 'material-ui/Subheader';
-import ActionGroupWork from 'material-ui/svg-icons/action/group-work';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import ImageRemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
 import PlacesCasino from 'material-ui/svg-icons/places/casino';
-import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { browserHistory } from 'react-router';
+import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 
@@ -161,6 +159,18 @@ class PartyView extends React.Component {
       </TurnatoBar>);
     }
 }
+PartyView.propTypes = {
+    joinParty: PropTypes.func.isRequired,
+    leaveParty: PropTypes.func.isRequired,
+    disconnected: PropTypes.bool.isRequired,
+    down: PropTypes.func.isRequired,
+    token: PropTypes.string.isRequired,
+    info: PropTypes.object.isRequired,
+    matches: PropTypes.array.isRequired,
+    games: PropTypes.array.isRequired,
+    downMapping: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired
+};
 
 PartyView.defaultProps = {
     joinParty: () => {},

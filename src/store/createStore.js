@@ -15,7 +15,7 @@ export default (initialState = {}) => {
   // Store Enhancers
   // ======================================================
     const enhancers = [];
-    if (__DEV__) {
+    if (__DEV__) { // eslint-disable-line no-undef
         const devToolsExtension = window.devToolsExtension;
         if (typeof devToolsExtension === 'function') {
             enhancers.push(devToolsExtension());

@@ -1,3 +1,5 @@
+import io from 'socket.io-client';
+
 var socket = io();
 var middlewareDispatch = null;
 var auth_token = null;
