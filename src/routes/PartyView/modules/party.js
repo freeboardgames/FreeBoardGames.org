@@ -14,66 +14,66 @@ export const SET_DOWN_MAPPING = 'SET_DOWN_MAPPING';
 // Actions
 // ------------------------------------
 export const down = (party, game) => (dispatch) => {
-    dispatch({type: DOWN_REQUEST, party, game});
+  dispatch({type: DOWN_REQUEST, party, game});
 };
 
 export const joinParty = (token, party_code) => (dispatch) => {
-    dispatch({type: JOIN_PARTY_REQUEST, code: party_code});
+  dispatch({type: JOIN_PARTY_REQUEST, code: party_code});
 };
 
 export const leaveParty = (token, party_code) => (dispatch) => {
-    dispatch({type: LEAVE_PARTY_REQUEST, code: party_code});
+  dispatch({type: LEAVE_PARTY_REQUEST, code: party_code});
 };
 
 export const actions = {
-    down, joinParty, leaveParty
+  down, joinParty, leaveParty
 };
 
 // ------------------------------------
 // Party Reducer
 // ------------------------------------
 const ACTION_HANDLERS = {
-    [SET_INFO] : (state, action) => {
-        return {...state,
-            info: action.info};
-    },
-    [SET_GAMES] : (state, action) => {
-        return {...state,
-            games: action.games};
-    },
-    [SET_DOWN_MAPPING] : (state, action) => {
-        let games = [];
-        if (state.games) {
-            for (let i=0; i<state.games.length; i++) {
-                let game = state.games[i];
-                games.push({...game, loading: false});
-            }
-        }
-        return {...state,
-            downMapping: action.downMapping,
-            games};
-    },
-    [SET_MATCHES] : (state, action) => {
-        return {...state,
-            matches: action.matches};
-    },
-    [DOWN_REQUEST] : (state, action) => {
-        let games = [];
-        for (let i=0; i<state.games.length; i++) {
-            let game = state.games[i];
-            if (game.code == action.game) {
-                games.push({...game, loading: true});
-            } else {
-                games.push({...game});
-            }
-        }
-        return {...state,
-            games};
-    },
+  [SET_INFO] : (state, action) => {
+    return {...state,
+      info: action.info};
+  },
+  [SET_GAMES] : (state, action) => {
+    return {...state,
+      games: action.games};
+  },
+  [SET_DOWN_MAPPING] : (state, action) => {
+    let games = [];
+    if (state.games) {
+      for (let i=0; i<state.games.length; i++) {
+        let game = state.games[i];
+        games.push({...game, loading: false});
+      }
+    }
+    return {...state,
+      downMapping: action.downMapping,
+      games};
+  },
+  [SET_MATCHES] : (state, action) => {
+    return {...state,
+      matches: action.matches};
+  },
+  [DOWN_REQUEST] : (state, action) => {
+    let games = [];
+    for (let i=0; i<state.games.length; i++) {
+      let game = state.games[i];
+      if (game.code == action.game) {
+        games.push({...game, loading: true});
+      } else {
+        games.push({...game});
+      }
+    }
+    return {...state,
+      games};
+  },
 };
 const initialState = {loading: true};
 export default function partyReducer (state = initialState, action) {
-    const handler = ACTION_HANDLERS[action.type];
+  const handler = ACTION_HANDLERS[action.type];
 
-    return handler ? handler(state, action) : state;
+  return handler ? handler(state, action) : state;
 }

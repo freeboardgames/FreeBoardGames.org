@@ -10,30 +10,30 @@ import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 class ChessGame extends React.Component {
-    componentDidMount () {
-        this.props.joinMatch(this.props.params.id);
-    }
-    componentWillUnmount () {
-        this.props.leaveMatch(this.props.params.id);
-    }
-    render () {
-        let state = this.props.state;
-        let inverted = state.player == 1;
-        let onClick = (x,y) => () => {
-            let real_y = y;
-            let real_x = x;
-            if (inverted) {
-                real_x = 7 - x;
-                real_y = 7 - y;
-            }
-            ReactGA.event({
-                category: 'ChessGame',
-                action: 'click',
-            });
-            this.props.sendClick(this.props.params.id, real_x, real_y, state.player);
-        };
-        if (state.loading) {
-            return (
+  componentDidMount () {
+    this.props.joinMatch(this.props.params.id);
+  }
+  componentWillUnmount () {
+    this.props.leaveMatch(this.props.params.id);
+  }
+  render () {
+    let state = this.props.state;
+    let inverted = state.player == 1;
+    let onClick = (x,y) => () => {
+      let real_y = y;
+      let real_x = x;
+      if (inverted) {
+        real_x = 7 - x;
+        real_y = 7 - y;
+      }
+      ReactGA.event({
+        category: 'ChessGame',
+        action: 'click',
+      });
+      this.props.sendClick(this.props.params.id, real_x, real_y, state.player);
+    };
+    if (state.loading) {
+      return (
         <TurnatoBar>
           <Card>
             <CardText style={{textAlign: 'center'}}>
@@ -41,53 +41,53 @@ class ChessGame extends React.Component {
             </CardText>
           </Card>
         </TurnatoBar>);
-        }
+    }
     //Positioning pieces
-        let pieces = [];
-        for (var j =0; j<state.board.length; j++) {
-            let boardState_col = state.board[j];
-            for (var i=0; i<boardState_col.length; i++) {
-                let piece = boardState_col[i];
-                if (piece != '') {
-                    let piece_id = parseInt(piece.split('_')[1]);
-                    let piece_color = 'light';
-                    if (piece.indexOf('d') > 0) {
-                        piece_color = 'dark';
-                    }
-                    let piece_type = piece[0];
-                    let fake_i = i;
-                    let fake_j = j;
-                    if (inverted) {
-                        fake_i = 7 - i;
-                        fake_j = 7 - j;
-                    }
-                    pieces.push(
+    let pieces = [];
+    for (var j =0; j<state.board.length; j++) {
+      let boardState_col = state.board[j];
+      for (var i=0; i<boardState_col.length; i++) {
+        let piece = boardState_col[i];
+        if (piece != '') {
+          let piece_id = parseInt(piece.split('_')[1]);
+          let piece_color = 'light';
+          if (piece.indexOf('d') > 0) {
+            piece_color = 'dark';
+          }
+          let piece_type = piece[0];
+          let fake_i = i;
+          let fake_j = j;
+          if (inverted) {
+            fake_i = 7 - i;
+            fake_j = 7 - j;
+          }
+          pieces.push(
             (<ChessPiece color={piece_color} type={piece_type}
               x={fake_i} y={fake_j} key={piece_id} onClick={onClick}/>));
-                }
-            }
         }
-        let feasible = [];
-        let selected = [];
-        for (let y=0; y<state.board.length; y++) {
-            for (let x=0; x<state.board[y].length; x++) {
-                let cell = state.board[y][x];
-                let fake_x = x;
-                let fake_y = y;
-                if (inverted) {
-                    fake_x = 7 - x;
-                    fake_y = 7 - y;
-                }
-                if (cell.indexOf('@') != -1) {
-                    selected.push({x: fake_x, y: fake_y});
-                }
-                if (cell.indexOf('*') != -1) {
-                    feasible.push({x: fake_x, y: fake_y});
-                }
-            }
+      }
+    }
+    let feasible = [];
+    let selected = [];
+    for (let y=0; y<state.board.length; y++) {
+      for (let x=0; x<state.board[y].length; x++) {
+        let cell = state.board[y][x];
+        let fake_x = x;
+        let fake_y = y;
+        if (inverted) {
+          fake_x = 7 - x;
+          fake_y = 7 - y;
         }
+        if (cell.indexOf('@') != -1) {
+          selected.push({x: fake_x, y: fake_y});
+        }
+        if (cell.indexOf('*') != -1) {
+          feasible.push({x: fake_x, y: fake_y});
+        }
+      }
+    }
 
-        return (
+    return (
     <div style={{backgroundColor: 'black', height: '100%'}}>
       <TurnHUD
         match_code={this.props.params.id}
@@ -107,25 +107,25 @@ class ChessGame extends React.Component {
         {pieces}
       </CheckerBoard>
     </div>);
-    }
+  }
 }
 
 ChessGame.propTypes = {
-    sendClick: PropTypes.func,
-    joinMatch: PropTypes.func,
-    leaveMatch: PropTypes.func,
-    resign: PropTypes.func,
-    state: PropTypes.object,
-    params: PropTypes.object
+  sendClick: PropTypes.func,
+  joinMatch: PropTypes.func,
+  leaveMatch: PropTypes.func,
+  resign: PropTypes.func,
+  state: PropTypes.object,
+  params: PropTypes.object
 };
 
 ChessGame.defaultProps = {
-    sendClick: () => {},
-    joinMatch: () => {},
-    leaveMatch: () => {},
-    resign: () => {},
-    state: [],
-    params: {}
+  sendClick: () => {},
+  joinMatch: () => {},
+  leaveMatch: () => {},
+  resign: () => {},
+  state: [],
+  params: {}
 };
 
 

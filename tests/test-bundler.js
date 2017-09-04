@@ -32,6 +32,6 @@ const testsToRun = testsContext.keys().filter(inManifest)
 
 // require all `src/**/*.js` except for `main.js` (for isparta coverage reporting)
 if (__COVERAGE__) { // eslint-disable-line no-undef
-    const componentsContext = require.context('../src/', true, /^((?!main|reducers).)*\.js$/);
-    componentsContext.keys().forEach(componentsContext);
+  const componentsContext = require.context('../src/', true, /^((?!main|reducers).)*\.js$/);
+  componentsContext.keys().forEach(componentsContext);
 }

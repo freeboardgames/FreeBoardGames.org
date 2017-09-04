@@ -6,49 +6,49 @@ import PropTypes from 'prop-types';
 
 export function requireAuthentication(Component) {
 
-    class AuthenticatedComponent extends React.Component {
+  class AuthenticatedComponent extends React.Component {
 
-        componentWillMount() {
-            this.checkAuth();
-        }
+    componentWillMount() {
+      this.checkAuth();
+    }
 
-        componentWillReceiveProps() {
-            this.checkAuth();
-        }
+    componentWillReceiveProps() {
+      this.checkAuth();
+    }
 
-        checkAuth() {
-            if (!this.props.auth.isAuthenticated) {
-                ReactGA.event({
-                    category: 'AuthenticatedComponent',
-                    action: 'redirect',
-                });
-                let redirectAfterLogin = this.props.location.pathname;
-                browserHistory.push('/login?next=' + redirectAfterLogin);
-            }
-        }
+    checkAuth() {
+      if (!this.props.auth.isAuthenticated) {
+        ReactGA.event({
+          category: 'AuthenticatedComponent',
+          action: 'redirect',
+        });
+        let redirectAfterLogin = this.props.location.pathname;
+        browserHistory.push('/login?next=' + redirectAfterLogin);
+      }
+    }
 
-        render() {
-            return (
+    render() {
+      return (
                 <div>
                     {this.props.auth.isAuthenticated
                         ? <Component {...this.props}/>
                         : null
                     }
                 </div>
-            );
+      );
 
-        }
+    }
     }
 
-    AuthenticatedComponent.propTypes = {
-        location: PropTypes.object.isRequired,
-        auth: PropTypes.object.isRequired
-    };
+  AuthenticatedComponent.propTypes = {
+    location: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
+  };
 
-    const mapStateToProps = (state) => ({
-        auth: state.auth,
-    });
+  const mapStateToProps = (state) => ({
+    auth: state.auth,
+  });
 
-    return connect(mapStateToProps)(AuthenticatedComponent);
+  return connect(mapStateToProps)(AuthenticatedComponent);
 
 }

@@ -13,8 +13,8 @@ const store = createStore(initialState);
 
 let token = localStorage.getItem('token4');
 if (token !== null) {
-    store.dispatch({type: 'AUTH_SUCCESS',
-        payload: { token: token}});
+  store.dispatch({type: 'AUTH_SUCCESS',
+    payload: { token: token}});
 }
 
 // ========================================================
@@ -23,9 +23,9 @@ if (token !== null) {
 const MOUNT_NODE = document.getElementById('root');
 
 let render = () => {
-    const routes = require('./routes/index').default(store);
+  const routes = require('./routes/index').default(store);
 
-    ReactDOM.render(
+  ReactDOM.render(
     <AppContainer store={store} routes={routes} />,
     MOUNT_NODE
   );
@@ -35,39 +35,39 @@ let render = () => {
 // Developer Tools Setup
 // ========================================================
 if (__DEV__) { // eslint-disable-line no-undef
-    if (window.devToolsExtension) {
-        window.devToolsExtension.open();
-    }
+  if (window.devToolsExtension) {
+    window.devToolsExtension.open();
+  }
 }
 
 // This code is excluded from production bundle
 if (__DEV__) { // eslint-disable-line no-undef
-    if (module.hot) {
+  if (module.hot) {
     // Development render functions
-        const renderApp = render;
-        const renderError = (error) => {
-            const RedBox = require('redbox-react').default;
+    const renderApp = render;
+    const renderError = (error) => {
+      const RedBox = require('redbox-react').default;
 
-            ReactDOM.render(<RedBox error={error} />, MOUNT_NODE);
-        };
+      ReactDOM.render(<RedBox error={error} />, MOUNT_NODE);
+    };
 
     // Wrap render in try/catch
-        render = () => {
-            try {
-                renderApp();
-            } catch (error) {
-                renderError(error);
-            }
-        };
+    render = () => {
+      try {
+        renderApp();
+      } catch (error) {
+        renderError(error);
+      }
+    };
 
     // Setup hot module replacement
-        module.hot.accept('./routes/index', () =>
+    module.hot.accept('./routes/index', () =>
       setImmediate(() => {
-          ReactDOM.unmountComponentAtNode(MOUNT_NODE);
-          render();
+        ReactDOM.unmountComponentAtNode(MOUNT_NODE);
+        render();
       })
     );
-    }
+  }
 }
 
 // ========================================================

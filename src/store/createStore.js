@@ -9,23 +9,23 @@ export default (initialState = {}) => {
   // ======================================================
   // Middleware Configuration
   // ======================================================
-    const middleware = [thunk, socketIoMiddleware];
+  const middleware = [thunk, socketIoMiddleware];
 
   // ======================================================
   // Store Enhancers
   // ======================================================
-    const enhancers = [];
-    if (__DEV__) { // eslint-disable-line no-undef
-        const devToolsExtension = window.devToolsExtension;
-        if (typeof devToolsExtension === 'function') {
-            enhancers.push(devToolsExtension());
-        }
+  const enhancers = [];
+  if (__DEV__) { // eslint-disable-line no-undef
+    const devToolsExtension = window.devToolsExtension;
+    if (typeof devToolsExtension === 'function') {
+      enhancers.push(devToolsExtension());
     }
+  }
 
   // ======================================================
   // Store Instantiation and HMR Setup
   // ======================================================
-    const store = createStore(
+  const store = createStore(
     makeRootReducer(),
     initialState,
     compose(
@@ -33,17 +33,17 @@ export default (initialState = {}) => {
       ...enhancers
     )
   );
-    store.asyncReducers = {};
+  store.asyncReducers = {};
 
   // To unsubscribe, invoke `store.unsubscribeHistory()` anytime
-    store.unsubscribeHistory = browserHistory.listen(updateLocation(store));
+  store.unsubscribeHistory = browserHistory.listen(updateLocation(store));
 
-    if (module.hot) {
-        module.hot.accept('./reducers', () => {
-            const reducers = require('./reducers').default;
-            store.replaceReducer(reducers(store.asyncReducers));
-        });
-    }
+  if (module.hot) {
+    module.hot.accept('./reducers', () => {
+      const reducers = require('./reducers').default;
+      store.replaceReducer(reducers(store.asyncReducers));
+    });
+  }
 
-    return store;
+  return store;
 };

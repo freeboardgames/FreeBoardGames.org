@@ -7,17 +7,17 @@ export const LOCATION_CHANGE = 'LOCATION_CHANGE';
 // Actions
 // ------------------------------------
 export function locationChange (location = '/') {
-    return {
-        type    : LOCATION_CHANGE,
-        payload : location
-    };
+  return {
+    type    : LOCATION_CHANGE,
+    payload : location
+  };
 }
 
 // ------------------------------------
 // Specialized Action Creator
 // ------------------------------------
 export const updateLocation = ({ dispatch }) => {
-    return (nextLocation) => dispatch(locationChange(nextLocation));
+  return (nextLocation) => dispatch(locationChange(nextLocation));
 };
 
 // ------------------------------------
@@ -25,7 +25,7 @@ export const updateLocation = ({ dispatch }) => {
 // ------------------------------------
 const initialState = null;
 export default function locationReducer (state = initialState, action) {
-    return action.type === LOCATION_CHANGE
+  return action.type === LOCATION_CHANGE
     ? action.payload
     : state;
 }

@@ -10,23 +10,23 @@ import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 
 class CheckerGame extends React.Component {
-    componentDidMount () {
-        this.props.joinMatch(this.props.params.id);
-    }
-    componentWillUnmount () {
-        this.props.leaveMatch(this.props.params.id);
-    }
-    render () {
-        let state = this.props.state;
-        let onClick = (x,y) => () => {
-            this.props.sendClick(this.props.params.id, x,y, state.player);
-            ReactGA.event({
-                category: 'CheckerGame',
-                action: 'click',
-            });
-        };
-        if (state.loading) {
-            return (
+  componentDidMount () {
+    this.props.joinMatch(this.props.params.id);
+  }
+  componentWillUnmount () {
+    this.props.leaveMatch(this.props.params.id);
+  }
+  render () {
+    let state = this.props.state;
+    let onClick = (x,y) => () => {
+      this.props.sendClick(this.props.params.id, x,y, state.player);
+      ReactGA.event({
+        category: 'CheckerGame',
+        action: 'click',
+      });
+    };
+    if (state.loading) {
+      return (
         <TurnatoBar>
           <Card>
             <CardText style={{textAlign: 'center'}}>
@@ -34,25 +34,25 @@ class CheckerGame extends React.Component {
             </CardText>
           </Card>
         </TurnatoBar>);
-        }
+    }
     //Positioning pieces
-        let pieces = [];
-        for (var j =0; j<state.board.length; j++) {
-            let boardState_col = state.board[j];
-            for (var i=0; i<boardState_col.length; i++) {
-                if (boardState_col[i]) {
-                    let piece = boardState_col[i];
-                    let color = 'yellow';
-                    if (piece.player == 0) {
-                        color = 'white';
-                    }
-                    pieces.push(
+    let pieces = [];
+    for (var j =0; j<state.board.length; j++) {
+      let boardState_col = state.board[j];
+      for (var i=0; i<boardState_col.length; i++) {
+        if (boardState_col[i]) {
+          let piece = boardState_col[i];
+          let color = 'yellow';
+          if (piece.player == 0) {
+            color = 'white';
+          }
+          pieces.push(
             (<CheckerPiece color={color} double={piece.double}
               x={i} y={j} key={piece.key} onClick={onClick}/>));
-                }
-            }
         }
-        return (
+      }
+    }
+    return (
     <div style={{backgroundColor: 'black', height: '100%'}}>
     <TurnHUD
       match_code={this.props.params.id}
@@ -71,24 +71,24 @@ class CheckerGame extends React.Component {
         {pieces}
       </CheckerBoard>
     </div>);
-    }
+  }
 }
 
 
 CheckerGame.propTypes = {
-    sendClick: PropTypes.func,
-    leaveMatch: PropTypes.func,
-    joinMatch: PropTypes.func,
-    resign: PropTypes.func,
-    params: PropTypes.object,
-    state: PropTypes.array
+  sendClick: PropTypes.func,
+  leaveMatch: PropTypes.func,
+  joinMatch: PropTypes.func,
+  resign: PropTypes.func,
+  params: PropTypes.object,
+  state: PropTypes.array
 };
 
 CheckerGame.defaultProps = {
-    sendClick: () => {},
-    joinMatch: () => {},
-    resign: () => {},
-    state: []
+  sendClick: () => {},
+  joinMatch: () => {},
+  resign: () => {},
+  state: []
 };
 
 

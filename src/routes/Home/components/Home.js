@@ -13,27 +13,27 @@ import { browserHistory } from 'react-router';
 
 
 class Home extends React.Component {
-    componentDidMount() {
-        this.props.requestHome(this.props.token);
-    }
+  componentDidMount() {
+    this.props.requestHome(this.props.token);
+  }
 
-    render() {
-        let joinMatch = (match) => () => {
-            browserHistory.push('/g/' + match.game_code + '/' + match._id);
-        };
-        let viewGame = (game) => () => {
-            browserHistory.push('/g/' + game.code);
-        };
-        let viewParty = (id) => () => {
-            browserHistory.push('/p/'+id);
-        };
-        let newParty = () => {
-            browserHistory.push('/newParty');
-        };
+  render() {
+    let joinMatch = (match) => () => {
+      browserHistory.push('/g/' + match.game_code + '/' + match._id);
+    };
+    let viewGame = (game) => () => {
+      browserHistory.push('/g/' + game.code);
+    };
+    let viewParty = (id) => () => {
+      browserHistory.push('/p/'+id);
+    };
+    let newParty = () => {
+      browserHistory.push('/newParty');
+    };
     // MATCHES
-        let matchesList = [];
-        this.props.matches.map((match) => {
-            matchesList.push((<ListItem
+    let matchesList = [];
+    this.props.matches.map((match) => {
+      matchesList.push((<ListItem
         key={match._id}
         primaryText={match.playersNickname.join(', ')}
         secondaryText={match.game_name + ' - ' + match.status}
@@ -41,12 +41,12 @@ class Home extends React.Component {
         style={{WebkitAppearance: 'inherit'}}
         onClick={joinMatch(match)}
       />));
-        });
+    });
 
     // GAMES
-        let gamesList = [];
-        this.props.games.map((game) => {
-            gamesList.push((<ListItem
+    let gamesList = [];
+    this.props.games.map((game) => {
+      gamesList.push((<ListItem
         key={game.code}
         primaryText={game.name}
         leftIcon={<PlacesCasino />}
@@ -54,13 +54,13 @@ class Home extends React.Component {
         onClick={viewGame(game)}
         style={{WebkitAppearance: 'inherit'}}
       />));
-        });
+    });
 
     // Parties
-        let partiesList = [];
-        if (this.props.parties.length > 0) {
-            this.props.parties.map((party) => {
-                partiesList.push((<ListItem
+    let partiesList = [];
+    if (this.props.parties.length > 0) {
+      this.props.parties.map((party) => {
+        partiesList.push((<ListItem
           leftIcon={<SocialGroup />}
           primaryText={party.name}
           rightIcon={<NavigationChevronRight />}
@@ -68,16 +68,16 @@ class Home extends React.Component {
           onClick={viewParty(party._id)}
           key={party._id}
         />));
-            });
-        } else {
-            partiesList.push(
+      });
+    } else {
+      partiesList.push(
         (<p key="0" style={{paddingLeft: '16px',
-            paddingRight: '16px'}}>You do not belong to any party yet.<br /><br />
+          paddingRight: '16px'}}>You do not belong to any party yet.<br /><br />
         <a
           onClick={newParty}
           href="#">Create one</a> and invite your friends!</p>));
-        }
-        return (<TurnatoBar disconnected={this.props.disconnected}>
+    }
+    return (<TurnatoBar disconnected={this.props.disconnected}>
       <Card>
         <CardMedia
           overlay={<CardTitle title="Fun with friends."
@@ -114,25 +114,25 @@ class Home extends React.Component {
       </p>
       <br/><br/>
       </TurnatoBar>);
-    }
+  }
 }
 
 Home.propTypes = {
-    disconnected: PropTypes.bool.isRequired,
-    parties: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
-    matches: PropTypes.array.isRequired,
-    games: PropTypes.array.isRequired,
-    token: PropTypes.string,
-    requestHome: PropTypes.func.isRequired
+  disconnected: PropTypes.bool.isRequired,
+  parties: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+  matches: PropTypes.array.isRequired,
+  games: PropTypes.array.isRequired,
+  token: PropTypes.string,
+  requestHome: PropTypes.func.isRequired
 };
 Home.defaultProps = {
-    disconnected: false,
-    parties: [],
-    loading: false,
-    matches: [],
-    games: [],
-    token: null,
-    requestHome: null
+  disconnected: false,
+  parties: [],
+  loading: false,
+  matches: [],
+  games: [],
+  token: null,
+  requestHome: null
 };
 export default Home;

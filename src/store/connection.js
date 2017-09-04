@@ -2,15 +2,15 @@
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-    ['SOCKET_RECONNECT'] : (state) => {
-        return { ...state, disconnected: false };
-    },
-    ['SOCKET_DISCONNECT'] : (state) => {
-        return { ...state, disconnected: true };
-    },
-    ['SOCKET_ACK_COUNT'] : (state, action) => {
-        return { ... state, sendingMessage: (action.count > 0)};
-    },
+  ['SOCKET_RECONNECT'] : (state) => {
+    return { ...state, disconnected: false };
+  },
+  ['SOCKET_DISCONNECT'] : (state) => {
+    return { ...state, disconnected: true };
+  },
+  ['SOCKET_ACK_COUNT'] : (state, action) => {
+    return { ... state, sendingMessage: (action.count > 0)};
+  },
 };
 
 // ------------------------------------
@@ -18,7 +18,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {disconnected: false, sendingMessage: false};
 export default function messageReducer (state = initialState, action) {
-    const handler = ACTION_HANDLERS[action.type];
+  const handler = ACTION_HANDLERS[action.type];
 
-    return handler ? handler(state, action) : state;
+  return handler ? handler(state, action) : state;
 }
