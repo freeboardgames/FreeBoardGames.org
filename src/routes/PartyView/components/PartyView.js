@@ -17,48 +17,48 @@ import ReactGA from 'react-ga';
 
 
 class PartyView extends React.Component {
-    componentWillMount() {
-        this.setState({link: window.location.href,
-            linkCopied: false});
-    }
-    componentDidMount() {
-        ReactGA.event({
-            category: 'PartyView',
-            action: 'visit',
-        });
-        this.props.joinParty(this.props.token, this.props.params.id);
-    }
-    componentWillUnmount() {
-        this.props.leaveParty(this.props.token, this.props.params.id);
-    }
-    down(game) {
-        ReactGA.event({
-            category: 'PartyView',
-            action: 'down',
-            label: game.code,
-        });
-        return () => {
-            if (game.loading)
-                return;
-            this.props.down(this.props.info.code, game.code);
-        };
-    }
-    copyLink() {
-        return () => {
-            this.setState({linkCopied: true});
-            ReactGA.event({
-                category: 'PartyView',
-                action: 'copyLink',
-            });
-        };
-    }
-    render() {
-        let joinMatch = (match) => () => {
-            browserHistory.push('/g/' + match.game_code + '/' + match._id);
-        };
+  componentWillMount() {
+    this.setState({link: window.location.href,
+      linkCopied: false});
+  }
+  componentDidMount() {
+    ReactGA.event({
+      category: 'PartyView',
+      action: 'visit',
+    });
+    this.props.joinParty(this.props.token, this.props.params.id);
+  }
+  componentWillUnmount() {
+    this.props.leaveParty(this.props.token, this.props.params.id);
+  }
+  down(game) {
+    ReactGA.event({
+      category: 'PartyView',
+      action: 'down',
+      label: game.code,
+    });
+    return () => {
+      if (game.loading)
+        return;
+      this.props.down(this.props.info.code, game.code);
+    };
+  }
+  copyLink() {
+    return () => {
+      this.setState({linkCopied: true});
+      ReactGA.event({
+        category: 'PartyView',
+        action: 'copyLink',
+      });
+    };
+  }
+  render() {
+    let joinMatch = (match) => () => {
+      browserHistory.push('/g/' + match.game_code + '/' + match._id);
+    };
 
-        if (this.props.info.loading) {
-            return (
+    if (this.props.info.loading) {
+      return (
         <TurnatoBar disconnected={this.props.disconnected}>
           <Card>
             <CardText style={{textAlign: 'center'}}>
@@ -66,27 +66,27 @@ class PartyView extends React.Component {
             </CardText>
           </Card>
         </TurnatoBar>);
-        }
+    }
     // PARTY
-        let partyName = this.props.info.name;
-        let currentUser = this.props.info.currentUser;
-        let currentUserId = this.props.info.users[currentUser];
-        let partyMemberCount = this.props.info.users.length;
-        let usersNickname = this.props.info.usersNickname;
-        let users = this.props.info.users;
+    let partyName = this.props.info.name;
+    let currentUser = this.props.info.currentUser;
+    let currentUserId = this.props.info.users[currentUser];
+    let partyMemberCount = this.props.info.users.length;
+    let usersNickname = this.props.info.usersNickname;
+    let users = this.props.info.users;
 
-        let idToNickname = (player_id) => {
-            return usersNickname[users.indexOf(player_id)];
-        };
-        let partyMemberList = this.props.info.users.map(idToNickname).join(', ');
+    let idToNickname = (player_id) => {
+      return usersNickname[users.indexOf(player_id)];
+    };
+    let partyMemberList = this.props.info.users.map(idToNickname).join(', ');
     //MATCHES
-        let matchesList = [];
-        this.props.matches.map((match) => {
-            let players = match.players.map(idToNickname).join(', ');
-            let active = match.players.indexOf(currentUserId) > -1 &&
+    let matchesList = [];
+    this.props.matches.map((match) => {
+      let players = match.players.map(idToNickname).join(', ');
+      let active = match.players.indexOf(currentUserId) > -1 &&
         match.status != 'Finished';
 
-            matchesList.push((<ListItem
+      matchesList.push((<ListItem
         key={match._id}
         primaryText={players}
         secondaryText={match.game_name + ' - ' + match.status}
@@ -95,22 +95,22 @@ class PartyView extends React.Component {
         style={{WebkitAppearance: 'inherit'}}
         onClick={joinMatch(match)}
       />));
-        });
+    });
 
     // GAMES
-        let gamesList = [];
-        this.props.games.map((game) => {
-            let downList = null;
-            if (this.props.downMapping)
-                downList = this.props.downMapping[game.code];
-            let downCount = 0;
-            let isChecked = false;
-            if (downList) {
-                downCount = downList.length;
-                isChecked = downList.indexOf(currentUserId) > -1;
-            }
+    let gamesList = [];
+    this.props.games.map((game) => {
+      let downList = null;
+      if (this.props.downMapping)
+        downList = this.props.downMapping[game.code];
+      let downCount = 0;
+      let isChecked = false;
+      if (downList) {
+        downCount = downList.length;
+        isChecked = downList.indexOf(currentUserId) > -1;
+      }
 
-            gamesList.push((<ListItem
+      gamesList.push((<ListItem
         key={game.code}
         primaryText={game.name}
         secondaryText={downCount+'/'+game.maxPlayers+' players'}
@@ -121,8 +121,8 @@ class PartyView extends React.Component {
         style={{WebkitAppearance: 'inherit'}}
         onClick={this.down(game)}
       />));
-        });
-        return (<TurnatoBar disconnected={this.props.disconnected}>
+    });
+    return (<TurnatoBar disconnected={this.props.disconnected}>
       <br />
       <Snackbar
         open={this.state.linkCopied}
@@ -157,32 +157,32 @@ class PartyView extends React.Component {
 
       </List>
       </TurnatoBar>);
-    }
+  }
 }
 PartyView.propTypes = {
-    joinParty: PropTypes.func.isRequired,
-    leaveParty: PropTypes.func.isRequired,
-    disconnected: PropTypes.bool.isRequired,
-    down: PropTypes.func.isRequired,
-    token: PropTypes.string.isRequired,
-    info: PropTypes.object.isRequired,
-    matches: PropTypes.array.isRequired,
-    games: PropTypes.array.isRequired,
-    downMapping: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired
+  joinParty: PropTypes.func.isRequired,
+  leaveParty: PropTypes.func.isRequired,
+  disconnected: PropTypes.bool.isRequired,
+  down: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+  info: PropTypes.object.isRequired,
+  matches: PropTypes.array.isRequired,
+  games: PropTypes.array.isRequired,
+  downMapping: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired
 };
 
 PartyView.defaultProps = {
-    joinParty: () => {},
-    leaveParty: () => {},
-    disconnected: false,
-    down: () => {},
-    token: '',
-    info: {loading: true},
-    matches: [],
-    games: [],
-    downMapping: {},
-    params: {}
+  joinParty: () => {},
+  leaveParty: () => {},
+  disconnected: false,
+  down: () => {},
+  token: '',
+  info: {loading: true},
+  matches: [],
+  games: [],
+  downMapping: {},
+  params: {}
 };
 
 export default PartyView;

@@ -9,38 +9,38 @@ import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 class NewParty extends React.Component {
-    componentWillMount() {
-        this.setState({
-            error: this.props.error,
-            name: this.props.name
-        });
-    }
+  componentWillMount() {
+    this.setState({
+      error: this.props.error,
+      name: this.props.name
+    });
+  }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.id) {
-            browserHistory.push('/p/' + nextProps.id);
-        }
-        this.setState({
-            error: nextProps.error,
-            name: nextProps.name
-        });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.id) {
+      browserHistory.push('/p/' + nextProps.id);
     }
+    this.setState({
+      error: nextProps.error,
+      name: nextProps.name
+    });
+  }
 
-    onNameChange(event) {
-        this.setState({...this.state,
-            name: event.target.value});
-    }
+  onNameChange(event) {
+    this.setState({...this.state,
+      name: event.target.value});
+  }
 
-    doNewParty() {
-        ReactGA.event({
-            category: 'NewParty',
-            action: 'do',
-        });
-        this.props.newParty(this.state.name);
-    }
+  doNewParty() {
+    ReactGA.event({
+      category: 'NewParty',
+      action: 'do',
+    });
+    this.props.newParty(this.state.name);
+  }
 
-    render() {
-        return (
+  render() {
+    return (
       <TurnatoBar disconnected={this.props.disconnected}>
       <CardHeader style={{paddingBottom: '0px'}}
         title="Give a name to your party."
@@ -68,23 +68,23 @@ class NewParty extends React.Component {
           <CircularProgress size={80} thickness={5} />
         </CardText>)}
       </TurnatoBar>
-        );
-    }
+    );
+  }
 }
 NewParty.propTypes = {
-    disconnected: PropTypes.bool.isRequired,
-    loading: PropTypes.bool.isRequired,
-    error: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    newParty: PropTypes.func.isRequired,
-    id: PropTypes.number.isRequired,
+  disconnected: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  newParty: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
 };
 NewParty.defaultProps = {
-    disconnected: false,
-    loading: false,
-    error: null,
-    name: '',
-    newParty: null,
-    id: null
+  disconnected: false,
+  loading: false,
+  error: null,
+  name: '',
+  newParty: null,
+  id: null
 };
 export default NewParty;

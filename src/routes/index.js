@@ -14,18 +14,18 @@ import NewPartyRoute from './NewParty';
     PlainRoute objects to build route definitions.   */
 
 export const createRoutes = (store) => ({
-    path        : '/',
-    component   : CoreLayout,
-    indexRoute  : HomeRoute(store),
-    childRoutes : [
-        CheckerGameRoute(store),
-        ChessGameRoute(store),
-        PartyViewRoute(store),
-        LoginRoute(store),
-        GameRoute(store),
-        LobbyRoute(store),
-        NewPartyRoute(store)
-    ]
+  path        : '/',
+  component   : CoreLayout,
+  indexRoute  : HomeRoute(store),
+  childRoutes : [
+    CheckerGameRoute(store),
+    ChessGameRoute(store),
+    PartyViewRoute(store),
+    LoginRoute(store),
+    GameRoute(store),
+    LobbyRoute(store),
+    NewPartyRoute(store)
+  ]
 });
 
 /*  Note: childRoutes can be chunked or otherwise loaded programmatically

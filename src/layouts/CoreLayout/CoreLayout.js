@@ -10,7 +10,7 @@ export const CoreLayout = ({ children }) => (
 );
 
 CoreLayout.propTypes = {
-    children: PropTypes.node
+  children: PropTypes.node
 };
 
 export default CoreLayout;

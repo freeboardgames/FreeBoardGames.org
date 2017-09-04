@@ -8,19 +8,19 @@ import { browserHistory } from 'react-router';
 
 
 class GameView extends React.Component {
-    componentDidMount() {
-        this.props.requestGameInfo(this.props.params.game_code);
-    }
-    render() {
-        let playWithFriends = () => {
-            browserHistory.push('/newParty');
-        };
-        let playWithStrangers = () => {
-            browserHistory.push('/lobby/' + this.props.params.game_code);
-        };
+  componentDidMount() {
+    this.props.requestGameInfo(this.props.params.game_code);
+  }
+  render() {
+    let playWithFriends = () => {
+      browserHistory.push('/newParty');
+    };
+    let playWithStrangers = () => {
+      browserHistory.push('/lobby/' + this.props.params.game_code);
+    };
 
-        if (this.props.loading) {
-            return (
+    if (this.props.loading) {
+      return (
         <TurnatoBar disconnected={this.props.disconnected}>
           <Card>
             <CardText style={{textAlign: 'center'}}>
@@ -28,14 +28,14 @@ class GameView extends React.Component {
             </CardText>
           </Card>
         </TurnatoBar>);
-        }
+    }
     // PARTY
-        let gameName = this.props.info.name;
-        let gameSubtitle = this.props.info.subtitle;
-        let gameScreenshot = this.props.info.screenshot;
-        let gameDescription = this.props.info.description;
+    let gameName = this.props.info.name;
+    let gameSubtitle = this.props.info.subtitle;
+    let gameScreenshot = this.props.info.screenshot;
+    let gameDescription = this.props.info.description;
 
-        return (<TurnatoBar disconnected={this.props.disconnected}>
+    return (<TurnatoBar disconnected={this.props.disconnected}>
       <br />
       <Card>
         <CardHeader
@@ -44,7 +44,7 @@ class GameView extends React.Component {
         />
         <CardText>
           <img src={gameScreenshot} style={{width: '60%', marginLeft:'20%',
-              marginRight: '20%'}} />
+            marginRight: '20%'}} />
           <br /><br />
           {gameDescription}
         </CardText>
@@ -57,24 +57,24 @@ class GameView extends React.Component {
         </CardActions>
       </Card>
       </TurnatoBar>);
-    }
+  }
 }
 
 GameView.propTypes = {
-    requestGameInfo:PropTypes.func.isRequired,
-    disconnected: PropTypes.bool.isRequired,
-    token: PropTypes.string,
-    info: PropTypes.object.isRequired,
-    loading: PropTypes.bool.isRequired,
-    params: PropTypes.object.isRequired
+  requestGameInfo:PropTypes.func.isRequired,
+  disconnected: PropTypes.bool.isRequired,
+  token: PropTypes.string,
+  info: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+  params: PropTypes.object.isRequired
 };
 GameView.defaultProps = {
-    requestGameInfo: () => {},
-    disconnected: false,
-    token: '',
-    info: {},
-    loading: true,
-    params: {}
+  requestGameInfo: () => {},
+  disconnected: false,
+  token: '',
+  info: {},
+  loading: true,
+  params: {}
 };
 
 export default GameView;

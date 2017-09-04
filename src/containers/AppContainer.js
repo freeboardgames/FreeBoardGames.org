@@ -6,31 +6,31 @@ import PropTypes from 'prop-types';
 ReactGA.initialize('UA-105391878-1');
 
 class AppContainer extends Component {
-    shouldComponentUpdate () {
-        return false;
+  shouldComponentUpdate () {
+    return false;
+  }
+
+  render () {
+    const { routes, store } = this.props;
+    function fireTracking() {
+      ReactGA.set({ page: window.location.pathname });
+      ReactGA.pageview(window.location.pathname);
     }
 
-    render () {
-        const { routes, store } = this.props;
-        function fireTracking() {
-            ReactGA.set({ page: window.location.pathname });
-            ReactGA.pageview(window.location.pathname);
-        }
-
-        return (
+    return (
       <Provider store={store}>
         <div style={{ height: '100%' }}>
           <Router history={browserHistory} children={routes}
                   onUpdate={fireTracking}/>
         </div>
       </Provider>
-        );
-    }
+    );
+  }
 }
 
 AppContainer.propTypes = {
-    routes: PropTypes.object.isRequired,
-    store: PropTypes.object.isRequired
+  routes: PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired
 };
 
 export default AppContainer;

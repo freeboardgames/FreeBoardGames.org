@@ -8,28 +8,28 @@ export const SET_GAME_INFO = 'SET_GAME_INFO';
 // Actions
 // ------------------------------------
 export const requestGameInfo = (code) => (dispatch) => {
-    dispatch({type: GAME_INFO_REQUEST, code});
+  dispatch({type: GAME_INFO_REQUEST, code});
 };
 
 export const actions = {
-    requestGameInfo
+  requestGameInfo
 };
 
 // ------------------------------------
 // Party Reducer
 // ------------------------------------
 const ACTION_HANDLERS = {
-    [SET_GAME_INFO] : (state, action) => {
-        return {
-            ...state,
-            info: action.payload,
-            loading: false
-        };
-    },
+  [SET_GAME_INFO] : (state, action) => {
+    return {
+      ...state,
+      info: action.payload,
+      loading: false
+    };
+  },
 };
 const initialState = {loading: true};
 export default function gameReducer (state = initialState, action) {
-    const handler = ACTION_HANDLERS[action.type];
+  const handler = ACTION_HANDLERS[action.type];
 
-    return handler ? handler(state, action) : state;
+  return handler ? handler(state, action) : state;
 }
