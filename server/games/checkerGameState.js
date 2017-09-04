@@ -1,6 +1,6 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
@@ -70,7 +70,7 @@ function calculateFeasible(board, x, y, player, turn) {
   if (!piece || piece.player != player || turn % 2 != player) return [];
   let feasible = [];
   let eat_movements = [];
-    //UP OR DOWN
+  //UP OR DOWN
   for (let directionY = -1; directionY <= 1; directionY += 2) {
     if (directionY == 1 && piece.player == 1 && !piece.double) {
       continue;
@@ -78,14 +78,14 @@ function calculateFeasible(board, x, y, player, turn) {
     if (directionY == -1 && piece.player == 0 && !piece.double) {
       continue;
     }
-        //LEFT OR RIGHT
+    //LEFT OR RIGHT
     for (let directionX = -1; directionX <= 1; directionX += 2) {
-            //WALK
+      //WALK
       if (isValidCell(board, x + directionX, y + directionY) && !board[y + directionY][x + directionX]) {
         feasible.push({ x: x + directionX, y: y + directionY, movement: 'WALK',
           from: { x: x, y: y } });
       }
-            //EAT
+      //EAT
       if (isValidCell(board, x + directionX, y + directionY) && isValidCell(board, x + 2 * directionX, y + 2 * directionY) && board[y + directionY][x + directionX] && board[y + directionY][x + directionX].player != piece.player && !board[y + 2 * directionY][x + 2 * directionX]) {
         let movement = { movement: 'EAT',
           x: x + 2 * directionX, y: y + 2 * directionY,
@@ -196,8 +196,8 @@ const initialState = { board: [[{ player: 0, key: 0 }, null, { player: 0, key: 1
   feasible: null };
 function messageReducer(state, action) {
   if (!state) {
-        //Have to do a deep copy because that on the server, the initialState was
-        //being modified by following actions.
+    //Have to do a deep copy because that on the server, the initialState was
+    //being modified by following actions.
     state = JSON.parse(JSON.stringify(initialState));
   }
   const handler = ACTION_HANDLERS[action.type];

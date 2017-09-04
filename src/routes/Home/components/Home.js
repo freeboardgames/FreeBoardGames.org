@@ -111,6 +111,8 @@ class Home extends React.Component {
       <p style={{fontSize: '12px', textAlign: 'center'}}>
       Made with ♥&nbsp;-&nbsp;
       <a href="https://github.com/Felizardo/turnato" target="_blank">GitHub</a>
+      &nbsp;-&nbsp;
+       <a href="#" onClick={joinMatch({game_code: 'colonizers', _id: 'a'})}>test - REMOVE ME</a>
       </p>
       <br/><br/>
       </TurnatoBar>);

@@ -100,6 +100,15 @@ describe('colonizersBoard', () => {
         expect(typeof(edge.owner)).to.eql('number');
       }
     });
+    it ('should have length of 1', () => {
+      for (let i in board.edges) {
+        let edge = board.edges[i];
+        let point0 = board.points[edge.points[0]];
+        let point1 = board.points[edge.points[1]];
+        expect(+Math.sqrt(Math.pow(point0.x - point1.x, 2) +
+                         Math.pow(point0.y - point1.y, 2)).toFixed(1)).to.eql(1.0);
+      }
+    });
   });
   describe('Points', () => {
     it ('should have an x and an y', () => {
