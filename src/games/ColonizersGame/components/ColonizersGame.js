@@ -4,20 +4,21 @@ import PropTypes from 'prop-types';
 class ColonizersGame extends React.Component {
   render () {
     let board = this.props.state.board;
+    let map = board.map;
     let lines = [];
-    for (let i in board.edges) {
-      let edge = board.edges[i];
-      let point0 = board.points[edge.points[0]];
-      let point1 = board.points[edge.points[1]];
+    for (let i in map.edges) {
+      let edge = map.edges[i];
+      let point0 = map.points[edge.points[0]];
+      let point1 = map.points[edge.points[1]];
       lines.push((
         <line x1={point0.x*100} y1={point0.y*100} x2={point1.x*100} y2={point1.y*100}
           strokeWidth="2" stroke="black" key={i}/>
       ));
     }
     let circles = [];
-    for (let y in board.tiles) {
-      for (let x in board.tiles[y]) {
-        let tile = board.tiles[y][x];
+    for (let y in map.tiles) {
+      for (let x in map.tiles[y]) {
+        let tile = map.tiles[y][x];
         if (!tile.active) {
           continue;
         }

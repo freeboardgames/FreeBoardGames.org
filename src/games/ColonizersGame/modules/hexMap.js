@@ -1,20 +1,20 @@
-export function newBoard (width, height, inactive_tiles) {
-  let board = {tiles: [],
+export function newHexMap (width, height, inactive_tiles) {
+  let map = {
+    tiles: [],
     edges: [],
-    points: [],
-    ports: []
+    points: []
   };
   for (let y=0; y < height; y++) {
-    board.tiles.push([]);
+    map.tiles.push([]);
     for (let x=0; x < width; x++) {
       let inactive = (inactive_tiles[y] && inactive_tiles[y][x] === true);
-      board.tiles[y].push(newTile(board, x, y, !inactive));
+      map.tiles[y].push(newTile(map, x, y, !inactive));
     }
   }
-  return board;
+  return map;
 }
 
-export function newTile (board, x, y, active) {
+export function newTile (map, x, y, active) {
   // Calculate center
   let tile = {x: -1, y: -1, active: active};
   tile.x = 1 + 1.5 * x;
@@ -28,15 +28,9 @@ export function newTile (board, x, y, active) {
     return tile;
   }
 
-  //Assign bogus type and value for tile.
-  //Server will need to setup correct values
-  //as we have to be deterministic on the clients.
-  tile.type = -1;
-  tile.value = 7;
-
   // Reuse shared edges
-  let edges = getSharedEdges(board.tiles, x, y);
-  createMissingEdges(board, edges, tile);
+  let edges = getSharedEdges(map.tiles, x, y);
+  createMissingEdges(map, edges, tile);
   tile.edges = edges;
   return tile;
 }
@@ -81,7 +75,7 @@ export function circularGet(arr, i) {
   return arr[i];
 }
 
-function createMissingEdges(board, edges, tile) {
+function createMissingEdges(map, edges, tile) {
   //We need to know which edges are shared, because its points are inverted
   let sharedEdges = [];
   for (let i=0; i<edges.length; i++) {
@@ -99,27 +93,27 @@ function createMissingEdges(board, edges, tile) {
     let firstPoint = null;
     if (edgeBeforeIndex != null) {
       if (sharedEdges.includes((i-1)%6)) {
-        firstPoint = board.edges[edgeBeforeIndex].points[0];
+        firstPoint = map.edges[edgeBeforeIndex].points[0];
       } else {
-        firstPoint = board.edges[edgeBeforeIndex].points[1];
+        firstPoint = map.edges[edgeBeforeIndex].points[1];
       }
     }
     let secondPoint = null;
     if (edgeAfterIndex != null) {
       if (sharedEdges.includes((i+1)%6)) {
-        secondPoint = board.edges[edgeAfterIndex].points[1];
+        secondPoint = map.edges[edgeAfterIndex].points[1];
       } else {
-        secondPoint = board.edges[edgeAfterIndex].points[0];
+        secondPoint = map.edges[edgeAfterIndex].points[0];
       }
     }
     let points = [firstPoint, secondPoint];
-    createMissingPoints(board, points, i, tile);
-    edges[i] = board.edges.length;
-    board.edges.push({points: points, owner: -1});
+    createMissingPoints(map, points, i, tile);
+    edges[i] = map.edges.length;
+    map.edges.push({points: points});
   }
 }
 
-function createMissingPoints(board, points, edgeIndex, tile) {
+function createMissingPoints(map, points, edgeIndex, tile) {
   for (let j=0; j<points.length; j++) {
     if (points[j] != null) {
       continue;
@@ -128,8 +122,7 @@ function createMissingPoints(board, points, edgeIndex, tile) {
     let teta = (Math.PI * pointIndex) / 3.0;
     let x2 = Math.cos(teta);
     let y2 = -1 * Math.sin(teta);
-    points[j] = board.points.length;
-    board.points.push({x: tile.x + x2, y: tile.y + y2,
-      owner: -1, building: -1});
+    points[j] = map.points.length;
+    map.points.push({x: tile.x + x2, y: tile.y + y2});
   }
 }
