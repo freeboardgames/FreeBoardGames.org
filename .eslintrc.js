@@ -37,6 +37,7 @@ module.exports = {
       "expect" : false,
       "should" : false,
       "sinon"  : false,
+      "fail" : false,
       "it" : false,
       "beforeEach" : false,
       "describe": false

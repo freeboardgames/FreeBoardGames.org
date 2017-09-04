@@ -1,24 +1,22 @@
-const INACTIVE_TILES = {0: {0: true, 4: true},
-  4: {0: true, 1: true, 3: true, 4: true}};
-
-export function newBoard () {
+export function newBoard (width, height, inactive_tiles) {
   let board = {tiles: [],
     edges: [],
     points: [],
     ports: []
   };
-  for (let y=0; y <= 4; y++) {
+  for (let y=0; y < height; y++) {
     board.tiles.push([]);
-    for (let x=0; x <= 4; x++) {
-      board.tiles[y].push(newTile(board, x, y));
+    for (let x=0; x < width; x++) {
+      let inactive = (inactive_tiles[y] && inactive_tiles[y][x] === true);
+      board.tiles[y].push(newTile(board, x, y, !inactive));
     }
   }
   return board;
 }
 
-export function newTile (board, x, y) {
+export function newTile (board, x, y, active) {
   // Calculate center
-  let tile = {x: -1, y: -1, active: true};
+  let tile = {x: -1, y: -1, active: active};
   tile.x = 1 + 1.5 * x;
   if ((x % 2) === 0) {
     tile.y = Math.sqrt(3)/2 + Math.sqrt(3) * y;
@@ -26,8 +24,7 @@ export function newTile (board, x, y) {
     tile.y = Math.sqrt(3) + Math.sqrt(3) * y;
   }
   // Calculate if it is inactive
-  if (INACTIVE_TILES[x] && INACTIVE_TILES[x][y]) {
-    tile.active = false;
+  if (!active) {
     return tile;
   }
 
@@ -48,6 +45,7 @@ function getSharedEdges(tiles, x, y) {
   let result = [null, null, null,
     null, null, null];
   if ((x%2) == 0) {
+    result[0] = tryToGetEdge(tiles, x+1, y-1, 3);
     result[1] = tryToGetEdge(tiles, x, y-1, 4);
     result[2] = tryToGetEdge(tiles, x-1, y-1, 5);
     result[3] = tryToGetEdge(tiles, x-1, y, 0);
@@ -69,7 +67,7 @@ function tryToGetEdge(tiles, x, y, edgeIndex) {
   if (!tile.active) {
     return null;
   }
-  if (tile.edges[edgeIndex]) {
+  if (edgeIndex < tile.edges.length) {
     return tile.edges[edgeIndex];
   }
   return null;
@@ -84,6 +82,13 @@ export function circularGet(arr, i) {
 }
 
 function createMissingEdges(board, edges, tile) {
+  //We need to know which edges are shared, because its points are inverted
+  let sharedEdges = [];
+  for (let i=0; i<edges.length; i++) {
+    if (edges[i] != null) {
+      sharedEdges.push(i);
+    }
+  }
   //Replace null with edges. Share points as needed.
   for (let i=0; i<edges.length; i++) {
     if (edges[i] != null) {
@@ -93,11 +98,19 @@ function createMissingEdges(board, edges, tile) {
     let edgeAfterIndex = circularGet(edges, i+1);
     let firstPoint = null;
     if (edgeBeforeIndex != null) {
-      firstPoint = board.edges[edgeBeforeIndex].points[0];
+      if (sharedEdges.includes((i-1)%6)) {
+        firstPoint = board.edges[edgeBeforeIndex].points[0];
+      } else {
+        firstPoint = board.edges[edgeBeforeIndex].points[1];
+      }
     }
     let secondPoint = null;
     if (edgeAfterIndex != null) {
-      secondPoint = board.edges[edgeAfterIndex].points[1];
+      if (sharedEdges.includes((i+1)%6)) {
+        secondPoint = board.edges[edgeAfterIndex].points[1];
+      } else {
+        secondPoint = board.edges[edgeAfterIndex].points[0];
+      }
     }
     let points = [firstPoint, secondPoint];
     createMissingPoints(board, points, i, tile);

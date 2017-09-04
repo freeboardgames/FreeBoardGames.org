@@ -5,10 +5,11 @@ import {
 } from './colonizersBoard.js';
 
 
-describe('colonizersBoard', () => {
+describe('5x5 colonizer board', () => {
   var board;
   beforeEach(() => {
-    board = newBoard();
+    board = newBoard(5, 5, {0: {0: true, 4: true},
+      4: {0: true, 1: true, 3: true, 4: true}});
   });
 
   describe('Tiles', () => {
@@ -109,6 +110,45 @@ describe('colonizersBoard', () => {
                          Math.pow(point0.y - point1.y, 2)).toFixed(1)).to.eql(1.0);
       }
     });
+    it ('should have correct X,Y for edge 0 of (x=2,y=2)', () => {
+      let tile = board.tiles[2][2];
+      let edge = board.edges[tile.edges[0]];
+      let point0 = board.points[edge.points[0]];
+      let point1 = board.points[edge.points[1]];
+      //We should not assume the order of the points in given edge
+      let expY = 2.5 * Math.sqrt(3);
+      expect(point0.x == 5 || point1.x == 5).to.eql(true);
+      expect(point1.y == expY || point1.y == expY).to.eql(true);
+    });
+    it ('should have correct X,Y for edge 1 of (x=2,y=4)', () => {
+      let tile = board.tiles[4][2];
+      let edge = board.edges[tile.edges[1]];
+      let point0 = board.points[edge.points[0]];
+      let point1 = board.points[edge.points[1]];
+      let expY = 4 * Math.sqrt(3);
+      expect(point0.x == 4.5 || point1.x == 4.5).to.eql(true);
+      expect(point0.y == expY || point1.y == expY).to.eql(true);
+    });
+    it ('should not have overlapping edges', () => {
+      let p0_p1_mapping = {};
+      for (let i in board.edges) {
+        let edge = board.edges[i];
+        let p0 = edge.points[0];
+        let p1 = edge.points[1];
+        if (!(p0 in p0_p1_mapping)) {
+          p0_p1_mapping[p0] = {};
+        }
+        if (!(p1 in p0_p1_mapping)) {
+          p0_p1_mapping[p1] = {};
+        }
+        if (p0_p1_mapping[p0][p1] === true ||
+            p0_p1_mapping[p1][p0] === true) {
+          throw new Error(`OVERLAPPING EDGES p0: ${p0} p1: ${p1}`);
+        }
+        p0_p1_mapping[p0][p1] = true;
+        p0_p1_mapping[p1][p0] = true;
+      }
+    });
   });
   describe('Points', () => {
     it ('should have an x and an y', () => {
@@ -131,21 +171,20 @@ describe('colonizersBoard', () => {
         expect(point.building <= 1).to.eql(true);
       }
     });
-    it ('should have correct X,Y for point 0 of (x=2,y=2)', () => {
-      let tile = board.tiles[2][2];
-      let edge = board.edges[tile.edges[0]];
-      let point = board.points[edge.points[0]];
-      expect(point.x).to.eql(5);
-      expect(point.y).to.eql(2.5 * Math.sqrt(3));
-    });
-    it ('should have correct X,Y for point 1 of (x=2,y=4)', () => {
-      let tile = board.tiles[4][2];
-      expect(tile.x).to.eql(4);
-      expect(tile.y).to.eql(4.5 * Math.sqrt(3));
-      let edge = board.edges[tile.edges[1]];
-      let point = board.points[edge.points[1]];
-      expect(point.x).to.eql(4.5);
-      expect(point.y).to.eql(4 * Math.sqrt(3));
+    it ('should not have overlapping points', () => {
+      let x_y_mapping = {};
+      for (let i in board.points) {
+        let point = board.points[i];
+        let x = +point.x.toFixed(2);
+        let y = +point.y.toFixed(2);
+        if (!(x in x_y_mapping)) {
+          x_y_mapping[x] = {};
+        }
+        if (x_y_mapping[x][y] === true) {
+          throw new Error(`OVERLAPPING POINTS ON X: ${x} Y: ${y}`);
+        }
+        x_y_mapping[x][y] = true;
+      }
     });
   });
   describe('Port', () => {

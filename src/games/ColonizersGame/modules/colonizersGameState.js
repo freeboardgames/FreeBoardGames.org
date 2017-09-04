@@ -1,9 +1,10 @@
 import {
   newBoard
 } from './colonizersBoard.js';
-
+// 4,4, {0: {0: true, 4: true}, : {0: true, 1: true, 3: true, 4: true}}
 const initialState = {
-  board: newBoard(),
+  board: newBoard(5,5, {0: {0: true, 4: true},
+    4: {0: true, 1: true, 3: true, 4: true}}),
   loading: true,
   turn: 0,
   numPlayers: 3,
