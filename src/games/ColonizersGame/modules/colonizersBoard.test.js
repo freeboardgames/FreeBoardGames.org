@@ -1,5 +1,7 @@
 import {
-  newBoard
+  newBoard,
+  newTile,
+  circularGet
 } from './colonizersBoard.js';
 
 
@@ -120,6 +122,22 @@ describe('colonizersBoard', () => {
         expect(point.building <= 1).to.eql(true);
       }
     });
+    it ('should have correct X,Y for point 0 of (x=2,y=2)', () => {
+      let tile = board.tiles[2][2];
+      let edge = board.edges[tile.edges[0]];
+      let point = board.points[edge.points[0]];
+      expect(point.x).to.eql(5);
+      expect(point.y).to.eql(2.5 * Math.sqrt(3));
+    });
+    it ('should have correct X,Y for point 1 of (x=2,y=4)', () => {
+      let tile = board.tiles[4][2];
+      expect(tile.x).to.eql(4);
+      expect(tile.y).to.eql(4.5 * Math.sqrt(3));
+      let edge = board.edges[tile.edges[1]];
+      let point = board.points[edge.points[1]];
+      expect(point.x).to.eql(4.5);
+      expect(point.y).to.eql(4 * Math.sqrt(3));
+    });
   });
   describe('Port', () => {
     it ('should have an edge', () => {
@@ -134,6 +152,43 @@ describe('colonizersBoard', () => {
         expect(port.type >= 0).to.eql(true);
         expect(port.type <= 4).to.eql(true);
       }
+    });
+  });
+  describe('Functions', () => {
+    var board;
+    beforeEach(() => {
+      board = {tiles: [],
+        edges: [],
+        points: [],
+        ports: []};
+    });
+    it ('should return correct X,Y for first tile', () => {
+      let tile = newTile(board, 0, 0);
+      expect(tile.x).to.eql(1);
+      expect(tile.y).to.eql(Math.sqrt(3)/2);
+    });
+    it ('should return correct X,Y for some tiles', () => {
+      let CORRECT_Y_X = {0: {4: {x: 7, y: Math.sqrt(3)/2}},
+        2: {2: {x: 4, y: 2.5 * Math.sqrt(3)}},
+        3: {1: {x: 2.5, y: 4 * Math.sqrt(3)}}};
+      for (let y = 0; y<=4; y++) {
+        board.tiles.push([]);
+        for (let x = 0; x<=4; x++) {
+          let tile = newTile(board, x, y);
+          if (CORRECT_Y_X[y] && CORRECT_Y_X[y][x]) {
+            expect(Math.abs(tile.x - CORRECT_Y_X[y][x].x) <= 0.001).to.eql(true);
+            expect(Math.abs(tile.y - CORRECT_Y_X[y][x].y) <= 0.001).to.eql(true);
+          }
+          board.tiles[y].push(tile);
+        }
+      }
+    });
+    it ('should have correct circular get array', () => {
+      let arr = [10,20,30,40];
+      expect(circularGet(arr, 5)).to.eql(20);
+      expect(circularGet(arr, 10)).to.eql(30);
+      expect(circularGet(arr, -1)).to.eql(40);
+      expect(circularGet(arr, -5)).to.eql(40);
     });
   });
 });
