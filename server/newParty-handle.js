@@ -9,10 +9,14 @@ module.exports = (socket, dispatch, db, user, name) => {
     downMapping: {}
   };
   partiesCollection.insert(party, (err) => {
-    if (err) {
-      dispatch({type: 'NEW_PARTY_ERROR', error: err});
-    } else {
-      dispatch({type: 'NEW_PARTY_SUCCESS', payload: {id: party._id}});
+    try {
+      if (err) {
+        dispatch({type: 'NEW_PARTY_ERROR', error: err});
+      } else {
+        dispatch({type: 'NEW_PARTY_SUCCESS', payload: {id: party._id}});
+      }
+    } catch (err) {
+      console.error(err);
     }
   });
 };

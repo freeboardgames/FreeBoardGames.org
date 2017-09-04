@@ -33,37 +33,41 @@ var joinMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => 
   db.collection('matches').findOne({_id: match_code}, (err, match) => {
     db.collection('users').find({_id: {$in: match.players}}, (err, players_cur) => {
       players_cur.toArray((err, all_players) => {
-        let match_cache = cache.get(match_code);
-        if (match_cache) {
-          match.log = match_cache.log;
-        }
-        match.playersNickname = match.players.map((u_code) => {
-          return all_players.filter(
-            (u) => { return u._id == u_code; })[0].nickname;
-        });
-
-        all_players.map((p) => { return p.nickname; });
-        cache.put(match_code, match, CACHE_DURATION, saveAfterExpire);
-        let current_state = undefined;
-        if (match.log && match.log.length > 0) {
-          current_state = match.log[0].state;
-        }
-        // We pass a NOOP to the reducer in case current_state = undefined.
-        let next_state = genericReducer(match.game_code, current_state,
-           {type: 'NOOP'});
-        next_state.players = match.players;
-        next_state.playersNickname = match.playersNickname;
-        next_state.loading = false;
-        next_state.player = match.players.indexOf(user._id);
-        if (next_state) {
-          socket.join('match-' + match_code);
-          let result = { type: 'MATCH_SET_STATE' };
-          result.payload = next_state;
-          dispatch(result);
-          if (!match.messages) {
-            match.messages = [];
+        try {
+          let match_cache = cache.get(match_code);
+          if (match_cache) {
+            match.log = match_cache.log;
           }
-          dispatch({ type: 'SET_MESSAGES', payload: match.messages });
+          match.playersNickname = match.players.map((u_code) => {
+            return all_players.filter(
+              (u) => { return u._id == u_code; })[0].nickname;
+          });
+
+          all_players.map((p) => { return p.nickname; });
+          cache.put(match_code, match, CACHE_DURATION, saveAfterExpire);
+          let current_state = undefined;
+          if (match.log && match.log.length > 0) {
+            current_state = match.log[0].state;
+          }
+          // We pass a NOOP to the reducer in case current_state = undefined.
+          let next_state = genericReducer(match.game_code, current_state,
+             {type: 'NOOP'});
+          next_state.players = match.players;
+          next_state.playersNickname = match.playersNickname;
+          next_state.loading = false;
+          next_state.player = match.players.indexOf(user._id);
+          if (next_state) {
+            socket.join('match-' + match_code);
+            let result = { type: 'MATCH_SET_STATE' };
+            result.payload = next_state;
+            dispatch(result);
+            if (!match.messages) {
+              match.messages = [];
+            }
+            dispatch({ type: 'SET_MESSAGES', payload: match.messages });
+          }
+        } catch (err) {
+          console.error(err);
         }
       });
     });
@@ -76,16 +80,20 @@ var leaveMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) =>
 
 var notifyToPlay = (db, user_id, game_code, match_code) => () => {
   db.collection('users').findOne({_id: user_id}, (err, user) => {
-    if (!user.pushSubscription)
-      return;
-    webpush.setVapidDetails('mailto:felizardow@gmail.com',
-                                vapidKeys.publicKey,
-                                vapidKeys.privateKey
-                               );
-    let notificationData = JSON.stringify({action: 'PLAY',
-      game: game_code,
-      match_code: match_code});
-    webpush.sendNotification(user.pushSubscription, notificationData);
+    try {
+      if (!user.pushSubscription)
+        return;
+      webpush.setVapidDetails('mailto:felizardow@gmail.com',
+                                  vapidKeys.publicKey,
+                                  vapidKeys.privateKey
+                                 );
+      let notificationData = JSON.stringify({action: 'PLAY',
+        game: game_code,
+        match_code: match_code});
+      webpush.sendNotification(user.pushSubscription, notificationData);
+    } catch (err) {
+      console.error(err);
+    }
   });
 };
 
@@ -94,9 +102,13 @@ var matchActionRequest = (socket, dispatchRoom, dispatch, db, user, match_code, 
   let match = cache.get(match_code);
   if (!match) {
     db.collection('matches').findOne({_id: match_code}, (err, match_db) => {
-      cache.put(match_code, match_db, CACHE_DURATION, saveAfterExpire);
-      matchActionRequest(socket, dispatchRoom, dispatch, db, user, match_code,
-        action);
+      try {
+        cache.put(match_code, match_db, CACHE_DURATION, saveAfterExpire);
+        matchActionRequest(socket, dispatchRoom, dispatch, db, user, match_code,
+          action);
+      } catch (err) {
+        console.error(err);
+      }
     });
     return;
   }
