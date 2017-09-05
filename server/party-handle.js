@@ -5,7 +5,14 @@ let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => 
   let handlePartyDb = (party, matches, games, all_users, current_user, new_user) => {
     try {
       let users_nickname = party.users.map((u_code) => {
-        return all_users.filter((u) => { return u._id == u_code; })[0].nickname;
+        let users = all_users.filter((u) => { return u._id == u_code; });
+        if (users.length == 1) {
+          return users[0].nickname;
+        } else {
+          //This should only happen if we lose users on the db, but they still
+          //have the JWT token.
+          return u_code;
+        }
       });
       let info = {name: party.name, users: party.users, currentUser: current_user,
         code: party_code, loading: false, usersNickname: users_nickname };
