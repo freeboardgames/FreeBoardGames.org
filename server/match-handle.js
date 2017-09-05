@@ -39,8 +39,12 @@ var joinMatchHandle = (socket, dispatchRoom, dispatch, db, user, match_code) => 
             match.log = match_cache.log;
           }
           match.playersNickname = match.players.map((u_code) => {
-            return all_players.filter(
-              (u) => { return u._id == u_code; })[0].nickname;
+            let users = all_players.filter((u) => { return u._id == u_code; });
+            if (users.length == 1) {
+              return users[0].nickname;
+            } else {
+              return u_code;
+            }
           });
 
           all_players.map((p) => { return p.nickname; });
