@@ -10,7 +10,8 @@ module.exports = (io, socket, dispatch, db, user, game_code) => {
   let game = GAMES.map[game_code];
   let timestamp = new Date().getTime();
   lobbyQueue[game_code] = lobbyQueue[game_code].filter((entry) => {
-    return (entry.timestamp >= timestamp - MAX_WAIT_TIME);
+    return (entry.timestamp >= timestamp - MAX_WAIT_TIME) &&
+           entry.user._id != user._id;
   });
   lobbyQueue[game_code].push({user, socket, timestamp});
   if (lobbyQueue[game_code].length === game.minPlayers) {
