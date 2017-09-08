@@ -212,7 +212,6 @@ const initialState = {board: [
   [null, {player: 1, key:20}, null, {player: 1, key:21}, null,
     {player: 1, key:22}, null, {player: 1, key:23}]
 ],
-  loading: true,
   turn: 0,
   winner: null,
   selected: null,

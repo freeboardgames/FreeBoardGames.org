@@ -451,7 +451,6 @@ const initialState = {board: [
     ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'],
     ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']
 ],
-  loading: true,
   turn: 0,
   winner: null,
   selected: null,

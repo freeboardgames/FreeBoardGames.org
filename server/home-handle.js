@@ -14,15 +14,15 @@ module.exports = (socket, dispatch, db, user) => {
             players_cur.toArray((err, all_players) => {
               try {
                 matches.map((m) => {
-                  let playersNickname = [];
-                  m.players.map((p_id) => {
-                    all_players.map((p) => {
-                      if (p._id == p_id) {
-                        playersNickname.push(p.nickname);
-                      }
-                    });
+                  m.playersNickname =  m.players.map((u_code) => {
+                    let users = all_players.filter(
+                      (u) => { return u._id == u_code; });
+                    if (users.length == 1) {
+                      return users[0].nickname;
+                    } else {
+                      return u_code;
+                    }
                   });
-                  m.playersNickname = playersNickname;
                   delete m.log;
                 });
                 dispatch({type: 'SET_MATCHES', matches});

@@ -1,9 +1,6 @@
 import React from 'react';
-import TurnatoBar from '../../../TurnatoBar/TurnatoBar';
-import {Card, CardText} from 'material-ui/Card';
 import CheckerBoard from '../../CheckerGame/components/CheckerBoard';
 import ChessPiece from './ChessPiece';
-import CircularProgress from 'material-ui/CircularProgress';
 import './ChessGame.scss';
 import TurnHUD from '../../../TurnHUD/containers/TurnHUDContainer';
 import PropTypes from 'prop-types';
@@ -18,7 +15,7 @@ class ChessGame extends React.Component {
   }
   render () {
     let state = this.props.state;
-    let inverted = state.player == 1;
+    let inverted = this.props.matchInfo.player == 1;
     let onClick = (x,y) => () => {
       let real_y = y;
       let real_x = x;
@@ -30,18 +27,12 @@ class ChessGame extends React.Component {
         category: 'ChessGame',
         action: 'click',
       });
-      this.props.sendClick(this.props.params.id, real_x, real_y, state.player);
+      this.props.sendClick(
+        this.props.matchInfo.code,
+        real_x,
+        real_y,
+        this.props.matchInfo.player);
     };
-    if (state.loading) {
-      return (
-        <TurnatoBar>
-          <Card>
-            <CardText style={{textAlign: 'center'}}>
-              <CircularProgress size={80} thickness={5} />
-            </CardText>
-          </Card>
-        </TurnatoBar>);
-    }
     //Positioning pieces
     let pieces = [];
     for (var j =0; j<state.board.length; j++) {
@@ -90,16 +81,12 @@ class ChessGame extends React.Component {
     return (
     <div style={{backgroundColor: 'black', height: '100%'}}>
       <TurnHUD
-        match_code={this.props.params.id}
-        players={state.players}
-        playersNickname={state.playersNickname}
-        playersPrimaryColors={['grey', 'black']}
+        playersPrimaryColors={['grey', '#CCCC00']}
         playersSecondaryColors={['white', 'grey']}
-        player={state.player}
         resign={this.props.resign}
         warning={state.check ? 'CHECK' : null}
         winner={state.winner}
-        currentPlayer={state.turn%2}/>
+        playerWhoseTurn={state.turn%2}/>
       <CheckerBoard
         feasible={feasible} selected={selected}
         onClick={onClick}
@@ -116,7 +103,8 @@ ChessGame.propTypes = {
   leaveMatch: PropTypes.func,
   resign: PropTypes.func,
   state: PropTypes.object,
-  params: PropTypes.object
+  params: PropTypes.object,
+  matchInfo: PropTypes.object
 };
 
 ChessGame.defaultProps = {
@@ -125,6 +113,7 @@ ChessGame.defaultProps = {
   leaveMatch: () => {},
   resign: () => {},
   state: [],
+  matchInfo: {},
   params: {}
 };
 

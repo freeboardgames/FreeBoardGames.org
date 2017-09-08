@@ -40,13 +40,18 @@ const ACTION_HANDLERS = {
   },
   ['SET_MESSAGES'] : (state, action) => {
     return { ...state, messages: action.payload.slice(0) };
+  },
+  ['SET_MATCH_INFO'] : (state, action) => {
+    return { ...state, matchInfo: action.payload };
   }
 };
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {messages: [], disconnected: false};
+const initialState = {messages: [],
+  matchInfo: {loading: true},
+  disconnected: false};
 export default function messageReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
 
