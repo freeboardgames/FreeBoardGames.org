@@ -34,6 +34,10 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [SET_INFO] : (state, action) => {
+    //Always preserve the current user.
+    if ('info' in state && 'currentUser' in state.info) {
+      action.info.currentUser = state.info.currentUser;
+    }
     return {...state,
       info: action.info};
   },

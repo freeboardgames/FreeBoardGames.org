@@ -12,7 +12,7 @@ class NewParty extends React.Component {
   componentWillMount() {
     this.setState({
       error: this.props.error,
-      name: this.props.name
+      name: this.props.name || ''
     });
   }
 
@@ -27,8 +27,10 @@ class NewParty extends React.Component {
   }
 
   onNameChange(event) {
-    this.setState({...this.state,
-      name: event.target.value});
+    if (event.target.value.length <= 30) {
+      this.setState({...this.state,
+        name: event.target.value});
+    }
   }
 
   doNewParty() {
@@ -60,7 +62,9 @@ class NewParty extends React.Component {
         </CardText>
         <CardActions style={{textAlign: 'right'}}>
           <RaisedButton label="Create" secondary={true}
-            onClick={this.doNewParty.bind(this)} />
+            onClick={this.doNewParty.bind(this)}
+            disabled={!this.state.name || this.state.name.length == 0}
+            />
         </CardActions>
       </div>
       ) : (
@@ -74,10 +78,10 @@ class NewParty extends React.Component {
 NewParty.propTypes = {
   disconnected: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  error: PropTypes.string,
+  name: PropTypes.string,
   newParty: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string,
 };
 NewParty.defaultProps = {
   disconnected: false,
