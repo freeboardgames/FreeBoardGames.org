@@ -38,6 +38,9 @@ const ACTION_HANDLERS = {
       loading: false
     };
   },
+  ['LOCATION_CHANGE'] : () => {
+    return initialState;
+  },
 };
 
 // ------------------------------------

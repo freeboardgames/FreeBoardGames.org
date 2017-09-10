@@ -14,6 +14,9 @@ class ChessGame extends React.Component {
     this.props.leaveMatch(this.props.params.id);
   }
   render () {
+    if (this.props.matchInfo.loading) {
+      return null;
+    }
     let state = this.props.state;
     let inverted = this.props.matchInfo.player == 1;
     let onClick = (x,y) => () => {
@@ -59,7 +62,7 @@ class ChessGame extends React.Component {
       }
     }
     let feasible = [];
-    let selected = [];
+    let selected = {};
     for (let y=0; y<state.board.length; y++) {
       for (let x=0; x<state.board[y].length; x++) {
         let cell = state.board[y][x];
@@ -70,7 +73,7 @@ class ChessGame extends React.Component {
           fake_y = 7 - y;
         }
         if (cell.indexOf('@') != -1) {
-          selected.push({x: fake_x, y: fake_y});
+          selected = {x: fake_x, y: fake_y};
         }
         if (cell.indexOf('*') != -1) {
           feasible.push({x: fake_x, y: fake_y});
@@ -79,21 +82,20 @@ class ChessGame extends React.Component {
     }
 
     return (
-    <div style={{backgroundColor: 'black', height: '100%'}}>
       <TurnHUD
         playersPrimaryColors={['grey', '#CCCC00']}
         playersSecondaryColors={['white', 'grey']}
         resign={this.props.resign}
         warning={state.check ? 'CHECK' : null}
         winner={state.winner}
-        playerWhoseTurn={state.turn%2}/>
-      <CheckerBoard
-        feasible={feasible} selected={selected}
-        onClick={onClick}
-        key="999">
-        {pieces}
-      </CheckerBoard>
-    </div>);
+        playerWhoseTurn={state.turn%2}>
+        <CheckerBoard
+          feasible={feasible} selected={selected}
+          onClick={onClick}
+          key="999">
+          {pieces}
+        </CheckerBoard>
+      </TurnHUD>);
   }
 }
 

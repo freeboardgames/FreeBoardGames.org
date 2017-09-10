@@ -127,6 +127,9 @@ const ACTION_HANDLERS = {
   [MATCH_SET_STATE]: (state, action) => {
     return _extends({}, action.payload);
   },
+  ['LOCATION_CHANGE']: () => {
+    return JSON.parse(JSON.stringify(initialState));
+  },
   [MATCH_ACTION_REQUEST]: (state, action) => {
     if (action.subtype == 'CLICK') {
       let x = action.payload.x;
@@ -189,7 +192,6 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = { board: [[{ player: 0, key: 0 }, null, { player: 0, key: 1 }, null, { player: 0, key: 2 }, null, { player: 0, key: 3 }, null], [null, { player: 0, key: 4 }, null, { player: 0, key: 5 }, null, { player: 0, key: 6 }, null, { player: 0, key: 7 }], [{ player: 0, key: 8 }, null, { player: 0, key: 9 }, null, { player: 0, key: 10 }, null, { player: 0, key: 11 }, null], [null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null], [null, { player: 1, key: 12 }, null, { player: 1, key: 13 }, null, { player: 1, key: 14 }, null, { player: 1, key: 15 }], [{ player: 1, key: 16 }, null, { player: 1, key: 17 }, null, { player: 1, key: 18 }, null, { player: 1, key: 19 }, null], [null, { player: 1, key: 20 }, null, { player: 1, key: 21 }, null, { player: 1, key: 22 }, null, { player: 1, key: 23 }]],
-  loading: true,
   turn: 0,
   winner: null,
   selected: null,

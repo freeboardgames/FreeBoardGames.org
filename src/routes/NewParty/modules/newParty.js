@@ -32,6 +32,9 @@ const ACTION_HANDLERS = {
       loading: false,
       error: action.error};
   },
+  ['LOCATION_CHANGE'] : () => {
+    return initialState;
+  },
   ['NEW_PARTY_SUCCESS'] : (state, action) => {
     return {id: action.payload.id};
   }

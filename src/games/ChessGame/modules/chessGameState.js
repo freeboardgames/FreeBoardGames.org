@@ -388,6 +388,9 @@ const ACTION_HANDLERS = {
   [MATCH_SET_STATE] : (state, action) => {
     return deepCopy(action.payload);
   },
+  ['LOCATION_CHANGE'] : () => {
+    return deepCopy(initialState);
+  },
   [MATCH_ACTION_REQUEST] : (state, action) => {
     if (action.subtype == 'CLICK') {
       state = deepCopy(state);
@@ -459,7 +462,7 @@ export default function messageReducer (state, action) {
   if (!state) {
     //Have to do a deep copy because that on the server, the initialState was
     //being modified by following actions.
-    state = JSON.parse(JSON.stringify(initialState));
+    state = deepCopy(initialState);
   }
   const handler = ACTION_HANDLERS[action.type];
 

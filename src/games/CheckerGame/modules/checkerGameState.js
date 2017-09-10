@@ -123,6 +123,9 @@ const ACTION_HANDLERS = {
       ...action.payload
     };
   },
+  ['LOCATION_CHANGE'] : () => {
+    return JSON.parse(JSON.stringify(initialState));
+  },
   [MATCH_ACTION_REQUEST] : (state, action) => {
     if (action.subtype == 'CLICK') {
       let x = action.payload.x;

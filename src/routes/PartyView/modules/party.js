@@ -37,6 +37,9 @@ const ACTION_HANDLERS = {
     return {...state,
       info: action.info};
   },
+  ['LOCATION_CHANGE'] : () => {
+    return initialState;
+  },
   [SET_GAMES] : (state, action) => {
     return {...state,
       games: action.games};

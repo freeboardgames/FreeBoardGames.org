@@ -26,6 +26,9 @@ const ACTION_HANDLERS = {
       loading: false
     };
   },
+  ['LOCATION_CHANGE'] : () => {
+    return initialState;
+  },
 };
 const initialState = {loading: true};
 export default function gameReducer (state = initialState, action) {

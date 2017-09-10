@@ -14,6 +14,9 @@ class CheckerGame extends React.Component {
     this.props.leaveMatch(this.props.params.id);
   }
   render () {
+    if (this.props.matchInfo.loading) {
+      return null;
+    }
     let state = this.props.state;
     let onClick = (x,y) => () => {
       this.props.sendClick(
@@ -39,25 +42,25 @@ class CheckerGame extends React.Component {
           }
           pieces.push(
             (<CheckerPiece color={color} double={piece.double}
-              x={i} y={j} key={piece.key} onClick={onClick}/>));
+              x={i} y={j} key={state.board.length*j + i}
+              onClick={onClick}/>));
         }
       }
     }
     return (
-    <div style={{backgroundColor: 'black', height: '100%'}}>
     <TurnHUD
       playersPrimaryColors={['grey', '#CCCC00']}
       playersSecondaryColors={['white', 'yellow']}
       winner={state.winner}
       resign={this.props.resign}
-      playerWhoseTurn={state.turn%2}/>
+      playerWhoseTurn={state.turn%2}>
       <CheckerBoard
         feasible={state.feasible} selected={state.selected}
         onClick={onClick}
         key="999">
         {pieces}
       </CheckerBoard>
-    </div>);
+    </TurnHUD>);
   }
 }
 
@@ -69,7 +72,7 @@ CheckerGame.propTypes = {
   resign: PropTypes.func,
   params: PropTypes.object,
   matchInfo: PropTypes.object,
-  state: PropTypes.array
+  state: PropTypes.object
 };
 
 CheckerGame.defaultProps = {

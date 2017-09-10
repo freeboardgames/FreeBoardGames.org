@@ -372,6 +372,9 @@ const ACTION_HANDLERS = {
   [MATCH_SET_STATE]: (state, action) => {
     return deepCopy(action.payload);
   },
+  ['LOCATION_CHANGE']: () => {
+    return deepCopy(initialState);
+  },
   [MATCH_ACTION_REQUEST]: (state, action) => {
     if (action.subtype == 'CLICK') {
       state = deepCopy(state);
@@ -419,7 +422,6 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = { board: [['rd_00', 'nd_01', 'bd_02', 'qd_03', 'kd_04', 'bd_05', 'nd_06', 'rd_07'], ['pd_08', 'pd_09', 'pd_10', 'pd_11', 'pd_12', 'pd_13', 'pd_14', 'pd_15'], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['pl_16', 'pl_17', 'pl_18', 'pl_19', 'pl_20', 'pl_21', 'pl_22', 'pl_23'], ['rl_24', 'nl_25', 'bl_26', 'ql_27', 'kl_28', 'bl_29', 'nl_30', 'rl_31']],
-  loading: true,
   turn: 0,
   winner: null,
   selected: null,
@@ -428,7 +430,7 @@ function messageReducer(state, action) {
   if (!state) {
     //Have to do a deep copy because that on the server, the initialState was
     //being modified by following actions.
-    state = JSON.parse(JSON.stringify(initialState));
+    state = deepCopy(initialState);
   }
   const handler = ACTION_HANDLERS[action.type];
 
