@@ -9,11 +9,11 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "compile": "better-npm-run compile",
+    "compile": "better-npm-run transpile:games && better-npm-run compile",
     "lint": "eslint bin build config server src tests",
     "lint:fix": "npm run lint -- --fix",
     "start": "better-npm-run start",
-    "dev": "better-npm-run dev",
+    "dev": "better-npm-run transpile:games && better-npm-run dev",
     "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
     "deploy": "better-npm-run deploy",
@@ -29,8 +29,17 @@
         "DEBUG": "app:*"
       }
     },
+    "transpile:games": {
+      "command": "better-npm-run transpile:checkers && better-npm-run transpile:chess"
+    },
+    "transpile:checkers": {
+      "command": "babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/CheckerGame/modules/checkerGameState.js --out-file server/games/checkerGameState.js"
+    },
+    "transpile:chess": {
+      "command": "babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/ChessGame/modules/chessGameState.js --out-file server/games/chessGameState.js"
+    },
     "dev": {
-      "command": "babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/CheckerGame/modules/checkerGameState.js --out-file server/games/checkerGameState.js && babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/ChessGame/modules/chessGameState.js --out-file server/games/chessGameState.js && nodemon server/main --ignore dist --ignore coverage --ignore tests --ignore src",
+      "command": "nodemon server/main --ignore dist --ignore coverage --ignore tests --ignore src",
       "env": {
         "NODE_ENV": "development",
         "DEBUG": "app:*"
