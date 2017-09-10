@@ -27,6 +27,9 @@ const ACTION_HANDLERS = {
       ...action.payload
     };
   },
+  ['LOCATION_CHANGE'] : () => {
+    return initialState;
+  },
 };
 const initialState = {loading: true};
 export default function lobbyReducer (state = initialState, action) {

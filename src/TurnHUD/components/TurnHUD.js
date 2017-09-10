@@ -1,4 +1,7 @@
 import React from 'react';
+import TurnatoBar from '../../TurnatoBar/TurnatoBar';
+import {Card, CardText} from 'material-ui/Card';
+import CircularProgress from 'material-ui/CircularProgress';
 import LinearProgress from 'material-ui/LinearProgress';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import PropTypes from 'prop-types';
@@ -95,7 +98,9 @@ class TurnHUD extends React.Component {
           category: 'TurnHUD',
           action: 'text',
         });
-        this.props.sendMessage(this.props.match_code, this.props.player, text);
+        this.props.sendMessage(this.props.matchInfo.code,
+                               this.props.matchInfo.player,
+                               text);
       }
     };
     let promptResign = () => {
@@ -109,9 +114,21 @@ class TurnHUD extends React.Component {
           category: 'TurnHUD',
           action: 'resign',
         });
-        this.props.resign(this.props.match_code, this.props.player);
+        this.props.resign(this.props.matchInfo.code,
+                          this.props.matchInfo.player);
       }
     };
+
+    if (this.props.matchInfo.loading) {
+      return (
+        <TurnatoBar>
+          <Card>
+            <CardText style={{textAlign: 'center'}}>
+              <CircularProgress size={80} thickness={5} />
+            </CardText>
+          </Card>
+        </TurnatoBar>);
+    }
     // WARNING
     let svg_height = '10';
     let warning_el = null;
@@ -130,9 +147,9 @@ class TurnHUD extends React.Component {
     for (var i =0; i<this.props.messages.length; i++) {
       let m = this.props.messages[i];
       messages_els.push(
-        (<p style={{color: 'white'}}>
+        (<p style={{color: 'white'}} key={i}>
           <span style={{color: this.props.playersSecondaryColors[m.player]}}>
-            <b>{this.props.playersNickname[m.player]}</b>
+            <b>{this.props.matchInfo.playersNickname[m.player]}</b>
           </span>: {m.text}
          </p>));
     }
@@ -150,7 +167,7 @@ class TurnHUD extends React.Component {
         zIndex: 9000, display: 'block', textAlign: 'center'}}>
         <div style={{transform: 'translateX(-50%) translateY(-50%)',
           left: '50%', top: '50%', position: 'absolute'}}>
-          <h1>{this.props.playersNickname[this.props.winner]} WON!!!
+          <h1>{this.props.matchInfo.playersNickname[this.props.winner]} WON!!!
           </h1>
           <a href="javascript:history.back();">Go Back</a>
         </div>
@@ -171,62 +188,60 @@ class TurnHUD extends React.Component {
       </div>);
     }
     return (
-    <div>
-    <div style={{width: '100%', position: 'fixed',
-      left: '0px', right:'0px', top: '0px',
-      maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto', zIndex: 999,
-      pointerEvents: 'none'}}>
-    {this.props.sendingMessage ? (<MuiThemeProvider>
-    <LinearProgress mode="indeterminate" />
-    </MuiThemeProvider>) : null}
-    <svg viewBox={'0 0 80 '+svg_height}>
-     <g>
-       <rect height="10" width="80" y="0" x="0" fill="white"></rect>
-       <rect height="10" width="13.9" y="0" x="0" fill="white"
-        onClick={promptResign} style={{pointerEvents:'all'}}></rect>
-       <rect height="10" width="13.9" y="0" x="66" fill="white"
-        onClick={promptText} style={{pointerEvents:'all'}}></rect>
-       <rect fillOpacity=".1" height="8.5" width=".1" y=".75" x="14"></rect>
-       <g transform="matrix(.4 0 0 .4 2 .5)" onClick={promptResign} style={{pointerEvents:'all'}}>
-        <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" fillOpacity={1}></path>
-       </g>
+    <div style={{backgroundColor: 'black', height: '100%'}}>
+      <div style={{width: '100%', position: 'fixed',
+        left: '0px', right:'0px', top: '0px',
+        maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto', zIndex: 999,
+        pointerEvents: 'none'}}>
+        {this.props.sendingMessage ? (<MuiThemeProvider>
+        <LinearProgress mode="indeterminate" />
+        </MuiThemeProvider>) : null}
+        <svg viewBox={'0 0 80 '+svg_height}>
+         <g>
+           <rect height="10" width="80" y="0" x="0" fill="white"></rect>
+           <rect height="10" width="13.9" y="0" x="0" fill="white"
+            onClick={promptResign} style={{pointerEvents:'all'}}></rect>
+           <rect height="10" width="13.9" y="0" x="66" fill="white"
+            onClick={promptText} style={{pointerEvents:'all'}}></rect>
+           <rect fillOpacity=".1" height="8.5" width=".1" y=".75" x="14"></rect>
+           <g transform="matrix(.4 0 0 .4 2 .5)" onClick={promptResign} style={{pointerEvents:'all'}}>
+            <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" fillOpacity={1}></path>
+           </g>
 
-       <g transform="matrix(.4 0 0 .4 69 .5)" onClick={promptText} style={{pointerEvents:'all'}}>
-        <path d="m21.99 4c0-1.1-0.89-2-1.99-2h-16c-1.1 0-2 0.9-2 2v12c0 1.1 0.9 2 2 2h14l4 4-0.01-18zm-3.99 10h-12v-2h12v2zm0-3h-12v-2h12v2zm0-3h-12v-2h12v2z"></path>
-       </g>
-      <rect fillOpacity=".1" height="8.5" width=".1" y=".75" x="67"></rect>
-      <text fontFamily="sans-serif"
-            style={{textAnchor: 'middle', textAlign: 'center'}}>
-        <tspan fontSize="4px" x="40" y="9">
-          {(this.props.currentPlayer == this.props.player) ?
-              'PLAY' : 'WAIT'}
-        </tspan>
-      </text>
-      <text x="40" fill={this.props.playersPrimaryColors[this.props.currentPlayer]}
-            fontFamily="sans-serif"
-            style={{textAnchor: 'middle', textAlign: 'center'}}>
-        <tspan fontSize="4px" y="4px" x="40">
-          {this.props.playersNickname[this.props.currentPlayer]}
-        </tspan>
-      </text>
-    </g>
-    {warning_el}
-    </svg>
-    {messages_els}
-    </div>
-    {winLayer}
-    {disconnectedLayer}
+           <g transform="matrix(.4 0 0 .4 69 .5)" onClick={promptText} style={{pointerEvents:'all'}}>
+            <path d="m21.99 4c0-1.1-0.89-2-1.99-2h-16c-1.1 0-2 0.9-2 2v12c0 1.1 0.9 2 2 2h14l4 4-0.01-18zm-3.99 10h-12v-2h12v2zm0-3h-12v-2h12v2zm0-3h-12v-2h12v2z"></path>
+           </g>
+          <rect fillOpacity=".1" height="8.5" width=".1" y=".75" x="67"></rect>
+          <text fontFamily="sans-serif"
+                style={{textAnchor: 'middle', textAlign: 'center'}}>
+            <tspan fontSize="4px" x="40" y="9">
+              {(this.props.playerWhoseTurn == this.props.matchInfo.player) ?
+                  'PLAY' : 'WAIT'}
+            </tspan>
+          </text>
+          <text x="40" fill={this.props.playersPrimaryColors[this.props.playerWhoseTurn]}
+                fontFamily="sans-serif"
+                style={{textAnchor: 'middle', textAlign: 'center'}}>
+            <tspan fontSize="4px" y="4px" x="40">
+              {this.props.matchInfo.playersNickname[this.props.playerWhoseTurn]}
+            </tspan>
+          </text>
+        </g>
+        {warning_el}
+        </svg>
+        {messages_els}
+      </div>
+      {winLayer}
+      {disconnectedLayer}
+      {this.props.children}
     </div>);
   }
 }
 TurnHUD.propTypes = {
-  match_code: PropTypes.string.isRequired,
-  players: PropTypes.array.isRequired,
-  playersNickname: PropTypes.array.isRequired,
-  player: PropTypes.number.isRequired,
-  playersPrimaryColors: PropTypes.array.isRequired, // Light background
-  playersSecondaryColors: PropTypes.array.isRequired, // Dark background
-  currentPlayer: PropTypes.number.isRequired,
+  matchInfo: PropTypes.object.isRequired,
+  playerWhoseTurn: PropTypes.number.isRequired,
+  playersPrimaryColors: PropTypes.array.isRequired,
+  playersSecondaryColors: PropTypes.array.isRequired,
   winner: PropTypes.number,
   messages: PropTypes.array.isRequired,
   warning: PropTypes.string,
@@ -234,16 +249,20 @@ TurnHUD.propTypes = {
   disconnected: PropTypes.bool.isRequired,
   sendMessage: PropTypes.func.isRequired,
   savePushSubscription: PropTypes.func.isRequired,
-  resign: PropTypes.func.isRequired
+  resign: PropTypes.func.isRequired,
+  children: PropTypes.node
 };
 TurnHUD.defaultProps = {
-  match_code: '',
-  players: [],
-  playersNickname: [],
-  player: 0,
+  matchInfo: {
+    code: '',
+    players: [],
+    playersNickname: [],
+    player: 0,
+    loading: true
+  },
+  playerWhoseTurn: 0,
   playersPrimaryColors: ['black', 'grey'], // Light background
   playersSecondaryColors: ['grey', 'white'], // Dark background
-  currentPlayer: 0,
   winner: null,
   messages: [],
   warning: null,

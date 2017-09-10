@@ -28,18 +28,13 @@ export function requireAuthentication(Component) {
     }
 
     render() {
-      return (
-                <div>
-                    {this.props.auth.isAuthenticated
-                        ? <Component {...this.props}/>
-                        : null
-                    }
-                </div>
-      );
-
+      if (this.props.auth.isAuthenticated) {
+        return (<Component {...this.props}/>);
+      } else {
+        return null;
+      }
     }
-    }
-
+  }
   AuthenticatedComponent.propTypes = {
     location: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired

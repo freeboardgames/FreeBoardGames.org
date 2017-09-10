@@ -62,8 +62,8 @@ Checkerboard.propTypes = {
   primaryColor: PropTypes.string.isRequired,
   secondaryColor: PropTypes.string.isRequired,
   feasibleColor: PropTypes.string.isRequired,
-  feasible: PropTypes.array.isRequired,
-  selected: PropTypes.array.isRequired,
+  feasible: PropTypes.array,
+  selected: PropTypes.object,
   onClick: PropTypes.func,
   children: PropTypes.node,
   selectedColor: PropTypes.string.isRequired

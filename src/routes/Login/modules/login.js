@@ -25,7 +25,10 @@ const ACTION_HANDLERS = {
       loading: true}; },
   ['AUTH_SUCCESS'] : (state, action) => {
     return {token: action.payload.token};
-  }
+  },
+  ['LOCATION_CHANGE'] : () => {
+    return initialState;
+  },
 };
 
 // ------------------------------------

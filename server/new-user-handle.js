@@ -8,8 +8,12 @@ module.exports = (socket, dispatch, db, nickname) => {
     return;
   //Save to the db
   usersCollection.insert(user, (err, new_user) => {
-    dispatch({type: 'AUTH_SUCCESS', payload: {
-      token: turnatoLogin.jwtTokenize(new_user.ops[0])
-    }});
+    try {
+      dispatch({type: 'AUTH_SUCCESS', payload: {
+        token: turnatoLogin.jwtTokenize(new_user.ops[0])
+      }});
+    } catch (err) {
+      console.error(err);
+    }
   });
 };

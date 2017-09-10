@@ -1,4 +1,5 @@
 # Turnato
+[![Build Status](https://travis-ci.org/Felizardo/turnato.svg?branch=colonizers)](https://travis-ci.org/Felizardo/turnato)
 
 Turnato is a Free (as in Freedom), mobile-first, board game platform.
 Objective is to popularize board games reducing the friction to play.

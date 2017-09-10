@@ -77,7 +77,7 @@ class CheckerPiece extends React.Component {
 CheckerPiece.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
-  double: PropTypes.bool.isRequired,
+  double: PropTypes.bool,
   color: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };

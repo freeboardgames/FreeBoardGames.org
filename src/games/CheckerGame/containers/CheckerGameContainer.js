@@ -7,7 +7,8 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state) => ({
-  state: state.checkerGameState
+  state: state.checkerGameState,
+  matchInfo: state.turnHUD.matchInfo
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckerGame);

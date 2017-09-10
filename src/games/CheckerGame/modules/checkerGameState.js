@@ -123,6 +123,9 @@ const ACTION_HANDLERS = {
       ...action.payload
     };
   },
+  ['LOCATION_CHANGE'] : () => {
+    return JSON.parse(JSON.stringify(initialState));
+  },
   [MATCH_ACTION_REQUEST] : (state, action) => {
     if (action.subtype == 'CLICK') {
       let x = action.payload.x;
@@ -212,7 +215,6 @@ const initialState = {board: [
   [null, {player: 1, key:20}, null, {player: 1, key:21}, null,
     {player: 1, key:22}, null, {player: 1, key:23}]
 ],
-  loading: true,
   turn: 0,
   winner: null,
   selected: null,

@@ -2,6 +2,8 @@ const shortid = require('shortid');
 
 module.exports = (socket, dispatch, db, user, name) => {
   let partiesCollection = db.collection('parties');
+  if (!name || name.length == 0 || name.length > 30)
+    return;
   let party =  {
     _id: shortid.generate(),
     name: name,
@@ -9,10 +11,14 @@ module.exports = (socket, dispatch, db, user, name) => {
     downMapping: {}
   };
   partiesCollection.insert(party, (err) => {
-    if (err) {
-      dispatch({type: 'NEW_PARTY_ERROR', error: err});
-    } else {
-      dispatch({type: 'NEW_PARTY_SUCCESS', payload: {id: party._id}});
+    try {
+      if (err) {
+        dispatch({type: 'NEW_PARTY_ERROR', error: err});
+      } else {
+        dispatch({type: 'NEW_PARTY_SUCCESS', payload: {id: party._id}});
+      }
+    } catch (err) {
+      console.error(err);
     }
   });
 };
