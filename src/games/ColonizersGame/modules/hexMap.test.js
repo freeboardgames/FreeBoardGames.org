@@ -1,15 +1,17 @@
 import {
   newHexMap,
   newTile,
-  circularGet
+  circularGet,
+  getTileNeighbors
 } from './hexMap.js';
-
+import {
+  HIDDEN_MAP_CELLS_Y_X
+} from './colonizersGameConstants.js';
 
 describe('5x5 hex map', () => {
   var map;
   beforeEach(() => {
-    map = newHexMap(5, 5, {0: {0: true, 4: true},
-      4: {0: true, 1: true, 3: true, 4: true}});
+    map = newHexMap(5, 5, HIDDEN_MAP_CELLS_Y_X);
   });
 
   describe('Tiles', () => {
@@ -144,7 +146,7 @@ describe('5x5 hex map', () => {
       }
     });
   });
-  describe('Functions', () => {
+  describe('Small map', () => {
     var map;
     beforeEach(() => {
       map = {tiles: [],
@@ -178,6 +180,21 @@ describe('5x5 hex map', () => {
       expect(circularGet(arr, 10)).to.eql(30);
       expect(circularGet(arr, -1)).to.eql(40);
       expect(circularGet(arr, -5)).to.eql(40);
+    });
+  });
+  describe('Operations', () => {
+    it('should get correct tile neighbors on the middle', () => {
+      expect(getTileNeighbors(map, 2, 2)).to.have.deep.members([{y: 1, x: 1},
+                                                                {y: 1, x: 2},
+                                                                {y: 1, x: 3},
+                                                                {y: 2, x: 1},
+                                                                {y: 2, x: 3},
+                                                                {y: 3, x: 2}]);
+    });
+    it('should get correct tile neighbors on the border', () => {
+      expect(getTileNeighbors(map, 2, 0)).to.have.deep.members([{y: 0, x: 1},
+                                                                {y: 1, x: 2},
+                                                                {y: 0, x: 3}]);
     });
   });
 });

@@ -126,3 +126,35 @@ function createMissingPoints(map, points, edgeIndex, tile) {
     map.points.push({x: tile.x + x2, y: tile.y + y2});
   }
 }
+
+export function getTileNeighbors(map, x, y) {
+  let edges = map.tiles[y][x].edges;
+  let result = [];
+  for (let i in edges) {
+    let edgeIndex = edges[i];
+    let tilesWithEdge = getTilesWithEdge(map, edgeIndex);
+    for (let j in tilesWithEdge) {
+      let tileCords = tilesWithEdge[j];
+      if (tileCords.x != x || tileCords.y != y) {
+        result.push(tileCords);
+      }
+    }
+  }
+  return result;
+}
+
+function getTilesWithEdge(map, edgeIndex) {
+  let result = [];
+  for (let y in map.tiles) {
+    for (let x in map.tiles[y]) {
+      let tile = map.tiles[y][x];
+      if (!tile.active) {
+        continue;
+      }
+      if (tile.edges.indexOf(edgeIndex) != -1) {
+        result.push({x: parseInt(x), y: parseInt(y)});
+      }
+    }
+  }
+  return result;
+}

@@ -3,6 +3,10 @@ import {
 } from './hexMap.js';
 
 import {
+  generateTilesInfo
+} from './colonizersTilesInfo.js';
+
+import {
   HIDDEN_MAP_CELLS_Y_X,
   DEFAULT_TRADEPOSTS_Y_X_EDGE
 } from './colonizersGameConstants.js';
@@ -14,15 +18,14 @@ const initialState = {
   board: {
     map: newHexMap(5,5, HIDDEN_MAP_CELLS_Y_X),
     tradePosts: DEFAULT_TRADEPOSTS_Y_X_EDGE,
-    tileTypes: {},
-    tileNumbers: {}
+    tilesInfo: {}, //type and number
   },
-  playerResources: {},
-  playerScore: {},
+  playerResources: [],
+  playerScores: [],
   //Phase 0: Each player initialize buildings/roads. 1: Normal Game
   phase: 0,
   //BUILD_OUTPOST, BUILD__CITY, BUILD_ROAD, TRADE_PROPOSAL
-  operationInProgress: 'BUILD_OUTPOST',
+  operationInProgress: null,
   waitingDices: null,
   turn: 0,
   numPlayers: 3,
@@ -38,10 +41,8 @@ const ACTION_HANDLERS = {
   ['LOCATION_CHANGE'] : () => {
     return JSON.parse(JSON.stringify(initialState));
   },
-  ['SET_MATCH_INFO'] : () => {
-    //Set numPlayers
-    //Populate board.tileTypes and board.tileNumbers
-
+  ['SET_MATCH_INFO'] : (state, action) => {
+    state = initializeMatch(state, action.payload);
   },
   ['DICE_RESULT'] : () => {
     //Received dice result from server
@@ -89,4 +90,21 @@ export default function messageReducer (state, action) {
   const handler = ACTION_HANDLERS[action.type];
 
   return handler ? handler(state, action) : state;
+}
+
+function initializeMatch(state, match_info) {
+  let numPlayers = match_info.players.length;
+  let playerResources = [];
+  let playerScores = [];
+  for (let i=0; i<numPlayers; i++) {
+    playerResources.push([0,0,0,0,0]);
+    playerScores.push(0);
+  }
+  return { ...state,
+    tilesInfo: generateTilesInfo(state.board.map, state.board.tradePosts),
+    numPlayers,
+    playerResources,
+    playerScores,
+    operationInProgress:  'BUILD_OUTPOST'
+  };
 }
