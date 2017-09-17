@@ -42,7 +42,7 @@ const ACTION_HANDLERS = {
     return JSON.parse(JSON.stringify(initialState));
   },
   ['SET_MATCH_INFO'] : (state, action) => {
-    state = initializeMatch(state, action.payload);
+    return initializeMatch(state, action.payload);
   },
   ['DICE_RESULT'] : () => {
     //Received dice result from server

@@ -105,6 +105,9 @@ function hasHighProbabilityTilesWithSameTypeTradePost(map, tilesInfo, tradePosts
       }
       let tileInfo = tilesInfo[y][x];
       if (isHighProbability(tileInfo.number)) {
+        if (!(y in tradePosts) || !(x in tradePosts[y])) {
+          continue;
+        }
         for (let edgeIndex in tradePosts[y][x]) {
           let tradePostType = tradePosts[y][x][edgeIndex].type;
           if (tradePostType != -1 && tradePostType === tilesInfo.type) {

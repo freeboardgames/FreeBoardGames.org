@@ -4,6 +4,49 @@ import {
 
 
 describe('colonizersGameState', () => {
+  describe('Game - Match initialized', () => {
+    var state;
+    beforeEach(() => {
+      state = colonizersReducer(null, {type: 'NOOP'});
+      let action = {
+        type: 'SET_MATCH_INFO',
+        payload: {
+          code: 'Hy56xa1cW',
+          players: [
+            'a',
+            'b',
+            'c',
+            'd'
+          ],
+          playersNickname: [
+            'foo',
+            'bar',
+            'lorem',
+            'ipsum'
+          ],
+          loading: false,
+          player: 1
+        },
+        FROM_SERVER: true
+      };
+      state = colonizersReducer(state, action);
+    });
+    it ('should have correct number of players', () => {
+      expect(state.numPlayers).to.eql(4);
+    });
+    it ('should have correct resources', () => {
+      expect(state.playerResources).to.eql([[0,0,0,0,0],
+                                            [0,0,0,0,0],
+                                            [0,0,0,0,0],
+                                            [0,0,0,0,0]]);
+    });
+    it ('should have correct score', () => {
+      expect(state.playerScores).to.eql([0,0,0,0]);
+    });
+    it ('operation should be building outpost', () => {
+      expect(state.operationInProgress).to.eql('BUILD_OUTPOST');
+    });
+  });
   describe('tradeposts', () => {
     var tradePosts;
     const EXPECTED_COUNT = {0: 1,
