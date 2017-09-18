@@ -2,6 +2,7 @@
 npm install
 
 ## See https://docker-curriculum.com/
+npm run clean
 npm run compile
 sudo docker build -t turnato-webserver .
 
@@ -11,9 +12,9 @@ sudo docker build -t turnato-webserver .
 ## Pushing to prod
 
 ### REPLACE -0 WITH VERSION ###
-sudo docker tag turnato-webserver gcr.io/turnato-180303/turnato-webserver-2
+sudo docker tag turnato-webserver gcr.io/turnato-180303/turnato-webserver-4
 
-sudo gcloud docker -- push gcr.io/turnato-180303/turnato-webserver-2
+sudo gcloud docker -- push gcr.io/turnato-180303/turnato-webserver-4
 
 ### REPLACE -0 IN YAML FILE ###
 kubectl apply -f kubernetes/turnato-webserver.yaml
