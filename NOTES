@@ -1,24 +1,22 @@
 ## first time dev
 npm install
 
-## Dev
+## See https://docker-curriculum.com/
 npm run compile
-sudo docker build -t turnato .
-sudo docker-compose up
+sudo docker build -t turnato-webserver .
 
-## Setting up cluster
-See https://docker-curriculum.com/
+## Setting up Kurbenete Cluster
+# See https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/
 
 ## Pushing to prod
-#Lol change docker-compose somehow
-sudo ecs-cli push turnato
-ecs-cli compose --file docker-compose-aws.yml stop
-ecs-cli compose --file docker-compose-aws.yml up
 
+### REPLACE -0 WITH VERSION ###
+sudo docker tag turnato-webserver gcr.io/turnato-180303/turnato-webserver-0
 
-ssh ec2-user@<<EC2 IP>>
-docker ps
-docker run --link <<CONTAINER ID fde2e33aedee>>:mongo -it mongo sh
-mongo mongo mongo:27017/turnato
+sudo gcloud docker -- push gcr.io/turnato-180303/turnato-webserver-0
 
-npm run lint --fix
+### REPLACE -0 IN YAML FILE ###
+kubectl apply -f kubernetes/turnato-webserver.yaml
+
+## To see external ip:
+kubectl get services

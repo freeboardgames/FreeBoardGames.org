@@ -1,6 +1,7 @@
 FROM node:boron
 ENV NODE_ENV production
-ENV MONGODB_URI mongodb://mongo/turnato
+ENV PORT 80
+ENV MONGODB_URI mongodb://mongo-0.mongo/turnato
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -15,5 +16,5 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-EXPOSE 3000
+EXPOSE 80
 CMD [ "npm", "start" ]

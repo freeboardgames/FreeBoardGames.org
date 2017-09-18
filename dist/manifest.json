@@ -9,9 +9,24 @@
             "src": "/logo_144.png",
             "sizes": "144x144",
             "type": "image/png"
+        },
+        {
+            "src": "/logo_192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/logo_256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/logo_512.png",
+            "sizes": "512x512",
+            "type": "image/png"
         }
     ],
     "orientation": "portrait",
-    "theme_color": "#607D8B",
+    "theme_color": "#317EFB",
     "background_color": "#ffffff"
 }
