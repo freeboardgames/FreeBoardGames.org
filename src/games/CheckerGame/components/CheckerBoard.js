@@ -1,6 +1,5 @@
 import React from 'react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import './CheckerBoard.scss';
 import PropTypes from 'prop-types';
 
 class Checkerboard extends React.Component {

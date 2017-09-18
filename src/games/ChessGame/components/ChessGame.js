@@ -1,7 +1,6 @@
 import React from 'react';
 import CheckerBoard from '../../CheckerGame/components/CheckerBoard';
 import ChessPiece from './ChessPiece';
-import './ChessGame.scss';
 import TurnHUD from '../../../TurnHUD/containers/TurnHUDContainer';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';

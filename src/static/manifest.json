@@ -2,7 +2,7 @@
     "name": "Turnato",
     "short_name": "Turnato",
     "lang": "en-US",
-    "start_url": "/",
+    "start_url": "/?utm_source=web_app_manifest",
     "display": "standalone",
     "icons": [
         {

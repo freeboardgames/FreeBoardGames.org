@@ -1,0 +1,24 @@
+## first time dev
+npm install
+
+## Dev
+npm run compile
+sudo docker build -t turnato .
+sudo docker-compose up
+
+## Setting up cluster
+See https://docker-curriculum.com/
+
+## Pushing to prod
+#Lol change docker-compose somehow
+sudo ecs-cli push turnato
+ecs-cli compose --file docker-compose-aws.yml stop
+ecs-cli compose --file docker-compose-aws.yml up
+
+
+ssh ec2-user@<<EC2 IP>>
+docker ps
+docker run --link <<CONTAINER ID fde2e33aedee>>:mongo -it mongo sh
+mongo mongo mongo:27017/turnato
+
+npm run lint --fix

@@ -39,7 +39,6 @@ function askPermission() {
 }
 
 function subscribeUserToPush() {
-  navigator.serviceWorker.register('/sw.js');
   return navigator.serviceWorker.ready
   .then((registration) => {
     if (!registration) {

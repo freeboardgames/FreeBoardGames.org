@@ -32,7 +32,8 @@ class TurnatoBar extends React.Component {
               title="Turnato"
               iconElementLeft={<img src="/logo_optimized.svg"
               style={{color:'white', width: '32px', height: '32px',
-                marginTop: '8px'}}></img>}
+                marginTop: '8px'}}
+              alt="Turnato logo."></img>}
             />
           </a>
           <div style={{height: '64px'}}></div>
