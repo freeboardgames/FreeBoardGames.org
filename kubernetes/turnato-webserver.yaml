@@ -11,6 +11,6 @@ spec:
     spec:
       containers:
       - name: turnato-webserver
-        image: gcr.io/turnato-180303/turnato-webserver-0
+        image: gcr.io/turnato-180303/turnato-webserver-3
         ports:
         - containerPort: 80
