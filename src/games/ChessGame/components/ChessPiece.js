@@ -6,6 +6,8 @@ import PawnPiece from './PawnPiece.js';
 import KnightPiece from './KnightPiece.js';
 import RookPiece from './RookPiece.js';
 import PropTypes from 'prop-types';
+import move2audio from  '../../../resources/move2.mp3';
+import moveaudio from  '../../../resources/move.wav';
 const MOVE_TIME = 750;
 
 class ChessPiece extends React.Component {
@@ -28,9 +30,9 @@ class ChessPiece extends React.Component {
         originY: this.props.y,
       });
       if (Math.abs(nextProps.x - this.props.x) == 1) {
-        (new Audio('/move2.mp3')).play();
+        (new Audio(move2audio)).play();
       } else {
-        (new Audio('/move.wav')).play();
+        (new Audio(moveaudio)).play();
       }
       requestAnimationFrame((this.animate).bind(this));
     }

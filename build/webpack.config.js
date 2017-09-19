@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const workboxPlugin = require('workbox-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const config = require('../config');
 const debug = require('debug')('app:webpack:config');
 
@@ -45,6 +47,10 @@ webpackConfig.output = {
 // Plugins
 // ------------------------------------
 webpackConfig.plugins = [
+  // copy WorkboxSW production build file
+  new CopyWebpackPlugin([
+    { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' }
+  ]),
   new webpack.DefinePlugin(config.globals),
   new HtmlWebpackPlugin({
     template : paths.client('index.html'),
@@ -111,8 +117,7 @@ webpackConfig.module.loaders.push(
   { test: /\.otf(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=font/opentype' },
   { test: /\.ttf(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream' },
   { test: /\.eot(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
-  { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
-  { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' }
+  { test: /\.(png|jpg|webp|svg|mp3|wav)$/,    loader: 'file' }
 )
 /* eslint-enable */
 
@@ -137,6 +142,17 @@ if (!__DEV__) {
     new ExtractTextPlugin('[name].[contenthash].css', {
       allChunks : true
     })
+  );
+}
+if (!__TEST__) {
+  webpackConfig.plugins.push(
+     new workboxPlugin({
+       globDirectory: paths.dist(),
+       globPatterns: ['**\/*.{html,js,webp,mp3,wav,svg}'],
+       globIgnores: [],
+       swSrc: './sw.js',
+       swDest: './dist/sw.js',
+     })
   );
 }
 

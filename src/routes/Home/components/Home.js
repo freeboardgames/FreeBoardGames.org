@@ -10,6 +10,7 @@ import PlacesCasino from 'material-ui/svg-icons/places/casino';
 import PropTypes from 'prop-types';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { browserHistory } from 'react-router';
+import introwebp from '../../../resources/intro.webp';
 
 
 class Home extends React.Component {
@@ -83,7 +84,7 @@ class Home extends React.Component {
           overlay={<CardTitle title="Play when you can, where you are."
           subtitle="Free, open-source board games on your phone." />}
         >
-        <img src="intro.webp" alt="People playing board game." />
+        <img src={introwebp} alt="People playing board game." />
       </CardMedia>
       </Card>
       { (this.props.loading) ? (

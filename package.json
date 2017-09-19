@@ -46,7 +46,7 @@
       }
     },
     "deploy": {
-      "command": "npm run lint && npm run test && npm run clean && npm run compile",
+      "command": "npm run clean && npm run lint:fix && npm run test && npm run compile",
       "env": {
         "DEBUG": "app:*"
       }
@@ -96,6 +96,7 @@
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "connect-history-api-fallback": "^1.3.0",
+    "copy-webpack-plugin": "^4.0.1",
     "crypto": "0.0.3",
     "debug": "^2.2.0",
     "eslint": "^3.19.0",
@@ -140,6 +141,8 @@
     "validator": "^6.1.0",
     "web-push": "^3.2.2",
     "webpack": "^1.12.14",
+    "workbox-sw": "^2.0.1",
+    "workbox-webpack-plugin": "^2.0.1",
     "yargs": "^5.0.0"
   },
   "devDependencies": {
