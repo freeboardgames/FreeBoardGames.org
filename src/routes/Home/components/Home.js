@@ -1,15 +1,15 @@
 import React from 'react';
 import TurnatoBar from '../../../TurnatoBar/TurnatoBar';
 import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardMedia, CardTitle} from 'material-ui/Card';
 import Subheader from 'material-ui/Subheader';
 import SocialGroup from 'material-ui/svg-icons/social/group';
-import PlacesCasino from 'material-ui/svg-icons/places/casino';
+import SignalWifiOff from 'material-ui/svg-icons/device/signal-wifi-off';
 import PropTypes from 'prop-types';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { browserHistory } from 'react-router';
+import GamesSection from './GamesSection.js';
 import introwebp from '../../../resources/intro.webp';
 
 
@@ -17,20 +17,7 @@ class Home extends React.Component {
   componentDidMount() {
     this.props.requestHome(this.props.token);
   }
-
   render() {
-    let joinMatch = (match) => () => {
-      browserHistory.push('/g/' + match.game_code + '/' + match._id);
-    };
-    let viewGame = (game) => () => {
-      browserHistory.push('/g/' + game.code);
-    };
-    let viewParty = (id) => () => {
-      browserHistory.push('/p/'+id);
-    };
-    let newParty = () => {
-      browserHistory.push('/newParty');
-    };
     // MATCHES
     let matchesList = [];
     this.props.matches.map((match) => {
@@ -40,45 +27,38 @@ class Home extends React.Component {
         secondaryText={match.game_name + ' - ' + match.status}
         rightIcon={<NavigationChevronRight />}
         style={{WebkitAppearance: 'inherit'}}
-        onClick={joinMatch(match)}
+        onClick={this.joinMatch(match)}
       />));
     });
-
-    // GAMES
-    let gamesList = [];
-    this.props.games.map((game) => {
-      gamesList.push((<ListItem
-        key={game.code}
-        primaryText={game.name}
-        leftIcon={<PlacesCasino />}
-        rightIcon={<NavigationChevronRight />}
-        onClick={viewGame(game)}
-        style={{WebkitAppearance: 'inherit'}}
-      />));
-    });
-
     // Parties
     let partiesList = [];
-    if (this.props.parties.length > 0) {
-      this.props.parties.map((party) => {
-        partiesList.push((<ListItem
-          leftIcon={<SocialGroup />}
-          primaryText={party.name}
-          rightIcon={<NavigationChevronRight />}
-          style={{WebkitAppearance: 'inherit'}}
-          onClick={viewParty(party._id)}
-          key={party._id}
-        />));
-      });
+    if (!this.props.disconnected) {
+      if (this.props.parties.length > 0) {
+        this.props.parties.map((party) => {
+          partiesList.push((<ListItem
+            leftIcon={<SocialGroup />}
+            primaryText={party.name}
+            rightIcon={<NavigationChevronRight />}
+            style={{WebkitAppearance: 'inherit'}}
+            onClick={this.viewParty(party._id)}
+            key={party._id}
+          />));
+        });
+      } else {
+        partiesList.push(
+          (<p key="0" style={{fontSize: '14px', paddingLeft: '16px',
+            paddingRight: '16px'}}>You do not belong to any party yet.<br />
+            <br />
+          <a
+            onClick={this.newParty}
+            href="#">Create one</a> and invite your friends!</p>));
+      }
     } else {
       partiesList.push(
-        (<p key="0" style={{fontSize: '14px', paddingLeft: '16px',
-          paddingRight: '16px'}}>You do not belong to any party yet.<br /><br />
-        <a
-          onClick={newParty}
-          href="#">Create one</a> and invite your friends!</p>));
+        (<SignalWifiOff />)
+      );
     }
-    return (<TurnatoBar disconnected={this.props.disconnected}>
+    return (<TurnatoBar>
       <Card>
         <CardMedia
           overlay={<CardTitle title="Play when you can, where you are."
@@ -87,40 +67,52 @@ class Home extends React.Component {
         <img src={introwebp} alt="People playing board game." />
       </CardMedia>
       </Card>
-      { (this.props.loading) ? (
-        <div style={{textAlign: 'center'}}>
-          <br/>
-          <CircularProgress size={80} thickness={5} />
-        </div>
-      ) :
-      (
       <List>
-
         {(matchesList.length > 0) ? (
           <Subheader>Active Matches</Subheader>) : null}
         {matchesList}
-        <Subheader>Games</Subheader>
-        {gamesList}
-        <br />
+        <GamesSection
+          games={this.props.games}
+          viewGame={this.viewGame}></GamesSection>
         <Subheader>Parties</Subheader>
         {partiesList}
         <RaisedButton label="+ party" secondary={true}
-        onClick={newParty}
+        onClick={this.newParty}
         style={{float: 'right', marginTop: '8px', marginRight: '16px'}}/>
 
-      </List>)}
+      </List>
       <br/><br/>
       <p style={{fontSize: '12px', textAlign: 'center'}}>
         Made with ♥&nbsp;-&nbsp;
         <a href="https://github.com/Felizardo/turnato" target="_blank"
           rel="noopener">GitHub</a>
         &nbsp;-&nbsp;
-        <a href="#" onClick={joinMatch({game_code: 'colonizers', _id: 'a'})}>
+        <a href="#" onClick={this.joinMatch(
+                                  {game_code: 'colonizers', _id: 'a'})
+                            }>
           TEMP LINK TO COLONIZERS
         </a>
       </p>
       <br/><br/>
       </TurnatoBar>);
+  }
+  joinMatch (match) {
+    return () => {
+      browserHistory.push('/g/' + match.game_code + '/' + match._id);
+    };
+  }
+  viewGame (game) {
+    return () => {
+      browserHistory.push('/g/' + game.code);
+    };
+  }
+  viewParty (id) {
+    return () => {
+      browserHistory.push('/p/'+id);
+    };
+  }
+  newParty () {
+    browserHistory.push('/newParty');
   }
 }
 

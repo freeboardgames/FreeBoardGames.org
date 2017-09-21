@@ -1,10 +1,11 @@
 import React from 'react';
 import TurnatoBar from '../../../TurnatoBar/TurnatoBar';
 import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
 import PropTypes from 'prop-types';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import { browserHistory } from 'react-router';
+import chess_screenshot from '../../../resources/chess_screenshot.webp';
+import checkers_screenshot from '../../../resources/checkers_screenshot.webp';
 
 
 class GameView extends React.Component {
@@ -12,27 +13,19 @@ class GameView extends React.Component {
     this.props.requestGameInfo(this.props.params.game_code);
   }
   render() {
-    let playWithFriends = () => {
-      browserHistory.push('/newParty');
-    };
-    let playWithStrangers = () => {
-      browserHistory.push('/lobby/' + this.props.params.game_code);
-    };
-
-    if (this.props.loading) {
-      return (
-        <TurnatoBar disconnected={this.props.disconnected}>
-          <Card>
-            <CardText style={{textAlign: 'center'}}>
-              <CircularProgress size={80} thickness={5} />
-            </CardText>
-          </Card>
-        </TurnatoBar>);
-    }
     // PARTY
+    let gameCode = this.props.info.code;
     let gameName = this.props.info.name;
     let gameSubtitle = this.props.info.subtitle;
-    let gameScreenshot = this.props.info.screenshot;
+    let gameScreenshot;
+    switch (gameCode) {
+    case 'chess':
+      gameScreenshot = chess_screenshot;
+      break;
+    case 'checkers':
+      gameScreenshot = checkers_screenshot;
+      break;
+    }
     let gameDescription = this.props.info.description;
 
     return (<TurnatoBar disconnected={this.props.disconnected}>
@@ -50,13 +43,15 @@ class GameView extends React.Component {
         </CardText>
 
         <CardActions style={{textAlign: 'right'}}>
-          <RaisedButton label="Play w/ Strangers" onClick={playWithStrangers}
-                        secondary={false} />
-          <RaisedButton label="Play w/ Friends" onClick={playWithFriends}
+          <RaisedButton label="Play w/ Friends"
+                        onClick={this.playWithFriends}
                         secondary={true} />
         </CardActions>
       </Card>
       </TurnatoBar>);
+  }
+  playWithFriends() {
+    browserHistory.push('/newParty');
   }
 }
 

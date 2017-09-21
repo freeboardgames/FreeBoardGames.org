@@ -5,7 +5,6 @@ var GAMES = {
     'maxPlayers': 2,
     'minPlayers': 2,
     'description': 'Classic Game of Chess, International rules.',
-    'screenshot': '/chess_screenshot.webp',
     'subtitle': '2 players, 10-60 mins',
   },
   'checkers': {
@@ -14,10 +13,9 @@ var GAMES = {
     'maxPlayers': 2,
     'minPlayers': 2,
     'description': 'Classic Game of Checkers, American rules.',
-    'subtitle': '2 players, 10-60 mins',
-    'screenshot': '/checkers_screenshot.webp'
+    'subtitle': '2 players, 10-60 mins'
   }
 };
 
-module.exports = {'list': [GAMES.chess, GAMES.checkers],
+export default {'list': [GAMES.chess, GAMES.checkers],
   'map': GAMES};

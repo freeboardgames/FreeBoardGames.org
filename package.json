@@ -8,38 +8,30 @@
     "npm": "^4.2.0"
   },
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist src_common_js",
     "compile": "better-npm-run compile",
     "lint": "eslint bin build config server src tests",
     "lint:fix": "npm run lint -- --fix",
     "start": "better-npm-run start",
-    "dev": "better-npm-run transpile:games && better-npm-run dev",
+    "dev": "better-npm-run dev",
     "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
     "deploy": "better-npm-run deploy",
     "deploy:dev": "better-npm-run deploy:dev",
     "deploy:prod": "better-npm-run deploy:prod",
-    "codecov": "cat coverage/*/lcov.info | codecov"
+    "codecov": "cat coverage/*/lcov.info | codecov",
+    "transpile": "babel src -d src_common_js"
   },
   "betterScripts": {
     "compile": {
-      "command": "node bin/compile",
+      "command": "npm run transpile && node bin/compile",
       "env": {
         "NODE_ENV": "production",
         "DEBUG": "app:*"
       }
     },
-    "transpile:games": {
-      "command": "better-npm-run transpile:checkers && better-npm-run transpile:chess"
-    },
-    "transpile:checkers": {
-      "command": "babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/CheckerGame/modules/checkerGameState.js --out-file server/games/checkerGameState.js"
-    },
-    "transpile:chess": {
-      "command": "babel --plugins=transform-object-rest-spread,transform-es2015-modules-commonjs src/games/ChessGame/modules/chessGameState.js --out-file server/games/chessGameState.js"
-    },
     "dev": {
-      "command": "nodemon server/main --ignore dist --ignore coverage --ignore tests --ignore src",
+      "command": "npm run compile && nodemon --ignore dist --ignore coverage --ignore tests --ignore src -- server/main",
       "env": {
         "NODE_ENV": "development",
         "DEBUG": "app:*"
@@ -87,6 +79,7 @@
   "license": "MIT",
   "dependencies": {
     "babel-loader": "^6.2.5",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
@@ -99,6 +92,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "crypto": "0.0.3",
     "debug": "^2.2.0",
+    "enzyme": "^2.9.1",
     "eslint": "^3.19.0",
     "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.0",

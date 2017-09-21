@@ -1,8 +1,8 @@
 const shortid = require('shortid');
-const GAMES = require('./games.js');
+const GAMES = require('../src_common_js/games');
 
 let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
-  let handlePartyDb = (party, matches, games, all_users, current_user, new_user) => {
+  let handlePartyDb = (party, matches, all_users, current_user, new_user) => {
     try {
       let users_nickname = party.users.map((u_code) => {
         let users = all_users.filter((u) => { return u._id == u_code; });
@@ -17,7 +17,6 @@ let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => 
       let info = {name: party.name, users: party.users, currentUser: current_user,
         code: party_code, loading: false, usersNickname: users_nickname };
       dispatch({type: 'SET_DOWN_MAPPING', downMapping: party.downMapping});
-      dispatch({type: 'SET_GAMES', games});
       dispatch({type: 'SET_MATCHES', matches});
       let set_info_message = {type: 'SET_INFO', info};
       dispatch(set_info_message);
@@ -48,8 +47,7 @@ let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => 
           db.collection('matches').find({party_id:  party_code,
             status: 'ACTIVE'})
             .toArray((err, matches) => {
-              let games = GAMES.list;
-              handlePartyDb(party, matches, games, all_users, current_user, new_user);
+              handlePartyDb(party, matches, all_users, current_user, new_user);
             });
         });
       });

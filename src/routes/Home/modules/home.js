@@ -1,10 +1,11 @@
+import GAMES from '../../../games';
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const HOME_REQUEST = 'HOME_REQUEST';
 export const SET_PARTIES = 'SET_PARTIES';
 export const SET_MATCHES = 'SET_MATCHES';
-export const SET_GAMES = 'SET_GAMES';
+export const SET_LOADING = 'SET_LOADING';
 
 // ------------------------------------
 // Actions
@@ -32,12 +33,12 @@ const ACTION_HANDLERS = {
       parties: action.parties
     };
   },
-  [SET_GAMES] : (state, action) => {
+  [SET_LOADING] : (state, action) => {
     return {...state,
-      games: action.games,
-      loading: false
+      loading: action.loading
     };
   },
+
   ['LOCATION_CHANGE'] : () => {
     return initialState;
   },
@@ -46,7 +47,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {loading: true, parties: []};
+const initialState = {loading: true, parties: [], games: GAMES.list};
 export default function loginReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
 

@@ -1,5 +1,3 @@
-const GAMES = require('./games.js');
-
 module.exports = (socket, dispatch, db, user) => {
   if (user) {
     db.collection('matches').find({players:  { $in: [user._id]},
@@ -49,6 +47,5 @@ module.exports = (socket, dispatch, db, user) => {
         }
       });
   }
-
-  dispatch({type: 'SET_GAMES', games: GAMES.list});
+  dispatch({type: 'SET_LOADING', loading: false});
 };

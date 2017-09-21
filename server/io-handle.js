@@ -1,6 +1,5 @@
 const turnatoLogin = require('./turnato-login.js');
 const homeHandle = require('./home-handle.js');
-const gameHandle = require('./game-handle.js');
 const joinPartyHandle = require('./party-handle.js').joinPartyHandle;
 const leavePartyHandle = require('./party-handle.js').leavePartyHandle;
 const downHandle = require('./party-handle.js').downHandle;
@@ -11,9 +10,8 @@ const newUserHandle = require('./new-user-handle.js');
 const sendMessageHandle = require('./hud-handle.js').sendMessageHandle;
 const savePushSubscriptionHandle = require('./hud-handle.js').savePushSubscriptionHandle;
 const newPartyHandle = require('./newParty-handle.js');
-const joinLobbyHandle = require('./lobby-handle.js');
 
-var ioHandle = (db, socket, dispatchRoom, dispatch, io) => {
+var ioHandle = (db, socket, dispatchRoom, dispatch) => {
   var user = null;
   socket.on('login', (token) => {
     try {
@@ -35,18 +33,12 @@ var ioHandle = (db, socket, dispatchRoom, dispatch, io) => {
       case 'HOME_REQUEST':
         homeHandle(socket, dispatch, db, user);
         return;
-      case 'GAME_INFO_REQUEST':
-        gameHandle(socket, dispatch, db, message.code);
-        return;
       }
       if (!user) {
                 console.log('LACK OF LOGIN, IGNORING: ' + message.type); // eslint-disable-line
         return;
       }
       switch (message.type) {
-      case 'JOIN_LOBBY_REQUEST':
-        joinLobbyHandle(io, socket, dispatch, db, user, message.code);
-        break;
       case 'NEW_PARTY_REQUEST':
         newPartyHandle(socket, dispatch, db, user, message.name);
         break;

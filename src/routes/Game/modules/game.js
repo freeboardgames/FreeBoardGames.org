@@ -1,14 +1,14 @@
+import GAMES from '../../../games';
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const GAME_INFO_REQUEST = 'GAME_INFO_REQUEST';
-export const SET_GAME_INFO = 'SET_GAME_INFO';
+export const GAME_INFO = 'GAME_INFO';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const requestGameInfo = (code) => (dispatch) => {
-  dispatch({type: GAME_INFO_REQUEST, code});
+  dispatch({type: GAME_INFO, code});
 };
 
 export const actions = {
@@ -19,18 +19,17 @@ export const actions = {
 // Party Reducer
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [SET_GAME_INFO] : (state, action) => {
+  [GAME_INFO] : (state, action) => {
     return {
       ...state,
-      info: action.payload,
-      loading: false
+      info: GAMES.map[action.code]
     };
   },
   ['LOCATION_CHANGE'] : () => {
     return initialState;
   },
 };
-const initialState = {loading: true};
+const initialState = {};
 export default function gameReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
 
