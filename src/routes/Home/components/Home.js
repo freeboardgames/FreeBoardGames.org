@@ -111,9 +111,13 @@ class Home extends React.Component {
       </List>)}
       <br/><br/>
       <p style={{fontSize: '12px', textAlign: 'center'}}>
-      Made with ♥&nbsp;-&nbsp;
-      <a href="https://github.com/Felizardo/turnato" target="_blank"
-      rel="noopener">GitHub</a>
+        Made with ♥&nbsp;-&nbsp;
+        <a href="https://github.com/Felizardo/turnato" target="_blank"
+          rel="noopener">GitHub</a>
+        &nbsp;-&nbsp;
+        <a href="#" onClick={joinMatch({game_code: 'colonizers', _id: 'a'})}>
+          TEMP LINK TO COLONIZERS
+        </a>
       </p>
       <br/><br/>
       </TurnatoBar>);

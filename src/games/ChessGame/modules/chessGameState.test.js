@@ -1,7 +1,7 @@
 import {
   sendClick,
   default as chessReducer
-} from 'games/ChessGame/modules/chessGameState';
+} from './chessGameState.js';
 
 describe('Chess', () => {
 

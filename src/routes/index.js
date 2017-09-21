@@ -1,6 +1,7 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout/CoreLayout';
 import CheckerGameRoute from '../games/CheckerGame';
+import ColonizersGameRoute from '../games/ColonizersGame';
 import ChessGameRoute from '../games/ChessGame';
 import GameRoute from './Game';
 import HomeRoute from './Home';
@@ -18,6 +19,7 @@ export const createRoutes = (store) => ({
   component   : CoreLayout,
   indexRoute  : HomeRoute(store),
   childRoutes : [
+    ColonizersGameRoute(store),
     CheckerGameRoute(store),
     ChessGameRoute(store),
     PartyViewRoute(store),

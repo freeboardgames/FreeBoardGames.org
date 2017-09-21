@@ -33,5 +33,14 @@ module.exports = {
             "error",
             "always"
         ]
+    },
+    "globals" : {
+      "expect" : false,
+      "should" : false,
+      "sinon"  : false,
+      "fail" : false,
+      "it" : false,
+      "beforeEach" : false,
+      "describe": false
     }
 };
