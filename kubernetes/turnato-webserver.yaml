@@ -1,0 +1,16 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: turnato-deployment
+spec:
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: turnato-webserver
+    spec:
+      containers:
+      - name: turnato-webserver
+        image: gcr.io/turnato-180303/turnato-webserver-8
+        ports:
+        - containerPort: 80

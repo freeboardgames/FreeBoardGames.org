@@ -2,6 +2,7 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import PropTypes from 'prop-types';
 import AppBar from 'material-ui/AppBar';
+import logooptimizedsvg from '../resources/logo_optimized.svg';
 
 class TurnatoBar extends React.Component {
   render() {
@@ -30,9 +31,10 @@ class TurnatoBar extends React.Component {
                 marginLeft: 'auto',
                 marginRight: 'auto'}}
               title="Turnato"
-              iconElementLeft={<img src="/logo_optimized.svg"
+              iconElementLeft={<img src={logooptimizedsvg}
               style={{color:'white', width: '32px', height: '32px',
-                marginTop: '8px'}}></img>}
+                marginTop: '8px'}}
+              alt="Turnato logo."></img>}
             />
           </a>
           <div style={{height: '64px'}}></div>

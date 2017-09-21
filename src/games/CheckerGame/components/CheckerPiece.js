@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import move2audio from  '../../../resources/move2.mp3';
+import moveaudio from  '../../../resources/move.wav';
+import successaudio from '../../../resources/success.wav';
 const MOVE_TIME = 750;
 
 class CheckerPiece extends React.Component {
@@ -22,11 +25,11 @@ class CheckerPiece extends React.Component {
         originY: this.props.y,
       });
       if (nextProps.double && !this.props.double) {
-        (new Audio('/success.wav')).play();
+        (new Audio(successaudio)).play();
       } else if (Math.abs(nextProps.x - this.props.x) == 1) {
-        (new Audio('/move2.mp3')).play();
+        (new Audio(move2audio)).play();
       } else {
-        (new Audio('/move.wav')).play();
+        (new Audio(moveaudio)).play();
       }
       requestAnimationFrame((this.animate).bind(this));
     }

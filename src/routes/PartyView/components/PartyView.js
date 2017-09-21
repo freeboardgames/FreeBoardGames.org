@@ -22,10 +22,6 @@ class PartyView extends React.Component {
       linkCopied: false});
   }
   componentDidMount() {
-    ReactGA.event({
-      category: 'PartyView',
-      action: 'visit',
-    });
     this.props.joinParty(this.props.token, this.props.params.id);
   }
   componentWillUnmount() {

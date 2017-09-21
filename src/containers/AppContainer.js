@@ -12,6 +12,7 @@ class AppContainer extends Component {
 
   render () {
     const { routes, store } = this.props;
+    navigator.serviceWorker.register('/sw.js');
     function fireTracking() {
       ReactGA.set({ page: window.location.pathname });
       ReactGA.pageview(window.location.pathname);

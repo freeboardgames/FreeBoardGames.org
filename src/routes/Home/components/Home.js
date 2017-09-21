@@ -10,6 +10,7 @@ import PlacesCasino from 'material-ui/svg-icons/places/casino';
 import PropTypes from 'prop-types';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { browserHistory } from 'react-router';
+import introwebp from '../../../resources/intro.webp';
 
 
 class Home extends React.Component {
@@ -71,7 +72,7 @@ class Home extends React.Component {
       });
     } else {
       partiesList.push(
-        (<p key="0" style={{paddingLeft: '16px',
+        (<p key="0" style={{fontSize: '14px', paddingLeft: '16px',
           paddingRight: '16px'}}>You do not belong to any party yet.<br /><br />
         <a
           onClick={newParty}
@@ -80,10 +81,10 @@ class Home extends React.Component {
     return (<TurnatoBar disconnected={this.props.disconnected}>
       <Card>
         <CardMedia
-          overlay={<CardTitle title="Fun with friends."
-          subtitle="Play your turn whenever you can, wherever you are." />}
+          overlay={<CardTitle title="Play when you can, where you are."
+          subtitle="Free, open-source board games on your phone." />}
         >
-        <img src="intro.jpg" />
+        <img src={introwebp} alt="People playing board game." />
       </CardMedia>
       </Card>
       { (this.props.loading) ? (
@@ -98,21 +99,25 @@ class Home extends React.Component {
         {(matchesList.length > 0) ? (
           <Subheader>Active Matches</Subheader>) : null}
         {matchesList}
+        <Subheader>Games</Subheader>
+        {gamesList}
+        <br />
         <Subheader>Parties</Subheader>
         {partiesList}
         <RaisedButton label="+ party" secondary={true}
         onClick={newParty}
         style={{float: 'right', marginTop: '8px', marginRight: '16px'}}/>
-        <br />
-        <Subheader style={{marginTop: '16px'}}>Games</Subheader>
-        {gamesList}
+
       </List>)}
       <br/><br/>
       <p style={{fontSize: '12px', textAlign: 'center'}}>
-      Made with ♥&nbsp;-&nbsp;
-      <a href="https://github.com/Felizardo/turnato" target="_blank">GitHub</a>
-      &nbsp;-&nbsp;
-       <a href="#" onClick={joinMatch({game_code: 'colonizers', _id: 'a'})}>test - REMOVE ME</a>
+        Made with ♥&nbsp;-&nbsp;
+        <a href="https://github.com/Felizardo/turnato" target="_blank"
+	   rel="noopener">GitHub</a>
+        &nbsp;-&nbsp;
+        <a href="#" onClick={joinMatch({game_code: 'colonizers', _id: 'a'})}>
+	  TEMP LINK TO COLONIZERS
+        </a>
       </p>
       <br/><br/>
       </TurnatoBar>);
