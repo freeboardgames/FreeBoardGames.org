@@ -33,11 +33,6 @@ const ACTION_HANDLERS = {
       parties: action.parties
     };
   },
-  [SET_LOADING] : (state, action) => {
-    return {...state,
-      loading: action.loading
-    };
-  },
 
   ['LOCATION_CHANGE'] : () => {
     return initialState;
@@ -47,8 +42,12 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {loading: true, parties: [], games: GAMES.list};
-export default function loginReducer (state = initialState, action) {
+const initialState = {
+  parties: [],
+  matches: [],
+  games: GAMES.list
+};
+export default function homeReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
 
   return handler ? handler(state, action) : state;

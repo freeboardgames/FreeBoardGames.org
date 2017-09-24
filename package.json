@@ -31,7 +31,7 @@
       }
     },
     "dev": {
-      "command": "npm run compile && nodemon --ignore dist --ignore coverage --ignore tests --ignore src -- server/main",
+      "command": "nodemon --ignore dist --ignore coverage --ignore tests --ignore src -- server/main",
       "env": {
         "NODE_ENV": "development",
         "DEBUG": "app:*"
@@ -171,6 +171,7 @@
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
     "redbox-react": "^1.2.10",
+    "redux-test-utils": "^0.1.2",
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
     "webpack-dev-middleware": "^1.6.1",

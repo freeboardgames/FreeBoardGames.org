@@ -12,7 +12,6 @@ const mapStateToProps = (state) => ({
   parties: state.home.parties,
   games: state.home.games,
   matches: state.home.matches,
-  loading: state.home.loading,
   disconnected: state.connection.disconnected,
 });
 
