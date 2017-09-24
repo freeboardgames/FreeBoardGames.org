@@ -21,17 +21,15 @@ class Home extends React.Component {
         <MatchesSection
           matches={this.props.matches}
           viewMatch={this.viewMatch}
-          disconnected={this.props.disconnected}
-        >
-        </MatchesSection>
+          disconnected={this.props.disconnected} />
         <GamesSection
           games={this.props.games}
-          viewGame={this.viewGame}></GamesSection>
+          viewGame={this.viewGame} />
         <PartiesSection
           parties={this.props.parties}
           viewParty={this.viewParty}
           newParty={this.newParty}
-          disconnected={this.props.disconnected}></PartiesSection>
+          disconnected={this.props.disconnected} />
 
       </List>
       <br/><br/>

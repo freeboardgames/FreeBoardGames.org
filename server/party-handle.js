@@ -1,5 +1,5 @@
 const shortid = require('shortid');
-const GAMES = require('../src_common_js/games');
+const GAMES = require('../src_common_js/games').default;
 
 let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => {
   let handlePartyDb = (party, matches, all_users, current_user, new_user) => {
@@ -17,6 +17,18 @@ let joinPartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) => 
       let info = {name: party.name, users: party.users, currentUser: current_user,
         code: party_code, loading: false, usersNickname: users_nickname };
       dispatch({type: 'SET_DOWN_MAPPING', downMapping: party.downMapping});
+      matches.map((m) => {
+        m.playersNickname =  m.players.map((u_code) => {
+          let users = all_users.filter(
+            (u) => { return u._id == u_code; });
+          if (users.length == 1) {
+            return users[0].nickname;
+          } else {
+            return u_code;
+          }
+        });
+        delete m.log;
+      });
       dispatch({type: 'SET_MATCHES', matches});
       let set_info_message = {type: 'SET_INFO', info};
       dispatch(set_info_message);

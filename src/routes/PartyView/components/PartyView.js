@@ -6,11 +6,10 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import Subheader from 'material-ui/Subheader';
-import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import ImageRemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
 import PlacesCasino from 'material-ui/svg-icons/places/casino';
 import Checkbox from 'material-ui/Checkbox';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import MatchesSection from '../../Home/components/MatchesSection.js';
 import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
@@ -48,11 +47,12 @@ class PartyView extends React.Component {
       });
     };
   }
-  render() {
-    let joinMatch = (match) => () => {
+  viewMatch(match) {
+    return () => {
       browserHistory.push('/g/' + match.game_code + '/' + match._id);
     };
-
+  }
+  render() {
     if (this.props.info.loading) {
       return (
         <TurnatoBar disconnected={this.props.disconnected}>
@@ -75,23 +75,6 @@ class PartyView extends React.Component {
       return usersNickname[users.indexOf(player_id)];
     };
     let partyMemberList = this.props.info.users.map(idToNickname).join(', ');
-    //MATCHES
-    let matchesList = [];
-    this.props.matches.map((match) => {
-      let players = match.players.map(idToNickname).join(', ');
-      let active = match.players.indexOf(currentUserId) > -1 &&
-        match.status != 'Finished';
-
-      matchesList.push((<ListItem
-        key={match._id}
-        primaryText={players}
-        secondaryText={match.game_name + ' - ' + match.status}
-        rightIcon={(active) ? <NavigationChevronRight /> :
-                              <ImageRemoveRedEye />}
-        style={{WebkitAppearance: 'inherit'}}
-        onClick={joinMatch(match)}
-      />));
-    });
 
     // GAMES
     let gamesList = [];
@@ -143,10 +126,10 @@ class PartyView extends React.Component {
         </CardActions>
       </Card>
       <List>
-        {(matchesList.length > 0) ?
-          <Subheader>Active Matches</Subheader> :
-          null }
-        {matchesList}
+        <MatchesSection
+          matches={this.props.matches}
+          viewMatch={this.viewMatch}
+          disconnected={this.props.disconnected} />
 
         <Subheader>I&rsquo;m down for</Subheader>
         {gamesList}
@@ -166,19 +149,6 @@ PartyView.propTypes = {
   games: PropTypes.array.isRequired,
   downMapping: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired
-};
-
-PartyView.defaultProps = {
-  joinParty: () => {},
-  leaveParty: () => {},
-  disconnected: false,
-  down: () => {},
-  token: '',
-  info: {loading: true},
-  matches: [],
-  games: [],
-  downMapping: {},
-  params: {}
 };
 
 export default PartyView;

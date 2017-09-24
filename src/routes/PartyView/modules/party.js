@@ -1,3 +1,4 @@
+import GAMES from '../../../games';
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -44,10 +45,6 @@ const ACTION_HANDLERS = {
   ['LOCATION_CHANGE'] : () => {
     return initialState;
   },
-  [SET_GAMES] : (state, action) => {
-    return {...state,
-      games: action.games};
-  },
   [SET_DOWN_MAPPING] : (state, action) => {
     let games = [];
     if (state.games) {
@@ -78,7 +75,10 @@ const ACTION_HANDLERS = {
       games};
   },
 };
-const initialState = {loading: true};
+const initialState = {games: GAMES.list,
+  matches: [],
+  info: {loading: true},
+  downMapping: {}};
 export default function partyReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];
 
