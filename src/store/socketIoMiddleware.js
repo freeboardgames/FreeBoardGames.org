@@ -23,9 +23,13 @@ socket.on('socketIoMiddleware', (message) => {
     middlewareDispatch(message);
   }
 });
-socket.on('connect', () => {
-});
 socket.on('disconnect', () => {
+  middlewareDispatch({type: 'SOCKET_DISCONNECT'});
+});
+socket.on('connect_error', () => {
+  middlewareDispatch({type: 'SOCKET_DISCONNECT'});
+});
+socket.on('reconnect_error', () => {
   middlewareDispatch({type: 'SOCKET_DISCONNECT'});
 });
 socket.on('reconnect', () => {

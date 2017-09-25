@@ -39,6 +39,7 @@ class PartyView extends React.Component {
       return (<LoadingScreen />);
     }
     return (<TurnatoBar disconnected={this.props.disconnected}>
+      <br />
       <PartyCard party={this.props.info}/>
       <List>
         <MatchesSection
