@@ -76,50 +76,66 @@ let leavePartyHandle = (socket, dispatchRoom, dispatch, db, user, party_code) =>
 let downHandle = (socket, dispatchRoom, dispatch, db,
                   user, party_code, game_code) => {
   db.collection('parties').findOne({_id: party_code}, (err, party) => {
-    try {
-      let game = GAMES.map[game_code];
-      let maxPlayers = game.maxPlayers;
-      let downMapping = party.downMapping;
-      if (party.users.indexOf(user._id) == -1) // User not in the party
-        return;
-      if (!(game_code in downMapping)) {
-        downMapping[game_code] = [];
-      }
-      if (downMapping[game_code].indexOf(user._id) == -1) { //New player
-        downMapping[game_code].unshift(user._id);
-        if (downMapping[game_code].length == maxPlayers) {
-          db.collection('matches').insertOne({party_id: party_code,
-            _id: shortid.generate(),
-            game_code,
-            game_name: game.name,
-            status: 'ACTIVE',
-            players: downMapping[game_code]
-          }, () => {
-            db.collection('matches').find({party_id:  party_code,
-              status: 'ACTIVE'})
-              .toArray((err, matches) => {
-                try {
-                  dispatchRoom('party-' + party._id,
-                               {type: 'SET_MATCHES', matches}, true);
-                } catch (err) {
-                  console.error(err);
-                }
+    db.collection('users').find({_id: {$in: party.users}}, (err, users_cur) => {
+      users_cur.toArray((err, all_users) => {
+        try {
+          let game = GAMES.map[game_code];
+          let maxPlayers = game.maxPlayers;
+          let downMapping = party.downMapping;
+          if (party.users.indexOf(user._id) == -1) // User not in the party
+            return;
+          if (!(game_code in downMapping)) {
+            downMapping[game_code] = [];
+          }
+          if (downMapping[game_code].indexOf(user._id) == -1) { //New player
+            downMapping[game_code].unshift(user._id);
+            if (downMapping[game_code].length == maxPlayers) {
+              db.collection('matches').insertOne({party_id: party_code,
+                _id: shortid.generate(),
+                game_code,
+                game_name: game.name,
+                status: 'ACTIVE',
+                players: downMapping[game_code]
+              }, () => {
+                db.collection('matches').find({party_id:  party_code,
+                  status: 'ACTIVE'})
+                  .toArray((err, matches) => {
+                    try {
+                      matches.map((m) => {
+                        m.playersNickname =  m.players.map((u_code) => {
+                          let users = all_users.filter(
+                            (u) => { return u._id == u_code; });
+                          if (users.length == 1) {
+                            return users[0].nickname;
+                          } else {
+                            return u_code;
+                          }
+                        });
+                        delete m.log;
+                      });
+                      dispatchRoom('party-' + party._id,
+                                   {type: 'SET_MATCHES', matches}, true);
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  });
               });
-          });
-          downMapping[game_code] = [];
-        }
-      } else { //Removing player
-        downMapping[game_code].splice(
-          downMapping[game_code].indexOf(user._id), 1);
-      }
+              downMapping[game_code] = [];
+            }
+          } else { //Removing player
+            downMapping[game_code].splice(
+              downMapping[game_code].indexOf(user._id), 1);
+          }
 
-      db.collection('parties').updateOne({_id: party_code},
-        { $set: {downMapping: downMapping} });
-      dispatchRoom('party-' + party._id,
-                   {type: 'SET_DOWN_MAPPING', downMapping: downMapping}, true);
-    } catch (err) {
-      console.error(err);
-    }
+          db.collection('parties').updateOne({_id: party_code},
+            { $set: {downMapping: downMapping} });
+          dispatchRoom('party-' + party._id,
+                       {type: 'SET_DOWN_MAPPING', downMapping: downMapping}, true);
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    });
   });
 };
 
