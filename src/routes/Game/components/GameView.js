@@ -14,11 +14,9 @@ class GameView extends React.Component {
   }
   render() {
     // PARTY
-    let gameCode = this.props.info.code;
-    let gameName = this.props.info.name;
-    let gameSubtitle = this.props.info.subtitle;
+    let game = this.props.info;
     let gameScreenshot;
-    switch (gameCode) {
+    switch (game.code) {
     case 'chess':
       gameScreenshot = chess_screenshot;
       break;
@@ -26,23 +24,23 @@ class GameView extends React.Component {
       gameScreenshot = checkers_screenshot;
       break;
     }
-    let gameDescription = this.props.info.description;
 
-    return (<TurnatoBar disconnected={this.props.disconnected}>
+    return (<TurnatoBar>
       <br />
       <Card>
         <CardHeader
-          title={gameName}
-          subtitle={gameSubtitle}
+          title={game.name}
+          subtitle={game.subtitle}
         />
         <CardText>
           <img src={gameScreenshot} style={{width: '60%', marginLeft:'20%',
             marginRight: '20%'}} />
           <br /><br />
-          {gameDescription}
+          {game.description}
         </CardText>
 
         <CardActions style={{textAlign: 'right'}}>
+          //TODO(felizardo): Add single player button
           <RaisedButton label="Play w/ Friends"
                         onClick={this.playWithFriends}
                         secondary={true} />
