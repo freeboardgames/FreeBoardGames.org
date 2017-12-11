@@ -4,7 +4,7 @@
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
-    "test": "mocha -r ts-node/register src/**/*.test.ts*",
+    "test": "jest",
     "build": "webpack",
     "server": "node server.js",
     "dev": "npm run build && npm run server"
