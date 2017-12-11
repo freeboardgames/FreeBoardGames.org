@@ -11,8 +11,4 @@ install:
   - npm install
 
 script:
-  - npm run deploy:dev
-  - npm run deploy:prod
-
-after_success:
-  - npm run codecov
+  - npm run test
