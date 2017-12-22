@@ -7,5 +7,6 @@ src_common_js
 dist
 
 coverage
+.coveralls.yml
 .env
 .idea/

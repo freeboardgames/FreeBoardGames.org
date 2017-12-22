@@ -1,14 +1,15 @@
-import * as React from "react";
-import Header from './Header'
-import Main from './Main'
-
+import * as React from 'react';
+import Header from './Header';
+import Main from './Main';
 
 class App extends React.Component<{}, {}> {
   render() {
-    return <div>
+    return (
+      <div>
         <Header />
         <Main />
-      </div>;
+      </div>
+    );
   }
 }
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import Chess from './index';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';

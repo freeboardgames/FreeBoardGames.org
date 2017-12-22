@@ -5,6 +5,10 @@
   "main": ".eslintrc.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --forceExit",
+    "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
+    "lint": "tslint -c tslint.json 'src/**/*.tsx'",
     "build": "webpack",
     "server": "node server.js",
     "dev": "npm run build && npm run server"
@@ -23,15 +27,18 @@
   "devDependencies": {
     "@types/chai": "^4.0.8",
     "@types/enzyme": "^3.1.5",
-    "@types/jest": "^21.1.8",
+    "@types/jest": "^21.1.9",
     "@types/mocha": "^2.2.44",
     "chai": "^4.1.2",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
-    "jest": "^21.2.1",
+    "jest": "^22.0.1",
     "mocha": "^4.0.1",
     "react-test-renderer": "^16.2.0",
+    "ts-jest": "^22.0.0",
     "ts-loader": "^3.2.0",
+    "tslint": "^5.8.0",
+    "tslint-react": "^3.2.0",
     "typescript": "^2.6.2",
     "webpack": "^3.10.0"
   },
@@ -39,12 +46,20 @@
     "@types/react": "^16.0.28",
     "@types/react-dom": "^16.0.3",
     "@types/react-router-dom": "^4.2.3",
+    "coveralls": "^3.0.0",
     "express": "^4.16.2",
+    "material-ui": "^1.0.0-beta.24",
+    "material-ui-icons": "^1.0.0-beta.17",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2"
   },
   "jest": {
+    "mapCoverage": true,
+    "collectCoverageFrom": [
+      "src/**",
+      "!src/app.tsx"
+    ],
     "setupFiles": [
       "./test/test-shim.js",
       "./test/test-setup.js"
@@ -55,7 +70,7 @@
       "js"
     ],
     "transform": {
-      "^.+\\.(ts|tsx)$": "./test/test-preprocessor.js"
+      "^.+\\.(ts|tsx)$": "ts-jest"
     },
     "testMatch": [
       "**/*.test.(ts|tsx|js)"
