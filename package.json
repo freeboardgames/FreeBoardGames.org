@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/chai": "^4.0.8",
     "@types/enzyme": "^3.1.5",
+    "@types/enzyme-adapter-react-16": "^1.0.1",
     "@types/jest": "^21.1.9",
     "@types/mocha": "^2.2.44",
     "chai": "^4.1.2",
