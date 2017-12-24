@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Chess from '../games/Chess';
-import Home from '../Home';
+import Home from '../Home/Home';
 import NotFound from './NotFound';
 
 class Main extends React.Component<{}, {}> {

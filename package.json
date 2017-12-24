@@ -29,10 +29,13 @@
     "@types/enzyme": "^3.1.5",
     "@types/enzyme-adapter-react-16": "^1.0.1",
     "@types/jest": "^21.1.9",
+    "@types/material-ui": "^0.20.0",
     "@types/mocha": "^2.2.44",
+    "@types/prop-types": "^15.5.2",
     "chai": "^4.1.2",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
+    "file-loader": "^0.9.0",
     "jest": "^22.0.1",
     "mocha": "^4.0.1",
     "react-test-renderer": "^16.2.0",
@@ -49,8 +52,7 @@
     "@types/react-router-dom": "^4.2.3",
     "coveralls": "^3.0.0",
     "express": "^4.16.2",
-    "material-ui": "^1.0.0-beta.24",
-    "material-ui-icons": "^1.0.0-beta.17",
+    "material-ui": "^0.20.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2"
@@ -59,11 +61,16 @@
     "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**",
-      "!src/app.tsx"
+      "!src/app.tsx",
+      "!**/*.d.ts"
     ],
     "setupFiles": [
       "./test/test-shim.js",
       "./test/test-setup.js"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
     ],
     "moduleFileExtensions": [
       "ts",
@@ -75,6 +82,9 @@
     },
     "testMatch": [
       "**/*.test.(ts|tsx|js)"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|jpg|png|svg|webp)$": "<rootDir>/test/empty-module.js"
+    }
   }
 }

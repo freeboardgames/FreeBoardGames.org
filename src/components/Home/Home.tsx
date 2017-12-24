@@ -1,16 +1,16 @@
 import * as React from 'react';
 import Header from './Header';
-import Main from './Main';
+import GamesSection from './GamesSection';
 
-class App extends React.Component<{}, {}> {
+class Home extends React.Component<{}, {}> {
   render() {
     return (
       <div>
         <Header />
-        <Main />
+        <GamesSection />
       </div>
     );
   }
 }
 
-export default App;
+export default Home;

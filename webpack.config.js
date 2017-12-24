@@ -23,7 +23,11 @@ var config = {
    * in your code.
    */
   resolve: {
-    extensions: [".ts", ".tsx", ".js"]
+    extensions: [".ts", ".tsx", ".js", "*"],
+    modules: [
+      "node_modules",
+      "src"
+    ]
   },
 
   module: {
@@ -39,6 +43,11 @@ var config = {
         test: /\.tsx?$/,
         loader: "ts-loader",
         exclude: /node_modules/
+      },
+      {
+        test: /\.(png|jpg|webp|svg|mp3|wav)$/,
+        exclude: /node_modules/,
+        loader: "file-loader"
       }
     ]
   }
