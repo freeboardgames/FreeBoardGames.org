@@ -6,6 +6,7 @@ const GAMES = {
     minPlayers: 2,
     description: 'Classic Game of Chess, International rules.',
     subtitle: '2 players, 10-60 mins',
+    link: '/g/chess',
   },
   checkers: {
     code: 'checkers',
@@ -14,6 +15,7 @@ const GAMES = {
     minPlayers: 2,
     description: 'Classic Game of Checkers, American rules.',
     subtitle: '2 players, 10-60 mins',
+    link: '/g/checkers',
   },
 };
 
