@@ -7,7 +7,7 @@ import 'mocha';
 describe('Chess game', () => {
 
   it('should have Chess on result', () => {
-    const wrapper = shallow(<Chess/>);
+    const wrapper = mount(<Chess/>);
     expect(wrapper.text()).to.include('Chess');
   });
 
