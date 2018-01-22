@@ -50,6 +50,7 @@
     "@types/react": "^16.0.28",
     "@types/react-dom": "^16.0.3",
     "@types/react-router-dom": "^4.2.3",
+    "boardgame.io": "git+https://github.com/Felizardo/boardgame.io.git",
     "coveralls": "^3.0.0",
     "express": "^4.16.2",
     "material-ui": "^0.20.0",
