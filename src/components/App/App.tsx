@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Chess from '../games/Chess';
+import ChessMenu from '../games/Chess';
 import Home from '../Home/Home';
 import NotFound from './NotFound';
 
@@ -9,7 +9,8 @@ class Main extends React.Component<{}, {}> {
     return (
       <Switch>
         <Route exact={true} path="/" component={Home}/>
-        <Route path="/g/Chess" component={Chess}/>
+        <Route path="/g/Chess"  exact={true} component={ChessMenu}/>
+        <Route path="/g/Chess/:opponentType/:code" component={ChessMenu}/>
         <Route component={NotFound} />
       </Switch>
     );

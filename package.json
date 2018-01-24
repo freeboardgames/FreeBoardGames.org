@@ -11,7 +11,8 @@
     "lint": "tslint -c tslint.json 'src/**/*.tsx'",
     "build": "webpack",
     "server": "node server.js",
-    "dev": "npm run build && npm run server"
+    "dev": "webpack-dev-server",
+    "precommit": "npm run build && npm run test && npm run lint"
   },
   "repository": {
     "type": "git",
@@ -44,19 +45,22 @@
     "tslint": "^5.8.0",
     "tslint-react": "^3.2.0",
     "typescript": "^2.6.2",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
     "@types/react": "^16.0.28",
     "@types/react-dom": "^16.0.3",
     "@types/react-router-dom": "^4.2.3",
+    "@types/shortid": "0.0.29",
     "boardgame.io": "git+https://github.com/Felizardo/boardgame.io.git",
     "coveralls": "^3.0.0",
     "express": "^4.16.2",
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "shortid": "^2.2.8"
   },
   "jest": {
     "mapCoverage": true,
