@@ -1,18 +1,27 @@
 import * as React from 'react';
-import OpponentPicker from './OpponentPicker';
-import {ListItem} from 'material-ui/List';
+import { OpponentPicker, OpponentPickerOption } from './OpponentPicker';
+import { ListItem } from 'material-ui/List';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import 'mocha';
 
 describe('Opponent Picker', () => {
 
-  it('onClick should work', () => {
-    const onClickMock = jest.fn();
+  it('should show all 4 options and accept clicks', () => {
+    const historyMock = { push: jest.fn() };
+    const optionsMock = [
+      OpponentPickerOption.EasyAI,
+      OpponentPickerOption.MediumAI,
+      OpponentPickerOption.HardAI,
+      OpponentPickerOption.Friend,
+    ];
     const wrapper = shallow((
-      <OpponentPicker onClick={onClickMock} />
+      <OpponentPicker options={optionsMock} history={historyMock}/>
     ));
+    wrapper.find(ListItem).at(0).simulate('click');
+    wrapper.find(ListItem).at(1).simulate('click');
+    wrapper.find(ListItem).at(2).simulate('click');
     wrapper.find(ListItem).at(3).simulate('click');
-    expect(onClickMock.mock.calls.length).to.equal(1);
+    expect(historyMock.push.mock.calls.length).to.equal(4);
   });
 });
