@@ -31,7 +31,12 @@ declare module 'boardgame.io/ui' {
 }
 
 declare module 'boardgame.io/core' {
+  export class FlowObj {
+    processGameEvent: (state: any, gameEvent: any) => any;
+  }
   export class GameObj {
+    processMove: (G: any, action: any, ctx: any) => any;
+    flow: FlowObj;
   }
   interface IGameCtx {
     numPlayer: number;
