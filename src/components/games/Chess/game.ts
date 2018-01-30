@@ -7,7 +7,7 @@
  */
 
 import { Game } from 'boardgame.io/core';
-import Chess from 'chess.js';
+import Chess from './chessjswrapper';
 
 interface IGameCtx {
   numPlayer: number;
@@ -16,18 +16,25 @@ interface IGameCtx {
   currentPlayerMoves: number;
 };
 
-// Helper to instantiate chess.js correctly on
-// both browser and Node.
-function Load(pgn: string) {
-  let chess = null;
-  const ChessPackage = Chess as any
-  if (ChessPackage.Chess) {
-    chess = new ChessPackage.Chess();
-  } else {
-    chess = new Chess();
+
+export function getWinner(chess: any) {
+  if (chess.game_over()) {
+    if (
+      chess.in_draw() ||
+      chess.in_threefold_repetition() ||
+      chess.insufficient_material() ||
+      chess.in_stalemate()
+    ) {
+      return 'd';
+    }
+    if (chess.in_checkmate()) {
+      if (chess.turn() == 'w') {
+        return 'b';
+      } else {
+        return 'w';
+      }
+    }
   }
-  chess.load_pgn(pgn);
-  return chess;
 }
 
 const ChessGame = Game({
@@ -37,7 +44,8 @@ const ChessGame = Game({
 
   moves: {
     move(G: any, ctx: IGameCtx, san: string) {
-      const chess = Load(G.pgn) as Chess;
+      const chess = Chess();
+      chess.load_pgn(G.pgn);
       if (
         (chess.turn() == 'w' && ctx.currentPlayer == '1') ||
         (chess.turn() == 'b' && ctx.currentPlayer == '0')
@@ -53,24 +61,9 @@ const ChessGame = Game({
     movesPerTurn: 1,
 
     endGameIf: (G:any) => {
-      const chess = Load(G.pgn);
-      if (chess.game_over()) {
-        if (
-          chess.in_draw() ||
-          chess.in_threefold_repetition() ||
-          chess.insufficient_material() ||
-          chess.in_stalemate()
-        ) {
-          return 'd';
-        }
-        if (chess.in_checkmate()) {
-          if (chess.turn() == 'w') {
-            return 'b';
-          } else {
-            return 'w';
-          }
-        }
-      }
+      const chess = Chess();
+      chess.load_pgn(G.pgn);
+      return getWinner(chess);  
     },
   },
 });

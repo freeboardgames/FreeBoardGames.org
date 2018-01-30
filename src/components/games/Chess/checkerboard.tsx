@@ -107,12 +107,10 @@ export class Checkerboard extends React.Component<any, any> {
     }
 
     // Add highlighted squares.
-    for (const square in this.props.highlightedSquares) {
-      if (this.props.highlightedSquares.hasOwnProperty(square)) {
-        const { x, y } = this._algebraicToCartesian(square);
-        const key = `${x},${y}`;
-        colorMap[key] = this.props.highlightedSquares[square];
-      }
+    for (const square of Object.keys(this.props.highlightedSquares)) {
+      const { x, y } = this._algebraicToCartesian(square);
+      const key = `${x},${y}`;
+      colorMap[key] = this.props.highlightedSquares[square];
     }
 
     return (

@@ -3,6 +3,7 @@ import * as shortid from 'shortid';
 import { Redirect } from 'react-router';
 import { Client } from 'boardgame.io/client';
 import ChessBoard from './board';
+import { Checkerboard } from './checkerboard';
 import Chess from './game';
 import GameBar from '../../App/Game/GameBar';
 import { OpponentPicker, OpponentPickerOption } from '../../App/Game/OpponentPicker';
@@ -24,11 +25,13 @@ class ChessMenu extends React.Component<IChessMenuProps, {}> {
     let alert: React.ReactNode = null;
     const opponentType = this.props.match.params.opponentType;
     const code = this.props.match.params.code;
+    const playerID = this.props.match.params.playerID;
     if (!opponentType && !code) {
       alert = (
         <MuiThemeProvider>
           <AlertLayer>
             <OpponentPicker
+              gameCode="chess"
               history={this.props.history}
               options={AVAILABLE_OPPONENTS}
             />
@@ -36,14 +39,15 @@ class ChessMenu extends React.Component<IChessMenuProps, {}> {
         </MuiThemeProvider>
       );
     }
-    const client = Client({
+    const App = Client({
       game: Chess,
       board: ChessBoard,
       debug: false,
-    });
+      multiplayer: false,
+    }) as any;
     return (
       <div style={{width: '100%', height: '100%'}}>
-        {client}
+        <App gameId={code} playerID={playerID} />
         {alert}
       </div>
     );

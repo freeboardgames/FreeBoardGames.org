@@ -11,7 +11,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.tsx'",
     "build": "webpack",
     "server": "node server.js",
-    "dev": "webpack-dev-server",
+    "dev": "webpack-dev-server --host 0.0.0.0",
     "precommit": "npm run build && npm run test && npm run lint"
   },
   "repository": {

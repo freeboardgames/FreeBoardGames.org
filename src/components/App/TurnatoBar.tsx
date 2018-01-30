@@ -4,6 +4,9 @@ import AppBar from 'material-ui/AppBar';
 import * as logo from './logo.svg';
 
 class App extends React.Component<{}, {}> {
+  componentWillMount() {
+    document.body.style.backgroundColor = 'white';
+  }
   render() {
     return (
       <MuiThemeProvider>

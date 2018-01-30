@@ -16,7 +16,7 @@ describe('Opponent Picker', () => {
       OpponentPickerOption.Friend,
     ];
     const wrapper = shallow((
-      <OpponentPicker options={optionsMock} history={historyMock}/>
+      <OpponentPicker gameCode="foo" options={optionsMock} history={historyMock}/>
     ));
     wrapper.find(ListItem).at(0).simulate('click');
     wrapper.find(ListItem).at(1).simulate('click');

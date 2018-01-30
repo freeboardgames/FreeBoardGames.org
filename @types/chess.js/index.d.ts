@@ -18,7 +18,14 @@ declare module 'chess.js' {
     piece: string;
     san: string;
   }
-  export default class Chess {
+  class Chess {
+    game_over: () => boolean;
+    in_draw: () => boolean;
+    in_threefold_repetition: () => boolean;
+    insufficient_material: () => boolean;
+    in_stalemate: () => boolean;
+    in_checkmate: () => boolean;
+    ascii: () => string;
     pgn: () => string;  
     move: (san: string) => void;
     turn: () => string;
@@ -27,5 +34,6 @@ declare module 'chess.js' {
     in_check: () => boolean; 
     load_pgn: (pgn: string) => void;
     get: (square: string)=> IChessSquare;
-  } 
+  }
+  export default Chess;
 }

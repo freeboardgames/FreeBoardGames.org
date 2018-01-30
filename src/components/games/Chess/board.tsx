@@ -8,9 +8,11 @@
 
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Chess from 'chess.js';
+
+import Chess from './chessjswrapper';
 import { Checkerboard, IAlgebraicCoords, IColorMap } from './checkerboard';
 import { Token } from 'boardgame.io/ui';
+import GameBar from '../../App/Game/GameBar';
 import Bishop from './pieces/bishop';
 import King from './pieces/king';
 import Knight from './pieces/knight';
@@ -39,7 +41,7 @@ class Board extends React.Component<IBoardProps, {}> {
     isActive: PropTypes.bool,
   };
 
-  chess = new Chess();
+  chess = Chess();
   state = {
     selected: '',
   };
@@ -54,17 +56,19 @@ class Board extends React.Component<IBoardProps, {}> {
 
   render() {
     return (
-      <div>
+      <GameBar
+        text={this._getStatus()}
+        backgroundColor={this.chess.turn() === 'b' ? 'black' : 'white'}
+        textColor={this.chess.turn() === 'b' ? 'white' : 'black'}
+      >
         <Checkerboard
+          style={{position: 'fixed', bottom: 0, maxWidth: '500px'}}
           highlightedSquares={this._getHighlightedSquares()}
-          style={{ width: '400px' }}
-          onClick={this.click}
+          onClick={this._click}
         >
           {this._getPieces()}
         </Checkerboard>
-
-        {this._getStatus()}
-      </div>
+      </GameBar>
     );
   }
 
@@ -80,7 +84,7 @@ class Board extends React.Component<IBoardProps, {}> {
 
     if (this.state.selected) {
       const moves = this._getMoves();
-      const move = moves.find((m) => {
+      const move = moves.find((m: any) => {
         return m.from === this.state.selected && m.to === square;
       });
       if (move) {
@@ -143,29 +147,24 @@ class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getStatus() {
-    let message = null;
-    if (this.chess.in_check()) {
-      message = 'CHECK';
-    }
     if (this.props.ctx.winner) {
       switch (this.props.ctx.winner) {
         case 'b':
-          message = 'Black won!';
-          break;
+          return 'Black won!';
         case 'w':
-          message = 'White won!';
-          break;
+          return 'White won!';
         case 'd':
-          message = 'Draw!';
-          break;
+          return 'Draw!';
       }
     }
-    if (message) {
-      return (
-        <p>
-          <strong>{message}</strong>
-        </p>
-      );
+    if (this.chess.in_check()) {
+      return 'CHECK';
+    }
+    switch (this.chess.turn()) {
+      case 'w':
+        return 'White\'s turn';
+      case 'b':
+        return 'Black\'s turn';
     }
   }
 
@@ -191,7 +190,7 @@ class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getCurrentPlayer() {
-    if (this.props.ctx.currentPlayer === 0) {
+    if (this.props.ctx.currentPlayer === '0') {
       return 'w';
     } else {
       return 'b';

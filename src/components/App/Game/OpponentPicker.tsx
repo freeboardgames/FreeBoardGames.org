@@ -7,6 +7,7 @@ import * as shortid from 'shortid';
 import * as PropTypes from 'prop-types';
 
 interface IOpponentPickerProps {
+  gameCode: string,
   options: OpponentPickerOption[];
   history: { push: (url: string) => void };
 }
@@ -20,6 +21,7 @@ export enum OpponentPickerOption {
 
 export class OpponentPicker extends React.Component<IOpponentPickerProps, {}> {
   static propTypes = {
+    gameCode: PropTypes.string,
     options: PropTypes.array,
     history: PropTypes.object,
   };
@@ -78,13 +80,14 @@ export class OpponentPicker extends React.Component<IOpponentPickerProps, {}> {
   _getUrl(option: OpponentPickerOption) {
     switch (option) {
       case OpponentPickerOption.EasyAI:
-        return 'ai/easy';
+        return `/g/${this.props.gameCode}/ai/easy`;
       case OpponentPickerOption.MediumAI:
-        return 'ai/medium';
+        return `/g/${this.props.gameCode}/ai/medium`;
       case OpponentPickerOption.HardAI:
-        return 'ai/hard';
+        return `/g/${this.props.gameCode}/ai/hard`;
       case OpponentPickerOption.Friend:
-        return 'match/' + shortid.generate();
+        const uid = shortid.generate();
+        return `/g/${this.props.gameCode}/match/${uid}/0`;
     }
   }
 }
