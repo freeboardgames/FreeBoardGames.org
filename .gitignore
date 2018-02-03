@@ -6,6 +6,7 @@ docker-compose-aws.yml
 node_modules
 src_common_js
 dist
+server.js
 
 coverage
 .coveralls.yml

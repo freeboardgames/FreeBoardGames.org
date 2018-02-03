@@ -9,9 +9,9 @@
     "test:coverage": "jest --coverage --forceExit",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "lint": "tslint -c tslint.json 'src/**/*.tsx'",
-    "build": "webpack",
-    "server": "node server.js",
-    "dev": "webpack-dev-server --host 0.0.0.0",
+    "static": "mkdir -p dist && cp -r static/src dist/",
+    "server": "npm run static && tsc && webpack && NODE_ENV=prod node dist/src/server.js",
+    "dev": "npm run static && tsc-watch --onSuccess \"node dist/src/server.js\"",
     "precommit": "npm run build && npm run test && npm run lint"
   },
   "repository": {
@@ -26,37 +26,52 @@
   },
   "homepage": "https://github.com/Felizardo/turnato#readme",
   "devDependencies": {
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "coveralls": "^3.0.0",
+    "@types/jest": "^22.1.1",
+    "@types/koa-helmet": "^3.1.2",
+    "@types/koa-static": "^4.0.0",
+    "@types/koa-webpack": "^1.0.0",
     "@types/chai": "^4.0.8",
     "@types/enzyme": "^3.1.5",
     "@types/enzyme-adapter-react-16": "^1.0.1",
-    "@types/jest": "^21.1.9",
+    "@types/koa": "^2.0.43",
     "@types/material-ui": "^0.20.0",
-    "@types/mocha": "^2.2.44",
     "@types/prop-types": "^15.5.2",
-    "chai": "^4.1.2",
-    "enzyme": "^3.2.0",
-    "enzyme-adapter-react-16": "^1.1.0",
-    "file-loader": "^0.9.0",
-    "jest": "^22.0.1",
-    "mocha": "^4.0.1",
-    "react-test-renderer": "^16.2.0",
-    "ts-jest": "^22.0.0",
-    "ts-loader": "^3.2.0",
-    "tslint": "^5.8.0",
-    "tslint-react": "^3.2.0",
-    "typescript": "^2.6.2",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
-  },
-  "dependencies": {
     "@types/react": "^16.0.28",
     "@types/react-dom": "^16.0.3",
     "@types/react-router-dom": "^4.2.3",
     "@types/shortid": "0.0.29",
+    "chai": "^4.1.2",
+    "concurrently": "^3.5.1",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "file-loader": "^0.9.0",
+    "html-webpack-plugin": "^2.30.1",
+    "jest": "^22.0.1",
+    "koa-helmet": "^3.3.0",
+    "koa-webpack": "^2.0.3",
+    "nodemon": "^1.14.11",
+    "react-test-renderer": "^16.2.0",
+    "ts-jest": "^22.0.0",
+    "ts-loader": "^3.2.0",
+    "tsc-watch": "^1.0.16",
+    "tslint": "^5.8.0",
+    "tslint-react": "^3.2.0",
+    "typescript": "^2.7.1",
+    "webpack": "^3.10.0",
+    "webpack-hot-middleware": "^2.21.0"
+  },
+  "dependencies": {
     "boardgame.io": "git+https://github.com/Felizardo/boardgame.io.git#package",
     "chess.js": "^0.10.2",
-    "coveralls": "^3.0.0",
-    "express": "^4.16.2",
+    "html-webpack-harddisk-plugin": "^0.1.0",
+    "koa": "^2.4.1",
+    "koa-router": "^7.4.0",
+    "koa-send": "^4.1.2",
+    "koa-socket": "^4.4.0",
+    "koa-static": "^4.0.2",
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -67,8 +82,10 @@
     "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**",
+      "!src/server.ts",
       "!src/app.tsx",
-      "!**/*.d.ts"
+      "!**/*.d.ts",
+      "!src/components/games/chess/chessjswrapper.ts"
     ],
     "setupFiles": [
       "./test/test-shim.js",
@@ -88,6 +105,9 @@
     },
     "testMatch": [
       "**/*.test.(ts|tsx|js)"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/", "/dist/" 
     ],
     "moduleNameMapper": {
       "\\.(css|jpg|png|svg|webp)$": "<rootDir>/test/empty-module.js"

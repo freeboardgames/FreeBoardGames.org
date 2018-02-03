@@ -87,3 +87,13 @@ declare module 'boardgame.io/client' {
   }
   export function Client (clientArgs: IClientArgs): WrapperBoard;
 }
+
+declare module 'boardgame.io/server' {
+  import { GameObj } from 'boardgame.io/core';
+  import * as Koa from 'koa';
+  interface IServerArgs {
+    games: GameObj[] 
+  }
+  function Server(serverArgs: IServerArgs): Koa;
+  export = Server;
+}

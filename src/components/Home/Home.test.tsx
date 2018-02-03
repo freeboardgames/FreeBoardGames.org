@@ -5,7 +5,6 @@ import * as Enzyme from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { expect } from 'chai';
-import 'mocha';
 
 describe('Home', () => {
 

@@ -2,13 +2,12 @@ import * as React from 'react';
 import App from './App';
 import * as Enzyme from 'enzyme';
 import { expect } from 'chai';
-import Chess from '../games/Chess';
+import Chess from '../games/chess';
 import Home from '../Home/Home';
 import NotFound from './NotFound';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { MemoryRouter } from 'react-router-dom';
 import * as Adapter from 'enzyme-adapter-react-16';
-import 'mocha';
 
 Enzyme.configure({ adapter: new Adapter() });
 

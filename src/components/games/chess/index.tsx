@@ -43,7 +43,7 @@ class ChessMenu extends React.Component<IChessMenuProps, {}> {
       game: Chess,
       board: ChessBoard,
       debug: false,
-      multiplayer: false,
+      multiplayer: true,
     }) as any;
     return (
       <div style={{width: '100%', height: '100%'}}>

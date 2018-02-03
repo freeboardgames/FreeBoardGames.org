@@ -2,7 +2,6 @@ import * as React from 'react';
 import AlertLayer from './AlertLayer';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
-import 'mocha';
 
 describe('Alert Layer', () => {
 

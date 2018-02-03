@@ -6,13 +6,13 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const port = process.env.PORT || 8000;
 
 
-var config = {
+export default {
   /*
    * app.ts represents the entry point to your web application. Webpack will
    * recursively go through every "require" statement in app.ts and
    * efficiently build out the application's dependency tree.
    */
-  entry: [path.resolve(__dirname, 'src/app.tsx')],
+  entry: [path.resolve(__dirname, 'src/app.js')],
 
   /*
    * The combination of path and filename tells Webpack what name to give to
@@ -26,7 +26,7 @@ var config = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, './dist/index.html'),
+      filename: path.resolve(__dirname, './index.html'),
       template: path.resolve(__dirname, './src/index.html'),
       alwaysWriteToDisk: true,
     }),
@@ -56,8 +56,11 @@ var config = {
      */
     loaders: [
       {
-        test: /\.tsx?$/,
-        loader: "ts-loader",
+        test: /\.jsx?$/,
+        loader: "babel-loader",
+        query: {
+          presets: ['es2015'],
+        },
         exclude: /node_modules/
       },
       {
@@ -68,5 +71,3 @@ var config = {
     ]
   }
 };
-
-module.exports = config

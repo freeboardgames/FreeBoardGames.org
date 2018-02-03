@@ -3,7 +3,6 @@ import { OpponentPicker, OpponentPickerOption } from './OpponentPicker';
 import { ListItem } from 'material-ui/List';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
-import 'mocha';
 
 describe('Opponent Picker', () => {
 

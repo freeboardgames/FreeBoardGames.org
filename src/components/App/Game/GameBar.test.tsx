@@ -3,7 +3,6 @@ import GameBar from './GameBar';
 import AlertLayer from './AlertLayer';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
-import 'mocha';
 
 describe('Game Bar', () => {
 

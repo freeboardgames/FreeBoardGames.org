@@ -3,7 +3,6 @@ import TurnatoBar from './TurnatoBar';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import { MemoryRouter } from 'react-router-dom';
-import 'mocha';
 
 describe('App', () => {
 
