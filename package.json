@@ -10,7 +10,8 @@
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "lint": "tslint -c tslint.json 'src/**/*.tsx'",
     "static": "mkdir -p dist && cp -r static/src dist/",
-    "server": "npm run static && tsc && webpack && NODE_ENV=prod node dist/src/server.js",
+    "build": "npm run static && tsc && webpack",
+    "server": "npm run build && NODE_ENV=prod node dist/src/server.js",
     "dev": "npm run static && tsc-watch --onSuccess \"node dist/src/server.js\"",
     "precommit": "npm run build && npm run test && npm run lint"
   },
