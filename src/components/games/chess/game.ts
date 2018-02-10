@@ -63,7 +63,7 @@ const ChessGame = Game({
     endGameIf: (G:any) => {
       const chess = Chess();
       chess.load_pgn(G.pgn);
-      return getWinner(chess);  
+      return getWinner(chess);
     },
   },
 });

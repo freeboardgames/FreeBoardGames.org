@@ -32,6 +32,7 @@ declare module 'boardgame.io/ui' {
 
 declare module 'boardgame.io/core' {
   export class FlowObj {
+    ctx: (players: number) => any;
     processGameEvent: (state: any, gameEvent: any) => any;
   }
   export class GameObj {
@@ -57,7 +58,7 @@ declare module 'boardgame.io/core' {
     action: (G: any, ctx: IGameCtx) => any;
   }
   interface IGameFlow {
-    movesPerTurn: number;
+    movesPerTurn?: number;
     endGameIf: (G: any, ctx: IGameCtx) => any;
     endTurnIf?: (G: any, ctx: IGameCtx) => boolean;
     onTurnEnd?: (G: any, ctx: IGameCtx) => void;

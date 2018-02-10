@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as shortid from 'shortid';
 import { Redirect } from 'react-router';
 import { Client } from 'boardgame.io/client';
-import ChessBoard from './board';
+import getBoard from './board';
 import { Checkerboard } from './checkerboard';
 import Chess from './game';
 import GameBar from '../../App/Game/GameBar';
@@ -41,13 +41,13 @@ class ChessMenu extends React.Component<IChessMenuProps, {}> {
     }
     const App = Client({
       game: Chess,
-      board: ChessBoard,
+      board: getBoard(code),
       debug: false,
       multiplayer: true,
     }) as any;
     return (
       <div style={{width: '100%', height: '100%'}}>
-        <App gameId={code} playerID={playerID} />
+        <App gameID={code} playerID={playerID} />
         {alert}
       </div>
     );

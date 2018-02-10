@@ -108,7 +108,8 @@
       "**/*.test.(ts|tsx|js)"
     ],
     "testPathIgnorePatterns": [
-      "/node_modules/", "/dist/" 
+      "/node_modules/",
+      "/dist/"
     ],
     "moduleNameMapper": {
       "\\.(css|jpg|png|svg|webp)$": "<rootDir>/test/empty-module.js"

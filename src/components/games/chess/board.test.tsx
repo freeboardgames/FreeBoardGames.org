@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Board from './board';
+import getBoard from './board';
 import { expect } from 'chai';
 import * as Enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
@@ -8,6 +8,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 test('render board - all states', () => {
   const moveMock = jest.fn();
+  const Board = getBoard('codeFoo');
   const board = Enzyme.mount((
     <Board
       G={{pgn: ''}}
@@ -16,6 +17,7 @@ test('render board - all states', () => {
       moves={{move:  moveMock}}
       playerID="0"
       isActive={true}
+      isConnected={true}
     />
   ));
   expect(board.html()).to.contain('Draw!');
@@ -47,8 +49,9 @@ function rowColAt(row: number, col: number) {
   return 8 * (col - 1) + (8 - row) + 1;
 }
 
-test('little game', () => {
+test('connection lost', () => {
   const moveMock = jest.fn();
+  const Board = getBoard('codeFoo');
   const board = Enzyme.mount((
     <Board
       G={{pgn: ''}}
@@ -57,20 +60,55 @@ test('little game', () => {
       moves={{move:  moveMock}}
       playerID="0"
       isActive={true}
+      isConnected={false}
+    />
+  ));
+  expect(board.html()).to.contain('Connection lost');
+});
+
+test('game sharing', () => {
+  const moveMock = jest.fn();
+  const Board = getBoard('codeFoo');
+  const board = Enzyme.mount((
+    <Board
+      G={{pgn: ''}}
+      ctx={{numPlayer: 2, turn: 0,
+          currentPlayer: '0', currentPlayerMoves: 0}}
+      moves={{move:  moveMock}}
+      playerID="0"
+      isActive={true}
+      isConnected={true}
+    />
+  ));
+  expect(board.html()).to.contain('Share');
+});
+
+test('little game', () => {
+  const moveMock = jest.fn();
+  const Board = getBoard('codeFoo');
+  const board = Enzyme.mount((
+    <Board
+      G={{pgn: ''}}
+      ctx={{numPlayer: 2, turn: 0,
+          currentPlayer: '0', currentPlayerMoves: 0}}
+      moves={{move:  moveMock}}
+      playerID="0"
+      isActive={true}
+      isConnected={true}
     />
   ));
   expect(board.html()).to.contain('White\'s turn');
   // select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.state()).to.deep.equal({ selected: 'a2' });
+  expect(board.state().selected).to.equal('a2');
 
   // unselect
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.state()).to.deep.equal({ selected: '' });
+  expect(board.state().selected).to.equal('');
 
   // select f2
   board.find('rect').at(rowColAt(2, 6)).simulate('click');
-  expect(board.state()).to.deep.equal({ selected: 'f2' });
+  expect(board.state().selected).to.equal('f2');
 
   // move to f4
   board.find('rect').at(rowColAt(4, 6)).simulate('click');
@@ -88,7 +126,7 @@ test('little game', () => {
 
   // try invalid selection
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.state()).to.deep.equal({ selected: '' });
+  expect(board.state().selected).to.equal('');
 
   // test inactive
   board.setProps({
@@ -98,7 +136,7 @@ test('little game', () => {
 
   // cant select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect(board.state()).to.deep.equal({ selected: '' });
+  expect(board.state().selected).to.equal('');
 
   // make it active again
   board.setProps({
@@ -108,7 +146,7 @@ test('little game', () => {
 
   // select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect(board.state()).to.deep.equal({ selected: 'a7' });
+  expect(board.state().selected).to.equal('a7');
 
   // move to a5
   board.find('rect').at(rowColAt(5, 1)).simulate('click');

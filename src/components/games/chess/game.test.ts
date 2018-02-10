@@ -5,8 +5,7 @@ import { expect } from 'chai';
 test('little game', () => {
   let initialState = { pgn: '' };
   let action = { type: 'move', args: ['f4'] };
-  let ctx = {numPlayer: 2, turn: 0,  
-          currentPlayer: '0', currentPlayerMoves: 0};
+  let ctx = ChessGame.flow.ctx(2);
   expect(ChessGame.processMove(initialState, action, ctx)).to.deep.equal(
       { pgn: '1. f4'}); 
   
@@ -15,6 +14,7 @@ test('little game', () => {
 
   // test flow
   let checkMateG = { pgn: '1.f4 e5 2.g4 Qh4#' };
+  ctx.currentPlayerMoves = 1;
   const newState = ChessGame.flow.processGameEvent({
     ctx, 
     G: checkMateG
