@@ -3,6 +3,7 @@ import getBoard from './board';
 import { expect } from 'chai';
 import * as Enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
+import RaisedButton from 'material-ui/RaisedButton';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -81,6 +82,8 @@ test('game sharing', () => {
     />
   ));
   expect(board.html()).to.contain('Share');
+  (board.instance() as any).dismissSharing();
+  expect(board.html()).to.not.contain('Share');
 });
 
 test('little game', () => {
