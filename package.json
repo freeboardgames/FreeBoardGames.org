@@ -11,7 +11,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.tsx'",
     "static": "mkdir -p dist && cp -r static/src dist/",
     "build": "npm run static && tsc && webpack",
-    "server": "npm run build && NODE_ENV=prod node dist/src/server.js",
+    "server": "npm run build && NODE_ENV=prod PORT=80 node dist/src/server.js",
     "dev": "npm run static && tsc-watch --onSuccess \"node dist/src/server.js\"",
     "precommit": "npm run build && npm run test && npm run lint"
   },
