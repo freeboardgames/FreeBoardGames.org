@@ -76,6 +76,7 @@
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-ga": "^2.4.1",
     "react-router-dom": "^4.2.2",
     "shortid": "^2.2.8"
   },

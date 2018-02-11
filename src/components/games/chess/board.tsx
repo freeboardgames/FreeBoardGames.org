@@ -21,6 +21,7 @@ import Pawn from './pieces/pawn';
 import Queen from './pieces/queen';
 import Rook from './pieces/rook';
 import AlertLayer from '../../App/Game/AlertLayer';
+import * as ReactGA from 'react-ga';
 
 const COL_NAMES = 'abcdefgh';
 const SELECTED_COLOR = 'green';
@@ -112,6 +113,10 @@ function getBoard(matchCode: string) {
     }
 
     click(coords: IAlgebraicCoords) {
+      ReactGA.event({
+        category: 'ChessGame',
+        action: 'click'
+      });
       const { square } = coords;
       if (!this.props.isActive) {
         return;
