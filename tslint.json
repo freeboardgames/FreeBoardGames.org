@@ -1,6 +1,7 @@
 {
   "extends": ["tslint:recommended", "tslint-react"],
   "rules": {
+    "max-classes-per-file": false,
     "arrow-parens": false,
     "arrow-return-shorthand": [false],
     "comment-format": [true, "check-space"],

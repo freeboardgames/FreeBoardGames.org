@@ -6,7 +6,7 @@ import * as Adapter from 'enzyme-adapter-react-16';
 import RaisedButton from 'material-ui/RaisedButton';
 
 Enzyme.configure({ adapter: new Adapter() });
-jest.mock("react-ga");
+jest.mock('react-ga');
 
 test('render board - all states', () => {
   const moveMock = jest.fn();

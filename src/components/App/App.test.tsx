@@ -10,7 +10,7 @@ import { MemoryRouter } from 'react-router-dom';
 import * as Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
-jest.mock("react-ga");
+jest.mock('react-ga');
 
 describe('App', () => {
 

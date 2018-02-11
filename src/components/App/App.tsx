@@ -11,11 +11,11 @@ const withGA = (WrapperComponent: any) => {
     render() {
       ReactGA.set({ page: window.location.pathname });
       ReactGA.pageview(window.location.pathname);
-      return <WrapperComponent {...this.props}/>
+      return <WrapperComponent {...this.props}/>;
     }
   }
   return GAWrapper;
-}
+};
 
 class Main extends React.Component<{}, {}> {
   render() {

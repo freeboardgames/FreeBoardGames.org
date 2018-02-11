@@ -115,7 +115,7 @@ function getBoard(matchCode: string) {
     click(coords: IAlgebraicCoords) {
       ReactGA.event({
         category: 'ChessGame',
-        action: 'click'
+        action: 'click',
       });
       const { square } = coords;
       if (!this.props.isActive) {
