@@ -49,6 +49,7 @@ interface ICheckerboardProps {
   rows: number;
   cols: number;
   onClick: (coords: ICartesianCoords) => void;
+  invert: boolean;
   primaryColor: string;
   secondaryColor: string;
   highlightedSquares: IColorMap;
@@ -62,6 +63,7 @@ export class Checkerboard extends React.Component<any, any> {
     onClick: PropTypes.func,
     primaryColor: PropTypes.string,
     secondaryColor: PropTypes.string,
+    invert: PropTypes.bool,
     highlightedSquares: PropTypes.object,
     style: PropTypes.object,
     children: PropTypes.oneOfType([
@@ -73,6 +75,7 @@ export class Checkerboard extends React.Component<any, any> {
   static defaultProps = {
     rows: 8,
     cols: 8,
+    invert: false,
     primaryColor: '#d18b47',
     secondaryColor: '#ffce9e',
     highlightedSquares: {},
@@ -135,11 +138,21 @@ export class Checkerboard extends React.Component<any, any> {
     const colSymbol = match[1].toLowerCase();
     const col = colSymbol.charCodeAt(0) - 'a'.charCodeAt(0);
     const row = parseInt(match[2], 10);
-    return { x: col, y: this.props.rows - row };
+		if (this.props.invert) {
+      return { x: this.props.cols - col - 1, y: row - 1 };
+		} else {
+    	return { x: col, y: this.props.rows - row };
+		}
   }
 
   _cartesianToAlgebraic(x: number, y: number) {
-    const colSymbol = String.fromCharCode(x + 'a'.charCodeAt(0));
-    return colSymbol + (this.props.rows - y);
+    if (this.props.invert) {
+    	const colSymbol = String.fromCharCode(
+				(this.props.cols - x - 1) + 'a'.charCodeAt(0));
+      return colSymbol + (y + 1);
+		} else {
+    	const colSymbol = String.fromCharCode(x + 'a'.charCodeAt(0));
+			return colSymbol + (this.props.rows - y);
+		}
   }
 }

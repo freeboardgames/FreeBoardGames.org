@@ -28,7 +28,16 @@ test('position', () => {
       </Token>
     </Checkerboard>
   ));
-  expect(grid.html()).to.contain('translate(1, 3)');
+  expect(grid.find('g').at(65).html()).to.contain('translate(1, 3)');
+
+  const grid2 = Enzyme.mount((
+    <Checkerboard invert={true}>
+      <Token square="b5">
+        <circle r="0.25" fill="red" />
+      </Token>
+    </Checkerboard>
+  ));
+  expect(grid2.find('g').at(65).html()).to.contain('translate(6, 4)');
 });
 
 test('click', () => {
@@ -39,6 +48,14 @@ test('click', () => {
     .at(5)
     .simulate('click');
   expect(onClick.mock.calls[0]).to.deep.equal([{ square: 'a3' }]);
+
+	const onClick2 = jest.fn();
+  const grid2 = Enzyme.mount(<Checkerboard onClick={onClick2} invert={true} />);
+  grid2
+    .find('rect')
+    .at(2)
+    .simulate('click');
+  expect(onClick2.mock.calls[0]).to.deep.equal([{ square: 'h3' }]);
 });
 
 test('invalid square', () => {
