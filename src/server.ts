@@ -2,8 +2,6 @@ import * as Koa from 'koa';
 import * as KoaSend from 'koa-send';
 import * as KoaStatic from 'koa-static';
 import * as KoaHelmet from 'koa-helmet';
-import * as KoaWebpack from 'koa-webpack';
-import WebpackDevConfig from '../webpack.dev';
 const Server = require('boardgame.io/server');
 import Chess from './components/games/chess/game';
 
@@ -15,15 +13,9 @@ const DEV = !PROD;
 
 const app = Server({ games: [Chess] });
 
-if (DEV) {
-  app.use(
-      KoaWebpack({ config: WebpackDevConfig,}));
-}
+app.use(KoaStatic('./dist'));
+app.use(KoaHelmet());
 
-if (PROD) {
-  app.use(KoaStatic('./dist'));
-  app.use(KoaHelmet());
-}
 app.use(async (ctx:any) => {
   await KoaSend(ctx, `./dist/index.html`); 
 });

@@ -2,8 +2,10 @@ var path = require("path");
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const port = process.env.PORT || 8000;
+const workboxPlugin = require('workbox-webpack-plugin');
 
 
 var config = {
@@ -30,7 +32,17 @@ var config = {
       template: path.resolve(__dirname, './src/index.html'),
       alwaysWriteToDisk: true,
     }),
-    new HtmlWebpackHarddiskPlugin()
+    new HtmlWebpackHarddiskPlugin(),
+		new workboxPlugin({
+       globDirectory: './dist',
+       globPatterns: ['**\/*.{html,js,webp,mp3,wav,svg}'],
+       globIgnores: [],
+       swSrc: './sw.js',
+       swDest: './dist/sw.js',
+   }),
+   new CopyWebpackPlugin([
+      { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' }
+   ])
   ],
 
   /*

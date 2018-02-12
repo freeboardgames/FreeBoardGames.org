@@ -9,10 +9,11 @@
     "test:coverage": "jest --coverage --forceExit",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "lint": "tslint -c tslint.json 'src/**/*.tsx'",
-    "static": "mkdir -p dist && cp -r static/src dist/",
-    "build": "npm run static && tsc && webpack",
-    "server": "npm run build && NODE_ENV=prod PORT=80 node dist/src/server.js",
-    "dev": "npm run static && tsc-watch --onSuccess \"node dist/src/server.js\"",
+    "static": "mkdir -p dist && cp -r static/* dist/",
+    "build": "npm run static && tsc",
+    "webpack-run": "webpack && node dist/server.js",
+    "server": "npm run build && NODE_ENV=prod PORT=80 npm run webpack-run",
+    "dev": "npm run static && tsc-watch --onSuccess \"npm run webpack-run\"",
     "precommit": "npm run build && npm run test && npm run lint"
   },
   "repository": {
@@ -33,7 +34,6 @@
     "@types/jest": "^22.1.1",
     "@types/koa-helmet": "^3.1.2",
     "@types/koa-static": "^4.0.0",
-    "@types/koa-webpack": "^1.0.0",
     "@types/chai": "^4.0.8",
     "@types/enzyme": "^3.1.5",
     "@types/enzyme-adapter-react-16": "^1.0.1",
@@ -52,7 +52,6 @@
     "html-webpack-plugin": "^2.30.1",
     "jest": "^22.0.1",
     "koa-helmet": "^3.3.0",
-    "koa-webpack": "^2.0.3",
     "nodemon": "^1.14.11",
     "react-test-renderer": "^16.2.0",
     "ts-jest": "^22.0.0",
@@ -67,6 +66,7 @@
   "dependencies": {
     "boardgame.io": "git+https://github.com/Felizardo/boardgame.io.git#package",
     "chess.js": "^0.10.2",
+    "copy-webpack-plugin": "^4.4.1",
     "html-webpack-harddisk-plugin": "^0.1.0",
     "koa": "^2.4.1",
     "koa-router": "^7.4.0",
@@ -78,7 +78,9 @@
     "react-dom": "^16.2.0",
     "react-ga": "^2.4.1",
     "react-router-dom": "^4.2.2",
-    "shortid": "^2.2.8"
+    "shortid": "^2.2.8",
+    "workbox-sw": "^2.1.2",
+    "workbox-webpack-plugin": "^2.1.2"
   },
   "jest": {
     "mapCoverage": true,

@@ -4,7 +4,11 @@ import ChessMenu from '../games/chess';
 import Home from '../Home/Home';
 import NotFound from './NotFound';
 import * as ReactGA from 'react-ga';
+
 ReactGA.initialize('UA-105391878-1');
+navigator.serviceWorker.register('/sw.js').then((registration) => {
+  registration.update();
+});
 
 const withGA = (WrapperComponent: any) => {
   class GAWrapper extends React.Component<{}, {}> {

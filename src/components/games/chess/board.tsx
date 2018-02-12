@@ -74,6 +74,13 @@ function getBoard(matchCode: string) {
 
     render() {
       let alert = null;
+      if (!this.props.isConnected) {
+        alert = (
+          <AlertLayer>
+            <h1>Connection lost</h1>
+            Trying to connect...
+          </AlertLayer>);
+      }
       if (!this.state.dismissedSharing && matchCode &&
            this.props.playerID === '0') {
         alert = (
@@ -86,13 +93,6 @@ function getBoard(matchCode: string) {
             />
           </AlertLayer>
         );
-      }
-      if (!this.props.isConnected) {
-        alert = (
-          <AlertLayer>
-            <h1>Connection lost</h1>
-            Trying to connect...
-          </AlertLayer>);
       }
       return (
         <GameBar
