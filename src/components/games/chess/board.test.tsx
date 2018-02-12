@@ -65,6 +65,7 @@ test('connection lost', () => {
       isConnected={false}
     />
   ));
+  (board.instance() as any).dismissSharing();
   expect(board.html()).to.contain('Connection lost');
 });
 
