@@ -103,7 +103,7 @@ function getBoard(matchCode: string) {
         >
           <Checkerboard
             style={{position: 'fixed', bottom: 0, maxWidth: '500px'}}
-						invert={this.props.playerID === '1'}
+            invert={this.props.playerID === '1'}
             highlightedSquares={this._getHighlightedSquares()}
             onClick={this._click}
           >

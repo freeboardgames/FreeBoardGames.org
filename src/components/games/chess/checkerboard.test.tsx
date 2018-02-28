@@ -49,7 +49,7 @@ test('click', () => {
     .simulate('click');
   expect(onClick.mock.calls[0]).to.deep.equal([{ square: 'a3' }]);
 
-	const onClick2 = jest.fn();
+  const onClick2 = jest.fn();
   const grid2 = Enzyme.mount(<Checkerboard onClick={onClick2} invert={true} />);
   grid2
     .find('rect')

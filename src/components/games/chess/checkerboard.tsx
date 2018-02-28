@@ -138,21 +138,21 @@ export class Checkerboard extends React.Component<any, any> {
     const colSymbol = match[1].toLowerCase();
     const col = colSymbol.charCodeAt(0) - 'a'.charCodeAt(0);
     const row = parseInt(match[2], 10);
-		if (this.props.invert) {
+    if (this.props.invert) {
       return { x: this.props.cols - col - 1, y: row - 1 };
-		} else {
-    	return { x: col, y: this.props.rows - row };
-		}
+    } else {
+      return { x: col, y: this.props.rows - row };
+    }
   }
 
   _cartesianToAlgebraic(x: number, y: number) {
     if (this.props.invert) {
-    	const colSymbol = String.fromCharCode(
-				(this.props.cols - x - 1) + 'a'.charCodeAt(0));
+      const colSymbol = String.fromCharCode(
+        (this.props.cols - x - 1) + 'a'.charCodeAt(0));
       return colSymbol + (y + 1);
-		} else {
-    	const colSymbol = String.fromCharCode(x + 'a'.charCodeAt(0));
-			return colSymbol + (this.props.rows - y);
-		}
+    } else {
+      const colSymbol = String.fromCharCode(x + 'a'.charCodeAt(0));
+      return colSymbol + (this.props.rows - y);
+    }
   }
 }
