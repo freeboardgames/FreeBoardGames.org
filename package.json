@@ -12,7 +12,7 @@
     "static": "mkdir -p dist && cp -r static/* dist/",
     "build": "npm run static && tsc",
     "webpack-run": "webpack && node dist/server.js",
-    "server": "npm run build && NODE_ENV=produciton PORT=80 npm run webpack-run",
+    "server": "npm run build && NODE_ENV=production PORT=80 npm run webpack-run",
     "dev": "npm run static && tsc-watch --onSuccess \"npm run webpack-run\"",
     "precommit": "npm run build && npm run test && npm run lint"
   },
