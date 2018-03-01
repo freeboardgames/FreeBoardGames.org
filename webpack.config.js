@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const port = process.env.PORT || 8000;
 const workboxPlugin = require('workbox-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 
 var config = {
@@ -42,7 +43,8 @@ var config = {
    }),
    new CopyWebpackPlugin([
       { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' }
-   ])
+   ]),
+   new UglifyJsPlugin()
   ],
 
   /*
@@ -59,24 +61,32 @@ var config = {
   },
 
   module: {
-    /*
-     * Each loader needs an associated Regex test that goes through each
-     * of the files you've included (or in this case, all files but the
-     * ones in the excluded directories) and finds all files that pass
-     * the test. Then it will apply the loader to that file. I haven't
-     * installed ts-loader yet, but will do that shortly.
-     */
-    loaders: [
-      {
-        test: /\.tsx?$/,
-        loader: "ts-loader",
-        exclude: /node_modules/
-      },
-      {
-        test: /\.(png|jpg|webp|svg|mp3|wav)$/,
-        exclude: /node_modules/,
-        loader: "file-loader"
-      }
+    rules: [{
+      test: /\.ts(x?)$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              'env'
+            ]
+          } 
+        },
+        {
+          loader: 'ts-loader'
+        }
+      ]
+    },
+    {
+      test: /\.(png|jpg|webp|svg|mp3|wav)$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: "file-loader"
+        }
+      ]
+    }
     ]
   }
 };

@@ -8,7 +8,7 @@ import Chess from './components/games/chess/game';
 const HOST = '0.0.0.0';
 const PORT = process.env.PORT || 8000;
 const NODE_ENV = process.env.NODE_ENV;
-const PROD = NODE_ENV === 'prod';
+const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
 const app = Server({ games: [Chess] });
