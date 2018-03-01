@@ -70,7 +70,14 @@ var config = {
           loader: 'babel-loader',
           options: {
             presets: [
-              'env'
+              [
+                'env',
+                {
+                  "targets": {
+                    "browsers": [">1%"]
+                  }
+                }
+              ]
             ]
           } 
         },
