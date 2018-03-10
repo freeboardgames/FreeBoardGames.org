@@ -9,11 +9,10 @@
     "test:coverage": "jest --coverage --forceExit",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "lint": "tslint -c tslint.json 'src/**/*.tsx'",
-    "static": "mkdir -p dist && cp -r static/* dist/",
-    "build": "npm run static && tsc",
+    "build": "tsc",
     "webpack-run": "webpack && node dist/server.js",
     "server": "npm run build && NODE_ENV=production PORT=80 npm run webpack-run",
-    "dev": "npm run static && tsc-watch --onSuccess \"npm run webpack-run\"",
+    "dev": "tsc-watch --onSuccess \"npm run webpack-run\"",
     "precommit": "npm run build && npm run test && npm run lint"
   },
   "repository": {
@@ -67,6 +66,8 @@
     "webpack-hot-middleware": "^2.21.0"
   },
   "dependencies": {
+    "@types/koa-router": "^7.0.27",
+    "@types/mustache": "^0.8.30",
     "boardgame.io": "git+https://github.com/Felizardo/boardgame.io.git#package",
     "chess.js": "^0.10.2",
     "copy-webpack-plugin": "^4.4.1",
@@ -77,6 +78,7 @@
     "koa-socket": "^4.4.0",
     "koa-static": "^4.0.2",
     "material-ui": "^0.20.0",
+    "mustache": "^2.3.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-ga": "^2.4.1",
