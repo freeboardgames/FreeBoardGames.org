@@ -9,7 +9,7 @@ import * as Mustache from 'mustache';
 import * as ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
-const { Server } = require('boardgame.io/server');
+const { Server } = require('boardgame.io/server'); // tslint:disable-line
 import Chess from './components/games/chess/game';
 import App from './components/App/App';
 
@@ -25,16 +25,18 @@ const template = fs.readFileSync('./dist/webpack/template.html', 'utf8');
 Mustache.parse(template);
 
 const renderSite = (url: string, title?: string) => {
-  if (!title) title = 'Turnato | Play Chess w/ Friends';
-  url = '/'; // TODO: Finish SSR -- showing only home page for now 
+  if (!title) {
+    title = 'Turnato | Play Chess w/ Friends';
+  }
+  url = '/'; // TODO: Finish SSR -- showing only home page for now.
   const context = {};
   const reactHtml = ReactDOMServer.renderToString(
     <StaticRouter
       location={url}
-      context={context} >
+      context={context}
+    >
       <App/>
-    </StaticRouter>
-  );
+    </StaticRouter>);
   return Mustache.render(template, {title, reactHtml});
 };
 
@@ -51,7 +53,6 @@ server.app.use((ctx: any) => {
   ctx.body = renderSite(ctx.request.url);
 });
 
-
 server.app.listen(PORT, HOST, () => {
-  console.log(`Serving ${NODE_ENV} at: http://localhost:${PORT}/`);
+  console.log(`Serving ${NODE_ENV} at: http://localhost:${PORT}/`); // tslint:disable-line
 });

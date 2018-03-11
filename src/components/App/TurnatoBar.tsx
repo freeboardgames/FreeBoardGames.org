@@ -1,9 +1,9 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-let logo:any = null;
+let logo: any = null;
 if (typeof window !== 'undefined') {
-  logo = require('./logo.svg');
+  logo = require('./logo.svg'); // tslint:disable-line
 }
 
 class App extends React.Component<{}, {}> {

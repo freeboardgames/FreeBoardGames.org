@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Card, CardMedia, CardTitle} from 'material-ui/Card';
-let introjpg:any = null;
+let introjpg: any = null;
 if (typeof window !== 'undefined') {
-  introjpg = require('./intro.jpg');
+  introjpg = require('./intro.jpg'); // tslint:disable-line
 }
 
 class Header extends React.Component<{}, {}> {

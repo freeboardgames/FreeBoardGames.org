@@ -6,8 +6,8 @@ import NotFound from './NotFound';
 import * as ReactGA from 'react-ga';
 
 ReactGA.initialize('UA-105391878-1');
-if (typeof window !== 'undefined' && 
-    typeof navigator !== 'undefined' && 
+if (typeof window !== 'undefined' &&
+    typeof navigator !== 'undefined' &&
     navigator.serviceWorker) {
   navigator.serviceWorker.register('/sw.js').then((registration) => {
     registration.update();
@@ -20,10 +20,8 @@ const withGA = (WrapperComponent: any) => {
       if (typeof window !== 'undefined') {
         ReactGA.set({ page: window.location.pathname });
         ReactGA.pageview(window.location.pathname);
-        return <WrapperComponent {...this.props}/>;
-      } else {
-        return <WrapperComponent {...this.props}/>;
       }
+      return <WrapperComponent {...this.props}/>;
     }
   }
   return GAWrapper;

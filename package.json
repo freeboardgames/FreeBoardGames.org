@@ -91,7 +91,7 @@
     "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**",
-      "!src/server.ts",
+      "!src/server.tsx",
       "!src/app.tsx",
       "!**/*.d.ts",
       "!src/components/games/chess/chessjswrapper.ts"
