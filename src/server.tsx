@@ -21,17 +21,17 @@ const DEV = !PROD;
 
 const server = Server({ games: [Chess] });
 const router = new Router();
-const template = fs.readFileSync('./dist/webpack/index.html', 'utf8');
+const template = fs.readFileSync('./dist/webpack/template.html', 'utf8');
 Mustache.parse(template);
 
 const renderSite = (url: string, title?: string) => {
   if (!title) title = 'Turnato | Play Chess w/ Friends';
+  url = '/'; // TODO: Finish SSR -- showing only home page for now 
   const context = {};
   const reactHtml = ReactDOMServer.renderToString(
     <StaticRouter
       location={url}
-      context={context}
-    >
+      context={context} >
       <App/>
     </StaticRouter>
   );
@@ -43,8 +43,7 @@ router.get('/g/chess', (ctx, next) => {
 });
 
 server.app.use(KoaStatic('./static'));
-server.app.use(KoaHelmet());
-
+server.app.use(KoaStatic('./dist/webpack'));
 server.app.use(router.routes());
 server.app.use(router.allowedMethods());
 

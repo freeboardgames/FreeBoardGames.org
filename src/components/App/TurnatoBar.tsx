@@ -8,7 +8,9 @@ if (typeof window !== 'undefined') {
 
 class App extends React.Component<{}, {}> {
   componentWillMount() {
-    document.body.style.backgroundColor = 'white';
+    if (typeof window !== 'undefined') {
+      document.body.style.backgroundColor = 'white';
+    }
   }
   render() {
     return (

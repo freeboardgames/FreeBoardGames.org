@@ -17,9 +17,13 @@ if (typeof window !== 'undefined' &&
 const withGA = (WrapperComponent: any) => {
   class GAWrapper extends React.Component<{}, {}> {
     render() {
-      ReactGA.set({ page: window.location.pathname });
-      ReactGA.pageview(window.location.pathname);
-      return <WrapperComponent {...this.props}/>;
+      if (typeof window !== 'undefined') {
+        ReactGA.set({ page: window.location.pathname });
+        ReactGA.pageview(window.location.pathname);
+        return <WrapperComponent {...this.props}/>;
+      } else {
+        return <WrapperComponent {...this.props}/>;
+      }
     }
   }
   return GAWrapper;
