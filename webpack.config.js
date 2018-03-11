@@ -23,24 +23,24 @@ var config = {
    */
   output: {
     publicPath: '/',
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "dist", "webpack"),
     filename: '[name].js',
     chunkFilename: '[chunkhash].js'
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, './dist/index.html'),
+      filename: path.resolve(__dirname, './dist/webpack/index.html'),
       template: path.resolve(__dirname, './src/index.html'),
       alwaysWriteToDisk: true,
     }),
     new HtmlWebpackHarddiskPlugin(),
 		new workboxPlugin({
-       globDirectory: './dist',
+       globDirectory: './dist/webpack',
        globPatterns: ['**\/*.{html,js,webp,mp3,wav,svg}'],
        globIgnores: [],
        swSrc: './sw.js',
-       swDest: './dist/sw.js',
+       swDest: './dist/webpack/sw.js',
    }),
    new CopyWebpackPlugin([
       { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' }

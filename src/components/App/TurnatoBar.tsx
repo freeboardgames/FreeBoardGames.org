@@ -1,7 +1,10 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import * as logo from './logo.svg';
+let logo:any = null;
+if (typeof window !== 'undefined') {
+  logo = require('./logo.svg');
+}
 
 class App extends React.Component<{}, {}> {
   componentWillMount() {
