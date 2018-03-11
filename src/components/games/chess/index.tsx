@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as shortid from 'shortid';
 import { Redirect } from 'react-router';
-import { Client } from 'boardgame.io/client';
+import { Client } from 'boardgame.io/react';
 import getBoard from './board';
 import { Checkerboard } from './checkerboard';
 import Chess from './game';
