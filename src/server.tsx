@@ -30,7 +30,7 @@ const renderSite = (url: string, title?: string) => {
   }
   url = '/'; // TODO: Finish SSR -- showing only home page for now.
   const context = {};
-  const reactHtml = ReactDOMServer.renderToString(
+  const reactHtml = ReactDOMServer.renderToStaticMarkup(
     <StaticRouter
       location={url}
       context={context}
