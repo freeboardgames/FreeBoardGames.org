@@ -75,7 +75,7 @@ declare module 'boardgame.io/core' {
   export function Game (gameArgs: IGameArgs): GameObj;
 }
 
-declare module 'boardgame.io/client' {
+declare module 'boardgame.io/react' {
   import { GameObj } from 'boardgame.io/core';
   export class WrapperBoard {
   }
