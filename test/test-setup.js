@@ -12,13 +12,15 @@ enzyme.configure({ adapter: new Adapter() });
 jest.mock('react-ga');
 
 //SW mock
-let swRegisterMock = jest.fn();
-let mockPromise = new Promise(function (resolve, reject) {
-  resolve({ update: jest.fn() });
-});
-swRegisterMock.mockReturnValue(mockPromise)
-global.navigator.serviceWorker = {
-  register: swRegisterMock
-};
+if (typeof window !== 'undefined') {
+  let swRegisterMock = jest.fn();
+  let mockPromise = new Promise(function (resolve, reject) {
+    resolve({ update: jest.fn() });
+  });
+  swRegisterMock.mockReturnValue(mockPromise)
+  global.navigator.serviceWorker = {
+    register: swRegisterMock
+  };
+}
 
 

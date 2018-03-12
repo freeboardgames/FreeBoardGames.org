@@ -7,6 +7,7 @@ import * as KoaHelmet from 'koa-helmet';
 import * as fs from 'fs';
 import * as Mustache from 'mustache';
 import * as ReactDOMServer from 'react-dom/server';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
 
 const { Server } = require('boardgame.io/server'); // tslint:disable-line
@@ -28,15 +29,16 @@ const renderSite = (url: string, title?: string) => {
   if (!title) {
     title = 'Turnato | Play Chess w/ Friends';
   }
-  url = '/'; // TODO: Finish SSR -- showing only home page for now.
   const context = {};
   const reactHtml = ReactDOMServer.renderToStaticMarkup(
-    <StaticRouter
-      location={url}
-      context={context}
-    >
-      <App/>
-    </StaticRouter>);
+    <MuiThemeProvider>
+      <StaticRouter
+        location={url}
+        context={context}
+      >
+        <App/>
+      </StaticRouter>
+    </MuiThemeProvider>);
   return Mustache.render(template, {title, reactHtml});
 };
 

@@ -21,7 +21,9 @@ class GameBar extends React.Component<IGameBarProps, {}> {
   };
 
   componentWillMount() {
-    document.body.style.backgroundColor = 'black';
+    if (typeof window !== 'undefined') {
+      document.body.style.backgroundColor = 'black';
+    }
   }
 
   render() {
