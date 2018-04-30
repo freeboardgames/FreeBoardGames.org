@@ -70,6 +70,7 @@
     "@types/mustache": "^0.8.30",
     "boardgame.io": "git+https://github.com/Felizardo/boardgame.io.git#package",
     "chess.js": "^0.10.2",
+    "copy-to-clipboard": "^3.0.8",
     "copy-webpack-plugin": "^4.4.1",
     "html-webpack-harddisk-plugin": "^0.1.0",
     "koa": "^2.4.1",

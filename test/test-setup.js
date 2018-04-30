@@ -10,6 +10,10 @@ const Adapter = require("enzyme-adapter-react-16");
 enzyme.configure({ adapter: new Adapter() });
 //Google analytics mock
 jest.mock('react-ga');
+jest.mock('copy-to-clipboard', () => {
+  global.copyClipboardMock = jest.fn();
+  return global.copyClipboardMock;
+});
 
 //SW mock
 if (typeof window !== 'undefined') {
