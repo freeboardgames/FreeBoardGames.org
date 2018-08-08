@@ -68,7 +68,7 @@
   "dependencies": {
     "@types/koa-router": "^7.0.27",
     "@types/mustache": "^0.8.30",
-    "boardgame.io": "git+https://github.com/Felizardo/boardgame.io.git#package",
+    "boardgame.io": "^0.25.4",
     "chess.js": "^0.10.2",
     "copy-to-clipboard": "^3.0.8",
     "copy-webpack-plugin": "^4.4.1",

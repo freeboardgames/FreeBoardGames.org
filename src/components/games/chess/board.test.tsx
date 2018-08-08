@@ -14,7 +14,7 @@ test('render board - all states', () => {
   const board = Enzyme.mount((
     <Board
       G={{pgn: ''}}
-      ctx={{numPlayer: 2, turn: 0,  winner: 'd',
+      ctx={{numPlayer: 2, turn: 0,  gameover: 'd',
           currentPlayer: '0', currentPlayerMoves: 0}}
       moves={{move:  moveMock}}
       playerID="0"
@@ -25,14 +25,14 @@ test('render board - all states', () => {
   expect(board.html()).to.contain('Draw!');
   board.setProps({
     ...board.props(),
-    ctx: {numPlayer: 2, turn: 0,  winner: 'b',
+    ctx: {numPlayer: 2, turn: 0,  gameover: 'b',
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });
   expect(board.html()).to.contain('Black won!');
   board.setProps({
     ...board.props(),
-    ctx: {numPlayer: 2, turn: 0,  winner: 'w',
+    ctx: {numPlayer: 2, turn: 0,  gameover: 'w',
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });

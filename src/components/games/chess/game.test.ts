@@ -13,12 +13,13 @@ test('little game', () => {
   expect(ChessGame.processMove(initialState, action, ctx)).to.deep.equal(initialState); 
 
   // test flow
-  let checkMateG = { pgn: '1.f4 e5 2.g4 Qh4#' };
-  ctx.currentPlayerMoves = 1;
+  let checkMateG = { pgn: '1.f3 e5 2.g4 Qh4#' };
+  ctx.stats = {turn: {numMoves: {1: 1},}};
   const newState = ChessGame.flow.processGameEvent({
-    ctx, 
-    G: checkMateG
-  }, { type: 'endTurn' });
+	  ctx, G: checkMateG}, {
+		  type: 'GAME_EVENT',
+		  payload: {type: 'endTurn'}
+    });
   expect(newState.ctx.gameover).to.equal('b');
 });
 
@@ -27,7 +28,7 @@ test('get winner', () => {
   expect(getWinner({ 
     game_over: () => true, 
     in_draw: () => true 
-  })).to.equal('d');
+  })).to.deep.equal('d');
   expect(getWinner({ 
     game_over: () => true,
     in_draw: () => false,
@@ -36,7 +37,7 @@ test('get winner', () => {
     in_stalemate: () => false,
     in_checkmate: () => true,
     turn: () => 'w'
-  })).to.equal('b');
+  })).to.deep.equal('b');
   expect(getWinner({ 
     game_over: () => true, 
     in_draw: () => false,
@@ -45,5 +46,5 @@ test('get winner', () => {
     in_stalemate: () => false,
     in_checkmate: () => true,
     turn: () => 'b'
-  })).to.equal('w');
+  })).to.deep.equal('w');
 });

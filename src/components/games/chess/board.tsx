@@ -198,8 +198,8 @@ function getBoard(matchCode: string) {
     }
 
     _getStatus() {
-      if (this.props.ctx.winner) {
-        switch (this.props.ctx.winner) {
+      if (this.props.ctx.gameover) {
+        switch (this.props.ctx.gameover) {
           case 'b':
             return 'Black won!';
           case 'w':
