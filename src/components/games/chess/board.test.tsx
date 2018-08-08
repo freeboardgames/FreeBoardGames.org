@@ -105,15 +105,15 @@ test('little game', () => {
   expect(board.html()).to.contain('White\'s turn');
   // select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.state().selected).to.equal('a2');
+  expect((board.state() as any).selected).to.equal('a2');
 
   // unselect
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.state().selected).to.equal('');
+  expect((board.state() as any).selected).to.equal('');
 
   // select f2
   board.find('rect').at(rowColAt(2, 6)).simulate('click');
-  expect(board.state().selected).to.equal('f2');
+  expect((board.state() as any).selected).to.equal('f2');
 
   // move to f4
   board.find('rect').at(rowColAt(4, 6)).simulate('click');
@@ -131,7 +131,7 @@ test('little game', () => {
 
   // try invalid selection
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.state().selected).to.equal('');
+  expect((board.state() as any).selected).to.equal('');
 
   // test inactive
   board.setProps({
@@ -141,7 +141,7 @@ test('little game', () => {
 
   // cant select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect(board.state().selected).to.equal('');
+  expect((board.state() as any).selected).to.equal('');
 
   // make it active again
   board.setProps({
@@ -151,7 +151,7 @@ test('little game', () => {
 
   // select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect(board.state().selected).to.equal('a7');
+  expect((board.state() as any).selected).to.equal('a7');
 
   // move to a5
   board.find('rect').at(rowColAt(5, 1)).simulate('click');
