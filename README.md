@@ -11,7 +11,7 @@ Play now at http://turnato.com/
 ## Running locally
 
 ```
-git clone https://github.com/Felizardo/turnato
+git clone https://github.com/flamecoals/turnato
 cd turnato
 
 npm install
