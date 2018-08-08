@@ -66,6 +66,7 @@
     "webpack-hot-middleware": "^2.21.0"
   },
   "dependencies": {
+    "@material-ui/core": "^1.4.3",
     "@types/koa-router": "^7.0.27",
     "@types/mustache": "^0.8.30",
     "boardgame.io": "^0.25.4",
