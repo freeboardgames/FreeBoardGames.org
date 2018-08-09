@@ -29,6 +29,7 @@ var config = {
   },
 
   plugins: [
+    new webpack.EnvironmentPlugin({'NODE_ENV': 'development'}), // use development unless defined
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, './dist/webpack/template.html'),
       template: path.resolve(__dirname, './src/index.html'),
