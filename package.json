@@ -11,7 +11,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.tsx'",
     "build": "tsc",
     "webpack-run": "webpack && node dist/server.js",
-    "prod": "npm run build && webpack && NODE_ENV=production PORT=8001 pm2 start dist/server.js",
+    "prod": "npm run build && webpack && pm2 start pm2-prod.config.js",
     "dev": "tsc-watch --onSuccess \"npm run webpack-run\"",
     "precommit": "npm run build && npm run test && npm run lint"
   },
