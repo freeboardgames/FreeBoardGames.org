@@ -42,30 +42,21 @@ Even before writing a single line of code, let's think about how we are going to
 - Each user's ships, each one using one or more cells.
 - The position of each user's salvos.
 
-Given this minimal information, we should be able to calculate what to display each user at any given time. Another important feature is that we can't allow each player to know where are the other player's ships, so we must leverage [Boardgame.io's secret state](http://boardgame.io/#/secret-state). 
+Given this minimal information, we should be able to calculate what to display each user at any given time. Another important feature is that we can't allow each player to know where are the other player's ships, so we must leverage [Boardgame.io's secret state](http://boardgame.io/#/secret-state) -- In this case, we will need to write our own ``StripSecrets`` in order to only show the cells of ships that were hit. 
 
 Therefore, the whole game state can be represented in a JSON like this:
 ```javascript
 {
-  players: {
-    0: {
-      ships: [
-        {cells: [{x: 5, y: 4}, {x: 5, y: 5}]},
-        {cells: [{x: 7, y: 7}, {x: 8, y: 7}]}
-      ]
-    },
-    1: {
-      ships: [
-        {cells: [{x: 1, y: 1}, {x: 2, y: 1}]},
-        {cells: [{x: 3, y: 3}, {x: 4, y: 3}]}
-      ]
-    }
-  },
-  salvos: [{player: 0, x: 0, y: 0, hit: false}],
-  turn: 3 
+  ships: [
+    {player: 0, cells: [{x: 5, y: 4}, {x: 5, y: 5}]},
+    {player: 0, cells: [{x: 7, y: 7}, {x: 8, y: 7}]},
+    {player: 1, cells: [{x: 1, y: 1}, {x: 2, y: 1}]},
+    {player: 1, cells: [{x: 3, y: 3}, {x: 4, y: 3}]}
+  ],
+  salvos: [{player: 0, x: 0, y: 0, hit: false, sunk: false}] 
 }
 ```
-We need to store the ships position inside players -> 0 and players -> 1 in order to tell Boardgame.io that this information should only be given to the correct player. This way, the complete game state will only be known to the server and it will be impossible for anyone else to know about the opponent's ship position. This does not apply to the salvos which is public information for both players.
+
 The above example would mean that player 0 sees this board:
 
 |   | A | B | C | D | E | F | G | H | I | J |
@@ -116,5 +107,44 @@ And the opponent board would show blank for player 1, as no salvo was shot yet. 
 Besides defining the state, we also need to define the actions that will change the state. Here is a list:
 - ``SET_SHIPS``: In the first turn, a player must do this action.  Payload contains the list of chips positions.
 - ``SALVO``: Shoots a given cell, it will add to the list of salvos on the state.
-- ``SALVO_RESULT``: An automatic response given by the server after receiving a salvo. It contains flags telling whether it was a hit or a miss, or whether the ship is sunk or not.
-- ``GAME_OVER``: A response given by the server that the game is over and someone won :). 
+
+## Setting up ships
+
+As a good practice, let's start writing failing tests of what we expect the rules to be. Let's first scaffold what will hold the rules.
+
+Create a file ``src/BattleshipGame.js`` with this content:
+```javascript
+import { Game } from 'boardgame.io/core';
+
+const BattleshipGame = Game({
+  setup: () => ({ ships: [], salvos: [] }),
+
+  moves: {
+    setShips(G, ctx, ships) {
+      return { ...G };
+    },
+    salvo(G, ctx, x, y) {
+      return { ...G };
+    },
+  },
+});
+
+export default BattleshipGame;```
+
+Now let's write the tests on ``src/BattleshipGame.test.js`` to simulate setting up ships:
+```javascript
+A
+B
+C
+```
+
+We are using ``chai``, so let's install it:
+
+``npm install chai --save-dev``
+
+And run the test:
+
+``npm run test``
+
+
+## Implementing rules
