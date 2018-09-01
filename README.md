@@ -2,9 +2,7 @@
 [![Build Status](https://travis-ci.org/flamecoals/turnato.svg?branch=master)](https://travis-ci.org/flamecoals/turnato)
 [![Coverage Status](https://coveralls.io/repos/github/flamecoals/turnato/badge.svg?branch=master)](https://coveralls.io/github/flamecoals/turnato?branch=master)
 
-Turnato is a Free (as in Freedom), mobile-first, board game platform.
-Objective is to popularize board games reducing the friction to play.
-And to have fun with friends even if they are far away :).
+Turnato is a free (as in freedom), mobile-first, board game platform.  Its goal is to popularize board games and to make them easy to play with friends, even from afar.
 
 Play now at http://turnato.com/
 
