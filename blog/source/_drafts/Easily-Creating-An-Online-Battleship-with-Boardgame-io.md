@@ -4,11 +4,11 @@ date: 2018-08-25 20:04:56
 tags: battleship
 ---
 
-If you ever tried to create an online game before, you probably spent a good chunk of your time dealing with networking, state management, user login and other overhead. Fear not, in this article you will learn how to use the [boardgame.io](http://boardgame.io) framework so you can focus on creating the game instead. In the end I will also show how to publish the game to [turnato.com](https://turnato.com), which takes care of hosting it for you.
+If you've ever tried to create an online game before, you probably spent a good chunk of your time dealing with networking, state management, user login, and other overhead. Fear not: in this article you will learn how to use the [boardgame.io](http://boardgame.io) framework so that you can focus on creating the game instead. In the end I will also show how to publish the game to [turnato.com](https://turnato.com), which takes care of hosting it for you.
 
 ![battleship](https://upload.wikimedia.org/wikipedia/commons/c/c9/Flickr_-_Official_U.S._Navy_Imagery_-_Sailors_play_%22Battleship%22_aboard_a_carrier..jpg)
 
-We will be creating an online version of [Battleship](https://en.wikipedia.org/wiki/Battleship_%28game%29), a classic multiplayer game which is simple but still really fun to play with friends :). The backend will be taken care of for us by boardgame.io, and we will only need to worry about the game rules and the user interface. For the user interface, I will be focusing on mobile devices and we will be using [ReactJS](https://reactjs.org/), as it is a modern framework that can run almost everywhere (mobile phones, tablets, computers, etc).
+We will be creating an online version of [Battleship](https://en.wikipedia.org/wiki/Battleship_%28game%29), a classic multiplayer game which is simple but still really fun to play with friends :). The backend will be taken care of for us by boardgame.io, and we will only need to worry about the game rules and the user interface. For the user interface, I will be focusing on mobile devices, and we will be using [ReactJS](https://reactjs.org/), a modern JavaScript framework that can run almost everywhere (mobile phones, tablets, computers, etc).
 
 
 # Setting up
@@ -28,7 +28,7 @@ Now, let's install boardgame.io:
 
 ``npm install boardgame.io --save``
 
-This should be enough for setting up! Let's start creating the game :D.
+This should be enough for setting up! Now let's start creating the game :D.
 
 # Coding game rules
 
@@ -38,13 +38,12 @@ This should be enough for setting up! Let's start creating the game :D.
 
 Even before writing a single line of code, let's think about how we are going to store the relevant data for coding the game rules. The state of the game can be represented with:
 
-- Which turn is (a turn finishes when the player has no action left).
 - Each user's ships, each one using one or more cells.
 - The position of each user's salvos.
 
-Given this minimal information, we should be able to calculate what to display each user at any given time. Another important feature is that we can't allow each player to know where are the other player's ships, so we must leverage [Boardgame.io's secret state](http://boardgame.io/#/secret-state) -- In this case, we will need to write our own ``StripSecrets`` in order to only show the cells of ships that were hit. 
+Given this basic information, we are be able to calculate what to display each user at any given time. Another important feature is that we can't allow players to know the position of their opponent's ships, so we must leverage [Boardgame.io's secret state](http://boardgame.io/#/secret-state).  In order to use *SecretState*, we will need to write our own ``StripSecrets`` to show only the cells of ships that were hit. 
 
-Therefore, the whole game state can be represented in a JSON like this:
+Therefore, the whole game state can be represented in JSON like this:
 ```javascript
 {
   ships: [
@@ -72,7 +71,7 @@ The above example would mean that player 0 sees this board:
 | 8 |   |   |   |   |   |   |   |   |   |   |
 | 9 |   |   |   |   |   |   |   |   |   |   | |
 
-And that's the opponent board that player 0 sees (M means miss):
+And the opponent board that player 0 sees (M means miss):
 
 |   | A | B | C | D | E | F | G | H | I | J |
 | - | - | - | - | - | - | - | - | - | - | - |
@@ -87,7 +86,7 @@ And that's the opponent board that player 0 sees (M means miss):
 | 8 |   |   |   |   |   |   |   |   |   |   |
 | 9 |   |   |   |   |   |   |   |   |   |   | |
 
-Player 1 sees the board below:
+Player 1 sees this board:
 
 |   | A | B | C | D | E | F | G | H | I | J |
 | - | - | - | - | - | - | - | - | - | - | - |
@@ -102,9 +101,9 @@ Player 1 sees the board below:
 | 8 |   |   |   |   |   |   |   |   |   |   |
 | 9 |   |   |   |   |   |   |   |   |   |   | |
 
-And the opponent board would show blank for player 1, as no salvo was shot yet. Because it is the second turn, it means player 1's has the turn to select a cell and shoot.
+And the opponent board would show blank for player 1, as no salvo has been shot yet. Because it's the second turn, it's player 1's turn to select a cell and shoot.
 
-Besides defining the state, we also need to define the actions that will change the state. Here is a list:
+In addition to defining the state, we also need to define the actions that will change the state. Here is a list:
 - ``SET_SHIPS``: In the first turn, a player must do this action.  Payload contains the list of chips positions.
 - ``SALVO``: Shoots a given cell, it will add to the list of salvos on the state.
 
