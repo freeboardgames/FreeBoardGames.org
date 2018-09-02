@@ -110,9 +110,112 @@ Besides defining the state, we also need to define the actions that will change 
 
 ## Setting up ships
 
-As a good practice, let's start writing failing tests of what we expect the rules to be. Let's first scaffold what will hold the rules.
+We are going to allow the user to setup all their ships with a single call to client.setShips. The game logic needs to make sure that some conditions are met:
+- No ships out of the 10x10 grid (i.e. x >= 0 and y <= 9).
+- No ships on top of each other.
+- Every ship ownership must be the current player turn setting up them.
+- The number of ships and their size follows the table below.
 
-Create a file ``src/BattleshipGame.js`` with this content:
+| Ship name  | Size |
+| ---------- | ---- |
+| Carrier    | 5    |
+| Battleship | 4    |
+| Cruiser    | 3    |
+| Submarine  | 3    |
+| Destroyer  | 2    |
+
+The ship names are not important, but we need to setup a data structure to hold the number of valid ships:
+
+```javascript
+VALID_SHIPS_COUNT = {
+  5: 1,
+  4: 1,
+  3: 2,
+  2: 1
+}```
+
+This means that we can have one 5-sized ship, one 4-sized ship, two 3-sized ships, and one 2-sized ship.
+
+
+Let's start writing the failing test for setting ships correctly. Write the following on ``src/BattleshipGame.test.js``:
+
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { Client } from 'boardgame.io/client';
+import { BattleshipGame } from './BattleshipGame';
+
+const VALID_SETUP_FIRST_PLAYER = [
+  { 
+    player: 0, 
+    cells: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: 3, y: 0 },
+      { x: 4, y: 0 }
+    ] 
+  },
+  {
+    player: 0,
+    cells: [
+      { x: 6, y: 0 },
+      { x: 6, y: 1 },
+      { x: 6, y: 2 },
+      { x: 6, y: 3 },
+    ]
+  },
+  {
+    player: 0,
+    cells: [
+      { x: 9, y: 0 },
+      { x: 9, y: 1 },
+      { x: 9, y: 2 },
+    ]
+  },
+  {
+    player: 0,
+    cells: [
+      { x: 9, y: 3 },
+      { x: 9, y: 4 },
+      { x: 9, y: 5 },
+    ]
+  },
+  {
+    player: 0,
+    cells: [
+      { x: 0, y: 9 },
+      { x: 1, y: 9 }
+    ]
+  }
+];
+
+const VALID_SETUP_SECOND_PLAYER = VALID_SETUP_FIRST_PLAYER.map((ship) => ({
+  ...ship, 
+  player: 1
+}));
+
+describe('Battleship', () => {
+  it('should set ships correctly', () => {
+    const client = Client({
+      game: BattleshipGame 
+    }); 
+    client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+    client.events.endTurn();
+
+    client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+    client.events.endTurn();
+
+    const { G, ctx } = client.store.getState();
+    expect(G.ships.length).toEqual(10);
+  });
+});
+```
+
+This test gives an example of valid setup, instantiates the Game using Boardgame.io API and simulate the first player setting up ships. Then, it does the same thing for the second player. In the end we expect to have 10 ships on the board.
+
+Because we are importing the game definition in this test, we need to write an implementation placeholder for now. Create a file ``src/BattleshipGame.js`` with this content:
 ```javascript
 import { Game } from 'boardgame.io/core';
 
@@ -131,20 +234,27 @@ const BattleshipGame = Game({
 
 export default BattleshipGame;```
 
-Now let's write the tests on ``src/BattleshipGame.test.js`` to simulate setting up ships:
-```javascript
-A
-B
-C
-```
 
-We are using ``chai``, so let's install it:
-
-``npm install chai --save-dev``
-
-And run the test:
+Now run the test:
 
 ``npm run test``
 
+
+You should get a message that test failed:
+```
+ FAIL  src/BattleshipGame.test.js
+  ● should set ships correctly
+
+    expect(received).toEqual(expected)
+
+    Expected value to equal:
+      10
+    Received:
+      0
+```
+
+That's working as expected, because our implementation does nothing yet. Let's setup tests for each condition setting up the ships:
+
+- No ships out of the 10x10 grid (i.e. x >= 0 and y <= 9).
 
 ## Implementing rules
