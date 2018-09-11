@@ -10,7 +10,8 @@
       "node_modules/@types",
       "@types",
       "./@types"
-    ]
+    ],
+    "lib": ["es2017", "dom"]
   },
   "include": [
     "./src/**/*"

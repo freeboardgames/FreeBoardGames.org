@@ -14,8 +14,7 @@ interface IGameCtx {
   turn: number;
   currentPlayer: string;
   currentPlayerMoves: number;
-};
-
+}
 
 export function getWinner(chess: any) {
   if (chess.game_over()) {
@@ -28,7 +27,7 @@ export function getWinner(chess: any) {
       return 'd';
     }
     if (chess.in_checkmate()) {
-      if (chess.turn() == 'w') {
+      if (chess.turn() === 'w') {
         return 'b';
       } else {
         return 'w';
@@ -47,8 +46,8 @@ const ChessGame = Game({
       const chess = Chess();
       chess.load_pgn(G.pgn);
       if (
-        (chess.turn() == 'w' && ctx.currentPlayer == '1') ||
-        (chess.turn() == 'b' && ctx.currentPlayer == '0')
+        (chess.turn() === 'w' && ctx.currentPlayer === '1') ||
+        (chess.turn() === 'b' && ctx.currentPlayer === '0')
       ) {
         return { ...G };
       }
@@ -60,7 +59,7 @@ const ChessGame = Game({
   flow: {
     movesPerTurn: 1,
 
-    endGameIf: (G:any) => {
+    endGameIf: (G: any) => {
       const chess = Chess();
       chess.load_pgn(G.pgn);
       return getWinner(chess);

@@ -1,51 +1,54 @@
 import { Game } from 'boardgame.io/core';
 
-export interface Ship {
+export interface IShip {
   player: number;
-  cells: Cell[];
+  cells: ICell[];
 }
 
-export interface Cell {
+export interface ICell {
   x: number;
   y: number;
 }
 
-export interface Salvo {
+export interface ISalvo {
   player: number;
-  cell: Cell;
+  cell: ICell;
   hit: boolean;
   sunk: boolean;
 }
 
-export interface BattleshipState {
-  ships: Ship[];
-  salvos: Salvo[];
+export interface IBattleshipState {
+  ships: IShip[];
+  salvos: ISalvo[];
+}
+
+interface ICtx {
+  currentPlayer: string;
 }
 
 const VALID_SHIPS_COUNT = {
   5: 1,
   4: 1,
   3: 2,
-  2: 1
+  2: 1,
 };
 
 export const BattleshipGame = Game({
-  setup: () => ({ ships: [], salvos: [] }),
+  setup: (): IBattleshipState => ({ ships: [], salvos: [] }),
 
   moves: {
-    setShips(G, ctx, ships: Ship[]) {
-      validateShips(parseInt(ctx.currentPlayer), ships); 
+    setShips(G: IBattleshipState, ctx: ICtx, ships: IShip[]) {
+      validateShips(parseInt(ctx.currentPlayer, 10), ships);
       return { ...G, ships: [...G.ships, ...ships] };
     },
-    salvo(G, ctx, x, y) {
+    salvo(G: IBattleshipState, ctx: ICtx, x: number, y: number) {
       return { ...G };
     },
   },
 });
 
-
 // PRIVATE FUNCTIONS
-function validateShips(player: number, ships: Ship[]) {
+function validateShips(player: number, ships: IShip[]) {
   validateShipsCount(ships);
   validateShipsOwnership(player, ships);
   validateShipsContinuity(ships);
@@ -53,12 +56,12 @@ function validateShips(player: number, ships: Ship[]) {
   validateShipsNotOverlapping(ships);
 }
 
-function validateShipsCount(ships: Ship[]) {
-  const shipsLength = ships.map((ship: Ship) => (ship.cells.length));
-  const count = {...VALID_SHIPS_COUNT};
+function validateShipsCount(ships: IShip[]) {
+  const shipsLength = ships.map((ship: IShip) => (ship.cells.length));
+  const count: {[key: number]: number} = {...VALID_SHIPS_COUNT};
   for (const length of shipsLength) {
     if (!(length in count)) {
-      throw new Error('Invalid ship length: ' + length);
+      throw new Error(`Invalid ship length: ${length}`);
     }
     count[length]--;
   }
@@ -69,55 +72,56 @@ function validateShipsCount(ships: Ship[]) {
   }
 }
 
-function validateShipsOwnership(player: number, ships: Ship[]) {
-  const owners = ships.map((ship: Ship) => (ship.player));
+function validateShipsOwnership(player: number, ships: IShip[]) {
+  const owners = ships.map((ship: IShip) => (ship.player));
   for (const owner of owners) {
     if (owner !== player) {
-      throw new Error('Invalid player owner: ' + owner + ', should be: ' + player);
+      throw new Error(`Invalid player owner: ${owner} should be: ${player}`);
     }
   }
 }
 
-function validateShipsContinuity(ships: Ship[]) {
-  for (let ship of ships) {
+function validateShipsContinuity(ships: IShip[]) {
+  for (const ship of ships) {
     if (ship.cells.length < 2) {
       continue;
     }
-    let lastCell: Cell = ship.cells[0];
-    let vector: Cell = getCellVector(ship.cells[1], ship.cells[0]);
-    if (!((Math.abs(vector.x) === 1 && Math.abs(vector.y) === 0) || 
+    let lastICell: ICell = ship.cells[0];
+    const vector: ICell = getCellVector(ship.cells[1], ship.cells[0]);
+    if (!((Math.abs(vector.x) === 1 && Math.abs(vector.y) === 0) ||
          (Math.abs(vector.x) === 0 && Math.abs(vector.y) === 1))) {
-      throw new Error('Ship is not spaced right!');
+      throw new Error('IShip is not spaced right!');
     }
-    for (let i = 1; i < ships.cells; i++) {
-      const newVector = getCellVector(cell, lastCell);
-      if (newVector.x !== vector.x || newVector.y != vector.y) {
-        throw new Error('Ship is not continuous!');
+    for (let i = 1; i < ship.cells.length; i++) {
+      const cell = ship.cells[i];
+      const newVector = getCellVector(cell, lastICell);
+      if (newVector.x !== vector.x || newVector.y !== vector.y) {
+        throw new Error('IShip is not continuous!');
       }
-      lastCell = cell;
+      lastICell = cell;
     }
   }
 }
 
-function getCellVector(a: Cell, b: Cell): Cell {
+function getCellVector(a: ICell, b: ICell): ICell {
   return {x: a.x - b.x, y: a.y - b.y};
 }
 
-function validateShipsNotOutOfBounds(ships: Ship[]) {
-  for (let ship of ships) {
-    for (let cell of ship.cells) {
+function validateShipsNotOutOfBounds(ships: IShip[]) {
+  for (const ship of ships) {
+    for (const cell of ship.cells) {
       if (cell.x < 0 || cell.x > 9 ||
           cell.y < 0 || cell.y > 9) {
-        throw new Error('Ship out of bounds!');
+        throw new Error('IShip out of bounds!');
       }
     }
   }
 }
 
-function validateShipsNotOverlapping(ships: Ship[]) {
-  let cellsUsed = {};
-  for (let ship of ships) {
-    for (let cell of ship.cells) {
+function validateShipsNotOverlapping(ships: IShip[]) {
+  const cellsUsed: {[x: number]: {[y: number]: boolean}} = {};
+  for (const ship of ships) {
+    for (const cell of ship.cells) {
       if (!(cell.x in cellsUsed)) {
         cellsUsed[cell.x] = {};
       }
@@ -128,4 +132,3 @@ function validateShipsNotOverlapping(ships: Ship[]) {
     }
   }
 }
-
