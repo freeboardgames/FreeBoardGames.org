@@ -70,19 +70,39 @@ declare module 'boardgame.io/core' {
     setup: (numPlayers: number) => any;
     moves: IGameMoves; 
     playerView?: (G: any, ctx: IGameCtx, playerID: string) => any;
-    flow: IGameFlow;
+    flow?: IGameFlow;
   }
   export function Game (gameArgs: IGameArgs): GameObj;
 }
 
 declare module 'boardgame.io/react' {
-  import { GameObj } from 'boardgame.io/core';
+  import { GameObj, IGameMoves } from 'boardgame.io/core';
   export class WrapperBoard {
+    moves: any;
+    events: any;
+    store: any;
   }
   interface IClientArgs {
-    game: GameObj;
+    game: any;
     numPlayer?: number;
-    board: React.ReactNode;
+    board?: React.ReactNode;
+    multiplayer?: boolean;
+    debug?: boolean;
+  }
+  export function Client (clientArgs: IClientArgs): WrapperBoard;
+}
+
+declare module 'boardgame.io/client' {
+  import { GameObj, IGameMoves } from 'boardgame.io/core';
+  export class WrapperBoard {
+    moves: any;
+    events: any;
+    store: any;
+  }
+  interface IClientArgs {
+    game: any;
+    numPlayer?: number;
+    board?: React.ReactNode;
     multiplayer?: boolean;
     debug?: boolean;
   }
