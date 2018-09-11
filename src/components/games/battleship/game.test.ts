@@ -1,7 +1,7 @@
 import { Client } from 'boardgame.io/client';
-import { BattleshipGame, Ship, Cell } from './game';
+import { BattleshipGame, IShip } from './game';
 
-const VALID_SETUP_FIRST_PLAYER: Ship[] = [
+const VALID_SETUP_FIRST_PLAYER: IShip[] = [
   {
     player: 0,
     cells: [
@@ -46,7 +46,7 @@ const VALID_SETUP_FIRST_PLAYER: Ship[] = [
   },
 ];
 
-const VALID_SETUP_SECOND_PLAYER: Ship[] = VALID_SETUP_FIRST_PLAYER.map((ship) => ({
+const VALID_SETUP_SECOND_PLAYER: IShip[] = VALID_SETUP_FIRST_PLAYER.map((ship) => ({
   ...ship,
   player: 1,
 }));

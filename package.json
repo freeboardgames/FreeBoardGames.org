@@ -92,7 +92,6 @@
     "workbox-webpack-plugin": "^2.1.3"
   },
   "jest": {
-    "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**",
       "!src/server.tsx",
