@@ -3,6 +3,7 @@ import { Game } from 'boardgame.io/core';
 export interface IShip {
   player: number;
   cells: ICell[];
+  sunk: boolean;
 }
 
 export interface ICell {
@@ -14,7 +15,7 @@ export interface ISalvo {
   player: number;
   cell: ICell;
   hit: boolean;
-  sunk: boolean;
+  hitShip?: number;
 }
 
 export interface IBattleshipState {
@@ -42,12 +43,44 @@ export const BattleshipGame = Game({
       return { ...G, ships: [...G.ships, ...ships] };
     },
     salvo(G: IBattleshipState, ctx: ICtx, x: number, y: number) {
-      return { ...G };
+      const player = parseInt(ctx.currentPlayer, 10);
+      // Avoid another salvo if the last was a miss.
+      if (G.salvos.length > 0 &&
+          G.salvos[G.salvos.length - 1].player ===  player &&
+          !G.salvos[G.salvos.length - 1].hit) {
+        return { ...G };
+      }
+      const shipIndex = findShipWithCell(G.ships, {x, y});
+      if (shipIndex === -1) { // Miss
+        return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y }}] };
+      }
+      // Hit
+      const newShips = [ ... G.ships ];
+      if (countShipHits(G.salvos, shipIndex) + 1 === G.ships[shipIndex].cells.length) {
+        newShips[shipIndex].sunk = true;
+      }
+      return { ...G,
+               ships: newShips,
+               salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: shipIndex}],
+             };
+      },
     },
-  },
-});
+  };
+})
 
 // PRIVATE FUNCTIONS
+function findShipWithCell(ships: IShip[], cell: ICell): number {
+  return ships.findIndex(
+    (ship) => ship.cells.findIndex(
+      (c) => c.x === cell.x && c.y === cell.y,
+    ) !== -1,
+  );
+}
+
+function countShipHits(salvos: ISalvo[], shipIndex: number): number {
+  return salvos.filter((s) => s.hitShip === shipIndex).length;
+}
+
 function validateShips(player: number, ships: IShip[]) {
   validateShipsCount(ships);
   validateShipsOwnership(player, ships);

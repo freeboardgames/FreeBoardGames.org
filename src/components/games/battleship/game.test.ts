@@ -11,6 +11,7 @@ const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 3, y: 0 },
       { x: 4, y: 0 },
     ],
+    sunk: false,
   },
   {
     player: 0,
@@ -20,6 +21,7 @@ const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 6, y: 2 },
       { x: 6, y: 3 },
     ],
+    sunk: false,
   },
   {
     player: 0,
@@ -28,6 +30,7 @@ const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 9, y: 1 },
       { x: 9, y: 2 },
     ],
+    sunk: false,
   },
   {
     player: 0,
@@ -36,6 +39,7 @@ const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 9, y: 4 },
       { x: 9, y: 5 },
     ],
+    sunk: false,
   },
   {
     player: 0,
@@ -43,6 +47,7 @@ const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 0, y: 9 },
       { x: 1, y: 9 },
     ],
+    sunk: false,
   },
 ];
 
@@ -92,7 +97,7 @@ describe('Battleship', () => {
     });
 
     const invalid = [... VALID_SETUP_FIRST_PLAYER];
-    invalid[4] = {player: 0, cells: [{x: 0, y: 9}, {x: 1, y: 8}]};
+    invalid[4] = {player: 0, cells: [{x: 0, y: 9}, {x: 1, y: 8}], sunk: false};
 
     expect(() => {
       client.moves.setShips(invalid);
@@ -105,7 +110,7 @@ describe('Battleship', () => {
     });
 
     const invalid = [... VALID_SETUP_FIRST_PLAYER];
-    invalid[4] = {player: 0, cells: [{x: -1, y: 9}, {x: 0, y: 9}]};
+    invalid[4] = {player: 0, cells: [{x: -1, y: 9}, {x: 0, y: 9}], sunk: false};
 
     expect(() => {
       client.moves.setShips(invalid);
@@ -118,10 +123,59 @@ describe('Battleship', () => {
     });
 
     const invalid = [... VALID_SETUP_FIRST_PLAYER];
-    invalid[4] = {player: 0, cells: [{x: 0, y: 0}, {x: 0, y: 1}]};
+    invalid[4] = {player: 0, cells: [{x: 0, y: 0}, {x: 0, y: 1}], sunk: false};
 
     expect(() => {
       client.moves.setShips(invalid);
     }).toThrow();
+  });
+
+  it('should hit ship correctly', () => {
+    const client = Client({
+      game: BattleshipGame,
+    });
+    client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+    client.events.endTurn();
+    client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+    client.events.endTurn();
+
+    client.moves.salvo(0, 0);
+
+    const { G, ctx } = client.store.getState();
+    expect(G.salvos).toEqual([{player: 0, cell: {x: 0, y: 0}, hit: true, hitShip: 0}]);
+  });
+
+  it('should miss ship correctly', () => {
+    const client = Client({
+      game: BattleshipGame,
+    });
+    client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+    client.events.endTurn();
+    client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+    client.events.endTurn();
+
+    client.moves.salvo(0, 1);
+    client.moves.salvo(0, 2); // ignore because it is not player 0 turn
+
+    const { G, ctx } = client.store.getState();
+    expect(G.salvos).toEqual([{player: 0, cell: {x: 0, y: 1}, hit: false}]);
+  });
+
+  it('should sunk ship correctly', () => {
+    const client = Client({
+      game: BattleshipGame,
+    });
+    client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+    client.events.endTurn();
+    client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+    client.events.endTurn();
+
+    client.moves.salvo(0, 9);
+    client.moves.salvo(1, 9);
+
+    const { G, ctx } = client.store.getState();
+    expect(G.salvos).toEqual([{player: 0, cell: {x: 0, y: 9}, hit: true, hitShip: 4},
+                              {player: 0, cell: {x: 1, y: 9}, hit: true, hitShip: 4}]);
+    expect(G.ships[4].sunk).toEqual(true);
   });
 });
