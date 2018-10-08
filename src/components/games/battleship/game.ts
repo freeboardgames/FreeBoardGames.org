@@ -63,10 +63,9 @@ export const BattleshipGame = Game({
                ships: newShips,
                salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: shipIndex}],
              };
-      },
     },
-  };
-})
+  },
+});
 
 // PRIVATE FUNCTIONS
 function findShipWithCell(ships: IShip[], cell: ICell): number {
