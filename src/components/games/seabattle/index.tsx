@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Client } from 'boardgame.io/react';
-import getBoard from './board';
-import Chess from './game';
+import { SeabattleGame } from './game';
 import { OpponentPicker, OpponentPickerOption } from '../../App/Game/OpponentPicker';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AlertLayer from '../../App/Game/AlertLayer';
 import * as PropTypes from 'prop-types';
 
-interface IChessMenuProps {
+interface ISeabattleMenuProps {
   match?: any;
   history?: { push: (url: string) => void };
 }
@@ -16,7 +15,7 @@ const AVAILABLE_OPPONENTS = [
   OpponentPickerOption.Friend,
 ];
 
-class ChessMenu extends React.Component<IChessMenuProps, {}> {
+class SeabattleMenu extends React.Component<ISeabattleMenuProps, {}> {
   render() {
     let alert: React.ReactNode = null;
     const opponentType = this.props.match.params.opponentType;
@@ -27,7 +26,7 @@ class ChessMenu extends React.Component<IChessMenuProps, {}> {
         <MuiThemeProvider>
           <AlertLayer>
             <OpponentPicker
-              gameCode="chess"
+              gameCode="seabattle"
               history={this.props.history}
               options={AVAILABLE_OPPONENTS}
             />
@@ -36,8 +35,8 @@ class ChessMenu extends React.Component<IChessMenuProps, {}> {
       );
     }
     const App = Client({
-      game: Chess,
-      board: getBoard(code),
+      game: SeabattleGame,
+      board: () => (<h1>Hello world</h1>),
       debug: false,
       multiplayer: true,
     }) as any;
@@ -50,4 +49,4 @@ class ChessMenu extends React.Component<IChessMenuProps, {}> {
   }
 }
 
-export default ChessMenu;
+export default SeabattleMenu;

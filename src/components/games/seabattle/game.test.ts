@@ -1,5 +1,5 @@
 import { Client } from 'boardgame.io/client';
-import { BattleshipGame, IShip } from './game';
+import { SeabattleGame, IShip } from './game';
 
 const VALID_SETUP_FIRST_PLAYER: IShip[] = [
   {
@@ -56,10 +56,10 @@ const VALID_SETUP_SECOND_PLAYER: IShip[] = VALID_SETUP_FIRST_PLAYER.map((ship) =
   player: 1,
 }));
 
-describe('Battleship', () => {
+describe('Seabattle', () => {
   it('should set ships correctly', () => {
     const client = Client({
-      game: BattleshipGame,
+      game: SeabattleGame,
     });
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
     client.events.endTurn();
@@ -73,7 +73,7 @@ describe('Battleship', () => {
 
   it('should only allow correct ship sizes', () => {
     const client = Client({
-      game: BattleshipGame,
+      game: SeabattleGame,
     });
 
     expect(() => {
@@ -83,7 +83,7 @@ describe('Battleship', () => {
 
   it('should only allow correct player to set ships', () => {
     const client = Client({
-      game: BattleshipGame,
+      game: SeabattleGame,
     });
 
     expect(() => {
@@ -93,7 +93,7 @@ describe('Battleship', () => {
 
   it('should only allow continuous ships', () => {
     const client = Client({
-      game: BattleshipGame,
+      game: SeabattleGame,
     });
 
     const invalid = [... VALID_SETUP_FIRST_PLAYER];
@@ -106,7 +106,7 @@ describe('Battleship', () => {
 
   it('should not have out of bounds ships', () => {
     const client = Client({
-      game: BattleshipGame,
+      game: SeabattleGame,
     });
 
     const invalid = [... VALID_SETUP_FIRST_PLAYER];
@@ -119,7 +119,7 @@ describe('Battleship', () => {
 
   it('should not have overlapping ships', () => {
     const client = Client({
-      game: BattleshipGame,
+      game: SeabattleGame,
     });
 
     const invalid = [... VALID_SETUP_FIRST_PLAYER];
@@ -132,7 +132,7 @@ describe('Battleship', () => {
 
   it('should hit ship correctly', () => {
     const client = Client({
-      game: BattleshipGame,
+      game: SeabattleGame,
     });
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
     client.events.endTurn();
@@ -147,7 +147,7 @@ describe('Battleship', () => {
 
   it('should miss ship correctly', () => {
     const client = Client({
-      game: BattleshipGame,
+      game: SeabattleGame,
     });
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
     client.events.endTurn();
@@ -163,7 +163,7 @@ describe('Battleship', () => {
 
   it('should sunk ship correctly', () => {
     const client = Client({
-      game: BattleshipGame,
+      game: SeabattleGame,
     });
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
     client.events.endTurn();
