@@ -18,7 +18,7 @@ export interface ISalvo {
   hitShip?: number;
 }
 
-export interface IBattleshipState {
+export interface ISeabattleState {
   ships: IShip[];
   salvos: ISalvo[];
 }
@@ -34,15 +34,15 @@ const VALID_SHIPS_COUNT = {
   2: 1,
 };
 
-export const BattleshipGame = Game({
-  setup: (): IBattleshipState => ({ ships: [], salvos: [] }),
+export const SeabattleGame = Game({
+  setup: (): ISeabattleState => ({ ships: [], salvos: [] }),
 
   moves: {
-    setShips(G: IBattleshipState, ctx: ICtx, ships: IShip[]) {
+    setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
       validateShips(parseInt(ctx.currentPlayer, 10), ships);
       return { ...G, ships: [...G.ships, ...ships] };
     },
-    salvo(G: IBattleshipState, ctx: ICtx, x: number, y: number) {
+    salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
       const player = parseInt(ctx.currentPlayer, 10);
       // Avoid another salvo if the last was a miss.
       if (G.salvos.length > 0 &&
