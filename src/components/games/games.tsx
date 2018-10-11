@@ -13,7 +13,7 @@ const GAMES = {
     name: 'Sea Battle',
     maxPlayers: 2,
     minPlayers: 2,
-    description: 'Sink your enemy ships!',
+    description: 'Sink your enemy\'s ships!',
     subtitle: '2 players, 5-20 mins',
     link: '/g/seabattle',
   },
