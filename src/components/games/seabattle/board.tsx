@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
+import { Radar } from './radar';
 import { Token } from 'boardgame.io/ui';
 import GameBar from '../../App/Game/GameBar';
 import { GameSharing } from '../../App/Game/GameSharing';
@@ -48,12 +49,13 @@ function getBoard(matchCode: string) {
       }
       return (
         <GameBar
-          text={"Hello world"}
-          backgroundColor={"black"}
-          textColor={"white"}
-          alert={alert}
+         text={"Hello world"}
+         backgroundColor={"black"}
+         textColor={"white"}
+         alert={alert}
         >
-          <h1>Hello world</h1>
+          <Radar
+            style={{position: 'fixed', bottom: 0, maxWidth:'500px'}} />
         </GameBar>
       );
     }
