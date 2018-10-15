@@ -17,7 +17,7 @@ export class Radar extends React.Component<any, any> {
     style: {},
   };
 
-  render () {
+  render() {
     const colorMap = {} as IColorMap;
     for (let x = 0; x < 10; x++) {
       for (let y = 0; y < 10; y++) {
@@ -25,6 +25,9 @@ export class Radar extends React.Component<any, any> {
         colorMap[key] = 'black';
       }
     }
+    const noop = () => {
+      return;
+    };
     return (
       <div className="seabattle-radar">
         <Grid
@@ -33,9 +36,9 @@ export class Radar extends React.Component<any, any> {
           outline={true}
           style={this.props.style}
           colorMap={colorMap}
-          onClick={() => {}}
+          onClick={noop}
         >
-          <Token x={1} y={1}></Token>
+          <Token x={1} y={1} />
         </Grid>
       </div>
     );

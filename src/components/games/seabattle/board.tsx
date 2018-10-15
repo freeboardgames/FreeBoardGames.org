@@ -26,7 +26,7 @@ function getBoard(matchCode: string) {
       playerID: PropTypes.string,
       isActive: PropTypes.bool,
       isConnected: PropTypes.bool,
-    }; 
+    };
     state = {
       dismissedSharing: false,
     };
@@ -49,13 +49,14 @@ function getBoard(matchCode: string) {
       }
       return (
         <GameBar
-         text={"Hello world"}
-         backgroundColor={"black"}
-         textColor={"white"}
+         text={'Hello world'}
+         backgroundColor={'black'}
+         textColor={'white'}
          alert={alert}
         >
           <Radar
-            style={{position: 'fixed', bottom: 0, maxWidth:'500px'}} />
+            style={{position: 'fixed', bottom: 0, maxWidth: '500px'}}
+          />
         </GameBar>
       );
     }
