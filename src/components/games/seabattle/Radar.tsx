@@ -25,7 +25,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
           outline={true}
           style={{position: 'fixed', bottom: 0, maxWidth: '500px'}}
           colorMap={colorMap}
-          onClick={()=>{}}
+          onClick={this._onClick}
         >
           {this._getShips()}
         </Grid>
@@ -33,22 +33,26 @@ export class Radar extends React.Component<IRadarProps, {}> {
     );
   }
 
+  _onClick() {
+    // TODO Handle clicks
+  }
+
   _getShips() {
     const result = [];
     const shipStyle = {fill: 'white', strokeWidth: .05, stroke: 'red'};
     for (const ship of this.props.ships) {
       const cell = ship.cells[0];
-      let shipDrawing; 
+      let shipDrawing;
       if (cell.x === ship.cells[1].x) { // Vertical
-        shipDrawing = <rect width='1' height={ship.cells.length} style={shipStyle} />;
+        shipDrawing = <rect width="1" height={ship.cells.length} style={shipStyle} />;
       } else { // Horizontal
-        shipDrawing = <rect width={ship.cells.length} height='1' style={shipStyle} />;
+        shipDrawing = <rect width={ship.cells.length} height="1" style={shipStyle} />;
       }
- 
+
       result.push(
-        <Token x={cell.x} y={cell.y} key={cell.x+','+cell.y}>
+        <Token x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`}>
           {shipDrawing}
-        </Token>
+        </Token>,
       );
     }
     return result;

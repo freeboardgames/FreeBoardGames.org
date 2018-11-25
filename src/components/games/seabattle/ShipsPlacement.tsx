@@ -29,7 +29,7 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
     // TODO: Allow rotation of ships with double click.
     return (
       <Radar
-        ships={this.state.ships} 
+        ships={this.state.ships}
       />
     );
   }
