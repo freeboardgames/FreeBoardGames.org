@@ -1,5 +1,5 @@
 import { Client } from 'boardgame.io/client';
-import { SeabattleGame, IShip } from './game';
+import { SeabattleGame, IShip, generateRandomShips } from './game';
 
 const VALID_SETUP_FIRST_PLAYER: IShip[] = [
   {
@@ -65,6 +65,21 @@ describe('Seabattle', () => {
     client.events.endTurn();
 
     client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+    client.events.endTurn();
+
+    const { G, ctx } = client.store.getState();
+    expect(G.ships.length).toEqual(10);
+  });
+
+  it('should randomly generate and set ships correctly', () => {
+    const client = Client({
+      game: SeabattleGame,
+    });
+    client.moves.setShips(generateRandomShips(0));
+
+    client.events.endTurn();
+
+    client.moves.setShips(generateRandomShips(1));
     client.events.endTurn();
 
     const { G, ctx } = client.store.getState();
