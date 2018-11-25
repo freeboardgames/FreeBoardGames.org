@@ -38,7 +38,7 @@ export class Radar extends React.Component<any, any> {
           colorMap={colorMap}
           onClick={noop}
         >
-          <Token x={1} y={1} />
+          <Token x={4} y={1} />
         </Grid>
       </div>
     );
