@@ -32,7 +32,7 @@ function getBoard(matchCode: string) {
       isConnected: PropTypes.bool,
     };
     state = {
-      dismissedSharing: false
+      dismissedSharing: false,
     };
     _dismissSharing = this.dismissSharing.bind(this);
     render() {
@@ -58,9 +58,9 @@ function getBoard(matchCode: string) {
          textColor={'white'}
          alert={alert}
         >
-          <ShipsPlacement 
-            playerID={this.props.ctx.currentPlayer} 
-            setShips={this._setShips} 
+          <ShipsPlacement
+            playerID={this.props.ctx.currentPlayer}
+            setShips={this._setShips}
           />
         </GameBar>
       );
@@ -72,9 +72,9 @@ function getBoard(matchCode: string) {
         dismissedSharing: true,
       });
     }
-    
+
     _setShips() {
-      console.log("_setShips called");
+      // TODO set Ships.
     }
   }
   return Board;

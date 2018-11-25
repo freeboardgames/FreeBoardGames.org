@@ -20,9 +20,9 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
   };
 
   render() {
-    //TODO: Allow user to move pre-positioned ships. Show "OK" button only if valid positioning.
-    //TODO: Show red in the UI if invalid positioning. Allow drag and drop of ships with two clicks.
-    //TODO: Allow rotation of ships with double click.
+    // TODO: Allow user to move pre-positioned ships. Show "OK" button only if valid positioning.
+    // TODO: Show red in the UI if invalid positioning. Allow drag and drop of ships with two clicks.
+    // TODO: Allow rotation of ships with double click.
     return (
       <Radar
         style={{position: 'fixed', bottom: 0, maxWidth: '500px'}}
