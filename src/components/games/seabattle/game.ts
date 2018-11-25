@@ -89,7 +89,7 @@ export function generateRandomShips(player: number): IShip[] {
 // PRIVATE FUNCTIONS
 function randomlyGetShip(player: number, shipSize: number): IShip {
   const cell: ICell = {x: getRandomInt(10), y: getRandomInt(10)};
-  const direction: ShipDirection = getRandomInt(2) === 1 ? 'H' : 'V';
+  const direction = getRandomInt(2) === 1 ? 'H' : 'V';
   const ship: IShip = {player,  cells: [], sunk: false};
   for (let i = 0; i < shipSize; i++) {
     if (direction === 'H') { // Constant y
