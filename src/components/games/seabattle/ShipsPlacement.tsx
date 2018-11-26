@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import { IShip } from './game';
+import { IShip, generateRandomShips } from './game';
 import { Radar } from './Radar';
 
 interface IShipsPlacementProps {
@@ -18,6 +18,10 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
     playerID: PropTypes.string.isRequired,
     setShips: PropTypes.any,
   };
+  constructor(props: IShipsPlacementProps) {
+    super(props);
+    this.state = {ships: generateRandomShips(Number(props.playerID))};
+  }
 
   render() {
     // TODO: Allow user to move pre-positioned ships. Show "OK" button only if valid positioning.
@@ -25,7 +29,7 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
     // TODO: Allow rotation of ships with double click.
     return (
       <Radar
-        style={{position: 'fixed', bottom: 0, maxWidth: '500px'}}
+        ships={this.state.ships}
       />
     );
   }
