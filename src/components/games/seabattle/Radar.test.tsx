@@ -14,6 +14,6 @@ test('render ships correctly', () => {
         {player: 0, cells: [{x: 0, y: 0}, {x: 1, y: 0}], sunk: false},
         {player: 0, cells: [{x: 2, y: 0}, {x: 2, y: 1}], sunk: false},
       ]}
-    />);
+    />));
   expect(grid.find('Token').length).to.equal(2);
 });
