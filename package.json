@@ -15,6 +15,9 @@
     "dev": "tsc-watch --onSuccess \"npm run webpack-run\"",
     "precommit": "npm run build && npm run test && npm run lint"
   },
+  "pre-commit": [
+    "precommit"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Felizardo/turnato.git"
@@ -54,6 +57,7 @@
     "jest": "^22.0.1",
     "koa-helmet": "^3.3.0",
     "nodemon": "^1.18.3",
+    "pre-commit": "^1.2.2",
     "react-test-renderer": "^16.2.0",
     "style-loader": "^0.23.1",
     "ts-jest": "^22.0.0",
