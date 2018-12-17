@@ -186,7 +186,7 @@ function validateShipsContinuity(ships: IShip[]): IShipsValidationResult {
   return {valid: true};
 }
 
-function getCellVector(a: ICell, b: ICell): ICell {
+export function getCellVector(a: ICell, b: ICell): ICell {
   return {x: a.x - b.x, y: a.y - b.y};
 }
 
