@@ -1,12 +1,22 @@
 declare module 'boardgame.io/ui' {
-  import * as React from 'react'; 
+  import * as React from 'react';
+  interface ITokenCoord {
+    x: number;
+    y: number;
+    originalX?: number;
+    originalY?: number;
+  } 
   interface ITokenProps {
     x?: number;
     y?: number;
     z?: number;
     style?: React.CSSProperties;
     animate?: boolean;
-    onClick?: (coord: any) => void;
+    draggable?: boolean;
+    shouldDrag?: (coord: ITokenCoord) => boolean;
+    onDrag?: (coord: ITokenCoord) => void;
+    onDrop?: (coord: ITokenCoord) => void;
+    onClick?: (coord: ITokenCoord) => void;
     children?: any;
     animationDuration?: number;
     square?: string;

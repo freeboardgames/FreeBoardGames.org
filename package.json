@@ -76,7 +76,7 @@
     "@types/koa-router": "^7.0.27",
     "@types/mustache": "^0.8.30",
     "babel-polyfill": "^6.26.0",
-    "boardgame.io": "^0.25.5",
+    "boardgame.io": "flamecoals/boardgame.io#plusplus",
     "chess.js": "^0.10.2",
     "copy-to-clipboard": "^3.0.8",
     "copy-webpack-plugin": "^4.5.2",
