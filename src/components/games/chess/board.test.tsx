@@ -22,21 +22,21 @@ test('render board - all states', () => {
       isConnected={true}
     />
   ));
-  expect(board.html()).to.contain('Draw!');
+  expect(board.html()).to.contain('Draw');
   board.setProps({
     ...board.props(),
     ctx: {numPlayer: 2, turn: 0,  gameover: 'b',
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('Black won!');
+  expect(board.html()).to.contain('YOU LOST');
   board.setProps({
     ...board.props(),
     ctx: {numPlayer: 2, turn: 0,  gameover: 'w',
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('White won!');
+  expect(board.html()).to.contain('YOU WON');
   board.setProps({
     ...board.props(),
     ctx: {numPlayer: 2, turn: 0,
@@ -48,45 +48,8 @@ test('render board - all states', () => {
 });
 
 function rowColAt(row: number, col: number) {
-  return 8 * (col - 1) + (8 - row) + 1;
+  return 8 * (col - 1) + (8 - row);
 }
-
-test('connection lost', () => {
-  const moveMock = jest.fn();
-  const Board = getBoard('codeFoo');
-  const board = Enzyme.mount((
-    <Board
-      G={{pgn: ''}}
-      ctx={{numPlayer: 2, turn: 0,
-          currentPlayer: '0', currentPlayerMoves: 0}}
-      moves={{move:  moveMock}}
-      playerID="0"
-      isActive={true}
-      isConnected={false}
-    />
-  ));
-  (board.instance() as any).dismissSharing();
-  expect(board.html()).to.contain('Connection lost');
-});
-
-test('game sharing', () => {
-  const moveMock = jest.fn();
-  const Board = getBoard('codeFoo');
-  const board = Enzyme.mount((
-    <Board
-      G={{pgn: ''}}
-      ctx={{numPlayer: 2, turn: 0,
-          currentPlayer: '0', currentPlayerMoves: 0}}
-      moves={{move:  moveMock}}
-      playerID="0"
-      isActive={true}
-      isConnected={true}
-    />
-  ));
-  expect(board.html()).to.contain('Share');
-  (board.instance() as any).dismissSharing();
-  expect(board.html()).to.not.contain('Share');
-});
 
 test('little game', () => {
   const moveMock = jest.fn();
@@ -102,7 +65,7 @@ test('little game', () => {
       isConnected={true}
     />
   ));
-  expect(board.html()).to.contain('White\'s turn');
+  expect(board.html()).to.contain('YOUR TURN');
   // select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
   expect((board.state() as any).selected).to.equal('a2');
@@ -127,7 +90,7 @@ test('little game', () => {
     },
     G: {pgn: '1.f4'},
   });
-  expect(board.html()).to.contain('Black\'s turn');
+  expect(board.html()).to.contain('Waiting opponent');
 
   // try invalid selection
   board.find('rect').at(rowColAt(2, 1)).simulate('click');

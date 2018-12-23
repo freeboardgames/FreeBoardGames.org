@@ -75,6 +75,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
             defaultValue={this._getLink()}
             floatingLabelText="Link"
           />
+          <br />
           <RaisedButton
             label="Done"
             primary={true}

@@ -13,7 +13,6 @@ import Chess from './chessjswrapper';
 import { Checkerboard, IAlgebraicCoords, IColorMap } from './checkerboard';
 import { Token } from 'boardgame.io/ui';
 import GameBar from '../../App/Game/GameBar';
-import { GameSharing } from '../../App/Game/GameSharing';
 import Bishop from './pieces/bishop';
 import King from './pieces/king';
 import Knight from './pieces/knight';
@@ -50,10 +49,8 @@ function getBoard(matchCode: string) {
     chess = Chess();
     state = {
       selected: '',
-      dismissedSharing: false,
     };
     _click = this.click.bind(this);
-    _dismissSharing = this.dismissSharing.bind(this);
 
     componentWillReceiveProps(nextProps: IBoardProps) {
       if (nextProps.G.pgn) {
@@ -65,52 +62,35 @@ function getBoard(matchCode: string) {
       }
     }
 
-    dismissSharing() {
-      this.setState({
-        ...this.state,
-        dismissedSharing: true,
-      });
-    }
-
     render() {
-      let alert = null;
-      if (!this.props.isConnected) {
-        alert = (
-          <AlertLayer>
-            <h1>Connection lost</h1>
-            Trying to connect...
-          </AlertLayer>);
-      }
-      if (!this.state.dismissedSharing && matchCode &&
-           this.props.playerID === '0') {
-        alert = (
-          <AlertLayer>
-            <GameSharing
-              gameCode={'chess'}
-              matchCode={matchCode}
-              playerID={this.props.playerID}
-              onDismiss={this._dismissSharing}
-            />
-          </AlertLayer>
-        );
-      }
       return (
-        <GameBar
-          text={this._getStatus()}
-          backgroundColor={this.chess.turn() === 'b' ? 'black' : 'white'}
-          textColor={this.chess.turn() === 'b' ? 'white' : 'black'}
-          alert={alert}
-        >
-          <Checkerboard
-            style={{position: 'fixed', bottom: 0, maxWidth: '500px'}}
-            invert={this.props.playerID === '1'}
-            highlightedSquares={this._getHighlightedSquares()}
-            onClick={this._click}
+        <GameBar>
+          <div
+              style={{position: 'fixed', top: '50%', transform: 'translate(0, -50%)',
+                      width: '100%', maxWidth: '500px'}}
           >
-            {this._getPieces()}
-          </Checkerboard>
+            <h2 style={{color: 'white', textAlign: 'center'}}>
+              {this._getStatus()}
+            </h2>
+            <Checkerboard
+              style={{width: '100%', maxWidth: '500px'}}
+              invert={this.getPlayer() === 'b'}
+              highlightedSquares={this._getHighlightedSquares()}
+              onClick={this._click}
+            >
+              {this._getPieces()}
+            </Checkerboard>
+          </div>
         </GameBar>
       );
+    }
+
+    getPlayer(): 'w'|'b' {
+      if (this.props.playerID === '1') {
+        return 'b';
+      } else {
+        return 'w';
+      }
     }
 
     click(coords: IAlgebraicCoords) {
@@ -199,23 +179,22 @@ function getBoard(matchCode: string) {
 
     _getStatus() {
       if (this.props.ctx.gameover) {
-        switch (this.props.ctx.gameover) {
-          case 'b':
-            return 'Black won!';
-          case 'w':
-            return 'White won!';
-          case 'd':
+        if (this.props.ctx.gameover === this.getPlayer()) {
+          return 'YOU WON!!!';
+        } else {
+          if (this.props.ctx.gameover === 'd') {
             return 'Draw!';
+          }
+          return 'YOU LOST';
         }
       }
       if (this.chess.in_check()) {
         return 'CHECK';
       }
-      switch (this.chess.turn()) {
-        case 'w':
-          return 'White\'s turn';
-        case 'b':
-          return 'Black\'s turn';
+      if (this.chess.turn() === this.getPlayer()) {
+        return 'YOUR TURN';
+      } else {
+        return 'Waiting opponent';
       }
     }
 
