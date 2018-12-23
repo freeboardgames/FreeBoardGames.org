@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AlertLayer from '../../App/Game/AlertLayer';
 import * as PropTypes from 'prop-types';
 import getBoard from './board';
+import { GameSharing } from '../../App/Game/GameSharing';
 
 interface ISeabattleMenuProps {
   match?: any;
@@ -17,6 +18,10 @@ const AVAILABLE_OPPONENTS = [
 ];
 
 class SeabattleMenu extends React.Component<ISeabattleMenuProps, {}> {
+  state = {
+    dismissedSharing: false,
+  };
+
   render() {
     let alert: React.ReactNode = null;
     const opponentType = this.props.match.params.opponentType;
@@ -24,29 +29,49 @@ class SeabattleMenu extends React.Component<ISeabattleMenuProps, {}> {
     const playerID = this.props.match.params.playerID;
     if (!opponentType && !code) {
       alert = (
-        <MuiThemeProvider>
-          <AlertLayer>
-            <OpponentPicker
-              gameCode="seabattle"
-              history={this.props.history}
-              options={AVAILABLE_OPPONENTS}
-            />
-          </AlertLayer>
-        </MuiThemeProvider>
+        <AlertLayer>
+          <OpponentPicker
+            gameCode="seabattle"
+            history={this.props.history}
+            options={AVAILABLE_OPPONENTS}
+          />
+        </AlertLayer>
+      );
+    }
+    if (!this.state.dismissedSharing && code &&
+         playerID === '0') {
+      alert = (
+        <AlertLayer>
+          <GameSharing
+            gameCode={'seabattle'}
+            matchCode={code}
+            playerID={playerID}
+            onDismiss={this.dismissSharing}
+          />
+        </AlertLayer>
       );
     }
     const App = Client({
       game: SeabattleGame,
       board: getBoard(code),
-      debug: true,
+      debug: false,
       multiplayer: true,
     }) as any;
     return (
       <div style={{width: '100%', height: '100%'}}>
         <App gameID={code} playerID={playerID} />
-        {alert}
+        <MuiThemeProvider>
+          {alert}
+        </MuiThemeProvider>
       </div>
     );
+  }
+
+  dismissSharing = () => {
+    this.setState({
+      ...this.state,
+      dismissedSharing: true,
+    });
   }
 }
 

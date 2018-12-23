@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-
-import { IShip, generateRandomShips } from './game';
+import RaisedButton from 'material-ui/RaisedButton';
+import { IShip, generateRandomShips, validateShips } from './game';
 import { Radar } from './Radar';
 
 interface IShipsPlacementProps {
@@ -24,13 +24,40 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
   }
 
   render() {
-    // TODO: Allow user to move pre-positioned ships. Show "OK" button only if valid positioning.
-    // TODO: Show red in the UI if invalid positioning. Allow drag and drop of ships with two clicks.
-    // TODO: Allow rotation of ships with double click.
+    let message = 'Drag & drop ships, click to rotate';
+    const validShips = validateShips(this.state.ships).valid;
+    if (!validShips) {
+      message = 'INVALID POSITIONING';
+    }
     return (
-      <Radar
-        ships={this.state.ships}
-      />
+      <div
+          style={{position: 'fixed', top: '50%', transform: 'translate(0, -50%)',
+                  width: '100%', maxWidth: '500px'}}
+      >
+        <h2 style={{color: 'white', textAlign: 'center'}}>{message}</h2>
+        <Radar
+          ships={this.state.ships}
+          editable={true}
+          onEdit={this.onEdit}
+        />
+        <RaisedButton
+          style={{float: 'right', marginTop: '8px'}}
+          label="Done"
+          primary={true}
+          onClick={this.done}
+          disabled={!validShips}
+        />
+      </div>
     );
+  }
+
+  onEdit = (ships: IShip[]) => {
+    this.setState({
+      ships,
+    });
+  }
+
+  done = () => {
+    this.props.setShips(this.state.ships);
   }
 }

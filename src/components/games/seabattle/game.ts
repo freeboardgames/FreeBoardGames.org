@@ -40,7 +40,7 @@ export const SeabattleGame = Game({
 
   moves: {
     setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
-      const validation = validateShips(parseInt(ctx.currentPlayer, 10), ships);
+      const validation = validateShips(ships, parseInt(ctx.currentPlayer, 10));
       if (!validation.valid) {
         throw new Error(validation.error);
       }
@@ -82,8 +82,25 @@ export function generateRandomShips(player: number): IShip[] {
         result.push(randomlyGetShip(player, shipSize));
       }
     }
-  } while (!validateShips(player, result).valid);
+  } while (!validateShips(result, player).valid);
   return result;
+}
+
+// Wheather a setup is valid or not.
+export function validateShips(ships: IShip[], player?: number): IShipsValidationResult {
+  const validations = [validateShipsCount(ships),
+                 validateShipsContinuity(ships),
+                 validateShipsNotOutOfBounds(ships),
+                 validateShipsNotOverlapping(ships)];
+  if (player !== undefined) {
+    validations.push(validateShipsOwnership(player, ships));
+  }
+  for (const validation of validations) {
+    if (!validation.valid) {
+      return validation;
+    }
+  }
+  return {valid: true};
 }
 
 // PRIVATE FUNCTIONS
@@ -120,20 +137,6 @@ function countShipHits(salvos: ISalvo[], shipIndex: number): number {
 interface IShipsValidationResult {
   valid: boolean;
   error?: string;
-}
-
-function validateShips(player: number, ships: IShip[]): IShipsValidationResult {
-  const validations = [validateShipsCount(ships),
-                 validateShipsOwnership(player, ships),
-                 validateShipsContinuity(ships),
-                 validateShipsNotOutOfBounds(ships),
-                 validateShipsNotOverlapping(ships)];
-  for (const validation of validations) {
-    if (!validation.valid) {
-      return validation;
-    }
-  }
-  return {valid: true};
 }
 
 function validateShipsCount(ships: IShip[]): IShipsValidationResult {

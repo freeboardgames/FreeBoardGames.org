@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { IShip, ICell, getCellVector } from './game';
+import { IShip, ICell, getCellVector, validateShips } from './game';
 import { Grid } from 'boardgame.io/ui';
 import { Token } from 'boardgame.io/ui';
 
@@ -9,13 +9,15 @@ export interface IColorMap {
 }
 interface IRadarProps {
   ships: IShip[];
+  editable: boolean;
+  onEdit: (ships: IShip[]) => void;
 }
-interface IRadarState {
-  ships: IShip[];
-}
-export class Radar extends React.Component<IRadarProps, IRadarState> {
+
+export class Radar extends React.Component<IRadarProps, {}> {
   static propTypes = {
     ships: PropTypes.array,
+    editable: PropTypes.bool,
+    onEdit: PropTypes.func,
   };
 
   _ignoreClick = false;
@@ -32,10 +34,10 @@ export class Radar extends React.Component<IRadarProps, IRadarState> {
     return (
       <div className="seabattle-radar">
         <Grid
+          style={{maxWidth: '500px'}}
           rows={10}
           cols={10}
           outline={true}
-          style={{position: 'fixed', bottom: 0, maxWidth: '500px'}}
           colorMap={colorMap}
           onClick={this._onClick}
         >
@@ -46,18 +48,20 @@ export class Radar extends React.Component<IRadarProps, IRadarState> {
   }
 
   _onClick = (coords: {x: number, y: number}) => {
-    if (this._ignoreClick) {
-      this._ignoreClick = false;
-      return;
-    }
-    const shipIndex = this._findShip(coords.x, coords.y);
-    if (shipIndex !== -1) {
-      this._rotateShip(shipIndex);
+    if (this.props.editable) {
+      if (this._ignoreClick) {
+        this._ignoreClick = false;
+        return;
+      }
+      const shipIndex = this._findShip(coords.x, coords.y);
+      if (shipIndex !== -1) {
+        this._rotateShip(shipIndex);
+      }
     }
   }
 
   _shouldDrag = () => {
-    return true;
+    return this.props.editable;
   }
 
   _onDrop = (coords: {x: number; y: number; originalX: number; originalY: number}) => {
@@ -76,20 +80,20 @@ export class Radar extends React.Component<IRadarProps, IRadarState> {
   }
 
   _findShip(x: number, y: number): number {
-    return this.state.ships.findIndex((ship) => {
+    return this.props.ships.findIndex((ship) => {
       return ship.cells.findIndex((c) => (c.x === x && c.y === y)) !== -1;
     });
   }
 
   _moveShip(shipIndex: number, x: number, y: number) {
-    const ship = this.state.ships[shipIndex];
-    const delta = getCellVector(ship.cells[0], ship.cells[1]);
+    const ship = this.props.ships[shipIndex];
+    const delta = getCellVector(ship.cells[1], ship.cells[0]);
     this._setShip(shipIndex, x, y, delta);
   }
 
   _rotateShip(shipIndex: number) {
-    const ship = this.state.ships[shipIndex];
-    const delta = getCellVector(ship.cells[0], ship.cells[1]);
+    const ship = this.props.ships[shipIndex];
+    const delta = getCellVector(ship.cells[1], ship.cells[0]);
     const temp = delta.x;
     delta.x = delta.y;
     delta.y = temp;
@@ -97,22 +101,21 @@ export class Radar extends React.Component<IRadarProps, IRadarState> {
   }
 
   _setShip(index: number, x: number, y: number, vector: ICell) {
-    const ship = this.state.ships[index];
+    const ship = this.props.ships[index];
     const newCells = [];
     for (let i = 0; i < ship.cells.length; i++) {
       newCells.push({ x: x + vector.x * i, y: y + vector.y * i });
     }
-    const newShips = [ ... this.state.ships ];
+    const newShips = [ ... this.props.ships ];
     newShips[index] = { ...ship, cells: newCells };
-    this.setState({
-      ships: newShips,
-    });
+    this.props.onEdit(newShips);
   }
 
   _getShips() {
     const result = [];
     const shipStyle = {fill: 'white', strokeWidth: .05, stroke: 'red'};
-    for (const ship of this.state.ships) {
+    let i = 0;
+    for (const ship of this.props.ships) {
       const cell = ship.cells[0];
       let shipDrawing;
       if (cell.x === ship.cells[1].x) { // Vertical
@@ -128,11 +131,12 @@ export class Radar extends React.Component<IRadarProps, IRadarState> {
           draggable={true}
           shouldDrag={this._shouldDrag}
           onDrop={this._onDrop}
-          key={`${cell.x},${cell.y}`}
+          key={i}
         >
           {shipDrawing}
         </Token>,
       );
+      i++;
     }
     return result;
   }

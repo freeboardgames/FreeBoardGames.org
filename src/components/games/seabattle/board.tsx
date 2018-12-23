@@ -4,8 +4,6 @@ import * as PropTypes from 'prop-types';
 import { ShipsPlacement } from './ShipsPlacement';
 import { Token } from 'boardgame.io/ui';
 import GameBar from '../../App/Game/GameBar';
-import { GameSharing } from '../../App/Game/GameSharing';
-import AlertLayer from '../../App/Game/AlertLayer';
 import * as ReactGA from 'react-ga';
 
 interface IBoardProps {
@@ -31,33 +29,10 @@ function getBoard(matchCode: string) {
       isActive: PropTypes.bool,
       isConnected: PropTypes.bool,
     };
-    state = {
-      dismissedSharing: false,
-    };
-    _dismissSharing = this.dismissSharing.bind(this);
+
     render() {
-      let alert = null;
-      // TODO: Add connection layer?
-      if (!this.state.dismissedSharing && matchCode &&
-           this.props.playerID === '0') {
-        alert = (
-          <AlertLayer>
-            <GameSharing
-              gameCode={'seabattle'}
-              matchCode={matchCode}
-              playerID={this.props.playerID}
-              onDismiss={this._dismissSharing}
-            />
-          </AlertLayer>
-        );
-      }
       return (
-        <GameBar
-         text={'Hello world'}
-         backgroundColor={'black'}
-         textColor={'white'}
-         alert={alert}
-        >
+        <GameBar>
           <ShipsPlacement
             playerID={this.props.ctx.currentPlayer}
             setShips={this._setShips}
@@ -66,15 +41,8 @@ function getBoard(matchCode: string) {
       );
     }
 
-    dismissSharing() {
-      this.setState({
-        ...this.state,
-        dismissedSharing: true,
-      });
-    }
-
     _setShips() {
-      // TODO set Ships.
+      alert('TODO _setShips');
     }
   }
   return Board;
