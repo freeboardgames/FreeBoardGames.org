@@ -54,7 +54,7 @@ class SeabattleMenu extends React.Component<ISeabattleMenuProps, {}> {
     const App = Client({
       game: SeabattleGame,
       board: getBoard(code),
-      debug: false,
+      debug: true,
       multiplayer: true,
     }) as any;
     return (

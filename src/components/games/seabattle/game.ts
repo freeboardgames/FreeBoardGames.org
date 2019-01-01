@@ -21,6 +21,7 @@ export interface ISalvo {
 export interface ISeabattleState {
   ships: IShip[];
   salvos: ISalvo[];
+  setupReady: boolean[];
 }
 
 interface ICtx {
@@ -36,15 +37,25 @@ const VALID_SHIPS_COUNT: {[size: number]: number} = {
 };
 
 export const SeabattleGame = Game({
-  setup: (): ISeabattleState => ({ ships: [], salvos: [] }),
+  setup: (): ISeabattleState => ({ 
+    ships: [], 
+    salvos: [], 
+    setupReady: [false, false] 
+  }),
 
   moves: {
     setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
-      const validation = validateShips(ships, parseInt(ctx.currentPlayer, 10));
+      const player = parseInt(ctx.currentPlayer, 10);
+      if (G.setupReady[player]) {
+        throw new Error("Setup already done!");
+      }
+      const validation = validateShips(ships, player);
       if (!validation.valid) {
         throw new Error(validation.error);
       }
-      return { ...G, ships: [...G.ships, ...ships] };
+      const setupReady = [... G.setupReady];
+      setupReady[player] = true;
+      return { ...G, ships: [...G.ships, ...ships], setupReady };
     },
     salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
       const player = parseInt(ctx.currentPlayer, 10);
