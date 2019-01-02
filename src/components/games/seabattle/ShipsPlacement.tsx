@@ -24,7 +24,7 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
   }
 
   render() {
-    let message = 'Drag & drop ships, click to rotate';
+    let message = 'Drag & drop, click to rotate';
     const validShips = validateShips(this.state.ships).valid;
     if (!validShips) {
       message = 'INVALID POSITIONING';

@@ -61,29 +61,45 @@ describe('Seabattle', () => {
     const client = Client({
       game: SeabattleGame,
     });
+    const store = client.store;
+    expect(store.getState().G.setupReady).toEqual([false, false]);
+
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
     client.events.endTurn();
+    expect(store.getState().G.setupReady).toEqual([true, false]);
 
     client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
     client.events.endTurn();
-
-    const { G, ctx } = client.store.getState();
-    expect(G.ships.length).toEqual(10);
+    expect(store.getState().G.setupReady).toEqual([true, true]);
+    expect(store.getState().G.ships.length).toEqual(10);
   });
 
   it('should randomly generate and set ships correctly', () => {
     const client = Client({
       game: SeabattleGame,
     });
-    client.moves.setShips(generateRandomShips(0));
+    const store = client.store;
+    expect(store.getState().G.setupReady).toEqual([false, false]);
 
+    client.moves.setShips(generateRandomShips(0));
     client.events.endTurn();
+    expect(store.getState().G.setupReady).toEqual([true, false]);
 
     client.moves.setShips(generateRandomShips(1));
     client.events.endTurn();
+    expect(store.getState().G.setupReady).toEqual([true, true]);
+    expect(store.getState().G.ships.length).toEqual(10);
+  });
 
-    const { G, ctx } = client.store.getState();
-    expect(G.ships.length).toEqual(10);
+  it('should only allow to setup once', () => {
+    const client = Client({
+      game: SeabattleGame,
+    });
+
+    client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+    expect(() => {
+      client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+    }).toThrow();
   });
 
   it('should only allow correct ship sizes', () => {
