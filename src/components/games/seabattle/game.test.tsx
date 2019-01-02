@@ -61,17 +61,11 @@ describe('Seabattle', () => {
     const client = Client({
       game: SeabattleGame,
     });
-    const store = client.store;
-    expect(store.getState().G.setupReady).toEqual([false, false]);
 
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
-    client.events.endTurn();
-    expect(store.getState().G.setupReady).toEqual([true, false]);
-
+    client.updatePlayerID('1');
     client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
-    client.events.endTurn();
-    expect(store.getState().G.setupReady).toEqual([true, true]);
-    expect(store.getState().G.ships.length).toEqual(10);
+    expect(client.store.getState().ctx.phase).toEqual('play');
   });
 
   it('should randomly generate and set ships correctly', () => {
@@ -79,27 +73,10 @@ describe('Seabattle', () => {
       game: SeabattleGame,
     });
     const store = client.store;
-    expect(store.getState().G.setupReady).toEqual([false, false]);
-
     client.moves.setShips(generateRandomShips(0));
-    client.events.endTurn();
-    expect(store.getState().G.setupReady).toEqual([true, false]);
-
+    client.updatePlayerID('1');
     client.moves.setShips(generateRandomShips(1));
-    client.events.endTurn();
-    expect(store.getState().G.setupReady).toEqual([true, true]);
-    expect(store.getState().G.ships.length).toEqual(10);
-  });
-
-  it('should only allow to setup once', () => {
-    const client = Client({
-      game: SeabattleGame,
-    });
-
-    client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
-    expect(() => {
-      client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
-    }).toThrow();
+    expect(store.getState().ctx.phase).toEqual('play');
   });
 
   it('should only allow correct ship sizes', () => {
@@ -163,13 +140,13 @@ describe('Seabattle', () => {
 
   it('should hit ship correctly', () => {
     const client = Client({
-      game: SeabattleGame,
+      game: SeabattleGame
     });
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
-    client.events.endTurn();
+    client.updatePlayerID('1');
     client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
-    client.events.endTurn();
 
+    client.updatePlayerID('0');
     client.moves.salvo(0, 0);
 
     const { G, ctx } = client.store.getState();
@@ -181,10 +158,10 @@ describe('Seabattle', () => {
       game: SeabattleGame,
     });
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
-    client.events.endTurn();
+    client.updatePlayerID("1");
     client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
-    client.events.endTurn();
 
+    client.updatePlayerID('0');
     client.moves.salvo(0, 1);
     client.moves.salvo(0, 2); // ignore because it is not player 0 turn
 

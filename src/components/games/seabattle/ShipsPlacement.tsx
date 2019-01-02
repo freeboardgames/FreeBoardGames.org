@@ -15,7 +15,7 @@ interface IShipsPlacementState {
 
 export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShipsPlacementState> {
   static propTypes = {
-    playerID: PropTypes.string.isRequired,
+    playerID: PropTypes.string,
     setShips: PropTypes.any,
   };
   constructor(props: IShipsPlacementProps) {

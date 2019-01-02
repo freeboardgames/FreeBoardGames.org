@@ -1,4 +1,4 @@
-import { Game } from 'boardgame.io/core';
+import { Game, TurnOrder } from 'boardgame.io/core';
 
 export interface IShip {
   player: number;
@@ -21,11 +21,10 @@ export interface ISalvo {
 export interface ISeabattleState {
   ships: IShip[];
   salvos: ISalvo[];
-  setupReady: boolean[];
 }
 
 interface ICtx {
-  currentPlayer: string;
+  playerID?: string;
 }
 
 const VALID_SHIPS_SIZES: number[] = [5, 4, 3, 2];
@@ -37,28 +36,22 @@ const VALID_SHIPS_COUNT: {[size: number]: number} = {
 };
 
 export const SeabattleGame = Game({
-  setup: (): ISeabattleState => ({ 
-    ships: [], 
-    salvos: [], 
-    setupReady: [false, false] 
+  setup: (): ISeabattleState => ({
+    ships: [],
+    salvos: [],
   }),
 
   moves: {
     setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
-      const player = parseInt(ctx.currentPlayer, 10);
-      if (G.setupReady[player]) {
-        throw new Error("Setup already done!");
-      }
+      const player = parseInt(ctx.playerID, 10); 
       const validation = validateShips(ships, player);
       if (!validation.valid) {
         throw new Error(validation.error);
       }
-      const setupReady = [... G.setupReady];
-      setupReady[player] = true;
-      return { ...G, ships: [...G.ships, ...ships], setupReady };
+      return { ...G, ships: [...G.ships, ...ships] };
     },
     salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
-      const player = parseInt(ctx.currentPlayer, 10);
+      const player = parseInt(ctx.playerID, 10);
       // Avoid another salvo if the last was a miss.
       if (G.salvos.length > 0 &&
           G.salvos[G.salvos.length - 1].player ===  player &&
@@ -79,6 +72,20 @@ export const SeabattleGame = Game({
                salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: shipIndex}],
              };
     },
+  },
+
+  flow: {
+    startingPhase: 'setup',
+    phases: {
+      setup: {
+        allowedMoves: ['setShips'], 
+        turnOrder: TurnOrder.ANY_ONCE, 
+        next: 'play' 
+      },
+      play: {
+        allowedMoves: ['salvo'], 
+      }
+    }
   },
 });
 

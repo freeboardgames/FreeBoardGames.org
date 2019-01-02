@@ -12,6 +12,7 @@ import { StaticRouter } from 'react-router-dom';
 
 const { Server } = require('boardgame.io/server'); // tslint:disable-line
 import Chess from './components/games/chess/game';
+import { SeabattleGame } from './components/games/seabattle/game';
 import App from './components/App/App';
 
 const HOST = '0.0.0.0';
@@ -20,7 +21,7 @@ const NODE_ENV = process.env.NODE_ENV;
 const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
-const server = Server({ games: [Chess] });
+const server = Server({ games: [Chess, SeabattleGame] });
 const router = new Router();
 const template = fs.readFileSync('./dist/webpack/template.html', 'utf8');
 Mustache.parse(template);
