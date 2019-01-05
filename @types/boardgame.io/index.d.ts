@@ -41,6 +41,9 @@ declare module 'boardgame.io/ui' {
 }
 
 declare module 'boardgame.io/core' {
+  export enum TurnOrder {
+    DEFAULT, ONCE, ANY, ANY_ONCE, OTHERS, OTHERS_ONCE, CUSTOM, CUSTOM_FROM
+  }
   export class FlowObj {
     ctx: (players: number) => any;
     processGameEvent: (state: any, gameEvent: any) => any;
@@ -50,6 +53,8 @@ declare module 'boardgame.io/core' {
     flow: FlowObj;
   }
   interface IGameCtx {
+    phase?: string;
+    playerID?: string;
     numPlayer: number;
     turn: number;
     currentPlayer: string;
@@ -58,22 +63,26 @@ declare module 'boardgame.io/core' {
   interface IGameMoves {
     [key:  string]: (G: any, ctx: IGameCtx, ...args: any[]) => any; 
   }
-  interface IGameFlowPhase {
-    name: string;
-    allowedMoves: string[];
-    endPhaseIf: (G: any, ctx: IGameCtx) => boolean;
+  interface IGameFlowPhases {
+    [name: string]: {
+      turnOrder?: TurnOrder;
+      next?: string;
+      allowedMoves?: string[];
+      endPhaseIf?: (G: any, ctx: IGameCtx) => boolean;
+    }
   }
   interface IGameFlowTrigger {
     conditon: (G: any, ctx: IGameCtx) => boolean;
     action: (G: any, ctx: IGameCtx) => any;
   }
   interface IGameFlow {
+    startingPhase?: string;
     movesPerTurn?: number;
-    endGameIf: (G: any, ctx: IGameCtx) => any;
+    endGameIf?: (G: any, ctx: IGameCtx) => any;
     endTurnIf?: (G: any, ctx: IGameCtx) => boolean;
     onTurnEnd?: (G: any, ctx: IGameCtx) => void;
     triggers?: IGameFlowTrigger[];
-    phases?: IGameFlowPhase[];
+    phases?: IGameFlowPhases;
   }
   interface IGameArgs {
     name?: string;
@@ -91,6 +100,7 @@ declare module 'boardgame.io/react' {
     moves: any;
     events: any;
     store: any;
+    updatePlayerID: (id: string) => void;
   }
   interface IClientArgs {
     game: any;
@@ -108,6 +118,7 @@ declare module 'boardgame.io/client' {
     moves: any;
     events: any;
     store: any;
+    updatePlayerID: (id: string) => void;
   }
   interface IClientArgs {
     game: any;

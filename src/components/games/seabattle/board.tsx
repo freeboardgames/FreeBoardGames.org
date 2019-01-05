@@ -5,7 +5,7 @@ import { ShipsPlacement } from './ShipsPlacement';
 import { Token } from 'boardgame.io/ui';
 import GameBar from '../../App/Game/GameBar';
 import * as ReactGA from 'react-ga';
-import { IShip } from './game'; 
+import { IShip } from './game';
 
 interface IBoardProps {
   G: any;
@@ -32,22 +32,23 @@ function getBoard(matchCode: string) {
     };
 
     render() {
-      const G = this.props.G;
-      const playerID = parseInt(this.props.playerID, 10);
-      if (!G.setupReady[playerID]) {
+      const ctx = this.props.ctx;
+      if (ctx.phase === 'setup' && 
+          (this.props.playerID === null || 
+          ctx.actionPlayers.includes(this.props.playerID))) {
         return (
           <GameBar>
             <ShipsPlacement
-              playerID={this.props.ctx.currentPlayer}
+              playerID={this.props.playerID}
               setShips={this._setShips}
             />
           </GameBar>
         );
-      } else if (!G.setupReady[0] || !G.setupReady[1]) {
+      } else if (ctx.phase === 'setup') {
         return (
           <GameBar>
             <h1 style={{color: 'white'}}>
-              Waiting other player...
+              Waiting for opponent...
             </h1>
           </GameBar>
         );
