@@ -140,17 +140,16 @@ describe('Seabattle', () => {
 
   it('should hit ship correctly', () => {
     const client = Client({
-      game: SeabattleGame
+      game: SeabattleGame,
     });
+    const store = client.store;
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
     client.updatePlayerID('1');
     client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
 
-    client.updatePlayerID('0');
     client.moves.salvo(0, 0);
 
-    const { G, ctx } = client.store.getState();
-    expect(G.salvos).toEqual([{player: 0, cell: {x: 0, y: 0}, hit: true, hitShip: 0}]);
+    expect(store.getState().G.salvos).toEqual([{player: 1, cell: {x: 0, y: 0}, hit: true, hitShip: 0}]);
   });
 
   it('should miss ship correctly', () => {
@@ -158,33 +157,34 @@ describe('Seabattle', () => {
       game: SeabattleGame,
     });
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
-    client.updatePlayerID("1");
+    client.updatePlayerID('1');
     client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
 
-    client.updatePlayerID('0');
     client.moves.salvo(0, 1);
-    client.moves.salvo(0, 2); // ignore because it is not player 0 turn
 
     const { G, ctx } = client.store.getState();
-    expect(G.salvos).toEqual([{player: 0, cell: {x: 0, y: 1}, hit: false}]);
+    expect(G.salvos).toEqual([{player: 1, cell: {x: 0, y: 1}, hit: false}]);
   });
 
-  /* TODO: Fix imutability error.
   it('should sunk ship correctly', () => {
     const client = Client({
       game: SeabattleGame,
     });
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
-    client.events.endTurn();
+    client.updatePlayerID('1');
     client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
-    client.events.endTurn();
 
     client.moves.salvo(0, 9);
+    client.updatePlayerID('0');
+    client.moves.salvo(0, 0);
+    client.updatePlayerID('1');
     client.moves.salvo(1, 9);
 
     const { G, ctx } = client.store.getState();
-    expect(G.salvos).toEqual([{player: 0, cell: {x: 0, y: 9}, hit: true, hitShip: 4},
-                              {player: 0, cell: {x: 1, y: 9}, hit: true, hitShip: 4}]);
+    expect(G.salvos).toEqual([
+      {player: 1, cell: {x: 0, y: 9}, hit: true, hitShip: 4},
+      {player: 0, cell: {x: 0, y: 0}, hit: true, hitShip: 5},
+      {player: 1, cell: {x: 1, y: 9}, hit: true, hitShip: 4}]);
     expect(G.ships[4].sunk).toEqual(true);
-  });*/
+  });
 });

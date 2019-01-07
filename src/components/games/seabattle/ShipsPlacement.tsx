@@ -30,11 +30,8 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
       message = 'INVALID POSITIONING';
     }
     return (
-      <div
-          style={{position: 'fixed', top: '50%', transform: 'translate(0, -50%)',
-                  width: '100%', maxWidth: '500px'}}
-      >
-        <h2 style={{color: 'white', textAlign: 'center'}}>{message}</h2>
+      <div>
+        <h2 style={{textAlign: 'center'}}>{message}</h2>
         <Radar
           ships={this.state.ships}
           editable={true}

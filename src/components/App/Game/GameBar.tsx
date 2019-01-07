@@ -21,10 +21,18 @@ class GameBar extends React.Component<IGameBarProps, {}> {
   render() {
     return (
       <MuiThemeProvider>
-        <div>
-          <div style={{maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto'}}>
-            {this.props.children}
-          </div>
+        <div
+          style={{
+            width: '100%',
+            color: 'white',
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            maxWidth: '500px',
+          }}
+        >
+          {this.props.children}
         </div>
      </MuiThemeProvider>
     );

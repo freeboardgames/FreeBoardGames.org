@@ -90,7 +90,7 @@ test('little game', () => {
     },
     G: {pgn: '1.f4'},
   });
-  expect(board.html()).to.contain('Waiting opponent');
+  expect(board.html()).to.contain('Waiting for opponent');
 
   // try invalid selection
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
