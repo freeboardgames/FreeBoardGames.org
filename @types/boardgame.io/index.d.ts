@@ -65,10 +65,12 @@ declare module 'boardgame.io/core' {
   }
   interface IGameFlowPhases {
     [name: string]: {
+      movesPerTurn?: number;
       turnOrder?: TurnOrder;
       next?: string;
       allowedMoves?: string[];
       endPhaseIf?: (G: any, ctx: IGameCtx) => boolean;
+      endGameIf?: (G: any, ctx: IGameCtx) => any;
     }
   }
   interface IGameFlowTrigger {

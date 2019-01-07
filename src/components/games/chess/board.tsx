@@ -65,15 +65,11 @@ function getBoard(matchCode: string) {
     render() {
       return (
         <GameBar>
-          <div
-              style={{position: 'fixed', top: '50%', transform: 'translate(0, -50%)',
-                      width: '100%', maxWidth: '500px'}}
-          >
-            <h2 style={{color: 'white', textAlign: 'center'}}>
+          <div>
+            <h2 style={{textAlign: 'center'}}>
               {this._getStatus()}
             </h2>
             <Checkerboard
-              style={{width: '100%', maxWidth: '500px'}}
               invert={this.getPlayer() === 'b'}
               highlightedSquares={this._getHighlightedSquares()}
               onClick={this._click}
@@ -194,7 +190,7 @@ function getBoard(matchCode: string) {
       if (this.chess.turn() === this.getPlayer()) {
         return 'YOUR TURN';
       } else {
-        return 'Waiting opponent';
+        return 'Waiting for opponent...';
       }
     }
 

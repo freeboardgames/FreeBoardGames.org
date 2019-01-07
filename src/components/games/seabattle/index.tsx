@@ -5,7 +5,7 @@ import { OpponentPicker, OpponentPickerOption } from '../../App/Game/OpponentPic
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AlertLayer from '../../App/Game/AlertLayer';
 import * as PropTypes from 'prop-types';
-import getBoard from './board';
+import { Board } from './board';
 import { GameSharing } from '../../App/Game/GameSharing';
 
 interface ISeabattleMenuProps {
@@ -53,8 +53,8 @@ class SeabattleMenu extends React.Component<ISeabattleMenuProps, {}> {
     }
     const App = Client({
       game: SeabattleGame,
-      board: getBoard(code),
-      debug: true,
+      board: Board,
+      debug: false,
       multiplayer: true,
     }) as any;
     return (

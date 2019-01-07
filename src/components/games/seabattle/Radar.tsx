@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { IShip, ICell, getCellVector, validateShips } from './game';
+import { IShip, ICell, ISalvo, getCellVector, validateShips } from './game';
 import { Grid } from 'boardgame.io/ui';
 import { Token } from 'boardgame.io/ui';
 
@@ -9,15 +9,19 @@ export interface IColorMap {
 }
 interface IRadarProps {
   ships: IShip[];
+  salvos?: ISalvo[];
   editable: boolean;
-  onEdit: (ships: IShip[]) => void;
+  onEdit?: (ships: IShip[]) => void;
+  onClick?: (cell: ICell) => void;
 }
 
 export class Radar extends React.Component<IRadarProps, {}> {
   static propTypes = {
     ships: PropTypes.array,
+    salvos: PropTypes.array,
     editable: PropTypes.bool,
     onEdit: PropTypes.func,
+    onClick: PropTypes.func,
   };
 
   _ignoreClick = false;
@@ -34,14 +38,13 @@ export class Radar extends React.Component<IRadarProps, {}> {
     return (
       <div className="seabattle-radar">
         <Grid
-          style={{maxWidth: '500px'}}
           rows={10}
           cols={10}
           outline={true}
           colorMap={colorMap}
           onClick={this._onClick}
         >
-          {this._getShips()}
+          {this._getShips().concat(this._getSalvos())}
         </Grid>
       </div>
     );
@@ -57,6 +60,8 @@ export class Radar extends React.Component<IRadarProps, {}> {
       if (shipIndex !== -1) {
         this._rotateShip(shipIndex);
       }
+    } else {
+      this.props.onClick(coords);
     }
   }
 
@@ -128,12 +133,39 @@ export class Radar extends React.Component<IRadarProps, {}> {
         <Token
           x={cell.x}
           y={cell.y}
-          draggable={true}
+          draggable={this.props.editable}
           shouldDrag={this._shouldDrag}
           onDrop={this._onDrop}
           key={i}
         >
           {shipDrawing}
+        </Token>,
+      );
+      i++;
+    }
+    return result;
+  }
+
+  _getSalvos() {
+    const result: JSX.Element[] = [];
+    if (!this.props.salvos) {
+      return result;
+    }
+    let i = 100;
+    for (const salvo of this.props.salvos) {
+      result.push(
+        <Token
+          x={salvo.cell.x}
+          y={salvo.cell.y}
+          draggable={false}
+          key={i}
+        >
+          <circle
+            cx="0.5"
+            cy="0.5"
+            r="0.5"
+            fill={(salvo.hit) ? 'red' : 'white'}
+          />
         </Token>,
       );
       i++;

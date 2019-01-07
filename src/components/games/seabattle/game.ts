@@ -43,7 +43,7 @@ export const SeabattleGame = Game({
 
   moves: {
     setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
-      const player = parseInt(ctx.playerID, 10); 
+      const player = parseInt(ctx.playerID, 10);
       const validation = validateShips(ships, player);
       if (!validation.valid) {
         throw new Error(validation.error);
@@ -58,14 +58,14 @@ export const SeabattleGame = Game({
           !G.salvos[G.salvos.length - 1].hit) {
         return { ...G };
       }
-      const shipIndex = findShipWithCell(G.ships, {x, y});
+      const shipIndex = findShipWithCell(G.ships, {x, y}, player);
       if (shipIndex === -1) { // Miss
         return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y }}] };
       }
       // Hit
       const newShips = [ ... G.ships ];
       if (countShipHits(G.salvos, shipIndex) + 1 === G.ships[shipIndex].cells.length) {
-        newShips[shipIndex].sunk = true;
+        newShips[shipIndex] = { ...newShips[shipIndex], sunk: true };
       }
       return { ...G,
                ships: newShips,
@@ -78,14 +78,32 @@ export const SeabattleGame = Game({
     startingPhase: 'setup',
     phases: {
       setup: {
-        allowedMoves: ['setShips'], 
-        turnOrder: TurnOrder.ANY_ONCE, 
-        next: 'play' 
+        allowedMoves: ['setShips'],
+        turnOrder: TurnOrder.ANY_ONCE,
+        next: 'play',
       },
       play: {
-        allowedMoves: ['salvo'], 
-      }
-    }
+        endGameIf: (G, ctx) => {
+          if (checkAllShipsSunk(G.ships, 0)) {
+            return { winner: '1' };
+          }
+          if (checkAllShipsSunk(G.ships, 1)) {
+            return { winner: '0' };
+          }
+        },
+        allowedMoves: ['salvo'],
+        movesPerTurn: 1,
+      },
+    },
+  },
+
+  playerView: (G: ISeabattleState, ctx: ICtx, playerID: string): ISeabattleState => {
+    const player = parseInt(playerID, 10);
+    const ships: IShip[] = G.ships.filter((ship) => (ship.player === player || ship.sunk));
+    return {
+      ...G,
+      ships,
+    };
   },
 });
 
@@ -122,6 +140,15 @@ export function validateShips(ships: IShip[], player?: number): IShipsValidation
 }
 
 // PRIVATE FUNCTIONS
+function checkAllShipsSunk(ships: IShip[], player: number): boolean {
+  for (const ship of ships) {
+    if (ship.player === player && !ship.sunk) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function randomlyGetShip(player: number, shipSize: number): IShip {
   const cell: ICell = {x: getRandomInt(10), y: getRandomInt(10)};
   const direction = getRandomInt(2) === 1 ? 'H' : 'V';
@@ -140,11 +167,11 @@ function getRandomInt(max: number): number {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-function findShipWithCell(ships: IShip[], cell: ICell): number {
+function findShipWithCell(ships: IShip[], cell: ICell, player: number): number {
   return ships.findIndex(
     (ship) => ship.cells.findIndex(
       (c) => c.x === cell.x && c.y === cell.y,
-    ) !== -1,
+    ) !== -1 && ship.player !== player,
   );
 }
 
