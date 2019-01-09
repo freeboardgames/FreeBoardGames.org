@@ -121,7 +121,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
 
   _getLink() {
     const player = (this.props.playerID === '0') ? '1' : '0';
-    const origin = window.location.origin;
+    const origin = (typeof window === "undefined") ? '': window.location.origin;
     const gameCode = this.props.gameCode;
     const matchCode = this.props.matchCode;
     return `${origin}/g/${gameCode}/match/${matchCode}/${player}`;
