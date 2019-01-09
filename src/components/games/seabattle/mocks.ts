@@ -54,5 +54,3 @@ export const VALID_SETUP_SECOND_PLAYER: IShip[] = VALID_SETUP_FIRST_PLAYER.map((
   ...ship,
   player: 1,
 }));
-
-
