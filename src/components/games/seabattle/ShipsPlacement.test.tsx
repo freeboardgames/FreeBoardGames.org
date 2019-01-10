@@ -1,0 +1,47 @@
+import * as React from 'react';
+import { ShipsPlacement } from './ShipsPlacement';
+import { expect } from 'chai';
+import { VALID_SETUP_FIRST_PLAYER } from './mocks';
+import GameBar from '../../App/Game/GameBar';
+
+import * as Enzyme from 'enzyme';
+import * as Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({ adapter: new Adapter() });
+
+test('Set ships correctly', () => {
+  const setShips = jest.fn();
+  const placement = Enzyme.mount((
+    <GameBar>
+      <ShipsPlacement
+        playerID={'0'}
+        setShips={setShips}
+      />
+    </GameBar>));
+  placement.find('button').simulate('click');
+  expect(setShips.mock.calls[0][0].length).to.equal(5);
+});
+
+test('invalid positioning', () => {
+  const setShips = jest.fn();
+  const placement = Enzyme.shallow((
+      <ShipsPlacement
+        playerID={'0'}
+        setShips={setShips}
+      />));
+  placement.setState({ships: []});
+  expect(placement.find('h2').html()).to.contain('INVALID POSITIONING');
+});
+
+test('sanity - rotate ship', () => {
+  const setShips = jest.fn();
+  const placement = Enzyme.mount((
+    <GameBar>
+      <ShipsPlacement
+        playerID={'0'}
+        setShips={setShips}
+      />
+    </GameBar>));
+  placement.find('Token').at(0).simulate('click');
+  expect(placement.html()).to.contain('rect');
+});
