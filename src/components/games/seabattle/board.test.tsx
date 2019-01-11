@@ -4,12 +4,26 @@ import { expect } from 'chai';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 import { SeabattleGame } from './game';
 import { Client } from 'boardgame.io/client';
+import { Client as ReactClient } from 'boardgame.io/react';
 import GameBar from '../../App/Game/GameBar';
 
 import * as Enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
+
+test('set ships', () => {
+  const App = ReactClient({
+    game: SeabattleGame,
+    debug: false,
+    board: Board,
+  }) as any;
+  const comp = Enzyme.mount((
+    <App playerID={'0'} gameID={'foo'} />
+  ));
+  comp.find('button').simulate('click');
+  expect(comp.html()).to.contain('Waiting');
+});
 
 test('start', () => {
   const client = Client({

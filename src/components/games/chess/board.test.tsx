@@ -39,6 +39,11 @@ test('render board - all states', () => {
   expect(board.html()).to.contain('YOU WON');
   board.setProps({
     ...board.props(),
+    playerID: '1',
+  });
+  expect(board.html()).to.contain('YOU LOST');
+  board.setProps({
+    ...board.props(),
     ctx: {numPlayer: 2, turn: 0,
       currentPlayer: '0', currentPlayerMoves: 0,
     },
