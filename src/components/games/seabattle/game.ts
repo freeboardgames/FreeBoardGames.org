@@ -52,12 +52,6 @@ export const SeabattleGame = Game({
     },
     salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
       const player = parseInt(ctx.playerID, 10);
-      // Avoid another salvo if the last was a miss.
-      if (G.salvos.length > 0 &&
-          G.salvos[G.salvos.length - 1].player ===  player &&
-          !G.salvos[G.salvos.length - 1].hit) {
-        return { ...G };
-      }
       const shipIndex = findShipWithCell(G.ships, {x, y}, player);
       if (shipIndex === -1) { // Miss
         return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y }}] };

@@ -10,7 +10,7 @@ export const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 3, y: 0 },
       { x: 4, y: 0 },
     ],
-    sunk: false,
+    sunk: true,
   },
   {
     player: 0,
