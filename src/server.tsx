@@ -10,7 +10,7 @@ import * as ReactDOMServer from 'react-dom/server';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
 
-const { Server } = require('boardgame.io/server'); // tslint:disable-line
+const { Server } = require('flamecoals-boardgame.io/server'); // tslint:disable-line
 import Chess from './components/games/chess/game';
 import { SeabattleGame } from './components/games/seabattle/game';
 import App from './components/App/App';

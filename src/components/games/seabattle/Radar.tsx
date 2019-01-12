@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { IShip, ICell, ISalvo, getCellVector, validateShips } from './game';
-import { Grid } from 'boardgame.io/ui';
-import { Token } from 'boardgame.io/ui';
+import { Grid } from 'flamecoals-boardgame.io/ui';
+import { Token } from 'flamecoals-boardgame.io/ui';
 
 export interface IColorMap {
   [key: string]: string;

@@ -1,4 +1,4 @@
-import { Client } from 'boardgame.io/client';
+import { Client } from 'flamecoals-boardgame.io/client';
 import { SeabattleGame, IShip, generateRandomShips } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 

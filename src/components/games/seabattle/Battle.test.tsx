@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { Battle } from './Battle';
 import { IShip, ISeabattleState, SeabattleGame } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
-import { Client } from 'boardgame.io/client';
+import { Client } from 'flamecoals-boardgame.io/client';
 
 Enzyme.configure({ adapter: new Adapter() });
 
