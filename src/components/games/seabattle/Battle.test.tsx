@@ -18,6 +18,11 @@ test('one phase', () => {
   client.updatePlayerID('1');
   client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
 
+  client.moves.salvo(0, 0);
+  client.updatePlayerID('0');
+  client.moves.salvo(1, 1);
+  client.updatePlayerID('1');
+
   const grid = Enzyme.mount(
     <Battle
       G={store.getState().G}
@@ -25,9 +30,10 @@ test('one phase', () => {
       playerID={'1'}
       currentPlayer={store.getState().ctx.currentPlayer}
     />);
+  // should be ignroed
+  grid.find({x: 0, y: 9}).find('Square').at(0).simulate('click');
   expect(grid.html()).to.contain('CLICK TO SHOOT');
 
-  grid.find({x: 0, y: 9}).find('Square').at(0).simulate('click');
   grid.setProps({
     ...grid.props(),
     G: store.getState().G,
