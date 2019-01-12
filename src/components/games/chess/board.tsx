@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 The boardgame.io Authors.
+ * Copyright 2018 The flamecoals-boardgame.io Authors.
  *
  * Use of this source code is governed by a MIT-style
  * license that can be found in the LICENSE file or at
@@ -11,7 +11,7 @@ import * as PropTypes from 'prop-types';
 
 import Chess from './chessjswrapper';
 import { Checkerboard, IAlgebraicCoords, IColorMap } from './checkerboard';
-import { Token } from 'boardgame.io/ui';
+import { Token } from 'flamecoals-boardgame.io/ui';
 import GameBar from '../../App/Game/GameBar';
 import Bishop from './pieces/bishop';
 import King from './pieces/king';

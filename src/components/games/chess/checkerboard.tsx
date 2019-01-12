@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 The boardgame.io Authors.
+ * Copyright 2018 The flamecoals-boardgame.io Authors.
  *
  * Use of this source code is governed by a MIT-style
  * license that can be found in the LICENSE file or at
@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Grid } from 'boardgame.io/ui';
+import { Grid } from 'flamecoals-boardgame.io/ui';
 
 /**
  * Checkerboard

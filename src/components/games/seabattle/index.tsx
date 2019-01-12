@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Client } from 'boardgame.io/react';
+import { Client } from 'flamecoals-boardgame.io/react';
 import { SeabattleGame } from './game';
 import { OpponentPicker, OpponentPickerOption } from '../../App/Game/OpponentPicker';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
