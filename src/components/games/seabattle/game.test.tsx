@@ -168,6 +168,25 @@ describe('Seabattle', () => {
     expect(G.salvos).toEqual([{player: 1, cell: {x: 0, y: 1}, hit: false}]);
   });
 
+  it('should not allow duplicate moves', () => {
+    const client = Client({
+      game: SeabattleGame,
+    });
+    client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+    client.updatePlayerID('1');
+    client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+
+    client.moves.salvo(0, 0);
+    client.updatePlayerID('0');
+    client.moves.salvo(0, 0);
+    client.updatePlayerID('1');
+    client.moves.salvo(0, 0);
+    
+    const { G, ctx } = client.store.getState();
+
+    expect(G.salvos.length).toEqual(2);
+  });
+
   it('should sunk ship correctly', () => {
     const client = Client({
       game: SeabattleGame,
