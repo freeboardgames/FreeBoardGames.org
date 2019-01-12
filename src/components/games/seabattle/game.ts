@@ -57,7 +57,7 @@ export const SeabattleGame = Game({
       const uniqueMove = G.salvos.filter((salvo) => (
         salvo.player === player &&
         salvo.cell.x === x &&
-        salvo.cell.y === y)
+        salvo.cell.y === y),
       ).length === 0;
       if (!uniqueMove) {
         return { ...G };

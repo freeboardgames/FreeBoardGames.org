@@ -36,7 +36,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     const uniqueMove = this.state.G.salvos.filter((salvo) => (
       salvo.player === parseInt(this.state.currentPlayer, 10) &&
       salvo.cell.x === cell.x &&
-      salvo.cell.y === cell.y)
+      salvo.cell.y === cell.y),
     ).length === 0;
     if (uniqueMove) {
       this.props.moves.salvo(cell.x, cell.y);

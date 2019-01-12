@@ -181,7 +181,7 @@ describe('Seabattle', () => {
     client.moves.salvo(0, 0);
     client.updatePlayerID('1');
     client.moves.salvo(0, 0);
-    
+
     const { G, ctx } = client.store.getState();
 
     expect(G.salvos.length).toEqual(2);
