@@ -53,6 +53,15 @@ export const SeabattleGame = Game({
     salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
       const player = parseInt(ctx.playerID, 10);
       const shipIndex = findShipWithCell(G.ships, {x, y}, player);
+      // Do not allow the same cells to be shot twice
+      const uniqueMove = G.salvos.filter((salvo) => (
+        salvo.player === player &&
+        salvo.cell.x === x &&
+        salvo.cell.y === y),
+      ).length === 0;
+      if (!uniqueMove) {
+        return { ...G };
+      }
       if (shipIndex === -1) { // Miss
         return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y }}] };
       }
