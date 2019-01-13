@@ -42,6 +42,7 @@ test('sanity - rotate ship', () => {
         setShips={setShips}
       />
     </GameBar>));
-  placement.find('Token').at(0).simulate('click');
+  const cell = (placement.find('Radar').props() as any).ships[0].cells[0];
+  (placement.find('Radar').instance() as any)._onClick(cell);
   expect(placement.html()).to.contain('rect');
 });

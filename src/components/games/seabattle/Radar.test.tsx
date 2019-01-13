@@ -18,6 +18,7 @@ test('rotate ships correctly', () => {
       editable={true}
       onEdit={onEdit}
     />));
+  (radar.instance() as Radar)._onClick({x: 0, y: 0});
   radar.find('Token').at(0).simulate('click');
   expect(onEdit.mock.calls[0]).to.deep.equal([[
     {player: 0, cells: [{x: 0, y: 0}, {x: 0, y: 1}], sunk: false},
