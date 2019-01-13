@@ -3,6 +3,10 @@ import * as PropTypes from 'prop-types';
 import { IShip, ICell, ISalvo, getCellVector, validateShips } from './game';
 import { Grid } from 'flamecoals-boardgame.io/ui';
 import { Token } from 'flamecoals-boardgame.io/ui';
+import SvgShip2 from './media/SvgShip2';
+import SvgShip3 from './media/SvgShip3';
+import SvgShip4 from './media/SvgShip4';
+import SvgShip5 from './media/SvgShip5';
 
 export interface IColorMap {
   [key: string]: string;
@@ -74,7 +78,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     if (originalX !== x || originalY !== y) {
       const shipIndex = this._findShip(originalX, originalY);
       this._moveShip(shipIndex, x, y);
-    } 
+    }
   }
 
   _findShip(x: number, y: number): number {
@@ -109,18 +113,34 @@ export class Radar extends React.Component<IRadarProps, {}> {
     this.props.onEdit(newShips);
   }
 
+  _getShipDrawing(size: number, rotation: 'h'|'v') {
+    // Drawings from https://github.com/studioromeo/battleship-svgs (MIT license)
+    // Used SVGR to transform to react components.
+    // https://github.com/smooth-code/svgr
+    let ship;
+    switch (size) {
+      case 2: ship = <SvgShip2 />; break;
+      case 3: ship = <SvgShip3 />; break;
+      case 4: ship = <SvgShip4 />; break;
+      case 5: ship = <SvgShip5 />; break;
+    }
+    if (rotation === 'v') {
+      return <g transform="translate(1 0) rotate(90)">{ship}</g>;
+    } else {
+      return ship;
+    }
+  }
+
   _getShips() {
     const result = [];
     const shipStyle = {fill: 'white', strokeWidth: .05, stroke: 'red'};
     let i = 0;
     for (const ship of this.props.ships) {
       const cell = ship.cells[0];
-      let shipDrawing;
-      if (cell.x === ship.cells[1].x) { // Vertical
-        shipDrawing = <rect width="1" height={ship.cells.length} style={shipStyle} />;
-      } else { // Horizontal
-        shipDrawing = <rect width={ship.cells.length} height="1" style={shipStyle} />;
-      }
+      const shipDrawing = this._getShipDrawing(
+        ship.cells.length,
+        cell.x === ship.cells[1].x ? 'v' : 'h',
+      );
 
       result.push(
         <Token
