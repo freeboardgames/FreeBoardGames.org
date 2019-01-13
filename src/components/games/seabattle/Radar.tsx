@@ -24,8 +24,6 @@ export class Radar extends React.Component<IRadarProps, {}> {
     onClick: PropTypes.func,
   };
 
-  _ignoreClick = false;
-
   constructor(props: IRadarProps) {
     super(props);
     this.state = {
@@ -52,10 +50,6 @@ export class Radar extends React.Component<IRadarProps, {}> {
 
   _onClick = (coords: {x: number, y: number}) => {
     if (this.props.editable) {
-      if (this._ignoreClick) {
-        this._ignoreClick = false;
-        return;
-      }
       const shipIndex = this._findShip(coords.x, coords.y);
       if (shipIndex !== -1) {
         this._rotateShip(shipIndex);
@@ -78,10 +72,9 @@ export class Radar extends React.Component<IRadarProps, {}> {
       return;
     }
     if (originalX !== x || originalY !== y) {
-      this._ignoreClick = true;
       const shipIndex = this._findShip(originalX, originalY);
       this._moveShip(shipIndex, x, y);
-    }
+    } 
   }
 
   _findShip(x: number, y: number): number {
