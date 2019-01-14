@@ -7,6 +7,7 @@ import SvgShip2 from './media/SvgShip2';
 import SvgShip3 from './media/SvgShip3';
 import SvgShip4 from './media/SvgShip4';
 import SvgShip5 from './media/SvgShip5';
+import SvgBackground from './media/SvgBackground';
 
 export interface IColorMap {
   [key: string]: string;
@@ -36,17 +37,19 @@ export class Radar extends React.Component<IRadarProps, {}> {
   }
 
   render() {
-    const colorMap = this._getColorMap();
+    const result = [
+      <SvgBackground onClick={this._onClick} key="background" />,
+    ].concat(this._getShips())
+     .concat(this._getSalvos());
     return (
       <div className="seabattle-radar">
         <Grid
           rows={10}
           cols={10}
-          outline={true}
-          colorMap={colorMap}
+          outline={false}
           onClick={this._onClick}
         >
-          {this._getShips().concat(this._getSalvos())}
+          {result}
         </Grid>
       </div>
     );
@@ -184,16 +187,5 @@ export class Radar extends React.Component<IRadarProps, {}> {
       i++;
     }
     return result;
-  }
-
-  _getColorMap(): IColorMap {
-    const colorMap = {} as IColorMap;
-    for (let x = 0; x < 10; x++) {
-      for (let y = 0; y < 10; y++) {
-        const key = `${x},${y}`;
-        colorMap[key] = 'black';
-      }
-    }
-    return colorMap;
   }
 }

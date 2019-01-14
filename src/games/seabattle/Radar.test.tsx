@@ -71,6 +71,6 @@ test('shoot ships correctly', () => {
       editable={false}
       onClick={onClick}
     />));
-  grid.find({x: 1, y: 2}).find('Square').at(0).simulate('click');
+  grid.find('rect').at(2 * 10 + 1).simulate('click');
   expect(onClick.mock.calls[0]).to.deep.equal([{x: 1, y: 2}]);
 });
