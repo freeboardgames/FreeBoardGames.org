@@ -2,24 +2,27 @@ import * as React from 'react';
 const squares = (props: any) => Array.from({ length: 100 }).map((unused, i) => {
   const x = i % 10;
   const y = Math.floor(i / 10);
-  let _onClick = () => {
+  const _onClick = () => {
     props.onClick({ x, y });
   };
-  return <g
-    key={i}
-    onClick={_onClick}
-    transform={`translate(${x}, ${y})`}>
-    <rect
-      x={0}
-      y={0}
-      fill="red"
-      fillOpacity="0"
-      width="1"
-      height="1"
-      stroke="white"
-      strokeWidth={0.005}
-    />
-  </g>
+  return (
+    <g
+      key={i}
+      onClick={_onClick}
+      transform={`translate(${x}, ${y})`}
+    >
+      <rect
+        x={0}
+        y={0}
+        fill="red"
+        fillOpacity="0"
+        width="1"
+        height="1"
+        stroke="white"
+        strokeWidth={0.005}
+      />
+    </g>
+  );
 });
 const SvgBackground = (props: any) => (
   <g>

@@ -172,9 +172,9 @@ export class Radar extends React.Component<IRadarProps, {}> {
     let i = 100;
     for (const salvo of this.props.salvos) {
       let drawing;
-      if (salvo.hit) { 
-        drawing =  <SvgExplosion />;
-      } else { 
+      if (salvo.hit) {
+        drawing = <SvgExplosion />;
+      } else {
         drawing = <SvgMiss />;
       }
       result.push(
@@ -184,7 +184,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
           draggable={false}
           key={i}
         >
-        {drawing}
+          {drawing}
         </Token>,
       );
       i++;
