@@ -11,9 +11,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
 
 const { Server } = require('flamecoals-boardgame.io/server'); // tslint:disable-line
-import Chess from './components/games/chess/game';
-import { SeabattleGame } from './components/games/seabattle/game';
-import App from './components/App/App';
+import Chess from './games/chess/game';
+import { SeabattleGame } from './games/seabattle/game';
+import App from './App/App';
 
 const HOST = '0.0.0.0';
 const PORT = process.env.PORT || 8000;
