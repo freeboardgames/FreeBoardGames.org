@@ -90,8 +90,9 @@ var config = {
           options: {
             presets: [
               [
-                'env',
+                '@babel/preset-env',
                 {
+                  "useBuiltIns": "usage",
                   "targets": {
                     "browsers": [">1%"]
                   }
