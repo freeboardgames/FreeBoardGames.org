@@ -19,4 +19,4 @@ const GAMES = {
   },
 };
 
-export default {list: [GAMES.chess, GAMES.seabattle], map: GAMES};
+export default { list: [GAMES.chess, GAMES.seabattle], map: GAMES };

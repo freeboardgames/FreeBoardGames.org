@@ -38,7 +38,7 @@ class ChessMenu extends React.Component<IChessMenuProps, {}> {
       );
     }
     if (!this.state.dismissedSharing && code &&
-         playerID === '0') {
+      playerID === '0') {
       alert = (
         <AlertLayer>
           <GameSharing
@@ -57,7 +57,7 @@ class ChessMenu extends React.Component<IChessMenuProps, {}> {
       multiplayer: true,
     }) as any;
     return (
-      <div style={{width: '100%', height: '100%'}}>
+      <div style={{ width: '100%', height: '100%' }}>
         <App gameID={code} playerID={playerID} />
         <MuiThemeProvider>
           {alert}

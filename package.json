@@ -8,12 +8,16 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --forceExit",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
-    "lint": "tslint --fix -c tslint.json 'src/**/*.ts*'",
     "build": "tsc",
     "webpack-run": "webpack && node dist/server.js",
     "prod": "npm run build && webpack && pm2 start pm2-prod.config.js",
     "dev": "tsc-watch --onSuccess \"npm run webpack-run\"",
-    "precommit": "npm run build && npm run test && npm run lint"
+    "precommit": "npm run verify-lint && npm run verify-tsfmt && npm run build && npm run test",
+    "fix": "npm run lint && npm run tsfmt",
+    "tsfmt": "tsfmt -r",
+    "verify-tsfmt": "tsfmt --verify",
+    "lint": "tslint --fix -c tslint.json 'src/**/*.ts*'",
+    "verify-lint": "tslint -c tslint.json 'src/**/*.ts*'"
   },
   "pre-commit": [
     "precommit"

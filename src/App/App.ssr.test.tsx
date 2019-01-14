@@ -17,7 +17,7 @@ describe('App', () => {
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(
       <MuiThemeProvider>
         <StaticRouter location={'/'} context={context}>
-            <App/>
+          <App />
         </StaticRouter>
       </MuiThemeProvider>);
     expect(ssrHtml).toContain('Turnato');
@@ -27,7 +27,7 @@ describe('App', () => {
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(
       <MuiThemeProvider>
         <StaticRouter location={'/g/chess'} context={context}>
-            <App/>
+          <App />
         </StaticRouter>
       </MuiThemeProvider>);
     expect(ssrHtml).toContain('svg');

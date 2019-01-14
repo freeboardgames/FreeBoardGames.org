@@ -20,7 +20,7 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
   };
   constructor(props: IShipsPlacementProps) {
     super(props);
-    this.state = {ships: generateRandomShips(Number(props.playerID))};
+    this.state = { ships: generateRandomShips(Number(props.playerID)) };
   }
 
   render() {
@@ -31,14 +31,14 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
     }
     return (
       <div>
-        <h2 style={{textAlign: 'center'}}>{message}</h2>
+        <h2 style={{ textAlign: 'center' }}>{message}</h2>
         <Radar
           ships={this.state.ships}
           editable={true}
           onEdit={this.onEdit}
         />
         <RaisedButton
-          style={{float: 'right', marginTop: '8px'}}
+          style={{ float: 'right', marginTop: '8px' }}
           label="Done"
           primary={true}
           onClick={this.done}

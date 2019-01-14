@@ -39,7 +39,7 @@ class SeabattleMenu extends React.Component<ISeabattleMenuProps, {}> {
       );
     }
     if (!this.state.dismissedSharing && code &&
-         playerID === '0') {
+      playerID === '0') {
       alert = (
         <AlertLayer>
           <GameSharing
@@ -58,7 +58,7 @@ class SeabattleMenu extends React.Component<ISeabattleMenuProps, {}> {
       multiplayer: true,
     }) as any;
     return (
-      <div style={{width: '100%', height: '100%'}}>
+      <div style={{ width: '100%', height: '100%' }}>
         <App gameID={code} playerID={playerID} />
         <MuiThemeProvider>
           {alert}

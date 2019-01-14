@@ -50,7 +50,7 @@ test('waiting opponent', () => {
     game: SeabattleGame,
   });
   const state0 = client.store.getState();
-  const state1 = {...state0, ctx: { ...state0.ctx, actionPlayers: ['1']}};
+  const state1 = { ...state0, ctx: { ...state0.ctx, actionPlayers: ['1'] } };
   const comp = Enzyme.mount((
     <Board
       G={state1.G}
@@ -70,7 +70,7 @@ test('gameover', () => {
     game: SeabattleGame,
   });
   const state0 = client.store.getState();
-  const state1 = {...state0, ctx: { ...state0.ctx, gameover: { winner: '1' }}};
+  const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
   const comp = Enzyme.mount((
     <Board
       G={state1.G}
@@ -90,7 +90,7 @@ test('battle', () => {
     game: SeabattleGame,
   });
   const state0 = client.store.getState();
-  const state1 = {...state0, ctx: { ...state0.ctx, phase: 'play'}};
+  const state1 = { ...state0, ctx: { ...state0.ctx, phase: 'play' } };
   const comp = Enzyme.mount((
     <Board
       G={state1.G}
