@@ -8,8 +8,8 @@ describe('App', () => {
 
   it('should contain Turnato title', () => {
     const wrapper = mount(
-        <TurnatoBar>
-          hello world
+      <TurnatoBar>
+        hello world
         </TurnatoBar>);
     expect(wrapper.text()).to.include('Turnato');
   });

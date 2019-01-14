@@ -26,7 +26,7 @@ class TwitterIcon extends React.Component<{}, {}> {
                    163.526,595.211,141.422,612,116.258z`;
     return (
       <SvgIcon viewBox="0 0 612 612">
-        <path d={path1}/>
+        <path d={path1} />
       </SvgIcon>
     );
   }

@@ -67,7 +67,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     const message = this._getMessage();
     return (
       <div>
-        <h2 style={{textAlign: 'center'}}>{message}</h2>
+        <h2 style={{ textAlign: 'center' }}>{message}</h2>
         <Radar
           ships={ships}
           salvos={salvos}

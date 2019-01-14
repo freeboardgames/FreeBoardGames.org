@@ -66,7 +66,7 @@ function getBoard(matchCode: string) {
       return (
         <GameBar>
           <div>
-            <h2 style={{textAlign: 'center'}}>
+            <h2 style={{ textAlign: 'center' }}>
               {this._getStatus()}
             </h2>
             <Checkerboard
@@ -81,7 +81,7 @@ function getBoard(matchCode: string) {
       );
     }
 
-    getPlayer(): 'w'|'b' {
+    getPlayer(): 'w' | 'b' {
       if (this.props.playerID === '1') {
         return 'b';
       } else {

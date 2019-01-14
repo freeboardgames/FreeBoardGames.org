@@ -25,11 +25,11 @@ test('Set ships correctly', () => {
 test('invalid positioning', () => {
   const setShips = jest.fn();
   const placement = Enzyme.shallow((
-      <ShipsPlacement
-        playerID={'0'}
-        setShips={setShips}
-      />));
-  placement.setState({ships: []});
+    <ShipsPlacement
+      playerID={'0'}
+      setShips={setShips}
+    />));
+  placement.setState({ ships: [] });
   expect(placement.find('h2').html()).to.contain('INVALID POSITIONING');
 });
 

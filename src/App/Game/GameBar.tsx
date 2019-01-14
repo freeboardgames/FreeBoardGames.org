@@ -4,7 +4,7 @@ import AlertLayer from './AlertLayer';
 import * as PropTypes from 'prop-types';
 
 interface IGameBarProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 class GameBar extends React.Component<IGameBarProps, {}> {
@@ -34,7 +34,7 @@ class GameBar extends React.Component<IGameBarProps, {}> {
         >
           {this.props.children}
         </div>
-     </MuiThemeProvider>
+      </MuiThemeProvider>
     );
   }
 }

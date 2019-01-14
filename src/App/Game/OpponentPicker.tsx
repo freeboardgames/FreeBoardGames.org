@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Card, CardTitle, CardText} from 'material-ui/Card';
+import { Card, CardTitle, CardText } from 'material-ui/Card';
 import AndroidIcon from 'material-ui/svg-icons/action/android';
 import GroupIcon from 'material-ui/svg-icons/social/group';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import * as shortid from 'shortid';
 import * as PropTypes from 'prop-types';
 
@@ -35,7 +35,7 @@ export class OpponentPicker extends React.Component<IOpponentPickerProps, {}> {
       <Card>
         <CardTitle title="Choose Opponent" />
         <CardText>
-          <List style={{textAlign: 'left'}}>{options}</List>
+          <List style={{ textAlign: 'left' }}>{options}</List>
         </CardText>
       </Card>
     );

@@ -28,7 +28,7 @@ interface ICtx {
 }
 
 const VALID_SHIPS_SIZES: number[] = [5, 4, 3, 2];
-const VALID_SHIPS_COUNT: {[size: number]: number} = {
+const VALID_SHIPS_COUNT: { [size: number]: number } = {
   5: 1,
   4: 1,
   3: 2,
@@ -52,7 +52,7 @@ export const SeabattleGame = Game({
     },
     salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
       const player = parseInt(ctx.playerID, 10);
-      const shipIndex = findShipWithCell(G.ships, {x, y}, player);
+      const shipIndex = findShipWithCell(G.ships, { x, y }, player);
       // Do not allow the same cells to be shot twice
       const uniqueMove = G.salvos.filter((salvo) => (
         salvo.player === player &&
@@ -63,17 +63,18 @@ export const SeabattleGame = Game({
         return { ...G };
       }
       if (shipIndex === -1) { // Miss
-        return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y }}] };
+        return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y } }] };
       }
       // Hit
-      const newShips = [ ... G.ships ];
+      const newShips = [...G.ships];
       if (countShipHits(G.salvos, shipIndex) + 1 === G.ships[shipIndex].cells.length) {
         newShips[shipIndex] = { ...newShips[shipIndex], sunk: true };
       }
-      return { ...G,
-               ships: newShips,
-               salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: shipIndex}],
-             };
+      return {
+        ...G,
+        ships: newShips,
+        salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: shipIndex }],
+      };
     },
   },
 
@@ -128,9 +129,9 @@ export function generateRandomShips(player: number): IShip[] {
 // Wheather a setup is valid or not.
 export function validateShips(ships: IShip[], player?: number): IShipsValidationResult {
   const validations = [validateShipsCount(ships),
-                 validateShipsContinuity(ships),
-                 validateShipsNotOutOfBounds(ships),
-                 validateShipsNotOverlapping(ships)];
+  validateShipsContinuity(ships),
+  validateShipsNotOutOfBounds(ships),
+  validateShipsNotOverlapping(ships)];
   if (player !== undefined) {
     validations.push(validateShipsOwnership(player, ships));
   }
@@ -139,7 +140,7 @@ export function validateShips(ships: IShip[], player?: number): IShipsValidation
       return validation;
     }
   }
-  return {valid: true};
+  return { valid: true };
 }
 
 // PRIVATE FUNCTIONS
@@ -153,14 +154,14 @@ function checkAllShipsSunk(ships: IShip[], player: number): boolean {
 }
 
 function randomlyGetShip(player: number, shipSize: number): IShip {
-  const cell: ICell = {x: getRandomInt(10), y: getRandomInt(10)};
+  const cell: ICell = { x: getRandomInt(10), y: getRandomInt(10) };
   const direction = getRandomInt(2) === 1 ? 'H' : 'V';
-  const ship: IShip = {player,  cells: [], sunk: false};
+  const ship: IShip = { player, cells: [], sunk: false };
   for (let i = 0; i < shipSize; i++) {
     if (direction === 'H') { // Constant y
-      ship.cells.push({...cell, x: (cell.x + i)});
+      ship.cells.push({ ...cell, x: (cell.x + i) });
     } else { // Constant x
-      ship.cells.push({...cell, y: (cell.y + i)});
+      ship.cells.push({ ...cell, y: (cell.y + i) });
     }
   }
   return ship;
@@ -189,29 +190,29 @@ interface IShipsValidationResult {
 
 function validateShipsCount(ships: IShip[]): IShipsValidationResult {
   const shipsLength = ships.map((ship: IShip) => (ship.cells.length));
-  const count: {[key: number]: number} = {...VALID_SHIPS_COUNT};
+  const count: { [key: number]: number } = { ...VALID_SHIPS_COUNT };
   for (const length of shipsLength) {
     if (!(length in count)) {
-      return {valid: false, error: `Invalid ship length: ${length}`};
+      return { valid: false, error: `Invalid ship length: ${length}` };
     }
     count[length]--;
   }
   for (const length of Object.values(count)) {
     if (length !== 0) {
-      return {valid: false, error: 'Invalid ships sizes.'};
+      return { valid: false, error: 'Invalid ships sizes.' };
     }
   }
-  return {valid: true};
+  return { valid: true };
 }
 
 function validateShipsOwnership(player: number, ships: IShip[]): IShipsValidationResult {
   const owners = ships.map((ship: IShip) => (ship.player));
   for (const owner of owners) {
     if (owner !== player) {
-      return {valid: false, error: `Invalid player owner: ${owner} should be: ${player}`};
+      return { valid: false, error: `Invalid player owner: ${owner} should be: ${player}` };
     }
   }
-  return {valid: true};
+  return { valid: true };
 }
 
 function validateShipsContinuity(ships: IShip[]): IShipsValidationResult {
@@ -222,49 +223,49 @@ function validateShipsContinuity(ships: IShip[]): IShipsValidationResult {
     let lastICell: ICell = ship.cells[0];
     const vector: ICell = getCellVector(ship.cells[1], ship.cells[0]);
     if (!((Math.abs(vector.x) === 1 && Math.abs(vector.y) === 0) ||
-         (Math.abs(vector.x) === 0 && Math.abs(vector.y) === 1))) {
-      return {valid: false, error: `IShip is not spaced right!`};
+      (Math.abs(vector.x) === 0 && Math.abs(vector.y) === 1))) {
+      return { valid: false, error: `IShip is not spaced right!` };
     }
     for (let i = 1; i < ship.cells.length; i++) {
       const cell = ship.cells[i];
       const newVector = getCellVector(cell, lastICell);
       if (newVector.x !== vector.x || newVector.y !== vector.y) {
-        return {valid: false, error: `IShip is not continuous!`};
+        return { valid: false, error: `IShip is not continuous!` };
       }
       lastICell = cell;
     }
   }
-  return {valid: true};
+  return { valid: true };
 }
 
 export function getCellVector(a: ICell, b: ICell): ICell {
-  return {x: a.x - b.x, y: a.y - b.y};
+  return { x: a.x - b.x, y: a.y - b.y };
 }
 
 function validateShipsNotOutOfBounds(ships: IShip[]): IShipsValidationResult {
   for (const ship of ships) {
     for (const cell of ship.cells) {
       if (cell.x < 0 || cell.x > 9 ||
-          cell.y < 0 || cell.y > 9) {
-        return {valid: false, error: `IShip out of bounds!`};
+        cell.y < 0 || cell.y > 9) {
+        return { valid: false, error: `IShip out of bounds!` };
       }
     }
   }
-  return {valid: true};
+  return { valid: true };
 }
 
 function validateShipsNotOverlapping(ships: IShip[]): IShipsValidationResult {
-  const cellsUsed: {[x: number]: {[y: number]: boolean}} = {};
+  const cellsUsed: { [x: number]: { [y: number]: boolean } } = {};
   for (const ship of ships) {
     for (const cell of ship.cells) {
       if (!(cell.x in cellsUsed)) {
         cellsUsed[cell.x] = {};
       }
       if (cellsUsed[cell.x][cell.y]) {
-        return {valid: false, error: `Overlapping ships!`};
+        return { valid: false, error: `Overlapping ships!` };
       }
       cellsUsed[cell.x][cell.y] = true;
     }
   }
-  return {valid: true};
+  return { valid: true };
 }

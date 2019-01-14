@@ -52,7 +52,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     );
   }
 
-  _onClick = (coords: {x: number, y: number}) => {
+  _onClick = (coords: { x: number, y: number }) => {
     if (this.props.editable) {
       const shipIndex = this._findShip(coords.x, coords.y);
       if (shipIndex !== -1) {
@@ -67,7 +67,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     return this.props.editable;
   }
 
-  _onDrop = (coords: {x: number; y: number; originalX: number; originalY: number}) => {
+  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
     const originalX = coords.originalX;
@@ -108,12 +108,12 @@ export class Radar extends React.Component<IRadarProps, {}> {
     for (let i = 0; i < ship.cells.length; i++) {
       newCells.push({ x: x + vector.x * i, y: y + vector.y * i });
     }
-    const newShips = [ ... this.props.ships ];
+    const newShips = [... this.props.ships];
     newShips[index] = { ...ship, cells: newCells };
     this.props.onEdit(newShips);
   }
 
-  _getShipDrawing(size: number, rotation: 'h'|'v') {
+  _getShipDrawing(size: number, rotation: 'h' | 'v') {
     // Drawings from https://github.com/studioromeo/battleship-svgs (MIT license)
     // Used SVGR to transform to react components.
     // https://github.com/smooth-code/svgr
@@ -133,7 +133,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
 
   _getShips() {
     const result = [];
-    const shipStyle = {fill: 'white', strokeWidth: .05, stroke: 'red'};
+    const shipStyle = { fill: 'white', strokeWidth: .05, stroke: 'red' };
     let i = 0;
     for (const ship of this.props.ships) {
       const cell = ship.cells[0];
