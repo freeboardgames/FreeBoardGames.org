@@ -8,13 +8,13 @@ cache:
     - node_modules
 
 install:
-  - npm install
+  - yarn install
 
 script:
-  - npm run lint
-  - npm run build
-  - npm run test
-  - npm run test:coverage
+  - yarn run lint
+  - yarn run build
+  - yarn run test
+  - yarn run test:coverage
 
 after_success:
-  - npm run test:coveralls
+  - yarn run test:coveralls
