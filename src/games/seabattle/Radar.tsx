@@ -8,6 +8,8 @@ import SvgShip3 from './media/SvgShip3';
 import SvgShip4 from './media/SvgShip4';
 import SvgShip5 from './media/SvgShip5';
 import SvgBackground from './media/SvgBackground';
+import SvgExplosion from './media/SvgExplosion';
+import SvgMiss from './media/SvgMiss';
 
 export interface IColorMap {
   [key: string]: string;
@@ -169,6 +171,12 @@ export class Radar extends React.Component<IRadarProps, {}> {
     }
     let i = 100;
     for (const salvo of this.props.salvos) {
+      let drawing;
+      if (salvo.hit) { 
+        drawing =  <SvgExplosion />;
+      } else { 
+        drawing = <SvgMiss />;
+      }
       result.push(
         <Token
           x={salvo.cell.x}
@@ -176,12 +184,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
           draggable={false}
           key={i}
         >
-          <circle
-            cx="0.5"
-            cy="0.5"
-            r="0.5"
-            fill={(salvo.hit) ? 'red' : 'white'}
-          />
+        {drawing}
         </Token>,
       );
       i++;
