@@ -117,6 +117,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     });
     copy(this._getLink());
     alert('Link copied to clipboard');
+    this.props.onDismiss();
   }
 
   _getLink() {
