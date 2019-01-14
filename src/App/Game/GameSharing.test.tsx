@@ -45,12 +45,12 @@ describe('Game sharing', () => {
     const mockFn = jest.fn();
     location.assign = mockFn;
     const wrapper = shallow((
-        <GameSharing
-          gameCode={'foocode'}
-          matchCode={'barmatch'}
-          playerID={'0'}
-          onDismiss={doNothing}
-        />
+      <GameSharing
+        gameCode={'foocode'}
+        matchCode={'barmatch'}
+        playerID={'0'}
+        onDismiss={doNothing}
+      />
     ));
     wrapper.find(IconButton).at(0).simulate('click');
     expect(mockFn.mock.calls.length).to.equal(1);
@@ -61,12 +61,12 @@ describe('Game sharing', () => {
     const mockFn = jest.fn();
     window.open = mockFn;
     const wrapper = shallow((
-        <GameSharing
-          gameCode={'foocode'}
-          matchCode={'barmatch'}
-          playerID={'0'}
-          onDismiss={doNothing}
-        />
+      <GameSharing
+        gameCode={'foocode'}
+        matchCode={'barmatch'}
+        playerID={'0'}
+        onDismiss={doNothing}
+      />
     ));
     wrapper.find(IconButton).at(1).simulate('click');
     expect(mockFn.mock.calls.length).to.equal(1);
@@ -77,12 +77,12 @@ describe('Game sharing', () => {
     const mockFn = jest.fn();
     window.open = mockFn;
     const wrapper = shallow((
-        <GameSharing
-          gameCode={'foocode'}
-          matchCode={'barmatch'}
-          playerID={'0'}
-          onDismiss={doNothing}
-        />
+      <GameSharing
+        gameCode={'foocode'}
+        matchCode={'barmatch'}
+        playerID={'0'}
+        onDismiss={doNothing}
+      />
     ));
     wrapper.find(IconButton).at(2).simulate('click');
     expect(mockFn.mock.calls.length).to.equal(1);
@@ -93,12 +93,12 @@ describe('Game sharing', () => {
     const mockFn = jest.fn();
     window.alert = mockFn;
     const wrapper = shallow((
-        <GameSharing
-          gameCode={'foocode'}
-          matchCode={'barmatch'}
-          playerID={'1'}
-          onDismiss={doNothing}
-        />
+      <GameSharing
+        gameCode={'foocode'}
+        matchCode={'barmatch'}
+        playerID={'1'}
+        onDismiss={doNothing}
+      />
     ));
     wrapper.find(IconButton).at(3).simulate('click');
     const mockFn2 = (global as any).copyClipboardMock;

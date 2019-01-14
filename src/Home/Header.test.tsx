@@ -7,7 +7,7 @@ import { expect } from 'chai';
 describe('Header', () => {
 
   it('should contain Chess option', () => {
-    const wrapper = mount(<MuiThemeProvider><Header/></MuiThemeProvider>);
+    const wrapper = mount(<MuiThemeProvider><Header /></MuiThemeProvider>);
     expect(wrapper.text()).to.include('Play when you can');
   });
 

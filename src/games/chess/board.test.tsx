@@ -13,10 +13,12 @@ test('render board - all states', () => {
   const Board = getBoard('codeFoo');
   const board = Enzyme.mount((
     <Board
-      G={{pgn: ''}}
-      ctx={{numPlayer: 2, turn: 0,  gameover: 'd',
-          currentPlayer: '0', currentPlayerMoves: 0}}
-      moves={{move:  moveMock}}
+      G={{ pgn: '' }}
+      ctx={{
+        numPlayer: 2, turn: 0, gameover: 'd',
+        currentPlayer: '0', currentPlayerMoves: 0,
+      }}
+      moves={{ move: moveMock }}
       playerID="0"
       isActive={true}
       isConnected={true}
@@ -25,14 +27,16 @@ test('render board - all states', () => {
   expect(board.html()).to.contain('Draw');
   board.setProps({
     ...board.props(),
-    ctx: {numPlayer: 2, turn: 0,  gameover: 'b',
+    ctx: {
+      numPlayer: 2, turn: 0, gameover: 'b',
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });
   expect(board.html()).to.contain('YOU LOST');
   board.setProps({
     ...board.props(),
-    ctx: {numPlayer: 2, turn: 0,  gameover: 'w',
+    ctx: {
+      numPlayer: 2, turn: 0, gameover: 'w',
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });
@@ -44,10 +48,11 @@ test('render board - all states', () => {
   expect(board.html()).to.contain('YOU LOST');
   board.setProps({
     ...board.props(),
-    ctx: {numPlayer: 2, turn: 0,
+    ctx: {
+      numPlayer: 2, turn: 0,
       currentPlayer: '0', currentPlayerMoves: 0,
     },
-    G: {pgn: '1.f4 e5 2.g4 Qh4#'},
+    G: { pgn: '1.f4 e5 2.g4 Qh4#' },
   });
   expect(board.html()).to.contain('CHECK');
 });
@@ -61,10 +66,12 @@ test('little game', () => {
   const Board = getBoard('codeFoo');
   const board = Enzyme.mount((
     <Board
-      G={{pgn: ''}}
-      ctx={{numPlayer: 2, turn: 0,
-          currentPlayer: '0', currentPlayerMoves: 0}}
-      moves={{move:  moveMock}}
+      G={{ pgn: '' }}
+      ctx={{
+        numPlayer: 2, turn: 0,
+        currentPlayer: '0', currentPlayerMoves: 0,
+      }}
+      moves={{ move: moveMock }}
       playerID="0"
       isActive={true}
       isConnected={true}
@@ -85,15 +92,16 @@ test('little game', () => {
 
   // move to f4
   board.find('rect').at(rowColAt(4, 6)).simulate('click');
-  expect(moveMock.mock.calls[0]).to.deep.equal([ 'f4' ]);
+  expect(moveMock.mock.calls[0]).to.deep.equal(['f4']);
 
   // mock move
   board.setProps({
     ...board.props(),
-    ctx: {numPlayer: 2, turn: 1,
+    ctx: {
+      numPlayer: 2, turn: 1,
       currentPlayer: '1', currentPlayerMoves: 0,
     },
-    G: {pgn: '1.f4'},
+    G: { pgn: '1.f4' },
   });
   expect(board.html()).to.contain('Waiting for opponent');
 
@@ -123,5 +131,5 @@ test('little game', () => {
 
   // move to a5
   board.find('rect').at(rowColAt(5, 1)).simulate('click');
-  expect(moveMock.mock.calls[1]).to.deep.equal([ 'a5' ]);
+  expect(moveMock.mock.calls[1]).to.deep.equal(['a5']);
 });

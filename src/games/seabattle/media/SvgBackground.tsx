@@ -1,30 +1,30 @@
 /* tslint:disable */
 import * as React from 'react';
 const squares = (props: any) => Array.from({ length: 100 }).map((unused, i) => {
-  const x = i%10;
-  const y = Math.floor(i/10);
+  const x = i % 10;
+  const y = Math.floor(i / 10);
   let _onClick = () => {
-    props.onClick({ x, y }); 
+    props.onClick({ x, y });
   };
   return <g
-    key={i}  
-    onClick={_onClick} 
+    key={i}
+    onClick={_onClick}
     transform={`translate(${x}, ${y})`}>
-      <rect
-        x={0} 
-        y={0} 
-        fill="red"
-        fillOpacity="0"
-        width="1" 
-        height="1"  
-        stroke="white" 
-        strokeWidth={0.005} 
-      />
-    </g>
+    <rect
+      x={0}
+      y={0}
+      fill="red"
+      fillOpacity="0"
+      width="1"
+      height="1"
+      stroke="white"
+      strokeWidth={0.005}
+    />
+  </g>
 });
 const SvgBackground = (props: any) => (
   <g>
-		// .svg starts here
+    // .svg starts here
     <defs>
       <linearGradient id="background_svg__a">
         <stop offset={0} stopColor="#203f5c" />
@@ -48,10 +48,9 @@ const SvgBackground = (props: any) => (
       fillRule="evenodd"
       d="M0 0h10v10H0z"
     />
-		// .svg ends here
+    // .svg ends here
     {squares(props)}
   </g>
 );
 
 export default SvgBackground;
-

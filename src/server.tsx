@@ -37,10 +37,10 @@ const renderSite = (url: string, title?: string) => {
         location={url}
         context={context}
       >
-        <App/>
+        <App />
       </StaticRouter>
     </MuiThemeProvider>);
-  return Mustache.render(template, {title, reactHtml});
+  return Mustache.render(template, { title, reactHtml });
 };
 
 router.get('/g/chess', (ctx, next) => {

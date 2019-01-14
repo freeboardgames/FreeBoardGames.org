@@ -9,7 +9,7 @@ class Home extends React.Component<{}, {}> {
       <TurnatoBar>
         <Header />
         <GamesSection />
-        <p style={{fontSize: '12px', textAlign: 'center'}}>
+        <p style={{ fontSize: '12px', textAlign: 'center' }}>
           Made with ♥&nbsp;-&nbsp;
           <a
             href="https://github.com/Felizardo/turnato"

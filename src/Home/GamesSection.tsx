@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ListItem} from 'material-ui/List';
+import { ListItem } from 'material-ui/List';
 import PlacesCasino from 'material-ui/svg-icons/places/casino';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import Subheader from 'material-ui/Subheader';
@@ -16,7 +16,7 @@ class GamesSection extends React.Component<any, any> {
         containerElement={<Link to={game.link} />}
         leftIcon={<PlacesCasino />}
         rightIcon={<NavigationChevronRight />}
-        style={{WebkitAppearance: 'inherit'}}
+        style={{ WebkitAppearance: 'inherit' }}
       />
     ));
     return (

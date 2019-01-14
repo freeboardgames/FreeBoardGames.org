@@ -17,7 +17,7 @@ describe('App', () => {
     const wrapper = Enzyme.mount(
       <MuiThemeProvider>
         <StaticRouter location={'/'} context={context}>
-            <App/>
+          <App />
         </StaticRouter>
       </MuiThemeProvider>);
     expect(wrapper.find(Home)).to.have.lengthOf(1);
@@ -28,7 +28,7 @@ describe('App', () => {
     const wrapper = Enzyme.mount(
       <MuiThemeProvider>
         <StaticRouter location={'/g/Chess'} context={context}>
-          <App/>
+          <App />
         </StaticRouter>
       </MuiThemeProvider>);
     expect(wrapper.find(Chess)).to.have.lengthOf(1);
@@ -39,7 +39,7 @@ describe('App', () => {
     const wrapper = Enzyme.mount(
       <MuiThemeProvider>
         <StaticRouter location={'/doesnotexist'} context={context}>
-          <App/>
+          <App />
         </StaticRouter>
       </MuiThemeProvider>);
     expect(wrapper.find(NotFound)).to.have.lengthOf(1);

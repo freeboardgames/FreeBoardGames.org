@@ -36,7 +36,7 @@ import { Grid } from 'flamecoals-boardgame.io/ui';
  * </Checkerboard>
  */
 export interface IAlgebraicCoords {
- square: string;
+  square: string;
 }
 export interface ICartesianCoords {
   x: number;

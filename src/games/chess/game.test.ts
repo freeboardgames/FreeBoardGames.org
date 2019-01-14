@@ -7,18 +7,19 @@ test('little game', () => {
   const action = { type: 'move', args: ['f4'] };
   const ctx = ChessGame.flow.ctx(2);
   expect(ChessGame.processMove(initialState, action, ctx)).to.deep.equal(
-      { pgn: '1. f4'});
+    { pgn: '1. f4' });
 
   ctx.currentPlayer = '1';
   expect(ChessGame.processMove(initialState, action, ctx)).to.deep.equal(initialState);
 
   // test flow
   const checkMateG = { pgn: '1.f3 e5 2.g4 Qh4#' };
-  ctx.stats = {turn: {numMoves: {1: 1}}};
+  ctx.stats = { turn: { numMoves: { 1: 1 } } };
   const newState = ChessGame.flow.processGameEvent({
-    ctx, G: checkMateG}, {
+    ctx, G: checkMateG,
+  }, {
       type: 'GAME_EVENT',
-      payload: {type: 'endTurn'},
+      payload: { type: 'endTurn' },
     });
   expect(newState.ctx.gameover).to.equal('b');
 });

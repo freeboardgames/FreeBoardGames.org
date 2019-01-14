@@ -45,7 +45,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       );
     }
     if (ctx.phase === 'setup' &&
-        (this.props.playerID === null ||
+      (this.props.playerID === null ||
         ctx.actionPlayers.includes(this.props.playerID))) {
       return (
         <GameBar>

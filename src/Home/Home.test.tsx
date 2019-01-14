@@ -10,8 +10,8 @@ describe('Home', () => {
 
   it('should contain Chess option', () => {
     const wrapper = Enzyme.mount(
-      <MemoryRouter initialEntries={[ '/' ]}>
-          <Home/>
+      <MemoryRouter initialEntries={['/']}>
+        <Home />
       </MemoryRouter>);
     expect(wrapper.find(GamesSection)).to.have.lengthOf(1);
   });

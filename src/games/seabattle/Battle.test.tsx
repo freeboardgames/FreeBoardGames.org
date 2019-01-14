@@ -31,7 +31,7 @@ test('one phase', () => {
       currentPlayer={store.getState().ctx.currentPlayer}
     />);
   // should be ignroed
-  grid.find({x: 0, y: 9}).find('Square').at(0).simulate('click');
+  grid.find({ x: 0, y: 9 }).find('Square').at(0).simulate('click');
   expect(grid.html()).to.contain('CLICK TO SHOOT');
 
   grid.setProps({
