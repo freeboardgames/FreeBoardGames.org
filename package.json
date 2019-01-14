@@ -13,7 +13,9 @@
     "webpack-run": "webpack && node dist/server.js",
     "prod": "npm run build && webpack && pm2 start pm2-prod.config.js",
     "dev": "tsc-watch --onSuccess \"npm run webpack-run\"",
-    "precommit": "npm run build && npm run test && npm run lint"
+    "precommit": "npm run verify-tsfmt && npm run build && npm run test && npm run lint",
+    "tsfmt": "tsfmt -r",
+    "verify-tsfmt": "tsfmt --verify"
   },
   "pre-commit": [
     "precommit"
