@@ -12,7 +12,7 @@ Play now at http://turnato.com/
 git clone https://github.com/flamecoals/turnato
 cd turnato
 
-npm install
+yarn install
 
-npm run dev
+yarn run dev
 ```
