@@ -69,6 +69,7 @@
     "ts-loader": "^5.3.3",
     "tsc-watch": "^1.0.31",
     "tslint": "^5.12.1",
+    "tslint-language-service": "^0.9.9",
     "tslint-react": "^3.2.0",
     "typescript": "^3.2.2",
     "typescript-formatter": "^7.2.2",
