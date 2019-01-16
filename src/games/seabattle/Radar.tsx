@@ -10,6 +10,7 @@ import SvgShip5 from './media/SvgShip5';
 import SvgBackground from './media/SvgBackground';
 import SvgExplosion from './media/SvgExplosion';
 import SvgMiss from './media/SvgMiss';
+import { Blink } from '../../App/Blink';
 
 export interface IColorMap {
   [key: string]: string;
@@ -172,10 +173,12 @@ export class Radar extends React.Component<IRadarProps, {}> {
     let i = 100;
     for (const salvo of this.props.salvos) {
       let drawing;
+      const blinks = 3;
+      const frequency = 300;
       if (salvo.hit) {
-        drawing = <SvgExplosion />;
+        drawing = <Blink blinks={blinks}><SvgExplosion /></Blink>;
       } else {
-        drawing = <SvgMiss />;
+        drawing = <Blink blinks={blinks}><SvgMiss /></Blink>;
       }
       result.push(
         <Token
