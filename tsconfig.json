@@ -6,6 +6,9 @@
     "target": "ES6",
     "jsx": "react",
     "moduleResolution": "node",
+    "plugins": [
+      { "name": "tslint-language-service"}
+    ],
     "typeRoots": [
       "node_modules/@types",
       "@types",
