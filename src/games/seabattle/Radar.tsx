@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { IShip, ICell, ISalvo, getCellVector, validateShips } from './game';
 import { Grid } from 'flamecoals-boardgame.io/ui';
 import { Token } from 'flamecoals-boardgame.io/ui';
@@ -10,6 +9,7 @@ import SvgShip5 from './media/SvgShip5';
 import SvgBackground from './media/SvgBackground';
 import SvgExplosion from './media/SvgExplosion';
 import SvgMiss from './media/SvgMiss';
+import { Blink } from '../../App/Blink';
 
 export interface IColorMap {
   [key: string]: string;
@@ -18,19 +18,12 @@ interface IRadarProps {
   ships: IShip[];
   salvos?: ISalvo[];
   editable: boolean;
+  blinkSalvo?: boolean;
   onEdit?: (ships: IShip[]) => void;
   onClick?: (cell: ICell) => void;
 }
 
 export class Radar extends React.Component<IRadarProps, {}> {
-  static propTypes = {
-    ships: PropTypes.array,
-    salvos: PropTypes.array,
-    editable: PropTypes.bool,
-    onEdit: PropTypes.func,
-    onClick: PropTypes.func,
-  };
-
   constructor(props: IRadarProps) {
     super(props);
     this.state = {
@@ -169,7 +162,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     if (!this.props.salvos) {
       return result;
     }
-    let i = 100;
+    let i = 0;
     for (const salvo of this.props.salvos) {
       let drawing;
       if (salvo.hit) {
@@ -177,12 +170,16 @@ export class Radar extends React.Component<IRadarProps, {}> {
       } else {
         drawing = <SvgMiss />;
       }
+      if (this.props.blinkSalvo &&
+        i === this.props.salvos.length - 1) {
+        drawing = <Blink>{drawing}</Blink>;
+      }
       result.push(
         <Token
           x={salvo.cell.x}
           y={salvo.cell.y}
           draggable={false}
-          key={i}
+          key={i + 100}
         >
           {drawing}
         </Token>,
