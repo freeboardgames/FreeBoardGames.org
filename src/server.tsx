@@ -57,5 +57,5 @@ server.app.use((ctx: any) => {
 });
 
 server.app.listen(PORT, HOST, () => {
-  console.log(`Serving ${NODE_ENV} at: http://localhost:${PORT}/`); // tslint:disable-line
+  console.log(`Serving ${NODE_ENV} at: http://${HOST}:${PORT}/`); // tslint:disable-line
 });
