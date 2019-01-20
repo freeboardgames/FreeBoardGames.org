@@ -6,33 +6,37 @@ interface IBlinkState {
 }
 
 interface IBlinkProps {
-  blinks: number;
+  totalDurationMillis?: number;
+  blinkDurationMillis?: number;
 }
 
 export class Blink extends React.Component<IBlinkProps, IBlinkState> {
+  static defaultProps = {
+    totalDurationMillis: 2000,
+    blinkDurationMillis: 300,
+  };
   constructor(props: IBlinkProps) {
     super(props);
     this.state = {
       hidden: false,
       startTime: Date.now(),
     };
-    requestAnimationFrame(this._animate(Date.now(), 0));
+    requestAnimationFrame(this._animate(Date.now()));
   }
-  _animate = (now: number, blinks: number) => {
+  _animate = (now: number) => () => {
     const elapsed = now - this.state.startTime;
-    const length = 2e3;
-    const done = elapsed > length || blinks > this.props.blinks;
-    return (() => {
-      const hidden = done ? false : ((Math.floor(elapsed / 400 % 2)) === 1);
-      if (this.state.hidden !== hidden) {
-        blinks++;
-      }
-      this.setState({
-        ... this.state,
-        hidden,
-      });
-      requestAnimationFrame(this._animate(Date.now(), blinks));
-    }).bind(this);
+    const done = elapsed > this.props.totalDurationMillis;
+    const blinkHidden = Math.floor(
+      elapsed / this.props.blinkDurationMillis % 2,
+    ) === 1;
+    const hidden = done ? false : blinkHidden;
+    this.setState({
+      ... this.state,
+      hidden,
+    });
+    if (!done) {
+      requestAnimationFrame(this._animate(Date.now()));
+    }
   }
   render() {
     return (this.state.hidden) ? null : this.props.children;

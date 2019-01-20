@@ -72,6 +72,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
           ships={ships}
           salvos={salvos}
           editable={false}
+          blinkSalvo={this.state.showSalvo}
           onClick={this._onClick}
         />
       </div>
