@@ -1,16 +1,16 @@
 import * as React from 'react';
-import getBoard from './board';
+import { Board } from './board';
 import { expect } from 'chai';
 import * as Enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 import RaisedButton from 'material-ui/RaisedButton';
+import { GameMode } from '../../App/Game/GameModePicker';
 
 Enzyme.configure({ adapter: new Adapter() });
 jest.mock('react-ga');
 
-test('render board - all states', () => {
+test('render board - all states - local friend', () => {
   const moveMock = jest.fn();
-  const Board = getBoard('codeFoo');
   const board = Enzyme.mount((
     <Board
       G={{ pgn: '' }}
@@ -22,6 +22,70 @@ test('render board - all states', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
+    />
+  ));
+  expect(board.html()).to.contain('Draw');
+  board.setProps({
+    ...board.props(),
+    ctx: {
+      numPlayer: 2, turn: 0, gameover: 'b',
+      currentPlayer: '0', currentPlayerMoves: 0,
+    },
+  });
+  expect(board.html()).to.contain('BLACK WON');
+  board.setProps({
+    ...board.props(),
+    ctx: {
+      numPlayer: 2, turn: 0, gameover: 'w',
+      currentPlayer: '0', currentPlayerMoves: 0,
+    },
+  });
+  expect(board.html()).to.contain('WHITE WON');
+  board.setProps({
+    ...board.props(),
+    ctx: {
+      numPlayer: 2, turn: 0,
+      currentPlayer: '0', currentPlayerMoves: 0,
+    },
+  });
+  expect(board.html()).to.contain('White\'s turn');
+  board.setProps({
+    ...board.props(),
+    ctx: {
+      numPlayer: 2, turn: 1,
+      currentPlayer: '1', currentPlayerMoves: 0,
+    },
+    G: { pgn: '1.f4' },
+  });
+  expect(board.html()).to.contain('Black\'s turn');
+  board.setProps({
+    ...board.props(),
+    ctx: {
+      numPlayer: 2, turn: 0,
+      currentPlayer: '0', currentPlayerMoves: 0,
+    },
+    G: { pgn: '1.f4 e5 2.g4 Qh4#' },
+  });
+  expect(board.html()).to.contain('CHECK');
+});
+
+test('render board - all states - online friend', () => {
+  const moveMock = jest.fn();
+  const board = Enzyme.mount((
+    <Board
+      G={{ pgn: '' }}
+      ctx={{
+        numPlayer: 2, turn: 0, gameover: 'd',
+        currentPlayer: '0', currentPlayerMoves: 0,
+      }}
+      moves={{ move: moveMock }}
+      playerID="0"
+      isActive={true}
+      isConnected={true}
+      gameArgs={{
+        gameCode: 'chess',
+        mode: GameMode.OnlineFriend,
+      }}
     />
   ));
   expect(board.html()).to.contain('Draw');
@@ -63,7 +127,6 @@ function rowColAt(row: number, col: number) {
 
 test('little game', () => {
   const moveMock = jest.fn();
-  const Board = getBoard('codeFoo');
   const board = Enzyme.mount((
     <Board
       G={{ pgn: '' }}
@@ -75,6 +138,10 @@ test('little game', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
+      gameArgs={{
+        gameCode: 'chess',
+        mode: GameMode.OnlineFriend,
+      }}
     />
   ));
   expect(board.html()).to.contain('YOUR TURN');

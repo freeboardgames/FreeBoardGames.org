@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import ChessMenu from '../games/chess';
-import SeabattleMenu from '../games/seabattle';
+import { GameInfo } from './Game/GameInfo';
+import { Game } from './Game/Game';
 import Home from '../Home/Home';
 import NotFound from './NotFound';
 import * as ReactGA from 'react-ga';
@@ -33,12 +33,9 @@ class Main extends React.Component<{}, {}> {
     return (
       <Switch>
         <Route exact={true} path="/" component={withGA(Home)} />
-        <Route path="/g/chess" exact={true} component={withGA(ChessMenu)} />
-        <Route path="/g/chess/:opponentType/:code" exact={true} component={withGA(ChessMenu)} />
-        <Route path="/g/chess/:opponentType/:code/:playerID" exact={true} component={withGA(ChessMenu)} />
-        <Route path="/g/seabattle" exact={true} component={withGA(SeabattleMenu)} />
-        <Route path="/g/seabattle/:opponentType/:code" exact={true} component={withGA(SeabattleMenu)} />
-        <Route path="/g/seabattle/:opponentType/:code/:playerID" exact={true} component={withGA(SeabattleMenu)} />
+        <Route path="/g/:gameCode" exact={true} component={withGA(GameInfo)} />
+        <Route path="/g/:gameCode/:mode" exact={true} component={withGA(Game)} />
+        <Route path="/g/:gameCode/:mode/:matchCode/:playerID" exact={true} component={withGA(Game)} />
         <Route component={withGA(NotFound)} />
       </Switch>
     );

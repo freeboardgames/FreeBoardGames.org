@@ -18,8 +18,6 @@ var config = {
    */
   entry: {
     index: path.resolve(__dirname, 'src/app.tsx'),
-    chess: path.resolve(__dirname, 'src/games/chess/index.tsx'),
-    seabattle: path.resolve(__dirname, 'src/games/seabattle/index.tsx'), 
   },
 
   optimization: {

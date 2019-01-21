@@ -36,7 +36,7 @@ export function getWinner(chess: any) {
   }
 }
 
-const ChessGame = Game({
+export const ChessGame = Game({
   name: 'chess',
 
   setup: () => ({ pgn: '' }),
@@ -45,12 +45,6 @@ const ChessGame = Game({
     move(G: any, ctx: IGameCtx, san: string) {
       const chess = Chess();
       chess.load_pgn(G.pgn);
-      if (
-        (chess.turn() === 'w' && ctx.currentPlayer === '1') ||
-        (chess.turn() === 'b' && ctx.currentPlayer === '0')
-      ) {
-        return { ...G };
-      }
       chess.move(san);
       return { pgn: chess.pgn() };
     },
@@ -65,5 +59,3 @@ const ChessGame = Game({
     },
   },
 });
-
-export default ChessGame;
