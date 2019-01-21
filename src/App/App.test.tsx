@@ -2,7 +2,6 @@ import * as React from 'react';
 import App from './App';
 import * as Enzyme from 'enzyme';
 import { expect } from 'chai';
-import Chess from '../games/chess';
 import Home from '../Home/Home';
 import NotFound from './NotFound';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -21,17 +20,6 @@ describe('App', () => {
         </StaticRouter>
       </MuiThemeProvider>);
     expect(wrapper.find(Home)).to.have.lengthOf(1);
-    expect(wrapper.find(NotFound)).to.have.lengthOf(0);
-  });
-
-  it('should go to chess', () => {
-    const wrapper = Enzyme.mount(
-      <MuiThemeProvider>
-        <StaticRouter location={'/g/Chess'} context={context}>
-          <App />
-        </StaticRouter>
-      </MuiThemeProvider>);
-    expect(wrapper.find(Chess)).to.have.lengthOf(1);
     expect(wrapper.find(NotFound)).to.have.lengthOf(0);
   });
 

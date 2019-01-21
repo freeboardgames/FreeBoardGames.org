@@ -9,10 +9,9 @@ import * as Mustache from 'mustache';
 import * as ReactDOMServer from 'react-dom/server';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
+import { GAMES_LIST } from './games';
 
 const { Server } = require('flamecoals-boardgame.io/server'); // tslint:disable-line
-import Chess from './games/chess/game';
-import { SeabattleGame } from './games/seabattle/game';
 import App from './App/App';
 
 const HOST = '0.0.0.0';
@@ -21,7 +20,7 @@ const NODE_ENV = process.env.NODE_ENV;
 const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
-const server = Server({ games: [Chess, SeabattleGame] });
+const server = Server({ games: GAMES_LIST.map((gameDef) => gameDef.bgioGame) });
 const router = new Router();
 const template = fs.readFileSync('./dist/webpack/template.html', 'utf8');
 Mustache.parse(template);

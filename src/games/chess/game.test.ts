@@ -1,27 +1,21 @@
 import { getWinner } from './game';
-import ChessGame from './game';
+import { ChessGame } from './game';
 import { expect } from 'chai';
+import { Client } from 'flamecoals-boardgame.io/client';
 
-test('little game', () => {
-  const initialState = { pgn: '' };
-  const action = { type: 'move', args: ['f4'] };
-  const ctx = ChessGame.flow.ctx(2);
-  expect(ChessGame.processMove(initialState, action, ctx)).to.deep.equal(
-    { pgn: '1. f4' });
-
-  ctx.currentPlayer = '1';
-  expect(ChessGame.processMove(initialState, action, ctx)).to.deep.equal(initialState);
-
-  // test flow
-  const checkMateG = { pgn: '1.f3 e5 2.g4 Qh4#' };
-  ctx.stats = { turn: { numMoves: { 1: 1 } } };
-  const newState = ChessGame.flow.processGameEvent({
-    ctx, G: checkMateG,
-  }, {
-      type: 'GAME_EVENT',
-      payload: { type: 'endTurn' },
-    });
-  expect(newState.ctx.gameover).to.equal('b');
+test('fool\'s move', () => {
+  const client = Client({
+    game: ChessGame,
+  });
+  client.moves.move('f3');
+  expect(client.store.getState().G.pgn).to.equal('1. f3');
+  client.updatePlayerID('1');
+  client.moves.move('e5');
+  client.updatePlayerID('0');
+  client.moves.move('g4');
+  client.updatePlayerID('1');
+  client.moves.move('Qh4#');
+  expect(client.store.getState().ctx.gameover).to.equal('b');
 });
 
 test('get winner', () => {
