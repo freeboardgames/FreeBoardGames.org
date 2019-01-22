@@ -5,8 +5,13 @@ import { expect } from 'chai';
 
 describe('Game', () => {
 
-  it('should pass sanity check', () => {
+  it('should render properly for multiplayer', () => {
     const wrapper = mount(<Game match={{ params: { gameCode: 'chess', mode: 'online' } }} />);
-    expect(wrapper.text().length).to.be.above(0);
+    expect(wrapper.html()).to.contain('connecting');
+  });
+
+  it('should render properly for singleplayer', () => {
+    const wrapper = mount(<Game match={{ params: { gameCode: 'chess', mode: 'local' } }} />);
+    expect(wrapper.find('Checkerboard').length).to.equal(1);
   });
 });

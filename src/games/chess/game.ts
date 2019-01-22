@@ -25,8 +25,7 @@ export function getWinner(chess: any) {
       chess.in_stalemate()
     ) {
       return 'd';
-    }
-    if (chess.in_checkmate()) {
+    } else {
       if (chess.turn() === 'w') {
         return 'b';
       } else {

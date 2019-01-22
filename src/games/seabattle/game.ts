@@ -35,6 +35,15 @@ const VALID_SHIPS_COUNT: { [size: number]: number } = {
   2: 1,
 };
 
+export const playerView = (G: ISeabattleState, ctx: ICtx, playerID: string): ISeabattleState => {
+  const player = parseInt(playerID, 10);
+  const ships: IShip[] = G.ships.filter((ship) => (ship.player === player || ship.sunk));
+  return {
+    ...G,
+    ships,
+  };
+};
+
 export const SeabattleGame = Game({
   setup: (): ISeabattleState => ({
     ships: [],
@@ -101,14 +110,7 @@ export const SeabattleGame = Game({
     },
   },
 
-  playerView: (G: ISeabattleState, ctx: ICtx, playerID: string): ISeabattleState => {
-    const player = parseInt(playerID, 10);
-    const ships: IShip[] = G.ships.filter((ship) => (ship.player === player || ship.sunk));
-    return {
-      ...G,
-      ships,
-    };
-  },
+  playerView,
 });
 
 // Helper function for generating random ships positioning.

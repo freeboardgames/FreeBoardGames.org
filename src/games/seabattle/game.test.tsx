@@ -1,5 +1,5 @@
 import { Client } from 'flamecoals-boardgame.io/client';
-import { SeabattleGame, IShip, generateRandomShips } from './game';
+import { SeabattleGame, IShip, generateRandomShips, playerView } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 
 describe('Seabattle', () => {
@@ -202,10 +202,12 @@ describe('Seabattle', () => {
     client.moves.salvo(1, 9);
 
     const { G, ctx } = client.store.getState();
-    expect(G.salvos).toEqual([
+    const newG = playerView(G, ctx, '1');
+    expect(newG.salvos).toEqual([
       { player: 1, cell: { x: 0, y: 9 }, hit: true, hitShip: 4 },
       { player: 0, cell: { x: 0, y: 0 }, hit: true, hitShip: 5 },
       { player: 1, cell: { x: 1, y: 9 }, hit: true, hitShip: 4 }]);
-    expect(G.ships[4].sunk).toEqual(true);
+    // TODO: Because the index change by playerView, change hitShip to ID.
+    expect(newG.ships[2].sunk).toEqual(true);
   });
 });

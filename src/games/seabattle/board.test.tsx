@@ -65,7 +65,27 @@ test('waiting opponent', () => {
   expect(comp.html()).to.contain('Waiting');
 });
 
-test('gameover', () => {
+test('gameover - won', () => {
+  const client = Client({
+    game: SeabattleGame,
+  });
+  const state0 = client.store.getState();
+  const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
+  const comp = Enzyme.mount((
+    <Board
+      G={state1.G}
+      ctx={state1.ctx}
+      moves={client.moves}
+      playerID={'0'}
+      isActive={true}
+      isConnected={true}
+    />
+  ));
+  // First page must have some ships
+  expect(comp.html()).to.contain('WON');
+});
+
+test('gameover - lost', () => {
   const client = Client({
     game: SeabattleGame,
   });

@@ -46,6 +46,22 @@ test('move ships correctly', () => {
   ]]);
 });
 
+test('same ship position if dropped in the same place', () => {
+  const onEdit = jest.fn();
+  const radar = Enzyme.mount((
+    <Radar
+      ships={[
+        { player: 0, cells: [{ x: 0, y: 0 }, { x: 1, y: 0 }], sunk: false },
+        { player: 0, cells: [{ x: 2, y: 0 }, { x: 2, y: 1 }], sunk: false },
+      ]}
+      editable={true}
+      onEdit={onEdit}
+    />));
+  (radar.instance() as Radar)._onDrop({ x: 0, y: 0, originalX: 0, originalY: 0 });
+  expect((radar.instance() as Radar)._shouldDrag()).to.equal(true);
+  expect(onEdit.mock.calls.length).to.equal(0);
+});
+
 test('not move out of bounds', () => {
   const onEdit = jest.fn();
   const radar = Enzyme.mount((

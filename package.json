@@ -109,9 +109,10 @@
     "collectCoverageFrom": [
       "src/**",
       "!src/server.tsx",
+      "!src/server.tsx",
       "!src/app.tsx",
       "!**/*.d.ts",
-      "!src/components/games/chess/chessjswrapper.ts"
+      "!src/games/chess/chessjswrapper.ts"
     ],
     "testURL": "http://localhost",
     "setupFiles": [
