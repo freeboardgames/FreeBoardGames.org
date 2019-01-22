@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
+import Subheader from 'material-ui/Subheader';
 import AndroidIcon from 'material-ui/svg-icons/action/android';
 import GroupIcon from 'material-ui/svg-icons/social/group';
 import { List, ListItem } from 'material-ui/List';
@@ -7,7 +8,7 @@ import * as shortid from 'shortid';
 import * as PropTypes from 'prop-types';
 
 interface IGameModePickerProps {
-  gameCode: string,
+  gameCode: string;
   modes: GameMode[];
   history: { push: (url: string) => void };
 }
@@ -27,12 +28,12 @@ export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
       modes.push(this._getListItem(mode));
     }
     return (
-      <Card>
-        <CardTitle title="Choose Mode" />
-        <CardText>
-          <List style={{ textAlign: 'left' }}>{modes}</List>
-        </CardText>
-      </Card>
+      <div>
+        <Subheader>Choose game mode</Subheader>
+        <List style={{ textAlign: 'left' }}>
+          {modes}
+        </List>
+      </div>
     );
   }
 
