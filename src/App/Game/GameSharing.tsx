@@ -125,6 +125,6 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     const origin = (typeof window === 'undefined') ? '' : window.location.origin;
     const gameCode = this.props.gameCode;
     const matchCode = this.props.matchCode;
-    return `${origin}/g/${gameCode}/match/${matchCode}/${player}`;
+    return `${origin}/g/${gameCode}/online/${matchCode}/${player}`;
   }
 }

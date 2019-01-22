@@ -24,7 +24,7 @@ describe('Game sharing', () => {
         />
       </MuiThemeProvider>
     ));
-    expect(wrapper.html()).to.contain('/g/foogame/match/barmatch/1');
+    expect(wrapper.html()).to.contain('/g/foogame/online/barmatch/1');
   });
 
   it('should call onDismiss', () => {
