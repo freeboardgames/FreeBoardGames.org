@@ -110,6 +110,7 @@ declare module 'flamecoals-boardgame.io/react' {
     board?: React.ReactNode;
     multiplayer?: boolean;
     debug?: boolean;
+    enhancer?: any;
   }
   export function Client (clientArgs: IClientArgs): WrapperBoard;
 }
@@ -128,6 +129,7 @@ declare module 'flamecoals-boardgame.io/client' {
     board?: React.ReactNode;
     multiplayer?: boolean;
     debug?: boolean;
+    enhancer?: any;
   }
   export function Client (clientArgs: IClientArgs): WrapperBoard;
 }

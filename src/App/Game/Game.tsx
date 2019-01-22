@@ -26,6 +26,9 @@ export class Game extends React.Component<IGameProps, {}> {
       }),
       debug: false,
     };
+    if (gameDef.enhancer) {
+      clientConfig.enhancer = gameDef.enhancer;
+    }
     if (mode === GameMode.OnlineFriend) {
       clientConfig.multiplayer = true;
     }

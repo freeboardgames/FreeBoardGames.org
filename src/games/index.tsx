@@ -3,6 +3,8 @@ import { ChessGame } from './chess/game';
 import { Board as ChessBoard } from './chess/board';
 import { SeabattleGame } from './seabattle/game';
 import { Board as SeabattleBoard } from './seabattle/board';
+import { SeabattleSound } from './seabattle/sound';
+import { applyMiddleware } from 'redux';
 
 export interface IGameDef {
   code: string;
@@ -14,6 +16,7 @@ export interface IGameDef {
   modes: GameMode[];
   maxPlayers: 2;
   minPlayers: 2;
+  enhancer?: any;
 }
 
 export interface IGameDefMap {
@@ -42,6 +45,7 @@ export const GAMES_MAP: IGameDefMap = {
     maxPlayers: 2,
     minPlayers: 2,
     description: 'Sink your enemy\'s ships!',
+    enhancer: applyMiddleware(SeabattleSound),
   },
 };
 
