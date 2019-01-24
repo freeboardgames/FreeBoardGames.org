@@ -16,3 +16,16 @@ yarn install
 
 yarn run dev
 ```
+
+## Running with [Docker Compose](https://docs.docker.com/compose/)
+
+[Install Docker Compose](https://docs.docker.com/compose/install/), then:
+
+```
+git clone https://github.com/flamecoals/turnato
+cd turnato
+
+docker-compose up --build
+```
+
+Visit Turnato at [http://localhost:8000/](http://localhost:8000/)
