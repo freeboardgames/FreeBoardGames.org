@@ -1,0 +1,4 @@
+*.bundle.js
+*.min.js
+Game.md
+package.json
