@@ -6,6 +6,10 @@ Turnato is a free (as in freedom), mobile-first, board game platform.  Its goal 
 
 Play now at http://turnato.com/
 
+## Contributing
+
+Check out the [infrastructure kanban](https://github.com/flamecoals/turnato/projects/6), each game kanban ([Chess](https://github.com/flamecoals/turnato/projects/5), [Seabattle](https://github.com/flamecoals/turnato/projects/4), [TicTacToe](https://github.com/flamecoals/turnato/projects/8)), or create your own game! Feel free to ask for any help :).
+
 ## Running locally
 
 ```
