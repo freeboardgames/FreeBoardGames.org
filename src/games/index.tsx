@@ -3,6 +3,8 @@ import { ChessGame } from './chess/game';
 import { Board as ChessBoard } from './chess/board';
 import { SeabattleGame } from './seabattle/game';
 import { Board as SeabattleBoard } from './seabattle/board';
+import { TictactoeGame } from './tictactoe/game';
+import { Board as TictactoeBoard } from './tictactoe/board';
 import { SeabattleSound } from './seabattle/sound';
 import { applyMiddleware } from 'redux';
 
@@ -47,9 +49,21 @@ export const GAMES_MAP: IGameDefMap = {
     description: 'Sink your enemy\'s ships!',
     enhancer: applyMiddleware(SeabattleSound),
   },
+  tictactoe: {
+    code: 'tictactoe',
+    name: 'Tic Tac Toe',
+    imageURL: '/seabattle.png',
+    bgioGame: TictactoeGame,
+    bgioBoard: TictactoeBoard,
+    modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
+    maxPlayers: 2,
+    minPlayers: 2,
+    description: 'Play Tic Tac Toe!',
+  },
 };
 
 export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.chess,
   GAMES_MAP.seabattle,
+  GAMES_MAP.tictactoe,
 ];
