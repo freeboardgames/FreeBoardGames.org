@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Notification from 'react-web-notification';
 import * as PropTypes from 'prop-types';
 
 import { Radar } from './Radar';
@@ -19,6 +20,7 @@ interface IBattleState {
   prevPlayer?: string;
   startTime?: number;
   salvo?: ISalvo;
+  playerNotified: boolean;
 }
 
 export class Battle extends React.Component<IBattleProps, IBattleState> {
@@ -30,6 +32,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       playerID: props.playerID,
       currentPlayer: props.currentPlayer,
       showSalvo: false,
+      playerNotified: false,
     };
   }
   _onClick = (cell: ICell) => {
@@ -53,6 +56,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
         prevPlayer: prevProps.currentPlayer,
         startTime: Date.now(),
         salvo: this.props.G.salvos[this.props.G.salvos.length - 1],
+        playerNotified: false,
       });
       requestAnimationFrame(this._animate(Date.now()));
     }
@@ -65,8 +69,10 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       (salvo: ISalvo) => salvo.player === player,
     );
     const message = this._getMessage();
+    const notification = this._notifyPlayer();
     return (
       <div>
+        {notification}
         <h2 style={{ textAlign: 'center' }}>{message}</h2>
         <Radar
           ships={ships}
@@ -86,6 +92,18 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       return 'CLICK TO SHOOT';
     } else {
       return 'Waiting for opponent...';
+    }
+  }
+
+  _notifyPlayer() {
+    if (this.state.playerID === this.state.currentPlayer) {
+      if (!this.state.playerNotified) {
+        this.setState({
+          ...this.state,
+          playerNotified: true,
+        });
+        return (<Notification title={'Your Turn!'} />);
+      }
     }
   }
 
