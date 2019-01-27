@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Notification from 'react-web-notification';
 import { GameMode } from './GameModePicker';
 import AlertLayer from './AlertLayer';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -29,8 +30,13 @@ export function gameBoardWrapper(args: IGameArgs) {
       if (!alert) {
         return child;
       }
+      let notification = null;
+      if (args.playerID === props.ctx.currentPlayer) {
+        notification = (<Notification title={'Your Turn!'} />);
+      }
       return (
         <div style={{ width: '100%', height: '100%' }}>
+          {notification}
           {child}
           <MuiThemeProvider>
             {alert}

@@ -69,10 +69,8 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       (salvo: ISalvo) => salvo.player === player,
     );
     const message = this._getMessage();
-    const notification = this._notifyPlayer();
     return (
       <div>
-        {notification}
         <h2 style={{ textAlign: 'center' }}>{message}</h2>
         <Radar
           ships={ships}
@@ -92,18 +90,6 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       return 'CLICK TO SHOOT';
     } else {
       return 'Waiting for opponent...';
-    }
-  }
-
-  _notifyPlayer() {
-    if (this.state.playerID === this.state.currentPlayer) {
-      if (!this.state.playerNotified) {
-        this.setState({
-          ...this.state,
-          playerNotified: true,
-        });
-        return (<Notification title={'Your Turn!'} />);
-      }
     }
   }
 
