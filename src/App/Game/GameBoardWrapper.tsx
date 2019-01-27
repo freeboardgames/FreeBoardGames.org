@@ -30,10 +30,7 @@ export function gameBoardWrapper(args: IGameArgs) {
       if (!alert) {
         return child;
       }
-      let notification = null;
-      if (args.playerID === props.ctx.currentPlayer) {
-        notification = (<Notification title={'Your Turn!'} />);
-      }
+      const notification = this._getNotification();
       return (
         <div style={{ width: '100%', height: '100%' }}>
           {notification}
@@ -73,6 +70,11 @@ export function gameBoardWrapper(args: IGameArgs) {
           Trying to connect...
         </AlertLayer>
       );
+    }
+    _getNotification() {
+      if (args.playerID === this.props.ctx.currentPlayer) { // && this.props.ctx.phase === 'play') // doesn't work?
+        return (<Notification title={'Your Turn!'} />);
+      }
     }
   }
   return Board;
