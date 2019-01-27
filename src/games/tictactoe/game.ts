@@ -37,7 +37,7 @@ export function isVictory(cells: number[]) {
   return false;
 }
 
-const TicTacToe = Game({
+export const TictactoeGame = Game({
   name: 'tic-tac-toe',
 
   setup: () => ({
@@ -45,7 +45,7 @@ const TicTacToe = Game({
   }),
 
   moves: {
-    clickCell(G, ctx, id) {
+    clickCell(G: any, ctx: any, id: number) {
       const cells = [...G.cells];
 
       if (cells[id] === null) {
@@ -59,10 +59,10 @@ const TicTacToe = Game({
     movesPerTurn: 1,
 
     endGameIf: (G, ctx) => {
-      if (IsVictory(G.cells)) {
+      if (isVictory(G.cells)) {
         return { winner: ctx.currentPlayer };
       }
-      if (G.cells.filter(c => c === null).length === 0) {
+      if (G.cells.filter((c: any) => c === null).length === 0) {
         return { draw: true };
       }
     },
