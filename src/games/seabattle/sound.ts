@@ -25,8 +25,8 @@ export const getSound = (action: any): 'hit' | 'miss' | null => {
     return 'miss';
   }
 };
-let hitSound:HTMLAudioElement;
-let missSound:HTMLAudioElement;
+let hitSound: HTMLAudioElement;
+let missSound: HTMLAudioElement;
 export const SeabattleSound = (store: any) => (next: any) => (action: any) => {
   const sound = getSound(action);
   if (!hitSound) {

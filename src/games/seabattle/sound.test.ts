@@ -23,7 +23,9 @@ test('should not play sound if it is unrelated update', () => {
   SeabattleSound({})(jest.fn())(action);
 });
 
-(window as any).HTMLMediaElement.prototype.play = function () {};
+(window as any).HTMLMediaElement.prototype.play = () => {
+  // Do nothing.
+};
 
 test('HIT salvo should play hit sound', () => {
   const action = {
