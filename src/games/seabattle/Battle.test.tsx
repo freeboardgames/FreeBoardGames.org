@@ -75,3 +75,39 @@ test('one phase - miss', () => {
   });
   expect(grid.html()).to.contain('MISS');
 });
+
+test('Notifications', () => {
+  const client = Client({
+    game: SeabattleGame,
+  });
+  const store = client.store;
+  client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+  client.updatePlayerID('1');
+  client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+
+  client.moves.salvo(9, 9);
+
+  const grid = Enzyme.mount(
+    <Battle
+      G={store.getState().G}
+      moves={client.moves}
+      playerID={'1'}
+      currentPlayer={store.getState().ctx.currentPlayer}
+    />);
+  grid.setState({
+    ...grid.state(),
+    startTime: Date.now(),
+    salvo: { hit: false },
+    showSalvo: true,
+  });
+  expect(grid.find('Notification').length).equals(0);
+  client.updatePlayerID('0');
+  const grid2 = Enzyme.mount(
+    <Battle
+      G={store.getState().G}
+      moves={client.moves}
+      playerID={'0'}
+      currentPlayer={store.getState().ctx.currentPlayer}
+    />);
+  expect(grid.find('Notification').length).equals(0);
+});
