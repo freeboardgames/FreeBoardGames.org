@@ -10,7 +10,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 
 var config = {
-  mode: 'development', // process.env.NODE_ENV,
+  mode: 'development',
   watch: true,
   watchOptions: {
     aggregateTimeout: 300,
