@@ -2,6 +2,7 @@ import * as React from 'react';
 import TurnatoBar from '../App/TurnatoBar';
 import Header from './Header';
 import GamesSection from './GamesSection';
+import { Link } from 'react-router-dom';
 
 class Home extends React.Component<{}, {}> {
   render() {
@@ -18,6 +19,12 @@ class Home extends React.Component<{}, {}> {
           >
             GitHub
           </a>
+          &nbsp;-&nbsp;
+          <Link
+            to="/about"
+          >
+            About
+          </Link>
         </p>
       </TurnatoBar>
     );
