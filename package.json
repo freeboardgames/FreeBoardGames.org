@@ -10,7 +10,7 @@
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "build": "tsc",
     "prod": "yarn run build && webpack --config prod.webpack.config.js && pm2 start pm2-prod.config.js",
-    "dev": "webpack --progress --config dev.webpack.config.js | node dist/server.js ",
+    "dev": "webpack --progress --config dev.webpack.config.js; tsc; webpack --watch --progress --config dev.webpack.config.js | node dist/server.js",
     "precommit": "yarn run verify-lint && yarn run verify-tsfmt && yarn run build && yarn run test",
     "pre": "yarn run precommit",
     "fix": "yarn run lint && yarn run tsfmt",

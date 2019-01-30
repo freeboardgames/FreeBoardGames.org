@@ -11,7 +11,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 var config = {
   mode: 'development',
-  watch: true,
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000
