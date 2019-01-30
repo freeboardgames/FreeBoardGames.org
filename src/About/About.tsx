@@ -13,7 +13,7 @@ class About extends React.Component<{}, {}> {
     return (
       <FreeBoardGameBar>
         <Card style={{ marginTop: '16px' }}>
-          <CardTitle title="About FreeBoardGame" />
+          <CardTitle title="About FreeBoardGame.org" />
           <CardText>
             FreeBoardGame.org is a free (as in freedom), mobile-first, board game platform.
             Its goal is to popularize board games and to make them easy to play with friends, even from afar.
