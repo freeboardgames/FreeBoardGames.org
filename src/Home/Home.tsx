@@ -18,6 +18,13 @@ class Home extends React.Component<{}, {}> {
           >
             GitHub
           </a>
+          &nbsp;-&nbsp;
+          <a
+            href="/about"
+            rel="noopener"
+          >
+            About
+          </a>
         </p>
       </TurnatoBar>
     );
