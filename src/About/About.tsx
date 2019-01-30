@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TurnatoBar from '../App/TurnatoBar';
+import FreeBoardGameBar from '../App/FreeBoardGameBar';
 import Button from '@material-ui/core/Button';
 import { Card, CardText, CardMedia, CardTitle } from 'material-ui/Card';
 import List from '@material-ui/core/List';
@@ -11,11 +11,11 @@ import Typography from '@material-ui/core/Typography';
 class About extends React.Component<{}, {}> {
   render() {
     return (
-      <TurnatoBar>
+      <FreeBoardGameBar>
         <Card style={{ marginTop: '16px' }}>
-          <CardTitle title="About Turnato" />
+          <CardTitle title="About FreeBoardGame" />
           <CardText>
-            Turnato is a free (as in freedom), mobile-first, board game platform.
+            FreeBoardGame.org is a free (as in freedom), mobile-first, board game platform.
             Its goal is to popularize board games and to make them easy to play with friends, even from afar.
           </CardText>
         </Card>
@@ -34,7 +34,7 @@ class About extends React.Component<{}, {}> {
               <ListItemText
                 primary="JasonHarrison"
               />
-              <Button size="small" color="primary" href="https://www.jasonharrison.us/?from=turnato">
+              <Button size="small" color="primary" href="https://www.jasonharrison.us/?from=freeboardgame.org">
                 Website
               </Button>
               <Button size="small" color="primary" href="https://github.com/jasonharrison">
@@ -72,7 +72,7 @@ class About extends React.Component<{}, {}> {
             </ListItem>
           </List>
         </Card>
-      </TurnatoBar>
+      </FreeBoardGameBar>
     );
   }
 }

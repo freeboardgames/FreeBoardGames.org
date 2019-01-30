@@ -30,7 +30,7 @@ class App extends React.Component<{}, {}> {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              title="Turnato"
+              title="FreeBoardGame.org"
               iconElementLeft={
                 <img
                   src={logo}
@@ -38,7 +38,7 @@ class App extends React.Component<{}, {}> {
                     color: 'white', width: '32px',
                     height: '32px', marginTop: '8px',
                   }}
-                  alt="Turnato logo."
+                  alt="FreeBoardGame.org logo."
                 />}
             />
           </a>

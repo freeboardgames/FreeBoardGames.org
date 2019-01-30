@@ -27,7 +27,7 @@ Mustache.parse(template);
 
 const renderSite = (url: string, title?: string) => {
   if (!title) {
-    title = 'Turnato | Play Chess w/ Friends';
+    title = 'FreeBoardGame.org | Play Chess w/ Friends';
   }
   const context = {};
   const reactHtml = ReactDOMServer.renderToStaticMarkup(
@@ -43,7 +43,7 @@ const renderSite = (url: string, title?: string) => {
 };
 
 router.get('/g/chess', (ctx, next) => {
-  ctx.body = renderSite(ctx.request.url, 'Play Chess w/ Friends | Turnato');
+  ctx.body = renderSite(ctx.request.url, 'Play Chess w/ Friends | FreeBoardGame.org');
 });
 
 server.app.use(KoaStatic('./static'));

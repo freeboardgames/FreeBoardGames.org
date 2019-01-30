@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TurnatoBar from '../App/TurnatoBar';
+import FreeBoardGameBar from '../App/FreeBoardGameBar';
 import Header from './Header';
 import GamesSection from './GamesSection';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 class Home extends React.Component<{}, {}> {
   render() {
     return (
-      <TurnatoBar>
+      <FreeBoardGameBar>
         <Header />
         <GamesSection />
         <p style={{ fontSize: '12px', textAlign: 'center' }}>
@@ -26,7 +26,7 @@ class Home extends React.Component<{}, {}> {
             About
           </Link>
         </p>
-      </TurnatoBar>
+      </FreeBoardGameBar>
     );
   }
 }
