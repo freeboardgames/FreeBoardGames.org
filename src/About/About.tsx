@@ -43,6 +43,35 @@ class About extends React.Component<{}, {}> {
             </ListItem>
           </List>
         </Card>
+        <Card style={{ marginTop: '16px' }}>
+          <CardTitle title="Credits" />
+          <List>
+            <ListItem>
+              <ListItemText
+                primary="Seabattle miss sound by InspectorJ"
+              />
+              <Button size="small" color="primary" href="https://freesound.org/people/InspectorJ/sounds/352103/">
+                freesound.org
+              </Button>
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Seabattle hit sound by fridobeck"
+              />
+              <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
+                freesound.org
+              </Button>
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Turnato icon by Noah Mormino"
+              />
+              <Button size="small" color="primary" href="https://thenounproject.com/term/tornado/148849/">
+                thenounproject.com
+              </Button>
+            </ListItem>
+          </List>
+        </Card>
       </TurnatoBar>
     );
   }
