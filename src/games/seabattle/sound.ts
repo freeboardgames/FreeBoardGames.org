@@ -25,11 +25,22 @@ export const getSound = (action: any): 'hit' | 'miss' | null => {
     return 'miss';
   }
 };
-
+let hitSound: HTMLAudioElement;
+let missSound: HTMLAudioElement;
 export const SeabattleSound = (store: any) => (next: any) => (action: any) => {
   const sound = getSound(action);
+  if (!hitSound) {
+    hitSound = new Audio('/seabattle/hit.mp3');
+  }
+  if (!missSound) {
+    missSound = new Audio('/seabattle/miss.mp3');
+  }
   if (sound) {
-    // TODO: Play the sound :)
+    if (sound === 'hit') {
+      hitSound.play();
+    } else {
+      missSound.play();
+    }
   }
   return next(action);
 };
