@@ -8,14 +8,8 @@ class Header extends React.Component<{}, {}> {
         <CardTitle title="Free as in freedom" />
         <CardText>
           Play when you can, wherever you are.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit
-          esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-          occaecat cupidatat non proident, sunt in culpa qui officia
-          deserunt mollit anim id est laborum.
+          Turnato is a free (as in freedom), mobile-first, board game platform.
+          Its goal is to popularize board games and to make them easy to play with friends, even from afar.
         </CardText>
       </Card>
     );
