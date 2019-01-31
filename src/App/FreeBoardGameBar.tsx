@@ -1,6 +1,8 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
+import Typography from '@material-ui/core/Typography';
+
 let logo: any = null;
 if (typeof window !== 'undefined') {
   logo = require('./logo.svg'); // tslint:disable-line
@@ -32,14 +34,13 @@ class App extends React.Component<{}, {}> {
               }}
               title="FreeBoardGame.org"
               iconElementLeft={
-                <img
-                  src={logo}
-                  style={{
-                    color: 'white', width: '32px',
-                    height: '32px', marginTop: '8px',
-                  }}
-                  alt="FreeBoardGame.org logo."
-                />}
+                <Typography
+                  component="h2"
+                  style={{ fontFamily: 'Blox2', color: 'black' }}
+                >
+                  FbG
+                </Typography>
+              }
             />
           </a>
           <div style={{ height: '64px' }} />
