@@ -64,10 +64,10 @@ class About extends React.Component<{}, {}> {
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Turnato icon by Noah Mormino"
+                primary="Blox font (used in logo) by Brian Kent"
               />
-              <Button size="small" color="primary" href="https://thenounproject.com/term/tornado/148849/">
-                thenounproject.com
+              <Button size="small" color="primary" href="https://www.dafont.com/blox.font">
+                dafont.com
               </Button>
             </ListItem>
           </List>
