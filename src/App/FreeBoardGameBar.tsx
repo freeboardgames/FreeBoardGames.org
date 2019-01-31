@@ -3,11 +3,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import Typography from '@material-ui/core/Typography';
 
-let logo: any = null;
-if (typeof window !== 'undefined') {
-  logo = require('./logo.svg'); // tslint:disable-line
-}
-
 class App extends React.Component<{}, {}> {
   componentWillMount() {
     if (typeof window !== 'undefined') {
@@ -34,12 +29,7 @@ class App extends React.Component<{}, {}> {
               }}
               title="FreeBoardGame.org"
               iconElementLeft={
-                <Typography
-                  component="h2"
-                  style={{ fontFamily: 'Blox2', color: 'black' }}
-                >
-                  FbG
-                </Typography>
+                <img src="/fbg_logo_white_48.png" alt="FbG" />
               }
             />
           </a>
