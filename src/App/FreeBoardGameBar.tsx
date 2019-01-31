@@ -29,8 +29,7 @@ class App extends React.Component<{}, {}> {
               }}
               title="FreeBoardGame.org"
               iconElementLeft={
-                <img src="/fbg_logo_white_48.png" alt="FbG" />
-              }
+                <img style={{ marginRight: '3px' }} src="/fbg_logo_white_48.png" alt="FbG" />}
             />
           </a>
           <div style={{ height: '64px' }} />
