@@ -1,5 +1,5 @@
 # FreeBoardGame.org
-[![Build Status](https://travis-ci.org/freeboardgame/FreeBoardGame.org.svg?branch=master)](https://travis-ci.org/freeboardgame/FreeBoardGame.org)
+[![Build Status](https://travis-ci.com/freeboardgame/FreeBoardGame.org.svg?branch=master)](https://travis-ci.com/freeboardgame/FreeBoardGame.org)
 [![Coverage Status](https://coveralls.io/repos/github/freeboardgame/FreeBoardGame.org/badge.svg?branch=master)](https://coveralls.io/github/freeboardgame/FreeBoardGame.org?branch=master)
 
 Mobile-First Free board games for everybody. Free as in "free beer" and as in "freedom". You are welcome to study the games, modify and contribute back to the community !
