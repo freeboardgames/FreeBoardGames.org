@@ -30,9 +30,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Felizardo/turnato/issues"
+    "url": "https://github.com/freeboardgame/FreeBoardGame.org/issues"
   },
-  "homepage": "https://github.com/Felizardo/turnato#readme",
+  "homepage": "https://github.com/freeboardgame/FreeBoardGame.org",
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/enzyme-adapter-react-16": "^1.0.1",
