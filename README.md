@@ -1,20 +1,22 @@
-# Turnato
-[![Build Status](https://travis-ci.org/flamecoals/turnato.svg?branch=master)](https://travis-ci.org/flamecoals/turnato)
-[![Coverage Status](https://coveralls.io/repos/github/flamecoals/turnato/badge.svg?branch=master)](https://coveralls.io/github/flamecoals/turnato?branch=master)
+# FreeBoardGame.org
+[![Build Status](https://travis-ci.org/flamecoals/FreeBoardGame.org.svg?branch=master)](https://travis-ci.org/flamecoals/FreeBoardGame.org)
+[![Coverage Status](https://coveralls.io/repos/github/flamecoals/FreeBoardGame.org/badge.svg?branch=master)](https://coveralls.io/github/flamecoals/FreeBoardGame.org?branch=master)
 
-Turnato is a free (as in freedom), mobile-first, board game platform.  Its goal is to popularize board games and to make them easy to play with friends, even from afar.
+Mobile-First Free board games for everybody. Free as in "free beer" and as in "freedom". You are welcome to study the games, modify and contribute back to the community !
 
-Play now at http://turnato.com/
+Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
+
+Made with React, Typescript and [Boardgame.io](https://boardgame.io/)
 
 ## Contributing
 
-Check out the [infrastructure kanban](https://github.com/flamecoals/turnato/projects/6), each game kanban ([Chess](https://github.com/flamecoals/turnato/projects/5), [Seabattle](https://github.com/flamecoals/turnato/projects/4), [TicTacToe](https://github.com/flamecoals/turnato/projects/8)), or create your own game! Feel free to ask for any help :).
+Check out the [infrastructure kanban](https://github.com/flamecoals/FreeBoardGame.org/projects/6), each game kanban ([Chess](https://github.com/flamecoals/FreeBoardGame.org/projects/5), [Seabattle](https://github.com/flamecoals/FreeBoardGame.org/projects/4), [TicTacToe](https://github.com/flamecoals/FreeBoardGame.org/projects/8)), or create your own game! Feel free to ask for any help :).
 
 ## Running locally
 
 ```
-git clone https://github.com/flamecoals/turnato
-cd turnato
+git clone https://github.com/flamecoals/FreeBoardGame.org
+cd FreeBoardGame.org
 
 yarn install
 
@@ -28,8 +30,8 @@ Visit Turnato at [http://localhost:8000/](http://localhost:8000/)
 [Install Docker Compose](https://docs.docker.com/compose/install/), then:
 
 ```
-git clone https://github.com/flamecoals/turnato
-cd turnato
+git clone https://github.com/flamecoals/FreeBoardGame.org
+cd FreeBoardGame.org
 
 docker-compose up --build
 ```
