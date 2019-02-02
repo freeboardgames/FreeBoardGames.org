@@ -13,7 +13,7 @@ class Home extends React.Component<{}, {}> {
         <p style={{ fontSize: '12px', textAlign: 'center' }}>
           Made with ♥&nbsp;-&nbsp;
           <a
-            href="https://github.com/Felizardo/turnato"
+            href="https://github.com/freeboardgame/FreeBoardGame.org"
             target="_blank"
             rel="noopener"
           >

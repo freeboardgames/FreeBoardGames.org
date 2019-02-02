@@ -1,5 +1,5 @@
 {
-  "name": "turnato",
+  "name": "FreeBoardGame.org",
   "version": "1.0.0",
   "description": "",
   "main": ".eslintrc.js",
@@ -24,7 +24,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Felizardo/turnato.git"
+    "url": "git@github.com:freeboardgame/FreeBoardGame.org.git"
   },
   "keywords": [],
   "author": "",

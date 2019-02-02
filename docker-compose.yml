@@ -1,8 +1,8 @@
 version: '3.7'
 
 services:
-  turnato:
-    container_name: turnato
+  fbg:
+    container_name: fbg 
     build:
       context: .
       dockerfile: Dockerfile

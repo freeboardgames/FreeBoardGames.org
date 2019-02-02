@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name   : "turnato server",
+    name   : "freeboardgame server",
     script : "./dist/server.js",
     env : {
       "NODE_ENV": "production",
