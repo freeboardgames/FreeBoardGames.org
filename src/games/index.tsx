@@ -27,7 +27,7 @@ export const GAMES_MAP: IGameDefMap = {
   chess: {
     code: 'chess',
     name: 'Chess',
-    imageURL: '/chess.png',
+    imageURL: '/thumbnail/chess.png',
     bgioGame: ChessGame,
     bgioBoard: ChessBoard,
     modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
@@ -38,7 +38,7 @@ export const GAMES_MAP: IGameDefMap = {
   seabattle: {
     code: 'seabattle',
     name: 'Sea Battle',
-    imageURL: '/seabattle.png',
+    imageURL: '/thumbnail/seabattle.png',
     bgioGame: SeabattleGame,
     bgioBoard: SeabattleBoard,
     modes: [GameMode.OnlineFriend],

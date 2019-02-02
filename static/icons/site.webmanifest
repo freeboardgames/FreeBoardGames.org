@@ -1,14 +1,14 @@
 {
-    "name": "FreeBoardGame.org",
-    "short_name": "FreeBoardGame.org",
+    "name": "FreeBoard Game.org",
+    "short_name": "FreeBoard Game.org",
     "icons": [
         {
-            "src": "/android-chrome-192x192.png",
+            "src": "/icons/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/android-chrome-512x512.png",
+            "src": "/icons/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }

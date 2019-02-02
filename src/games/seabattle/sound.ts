@@ -30,10 +30,10 @@ let missSound: HTMLAudioElement;
 export const SeabattleSound = (store: any) => (next: any) => (action: any) => {
   const sound = getSound(action);
   if (!hitSound) {
-    hitSound = new Audio('/seabattle/hit.mp3');
+    hitSound = new Audio('/resources/seabattle/hit.mp3');
   }
   if (!missSound) {
-    missSound = new Audio('/seabattle/miss.mp3');
+    missSound = new Audio('/resources/seabattle/miss.mp3');
   }
   if (sound) {
     if (sound === 'hit') {
