@@ -22,8 +22,7 @@ yarn install
 
 yarn run dev
 ```
-
-Visit Turnato at [http://localhost:8000/](http://localhost:8000/)
+Open [http://localhost:8000/](http://localhost:8000/)
 
 ## Running with [Docker Compose](https://docs.docker.com/compose/)
 
@@ -36,4 +35,4 @@ cd FreeBoardGame.org
 docker-compose up --build
 ```
 
-Visit Turnato at [http://localhost:8000/](http://localhost:8000/)
+Open [http://localhost:8000/](http://localhost:8000/)
