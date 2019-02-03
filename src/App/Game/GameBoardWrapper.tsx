@@ -2,7 +2,8 @@ import * as React from 'react';
 import { GameMode } from './GameModePicker';
 import AlertLayer from './AlertLayer';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { GameSharing } from '../../App/Game/GameSharing';
+import { GameSharing } from './GameSharing';
+import { GameOver } from './GameOver';
 import { IGameDef, GAMES_MAP } from '../../games';
 
 export interface IGameArgs {

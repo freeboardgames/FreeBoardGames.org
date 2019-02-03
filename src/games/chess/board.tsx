@@ -12,7 +12,7 @@ import Chess from './chessjswrapper';
 import { Checkerboard, IAlgebraicCoords, IColorMap } from './checkerboard';
 import { Token } from 'flamecoals-boardgame.io/ui';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
-import GameBar from '../../App/Game/GameBar';
+import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
 import Bishop from './pieces/bishop';
 import King from './pieces/king';
@@ -55,8 +55,13 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   render() {
+    if (this.props.ctx.gameover) {
+      return (
+        <GameLayout gameOver={this._getGameOver()} />
+      );
+    }
     return (
-      <GameBar>
+      <GameLayout>
         <div>
           <h2 style={{ textAlign: 'center' }}>
             {this._getStatus()}
@@ -69,7 +74,7 @@ export class Board extends React.Component<IBoardProps, {}> {
             {this._getPieces()}
           </Checkerboard>
         </div>
-      </GameBar>
+      </GameLayout>
     );
   }
 
@@ -165,19 +170,28 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
   }
 
+  _getGameOver() {
+    // Online Multiplayer
+    if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
+      if (this.props.ctx.gameover === this.getPlayer()) {
+        return 'you won';
+      } else if (this.props.ctx.gameover === 'd') {
+        return 'draw';
+      } else {
+        return 'you lost';
+      }
+    } else { // Local game
+      switch (this.props.ctx.gameover) {
+        case 'w': return 'white won';
+        case 'b': return 'black won';
+        case 'd': return 'draw';
+      }
+    }
+  }
+
   _getStatus() {
     // Online Multiplayer
     if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
-      if (this.props.ctx.gameover) {
-        if (this.props.ctx.gameover === this.getPlayer()) {
-          return 'YOU WON!!!';
-        } else {
-          if (this.props.ctx.gameover === 'd') {
-            return 'Draw!';
-          }
-          return 'YOU LOST';
-        }
-      }
       if (this.chess.in_check()) {
         return 'CHECK';
       }
@@ -186,15 +200,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       } else {
         return 'Waiting for opponent...';
       }
-      // Local game
-    } else {
-      if (this.props.ctx.gameover) {
-        switch (this.props.ctx.gameover) {
-          case 'w': return 'WHITE WON!!!';
-          case 'b': return 'BLACK WON!!!';
-          case 'd': return 'Draw!';
-        }
-      }
+    } else { // Local game
       if (this.chess.in_check()) {
         return 'CHECK';
       }
