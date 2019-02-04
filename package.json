@@ -61,6 +61,7 @@
     "jest": "^24.0.0",
     "koa-helmet": "^4.0.0",
     "nodemon": "^1.18.9",
+    "pm2": "^3.2.9",
     "pre-commit": "^1.2.2",
     "react-test-renderer": "^16.7.0",
     "style-loader": "^0.23.1",
