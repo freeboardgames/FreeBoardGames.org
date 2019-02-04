@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin');
 const port = process.env.PORT || 8000;
 const {GenerateSW, InjectManifest} = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -61,6 +62,9 @@ var config = {
    new CopyWebpackPlugin([
       { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' }
    ]),
+   new WebpackShellPlugin({
+       onBuildEnd: ['node dist/server.js']
+   })
   ],
 
   /*

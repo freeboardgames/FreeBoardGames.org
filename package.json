@@ -10,14 +10,15 @@
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "build": "tsc",
     "prod": "yarn run build && webpack --config prod.webpack.config.js && pm2 start pm2-prod.config.js",
-    "dev": "webpack --progress --config dev.webpack.config.js && tsc && webpack --watch --progress --config dev.webpack.config.js | node dist/server.js",
+    "dev": "run-s build webpack:watch",
     "precommit": "yarn run verify-lint && yarn run verify-tsfmt && yarn run build && yarn run test",
     "pre": "yarn run precommit",
     "fix": "yarn run lint && yarn run tsfmt",
     "tsfmt": "tsfmt -r",
     "verify-tsfmt": "tsfmt --verify",
     "lint": "tslint --fix -c tslint.json 'src/**/*.ts*'",
-    "verify-lint": "tslint -c tslint.json 'src/**/*.ts*'"
+    "verify-lint": "tslint -c tslint.json 'src/**/*.ts*'",
+    "webpack:watch": "webpack --watch --progress --config dev.webpack.config.js"
   },
   "pre-commit": [
     "precommit"
@@ -67,7 +68,6 @@
     "terser-webpack-plugin": "^1.2.1",
     "ts-jest": "^23.10.5",
     "ts-loader": "^5.3.3",
-    "tsc-watch": "^1.1.36",
     "tslint": "^5.12.1",
     "tslint-language-service": "^0.9.9",
     "tslint-react": "^3.2.0",
@@ -95,12 +95,14 @@
     "koa-static": "^5.0.0",
     "material-ui": "^0.20.2",
     "mustache": "^3.0.1",
+    "npm-run-all": "^4.1.5",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-ga": "^2.5.7",
     "react-router-dom": "^4.2.2",
     "shortid": "^2.2.14",
     "socket.io-client": "^2.2.0",
+    "webpack-shell-plugin": "^0.5.0",
     "workbox-sw": "^3.6.3",
     "workbox-webpack-plugin": "^3.6.3"
   },
