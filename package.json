@@ -87,7 +87,7 @@
     "chess.js": "^0.10.2",
     "copy-to-clipboard": "^3.0.8",
     "copy-webpack-plugin": "^4.6.0",
-    "flamecoals-boardgame.io": "^0.33.0",
+    "flamecoals-boardgame.io": "^0.36.0",
     "html-webpack-harddisk-plugin": "^1.0.1",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
