@@ -4,15 +4,14 @@ import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-rig
 import Subheader from 'material-ui/Subheader';
 import { GAMES_LIST } from '../games';
 import { GameCard } from '../App/Game/GameCard';
-import { Link } from 'react-router-dom';
 
-class GamesSection extends React.Component<any, any> {
+export class GamesList extends React.Component<{}, {}> {
   public render() {
     // GAMES
     const gamesList = GAMES_LIST.map((game) => (
-      <Link to={'/g/' + game.code} key={game.code}>
+      <a href={'/g/' + game.code} key={game.code}>
         <GameCard game={game} />
-      </Link>
+      </a>
     ));
     return (
       <div>
@@ -22,5 +21,3 @@ class GamesSection extends React.Component<any, any> {
     );
   }
 }
-
-export default GamesSection;

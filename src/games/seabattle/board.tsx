@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 
 import { ShipsPlacement } from './ShipsPlacement';
 import { Token } from 'flamecoals-boardgame.io/ui';
-import GameBar from '../../App/Game/GameBar';
+import { GameLayout } from '../../App/Game/GameLayout';
 import * as ReactGA from 'react-ga';
 import { IShip } from './game';
 import { Battle } from './Battle';
@@ -34,47 +34,39 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     const ctx = this.props.ctx;
     if (ctx.gameover) {
+      const result = (ctx.gameover.winner === this.props.playerID) ?
+        'you won' : 'you lost';
       return (
-        <GameBar>
-          <h1>
-            {(ctx.gameover.winner === this.props.playerID) ?
-              'YOU WON' : 'YOU LOST'
-            }
-          </h1>
-        </GameBar>
+        <GameLayout gameOver={result} />
       );
     }
+    let child;
     if (ctx.phase === 'setup' &&
       (this.props.playerID === null ||
         ctx.actionPlayers.includes(this.props.playerID))) {
-      return (
-        <GameBar>
-          <ShipsPlacement
-            playerID={this.props.playerID}
-            setShips={this._setShips}
-          />
-        </GameBar>
+      child = (
+        <ShipsPlacement
+          playerID={this.props.playerID}
+          setShips={this._setShips}
+        />
       );
     } else if (ctx.phase === 'setup') {
-      return (
-        <GameBar>
-          <h1>
-            Waiting for opponent...
-          </h1>
-        </GameBar>
+      child = (
+        <h1>
+          Waiting for opponent...
+        </h1>
       );
     } else {
-      return (
-        <GameBar>
-          <Battle
-            G={this.props.G}
-            moves={this.props.moves}
-            playerID={this.props.playerID}
-            currentPlayer={ctx.currentPlayer}
-          />
-        </GameBar>
+      child = (
+        <Battle
+          G={this.props.G}
+          moves={this.props.moves}
+          playerID={this.props.playerID}
+          currentPlayer={ctx.currentPlayer}
+        />
       );
     }
+    return <GameLayout>{child}</GameLayout>;
   }
 
   _setShips = (ships: IShip[]) => {

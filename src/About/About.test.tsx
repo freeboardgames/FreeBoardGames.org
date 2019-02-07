@@ -1,19 +1,19 @@
 import * as React from 'react';
-import Home from './Home';
-import { GamesList } from '../App/GamesList';
+import About from './About';
+import FreeBoardGameBar from '../App/FreeBoardGameBar';
 import * as Enzyme from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { expect } from 'chai';
 
-describe('Home', () => {
+describe('About', () => {
 
-  it('should contain game list', () => {
+  it('should contain FreeBoardGameBar', () => {
     const wrapper = Enzyme.mount(
       <MemoryRouter initialEntries={['/']}>
-        <Home />
+        <About />
       </MemoryRouter>);
-    expect(wrapper.find(GamesList)).to.have.lengthOf(1);
+    expect(wrapper.find(FreeBoardGameBar)).to.have.lengthOf(1);
   });
 
 });

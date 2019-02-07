@@ -5,7 +5,7 @@ import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 import { SeabattleGame } from './game';
 import { Client } from 'flamecoals-boardgame.io/client';
 import { Client as ReactClient } from 'flamecoals-boardgame.io/react';
-import GameBar from '../../App/Game/GameBar';
+import { StaticRouter } from 'react-router-dom';
 
 import * as Enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
@@ -72,17 +72,19 @@ test('gameover - won', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
   const comp = Enzyme.mount((
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      isConnected={true}
-    />
+    <StaticRouter location={'/'} context={{}}>
+      <Board
+        G={state1.G}
+        ctx={state1.ctx}
+        moves={client.moves}
+        playerID={'0'}
+        isActive={true}
+        isConnected={true}
+      />
+    </StaticRouter>
   ));
   // First page must have some ships
-  expect(comp.html()).to.contain('WON');
+  expect(comp.html()).to.contain('won');
 });
 
 test('gameover - lost', () => {
@@ -92,17 +94,19 @@ test('gameover - lost', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
   const comp = Enzyme.mount((
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      isConnected={true}
-    />
+    <StaticRouter location={'/'} context={{}}>
+      <Board
+        G={state1.G}
+        ctx={state1.ctx}
+        moves={client.moves}
+        playerID={'0'}
+        isActive={true}
+        isConnected={true}
+      />
+    </StaticRouter>
   ));
   // First page must have some ships
-  expect(comp.html()).to.contain('LOST');
+  expect(comp.html()).to.contain('lost');
 });
 
 test('battle', () => {

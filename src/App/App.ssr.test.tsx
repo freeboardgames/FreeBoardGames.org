@@ -20,7 +20,7 @@ describe('App', () => {
           <App />
         </StaticRouter>
       </MuiThemeProvider>);
-    expect(ssrHtml).toContain('Turnato');
+    expect(ssrHtml).toContain('FreeBoardGame.org');
   });
 
   it('should render chess', () => {

@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { GameInfo } from './Game/GameInfo';
 import { Game } from './Game/Game';
 import Home from '../Home/Home';
+import About from '../About/About';
 import NotFound from './NotFound';
 import * as ReactGA from 'react-ga';
 
@@ -33,6 +34,7 @@ class Main extends React.Component<{}, {}> {
     return (
       <Switch>
         <Route exact={true} path="/" component={withGA(Home)} />
+        <Route exact={true} path="/about" component={withGA(About)} />
         <Route path="/g/:gameCode" exact={true} component={withGA(GameInfo)} />
         <Route path="/g/:gameCode/:mode" exact={true} component={withGA(Game)} />
         <Route path="/g/:gameCode/:mode/:matchCode/:playerID" exact={true} component={withGA(Game)} />

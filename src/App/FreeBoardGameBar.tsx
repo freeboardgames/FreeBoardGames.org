@@ -1,10 +1,7 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-let logo: any = null;
-if (typeof window !== 'undefined') {
-  logo = require('./logo.svg'); // tslint:disable-line
-}
+import Typography from '@material-ui/core/Typography';
 
 class App extends React.Component<{}, {}> {
   componentWillMount() {
@@ -30,16 +27,9 @@ class App extends React.Component<{}, {}> {
                 marginLeft: 'auto',
                 marginRight: 'auto',
               }}
-              title="Turnato"
+              title="FreeBoardGame.org"
               iconElementLeft={
-                <img
-                  src={logo}
-                  style={{
-                    color: 'white', width: '32px',
-                    height: '32px', marginTop: '8px',
-                  }}
-                  alt="Turnato logo."
-                />}
+                <img style={{ marginRight: '3px' }} src="/logo/fbg_logo_white_48.png" alt="FbG" />}
             />
           </a>
           <div style={{ height: '64px' }} />
