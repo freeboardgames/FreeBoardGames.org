@@ -23,6 +23,10 @@ test('should not play sound if it is unrelated update', () => {
   SeabattleSound({})(jest.fn())(action);
 });
 
+(window as any).HTMLMediaElement.prototype.play = () => {
+  // Do nothing.
+};
+
 test('HIT salvo should play hit sound', () => {
   const action = {
     type: 'UPDATE',
@@ -82,4 +86,5 @@ test('MISS salvo should play miss sound', () => {
     },
   };
   expect(getSound(action)).to.equal('miss');
+  SeabattleSound({})(jest.fn())(action);
 });

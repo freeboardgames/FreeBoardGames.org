@@ -8,7 +8,7 @@ describe('Header', () => {
 
   it('should contain Chess option', () => {
     const wrapper = mount(<MuiThemeProvider><Header /></MuiThemeProvider>);
-    expect(wrapper.text()).to.include('Play when you can');
+    expect(wrapper.text()).to.include('Free as in freedom');
   });
 
 });

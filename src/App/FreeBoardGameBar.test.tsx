@@ -1,17 +1,17 @@
 import * as React from 'react';
-import TurnatoBar from './TurnatoBar';
+import FreeBoardGameBar from './FreeBoardGameBar';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import { MemoryRouter } from 'react-router-dom';
 
 describe('App', () => {
 
-  it('should contain Turnato title', () => {
+  it('should contain FreeBoardGame title', () => {
     const wrapper = mount(
-      <TurnatoBar>
+      <FreeBoardGameBar>
         hello world
-        </TurnatoBar>);
-    expect(wrapper.text()).to.include('Turnato');
+        </FreeBoardGameBar>);
+    expect(wrapper.text()).to.include('FreeBoardGame.org');
   });
 
 });

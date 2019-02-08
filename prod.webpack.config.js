@@ -57,7 +57,7 @@ var config = {
    new CopyWebpackPlugin([
       { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' }
    ]),
-    new TerserPlugin({
+   new TerserPlugin({
       parallel: true,
       terserOptions: {
         ecma: 6,

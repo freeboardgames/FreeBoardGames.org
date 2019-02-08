@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TurnatoBar from '../TurnatoBar';
+import FreeBoardGameBar from '../FreeBoardGameBar';
 import { GameCard } from './GameCard';
 import { GameModePicker } from './GameModePicker';
 import { IGameDef, GAMES_MAP } from '../../games';
@@ -15,14 +15,14 @@ export class GameInfo extends React.Component<IGameInfoProps, {}> {
     const gameDef: IGameDef = GAMES_MAP[gameCode]!;
 
     return (
-      <TurnatoBar>
+      <FreeBoardGameBar>
         <GameCard game={gameDef} />
         <GameModePicker
           gameCode={gameDef.code}
           modes={gameDef.modes}
           history={this.props.history}
         />
-      </TurnatoBar>
+      </FreeBoardGameBar>
     );
   }
 }

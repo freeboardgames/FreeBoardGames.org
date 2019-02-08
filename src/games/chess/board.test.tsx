@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import * as Enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 import RaisedButton from 'material-ui/RaisedButton';
+import { StaticRouter } from 'react-router-dom';
 import { GameMode } from '../../App/Game/GameModePicker';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -24,7 +25,7 @@ test('render board - all states - local friend', () => {
       isConnected={true}
     />
   ));
-  expect(board.html()).to.contain('Draw');
+  expect(board.html()).to.contain('draw');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -32,7 +33,7 @@ test('render board - all states - local friend', () => {
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('BLACK WON');
+  expect(board.html()).to.contain('black won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -40,7 +41,7 @@ test('render board - all states - local friend', () => {
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('WHITE WON');
+  expect(board.html()).to.contain('white won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -88,7 +89,7 @@ test('render board - all states - online friend', () => {
       }}
     />
   ));
-  expect(board.html()).to.contain('Draw');
+  expect(board.html()).to.contain('draw');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -96,7 +97,7 @@ test('render board - all states - online friend', () => {
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('YOU LOST');
+  expect(board.html()).to.contain('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -104,12 +105,12 @@ test('render board - all states - online friend', () => {
       currentPlayer: '0', currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('YOU WON');
+  expect(board.html()).to.contain('you won');
   board.setProps({
     ...board.props(),
     playerID: '1',
   });
-  expect(board.html()).to.contain('YOU LOST');
+  expect(board.html()).to.contain('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
