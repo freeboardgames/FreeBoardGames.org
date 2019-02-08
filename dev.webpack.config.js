@@ -63,7 +63,11 @@ var config = {
       { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' }
    ]),
    new WebpackShellPlugin({
-       onBuildEnd: ['node dist/server.js']
+       onBuildEnd: {
+         scripts: ['node dist/server.js'],
+         blocking: false,
+         parallel: true,
+       }
    })
   ],
 
