@@ -16,42 +16,43 @@ export class GameLayout extends React.Component<IGameLayoutProps, {}> {
     } else {
       return (
         <MuiThemeProvider>
-          <div
-            style={{
-              maxWidth: '500px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              position: 'fixed',
-            }}
-          >
-            <a href="/">
-              <img
-                style={{
-                  maxWidth: '500px',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                }}
-                src="/logo/fbg_logo_white_48.png"
-                alt="FbG"
-              />
-            </a>
-            <Typography
-              variant="title"
-              gutterBottom={true}
+          <div>
+            <div
               style={{
-                marginTop: '16px',
+                maxWidth: '500px',
                 marginLeft: 'auto',
                 marginRight: 'auto',
-                color: 'white',
+                position: 'fixed',
               }}
             >
-              FreeBoardGame.org
-            </Typography>
-            <div style={{ height: '64px' }} />
-          </div>
-          <GameDarkSublayout>
-            {this.props.children}
-          </GameDarkSublayout>
+              <a href="/">
+                <img
+                  style={{
+                    maxWidth: '500px',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                  }}
+                  src="/logo/fbg_logo_white_48.png"
+                  alt="FbG"
+                />
+              </a>
+              <Typography
+                variant="title"
+                gutterBottom={true}
+                style={{
+                  marginTop: '16px',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  color: 'white',
+                }}
+              >
+                FreeBoardGame.org
+              </Typography>
+            </div>
+            <GameDarkSublayout>
+              {this.props.children}
+            </GameDarkSublayout>
+         </div>
         </MuiThemeProvider>
       );
     }
