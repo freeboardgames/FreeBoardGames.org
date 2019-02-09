@@ -2,11 +2,9 @@ var path = require("path");
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin-next');
 const port = process.env.PORT || 8000;
-const {GenerateSW, InjectManifest} = require('workbox-webpack-plugin');
+const {GenerateSW} = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 
@@ -45,24 +43,16 @@ var config = {
   plugins: [
     new webpack.EnvironmentPlugin({'NODE_ENV': 'development'}), // use development unless defined
     new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, './dist/webpack/template.html'),
       template: path.resolve(__dirname, './src/index.html'),
-      alwaysWriteToDisk: true,
-    }),
-    new HtmlWebpackHarddiskPlugin(),
-    new InjectManifest({
-       swSrc: './sw.js',
-       swDest: './dist/webpack/sw.js', 
+      filename: 'index.html',
+      inject: true,
     }),
 		new GenerateSW({
-       globDirectory: './dist/webpack',
-       globPatterns: ['**\/*.{html,js,webp,mp3,wav,svg}'],
-       globIgnores: [],
-   }),
-   new CopyWebpackPlugin([
-      { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' }
-   ]),
-   new WebpackShellPlugin({
+      swDest: 'sw.js',
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
+    new WebpackShellPlugin({
        onBuildEnd: {
          scripts: ['node dist/server.js'],
          blocking: false,
