@@ -6,6 +6,7 @@ import Home from '../Home/Home';
 import About from '../About/About';
 import NotFound from './NotFound';
 import * as ReactGA from 'react-ga';
+import { getPageTitle } from '../title';
 
 ReactGA.initialize('UA-105391878-1');
 if (typeof window !== 'undefined' &&
@@ -31,6 +32,10 @@ const withGA = (WrapperComponent: any) => {
 
 class Main extends React.Component<{}, {}> {
   render() {
+    if (typeof document !== 'undefined' &&
+      typeof window !== 'undefined') {
+      document.title = getPageTitle(window.location.pathname);
+    }
     return (
       <Switch>
         <Route exact={true} path="/" component={withGA(Home)} />
