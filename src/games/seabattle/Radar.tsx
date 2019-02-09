@@ -7,7 +7,7 @@ import SvgShip3 from './media/SvgShip3';
 import SvgShip4 from './media/SvgShip4';
 import SvgShip5 from './media/SvgShip5';
 import SvgBackground from './media/SvgBackground';
-import SvgExplosion from './media/SvgExplosion';
+import SvgHit from './media/SvgHit';
 import SvgMiss from './media/SvgMiss';
 import { Blink } from '../../App/Blink';
 
@@ -166,7 +166,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     for (const salvo of this.props.salvos) {
       let drawing;
       if (salvo.hit) {
-        drawing = <SvgExplosion />;
+        drawing = <SvgHit />;
       } else {
         drawing = <SvgMiss />;
       }
