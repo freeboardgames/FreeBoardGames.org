@@ -22,7 +22,7 @@ const DEV = !PROD;
 
 const server = Server({ games: GAMES_LIST.map((gameDef) => gameDef.bgioGame) });
 const router = new Router();
-const template = fs.readFileSync('./dist/webpack/template.html', 'utf8');
+const template = fs.readFileSync('./dist/index.html', 'utf8');
 Mustache.parse(template);
 
 const renderSite = (url: string, title?: string) => {
@@ -47,7 +47,7 @@ router.get('/g/chess', (ctx, next) => {
 });
 
 server.app.use(KoaStatic('./static'));
-server.app.use(KoaStatic('./dist/webpack'));
+server.app.use(KoaStatic('./dist'));
 server.app.use(router.routes());
 server.app.use(router.allowedMethods());
 

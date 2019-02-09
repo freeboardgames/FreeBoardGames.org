@@ -1,9 +1,11 @@
 var path = require("path");
 
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin-next');
 const port = process.env.PORT || 8000;
-const {GenerateSW, InjectManifest} = require('workbox-webpack-plugin');
+const {GenerateSW} = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 
@@ -30,13 +32,14 @@ var config = {
    */
   output: {
     publicPath: '/',
-    path: path.resolve(__dirname, "dist", "webpack"),
+    path: path.resolve(__dirname, "dist"),
     filename: '[name].js',
     chunkFilename: '[chunkhash].js'
   },
 
   plugins: [
     new webpack.EnvironmentPlugin({'NODE_ENV': 'production'}),
+    new CleanWebpackPlugin(['dist'], { root: __dirname, verbose: true, dry: false, exclude: [] }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
       filename: 'index.html',
@@ -53,6 +56,13 @@ var config = {
         ecma: 6,
       },
     }),
+    new WebpackShellPlugin({
+       onBuildEnd: {
+         scripts: ['node build/server.js'],
+         blocking: false,
+         parallel: true,
+       }
+   })
   ],
 
   /*
