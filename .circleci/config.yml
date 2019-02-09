@@ -1,8 +1,4 @@
 defaults: &defaults
-    filters:
-        branches:
-            only:
-                - master
     docker:
         - image: circleci/node:11
     working_directory: ~/tmp/circlci
@@ -20,4 +16,7 @@ workflows:
     version: 2
     deploy_with_ssh:
         jobs:
-            - deploy
+          - deploy:
+              filters:
+                branches:
+                  only: master
