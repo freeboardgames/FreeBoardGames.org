@@ -8,13 +8,6 @@ import NotFound from './NotFound';
 import * as ReactGA from 'react-ga';
 
 ReactGA.initialize('UA-105391878-1');
-if (typeof window !== 'undefined' &&
-  typeof navigator !== 'undefined' &&
-  navigator.serviceWorker) {
-  navigator.serviceWorker.register('/sw.js').then((registration) => {
-    registration.update();
-  });
-}
 
 const withGA = (WrapperComponent: any) => {
   class GAWrapper extends React.Component<{}, {}> {

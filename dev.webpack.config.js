@@ -6,7 +6,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin-next');
 const port = process.env.PORT || 8000;
-const {GenerateSW, InjectManifest} = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 
@@ -50,19 +49,7 @@ var config = {
       alwaysWriteToDisk: true,
     }),
     new HtmlWebpackHarddiskPlugin(),
-    new InjectManifest({
-       swSrc: './sw.js',
-       swDest: './dist/webpack/sw.js', 
-    }),
-		new GenerateSW({
-       globDirectory: './dist/webpack',
-       globPatterns: ['**\/*.{html,js,webp,mp3,wav,svg}'],
-       globIgnores: [],
-   }),
-   new CopyWebpackPlugin([
-      { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' }
-   ]),
-   new WebpackShellPlugin({
+    new WebpackShellPlugin({
        onBuildEnd: {
          scripts: ['node dist/server.js'],
          blocking: false,
