@@ -46,13 +46,14 @@ var config = {
     new CleanWebpackPlugin(['dist'], { root: __dirname, verbose: true, dry: false, exclude: [] }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
-      filename: 'index.html',
+      filename: 'template.html',
       inject: true,
     }),
 		new GenerateSW({
       swDest: 'sw.js',
       clientsClaim: true,
       skipWaiting: true,
+      navigateFallback: '/template.html'
     }),
     new WebpackShellPlugin({
        onBuildEnd: {
