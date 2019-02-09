@@ -52,6 +52,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^4.2.0",
+    "clean-webpack-plugin": "^1.0.1",
     "concurrently": "^4.1.0",
     "coveralls": "^3.0.0",
     "css-loader": "^2.1.0",
