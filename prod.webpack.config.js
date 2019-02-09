@@ -3,7 +3,6 @@ var path = require("path");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebpackShellPlugin = require('webpack-shell-plugin-next');
 const port = process.env.PORT || 8000;
 const {GenerateSW} = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -56,13 +55,6 @@ var config = {
         ecma: 6,
       },
     }),
-    new WebpackShellPlugin({
-       onBuildEnd: {
-         scripts: ['node build/server.js'],
-         blocking: false,
-         parallel: true,
-       }
-   })
   ],
 
   /*
