@@ -1,0 +1,23 @@
+defaults: &defaults
+    filters:
+        branches:
+            only:
+                - master
+    docker:
+        - image: circleci/node:11
+    working_directory: ~/tmp/circlci
+
+version: 2
+jobs:
+    deploy:
+        <<: *defaults
+        steps:
+            - deploy:
+                name: Deploy Over SSH
+                command: |
+                    ssh -oStrictHostKeyChecking=no $SSH_USER@$SSH_HOST "~/deploy.bash"
+workflows:
+    version: 2
+    deploy_with_ssh:
+        jobs:
+            - deploy
