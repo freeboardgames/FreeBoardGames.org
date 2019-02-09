@@ -3572,10 +3572,10 @@ findup-sync@^2.0.0:
     micromatch "^3.0.4"
     resolve-dir "^1.0.1"
 
-flamecoals-boardgame.io@^0.36.0:
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/flamecoals-boardgame.io/-/flamecoals-boardgame.io-0.36.0.tgz#f9cc97f221cf74b280ae7d5b64942536a91fa7c8"
-  integrity sha512-K3qng8AC3cTZdaX6OcCRZdA/un2yiz5wIO8wb5QSdXKklB8aoNSRe3wwIx/L95RiJ7URoAwtTNZ1cQYCZvg2+w==
+flamecoals-boardgame.io@^0.37.0:
+  version "0.37.0"
+  resolved "https://registry.yarnpkg.com/flamecoals-boardgame.io/-/flamecoals-boardgame.io-0.37.0.tgz#8c2cb00dacc2dced3fe18ebe020af58527c56299"
+  integrity sha512-mi87L55clggPKZyONGgYoXg+KHoF5dPszCB8Fz6sVC1Rs0M/VWdgzXAWmuYsziMNzb5YrQcmNuhvxYk4Z+164Q==
   dependencies:
     "@koa/cors" "^2.2.1"
     "@tweenjs/tween.js" "^17.2.0"
@@ -3592,7 +3592,6 @@ flamecoals-boardgame.io@^0.36.0:
     react-dragtastic "^2.4.3"
     redux "^4.0.0"
     socket.io "^2.1.1"
-    three "^0.100.0"
     uuid "3.2.1"
 
 flatted@^0.2.3:
@@ -8464,11 +8463,6 @@ thenify-all@^1.0.0:
   integrity sha1-5p44obq+lpsBCCB5eLn2K4hgSDk=
   dependencies:
     any-promise "^1.0.0"
-
-three@^0.100.0:
-  version "0.100.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.100.0.tgz#262841c0b7d88ebd62af73f28d9f578963b3aa00"
-  integrity sha512-/lN2rdE1OqIwJr4/HcSaOisiCY0uVA0sqPpbCG5nil2uICEdS0LfGwSVYTtZDsIpR76r3++h5H3Hzg5D+SJBRQ==
 
 throat@^4.0.0:
   version "4.1.0"
