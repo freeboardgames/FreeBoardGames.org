@@ -11,7 +11,7 @@ jobs:
             - deploy:
                 name: Deploy Over SSH
                 command: |
-                    ssh -oStrictHostKeyChecking=no $SSH_USER@$SSH_HOST "~/deploy.bash"
+                    ssh -oStrictHostKeyChecking=no $SSH_USER@$SSH_HOST "~/hot.bash"
 workflows:
     version: 2
     deploy_with_ssh:
