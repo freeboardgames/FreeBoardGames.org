@@ -16,43 +16,9 @@ export class GameLayout extends React.Component<IGameLayoutProps, {}> {
     } else {
       return (
         <MuiThemeProvider>
-          <div>
-            <div
-              style={{
-                maxWidth: '500px',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                position: 'fixed',
-              }}
-            >
-              <a href="/">
-                <img
-                  style={{
-                    maxWidth: '500px',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                  }}
-                  src="/logo/fbg_logo_white_48.png"
-                  alt="FbG"
-                />
-              </a>
-              <Typography
-                variant="title"
-                gutterBottom={true}
-                style={{
-                  marginTop: '16px',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  color: 'white',
-                }}
-              >
-                FreeBoardGame.org
-              </Typography>
-            </div>
-            <GameDarkSublayout>
-              {this.props.children}
-            </GameDarkSublayout>
-         </div>
+          <GameDarkSublayout>
+            {this.props.children}
+          </GameDarkSublayout>
         </MuiThemeProvider>
       );
     }
