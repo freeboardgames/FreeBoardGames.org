@@ -1,14 +1,12 @@
 version: '3.7'
 
 services:
-  fbg:
-    container_name: fbg 
+  web:
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - '.:/usr/src/app'
-      - node_modules:/worker/node_modules
+      - node_modules:/appdata/node_modules
     ports:
       - '8000:8000'
     environment:

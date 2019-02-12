@@ -1,10 +1,10 @@
 module.exports = {
   apps : [{
     name   : "freeboardgame server",
-    script : "./dist/server.js",
+    script : "./build/server.js",
     env : {
       "NODE_ENV": "production",
-      "PORT": 8001
+      "PORT": process.env.PORT || 8000
     }
   }]
 }

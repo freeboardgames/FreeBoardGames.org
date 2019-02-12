@@ -8,7 +8,6 @@
 
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import GameBar from '../../App/Game/GameBar';
 // import './board.css';
 
 interface IBoardProps {
@@ -26,17 +25,6 @@ interface IBoardState {
 }
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
-  static propTypes = {
-    G: PropTypes.any.isRequired,
-    ctx: PropTypes.any.isRequired,
-    moves: PropTypes.any.isRequired,
-    playerID: PropTypes.string,
-    isActive: PropTypes.bool,
-    isMultiplayer: PropTypes.bool,
-    isConnected: PropTypes.bool,
-    isPreview: PropTypes.bool,
-  };
-
   onClick = (id: number) => {
     if (this.isActive(id)) {
       this.props.moves.clickCell(id);
@@ -48,18 +36,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   render() {
-    const ctx = this.props.ctx;
     const tbody = [];
     for (let i = 0; i < 3; i++) {
       const cells = [];
       for (let j = 0; j < 3; j++) {
         const id = 3 * i + j;
-        // @ts-ignore
         cells.push(
           <td
             key={id}
             className={this.isActive(id) ? 'active' : ''}
-            onClick={() => this.onClick(id)}
+            onClick={() => this.onClick(id)}  // tslint:disable-line
           >
             {this.props.G.cells[id]}
           </td>,
@@ -93,16 +79,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     return (
-      <GameBar>
-        <div>
-          <table id="board">
-            <tbody>{tbody}</tbody>
-          </table>
-          {player}
-          {winner}
-          {disconnected}
-        </div>
-      </GameBar>
+      <div>
+        <table id="board">
+          <tbody>{tbody}</tbody>
+        </table>
+        {player}
+        {winner}
+        {disconnected}
+      </div>
     );
   }
 }

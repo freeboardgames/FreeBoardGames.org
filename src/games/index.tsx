@@ -52,7 +52,7 @@ export const GAMES_MAP: IGameDefMap = {
   tictactoe: {
     code: 'tictactoe',
     name: 'Tic Tac Toe',
-    imageURL: '/seabattle.png',
+    imageURL: '/thumbnail/seabattle.png',
     bgioGame: TictactoeGame,
     bgioBoard: TictactoeBoard,
     modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
