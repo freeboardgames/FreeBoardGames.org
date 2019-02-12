@@ -5,7 +5,6 @@ ADD . /appdata
 RUN mkdir /appdata/node_modules
 RUN groupadd -g 999 appuser && useradd -m -r -u 999 -g appuser appuser
 RUN chown -hR appuser /appdata
-VOLUME /appdata/node_modules
 USER appuser
 WORKDIR /appdata
 # add node_modules to PATH
