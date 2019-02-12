@@ -10,7 +10,7 @@ import * as ReactDOMServer from 'react-dom/server';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
 import { GAMES_LIST } from './games';
-import { getPageTitle } from './title';
+import { getPageMetadata } from './metadata';
 
 const { Server } = require('flamecoals-boardgame.io/server'); // tslint:disable-line
 import App from './App/App';
@@ -27,7 +27,9 @@ const template = fs.readFileSync('./dist/template.html', 'utf8');
 Mustache.parse(template);
 
 const renderSite = (url: string) => {
-  const title = getPageTitle(url);
+  const metadata = getPageMetadata(url);
+  const title = metadata.title;
+  const description = metadata.description;
   const reactHtml = ReactDOMServer.renderToStaticMarkup(
     <MuiThemeProvider>
       <StaticRouter
@@ -37,7 +39,7 @@ const renderSite = (url: string) => {
         <App />
       </StaticRouter>
     </MuiThemeProvider>);
-  return Mustache.render(template, { title, reactHtml });
+  return Mustache.render(template, { title, reactHtml, description });
 };
 
 server.app.use(KoaStatic('./static'));
