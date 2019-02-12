@@ -6,7 +6,7 @@ import Home from '../Home/Home';
 import About from '../About/About';
 import NotFound from './NotFound';
 import * as ReactGA from 'react-ga';
-import { getPageTitle } from '../title';
+import { getPageMetadata } from '../metadata';
 
 ReactGA.initialize('UA-105391878-1');
 if (typeof window !== 'undefined' &&
@@ -34,7 +34,7 @@ class Main extends React.Component<{}, {}> {
   render() {
     if (typeof document !== 'undefined' &&
       typeof window !== 'undefined') {
-      document.title = getPageTitle(window.location.pathname);
+      document.title = getPageMetadata(window.location.pathname).title;
     }
     return (
       <Switch>
