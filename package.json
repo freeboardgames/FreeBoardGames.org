@@ -140,8 +140,7 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/dist/",
-      "/build/"
+      "/dist/"
     ],
     "moduleNameMapper": {
       "\\.(css|jpg|png|svg|webp)$": "<rootDir>/test/empty-module.js"
