@@ -5,12 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      - node_modules:/appdata/node_modules
     ports:
       - '8000:8000'
     environment:
       - NODE_ENV=development
-
-volumes:
-  node_modules:
