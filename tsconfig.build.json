@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./build/", 
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "commonjs",
     "target": "es6",
     "jsx": "react",
     "moduleResolution": "node",
