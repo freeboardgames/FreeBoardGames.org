@@ -143,3 +143,5 @@ declare module 'flamecoals-boardgame.io/server' {
   function Server(serverArgs: IServerArgs): Koa;
   export = Server;
 }
+
+declare module 'flamecoals-boardgame.io/ai';
