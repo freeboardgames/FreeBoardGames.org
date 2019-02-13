@@ -2,6 +2,7 @@ import * as React from 'react';
 import { GameOver } from './GameOver';
 import { GameDarkSublayout } from './GameDarkSublayout';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Typography from '@material-ui/core/Typography';
 
 interface IGameLayoutProps {
   children?: React.ReactNode;
