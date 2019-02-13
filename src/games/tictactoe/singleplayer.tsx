@@ -6,19 +6,19 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import React from 'react';
-import { Client } from 'boardgame.io/react';
-import { AI } from 'boardgame.io/ai';
-import { MCTSVisualizer } from 'boardgame.io/ai-visualize';
-import TicTacToe from './game';
+import * as React from 'react';
+import { Client } from 'flamecoals-boardgame.io/react';
+import { AI } from 'flamecoals-boardgame.io/ai';
+import { TictactoeGame } from './game';
 import Board from './board';
+import { GameLayout } from '../../App/Game/GameLayout';
 
 const App = Client({
-  game: TicTacToe,
+  game: TictactoeGame,
   board: Board,
   ai: AI({
-    enumerate: G => {
-      let r = [];
+    enumerate: (G: any) => {
+      const r = [];
       for (let i = 0; i < 9; i++) {
         if (G.cells[i] === null) {
           r.push({ move: 'clickCell', args: [i] });
@@ -26,12 +26,6 @@ const App = Client({
       }
       return r;
     },
-
-    visualize: MCTSVisualizer(state => (
-      <div style={{ transform: 'scale(0.7)' }}>
-        <Board {...state} isPreview={true} moves={{}} />
-      </div>
-    )),
   }),
 });
 
