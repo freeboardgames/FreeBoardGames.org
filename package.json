@@ -8,8 +8,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --forceExit",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
-    "build": "tsc",
-    "prod": "yarn run build && webpack --config prod.webpack.config.js && pm2 start pm2-prod.config.js",
+    "build": "tsc -p tsconfig.build.json",
+    "prod": "yarn run build && webpack --config webpack.prod.js && pm2 start pm2-prod.config.js",
     "dev": "run-s build webpack:watch",
     "precommit": "yarn run verify-lint && yarn run verify-tsfmt && yarn run build && yarn run test",
     "pre": "yarn run precommit",
@@ -18,7 +18,7 @@
     "verify-tsfmt": "tsfmt --verify",
     "lint": "tslint --fix -c tslint.json 'src/**/*.ts*'",
     "verify-lint": "tslint -c tslint.json 'src/**/*.ts*'",
-    "webpack:watch": "webpack --watch --progress --config dev.webpack.config.js"
+    "webpack:watch": "webpack --watch --progress --config webpack.dev.js"
   },
   "pre-commit": [
     "precommit"
@@ -27,6 +27,7 @@
     "type": "git",
     "url": "git@github.com:freeboardgame/FreeBoardGame.org.git"
   },
+  "sideEffects": false,
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -77,7 +78,8 @@
     "typescript-formatter": "^7.2.2",
     "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1",
-    "webpack-hot-middleware": "^2.24.3"
+    "webpack-hot-middleware": "^2.24.3",
+    "webpack-merge": "^4.2.1"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.2",
