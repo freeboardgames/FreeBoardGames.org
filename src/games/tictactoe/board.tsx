@@ -9,7 +9,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { GameLayout } from '../../App/Game/GameLayout';
-// import './board.css';
 
 interface IBoardProps {
   G: any;
@@ -27,7 +26,7 @@ interface IBoardState {
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
   lineStyle = {
-    stroke: 'red',
+    stroke: 'white',
     strokeWidth: .05,
   };
   onClick = (id: number) => () => {
@@ -82,7 +81,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             y={j}
             width="1"
             height="1"
-            fill="white"
+            fill="black"
             onClick={this.onClick(id)}
           />,
         );
@@ -97,24 +96,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         }
       }
     }
-    // const tbody = [];
-    // for (let i = 0; i < 3; i++) {
-      // const cells = [];
-      // for (let j = 0; j < 3; j++) {
-        // const id = 3 * i + j;
-        // cells.push(
-          // <td
-            // key={id}
-            // style={cellStyle}
-            // className={this.isActive(id) ? 'active' : ''}
-            // onClick={() => this.onClick(id)}  // tslint:disable-line
-          // >
-            // {this.props.G.cells[id]}
-          // </td>,
-        // );
-      // }
-      // tbody.push(<tr key={i}>{cells}</tr>);
-    // }
 
     let disconnected = null;
     if (this.props.isMultiplayer && !this.props.isConnected) {
