@@ -13,7 +13,6 @@ install:
 script:
   - yarn run lint
   - yarn run build
-  - yarn run test
   - yarn run test:coverage
 
 after_success:
