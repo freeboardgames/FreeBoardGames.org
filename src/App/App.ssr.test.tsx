@@ -9,7 +9,7 @@ import { StaticRouter } from 'react-router-dom';
 import ReactDOMServer from 'react-dom/server';
 import { GameSharing } from './Game/GameSharing';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
-import bootstrapper from 'react-async-bootstrapper';
+import asyncBootstrapper from 'react-async-bootstrapper';
 (global as any).navigator = { userAgent: 'all' };
 
 describe('App', () => {
@@ -25,7 +25,7 @@ describe('App', () => {
     expect(ssrHtml).toContain('FreeBoardGame.org');
   });
 
-  it('should render chess', () => {
+  it('should render chess', async () => {
     const asyncContext = createAsyncContext();
     const app = (
       <AsyncComponentProvider asyncContext={asyncContext}>
@@ -36,10 +36,9 @@ describe('App', () => {
         </MuiThemeProvider>
       </AsyncComponentProvider>
     );
-    bootstrapper(app).then(() => {
-      const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
-      expect(ssrHtml).toContain('svg');
-    });
+    await asyncBootstrapper(app);
+    const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
+    expect(ssrHtml).toContain('svg');
   });
 
   it('should render game sharing', () => {
@@ -56,7 +55,7 @@ describe('App', () => {
     expect(ssrHtml).toContain('Share');
   });
 
-  it('should render seabattle', () => {
+  it('should render seabattle', async () => {
     const asyncContext = createAsyncContext();
     const app = (
       <AsyncComponentProvider asyncContext={asyncContext}>
@@ -67,9 +66,8 @@ describe('App', () => {
         </MuiThemeProvider>
       </AsyncComponentProvider>
     );
-    bootstrapper(app).then(() => {
-      const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
-      expect(ssrHtml).toContain('svg');
-    });
+    await asyncBootstrapper(app);
+    const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
+    expect(ssrHtml).toContain('svg');
   });
 });

@@ -1,5 +1,6 @@
 .DS_STORE
 *.swp
+*.swn
 *.swo
 *.log
 docker-compose-aws.yml

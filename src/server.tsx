@@ -29,7 +29,7 @@ const router = new Router();
 const template = fs.readFileSync('./dist/template.html', 'utf8');
 Mustache.parse(template);
 
-const renderSite = (url: string) => {
+const renderSite = async (url: string) => {
   const metadata = getPageMetadata(url);
   const title = metadata.title;
   const description = metadata.description;
@@ -46,11 +46,10 @@ const renderSite = (url: string) => {
       </MuiThemeProvider>
     </AsyncComponentProvider>
   );
-  return asyncBootstrapper(app).then(() => {
-    const reactHtml = ReactDOMServer.renderToString(app);
-    const asyncState = serialize(asyncContext.getState());
-    return Mustache.render(template, { title, reactHtml, asyncState, description });
-  });
+  await asyncBootstrapper(app);
+  const reactHtml = ReactDOMServer.renderToString(app);
+  const asyncState = serialize(asyncContext.getState());
+  return Mustache.render(template, { title, reactHtml, asyncState, description });
 };
 
 server.app.use(KoaStatic('./static'));
