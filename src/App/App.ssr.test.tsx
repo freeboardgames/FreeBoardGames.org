@@ -8,6 +8,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
 import ReactDOMServer from 'react-dom/server';
 import { GameSharing } from './Game/GameSharing';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import bootstrapper from 'react-async-bootstrapper';
 (global as any).navigator = { userAgent: 'all' };
 
 describe('App', () => {
@@ -24,13 +26,20 @@ describe('App', () => {
   });
 
   it('should render chess', () => {
-    const ssrHtml = ReactDOMServer.renderToStaticMarkup(
-      <MuiThemeProvider>
-        <StaticRouter location={'/g/chess/local'} context={context}>
-          <App />
-        </StaticRouter>
-      </MuiThemeProvider>);
-    expect(ssrHtml).toContain('svg');
+    const asyncContext = createAsyncContext();
+    const app = (
+      <AsyncComponentProvider asyncContext={asyncContext}>
+        <MuiThemeProvider>
+          <StaticRouter location={'/g/chess/local'} context={context}>
+            <App />
+          </StaticRouter>
+        </MuiThemeProvider>
+      </AsyncComponentProvider>
+    );
+    bootstrapper(app).then(() => {
+      const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
+      expect(ssrHtml).toContain('svg');
+    });
   });
 
   it('should render game sharing', () => {
@@ -48,12 +57,19 @@ describe('App', () => {
   });
 
   it('should render seabattle', () => {
-    const ssrHtml = ReactDOMServer.renderToStaticMarkup(
-      <MuiThemeProvider>
-        <StaticRouter location={'/g/seabattle/local'} context={context}>
-          <App />
-        </StaticRouter>
-      </MuiThemeProvider>);
-    expect(ssrHtml).toContain('svg');
+    const asyncContext = createAsyncContext();
+    const app = (
+      <AsyncComponentProvider asyncContext={asyncContext}>
+        <MuiThemeProvider>
+          <StaticRouter location={'/g/seabattle/local'} context={context}>
+            <App />
+          </StaticRouter>
+        </MuiThemeProvider>
+      </AsyncComponentProvider>
+    );
+    bootstrapper(app).then(() => {
+      const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
+      expect(ssrHtml).toContain('svg');
+    });
   });
 });

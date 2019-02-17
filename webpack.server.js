@@ -42,14 +42,15 @@ var config = {
           options: {
             presets: [
               [
-                'env',
+                '@babel/preset-env',
                 {
                   "targets": {
                     "node": true
                   }
                 }
               ]
-            ]
+            ],
+            plugins: ["@babel/plugin-syntax-dynamic-import"]
           } 
         },
         {

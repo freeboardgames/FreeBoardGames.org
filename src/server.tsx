@@ -8,6 +8,9 @@ import fs from 'fs';
 import Mustache from 'mustache';
 import ReactDOMServer from 'react-dom/server';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import asyncBootstrapper from 'react-async-bootstrapper';
+import serialize from 'serialize-javascript';
 import { StaticRouter } from 'react-router-dom';
 import { GAMES_LIST } from './games';
 import { getPageMetadata } from './metadata';
@@ -30,16 +33,24 @@ const renderSite = (url: string) => {
   const metadata = getPageMetadata(url);
   const title = metadata.title;
   const description = metadata.description;
-  const reactHtml = ReactDOMServer.renderToStaticMarkup(
-    <MuiThemeProvider>
-      <StaticRouter
-        location={url}
-        context={{}}
-      >
-        <App />
-      </StaticRouter>
-    </MuiThemeProvider>);
-  return Mustache.render(template, { title, reactHtml, description });
+  const asyncContext = createAsyncContext();
+  const app = (
+    <AsyncComponentProvider asyncContext={asyncContext}>
+      <MuiThemeProvider>
+        <StaticRouter
+          location={url}
+          context={{}}
+        >
+          <App />
+        </StaticRouter>
+      </MuiThemeProvider>
+    </AsyncComponentProvider>
+  );
+  return asyncBootstrapper(app).then(() => {
+    const reactHtml = ReactDOMServer.renderToString(app);
+    const asyncState = serialize(asyncContext.getState());
+    return Mustache.render(template, { title, reactHtml, asyncState, description });
+  });
 };
 
 server.app.use(KoaStatic('./static'));
@@ -47,8 +58,9 @@ server.app.use(KoaStatic('./dist'));
 server.app.use(router.routes());
 server.app.use(router.allowedMethods());
 
-server.app.use((ctx: any) => {
-  ctx.body = renderSite(ctx.request.url);
+server.app.use(async (ctx: any, next: any) => {
+  await next();
+  ctx.response.body = await renderSite(ctx.request.url);
 });
 
 server.app.listen(PORT, HOST, () => {
