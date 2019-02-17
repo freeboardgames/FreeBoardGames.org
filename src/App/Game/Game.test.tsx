@@ -1,5 +1,5 @@
 import React from 'react';
-import { Game } from './Game';
+import Game from './Game';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 

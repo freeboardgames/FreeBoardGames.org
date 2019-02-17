@@ -11,6 +11,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 var config = {
   entry: {
     index: path.resolve(__dirname, 'src/app.tsx'),
+    game: path.resolve(__dirname, 'src/App/Game/Game.tsx'),
   },
 
   optimization: {
@@ -59,7 +60,7 @@ var config = {
           options: {
             presets: [
               [
-                'env',
+                '@babel/preset-env',
                 {
                   "modules": false,
                   "targets": {
@@ -67,7 +68,8 @@ var config = {
                   }
                 }
               ]
-            ]
+            ],
+            plugins: ["@babel/plugin-syntax-dynamic-import"]
           } 
         },
         {

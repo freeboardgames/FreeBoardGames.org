@@ -9,7 +9,7 @@ interface IGameProps {
   history?: { push: (url: string) => void };
 }
 
-export class Game extends React.Component<IGameProps, {}> {
+export default class Game extends React.Component<IGameProps, {}> {
   render() {
     const gameCode = this.props.match.params.gameCode;
     const mode = this.props.match.params.mode as GameMode;

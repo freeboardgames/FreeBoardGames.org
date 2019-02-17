@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { GameInfo } from './Game/GameInfo';
-import { Game } from './Game/Game';
+import Game from './Game/GameAsync';
 import Home from '../Home/Home';
 import About from '../About/About';
 import NotFound from './NotFound';
