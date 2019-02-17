@@ -6,8 +6,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Grid } from 'flamecoals-boardgame.io/ui';
 
 /**

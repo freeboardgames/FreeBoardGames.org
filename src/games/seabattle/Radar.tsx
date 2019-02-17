@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IShip, ICell, ISalvo, getCellVector, validateShips } from './game';
 import { Grid } from 'flamecoals-boardgame.io/ui';
 import { Token } from 'flamecoals-boardgame.io/ui';

@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import * as React from 'react';
+import React from 'react';
 
 import Chess from './chessjswrapper';
 import { Checkerboard, IAlgebraicCoords, IColorMap } from './checkerboard';
@@ -21,7 +21,7 @@ import Pawn from './pieces/pawn';
 import Queen from './pieces/queen';
 import Rook from './pieces/rook';
 import AlertLayer from '../../App/Game/AlertLayer';
-import * as ReactGA from 'react-ga';
+import ReactGA from 'react-ga';
 
 const COL_NAMES = 'abcdefgh';
 const SELECTED_COLOR = 'green';

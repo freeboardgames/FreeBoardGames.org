@@ -1,7 +1,7 @@
-import * as Enzyme from 'enzyme';
+import Enzyme from 'enzyme';
 import { getPageMetadata } from './metadata';
 import { expect } from 'chai';
-import * as Adapter from 'enzyme-adapter-react-16';
+import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
 

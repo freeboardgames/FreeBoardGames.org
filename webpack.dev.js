@@ -12,7 +12,7 @@ module.exports = merge(common, {
   plugins: [
     new WebpackShellPlugin({
        onBuildEnd: {
-         scripts: ['node build/server.js'],
+         scripts: ['node server-build/server.js'],
          blocking: false,
          parallel: true,
        }

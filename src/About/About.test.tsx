@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import About from './About';
 import FreeBoardGameBar from '../App/FreeBoardGameBar';
-import * as Enzyme from 'enzyme';
+import Enzyme from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { expect } from 'chai';

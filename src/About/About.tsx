@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import FreeBoardGameBar from '../App/FreeBoardGameBar';
 import Button from '@material-ui/core/Button';
 import { Card, CardText, CardMedia, CardTitle } from 'material-ui/Card';

@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import Subheader from 'material-ui/Subheader';
 import AndroidIcon from 'material-ui/svg-icons/action/android';
 import GroupIcon from 'material-ui/svg-icons/social/group';
 import { List, ListItem } from 'material-ui/List';
-import * as shortid from 'shortid';
-import * as PropTypes from 'prop-types';
+import shortid from 'shortid';
+import PropTypes from 'prop-types';
 
 interface IGameModePickerProps {
   gameCode: string;

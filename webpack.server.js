@@ -2,43 +2,26 @@ var path = require("path");
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const port = process.env.PORT || 8000;
-const {GenerateSW} = require('workbox-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-
+const nodeExternals = require('webpack-node-externals');
 
 var config = {
+  mode: 'development',
+  target: 'node',
+  externals: [nodeExternals()],
+  
   entry: {
-    index: path.resolve(__dirname, 'src/app.tsx'),
-  },
-
-  optimization: {
-    splitChunks: {
-      chunks: 'all'
-    }
+    server: path.resolve(__dirname, 'src/server.tsx'),
   },
 
   output: {
     publicPath: '/',
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "server-build"),
     filename: '[name].js',
     chunkFilename: '[chunkhash].js'
   },
 
   plugins: [
-    new CleanWebpackPlugin(['dist'], { root: __dirname, verbose: true, dry: false, exclude: [] }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/index.html'),
-      filename: 'template.html',
-      inject: true,
-    }),
-		new GenerateSW({
-      swDest: 'sw.js',
-      clientsClaim: true,
-      skipWaiting: true,
-      navigateFallback: '/template.html'
-    })
+    new CleanWebpackPlugin(['server-build'], { root: __dirname, dry: false, exclude: [] }),
   ],
 
   resolve: {
@@ -61,9 +44,8 @@ var config = {
               [
                 'env',
                 {
-                  "modules": false,
                   "targets": {
-                    "browsers": [">1%"]
+                    "node": true
                   }
                 }
               ]

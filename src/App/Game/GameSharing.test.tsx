@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { GameSharing } from './GameSharing';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';

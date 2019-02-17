@@ -2,11 +2,11 @@
  * @jest-environment node
  */
 
-import * as React from 'react';
+import React from 'react';
 import App from './App';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
-import * as ReactDOMServer from 'react-dom/server';
+import ReactDOMServer from 'react-dom/server';
 import { GameSharing } from './Game/GameSharing';
 (global as any).navigator = { userAgent: 'all' };
 

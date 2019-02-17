@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { GameModePicker, GameMode } from './GameModePicker';
 import { ListItem } from 'material-ui/List';
 import { mount, shallow } from 'enzyme';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import PlacesCasino from 'material-ui/svg-icons/places/casino';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import Subheader from 'material-ui/Subheader';
