@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import FreeBoardGameBar from '../App/FreeBoardGameBar';
 import Header from './Header';
 import { GamesList } from '../App/GamesList';

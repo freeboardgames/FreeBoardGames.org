@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Board } from './board';
 import { expect } from 'chai';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
@@ -7,8 +7,8 @@ import { Client } from 'flamecoals-boardgame.io/client';
 import { Client as ReactClient } from 'flamecoals-boardgame.io/react';
 import { StaticRouter } from 'react-router-dom';
 
-import * as Enzyme from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as Enzyme from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { expect } from 'chai';
 import { GameMode } from './GameModePicker';
 import { gameBoardWrapper } from './GameBoardWrapper';

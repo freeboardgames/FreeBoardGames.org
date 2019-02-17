@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 class AlertLayer extends React.Component<{}, {}> {
   render() {

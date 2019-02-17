@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Client } from 'flamecoals-boardgame.io/react';
 import { IGameDef, GAMES_MAP } from '../../games';
 import { gameBoardWrapper } from './GameBoardWrapper';

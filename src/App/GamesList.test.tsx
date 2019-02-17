@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { GamesList } from './GamesList';
 import { ListItem } from 'material-ui/List';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import FreeBoardGameBar from '../FreeBoardGameBar';
 import { GameCard } from './GameCard';
 import { GameModePicker } from './GameModePicker';

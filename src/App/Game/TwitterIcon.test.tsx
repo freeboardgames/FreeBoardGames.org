@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import TwitterIcon from './TwitterIcon';
-import * as Enzyme from 'enzyme';
+import Enzyme from 'enzyme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import * as Adapter from 'enzyme-adapter-react-16';
+import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
 

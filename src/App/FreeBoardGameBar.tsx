@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import Typography from '@material-ui/core/Typography';

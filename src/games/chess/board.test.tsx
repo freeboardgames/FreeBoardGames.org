@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Board } from './board';
 import { expect } from 'chai';
-import * as Enzyme from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import RaisedButton from 'material-ui/RaisedButton';
 import { StaticRouter } from 'react-router-dom';
 import { GameMode } from '../../App/Game/GameModePicker';

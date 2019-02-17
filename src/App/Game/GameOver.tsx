@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { GameMode } from './GameModePicker';
 import { IGameArgs } from './GameBoardWrapper';
 import { GamesList } from '../GamesList';

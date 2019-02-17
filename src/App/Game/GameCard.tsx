@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IGameDef } from '../../games';
 import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 

@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "./build/", 
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "esnext",
     "target": "es6",
     "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "moduleResolution": "node",
     "plugins": [
       { "name": "tslint-language-service"}

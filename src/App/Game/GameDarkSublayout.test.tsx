@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { GameDarkSublayout } from './GameDarkSublayout';
 import AlertLayer from './AlertLayer';
 import { mount, shallow } from 'enzyme';

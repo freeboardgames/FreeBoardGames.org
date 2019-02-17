@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Header from './Header';
 import { mount, shallow } from 'enzyme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
