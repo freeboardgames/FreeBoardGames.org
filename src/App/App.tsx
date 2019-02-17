@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { GameInfo } from './Game/GameInfo';
+import GameInfo from './Game/GameInfoAsync';
 import Game from './Game/GameAsync';
-import Home from '../Home/Home';
-import About from '../About/About';
-import NotFound from './NotFound';
+import Home from '../Home/HomeAsync';
+import About from '../About/AboutAsync';
+import NotFound from './NotFoundAsync';
 import ReactGA from 'react-ga';
 import { getPageMetadata } from '../metadata';
 

@@ -15,13 +15,19 @@ import asyncBootstrapper from 'react-async-bootstrapper';
 describe('App', () => {
 
   const context = {};
-  it('should render home', () => {
-    const ssrHtml = ReactDOMServer.renderToStaticMarkup(
-      <MuiThemeProvider>
-        <StaticRouter location={'/'} context={context}>
-          <App />
-        </StaticRouter>
-      </MuiThemeProvider>);
+  it('should render home', async () => {
+    const asyncContext = createAsyncContext();
+    const app = (
+      <AsyncComponentProvider asyncContext={asyncContext}>
+        <MuiThemeProvider>
+          <StaticRouter location={'/'} context={context}>
+            <App />
+          </StaticRouter>
+        </MuiThemeProvider>
+      </AsyncComponentProvider>
+    );
+    await asyncBootstrapper(app);
+    const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
     expect(ssrHtml).toContain('FreeBoardGame.org');
   });
 

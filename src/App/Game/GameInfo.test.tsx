@@ -1,5 +1,5 @@
 import React from 'react';
-import { GameInfo } from './GameInfo';
+import GameInfo from './GameInfo';
 import Enzyme from 'enzyme';
 import { expect } from 'chai';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';

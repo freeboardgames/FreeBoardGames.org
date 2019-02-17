@@ -9,7 +9,7 @@ interface IGameInfoProps {
   history?: { push: (url: string) => void };
 }
 
-export class GameInfo extends React.Component<IGameInfoProps, {}> {
+class GameInfo extends React.Component<IGameInfoProps, {}> {
   render() {
     const gameCode = this.props.match.params.gameCode;
     const gameDef: IGameDef = GAMES_MAP[gameCode]!;
@@ -26,3 +26,5 @@ export class GameInfo extends React.Component<IGameInfoProps, {}> {
     );
   }
 }
+
+export default GameInfo;
