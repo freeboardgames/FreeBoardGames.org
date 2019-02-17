@@ -27,7 +27,6 @@ var config = {
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin({'NODE_ENV': 'production'}),
     new CleanWebpackPlugin(['dist'], { root: __dirname, verbose: true, dry: false, exclude: [] }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
