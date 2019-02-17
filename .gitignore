@@ -4,7 +4,7 @@
 *.log
 docker-compose-aws.yml
 
-build
+server-build
 node_modules
 src_common_js
 dist
