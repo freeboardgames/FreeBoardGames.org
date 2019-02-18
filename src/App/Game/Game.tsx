@@ -31,6 +31,12 @@ export default class Game extends React.Component<IGameProps, {}> {
     this.gameCode = this.props.match.params.gameCode;
   }
 
+  clear() {
+    state.loading = true;
+    state.error = false;
+    state.config = undefined;
+  }
+
   bootstrap() {
     return this.load();
   }
