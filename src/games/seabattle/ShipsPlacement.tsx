@@ -39,6 +39,7 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
         />
         <Button
           style={{ float: 'right', marginTop: '8px' }}
+          variant="contained"
           color="primary"
           onClick={this.done}
           disabled={!validShips}

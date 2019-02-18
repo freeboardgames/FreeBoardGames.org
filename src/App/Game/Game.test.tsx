@@ -22,7 +22,7 @@ describe('Game', () => {
   });
 
   it('should render error correctly', async () => {
-    GAMES_MAP['chess'].config = () => Promise.reject(new Error('fail'));
+    GAMES_MAP.chess.config = () => Promise.reject(new Error('fail'));
     const app = <Game match={{ params: { gameCode: 'chess', mode: 'local' } }} />;
     await asyncBootstrapper(app);
     const wrapper = mount(app);
@@ -32,7 +32,7 @@ describe('Game', () => {
   it('should render loading correctly', () => {
     const app = <Game match={{ params: { gameCode: 'chess', mode: 'local' } }} />;
     const wrapper = mount(app);
-    (wrapper.instance() as any).clear(); 
+    (wrapper.instance() as any).clear();
     (wrapper.instance() as any).forceUpdate();
     expect(wrapper.html()).to.contain('Loading');
   });

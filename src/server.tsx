@@ -41,9 +41,8 @@ const renderSite = async (url: string) => {
     </AsyncComponentProvider>
   );
   await asyncBootstrapper(app);
-  const reactHtml = ReactDOMServer.renderToString(app);
-  const asyncState = serialize(asyncContext.getState());
-  return Mustache.render(template, { title, reactHtml, asyncState, description });
+  const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
+  return Mustache.render(template, { title, reactHtml, description });
 };
 
 const startServer = async () => {

@@ -45,11 +45,11 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
   render() {
     return (
       <Card>
-        <Typography gutterBottom={true} variant="h5" component="h2">
+        <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
           Invite Your Friend
         </Typography>
         <CardContent>
-          <div>
+          <div style={{ paddingBottom: '8px' }}>
             <Tooltip title="Send link by e-mail" aria-label="E-mail">
               <IconButton onClick={this.sendEmailCallback}>
                 <EmailIcon />
@@ -77,8 +77,10 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
           />
           <br />
           <Button
+            variant="contained"
             color="primary"
             onClick={this.props.onDismiss}
+            style={{ marginTop: '8px' }}
           >
             Done
           </Button>

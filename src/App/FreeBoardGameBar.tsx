@@ -18,24 +18,16 @@ class App extends React.Component<{}, {}> {
           marginRight: 'auto',
         }}
       >
-        <a href="/">
-          <AppBar
-            position="static"
-            style={{
-              maxWidth: '500px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-          >
+        <a href="/" style={{ textDecoration: 'none' }}>
+          <AppBar position="static">
             <Toolbar>
-              <img style={{ marginRight: '3px' }} src="/logo/fbg_logo_white_48.png" alt="FbG" />
-              <Typography>
+              <img style={{ marginRight: '8px', height: '48px' }} src="/logo/fbg_logo_white_48.png" alt="FbG" />
+              <Typography variant="title" style={{ color: 'white' }}>
                 FreeBoardGame.org
-                </Typography>
+              </Typography>
             </Toolbar>
           </AppBar>
         </a>
-        <div style={{ height: '64px' }} />
         {this.props.children}
       </div>
     );

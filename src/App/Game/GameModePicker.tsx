@@ -64,6 +64,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
     }
     return (
       <ListItem
+        style={{ cursor: 'pointer' }}
         key={text}
         onClick={this._onClick(mode)}
       >

@@ -6,9 +6,8 @@ import asyncBootstrapper from 'react-async-bootstrapper';
 import App from './App/App';
 import { BrowserRouter } from 'react-router-dom';
 
-const rehydrateState = (window as any).ASYNC_COMPONENTS_STATE;
 const app = (
-  <AsyncComponentProvider rehydrateState={rehydrateState}>
+  <AsyncComponentProvider>
     <BrowserRouter>
       <App />
     </BrowserRouter>
