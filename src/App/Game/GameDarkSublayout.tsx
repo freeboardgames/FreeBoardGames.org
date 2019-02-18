@@ -1,5 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;
@@ -34,7 +35,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
               marginRight: 'auto',
             }}
           >
-            <a href="/" style={{ textDecoration: 'none' }}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
               <img
                 src="/logo/fbg_logo_white_48.png"
                 alt="FreeBoardGame.org"
@@ -47,7 +48,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
               >
                 FreeBoardGame.org
               </Typography>
-            </a>
+            </Link>
           </div>
         </div>
         <div

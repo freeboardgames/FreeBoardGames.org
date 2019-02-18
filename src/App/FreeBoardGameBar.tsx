@@ -2,6 +2,7 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 
 class App extends React.Component<{}, {}> {
   componentWillMount() {
@@ -18,7 +19,7 @@ class App extends React.Component<{}, {}> {
           marginRight: 'auto',
         }}
       >
-        <a href="/" style={{ textDecoration: 'none' }}>
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <AppBar position="static">
             <Toolbar>
               <img style={{ marginRight: '8px', height: '48px' }} src="/logo/fbg_logo_white_48.png" alt="FbG" />
@@ -27,7 +28,7 @@ class App extends React.Component<{}, {}> {
               </Typography>
             </Toolbar>
           </AppBar>
-        </a>
+        </Link>
         {this.props.children}
       </div>
     );
