@@ -3,7 +3,6 @@ import Home from './Home';
 import { GamesList } from '../App/GamesList';
 import Enzyme from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { expect } from 'chai';
 
 describe('Home', () => {

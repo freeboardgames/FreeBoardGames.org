@@ -1,10 +1,8 @@
 import React from 'react';
 import { GameMode } from './GameModePicker';
 import AlertLayer from './AlertLayer';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { GameSharing } from './GameSharing';
 import { GameOver } from './GameOver';
-import { IGameDef, GAMES_MAP } from '../../games';
 
 export interface IGameArgs {
   gameCode: string;
@@ -13,29 +11,31 @@ export interface IGameArgs {
   playerID?: string;
 }
 
-export function gameBoardWrapper(args: IGameArgs) {
+export interface IBoardWrapperArgs {
+  gameArgs: IGameArgs
+  board: any;
+}
+
+export function gameBoardWrapper(args: IBoardWrapperArgs) {
   class Board extends React.Component<any, {}> {
     state = { dismissedSharing: false };
     render() {
       const props: any = {
         ...this.props,
-        gameArgs: args,
+        gameArgs: args.gameArgs,
       };
       let alert = this._getGameSharing();
       if (!this.props.isConnected) {
         alert = this._getConnectionLost();
       }
-      const gameDef: IGameDef = GAMES_MAP[args.gameCode];
-      const child = React.createElement(gameDef.bgioBoard, props);
+      const child = React.createElement(args.board, props);
       if (!alert) {
         return child;
       }
       return (
         <div style={{ width: '100%', height: '100%' }}>
           {child}
-          <MuiThemeProvider>
-            {alert}
-          </MuiThemeProvider>
+          {alert}
         </div>
       );
     }
@@ -45,14 +45,14 @@ export function gameBoardWrapper(args: IGameArgs) {
     }
 
     _getGameSharing() {
-      if (!this.state.dismissedSharing && args.matchCode &&
-        args.playerID === '0') {
+      if (!this.state.dismissedSharing && args.gameArgs.matchCode &&
+        args.gameArgs.playerID === '0') {
         return (
           <AlertLayer>
             <GameSharing
-              gameCode={args.gameCode}
-              matchCode={args.matchCode}
-              playerID={args.playerID}
+              gameCode={args.gameArgs.gameCode}
+              matchCode={args.gameArgs.matchCode}
+              playerID={args.gameArgs.playerID}
               onDismiss={this._dismissSharing}
             />
           </AlertLayer>

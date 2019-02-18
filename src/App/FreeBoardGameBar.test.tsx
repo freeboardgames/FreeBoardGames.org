@@ -10,7 +10,7 @@ describe('App', () => {
     const wrapper = mount(
       <FreeBoardGameBar>
         hello world
-        </FreeBoardGameBar>);
+      </FreeBoardGameBar>);
     expect(wrapper.text()).to.include('FreeBoardGame.org');
   });
 

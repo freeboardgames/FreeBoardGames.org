@@ -7,7 +7,6 @@ import KoaHelmet from 'koa-helmet';
 import fs from 'fs';
 import Mustache from 'mustache';
 import ReactDOMServer from 'react-dom/server';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import serialize from 'serialize-javascript';
@@ -24,45 +23,46 @@ const NODE_ENV = process.env.NODE_ENV;
 const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
-const server = Server({ games: GAMES_LIST.map((gameDef) => gameDef.bgioGame) });
-const router = new Router();
 const template = fs.readFileSync('./dist/template.html', 'utf8');
-Mustache.parse(template);
 
-const renderSite = (url: string) => {
+const renderSite = async (url: string) => {
   const metadata = getPageMetadata(url);
   const title = metadata.title;
   const description = metadata.description;
   const asyncContext = createAsyncContext();
   const app = (
     <AsyncComponentProvider asyncContext={asyncContext}>
-      <MuiThemeProvider>
-        <StaticRouter
-          location={url}
-          context={{}}
-        >
-          <App />
-        </StaticRouter>
-      </MuiThemeProvider>
+      <StaticRouter
+        location={url}
+        context={{}}
+      >
+        <App />
+      </StaticRouter>
     </AsyncComponentProvider>
   );
-  return asyncBootstrapper(app).then(() => {
-    const reactHtml = ReactDOMServer.renderToString(app);
-    const asyncState = serialize(asyncContext.getState());
-    return Mustache.render(template, { title, reactHtml, asyncState, description });
+  await asyncBootstrapper(app);
+  const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
+  return Mustache.render(template, { title, reactHtml, description });
+};
+
+const startServer = async () => {
+  const configs = Promise.all(GAMES_LIST.map((gameDef) => gameDef.config()));
+  const games = (await configs).map((config) => config.default.bgioGame);
+  const server = Server({ games });
+  server.app.use(KoaStatic('./static'));
+  server.app.use(KoaStatic('./dist'));
+  const router = new Router();
+  server.app.use(router.routes());
+  server.app.use(router.allowedMethods());
+
+  server.app.use(async (ctx: any, next: any) => {
+    await next();
+    ctx.response.body = await renderSite(ctx.request.url);
+  });
+
+  server.app.listen(PORT, HOST, () => {
+    console.log(`Serving ${NODE_ENV} at: http://${HOST}:${PORT}/`); // tslint:disable-line
   });
 };
 
-server.app.use(KoaStatic('./static'));
-server.app.use(KoaStatic('./dist'));
-server.app.use(router.routes());
-server.app.use(router.allowedMethods());
-
-server.app.use(async (ctx: any, next: any) => {
-  await next();
-  ctx.response.body = await renderSite(ctx.request.url);
-});
-
-server.app.listen(PORT, HOST, () => {
-  console.log(`Serving ${NODE_ENV} at: http://${HOST}:${PORT}/`); // tslint:disable-line
-});
+startServer();
