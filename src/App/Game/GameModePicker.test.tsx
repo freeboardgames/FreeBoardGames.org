@@ -1,6 +1,6 @@
 import React from 'react';
 import { GameModePicker, GameMode } from './GameModePicker';
-import { ListItem } from 'material-ui/List';
+import ListItem from '@material-ui/core/ListItem';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 

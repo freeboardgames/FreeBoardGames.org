@@ -3,7 +3,6 @@ import About from './About';
 import FreeBoardGameBar from '../App/FreeBoardGameBar';
 import Enzyme from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { expect } from 'chai';
 
 describe('About', () => {

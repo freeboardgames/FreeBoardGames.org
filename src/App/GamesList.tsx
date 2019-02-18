@@ -1,7 +1,6 @@
 import React from 'react';
-import PlacesCasino from 'material-ui/svg-icons/places/casino';
-import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import Subheader from 'material-ui/Subheader';
+import PlacesCasino from '@material-ui/icons/Casino';
+import NavigationChevronRight from '@material-ui/icons/ChevronRight';
 import { GAMES_LIST } from '../games';
 import { GameCard } from '../App/Game/GameCard';
 
@@ -15,7 +14,7 @@ export class GamesList extends React.Component<{}, {}> {
     ));
     return (
       <div>
-        <Subheader>Games</Subheader>
+        <h2>Games</h2>
         {gamesList}
       </div>
     );

@@ -3,7 +3,6 @@ import { Board } from './board';
 import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import RaisedButton from 'material-ui/RaisedButton';
 import { StaticRouter } from 'react-router-dom';
 import { GameMode } from '../../App/Game/GameModePicker';
 

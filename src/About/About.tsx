@@ -1,26 +1,49 @@
 import React from 'react';
 import FreeBoardGameBar from '../App/FreeBoardGameBar';
 import Button from '@material-ui/core/Button';
-import { Card, CardText, CardMedia, CardTitle } from 'material-ui/Card';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 class About extends React.Component<{}, {}> {
   render() {
     return (
       <FreeBoardGameBar>
-        <Card style={{ marginTop: '16px' }}>
-          <CardTitle title="About FreeBoardGame.org" />
-          <CardText>
+        {this._getAboutCard()}
+        {this._getContributorsCard()}
+        {this._getCreditsCard()}
+      </FreeBoardGameBar>
+    );
+  }
+
+  _getAboutCard() {
+    return (
+      <Card style={{ marginTop: '16px' }}>
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            About FreeBoardGame.org
+          </Typography>
+          <Typography component="p">
             FreeBoardGame.org is a free (as in freedom), mobile-first, board game platform.
             Its goal is to popularize board games and to make them easy to play with friends, even from afar.
-          </CardText>
-        </Card>
-        <Card style={{ marginTop: '16px' }}>
-          <CardTitle title="Contributors" />
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  _getContributorsCard() {
+    return (
+      <Card style={{ marginTop: '16px' }}>
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            Contributors
+          </Typography>
           <List>
             <ListItem>
               <ListItemText
@@ -42,9 +65,18 @@ class About extends React.Component<{}, {}> {
               </Button>
             </ListItem>
           </List>
-        </Card>
-        <Card style={{ marginTop: '16px' }}>
-          <CardTitle title="Credits" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  _getCreditsCard() {
+    return (
+      <Card style={{ marginTop: '16px' }}>
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            Credits
+          </Typography>
           <List>
             <ListItem>
               <ListItemText
@@ -71,8 +103,8 @@ class About extends React.Component<{}, {}> {
               </Button>
             </ListItem>
           </List>
-        </Card>
-      </FreeBoardGameBar>
+        </CardContent>
+      </Card>
     );
   }
 }

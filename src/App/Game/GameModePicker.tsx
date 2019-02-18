@@ -1,9 +1,11 @@
 import React from 'react';
-import { Card, CardTitle, CardText } from 'material-ui/Card';
-import Subheader from 'material-ui/Subheader';
-import AndroidIcon from 'material-ui/svg-icons/action/android';
-import GroupIcon from 'material-ui/svg-icons/social/group';
-import { List, ListItem } from 'material-ui/List';
+import List from '@material-ui/core/List';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import AndroidIcon from '@material-ui/icons/Android';
+import GroupIcon from '@material-ui/icons/Group';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import shortid from 'shortid';
 import PropTypes from 'prop-types';
 
@@ -28,12 +30,10 @@ export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
       modes.push(this._getListItem(mode));
     }
     return (
-      <div>
-        <Subheader>Choose game mode</Subheader>
-        <List style={{ textAlign: 'left' }}>
-          {modes}
-        </List>
-      </div>
+      <List>
+        <ListSubheader>Choose game mode</ListSubheader>
+        {modes}
+      </List>
     );
   }
 
@@ -65,10 +65,11 @@ export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
     return (
       <ListItem
         key={text}
-        primaryText={text}
-        leftIcon={icon}
         onClick={this._onClick(mode)}
-      />);
+      >
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText>{text}</ListItemText>
+      </ListItem>);
   }
 
   _onClick(mode: GameMode) {

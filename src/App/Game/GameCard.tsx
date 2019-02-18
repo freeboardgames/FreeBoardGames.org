@@ -1,6 +1,10 @@
 import React from 'react';
 import { IGameDef } from '../../games';
-import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
 
 interface IGameCardProps {
   game: IGameDef;
@@ -10,18 +14,20 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
   render() {
     return (
       <Card style={{ marginBottom: '16px' }}>
-        <CardMedia
-          overlay={
-            <CardTitle
-              title={this.props.game.name}
-              subtitle={this.props.game.description}
-            />}
-        >
-          <img
-            src={this.props.game.imageURL}
-            alt={this.props.game.name}
+        <CardActionArea>
+          <CardMedia
+            image={this.props.game.imageURL}
+            title={this.props.game.name}
           />
-        </CardMedia>
+          <CardContent>
+            <Typography gutterBottom={true} variant="h5" component="h2">
+              {this.props.game.name}
+            </Typography>
+            <Typography component="p">
+              {this.props.game.description}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
       </Card>
     );
   }

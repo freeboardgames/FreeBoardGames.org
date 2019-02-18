@@ -4,7 +4,6 @@
 
 import React from 'react';
 import App from './App';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { StaticRouter } from 'react-router-dom';
 import ReactDOMServer from 'react-dom/server';
 import { GameSharing } from './Game/GameSharing';
@@ -19,11 +18,9 @@ describe('App', () => {
     const asyncContext = createAsyncContext();
     const app = (
       <AsyncComponentProvider asyncContext={asyncContext}>
-        <MuiThemeProvider>
-          <StaticRouter location={'/'} context={context}>
-            <App />
-          </StaticRouter>
-        </MuiThemeProvider>
+        <StaticRouter location={'/'} context={context}>
+          <App />
+        </StaticRouter>
       </AsyncComponentProvider>
     );
     await asyncBootstrapper(app);
@@ -35,11 +32,9 @@ describe('App', () => {
     const asyncContext = createAsyncContext();
     const app = (
       <AsyncComponentProvider asyncContext={asyncContext}>
-        <MuiThemeProvider>
-          <StaticRouter location={'/g/chess/local'} context={context}>
-            <App />
-          </StaticRouter>
-        </MuiThemeProvider>
+        <StaticRouter location={'/g/chess/local'} context={context}>
+          <App />
+        </StaticRouter>
       </AsyncComponentProvider>
     );
     await asyncBootstrapper(app);
@@ -50,14 +45,12 @@ describe('App', () => {
   it('should render game sharing', () => {
     const onDismiss = jest.fn();
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(
-      <MuiThemeProvider>
-        <GameSharing
-          gameCode={'chess'}
-          matchCode={'foo'}
-          playerID={'0'}
-          onDismiss={onDismiss}
-        />
-      </MuiThemeProvider>);
+      <GameSharing
+        gameCode={'chess'}
+        matchCode={'foo'}
+        playerID={'0'}
+        onDismiss={onDismiss}
+      />);
     expect(ssrHtml).toContain('Share');
   });
 
@@ -65,15 +58,41 @@ describe('App', () => {
     const asyncContext = createAsyncContext();
     const app = (
       <AsyncComponentProvider asyncContext={asyncContext}>
-        <MuiThemeProvider>
-          <StaticRouter location={'/g/seabattle/local'} context={context}>
-            <App />
-          </StaticRouter>
-        </MuiThemeProvider>
+        <StaticRouter location={'/g/seabattle/local'} context={context}>
+          <App />
+        </StaticRouter>
       </AsyncComponentProvider>
     );
     await asyncBootstrapper(app);
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
     expect(ssrHtml).toContain('svg');
+  });
+
+  it('should render about', async () => {
+    const asyncContext = createAsyncContext();
+    const app = (
+      <AsyncComponentProvider asyncContext={asyncContext}>
+        <StaticRouter location={'/about'} context={context}>
+          <App />
+        </StaticRouter>
+      </AsyncComponentProvider>
+    );
+    await asyncBootstrapper(app);
+    const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
+    expect(ssrHtml).toContain('About');
+  });
+
+  it('should render chess info', async () => {
+    const asyncContext = createAsyncContext();
+    const app = (
+      <AsyncComponentProvider asyncContext={asyncContext}>
+        <StaticRouter location={'/g/chess'} context={context}>
+          <App />
+        </StaticRouter>
+      </AsyncComponentProvider>
+    );
+    await asyncBootstrapper(app);
+    const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
+    expect(ssrHtml).toContain('Chess');
   });
 });

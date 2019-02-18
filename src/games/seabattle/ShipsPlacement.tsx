@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
 import { IShip, generateRandomShips, validateShips } from './game';
 import { Radar } from './Radar';
 
@@ -37,13 +37,14 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
           editable={true}
           onEdit={this.onEdit}
         />
-        <RaisedButton
+        <Button
           style={{ float: 'right', marginTop: '8px' }}
-          label="Done"
-          primary={true}
+          color="primary"
           onClick={this.done}
           disabled={!validShips}
-        />
+        >
+          Done
+        </Button>
       </div>
     );
   }

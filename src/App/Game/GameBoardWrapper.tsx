@@ -1,7 +1,6 @@
 import React from 'react';
 import { GameMode } from './GameModePicker';
 import AlertLayer from './AlertLayer';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { GameSharing } from './GameSharing';
 import { GameOver } from './GameOver';
 
@@ -36,9 +35,7 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
       return (
         <div style={{ width: '100%', height: '100%' }}>
           {child}
-          <MuiThemeProvider>
-            {alert}
-          </MuiThemeProvider>
+          {alert}
         </div>
       );
     }

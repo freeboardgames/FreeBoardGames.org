@@ -7,7 +7,6 @@ import KoaHelmet from 'koa-helmet';
 import fs from 'fs';
 import Mustache from 'mustache';
 import ReactDOMServer from 'react-dom/server';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import serialize from 'serialize-javascript';
@@ -33,14 +32,12 @@ const renderSite = async (url: string) => {
   const asyncContext = createAsyncContext();
   const app = (
     <AsyncComponentProvider asyncContext={asyncContext}>
-      <MuiThemeProvider>
-        <StaticRouter
-          location={url}
-          context={{}}
-        >
-          <App />
-        </StaticRouter>
-      </MuiThemeProvider>
+      <StaticRouter
+        location={url}
+        context={{}}
+      >
+        <App />
+      </StaticRouter>
     </AsyncComponentProvider>
   );
   await asyncBootstrapper(app);
