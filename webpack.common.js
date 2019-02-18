@@ -10,8 +10,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 var config = {
   entry: {
-    index: path.resolve(__dirname, 'src/app.tsx'),
-    game: path.resolve(__dirname, 'src/App/Game/Game.tsx'),
+    index: path.resolve(__dirname, 'src/app.tsx')
   },
 
   optimization: {
