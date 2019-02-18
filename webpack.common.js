@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const port = process.env.PORT || 8000;
 const {GenerateSW} = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin-next');
 
 
 var config = {
@@ -39,6 +40,13 @@ var config = {
       clientsClaim: true,
       skipWaiting: true,
       navigateFallback: '/template.html'
+    }),
+    new WebpackShellPlugin({
+       onBuildEnd: {
+         scripts: ['node server-build/server.js'],
+         blocking: false,
+         parallel: true,
+       }
     })
   ],
 
