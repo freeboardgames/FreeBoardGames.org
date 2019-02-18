@@ -24,10 +24,7 @@ const NODE_ENV = process.env.NODE_ENV;
 const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
-const server = Server({ games: GAMES_LIST.map((gameDef) => gameDef.bgioGame) });
-const router = new Router();
 const template = fs.readFileSync('./dist/template.html', 'utf8');
-Mustache.parse(template);
 
 const renderSite = async (url: string) => {
   const metadata = getPageMetadata(url);
@@ -52,16 +49,24 @@ const renderSite = async (url: string) => {
   return Mustache.render(template, { title, reactHtml, asyncState, description });
 };
 
-server.app.use(KoaStatic('./static'));
-server.app.use(KoaStatic('./dist'));
-server.app.use(router.routes());
-server.app.use(router.allowedMethods());
+const startServer = async () => {
+  const configs = Promise.all(GAMES_LIST.map((gameDef) => gameDef.config()));
+  const games = (await configs).map((config) => config.default.bgioGame);
+  const server = Server({ games });
+  server.app.use(KoaStatic('./static'));
+  server.app.use(KoaStatic('./dist'));
+  const router = new Router();
+  server.app.use(router.routes());
+  server.app.use(router.allowedMethods());
 
-server.app.use(async (ctx: any, next: any) => {
-  await next();
-  ctx.response.body = await renderSite(ctx.request.url);
-});
+  server.app.use(async (ctx: any, next: any) => {
+    await next();
+    ctx.response.body = await renderSite(ctx.request.url);
+  });
 
-server.app.listen(PORT, HOST, () => {
-  console.log(`Serving ${NODE_ENV} at: http://${HOST}:${PORT}/`); // tslint:disable-line
-});
+  server.app.listen(PORT, HOST, () => {
+    console.log(`Serving ${NODE_ENV} at: http://${HOST}:${PORT}/`); // tslint:disable-line
+  });
+};
+
+startServer();

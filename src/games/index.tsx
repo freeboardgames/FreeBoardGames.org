@@ -1,22 +1,14 @@
 import { GameMode } from '../App/Game/GameModePicker';
-import { ChessGame } from './chess/game';
-import { Board as ChessBoard } from './chess/board';
-import { SeabattleGame } from './seabattle/game';
-import { Board as SeabattleBoard } from './seabattle/board';
-import { SeabattleSound } from './seabattle/sound';
-import { applyMiddleware } from 'redux';
 
 export interface IGameDef {
   code: string;
   name: string;
   imageURL: string;
-  bgioGame: any;
-  bgioBoard: any;
   description: string;
   modes: GameMode[];
   maxPlayers: 2;
   minPlayers: 2;
-  enhancer?: any;
+  config: () => Promise<any>;
 }
 
 export interface IGameDefMap {
@@ -28,24 +20,21 @@ export const GAMES_MAP: IGameDefMap = {
     code: 'chess',
     name: 'Chess',
     imageURL: '/thumbnail/chess.png',
-    bgioGame: ChessGame,
-    bgioBoard: ChessBoard,
     modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,
     description: 'Chess, International rules.',
+    config: () => import('./chess/config'),
   },
   seabattle: {
     code: 'seabattle',
     name: 'Sea Battle',
     imageURL: '/thumbnail/seabattle.png',
-    bgioGame: SeabattleGame,
-    bgioBoard: SeabattleBoard,
     modes: [GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,
     description: 'Sink your enemy\'s ships!',
-    enhancer: applyMiddleware(SeabattleSound),
+    config: () => import('./seabattle/config'),
   },
 };
 

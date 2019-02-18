@@ -33,6 +33,7 @@ var config = {
       template: path.resolve(__dirname, './src/index.html'),
       filename: 'template.html',
       inject: true,
+      chunksSortMode: 'none' // https://github.com/jantimon/html-webpack-plugin/issues/870
     }),
 		new GenerateSW({
       swDest: 'sw.js',
