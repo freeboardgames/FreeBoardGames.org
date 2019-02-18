@@ -4,14 +4,15 @@ import NavigationChevronRight from '@material-ui/icons/ChevronRight';
 import { GAMES_LIST } from '../games';
 import { GameCard } from '../App/Game/GameCard';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 
 export class GamesList extends React.Component<{}, {}> {
   public render() {
     // GAMES
     const gamesList = GAMES_LIST.map((game) => (
-      <a href={'/g/' + game.code} key={game.code} style={{ textDecoration: 'none' }}>
+      <Link to={'/g/' + game.code} key={game.code} style={{ textDecoration: 'none' }}>
         <GameCard game={game} />
-      </a>
+      </Link>
     ));
     return (
       <div style={{ marginTop: '16px' }}>

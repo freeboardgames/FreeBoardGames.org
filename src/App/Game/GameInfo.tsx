@@ -6,7 +6,6 @@ import { IGameDef, GAMES_MAP } from '../../games';
 
 interface IGameInfoProps {
   match?: any;
-  history?: { push: (url: string) => void };
 }
 
 class GameInfo extends React.Component<IGameInfoProps, {}> {
@@ -20,7 +19,6 @@ class GameInfo extends React.Component<IGameInfoProps, {}> {
         <GameModePicker
           gameCode={gameDef.code}
           modes={gameDef.modes}
-          history={this.props.history}
         />
       </FreeBoardGameBar>
     );

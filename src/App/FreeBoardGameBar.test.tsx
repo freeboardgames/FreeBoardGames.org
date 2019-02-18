@@ -8,9 +8,12 @@ describe('App', () => {
 
   it('should contain FreeBoardGame title', () => {
     const wrapper = mount(
-      <FreeBoardGameBar>
-        hello world
-      </FreeBoardGameBar>);
+      <MemoryRouter>
+        <FreeBoardGameBar>
+          hello world
+        </FreeBoardGameBar>
+      </MemoryRouter>,
+    );
     expect(wrapper.text()).to.include('FreeBoardGame.org');
   });
 

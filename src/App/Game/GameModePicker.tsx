@@ -8,11 +8,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import shortid from 'shortid';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 interface IGameModePickerProps {
   gameCode: string;
   modes: GameMode[];
-  history: { push: (url: string) => void };
 }
 
 export enum GameMode {
@@ -24,6 +24,10 @@ export enum GameMode {
 }
 
 export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
+  _getLink = (to: string) => (props: any) => {
+    return React.createElement(Link, { ...props, to }, props.children);
+  }
+
   render() {
     const modes = [];
     for (const mode of this.props.modes) {
@@ -64,19 +68,13 @@ export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
     }
     return (
       <ListItem
-        style={{ cursor: 'pointer' }}
+        button={true}
+        component={this._getLink(this._getUrl(mode))}
         key={text}
-        onClick={this._onClick(mode)}
       >
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText>{text}</ListItemText>
       </ListItem>);
-  }
-
-  _onClick(mode: GameMode) {
-    return () => {
-      this.props.history.push(this._getUrl(mode));
-    };
   }
 
   _getUrl(mode: GameMode) {

@@ -1,8 +1,9 @@
 import React from 'react';
 import { GameModePicker, GameMode } from './GameModePicker';
 import ListItem from '@material-ui/core/ListItem';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
+import { MemoryRouter } from 'react-router';
 
 describe('Game Mode Picker', () => {
 
@@ -15,14 +16,11 @@ describe('Game Mode Picker', () => {
       GameMode.OnlineFriend,
       GameMode.LocalFriend,
     ];
-    const wrapper = shallow((
-      <GameModePicker gameCode="foo" modes={modesMock} history={historyMock} />
+    const wrapper = mount((
+      <MemoryRouter>
+        <GameModePicker gameCode="foo" modes={modesMock} />
+      </MemoryRouter>
     ));
-    wrapper.find(ListItem).at(0).simulate('click');
-    wrapper.find(ListItem).at(1).simulate('click');
-    wrapper.find(ListItem).at(2).simulate('click');
-    wrapper.find(ListItem).at(3).simulate('click');
-    wrapper.find(ListItem).at(4).simulate('click');
-    expect(historyMock.push.mock.calls.length).to.equal(5);
+    expect(wrapper.find('a').length).to.equal(5);
   });
 });
