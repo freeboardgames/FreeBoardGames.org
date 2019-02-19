@@ -1,12 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import App from './App';
-import * as Enzyme from 'enzyme';
+import Enzyme from 'enzyme';
 import { expect } from 'chai';
-import Home from '../Home/Home';
-import NotFound from './NotFound';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Home from '../Home/HomeAsync';
+import NotFound from './NotFoundAsync';
 import { StaticRouter } from 'react-router-dom';
-import * as Adapter from 'enzyme-adapter-react-16';
+import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -14,22 +13,20 @@ describe('App', () => {
   const context = {};
   it('should go to home', () => {
     const wrapper = Enzyme.mount(
-      <MuiThemeProvider>
-        <StaticRouter location={'/'} context={context}>
-          <App />
-        </StaticRouter>
-      </MuiThemeProvider>);
+      <StaticRouter location={'/'} context={context}>
+        <App />
+      </StaticRouter>,
+    );
     expect(wrapper.find(Home)).to.have.lengthOf(1);
     expect(wrapper.find(NotFound)).to.have.lengthOf(0);
   });
 
   it('should show not found page', () => {
     const wrapper = Enzyme.mount(
-      <MuiThemeProvider>
-        <StaticRouter location={'/doesnotexist'} context={context}>
-          <App />
-        </StaticRouter>
-      </MuiThemeProvider>);
+      <StaticRouter location={'/doesnotexist'} context={context}>
+        <App />
+      </StaticRouter>,
+    );
     expect(wrapper.find(NotFound)).to.have.lengthOf(1);
   });
 });

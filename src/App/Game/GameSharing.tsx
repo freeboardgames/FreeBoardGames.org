@@ -1,16 +1,18 @@
-import * as React from 'react';
-import { Card, CardTitle, CardText } from 'material-ui/Card';
-import TextField from 'material-ui/TextField';
-import { List, ListItem } from 'material-ui/List';
-import RaisedButton from 'material-ui/RaisedButton';
-import EmailIcon from 'material-ui/svg-icons/communication/email';
-import ContentCopyIcon from 'material-ui/svg-icons/content/content-copy';
-import IconButton from 'material-ui/IconButton';
+import React from 'react';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import EmailIcon from '@material-ui/icons/Email';
+import ContentCopyIcon from '@material-ui/icons/FileCopy';
+import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from './FacebookIcon';
 import TwitterIcon from './TwitterIcon';
-import * as copy from 'copy-to-clipboard';
-import * as PropTypes from 'prop-types';
-import * as ReactGA from 'react-ga';
+import copy from 'copy-to-clipboard';
+import PropTypes from 'prop-types';
+import ReactGA from 'react-ga';
+import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
 
 interface IGameSharingProps {
   gameCode: string;
@@ -42,46 +44,47 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
 
   render() {
     return (
-      <Card>
-        <CardTitle title="Invite Your Friend" />
-        <CardText>
-          <div>
-            <IconButton
-              tooltip="Send link by e-mail"
-              onClick={this.sendEmailCallback}
-            >
-              <EmailIcon />
-            </IconButton>
-            <IconButton
-              tooltip="Share on Facebook"
-              onClick={this.shareFacebookCallback}
-            >
-              <FacebookIcon />
-            </IconButton>
-            <IconButton
-              tooltip="Share on Twitter"
-              onClick={this.shareTwitterCallback}
-            >
-              <TwitterIcon />
-            </IconButton>
-            <IconButton
-              tooltip="Copy link to clipboard"
-              onClick={this.copyClipboardCallback}
-            >
-              <ContentCopyIcon />
-            </IconButton>
+      <Card style={{ whiteSpace: 'nowrap' }}>
+        <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
+          Invite Your Friend
+        </Typography>
+        <CardContent>
+          <div style={{ paddingBottom: '8px' }}>
+            <Tooltip title="Send link by e-mail" aria-label="E-mail">
+              <IconButton onClick={this.sendEmailCallback}>
+                <EmailIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Share on Facebook" aria-label="Facebook">
+              <IconButton onClick={this.shareFacebookCallback}>
+                <FacebookIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Share on Twitter" aria-label="Twitter">
+              <IconButton onClick={this.shareTwitterCallback}>
+                <TwitterIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Copy link to clipboard" aria-label="Clipboard">
+              <IconButton onClick={this.copyClipboardCallback}>
+                <ContentCopyIcon />
+              </IconButton>
+            </Tooltip>
           </div>
           <TextField
             defaultValue={this._getLink()}
-            floatingLabelText="Link"
+            label="Link"
           />
           <br />
-          <RaisedButton
-            label="Done"
-            primary={true}
+          <Button
+            variant="contained"
+            color="primary"
             onClick={this.props.onDismiss}
-          />
-        </CardText>
+            style={{ marginTop: '8px' }}
+          >
+            Done
+          </Button>
+        </CardContent>
       </Card>
     );
   }

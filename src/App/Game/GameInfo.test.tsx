@@ -1,20 +1,20 @@
-import * as React from 'react';
-import { GameInfo } from './GameInfo';
-import * as Enzyme from 'enzyme';
+import React from 'react';
+import GameInfo from './GameInfo';
+import Enzyme from 'enzyme';
 import { expect } from 'chai';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import * as Adapter from 'enzyme-adapter-react-16';
+import Adapter from 'enzyme-adapter-react-16';
+import { MemoryRouter } from 'react-router';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Game info', () => {
   const context = {};
   it('should render chess', () => {
-    const wrapper = Enzyme.mount(
-      <MuiThemeProvider>
+    const wrapper = Enzyme.mount((
+      <MemoryRouter>
         <GameInfo match={{ params: { gameCode: 'chess' } }} />
-      </MuiThemeProvider>,
-    );
+      </MemoryRouter>
+    ));
     expect(wrapper.html()).to.contain('Chess');
   });
 });

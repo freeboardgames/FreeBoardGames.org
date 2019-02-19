@@ -6,12 +6,12 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import * as React from 'react';
+import React from 'react';
 import { Checkerboard } from './checkerboard';
 import { Token } from 'flamecoals-boardgame.io/ui';
 import { expect } from 'chai';
-import * as Enzyme from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import FreeBoardGameBar from './FreeBoardGameBar';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
@@ -8,9 +8,12 @@ describe('App', () => {
 
   it('should contain FreeBoardGame title', () => {
     const wrapper = mount(
-      <FreeBoardGameBar>
-        hello world
-        </FreeBoardGameBar>);
+      <MemoryRouter>
+        <FreeBoardGameBar>
+          hello world
+        </FreeBoardGameBar>
+      </MemoryRouter>,
+    );
     expect(wrapper.text()).to.include('FreeBoardGame.org');
   });
 

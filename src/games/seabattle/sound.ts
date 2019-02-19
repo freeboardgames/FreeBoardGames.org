@@ -1,3 +1,6 @@
+import HitSound from './media/hit.mp3';
+import MissSound from './media/miss.mp3';
+
 // Visible for testing only
 function isSalvoUpdate(action: any): boolean {
   if (action.type !== 'UPDATE') {
@@ -30,10 +33,10 @@ let missSound: HTMLAudioElement;
 export const SeabattleSound = (store: any) => (next: any) => (action: any) => {
   const sound = getSound(action);
   if (!hitSound) {
-    hitSound = new Audio('/resources/seabattle/hit.mp3');
+    hitSound = new Audio(HitSound);
   }
   if (!missSound) {
-    missSound = new Audio('/resources/seabattle/miss.mp3');
+    missSound = new Audio(MissSound);
   }
   if (sound) {
     if (sound === 'hit') {

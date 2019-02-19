@@ -1,6 +1,5 @@
-import SvgIcon from 'material-ui/SvgIcon';
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import React from 'react';
 
 class TwitterIcon extends React.Component<{}, {}> {
 

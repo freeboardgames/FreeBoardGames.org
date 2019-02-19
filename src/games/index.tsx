@@ -1,24 +1,16 @@
 import { GameMode } from '../App/Game/GameModePicker';
-import { ChessGame } from './chess/game';
-import { Board as ChessBoard } from './chess/board';
-import { SeabattleGame } from './seabattle/game';
-import { Board as SeabattleBoard } from './seabattle/board';
-import { TictactoeGame } from './tictactoe/game';
-import { Board as TictactoeBoard } from './tictactoe/board';
-import { SeabattleSound } from './seabattle/sound';
-import { applyMiddleware } from 'redux';
+import SeabattleThumbnail from './seabattle/media/thumbnail.png';
+import ChessThumbnail from './chess/media/thumbnail.png';
 
 export interface IGameDef {
   code: string;
   name: string;
   imageURL: string;
-  bgioGame: any;
-  bgioBoard: any;
   description: string;
   modes: GameMode[];
   maxPlayers: 2;
   minPlayers: 2;
-  enhancer?: any;
+  config: () => Promise<any>;
 }
 
 export interface IGameDefMap {
@@ -29,36 +21,32 @@ export const GAMES_MAP: IGameDefMap = {
   chess: {
     code: 'chess',
     name: 'Chess',
-    imageURL: '/thumbnail/chess.png',
-    bgioGame: ChessGame,
-    bgioBoard: ChessBoard,
+    imageURL: ChessThumbnail,
     modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,
     description: 'Chess, International rules.',
+    config: () => import('./chess/config'),
   },
   seabattle: {
     code: 'seabattle',
     name: 'Sea Battle',
-    imageURL: '/thumbnail/seabattle.png',
-    bgioGame: SeabattleGame,
-    bgioBoard: SeabattleBoard,
+    imageURL: SeabattleThumbnail,
     modes: [GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,
     description: 'Sink your enemy\'s ships!',
-    enhancer: applyMiddleware(SeabattleSound),
+    config: () => import('./seabattle/config'),
   },
   tictactoe: {
     code: 'tictactoe',
     name: 'Tic Tac Toe',
     imageURL: '/thumbnail/seabattle.png',
-    bgioGame: TictactoeGame,
-    bgioBoard: TictactoeBoard,
     modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,
     description: 'Play Tic Tac Toe!',
+    config: () => import('./tictactoe/config'),
   },
 };
 

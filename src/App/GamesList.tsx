@@ -1,21 +1,24 @@
-import * as React from 'react';
-import PlacesCasino from 'material-ui/svg-icons/places/casino';
-import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import Subheader from 'material-ui/Subheader';
+import React from 'react';
+import PlacesCasino from '@material-ui/icons/Casino';
+import NavigationChevronRight from '@material-ui/icons/ChevronRight';
 import { GAMES_LIST } from '../games';
 import { GameCard } from '../App/Game/GameCard';
+import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 
 export class GamesList extends React.Component<{}, {}> {
   public render() {
     // GAMES
     const gamesList = GAMES_LIST.map((game) => (
-      <a href={'/g/' + game.code} key={game.code}>
+      <Link to={'/g/' + game.code} key={game.code} style={{ textDecoration: 'none' }}>
         <GameCard game={game} />
-      </a>
+      </Link>
     ));
     return (
-      <div>
-        <Subheader>Games</Subheader>
+      <div style={{ marginTop: '16px' }}>
+        <Typography variant="title" style={{ marginBottom: '16px' }}>
+          Games
+        </Typography>
         {gamesList}
       </div>
     );

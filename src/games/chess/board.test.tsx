@@ -1,19 +1,22 @@
-import * as React from 'react';
+import React from 'react';
 import { Board } from './board';
 import { expect } from 'chai';
-import * as Enzyme from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16';
-import RaisedButton from 'material-ui/RaisedButton';
-import { StaticRouter } from 'react-router-dom';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import { MemoryRouter } from 'react-router';
 import { GameMode } from '../../App/Game/GameModePicker';
 
 Enzyme.configure({ adapter: new Adapter() });
 jest.mock('react-ga');
+const TestBoard = (props: any) => {
+  const board = React.createElement(Board, props, props.children);
+  return <MemoryRouter>{board}</MemoryRouter>;
+};
 
 test('render board - all states - local friend', () => {
   const moveMock = jest.fn();
   const board = Enzyme.mount((
-    <Board
+    <TestBoard
       G={{ pgn: '' }}
       ctx={{
         numPlayer: 2, turn: 0, gameover: 'd',
@@ -73,7 +76,7 @@ test('render board - all states - local friend', () => {
 test('render board - all states - online friend', () => {
   const moveMock = jest.fn();
   const board = Enzyme.mount((
-    <Board
+    <TestBoard
       G={{ pgn: '' }}
       ctx={{
         numPlayer: 2, turn: 0, gameover: 'd',
@@ -129,7 +132,7 @@ function rowColAt(row: number, col: number) {
 test('little game', () => {
   const moveMock = jest.fn();
   const board = Enzyme.mount((
-    <Board
+    <TestBoard
       G={{ pgn: '' }}
       ctx={{
         numPlayer: 2, turn: 0,
@@ -148,15 +151,15 @@ test('little game', () => {
   expect(board.html()).to.contain('YOUR TURN');
   // select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect((board.state() as any).selected).to.equal('a2');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.contain('green');
 
   // unselect
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect((board.state() as any).selected).to.equal('');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
 
   // select f2
   board.find('rect').at(rowColAt(2, 6)).simulate('click');
-  expect((board.state() as any).selected).to.equal('f2');
+  expect(board.find('rect').at(rowColAt(2, 6)).html()).to.contain('green');
 
   // move to f4
   board.find('rect').at(rowColAt(4, 6)).simulate('click');
@@ -175,7 +178,7 @@ test('little game', () => {
 
   // try invalid selection
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect((board.state() as any).selected).to.equal('');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
 
   // test inactive
   board.setProps({
@@ -185,7 +188,7 @@ test('little game', () => {
 
   // cant select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect((board.state() as any).selected).to.equal('');
+  expect(board.find('rect').at(rowColAt(7, 1)).html()).to.not.contain('green');
 
   // make it active again
   board.setProps({
@@ -195,7 +198,7 @@ test('little game', () => {
 
   // select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect((board.state() as any).selected).to.equal('a7');
+  expect(board.find('rect').at(rowColAt(7, 1)).html()).to.contain('green');
 
   // move to a5
   board.find('rect').at(rowColAt(5, 1)).simulate('click');

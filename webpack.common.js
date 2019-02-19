@@ -10,7 +10,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 var config = {
   entry: {
-    index: path.resolve(__dirname, 'src/app.tsx'),
+    index: path.resolve(__dirname, 'src/app.tsx')
   },
 
   optimization: {
@@ -27,19 +27,20 @@ var config = {
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin({'NODE_ENV': 'production'}),
     new CleanWebpackPlugin(['dist'], { root: __dirname, verbose: true, dry: false, exclude: [] }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
       filename: 'template.html',
       inject: true,
+      chunksSortMode: 'none' // https://github.com/jantimon/html-webpack-plugin/issues/870
     }),
 		new GenerateSW({
       swDest: 'sw.js',
       clientsClaim: true,
       skipWaiting: true,
-      navigateFallback: '/template.html'
-    })
+      navigateFallback: '/template.html',
+      navigateFallbackBlacklist: [/^blog.*/]
+    }),
   ],
 
   resolve: {
@@ -60,7 +61,7 @@ var config = {
           options: {
             presets: [
               [
-                'env',
+                '@babel/preset-env',
                 {
                   "modules": false,
                   "targets": {
@@ -68,7 +69,8 @@ var config = {
                   }
                 }
               ]
-            ]
+            ],
+            plugins: ["@babel/plugin-syntax-dynamic-import"]
           } 
         },
         {

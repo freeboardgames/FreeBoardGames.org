@@ -8,9 +8,27 @@ Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
 
 Made with React, Typescript and [Boardgame.io](https://boardgame.io/)
 
+## Features
+
+- :heavy_check_mark: Code splitting.
+- :heavy_check_mark: Server side rendering.
+- :heavy_check_mark: Installable.
+- :heavy_check_mark: Loads fast - small javascript sizes.
+- :heavy_check_mark: Works offline.
+- :construction: Party/lobby system.
+- :construction: i18n.
+
+Check out [kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/6).
+
+## Games
+
+- :heavy_check_mark: Chess [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/5).
+- :heavy_check_mark: Seabattle [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/4).
+- :construction: TicTacToe [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/8).
+
 ## Contributing
 
-Check out the [infrastructure kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/6), each game kanban ([Chess](https://github.com/freeboardgame/FreeBoardGame.org/projects/5), [Seabattle](https://github.com/freeboardgame/FreeBoardGame.org/projects/4), [TicTacToe](https://github.com/freeboardgame/FreeBoardGame.org/projects/8)), or create your own game! Feel free to ask for any help :).
+Contributions are always welcome, even if just reporting bugs. Feel free to ask for any help :).
 
 ## Running locally
 

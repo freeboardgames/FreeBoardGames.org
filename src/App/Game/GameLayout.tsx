@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { GameOver } from './GameOver';
 import { GameDarkSublayout } from './GameDarkSublayout';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Typography from '@material-ui/core/Typography';
 
 interface IGameLayoutProps {
@@ -15,11 +14,9 @@ export class GameLayout extends React.Component<IGameLayoutProps, {}> {
       return (<GameOver result={this.props.gameOver} />);
     } else {
       return (
-        <MuiThemeProvider>
-          <GameDarkSublayout>
-            {this.props.children}
-          </GameDarkSublayout>
-        </MuiThemeProvider>
+        <GameDarkSublayout>
+          {this.props.children}
+        </GameDarkSublayout>
       );
     }
   }

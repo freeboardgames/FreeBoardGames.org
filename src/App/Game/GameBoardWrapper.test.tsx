@@ -1,16 +1,25 @@
-import * as React from 'react';
-import * as Enzyme from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { expect } from 'chai';
 import { GameMode } from './GameModePicker';
 import { gameBoardWrapper } from './GameBoardWrapper';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+class MockBoard extends React.Component<any, any> {
+  render() {
+    return <div>foo</div>;
+  }
+}
+
 test('show no warning', () => {
   const Board = gameBoardWrapper({
-    gameCode: 'chess',
-    mode: GameMode.OnlineFriend,
+    board: MockBoard,
+    gameArgs: {
+      gameCode: 'chess',
+      mode: GameMode.OnlineFriend,
+    },
   });
   const el = Enzyme.mount((
     <Board isConnected={true} G={{ pgn: '' }} ctx={{}} />
@@ -20,8 +29,11 @@ test('show no warning', () => {
 
 test('show disconnected warning', () => {
   const Board = gameBoardWrapper({
-    gameCode: 'chess',
-    mode: GameMode.OnlineFriend,
+    board: MockBoard,
+    gameArgs: {
+      gameCode: 'chess',
+      mode: GameMode.OnlineFriend,
+    },
   });
   const el = Enzyme.mount((
     <Board isConnected={false} G={{ pgn: '' }} ctx={{}} />
@@ -31,10 +43,13 @@ test('show disconnected warning', () => {
 
 test('show sharing dialog and hide it', () => {
   const Board = gameBoardWrapper({
-    gameCode: 'chess',
-    mode: GameMode.OnlineFriend,
-    matchCode: 'foo',
-    playerID: '0',
+    board: MockBoard,
+    gameArgs: {
+      gameCode: 'chess',
+      mode: GameMode.OnlineFriend,
+      matchCode: 'foo',
+      playerID: '0',
+    },
   });
   const el = Enzyme.mount((
     <Board isConnected={true} G={{ pgn: '' }} ctx={{}} />

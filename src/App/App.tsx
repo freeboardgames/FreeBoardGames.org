@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { GameInfo } from './Game/GameInfo';
-import { Game } from './Game/Game';
-import Home from '../Home/Home';
-import About from '../About/About';
-import NotFound from './NotFound';
-import * as ReactGA from 'react-ga';
+import GameInfo from './Game/GameInfoAsync';
+import Game from './Game/GameAsync';
+import Home from '../Home/HomeAsync';
+import About from '../About/AboutAsync';
+import NotFound from './NotFoundAsync';
+import ReactGA from 'react-ga';
 import { getPageMetadata } from '../metadata';
 
 ReactGA.initialize('UA-105391878-1');

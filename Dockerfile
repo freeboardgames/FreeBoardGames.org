@@ -8,7 +8,18 @@ USER appuser
 WORKDIR /appdata
 # add node_modules to PATH
 ENV PATH /appdata/node_modules/.bin:$PATH
+
+# for fbg app:
 # install and cache app dependencies
 RUN yarn install
-# start app
-CMD ["yarn", "run", "dev"]
+# build app
+RUN yarn prod:build
+
+# for blog:
+WORKDIR /appdata/blog/
+RUN yarn install
+RUN yarn run hexo generate
+
+WORKDIR /appdata
+# start server
+CMD ["yarn", "run", "server"]
