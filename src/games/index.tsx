@@ -41,7 +41,7 @@ export const GAMES_MAP: IGameDefMap = {
   tictactoe: {
     code: 'tictactoe',
     name: 'Tic Tac Toe',
-    imageURL: '/thumbnail/seabattle.png',
+    imageURL: SeabattleThumbnail,
     modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,
