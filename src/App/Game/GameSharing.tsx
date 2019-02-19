@@ -44,7 +44,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
 
   render() {
     return (
-      <Card>
+      <Card style={{ whiteSpace: 'nowrap' }}>
         <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
           Invite Your Friend
         </Typography>
