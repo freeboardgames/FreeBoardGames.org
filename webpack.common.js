@@ -38,7 +38,8 @@ var config = {
       swDest: 'sw.js',
       clientsClaim: true,
       skipWaiting: true,
-      navigateFallback: '/template.html'
+      navigateFallback: '/template.html',
+      navigateFallbackBlacklist: [/^blog.*/]
     }),
   ],
 
