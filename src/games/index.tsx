@@ -1,6 +1,6 @@
 import { GameMode } from '../App/Game/GameModePicker';
-import SeabattleThumbnail from './seabattle.png';
-import ChessThumbnail from './chess.png';
+import SeabattleThumbnail from './seabattle/media/thumbnail.png';
+import ChessThumbnail from './chess/media/thumbnail.png';
 
 export interface IGameDef {
   code: string;
