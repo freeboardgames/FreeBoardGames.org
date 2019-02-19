@@ -11,6 +11,6 @@ ENV PATH /appdata/node_modules/.bin:$PATH
 # install and cache app dependencies
 RUN yarn install
 # build app
-RUN yarn dev:build
+RUN yarn prod:build
 # start app
 CMD ["yarn", "run", "server"]

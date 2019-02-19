@@ -8,5 +8,14 @@ module.exports = merge(common, {
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000
-  }
+  },
+  plugins: [
+    new WebpackShellPlugin({
+       onBuildEnd: {
+         scripts: ['node server-build/server.js'],
+         blocking: false,
+         parallel: true
+       }
+    })
+  ]
 });
