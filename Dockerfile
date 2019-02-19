@@ -10,5 +10,7 @@ WORKDIR /appdata
 ENV PATH /appdata/node_modules/.bin:$PATH
 # install and cache app dependencies
 RUN yarn install
+# build app
+RUN yarn dev:build
 # start app
-CMD ["yarn", "run", "dev"]
+CMD ["yarn", "run", "server"]
