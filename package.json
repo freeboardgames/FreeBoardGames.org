@@ -148,7 +148,7 @@
       "/server-build/"
     ],
     "moduleNameMapper": {
-      "\\.(css|jpg|png|svg|webp)$": "<rootDir>/test/empty-module.js"
+      "\\.(css|jpg|png|svg|webp|mp3)$": "<rootDir>/test/empty-module.js"
     }
   }
 }

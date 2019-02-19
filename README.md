@@ -14,7 +14,7 @@ Made with React, Typescript and [Boardgame.io](https://boardgame.io/)
 - :heavy_check_mark: Server side rendering.
 - :heavy_check_mark: Installable.
 - :heavy_check_mark: Loads fast - small javascript sizes.
-- :construction: Works offline.
+- :heavy_check_mark: Works offline.
 - :construction: Party/lobby system.
 - :construction: i18n.
 

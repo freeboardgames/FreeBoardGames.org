@@ -1,4 +1,6 @@
 import { GameMode } from '../App/Game/GameModePicker';
+import SeabattleThumbnail from './seabattle/media/thumbnail.png';
+import ChessThumbnail from './chess/media/thumbnail.png';
 
 export interface IGameDef {
   code: string;
@@ -19,7 +21,7 @@ export const GAMES_MAP: IGameDefMap = {
   chess: {
     code: 'chess',
     name: 'Chess',
-    imageURL: '/thumbnail/chess.png',
+    imageURL: ChessThumbnail,
     modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,
@@ -29,7 +31,7 @@ export const GAMES_MAP: IGameDefMap = {
   seabattle: {
     code: 'seabattle',
     name: 'Sea Battle',
-    imageURL: '/thumbnail/seabattle.png',
+    imageURL: SeabattleThumbnail,
     modes: [GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,

@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import FbgLogo from './media/fbg_logo_white_48.png';
 
 class App extends React.Component<{}, {}> {
   componentWillMount() {
@@ -22,7 +23,7 @@ class App extends React.Component<{}, {}> {
         <Link to="/" style={{ textDecoration: 'none' }}>
           <AppBar position="static">
             <Toolbar>
-              <img style={{ marginRight: '8px', height: '48px' }} src="/logo/fbg_logo_white_48.png" alt="FbG" />
+              <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
               <Typography variant="title" style={{ color: 'white' }}>
                 FreeBoardGame.org
               </Typography>
