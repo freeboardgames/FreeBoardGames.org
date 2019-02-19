@@ -4,21 +4,23 @@
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
+    "dev": "run-s server:build dev:watch",
+    "dev:watch": "webpack --watch --progress --config webpack.dev.js",
+    "fix": "yarn run lint && yarn run tsfmt",
+    "lint": "tslint --fix -c tslint.json 'src/**/*.ts*'",
+    "prod": "run-s prod:build server",
+    "prod:build": "yarn run server:build && webpack --progress --config webpack.prod.js",
+    "precommit": "yarn run verify-lint && yarn run verify-tsfmt && yarn run server:build && yarn run test",
+    "pre": "yarn run precommit",
+    "server": "node server-build/server.js",
+    "server:build": "webpack --progress --config webpack.server.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --forceExit",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
-    "build": "webpack --progress --config webpack.server.js",
-    "prod": "yarn run build && webpack --progress --config webpack.prod.js",
-    "dev": "run-s build webpack:watch",
-    "precommit": "yarn run verify-lint && yarn run verify-tsfmt && yarn run build && yarn run test",
-    "pre": "yarn run precommit",
-    "fix": "yarn run lint && yarn run tsfmt",
     "tsfmt": "tsfmt -r",
     "verify-tsfmt": "tsfmt --verify",
-    "lint": "tslint --fix -c tslint.json 'src/**/*.ts*'",
-    "verify-lint": "tslint -c tslint.json 'src/**/*.ts*'",
-    "webpack:watch": "webpack --watch --progress --config webpack.dev.js"
+    "verify-lint": "tslint -c tslint.json 'src/**/*.ts*'"
   },
   "pre-commit": [
     "precommit"
