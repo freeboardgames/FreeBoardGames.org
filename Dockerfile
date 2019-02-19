@@ -16,11 +16,10 @@ RUN yarn install
 RUN yarn prod:build
 
 # for blog:
-WORKDIR blog/
+WORKDIR /appdata/blog/
 RUN yarn install
 RUN yarn run hexo generate
-WORKDIR /appdata
-COPY blog/public static/blog
 
+WORKDIR /appdata
 # start server
 CMD ["yarn", "run", "server"]
