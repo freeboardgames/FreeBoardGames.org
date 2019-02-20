@@ -21,5 +21,7 @@ RUN yarn install
 RUN yarn run hexo generate
 
 WORKDIR /appdata
+# remove robots.txt
+RUN rm static/robots.txt
 # start server
 CMD ["yarn", "run", "server"]
