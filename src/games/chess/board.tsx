@@ -44,17 +44,10 @@ export class Board extends React.Component<IBoardProps, {}> {
   };
   _click = this.click.bind(this);
 
-  componentWillReceiveProps(nextProps: IBoardProps) {
-    if (nextProps.G.pgn) {
-      this.chess.load_pgn(nextProps.G.pgn);
-      this.setState({
-        ...this.state,
-        selected: '',
-      });
-    }
-  }
-
   render() {
+    if (this.props.G.pgn) {
+      this.chess.load_pgn(this.props.G.pgn);
+    }
     if (this.props.ctx.gameover) {
       return (
         <GameLayout gameOver={this._getGameOver()} />
@@ -110,12 +103,11 @@ export class Board extends React.Component<IBoardProps, {}> {
       });
       if (move) {
         this.props.moves.move(move.san);
-      } else {
-        this.setState({
-          ...this.state,
-          selected: '',
-        });
       }
+      this.setState({
+        ...this.state,
+        selected: '',
+      });
     }
   }
 
