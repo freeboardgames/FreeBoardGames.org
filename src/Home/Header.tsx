@@ -20,7 +20,7 @@ class Header extends React.Component<{}, {}> {
           Not only do you get to enjoy free high quality games everywhere,
           but you also can study how they are made, change them, and contribute back to the community!
         </Typography>
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', marginTop: '8px' }}>
           <Link to="/about" style={{ textDecoration: 'none' }}>
             <Button variant="outlined" style={{ margin: '8px' }}>
               <InfoIcon style={{ marginRight: '8px' }} />
