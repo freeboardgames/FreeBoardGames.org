@@ -3,6 +3,7 @@ import ErrorPng from './media/error.png';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FreeBoardGameBar from './FreeBoardGameBar';
 import SvgError from './media/SvgError';
+import Typography from '@material-ui/core/Typography';
 
 const getMessagePage = (type: 'error' | 'loading', message: string) => {
   return () => {
@@ -16,7 +17,9 @@ const getMessagePage = (type: 'error' | 'loading', message: string) => {
       <FreeBoardGameBar>
         <div style={{ paddingTop: '16px', textAlign: 'center' }}>
           {icon}
-          <h2>{message}</h2>
+          <Typography variant="title" gutterBottom={true} style={{ paddingTop: '16px'}}>
+            {message}
+          </Typography>
         </div>
       </FreeBoardGameBar>
     );
