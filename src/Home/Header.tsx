@@ -20,7 +20,7 @@ class Header extends React.Component<{}, {}> {
           Not only do you get to enjoy free high quality games everywhere,
           but you also can study how they are made, change them, and contribute back to the community!
         </Typography>
-        _links();
+        {this._links()}
       </div>
     );
   }
