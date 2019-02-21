@@ -4,6 +4,7 @@ import { IGameDef, GAMES_MAP } from '../../games';
 import { IGameConfig } from '../../games/config';
 import { gameBoardWrapper } from './GameBoardWrapper';
 import { GameMode } from './GameModePicker';
+import getMessagePage from '../MessagePage';
 
 interface IGameProps {
   match?: any;
@@ -24,11 +25,13 @@ const state: IGameState = {
 
 export default class Game extends React.Component<IGameProps, {}> {
   gameCode: string;
+  gameDef: IGameDef;
   gameConfigPromise: Promise<any>;
 
   constructor(props: IGameProps) {
     super(props);
     this.gameCode = this.props.match.params.gameCode;
+    this.gameDef = GAMES_MAP[this.gameCode];
   }
 
   clear() {
@@ -42,8 +45,7 @@ export default class Game extends React.Component<IGameProps, {}> {
   }
 
   load() {
-    const gameDef: IGameDef = GAMES_MAP[this.gameCode];
-    return gameDef.config().then((config) => {
+    return this.gameDef.config().then((config) => {
       state.config = config.default;
       state.loading = false;
       state.error = false;
@@ -67,6 +69,7 @@ export default class Game extends React.Component<IGameProps, {}> {
     if (!state.loading && state.config) {
       const clientConfig: any = {
         game: state.config.bgioGame,
+        loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
           board: state.config.bgioBoard,
           gameArgs: {
@@ -89,9 +92,17 @@ export default class Game extends React.Component<IGameProps, {}> {
         <App gameID={matchCode} playerID={playerID} />
       );
     } else if (state.loading) {
-      return (<div>Loading...</div>);
+      const LoadingPage = getMessagePage(
+        'loading',
+        `Downloading ${this.gameDef.name}...`,
+      );
+      return <LoadingPage />;
     } else {
-      return (<div>Error loading Game!</div>);
+      const ErrorPage = getMessagePage(
+        'error',
+        `Failed to download ${this.gameDef.name}.`,
+      );
+      return <ErrorPage />;
     }
   }
 }

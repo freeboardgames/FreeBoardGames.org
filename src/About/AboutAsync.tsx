@@ -1,7 +1,5 @@
-import { asyncComponent } from 'react-async-component';
+import getAsync from '../App/Async';
 
-const AboutAsync = asyncComponent({
-  resolve: () => import('./About'),
-});
+const AboutAsync = getAsync('About', () => import('./About'));
 
 export default AboutAsync;

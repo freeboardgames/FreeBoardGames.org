@@ -1,7 +1,5 @@
-import { asyncComponent } from 'react-async-component';
+import getAsync from '../Async';
 
-const GameInfoAsync = asyncComponent({
-  resolve: () => import('./GameInfo'),
-});
+const GameInfoAsync = getAsync('Game Info', () => import('./GameInfo'));
 
 export default GameInfoAsync;

@@ -3,7 +3,6 @@ import App from './App';
 import Enzyme from 'enzyme';
 import { expect } from 'chai';
 import Home from '../Home/HomeAsync';
-import NotFound from './NotFoundAsync';
 import { StaticRouter } from 'react-router-dom';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -18,7 +17,7 @@ describe('App', () => {
       </StaticRouter>,
     );
     expect(wrapper.find(Home)).to.have.lengthOf(1);
-    expect(wrapper.find(NotFound)).to.have.lengthOf(0);
+    expect(wrapper.html()).to.not.contain('Not Found');
   });
 
   it('should show not found page', () => {
@@ -27,6 +26,6 @@ describe('App', () => {
         <App />
       </StaticRouter>,
     );
-    expect(wrapper.find(NotFound)).to.have.lengthOf(1);
+    expect(wrapper.html()).to.contain('Not Found');
   });
 });
