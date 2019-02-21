@@ -1,7 +1,5 @@
-import { asyncComponent } from 'react-async-component';
+import getAsync from '../App/Async';
 
-const HomeAsync = asyncComponent({
-  resolve: () => import('./Home'),
-});
+const HomeAsync = getAsync('Home', () => import('./Home'));
 
 export default HomeAsync;
