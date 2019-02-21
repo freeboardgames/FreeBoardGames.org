@@ -20,27 +20,32 @@ class Header extends React.Component<{}, {}> {
           Not only do you get to enjoy free high quality games everywhere,
           but you also can study how they are made, change them, and contribute back to the community!
         </Typography>
-        <div style={{ textAlign: 'center', marginTop: '8px' }}>
-          <Link to="/about" style={{ textDecoration: 'none' }}>
-            <Button variant="outlined" style={{ margin: '8px' }}>
-              <InfoIcon style={{ marginRight: '8px' }} />
-              About
-            </Button>
-          </Link>
-          <Button
-            href="https://github.com/freeboardgame/FreeBoardGame.org"
-            target="_blank"
-            variant="outlined"
-            style={{ margin: '8px' }}
-          >
-            <CodeIcon style={{ marginRight: '8px' }} />
-            GitHub
+        _links();
+      </div>
+    );
+  }
+  _links() {
+    return (
+      <div style={{ textAlign: 'center', marginTop: '8px' }}>
+        <Link to="/about" style={{ textDecoration: 'none' }}>
+          <Button variant="outlined" style={{ margin: '8px' }}>
+            <InfoIcon style={{ marginRight: '8px' }} />
+            About
           </Button>
-          <Button href="https://discord.gg/AaE6n3n" target="_blank" variant="outlined" style={{ margin: '8px' }}>
-            <QuestionAnswerIcon style={{ marginRight: '8px' }} />
-            Discord
-          </Button>
-        </div>
+        </Link>
+        <Button
+          href="https://github.com/freeboardgame/FreeBoardGame.org"
+          target="_blank"
+          variant="outlined"
+          style={{ margin: '8px' }}
+        >
+          <CodeIcon style={{ marginRight: '8px' }} />
+          GitHub
+        </Button>
+        <Button href="https://discord.gg/AaE6n3n" target="_blank" variant="outlined" style={{ margin: '8px' }}>
+          <QuestionAnswerIcon style={{ marginRight: '8px' }} />
+          Discord
+        </Button>
       </div>
     );
   }
