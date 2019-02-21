@@ -17,7 +17,7 @@ const getMessagePage = (type: 'error' | 'loading', message: string) => {
       <FreeBoardGameBar>
         <div style={{ paddingTop: '16px', textAlign: 'center' }}>
           {icon}
-          <Typography variant="title" gutterBottom={true} style={{ paddingTop: '16px'}}>
+          <Typography variant="title" gutterBottom={true} style={{ paddingTop: '16px' }}>
             {message}
           </Typography>
         </div>
