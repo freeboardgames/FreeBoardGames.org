@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import InfoIcon from '@material-ui/icons/Info';
 import CodeIcon from '@material-ui/icons/Code';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Icon from '@material-ui/core/Icon';
@@ -27,12 +26,6 @@ class Header extends React.Component<{}, {}> {
   _links() {
     return (
       <div style={{ textAlign: 'center', marginTop: '8px' }}>
-        <Link to="/about" style={{ textDecoration: 'none' }}>
-          <Button variant="outlined" style={{ margin: '8px' }}>
-            <InfoIcon style={{ marginRight: '8px' }} />
-            About
-          </Button>
-        </Link>
         <Button
           href="https://github.com/freeboardgame/FreeBoardGame.org"
           target="_blank"
