@@ -27,12 +27,6 @@ class Header extends React.Component<{}, {}> {
   _links() {
     return (
       <div style={{ textAlign: 'center', marginTop: '8px' }}>
-        <Link to="/about" style={{ textDecoration: 'none' }}>
-          <Button variant="outlined" style={{ margin: '8px' }}>
-            <InfoIcon style={{ marginRight: '8px' }} />
-            About
-          </Button>
-        </Link>
         <Button
           href="https://github.com/freeboardgame/FreeBoardGame.org"
           target="_blank"
