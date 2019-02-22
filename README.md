@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.com/freeboardgame/FreeBoardGame.org.svg?branch=master)](https://travis-ci.com/freeboardgame/FreeBoardGame.org)
 [![Coverage Status](https://coveralls.io/repos/github/freeboardgame/FreeBoardGame.org/badge.svg)](https://coveralls.io/github/freeboardgame/FreeBoardGame.org)
 
-Mobile-First Free board games for everybody. Free as in "free beer" and as in "freedom". You are welcome to study the games, modify and contribute back to the community !
+Mobile-First Free board games for everybody. Free as in "free beer" and as in "freedom". You are welcome to study the games, modify and contribute back to the community!
 
 Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
 
@@ -29,6 +29,10 @@ Check out [kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/6
 ## Contributing
 
 Contributions are always welcome, even if just reporting bugs. Feel free to ask for any help :).
+
+## Community
+
+<a href="https://discord.gg/AaE6n3n" target="_blank"><img src="https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png" alt="Discord Logo" width="240" height="80" /></a>
 
 ## Running locally
 
