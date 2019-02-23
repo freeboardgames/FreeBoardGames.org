@@ -18,6 +18,7 @@
     "server:buildquietly": "webpack --config webpack.server.js",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:watchverbose": "jest --watch --verbose=true",
     "test:coverage": "jest --coverage --forceExit",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "tsfmt": "tsfmt -r",
