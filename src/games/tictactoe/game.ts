@@ -9,7 +9,7 @@
 import { Game } from 'flamecoals-boardgame.io/core';
 
 export function isVictory(cells: number[]) {
-  const positions  = [
+  const positions = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
