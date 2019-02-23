@@ -12,7 +12,7 @@ install:
 
 script:
   - yarn run lint
-  - yarn run prod:build
+  - yarn run prod:buildquietly
   - yarn run test:coverage
 
 after_success:
