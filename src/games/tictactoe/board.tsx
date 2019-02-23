@@ -56,7 +56,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   makeCircle(x: number, y: number) {
-    return <circle cx={x + .5} cy={y + .5} r=".5" fill="none" style={this.lineStyle} />;
+    return <circle cx={x + .5} cy={y + .5} r=".45" fill="none" style={this.lineStyle} />;
   }
 
   isActive(id: number) {
