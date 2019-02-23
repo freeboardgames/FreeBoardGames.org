@@ -31,17 +31,12 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
   _animate = (now: number) => () => {
     const elapsed = now - this.state.startTime;
     const timedout = elapsed > 5000;
-    console.log(now);
-    console.log(this.state.startTime);
-    console.log(elapsed);
-    console.log(timedout);
     const linkHidden = timedout ? false : this.props.type !== 'error';
-    console.log(linkHidden);
     this.setState({
       ... this.state,
       linkHidden,
     });
-    if (linkHidden) {
+    if (linkHidden && !timedout) {
       requestAnimationFrame(this._animate(Date.now()));
     }
   }
