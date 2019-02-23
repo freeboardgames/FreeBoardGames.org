@@ -4,7 +4,7 @@ import GameInfo from './Game/GameInfoAsync';
 import Game from './Game/GameAsync';
 import Home from '../Home/HomeAsync';
 import About from '../About/AboutAsync';
-import NotFound from './NotFoundAsync';
+import getMessagePage from './MessagePage';
 import ReactGA from 'react-ga';
 import { getPageMetadata } from '../metadata';
 
@@ -43,7 +43,7 @@ class Main extends React.Component<{}, {}> {
         <Route path="/g/:gameCode" exact={true} component={withGA(GameInfo)} />
         <Route path="/g/:gameCode/:mode" exact={true} component={withGA(Game)} />
         <Route path="/g/:gameCode/:mode/:matchCode/:playerID" exact={true} component={withGA(Game)} />
-        <Route component={withGA(NotFound)} />
+        <Route component={withGA(getMessagePage('error', 'Not Found'))} />
       </Switch>
     );
   }

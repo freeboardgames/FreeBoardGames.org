@@ -16,7 +16,7 @@ describe('Game', () => {
     );
     await asyncBootstrapper(app);
     const wrapper = mount(app);
-    expect(wrapper.html()).to.contain('connecting');
+    expect(wrapper.html()).to.contain('Connecting');
   });
 
   it('should render properly for singleplayer', async () => {
@@ -39,7 +39,7 @@ describe('Game', () => {
     );
     await asyncBootstrapper(app);
     const wrapper = mount(app);
-    expect(wrapper.html()).to.contain('Error');
+    expect(wrapper.html()).to.contain('Fail');
   });
 
   it('should render loading correctly', () => {
@@ -51,6 +51,6 @@ describe('Game', () => {
     const wrapper = mount(app);
     (wrapper.find(Game).instance() as any).clear();
     (wrapper.find(Game).instance() as any).forceUpdate();
-    expect(wrapper.html()).to.contain('Loading');
+    expect(wrapper.html()).to.contain('Downloading');
   });
 });
