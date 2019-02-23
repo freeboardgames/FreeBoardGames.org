@@ -22,7 +22,7 @@ var config = {
   output: {
     publicPath: '/',
     path: path.resolve(__dirname, "dist"),
-    filename: '[name].js',
+    filename: '[name]-[chunkhash].js',
     chunkFilename: '[chunkhash].js'
   },
 
