@@ -12,14 +12,14 @@ test('MessagePage starts with link hidden', () => {
   const msg = Enzyme.mount(
     <MemoryRouter><MessagePage type={'loading'} message={'loading'} /></MemoryRouter>,
   ).find(MessagePage);
-  expect(msg.html()).not.to.contain('Go home');
+  expect(msg.html()).not.to.contain('Go Home');
 });
 
 test('MessagePage starts with link visible for errors', () => {
   const msg = Enzyme.mount(
     <MemoryRouter><MessagePage type={'error'} message={'Not Found'} /></MemoryRouter>,
   ).find(MessagePage);
-  expect(msg.html()).to.contain('Go home');
+  expect(msg.html()).to.contain('Go Home');
 });
 
 test('MessagePage is hidden', () => {
@@ -28,7 +28,7 @@ test('MessagePage is hidden', () => {
   ).find(MessagePage);
   msg.setState({ linkHidden: true, startTime: 0 });
   (msg.instance() as MessagePage)._animate(125)();
-  expect(msg.html()).not.to.contain('Go home');
+  expect(msg.html()).not.to.contain('Go Home');
 });
 
 test('MessagePage unhides link after 5 seconds', () => {
@@ -36,6 +36,6 @@ test('MessagePage unhides link after 5 seconds', () => {
     <MemoryRouter><MessagePage type={'loading'} message={'loading'} /></MemoryRouter>,
   ).find(MessagePage);
   msg.setState({ linkHidden: true, startTime: 0 });
-  (msg.instance() as MessagePage)._animate(6000001)();
-  expect(msg.html()).to.contain('Go home');
+  (msg.find(MessagePage).instance() as MessagePage)._animate(6000)();
+  expect(msg.html()).to.contain('Go Home');
 });

@@ -1,5 +1,7 @@
 import React from 'react';
 import ErrorPng from './media/error.png';
+import Button from '@material-ui/core/Button';
+import HomeIcon from '@material-ui/icons/Home';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FreeBoardGameBar from './FreeBoardGameBar';
 import SvgError from './media/SvgError';
@@ -36,7 +38,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
       ... this.state,
       linkHidden,
     });
-    if (linkHidden && !timedout) {
+    if (linkHidden) {
       requestAnimationFrame(this._animate(Date.now()));
     }
   }
@@ -50,7 +52,11 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
       icon = <CircularProgress />;
     }
     if (!this.state.linkHidden) {
-      linkHome = <Link to="/">Go home</Link>;
+      linkHome = (
+        <Button href="/" target="_blank" variant="outlined" style={{ margin: '8px' }}>
+          <HomeIcon style={{ marginRight: '8px' }} />
+          Go Home
+        </Button>);
     }
     return (
       <FreeBoardGameBar>
@@ -58,7 +64,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
           {icon}
           <Typography variant="title" gutterBottom={true} style={{ paddingTop: '16px' }}>
             {this.props.message}
-            <br />
+            <br /><br />
             {linkHome}
           </Typography>
         </div>
