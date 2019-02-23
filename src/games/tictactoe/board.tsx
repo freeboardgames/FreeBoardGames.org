@@ -43,7 +43,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
-      this.takeTurn();
       this.props.moves.clickCell(id);
     }
   }
@@ -75,17 +74,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend);
   }
 
-  takeTurn() {
-    let turn;
-    if (this.state.turn === 'X') {
-      turn = 'O';
-    } else {
-      turn = 'X';
-    }
-    this.setState({ ... this.state, turn });
-    return turn;
-  }
-
   _getStatus() {
     if (this.isOnlineGame()) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
@@ -94,9 +82,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         return 'Waiting for opponent...';
       }
     } else { // Local game
-      switch (this.state.turn) {
-        case 'X': return 'X\'s turn';
-        case 'O': return 'O\'s turn';
+      switch (this.props.ctx.currentPlayer) {
+        case '0': return 'X\'s turn';
+        case '1': return 'O\'s turn';
       }
     }
   }
