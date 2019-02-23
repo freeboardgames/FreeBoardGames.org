@@ -22,7 +22,7 @@ test('MessagePage starts with link visible for errors', () => {
   expect(msg.html()).to.contain('Go Home');
 });
 
-test('MessagePage is hidden', () => {
+test('MessagePage link is hidden', () => {
   const msg = Enzyme.mount(
     <MemoryRouter><MessagePage type={'loading'} message={'loading'} /></MemoryRouter>,
   ).find(MessagePage);
