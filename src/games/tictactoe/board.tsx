@@ -163,7 +163,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     let player = null;
-    if (this.props.playerID) {
+    if (this.props.playerID && this.isOnlineGame()) {
       player = <div id="player">Player: {this.getPlayer()}</div>;
     }
 
