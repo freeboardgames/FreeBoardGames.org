@@ -23,7 +23,7 @@ const NODE_ENV = process.env.NODE_ENV;
 const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
-const template = fs.readFileSync('./dist/template.html', 'utf8');
+const template = fs.readFileSync('./dist/template2.html', 'utf8');
 
 const renderSite = async (url: string) => {
   const metadata = getPageMetadata(url);
