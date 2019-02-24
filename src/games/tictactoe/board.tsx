@@ -18,44 +18,53 @@ interface IBoardProps {
   moves: any;
   playerID: string;
   isActive: boolean;
-  isConnected: boolean;
-  isMultiplayer: boolean;
-  isPreview: boolean;
   gameArgs?: IGameArgs;
 }
 
-interface IBoardState {
-  turn: string;
-}
-
-export class Board extends React.Component<IBoardProps, IBoardState> {
+export class Board extends React.Component<IBoardProps, {}> {
   private lineStyle = {
     stroke: 'white',
     strokeWidth: .05,
   };
-
-  constructor(props: IBoardProps) {
-    super(props);
-    this.state = {
-      turn: 'X',
-    };
-  }
 
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
       this.props.moves.clickCell(id);
     }
   }
+
   makeCross(x: number, y: number) {
-    const crosses = [
-      <line key={`cross0${x}${y}`} x1={x} y1={y} x2={x + 1} y2={y + 1} style={this.lineStyle} />,
-      <line key={`cross1${x}${y}`} x1={x + 1} y1={y} x2={x} y2={y + 1} style={this.lineStyle} />,
-    ];
-    return crosses;
+    return (
+      <g className="cross" key={`cross${x},${y}`}>
+        <line
+          x1={x}
+          y1={y}
+          x2={x + 1}
+          y2={y + 1}
+          style={this.lineStyle}
+        />,
+        <line
+          x1={x + 1}
+          y1={y}
+          x2={x}
+          y2={y + 1}
+          style={this.lineStyle}
+        />
+      </g>
+    );
   }
 
   makeCircle(x: number, y: number) {
-    return <circle cx={x + .5} cy={y + .5} r=".45" fill="none" style={this.lineStyle} />;
+    return (
+      <circle
+        key={`circle${x},${y}`}
+        cx={x + .5}
+        cy={y + .5}
+        r=".45"
+        fill="none"
+        style={this.lineStyle}
+      />
+    );
   }
 
   isActive(id: number) {
@@ -136,7 +145,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         const id = 3 * i + j;
         cells.push(
           <rect
-            key={`${i}${j}`}
+            key={`${id}`}
             x={i}
             y={j}
             width="1"
@@ -157,20 +166,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       }
     }
 
-    let disconnected = null;
-    if (this.props.isMultiplayer && !this.props.isConnected) {
-      disconnected = <div>Disconnected!</div>;
-    }
-
-    let player = null;
-    if (this.props.playerID && this.isOnlineGame()) {
-      player = <div id="player">Player: {this.getPlayer()}</div>;
-    }
-
-    if (this.props.isPreview) {
-      disconnected = player = null;
-    }
-
     return (
       <GameLayout>
         <div>
@@ -181,8 +176,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             {cells}
             {lines}
           </svg>
-          {player}
-          {disconnected}
         </div>
       </GameLayout>
     );
