@@ -3,26 +3,35 @@ export interface IPageMetadata {
   url?: RegExp;
 }
 
+const TITLE_PREFIX = 'FreeBoardGame.org - ';
+
 const DEFAULT_METADATA: IPageMetadata = {
-  title: 'FreeBoardGame.org - Play Free Board Games Online',
-  description: 'Play free board games online. Free software project.',
+  title: TITLE_PREFIX + 'Play Free Board Games Online',
+  description: 'Play board games in your browser for free. \
+Compete against your online friends or play locally. Free and open-source software project.',
 };
+
 // Most specific URLs MUST come first.
 const PAGES_METADATA: IPageMetadata[] = [
   {
-    title: 'FreeBoardGame.org - Play Two Players Free Chess Locally',
-    description: 'Local free chess game for two players on the same device.',
+    title: 'FreeBoardGame.org - Play Two Player Chess Locally',
+    description: 'Play a free chess game in your browser for two players on the same device.',
     url: new RegExp('^/g/chess/local', 'i'),
   },
   {
-    title: 'FreeBoardGame.org - Play Free Chess With Online Friend',
-    description: 'Online free chess game for playing with friends.',
+    title: 'FreeBoardGame.org - Play Chess with an Online Friend',
+    description: 'Play a free chess game against an online friend in your browser.',
     url: new RegExp('^/g/chess/online', 'i'),
   },
   {
     title: 'FreeBoardGame.org - Play Free Chess Online',
-    description: 'Free chess game that can be played locally or online.',
+    description: 'Play a game of chess in your browser for free.  Compete against your online friends or play locally.',
     url: new RegExp('^/g/chess', 'i'),
+  },
+  {
+    title: 'FreeBoardGame.org - Play Free Seabattle with Online Friend',
+    description: 'Battle and sink ships in a free online game with an online friend.',
+    url: new RegExp('^/g/seabattle/online', 'i'),
   },
   {
     title: 'FreeBoardGame.org - Play Free Seabattle Online',
@@ -30,13 +39,8 @@ const PAGES_METADATA: IPageMetadata[] = [
     url: new RegExp('^/g/seabattle', 'i'),
   },
   {
-    title: 'FreeBoardGame.org - Play Free Seabattle With Online Friend',
-    description: 'Battle online friends in a free game, sinking their ships.',
-    url: new RegExp('^/g/seabattle/online', 'i'),
-  },
-  {
-    title: 'FreeBoardGame.org - About us',
-    description: 'About the free software project FreeBoardGame.org.',
+    title: 'FreeBoardGame.org - About Us',
+    description: 'About FreeBoardGame.org, a free and open-source software project.',
     url: new RegExp('^/about', 'i'),
   },
 ];
