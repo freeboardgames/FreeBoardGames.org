@@ -26,15 +26,16 @@ const DEV = !PROD;
 const template = fs.readFileSync('./dist/template2.html', 'utf8');
 
 const renderSite = async (url: string) => {
+  const asyncContext = createAsyncContext();
   const metadata = getPageMetadata(url);
   const title = metadata.title;
   const description = metadata.description;
-  const asyncContext = createAsyncContext();
+  const context = {};
   const app = (
     <AsyncComponentProvider asyncContext={asyncContext}>
       <StaticRouter
         location={url}
-        context={{}}
+        context={context}
       >
         <App />
       </StaticRouter>
@@ -42,7 +43,10 @@ const renderSite = async (url: string) => {
   );
   await asyncBootstrapper(app);
   const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
-  return Mustache.render(template, { title, reactHtml, description });
+  return ({
+    is404: 'status' in context ? true : false,
+    render: Mustache.render(template, { title, reactHtml, description }),
+  });
 };
 
 const startServer = async () => {
@@ -57,7 +61,11 @@ const startServer = async () => {
 
   server.app.use(async (ctx: any, next: any) => {
     await next();
-    ctx.response.body = await renderSite(ctx.request.url);
+    const { render, is404 } = await renderSite(ctx.request.url);
+    if (is404) {
+      ctx.response.status = 404;
+    }
+    ctx.response.body = render;
   });
 
   server.app.listen(PORT, HOST, () => {
