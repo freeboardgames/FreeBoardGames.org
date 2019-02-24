@@ -22,7 +22,7 @@ var config = {
   output: {
     publicPath: '/',
     path: path.resolve(__dirname, "dist"),
-    filename: '[name].js',
+    filename: '[name]-[chunkhash].js',
     chunkFilename: '[chunkhash].js'
   },
 
@@ -38,7 +38,7 @@ var config = {
       swDest: 'sw.js',
       clientsClaim: true,
       skipWaiting: true,
-      navigateFallbackBlacklist: [/^\/blog.*/],
+      navigateFallbackBlacklist: [/^\/blog.*/, /^.*\.txt$/, /^.*\.xml$/],
       navigateFallback: '/template.html'
     }),
   ],
