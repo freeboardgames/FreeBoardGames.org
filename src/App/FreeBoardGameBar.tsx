@@ -21,7 +21,7 @@ class App extends React.Component<{}, {}> {
         }}
       >
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <AppBar position="static">
+          <AppBar position="sticky">
             <Toolbar>
               <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
               <Typography variant="title" style={{ color: 'white' }}>
