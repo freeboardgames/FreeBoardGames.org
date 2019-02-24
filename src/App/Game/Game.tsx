@@ -5,6 +5,7 @@ import { IGameConfig } from '../../games/config';
 import { gameBoardWrapper } from './GameBoardWrapper';
 import { GameMode } from './GameModePicker';
 import getMessagePage from '../MessagePage';
+import MessagePageClass from '../MessagePageClass';
 
 interface IGameProps {
   match?: any;
@@ -57,15 +58,20 @@ export default class Game extends React.Component<IGameProps, {}> {
   }
 
   componentDidMount() {
-    this.load().then(() => {
-      this.forceUpdate();
-    });
+    if (this.gameDef) {
+      this.load().then(() => {
+        this.forceUpdate();
+      });
+    }
   }
 
   render() {
     const mode = this.props.match.params.mode as GameMode;
     const matchCode = this.props.match.params.matchCode;
     const playerID = this.props.match.params.playerID;
+    if (!this.gameDef) {
+      return <MessagePageClass type={'error'} message={'Game Not Found'} />;
+    }
     if (!state.loading && state.config) {
       const clientConfig: any = {
         game: state.config.bgioGame,
