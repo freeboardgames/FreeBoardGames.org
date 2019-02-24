@@ -11,6 +11,7 @@ import * as PropTypes from 'prop-types';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
+import { Circle, Cross, Lines } from './Shapes';
 
 interface IBoardProps {
   G: any;
@@ -31,40 +32,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (this.isActive(id)) {
       this.props.moves.clickCell(id);
     }
-  }
-
-  makeCross(x: number, y: number) {
-    return (
-      <g className="cross" key={`cross${x},${y}`}>
-        <line
-          x1={x}
-          y1={y}
-          x2={x + 1}
-          y2={y + 1}
-          style={this.lineStyle}
-        />,
-        <line
-          x1={x + 1}
-          y1={y}
-          x2={x}
-          y2={y + 1}
-          style={this.lineStyle}
-        />
-      </g>
-    );
-  }
-
-  makeCircle(x: number, y: number) {
-    return (
-      <circle
-        key={`circle${x},${y}`}
-        cx={x + .5}
-        cy={y + .5}
-        r=".45"
-        fill="none"
-        style={this.lineStyle}
-      />
-    );
   }
 
   isActive(id: number) {
@@ -132,13 +99,6 @@ export class Board extends React.Component<IBoardProps, {}> {
       height: '50px',
       lineHeight: '50px',
     };
-    const lines = [
-      <line key="line1" x1="1" y1="0" x2="1" y2="3" style={this.lineStyle} />,
-      <line key="line2" x1="2" y1="0" x2="2" y2="3" style={this.lineStyle} />,
-      <line key="line3" x1="0" y1="1" x2="3" y2="1" style={this.lineStyle} />,
-      <line key="line4" x1="0" y1="2" x2="3" y2="2" style={this.lineStyle} />,
-      <line key="line5" x1="0" y1="1" x2="3" y2="1" style={this.lineStyle} />,
-    ];
     const cells = [];
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -156,9 +116,9 @@ export class Board extends React.Component<IBoardProps, {}> {
         );
         let overlay;
         if (this.props.G.cells[id] === '0') {
-          overlay = this.makeCross(i, j);
+          overlay = <Cross x={i} y={j} />;
         } else if (this.props.G.cells[id] === '1') {
-          overlay = this.makeCircle(i, j);
+          overlay = <Circle x={i} y={j} />;
         }
         if (overlay) {
           cells.push(overlay);
@@ -174,7 +134,7 @@ export class Board extends React.Component<IBoardProps, {}> {
           </h2>
           <svg width="100%" height="100%" viewBox="0 0 3 3">
             {cells}
-            {lines}
+            {Lines}
           </svg>
         </div>
       </GameLayout>
