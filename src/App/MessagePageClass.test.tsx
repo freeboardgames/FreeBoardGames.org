@@ -30,6 +30,14 @@ test('MessagePage has status for error types', () => {
   expect(status.length).to.equal(1);
 });
 
+test('MessagePage does not have status for non-error types', () => {
+  const msg = Enzyme.mount(
+    <MemoryRouter><MessagePage type={'loading'} message={'loading'} /></MemoryRouter>,
+  ).find(MessagePage);
+  const status = msg.find('Status');
+  expect(status.length).to.equal(0);
+});
+
 test('MessagePage link is hidden', () => {
   const msg = Enzyme.mount(
     <MemoryRouter><MessagePage type={'loading'} message={'loading'} /></MemoryRouter>,
