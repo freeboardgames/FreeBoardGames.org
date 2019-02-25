@@ -42,7 +42,7 @@ var config = {
         urlPattern: new RegExp('^(.(?!.*\.js$|.*\.mp3$|.*\.png$))*$'),
         handler: 'networkFirst',
       }],
-      navigateFallbackBlacklist: [/^\/blog.*/, /^.*\.txt$/, /^.*\.xml$/, /^.*\.mp3$/, /^.*\.png$/, /^.*\.js$/]
+      navigateFallbackBlacklist: [/^\/blog.*/, /^.*\.txt$/, /^.*\.xml$/, /^.*\.mp3$/, /^.*\.png$/, /^.*\.js$/],
       navigateFallback: '/template.html',
     }),
   ],
