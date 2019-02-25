@@ -46,15 +46,19 @@ export default class Game extends React.Component<IGameProps, {}> {
   }
 
   load() {
-    return this.gameDef.config().then((config) => {
-      state.config = config.default;
-      state.loading = false;
-      state.error = false;
-    }, () => {
-      state.config = undefined;
-      state.loading = false;
-      state.error = true;
-    });
+    if (this.gameDef) {
+      return this.gameDef.config().then((config) => {
+        state.config = config.default;
+        state.loading = false;
+        state.error = false;
+      }, () => {
+        state.config = undefined;
+        state.loading = false;
+        state.error = true;
+      });
+    } else {
+      return null;
+    }
   }
 
   componentDidMount() {
