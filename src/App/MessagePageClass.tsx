@@ -55,7 +55,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
     }
     if (!this.state.linkHidden) {
       linkHome = (
-        <Button href="/" target="_blank" variant="outlined" style={{ margin: '8px' }}>
+        <Button href="/" variant="outlined" style={{ margin: '8px' }}>
           <HomeIcon style={{ marginRight: '8px' }} />
           Go Home
         </Button>);
