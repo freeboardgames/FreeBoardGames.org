@@ -19,7 +19,6 @@
     <link rel="shortcut icon" href="/icons/favicon.ico">
     <meta name="msapplication-TileColor" content="#ffc40d">
     <meta name="msapplication-config" content="/icons/browserconfig.xml">
-
 		<meta charset="utf-8">
     <style>
       /* TODO: FIGURE OUT CSS AND WEBPACK AND TS. */
@@ -37,5 +36,23 @@
   </head>
   <body style="margin:0;">
     <div id="root">{{{reactHtml}}}</div> 
+    <script>
+      if (typeof window !== 'undefined' &&
+        typeof navigator !== 'undefined' &&
+        navigator.serviceWorker) {
+        navigator.serviceWorker.register('/sw.js').then(function(reg) {
+          reg.onupdatefound = function() {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = function() {
+              if (installingWorker.state === 'installed' &&
+                  navigator.serviceWorker.controller) {
+                alert('New FreeBoardGame.org version found, reloading.');
+                location.reload();
+              }
+            };
+          };
+        });
+      }
+    </script>
   </body>
 </html>

@@ -30,7 +30,7 @@ var config = {
     new CleanWebpackPlugin(['dist'], { root: __dirname, verbose: true, dry: false, exclude: [] }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
-      filename: 'template.html',
+      filename: 'index.html',
       inject: true,
       chunksSortMode: 'none' // https://github.com/jantimon/html-webpack-plugin/issues/870
     }),
@@ -38,12 +38,8 @@ var config = {
       swDest: 'sw.js',
       clientsClaim: true,
       skipWaiting: true,
-      runtimeCaching: [{
-        urlPattern: new RegExp('^(.(?!.*\.js$|.*\.mp3$|.*\.png$))*$'),
-        handler: 'networkFirst',
-      }],
       navigateFallbackBlacklist: [/^\/blog.*/, /^.*\.txt$/, /^.*\.xml$/, /^.*\.mp3$/, /^.*\.png$/, /^.*\.js$/],
-      navigateFallback: '/template.html',
+      navigateFallback: '/',
     }),
   ],
 
