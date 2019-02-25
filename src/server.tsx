@@ -44,7 +44,7 @@ const renderSite = async (url: string) => {
   await asyncBootstrapper(app);
   const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
   return ({
-    is404: 'status' in context ? true : false,
+    status: (context as any).status,
     render: Mustache.render(template, { title, reactHtml, description }),
   });
 };
@@ -61,9 +61,9 @@ const startServer = async () => {
 
   server.app.use(async (ctx: any, next: any) => {
     await next();
-    const { render, is404 } = await renderSite(ctx.request.url);
-    if (is404) {
-      ctx.response.status = 404;
+    const { render, status } = await renderSite(ctx.request.url);
+    if (status) {
+      ctx.response.status = Number(status);
     }
     ctx.response.body = render;
   });
