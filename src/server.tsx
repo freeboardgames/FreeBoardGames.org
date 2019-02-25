@@ -5,7 +5,6 @@ import KoaSend from 'koa-send';
 import KoaStatic from 'koa-static';
 import KoaHelmet from 'koa-helmet';
 import fs from 'fs';
-import Mustache from 'mustache';
 import ReactDOMServer from 'react-dom/server';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
@@ -24,7 +23,19 @@ const NODE_ENV = process.env.NODE_ENV;
 const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
-const template = fs.readFileSync('./dist/index.html', 'utf8');
+const template = fs.readFileSync('./dist/layout.html', 'utf8');
+
+function renderHtml(layout: string, title: string, description: string, reactHtml: string) {
+  let result = layout;
+  result = result.replace('<title>FreeBoardGame.org</title>', `<title>${title}</title>`);
+  result = result.replace(
+    '<meta name="Description" content="">',
+    `<meta name="Description" content="${description}">`);
+  result = result.replace(
+    '<div id="root"></div>',
+    `<div id="root">${reactHtml}</div>`);
+  return result;
+}
 
 const renderSite = async (url: string) => {
   const asyncContext = createAsyncContext();
@@ -46,7 +57,7 @@ const renderSite = async (url: string) => {
   const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
   return ({
     status: (context as any).status,
-    render: Mustache.render(template, { title, reactHtml, description }),
+    render: renderHtml(template, title, description, reactHtml),
   });
 };
 
