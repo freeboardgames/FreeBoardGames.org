@@ -13,6 +13,7 @@ import serialize from 'serialize-javascript';
 import { StaticRouter } from 'react-router-dom';
 import { GAMES_LIST } from './games';
 import { getPageMetadata } from './metadata';
+import noCache from 'koa-no-cache';
 
 const { Server } = require('flamecoals-boardgame.io/server'); // tslint:disable-line
 import App from './App/App';
@@ -53,12 +54,12 @@ const startServer = async () => {
   const configs = Promise.all(GAMES_LIST.map((gameDef) => gameDef.config()));
   const games = (await configs).map((config) => config.default.bgioGame);
   const server = Server({ games });
+  server.app.use(noCache({ global: true }));
   server.app.use(KoaStatic('./static'));
   server.app.use(KoaStatic('./dist'));
   const router = new Router();
   server.app.use(router.routes());
   server.app.use(router.allowedMethods());
-
   server.app.use(async (ctx: any, next: any) => {
     await next();
     const { render, status } = await renderSite(ctx.request.url);
