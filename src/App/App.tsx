@@ -12,8 +12,17 @@ ReactGA.initialize('UA-105391878-1');
 if (typeof window !== 'undefined' &&
   typeof navigator !== 'undefined' &&
   navigator.serviceWorker) {
-  navigator.serviceWorker.register('/sw.js').then((registration) => {
-    registration.update();
+  navigator.serviceWorker.register('/sw.js').then((reg) => {
+    reg.onupdatefound = () => {
+      const installingWorker = reg.installing;
+      installingWorker.onstatechange = () => {
+        if (installingWorker.state === 'installed' &&
+            navigator.serviceWorker.controller) {
+          alert('New FreeBoardGame.org version found, reloading.');
+          location.reload();
+        }
+      };
+    };
   });
 }
 
