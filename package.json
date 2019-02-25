@@ -101,6 +101,7 @@
     "flamecoals-boardgame.io": "^0.37.0",
     "html-webpack-harddisk-plugin": "^1.0.1",
     "koa": "^2.7.0",
+    "koa-no-cache": "^2.0.0",
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
     "koa-socket-2": "^1.0.17",
