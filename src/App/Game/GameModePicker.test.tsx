@@ -10,9 +10,7 @@ describe('Game Mode Picker', () => {
   it('should show all 5 options and accept clicks', () => {
     const historyMock = { push: jest.fn() };
     const modesMock = [
-      GameMode.EasyAI,
-      GameMode.MediumAI,
-      GameMode.HardAI,
+      GameMode.AI,
       GameMode.OnlineFriend,
       GameMode.LocalFriend,
     ];
@@ -21,6 +19,6 @@ describe('Game Mode Picker', () => {
         <GameModePicker gameCode="foo" modes={modesMock} />
       </MemoryRouter>
     ));
-    expect(wrapper.find('a').length).to.equal(5);
+    expect(wrapper.find('a').length).to.equal(3);
   });
 });

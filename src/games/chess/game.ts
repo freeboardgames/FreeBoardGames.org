@@ -44,7 +44,7 @@ export const ChessGame = Game({
     move(G: any, ctx: IGameCtx, san: string) {
       const chess = Chess();
       chess.load_pgn(G.pgn);
-      chess.move(san);
+      chess.move(san, { sloppy: true });
       return { pgn: chess.pgn() };
     },
   },

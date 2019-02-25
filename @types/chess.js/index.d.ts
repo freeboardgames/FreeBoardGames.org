@@ -27,7 +27,7 @@ declare module 'chess.js' {
     in_checkmate: () => boolean;
     ascii: () => string;
     pgn: () => string;  
-    move: (san: string) => void;
+    move: (san: string, options?: any) => void;
     turn: () => string;
     history: (options: IChessHistoryOptions) => Array<IChessMove>;
     moves: (options: IChessMovesOptions) => Array<IChessMove>;

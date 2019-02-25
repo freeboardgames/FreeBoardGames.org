@@ -42,6 +42,7 @@ class Main extends React.Component<{}, {}> {
         <Route exact={true} path="/about" component={withGA(About)} />
         <Route path="/g/:gameCode" exact={true} component={withGA(GameInfo)} />
         <Route path="/g/:gameCode/:mode" exact={true} component={withGA(Game)} />
+        <Route path="/g/:gameCode/:mode/:aiLevel" exact={true} component={withGA(Game)} />
         <Route path="/g/:gameCode/:mode/:matchCode/:playerID" exact={true} component={withGA(Game)} />
         <Route component={withGA(getMessagePage('error', 'Not Found'))} />
       </Switch>

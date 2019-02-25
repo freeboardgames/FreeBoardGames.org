@@ -82,7 +82,8 @@
     "webpack-cli": "^3.2.1",
     "webpack-hot-middleware": "^2.24.3",
     "webpack-merge": "^4.2.1",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "worker-loader": "^2.0.0"
   },
   "dependencies": {
     "@babel/core": "^7.3.3",
@@ -97,6 +98,7 @@
     "chess.js": "^0.10.2",
     "copy-to-clipboard": "^3.0.8",
     "copy-webpack-plugin": "^4.6.0",
+    "empty-module": "^0.0.2",
     "flamecoals-boardgame.io": "^0.37.0",
     "html-webpack-harddisk-plugin": "^1.0.1",
     "koa": "^2.7.0",
@@ -127,6 +129,7 @@
       "!src/server.tsx",
       "!src/app.tsx",
       "!**/*.d.ts",
+      "!src/games/chess/stockfish8.js",
       "!src/games/chess/chessjswrapper.ts"
     ],
     "testURL": "http://localhost",
