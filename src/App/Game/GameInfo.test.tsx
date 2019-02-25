@@ -17,4 +17,12 @@ describe('Game info', () => {
     ));
     expect(wrapper.html()).to.contain('Chess');
   });
+  it('should render an error for an unknown game', () => {
+    const wrapper = Enzyme.mount((
+      <MemoryRouter>
+        <GameInfo match={{ params: { gameCode: 'doesnotexist' } }} />
+      </MemoryRouter>
+    ));
+    expect(wrapper.html()).to.contain('Not Found');
+  });
 });

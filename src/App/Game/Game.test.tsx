@@ -53,4 +53,14 @@ describe('Game', () => {
     (wrapper.find(Game).instance() as any).forceUpdate();
     expect(wrapper.html()).to.contain('Downloading');
   });
+
+  it('should render an error for an unknown game', () => {
+    const app = (
+      <MemoryRouter>
+        <Game match={{ params: { gameCode: 'doesnotexist', mode: 'local' } }} />
+      </MemoryRouter>
+    );
+    const wrapper = mount(app);
+    expect(wrapper.html()).to.contain('Not Found');
+  });
 });

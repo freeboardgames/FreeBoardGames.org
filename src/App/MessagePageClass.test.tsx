@@ -22,6 +22,22 @@ test('MessagePage starts with link visible for errors', () => {
   expect(msg.html()).to.contain('Go Home');
 });
 
+test('MessagePage has status for error types', () => {
+  const msg = Enzyme.mount(
+    <MemoryRouter><MessagePage type={'error'} message={'Not Found'} /></MemoryRouter>,
+  ).find(MessagePage);
+  const status = msg.find('Status');
+  expect(status.length).to.equal(1);
+});
+
+test('MessagePage does not have status for non-error types', () => {
+  const msg = Enzyme.mount(
+    <MemoryRouter><MessagePage type={'loading'} message={'loading'} /></MemoryRouter>,
+  ).find(MessagePage);
+  const status = msg.find('Status');
+  expect(status.length).to.equal(0);
+});
+
 test('MessagePage link is hidden', () => {
   const msg = Enzyme.mount(
     <MemoryRouter><MessagePage type={'loading'} message={'loading'} /></MemoryRouter>,

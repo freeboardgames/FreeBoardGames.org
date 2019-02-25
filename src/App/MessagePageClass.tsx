@@ -7,6 +7,7 @@ import FreeBoardGameBar from './FreeBoardGameBar';
 import SvgError from './media/SvgError';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import { Status } from 'rrc';
 
 interface IMessageState {
   linkHidden: boolean;
@@ -45,14 +46,16 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
   render() {
     let icon;
     let linkHome;
+    let status;
     if (this.props.type === 'error') {
+      status = <Status code="404" />;
       icon = <SvgError style={{ height: '128px' }} />;
     } else {
       icon = <CircularProgress />;
     }
     if (!this.state.linkHidden) {
       linkHome = (
-        <Button href="/" target="_blank" variant="outlined" style={{ margin: '8px' }}>
+        <Button href="/" variant="outlined" style={{ margin: '8px' }}>
           <HomeIcon style={{ marginRight: '8px' }} />
           Go Home
         </Button>);
@@ -60,6 +63,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
     return (
       <FreeBoardGameBar>
         <div style={{ paddingTop: '16px', textAlign: 'center' }}>
+          {status}
           {icon}
           <Typography variant="title" gutterBottom={true} style={{ paddingTop: '16px' }}>
             {this.props.message}
