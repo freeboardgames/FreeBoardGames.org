@@ -26,7 +26,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
       linkHidden: props.type !== 'error',
       startTime: Date.now(),
     };
-    if (props.type !== 'error') {
+    if (typeof window !== 'undefined' && props.type !== 'error') {
       requestAnimationFrame(this._animate(Date.now()));
     }
   }
