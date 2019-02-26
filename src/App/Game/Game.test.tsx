@@ -30,7 +30,7 @@ describe('Game', () => {
     expect(wrapper.find('Checkerboard').length).to.equal(1);
   });
 
-  it('should render error correctly', async () => {
+  it('should render error correctly with rejected Promise', async () => {
     GAMES_MAP.chess.config = () => Promise.reject(new Error('fail'));
     const app = (
       <MemoryRouter>
@@ -40,6 +40,17 @@ describe('Game', () => {
     await asyncBootstrapper(app);
     const wrapper = mount(app);
     expect(wrapper.html()).to.contain('Fail');
+  });
+
+  it('should render error correctly with unknown gameCode', async () => {
+    const app = (
+      <MemoryRouter>
+        <Game match={{ params: { gameCode: 'notagame', mode: 'local' } }} />
+      </MemoryRouter>
+    );
+    await asyncBootstrapper(app);
+    const wrapper = mount(app);
+    expect(wrapper.html()).to.contain('Game Not Found');
   });
 
   it('should render loading correctly', () => {
@@ -52,15 +63,5 @@ describe('Game', () => {
     (wrapper.find(Game).instance() as any).clear();
     (wrapper.find(Game).instance() as any).forceUpdate();
     expect(wrapper.html()).to.contain('Downloading');
-  });
-
-  it('should render an error for an unknown game', () => {
-    const app = (
-      <MemoryRouter>
-        <Game match={{ params: { gameCode: 'doesnotexist', mode: 'local' } }} />
-      </MemoryRouter>
-    );
-    const wrapper = mount(app);
-    expect(wrapper.html()).to.contain('Not Found');
   });
 });
