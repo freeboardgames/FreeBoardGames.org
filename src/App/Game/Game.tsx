@@ -57,7 +57,10 @@ export default class Game extends React.Component<IGameProps, {}> {
         state.error = true;
       });
     } else {
-      return null;
+      state.config = undefined;
+      state.loading = false;
+      state.error = true;
+      return Promise.resolve();
     }
   }
 
