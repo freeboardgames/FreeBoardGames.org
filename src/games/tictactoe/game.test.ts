@@ -19,7 +19,7 @@ it('should declare player 1 as the winner', () => {
   // make some game moves
   client.moves.clickCell(8);
   client.moves.clickCell(0); // Move ignored
-  client.moves.clickCell(3); // Move ignored 
+  client.moves.clickCell(3); // Move ignored
   client.moves.clickCell(5);
 
   // get the latest game state

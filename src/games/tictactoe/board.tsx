@@ -108,9 +108,9 @@ export class Board extends React.Component<IBoardProps, {}> {
         );
         let overlay;
         if (this.props.G.cells[id] === '0') {
-          overlay = <Cross x={i} y={j} />;
+          overlay = <Cross x={i} y={j} key={`cross${id}`} />;
         } else if (this.props.G.cells[id] === '1') {
-          overlay = <Circle x={i} y={j} />;
+          overlay = <Circle x={i} y={j} key={`circle${id}`} />;
         }
         if (overlay) {
           cells.push(overlay);
