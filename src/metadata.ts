@@ -15,7 +15,7 @@ Compete against your online friends or play locally. Free and open-source softwa
 const PAGES_METADATA: IPageMetadata[] = [
   {
     title: 'FreeBoardGame.org - Play Two Player Chess Locally',
-    description: 'Play a free chess game in your browser for two players on the same device.',
+    description: 'Play a free chess game in your browser for two players sharing the same device.',
     url: new RegExp('^/g/chess/local', 'i'),
   },
   {
@@ -27,6 +27,21 @@ const PAGES_METADATA: IPageMetadata[] = [
     title: 'FreeBoardGame.org - Play Free Chess Online',
     description: 'Play a game of chess in your browser for free.  Compete against your online friends or play locally.',
     url: new RegExp('^/g/chess', 'i'),
+  },
+  {
+    title: 'FreeBoardGame.org - Play Free Tic-Tac-Toe with Online Friend',
+    description: 'Play a free game of Tic-Tac-Toe in your browser.  Compete against your online friends.',
+    url: new RegExp('^/g/tictactoe/online', 'i'),
+  },
+  {
+    title: 'FreeBoardGame.org - Play Free Tic-Tac-Toe Locally',
+    description: 'Play a free game of Tic-Tac-Toe in your browser for two players sharing the same device.',
+    url: new RegExp('^/g/tictactoe/local', 'i'),
+  },
+  {
+    title: 'FreeBoardGame.org - Play Free Tic-Tac-Toe Online',
+    description: 'Play Tic-Tac-Toe in your browser for free.  Compete against your online friends or play locally.',
+    url: new RegExp('^/g/tictactoe', 'i'),
   },
   {
     title: 'FreeBoardGame.org - Play Free Seabattle with Online Friend',
