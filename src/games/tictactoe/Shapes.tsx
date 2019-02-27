@@ -5,27 +5,33 @@ interface IShapeProps {
   y: number
 }
 
+const boldLineStyle = {
+  strokeWidth: .1,
+};
+
 const lineStyle = {
   stroke: 'white',
-  strokeWidth: .05,
+  strokeWidth: .025,
 };
 
 export const Cross = (props: IShapeProps) => {
   return (
     <g className="cross" key={`cross${props.x},${props.y}`}>
       <line
-        x1={props.x}
-        y1={props.y}
-        x2={props.x + 1}
-        y2={props.y + 1}
-        style={lineStyle}
+        x1={props.x + 0.25}
+        y1={props.y + 0.25}
+        x2={props.x + 0.75}
+        y2={props.y + 0.75}
+        stroke="red"
+        style={boldLineStyle}
       />,
       <line
-        x1={props.x + 1}
-        y1={props.y}
-        x2={props.x}
-        y2={props.y + 1}
-        style={lineStyle}
+        x1={props.x + 0.75}
+        y1={props.y + 0.25}
+        x2={props.x + 0.25}
+        y2={props.y + 0.75}
+        stroke="red"
+        style={boldLineStyle}
       />
     </g>
   );
@@ -37,9 +43,10 @@ export const Circle = (props: IShapeProps) => {
       key={`circle${props.x},${props.y}`}
       cx={props.x + .5}
       cy={props.y + .5}
-      r=".45"
+      r=".25"
       fill="none"
-      style={lineStyle}
+      stroke="lime"
+      style={boldLineStyle}
     />
   );
 };

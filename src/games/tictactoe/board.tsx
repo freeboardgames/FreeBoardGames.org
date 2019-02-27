@@ -12,6 +12,7 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { Circle, Cross, Lines } from './Shapes';
+import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: any;
@@ -51,8 +52,8 @@ export class Board extends React.Component<IBoardProps, {}> {
       }
     } else { // Local game
       switch (this.props.ctx.currentPlayer) {
-        case '0': return 'X\'s turn';
-        case '1': return 'O\'s turn';
+        case '0': return 'Red\'s turn';
+        case '1': return 'Green\'s turn';
       }
     }
   }
@@ -72,8 +73,8 @@ export class Board extends React.Component<IBoardProps, {}> {
     } else {
       // Local game
       switch (this.props.ctx.gameover.winner) {
-        case '0': return 'X won';
-        case '1': return 'O won';
+        case '0': return 'Red won';
+        case '1': return 'Green won';
         case undefined: return 'draw';
       }
     }

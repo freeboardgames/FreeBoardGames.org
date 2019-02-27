@@ -71,7 +71,7 @@ test('render board - one X and one O - local friend', () => {
       />
     </MemoryRouter>
   ));
-  expect(comp.html()).to.contain('X\'s turn');
+  expect(comp.html()).to.contain('Red\'s turn');
   expect(comp.find('rect').length).to.equal(9); // 9 rectangles
   expect(comp.find('.cross').length).to.equal(1); // one X
   expect(comp.find('circle').length).to.equal(1); // one O
@@ -94,7 +94,7 @@ test('render board - O\'s turn - local friend', () => {
       />
     </MemoryRouter>
   ));
-  expect(comp.html()).to.contain('O\'s turn');
+  expect(comp.html()).to.contain('Green\'s turn');
 });
 
 test('render board - X wins - local friend', () => {
@@ -114,7 +114,7 @@ test('render board - X wins - local friend', () => {
       />
     </MemoryRouter>
   ));
-  expect(comp.html()).to.contain('X won');
+  expect(comp.html()).to.contain('Red won');
 });
 
 test('render board - O wins - local friend', () => {
@@ -134,7 +134,7 @@ test('render board - O wins - local friend', () => {
       />
     </MemoryRouter>
   ));
-  expect(comp.html()).to.contain('O won');
+  expect(comp.html()).to.contain('Green won');
 });
 
 test('render board - draw - local friend', () => {

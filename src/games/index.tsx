@@ -1,6 +1,7 @@
 import { GameMode } from '../App/Game/GameModePicker';
 import SeabattleThumbnail from './seabattle/media/thumbnail.png';
 import ChessThumbnail from './chess/media/thumbnail.png';
+import TicTacToeThumbnail from './tictactoe/media/thumbnail.png';
 
 export interface IGameDef {
   code: string;
@@ -41,7 +42,7 @@ export const GAMES_MAP: IGameDefMap = {
   tictactoe: {
     code: 'tictactoe',
     name: 'Tic Tac Toe',
-    imageURL: SeabattleThumbnail,
+    imageURL: TicTacToeThumbnail,
     modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,
