@@ -24,7 +24,7 @@ Check out [kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/6
 
 - :heavy_check_mark: Chess [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/5).
 - :heavy_check_mark: Seabattle [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/4).
-- :construction: TicTacToe [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/8).
+- :heavy_check_mark: TicTacToe [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/8).
 
 ## Contributing
 
