@@ -38,14 +38,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     return this.props.isActive && this.props.G.cells[id] === null;
   }
 
-  getPlayer(): 'X' | 'O' {
-    if (this.props.playerID === '0') {
-      return 'X';
-    } else {
-      return 'O';
-    }
-  }
-
   isOnlineGame() {
     return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend);
   }
@@ -69,7 +61,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
-        if (this.props.ctx.gameover.winner !== this.props.playerID) {
+        if (this.props.ctx.gameover.winner === this.props.playerID) {
           return 'you won';
         } else {
           return 'you lost';
