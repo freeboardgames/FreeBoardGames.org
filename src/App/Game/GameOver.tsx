@@ -16,7 +16,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
         <Typography variant="title" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           Game Over, {this.props.result}!
         </Typography>
-        <Typography variant="body1" gutterBottom={true} style={{ marginTop: '16px' }}>
+        <Typography variant="body1" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           Do you want to play again? Check out our games below.
         </Typography>
         <GamesList />
