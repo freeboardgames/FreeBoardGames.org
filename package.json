@@ -4,6 +4,8 @@
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
+    "autoprecommit": "yarn run fix && yarn run precommit",
+    "autopre": "yarn run autoprecommit",
     "dev": "run-s server:build dev:watch",
     "dev:watch": "webpack --watch --progress --config webpack.dev.js",
     "fix": "yarn run lint && yarn run tsfmt",
@@ -13,8 +15,6 @@
     "prod:build": "run-s server:build webpack:build",
     "precommit": "yarn run verify-lint && yarn run verify-tsfmt && yarn run server:build && yarn run test",
     "pre": "yarn run precommit",
-    "autoprecommit": "yarn run fix && yarn run precommit",
-    "autopre": "yarn run autoprecommit",
     "server": "node server-build/server.js",
     "server:build": "webpack --progress --config webpack.server.js",
     "server:buildquietly": "webpack --config webpack.server.js",
