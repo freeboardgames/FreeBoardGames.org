@@ -4,6 +4,8 @@
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
+    "autoprecommit": "yarn run fix && yarn run precommit",
+    "autopre": "yarn run autoprecommit",
     "dev": "run-s server:build dev:watch",
     "dev:watch": "webpack --watch --progress --config webpack.dev.js",
     "fix": "yarn run lint && yarn run tsfmt",
