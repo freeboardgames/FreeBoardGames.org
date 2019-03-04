@@ -26,6 +26,7 @@ declare module 'chess.js' {
     in_stalemate: () => boolean;
     in_checkmate: () => boolean;
     ascii: () => string;
+    fen: () => string;
     pgn: () => string;  
     move: (san: string, options?: any) => void;
     turn: () => string;

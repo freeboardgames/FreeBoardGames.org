@@ -638,10 +638,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@freeboardgame.org/boardgame.io@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.1.tgz#1eb12b2581e2668244744f19b54d1a09e0f00b85"
-  integrity sha512-ndxyjH0YsA5KOd+hRS4gEVuGg6ojGeP+os8M3g2mJLld5bwVbW6fX50xPJ/5JaZMId3/HHkC1oa7cwYy7HHVNg==
+"@freeboardgame.org/boardgame.io@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.4.tgz#a51e49ae4327c78015b5de1c7b3ec783b89a2eb2"
+  integrity sha512-hXIUj+iS+CUbWp+eMVAwn3YfsWMSYMLqpZFMXYlbQCKDwPCH/O8ybtMDiNqv96DGyvAomRV1GSGcjI9O3lbc5Q==
   dependencies:
     "@koa/cors" "^2.2.1"
     flatted "^0.2.3"

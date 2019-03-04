@@ -5,7 +5,7 @@ import { Board as ChessBoard } from './board';
 const config: IGameConfig = {
   bgioGame: ChessGame,
   bgioBoard: ChessBoard,
-  debug: true,
+  debug: false,
 };
 
 export default config;

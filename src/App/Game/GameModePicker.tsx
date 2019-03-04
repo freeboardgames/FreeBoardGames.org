@@ -71,7 +71,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
     const uid = shortid.generate();
     switch (mode) {
       case GameMode.AI:
-        return `/g/${this.props.gameCode}/AI/0`;
+        return `/g/${this.props.gameCode}/AI/1`;
       case GameMode.LocalFriend:
         return `/g/${this.props.gameCode}/local`;
       case GameMode.OnlineFriend:

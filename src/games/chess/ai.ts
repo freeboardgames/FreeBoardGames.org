@@ -7,25 +7,66 @@ interface IPlayState {
   ctx: any;
 }
 
+const LVL_MOVETIMES = [100, 200, 300, 400, 600, 800, 1000, 2000];
+const LVL_DEPTHS = [1, 1, 2, 3, 5, 8, 13, 22];
+
+class Stockfish {
+  worker: any;
+  level: number;
+
+  constructor() {
+    this.worker = new StockfishWorker();
+    this.send('isready');
+  }
+
+  send(message: string) {
+    console.log(`>>> ${message}`); // tslint:disable-line
+    this.worker.postMessage(message);
+  }
+
+  async getMove(fen: string): Promise<string> {
+    return await new Promise((resolve) => {
+      this.worker.onmessage = (event: any) => {
+        const msg = event.data;
+        console.log(`<<< ${msg}`); // tslint:disable-line
+        if (msg.includes('bestmove')) {
+          resolve(msg.split(' ')[1]);
+        }
+      };
+      const lvl = Math.round((this.level - 1) * 20.0 / 7);
+      this.send(`setoption name Skill Level value ${lvl}`);
+      if (fen !== '') {
+        this.send(`position fen ${fen}`);
+      } else {
+        this.send('position startpos');
+      }
+      const depth = LVL_DEPTHS[this.level - 1];
+      const movetime = LVL_MOVETIMES[this.level - 1];
+      this.send(`go depth ${depth} movetime ${movetime}`);
+    });
+  }
+}
+
+const stockfish = new Stockfish();
+
 class StockfishBot {
-  play(state: IPlayState, playerID: string) {
-    const G = state.G;
-    const ctx = state.ctx;
-    return this.makeMove('e2e4', playerID);
+  async play(state: IPlayState, playerID: string) {
+    if (!state.ctx.gameover) {
+      const move = await stockfish.getMove(state.G.fen);
+      return this.makeMove(move, state.ctx.currentPlayer);
+    } else {
+      return {};
+    }
   }
 
   makeMove(move: string, playerID: string) {
     return { action: { type: 'MAKE_MOVE', payload: { type: 'move', args: [move], playerID } } };
   }
 }
+
 const config: IAIConfig = {
   bgioAI: (level: string) => {
-    const worker = new StockfishWorker();
-    worker.postMessage('isready');
-    worker.onmessage = (event: any) => {
-      console.log(`<<< ${event.data}`); // tslint:disable-line
-    };
-    console.log(`Set level to: ${level}`); // tslint:disable-line
+    stockfish.level = Number(level);
     return {
       bot: StockfishBot,
     };
