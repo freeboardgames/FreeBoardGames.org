@@ -1,4 +1,4 @@
-import { Client } from 'flamecoals-boardgame.io/client';
+import { Client } from '@freeboardgame.org/boardgame.io/client';
 import { TictactoeGame } from './game';
 
 // https://github.com/nicolodavis/boardgame.io/blob/master/docs/testing.md

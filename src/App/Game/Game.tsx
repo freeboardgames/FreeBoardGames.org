@@ -1,5 +1,5 @@
 import React from 'react';
-import { Client } from 'flamecoals-boardgame.io/react';
+import { Client } from '@freeboardgame.org/boardgame.io/react';
 import { IGameDef, GAMES_MAP } from '../../games';
 import { IGameConfig } from '../../games/config';
 import { gameBoardWrapper } from './GameBoardWrapper';

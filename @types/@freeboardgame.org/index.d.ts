@@ -1,4 +1,4 @@
-declare module 'flamecoals-boardgame.io/ui' {
+declare module '@freeboardgame.org/boardgame.io/ui' {
   import * as React from 'react';
   interface ITokenCoord {
     x: number;
@@ -40,7 +40,7 @@ declare module 'flamecoals-boardgame.io/ui' {
   }
 }
 
-declare module 'flamecoals-boardgame.io/core' {
+declare module '@freeboardgame.org/boardgame.io/core' {
   export enum TurnOrder {
     DEFAULT, ONCE, ANY, ANY_ONCE, OTHERS, OTHERS_ONCE, CUSTOM, CUSTOM_FROM
   }
@@ -96,8 +96,8 @@ declare module 'flamecoals-boardgame.io/core' {
   export function Game (gameArgs: IGameArgs): GameObj;
 }
 
-declare module 'flamecoals-boardgame.io/react' {
-  import { GameObj, IGameMoves } from 'flamecoals-boardgame.io/core';
+declare module '@freeboardgame.org/boardgame.io/react' {
+  import { GameObj, IGameMoves } from '@freeboardgame.org/boardgame.io/core';
   export class WrapperBoard {
     moves: any;
     events: any;
@@ -115,8 +115,8 @@ declare module 'flamecoals-boardgame.io/react' {
   export function Client (clientArgs: IClientArgs): WrapperBoard;
 }
 
-declare module 'flamecoals-boardgame.io/client' {
-  import { GameObj, IGameMoves } from 'flamecoals-boardgame.io/core';
+declare module '@freeboardgame.org/boardgame.io/client' {
+  import { GameObj, IGameMoves } from '@freeboardgame.org/boardgame.io/core';
   export class WrapperBoard {
     moves: any;
     events: any;
@@ -134,8 +134,8 @@ declare module 'flamecoals-boardgame.io/client' {
   export function Client (clientArgs: IClientArgs): WrapperBoard;
 }
 
-declare module 'flamecoals-boardgame.io/server' {
-  import { GameObj } from 'flamecoals-boardgame.io/core';
+declare module '@freeboardgame.org/boardgame.io/server' {
+  import { GameObj } from '@freeboardgame.org/boardgame.io/core';
   import * as Koa from 'koa';
   interface IServerArgs {
     games: GameObj[] 

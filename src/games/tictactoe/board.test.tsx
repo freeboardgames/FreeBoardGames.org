@@ -6,7 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import { MemoryRouter } from 'react-router';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { TictactoeGame } from './game';
-import { Client } from 'flamecoals-boardgame.io/client';
+import { Client } from '@freeboardgame.org/boardgame.io/client';
 
 Enzyme.configure({ adapter: new Adapter() });
 
