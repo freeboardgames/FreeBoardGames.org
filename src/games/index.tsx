@@ -1,6 +1,7 @@
 import { GameMode } from '../App/Game/GameModePicker';
 import SeabattleThumbnail from './seabattle/media/thumbnail.png';
 import ChessThumbnail from './chess/media/thumbnail.png';
+import TicTacToeThumbnail from './tictactoe/media/thumbnail.png';
 
 export interface IGameConfig {
   bgioGame: any;
@@ -51,9 +52,20 @@ export const GAMES_MAP: IGameDefMap = {
     description: 'Sink your enemy\'s ships!',
     config: () => import('./seabattle/config'),
   },
+  tictactoe: {
+    code: 'tictactoe',
+    name: 'Tic Tac Toe',
+    imageURL: TicTacToeThumbnail,
+    modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
+    maxPlayers: 2,
+    minPlayers: 2,
+    description: 'Play Tic Tac Toe!',
+    config: () => import('./tictactoe/config'),
+  },
 };
 
 export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.chess,
   GAMES_MAP.seabattle,
+  GAMES_MAP.tictactoe,
 ];

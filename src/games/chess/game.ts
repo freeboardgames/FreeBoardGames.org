@@ -1,12 +1,12 @@
 /*
- * Copyright 2018 The flamecoals-boardgame.io Authors
+ * Copyright 2018 The @freeboardgame.org/boardgame.io Authors
  *
  * Use of this source code is governed by a MIT-style
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  */
 
-import { Game } from 'flamecoals-boardgame.io/core';
+import { Game } from '@freeboardgame.org/boardgame.io/core';
 import Chess from './chessjswrapper';
 
 interface IGameCtx {

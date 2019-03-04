@@ -14,32 +14,47 @@ Compete against your online friends or play locally. Free and open-source softwa
 // Most specific URLs MUST come first.
 const PAGES_METADATA: IPageMetadata[] = [
   {
-    title: 'FreeBoardGame.org - Play Two Player Chess Locally',
-    description: 'Play a free chess game in your browser for two players on the same device.',
+    title: TITLE_PREFIX + 'Play Two Player Chess Locally',
+    description: 'Play a free chess game in your browser for two players sharing the same device.',
     url: new RegExp('^/g/chess/local', 'i'),
   },
   {
-    title: 'FreeBoardGame.org - Play Chess with an Online Friend',
+    title: TITLE_PREFIX + 'Play Chess with an Online Friend',
     description: 'Play a free chess game against an online friend in your browser.',
     url: new RegExp('^/g/chess/online', 'i'),
   },
   {
-    title: 'FreeBoardGame.org - Play Free Chess Online',
+    title: TITLE_PREFIX + 'Play Free Chess Online',
     description: 'Play a game of chess in your browser for free.  Compete against your online friends or play locally.',
     url: new RegExp('^/g/chess', 'i'),
   },
   {
-    title: 'FreeBoardGame.org - Play Free Seabattle with Online Friend',
+    title: TITLE_PREFIX + 'Play Free Tic-Tac-Toe with Online Friend',
+    description: 'Play a free game of Tic-Tac-Toe in your browser.  Compete against your online friends.',
+    url: new RegExp('^/g/tictactoe/online', 'i'),
+  },
+  {
+    title: TITLE_PREFIX + 'Play Free Tic-Tac-Toe Locally',
+    description: 'Play a free game of Tic-Tac-Toe in your browser for two players sharing the same device.',
+    url: new RegExp('^/g/tictactoe/local', 'i'),
+  },
+  {
+    title: TITLE_PREFIX + 'Play Free Tic-Tac-Toe Online',
+    description: 'Play Tic-Tac-Toe in your browser for free.  Compete against your online friends or play locally.',
+    url: new RegExp('^/g/tictactoe', 'i'),
+  },
+  {
+    title: TITLE_PREFIX + 'Play Free Seabattle with Online Friend',
     description: 'Battle and sink ships in a free online game with an online friend.',
     url: new RegExp('^/g/seabattle/online', 'i'),
   },
   {
-    title: 'FreeBoardGame.org - Play Free Seabattle Online',
+    title: TITLE_PREFIX + 'Play Free Seabattle Online',
     description: 'Battle and sink ships in a free online game with your friend.',
     url: new RegExp('^/g/seabattle', 'i'),
   },
   {
-    title: 'FreeBoardGame.org - About Us',
+    title: TITLE_PREFIX + 'About Us',
     description: 'About FreeBoardGame.org, a free and open-source software project.',
     url: new RegExp('^/about', 'i'),
   },

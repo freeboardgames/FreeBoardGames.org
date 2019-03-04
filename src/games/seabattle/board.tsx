@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ShipsPlacement } from './ShipsPlacement';
-import { Token } from 'flamecoals-boardgame.io/ui';
+import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { GameLayout } from '../../App/Game/GameLayout';
 import ReactGA from 'react-ga';
 import { IShip } from './game';

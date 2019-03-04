@@ -1,5 +1,5 @@
 import React from 'react';
-import { Client } from 'flamecoals-boardgame.io/react';
+import { Client } from '@freeboardgame.org/boardgame.io/react';
 import { IGameDef, GAMES_MAP, IGameConfig, IAIConfig } from '../../games';
 import { gameBoardWrapper } from './GameBoardWrapper';
 import { GameMode } from './GameModePicker';
@@ -50,23 +50,30 @@ export default class Game extends React.Component<IGameProps, {}> {
   }
 
   load() {
-    let aiPromise = Promise.resolve({});
-    if (this.loadAI) {
-      aiPromise = this.gameDef.aiConfig();
+    if (this.gameDef) {
+      let aiPromise = Promise.resolve({});
+      if (this.loadAI) {
+        aiPromise = this.gameDef.aiConfig();
+      }
+      return Promise.all([this.gameDef.config(), aiPromise]).then(
+        (promises: any) => {
+          state.config = (promises[0].default as IGameConfig);
+          if (this.loadAI) {
+            state.ai = (promises[1].default as IAIConfig);
+          }
+          state.loading = false;
+          state.error = false;
+        }, () => {
+          state.config = undefined;
+          state.loading = false;
+          state.error = true;
+        });
+    } else {
+      state.config = undefined;
+      state.loading = false;
+      state.error = true;
+      return Promise.resolve();
     }
-    return Promise.all([this.gameDef.config(), aiPromise]).then(
-      (promises: any) => {
-        state.config = (promises[0].default as IGameConfig);
-        if (this.loadAI) {
-          state.ai = (promises[1].default as IAIConfig);
-        }
-        state.loading = false;
-        state.error = false;
-      }, () => {
-        state.config = undefined;
-        state.loading = false;
-        state.error = true;
-      });
   }
 
   componentDidMount() {

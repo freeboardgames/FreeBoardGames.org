@@ -9,13 +9,6 @@ import ReactGA from 'react-ga';
 import { getPageMetadata } from '../metadata';
 
 ReactGA.initialize('UA-105391878-1');
-if (typeof window !== 'undefined' &&
-  typeof navigator !== 'undefined' &&
-  navigator.serviceWorker) {
-  navigator.serviceWorker.register('/sw.js').then((registration) => {
-    registration.update();
-  });
-}
 
 const withGA = (WrapperComponent: any) => {
   class GAWrapper extends React.Component<{}, {}> {

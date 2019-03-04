@@ -40,6 +40,21 @@ describe('Metadata', () => {
     expect(metadata.title).to.contain('Online Friend');
     expect(metadata.description).to.contain('online friend');
 
+    metadata = getPageMetadata('/g/tictactoe');
+    expect(metadata.title).to.contain(TITLE_PREFIX);
+    expect(metadata.title).to.contain('Play Free Tic-Tac-Toe Online');
+    expect(metadata.description).to.contain('Play Tic-Tac-Toe in your browser');
+
+    metadata = getPageMetadata('/g/tictactoe/local');
+    expect(metadata.title).to.contain(TITLE_PREFIX);
+    expect(metadata.title).to.contain('Locally');
+    expect(metadata.description).to.contain('same device');
+
+    metadata = getPageMetadata('/g/tictactoe/online');
+    expect(metadata.title).to.contain(TITLE_PREFIX);
+    expect(metadata.title).to.contain('Online Friend');
+    expect(metadata.description).to.contain('online friend');
+
     metadata = getPageMetadata('/about');
     expect(metadata.title).to.contain(TITLE_PREFIX);
     expect(metadata.title).to.contain('About Us');
