@@ -3,6 +3,17 @@ import SeabattleThumbnail from './seabattle/media/thumbnail.png';
 import ChessThumbnail from './chess/media/thumbnail.png';
 import TicTacToeThumbnail from './tictactoe/media/thumbnail.png';
 
+export interface IGameConfig {
+  bgioGame: any;
+  bgioBoard: any;
+  enhancer?: any;
+  debug?: boolean;
+}
+
+export interface IAIConfig {
+  bgioAI: (level: string) => any;
+}
+
 export interface IGameDef {
   code: string;
   name: string;
@@ -12,6 +23,7 @@ export interface IGameDef {
   maxPlayers: 2;
   minPlayers: 2;
   config: () => Promise<any>;
+  aiConfig?: () => Promise<any>;
 }
 
 export interface IGameDefMap {
@@ -23,11 +35,12 @@ export const GAMES_MAP: IGameDefMap = {
     code: 'chess',
     name: 'Chess',
     imageURL: ChessThumbnail,
-    modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
+    modes: [GameMode.AI, GameMode.LocalFriend, GameMode.OnlineFriend],
     maxPlayers: 2,
     minPlayers: 2,
     description: 'Chess, International rules.',
     config: () => import('./chess/config'),
+    aiConfig: () => import('./chess/ai'),
   },
   seabattle: {
     code: 'seabattle',

@@ -1,4 +1,4 @@
-import { IGameConfig } from '../config';
+import { IGameConfig } from '../index';
 import { SeabattleGame } from './game';
 import { Board as SeabattleBoard } from './board';
 import { SeabattleSound } from './sound';

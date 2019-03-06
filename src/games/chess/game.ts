@@ -38,14 +38,14 @@ export function getWinner(chess: any) {
 export const ChessGame = Game({
   name: 'chess',
 
-  setup: () => ({ pgn: '' }),
+  setup: () => ({ pgn: '', fen: '' }),
 
   moves: {
     move(G: any, ctx: IGameCtx, san: string) {
       const chess = Chess();
       chess.load_pgn(G.pgn);
-      chess.move(san);
-      return { pgn: chess.pgn() };
+      chess.move(san, { sloppy: true });
+      return { pgn: chess.pgn(), fen: chess.fen() };
     },
   },
 

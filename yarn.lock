@@ -638,10 +638,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@freeboardgame.org/boardgame.io@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.1.tgz#1eb12b2581e2668244744f19b54d1a09e0f00b85"
-  integrity sha512-ndxyjH0YsA5KOd+hRS4gEVuGg6ojGeP+os8M3g2mJLld5bwVbW6fX50xPJ/5JaZMId3/HHkC1oa7cwYy7HHVNg==
+"@freeboardgame.org/boardgame.io@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.4.tgz#a51e49ae4327c78015b5de1c7b3ec783b89a2eb2"
+  integrity sha512-hXIUj+iS+CUbWp+eMVAwn3YfsWMSYMLqpZFMXYlbQCKDwPCH/O8ybtMDiNqv96DGyvAomRV1GSGcjI9O3lbc5Q==
   dependencies:
     "@koa/cors" "^2.2.1"
     flatted "^0.2.3"
@@ -2996,6 +2996,11 @@ emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
   integrity sha1-TapNnbAPmBmIDHn6RXrlsJof04k=
+
+empty-module@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/empty-module/-/empty-module-0.0.2.tgz#13b4dd8d4afeddd35e50c18dcd788c51087f1545"
+  integrity sha1-E7TdjUr+3dNeUMGNzXiMUQh/FUU=
 
 encoding@^0.1.11:
   version "0.1.12"
@@ -5482,7 +5487,7 @@ loader-utils@^0.2.16:
     json5 "^0.5.0"
     object-assign "^4.0.1"
 
-loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2.1:
+loader-utils@^1.0.0, loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2.1:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.2.3.tgz#1ff5dc6911c9f0a062531a4c04b609406108c2c7"
   integrity sha512-fkpz8ejdnEMG3s37wGL07iSBDg99O9D5yflE9RGNH3hRdx9SOwYfnGYdZOUIZitN8E+E2vkq3MUMYMvPYl5ZZA==
@@ -7583,7 +7588,7 @@ scheduler@^0.12.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
-schema-utils@^0.4.4:
+schema-utils@^0.4.0, schema-utils@^0.4.4:
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.4.7.tgz#ba74f597d2be2ea880131746ee17d0a093c68187"
   integrity sha512-v/iwU6wvwGK8HbU9yi3/nhGzP0yGSuhQMzL6ySiec1FSrZZDkhm4noOSWzrNFo/jEc+SJY6jRTwuwbSXJPDUnQ==
@@ -9079,6 +9084,14 @@ worker-farm@^1.5.2:
   integrity sha512-6w+3tHbM87WnSWnENBUvA2pxJPLhQUg5LKwUQHq3r+XPhIM+Gh2R5ycbwPCyuGbNg+lPgdcnQUhuC02kJCvffQ==
   dependencies:
     errno "~0.1.7"
+
+worker-loader@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/worker-loader/-/worker-loader-2.0.0.tgz#45fda3ef76aca815771a89107399ee4119b430ac"
+  integrity sha512-tnvNp4K3KQOpfRnD20m8xltE3eWh89Ye+5oj7wXEEHKac1P4oZ6p9oTj8/8ExqoSBnk9nu5Pr4nKfQ1hn2APJw==
+  dependencies:
+    loader-utils "^1.0.0"
+    schema-utils "^0.4.0"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"

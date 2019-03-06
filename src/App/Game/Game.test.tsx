@@ -30,6 +30,17 @@ describe('Game', () => {
     expect(wrapper.find('Checkerboard').length).to.equal(1);
   });
 
+  it('should render properly for ai', async () => {
+    const app = (
+      <MemoryRouter>
+        <Game match={{ params: { gameCode: 'chess', mode: 'AI' } }} />
+      </MemoryRouter>
+    );
+    await asyncBootstrapper(app);
+    const wrapper = mount(app);
+    expect(wrapper.find('Checkerboard').length).to.equal(1);
+  });
+
   it('should render error correctly with rejected Promise', async () => {
     GAMES_MAP.chess.config = () => Promise.reject(new Error('fail'));
     const app = (

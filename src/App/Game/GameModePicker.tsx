@@ -16,9 +16,7 @@ interface IGameModePickerProps {
 }
 
 export enum GameMode {
-  EasyAI = 'easyAI',
-  MediumAI = 'mediumAI',
-  HardAI = 'hardAI',
+  AI = 'AI',
   OnlineFriend = 'online',
   LocalFriend = 'local',
 }
@@ -45,16 +43,8 @@ export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
     let text = '';
     let icon = <AndroidIcon />;
     switch (mode) {
-      case GameMode.EasyAI:
-        text = 'Easy AI';
-        icon = <AndroidIcon />;
-        break;
-      case GameMode.MediumAI:
-        text = 'Medium AI';
-        icon = <AndroidIcon />;
-        break;
-      case GameMode.HardAI:
-        text = 'Hard AI';
+      case GameMode.AI:
+        text = 'Computer (AI)';
         icon = <AndroidIcon />;
         break;
       case GameMode.LocalFriend:
@@ -80,12 +70,8 @@ export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
   _getUrl(mode: GameMode) {
     const uid = shortid.generate();
     switch (mode) {
-      case GameMode.EasyAI:
-        return `/g/${this.props.gameCode}/easyAI`;
-      case GameMode.MediumAI:
-        return `/g/${this.props.gameCode}/mediumAI`;
-      case GameMode.HardAI:
-        return `/g/${this.props.gameCode}/hardAI`;
+      case GameMode.AI:
+        return `/g/${this.props.gameCode}/AI/1`;
       case GameMode.LocalFriend:
         return `/g/${this.props.gameCode}/local`;
       case GameMode.OnlineFriend:

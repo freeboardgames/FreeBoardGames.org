@@ -31,6 +31,7 @@ interface IBoardProps {
   G: any;
   ctx: any;
   moves: any;
+  step: any;
   playerID: string;
   isActive: boolean;
   isConnected: boolean;
@@ -103,6 +104,9 @@ export class Board extends React.Component<IBoardProps, {}> {
       });
       if (move) {
         this.props.moves.move(move.san);
+        if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
+          this.props.step();
+        }
       }
       this.setState({
         ...this.state,
