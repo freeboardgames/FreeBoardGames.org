@@ -163,6 +163,7 @@
       "/server-build/"
     ],
     "moduleNameMapper": {
+      "\\.worker.js":"<rootDir>/test/stockfish8Mock.js",
       "\\.(css|jpg|png|svg|webp|mp3)$": "<rootDir>/test/empty-module.js"
     }
   }

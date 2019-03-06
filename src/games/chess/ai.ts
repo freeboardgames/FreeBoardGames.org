@@ -20,7 +20,6 @@ class Stockfish {
   }
 
   send(message: string) {
-    console.log(`>>> ${message}`); // tslint:disable-line
     this.worker.postMessage(message);
   }
 
@@ -28,7 +27,6 @@ class Stockfish {
     return await new Promise((resolve) => {
       this.worker.onmessage = (event: any) => {
         const msg = event.data;
-        console.log(`<<< ${msg}`); // tslint:disable-line
         if (msg.includes('bestmove')) {
           resolve(msg.split(' ')[1]);
         }
