@@ -80,6 +80,7 @@ const startServer = async () => {
   server.app.use(router.routes());
   server.app.use(router.allowedMethods());
   server.app.use(async (ctx: any, next: any) => {
+    await next();
     if (ctx.request.path === '/robots.txt') {
       if (ctx.request.hostname.toLowerCase() === 'freeboardgame.org') {
         ctx.response.body = OPEN_ROBOTS_TXT;
@@ -87,16 +88,12 @@ const startServer = async () => {
         ctx.response.body = RESTRICTIVE_ROBOTS_TXT;
       }
     } else {
-      await next();
+      const { render, status } = await renderSite(ctx.request.url);
+      if (status) {
+        ctx.response.status = Number(status);
+      }
+      ctx.response.body = render;
     }
-  });
-  server.app.use(async (ctx: any, next: any) => {
-    await next();
-    const { render, status } = await renderSite(ctx.request.url);
-    if (status) {
-      ctx.response.status = Number(status);
-    }
-    ctx.response.body = render;
   });
 
   server.app.listen(PORT, HOST, () => {
