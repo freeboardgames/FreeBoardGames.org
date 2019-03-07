@@ -14,7 +14,7 @@ import { GAMES_LIST } from './games';
 import { getPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
-const { Server } = require('@freeboardgame.org/boardgame.io/server'); // tslint:disable-line
+const { Server } = require('flamecoals-boardgame.io/server'); // tslint:disable-line
 import App from './App/App';
 
 const HOST = '0.0.0.0';
@@ -22,9 +22,6 @@ const PORT = process.env.PORT || 8000;
 const NODE_ENV = process.env.NODE_ENV;
 const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
-
-// https://stackoverflow.com/a/52231746
-const BEING_TESTED_BY_JEST = process.env.JEST_WORKER_ID !== undefined;
 
 const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *',
   'Disallow: /'].join('\n');
@@ -82,19 +79,17 @@ const startServer = async () => {
   const router = new Router();
   server.app.use(router.routes());
   server.app.use(router.allowedMethods());
-  if (!BEING_TESTED_BY_JEST) {
-    server.app.use(async (ctx: any, next: any) => {
-      if (ctx.request.path === '/robots.txt') {
-        if (ctx.request.hostname.toLowerCase() === 'freeboardgame.org') {
-          ctx.response.body = OPEN_ROBOTS_TXT;
-        } else {
-          ctx.response.body = RESTRICTIVE_ROBOTS_TXT;
-        }
+  server.app.use(async (ctx: any, next: any) => {
+    if (ctx.request.path === '/robots.txt' && typeof ctx.request.hostname === 'string') {
+      if (ctx.request.hostname.toLowerCase() === 'freeboardgame.org') {
+        ctx.response.body = OPEN_ROBOTS_TXT;
       } else {
-        await next();
+        ctx.response.body = RESTRICTIVE_ROBOTS_TXT;
       }
-    });
-  }
+    } else {
+      await next();
+    }
+  });
   server.app.use(async (ctx: any, next: any) => {
     await next();
     const { render, status } = await renderSite(ctx.request.url);
