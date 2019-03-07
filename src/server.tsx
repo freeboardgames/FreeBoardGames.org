@@ -14,7 +14,7 @@ import { GAMES_LIST } from './games';
 import { getPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
-const { Server } = require('flamecoals-boardgame.io/server'); // tslint:disable-line
+const { Server } = require('@freeboardgame.org/boardgame.io/server'); // tslint:disable-line
 import App from './App/App';
 
 const HOST = '0.0.0.0';
@@ -80,7 +80,7 @@ const startServer = async () => {
   server.app.use(router.routes());
   server.app.use(router.allowedMethods());
   server.app.use(async (ctx: any, next: any) => {
-    if (ctx.request.path === '/robots.txt' && typeof ctx.request.hostname === 'string') {
+    if (ctx.request.path === '/robots.txt') {
       if (ctx.request.hostname.toLowerCase() === 'freeboardgame.org') {
         ctx.response.body = OPEN_ROBOTS_TXT;
       } else {
