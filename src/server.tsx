@@ -24,12 +24,9 @@ const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
 const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *',
-  'Disallow: /'].join('\n');
+  'Disallow: /', ''].join('\n');
 
-const OPEN_ROBOTS_TXT = ['User-agent: *',
-  'Disallow: /g/chess/online/*',
-  'Disallow: /g/seabattle/online/*',
-  'Disallow: /g/tictactoe/online/*'].join('\n');
+const OPEN_ROBOTS_TXT = getOpenRobotsTxt();
 
 const template = fs.readFileSync('./dist/layout.html', 'utf8');
 
@@ -103,5 +100,14 @@ const startServer = async () => {
     console.log(`Serving ${NODE_ENV} at: http://${HOST}:${PORT}/`); // tslint:disable-line
   });
 };
+
+function getOpenRobotsTxt() {
+  const robotstxt = ['User-agent: *'];
+  GAMES_LIST.forEach((game) => {
+    robotstxt.push(`Disallow: /g/${game.code}/online/*`);
+  });
+  robotstxt.push('');  // so that there is a newline at the end of the file
+  return robotstxt.join('\n');
+}
 
 startServer();
