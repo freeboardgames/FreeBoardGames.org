@@ -234,3 +234,39 @@ test('little AI game', () => {
   expect(moveMock.mock.calls[0]).to.deep.equal(['f4']);
   expect(stepMock.mock.calls.length).to.equal(1);
 });
+
+test('castling fix', () => {
+  const board = Enzyme.mount((
+    <TestBoard
+      G={{ pgn: '' }}
+      ctx={{
+        numPlayer: 2, turn: 0,
+        currentPlayer: '0', currentPlayerMoves: 0,
+      }}
+      moves={{}}
+      playerID="0"
+      isActive={true}
+      isConnected={true}
+      gameArgs={{
+        gameCode: 'chess',
+        mode: GameMode.LocalFriend,
+      }}
+    />
+  ));
+  const result = (board.find('Board').instance() as any)._fixHistory([
+    { san: 'O-O-O', color: 'w' },
+    { san: 'O-O-O', color: 'b' },
+    { san: 'O-O', color: 'w' },
+    { san: 'O-O', color: 'b' },
+  ]);
+  expect(result).to.deep.equal([
+    { san: 'O-O-O', color: 'w' },
+    { from: 'a1', to: 'd1' },
+    { san: 'O-O-O', color: 'b' },
+    { from: 'a8', to: 'd8' },
+    { san: 'O-O', color: 'w' },
+    { from: 'h1', to: 'f1' },
+    { san: 'O-O', color: 'b' },
+    { from: 'h8', to: 'f8' },
+  ]);
+});
