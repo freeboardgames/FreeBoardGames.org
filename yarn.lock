@@ -638,6 +638,27 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@freeboardgame.org/boardgame.io@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.4.tgz#a51e49ae4327c78015b5de1c7b3ec783b89a2eb2"
+  integrity sha512-hXIUj+iS+CUbWp+eMVAwn3YfsWMSYMLqpZFMXYlbQCKDwPCH/O8ybtMDiNqv96DGyvAomRV1GSGcjI9O3lbc5Q==
+  dependencies:
+    "@koa/cors" "^2.2.1"
+    flatted "^0.2.3"
+    immer "^1.8.0"
+    koa "^2.5.2"
+    koa-body "^2.5.0"
+    koa-router "^7.2.1"
+    koa-socket-2 "^1.0.17"
+    lru-cache "^4.1.1"
+    mousetrap "^1.6.1"
+    prop-types "^15.5.10"
+    react-cookies "^0.1.0"
+    react-dragtastic "^2.4.3"
+    redux "^4.0.0"
+    socket.io "^2.1.1"
+    uuid "3.2.1"
+
 "@koa/cors@^2.2.1":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@koa/cors/-/cors-2.2.3.tgz#c32a9907acbee1e72fedfb0b9ac840d2e6f9be57"
@@ -685,7 +706,7 @@
     "@babel/runtime" "^7.2.0"
     recompose "0.28.0 - 0.30.0"
 
-"@tweenjs/tween.js@^17.2.0":
+"@tweenjs/tween.js@^17.3.0":
   version "17.3.0"
   resolved "https://registry.yarnpkg.com/@tweenjs/tween.js/-/tween.js-17.3.0.tgz#1cbea14b4b5baa292274c96766fd1b2a56b7ca9f"
   integrity sha512-SPkhNj9/wGfbdX2C3B3KhttLQ4iesd+Ny8Dv1RnqF1MFUIqsZz/OJVLzJEHSEl7zheNx70dvqrwfbCFDQ0sWBw==
@@ -2976,6 +2997,11 @@ emojis-list@^2.0.0:
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
   integrity sha1-TapNnbAPmBmIDHn6RXrlsJof04k=
 
+empty-module@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/empty-module/-/empty-module-0.0.2.tgz#13b4dd8d4afeddd35e50c18dcd788c51087f1545"
+  integrity sha1-E7TdjUr+3dNeUMGNzXiMUQh/FUU=
+
 encoding@^0.1.11:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/encoding/-/encoding-0.1.12.tgz#538b66f3ee62cd1ab51ec323829d1f9480c74beb"
@@ -3484,28 +3510,6 @@ findup-sync@^2.0.0:
     is-glob "^3.1.0"
     micromatch "^3.0.4"
     resolve-dir "^1.0.1"
-
-flamecoals-boardgame.io@^0.37.0:
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/flamecoals-boardgame.io/-/flamecoals-boardgame.io-0.37.0.tgz#8c2cb00dacc2dced3fe18ebe020af58527c56299"
-  integrity sha512-mi87L55clggPKZyONGgYoXg+KHoF5dPszCB8Fz6sVC1Rs0M/VWdgzXAWmuYsziMNzb5YrQcmNuhvxYk4Z+164Q==
-  dependencies:
-    "@koa/cors" "^2.2.1"
-    "@tweenjs/tween.js" "^17.2.0"
-    flatted "^0.2.3"
-    immer "^1.8.0"
-    koa "^2.5.2"
-    koa-body "^2.5.0"
-    koa-router "^7.2.1"
-    koa-socket-2 "^1.0.17"
-    lru-cache "^4.1.1"
-    mousetrap "^1.6.1"
-    prop-types "^15.5.10"
-    react-cookies "^0.1.0"
-    react-dragtastic "^2.4.3"
-    redux "^4.0.0"
-    socket.io "^2.1.1"
-    uuid "3.2.1"
 
 flatted@^0.2.3:
   version "0.2.3"
@@ -4204,9 +4208,9 @@ ignore@^3.3.5:
   integrity sha512-Pgs951kaMm5GXP7MOvxERINe3gsaVjUWFm+UZPSq9xYriQAksyhg0csnS0KXSNRD5NmNdapXEpjxG49+AKh/ug==
 
 immer@^1.8.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
-  integrity sha512-O3sR1/opvCDGLEVcvrGTMtLac8GJ5IwZC4puPrLuRj3l7ICKvkmA0vGuU9OW8mV9WIBRnaxp5GJh9IEAaNOoYg==
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-1.12.1.tgz#40c6e5b292c00560836c2993bda3a24379d466f5"
+  integrity sha512-3fmKM6ovaqDt0CdC9daXpNi5x/YCYS3i4cwLdTVkhJdk5jrDXoPs7lCm3IqM3yhfSnz4tjjxbRG2CziQ7m8ztg==
 
 import-lazy@^2.1.0:
   version "2.1.0"
@@ -5368,37 +5372,7 @@ koa-static@^5.0.0:
     debug "^3.1.0"
     koa-send "^5.0.0"
 
-koa@^2.5.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/koa/-/koa-2.6.2.tgz#57ba4d049b0a99cae0d594e6144e2931949a7ce1"
-  integrity sha512-KdnBFhTgh9ysMMoYe4J4fLvaKjT7mF3nRYV8MjxLzx6qywFNeptqi4xevyUltg1fZl2CFJ+HeLXuCGx07Yvl/A==
-  dependencies:
-    accepts "^1.3.5"
-    cache-content-type "^1.0.0"
-    content-disposition "~0.5.2"
-    content-type "^1.0.4"
-    cookies "~0.7.1"
-    debug "~3.1.0"
-    delegates "^1.0.0"
-    depd "^1.1.2"
-    destroy "^1.0.4"
-    error-inject "^1.0.0"
-    escape-html "^1.0.3"
-    fresh "~0.5.2"
-    http-assert "^1.3.0"
-    http-errors "^1.6.3"
-    is-generator-function "^1.0.7"
-    koa-compose "^4.1.0"
-    koa-convert "^1.2.0"
-    koa-is-json "^1.0.0"
-    on-finished "^2.3.0"
-    only "~0.0.2"
-    parseurl "^1.3.2"
-    statuses "^1.5.0"
-    type-is "^1.6.16"
-    vary "^1.1.2"
-
-koa@^2.7.0:
+koa@^2.5.2, koa@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/koa/-/koa-2.7.0.tgz#7e00843506942b9d82c6cc33749f657c6e5e7adf"
   integrity sha512-7ojD05s2Q+hFudF8tDLZ1CpCdVZw8JQELWSkcfG9bdtoTDzMmkRF6BQBU7JzIzCCOY3xd3tftiy/loHBUYaY2Q==
@@ -5513,7 +5487,7 @@ loader-utils@^0.2.16:
     json5 "^0.5.0"
     object-assign "^4.0.1"
 
-loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2.1:
+loader-utils@^1.0.0, loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2.1:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.2.3.tgz#1ff5dc6911c9f0a062531a4c04b609406108c2c7"
   integrity sha512-fkpz8ejdnEMG3s37wGL07iSBDg99O9D5yflE9RGNH3hRdx9SOwYfnGYdZOUIZitN8E+E2vkq3MUMYMvPYl5ZZA==
@@ -7614,7 +7588,7 @@ scheduler@^0.12.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
-schema-utils@^0.4.4:
+schema-utils@^0.4.0, schema-utils@^0.4.4:
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.4.7.tgz#ba74f597d2be2ea880131746ee17d0a093c68187"
   integrity sha512-v/iwU6wvwGK8HbU9yi3/nhGzP0yGSuhQMzL6ySiec1FSrZZDkhm4noOSWzrNFo/jEc+SJY6jRTwuwbSXJPDUnQ==
@@ -9110,6 +9084,14 @@ worker-farm@^1.5.2:
   integrity sha512-6w+3tHbM87WnSWnENBUvA2pxJPLhQUg5LKwUQHq3r+XPhIM+Gh2R5ycbwPCyuGbNg+lPgdcnQUhuC02kJCvffQ==
   dependencies:
     errno "~0.1.7"
+
+worker-loader@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/worker-loader/-/worker-loader-2.0.0.tgz#45fda3ef76aca815771a89107399ee4119b430ac"
+  integrity sha512-tnvNp4K3KQOpfRnD20m8xltE3eWh89Ye+5oj7wXEEHKac1P4oZ6p9oTj8/8ExqoSBnk9nu5Pr4nKfQ1hn2APJw==
+  dependencies:
+    loader-utils "^1.0.0"
+    schema-utils "^0.4.0"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"

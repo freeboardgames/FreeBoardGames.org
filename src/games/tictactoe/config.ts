@@ -1,4 +1,4 @@
-import { IGameConfig } from '../config';
+import { IGameConfig } from '../';
 import { TictactoeGame } from './game';
 import { Board } from './board';
 import { applyMiddleware } from 'redux';

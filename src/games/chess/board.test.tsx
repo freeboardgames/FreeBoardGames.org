@@ -204,3 +204,33 @@ test('little game', () => {
   board.find('rect').at(rowColAt(5, 1)).simulate('click');
   expect(moveMock.mock.calls[1]).to.deep.equal(['a5']);
 });
+
+test('little AI game', () => {
+  const moveMock = jest.fn();
+  const stepMock = jest.fn();
+  const board = Enzyme.mount((
+    <TestBoard
+      G={{ pgn: '' }}
+      ctx={{
+        numPlayer: 2, turn: 0,
+        currentPlayer: '0', currentPlayerMoves: 0,
+      }}
+      moves={{ move: moveMock }}
+      playerID="0"
+      isActive={true}
+      isConnected={true}
+      gameArgs={{
+        gameCode: 'chess',
+        mode: GameMode.AI,
+      }}
+      step={stepMock}
+    />
+  ));
+  // select f2
+  board.find('rect').at(rowColAt(2, 6)).simulate('click');
+
+  // move to f4
+  board.find('rect').at(rowColAt(4, 6)).simulate('click');
+  expect(moveMock.mock.calls[0]).to.deep.equal(['f4']);
+  expect(stepMock.mock.calls.length).to.equal(1);
+});

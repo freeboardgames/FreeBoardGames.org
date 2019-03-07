@@ -3,8 +3,8 @@ import { Board } from './board';
 import { expect } from 'chai';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 import { SeabattleGame } from './game';
-import { Client } from 'flamecoals-boardgame.io/client';
-import { Client as ReactClient } from 'flamecoals-boardgame.io/react';
+import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
 import { MemoryRouter } from 'react-router';
 
 import Enzyme from 'enzyme';

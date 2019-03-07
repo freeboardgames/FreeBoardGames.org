@@ -1,4 +1,4 @@
-import { Game, TurnOrder } from 'flamecoals-boardgame.io/core';
+import { Game, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
 
 export interface IShip {
   player: number;

@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Game } from 'flamecoals-boardgame.io/core';
+import { Game } from '@freeboardgame.org/boardgame.io/core';
 
 export function isVictory(cells: number[]) {
   const positions = [

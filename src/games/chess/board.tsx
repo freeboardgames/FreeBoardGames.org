@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 The flamecoals-boardgame.io Authors.
+ * Copyright 2018 The @freeboardgame.org/boardgame.io Authors.
  *
  * Use of this source code is governed by a MIT-style
  * license that can be found in the LICENSE file or at
@@ -10,7 +10,7 @@ import React from 'react';
 
 import Chess from './chessjswrapper';
 import { Checkerboard, IAlgebraicCoords, IColorMap } from './checkerboard';
-import { Token } from 'flamecoals-boardgame.io/ui';
+import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
@@ -31,6 +31,7 @@ interface IBoardProps {
   G: any;
   ctx: any;
   moves: any;
+  step: any;
   playerID: string;
   isActive: boolean;
   isConnected: boolean;
@@ -103,6 +104,9 @@ export class Board extends React.Component<IBoardProps, {}> {
       });
       if (move) {
         this.props.moves.move(move.san);
+        if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
+          this.props.step();
+        }
       }
       this.setState({
         ...this.state,

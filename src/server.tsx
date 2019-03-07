@@ -14,7 +14,7 @@ import { GAMES_LIST } from './games';
 import { getPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
-const { Server } = require('flamecoals-boardgame.io/server'); // tslint:disable-line
+const { Server } = require('@freeboardgame.org/boardgame.io/server'); // tslint:disable-line
 import App from './App/App';
 
 const HOST = '0.0.0.0';

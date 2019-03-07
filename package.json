@@ -84,14 +84,17 @@
     "webpack-cli": "^3.2.1",
     "webpack-hot-middleware": "^2.24.3",
     "webpack-merge": "^4.2.1",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "worker-loader": "^2.0.0"
   },
   "dependencies": {
     "@babel/core": "^7.3.3",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.3.1",
+    "@freeboardgame.org/boardgame.io": "^0.0.4",
     "@material-ui/core": "3.3.0",
     "@material-ui/icons": "^3.0.2",
+    "@tweenjs/tween.js": "^17.3.0",
     "@types/enzyme": "^3.1.16",
     "@types/koa-router": "^7.0.39",
     "@types/mustache": "^0.8.32",
@@ -100,7 +103,7 @@
     "chess.js": "^0.10.2",
     "copy-to-clipboard": "^3.0.8",
     "copy-webpack-plugin": "^4.6.0",
-    "flamecoals-boardgame.io": "^0.37.0",
+    "empty-module": "^0.0.2",
     "html-webpack-harddisk-plugin": "^1.0.1",
     "koa": "^2.7.0",
     "koa-no-cache": "^2.0.0",
@@ -131,6 +134,7 @@
       "!src/server.tsx",
       "!src/app.tsx",
       "!**/*.d.ts",
+      "!src/games/chess/stockfish8.js",
       "!src/games/chess/chessjswrapper.ts"
     ],
     "testURL": "http://localhost",
@@ -159,6 +163,7 @@
       "/server-build/"
     ],
     "moduleNameMapper": {
+      "\\.worker.js":"<rootDir>/test/stockfish8Mock.js",
       "\\.(css|jpg|png|svg|webp|mp3)$": "<rootDir>/test/empty-module.js"
     }
   }
