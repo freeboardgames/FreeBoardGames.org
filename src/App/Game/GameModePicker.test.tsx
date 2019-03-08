@@ -1,5 +1,5 @@
 import React from 'react';
-import { GameModePicker, GameMode } from './GameModePicker';
+import { GameModePicker, GameMode, IGameModeInfo } from './GameModePicker';
 import ListItem from '@material-ui/core/ListItem';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
@@ -9,10 +9,10 @@ describe('Game Mode Picker', () => {
 
   it('should show all 5 options and accept clicks', () => {
     const historyMock = { push: jest.fn() };
-    const modesMock = [
-      GameMode.AI,
-      GameMode.OnlineFriend,
-      GameMode.LocalFriend,
+    const modesMock: IGameModeInfo[] = [
+      { mode: GameMode.AI, cardDescription: 'foo AI' },
+      { mode: GameMode.OnlineFriend, cardDescription: 'online' },
+      { mode: GameMode.LocalFriend, cardDescription: 'local' },
     ];
     const wrapper = mount((
       <MemoryRouter>
