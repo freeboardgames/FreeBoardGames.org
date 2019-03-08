@@ -23,6 +23,14 @@ const NODE_ENV = process.env.NODE_ENV;
 const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
+const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *',
+  'Disallow: /'].join('\n');
+
+const OPEN_ROBOTS_TXT = ['User-agent: *',
+  'Disallow: /g/chess/online/*',
+  'Disallow: /g/seabattle/online/*',
+  'Disallow: /g/tictactoe/online/*'].join('\n');
+
 const template = fs.readFileSync('./dist/layout.html', 'utf8');
 
 function renderHtml(layout: string, title: string, description: string, reactHtml: string) {
@@ -71,6 +79,17 @@ const startServer = async () => {
   const router = new Router();
   server.app.use(router.routes());
   server.app.use(router.allowedMethods());
+  server.app.use(async (ctx: any, next: any) => {
+    if (ctx.request.path === '/robots.txt') {
+      if (ctx.request.hostname.toLowerCase() === 'freeboardgame.org') {
+        ctx.response.body = OPEN_ROBOTS_TXT;
+      } else {
+        ctx.response.body = RESTRICTIVE_ROBOTS_TXT;
+      }
+    } else {
+      await next();
+    }
+  });
   server.app.use(async (ctx: any, next: any) => {
     await next();
     const { render, status } = await renderSite(ctx.request.url);
