@@ -76,6 +76,10 @@ export const GAMES_MAP: IGameDefMap = {
     imageURL: TicTacToeThumbnail,
     modes: [
       {
+        mode: GameMode.AI,
+        cardDescription: 'Play TicTacToe against the computer for free!',
+      },
+      {
         mode: GameMode.LocalFriend,
         cardDescription: 'Share the same device and play Tic Tac Toe ' +
           ' against a friend.',
@@ -88,6 +92,7 @@ export const GAMES_MAP: IGameDefMap = {
     ],
     description: 'Play Tic Tac Toe!',
     config: () => import('./tictactoe/config'),
+    aiConfig: () => import('./tictactoe/ai'),
   },
 };
 
