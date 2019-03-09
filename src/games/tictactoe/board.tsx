@@ -21,6 +21,7 @@ interface IBoardProps {
   playerID: string;
   isActive: boolean;
   gameArgs?: IGameArgs;
+  step?: any;
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
@@ -32,6 +33,9 @@ export class Board extends React.Component<IBoardProps, {}> {
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
       this.props.moves.clickCell(id);
+      if (this.isAIGame()) {
+        setTimeout(this.props.step, 250);
+      }
     }
   }
 
@@ -43,6 +47,10 @@ export class Board extends React.Component<IBoardProps, {}> {
     return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend);
   }
 
+  isAIGame() {
+    return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI);
+  }
+
   _getStatus() {
     if (this.isOnlineGame()) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
@@ -50,7 +58,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       } else {
         return 'Waiting for opponent...';
       }
-    } else { // Local game
+    } else { // Local or AI game
       switch (this.props.ctx.currentPlayer) {
         case '0': return 'Red\'s turn';
         case '1': return 'Green\'s turn';

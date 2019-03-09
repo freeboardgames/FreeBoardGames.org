@@ -143,3 +143,5 @@ declare module '@freeboardgame.org/boardgame.io/server' {
   function Server(serverArgs: IServerArgs): Koa;
   export = Server;
 }
+
+declare module '@freeboardgame.org/boardgame.io/ai';
