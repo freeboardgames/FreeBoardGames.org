@@ -122,6 +122,7 @@ declare module '@freeboardgame.org/boardgame.io/client' {
     events: any;
     store: any;
     updatePlayerID: (id: string) => void;
+    step: () => void;
   }
   interface IClientArgs {
     game: any;
@@ -130,6 +131,7 @@ declare module '@freeboardgame.org/boardgame.io/client' {
     multiplayer?: boolean;
     debug?: boolean;
     enhancer?: any;
+    ai?: any;
   }
   export function Client (clientArgs: IClientArgs): WrapperBoard;
 }
