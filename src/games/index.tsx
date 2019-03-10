@@ -62,6 +62,10 @@ export const GAMES_MAP: IGameDefMap = {
     imageURL: SeabattleThumbnail,
     modes: [
       {
+        mode: GameMode.AI,
+        cardDescription: 'Play Seabattle against the computer for free!',
+      },
+      {
         mode: GameMode.OnlineFriend,
         cardDescription: 'Share a link and play a match of Sea battle ' +
           'with a friend. Sink all their ship before they sink yours!',
@@ -69,6 +73,7 @@ export const GAMES_MAP: IGameDefMap = {
     ],
     description: 'Sink your friend\'s ships!',
     config: () => import('./seabattle/config'),
+    aiConfig: () => import('./seabattle/ai'),
   },
   tictactoe: {
     code: 'tictactoe',
