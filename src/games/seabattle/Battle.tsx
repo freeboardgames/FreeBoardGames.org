@@ -9,6 +9,8 @@ interface IBattleProps {
   moves: any;
   playerID: string;
   currentPlayer: string;
+  step?: any;
+  isAIGame?: boolean;
 }
 
 interface IBattleState {
@@ -40,6 +42,9 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     ).length === 0;
     if (uniqueMove) {
       this.props.moves.salvo(cell.x, cell.y);
+      if (this.props.isAIGame) {
+        setTimeout(this.props.step, 2500);
+      }
     }
   }
 
