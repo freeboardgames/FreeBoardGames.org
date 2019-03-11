@@ -6,7 +6,7 @@ interface IPlayState {
   ctx: any;
 }
 
-class TictactoeBot {
+class TictactoeRandomBot {
   async play(state: IPlayState, playerID: string) {
     const cell = this.generateMove(state);
     return this.makeMove(cell);
@@ -28,7 +28,7 @@ class TictactoeBot {
 }
 const config: IAIConfig = {
   bgioAI: (level: string) => {
-    if (level === 'Hard') {
+    if (level === '2') {  // Hard
       return AI({
         enumerate: (G: any, ctx: any) => {
           const moves = [];
@@ -40,9 +40,9 @@ const config: IAIConfig = {
           return moves;
         },
       });
-    } else if (level === 'Easy') {
+    } else if (level === '1') {  // Easy
       return {
-        bot: TictactoeBot,
+        bot: TictactoeRandomBot,
       };
     }
   },

@@ -6,7 +6,7 @@ import { Client } from '@freeboardgame.org/boardgame.io/client';
 test('Easy AI - should return a move for the initial position', async () => {
   const client = Client({
     game: TictactoeGame,
-    ai: AIConfig.bgioAI('Easy'),
+    ai: AIConfig.bgioAI('1'),
   });
   client.moves.clickCell(0);  // player plays
   await client.step();  // AI plays
@@ -20,7 +20,7 @@ test('Easy AI - should return a move for the initial position', async () => {
 test('Hard AI - should return a move for the initial position', async () => {
   const client = Client({
     game: TictactoeGame,
-    ai: AIConfig.bgioAI('Hard'),
+    ai: AIConfig.bgioAI('2'),
   });
   client.moves.clickCell(0);  // player plays
   await client.step();  // AI plays

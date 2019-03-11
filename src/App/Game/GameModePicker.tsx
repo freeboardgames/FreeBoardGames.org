@@ -154,14 +154,15 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
         );
       } else if (extraInfo.type === 'dropdown') {
         const dropdown = (extraInfo as IGameModeExtraInfoDropdown);
-        const list: any = [];  // TODO typing?
-        dropdown.options.map(option => {
+        const list: JSX.Element[] = [];
+        dropdown.options.map((option, idx) => {
+          idx++;
           list.push(
             <MenuItem
-              onClick={this._handleExtraInfoChange(info.mode, option)}
+              onClick={this._handleExtraInfoChange(info.mode, idx)}
               key={option}
               value={option}
-              selected={(this.state.extraInfo as any)[info.mode] === option}
+              selected={this._getExtraInfoValue(info) === idx}
             >
               {option}
             </MenuItem>);
