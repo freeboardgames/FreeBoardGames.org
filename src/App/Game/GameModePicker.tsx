@@ -159,6 +159,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
           list.push(
             <MenuItem
               onClick={this._handleExtraInfoChange(info.mode, option)}
+              key={option}
               value={option}
               selected={(this.state.extraInfo as any)[info.mode] === option}
             >
@@ -167,21 +168,21 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
         });
         return (
           <div style={{ marginTop: '16px' }}>
-            <Typography id="label" style={{ marginBottom: '8px' }}>
-              <MenuList>
-                {list}
-              </MenuList>
-            </Typography>
+            <MenuList
+              style={{
+                paddingRight: '20%',
+                display: 'flex',
+                listStyle: 'none'
+              }}
+            >
+              {list}
+            </MenuList>
           </div>
         );
       }
     }
     return null;
   }
-
-  // _handleDropdownClick = (option: string) => (event: React.MouseEvent<HTMLElement>) => {
-  // this.state = { ...this.state, dropdownSelecto
-  // }
 
   _getExtraInfoValue(info: IGameModeInfo): number {
     return (this.state.extraInfo as any)[info.mode] || 1;
