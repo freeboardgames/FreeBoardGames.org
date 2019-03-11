@@ -3,10 +3,10 @@ import { expect } from 'chai';
 import { TictactoeGame } from './game';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 
-test('should return a move for the initial position', async () => {
+test('Hard - should return a move for the initial position', async () => {
   const client = Client({
     game: TictactoeGame,
-    ai: AIConfig.bgioAI('1'),
+    ai: AIConfig.bgioAI('Hard'),
   });
   client.moves.clickCell(0);  // player plays
   await client.step();  // AI plays

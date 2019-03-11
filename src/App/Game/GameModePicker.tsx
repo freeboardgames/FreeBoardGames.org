@@ -7,6 +7,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Slider from '@material-ui/lab/Slider';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -39,6 +41,11 @@ export interface IGameModeExtraInfoSlider extends IGameModeExtraInfo {
   max: number;
 }
 
+export interface IGameModeExtraInfoDropdown extends IGameModeExtraInfo {
+  type: 'dropdown';
+  options: string[];
+}
+
 export enum GameMode {
   AI = 'AI',
   OnlineFriend = 'online',
@@ -51,7 +58,8 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     return React.createElement(Link, { ...props, to }, props.children);
   }
 
-  _handleExtraInfoChange = (mode: GameMode) => (event: any, value: number) => {
+  _handleExtraInfoChange = (mode: GameMode, argValue?: any) => (event: any, value?: number) => {
+    value = value || argValue;
     const newState: IGameModePickerState = {
       ...this.state,
       extraInfo: {
@@ -144,10 +152,36 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
             />
           </div>
         );
+      } else if (extraInfo.type === 'dropdown') {
+        const dropdown = (extraInfo as IGameModeExtraInfoDropdown);
+        const list: any = [];  // TODO typing?
+        dropdown.options.map(option => {
+          list.push(
+            <MenuItem
+              onClick={this._handleExtraInfoChange(info.mode, option)}
+              value={option}
+              selected={(this.state.extraInfo as any)[info.mode] === option}
+            >
+              {option}
+            </MenuItem>);
+        });
+        return (
+          <div style={{ marginTop: '16px' }}>
+            <Typography id="label" style={{ marginBottom: '8px' }}>
+              <MenuList>
+                {list}
+              </MenuList>
+            </Typography>
+          </div>
+        );
       }
     }
     return null;
   }
+
+  // _handleDropdownClick = (option: string) => (event: React.MouseEvent<HTMLElement>) => {
+  // this.state = { ...this.state, dropdownSelecto
+  // }
 
   _getExtraInfoValue(info: IGameModeInfo): number {
     return (this.state.extraInfo as any)[info.mode] || 1;
