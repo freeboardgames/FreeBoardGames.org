@@ -95,7 +95,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   render() {
     if (this.props.ctx.gameover) {
       return (
-        <GameLayout gameOver={this._getGameOver()} playAgain={this.isAIGame() || this.isOfflineGame()} />
+        <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />
       );
     }
     const cellStyle = {

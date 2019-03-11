@@ -10,14 +10,17 @@ import ReplayIcon from '@material-ui/icons/Replay';
 
 export interface IGameOverProps {
   result: string;
-  playAgain: boolean;
+  gameArgs?: IGameArgs;
 }
 
 export class GameOver extends React.Component<IGameOverProps, {}> {
   render() {
+    const playAgain = (
+      (this.props.gameArgs) && ((this.props.gameArgs.mode === GameMode.AI) ||
+        (this.props.gameArgs.mode === GameMode.LocalFriend)));
     let playAgainLink;
     let playAgainText;
-    if (this.props.playAgain) {
+    if (playAgain) {
       playAgainLink = (
         <Button
           onClick={this._refreshPage}
