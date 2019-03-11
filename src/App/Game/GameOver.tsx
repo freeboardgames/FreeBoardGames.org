@@ -27,9 +27,9 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
           <ReplayIcon style={{ marginRight: '8px' }} />
           Play Again
         </Button>);
-      playAgainText = 'Check out our games below:';
+      playAgainText = 'Check out our games below.';
     } else {
-      playAgainText = 'Do you want to play again? Check out our games below:';
+      playAgainText = 'Do you want to play again? Check out our games below.';
     }
     return (
       <FreeBoardGameBar>
