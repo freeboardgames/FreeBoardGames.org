@@ -172,7 +172,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
               style={{
                 paddingRight: '20%',
                 display: 'flex',
-                listStyle: 'none'
+                listStyle: 'none',
               }}
             >
               {list}
