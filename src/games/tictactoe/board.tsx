@@ -47,6 +47,10 @@ export class Board extends React.Component<IBoardProps, {}> {
     return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend);
   }
 
+  isOfflineGame() {
+    return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend);
+  }
+
   isAIGame() {
     return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI);
   }
@@ -91,7 +95,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   render() {
     if (this.props.ctx.gameover) {
       return (
-        <GameLayout gameOver={this._getGameOver()} />
+        <GameLayout gameOver={this._getGameOver()} playAgain={this.isAIGame() || this.isOfflineGame()} />
       );
     }
     const cellStyle = {
