@@ -8,10 +8,10 @@ interface IPlayState {
 
 class TictactoeRandomBot {
   async play(state: IPlayState, playerID: string) {
-    const cell = this.generateMove(state);
+    const cell = this.generateRandomMove(state);
     return this.makeMove(cell);
   }
-  generateMove(state: IPlayState) {
+  generateRandomMove(state: IPlayState) {
     while (true) {
       const cell = this.randomNumber(0, 9);
       if (state.G.cells[cell] === null) {  // unplayed
