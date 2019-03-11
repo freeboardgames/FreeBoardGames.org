@@ -22,7 +22,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
         <Button
           onClick={this._refreshPage}
           variant="outlined"
-          style={{ marginRight: '50%', marginLeft: '40%', marginTop: '8px' }}
+          style={{ width: '150px', marginRight: '50%', marginLeft: '35%', marginTop: '8px' }}
         >
           <ReplayIcon style={{ marginRight: '8px' }} />
           Play Again
