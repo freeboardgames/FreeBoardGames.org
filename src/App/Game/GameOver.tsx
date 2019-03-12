@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
+import ReactGA from 'react-ga';
 
 export interface IGameOverProps {
   result: string;
@@ -23,7 +24,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     if (playAgain) {
       playAgainLink = (
         <Button
-          onClick={this._refreshPage}
+          onClick={this._refreshPage(this.props.gameArgs)}
           variant="outlined"
           style={{ width: '150px', marginRight: '50%', marginLeft: '35%', marginTop: '8px' }}
         >
@@ -47,7 +48,12 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       </FreeBoardGameBar>
     );
   }
-  _refreshPage() {
+  _refreshPage = (gameArgs: IGameArgs) => (event: React.MouseEvent<HTMLElement>) => {
+    ReactGA.event({
+      category: 'GameOver',
+      action: 'Clicked play again',
+      label: gameArgs.gameCode,
+    });
     window.location.reload();
   }
 }
