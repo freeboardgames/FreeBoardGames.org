@@ -11,6 +11,7 @@ import asyncBootstrapper from 'react-async-bootstrapper';
 import serialize from 'serialize-javascript';
 import { StaticRouter } from 'react-router-dom';
 import { GAMES_LIST } from './games';
+import { GameMode } from './App/Game/GameModePicker';
 import { getPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
@@ -104,7 +105,13 @@ const startServer = async () => {
 function getOpenRobotsTxt() {
   const robotstxt = ['User-agent: *'];
   GAMES_LIST.forEach((game) => {
-    robotstxt.push(`Disallow: /g/${game.code}/online/*`);
+    const modes = game.modes;
+    if (modes.includes(GameMode.AI)) {
+      robotstxt.push(`Disallow: /g/${game.code}/ai/`);
+    }
+    if (modes.includes(GameMode.OnlineFriend)) {
+      robotstxt.push(`Disallow: /g/${game.code}/online/`);
+    }
   });
   robotstxt.push('');  // so that there is a newline at the end of the file
   return robotstxt.join('\n');
