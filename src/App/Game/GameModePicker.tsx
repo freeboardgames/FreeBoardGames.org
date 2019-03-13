@@ -58,8 +58,18 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     return React.createElement(Link, { ...props, to }, props.children);
   }
 
-  _handleExtraInfoChange = (mode: GameMode, argValue?: any) => (event: any, value?: number) => {
-    value = value || argValue;
+  _handleSliderChange = (mode: GameMode) => (event: any, value: number) => {
+    const newState: IGameModePickerState = {
+      ...this.state,
+      extraInfo: {
+        ...this.state.extraInfo,
+      },
+    };
+    newState.extraInfo[mode] = value;
+    this.setState(newState);
+  }
+
+  _handleClickSelection = (mode: GameMode, value: any) => (event: any) => {
     const newState: IGameModePickerState = {
       ...this.state,
       extraInfo: {
@@ -148,7 +158,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
               min={slider.min}
               max={slider.max}
               step={1}
-              onChange={this._handleExtraInfoChange(info.mode)}
+              onChange={this._handleSliderChange(info.mode)}
             />
           </div>
         );
@@ -158,7 +168,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
           idx++;
           return (
             <MenuItem
-              onClick={this._handleExtraInfoChange(info.mode, idx)}
+              onClick={this._handleClickSelection(info.mode, idx)}
               key={option}
               value={option}
               selected={this._getExtraInfoValue(info) === idx}
