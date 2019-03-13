@@ -307,3 +307,27 @@ test('render board - draw - online', () => {
   ));
   expect(comp.html()).to.contain('draw');
 });
+
+test('render board - AI', () => {
+  const client = Client({
+    game: TictactoeGame,
+  });
+  const state0 = client.store.getState();
+  const comp = Enzyme.mount((
+    <MemoryRouter>
+      <Board
+        G={state0.G}
+        ctx={state0.ctx}
+        moves={client.moves}
+        playerID={'0'}
+        isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.AI,
+        }}
+      />
+    </MemoryRouter>
+  ));
+  comp.find('rect').at(0).simulate('click');
+  expect(comp.html()).to.contain('Red\'s turn');
+});

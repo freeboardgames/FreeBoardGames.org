@@ -1,4 +1,4 @@
-import { GameMode } from '../App/Game/GameModePicker';
+import { IGameModeInfo, GameMode, IGameModeExtraInfoSlider } from '../App/Game/GameModePicker';
 import SeabattleThumbnail from './seabattle/media/thumbnail.png';
 import ChessThumbnail from './chess/media/thumbnail.png';
 import TicTacToeThumbnail from './tictactoe/media/thumbnail.png';
@@ -19,9 +19,7 @@ export interface IGameDef {
   name: string;
   imageURL: string;
   description: string;
-  modes: GameMode[];
-  maxPlayers: 2;
-  minPlayers: 2;
+  modes: IGameModeInfo[];
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
 }
@@ -35,10 +33,26 @@ export const GAMES_MAP: IGameDefMap = {
     code: 'chess',
     name: 'Chess',
     imageURL: ChessThumbnail,
-    modes: [GameMode.AI, GameMode.LocalFriend, GameMode.OnlineFriend],
-    maxPlayers: 2,
-    minPlayers: 2,
-    description: 'Chess, International rules.',
+    modes: [
+      {
+        mode: GameMode.AI,
+        cardDescription: 'Play Chess against the computer for free! ' +
+          'Play against Stockfish, one of the best chess ' +
+          'engines in the world.',
+        extraInfo: { type: 'slider', min: 1, max: 8 } as IGameModeExtraInfoSlider,
+      },
+      {
+        mode: GameMode.OnlineFriend,
+        cardDescription: 'Share a link with a friend and play Chess, ' +
+          'for free, over the internet!',
+      },
+      {
+        mode: GameMode.LocalFriend,
+        cardDescription: 'Share the same device and play Chess ' +
+          'against a friend for free!',
+      },
+    ],
+    description: 'Classic game of Chess.',
     config: () => import('./chess/config'),
     aiConfig: () => import('./chess/ai'),
   },
@@ -46,21 +60,39 @@ export const GAMES_MAP: IGameDefMap = {
     code: 'seabattle',
     name: 'Sea Battle',
     imageURL: SeabattleThumbnail,
-    modes: [GameMode.OnlineFriend],
-    maxPlayers: 2,
-    minPlayers: 2,
-    description: 'Sink your enemy\'s ships!',
+    modes: [
+      {
+        mode: GameMode.OnlineFriend,
+        cardDescription: 'Share a link and play a match of Sea battle ' +
+          'with a friend. Sink all their ship before they sink yours!',
+      },
+    ],
+    description: 'Sink your friend\'s ships!',
     config: () => import('./seabattle/config'),
   },
   tictactoe: {
     code: 'tictactoe',
     name: 'Tic Tac Toe',
     imageURL: TicTacToeThumbnail,
-    modes: [GameMode.LocalFriend, GameMode.OnlineFriend],
-    maxPlayers: 2,
-    minPlayers: 2,
+    modes: [
+      {
+        mode: GameMode.AI,
+        cardDescription: 'Play TicTacToe against the computer for free!',
+      },
+      {
+        mode: GameMode.LocalFriend,
+        cardDescription: 'Share the same device and play Tic Tac Toe ' +
+          ' against a friend.',
+      },
+      {
+        mode: GameMode.OnlineFriend,
+        cardDescription: 'Share a link with a friend and play ' +
+          'Tic Tac Toe over the internet for free.',
+      },
+    ],
     description: 'Play Tic Tac Toe!',
     config: () => import('./tictactoe/config'),
+    aiConfig: () => import('./tictactoe/ai'),
   },
 };
 

@@ -51,7 +51,10 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
     if (this.props.ctx.gameover) {
       return (
-        <GameLayout gameOver={this._getGameOver()} />
+        <GameLayout
+          gameOver={this._getGameOver()}
+          gameArgs={this.props.gameArgs}
+        />
       );
     }
     return (
@@ -208,7 +211,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getInitialCell(square: string) {
-    const history = this.chess.history({ verbose: true });
+    const history = this._fixHistory(this.chess.history({ verbose: true }));
     let lastSeen = square;
     for (let i = history.length - 1; i >= 0; i--) {
       const move = history[i];
@@ -217,6 +220,32 @@ export class Board extends React.Component<IBoardProps, {}> {
       }
     }
     return lastSeen;
+  }
+
+  // Castling only contains one move, leading to wrong initial cell.
+  _fixHistory(history: any) {
+    const result = [];
+    for (const move of history) {
+      let newMove = null;
+      if (move.san === 'O-O-O') {
+        if (move.color === 'w') {
+          newMove = { from: 'a1', to: 'd1' };
+        } else {
+          newMove = { from: 'a8', to: 'd8' };
+        }
+      } else if (move.san === 'O-O') {
+        if (move.color === 'w') {
+          newMove = { from: 'h1', to: 'f1' };
+        } else {
+          newMove = { from: 'h8', to: 'f8' };
+        }
+      }
+      result.push(move);
+      if (newMove) {
+        result.push(newMove);
+      }
+    }
+    return result;
   }
 
   _isSelectable(square: string) {
