@@ -51,7 +51,10 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
     if (this.props.ctx.gameover) {
       return (
-        <GameLayout gameOver={this._getGameOver()} />
+        <GameLayout
+          gameOver={this._getGameOver()}
+          gameArgs={this.props.gameArgs}
+        />
       );
     }
     return (
