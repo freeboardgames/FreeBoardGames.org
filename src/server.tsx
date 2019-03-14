@@ -109,7 +109,7 @@ function getOpenRobotsTxt() {
   GAMES_LIST.forEach((game) => {
     game.modes.forEach((modeInfo) => {
       if (modeInfo.mode === GameMode.AI) {
-        robotstxt.push(`Disallow: /g/${game.code}/ai/`);
+        robotstxt.push(`Disallow: /g/${game.code}/AI/`);
       }
       if (modeInfo.mode === GameMode.OnlineFriend) {
         robotstxt.push(`Disallow: /g/${game.code}/online/`);
