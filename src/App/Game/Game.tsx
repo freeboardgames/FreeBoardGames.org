@@ -110,7 +110,13 @@ export default class Game extends React.Component<IGameProps, {}> {
         clientConfig.enhancer = state.config.enhancer;
       }
       if (this.loadAI) {
-        clientConfig.ai = state.ai.bgioAI(aiLevel);
+        if (typeof state.ai === 'undefined') {
+          this.load().then(() => {
+            clientConfig.ai = state.ai.bgioAI(aiLevel);
+          });
+        } else {
+          clientConfig.ai = state.ai.bgioAI(aiLevel);
+        }
       }
       if (this.mode === GameMode.OnlineFriend) {
         clientConfig.multiplayer = true;
