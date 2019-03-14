@@ -103,21 +103,21 @@ const startServer = async () => {
 };
 
 function getOpenRobotsTxt() {
-  const robotstxt = ['User-agent: *'];
+  const robotsTxt = ['User-agent: *'];
   const AI = GameMode.AI;
   const OnlineFriend = GameMode.OnlineFriend;
   GAMES_LIST.forEach((game) => {
     game.modes.forEach((modeInfo) => {
       if (modeInfo.mode === GameMode.AI) {
-        robotstxt.push(`Disallow: /g/${game.code}/AI/`);
+        robotsTxt.push(`Disallow: /g/${game.code}/AI/`);
       }
       if (modeInfo.mode === GameMode.OnlineFriend) {
-        robotstxt.push(`Disallow: /g/${game.code}/online/`);
+        robotsTxt.push(`Disallow: /g/${game.code}/online/`);
       }
     });
   });
-  robotstxt.push('');  // so that there is a newline at the end of the file
-  return robotstxt.join('\n');
+  robotsTxt.push('');  // so that there is a newline at the end of the file
+  return robotsTxt.join('\n');
 }
 
 startServer();
