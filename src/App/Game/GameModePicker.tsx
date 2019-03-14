@@ -7,6 +7,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Slider from '@material-ui/lab/Slider';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -39,6 +41,11 @@ export interface IGameModeExtraInfoSlider extends IGameModeExtraInfo {
   max: number;
 }
 
+export interface IGameModeExtraInfoDropdown extends IGameModeExtraInfo {
+  type: 'dropdown';
+  options: string[];
+}
+
 export enum GameMode {
   AI = 'AI',
   OnlineFriend = 'online',
@@ -51,7 +58,18 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     return React.createElement(Link, { ...props, to }, props.children);
   }
 
-  _handleExtraInfoChange = (mode: GameMode) => (event: any, value: number) => {
+  _handleSliderChange = (mode: GameMode) => (event: any, value: number) => {
+    const newState: IGameModePickerState = {
+      ...this.state,
+      extraInfo: {
+        ...this.state.extraInfo,
+      },
+    };
+    newState.extraInfo[mode] = value;
+    this.setState(newState);
+  }
+
+  _handleClickSelection = (mode: GameMode, value: any) => (event: any) => {
     const newState: IGameModePickerState = {
       ...this.state,
       extraInfo: {
@@ -140,8 +158,35 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
               min={slider.min}
               max={slider.max}
               step={1}
-              onChange={this._handleExtraInfoChange(info.mode)}
+              onChange={this._handleSliderChange(info.mode)}
             />
+          </div>
+        );
+      } else if (extraInfo.type === 'dropdown') {
+        const dropdown = (extraInfo as IGameModeExtraInfoDropdown);
+        const list: JSX.Element[] = dropdown.options.map((option, idx) => {
+          idx++;
+          return (
+            <MenuItem
+              onClick={this._handleClickSelection(info.mode, idx)}
+              key={option}
+              value={option}
+              selected={this._getExtraInfoValue(info) === idx}
+            >
+              {option}
+            </MenuItem>);
+        });
+        return (
+          <div style={{ marginTop: '16px' }}>
+            <MenuList
+              style={{
+                paddingRight: '20%',
+                display: 'flex',
+                listStyle: 'none',
+              }}
+            >
+              {list}
+            </MenuList>
           </div>
         );
       }
