@@ -33,6 +33,7 @@ export default class Game extends React.Component<IGameProps, {}> {
 
   constructor(props: IGameProps) {
     super(props);
+    this.clear();
     this.mode = this.props.match.params.mode as GameMode;
     this.loadAI = this.mode === GameMode.AI && typeof window !== 'undefined';
     this.gameCode = this.props.match.params.gameCode;
