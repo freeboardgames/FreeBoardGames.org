@@ -4,6 +4,7 @@ export interface IShip {
   player: number;
   cells: ICell[];
   sunk: boolean;
+  id?: number;
 }
 
 export interface ICell {
@@ -53,6 +54,9 @@ export const SeabattleGame = Game({
   moves: {
     setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
       const player = parseInt(ctx.playerID, 10);
+      for (let i = 0; i < ships.length; i++) {
+        ships[i] = { ...ships[i], id: i + G.ships.length };
+      }
       const validation = validateShips(ships, player);
       if (!validation.valid) {
         throw new Error(validation.error);
@@ -133,7 +137,8 @@ export function validateShips(ships: IShip[], player?: number): IShipsValidation
   const validations = [validateShipsCount(ships),
   validateShipsContinuity(ships),
   validateShipsNotOutOfBounds(ships),
-  validateShipsNotOverlapping(ships)];
+  validateShipsNotOverlapping(ships),
+  validateShipsHaveUniqueIDs(ships)];
   if (player !== undefined) {
     validations.push(validateShipsOwnership(player, ships));
   }
@@ -242,6 +247,17 @@ function validateShipsContinuity(ships: IShip[]): IShipsValidationResult {
 
 export function getCellVector(a: ICell, b: ICell): ICell {
   return { x: a.x - b.x, y: a.y - b.y };
+}
+
+function validateShipsHaveUniqueIDs(ships: IShip[]): IShipsValidationResult {
+  const usedIDs: number[] = [];
+  for (const ship of ships) {
+    if (ship.id in usedIDs) {
+      return { valid: false, error: `IShip IDs are not unique!` };
+    }
+    usedIDs.push(ship.id);
+  }
+  return { valid: true };
 }
 
 function validateShipsNotOutOfBounds(ships: IShip[]): IShipsValidationResult {
