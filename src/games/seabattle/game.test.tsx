@@ -1,5 +1,5 @@
 import { Client } from '@freeboardgame.org/boardgame.io/client';
-import { SeabattleGame, IShip, generateRandomShips, playerView } from './game';
+import { SeabattleGame, IShip, generateRandomShips, validateShips, playerView } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 
 describe('Seabattle', () => {
@@ -33,6 +33,16 @@ describe('Seabattle', () => {
     expect(() => {
       client.moves.setShips([{ player: 0, cells: [{ x: 0, y: 9 }, { x: 1, y: 9 }] }]);
     }).toThrow();
+  });
+
+  it('should only allow unique IDs', () => {
+    const client = Client({
+      game: SeabattleGame,
+    });
+    client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+    const state0 = client.store.getState();
+    state0.G.ships[0].id = 2;
+    expect(validateShips(state0.G.ships).valid).toBeFalsy();
   });
 
   it('should only allow correct player to set ships', () => {

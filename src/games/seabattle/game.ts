@@ -120,12 +120,14 @@ export const SeabattleGame = Game({
 // Helper function for generating random ships positioning.
 export function generateRandomShips(player: number): IShip[] {
   let result: IShip[];
+  let shipID;
   do {
     result = [];
     for (const shipSize of VALID_SHIPS_SIZES) {
       const count: number = VALID_SHIPS_COUNT[shipSize];
       for (let i = 0; i < count; i++) {
-        result.push(randomlyGetShip(player, shipSize));
+        shipID = Math.floor(0 + Math.random() * (99999 + 1 - 0));
+        result.push(randomlyGetShip(player, shipSize, shipID));
       }
     }
   } while (!validateShips(result, player).valid);
@@ -160,10 +162,10 @@ function checkAllShipsSunk(ships: IShip[], player: number): boolean {
   return true;
 }
 
-function randomlyGetShip(player: number, shipSize: number): IShip {
+function randomlyGetShip(player: number, shipSize: number, id: number): IShip {
   const cell: ICell = { x: getRandomInt(10), y: getRandomInt(10) };
   const direction = getRandomInt(2) === 1 ? 'H' : 'V';
-  const ship: IShip = { player, cells: [], sunk: false };
+  const ship: IShip = { player, cells: [], sunk: false, id };
   for (let i = 0; i < shipSize; i++) {
     if (direction === 'H') { // Constant y
       ship.cells.push({ ...cell, x: (cell.x + i) });
@@ -252,7 +254,7 @@ export function getCellVector(a: ICell, b: ICell): ICell {
 function validateShipsHaveUniqueIDs(ships: IShip[]): IShipsValidationResult {
   const usedIDs: number[] = [];
   for (const ship of ships) {
-    if (ship.id in usedIDs) {
+    if (usedIDs.includes(ship.id)) {
       return { valid: false, error: `IShip IDs are not unique!` };
     }
     usedIDs.push(ship.id);
