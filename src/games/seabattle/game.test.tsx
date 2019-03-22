@@ -39,10 +39,10 @@ describe('Seabattle', () => {
     const client = Client({
       game: SeabattleGame,
     });
-    client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
-    const state0 = client.store.getState();
-    state0.G.ships[0].id = 2;
-    expect(validateShips(state0.G.ships).valid).toBeFalsy();
+    expect(() => {
+      client.moves.setShips([{ player: 0, id: 1, cells: [{ x: 0, y: 9 }, { x: 1, y: 9 }] },
+      { player: 0, id: 1, cells: [{ x: 2, y: 9 }, { x: 3, y: 9 }] }]);
+    }).toThrow();
   });
 
   it('should only allow correct player to set ships', () => {
@@ -135,7 +135,7 @@ describe('Seabattle', () => {
     expect(store.getState().ctx.gameover.winner).toEqual('1');
   });
 
-  it('should show victory correctly - player 11 loss', () => {
+  it('should show victory correctly - player 1 loss', () => {
     const client = Client({
       game: SeabattleGame,
     });

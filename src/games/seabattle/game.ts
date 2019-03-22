@@ -54,9 +54,6 @@ export const SeabattleGame = Game({
   moves: {
     setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
       const player = parseInt(ctx.playerID, 10);
-      for (let i = 0; i < ships.length; i++) {
-        ships[i] = { ...ships[i], id: i + G.ships.length };
-      }
       const validation = validateShips(ships, player);
       if (!validation.valid) {
         throw new Error(validation.error);
@@ -126,7 +123,7 @@ export function generateRandomShips(player: number): IShip[] {
     for (const shipSize of VALID_SHIPS_SIZES) {
       const count: number = VALID_SHIPS_COUNT[shipSize];
       for (let i = 0; i < count; i++) {
-        shipID = Math.floor(0 + Math.random() * (99999 + 1 - 0));
+        shipID = Math.floor(0 + Math.random() * (999999 + 1 - 0));
         result.push(randomlyGetShip(player, shipSize, shipID));
       }
     }
