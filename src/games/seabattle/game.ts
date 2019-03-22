@@ -1,10 +1,11 @@
 import { Game, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
+import shortid from 'shortid';
 
 export interface IShip {
   player: number;
   cells: ICell[];
   sunk: boolean;
-  id?: number;
+  id?: string;
 }
 
 export interface ICell {
@@ -123,7 +124,7 @@ export function generateRandomShips(player: number): IShip[] {
     for (const shipSize of VALID_SHIPS_SIZES) {
       const count: number = VALID_SHIPS_COUNT[shipSize];
       for (let i = 0; i < count; i++) {
-        shipID = Math.floor(0 + Math.random() * (999999 + 1 - 0));
+        shipID = shortid.generate();
         result.push(randomlyGetShip(player, shipSize, shipID));
       }
     }
@@ -159,7 +160,7 @@ function checkAllShipsSunk(ships: IShip[], player: number): boolean {
   return true;
 }
 
-function randomlyGetShip(player: number, shipSize: number, id: number): IShip {
+function randomlyGetShip(player: number, shipSize: number, id: string): IShip {
   const cell: ICell = { x: getRandomInt(10), y: getRandomInt(10) };
   const direction = getRandomInt(2) === 1 ? 'H' : 'V';
   const ship: IShip = { player, cells: [], sunk: false, id };
@@ -249,7 +250,7 @@ export function getCellVector(a: ICell, b: ICell): ICell {
 }
 
 function validateShipsHaveUniqueIDs(ships: IShip[]): IShipsValidationResult {
-  const usedIDs: { [id: number]: boolean; } = {};
+  const usedIDs: { [id: string]: boolean; } = {};
   for (const ship of ships) {
     if (usedIDs[ship.id]) {
       return { valid: false, error: `IShip IDs are not unique!` };
