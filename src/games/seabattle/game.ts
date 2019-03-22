@@ -252,12 +252,12 @@ export function getCellVector(a: ICell, b: ICell): ICell {
 }
 
 function validateShipsHaveUniqueIDs(ships: IShip[]): IShipsValidationResult {
-  const usedIDs: number[] = [];
+  const usedIDs: { [id: number]: boolean; } = {};
   for (const ship of ships) {
-    if (usedIDs.includes(ship.id)) {
+    if (usedIDs[ship.id]) {
       return { valid: false, error: `IShip IDs are not unique!` };
     }
-    usedIDs.push(ship.id);
+    usedIDs[ship.id] = true;
   }
   return { valid: true };
 }
