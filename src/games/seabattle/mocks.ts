@@ -1,5 +1,4 @@
 import { IShip } from './game';
-import shortid from 'shortid';
 
 export const VALID_SETUP_FIRST_PLAYER: IShip[] = [
   {
@@ -12,7 +11,7 @@ export const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 4, y: 0 },
     ],
     sunk: true,
-    id: shortid.generate(),
+    id: '1',
   },
   {
     player: 0,
@@ -23,7 +22,7 @@ export const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 6, y: 3 },
     ],
     sunk: false,
-    id: shortid.generate(),
+    id: '2',
   },
   {
     player: 0,
@@ -33,7 +32,7 @@ export const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 9, y: 2 },
     ],
     sunk: false,
-    id: shortid.generate(),
+    id: '3',
   },
   {
     player: 0,
@@ -43,7 +42,7 @@ export const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 9, y: 5 },
     ],
     sunk: false,
-    id: shortid.generate(),
+    id: '4',
   },
   {
     player: 0,
@@ -52,12 +51,12 @@ export const VALID_SETUP_FIRST_PLAYER: IShip[] = [
       { x: 1, y: 9 },
     ],
     sunk: false,
-    id: shortid.generate(),
+    id: '5',
   },
 ];
 
-export const VALID_SETUP_SECOND_PLAYER: IShip[] = VALID_SETUP_FIRST_PLAYER.map((ship, idx) => ({
+export const VALID_SETUP_SECOND_PLAYER: IShip[] = VALID_SETUP_FIRST_PLAYER.map((ship) => ({
   ...ship,
   player: 1,
-  id: shortid.generate(),
+  id: 'second ' + ship.id,
 }));
