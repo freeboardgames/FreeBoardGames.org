@@ -11,6 +11,7 @@ import asyncBootstrapper from 'react-async-bootstrapper';
 import serialize from 'serialize-javascript';
 import { StaticRouter } from 'react-router-dom';
 import { GAMES_LIST } from './games';
+import { GameMode } from './App/Game/GameModePicker';
 import { getPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
@@ -24,12 +25,9 @@ const PROD = NODE_ENV === 'production';
 const DEV = !PROD;
 
 const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *',
-  'Disallow: /'].join('\n');
+  'Disallow: /', ''].join('\n');
 
-const OPEN_ROBOTS_TXT = ['User-agent: *',
-  'Disallow: /g/chess/online/*',
-  'Disallow: /g/seabattle/online/*',
-  'Disallow: /g/tictactoe/online/*'].join('\n');
+const OPEN_ROBOTS_TXT = getOpenRobotsTxt();
 
 const template = fs.readFileSync('./dist/layout.html', 'utf8');
 
@@ -103,5 +101,23 @@ const startServer = async () => {
     console.log(`Serving ${NODE_ENV} at: http://${HOST}:${PORT}/`); // tslint:disable-line
   });
 };
+
+function getOpenRobotsTxt() {
+  const robotsTxt = ['User-agent: *'];
+  const AI = GameMode.AI;
+  const OnlineFriend = GameMode.OnlineFriend;
+  GAMES_LIST.forEach((game) => {
+    game.modes.forEach((modeInfo) => {
+      if (modeInfo.mode === GameMode.AI) {
+        robotsTxt.push(`Disallow: /g/${game.code}/AI/`);
+      }
+      if (modeInfo.mode === GameMode.OnlineFriend) {
+        robotsTxt.push(`Disallow: /g/${game.code}/online/`);
+      }
+    });
+  });
+  robotsTxt.push('');  // so that there is a newline at the end of the file
+  return robotsTxt.join('\n');
+}
 
 startServer();

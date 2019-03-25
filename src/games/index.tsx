@@ -1,4 +1,5 @@
-import { IGameModeInfo, GameMode, IGameModeExtraInfoSlider } from '../App/Game/GameModePicker';
+import { IGameModeInfo, GameMode } from '../App/Game/GameModePicker';
+import { IGameModeExtraInfoSlider, IGameModeExtraInfoDropdown } from '../App/Game/GameModePicker';
 import SeabattleThumbnail from './seabattle/media/thumbnail.png';
 import ChessThumbnail from './chess/media/thumbnail.png';
 import TicTacToeThumbnail from './tictactoe/media/thumbnail.png';
@@ -83,6 +84,7 @@ export const GAMES_MAP: IGameDefMap = {
       {
         mode: GameMode.AI,
         cardDescription: 'Play TicTacToe against the computer for free!',
+        extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
       },
       {
         mode: GameMode.LocalFriend,

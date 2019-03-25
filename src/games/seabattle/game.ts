@@ -1,9 +1,11 @@
 import { Game, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
+import shortid from 'shortid';
 
 export interface IShip {
   player: number;
   cells: ICell[];
   sunk: boolean;
+  id?: string;
 }
 
 export interface ICell {
@@ -15,7 +17,7 @@ export interface ISalvo {
   player: number;
   cell: ICell;
   hit: boolean;
-  hitShip?: number;
+  hitShip?: string;
 }
 
 export interface ISeabattleState {
@@ -74,15 +76,16 @@ export const SeabattleGame = Game({
       if (shipIndex === -1) { // Miss
         return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y } }] };
       }
+      const ship = G.ships[shipIndex];
       // Hit
       const newShips = [...G.ships];
-      if (countShipHits(G.salvos, shipIndex) + 1 === G.ships[shipIndex].cells.length) {
+      if (countShipHits(G.salvos, ship.id) + 1 === ship.cells.length) {
         newShips[shipIndex] = { ...newShips[shipIndex], sunk: true };
       }
       return {
         ...G,
         ships: newShips,
-        salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: shipIndex }],
+        salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: ship.id }],
       };
     },
   },
@@ -116,12 +119,14 @@ export const SeabattleGame = Game({
 // Helper function for generating random ships positioning.
 export function generateRandomShips(player: number): IShip[] {
   let result: IShip[];
+  let shipID;
   do {
     result = [];
     for (const shipSize of VALID_SHIPS_SIZES) {
       const count: number = VALID_SHIPS_COUNT[shipSize];
       for (let i = 0; i < count; i++) {
-        result.push(randomlyGetShip(player, shipSize));
+        shipID = shortid.generate();
+        result.push(randomlyGetShip(player, shipSize, shipID));
       }
     }
   } while (!validateShips(result, player).valid);
@@ -133,7 +138,8 @@ export function validateShips(ships: IShip[], player?: number): IShipsValidation
   const validations = [validateShipsCount(ships),
   validateShipsContinuity(ships),
   validateShipsNotOutOfBounds(ships),
-  validateShipsNotOverlapping(ships)];
+  validateShipsNotOverlapping(ships),
+  validateShipsHaveUniqueIDs(ships)];
   if (player !== undefined) {
     validations.push(validateShipsOwnership(player, ships));
   }
@@ -155,10 +161,10 @@ function checkAllShipsSunk(ships: IShip[], player: number): boolean {
   return true;
 }
 
-function randomlyGetShip(player: number, shipSize: number): IShip {
+function randomlyGetShip(player: number, shipSize: number, id: string): IShip {
   const cell: ICell = { x: getRandomInt(10), y: getRandomInt(10) };
   const direction = getRandomInt(2) === 1 ? 'H' : 'V';
-  const ship: IShip = { player, cells: [], sunk: false };
+  const ship: IShip = { player, cells: [], sunk: false, id };
   for (let i = 0; i < shipSize; i++) {
     if (direction === 'H') { // Constant y
       ship.cells.push({ ...cell, x: (cell.x + i) });
@@ -181,8 +187,8 @@ function findShipWithCell(ships: IShip[], cell: ICell, player: number): number {
   );
 }
 
-function countShipHits(salvos: ISalvo[], shipIndex: number): number {
-  return salvos.filter((s) => s.hitShip === shipIndex).length;
+function countShipHits(salvos: ISalvo[], shipId: string): number {
+  return salvos.filter((s) => s.hitShip === shipId).length;
 }
 
 interface IShipsValidationResult {
@@ -242,6 +248,17 @@ function validateShipsContinuity(ships: IShip[]): IShipsValidationResult {
 
 export function getCellVector(a: ICell, b: ICell): ICell {
   return { x: a.x - b.x, y: a.y - b.y };
+}
+
+function validateShipsHaveUniqueIDs(ships: IShip[]): IShipsValidationResult {
+  const usedIDs: { [id: string]: boolean; } = {};
+  for (const ship of ships) {
+    if (usedIDs[ship.id]) {
+      return { valid: false, error: `IShip IDs are not unique!` };
+    }
+    usedIDs[ship.id] = true;
+  }
+  return { valid: true };
 }
 
 function validateShipsNotOutOfBounds(ships: IShip[]): IShipsValidationResult {
