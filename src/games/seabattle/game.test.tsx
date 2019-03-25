@@ -161,7 +161,7 @@ describe('Seabattle', () => {
 
     client.moves.salvo(0, 0);
 
-    expect(store.getState().G.salvos).toEqual([{ player: 1, cell: { x: 0, y: 0 }, hit: true, hitShip: 0 }]);
+    expect(store.getState().G.salvos).toEqual([{ player: 1, cell: { x: 0, y: 0 }, hit: true, hitShip: '1' }]);
   });
 
   it('should miss ship correctly', () => {
@@ -197,7 +197,7 @@ describe('Seabattle', () => {
     expect(G.salvos.length).toEqual(2);
   });
 
-  it('should sunk ship correctly', () => {
+  it('should sink ship correctly', () => {
     const client = Client({
       game: SeabattleGame,
     });
@@ -214,10 +214,9 @@ describe('Seabattle', () => {
     const { G, ctx } = client.store.getState();
     const newG = playerView(G, ctx, '1');
     expect(newG.salvos).toEqual([
-      { player: 1, cell: { x: 0, y: 9 }, hit: true, hitShip: 4 },
-      { player: 0, cell: { x: 0, y: 0 }, hit: true, hitShip: 5 },
-      { player: 1, cell: { x: 1, y: 9 }, hit: true, hitShip: 4 }]);
-    // TODO: Because the index change by playerView, change hitShip to ID.
+      { player: 1, cell: { x: 0, y: 9 }, hit: true, hitShip: '5' },
+      { player: 0, cell: { x: 0, y: 0 }, hit: true, hitShip: 'second 1' },
+      { player: 1, cell: { x: 1, y: 9 }, hit: true, hitShip: '5' }]);
     expect(newG.ships[2].sunk).toEqual(true);
   });
 });

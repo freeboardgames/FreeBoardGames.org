@@ -17,7 +17,7 @@ export interface ISalvo {
   player: number;
   cell: ICell;
   hit: boolean;
-  hitShip?: number;
+  hitShip?: string;
 }
 
 export interface ISeabattleState {
@@ -76,15 +76,16 @@ export const SeabattleGame = Game({
       if (shipIndex === -1) { // Miss
         return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y } }] };
       }
+      const ship = G.ships[shipIndex];
       // Hit
       const newShips = [...G.ships];
-      if (countShipHits(G.salvos, shipIndex) + 1 === G.ships[shipIndex].cells.length) {
+      if (countShipHits(G.salvos, ship.id) + 1 === ship.cells.length) {
         newShips[shipIndex] = { ...newShips[shipIndex], sunk: true };
       }
       return {
         ...G,
         ships: newShips,
-        salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: shipIndex }],
+        salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: ship.id }],
       };
     },
   },
@@ -186,8 +187,8 @@ function findShipWithCell(ships: IShip[], cell: ICell, player: number): number {
   );
 }
 
-function countShipHits(salvos: ISalvo[], shipIndex: number): number {
-  return salvos.filter((s) => s.hitShip === shipIndex).length;
+function countShipHits(salvos: ISalvo[], shipId: string): number {
+  return salvos.filter((s) => s.hitShip === shipId).length;
 }
 
 interface IShipsValidationResult {
