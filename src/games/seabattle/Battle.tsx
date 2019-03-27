@@ -43,7 +43,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     if (uniqueMove) {
       this.props.moves.salvo(cell.x, cell.y);
       if (this.props.isAIGame) {
-        setTimeout(this.props.step, 2500);
+        setTimeout(this.props.step, 3000);
       }
     }
   }
