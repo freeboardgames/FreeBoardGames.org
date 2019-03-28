@@ -16,11 +16,7 @@ it('should set ships correctly', async () => {
 });
 
 it('should shoot a random salvo', async () => {
-  const client = genClient();
-
-  client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
-  client.updatePlayerID('1');
-  client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+  const client = genReadyClient();
 
   // AI shoots random salvo
   await client.step();
@@ -34,4 +30,12 @@ function genClient() {
     game: SeabattleGame,
     ai: AIConfig.bgioAI('1'),
   });
+}
+
+function genReadyClient() {
+  const client = genClient();
+  client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+  client.updatePlayerID('1');
+  client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+  return client;
 }
