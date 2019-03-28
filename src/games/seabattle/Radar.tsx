@@ -15,6 +15,7 @@ export interface IColorMap {
   [key: string]: string;
 }
 interface IRadarProps {
+  player?: number;
   ships: IShip[];
   salvos?: ISalvo[];
   editable: boolean;
@@ -147,7 +148,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
           draggable={this.props.editable}
           shouldDrag={this._shouldDrag}
           onDrop={this._onDrop}
-          key={i}
+          key={ship.id}
         >
           {shipDrawing}
         </Token>,
@@ -174,12 +175,13 @@ export class Radar extends React.Component<IRadarProps, {}> {
         i === this.props.salvos.length - 1) {
         drawing = <Blink>{drawing}</Blink>;
       }
+      const player = this.props.player || 0;
       result.push(
         <Token
           x={salvo.cell.x}
           y={salvo.cell.y}
           draggable={false}
-          key={i + 100}
+          key={`salvo_${i}_${player}`}
         >
           {drawing}
         </Token>,

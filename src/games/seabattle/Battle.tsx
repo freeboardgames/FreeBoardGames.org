@@ -69,6 +69,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       <div>
         <h2 style={{ textAlign: 'center' }}>{message}</h2>
         <Radar
+          player={player}
           ships={ships}
           salvos={salvos}
           editable={false}
