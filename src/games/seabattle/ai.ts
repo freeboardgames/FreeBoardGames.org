@@ -33,10 +33,6 @@ class SeabattleBot {
   }
 
   generateMove(state: IPlayState) {
-    if (state.G.salvos.length === 0) {
-      const move: ICell = { x: 0, y: 0 };
-      return move;
-    }
     const salvos = state.G.salvos.filter((salvo: ISalvo) => (
       salvo.player === 1 &&
       salvo.hit === true &&
