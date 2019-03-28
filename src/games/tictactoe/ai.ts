@@ -12,12 +12,15 @@ class TictactoeRandomBot {
     return this.makeMove(cell);
   }
   generateRandomMove(state: IPlayState) {
-    while (true) {
-      const cell = this.randomNumber(0, 9);
-      if (state.G.cells[cell] === null) {  // unplayed
-        return cell;
+    const freeCellsIndexes = [];
+    const cells = state.G.cells;
+    for (let i = 0; i < cells.length; i++) {
+      if (cells[i] === null) {
+        freeCellsIndexes.push(i);
       }
     }
+    const cell = freeCellsIndexes[this.randomNumber(0, freeCellsIndexes.length)];
+    return cell;
   }
   makeMove(cell: number) {
     return { action: { type: 'MAKE_MOVE', payload: { type: 'clickCell', args: [cell], playerID: '1' } } };
