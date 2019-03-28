@@ -84,6 +84,10 @@ export default class Game extends React.Component<IGameProps, {}> {
     }
   }
 
+  componentWillUnmount() {
+    this.clear();
+  }
+
   render() {
     const aiLevel = this.props.match.params.aiLevel;
     const matchCode = this.props.match.params.matchCode;
