@@ -1,0 +1,19 @@
+sudo: false
+language: node_js
+node_js:
+  - "stable"
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - yarn install
+
+script:
+  - yarn run lint
+  - yarn run prod:buildquietly
+  - yarn run test:coverage
+
+after_success:
+  - yarn run test:coveralls
