@@ -9,7 +9,7 @@ interface IPlayState {
 class TictactoeRandomBot {
   async play(state: IPlayState, playerID: string) {
     const cell = this.generateRandomMove(state);
-    return this.makeMove(cell);
+    return this.makeMove(playerID, cell);
   }
   generateRandomMove(state: IPlayState) {
     while (true) {
@@ -19,8 +19,8 @@ class TictactoeRandomBot {
       }
     }
   }
-  makeMove(cell: number) {
-    return { action: { type: 'MAKE_MOVE', payload: { type: 'clickCell', args: [cell], playerID: '1' } } };
+  makeMove(playerID: string, cell: number) {
+    return { action: { type: 'MAKE_MOVE', payload: { type: 'clickCell', args: [cell], playerID } } };
   }
   randomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
