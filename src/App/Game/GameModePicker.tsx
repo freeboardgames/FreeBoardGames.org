@@ -126,9 +126,9 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
           <Typography component="p">
             {info.cardDescription}
           </Typography>
-          {extraInfo}
         </CardContent>
         <CardActions>
+          {extraInfo}
           <Button
             component={this._getLink(this._getUrl(info))}
             variant="contained"
@@ -145,50 +145,12 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
   _getExtraInfo(info: IGameModeInfo) {
     if (info.extraInfo) {
       const extraInfo = info.extraInfo;
-      const value = this._getExtraInfoValue(info);
       if (extraInfo.type === 'slider') {
         const slider = (extraInfo as IGameModeExtraInfoSlider);
-        return (
-          <div style={{ marginTop: '16px' }}>
-            <Typography id="label" style={{ marginBottom: '8px' }}>
-              Difficulty {value}/{slider.max}
-            </Typography>
-            <Slider
-              value={value}
-              min={slider.min}
-              max={slider.max}
-              step={1}
-              onChange={this._handleSliderChange(info.mode)}
-            />
-          </div>
-        );
+        return this._getExtraInfoSlider(info, slider);
       } else if (extraInfo.type === 'dropdown') {
         const dropdown = (extraInfo as IGameModeExtraInfoDropdown);
-        const list: JSX.Element[] = dropdown.options.map((option, idx) => {
-          idx++;
-          return (
-            <MenuItem
-              onClick={this._handleClickSelection(info.mode, idx)}
-              key={option}
-              value={option}
-              selected={this._getExtraInfoValue(info) === idx}
-            >
-              {option}
-            </MenuItem>);
-        });
-        return (
-          <div style={{ marginTop: '16px' }}>
-            <MenuList
-              style={{
-                paddingRight: '20%',
-                display: 'flex',
-                listStyle: 'none',
-              }}
-            >
-              {list}
-            </MenuList>
-          </div>
-        );
+        return this._getExtraInfoDropdown(info, dropdown);
       }
     }
     return null;
@@ -196,6 +158,51 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
 
   _getExtraInfoValue(info: IGameModeInfo): number {
     return (this.state.extraInfo as any)[info.mode] || 1;
+  }
+
+  _getExtraInfoSlider(info: IGameModeInfo, slider: IGameModeExtraInfoSlider) {
+    const value = this._getExtraInfoValue(info);
+    return (
+      <div style={{ marginBottom: '18px', width: '80%' }}>
+        <Typography id="label" style={{ marginBottom: '8px' }}>
+          Difficulty {value}/{slider.max}
+        </Typography>
+        <Slider
+          value={value}
+          min={slider.min}
+          max={slider.max}
+          step={1}
+          onChange={this._handleSliderChange(info.mode)}
+        />
+      </div>
+    );
+  }
+
+  _getExtraInfoDropdown(info: IGameModeInfo, dropdown: IGameModeExtraInfoDropdown) {
+    const list: JSX.Element[] = dropdown.options.map((option, idx) => {
+      idx++;
+      return (
+        <MenuItem
+          onClick={this._handleClickSelection(info.mode, idx)}
+          key={option}
+          value={option}
+          selected={this._getExtraInfoValue(info) === idx}
+        >
+          {option}
+        </MenuItem>);
+    });
+    return (
+      <div>
+        <MenuList
+          style={{
+            paddingTop: 0,
+            display: 'flex',
+          }}
+        >
+          {list}
+        </MenuList>
+      </div>
+    );
   }
 
   _getUrl(info: IGameModeInfo) {
