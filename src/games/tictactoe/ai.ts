@@ -19,7 +19,8 @@ class TictactoeRandomBot {
         freeCellsIndexes.push(i);
       }
     }
-    const cell = freeCellsIndexes[this.randomNumber(0, freeCellsIndexes.length)];
+    const randIndex = this.randomNumber(0, freeCellsIndexes.length);
+    const cell = freeCellsIndexes[randIndex];
     return cell;
   }
   makeMove(cell: number) {
