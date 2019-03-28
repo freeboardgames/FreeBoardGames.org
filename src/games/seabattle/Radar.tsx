@@ -176,7 +176,6 @@ export class Radar extends React.Component<IRadarProps, {}> {
         drawing = <Blink>{drawing}</Blink>;
       }
       const player = this.props.player || 0;
-      console.log(`player: ${player}`);
       result.push(
         <Token
           x={salvo.cell.x}
