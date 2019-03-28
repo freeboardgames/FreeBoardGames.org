@@ -30,7 +30,7 @@ test('one phase - hit', () => {
       playerID={'1'}
       currentPlayer={store.getState().ctx.currentPlayer}
     />);
-  // should be ignroed
+  // should be ignored
   grid.find({ x: 0, y: 0 }).find('Square').at(0).simulate('click');
   grid.find({ x: 0, y: 9 }).find('Square').at(0).simulate('click');
   expect(grid.html()).to.contain('CLICK TO SHOOT');
