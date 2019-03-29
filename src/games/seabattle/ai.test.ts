@@ -15,7 +15,7 @@ it('should set ships correctly', async () => {
   expect(client.store.getState().ctx.phase).toEqual('play');
 });
 
-it('should shoot a random salvo', async () => {
+it('should shoot a salvo randomly', async () => {
   const client = genReadyClient();
 
   // AI shoots random salvo
@@ -25,6 +25,24 @@ it('should shoot a random salvo', async () => {
   expect(state.G.salvos.length).toEqual(1);
 });
 
+it('should shoot a salvo at a random neighbor', async () => {
+  const client = genReadyClient();
+
+  // Set up board for test:
+  bothPlayersMakeMove(client, 9, 3);
+  bothPlayersMakeMove(client, 9, 2);
+  bothPlayersMakeMove(client, 8, 3);
+
+  // AI shoots random salvo
+  await client.step();
+
+  const state = client.store.getState();
+  const lastSalvo = state.G.salvos[state.G.salvos.length - 1];
+  expect(lastSalvo.cell.x).toEqual(9);
+  expect(lastSalvo.cell.y).toEqual(4);
+});
+
+// returns a client, setup phase
 function genClient() {
   return Client({
     game: SeabattleGame,
@@ -32,10 +50,24 @@ function genClient() {
   });
 }
 
+// returns a client, play phase, no salvos, player 1's turn
 function genReadyClient() {
   const client = genClient();
+
   client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
   client.updatePlayerID('1');
   client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
+
   return client;
+}
+
+function bothPlayersMakeMove(client: any, x: number, y: number) {
+  const player = client.store.getState().ctx.currentPlayer;
+  client.moves.salvo(x, y);  // initial player fires
+
+  const nextPlayer = (player === '0') ? '1' : '0';
+  client.updatePlayerID(nextPlayer);
+  client.moves.salvo(x, y);  // other player fires
+
+  client.updatePlayerID(player);  // switch back to current player
 }
