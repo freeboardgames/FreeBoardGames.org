@@ -17,19 +17,19 @@ class SeabattleBot {
   async play(state: IPlayState, playerID: string) {
     if (state.ctx.phase === 'setup') {
       const shipPositions = generateRandomShips(1);
-      return this.makeSetShipsMove(shipPositions);
+      return this.makeSetShipsMove(shipPositions, playerID);
     } else {
       const cell = this.generateMove(playerID, state);
-      return this.makeSalvoMove(cell);
+      return this.makeSalvoMove(cell, playerID);
     }
   }
 
-  makeSetShipsMove(ships: IShip[]) {
-    return { action: { type: 'MAKE_MOVE', payload: { type: 'setShips', args: [ships], playerID: '1' } } };
+  makeSetShipsMove(ships: IShip[], playerID: string) {
+    return { action: { type: 'MAKE_MOVE', payload: { type: 'setShips', args: [ships], playerID } } };
   }
 
-  makeSalvoMove(cell: ICell) {
-    return { action: { type: 'MAKE_MOVE', payload: { type: 'salvo', args: [cell.x, cell.y], playerID: '1' } } };
+  makeSalvoMove(cell: ICell, playerID: string) {
+    return { action: { type: 'MAKE_MOVE', payload: { type: 'salvo', args: [cell.x, cell.y], playerID } } };
   }
 
   generateMove(playerID: string, state: IPlayState) {
