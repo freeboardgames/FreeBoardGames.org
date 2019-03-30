@@ -8,7 +8,7 @@ test('Easy AI - should return a move for the initial position', async () => {
     game: TictactoeGame,
     ai: AIConfig.bgioAI('1'),
   });
-  client.moves.clickCell(0);  // player plays
+  await client.moves.clickCell(0);  // player plays
   await client.step();  // AI plays
   const { G, ctx } = client.store.getState();
   const player0Moves = G.cells.filter((cell: string) => cell === '0');
@@ -22,7 +22,7 @@ test('Hard AI - should return a move for the initial position', async () => {
     game: TictactoeGame,
     ai: AIConfig.bgioAI('2'),
   });
-  client.moves.clickCell(0);  // player plays
+  await client.moves.clickCell(0);  // player plays
   await client.step();  // AI plays
   const { G, ctx } = client.store.getState();
   const player0Moves = G.cells.filter((cell: string) => cell === '0');
