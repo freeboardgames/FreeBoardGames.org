@@ -106,16 +106,14 @@ class SeabattleBot {
   }
 
   getRandomNeighbor(state: IPlayState, salvo: ISalvo): ICell {
-    let i = 0;
     let validMove;
     let move: ICell;
-    while (!validMove && i < 100) {
+    while (!validMove) {
       const vertical = this.genRandomNumber(0, 1) === 0;
       const randomChange = (this.genRandomNumber(0, 1) === 0) ? -1 : 1;
       const moveDelta = { x: (vertical) ? randomChange : 0, y: (vertical) ? 0 : randomChange };
       move = { x: salvo.cell.x + moveDelta.x, y: salvo.cell.y + moveDelta.y };
       validMove = this.isValidMove(state, move);
-      i++;
     }
     return move;
   }
