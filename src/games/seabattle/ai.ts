@@ -65,11 +65,19 @@ class SeabattleBot {
       x: Math.max(...xMap),
       y: Math.max(...yMap),
     };
-    const diffMinMaxSalvoPos = { x: minSalvoPos.x - maxSalvoPos.x, y: minSalvoPos.y - maxSalvoPos.y };  // either x or y must be 0, given that the ship must be horizontal or vertical
-    const direction = diffMinMaxSalvoPos.x === 0 ? { x: 0, y: 1 } :  { x: 1, y: 0 };
+    // either x or y must be 0, given that the ship must be horizontal or vertical
+    const diffMinMaxSalvoPos = {
+      x: minSalvoPos.x - maxSalvoPos.x,
+      y: minSalvoPos.y - maxSalvoPos.y,
+    };
+    const direction = diffMinMaxSalvoPos.x === 0 ? { x: 0, y: 1 } : { x: 1, y: 0 };
     const diffLength = diffMinMaxSalvoPos.x + diffMinMaxSalvoPos.y;
-    if (diffLength === hitSalvos.length) { // This means that there is no "hole" in the salvos, therefore we must try the edges
-      const possibleMoves: ICell[] = [{ x: minSalvoPos.x - direction.x, y: minSalvoPos.y - direction.y }, { x: maxSalvoPos.x + direction.x, y: maxSalvoPos.y + direction.y }];
+    if (diffLength === hitSalvos.length) {
+      // This means that there is no "hole" in the salvos, therefore we must try the edges
+      const possibleMoves: ICell[] = [
+        { x: minSalvoPos.x - direction.x, y: minSalvoPos.y - direction.y },
+        { x: maxSalvoPos.x + direction.x, y: maxSalvoPos.y + direction.y },
+      ];
       return this.anyValidMove(state, possibleMoves);
     } else {
       return this.anyValidMove(state, this.allCellsBetween(minSalvoPos, maxSalvoPos, direction, diffLength));
@@ -82,11 +90,11 @@ class SeabattleBot {
     const absDiffLength = Math.abs(diffLength);
     if (direction.x) {
       for (let x = min.x - absDiffLength; x <= max.x + absDiffLength; x++) {
-        cells.push({x: x, y: max.y});
+        cells.push({ x: x, y: max.y });
       }
     } else {
-      for (let y = min.y - absDiffLength ; y <= max.y + absDiffLength; y++) {
-        cells.push({x: max.x, y: y});
+      for (let y = min.y - absDiffLength; y <= max.y + absDiffLength; y++) {
+        cells.push({ x: max.x, y: y });
       }
     }
     return cells;
