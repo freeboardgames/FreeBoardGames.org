@@ -46,11 +46,9 @@ it('should shoot a salvo at a cell between min/max SalvoPos', async () => {
   const client = genReadyClient();
 
   // Set up board for test:
+  bothPlayersMakeMove(client, 6, 2);
   bothPlayersMakeMove(client, 6, 3);
   bothPlayersMakeMove(client, 6, 4);
-  bothPlayersMakeMove(client, 7, 3);
-  bothPlayersMakeMove(client, 5, 3);
-  bothPlayersMakeMove(client, 6, 2);
 
   // AI shoots random salvo
   await client.step();

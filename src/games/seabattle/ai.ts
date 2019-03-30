@@ -70,32 +70,25 @@ class SeabattleBot {
     const diffLength = diffMinMaxSalvoPos.x + diffMinMaxSalvoPos.y;
     if (diffLength === hitSalvos.length) { // This means that there is no "hole" in the salvos, therefore we must try the edges
       const possibleMoves: ICell[] = [{ x: minSalvoPos.x - direction.x, y: minSalvoPos.y - direction.y }, { x: maxSalvoPos.x + direction.x, y: maxSalvoPos.y + direction.y }];
-      console.log('possiblemoves');
-      console.log(possibleMoves);
       return this.anyValidMove(state, possibleMoves);
     } else {
-      return this.anyValidMove(state, this.allCellsBetween(minSalvoPos, maxSalvoPos, direction));
+      return this.anyValidMove(state, this.allCellsBetween(minSalvoPos, maxSalvoPos, direction, diffLength));
       // return anyValidMove([ all cells between minSalvoPos and maxSalvoPos ]);
     }
   }
 
-  allCellsBetween(min: ICell, max: ICell, direction: ICell) {
+  allCellsBetween(min: ICell, max: ICell, direction: ICell, diffLength: number) {
     const cells: ICell[] = [];
-    console.log('direction');
-    console.log(direction);
+    const absDiffLength = Math.abs(diffLength);
     if (direction.x) {
-      for (let x = min.x ; x <= max.x; x++) {
+      for (let x = min.x - absDiffLength; x <= max.x + absDiffLength; x++) {
         cells.push({x: x, y: max.y});
       }
     } else {
-      for (let y = min.y ; y <= max.y; y++) {
+      for (let y = min.y - absDiffLength ; y <= max.y + absDiffLength; y++) {
         cells.push({x: max.x, y: y});
       }
     }
-    console.log('allcellsbetween');
-    console.log(min);
-    console.log(max);
-    console.log(cells);
     return cells;
   }
 
@@ -119,8 +112,6 @@ class SeabattleBot {
         return move;
       }
     }
-    console.log('no valid move');
-    console.log(moves);
     return null;
   }
 
