@@ -42,6 +42,26 @@ it('should shoot a salvo at a random neighbor', async () => {
   expect(lastSalvo.cell.y).toEqual(4);
 });
 
+it('should shoot a salvo at a cell between min/max SalvoPos', async () => {
+  const client = genReadyClient();
+
+  // Set up board for test:
+  bothPlayersMakeMove(client, 6, 3);
+  bothPlayersMakeMove(client, 6, 4);
+  bothPlayersMakeMove(client, 7, 3);
+  bothPlayersMakeMove(client, 5, 3);
+  bothPlayersMakeMove(client, 6, 2);
+
+  // AI shoots random salvo
+  await client.step();
+
+  const state = client.store.getState();
+  const lastSalvo = state.G.salvos[state.G.salvos.length - 1];
+
+  expect(lastSalvo.cell.x).toEqual(6);
+  expect(lastSalvo.cell.y).toEqual(1);
+});
+
 // returns a client, setup phase
 function genClient() {
   return Client({

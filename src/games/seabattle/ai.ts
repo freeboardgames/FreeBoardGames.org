@@ -65,14 +65,38 @@ class SeabattleBot {
       x: Math.max(...xMap),
       y: Math.max(...yMap),
     };
-    const diffMinMaxSalvoPos = { x: minSalvoPos.x - maxSalvoPos.x, y: minSalvoPos.y - maxSalvoPos.y }  // either x or y must be 0, given that the ship must be horizontal or vertical
+    const diffMinMaxSalvoPos = { x: minSalvoPos.x - maxSalvoPos.x, y: minSalvoPos.y - maxSalvoPos.y };  // either x or y must be 0, given that the ship must be horizontal or vertical
     const direction = diffMinMaxSalvoPos.x === 0 ? { x: 0, y: 1 } :  { x: 1, y: 0 };
-    const diffLength = diffMinMaxSalvoPos.x + diffMinMaxSalvoPos.y
-    if (diffLength === salvos.length) { // This means that there is no "hole" in the salvos, therefore we must try the edges
-      return anyValidMove([{ x: minSalvoPos.x - direction.x, y: minSalvoPos.y - direction.y }, { x: maxSalvoPos.x + direction.x, y: maxSalvoPos.y + direction.y }]); 
+    const diffLength = diffMinMaxSalvoPos.x + diffMinMaxSalvoPos.y;
+    if (diffLength === hitSalvos.length) { // This means that there is no "hole" in the salvos, therefore we must try the edges
+      const possibleMoves: ICell[] = [{ x: minSalvoPos.x - direction.x, y: minSalvoPos.y - direction.y }, { x: maxSalvoPos.x + direction.x, y: maxSalvoPos.y + direction.y }];
+      console.log('possiblemoves');
+      console.log(possibleMoves);
+      return this.anyValidMove(state, possibleMoves);
     } else {
-      return anyValidMove([ all cells between minSalvoPos and maxSalvoPos ]);
+      return this.anyValidMove(state, this.allCellsBetween(minSalvoPos, maxSalvoPos, direction));
+      // return anyValidMove([ all cells between minSalvoPos and maxSalvoPos ]);
     }
+  }
+
+  allCellsBetween(min: ICell, max: ICell, direction: ICell) {
+    const cells: ICell[] = [];
+    console.log('direction');
+    console.log(direction);
+    if (direction.x) {
+      for (let x = min.x ; x <= max.x; x++) {
+        cells.push({x: x, y: max.y});
+      }
+    } else {
+      for (let y = min.y ; y <= max.y; y++) {
+        cells.push({x: max.x, y: y});
+      }
+    }
+    console.log('allcellsbetween');
+    console.log(min);
+    console.log(max);
+    console.log(cells);
+    return cells;
   }
 
   isInBounds(x: number) {
@@ -87,6 +111,17 @@ class SeabattleBot {
 
   areVerticalMovesPossible(state: IPlayState, move: ICell) {
     const possible = (this.isValidMove(state, move));
+  }
+
+  anyValidMove(state: IPlayState, moves: ICell[]) {
+    for (const move of moves) {
+      if (this.isValidMove(state, move)) {
+        return move;
+      }
+    }
+    console.log('no valid move');
+    console.log(moves);
+    return null;
   }
 
   getRandomNeighbor(state: IPlayState, salvo: ISalvo): ICell {
