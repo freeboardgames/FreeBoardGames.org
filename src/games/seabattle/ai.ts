@@ -54,41 +54,25 @@ class SeabattleBot {
   }
 
   getNextShipFoundMove(state: IPlayState, hitSalvos: ISalvo[]): ICell {
-    const len = hitSalvos.length;
-    const lastHitSalvo = hitSalvos[len - 1];
-    const lastHitCell = lastHitSalvo.cell;
-    const secondLastHitCell = hitSalvos[len - 2].cell;  // second to last hit
-    const firstHitCell = hitSalvos[0].cell;
+    const xMap = hitSalvos.map((salvo) => salvo.cell.x);
+    const yMap = hitSalvos.map((salvo) => salvo.cell.y);
 
-    let move: ICell = { x: lastHitCell.x, y: lastHitCell.y };  // set to last hit cell
-    let moveDelta;
-    if (lastHitCell.x === secondLastHitCell.x) {
-      // ship is vertical x, so move horizontal y
-      moveDelta = lastHitCell.y - secondLastHitCell.y;
-      if (moveDelta !== -1 && moveDelta !== 1) {
-        return this.getRandomNeighbor(state, lastHitSalvo);
-      }
-      if (this.isInBounds(move.y + moveDelta)) {
-        move = { x: move.x, y: move.y + moveDelta };  // reset to first hit cell
-      } else {
-        move = { x: firstHitCell.x, y: firstHitCell.y - moveDelta };  // reset to first hit cell
-      }
-    } else if (lastHitCell.y === secondLastHitCell.y) {
-      // ship is horizontal y, so move vertical x
-      moveDelta = lastHitCell.x - secondLastHitCell.x;
-      if (moveDelta !== -1 && moveDelta !== 1) {
-        return this.getRandomNeighbor(state, lastHitSalvo);
-      }
-      if (this.isInBounds(move.x + moveDelta)) {
-        move = { x: move.x + moveDelta, y: move.y };  // reset to first hit cell
-      } else {
-        move = { x: firstHitCell.x - moveDelta, y: firstHitCell.y };  // reset to first hit cell
-      }
+    const minSalvoPos = {
+      x: Math.min(...xMap),
+      y: Math.min(...yMap),
+    };
+    const maxSalvoPos = {
+      x: Math.max(...xMap),
+      y: Math.max(...yMap),
+    };
+    const diffMinMaxSalvoPos = { x: minSalvoPos.x - maxSalvoPos.x, y: minSalvoPos.y - maxSalvoPos.y }  // either x or y must be 0, given that the ship must be horizontal or vertical
+    const direction = diffMinMaxSalvoPos.x === 0 ? { x: 0, y: 1 } :  { x: 1, y: 0 };
+    const diffLength = diffMinMaxSalvoPos.x + diffMinMaxSalvoPos.y
+    if (diffLength === salvos.length) { // This means that there is no "hole" in the salvos, therefore we must try the edges
+      return anyValidMove([{ x: minSalvoPos.x - direction.x, y: minSalvoPos.y - direction.y }, { x: maxSalvoPos.x + direction.x, y: maxSalvoPos.y + direction.y }]); 
     } else {
-      // we hit a different ship than the one before, so hit a random neighbor:
-      return this.getRandomNeighbor(state, lastHitSalvo);
+      return anyValidMove([ all cells between minSalvoPos and maxSalvoPos ]);
     }
-    return move;
   }
 
   isInBounds(x: number) {
