@@ -19,7 +19,7 @@ class SeabattleBot {
       const shipPositions = generateRandomShips(1);
       return this.makeSetShipsMove(shipPositions);
     } else {
-      const cell = this.generateMove(state);
+      const cell = this.generateMove(playerID, state);
       return this.makeSalvoMove(cell);
     }
   }
@@ -32,9 +32,9 @@ class SeabattleBot {
     return { action: { type: 'MAKE_MOVE', payload: { type: 'salvo', args: [cell.x, cell.y], playerID: '1' } } };
   }
 
-  generateMove(state: IPlayState) {
+  generateMove(playerID: string, state: IPlayState) {
     const salvos = state.G.salvos.filter((salvo: ISalvo) => (
-      salvo.player === 1 &&
+      salvo.player === Number(playerID) &&
       salvo.hit === true &&
       typeof salvo.hitShip !== 'undefined'));
     for (const salvo of salvos) {
@@ -43,7 +43,7 @@ class SeabattleBot {
         const otherHitSalvos = this.getOtherSalvosHitShip(state, salvo.hitShip);
         if (otherHitSalvos.length >= 2) {
           // we have hit this ship at least twice, so we can make an intelligent move
-          return this.getMoveFromOtherSalvos(state, otherHitSalvos);
+          return this.getNextShipFoundMove(state, otherHitSalvos);
         }
         // no other salvos for the same ship were hit, so hit a random neighbor
         return this.getRandomNeighbor(state, salvo);
@@ -53,7 +53,7 @@ class SeabattleBot {
     return this.generateRandomMove(state);
   }
 
-  getMoveFromOtherSalvos(state: IPlayState, hitSalvos: ISalvo[]): ICell {
+  getNextShipFoundMove(state: IPlayState, hitSalvos: ISalvo[]): ICell {
     const len = hitSalvos.length;
     const lastHitSalvo = hitSalvos[len - 1];
     const lastHitCell = lastHitSalvo.cell;
@@ -107,31 +107,13 @@ class SeabattleBot {
 
   getRandomNeighbor(state: IPlayState, salvo: ISalvo): ICell {
     let i = 0;
-    let vertical;
     let validMove;
-    let randomChange;
     let move: ICell;
-    while (!validMove && i < 10) {
-      vertical = this.genRandomNumber(0, 1) === 0;
-      move = { x: salvo.cell.x, y: salvo.cell.y };
-      randomChange = (this.genRandomNumber(0, 1) === 0) ? -1 : 1;
-      if (vertical) {
-        if (move.x === 0) {
-          move.x++;
-        } else if (move.x === 9) {
-          move.x--;
-        } else {
-          move.x += randomChange;
-        }
-      } else {
-        if (move.y === 0) {
-          move.y++;
-        } else if (move.y === 9) {
-          move.y--;
-        } else {
-          move.y += randomChange;
-        }
-      }
+    while (!validMove && i < 100) {
+      const vertical = this.genRandomNumber(0, 1) === 0;
+      const randomChange = (this.genRandomNumber(0, 1) === 0) ? -1 : 1;
+      const moveDelta = { x: (vertical) ? randomChange : 0, y: (vertical) ? 0 : randomChange };
+      move = { x: salvo.cell.x + moveDelta.x, y: salvo.cell.y + moveDelta.y };
       validMove = this.isValidMove(state, move);
       i++;
     }
