@@ -81,7 +81,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     } else if (this.isAIGame()) {
       switch (this.props.ctx.gameover.winner) {
         case '0': return 'you won';
-        case '1': return 'computer won';
+        case '1': return 'you lost';
         case undefined: return 'draw';
       }
     } else {

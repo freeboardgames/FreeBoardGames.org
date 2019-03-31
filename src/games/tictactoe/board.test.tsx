@@ -182,7 +182,7 @@ test('render board - O wins - AI', () => {
       />
     </MemoryRouter>
   ));
-  expect(comp.html()).to.contain('computer won');
+  expect(comp.html()).to.contain('you lost');
 });
 
 test('render board - O wins - draw', () => {
