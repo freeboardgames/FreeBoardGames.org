@@ -35,6 +35,18 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     } else {
       playAgainText = 'Do you want to play again? Check out our games below.';
     }
+    if (typeof this.props.gameArgs !== 'undefined') {
+      ReactGA.event({
+        category: 'GameOver',
+        label: this.props.gameArgs.gameCode,
+        action: this.props.result,
+      });
+    } else {
+      ReactGA.event({
+        category: 'GameOver',
+        action: this.props.result,
+      });
+    }
     return (
       <FreeBoardGameBar>
         <Typography variant="title" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
