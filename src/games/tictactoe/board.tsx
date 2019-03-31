@@ -67,7 +67,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getGameOver() {
-    if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
+    if (this.isOnlineGame()) {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
         if (this.props.ctx.gameover.winner === this.props.playerID) {
@@ -78,11 +78,17 @@ export class Board extends React.Component<IBoardProps, {}> {
       } else {
         return 'draw';
       }
+    } else if (this.isAIGame()) {
+      switch (this.props.ctx.gameover.winner) {
+        case '0': return 'you won';
+        case '1': return 'computer won';
+        case undefined: return 'draw';
+      }
     } else {
       // Local game
       switch (this.props.ctx.gameover.winner) {
-        case '0': return 'Red won';
-        case '1': return 'Green won';
+        case '0': return 'red won';
+        case '1': return 'green won';
         case undefined: return 'draw';
       }
     }
