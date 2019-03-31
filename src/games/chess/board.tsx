@@ -126,6 +126,15 @@ export class Board extends React.Component<IBoardProps, {}> {
     for (const move of this._getMoves()) {
       result[move.to] = MOVABLE_COLOR;
     }
+    const pgnArray = this.props.G.pgn.split(' ');
+    if (pgnArray.length > 0) {
+      const lastMove = pgnArray[pgnArray.length - 1];
+      if (lastMove !== '') {
+        if (this.props.ctx.currentPlayer === this.props.playerID) {
+          result[lastMove] = MOVABLE_COLOR;
+        }
+      }
+    }
     return result;
   }
 
