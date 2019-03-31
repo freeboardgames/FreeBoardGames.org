@@ -39,12 +39,12 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       ReactGA.event({
         category: 'GameOver',
         label: this.props.gameArgs.gameCode,
-        action: this.props.result,
+        action: this.props.result,  // 'red won'
       });
     } else {
       ReactGA.event({
         category: 'GameOver',
-        action: this.props.result,
+        action: this.props.result,  // 'red won'
       });
     }
     return (
