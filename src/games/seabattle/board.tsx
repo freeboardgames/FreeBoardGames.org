@@ -36,8 +36,17 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (ctx.gameover) {
       const result = (ctx.gameover.winner === this.props.playerID) ?
         'you won' : 'you lost';
+      const otherPlayer = ctx.currentPlayer === '0' ? '1' : '0';
+      const otherRadar = (
+        <Battle
+          ctx={ctx}
+          G={this.props.G}
+          moves={this.props.moves}
+          playerID={this.props.playerID}
+          currentPlayer={otherPlayer}
+        />);
       return (
-        <GameLayout gameOver={result} />
+        <GameLayout gameOver={result} otherPlayerBoard={otherRadar} />
       );
     }
     let child;
@@ -59,6 +68,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     } else {
       child = (
         <Battle
+          ctx={ctx}
           G={this.props.G}
           moves={this.props.moves}
           playerID={this.props.playerID}
