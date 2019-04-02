@@ -1,91 +1,220 @@
-import * as React from 'react';
-import { Card, CardTitle, CardText } from 'material-ui/Card';
-import Subheader from 'material-ui/Subheader';
-import AndroidIcon from 'material-ui/svg-icons/action/android';
-import GroupIcon from 'material-ui/svg-icons/social/group';
-import { List, ListItem } from 'material-ui/List';
-import * as shortid from 'shortid';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import AndroidIcon from '@material-ui/icons/Android';
+import GroupIcon from '@material-ui/icons/Group';
+import WifiIcon from '@material-ui/icons/Wifi';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Slider from '@material-ui/lab/Slider';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import shortid from 'shortid';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 interface IGameModePickerProps {
   gameCode: string;
-  modes: GameMode[];
-  history: { push: (url: string) => void };
+  modes: IGameModeInfo[];
+}
+
+interface IGameModePickerState {
+  extraInfo: { [mode: string]: number }
+}
+
+export interface IGameModeInfo {
+  mode: GameMode;
+  cardDescription: string;
+  extraInfo?: IGameModeExtraInfo;
+}
+
+interface IGameModeExtraInfo {
+  type: string;
+}
+
+export interface IGameModeExtraInfoSlider extends IGameModeExtraInfo {
+  type: 'slider';
+  min: number;
+  max: number;
+}
+
+export interface IGameModeExtraInfoDropdown extends IGameModeExtraInfo {
+  type: 'dropdown';
+  options: string[];
 }
 
 export enum GameMode {
-  EasyAI = 'easyAI',
-  MediumAI = 'mediumAI',
-  HardAI = 'hardAI',
+  AI = 'AI',
   OnlineFriend = 'online',
   LocalFriend = 'local',
 }
 
-export class GameModePicker extends React.Component<IGameModePickerProps, {}> {
+export class GameModePicker extends React.Component<IGameModePickerProps, IGameModePickerState> {
+  state = { extraInfo: {} };
+  _getLink = (to: string) => (props: any) => {
+    return React.createElement(Link, { ...props, to }, props.children);
+  }
+
+  _handleSliderChange = (mode: GameMode) => (event: any, value: number) => {
+    const newState: IGameModePickerState = {
+      ...this.state,
+      extraInfo: {
+        ...this.state.extraInfo,
+      },
+    };
+    newState.extraInfo[mode] = value;
+    this.setState(newState);
+  }
+
+  _handleClickSelection = (mode: GameMode, value: any) => (event: any) => {
+    const newState: IGameModePickerState = {
+      ...this.state,
+      extraInfo: {
+        ...this.state.extraInfo,
+      },
+    };
+    newState.extraInfo[mode] = value;
+    this.setState(newState);
+  }
+
   render() {
     const modes = [];
     for (const mode of this.props.modes) {
-      modes.push(this._getListItem(mode));
+      modes.push(this._getCard(mode));
     }
     return (
       <div>
-        <Subheader>Choose game mode</Subheader>
-        <List style={{ textAlign: 'left' }}>
-          {modes}
-        </List>
+        <Typography variant="subheading" style={{ marginBottom: '16px' }}>
+          Choose game mode
+        </Typography>
+        {modes}
       </div>
     );
   }
 
-  _getListItem(mode: GameMode) {
-    let text = '';
-    let icon = <AndroidIcon />;
-    switch (mode) {
-      case GameMode.EasyAI:
-        text = 'Easy AI';
-        icon = <AndroidIcon />;
-        break;
-      case GameMode.MediumAI:
-        text = 'Medium AI';
-        icon = <AndroidIcon />;
-        break;
-      case GameMode.HardAI:
-        text = 'Hard AI';
+  _getCard(info: IGameModeInfo) {
+    let title;
+    let icon;
+    switch (info.mode) {
+      case GameMode.AI:
+        title = 'Computer (AI)';
         icon = <AndroidIcon />;
         break;
       case GameMode.LocalFriend:
-        text = 'Local Friend';
+        title = 'Local Friend';
         icon = <GroupIcon />;
         break;
       case GameMode.OnlineFriend:
-        text = 'Online Friend';
-        icon = <GroupIcon />;
+        title = 'Online Friend';
+        icon = <WifiIcon />;
         break;
     }
+    const extraInfo = this._getExtraInfo(info);
     return (
-      <ListItem
-        key={text}
-        primaryText={text}
-        leftIcon={icon}
-        onClick={this._onClick(mode)}
-      />);
+      <Card key={title} style={{ marginBottom: '16px' }}>
+        <CardHeader
+          avatar={
+            <Avatar aria-label={title}>
+              {icon}
+            </Avatar>}
+          title={title}
+        />
+        <CardContent>
+          <Typography component="p">
+            {info.cardDescription}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          {extraInfo}
+          <Button
+            component={this._getLink(this._getUrl(info))}
+            variant="contained"
+            color="primary"
+            style={{ marginLeft: 'auto' }}
+          >
+            Play
+          </Button>
+        </CardActions>
+      </Card>
+    );
   }
 
-  _onClick(mode: GameMode) {
-    return () => {
-      this.props.history.push(this._getUrl(mode));
-    };
+  _getExtraInfo(info: IGameModeInfo) {
+    if (info.extraInfo) {
+      const extraInfo = info.extraInfo;
+      if (extraInfo.type === 'slider') {
+        const slider = (extraInfo as IGameModeExtraInfoSlider);
+        return this._getExtraInfoSlider(info, slider);
+      } else if (extraInfo.type === 'dropdown') {
+        const dropdown = (extraInfo as IGameModeExtraInfoDropdown);
+        return this._getExtraInfoDropdown(info, dropdown);
+      }
+    }
+    return null;
   }
 
-  _getUrl(mode: GameMode) {
+  _getExtraInfoValue(info: IGameModeInfo): number {
+    return (this.state.extraInfo as any)[info.mode] || 1;
+  }
+
+  _getExtraInfoSlider(info: IGameModeInfo, slider: IGameModeExtraInfoSlider) {
+    const value = this._getExtraInfoValue(info);
+    return (
+      <div style={{ marginBottom: '18px', width: '80%' }}>
+        <Typography id="label" style={{ marginBottom: '8px' }}>
+          Difficulty {value}/{slider.max}
+        </Typography>
+        <Slider
+          value={value}
+          min={slider.min}
+          max={slider.max}
+          step={1}
+          onChange={this._handleSliderChange(info.mode)}
+        />
+      </div>
+    );
+  }
+
+  _getExtraInfoDropdown(info: IGameModeInfo, dropdown: IGameModeExtraInfoDropdown) {
+    const list: JSX.Element[] = dropdown.options.map((option, idx) => {
+      idx++;
+      return (
+        <MenuItem
+          onClick={this._handleClickSelection(info.mode, idx)}
+          key={option}
+          value={option}
+          selected={this._getExtraInfoValue(info) === idx}
+        >
+          {option}
+        </MenuItem>);
+    });
+    return (
+      <div>
+        <MenuList
+          style={{
+            paddingTop: 0,
+            display: 'flex',
+          }}
+        >
+          {list}
+        </MenuList>
+      </div>
+    );
+  }
+
+  _getUrl(info: IGameModeInfo) {
     const uid = shortid.generate();
+    const mode = info.mode;
     switch (mode) {
-      case GameMode.EasyAI:
-        return `/g/${this.props.gameCode}/easyAI`;
-      case GameMode.MediumAI:
-        return `/g/${this.props.gameCode}/mediumAI`;
-      case GameMode.HardAI:
-        return `/g/${this.props.gameCode}/hardAI`;
+      case GameMode.AI:
+        if (info.extraInfo) {
+          return `/g/${this.props.gameCode}/AI/${this._getExtraInfoValue(info)}`;
+        } else {
+          return `/g/${this.props.gameCode}/AI`;
+        }
       case GameMode.LocalFriend:
         return `/g/${this.props.gameCode}/local`;
       case GameMode.OnlineFriend:

@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { GameSharing } from './GameSharing';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
-import RaisedButton from 'material-ui/RaisedButton';
-import IconButton from 'material-ui/IconButton';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 
 const doNothing = () => { return; };
 
@@ -15,14 +14,12 @@ describe('Game sharing', () => {
   it('should contain a link', () => {
     const mockFn = jest.fn();
     const wrapper = mount((
-      <MuiThemeProvider>
-        <GameSharing
-          gameCode={'foogame'}
-          matchCode={'barmatch'}
-          playerID={'0'}
-          onDismiss={mockFn}
-        />
-      </MuiThemeProvider>
+      <GameSharing
+        gameCode={'foogame'}
+        matchCode={'barmatch'}
+        playerID={'0'}
+        onDismiss={mockFn}
+      />
     ));
     expect(wrapper.html()).to.contain('/g/foogame/online/barmatch/1');
   });
@@ -37,7 +34,7 @@ describe('Game sharing', () => {
         onDismiss={mockFn}
       />
     ));
-    wrapper.find(RaisedButton).simulate('click');
+    wrapper.find(Button).simulate('click');
     expect(mockFn.mock.calls.length).to.equal(1);
   });
 

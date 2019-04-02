@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 const squares = (props: any) => Array.from({ length: 100 }).map((unused, i) => {
   const x = i % 10;
   const y = Math.floor(i / 10);

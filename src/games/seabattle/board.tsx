@@ -1,12 +1,13 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import { ShipsPlacement } from './ShipsPlacement';
-import { Token } from 'flamecoals-boardgame.io/ui';
-import GameBar from '../../App/Game/GameBar';
-import * as ReactGA from 'react-ga';
+import { Token } from '@freeboardgame.org/boardgame.io/ui';
+import { GameLayout } from '../../App/Game/GameLayout';
+import ReactGA from 'react-ga';
 import { IShip } from './game';
 import { Battle } from './Battle';
+import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 
 interface IBoardProps {
   G: any;
@@ -15,6 +16,7 @@ interface IBoardProps {
   playerID: string;
   isActive: boolean;
   isConnected: boolean;
+  gameArgs?: IGameArgs;
 }
 
 interface IBoardState {
@@ -29,52 +31,45 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     playerID: PropTypes.string,
     isActive: PropTypes.bool,
     isConnected: PropTypes.bool,
+    gameArgs: PropTypes.any,
   };
 
   render() {
     const ctx = this.props.ctx;
     if (ctx.gameover) {
+      const result = (ctx.gameover.winner === this.props.playerID) ?
+        'you won' : 'you lost';
       return (
-        <GameBar>
-          <h1>
-            {(ctx.gameover.winner === this.props.playerID) ?
-              'YOU WON' : 'YOU LOST'
-            }
-          </h1>
-        </GameBar>
+        <GameLayout gameOver={result} gameArgs={this.props.gameArgs} />
       );
     }
+    let child;
     if (ctx.phase === 'setup' &&
       (this.props.playerID === null ||
         ctx.actionPlayers.includes(this.props.playerID))) {
-      return (
-        <GameBar>
-          <ShipsPlacement
-            playerID={this.props.playerID}
-            setShips={this._setShips}
-          />
-        </GameBar>
+      child = (
+        <ShipsPlacement
+          playerID={this.props.playerID}
+          setShips={this._setShips}
+        />
       );
     } else if (ctx.phase === 'setup') {
-      return (
-        <GameBar>
-          <h1>
-            Waiting for opponent...
-          </h1>
-        </GameBar>
+      child = (
+        <h1>
+          Waiting for opponent...
+        </h1>
       );
     } else {
-      return (
-        <GameBar>
-          <Battle
-            G={this.props.G}
-            moves={this.props.moves}
-            playerID={this.props.playerID}
-            currentPlayer={ctx.currentPlayer}
-          />
-        </GameBar>
+      child = (
+        <Battle
+          G={this.props.G}
+          moves={this.props.moves}
+          playerID={this.props.playerID}
+          currentPlayer={ctx.currentPlayer}
+        />
       );
     }
+    return <GameLayout>{child}</GameLayout>;
   }
 
   _setShips = (ships: IShip[]) => {

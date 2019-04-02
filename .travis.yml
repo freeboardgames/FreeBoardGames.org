@@ -1,7 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-  - "8"
+  - "stable"
 
 cache:
   directories:
@@ -12,8 +12,7 @@ install:
 
 script:
   - yarn run lint
-  - yarn run build
-  - yarn run test
+  - yarn run prod:buildquietly
   - yarn run test:coverage
 
 after_success:

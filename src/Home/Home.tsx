@@ -1,25 +1,22 @@
-import * as React from 'react';
-import TurnatoBar from '../App/TurnatoBar';
+import React from 'react';
+import FreeBoardGameBar from '../App/FreeBoardGameBar';
 import Header from './Header';
-import GamesSection from './GamesSection';
+import { GamesList } from '../App/GamesList';
+import { Link } from 'react-router-dom';
 
 class Home extends React.Component<{}, {}> {
   render() {
     return (
-      <TurnatoBar>
+      <FreeBoardGameBar>
         <Header />
-        <GamesSection />
+        <GamesList />
         <p style={{ fontSize: '12px', textAlign: 'center' }}>
           Made with ♥&nbsp;-&nbsp;
-          <a
-            href="https://github.com/Felizardo/turnato"
-            target="_blank"
-            rel="noopener"
-          >
-            GitHub
-          </a>
+          <Link to="/about">
+            About
+          </Link>
         </p>
-      </TurnatoBar>
+      </FreeBoardGameBar>
     );
   }
 }

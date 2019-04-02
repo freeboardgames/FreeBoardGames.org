@@ -1,14 +1,14 @@
 /*
- * Copyright 2018 The flamecoals-boardgame.io Authors.
+ * Copyright 2018 The @freeboardgame.org/boardgame.io Authors.
  *
  * Use of this source code is governed by a MIT-style
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  */
 
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { Grid } from 'flamecoals-boardgame.io/ui';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 
 /**
  * Checkerboard

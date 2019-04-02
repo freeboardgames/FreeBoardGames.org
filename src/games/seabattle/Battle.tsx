@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Notification from 'react-web-notification';
-import * as PropTypes from 'prop-types';
 
 import { Radar } from './Radar';
 import { ISeabattleState, IShip, ISalvo, ICell } from './game';
@@ -73,6 +73,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       <div>
         <h2 style={{ textAlign: 'center' }}>{message}</h2>
         <Radar
+          player={player}
           ships={ships}
           salvos={salvos}
           editable={false}

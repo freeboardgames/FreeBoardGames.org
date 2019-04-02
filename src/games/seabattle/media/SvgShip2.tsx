@@ -1,5 +1,5 @@
 /* tslint:disable */
-import * as React from 'react';
+import React from 'react';
 
 const SvgShip2 = (props: any) => (
   <g>

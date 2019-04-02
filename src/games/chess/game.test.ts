@@ -1,7 +1,7 @@
 import { getWinner } from './game';
 import { ChessGame } from './game';
 import { expect } from 'chai';
-import { Client } from 'flamecoals-boardgame.io/client';
+import { Client } from '@freeboardgame.org/boardgame.io/client';
 
 test('fool\'s move', () => {
   const client = Client({

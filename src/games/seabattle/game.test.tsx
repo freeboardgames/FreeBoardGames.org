@@ -1,5 +1,5 @@
-import { Client } from 'flamecoals-boardgame.io/client';
-import { SeabattleGame, IShip, generateRandomShips, playerView } from './game';
+import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { SeabattleGame, IShip, generateRandomShips, validateShips, playerView } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 
 describe('Seabattle', () => {
@@ -32,6 +32,16 @@ describe('Seabattle', () => {
 
     expect(() => {
       client.moves.setShips([{ player: 0, cells: [{ x: 0, y: 9 }, { x: 1, y: 9 }] }]);
+    }).toThrow();
+  });
+
+  it('should only allow unique IDs', () => {
+    const client = Client({
+      game: SeabattleGame,
+    });
+    expect(() => {
+      client.moves.setShips([{ player: 0, id: 1, cells: [{ x: 0, y: 9 }, { x: 1, y: 9 }] },
+      { player: 0, id: 1, cells: [{ x: 2, y: 9 }, { x: 3, y: 9 }] }]);
     }).toThrow();
   });
 
@@ -125,7 +135,7 @@ describe('Seabattle', () => {
     expect(store.getState().ctx.gameover.winner).toEqual('1');
   });
 
-  it('should show victory correctly - player 11 loss', () => {
+  it('should show victory correctly - player 1 loss', () => {
     const client = Client({
       game: SeabattleGame,
     });
@@ -151,7 +161,7 @@ describe('Seabattle', () => {
 
     client.moves.salvo(0, 0);
 
-    expect(store.getState().G.salvos).toEqual([{ player: 1, cell: { x: 0, y: 0 }, hit: true, hitShip: 0 }]);
+    expect(store.getState().G.salvos).toEqual([{ player: 1, cell: { x: 0, y: 0 }, hit: true, hitShip: '1' }]);
   });
 
   it('should miss ship correctly', () => {
@@ -187,7 +197,7 @@ describe('Seabattle', () => {
     expect(G.salvos.length).toEqual(2);
   });
 
-  it('should sunk ship correctly', () => {
+  it('should sink ship correctly', () => {
     const client = Client({
       game: SeabattleGame,
     });
@@ -204,10 +214,9 @@ describe('Seabattle', () => {
     const { G, ctx } = client.store.getState();
     const newG = playerView(G, ctx, '1');
     expect(newG.salvos).toEqual([
-      { player: 1, cell: { x: 0, y: 9 }, hit: true, hitShip: 4 },
-      { player: 0, cell: { x: 0, y: 0 }, hit: true, hitShip: 5 },
-      { player: 1, cell: { x: 1, y: 9 }, hit: true, hitShip: 4 }]);
-    // TODO: Because the index change by playerView, change hitShip to ID.
+      { player: 1, cell: { x: 0, y: 9 }, hit: true, hitShip: '5' },
+      { player: 0, cell: { x: 0, y: 0 }, hit: true, hitShip: 'second 1' },
+      { player: 1, cell: { x: 1, y: 9 }, hit: true, hitShip: '5' }]);
     expect(newG.ships[2].sunk).toEqual(true);
   });
 });

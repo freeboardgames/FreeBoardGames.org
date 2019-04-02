@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Turnato
+title: FreeBoardGame.org
 subtitle: Free, open-source board games on your phone.
-description: Turnato.com blog
+description: FreeBoardGame.org blog
 keywords: chess board game online play tutorial guide create develop
 author: Flamecoals
 language: English
@@ -13,14 +13,14 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://turnato.com/blog
+url: https://FreeBoardGame.org/blog
 root: /blog/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 # Directory
 source_dir: source
-public_dir: public
+public_dir: ../static/blog
 tag_dir: tags
 archive_dir: archives
 category_dir: categories

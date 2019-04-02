@@ -1,18 +1,18 @@
 /*
- * Copyright 2018 The flamecoals-boardgame.io Authors.
+ * Copyright 2018 The @freeboardgame.org/boardgame.io Authors.
  *
  * Use of this source code is governed by a MIT-style
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  */
 
-import * as React from 'react';
+import React from 'react';
 
 import Chess from './chessjswrapper';
 import { Checkerboard, IAlgebraicCoords, IColorMap } from './checkerboard';
-import { Token } from 'flamecoals-boardgame.io/ui';
+import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
-import GameBar from '../../App/Game/GameBar';
+import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
 import Bishop from './pieces/bishop';
 import King from './pieces/king';
@@ -21,7 +21,7 @@ import Pawn from './pieces/pawn';
 import Queen from './pieces/queen';
 import Rook from './pieces/rook';
 import AlertLayer from '../../App/Game/AlertLayer';
-import * as ReactGA from 'react-ga';
+import ReactGA from 'react-ga';
 
 const COL_NAMES = 'abcdefgh';
 const SELECTED_COLOR = 'green';
@@ -31,6 +31,7 @@ interface IBoardProps {
   G: any;
   ctx: any;
   moves: any;
+  step: any;
   playerID: string;
   isActive: boolean;
   isConnected: boolean;
@@ -44,19 +45,20 @@ export class Board extends React.Component<IBoardProps, {}> {
   };
   _click = this.click.bind(this);
 
-  componentWillReceiveProps(nextProps: IBoardProps) {
-    if (nextProps.G.pgn) {
-      this.chess.load_pgn(nextProps.G.pgn);
-      this.setState({
-        ...this.state,
-        selected: '',
-      });
-    }
-  }
-
   render() {
+    if (this.props.G.pgn) {
+      this.chess.load_pgn(this.props.G.pgn);
+    }
+    if (this.props.ctx.gameover) {
+      return (
+        <GameLayout
+          gameOver={this._getGameOver()}
+          gameArgs={this.props.gameArgs}
+        />
+      );
+    }
     return (
-      <GameBar>
+      <GameLayout>
         <div>
           <h2 style={{ textAlign: 'center' }}>
             {this._getStatus()}
@@ -69,7 +71,7 @@ export class Board extends React.Component<IBoardProps, {}> {
             {this._getPieces()}
           </Checkerboard>
         </div>
-      </GameBar>
+      </GameLayout>
     );
   }
 
@@ -105,12 +107,14 @@ export class Board extends React.Component<IBoardProps, {}> {
       });
       if (move) {
         this.props.moves.move(move.san);
-      } else {
-        this.setState({
-          ...this.state,
-          selected: '',
-        });
+        if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
+          this.props.step();
+        }
       }
+      this.setState({
+        ...this.state,
+        selected: '',
+      });
     }
   }
 
@@ -165,19 +169,29 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
   }
 
+  _getGameOver() {
+    const gameArgs = this.props.gameArgs;
+    const mode = typeof gameArgs !== 'undefined' ? gameArgs.mode : GameMode.LocalFriend;
+    if (mode === GameMode.OnlineFriend || mode === GameMode.AI) {
+      if (this.props.ctx.gameover === this.getPlayer()) {
+        return 'you won';
+      } else if (this.props.ctx.gameover === 'd') {
+        return 'draw';
+      } else {
+        return 'you lost';
+      }
+    } else { // Local game
+      switch (this.props.ctx.gameover) {
+        case 'w': return 'white won';
+        case 'b': return 'black won';
+        case 'd': return 'draw';
+      }
+    }
+  }
+
   _getStatus() {
     // Online Multiplayer
     if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
-      if (this.props.ctx.gameover) {
-        if (this.props.ctx.gameover === this.getPlayer()) {
-          return 'YOU WON!!!';
-        } else {
-          if (this.props.ctx.gameover === 'd') {
-            return 'Draw!';
-          }
-          return 'YOU LOST';
-        }
-      }
       if (this.chess.in_check()) {
         return 'CHECK';
       }
@@ -186,15 +200,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       } else {
         return 'Waiting for opponent...';
       }
-      // Local game
-    } else {
-      if (this.props.ctx.gameover) {
-        switch (this.props.ctx.gameover) {
-          case 'w': return 'WHITE WON!!!';
-          case 'b': return 'BLACK WON!!!';
-          case 'd': return 'Draw!';
-        }
-      }
+    } else { // Local game
       if (this.chess.in_check()) {
         return 'CHECK';
       }
@@ -206,7 +212,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getInitialCell(square: string) {
-    const history = this.chess.history({ verbose: true });
+    const history = this._fixHistory(this.chess.history({ verbose: true }));
     let lastSeen = square;
     for (let i = history.length - 1; i >= 0; i--) {
       const move = history[i];
@@ -215,6 +221,32 @@ export class Board extends React.Component<IBoardProps, {}> {
       }
     }
     return lastSeen;
+  }
+
+  // Castling only contains one move, leading to wrong initial cell.
+  _fixHistory(history: any) {
+    const result = [];
+    for (const move of history) {
+      let newMove = null;
+      if (move.san === 'O-O-O') {
+        if (move.color === 'w') {
+          newMove = { from: 'a1', to: 'd1' };
+        } else {
+          newMove = { from: 'a8', to: 'd8' };
+        }
+      } else if (move.san === 'O-O') {
+        if (move.color === 'w') {
+          newMove = { from: 'h1', to: 'f1' };
+        } else {
+          newMove = { from: 'h8', to: 'f8' };
+        }
+      }
+      result.push(move);
+      if (newMove) {
+        result.push(newMove);
+      }
+    }
+    return result;
   }
 
   _isSelectable(square: string) {
