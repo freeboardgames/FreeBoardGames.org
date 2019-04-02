@@ -24,6 +24,10 @@ test('clicking a cell on the board', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -46,6 +50,10 @@ test('click a cell that has already been played', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -68,6 +76,10 @@ test('render board - one X and one O - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -91,6 +103,10 @@ test('render board - O\'s turn - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -111,6 +127,10 @@ test('render board - X wins - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -131,6 +151,10 @@ test('render board - O wins - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -223,6 +247,10 @@ test('render board - draw - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));

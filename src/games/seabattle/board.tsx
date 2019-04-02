@@ -7,6 +7,7 @@ import { GameLayout } from '../../App/Game/GameLayout';
 import ReactGA from 'react-ga';
 import { IShip } from './game';
 import { Battle } from './Battle';
+import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 
 interface IBoardProps {
   G: any;
@@ -15,6 +16,7 @@ interface IBoardProps {
   playerID: string;
   isActive: boolean;
   isConnected: boolean;
+  gameArgs?: IGameArgs;
 }
 
 interface IBoardState {
@@ -29,6 +31,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     playerID: PropTypes.string,
     isActive: PropTypes.bool,
     isConnected: PropTypes.bool,
+    gameArgs: PropTypes.any,
   };
 
   render() {
@@ -37,7 +40,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       const result = (ctx.gameover.winner === this.props.playerID) ?
         'you won' : 'you lost';
       return (
-        <GameLayout gameOver={result} />
+        <GameLayout gameOver={result} gameArgs={this.props.gameArgs} />
       );
     }
     let child;

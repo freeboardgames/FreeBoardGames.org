@@ -26,6 +26,10 @@ test('render board - all states - local friend', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
+      gameArgs={{
+        gameCode: 'chess',
+        mode: GameMode.LocalFriend,
+      }}
     />
   ));
   expect(board.html()).to.contain('draw');
