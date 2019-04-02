@@ -24,6 +24,10 @@ test('clicking a cell on the board', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -46,6 +50,10 @@ test('click a cell that has already been played', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -68,6 +76,10 @@ test('render board - one X and one O - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -91,6 +103,10 @@ test('render board - O\'s turn - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -111,10 +127,14 @@ test('render board - X wins - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
-  expect(comp.html()).to.contain('Red won');
+  expect(comp.html()).to.contain('red won');
 });
 
 test('render board - O wins - local friend', () => {
@@ -131,10 +151,86 @@ test('render board - O wins - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
-  expect(comp.html()).to.contain('Green won');
+  expect(comp.html()).to.contain('green won');
+});
+
+test('render board - X wins - AI', () => {
+  const client = Client({
+    game: TictactoeGame,
+  });
+  const state0 = client.store.getState();
+  const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
+  const comp = Enzyme.mount((
+    <MemoryRouter>
+      <Board
+        G={state1.G}
+        ctx={state1.ctx}
+        moves={client.moves}
+        playerID={'0'}
+        isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.AI,
+        }}
+      />
+    </MemoryRouter>
+  ));
+  expect(comp.html()).to.contain('you won');
+});
+
+test('render board - O wins - AI', () => {
+  const client = Client({
+    game: TictactoeGame,
+  });
+  const state0 = client.store.getState();
+  const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
+  const comp = Enzyme.mount((
+    <MemoryRouter>
+      <Board
+        G={state1.G}
+        ctx={state1.ctx}
+        moves={client.moves}
+        playerID={'0'}
+        isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.AI,
+        }}
+      />
+    </MemoryRouter>
+  ));
+  expect(comp.html()).to.contain('you lost');
+});
+
+test('render board - O wins - draw', () => {
+  const client = Client({
+    game: TictactoeGame,
+  });
+  const state0 = client.store.getState();
+  const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
+  const comp = Enzyme.mount((
+    <MemoryRouter>
+      <Board
+        G={state1.G}
+        ctx={state1.ctx}
+        moves={client.moves}
+        playerID={'0'}
+        isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.AI,
+        }}
+      />
+    </MemoryRouter>
+  ));
+  expect(comp.html()).to.contain('draw');
 });
 
 test('render board - draw - local friend', () => {
@@ -151,6 +247,10 @@ test('render board - draw - local friend', () => {
         moves={client.moves}
         playerID={'0'}
         isActive={true}
+        gameArgs={{
+          gameCode: 'tictactoe',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));

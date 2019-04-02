@@ -170,8 +170,9 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getGameOver() {
-    // Online Multiplayer
-    if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
+    const gameArgs = this.props.gameArgs;
+    const mode = typeof gameArgs !== 'undefined' ? gameArgs.mode : GameMode.LocalFriend;
+    if (mode === GameMode.OnlineFriend || mode === GameMode.AI) {
       if (this.props.ctx.gameover === this.getPlayer()) {
         return 'you won';
       } else if (this.props.ctx.gameover === 'd') {

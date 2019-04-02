@@ -43,7 +43,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       const result = (ctx.gameover.winner === this.props.playerID) ?
         'you won' : 'you lost';
       return (
-        <GameLayout gameOver={result} />
+        <GameLayout gameOver={result} gameArgs={this.props.gameArgs} />
       );
     }
     let child;
