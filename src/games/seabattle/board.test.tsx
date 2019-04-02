@@ -6,6 +6,7 @@ import { SeabattleGame } from './game';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
 import { MemoryRouter } from 'react-router';
+import { GameMode } from '../../App/Game/GameModePicker';
 
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -41,6 +42,10 @@ test('start', () => {
         playerID={'0'}
         isActive={true}
         isConnected={true}
+        gameArgs={{
+          gameCode: 'seabattle',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -64,6 +69,10 @@ test('waiting opponent', () => {
         playerID={'0'}
         isActive={true}
         isConnected={true}
+        gameArgs={{
+          gameCode: 'seabattle',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -86,6 +95,10 @@ test('gameover - won', () => {
         playerID={'0'}
         isActive={true}
         isConnected={true}
+        gameArgs={{
+          gameCode: 'seabattle',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -108,6 +121,10 @@ test('gameover - lost', () => {
         playerID={'0'}
         isActive={true}
         isConnected={true}
+        gameArgs={{
+          gameCode: 'seabattle',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
@@ -130,6 +147,10 @@ test('battle', () => {
         playerID={'0'}
         isActive={true}
         isConnected={true}
+        gameArgs={{
+          gameCode: 'seabattle',
+          mode: GameMode.LocalFriend,
+        }}
       />
     </MemoryRouter>
   ));
