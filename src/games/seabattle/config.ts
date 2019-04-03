@@ -8,7 +8,6 @@ const config: IGameConfig = {
   bgioGame: SeabattleGame,
   bgioBoard: SeabattleBoard,
   enhancer: applyMiddleware(SeabattleSound),
-  debug: true,
 };
 
 export default config;

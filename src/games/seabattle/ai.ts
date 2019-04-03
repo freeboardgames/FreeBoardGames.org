@@ -1,5 +1,6 @@
 import { IAIConfig } from '../index';
 import { ICell, IShip, ISalvo, generateRandomShips } from './game';
+import shuffle from 'shuffle-array';
 
 interface IAISalvo extends ISalvo {
   up: boolean;
@@ -57,64 +58,25 @@ class SeabattleBot {
     const xMap = hitSalvos.map((salvo) => salvo.cell.x);
     const yMap = hitSalvos.map((salvo) => salvo.cell.y);
 
-    const minSalvoPos = {
-      x: Math.min(...xMap),
-      y: Math.min(...yMap),
-    };
-    const maxSalvoPos = {
-      x: Math.max(...xMap),
-      y: Math.max(...yMap),
-    };
-    // either x or y must be 0, given that the ship must be horizontal or vertical
-    const diffMinMaxSalvoPos = {
-      x: minSalvoPos.x - maxSalvoPos.x,
-      y: minSalvoPos.y - maxSalvoPos.y,
-    };
-    const direction = diffMinMaxSalvoPos.x === 0 ? { x: 0, y: 1 } : { x: 1, y: 0 };
-    const diffLength = diffMinMaxSalvoPos.x + diffMinMaxSalvoPos.y;
-    if (diffLength === hitSalvos.length) {
-      // This means that there is no "hole" in the salvos, therefore we must try the edges
-      const possibleMoves: ICell[] = [
-        { x: minSalvoPos.x - direction.x, y: minSalvoPos.y - direction.y },
-        { x: maxSalvoPos.x + direction.x, y: maxSalvoPos.y + direction.y },
-      ];
-      return this.anyValidMove(state, possibleMoves);
-    } else {
-      return this.anyValidMove(state, this.allCellsBetween(minSalvoPos, maxSalvoPos, direction, diffLength));
-      // return anyValidMove([ all cells between minSalvoPos and maxSalvoPos ]);
-    }
-  }
-
-  allCellsBetween(min: ICell, max: ICell, direction: ICell, diffLength: number) {
-    const cells: ICell[] = [];
-    const absDiffLength = Math.abs(diffLength);
-    if (direction.x) {
-      for (let x = min.x - absDiffLength; x <= max.x + absDiffLength; x++) {
-        cells.push({ x: x, y: max.y });
-      }
-    } else {
-      for (let y = min.y - absDiffLength; y <= max.y + absDiffLength; y++) {
-        cells.push({ x: max.x, y: y });
-      }
-    }
-    return cells;
+    const minPos = { x: Math.min(...xMap), y: Math.min(...yMap) };
+    const maxPos = { x: Math.max(...xMap), y: Math.max(...yMap) };
+    const direction = maxPos.x === minPos.x ? { x: 0, y: 1 } : { x: 1, y: 0 };
+    return this.anyValidMove(state, [
+      { x: minPos.x - direction.x, y: minPos.y - direction.y },
+      { x: maxPos.x + direction.x, y: maxPos.y + direction.y },
+    ]);
   }
 
   isInBounds(x: number) {
-    const valid = (x >= 0 && x <= 9);
-    return valid;
+    return (x >= 0 && x <= 9);
   }
 
   isValidMove(state: IPlayState, cell: ICell) {
-    const valid = (this.isInBounds(cell.x) && this.isInBounds(cell.y) && this.isUniqueMove(state, cell));
-    return valid;
-  }
-
-  areVerticalMovesPossible(state: IPlayState, move: ICell) {
-    const possible = (this.isValidMove(state, move));
+    return (this.isInBounds(cell.x) && this.isInBounds(cell.y) && this.isUniqueMove(state, cell));
   }
 
   anyValidMove(state: IPlayState, moves: ICell[]) {
+    shuffle(moves); // ONLY source of randomness
     for (const move of moves) {
       if (this.isValidMove(state, move)) {
         return move;
@@ -124,16 +86,12 @@ class SeabattleBot {
   }
 
   getRandomNeighbor(state: IPlayState, salvo: ISalvo): ICell {
-    let validMove;
-    let move: ICell;
-    while (!validMove) {
-      const vertical = this.genRandomNumber(0, 1) === 0;
-      const randomChange = (this.genRandomNumber(0, 1) === 0) ? -1 : 1;
-      const moveDelta = { x: (vertical) ? randomChange : 0, y: (vertical) ? 0 : randomChange };
-      move = { x: salvo.cell.x + moveDelta.x, y: salvo.cell.y + moveDelta.y };
-      validMove = this.isValidMove(state, move);
-    }
-    return move;
+    return this.anyValidMove(state, [
+      { x: salvo.cell.x - 1, y: salvo.cell.y },
+      { x: salvo.cell.x, y: salvo.cell.y - 1 },
+      { x: salvo.cell.x + 1, y: salvo.cell.y },
+      { x: salvo.cell.x, y: salvo.cell.y + 1 },
+    ]);
   }
 
   getOtherSalvosHitShip(state: IPlayState, id: string) {
@@ -149,33 +107,20 @@ class SeabattleBot {
   }
 
   generateRandomMove(state: IPlayState) {
-    while (true) {
-      const x = this.genRandomNumber(0, 9);
-      const y = this.genRandomNumber(0, 9);
-      const randomCell: ICell = { x, y };
-      const unique = this.isUniqueMove(state, randomCell);
-      if (unique) {
-        return randomCell;
+    const allPossibleMoves: ICell[] = [];
+    for (let x = 0; x <= 9; x++) {
+      for (let y = 0; y <= 9; y++) {
+        allPossibleMoves.push({ x, y });
       }
     }
-  }
-
-  getAISalvos(state: IPlayState) {
-    const salvos = state.G.salvos.filter((salvo: ISalvo) => (
-      salvo.player === 1));
-    return salvos;
+    return this.anyValidMove(state, allPossibleMoves);
   }
 
   isUniqueMove(state: IPlayState, cell: ICell) {
     const moves = state.G.salvos.filter((salvo: ISalvo) => (
       salvo.player === 1 && salvo.cell.x === cell.x && salvo.cell.y === cell.y),
     );
-    const uniqueMove = moves.length === 0;
-    return uniqueMove;
-  }
-
-  genRandomNumber(min: number, max: number) {
-    return Math.floor(min + Math.random() * (max + 1 - min));
+    return moves.length === 0;
   }
 }
 
