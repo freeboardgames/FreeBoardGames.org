@@ -9,6 +9,8 @@ interface IBattleProps {
   moves: any;
   playerID: string;
   currentPlayer: string;
+  step?: any;
+  isAIGame?: boolean;
 }
 
 interface IBattleState {
@@ -19,6 +21,7 @@ interface IBattleState {
   prevPlayer?: string;
   startTime?: number;
   salvo?: ISalvo;
+  aiPlaying?: boolean;
 }
 
 export class Battle extends React.Component<IBattleProps, IBattleState> {
@@ -30,6 +33,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       playerID: props.playerID,
       currentPlayer: props.currentPlayer,
       showSalvo: false,
+      aiPlaying: false,
     };
   }
   _onClick = (cell: ICell) => {
@@ -40,6 +44,13 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     ).length === 0;
     if (uniqueMove) {
       this.props.moves.salvo(cell.x, cell.y);
+      if (this.props.isAIGame && !this.state.aiPlaying) {
+        this.setState({ ...this.state, aiPlaying: true });
+        setTimeout(() => {
+          this.props.step();
+          this.setState({ ...this.state, aiPlaying: false });
+        }, 3000);
+      }
     }
   }
 
