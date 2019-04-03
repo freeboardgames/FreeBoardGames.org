@@ -49,7 +49,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
         setTimeout(() => {
           this.props.step();
           this.setState({ ...this.state, aiPlaying: false });
-        }, 3000);
+        }, 2500);
       }
     }
   }
