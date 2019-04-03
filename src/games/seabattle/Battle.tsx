@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Notification from 'react-web-notification';
 
 import { Radar } from './Radar';
 import { ISeabattleState, IShip, ISalvo, ICell } from './game';
@@ -10,6 +9,8 @@ interface IBattleProps {
   moves: any;
   playerID: string;
   currentPlayer: string;
+  step?: any;
+  isAIGame?: boolean;
 }
 
 interface IBattleState {
@@ -20,7 +21,7 @@ interface IBattleState {
   prevPlayer?: string;
   startTime?: number;
   salvo?: ISalvo;
-  playerNotified: boolean;
+  aiPlaying?: boolean;
 }
 
 export class Battle extends React.Component<IBattleProps, IBattleState> {
@@ -32,7 +33,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       playerID: props.playerID,
       currentPlayer: props.currentPlayer,
       showSalvo: false,
-      playerNotified: false,
+      aiPlaying: false,
     };
   }
   _onClick = (cell: ICell) => {
@@ -43,6 +44,13 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     ).length === 0;
     if (uniqueMove) {
       this.props.moves.salvo(cell.x, cell.y);
+      if (this.props.isAIGame && !this.state.aiPlaying) {
+        this.setState({ ...this.state, aiPlaying: true });
+        setTimeout(() => {
+          this.props.step();
+          this.setState({ ...this.state, aiPlaying: false });
+        }, 2500);
+      }
     }
   }
 
@@ -56,7 +64,6 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
         prevPlayer: prevProps.currentPlayer,
         startTime: Date.now(),
         salvo: this.props.G.salvos[this.props.G.salvos.length - 1],
-        playerNotified: false,
       });
       requestAnimationFrame(this._animate(Date.now()));
     }
