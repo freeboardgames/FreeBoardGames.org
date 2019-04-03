@@ -19,7 +19,7 @@ class TictactoeRandomBot {
         freeCellsIndexes.push(i);
       }
     }
-    const randIndex = this.randomNumber(0, freeCellsIndexes.length);
+    const randIndex = this.randomNumber(0, freeCellsIndexes.length - 1);
     const cell = freeCellsIndexes[randIndex];
     return cell;
   }
