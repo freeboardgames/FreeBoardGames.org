@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ShipsPlacement } from './ShipsPlacement';
+import { IGameArgs } from '../../App/Game/GameBoardWrapper';
+import { GameMode } from '../../App/Game/GameModePicker';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { GameLayout } from '../../App/Game/GameLayout';
 import ReactGA from 'react-ga';
 import { IShip } from './game';
 import { Battle } from './Battle';
-import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 
 interface IBoardProps {
   G: any;
@@ -17,6 +18,7 @@ interface IBoardProps {
   isActive: boolean;
   isConnected: boolean;
   gameArgs?: IGameArgs;
+  step?: any;
 }
 
 interface IBoardState {
@@ -32,6 +34,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     isActive: PropTypes.bool,
     isConnected: PropTypes.bool,
     gameArgs: PropTypes.any,
+    step: PropTypes.any,
   };
 
   render() {
@@ -66,13 +69,23 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           moves={this.props.moves}
           playerID={this.props.playerID}
           currentPlayer={ctx.currentPlayer}
+          step={this.props.step}
+          isAIGame={this.isAIGame()}
         />
       );
     }
     return <GameLayout>{child}</GameLayout>;
   }
 
+  isAIGame() {
+    return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI);
+  }
+
   _setShips = (ships: IShip[]) => {
     this.props.moves.setShips(ships);
+    if (this.isAIGame()) {
+      setTimeout(this.props.step, 250);  // place ships
+      setTimeout(this.props.step, 1000);  // make first move
+    }
   }
 }

@@ -1240,6 +1240,11 @@
   resolved "https://registry.yarnpkg.com/@types/shortid/-/shortid-0.0.29.tgz#8093ee0416a6e2bf2aa6338109114b3fbffa0e9b"
   integrity sha1-gJPuBBam4r8qpjOBCRFLP7/6Dps=
 
+"@types/shuffle-array@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/shuffle-array/-/shuffle-array-0.0.28.tgz#a1e10d20a409f6528992c4791fa852ffb10e6996"
+  integrity sha1-oeENIKQJ9lKJksR5H6hS/7EOaZY=
+
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
@@ -7622,6 +7627,11 @@ shortid@^2.2.14:
   integrity sha512-4UnZgr9gDdA1kaKj/38IiudfC3KHKhDc1zi/HSxd9FQDR0VLwH3/y79tZJLsVYPsJgIjeHjqIWaWVRJUj9qZOQ==
   dependencies:
     nanoid "^2.0.0"
+
+shuffle-array@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/shuffle-array/-/shuffle-array-1.0.1.tgz#c4ff3cfe74d16f93730592301b25e6577b12898b"
+  integrity sha1-xP88/nTRb5NzBZIwGyXmV3sSiYs=
 
 sigmund@^1.0.1:
   version "1.0.1"
