@@ -58,3 +58,35 @@ test('show sharing dialog and hide it', () => {
   (el.instance() as any)._dismissSharing();
   expect(el.state('dismissedSharing')).to.equal(true);
 });
+
+test('does not show notification', () => {
+  const Board = gameBoardWrapper({
+    board: MockBoard,
+    gameArgs: {
+      gameCode: 'chess',
+      mode: GameMode.OnlineFriend,
+      matchCode: 'foo',
+      playerID: '0',
+    },
+  });
+  const el = Enzyme.mount((
+    <Board isConnected={true} G={{ pgn: '' }} ctx={{ currentPlayer: '1' }} />
+  ));
+  expect(el.find('Notification').length).equals(0);
+});
+
+test('shows notification', () => {
+  const Board = gameBoardWrapper({
+    board: MockBoard,
+    gameArgs: {
+      gameCode: 'chess',
+      mode: GameMode.OnlineFriend,
+      matchCode: 'foo',
+      playerID: '0',
+    },
+  });
+  const el = Enzyme.mount((
+    <Board isConnected={true} G={{ pgn: '' }} ctx={{ currentPlayer: '0' }} />
+  ));
+  expect(el.find('Notification').length).equals(1);
+});
