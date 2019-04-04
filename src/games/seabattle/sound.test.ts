@@ -1,11 +1,19 @@
 import { expect } from 'chai';
 import { getSound, SeabattleSound } from './sound';
+import { GameMode } from '../../App/Game/GameModePicker';
+
+const gameArgsOnline = {
+  gameCode: 'seabattle',
+  mode: GameMode.OnlineFriend,
+  matchCode: 'foo',
+  playerID: '0',
+};
 
 test('should not play sound if it is not an update', () => {
   const action = {
     type: 'MAKE_MOVE',
   };
-  expect(getSound(action)).to.equal(null);
+  expect(getSound(gameArgsOnline, undefined, action)).to.equal(null);
 });
 
 test('should not play sound if it is unrelated update', () => {
@@ -19,8 +27,8 @@ test('should not play sound if it is unrelated update', () => {
       },
     ],
   };
-  expect(getSound(action)).to.equal(null);
-  SeabattleSound({})(jest.fn())(action);
+  expect(getSound(gameArgsOnline, undefined, action)).to.equal(null);
+  SeabattleSound(gameArgsOnline)({})(jest.fn())(action);
 });
 
 (window as any).HTMLMediaElement.prototype.play = () => {
@@ -54,8 +62,8 @@ test('HIT salvo should play hit sound', () => {
       },
     },
   };
-  expect(getSound(action)).to.equal('hit');
-  SeabattleSound({})(jest.fn())(action);
+  expect(getSound(gameArgsOnline, undefined, action)).to.equal('hit');
+  SeabattleSound(gameArgsOnline)({})(jest.fn())(action);
 });
 
 test('MISS salvo should play miss sound', () => {
@@ -85,6 +93,6 @@ test('MISS salvo should play miss sound', () => {
       },
     },
   };
-  expect(getSound(action)).to.equal('miss');
-  SeabattleSound({})(jest.fn())(action);
+  expect(getSound(gameArgsOnline, undefined, action)).to.equal('miss');
+  SeabattleSound(gameArgsOnline)({})(jest.fn())(action);
 });

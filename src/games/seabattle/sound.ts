@@ -1,26 +1,33 @@
+import { IGameArgs } from '../../App/Game/GameBoardWrapper';
+import { GameMode } from '../../App/Game/GameModePicker';
 import HitSound from './media/hit.mp3';
 import MissSound from './media/miss.mp3';
 
 // Visible for testing only
-function isSalvoUpdate(action: any): boolean {
-  if (action.type !== 'UPDATE') {
-    return false;
+function isSalvoUpdate(gameArgs: IGameArgs, action: any): boolean {
+  if (gameArgs.mode === GameMode.OnlineFriend) {
+    if (action.type !== 'UPDATE') {
+      return false;
+    }
+    const moveLog = action.deltalog.find(
+      (entry: any) => entry.action.type === 'MAKE_MOVE' &&
+        entry.action.payload.type === 'salvo',
+    );
+    if (!moveLog) {
+      return false;
+    }
+    return true;
   }
-  const moveLog = action.deltalog.find(
-    (entry: any) => entry.action.type === 'MAKE_MOVE' &&
-      entry.action.payload.type === 'salvo',
-  );
-  if (!moveLog) {
-    return false;
+  if (action.payload.type === 'salvo') {
+    return true;
   }
-  return true;
 }
 
-export const getSound = (action: any): 'hit' | 'miss' | null => {
-  if (!isSalvoUpdate(action)) {
+export const getSound = (gameArgs: IGameArgs, state: any, action: any): 'hit' | 'miss' | null => {
+  if (!isSalvoUpdate(gameArgs, action)) {
     return null;
   }
-  const salvos = action.state.G.salvos;
+  const salvos = (gameArgs.mode === GameMode.OnlineFriend) ? action.state.G.salvos : state.G.salvos;
   const lastSalvo = salvos[salvos.length - 1];
   if (lastSalvo.hit) {
     return 'hit';
@@ -30,8 +37,12 @@ export const getSound = (action: any): 'hit' | 'miss' | null => {
 };
 let hitSound: HTMLAudioElement;
 let missSound: HTMLAudioElement;
-export const SeabattleSound = (store: any) => (next: any) => (action: any) => {
-  const sound = getSound(action);
+export const SeabattleSound = (gameArgs: IGameArgs) => (store: any) => (next: any) => (action: any) => {
+  if (gameArgs.mode !== GameMode.OnlineFriend) {
+    next(action);
+  }
+  const state = store.getState();
+  const sound = getSound(gameArgs, state, action);
   if (!hitSound) {
     hitSound = new Audio(HitSound);
   }
