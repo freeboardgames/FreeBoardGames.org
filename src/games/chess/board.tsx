@@ -106,6 +106,11 @@ export class Board extends React.Component<IBoardProps, {}> {
         return m.from === this.state.selected && m.to === square;
       });
       if (move) {
+        ReactGA.event({
+          category: 'ChessGame',
+          action: 'move',
+          label: `Player ${this.props.playerID} moved from ${move.from} to ${move.to}`,
+        });
         this.props.moves.move(move.san);
         if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
           this.props.step();
