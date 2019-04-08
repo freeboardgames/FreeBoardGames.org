@@ -93,6 +93,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     ReactGA.event({
       category: 'GameSharing',
       action: 'sendEmail',
+      label: this.props.gameCode,
     });
     location.assign('mailto:?body=' + this._getLink());
   }
@@ -101,6 +102,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     ReactGA.event({
       category: 'GameSharing',
       action: 'shareFacebook',
+      label: this.props.gameCode,
     });
     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURI(this._getLink()));
   }
@@ -109,6 +111,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     ReactGA.event({
       category: 'GameSharing',
       action: 'shareTwitter',
+      label: this.props.gameCode,
     });
     window.open('https://www.twitter.com/share?url=' + encodeURI(this._getLink()));
   }
@@ -117,6 +120,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     ReactGA.event({
       category: 'GameSharing',
       action: 'copyClipboard',
+      label: this.props.gameCode,
     });
     copy(this._getLink());
     alert('Link copied to clipboard');
