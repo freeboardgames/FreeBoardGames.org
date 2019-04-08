@@ -21,6 +21,7 @@ function isSalvoUpdate(gameArgs: IGameArgs, action: any): boolean {
   if (action.payload.type === 'salvo') {
     return true;
   }
+  return false;
 }
 
 export const getSound = (gameArgs: IGameArgs, state: any, action: any): 'hit' | 'miss' | null => {
