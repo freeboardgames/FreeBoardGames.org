@@ -10,46 +10,7 @@ const gameArgsOnline = {
 };
 
 const gameArgsAI = { ...gameArgsOnline, mode: GameMode.AI };
-
-const mockStateDict: any = {
-  G: {
-    ships: [],
-    salvos: [],
-  },
-  ctx: {
-    numPlayers: 2,
-    turn: 0,
-    currentPlayer: '0',
-    actionPlayers: [
-      '0',
-      '1',
-    ],
-    currentPlayerMoves: 0,
-    playOrder: [
-      '0',
-      '1',
-    ],
-    playOrderPos: 0,
-    stats: {
-      turn: {
-        numMoves: {},
-        allPlayed: false,
-      },
-      phase: {
-        numMoves: {},
-        allPlayed: false,
-      },
-    },
-    allPlayed: false,
-    phase: 'setup',
-    prevPhase: 'default',
-    allowedMoves: [
-      'setShips',
-    ],
-  },
-};
 const mockStateFn = jest.fn();
-mockStateFn.mockReturnValue(mockStateDict);
 const mockStore = { getState: mockStateFn };
 
 test('should not play sound if it is not an update - online friend', () => {
@@ -139,7 +100,7 @@ test('MISS salvo should play miss sound - AI', () => {
       },
     },
   };
-  const mockMissState = { ...mockStateDict, G: { ships: [], salvos: [{ hit: false }] } };
+  const mockMissState: any = { G: { ships: [], salvos: [{ hit: false }] } };
   expect(getSound(gameArgsAI, mockMissState, action)).to.equal('miss');
 });
 
@@ -173,6 +134,6 @@ test('unrelated salvo should not play sound - AI', () => {
       },
     },
   };
-  const mockMissState = { ...mockStateDict, G: { ships: [], salvos: [{ hit: true }] } };
-  expect(getSound(gameArgsAI, mockMissState, action)).to.equal(null);
+  const mockHitState: any = { G: { ships: [], salvos: [{ hit: true }] } };
+  expect(getSound(gameArgsAI, mockHitState, action)).to.equal(null);
 });
