@@ -26,8 +26,7 @@ import ReactGA from 'react-ga';
 const COL_NAMES = 'abcdefgh';
 const SELECTED_COLOR = 'green';
 const MOVABLE_COLOR = 'palegreen';
-const MOVE_FROM_COLOR = 'tomato';
-const MOVE_TO_COLOR = 'lightskyblue';
+const MOVED_COLOR = '#CCE5FF';
 
 interface IBoardProps {
   G: any;
@@ -122,19 +121,19 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getHighlightedSquares() {
     const result = {} as IColorMap;
+    const history = this._fixHistory(this.chess.history({ verbose: true }));
+    if (history.length > 0) {
+      const lastMove = history[history.length - 1];
+      if (this._getCurrentPlayer() !== lastMove.color) {
+        result[lastMove.from] = MOVED_COLOR;
+        result[lastMove.to] = MOVED_COLOR;
+      }
+    }
     if (this.state.selected) {
       result[this.state.selected] = SELECTED_COLOR;
     }
     for (const move of this._getMoves()) {
       result[move.to] = MOVABLE_COLOR;
-    }
-    const history = this._fixHistory(this.chess.history({ verbose: true }));
-    if (history.length > 0) {
-      const lastMove = history[history.length - 1];
-      if (this._getCurrentPlayer() !== lastMove.color) {
-        result[lastMove.from] = MOVE_FROM_COLOR;
-        result[lastMove.to] = MOVE_TO_COLOR;
-      }
     }
     return result;
   }
