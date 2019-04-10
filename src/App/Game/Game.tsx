@@ -112,8 +112,12 @@ export default class Game extends React.Component<IGameProps, {}> {
           gameArgs,
         }),
       };
-      if (state.config.enhancer) {
-        clientConfig.enhancer = applyMiddleware(state.config.enhancer(gameArgs));
+      if (state.config.enhancers) {
+        const enhancers = [];
+        for (const enhancer of state.config.enhancers) {
+          enhancers.push(enhancer(gameArgs));
+        }
+        clientConfig.enhancer = applyMiddleware(...enhancers);
       }
       if (this.loadAI) {
         clientConfig.ai = state.ai.bgioAI(aiLevel);

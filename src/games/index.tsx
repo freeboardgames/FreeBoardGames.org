@@ -7,7 +7,7 @@ import TicTacToeThumbnail from './tictactoe/media/thumbnail.png';
 export interface IGameConfig {
   bgioGame: any;
   bgioBoard: any;
-  enhancer?: any;
+  enhancers?: any;
   debug?: boolean;
 }
 
