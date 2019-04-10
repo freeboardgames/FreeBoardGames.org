@@ -36,16 +36,16 @@ function renderHtml(layout: string, metadata: IPageMetadata, reactHtml: string) 
 
   if (metadata.description) {
     result = result.replace(
-      '    <meta name="description" content="">\n',
-      `    <meta name="description" content="${metadata.description}">\n`);
+      '<meta name="description" content="">\n',
+      `<meta name="description" content="${metadata.description}">\n`);
   } else {
     result = result.replace(
-      '    <meta name="description" content="">\n',
+      '<meta name="description" content="">\n',
       '');
   }
 
   if (!metadata.noindex) {
-    result = result.replace('   <meta name="robots" content="noindex">\n',
+    result = result.replace('<meta name="robots" content="noindex">\n',
       '');
   }
 
