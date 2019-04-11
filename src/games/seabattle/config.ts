@@ -6,7 +6,7 @@ import { SeabattleSound } from './sound';
 const config: IGameConfig = {
   bgioGame: SeabattleGame,
   bgioBoard: SeabattleBoard,
-  enhancer: SeabattleSound,
+  enhancers: [SeabattleSound],
 };
 
 export default config;
