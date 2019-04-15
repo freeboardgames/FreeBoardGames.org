@@ -102,6 +102,7 @@ test('MISS salvo should play miss sound - AI', () => {
   };
   const mockMissState: any = { G: { ships: [], salvos: [{ hit: false }] } };
   expect(getSound(gameArgsAI, mockMissState, action)).to.equal('miss');
+  SeabattleSound(gameArgsOnline)(mockStore)(jest.fn())(action);
 });
 
 test('unrelated salvo should not play sound - AI', () => {
