@@ -80,6 +80,22 @@ class About extends React.Component<{}, {}> {
           <List>
             <ListItem>
               <ListItemText
+                primary="Seabattle hit sound by fridobeck"
+              />
+              <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
+                freesound.org
+              </Button>
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Seabattle hit sound by qubodup"
+              />
+              <Button size="small" color="primary" href="https://freesound.org/people/qubodup/sounds/182429/">
+                freesound.org
+              </Button>
+            </ListItem>
+            <ListItem>
+              <ListItemText
                 primary="Seabattle miss sound by InspectorJ"
               />
               <Button size="small" color="primary" href="https://freesound.org/people/InspectorJ/sounds/352103/">
@@ -88,9 +104,9 @@ class About extends React.Component<{}, {}> {
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Seabattle hit sound by fridobeck"
+                primary="Seabattle miss sound by CGEffex"
               />
-              <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
+              <Button size="small" color="primary" href="https://freesound.org/people/CGEffex/sounds/98335/">
                 freesound.org
               </Button>
             </ListItem>
