@@ -4,41 +4,72 @@ import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { GAMES_MAP } from '../../games';
+import { GameMode } from './GameModePicker';
 import { MemoryRouter } from 'react-router';
 
 describe('Game', () => {
 
   it('should render properly for multiplayer', async () => {
-    const app = (
-      <MemoryRouter>
-        <Game match={{ params: { gameCode: 'chess', mode: 'online' } }} />
-      </MemoryRouter>
-    );
-    await asyncBootstrapper(app);
-    const wrapper = mount(app);
-    expect(wrapper.html()).to.contain('Connecting');
+    for (const gameCode in GAMES_MAP) {
+      if (GAMES_MAP.hasOwnProperty(gameCode)) {
+        const game = GAMES_MAP[gameCode];
+        const modes = game.modes;
+        for (const mode of modes) {
+          if (mode.mode === GameMode.OnlineFriend) {
+            const app = (
+              <MemoryRouter>
+                <Game match={{ params: { gameCode, mode: 'online' } }} />
+              </MemoryRouter>
+            );
+            await asyncBootstrapper(app);
+            const wrapper = mount(app);
+            expect(wrapper.html()).to.contain('Connecting');
+          }
+        }
+      }
+    }
   });
 
   it('should render properly for singleplayer', async () => {
-    const app = (
-      <MemoryRouter>
-        <Game match={{ params: { gameCode: 'chess', mode: 'local' } }} />
-      </MemoryRouter>
-    );
-    await asyncBootstrapper(app);
-    const wrapper = mount(app);
-    expect(wrapper.find('Checkerboard').length).to.equal(1);
+    for (const gameCode in GAMES_MAP) {
+      if (GAMES_MAP.hasOwnProperty(gameCode)) {
+        const game = GAMES_MAP[gameCode];
+        const modes = game.modes;
+        for (const mode of modes) {
+          if (mode.mode === GameMode.LocalFriend) {
+            const app = (
+              <MemoryRouter>
+                <Game match={{ params: { gameCode, mode: 'local' } }} />
+              </MemoryRouter>
+            );
+            await asyncBootstrapper(app);
+            const wrapper = mount(app);
+            expect(wrapper.find('Board').length).to.be.greaterThan(0);
+          }
+        }
+      }
+    }
   });
 
   it('should render properly for ai', async () => {
-    const app = (
-      <MemoryRouter>
-        <Game match={{ params: { gameCode: 'chess', mode: 'AI' } }} />
-      </MemoryRouter>
-    );
-    await asyncBootstrapper(app);
-    const wrapper = mount(app);
-    expect(wrapper.find('Checkerboard').length).to.equal(1);
+    for (const gameCode in GAMES_MAP) {
+      if (GAMES_MAP.hasOwnProperty(gameCode)) {
+        const game = GAMES_MAP[gameCode];
+        const modes = game.modes;
+        for (const mode of modes) {
+          if (mode.mode === GameMode.AI) {
+            const app = (
+              <MemoryRouter>
+                <Game match={{ params: { gameCode, mode: 'AI' } }} />
+              </MemoryRouter>
+            );
+            await asyncBootstrapper(app);
+            const wrapper = mount(app);
+            expect(wrapper.find('Board').length).to.be.greaterThan(0);
+          }
+        }
+      }
+    }
   });
 
   it('should render error correctly with rejected Promise', async () => {

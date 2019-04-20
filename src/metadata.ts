@@ -1,6 +1,8 @@
 export interface IPageMetadata {
-  title: string; description: string;
+  title: string;
+  description?: string;
   url?: RegExp;
+  noindex?: boolean;
 }
 
 const TITLE_PREFIX = 'FreeBoardGame.org - ';
@@ -14,13 +16,19 @@ Compete against your online friends or play locally. Free and open-source softwa
 // Most specific URLs MUST come first.
 const PAGES_METADATA: IPageMetadata[] = [
   {
+    title: TITLE_PREFIX + 'Play Chess Against the Computer',
+    noindex: true,
+    url: new RegExp('^/g/chess/ai', 'i'),
+  },
+  {
     title: TITLE_PREFIX + 'Play Two Player Chess Locally',
-    description: 'Play a free chess game in your browser for two players sharing the same device.',
+    noindex: true,
     url: new RegExp('^/g/chess/local', 'i'),
   },
   {
     title: TITLE_PREFIX + 'Play Chess with an Online Friend',
     description: 'Play a free chess game against an online friend in your browser.',
+    noindex: true,
     url: new RegExp('^/g/chess/online', 'i'),
   },
   {
@@ -29,13 +37,18 @@ const PAGES_METADATA: IPageMetadata[] = [
     url: new RegExp('^/g/chess', 'i'),
   },
   {
+    title: TITLE_PREFIX + 'Play Free Tic-Tac-Toe Against the Computer',
+    noindex: true,
+    url: new RegExp('^/g/tictactoe/ai', 'i'),
+  },
+  {
     title: TITLE_PREFIX + 'Play Free Tic-Tac-Toe with Online Friend',
-    description: 'Play a free game of Tic-Tac-Toe in your browser.  Compete against your online friends.',
+    noindex: true,
     url: new RegExp('^/g/tictactoe/online', 'i'),
   },
   {
     title: TITLE_PREFIX + 'Play Free Tic-Tac-Toe Locally',
-    description: 'Play a free game of Tic-Tac-Toe in your browser for two players sharing the same device.',
+    noindex: true,
     url: new RegExp('^/g/tictactoe/local', 'i'),
   },
   {
@@ -44,8 +57,14 @@ const PAGES_METADATA: IPageMetadata[] = [
     url: new RegExp('^/g/tictactoe', 'i'),
   },
   {
+    title: TITLE_PREFIX + 'Play Free Seabattle Against the Computer',
+    noindex: true,
+    url: new RegExp('^/g/seabattle/ai', 'i'),
+  },
+  {
     title: TITLE_PREFIX + 'Play Free Seabattle with Online Friend',
     description: 'Battle and sink ships in a free online game with an online friend.',
+    noindex: true,
     url: new RegExp('^/g/seabattle/online', 'i'),
   },
   {

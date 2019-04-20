@@ -12,7 +12,7 @@ import serialize from 'serialize-javascript';
 import { StaticRouter } from 'react-router-dom';
 import { GAMES_LIST } from './games';
 import { GameMode } from './App/Game/GameModePicker';
-import { getPageMetadata } from './metadata';
+import { getPageMetadata, IPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
 const { Server } = require('@freeboardgame.org/boardgame.io/server'); // tslint:disable-line
@@ -27,16 +27,28 @@ const DEV = !PROD;
 const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *',
   'Disallow: /', ''].join('\n');
 
-const OPEN_ROBOTS_TXT = getOpenRobotsTxt();
-
 const template = fs.readFileSync('./dist/layout.html', 'utf8');
 
-function renderHtml(layout: string, title: string, description: string, reactHtml: string) {
+function renderHtml(layout: string, metadata: IPageMetadata, reactHtml: string) {
   let result = layout;
-  result = result.replace('<title>FreeBoardGame.org</title>', `<title>${title}</title>`);
-  result = result.replace(
-    '<meta name="Description" content="">',
-    `<meta name="Description" content="${description}">`);
+
+  result = result.replace('<title>FreeBoardGame.org</title>', `<title>${metadata.title}</title>`);
+
+  if (metadata.description) {
+    result = result.replace(
+      '<meta name="description" content="">\n',
+      `<meta name="description" content="${metadata.description}">\n`);
+  } else {
+    result = result.replace(
+      '<meta name="description" content="">\n',
+      '');
+  }
+
+  if (!metadata.noindex) {
+    result = result.replace('<meta name="robots" content="noindex">\n',
+      '');
+  }
+
   result = result.replace(
     '<div id="root"></div>',
     `<div id="root">${reactHtml}</div>`);
@@ -63,7 +75,7 @@ const renderSite = async (url: string) => {
   const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
   return ({
     status: (context as any).status,
-    render: renderHtml(template, title, description, reactHtml),
+    render: renderHtml(template, metadata, reactHtml),
   });
 };
 
@@ -79,9 +91,7 @@ const startServer = async () => {
   server.app.use(router.allowedMethods());
   server.app.use(async (ctx: any, next: any) => {
     if (ctx.request.path === '/robots.txt') {
-      if (ctx.request.hostname.toLowerCase() === 'freeboardgame.org') {
-        ctx.response.body = OPEN_ROBOTS_TXT;
-      } else {
+      if (ctx.request.hostname.toLowerCase() !== 'freeboardgame.org') {
         ctx.response.body = RESTRICTIVE_ROBOTS_TXT;
       }
     } else {
@@ -101,23 +111,5 @@ const startServer = async () => {
     console.log(`Serving ${NODE_ENV} at: http://${HOST}:${PORT}/`); // tslint:disable-line
   });
 };
-
-function getOpenRobotsTxt() {
-  const robotsTxt = ['User-agent: *'];
-  const AI = GameMode.AI;
-  const OnlineFriend = GameMode.OnlineFriend;
-  GAMES_LIST.forEach((game) => {
-    game.modes.forEach((modeInfo) => {
-      if (modeInfo.mode === GameMode.AI) {
-        robotsTxt.push(`Disallow: /g/${game.code}/AI/`);
-      }
-      if (modeInfo.mode === GameMode.OnlineFriend) {
-        robotsTxt.push(`Disallow: /g/${game.code}/online/`);
-      }
-    });
-  });
-  robotsTxt.push('');  // so that there is a newline at the end of the file
-  return robotsTxt.join('\n');
-}
 
 startServer();

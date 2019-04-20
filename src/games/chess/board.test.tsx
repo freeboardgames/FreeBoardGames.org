@@ -26,6 +26,10 @@ test('render board - all states - local friend', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
+      gameArgs={{
+        gameCode: 'chess',
+        mode: GameMode.LocalFriend,
+      }}
     />
   ));
   expect(board.html()).to.contain('draw');
@@ -233,6 +237,46 @@ test('little AI game', () => {
   board.find('rect').at(rowColAt(4, 6)).simulate('click');
   expect(moveMock.mock.calls[0]).to.deep.equal(['f4']);
   expect(stepMock.mock.calls.length).to.equal(1);
+});
+
+test('AI gameover - all cases', () => {
+  const moveMock = jest.fn();
+  const stepMock = jest.fn();
+  const board = Enzyme.mount((
+    <TestBoard
+      G={{ pgn: '' }}
+      ctx={{
+        numPlayer: 2, turn: 0, gameover: 'd',
+        currentPlayer: '0', currentPlayerMoves: 0,
+      }}
+      moves={{ move: moveMock }}
+      playerID="0"
+      isActive={true}
+      isConnected={true}
+      gameArgs={{
+        gameCode: 'chess',
+        mode: GameMode.AI,
+      }}
+      step={stepMock}
+    />
+  ));
+  expect(board.html()).to.contain('draw');
+  board.setProps({
+    ...board.props(),
+    ctx: {
+      numPlayer: 2, turn: 0, gameover: 'b',
+      currentPlayer: '0', currentPlayerMoves: 0,
+    },
+  });
+  expect(board.html()).to.contain('you lost');
+  board.setProps({
+    ...board.props(),
+    ctx: {
+      numPlayer: 2, turn: 0, gameover: 'w',
+      currentPlayer: '0', currentPlayerMoves: 0,
+    },
+  });
+  expect(board.html()).to.contain('you won');
 });
 
 test('castling fix', () => {

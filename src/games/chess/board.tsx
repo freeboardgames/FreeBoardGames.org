@@ -26,6 +26,7 @@ import ReactGA from 'react-ga';
 const COL_NAMES = 'abcdefgh';
 const SELECTED_COLOR = 'green';
 const MOVABLE_COLOR = 'palegreen';
+const MOVED_COLOR = '#CCE5FF';
 
 interface IBoardProps {
   G: any;
@@ -120,6 +121,14 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getHighlightedSquares() {
     const result = {} as IColorMap;
+    const history = this._fixHistory(this.chess.history({ verbose: true }));
+    if (history.length > 0) {
+      const lastMove = history[history.length - 1];
+      if (this._getCurrentPlayer() !== lastMove.color) {
+        result[lastMove.from] = MOVED_COLOR;
+        result[lastMove.to] = MOVED_COLOR;
+      }
+    }
     if (this.state.selected) {
       result[this.state.selected] = SELECTED_COLOR;
     }
@@ -170,8 +179,9 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getGameOver() {
-    // Online Multiplayer
-    if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
+    const gameArgs = this.props.gameArgs;
+    const mode = typeof gameArgs !== 'undefined' ? gameArgs.mode : GameMode.LocalFriend;
+    if (mode === GameMode.OnlineFriend || mode === GameMode.AI) {
       if (this.props.ctx.gameover === this.getPlayer()) {
         return 'you won';
       } else if (this.props.ctx.gameover === 'd') {
