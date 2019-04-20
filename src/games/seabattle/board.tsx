@@ -5,8 +5,9 @@ import { ShipsPlacement } from './ShipsPlacement';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { GameLayout } from '../../App/Game/GameLayout';
 import ReactGA from 'react-ga';
-import { IShip } from './game';
+import { ISalvo, IShip } from './game';
 import { Battle } from './Battle';
+import { Radar } from './Radar';
 
 interface IBoardProps {
   G: any;
@@ -36,14 +37,18 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (ctx.gameover) {
       const result = (ctx.gameover.winner === this.props.playerID) ?
         'you won' : 'you lost';
-      const otherPlayer = ctx.currentPlayer === '0' ? '1' : '0';
+      const player = Number(this.props.playerID);
+      const otherPlayer = player === 0 ? 1 : 0;
+      const salvos: ISalvo[] = this.props.G.salvos.filter(
+        (salvo: ISalvo) => salvo.player === player,
+      );
+      const ships: IShip[] = this.props.G.ships.filter((ship: any) => ship.player !== otherPlayer);
       const otherRadar = (
-        <Battle
-          ctx={ctx}
-          G={this.props.G}
-          moves={this.props.moves}
-          playerID={this.props.playerID}
-          currentPlayer={otherPlayer}
+        <Radar
+          player={player}
+          ships={ships}
+          salvos={salvos}
+          editable={false}
         />);
       return (
         <GameLayout gameOver={result} otherPlayerBoard={otherRadar} />
