@@ -60,14 +60,6 @@ export const SeabattleGame = Game({
       if (!validation.valid) {
         throw new Error(validation.error);
       }
-      // if (player === 0) {
-      // G.ships = VALID_SETUP_PLAYER_LOST0;
-      // return { ...G, ships: VALID_SETUP_PLAYER_LOST0 };
-      // } else {
-      // G.ships = VALID_SETUP_PLAYER_LOST1;
-      // return { ...G, ships: VALID_SETUP_PLAYER_LOST1 };
-      // }
-
       return { ...G, ships: [...G.ships, ...ships] };
     },
     salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
@@ -127,26 +119,19 @@ export const SeabattleGame = Game({
 
 // Helper function for generating random ships positioning.
 export function generateRandomShips(player: number): IShip[] {
-  // let result: IShip[];
-  // let shipID;
-  // do {
-  // result = [];
-  // for (const shipSize of VALID_SHIPS_SIZES) {
-  // const count: number = VALID_SHIPS_COUNT[shipSize];
-  // for (let i = 0; i < count; i++) {
-  // shipID = shortid.generate();
-  // result.push(randomlyGetShip(player, shipSize, shipID));
-  // }
-  // }
-  // } while (!validateShips(result, player).valid);
-  // return result;
-
-  // TODO REMOVE TESTING CODE
-  if (player === 0) {
-    return VALID_SETUP_PLAYER_LOST0;
-  } else {
-    return VALID_SETUP_PLAYER_LOST1;
-  }
+  let result: IShip[];
+  let shipID;
+  do {
+    result = [];
+    for (const shipSize of VALID_SHIPS_SIZES) {
+      const count: number = VALID_SHIPS_COUNT[shipSize];
+      for (let i = 0; i < count; i++) {
+        shipID = shortid.generate();
+        result.push(randomlyGetShip(player, shipSize, shipID));
+      }
+    }
+  } while (!validateShips(result, player).valid);
+  return result;
 }
 
 // Wheather a setup is valid or not.
