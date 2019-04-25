@@ -20,7 +20,6 @@ import Knight from './pieces/knight';
 import Pawn from './pieces/pawn';
 import Queen from './pieces/queen';
 import Rook from './pieces/rook';
-import AlertLayer from '../../App/Game/AlertLayer';
 import ReactGA from 'react-ga';
 
 const COL_NAMES = 'abcdefgh';

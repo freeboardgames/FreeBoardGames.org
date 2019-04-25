@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import { ShipsPlacement } from './ShipsPlacement';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameMode } from '../../App/Game/GameModePicker';
-import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { GameLayout } from '../../App/Game/GameLayout';
-import ReactGA from 'react-ga';
 import { IShip } from './game';
 import { Battle } from './Battle';
 
