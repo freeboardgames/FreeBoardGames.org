@@ -8,6 +8,7 @@ interface IGameLayoutProps {
   children?: React.ReactNode;
   gameOver?: string;
   gameArgs?: IGameArgs;
+  optionsMenuItems?: React.ReactNode;
 }
 
 export class GameLayout extends React.Component<IGameLayoutProps, {}> {
@@ -16,7 +17,7 @@ export class GameLayout extends React.Component<IGameLayoutProps, {}> {
       return (<GameOver result={this.props.gameOver} gameArgs={this.props.gameArgs} />);
     } else {
       return (
-        <GameDarkSublayout>
+        <GameDarkSublayout optionsMenuItems={this.props.optionsMenuItems}>
           {this.props.children}
         </GameDarkSublayout>
       );

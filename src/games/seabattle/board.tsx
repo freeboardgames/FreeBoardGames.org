@@ -9,6 +9,7 @@ import { GameLayout } from '../../App/Game/GameLayout';
 import ReactGA from 'react-ga';
 import { IShip } from './game';
 import { Battle } from './Battle';
+import { OptionsMenu } from './OptionsMenu';
 
 interface IBoardProps {
   G: any;
@@ -39,6 +40,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   render() {
     const ctx = this.props.ctx;
+    const optionsMenu = <OptionsMenu />;
     if (ctx.gameover) {
       const result = (ctx.gameover.winner === this.props.playerID) ?
         'you won' : 'you lost';
@@ -74,7 +76,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         />
       );
     }
-    return <GameLayout>{child}</GameLayout>;
+    return (
+      <GameLayout optionsMenuItems={optionsMenu}>
+        {child}
+      </GameLayout>
+    );
   }
 
   isAIGame() {
