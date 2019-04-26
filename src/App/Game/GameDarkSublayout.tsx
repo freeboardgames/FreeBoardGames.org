@@ -2,6 +2,8 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import FbgLogo from '../media/fbg_logo_white_48.png';
+import Button from '@material-ui/core/Button';
+import DehazeIcon from '@material-ui/icons/Dehaze';
 
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;
@@ -50,6 +52,9 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
                 FreeBoardGame.org
               </Typography>
             </Link>
+            <Button href="/" target="_blank" variant="outlined" style={{ margin: '8px', float: 'right' }}>
+              <DehazeIcon style={{ color: 'white' }} />
+            </Button>
           </div>
         </div>
         <div
