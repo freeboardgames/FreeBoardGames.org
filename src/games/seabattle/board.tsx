@@ -23,24 +23,20 @@ interface IBoardProps {
 }
 
 interface IBoardState {
-  dismissedSharing: boolean;
+  soundEnabled: boolean;
 }
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
-  static propTypes = {
-    G: PropTypes.any.isRequired,
-    ctx: PropTypes.any.isRequired,
-    moves: PropTypes.any.isRequired,
-    playerID: PropTypes.string,
-    isActive: PropTypes.bool,
-    isConnected: PropTypes.bool,
-    gameArgs: PropTypes.any,
-    step: PropTypes.any,
-  };
+  constructor(props: IBoardProps, state: IBoardState) {
+    super(props, state);
+    this.state = {
+      soundEnabled: true,
+    };
+  }
 
   render() {
     const ctx = this.props.ctx;
-    const optionsMenu = <OptionsMenu />;
+    const optionsMenu = <OptionsMenu getSoundPref={this._getSoundPref} setSoundPref={this._setSoundPref} />;
     if (ctx.gameover) {
       const result = (ctx.gameover.winner === this.props.playerID) ?
         'you won' : 'you lost';
@@ -73,6 +69,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           currentPlayer={ctx.currentPlayer}
           step={this.props.step}
           isAIGame={this.isAIGame()}
+          getSoundPref={this._getSoundPref}
         />
       );
     }
@@ -85,6 +82,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   isAIGame() {
     return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI);
+  }
+
+  _setSoundPref = (soundEnabled: boolean) => {
+    this.setState({ ... this.state, soundEnabled });
+  }
+
+  _getSoundPref = () => {
+    return this.state.soundEnabled;
   }
 
   _setShips = (ships: IShip[]) => {

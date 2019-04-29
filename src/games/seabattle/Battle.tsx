@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Radar } from './Radar';
 import { ISeabattleState, IShip, ISalvo, ICell } from './game';
+import { SeabattleSound } from './sound';
 
 interface IBattleProps {
   G: ISeabattleState;
@@ -11,6 +12,7 @@ interface IBattleProps {
   currentPlayer: string;
   step?: any;
   isAIGame?: boolean;
+  getSoundPref: () => boolean;
 }
 
 interface IBattleState {
@@ -76,6 +78,9 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       (salvo: ISalvo) => salvo.player === player,
     );
     const message = this._getMessage();
+    if (this.props.getSoundPref()) {
+    SeabattleSound(message);
+    }
     return (
       <div>
         <h2 style={{ textAlign: 'center' }}>{message}</h2>

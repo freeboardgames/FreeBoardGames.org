@@ -1,26 +1,34 @@
 import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 
+interface IOptionsProps {
+  setSoundPref: (arg0: boolean) => void;
+  getSoundPref: () => boolean;
+}
+
 interface IOptionsState {
   soundEnabled: boolean;
 }
 
-export class OptionsMenu extends React.Component<{}, IOptionsState> {
-  constructor(state: IOptionsState) {
-    super(state);
+export class OptionsMenu extends React.Component<IOptionsProps, IOptionsState> {
+  constructor(props: IOptionsProps, state: IOptionsState) {
+    super(props, state);
     this.state = {
       soundEnabled: true,
     };
   }
 
   render() {
-    const actionText = this.state.soundEnabled ? 'Disable' : 'Enable';
+    const actionText = this.props.getSoundPref() ? 'Disable' : 'Enable';
     const toggleText = `${actionText} sound`;
     return <MenuItem onClick={this._toggleSound}>{toggleText}</MenuItem>;
   }
 
   _toggleSound = () => {
+    console.log(`Sound was ${this.state.soundEnabled}`);
     const soundEnabled = this.state.soundEnabled ? false : true;
+    console.log(`Sound is now ${soundEnabled}`);
     this.setState({ ... this.state, soundEnabled });
+    this.props.setSoundPref(soundEnabled);
   }
 }

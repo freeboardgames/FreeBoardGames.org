@@ -12,56 +12,14 @@ import MissSound5 from './media/miss5.mp3';
 const HIT_SOUNDS = [HitSound1, HitSound2, HitSound3];
 const MISS_SOUNDS = [MissSound1, MissSound2, MissSound3, MissSound4, MissSound5];
 
-// Visible for testing only
-function isSalvoUpdate(gameArgs: IGameArgs, action: any): boolean {
-  if (gameArgs.mode === GameMode.OnlineFriend) {
-    if (action.type !== 'UPDATE') {
-      return false;
-    }
-    const moveLog = action.deltalog.find(
-      (entry: any) => entry.action.type === 'MAKE_MOVE' &&
-        entry.action.payload.type === 'salvo',
-    );
-    if (!moveLog) {
-      return false;
-    }
-    return true;
+export const SeabattleSound = (sound: string) => {
+  if (sound === 'HIT') {
+    const hitSound = new Audio(_getRandomSound('hit'));
+    hitSound.play();
+  } else if (sound === 'MISS') {
+    const missSound = new Audio(_getRandomSound('miss'));
+    missSound.play();
   }
-  if (action.payload.type === 'salvo') {
-    return true;
-  }
-  return false;
-}
-
-export const getSound = (gameArgs: IGameArgs, state: any, action: any): 'hit' | 'miss' | null => {
-  if (!isSalvoUpdate(gameArgs, action)) {
-    return null;
-  }
-  const salvos = (gameArgs.mode === GameMode.OnlineFriend) ? action.state.G.salvos : state.G.salvos;
-  const lastSalvo = salvos[salvos.length - 1];
-  if (lastSalvo.hit) {
-    return 'hit';
-  } else {
-    return 'miss';
-  }
-};
-
-export const SeabattleSound = (gameArgs: IGameArgs) => (store: any) => (next: any) => (action: any) => {
-  if (gameArgs.mode !== GameMode.OnlineFriend) {
-    next(action);
-  }
-  const state = store.getState();
-  const sound = getSound(gameArgs, state, action);
-  if (sound) {
-    if (sound === 'hit') {
-      const hitSound = new Audio(_getRandomSound('hit'));
-      hitSound.play();
-    } else {
-      const missSound = new Audio(_getRandomSound('miss'));
-      missSound.play();
-    }
-  }
-  return next(action);
 };
 
 const _getRandomSound = (type: 'hit' | 'miss') => {
