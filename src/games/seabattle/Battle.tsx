@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Radar } from './Radar';
 import { ISeabattleState, IShip, ISalvo, ICell } from './game';
