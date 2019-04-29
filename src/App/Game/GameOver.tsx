@@ -59,7 +59,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     );
   }
   _getOtherPlayerBoard = () => {
-    if (typeof this.props.extraCardContent === 'undefined') {
+    if (!this.props.extraCardContent) {
       return null;
     }
     const otherPlayerCard = (
