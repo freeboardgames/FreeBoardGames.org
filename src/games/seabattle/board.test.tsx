@@ -24,7 +24,7 @@ test('set ships', () => {
       <App playerID={'0'} gameID={'foo'} />
     </MemoryRouter>
   ));
-  comp.find('button').simulate('click');
+  comp.find('button').at(1).simulate('click');
   expect(comp.html()).to.contain('Waiting');
 });
 
@@ -51,7 +51,7 @@ test('start', () => {
   ));
   // First page must have some ships
   expect(comp.find('ShipsPlacement').length).to.equal(1);
-  comp.find('button').simulate('click');
+  comp.find('button').at(1).simulate('click');
 });
 
 test('waiting opponent', () => {

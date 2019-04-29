@@ -79,7 +79,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     );
     const message = this._getMessage();
     if (this.props.getSoundPref()) {
-    SeabattleSound(message);
+      SeabattleSound(message);
     }
     return (
       <div>

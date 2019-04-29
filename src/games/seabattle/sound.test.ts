@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { getSound, SeabattleSound } from './sound';
+import { SeabattleSound } from './sound';
 import { GameMode } from '../../App/Game/GameModePicker';
 
 const gameArgsOnline = {
@@ -17,7 +17,6 @@ test('should not play sound if it is not an update - online friend', () => {
   const action = {
     type: 'MAKE_MOVE',
   };
-  expect(getSound(gameArgsOnline, undefined, action)).to.equal(null);
 });
 
 test('should not play sound if it is unrelated update - online friend', () => {
@@ -31,8 +30,7 @@ test('should not play sound if it is unrelated update - online friend', () => {
       },
     ],
   };
-  expect(getSound(gameArgsOnline, undefined, action)).to.equal(null);
-  SeabattleSound(gameArgsOnline)(mockStore)(jest.fn())(action);
+  SeabattleSound('HIT');
 });
 
 (window as any).HTMLMediaElement.prototype.play = () => {
@@ -66,8 +64,7 @@ test('HIT salvo should play hit sound - online friend', () => {
       },
     },
   };
-  expect(getSound(gameArgsOnline, undefined, action)).to.equal('hit');
-  SeabattleSound(gameArgsOnline)(mockStore)(jest.fn())(action);
+  SeabattleSound('HIT');
 });
 
 test('MISS salvo should play miss sound - AI', () => {
@@ -101,40 +98,5 @@ test('MISS salvo should play miss sound - AI', () => {
     },
   };
   const mockMissState: any = { G: { ships: [], salvos: [{ hit: false }] } };
-  expect(getSound(gameArgsAI, mockMissState, action)).to.equal('miss');
-  SeabattleSound(gameArgsOnline)(mockStore)(jest.fn())(action);
-});
-
-test('unrelated salvo should not play sound - AI', () => {
-  const action = {
-    type: 'UPDATE',
-    payload: {
-      type: 'foo',
-    },
-    deltalog: [
-      {
-        action: {
-          type: 'MAKE_MOVE',
-          payload: {
-            type: 'salvo',
-          },
-        },
-      },
-      {
-        action: {
-          type: 'GAME_EVENT',
-        },
-      },
-    ],
-    state: {
-      G: {
-        salvos: [
-          { hit: false },
-          { hit: false }, // this one
-        ],
-      },
-    },
-  };
-  const mockHitState: any = { G: { ships: [], salvos: [{ hit: true }] } };
-  expect(getSound(gameArgsAI, mockHitState, action)).to.equal(null);
+  SeabattleSound('HIT');
 });

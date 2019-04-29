@@ -25,9 +25,7 @@ export class OptionsMenu extends React.Component<IOptionsProps, IOptionsState> {
   }
 
   _toggleSound = () => {
-    console.log(`Sound was ${this.state.soundEnabled}`);
     const soundEnabled = this.state.soundEnabled ? false : true;
-    console.log(`Sound is now ${soundEnabled}`);
     this.setState({ ... this.state, soundEnabled });
     this.props.setSoundPref(soundEnabled);
   }
