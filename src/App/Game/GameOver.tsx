@@ -14,7 +14,7 @@ import CardContent from '@material-ui/core/CardContent';
 export interface IGameOverProps {
   result: string;
   gameArgs?: IGameArgs;
-  otherPlayerBoard?: React.ReactNode;
+  extraCardContent?: React.ReactNode;
 }
 
 export class GameOver extends React.Component<IGameOverProps, {}> {
@@ -24,7 +24,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
         (this.props.gameArgs.mode === GameMode.LocalFriend)));
     let playAgainLink;
     let playAgainText;
-    const otherPlayerBoard = this._getOtherPlayerBoard();
+    const extraCardContent = this._getOtherPlayerBoard();
     if (playAgain) {
       playAgainLink = (
         <Button
@@ -53,19 +53,19 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
         <Typography variant="body1" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           {playAgainText}
         </Typography>
-        {otherPlayerBoard}
+        {extraCardContent}
         <GamesList />
       </FreeBoardGameBar>
     );
   }
   _getOtherPlayerBoard = () => {
-    if (typeof this.props.otherPlayerBoard === 'undefined') {
+    if (typeof this.props.extraCardContent === 'undefined') {
       return null;
     }
     const otherPlayerCard = (
       <Card>
         <CardContent style={{ paddingBottom: '12px' }}>
-          {this.props.otherPlayerBoard}
+          {this.props.extraCardContent}
         </CardContent>
       </Card>
     );

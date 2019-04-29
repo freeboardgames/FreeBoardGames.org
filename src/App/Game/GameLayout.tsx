@@ -8,7 +8,7 @@ interface IGameLayoutProps {
   children?: React.ReactNode;
   gameOver?: string;
   gameArgs?: IGameArgs;
-  otherPlayerBoard?: React.ReactNode;
+  extraCardContent?: React.ReactNode;
 }
 
 export class GameLayout extends React.Component<IGameLayoutProps, {}> {
@@ -18,7 +18,7 @@ export class GameLayout extends React.Component<IGameLayoutProps, {}> {
         <GameOver
           result={this.props.gameOver}
           gameArgs={this.props.gameArgs}
-          otherPlayerBoard={this.props.otherPlayerBoard}
+          extraCardContent={this.props.extraCardContent}
         />
       );
     } else {

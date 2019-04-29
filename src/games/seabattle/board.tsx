@@ -57,7 +57,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           editable={false}
         />);
       return (
-        <GameLayout gameOver={result} otherPlayerBoard={otherRadar} gameArgs={this.props.gameArgs} />
+        <GameLayout gameOver={result} extraCardContent={otherRadar} gameArgs={this.props.gameArgs} />
       );
     }
     let child;
