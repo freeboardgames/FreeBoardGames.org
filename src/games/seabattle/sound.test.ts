@@ -2,6 +2,13 @@ import { expect } from 'chai';
 import { SeabattleSound } from './sound';
 import { GameMode } from '../../App/Game/GameModePicker';
 
+// mock functions for HTMLMediaElement
+// https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395
+(window as any).HTMLMediaElement.prototype.load = () => { /* do nothing */ };
+(window as any).HTMLMediaElement.prototype.play = () => { /* do nothing */ };
+(window as any).HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
+(window as any).HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
+
 const gameArgsOnline = {
   gameCode: 'seabattle',
   mode: GameMode.OnlineFriend,
@@ -32,10 +39,6 @@ test('should not play sound if it is unrelated update - online friend', () => {
   };
   SeabattleSound('HIT');
 });
-
-(window as any).HTMLMediaElement.prototype.play = () => {
-  // Do nothing.
-};
 
 test('HIT salvo should play hit sound - online friend', () => {
   const action = {
