@@ -1,6 +1,4 @@
 import React from 'react';
-import PlacesCasino from '@material-ui/icons/Casino';
-import NavigationChevronRight from '@material-ui/icons/ChevronRight';
 import { GAMES_LIST } from '../games';
 import { GameCard } from '../App/Game/GameCard';
 import Typography from '@material-ui/core/Typography';

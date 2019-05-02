@@ -1,12 +1,10 @@
 import React from 'react';
-import ErrorPng from './media/error.png';
 import Button from '@material-ui/core/Button';
 import HomeIcon from '@material-ui/icons/Home';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FreeBoardGameBar from './FreeBoardGameBar';
 import SvgError from './media/SvgError';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
 import { Status } from 'rrc';
 
 interface IMessageState {
