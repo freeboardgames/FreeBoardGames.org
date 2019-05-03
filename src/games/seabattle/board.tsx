@@ -9,6 +9,7 @@ import ReactGA from 'react-ga';
 import { ISalvo, IShip } from './game';
 import { Battle } from './Battle';
 import { Radar } from './Radar';
+import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: any;
@@ -48,15 +49,20 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         (salvo: ISalvo) => salvo.player === player,
       );
       const ships: IShip[] = this.props.G.ships.filter((ship: any) => ship.player !== otherPlayer);
-      const otherRadar = (
-        <Radar
-          player={player}
-          ships={ships}
-          salvos={salvos}
-          editable={false}
-        />);
+      const extraCardContent = (
+        <div>
+          <Typography variant="title" align="center" style={{ marginTop: '0px', marginBottom: '16px' }}>
+            Your Opponent's Board
+          </Typography>
+          <Radar
+            player={player}
+            ships={ships}
+            salvos={salvos}
+            editable={false}
+          />
+        </div>);
       return (
-        <GameLayout gameOver={result} extraCardContent={otherRadar} gameArgs={this.props.gameArgs} />
+        <GameLayout gameOver={result} extraCardContent={extraCardContent} gameArgs={this.props.gameArgs} />
       );
     }
     let child;
