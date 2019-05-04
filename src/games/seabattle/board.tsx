@@ -48,7 +48,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       const salvos: ISalvo[] = this.props.G.salvos.filter(
         (salvo: ISalvo) => salvo.player === player,
       );
-      const ships: IShip[] = this.props.G.ships.filter((ship: any) => ship.player !== otherPlayer);
+      const ships: IShip[] = this.props.G.ships.filter((ship: any) => ship.player === otherPlayer);
       const extraCardContent = (
         <div>
           <Typography variant="title" align="center" style={{ marginTop: '0px', marginBottom: '16px' }}>
