@@ -114,9 +114,8 @@ export class Board extends React.Component<IBoardProps, {}> {
       if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
         this.props.step();
       }
-    } else {
-      this.setState({ ...this.state, selected: '', highlighted: '' });
     }
+    this.setState({ ...this.state, selected: '', highlighted: '' });
   }
 
   _shouldDrag = (coords: ICartesianCoords) => {
