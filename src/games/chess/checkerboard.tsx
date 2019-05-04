@@ -19,8 +19,6 @@ import { Grid } from '@freeboardgame.org/boardgame.io/ui';
  * with 1.
  *
  * Props:
- *   rows    - How many rows to show up, 8 by default.
- *   cols    - How many columns to show up, 8 by default. Maximum is 26.
  *   onClick - On Click Callback, (row, col) of the square passed as argument.
  *   primaryColor - Primary color, #d18b47 by default.
  *   secondaryColor - Secondary color, #ffce9e by default.
@@ -35,6 +33,8 @@ import { Grid } from '@freeboardgame.org/boardgame.io/ui';
  *   </Token>
  * </Checkerboard>
  */
+const NUM_COLS = 8;
+const NUM_ROWS = 8;
 export interface IAlgebraicCoords {
   square: string;
 }
@@ -46,8 +46,6 @@ export interface IColorMap {
   [key: string]: string;
 }
 interface ICheckerboardProps {
-  rows: number;
-  cols: number;
   onClick: (coords: ICartesianCoords) => void;
   invert: boolean;
   primaryColor: string;
@@ -57,24 +55,7 @@ interface ICheckerboardProps {
   children?: any;
 }
 export class Checkerboard extends React.Component<any, any> {
-  static propTypes = {
-    rows: PropTypes.number,
-    cols: PropTypes.number,
-    onClick: PropTypes.func,
-    primaryColor: PropTypes.string,
-    secondaryColor: PropTypes.string,
-    invert: PropTypes.bool,
-    highlightedSquares: PropTypes.object,
-    style: PropTypes.object,
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.element),
-      PropTypes.element,
-    ]),
-  };
-
   static defaultProps = {
-    rows: 8,
-    cols: 8,
     invert: false,
     primaryColor: '#d18b47',
     secondaryColor: '#ffce9e',
@@ -85,21 +66,21 @@ export class Checkerboard extends React.Component<any, any> {
 
   onClick(coords: ICartesianCoords) {
     const { x, y } = coords;
-    this.props.onClick({ square: this._cartesianToAlgebraic(x, y) });
+    this.props.onClick({ square: cartesianToAlgebraic(x, y, this.props.invert) });
   }
 
   render() {
     // Convert the square="" prop to x and y.
     const tokens = React.Children.map(this.props.children, (child: any) => {
       const square = child.props.square;
-      const { x, y } = this._algebraicToCartesian(square);
+      const { x, y } = algebraicToCartesian(square, this.props.invert);
       return React.cloneElement(child, { x, y });
     });
 
     // Build colorMap with checkerboard pattern.
     const colorMap = {} as IColorMap;
-    for (let x = 0; x < this.props.cols; x++) {
-      for (let y = 0; y < this.props.rows; y++) {
+    for (let x = 0; x < NUM_COLS; x++) {
+      for (let y = 0; y < NUM_ROWS; y++) {
         const key = `${x},${y}`;
         let color = this.props.secondaryColor;
         if ((x + y) % 2 === 0) {
@@ -111,15 +92,15 @@ export class Checkerboard extends React.Component<any, any> {
 
     // Add highlighted squares.
     for (const square of Object.keys(this.props.highlightedSquares)) {
-      const { x, y } = this._algebraicToCartesian(square);
+      const { x, y } = algebraicToCartesian(square, this.props.invert);
       const key = `${x},${y}`;
       colorMap[key] = this.props.highlightedSquares[square];
     }
 
     return (
       <Grid
-        rows={this.props.rows}
-        cols={this.props.cols}
+        rows={NUM_ROWS}
+        cols={NUM_COLS}
         style={this.props.style}
         onClick={this._onClick}
         colorMap={colorMap}
@@ -128,31 +109,39 @@ export class Checkerboard extends React.Component<any, any> {
       </Grid>
     );
   }
+}
 
-  _algebraicToCartesian(square: string) {
-    const regexp = /([A-Za-z])([0-9]+)/g;
-    const match = regexp.exec(square);
-    if (match == null) {
-      throw Error('Invalid square provided: ' + square);
-    }
-    const colSymbol = match[1].toLowerCase();
-    const col = colSymbol.charCodeAt(0) - 'a'.charCodeAt(0);
-    const row = parseInt(match[2], 10);
-    if (this.props.invert) {
-      return { x: this.props.cols - col - 1, y: row - 1 };
-    } else {
-      return { x: col, y: this.props.rows - row };
-    }
+/**
+ * Given an algebraic notation, returns x and y values.
+ * Example: A1 returns { x: 0, y: 0 }
+ */
+export function algebraicToCartesian(square: string, invert?: boolean) {
+  const regexp = /([A-Za-z])([0-9]+)/g;
+  const match = regexp.exec(square);
+  if (match == null) {
+    throw Error('Invalid square provided: ' + square);
   }
+  const colSymbol = match[1].toLowerCase();
+  const col = colSymbol.charCodeAt(0) - 'a'.charCodeAt(0);
+  const row = parseInt(match[2], 10);
+  if (invert) {
+    return { x: NUM_COLS - col - 1, y: row - 1 };
+  } else {
+    return { x: col, y: NUM_ROWS - row };
+  }
+}
 
-  _cartesianToAlgebraic(x: number, y: number) {
-    if (this.props.invert) {
-      const colSymbol = String.fromCharCode(
-        (this.props.cols - x - 1) + 'a'.charCodeAt(0));
-      return colSymbol + (y + 1);
-    } else {
-      const colSymbol = String.fromCharCode(x + 'a'.charCodeAt(0));
-      return colSymbol + (this.props.rows - y);
-    }
+/**
+ * Given an x and y values, returns algebraic notation.
+ * Example: 0, 0 returns A1
+ */
+export function cartesianToAlgebraic(x: number, y: number, invert?: boolean) {
+  if (invert) {
+    const colSymbol = String.fromCharCode(
+      (NUM_COLS - x - 1) + 'a'.charCodeAt(0));
+    return colSymbol + (y + 1);
+  } else {
+    const colSymbol = String.fromCharCode(x + 'a'.charCodeAt(0));
+    return colSymbol + (NUM_ROWS - y);
   }
 }
