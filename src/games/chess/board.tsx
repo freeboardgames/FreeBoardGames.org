@@ -9,7 +9,7 @@
 import React from 'react';
 
 import Chess from './chessjswrapper';
-import { Checkerboard, IAlgebraicCoords, IColorMap } from './checkerboard';
+import { Checkerboard, IAlgebraicCoords, ICartesianCoords, IColorMap, cartesianToAlgebraic } from './checkerboard';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
@@ -24,7 +24,7 @@ import AlertLayer from '../../App/Game/AlertLayer';
 import ReactGA from 'react-ga';
 
 const COL_NAMES = 'abcdefgh';
-const SELECTED_COLOR = 'green';
+const HIGHLIGHTED_COLOR = 'green';
 const MOVABLE_COLOR = 'palegreen';
 const MOVED_COLOR = '#CCE5FF';
 
@@ -38,13 +38,19 @@ interface IBoardProps {
   isConnected: boolean;
   gameArgs?: IGameArgs;
 }
-
+interface IOnDragData {
+  x: number;
+  y: number;
+  originalX: number;
+  originalY: number;
+}
 export class Board extends React.Component<IBoardProps, {}> {
   chess = Chess();
   state = {
     selected: '',
+    highlighted: '',
+    dragged: '',
   };
-  _click = this.click.bind(this);
 
   render() {
     if (this.props.G.pgn) {
@@ -84,7 +90,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
   }
 
-  click(coords: IAlgebraicCoords) {
+  _click = (coords: IAlgebraicCoords) => {
     ReactGA.event({
       category: 'ChessGame',
       action: 'click',
@@ -95,27 +101,65 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     if (!this.state.selected && this._isSelectable(square)) {
+      this.setState({ ...this.state, selected: square, highlighted: square });
+    } else if (this.state.selected) {
+      this._tryMove(this.state.selected, square);
+    }
+  }
+
+  _tryMove(from: string, to: string) {
+    const moves = this._getMoves();
+    const move = moves.find(m => m.from === from && m.to === to);
+    if (move) {
+      this.props.moves.move(move.san);
+      if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
+        this.props.step();
+      }
+    } else {
+      this.setState({ ...this.state, selected: '', highlighted: '' });
+    }
+  }
+
+  _shouldDrag = (coords: ICartesianCoords) => {
+    const x = coords.x;
+    const y = coords.y;
+    const square = cartesianToAlgebraic(x, y);
+    const result = this.props.isActive && this._isSelectable(square);
+    if (result) {
       this.setState({
         ...this.state,
-        selected: square,
+        dragged: this._getInitialCell(square),
       });
+      return true;
     }
+  }
 
-    if (this.state.selected) {
-      const moves = this._getMoves();
-      const move = moves.find((m: any) => {
-        return m.from === this.state.selected && m.to === square;
+  _onDrag = (data: IOnDragData) => {
+    const x = data.x;
+    const y = data.y;
+    const originalX = data.originalX;
+    const originalY = data.originalY;
+    if (Math.sqrt((x - originalX) ** 2 + (y - originalY) ** 2) > 0.2) {
+      this.setState({
+        ...this.state,
+        selected: this._getSquare(originalX, originalY),
+        highlighted: this._getSquare(x, y),
       });
-      if (move) {
-        this.props.moves.move(move.san);
-        if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
-          this.props.step();
-        }
-      }
+    } else {
       this.setState({
         ...this.state,
         selected: '',
+        highlighted: '',
       });
+    }
+  }
+
+  _onDrop = (coords: ICartesianCoords) => {
+    const x = coords.x;
+    const y = coords.y;
+    if (this.state.selected) {
+      this.setState({ ...this.state, dragged: '' });
+      this._tryMove(this.state.selected, this._getSquare(x, y));
     }
   }
 
@@ -129,36 +173,53 @@ export class Board extends React.Component<IBoardProps, {}> {
         result[lastMove.to] = MOVED_COLOR;
       }
     }
-    if (this.state.selected) {
-      result[this.state.selected] = SELECTED_COLOR;
-    }
     for (const move of this._getMoves()) {
       result[move.to] = MOVABLE_COLOR;
+    }
+    if (this.state.highlighted) {
+      result[this.state.highlighted] = HIGHLIGHTED_COLOR;
     }
     return result;
   }
 
+  _getSquare(x: number, y: number) {
+    return cartesianToAlgebraic(this._getInRange(x), this._getInRange(y));
+  }
+
+  _getInRange(x: number) {
+    return Math.max(Math.min(Math.round(x), 7), 0);
+  }
+
   _getPieces() {
+    const dragged = [];
     const result = [];
     for (let y = 1; y <= 8; y++) {
       for (let x = 0; x < 8; x++) {
         const square = COL_NAMES[x] + y;
-        const p = this.chess.get(square);
-        if (p) {
-          result.push(
+        const piece = this.chess.get(square);
+        if (piece) {
+          const token = (
             <Token
+              draggable={true}
+              shouldDrag={this._shouldDrag}
+              onDrag={this._onDrag}
+              onDrop={this._onDrop}
               square={square}
               animate={true}
               key={this._getInitialCell(square)}
-              onClick={this._click}
             >
-              {this._getPieceByTypeAndColor(p.type, p.color)}
-            </Token>,
+              {this._getPieceByTypeAndColor(piece.type, piece.color)}
+            </Token>
           );
+          if (square === this.state.dragged) {
+            result.push(token);
+          } else {
+            dragged.push(token);
+          }
         }
       }
     }
-    return result;
+    return dragged.concat(result);
   }
 
   _getPieceByTypeAndColor(type: string, color: string) {
