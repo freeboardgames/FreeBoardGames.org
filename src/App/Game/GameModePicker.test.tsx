@@ -11,9 +11,9 @@ describe('Game Mode Picker', () => {
   it('should show all 5 options and accept clicks', () => {
     const historyMock = { push: jest.fn() };
     const modesMock: IGameModeInfo[] = [
-      { mode: GameMode.AI, cardDescription: 'foo AI' },
-      { mode: GameMode.OnlineFriend, cardDescription: 'online' },
-      { mode: GameMode.LocalFriend, cardDescription: 'local' },
+      { mode: GameMode.AI },
+      { mode: GameMode.OnlineFriend },
+      { mode: GameMode.LocalFriend },
     ];
     const wrapper = mount((
       <MemoryRouter>
@@ -28,7 +28,6 @@ describe('Game Mode Picker', () => {
     const modesMock: IGameModeInfo[] = [
       {
         mode: GameMode.AI,
-        cardDescription: 'foo AI',
         extraInfo: { type: 'slider', min: 1, max: 8 } as IGameModeExtraInfoSlider,
       },
     ];
@@ -71,7 +70,6 @@ function makeDropdownWrapper() {
   const modesMock: IGameModeInfo[] = [
     {
       mode: GameMode.AI,
-      cardDescription: 'foo AI',
       extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
     },
   ];
