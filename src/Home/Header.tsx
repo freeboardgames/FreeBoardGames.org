@@ -2,9 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import CodeIcon from '@material-ui/icons/Code';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
 
 class Header extends React.Component<{}, {}> {
   render() {

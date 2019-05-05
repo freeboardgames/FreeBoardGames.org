@@ -7,12 +7,10 @@
  */
 
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { Circle, Cross, Lines } from './Shapes';
-import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: any;
@@ -25,10 +23,6 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
-  private lineStyle = {
-    stroke: 'white',
-    strokeWidth: .05,
-  };
 
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
@@ -100,12 +94,6 @@ export class Board extends React.Component<IBoardProps, {}> {
         <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />
       );
     }
-    const cellStyle = {
-      border: '1px solid #555',
-      width: '50px',
-      height: '50px',
-      lineHeight: '50px',
-    };
     const cells = [];
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {

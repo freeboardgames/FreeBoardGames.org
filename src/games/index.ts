@@ -20,7 +20,7 @@ export const GAMES_LIST: IGameDef[] = [
 export interface IGameConfig {
   bgioGame: any;
   bgioBoard: any;
-  enhancer?: any;
+  enhancers?: any;
   debug?: boolean;
 }
 

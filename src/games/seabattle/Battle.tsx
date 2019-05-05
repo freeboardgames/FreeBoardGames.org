@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Radar } from './Radar';
 import { ISeabattleState, IShip, ISalvo, ICell } from './game';
 
 interface IBattleProps {
   G: ISeabattleState;
+  ctx: any;
   moves: any;
   playerID: string;
   currentPlayer: string;
@@ -78,7 +78,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     const message = this._getMessage();
     return (
       <div>
-        <h2 style={{ textAlign: 'center' }}>{message}</h2>
+        {message}
         <Radar
           player={player}
           ships={ships}
@@ -92,13 +92,18 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
   }
 
   _getMessage() {
-    if (this.state.showSalvo) {
-      return (this.state.salvo.hit) ? 'HIT' : 'MISS';
-    } else if (this.state.playerID === this.state.currentPlayer) {
-      return 'CLICK TO SHOOT';
-    } else {
-      return 'Waiting for opponent...';
+    if (this.props.ctx.gameover) {
+      return null;
     }
+    let text;
+    if (this.state.showSalvo) {
+      text = (this.state.salvo.hit) ? 'HIT' : 'MISS';
+    } else if (this.state.playerID === this.state.currentPlayer) {
+      text = 'CLICK TO SHOOT';
+    } else {
+      text = 'Waiting for opponent...';
+    }
+    return (<h2 style={{ textAlign: 'center' }}>{text}</h2>);
   }
 
   _animate(now: number) {

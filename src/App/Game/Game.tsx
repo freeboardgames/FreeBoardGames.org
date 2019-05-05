@@ -5,6 +5,7 @@ import { gameBoardWrapper } from './GameBoardWrapper';
 import { GameMode } from './GameModePicker';
 import getMessagePage from '../MessagePage';
 import MessagePageClass from '../MessagePageClass';
+import { applyMiddleware } from 'redux';
 
 interface IGameProps {
   match?: any;
@@ -91,27 +92,32 @@ export default class Game extends React.Component<IGameProps, {}> {
   render() {
     const aiLevel = this.props.match.params.aiLevel;
     const matchCode = this.props.match.params.matchCode;
-    const playerID = this.props.match.params.playerID || '0';
+    const playerID = this.props.match.params.playerID;
     if (!this.gameDef) {
       return <MessagePageClass type={'error'} message={'Game Not Found'} />;
     }
     if (!state.loading && state.config) {
+      const gameArgs = {
+        gameCode: this.gameCode,
+        mode: this.mode,
+        matchCode,
+        playerID,
+      };
       const clientConfig: any = {
         game: state.config.bgioGame,
         debug: state.config.debug || false,
         loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
           board: state.config.bgioBoard,
-          gameArgs: {
-            gameCode: this.gameCode,
-            mode: this.mode,
-            matchCode,
-            playerID,
-          },
+          gameArgs,
         }),
       };
-      if (state.config.enhancer) {
-        clientConfig.enhancer = state.config.enhancer;
+      if (state.config.enhancers) {
+        const enhancers = [];
+        for (const enhancer of state.config.enhancers) {
+          enhancers.push(enhancer(gameArgs));
+        }
+        clientConfig.enhancer = applyMiddleware(...enhancers);
       }
       if (this.loadAI) {
         clientConfig.ai = state.ai.bgioAI(aiLevel);

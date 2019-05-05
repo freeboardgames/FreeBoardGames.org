@@ -4,9 +4,7 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
@@ -80,6 +78,22 @@ class About extends React.Component<{}, {}> {
           <List>
             <ListItem>
               <ListItemText
+                primary="Seabattle hit sound by fridobeck"
+              />
+              <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
+                freesound.org
+              </Button>
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Seabattle hit sound by qubodup"
+              />
+              <Button size="small" color="primary" href="https://freesound.org/people/qubodup/sounds/182429/">
+                freesound.org
+              </Button>
+            </ListItem>
+            <ListItem>
+              <ListItemText
                 primary="Seabattle miss sound by InspectorJ"
               />
               <Button size="small" color="primary" href="https://freesound.org/people/InspectorJ/sounds/352103/">
@@ -88,9 +102,9 @@ class About extends React.Component<{}, {}> {
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Seabattle hit sound by fridobeck"
+                primary="Seabattle miss sound by CGEffex"
               />
-              <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
+              <Button size="small" color="primary" href="https://freesound.org/people/CGEffex/sounds/98335/">
                 freesound.org
               </Button>
             </ListItem>

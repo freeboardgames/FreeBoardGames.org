@@ -1,16 +1,18 @@
 import { GAMES_LIST } from './games';
 
 export interface IPageMetadata {
-  title: string; description: string;
+  title: string;
+  description?: string;
   url?: RegExp;
+  noindex?: boolean;
 }
 
 const TITLE_PREFIX = 'FreeBoardGame.org - ';
 
 const DEFAULT_METADATA: IPageMetadata = {
-  title: TITLE_PREFIX + 'Play Free Board Games Online',
-  description: 'Play board games in your browser for free. \
-Compete against your online friends or play locally. Free and open-source software project.',
+  title: TITLE_PREFIX,
+  description: 'Free Board Game',
+  noindex: true,
 };
 
 // Most specific URLs MUST come first.
@@ -20,6 +22,12 @@ const PAGES_METADATA: IPageMetadata[] = [
     description: 'About FreeBoardGame.org, a free and open-source software project.',
     url: new RegExp('^/about', 'i'),
   },
+  {
+    title: TITLE_PREFIX + 'Play Free Board Games Online',
+    description: `Play board games in your browser for free. \
+Compete against your online friends or play locally. Free and open-source software project.`,
+    url: new RegExp('^/$', 'i'),
+  },
 ];
 
 function getGamesPageMetadata(): IPageMetadata[] {
@@ -27,7 +35,7 @@ function getGamesPageMetadata(): IPageMetadata[] {
     ({
       title: TITLE_PREFIX + `Play Free ${gameDef.name} Online`,
       description: gameDef.descriptionTag,
-      url: new RegExp(`^/g/${gameDef.code}`, 'i'),
+      url: new RegExp(`^/g/${gameDef.code}$`, 'i'),
     }));
 }
 

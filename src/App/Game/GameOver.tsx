@@ -8,10 +8,13 @@ import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ReactGA from 'react-ga';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 export interface IGameOverProps {
   result: string;
   gameArgs?: IGameArgs;
+  extraCardContent?: React.ReactNode;
 }
 
 export class GameOver extends React.Component<IGameOverProps, {}> {
@@ -21,6 +24,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
         (this.props.gameArgs.mode === GameMode.LocalFriend)));
     let playAgainLink;
     let playAgainText;
+    const extraCardContent = this._getOtherPlayerBoard();
     if (playAgain) {
       playAgainLink = (
         <Button
@@ -49,9 +53,23 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
         <Typography variant="body1" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           {playAgainText}
         </Typography>
+        {extraCardContent}
         <GamesList />
       </FreeBoardGameBar>
     );
+  }
+  _getOtherPlayerBoard = () => {
+    if (!this.props.extraCardContent) {
+      return null;
+    }
+    const otherPlayerCard = (
+      <Card>
+        <CardContent style={{ paddingBottom: '12px' }}>
+          {this.props.extraCardContent}
+        </CardContent>
+      </Card>
+    );
+    return otherPlayerCard;
   }
   _refreshPage = (gameArgs: IGameArgs) => (event: React.MouseEvent<HTMLElement>) => {
     ReactGA.event({

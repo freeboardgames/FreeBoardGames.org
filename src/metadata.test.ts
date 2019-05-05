@@ -17,6 +17,7 @@ describe('Metadata', () => {
 
     metadata = getPageMetadata('/g/chess');
     expect(metadata.title).to.contain(TITLE_PREFIX);
+
     expect(metadata.title).to.contain('Chess');
     expect(metadata.description).to.contain('chess');
 

@@ -20,7 +20,6 @@ import Knight from './pieces/knight';
 import Pawn from './pieces/pawn';
 import Queen from './pieces/queen';
 import Rook from './pieces/rook';
-import AlertLayer from '../../App/Game/AlertLayer';
 import ReactGA from 'react-ga';
 
 const COL_NAMES = 'abcdefgh';
@@ -115,9 +114,8 @@ export class Board extends React.Component<IBoardProps, {}> {
       if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
         this.props.step();
       }
-    } else {
-      this.setState({ ...this.state, selected: '', highlighted: '' });
     }
+    this.setState({ ...this.state, selected: '', highlighted: '' });
   }
 
   _shouldDrag = (coords: ICartesianCoords) => {
