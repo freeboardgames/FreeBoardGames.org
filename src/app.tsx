@@ -10,11 +10,11 @@ import i18n from './App/i18n';
 
 const app = (
   <AsyncComponentProvider>
-    <I18nextProvider i18n={i18n}>
-      <BrowserRouter>
+    <BrowserRouter>
+      <I18nextProvider i18n={i18n}>
         <App />
-      </BrowserRouter>
-    </I18nextProvider>
+      </I18nextProvider>
+    </BrowserRouter>
   </AsyncComponentProvider>
 );
 
