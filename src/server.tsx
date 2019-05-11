@@ -1,17 +1,12 @@
 import React from 'react';
-import Koa from 'koa';
 import Router from 'koa-router';
-import KoaSend from 'koa-send';
 import KoaStatic from 'koa-static';
-import KoaHelmet from 'koa-helmet';
 import fs from 'fs';
 import ReactDOMServer from 'react-dom/server';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
-import serialize from 'serialize-javascript';
 import { StaticRouter } from 'react-router-dom';
 import { GAMES_LIST } from './games';
-import { GameMode } from './App/Game/GameModePicker';
 import { getPageMetadata, IPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
@@ -22,7 +17,6 @@ const HOST = '0.0.0.0';
 const PORT = process.env.PORT || 8000;
 const NODE_ENV = process.env.NODE_ENV;
 const PROD = NODE_ENV === 'production';
-const DEV = !PROD;
 
 const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *',
   'Disallow: /', ''].join('\n');
@@ -58,8 +52,6 @@ function renderHtml(layout: string, metadata: IPageMetadata, reactHtml: string) 
 const renderSite = async (url: string) => {
   const asyncContext = createAsyncContext();
   const metadata = getPageMetadata(url);
-  const title = metadata.title;
-  const description = metadata.description;
   const context = {};
   const app = (
     <AsyncComponentProvider asyncContext={asyncContext}>
