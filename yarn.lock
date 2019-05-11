@@ -632,6 +632,13 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
+"@babel/runtime@^7.3.1":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.4.tgz#dc2e34982eb236803aa27a07fea6857af1b9171d"
+  integrity sha512-w0+uT71b6Yi7i5SE0co4NioIpSYS6lLiXvCzWzGSKvpK5vdQtCbICHMj+gbAKAOtxiV6HsVh/MBdaF9EQ6faSg==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.0.0", "@babel/template@^7.1.0", "@babel/template@^7.1.2", "@babel/template@^7.2.2":
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.2.2.tgz#005b3fdf0ed96e88041330379e0da9a708eb2907"
@@ -1193,10 +1200,10 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
 
-"@types/react-dom@^16.0.11":
-  version "16.0.11"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.11.tgz#bd10ccb0d9260343f4b9a49d4f7a8330a5c1f081"
-  integrity sha512-x6zUx9/42B5Kl2Vl9HlopV8JF64wLpX3c+Pst9kc1HgzrsH+mkehe/zmHMQTplIrR48H2gpU7ZqurQolYu8XBA==
+"@types/react-dom@^16.8.4":
+  version "16.8.4"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.8.4.tgz#7fb7ba368857c7aa0f4e4511c4710ca2c5a12a88"
+  integrity sha512-eIRpEW73DCzPIMaNBDP5pPIpK1KXyZwNgfxiVagb5iGiz6da+9A5hslSX6GAQKdO7SayVCS/Fr2kjqprgAvkfA==
   dependencies:
     "@types/react" "*"
 
@@ -1224,10 +1231,18 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.1":
+"@types/react@*":
   version "16.8.1"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.1.tgz#b431b104ecc6febda170b718caa9f50be66a6750"
   integrity sha512-tD1ETKJcuhANOejRc/p7OgQ16DKnbGi0M3LccelKlPnUCDp2a5koVxZFoRN9HN+A+m84HB5VGN7I+r3nNhS3PA==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/react@^16.8.17":
+  version "16.8.17"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.17.tgz#f287b76a5badb93bc9aa3f54521a3eb53d6c2374"
+  integrity sha512-pln3mgc6VfkNg92WXODul/ONo140huK9OMsx62GlBlZ2lvjNK86PQJhYMPLO1i66aF5O9OPyZefogvNltBIszA==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -4148,6 +4163,13 @@ html-minifier@^3.2.3:
     relateurl "0.2.x"
     uglify-js "3.4.x"
 
+html-parse-stringify2@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/html-parse-stringify2/-/html-parse-stringify2-2.0.1.tgz#dc5670b7292ca158b7bc916c9a6735ac8872834a"
+  integrity sha1-3FZwtyksoVi3vJFsmmc1rIhyg0o=
+  dependencies:
+    void-elements "^2.0.1"
+
 html-webpack-harddisk-plugin@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/html-webpack-harddisk-plugin/-/html-webpack-harddisk-plugin-1.0.1.tgz#4fc034d3440ec2a223dbe8fa1a5a2eb905e86fa5"
@@ -4237,6 +4259,23 @@ hyphenate-style-name@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.3.tgz#097bb7fa0b8f1a9cf0bd5c734cf95899981a9b48"
   integrity sha512-EcuixamT82oplpoJ2XU4pDtKGWQ7b00CD9f1ug9IaQ3p1bkHMiKCZ9ut9QDI6qsa6cpUuB+A/I+zLtdNK4n2DQ==
+
+i18next-browser-languagedetector@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-3.0.1.tgz#a47c43176e8412c91e808afb7c6eb5367649aa8e"
+  integrity sha512-WFjPLNPWl62uu07AHY2g+KsC9qz0tyMq+OZEB/H7N58YKL/JLiCz9U709gaR20Mule/Ppn+uyfVx5REJJjn1HA==
+
+i18next-xhr-backend@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/i18next-xhr-backend/-/i18next-xhr-backend-2.0.1.tgz#7af735ee1b0c6d4ce49fa5756591040a0fba6db7"
+  integrity sha512-CP0XPjJsTE4hY1rM1KXFYo63Ib61EBLEcTvMDyJwr0vs9p/UTuA3ENCmzSs9+ghZgWSjdOigc0oUERHaxctbsQ==
+
+i18next@^15.1.0:
+  version "15.1.0"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.1.0.tgz#4c2749a8158a6bf7b67da129b61c60e2d60e0d72"
+  integrity sha512-7cCrVn/BcoSOGJwTilAjGgWWzUDg4scTLX1sIBMWq6QjYYBrT+ChSAvmgVyQxkHinaIcswC04XK6l15RxM4Dkg==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
 
 iconv-lite@0.4.23:
   version "0.4.23"
@@ -6975,15 +7014,15 @@ react-cookies@^0.1.0:
     cookie "^0.3.1"
     object-assign "^4.1.1"
 
-react-dom@^16.7.0:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.7.0.tgz#a17b2a7ca89ee7390bc1ed5eb81783c7461748b8"
-  integrity sha512-D0Ufv1ExCAmF38P2Uh1lwpminZFRXEINJe53zRAbm4KPwSyd6DY/uDoS0Blj9jvPpn1+wivKpZYc8aAAN/nAkg==
+react-dom@^16.8.6:
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
+  integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.12.0"
+    scheduler "^0.13.6"
 
 react-dragtastic@^2.4.3:
   version "2.4.3"
@@ -7005,6 +7044,14 @@ react-ga@^2.5.7:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.5.7.tgz#1c80a289004bf84f84c26d46f3a6a6513081bf2e"
   integrity sha512-UmATFaZpEQDO96KFjB5FRLcT6hFcwaxOmAJZnjrSiFN/msTqylq9G+z5Z8TYzN/dbamDTiWf92m6MnXXJkAivQ==
+
+react-i18next@^10.9.0:
+  version "10.9.0"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-10.9.0.tgz#fdbb83d0d7a5bc7638e58088833f55581ec13f4e"
+  integrity sha512-jnutkawC0UVUCwcMPtLiLmCi1HjcHkKla+QiAAYy23SR3mEJtDXvd7ztI08vOHYNT2eUPqdPrdiD6/Xc607CGA==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    html-parse-stringify2 "2.0.1"
 
 react-is@^16.6.3:
   version "16.8.4"
@@ -7092,15 +7139,15 @@ react@^15.5.4:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react@^16.7.0:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.7.0.tgz#b674ec396b0a5715873b350446f7ea0802ab6381"
-  integrity sha512-StCz3QY8lxTb5cl2HJxjwLFOXPIFQp+p+hxQfc8WE0QiLfCtIlKj8/+5tjjKm8uSTlAW+fCPaavGFS06V9Ar3A==
+react@^16.8.6:
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
+  integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.12.0"
+    scheduler "^0.13.6"
 
 read-pkg-up@^4.0.0:
   version "4.0.0"
@@ -7227,6 +7274,11 @@ regenerator-runtime@^0.12.0:
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
   integrity sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg==
+
+regenerator-runtime@^0.13.2:
+  version "0.13.2"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.2.tgz#32e59c9a6fb9b1a4aff09b4930ca2d4477343447"
+  integrity sha512-S/TQAZJO+D3m9xeN1WTI8dLKBBiRgXBlTJvbWjCThHWZj9EvHK70Ff50/tYj2J/fvBY6JtFVwRuazHN2E7M9BA==
 
 regenerator-transform@^0.13.3:
   version "0.13.3"
@@ -7563,6 +7615,14 @@ scheduler@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.12.0.tgz#8ab17699939c0aedc5a196a657743c496538647b"
   integrity sha512-t7MBR28Akcp4Jm+QoR63XgAi9YgCUmgvDHqf5otgAj4QvdoBE4ImCX0ffehefePPG+aitiYHp0g/mW6s4Tp+dw==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+scheduler@^0.13.6:
+  version "0.13.6"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.6.tgz#466a4ec332467b31a91b9bf74e5347072e4cd889"
+  integrity sha512-IWnObHt413ucAYKsD9J1QShUKkbKLQQHdxRyw73sw4FN26iWr3DY/H34xGPe4nmL1DwXyWmSWmMrA9TfQbE/XQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -8712,6 +8772,11 @@ vm-browserify@0.0.4:
   integrity sha1-XX6kW7755Kb/ZflUOOCofDV9WnM=
   dependencies:
     indexof "0.0.1"
+
+void-elements@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
+  integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
