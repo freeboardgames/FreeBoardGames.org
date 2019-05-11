@@ -706,10 +706,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@freeboardgame.org/boardgame.io@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.4.tgz#a51e49ae4327c78015b5de1c7b3ec783b89a2eb2"
-  integrity sha512-hXIUj+iS+CUbWp+eMVAwn3YfsWMSYMLqpZFMXYlbQCKDwPCH/O8ybtMDiNqv96DGyvAomRV1GSGcjI9O3lbc5Q==
+"@freeboardgame.org/boardgame.io@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.6.tgz#e9788edeb01ef4a687988fdea582aeeb8ca84c76"
+  integrity sha512-wEhN3vf86c5DR+RjxgOpzfH6PszZJYBQyZTuPKyM94aO/6cw1cSbHTXbSW4sO+NGQcViPtKVcQVZvRXNv0+cvw==
   dependencies:
     "@koa/cors" "^2.2.1"
     flatted "^0.2.3"
