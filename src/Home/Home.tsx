@@ -4,11 +4,7 @@ import Header from './Header';
 import { GamesList } from '../App/GamesList';
 import { Link } from 'react-router-dom';
 
-interface IHomeProps {
-  t: any;
-}
-
-class Home extends React.Component<IHomeProps, {}> {
+class Home extends React.Component<{}, {}> {
   render() {
     return (
       <FreeBoardGameBar>
@@ -17,7 +13,7 @@ class Home extends React.Component<IHomeProps, {}> {
         <p style={{ fontSize: '12px', textAlign: 'center' }}>
           Made with ♥&nbsp;-&nbsp;
           <Link to="/about">
-            {this.props.t('About')}
+            About
           </Link>
         </p>
       </FreeBoardGameBar>

@@ -4,13 +4,15 @@ import CodeIcon from '@material-ui/icons/Code';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Typography from '@material-ui/core/Typography';
 import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 class Header extends React.Component<{}, {}> {
   render() {
+    const { t, i18n } = useTranslation();
     return (
       <div>
         <Typography variant="title" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
-          <Trans>headerTitle</Trans>
+          {t('headerTitle')}
         </Typography>
         <Typography variant="body1" gutterBottom={true} style={{ marginTop: '16px' }}>
           <Trans i18nKey="headerBody">
