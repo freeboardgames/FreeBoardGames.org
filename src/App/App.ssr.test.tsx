@@ -10,6 +10,8 @@ import { GameSharing } from './Game/GameSharing';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { GAMES_LIST } from '../games';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n';
 
 (global as any).navigator = { userAgent: 'all' };
 
@@ -21,7 +23,9 @@ describe('App', () => {
     const app = (
       <AsyncComponentProvider asyncContext={asyncContext}>
         <StaticRouter location={'/'} context={context}>
-          <App />
+          <I18nextProvider i18n={i18n}>
+            <App />
+          </I18nextProvider>
         </StaticRouter>
       </AsyncComponentProvider>
     );
