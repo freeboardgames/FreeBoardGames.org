@@ -103,10 +103,14 @@ export default class Game extends React.Component<IGameProps, {}> {
         matchCode,
         playerID,
       };
+      if (typeof window !== 'undefined') {
+        const bgioServer = process.env.BGIO_SERVER_URL || `${window.location.host}:8001`;
+      }
       const clientConfig: any = {
         game: state.config.bgioGame,
         debug: state.config.debug || false,
-        server: process.env.BGIO_SERVER_URL || undefined,
+        server: typeof window !== 'undefined' ?
+          process.env.BGIO_SERVER_URL || `${window.location.host}:8001` : 'localhost:8001',
         loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
           board: state.config.bgioBoard,

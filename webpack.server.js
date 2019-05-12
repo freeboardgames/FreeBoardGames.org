@@ -10,7 +10,8 @@ var config = {
   externals: [nodeExternals()],
   
   entry: {
-    server: path.resolve(__dirname, 'src/server.tsx'),
+    server_fbg: path.resolve(__dirname, 'src/server_fbg.tsx'),
+    server_bgio: path.resolve(__dirname, 'src/server_bgio.tsx'),
   },
 
   output: {

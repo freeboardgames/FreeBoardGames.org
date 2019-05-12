@@ -13,7 +13,7 @@ module.exports = merge(common, {
   plugins: [
     new WebpackShellPlugin({
        onBuildEnd: {
-         scripts: ['node server-build/server.js'],
+         scripts: ['node server-build/server_fbg.js','node server-build/server_bgio.js'],
          blocking: false,
          parallel: true
        }
