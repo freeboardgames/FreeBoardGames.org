@@ -1,6 +1,7 @@
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const WebpackShellPlugin = require('webpack-shell-plugin-next');
+const webpack = require('webpack');
 
 module.exports = merge(common, {
   mode: 'development',
@@ -16,6 +17,9 @@ module.exports = merge(common, {
          blocking: false,
          parallel: true
        }
-    })
+    }),
+    new webpack.EnvironmentPlugin({
+      BGIO_SERVER_URL: ''
+    }),
   ]
 });
