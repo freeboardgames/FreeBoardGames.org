@@ -60,3 +60,17 @@ export const VALID_SETUP_SECOND_PLAYER: IShip[] = VALID_SETUP_FIRST_PLAYER.map((
   player: 1,
   id: 'second ' + ship.id,
 }));
+
+export const VALID_SETUP_PLAYER_LOST0: IShip[] = VALID_SETUP_FIRST_PLAYER.map((ship) => ({
+  ...ship,
+  player: 0,
+  id: 'second ' + ship.id,
+  sunk: ship.id === '5' ? false : true,
+}));
+
+export const VALID_SETUP_PLAYER_LOST1: IShip[] = VALID_SETUP_FIRST_PLAYER.map((ship) => ({
+  ...ship,
+  player: 1,
+  id: 'second ' + ship.id,
+  sunk: ship.id === '5' ? false : true,
+}));

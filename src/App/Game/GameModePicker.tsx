@@ -27,7 +27,6 @@ interface IGameModePickerState {
 
 export interface IGameModeInfo {
   mode: GameMode;
-  cardDescription: string;
   extraInfo?: IGameModeExtraInfo;
 }
 
@@ -55,7 +54,7 @@ export enum GameMode {
 export class GameModePicker extends React.Component<IGameModePickerProps, IGameModePickerState> {
   state = { extraInfo: {} };
   _getLink = (to: string) => (props: any) => {
-    return React.createElement(Link, { ...props, to }, props.children);
+    return React.createElement(Link, { ...props, to, rel: 'nofollow' }, props.children);
   }
 
   _handleSliderChange = (mode: GameMode) => (event: any, value: number) => {
@@ -97,18 +96,22 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
 
   _getCard(info: IGameModeInfo) {
     let title;
+    let description;
     let icon;
     switch (info.mode) {
       case GameMode.AI:
         title = 'Computer (AI)';
+        description = 'Play against the computer in your browser.';
         icon = <AndroidIcon />;
         break;
       case GameMode.LocalFriend:
         title = 'Local Friend';
+        description = 'Share your device and play against a friend locally.';
         icon = <GroupIcon />;
         break;
       case GameMode.OnlineFriend:
         title = 'Online Friend';
+        description = 'Share a link and play against a friend online.';
         icon = <WifiIcon />;
         break;
     }
@@ -124,7 +127,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
         />
         <CardContent>
           <Typography component="p">
-            {info.cardDescription}
+            {description}
           </Typography>
         </CardContent>
         <CardActions>

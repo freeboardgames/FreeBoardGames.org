@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Radar } from './Radar';
 import { ISeabattleState, IShip, ISalvo, ICell } from './game';
@@ -7,6 +6,7 @@ import { SeabattleSound } from './sound';
 
 interface IBattleProps {
   G: ISeabattleState;
+  ctx: any;
   moves: any;
   playerID: string;
   currentPlayer: string;

@@ -1,0 +1,25 @@
+import { GameMode } from '../../App/Game/GameModePicker';
+import { IGameModeExtraInfoDropdown } from '../../App/Game/GameModePicker';
+import TicTacToeThumbnail from './media/thumbnail.png';
+import { IGameDef } from '../../games';
+
+export const tictactoeGameDef: IGameDef = {
+  code: 'tictactoe',
+  name: 'Tic Tac Toe',
+  imageURL: TicTacToeThumbnail,
+  modes: [
+    {
+      mode: GameMode.AI,
+      extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
+    },
+    { mode: GameMode.OnlineFriend },
+    { mode: GameMode.LocalFriend },
+  ],
+  description: 'Play Tic-Tac-Toe!',
+  descriptionTag: `Play Tic-Tac-Toe (also called Noughts and Crosses) for \
+ free online. You can either do a single-player game against the computer,\
+ a multi-player game against a friend online or share your device and play\
+ locally against a friend.`,
+  config: () => import('./config'),
+  aiConfig: () => import('./ai'),
+};

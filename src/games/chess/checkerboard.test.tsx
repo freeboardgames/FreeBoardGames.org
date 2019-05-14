@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Checkerboard } from './checkerboard';
+import { Checkerboard, algebraicToCartesian } from './checkerboard';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { expect } from 'chai';
 import Enzyme from 'enzyme';
@@ -61,7 +61,7 @@ test('click', () => {
 test('invalid square', () => {
   const invalidSquare = () => {
     const checkerboard = Enzyme.shallow(<Checkerboard />).instance() as Checkerboard;
-    checkerboard._algebraicToCartesian('*1');
+    algebraicToCartesian('*1');
   };
   expect(invalidSquare).to.throw();
 });

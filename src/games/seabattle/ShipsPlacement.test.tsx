@@ -1,7 +1,6 @@
 import React from 'react';
 import { ShipsPlacement } from './ShipsPlacement';
 import { expect } from 'chai';
-import { VALID_SETUP_FIRST_PLAYER } from './mocks';
 import { MemoryRouter } from 'react-router';
 
 import Enzyme from 'enzyme';

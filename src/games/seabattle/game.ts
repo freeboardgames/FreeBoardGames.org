@@ -1,4 +1,5 @@
 import { Game, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
+import { VALID_SETUP_PLAYER_LOST0, VALID_SETUP_PLAYER_LOST1 } from './mocks';
 import shortid from 'shortid';
 
 export interface IShip {

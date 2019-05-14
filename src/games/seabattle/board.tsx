@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { ShipsPlacement } from './ShipsPlacement';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameMode } from '../../App/Game/GameModePicker';
-import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { GameLayout } from '../../App/Game/GameLayout';
 import ReactGA from 'react-ga';
-import { IShip } from './game';
+import { ISalvo, IShip } from './game';
 import { Battle } from './Battle';
 import { OptionsMenu } from './OptionsMenu';
+import { Radar } from './Radar';
+import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: any;
@@ -40,8 +41,26 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (ctx.gameover) {
       const result = (ctx.gameover.winner === this.props.playerID) ?
         'you won' : 'you lost';
+      const player = Number(this.props.playerID);
+      const otherPlayer = player === 0 ? 1 : 0;
+      const salvos: ISalvo[] = this.props.G.salvos.filter(
+        (salvo: ISalvo) => salvo.player === player,
+      );
+      const ships: IShip[] = this.props.G.ships.filter((ship: any) => ship.player === otherPlayer);
+      const extraCardContent = (
+        <div>
+          <Typography variant="title" align="center" style={{ marginTop: '0px', marginBottom: '16px' }}>
+            Your Opponent's Board
+          </Typography>
+          <Radar
+            player={player}
+            ships={ships}
+            salvos={salvos}
+            editable={false}
+          />
+        </div>);
       return (
-        <GameLayout gameOver={result} gameArgs={this.props.gameArgs} />
+        <GameLayout gameOver={result} extraCardContent={extraCardContent} gameArgs={this.props.gameArgs} />
       );
     }
     let child;
@@ -63,6 +82,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     } else {
       child = (
         <Battle
+          ctx={ctx}
           G={this.props.G}
           moves={this.props.moves}
           playerID={this.props.playerID}

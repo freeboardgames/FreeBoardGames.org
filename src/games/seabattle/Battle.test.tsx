@@ -25,6 +25,7 @@ test('one phase - hit', () => {
 
   const grid = Enzyme.mount(
     <Battle
+      ctx={store.getState().ctx}
       G={store.getState().G}
       moves={client.moves}
       playerID={'1'}
@@ -63,6 +64,7 @@ test('one phase - miss', () => {
 
   const grid = Enzyme.mount(
     <Battle
+      ctx={store.getState().ctx}
       G={store.getState().G}
       moves={client.moves}
       playerID={'1'}
