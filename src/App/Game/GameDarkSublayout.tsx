@@ -103,6 +103,9 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
   }
 
   _getOptionsMenuItems = () => {
+    if (!this.props.optionsMenuItems) {
+      return;
+    }
     const { menuAnchorEl } = this.state;
     return (
       <Menu
