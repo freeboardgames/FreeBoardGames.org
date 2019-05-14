@@ -59,8 +59,8 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
                 FreeBoardGame.org
               </Typography>
             </Link>
-            {this._getOptionsMenuLink()}
-            {this._getOptionsMenu()}
+            {this._getOptionsMenuButton()}
+            {this._getOptionsMenuItems()}
           </div>
         </div>
         <div
@@ -79,7 +79,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
       </div>
     );
   }
-  _getOptionsMenuLink() {
+  _getOptionsMenuButton() {
     if (this.props.optionsMenuItems) {
       return (
         <Button
@@ -102,7 +102,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
     this.setState({ menuAnchorEl: null });
   }
 
-  _getOptionsMenu = () => {
+  _getOptionsMenuItems = () => {
     const { menuAnchorEl } = this.state;
     return (
       <Menu

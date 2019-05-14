@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Radar } from './Radar';
 import { ISeabattleState, IShip, ISalvo, ICell } from './game';
-import { SeabattleSound } from './sound';
+import { playSeabattleSound } from './sound';
 
 interface IBattleProps {
   G: ISeabattleState;
@@ -79,7 +79,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     );
     const message = this._getMessage();
     if (this.props.getSoundPref()) {
-      SeabattleSound(message);
+      playSeabattleSound(message);
     }
     return (
       <div>

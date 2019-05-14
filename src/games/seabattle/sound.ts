@@ -12,7 +12,7 @@ import MissSound5 from './media/miss5.mp3';
 const HIT_SOUNDS = [HitSound1, HitSound2, HitSound3];
 const MISS_SOUNDS = [MissSound1, MissSound2, MissSound3, MissSound4, MissSound5];
 
-export const SeabattleSound = (sound: string) => {
+export const playSeabattleSound = (sound: string) => {
   if (sound === 'HIT') {
     const hitSound = new Audio(_getRandomSound('hit'));
     hitSound.play();

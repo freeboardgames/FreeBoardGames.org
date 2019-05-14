@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { SeabattleSound } from './sound';
+import { playSeabattleSound } from './sound';
 import { GameMode } from '../../App/Game/GameModePicker';
 
 // mock functions for HTMLMediaElement
@@ -37,7 +37,7 @@ test('should not play sound if it is unrelated update - online friend', () => {
       },
     ],
   };
-  SeabattleSound('HIT');
+  playSeabattleSound('HIT');
 });
 
 test('HIT salvo should play hit sound - online friend', () => {
@@ -67,7 +67,7 @@ test('HIT salvo should play hit sound - online friend', () => {
       },
     },
   };
-  SeabattleSound('HIT');
+  playSeabattleSound('HIT');
 });
 
 test('MISS salvo should play miss sound - AI', () => {
@@ -101,5 +101,5 @@ test('MISS salvo should play miss sound - AI', () => {
     },
   };
   const mockMissState: any = { G: { ships: [], salvos: [{ hit: false }] } };
-  SeabattleSound('HIT');
+  playSeabattleSound('HIT');
 });
