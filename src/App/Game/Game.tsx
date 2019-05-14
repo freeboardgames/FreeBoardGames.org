@@ -92,7 +92,7 @@ export default class Game extends React.Component<IGameProps, {}> {
   render() {
     const aiLevel = this.props.match.params.aiLevel;
     const matchCode = this.props.match.params.matchCode;
-    const playerID = this.props.match.params.playerID;
+    const playerID = (this.mode === GameMode.AI) ? '0' : this.props.match.params.playerID;
     if (!this.gameDef) {
       return <MessagePageClass type={'error'} message={'Game Not Found'} />;
     }
