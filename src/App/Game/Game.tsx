@@ -103,14 +103,9 @@ export default class Game extends React.Component<IGameProps, {}> {
         matchCode,
         playerID,
       };
-      if (typeof window !== 'undefined') {
-        const bgioServer = process.env.BGIO_SERVER_URL || `${window.location.host}:8001`;
-      }
       const clientConfig: any = {
         game: state.config.bgioGame,
         debug: state.config.debug || false,
-        server: typeof window !== 'undefined' ?
-          process.env.BGIO_SERVER_URL || `${window.location.host}:8001` : 'localhost:8001',
         loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
           board: state.config.bgioBoard,
@@ -128,7 +123,11 @@ export default class Game extends React.Component<IGameProps, {}> {
         clientConfig.ai = state.ai.bgioAI(aiLevel);
       }
       if (this.mode === GameMode.OnlineFriend) {
-        clientConfig.multiplayer = true;
+        const server = typeof window !== 'undefined' ?
+          process.env.BGIO_SERVER_URL || `${window.location.hostname}:8001` : 'localhost:8001';
+        clientConfig.multiplayer = { server };
+        console.log('multi');
+        console.log(clientConfig.multiplayer);
       }
       const App = Client(clientConfig) as any;
       return (
