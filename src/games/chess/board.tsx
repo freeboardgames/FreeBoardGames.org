@@ -90,10 +90,6 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _click = (coords: IAlgebraicCoords) => {
-    ReactGA.event({
-      category: 'ChessGame',
-      action: 'click',
-    });
     const { square } = coords;
     if (!this.props.isActive) {
       return;
