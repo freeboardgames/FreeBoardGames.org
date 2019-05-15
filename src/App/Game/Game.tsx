@@ -6,6 +6,7 @@ import { GameMode } from './GameModePicker';
 import getMessagePage from '../MessagePage';
 import MessagePageClass from '../MessagePageClass';
 import { applyMiddleware } from 'redux';
+import DEFAULT_ENHANCERS from './Enhancers';
 
 interface IGameProps {
   match?: any;
@@ -112,13 +113,13 @@ export default class Game extends React.Component<IGameProps, {}> {
           gameArgs,
         }),
       };
-      if (state.config.enhancers) {
-        const enhancers = [];
-        for (const enhancer of state.config.enhancers) {
-          enhancers.push(enhancer(gameArgs));
-        }
-        clientConfig.enhancer = applyMiddleware(...enhancers);
+      const allEnhancers = state.config.enhancers ?
+        state.config.enhancers.concat(DEFAULT_ENHANCERS) : DEFAULT_ENHANCERS;
+      const enhancers = [];
+      for (const enhancer of allEnhancers) {
+        enhancers.push(enhancer(gameArgs));
       }
+      clientConfig.enhancer = applyMiddleware(...enhancers);
       if (this.loadAI) {
         clientConfig.ai = state.ai.bgioAI(aiLevel);
       }
