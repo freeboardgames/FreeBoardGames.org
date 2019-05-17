@@ -126,8 +126,6 @@ export default class Game extends React.Component<IGameProps, {}> {
         const server = typeof window !== 'undefined' ?
           process.env.BGIO_SERVER_URL || `${window.location.hostname}:8001` : 'localhost:8001';
         clientConfig.multiplayer = { server };
-        console.log('multi');
-        console.log(clientConfig.multiplayer);
       }
       const App = Client(clientConfig) as any;
       return (
