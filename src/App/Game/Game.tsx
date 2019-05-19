@@ -123,7 +123,8 @@ export default class Game extends React.Component<IGameProps, {}> {
         clientConfig.ai = state.ai.bgioAI(aiLevel);
       }
       if (this.mode === GameMode.OnlineFriend) {
-        const server = process.env.BGIO_SERVER_URL || `${window.location.hostname}:8001`;
+        const server = typeof window !== 'undefined' ?
+          process.env.BGIO_SERVER_URL || `${window.location.hostname}:8001` : undefined;
         clientConfig.multiplayer = { server };
       }
       const App = Client(clientConfig) as any;
