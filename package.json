@@ -15,6 +15,7 @@
     "prod:build": "run-s server:build webpack:build",
     "precommit": "yarn run verify-lint && yarn run verify-tsfmt && yarn run server:build && yarn run test",
     "pre": "yarn run precommit",
+    "server": "yarn run server:both",
     "server:bgio": "node server-build/server_bgio.js",
     "server:fbg": "node server-build/server_fbg.js",
     "server:both": "run-p server:bgio server:fbg",
