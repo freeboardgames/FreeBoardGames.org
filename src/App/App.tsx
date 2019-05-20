@@ -12,31 +12,31 @@ import translations from './translations';
 
 ReactGA.initialize('UA-105391878-1');
 
-const withGA = (WrapperComponent: any) => {
+const withGA = (WrappedComponent: any) => {
   class Wrapper extends React.Component<{}, {}> {
     render() {
       if (typeof window !== 'undefined') {
         ReactGA.set({ page: window.location.pathname });
         ReactGA.pageview(window.location.pathname);
       }
-      return <WrapperComponent {...this.props} />;
+      return <WrappedComponent {...this.props} />;
     }
   }
   return Wrapper;
 };
-const withI18n = (WrapperComponent: any) => {
+const withI18n = (WrappedComponent: any) => {
   class Wrapper extends React.Component<{}, {}> {
     render() {
       registerLang('en', translations.en);
       setCurrentLocale('en');
-      return <WrapperComponent {...this.props} />;
+      return <WrappedComponent {...this.props} />;
     }
   }
   return Wrapper;
 };
 
-const withWrappers = (WrapperComponent: any) => {
-  return withI18n(withGA(WrapperComponent));
+const withWrappers = (WrappedComponent: any) => {
+  return withI18n(withGA(WrappedComponent));
 };
 
 class Main extends React.Component<{}, {}> {
