@@ -122,6 +122,7 @@
     "react-async-bootstrapper": "^2.1.1",
     "react-async-component": "^2.0.0",
     "react-dom": "^16.7.0",
+    "react-easy-i18n": "^0.3.1",
     "react-ga": "^2.5.7",
     "react-router-dom": "^4.2.2",
     "rrc": "^0.10.1",

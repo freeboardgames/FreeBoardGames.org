@@ -87,6 +87,6 @@ describe('App', () => {
     );
     await asyncBootstrapper(app);
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
-    expect(ssrHtml).toContain('About');
+    expect(ssrHtml).toContain('about.header');
   });
 });
