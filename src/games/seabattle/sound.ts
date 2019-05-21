@@ -1,5 +1,3 @@
-import { IGameArgs } from '../../App/Game/GameBoardWrapper';
-import { GameMode } from '../../App/Game/GameModePicker';
 import HitSound1 from './media/hit1.mp3';
 import HitSound2 from './media/hit2.mp3';
 import HitSound3 from './media/hit3.mp3';
