@@ -16,9 +16,7 @@ const gameArgsOnline = {
   playerID: '0',
 };
 
-const gameArgsAI = { ...gameArgsOnline, mode: GameMode.AI };
 const mockStateFn = jest.fn();
-const mockStore = { getState: mockStateFn };
 
 test('should play hit sound', () => {
   playSeabattleSound('HIT');
