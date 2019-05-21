@@ -2,7 +2,6 @@ import React from 'react';
 import { GameMode } from './GameModePicker';
 import AlertLayer from './AlertLayer';
 import { GameSharing } from './GameSharing';
-import { GameOver } from './GameOver';
 
 export interface IGameArgs {
   gameCode: string;
