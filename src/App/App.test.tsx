@@ -17,7 +17,7 @@ describe('App', () => {
       </StaticRouter>,
     );
     expect(wrapper.find(Home)).to.have.lengthOf(1);
-    expect(wrapper.html()).to.not.contain('Not Found');
+    expect(wrapper.html()).to.not.contain('messagePage.notFound');
   });
 
   it('should show not found page', () => {
@@ -26,6 +26,6 @@ describe('App', () => {
         <App />
       </StaticRouter>,
     );
-    expect(wrapper.html()).to.contain('Not Found');
+    expect(wrapper.html()).to.contain('messagePage.notFound');
   });
 });

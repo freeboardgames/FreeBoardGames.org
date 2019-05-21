@@ -24,11 +24,18 @@ const withGA = (WrappedComponent: any) => {
   }
   return Wrapper;
 };
+
 const withI18n = (WrappedComponent: any) => {
-  class Wrapper extends React.Component<{}, {}> {
+  class Wrapper extends React.Component<any, {}> {
     render() {
-      registerLang('en', translations.en);
-      setCurrentLocale('en');
+      const locale = this.props.match.params.locale;
+      if (locale === 'en' || (locale && !(locale in translations))) {
+        throw new Error('Invalid locale');
+      }
+      // set language based on URL, default to English
+      const lang = locale || 'en';
+      registerLang(lang, translations[lang]);
+      setCurrentLocale(lang);
       return <WrappedComponent {...this.props} />;
     }
   }
@@ -39,6 +46,8 @@ const withWrappers = (WrappedComponent: any) => {
   return withI18n(withGA(WrappedComponent));
 };
 
+const BASEPATH = '/:locale([A-Za-z]{2})?';
+
 class Main extends React.Component<{}, {}> {
   render() {
     if (typeof document !== 'undefined' &&
@@ -47,13 +56,17 @@ class Main extends React.Component<{}, {}> {
     }
     return (
       <Switch>
-        <Route exact={true} path="/" component={withWrappers(Home)} />
-        <Route exact={true} path="/about" component={withWrappers(About)} />
-        <Route path="/g/:gameCode" exact={true} component={withWrappers(GameInfo)} />
-        <Route path="/g/:gameCode/:mode" exact={true} component={withWrappers(Game)} />
-        <Route path="/g/:gameCode/:mode/:aiLevel" exact={true} component={withWrappers(Game)} />
-        <Route path="/g/:gameCode/:mode/:matchCode/:playerID" exact={true} component={withWrappers(Game)} />
-        <Route component={withWrappers(getMessagePage('error', 'Not Found'))} />
+        <Route exact={true} path={BASEPATH} component={withWrappers(Home)} />
+        <Route exact={true} path={`${BASEPATH}/about`} component={withWrappers(About)} />
+        <Route exact={true} path={`${BASEPATH}/g/:gameCode`} component={withWrappers(GameInfo)} />
+        <Route exact={true} path={`${BASEPATH}/g/:gameCode/:mode`} component={withWrappers(Game)} />
+        <Route exact={true} path={`${BASEPATH}/g/:gameCode/:mode/:aiLevel`} component={withWrappers(Game)} />
+        <Route
+          exact={true}
+          path={`${BASEPATH}/g/:gameCode/:mode/:matchCode/:playerID`}
+          component={withWrappers(Game)}
+        />
+        <Route exact={true} component={withWrappers(getMessagePage('error', 'messagePage.notFound'))} />
       </Switch>
     );
   }
