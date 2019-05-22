@@ -3,6 +3,7 @@ const en = {
     header: 'About FreeBoardGame.org',
   },
   messagePage: {
+    invalidLocale: 'Invalid Locale',
     notFound: 'Not Found',
     goHome: 'Go Home',
   },

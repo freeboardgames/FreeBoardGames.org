@@ -30,7 +30,10 @@ const withI18n = (WrappedComponent: any) => {
     render() {
       const locale = this.props.match.params.locale;
       if (locale === 'en' || (locale && !(locale in translations))) {
-        throw new Error('Invalid locale');
+        const ErrorPage = withWrappers(getMessagePage('error', 'messagePage.invalidLocale'));
+        // pass newProps instead of this.props to avoid an infinite-loop (because of this.props.match.params.locale)
+        const newProps = { ...this.props, match: { params: { locale: '' } } };
+        return <ErrorPage {...newProps} />;
       }
       // set language based on URL, default to English
       const lang = locale || 'en';
