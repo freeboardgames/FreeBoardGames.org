@@ -139,8 +139,8 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**",
-      "!src/server.tsx",
-      "!src/server.tsx",
+      "!src/server_bgio.tsx",
+      "!src/server_fbg.tsx",
       "!src/app.tsx",
       "!**/*.d.ts",
       "!src/games/chess/stockfish8.js",
