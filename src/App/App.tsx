@@ -73,7 +73,7 @@ class Main extends React.Component<{}, {}> {
         />
         <Route path={`${BASEPATH}/room/new/:gameCode`} exact={true} component={withGA(NewRoom)} />
         <Route path={`${BASEPATH}/room/:gameCode/:roomId`} exact={true} component={withGA(Room)} />
-        <Route exact={true} component={withWrappers(getMessagePage('error', 'messagePage.notFound'))} />
+        <Route exact={true} component={withWrappers(getMessagePage('error', 'Not Found'))} />
       </Switch>
     );
   }
