@@ -47,10 +47,14 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     if (uniqueMove) {
       this.props.moves.salvo(cell.x, cell.y);
       if (this.props.isAIGame && !this.state.aiPlaying) {
-        this.setState({ ...this.state, aiPlaying: true });
+        this.setState((oldState) => {
+          return { ...oldState, aiPlaying: true };
+        });
         setTimeout(() => {
           this.props.step();
-          this.setState({ ...this.state, aiPlaying: false });
+          this.setState((oldState) => {
+            return { ...oldState, aiPlaying: false };
+          });
         }, 2500);
       }
     }

@@ -105,7 +105,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _setSoundPref = (soundEnabled: boolean) => {
-    this.setState({ ... this.state, soundEnabled });
+    this.setState((oldState) => {
+      return { ...oldState, soundEnabled };
+    });
   }
 
   _getSoundPref = () => {
