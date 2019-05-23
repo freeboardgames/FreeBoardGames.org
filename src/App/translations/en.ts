@@ -4,7 +4,6 @@ const en = {
   },
   messagePage: {
     invalidLocale: 'Invalid Locale',
-    notFound: 'Not Found',
     goHome: 'Go Home',
   },
 };

@@ -65,7 +65,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
           {status}
           {icon}
           <Typography variant="title" gutterBottom={true} style={{ paddingTop: '16px' }}>
-            <Text text={this.props.message} />
+            {this.props.message}
             <br /><br />
             {linkHome}
           </Typography>
