@@ -5,14 +5,20 @@ import FbgLogo from '../media/fbg_logo_white_48.png';
 import Button from '@material-ui/core/Button';
 import MoreVert from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;
-  optionsMenuItems?: React.ReactNode;
+  optionsMenuItems?: () => IOptionsItems[];
 }
 
 interface IGameDarkSublayoutState {
   menuAnchorEl: any;
+}
+
+export interface IOptionsItems {
+  text: string;
+  onClick: () => void;
 }
 
 export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
@@ -98,8 +104,14 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
     this.setState({ menuAnchorEl: event.currentTarget });
   }
 
-  _closeOptionsMenu = (event: any) => {
+  _closeOptionsMenu = (event?: any) => {
     this.setState({ menuAnchorEl: null });
+  }
+
+  _wrapOnClick = (onClickFunc: () => void) => () => {
+    // close menu, call onClickFunc
+    this._closeOptionsMenu();
+    onClickFunc();
   }
 
   _getOptionsMenuItems = () => {
@@ -107,6 +119,16 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
       return;
     }
     const { menuAnchorEl } = this.state;
+    const menuItems = this.props.optionsMenuItems().map((option: IOptionsItems, index) => {
+      return (
+        <MenuItem
+          key={`option-${index}`}
+          onClick={this._wrapOnClick(option.onClick)}
+        >
+          {option.text}
+        </MenuItem>
+      );
+    });
     return (
       <Menu
         id="simple-menu"
@@ -114,7 +136,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
         open={Boolean(menuAnchorEl)}
         onClose={this._closeOptionsMenu}
       >
-        {this.props.optionsMenuItems}
+        {menuItems}
       </Menu>
     );
   }
