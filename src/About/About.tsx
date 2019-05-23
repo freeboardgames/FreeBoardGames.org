@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import { Text } from 'react-easy-i18n';
 
 class About extends React.Component<{}, {}> {
   render() {
@@ -24,7 +25,7 @@ class About extends React.Component<{}, {}> {
       <Card style={{ marginTop: '16px' }}>
         <CardContent>
           <Typography variant="h5" component="h2">
-            About FreeBoardGame.org
+            <Text text="about.header" />
           </Typography>
           <Typography component="p">
             FreeBoardGame.org is a free (as in freedom), mobile-first, board game platform.

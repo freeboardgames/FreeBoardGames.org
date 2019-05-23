@@ -6,6 +6,7 @@ import { GameMode } from './GameModePicker';
 import getMessagePage from '../MessagePage';
 import MessagePageClass from '../MessagePageClass';
 import { applyMiddleware } from 'redux';
+import DEFAULT_ENHANCERS from './Enhancers';
 
 interface IGameProps {
   match?: any;
@@ -92,7 +93,7 @@ export default class Game extends React.Component<IGameProps, {}> {
   render() {
     const aiLevel = this.props.match.params.aiLevel;
     const matchCode = this.props.match.params.matchCode;
-    const playerID = this.props.match.params.playerID;
+    const playerID = (this.mode === GameMode.AI) ? '0' : this.props.match.params.playerID;
     if (!this.gameDef) {
       return <MessagePageClass type={'error'} message={'Game Not Found'} />;
     }
@@ -112,18 +113,17 @@ export default class Game extends React.Component<IGameProps, {}> {
           gameArgs,
         }),
       };
-      if (state.config.enhancers) {
-        const enhancers = [];
-        for (const enhancer of state.config.enhancers) {
-          enhancers.push(enhancer(gameArgs));
-        }
-        clientConfig.enhancer = applyMiddleware(...enhancers);
-      }
+      const allEnhancers = state.config.enhancers ?
+        state.config.enhancers.concat(DEFAULT_ENHANCERS) : DEFAULT_ENHANCERS;
+      const enhancers = allEnhancers.map((enhancer: any) => enhancer(gameArgs));
+      clientConfig.enhancer = applyMiddleware(...enhancers);
       if (this.loadAI) {
         clientConfig.ai = state.ai.bgioAI(aiLevel);
       }
       if (this.mode === GameMode.OnlineFriend) {
-        clientConfig.multiplayer = true;
+        const server = typeof window !== 'undefined' ?
+          process.env.BGIO_SERVER_URL || `${window.location.hostname}:8001` : undefined;
+        clientConfig.multiplayer = { server };
       }
       const App = Client(clientConfig) as any;
       return (

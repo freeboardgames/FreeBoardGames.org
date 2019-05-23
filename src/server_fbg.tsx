@@ -10,13 +10,13 @@ import { GAMES_LIST } from './games';
 import { getPageMetadata, IPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
-const { Server } = require('@freeboardgame.org/boardgame.io/server'); // tslint:disable-line
+import Koa from 'koa';
+const server = new Koa();
+
 import App from './App/App';
 
 const HOST = '0.0.0.0';
-const PORT = process.env.PORT || 8000;
-const NODE_ENV = process.env.NODE_ENV;
-const PROD = NODE_ENV === 'production';
+const PORT = Number(process.env.FBG_PORT) || 8000;
 
 const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *',
   'Disallow: /', ''].join('\n');
@@ -72,16 +72,13 @@ const renderSite = async (url: string) => {
 };
 
 const startServer = async () => {
-  const configs = Promise.all(GAMES_LIST.map((gameDef) => gameDef.config()));
-  const games = (await configs).map((config) => config.default.bgioGame);
-  const server = Server({ games });
-  server.app.use(noCache({ global: true }));
-  server.app.use(KoaStatic('./static'));
-  server.app.use(KoaStatic('./dist'));
+  server.use(noCache({ global: true }));
+  server.use(KoaStatic('./static'));
+  server.use(KoaStatic('./dist'));
   const router = new Router();
-  server.app.use(router.routes());
-  server.app.use(router.allowedMethods());
-  server.app.use(async (ctx: any, next: any) => {
+  server.use(router.routes());
+  server.use(router.allowedMethods());
+  server.use(async (ctx: any, next: any) => {
     if (ctx.request.path === '/robots.txt') {
       if (ctx.request.hostname.toLowerCase() !== 'freeboardgame.org') {
         ctx.response.body = RESTRICTIVE_ROBOTS_TXT;
@@ -90,7 +87,7 @@ const startServer = async () => {
       await next();
     }
   });
-  server.app.use(async (ctx: any, next: any) => {
+  server.use(async (ctx: any, next: any) => {
     await next();
     const { render, status } = await renderSite(ctx.request.url);
     if (status) {
@@ -99,8 +96,10 @@ const startServer = async () => {
     ctx.response.body = render;
   });
 
-  server.app.listen(PORT, HOST, () => {
-    console.log(`Serving ${NODE_ENV} at: http://${HOST}:${PORT}/`); // tslint:disable-line
+  // app.listen()
+
+  server.listen(PORT, HOST, () => {
+    console.log(`Serving FreeBoardGame.org at: http://${HOST}:${PORT}/`); // tslint:disable-line
   });
 };
 

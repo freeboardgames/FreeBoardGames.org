@@ -1,5 +1,7 @@
 FROM node:11-stretch
+ARG BGIO_SERVER_URL
 EXPOSE 8000
+EXPOSE 8001
 # do not run our app as root
 ADD . /appdata
 RUN groupadd -g 999 appuser && useradd -m -r -u 999 -g appuser appuser
@@ -21,5 +23,6 @@ RUN yarn install
 RUN yarn run hexo generate
 
 WORKDIR /appdata
+
 # start server
-CMD ["yarn", "run", "server"]
+CMD ["./docker_run.bash"]
