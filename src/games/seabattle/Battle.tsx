@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Radar } from './Radar';
 import { ISeabattleState, IShip, ISalvo, ICell } from './game';
+import { playSeabattleSound } from './sound';
 
 interface IBattleProps {
   G: ISeabattleState;
@@ -11,6 +12,7 @@ interface IBattleProps {
   currentPlayer: string;
   step?: any;
   isAIGame?: boolean;
+  getSoundPref: () => boolean;
 }
 
 interface IBattleState {
@@ -45,10 +47,14 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     if (uniqueMove) {
       this.props.moves.salvo(cell.x, cell.y);
       if (this.props.isAIGame && !this.state.aiPlaying) {
-        this.setState({ ...this.state, aiPlaying: true });
+        this.setState((oldState) => {
+          return { ...oldState, aiPlaying: true };
+        });
         setTimeout(() => {
           this.props.step();
-          this.setState({ ...this.state, aiPlaying: false });
+          this.setState((oldState) => {
+            return { ...oldState, aiPlaying: false };
+          });
         }, 2500);
       }
     }
@@ -76,9 +82,12 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
       (salvo: ISalvo) => salvo.player === player,
     );
     const message = this._getMessage();
+    if (this.props.getSoundPref()) {
+      playSeabattleSound(message);
+    }
     return (
       <div>
-        {message}
+        <h2 style={{ textAlign: 'center' }}>{message}</h2>
         <Radar
           player={player}
           ships={ships}
@@ -92,18 +101,13 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
   }
 
   _getMessage() {
-    if (this.props.ctx.gameover) {
-      return null;
-    }
-    let text;
     if (this.state.showSalvo) {
-      text = (this.state.salvo.hit) ? 'HIT' : 'MISS';
+      return (this.state.salvo.hit) ? 'HIT' : 'MISS';
     } else if (this.state.playerID === this.state.currentPlayer) {
-      text = 'CLICK TO SHOOT';
+      return 'CLICK TO SHOOT';
     } else {
-      text = 'Waiting for opponent...';
+      return 'Waiting for opponent...';
     }
-    return (<h2 style={{ textAlign: 'center' }}>{text}</h2>);
   }
 
   _animate(now: number) {

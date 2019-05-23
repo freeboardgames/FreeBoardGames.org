@@ -2,17 +2,26 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import FbgLogo from '../media/fbg_logo_white_48.png';
+import Button from '@material-ui/core/Button';
+import MoreVert from '@material-ui/icons/MoreVert';
+import Menu from '@material-ui/core/Menu';
 
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;
+  optionsMenuItems?: React.ReactNode;
 }
 
-export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, {}> {
+interface IGameDarkSublayoutState {
+  menuAnchorEl: any;
+}
+
+export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
   constructor(props: IGameDarkSublayoutProps) {
     super(props);
     if (typeof window !== 'undefined') {
       document.body.style.backgroundColor = 'black';
     }
+    this.state = { menuAnchorEl: null };
   }
 
   componentWillUnmount() {
@@ -50,6 +59,8 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
                 FreeBoardGame.org
               </Typography>
             </Link>
+            {this._getOptionsMenuButton()}
+            {this._getOptionsMenuItems()}
           </div>
         </div>
         <div
@@ -66,6 +77,45 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
           {this.props.children}
         </div>
       </div>
+    );
+  }
+  _getOptionsMenuButton() {
+    if (this.props.optionsMenuItems) {
+      return (
+        <Button
+          onClick={this._openOptionsMenu}
+          target="_blank"
+          variant="outlined"
+          style={{ margin: '8px', float: 'right' }}
+        >
+          <MoreVert style={{ color: 'white' }} />
+        </Button>
+      );
+    }
+  }
+
+  _openOptionsMenu = (event: any) => {
+    this.setState({ menuAnchorEl: event.currentTarget });
+  }
+
+  _closeOptionsMenu = (event: any) => {
+    this.setState({ menuAnchorEl: null });
+  }
+
+  _getOptionsMenuItems = () => {
+    if (!this.props.optionsMenuItems) {
+      return;
+    }
+    const { menuAnchorEl } = this.state;
+    return (
+      <Menu
+        id="simple-menu"
+        anchorEl={menuAnchorEl}
+        open={Boolean(menuAnchorEl)}
+        onClose={this._closeOptionsMenu}
+      >
+        {this.props.optionsMenuItems}
+      </Menu>
     );
   }
 }

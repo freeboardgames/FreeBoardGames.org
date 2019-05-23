@@ -30,6 +30,7 @@ test('one phase - hit', () => {
       moves={client.moves}
       playerID={'1'}
       currentPlayer={store.getState().ctx.currentPlayer}
+      getSoundPref={jest.fn(arg0 => true)}
     />);
   // should be ignored
   grid.find({ x: 0, y: 0 }).find('Square').at(0).simulate('click');
@@ -68,6 +69,7 @@ test('one phase - miss', () => {
       moves={client.moves}
       playerID={'1'}
       currentPlayer={store.getState().ctx.currentPlayer}
+      getSoundPref={jest.fn(arg0 => true)}
     />);
   grid.setState({
     ...grid.state(),
