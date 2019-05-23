@@ -6,7 +6,7 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'inline-cheap-source-map',
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000
