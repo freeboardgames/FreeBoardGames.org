@@ -3,7 +3,6 @@ import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
 const { Server } = require('@freeboardgame.org/boardgame.io/server'); // tslint:disable-line
 
-const HOST = '0.0.0.0';
 const PORT = process.env.BGIO_PORT || 8001;
 
 const startServer = async () => {
@@ -12,8 +11,8 @@ const startServer = async () => {
   const server = Server({ games });
   server.app.use(noCache({ global: true }));
   server.app.use(cors());
-  server.app.listen(PORT, HOST, () => {
-    console.log(`Serving boardgame.io at: http://${HOST}:${PORT}/`); // tslint:disable-line
+  server.run(PORT, () => {
+    console.log(`Serving boardgame.io at: http://0.0.0.0:${PORT}/`); // tslint:disable-line
   });
 };
 
