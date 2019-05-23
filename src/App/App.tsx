@@ -69,7 +69,7 @@ class Main extends React.Component<{}, {}> {
           path={`${BASEPATH}/g/:gameCode/:mode/:matchCode/:playerID`}
           component={withWrappers(Game)}
         />
-        <Route exact={true} component={withWrappers(getMessagePage('error', 'messagePage.notFound'))} />
+        <Route exact={true} component={withWrappers(getMessagePage('error', 'Not Found'))} />
       </Switch>
     );
   }
