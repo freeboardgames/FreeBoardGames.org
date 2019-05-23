@@ -48,6 +48,8 @@ export const playerView = (G: ISeabattleState, ctx: ICtx, playerID: string): ISe
 };
 
 export const SeabattleGame = Game({
+  name: 'seabattle',
+
   setup: (): ISeabattleState => ({
     ships: [],
     salvos: [],

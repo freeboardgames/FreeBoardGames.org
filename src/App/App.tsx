@@ -2,6 +2,8 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import GameInfo from './Game/GameInfoAsync';
 import Game from './Game/GameAsync';
+import { NewRoom } from './Lobby/NewRoom';
+import { Room } from './Lobby/Room';
 import Home from '../Home/HomeAsync';
 import About from '../About/AboutAsync';
 import getMessagePage from './MessagePage';
@@ -69,6 +71,8 @@ class Main extends React.Component<{}, {}> {
           path={`${BASEPATH}/g/:gameCode/:mode/:matchCode/:playerID`}
           component={withWrappers(Game)}
         />
+        <Route path={`${BASEPATH}/room/new/:gameCode`} exact={true} component={withGA(NewRoom)} />
+        <Route path={`${BASEPATH}/room/:gameCode/:roomId`} exact={true} component={withGA(Room)} />
         <Route exact={true} component={withWrappers(getMessagePage('error', 'messagePage.notFound'))} />
       </Switch>
     );
