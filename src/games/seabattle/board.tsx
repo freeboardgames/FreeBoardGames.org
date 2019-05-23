@@ -8,9 +8,9 @@ import { GameLayout } from '../../App/Game/GameLayout';
 import ReactGA from 'react-ga';
 import { ISalvo, IShip } from './game';
 import { Battle } from './Battle';
-import { OptionsMenu } from './OptionsMenu';
 import { Radar } from './Radar';
 import Typography from '@material-ui/core/Typography';
+import { IOptionsItems } from '../../App/Game/GameDarkSublayout';
 
 interface IBoardProps {
   G: any;
@@ -37,7 +37,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   render() {
     const ctx = this.props.ctx;
-    const optionsMenu = <OptionsMenu getSoundPref={this._getSoundPref} setSoundPref={this._setSoundPref} />;
     if (ctx.gameover) {
       const result = (ctx.gameover.winner === this.props.playerID) ?
         'you won' : 'you lost';
@@ -94,7 +93,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       );
     }
     return (
-      <GameLayout optionsMenuItems={optionsMenu}>
+      <GameLayout optionsMenuItems={this._getOptionsMenuItems}>
         {child}
       </GameLayout>
     );
@@ -110,8 +109,23 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     });
   }
 
+  _toggleSoundPref = () => {
+    this._setSoundPref(!this._getSoundPref());
+  }
+
   _getSoundPref = () => {
     return this.state.soundEnabled;
+  }
+
+  _getOptionsMenuItems = () => {
+    const curSoundPref = this._getSoundPref();
+    const newSoundPref = !curSoundPref;
+    const option: IOptionsItems = {
+      onClick: this._toggleSoundPref,
+      text: `${newSoundPref ? 'Enable' : 'Disable'} sound`,
+    };
+    const options = [option];
+    return options;
   }
 
   _setShips = (ships: IShip[]) => {
