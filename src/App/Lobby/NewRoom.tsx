@@ -40,13 +40,13 @@ export class NewRoom extends React.Component<INewRoomProps, INewRoomState> {
     if (this.state.error) {
       const ErrorPage = getMessagePage(
         'error',
-        'lobby.failedCreateRoom',
+        'Failed to create room',
       );
       return <ErrorPage />;
     }
     const LoadingPage = getMessagePage(
       'loading',
-      'lobby.creatingRoom',
+      'Creating room...',
     );
     return <LoadingPage />;
   }
