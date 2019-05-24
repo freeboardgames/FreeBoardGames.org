@@ -1,7 +1,7 @@
 # FreeBoardGame.org
 [![Build Status](https://travis-ci.com/freeboardgame/FreeBoardGame.org.svg?branch=master)](https://travis-ci.com/freeboardgame/FreeBoardGame.org)
 
-OSS Platform for publishing your boardgame.io games. We curate high quality implementation of board games and optimize your game for delivery so you can quickly reach hundreds of players.
+OSS Platform for publishing your boardgame.io games. We curate high quality implementations of board games and optimize your game for delivery so you can quickly reach hundreds of players.
 
 Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
 
