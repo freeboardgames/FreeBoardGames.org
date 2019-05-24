@@ -27,8 +27,8 @@ export class LobbyService {
     const initialPlayer: IPlayerInRoom = { playerID: 0, name: 'J' };
     const credential = await this.joinRoom(room, initialPlayer);
     initialPlayer.credential = credential;
-    const newRoom: INewRoom = { room, initialPlayer };
-    return newRoom;
+    localStorage.setItem('fbgCredential', JSON.stringify(initialPlayer));
+    return roomID;
   }
 
   public static async joinRoom(room: IRoomMetadata, player: IPlayerInRoom): Promise<string> {
@@ -38,6 +38,6 @@ export class LobbyService {
         playerID: player.playerID,
         playerName: player.name,
       });
-    return response.body.playerCredential;
+    return response.body.playerCredentials;
   }
 }
