@@ -1,11 +1,9 @@
 # FreeBoardGame.org
 [![Build Status](https://travis-ci.com/freeboardgame/FreeBoardGame.org.svg?branch=master)](https://travis-ci.com/freeboardgame/FreeBoardGame.org)
 
-Mobile-First Free board games for everybody. Free as in "free beer" and as in "freedom". You are welcome to study the games, modify and contribute back to the community!
+OSS Platform for publishing your boardgame.io board games. We optimize your game for delivery and you can have a reach of hundreds of users playing your game.
 
 Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
-
-Made with React, Typescript and [Boardgame.io](https://boardgame.io/)
 
 ## Games
 
