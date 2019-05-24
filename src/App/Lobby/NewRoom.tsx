@@ -29,7 +29,7 @@ export class NewRoom extends React.Component<INewRoomProps, INewRoomState> {
     }
     LobbyService.newRoom(gameCode)
       .then((newRoom) => {
-        localStorage.setItem('fbgCredentials', JSON.stringify(newRoom.initialPlayer));
+        localStorage.setItem('fbgCredential', JSON.stringify(newRoom.initialPlayer));
         props.history.push(`/room/${gameCode}/${newRoom.room.roomID}`);
       }, () => {
         this.setState({ error: true });

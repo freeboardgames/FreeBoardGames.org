@@ -4,7 +4,7 @@ import request from 'superagent';
 export interface IPlayerInRoom {
   playerID: number;
   name: string;
-  credentials?: string;
+  credential?: string;
 }
 
 export interface IRoomMetadata {
@@ -25,8 +25,8 @@ export class LobbyService {
     const roomID = response.body.gameID;
     const room: IRoomMetadata = { gameCode, roomID };
     const initialPlayer: IPlayerInRoom = { playerID: 0, name: 'J' };
-    const credentials = await this.joinRoom(room, initialPlayer);
-    initialPlayer.credentials = credentials;
+    const credential = await this.joinRoom(room, initialPlayer);
+    initialPlayer.credential = credential;
     const newRoom: INewRoom = { room, initialPlayer };
     return newRoom;
   }
@@ -38,6 +38,6 @@ export class LobbyService {
         playerID: player.playerID,
         playerName: player.name,
       });
-    return response.body.playerCredentials;
+    return response.body.playerCredential;
   }
 }
