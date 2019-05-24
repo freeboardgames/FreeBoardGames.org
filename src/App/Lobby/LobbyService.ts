@@ -2,7 +2,7 @@ import AddressHelper from '../AddressHelper';
 import request from 'superagent';
 
 export interface IPlayerInRoom {
-  ID: number;
+  playerID: number;
   name: string;
   credentials?: string;
 }
@@ -24,7 +24,7 @@ export class LobbyService {
       .send({ numPlayers: 2 });
     const roomID = response.body.gameID;
     const room: IRoomMetadata = { gameCode, roomID };
-    const initialPlayer: IPlayerInRoom = { ID: 0, name: 'J' };
+    const initialPlayer: IPlayerInRoom = { playerID: 0, name: 'J' };
     const credentials = await this.joinRoom(room, initialPlayer);
     initialPlayer.credentials = credentials;
     const newRoom: INewRoom = { room, initialPlayer };
@@ -35,7 +35,7 @@ export class LobbyService {
     const response = await request
       .post(`${AddressHelper.getServerAddress()}/games/${room.gameCode}/${room.roomID}/join`)
       .send({
-        playerID: player.ID,
+        playerID: player.playerID,
         playerName: player.name,
       });
     return response.body.playerCredentials;
