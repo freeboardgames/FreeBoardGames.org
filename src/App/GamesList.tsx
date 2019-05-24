@@ -9,7 +9,7 @@ export class GamesList extends React.Component<{}, {}> {
     // GAMES
     const gamesList = GAMES_LIST.map((game) => (
       <Link to={'/g/' + game.code} key={game.code} style={{ textDecoration: 'none' }}>
-        <GameCard game={game} />
+        <GameCard game={game} isLink={true} />
       </Link>
     ));
     return (
