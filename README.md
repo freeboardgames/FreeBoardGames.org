@@ -1,11 +1,18 @@
 # FreeBoardGame.org
 [![Build Status](https://travis-ci.com/freeboardgame/FreeBoardGame.org.svg?branch=master)](https://travis-ci.com/freeboardgame/FreeBoardGame.org)
 
-Mobile-First Free board games for everybody. Free as in "free beer" and as in "freedom". You are welcome to study the games, modify and contribute back to the community!
+FOSS platform for publishing your [boardgame.io](https://boardgame.io) games. We curate high quality implementations of board games and optimize your game for delivery so you can quickly reach hundreds of players.
 
 Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
 
-Made with React, Typescript and [Boardgame.io](https://boardgame.io/)
+## Games
+
+- :heavy_check_mark: Chess.
+- :heavy_check_mark: Seabattle (similar to Battleship).
+- :heavy_check_mark: TicTacToe.
+- :construction: Checkers
+
+Check the [game development kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/11)
 
 ## Features
 
@@ -17,19 +24,11 @@ Made with React, Typescript and [Boardgame.io](https://boardgame.io/)
 - :construction: Party/lobby system.
 - :construction: i18n.
 
-Check out [kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/6).
-
-## Games
-
-- :heavy_check_mark: Chess [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/5).
-- :heavy_check_mark: Seabattle [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/4).
-- :heavy_check_mark: TicTacToe [(kanban)](https://github.com/freeboardgame/FreeBoardGame.org/projects/8).
-- :construction: Checkers
-- :construction: Minesweeper
+Check out the [infrastructure kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/6).
 
 ## Contributing
 
-Contributions are always welcome, even if just reporting bugs. Feel free to ask for any help :).
+Contributions are always welcome, even if just reporting bugs (check the [known bugs kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/13)). Feel free to ask for any help :).
 
 ## Community
 

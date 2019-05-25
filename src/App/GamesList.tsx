@@ -13,11 +13,13 @@ export class GamesList extends React.Component<{}, {}> {
       </Link>
     ));
     return (
-      <div style={{ marginTop: '8px' }}>
+      <div style={{ margin: '8px 0' }}>
         <Typography variant="title" style={{ marginBottom: '16px' }}>
           Games
         </Typography>
-        {gamesList}
+        <div style={{ margin: '0 4px' }}>
+          {gamesList}
+        </div>
       </div>
     );
   }
