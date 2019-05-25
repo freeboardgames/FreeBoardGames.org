@@ -3,7 +3,6 @@ var path = require("path");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 var config = {
   mode: 'development',
@@ -23,7 +22,6 @@ var config = {
   },
 
   plugins: [
-    new HardSourceWebpackPlugin(),
     new CleanWebpackPlugin(['server-build'], { root: __dirname, dry: false, exclude: [] }),
   ],
 
