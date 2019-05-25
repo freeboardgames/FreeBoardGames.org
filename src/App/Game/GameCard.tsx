@@ -24,16 +24,24 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
       backgroundPosition: 'center',
       backgroundImage: `url(${this.props.game.imageURL})`,
     };
+    const baseBadgeStyle: React.CSSProperties = {
+      position: 'absolute',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+      padding: '0px 8px',
+      borderRadius: '8px',
+      backgroundColor: 'white',
+    };
     if (this.props.isLink) {
+      mainDivStyle.boxShadow = '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)';
       mainDivStyle.borderRadius = '8px';
       navigateButton = (
         <div
           style={{
-            position: 'absolute',
+            ...baseBadgeStyle,
             bottom: '12px',
             right: '8px',
             borderRadius: '32px',
-            backgroundColor: 'white',
+            padding: '0',
           }}
         >
           <IconButton aria-label="Next">
@@ -46,12 +54,10 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
       <div style={mainDivStyle}>
         <div
           style={{
-            position: 'absolute',
+            ...baseBadgeStyle,
             top: '12px',
             left: '8px',
-            padding: '4px 8px',
-            borderRadius: '8px',
-            backgroundColor: 'white',
+            paddingTop: '4px',
           }}
         >
           <Typography gutterBottom={false} variant="h4" component="h4" style={{ fontWeight: 300 }}>
@@ -60,12 +66,9 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
         </div>
         <div
           style={{
-            position: 'absolute',
+            ...baseBadgeStyle,
             bottom: '12px',
             left: '8px',
-            padding: '0 8px',
-            borderRadius: '8px',
-            backgroundColor: 'white',
           }}
         >
           <Typography gutterBottom={false} variant="overline" component="p">

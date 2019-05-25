@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 class Header extends React.Component<{}, {}> {
   render() {
     return (
-      <div>
+      <div style={{ padding: '0 8px' }}>
         <Typography variant="title" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           Free as in freedom
         </Typography>
