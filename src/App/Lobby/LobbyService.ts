@@ -8,8 +8,10 @@ export interface IPlayerInRoom {
 }
 
 export interface IRoomMetadata {
-  gameCode: string;
+  gameCode?: string;
   roomID: string;
+  players?: IPlayerInRoom[];
+  ready?: boolean;
 }
 
 export interface INewRoom {
@@ -39,5 +41,24 @@ export class LobbyService {
         playerName: player.name,
       });
     return response.body.playerCredentials;
+  }
+
+  public static async roomMetadata(room: IRoomMetadata): Promise<IRoomMetadata> {
+    const response = await request
+      .get(`${AddressHelper.getServerAddress()}/games/${room.gameCode}/${room.roomID}`);
+    const roomMetadata: IRoomMetadata = response.body;
+    return roomMetadata;
+  }
+
+  public static async roomReady(room: IRoomMetadata): Promise<boolean> {
+    const roomMetadata: IRoomMetadata = await this.roomMetadata(room);
+    const players = roomMetadata.players;
+    const playersWithNames: any = [];
+    for (const player of players) {
+      if (player.name) {
+        playersWithNames.push(player);
+      }
+    }
+    return playersWithNames.length === 2;
   }
 }
