@@ -106,6 +106,9 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   }
   export function Game(gameArgs: IGameArgs): GameObj;
   export const INVALID_MOVE: string;
+  export const PlayerView: {
+    STRIP_SECRETS: (G: any, ctx: IGameCtx, playerID: any) => any;
+  }
 }
 
 declare module '@freeboardgame.org/boardgame.io/react' {
