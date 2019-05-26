@@ -52,13 +52,25 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     processMove: (G: any, action: any, ctx: any) => any;
     flow: FlowObj;
   }
+  export class Random {
+    Shuffle: (deck: any[]) => any[];
+    Number: () => number;
+    Die: (spotvalue: number, diceCount: number) => number;
+    D4: () => number;
+    D6: () => number;
+    D8: () => number;
+    D10: () => number;
+    D12: () => number;
+    D20: () => number;
+  }
   interface IGameCtx {
     phase?: string;
     playerID?: string;
-    numPlayer: number;
+    numPlayers: number;
     turn: number;
     currentPlayer: string;
     currentPlayerMoves: number;
+    random: Random;
   }
   interface IGameMoves {
     [key: string]: (G: any, ctx: IGameCtx, ...args: any[]) => any;
@@ -111,7 +123,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   }
   interface IGameArgs {
     name?: string;
-    setup: (numPlayers: number) => any;
+    setup: (ctx: IGameCtx) => any;
     moves: IGameMoves;
     playerView?: (G: any, ctx: IGameCtx, playerID: string) => any;
     flow?: IGameFlow;
