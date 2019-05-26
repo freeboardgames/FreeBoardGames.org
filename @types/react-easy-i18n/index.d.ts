@@ -1,1 +1,0 @@
-declare module 'react-easy-i18n';

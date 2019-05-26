@@ -6,7 +6,7 @@ import FreeBoardGameBar from './FreeBoardGameBar';
 import SvgError from './media/SvgError';
 import Typography from '@material-ui/core/Typography';
 import { Status } from 'rrc';
-import { Text } from 'react-easy-i18n';
+import { trans } from 'ts-easy-i18n';
 
 interface IMessageState {
   linkHidden: boolean;
@@ -56,7 +56,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
       linkHome = (
         <Button href="/" variant="outlined" style={{ margin: '8px' }}>
           <HomeIcon style={{ marginRight: '8px' }} />
-          <Text text="messagePage.goHome" />
+          {trans('messagePage.goHome')}
         </Button>);
     }
     return (
