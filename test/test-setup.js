@@ -13,9 +13,9 @@ enzyme.configure({ adapter: new Adapter() });
 jest.mock('react-ga');
 
 // mock i18n
-// <Text text="examplepage.header" /> will render in tests as "examplepage.header"
-jest.mock('react-easy-i18n', () => ({
-  Text: jest.fn(attr => attr.text),
+// trans('examplepage.header') will render in tests as "examplepage.header"
+jest.mock('ts-easy-i18n', () => ({
+  trans: jest.fn(attr => attr),
   registerLang: jest.fn(),
   setCurrentLocale: jest.fn()
 }))
