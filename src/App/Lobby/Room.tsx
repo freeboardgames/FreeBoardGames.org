@@ -20,58 +20,64 @@ interface IRoomProps {
 }
 
 interface IRoomState {
-  room: IRoomMetadata;
-  player?: IPlayerInRoom;
-  nameTextBox: string;
+  roomMetadata?: IRoomMetadata;
+  nameTextBox?: string;
+  loading: boolean;
 }
 
 export class Room extends React.Component<IRoomProps, IRoomState> {
-  private timer: any;  // fixme
+  state = { loading: true };
+  private timer: any;  // fixme loads state of room
   constructor(props: IRoomProps) {
     super(props);
-    const roomID = this.props.match.params.roomID;
-    this.state = {
-      nameTextBox: '',
-      room: {
-        gameCode: this.props.match.params.gameCode,
-        ready: false,
-        players: [],
-        roomID,
-      },
-      player: LobbyService.getCredential(roomID),
-    };
   }
   render() {
     let LoadingPage;
-    const playerInRoom = this.state.room.players[this.state.player.playerID];
-    if (!playerInRoom || playerInRoom.name) {
-      // user hasn't joined
+    const nickname = LobbyService.getNickname();
+    if (!nickname) {
+      return this._getNamePrompt();
     }
-    if (!this.state.room.ready) {
+    if (this.state.loading) {
       LoadingPage = getMessagePage(
         'loading',
-        'Waiting for friend...',
+        'Loading...',
       );
+      return <LoadingPage />;
     } else {
       LoadingPage = getMessagePage(
         'error',
         'Work in progress...',
       );
+      return <LoadingPage />;
     }
-    return <LoadingPage />;
   }
 
   checkIfRoomReady = (room: IRoomMetadata) => {
-    LobbyService.roomReady(room)
+    LobbyService.isRoomReady(room)
       .then((ready) => {
         if (ready) {
           room.ready = true;
           this.setState((oldState) => {
-            return { ...oldState, room };
+            return { ...oldState, roomMetadata: room };
           });
         }
       }, () => {
         throw new Error('failed to check if room ready');
+      });
+  }
+
+  updateMetadata = () => {
+    // metadata updated on a timer
+    // now we have credentials on browser and have metadata but metadata is
+    // not going to show if that specific user is already in room
+    const { gameCode, roomID } = this.props.match.params;
+    LobbyService.getRoomMetadata(gameCode, roomID)
+      .then((metadata) => {
+        this.setState((oldState) => {
+          return { ...oldState, roomMetadata: metadata };
+        });
+      }, () => {
+        throw new Error('failed to fetch room metadata');
       });
   }
 
@@ -99,7 +105,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
               onClick={this._joinRoom}
             >
               Join Room
-          </Button>
+            </Button>
           </CardContent>
         </Card>
       </AlertLayer>);
@@ -109,7 +115,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
     const player = this.state.player;
     LobbyService.joinRoom(this.state.room, player).then((newRoom) => {
       this.setState((oldState) => {
-        return { ...oldState, room: newRoom };
+        return { ...oldState, roomMetadata: newRoom };
       });
     }, () => {
       throw new Error('failed to join room');
@@ -126,7 +132,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   componentDidMount() {
-    this.timer = setInterval(() => this.checkIfRoomReady(this.state.room), 2000);
+    this.timer = setInterval(() => this.updateMetadata(), 2000);
   }
 
   componentWillUnmount() {

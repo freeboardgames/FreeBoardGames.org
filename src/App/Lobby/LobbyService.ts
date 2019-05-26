@@ -1,6 +1,10 @@
 import AddressHelper from '../AddressHelper';
 import request from 'superagent';
 
+export interface IPlayerCredential {
+  rooms: IPlayerCredential[];
+}
+
 export interface IPlayerInRoom {
   playerID: number;
   name?: string;
@@ -11,8 +15,9 @@ export interface IPlayerInRoom {
 export interface IRoomMetadata {
   gameCode?: string;
   roomID: string;
-  players?: IPlayerInRoom[];
-  ready?: boolean;
+  players?: IPlayerInRoom[];  // everyone listed
+  // want to know if person is the player
+  // new field?
 }
 
 export interface INewRoom {
@@ -47,15 +52,15 @@ export class LobbyService {
     return newRoom;
   }
 
-  public static async roomMetadata(room: IRoomMetadata): Promise<IRoomMetadata> {
+  public static async getRoomMetadata(gameCode: string, roomID: string): Promise<IRoomMetadata> {
     const response = await request
-      .get(`${AddressHelper.getServerAddress()}/games/${room.gameCode}/${room.roomID}`);
+      .get(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}`);
     const roomMetadata: IRoomMetadata = response.body;
     return roomMetadata;
   }
 
-  public static async roomReady(room: IRoomMetadata): Promise<boolean> {
-    const roomMetadata: IRoomMetadata = await this.roomMetadata(room);
+  public static async isRoomReady(room: IRoomMetadata): Promise<boolean> {
+    const roomMetadata: IRoomMetadata = await this.getRoomMetadata(room);
     const players = roomMetadata.players;
     const playersWithNames: any = [];
     for (const player of players) {
@@ -64,6 +69,10 @@ export class LobbyService {
       }
     }
     return playersWithNames.length === 2;
+  }
+
+  public static getNickname(): string {
+    return localStorage.getItem('fbgNickname');
   }
 
   public static getCredential(roomID: string): IPlayerInRoom {
