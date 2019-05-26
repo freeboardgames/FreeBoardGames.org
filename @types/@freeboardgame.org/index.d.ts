@@ -52,21 +52,53 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     processMove: (G: any, action: any, ctx: any) => any;
     flow: FlowObj;
   }
+  export class Random {
+    Shuffle: (deck: any[]) => any[];
+    Number: () => number;
+    Die: (spotvalue: number, diceCount: number) => number;
+    D4: () => number;
+    D6: () => number;
+    D8: () => number;
+    D10: () => number;
+    D12: () => number;
+    D20: () => number;
+  }
+  export class Events {
+    endTurn: () => void;
+    endPhase: () => void;
+    endGame: () => void;
+  }
   interface IGameCtx {
     phase?: string;
     playerID?: string;
-    numPlayer: number;
+    numPlayers: number;
     turn: number;
     currentPlayer: string;
     currentPlayerMoves: number;
+    playOrder: string[];
+    playOrderPos: number;
+    random: Random;
+    events: Events;
   }
   interface IGameMoves {
     [key: string]: (G: any, ctx: IGameCtx, ...args: any[]) => any;
   }
+  interface IActionPlayers {
+    value: (G: any, ctx: IGameCtx) => number[] | string[],
+    all: boolean;
+    others: boolean;
+    once: boolean;
+  }
+  interface ITurnOrder {
+    playOrder?: (G: any, ctx: IGameCtx) => number[] | string[];
+    first: (G: any, ctx: IGameCtx) => number;
+    next: (G: any, ctx: IGameCtx) => number;
+    actionPlayers?: IActionPlayers
+  }
   interface IGameFlowPhases {
     [name: string]: {
       movesPerTurn?: number;
-      turnOrder?: TurnOrder;
+      turnOrder?: TurnOrder | ITurnOrder;
       next?: string;
       allowedMoves?: string[];
       endPhaseIf?: (G: any, ctx: IGameCtx) => boolean | object;
@@ -99,7 +131,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   }
   interface IGameArgs {
     name?: string;
-    setup: (numPlayers: number) => any;
+    setup: (ctx: IGameCtx) => any;
     moves: IGameMoves;
     playerView?: (G: any, ctx: IGameCtx, playerID: string) => any;
     flow?: IGameFlow;

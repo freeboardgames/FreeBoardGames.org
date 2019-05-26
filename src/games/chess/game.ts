@@ -10,7 +10,7 @@ import { Game } from '@freeboardgame.org/boardgame.io/core';
 import Chess from './chessjswrapper';
 
 interface IGameCtx {
-  numPlayer: number;
+  numPlayers: number;
   turn: number;
   currentPlayer: string;
   currentPlayerMoves: number;
