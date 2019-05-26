@@ -63,10 +63,22 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   interface IGameMoves {
     [key: string]: (G: any, ctx: IGameCtx, ...args: any[]) => any;
   }
+  interface IActionPlayers {
+    value: (G: any, ctx: IGameCtx) => number[] | string[],
+    all: boolean;
+    others: boolean;
+    once: boolean;
+  }
+  interface ITurnOrder {
+    playOrder?: (G: any, ctx: IGameCtx) => number[] | string[];
+    first: (G: any, ctx: IGameCtx) => number;
+    next: (G: any, ctx: IGameCtx) => number;
+    actionPlayers?: IActionPlayers
+  }
   interface IGameFlowPhases {
     [name: string]: {
       movesPerTurn?: number;
-      turnOrder?: TurnOrder;
+      turnOrder?: TurnOrder | ITurnOrder;
       next?: string;
       allowedMoves?: string[];
       endPhaseIf?: (G: any, ctx: IGameCtx) => boolean | object;
