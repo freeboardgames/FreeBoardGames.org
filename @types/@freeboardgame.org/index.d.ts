@@ -63,6 +63,11 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     D12: () => number;
     D20: () => number;
   }
+  export class Events {
+    endTurn: () => void;
+    endPhase: () => void;
+    endGame: () => void;
+  }
   interface IGameCtx {
     phase?: string;
     playerID?: string;
@@ -70,7 +75,10 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     turn: number;
     currentPlayer: string;
     currentPlayerMoves: number;
+    playOrder: string[];
+    playOrderPos: number;
     random: Random;
+    events: Events;
   }
   interface IGameMoves {
     [key: string]: (G: any, ctx: IGameCtx, ...args: any[]) => any;
