@@ -88,6 +88,11 @@ export class Board extends React.Component<IBoardProps, {}> {
         <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />
       );
     }
+
+    if (this.props.playerID === null) {
+      return (<GameLayout><div><svg></svg></div></GameLayout>)
+    }
+
     return (
       <GameLayout>
         <h2 style={{ textAlign: 'center' }}>
