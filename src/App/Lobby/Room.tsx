@@ -6,8 +6,6 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 
 interface IExpectedParams {
@@ -21,15 +19,16 @@ interface IRoomProps {
 
 interface IRoomState {
   roomMetadata?: IRoomMetadata;
-  nameTextBox?: string;
+  nameTextField?: string;
   loading: boolean;
 }
 
 export class Room extends React.Component<IRoomProps, IRoomState> {
-  state = { loading: true };
+  state: IRoomState = { loading: true };
   private timer: any;  // fixme loads state of room
   constructor(props: IRoomProps) {
     super(props);
+    this.updateMetadata();
   }
   render() {
     let LoadingPage;
@@ -43,39 +42,31 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
         'Loading...',
       );
       return <LoadingPage />;
-    } else {
-      LoadingPage = getMessagePage(
-        'error',
-        'Work in progress...',
-      );
-      return <LoadingPage />;
     }
-  }
-
-  checkIfRoomReady = (room: IRoomMetadata) => {
-    LobbyService.isRoomReady(room)
-      .then((ready) => {
-        if (ready) {
-          room.ready = true;
-          this.setState((oldState) => {
-            return { ...oldState, roomMetadata: room };
-          });
-        }
-      }, () => {
-        throw new Error('failed to check if room ready');
-      });
+    return JSON.stringify(this.state.roomMetadata);
   }
 
   updateMetadata = () => {
-    // metadata updated on a timer
-    // now we have credentials on browser and have metadata but metadata is
-    // not going to show if that specific user is already in room
     const { gameCode, roomID } = this.props.match.params;
+    if (!LobbyService.getNickname()) {
+      return;
+    }
     LobbyService.getRoomMetadata(gameCode, roomID)
+      .then(async (metadata) => {
+        if (!metadata.currentUser) {
+          const player: IPlayerInRoom = {
+            playerID: metadata.players.length,
+            roomID,
+            name: LobbyService.getNickname(),
+          };
+          await LobbyService.joinRoom(gameCode, player);
+          return LobbyService.getRoomMetadata(gameCode, roomID);
+        }
+        return metadata;
+      })
       .then((metadata) => {
-        this.setState((oldState) => {
-          return { ...oldState, roomMetadata: metadata };
-        });
+        this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
+        setTimeout(() => this.updateMetadata(), 2000);
       }, () => {
         throw new Error('failed to fetch room metadata');
       });
@@ -102,7 +93,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
               color="primary"
               // onClick={this.props.onDismiss}
               style={{ marginTop: '16px' }}
-              onClick={this._joinRoom}
+              onClick={this._setName}
             >
               Join Room
             </Button>
@@ -111,28 +102,19 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       </AlertLayer>);
   }
 
-  _joinRoom = () => {
-    const player = this.state.player;
-    LobbyService.joinRoom(this.state.room, player).then((newRoom) => {
-      this.setState((oldState) => {
-        return { ...oldState, roomMetadata: newRoom };
-      });
-    }, () => {
-      throw new Error('failed to join room');
-    });
+  _setName = () => {
+    const name = this.state.nameTextField;
+    if (name.length > 0) {
+      LobbyService.setNickname(name);
+      this.updateMetadata();
+    }
   }
 
   _changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value!;
-    const player: IPlayerInRoom = { ... this.state.player };
-    player.name = name;
+    const nameTextField = event.target.value!;
     this.setState((oldState) => {
-      return { ...oldState, player };
+      return { ...oldState, nameTextField };
     });
-  }
-
-  componentDidMount() {
-    this.timer = setInterval(() => this.updateMetadata(), 2000);
   }
 
   componentWillUnmount() {

@@ -1,105 +1,90 @@
 import AddressHelper from '../AddressHelper';
 import request from 'superagent';
 
-export interface IPlayerCredential {
-  rooms: IPlayerCredential[];
-}
+const FBG_CREDENTIALS_KEY = 'fbgCredentials';
 
 export interface IPlayerInRoom {
   playerID: number;
   name?: string;
-  credential?: string;
   roomID: string;
 }
 
 export interface IRoomMetadata {
   gameCode?: string;
   roomID: string;
-  players?: IPlayerInRoom[];  // everyone listed
+  players?: IPlayerInRoom[];  // only active players
+  currentUser?: IPlayerInRoom;
   // want to know if person is the player
   // new field?
 }
 
-export interface INewRoom {
-  room: IRoomMetadata;
-  initialPlayer: IPlayerInRoom;
+interface IPlayerCredential {
+  playerID: number;
+  credential: string;
+}
+
+interface IStoredCredentials {
+  [key: string]: IPlayerCredential;
 }
 
 export class LobbyService {
-  public static async newRoom(gameCode: string): Promise<INewRoom> {
+  public static async newRoom(gameCode: string): Promise<string> {
     const response = await request
       .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/create`)
       .send({ numPlayers: 2 });
     const roomID = response.body.gameID;
-    const room: IRoomMetadata = { gameCode, roomID };
-    const initialPlayer: IPlayerInRoom = { playerID: 0, name: 'J', roomID };
     return roomID;
   }
 
-  public static async joinRoom(room: IRoomMetadata, player: IPlayerInRoom): Promise<IRoomMetadata> {
+  public static async joinRoom(gameCode: string, player: IPlayerInRoom): Promise<void> {
     const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${room.gameCode}/${room.roomID}/join`)
+      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/join`)
       .send({
-        playerID: this.genPlayerID(room),  // gen player id automatically
+        playerID: player.playerID,
         playerName: player.name,
       });
     const credential = response.body.playerCredentials;
-    player.credential = credential;
-    this.setCredential(player);
-    const response2 = await request
-      .get(`${AddressHelper.getServerAddress()}/games/${room.gameCode}/${room.roomID}`);
-    const newRoom: IRoomMetadata = response.body;
-    return newRoom;
+    this.setCredential(player, credential);
   }
 
   public static async getRoomMetadata(gameCode: string, roomID: string): Promise<IRoomMetadata> {
     const response = await request
       .get(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}`);
-    const roomMetadata: IRoomMetadata = response.body;
-    return roomMetadata;
-  }
-
-  public static async isRoomReady(room: IRoomMetadata): Promise<boolean> {
-    const roomMetadata: IRoomMetadata = await this.getRoomMetadata(room);
-    const players = roomMetadata.players;
-    const playersWithNames: any = [];
-    for (const player of players) {
-      if (player.name) {
-        playersWithNames.push(player);
-      }
+    const body = response.body;
+    const players: IPlayerInRoom[] = body.players.filter((player: any) => player.name)
+      .map((player: any) => ({
+        playerID: player.id,
+        name: player.name,
+        roomID,
+      }));
+    const playerCredential: IPlayerCredential = this.getCredential(roomID);
+    let currentUser;
+    if (playerCredential) {
+      currentUser = body.players.find((player: any) => player.id === playerCredential.playerID);
     }
-    return playersWithNames.length === 2;
+    return { players, gameCode, roomID, currentUser };
   }
 
   public static getNickname(): string {
     return localStorage.getItem('fbgNickname');
   }
 
-  public static getCredential(roomID: string): IPlayerInRoom {
+  public static setNickname(name: string): void {
+    localStorage.setItem('fbgNickname', name);
+  }
+
+  private static getCredential(roomID: string): IPlayerCredential | undefined {
     // return an empty IPlayerInRoom object if the player's identity is for another room
-    const credential = localStorage.getItem('fbgCredential');
-    let player: IPlayerInRoom;
-    if (credential) {
-      const decodedPlayer: IPlayerInRoom = JSON.parse(credential);
-      if (decodedPlayer.roomID === roomID) {
-        player = decodedPlayer;
-      }
+    const credentials: IStoredCredentials = JSON.parse(localStorage.getItem(FBG_CREDENTIALS_KEY));
+    if (credentials) {
+      return credentials[roomID];
     }
-    return player;
   }
 
-  public static setCredential(credential: IPlayerInRoom): void {
-    localStorage.setItem('fbgCredential', JSON.stringify(credential));
-  }
-
-  public static genPlayerID(room: IRoomMetadata): number {
-    const players = room.players;
-    const playersWithNames: any = [];
-    for (const player of players) {
-      if (player.name) {
-        playersWithNames.push(player);
-      }
-    }
-    return playersWithNames.length - 1;
+  private static setCredential(player: IPlayerInRoom, credential: string): void {
+    const existing: IStoredCredentials = JSON.parse(localStorage.getItem(FBG_CREDENTIALS_KEY));
+    const newCredentials = { ...existing };
+    newCredentials[player.roomID] = { credential, playerID: player.playerID };
+    localStorage.setItem(FBG_CREDENTIALS_KEY, JSON.stringify(newCredentials));
   }
 }
