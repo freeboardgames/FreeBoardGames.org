@@ -73,12 +73,12 @@ export const TakeSixGame = Game({
         if (scoreboard[0].penaltyPoints === scoreboard[1].penaltyPoints) {
           return { draw: true };
         } else {
-          return { winner: scoreboard[0].playerID };
+          return { winner: scoreboard[0].playerID.toString() };
         }
       }
     },
   },
-  playerView: PlayerView.STRIP_SECRETS,
+  // playerView: PlayerView.STRIP_SECRETS,
   setup: (ctx): IG => {
     // Generate deck
     const deck = ctx.random.Shuffle(

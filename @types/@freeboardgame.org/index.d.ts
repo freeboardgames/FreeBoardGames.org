@@ -75,6 +75,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     turn: number;
     currentPlayer: string;
     currentPlayerMoves: number;
+    actionPlayers: string[],
     playOrder: string[];
     playOrderPos: number;
     gameover: any;
@@ -136,6 +137,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     moves: IGameMoves;
     playerView?: (G: any, ctx: IGameCtx, playerID: string) => any;
     flow?: IGameFlow;
+    seed?: string;
   }
   export function Game(gameArgs: IGameArgs): GameObj;
   export const INVALID_MOVE: string;
