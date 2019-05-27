@@ -48,12 +48,12 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
         args.gameArgs.playerID === '0') {
         return (
           <AlertLayer>
-            <GameSharing
+            {/* <GameSharing
               gameCode={args.gameArgs.gameCode}
               matchCode={args.gameArgs.matchCode}
               playerID={args.gameArgs.playerID}
               onDismiss={this._dismissSharing}
-            />
+            /> */}
           </AlertLayer>
         );
       }

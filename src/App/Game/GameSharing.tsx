@@ -16,19 +16,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 interface IGameSharingProps {
   gameCode: string;
-  matchCode: string;
-  playerID: string;
-  onDismiss: () => void;
+  roomID: string;
 }
 
 export class GameSharing extends React.Component<IGameSharingProps, {}> {
-  static propTypes = {
-    gameCode: PropTypes.string,
-    matchCode: PropTypes.string,
-    playerID: PropTypes.string,
-    onDismiss: PropTypes.func,
-  };
-
   private sendEmailCallback: any;
   private shareFacebookCallback: any;
   private shareTwitterCallback: any;
@@ -79,7 +70,6 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
           <Button
             variant="contained"
             color="primary"
-            onClick={this.props.onDismiss}
             style={{ marginTop: '8px' }}
           >
             Done
@@ -124,14 +114,12 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     });
     copy(this._getLink());
     alert('Link copied to clipboard');
-    this.props.onDismiss();
   }
 
   _getLink() {
-    const player = (this.props.playerID === '0') ? '1' : '0';
     const origin = (typeof window === 'undefined') ? '' : window.location.origin;
     const gameCode = this.props.gameCode;
-    const matchCode = this.props.matchCode;
-    return `${origin}/g/${gameCode}/online/${matchCode}/${player}`;
+    const roomID = this.props.roomID;
+    return `${origin}/room/${gameCode}/online/${roomID}`;
   }
 }

@@ -35,9 +35,7 @@ describe('App', () => {
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(
       <GameSharing
         gameCode={'chess'}
-        matchCode={'foo'}
-        playerID={'0'}
-        onDismiss={onDismiss}
+        roomID={'0'}
       />);
     expect(ssrHtml).toContain('Share');
   });

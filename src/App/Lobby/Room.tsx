@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
+import FreeBoardGameBar from '../FreeBoardGameBar';
+import { GameSharing } from '../Game/GameSharing';
 
 interface IExpectedParams {
   gameCode: string;
@@ -43,7 +45,12 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       );
       return <LoadingPage />;
     }
-    return JSON.stringify(this.state.roomMetadata);
+    return (
+      <FreeBoardGameBar>
+        {this._getGameSharing()}
+        {this._listOfPlayers()}
+      </FreeBoardGameBar>
+    );
   }
 
   updateMetadata = () => {
@@ -85,7 +92,6 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
               type="text"
               onChange={this._changeName}
               value={name}
-            // label="Link"
             />
             <br />
             <Button
@@ -120,5 +126,21 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
   componentWillUnmount() {
     clearInterval(this.timer);
     this.timer = null;
+  }
+
+  _getGameSharing = () => {
+    const { gameCode, roomID } = this.props.match.params;
+    return (<GameSharing gameCode={gameCode} roomID={roomID} />);
+  }
+
+  _listOfPlayers = () => {
+    return (
+      <div>
+        <h3>Currently Online</h3>
+        <ul>
+          <li>xyz...</li>
+        </ul>
+      </div>
+    );
   }
 }
