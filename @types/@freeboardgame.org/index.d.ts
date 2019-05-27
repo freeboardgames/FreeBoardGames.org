@@ -77,6 +77,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     currentPlayerMoves: number;
     playOrder: string[];
     playOrderPos: number;
+    gameover: any;
     random: Random;
     events: Events;
   }
