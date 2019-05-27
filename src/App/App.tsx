@@ -9,7 +9,7 @@ import About from '../About/AboutAsync';
 import getMessagePage from './MessagePage';
 import ReactGA from 'react-ga';
 import { getPageMetadata } from '../metadata';
-import { registerLang, setCurrentLocale, Text } from 'react-easy-i18n';
+import { registerLang, setCurrentLocale } from 'ts-easy-i18n';
 import translations from './translations';
 
 ReactGA.initialize('UA-105391878-1');

@@ -5,7 +5,7 @@ const webpack = require('webpack');
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'inline-cheap-source-map',
+  devtool: 'inline-source-map',
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000
