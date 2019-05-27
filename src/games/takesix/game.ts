@@ -2,7 +2,7 @@ import { Game, TurnOrder, IGameCtx, INVALID_MOVE, PlayerView } from '@freeboardg
 import Card from './card';
 import Player from './player';
 
-interface IG {
+export interface IG {
   players: Player[],
   decks: Card[][],
   cardOrder: string[],
@@ -10,6 +10,7 @@ interface IG {
 }
 
 export const TakeSixGame = Game({
+  name: 'takesix',
   flow: {
     endTurn: false,
     endPhase: false,

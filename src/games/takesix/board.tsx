@@ -1,64 +1,14 @@
 import * as React from 'react';
-import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
-import { parenthesizedExpression } from '@babel/types';
-import createMixins from '@material-ui/core/styles/createMixins';
+import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IG } from './game';
+import CardComponent from './CardComponent';
 
 interface IBoardProps {
-  G: any;
-  ctx: any;
+  G: IG;
+  ctx: IGameCtx;
   moves: any;
   playerID: string;
-}
-
-interface ICardProps {
-  card: any;
-  click?: any;
-}
-
-export class Card extends React.Component<ICardProps, {}> {
-  render() {
-    const values: any = {
-      1: '#ffffff',
-      2: '#3498db',
-      3: '#f1c40f',
-      5: '#e74c3c',
-      7: '#8e44ad',
-    };
-    const style: any = {
-      width: 80,
-      height: 80,
-      background: values[this.props.card.value],
-      float: 'left',
-      color: 'black',
-    };
-
-    return (
-      <div
-        onClick={this.props.click}
-        style={style}
-      >
-        <div
-          style={{
-            textAlign: 'center',
-            lineHeight: '20px',
-          }}
-        >
-          {this.props.card.value}
-        </div>
-        <div
-          style={{
-            textAlign: 'center',
-            lineHeight: '60px',
-            verticalAlign: 'middle',
-            fontSize: '3em',
-          }}
-        >
-          {this.props.card.number}
-        </div>
-      </div>
-    );
-  }
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
@@ -76,14 +26,14 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     const lastCards = this.props.G.decks
-      .map((deck: any) => deck[deck.length - 1])
-      .sort((a: any, b: any) => a.number - b.number);
-    const card = this.props.G.players[this.props.playerID].selectedCard;
+      .map((deck) => deck[deck.length - 1])
+      .sort((a, b) => a.number - b.number);
+    const card = this.props.G.players[this.props.playerID as any].selectedCard;
     if (card.number < lastCards[0].number) {
       return 1;
     } else {
       const diffs: number[] = this.props.G.decks.map(
-        (deck: any) => card.number - deck[deck.length - 1].number,
+        (deck) => card.number - deck[deck.length - 1].number,
       );
 
       let min = Number.MAX_SAFE_INTEGER;
@@ -107,7 +57,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     return (
       <GameLayout>
         <div>
-          {this.props.G.decks.map((deck: any, i: number) => (
+          {this.props.G.decks.map((deck, i) => (
             <div
               key={i}
               onClick={this.selectDeck.bind(this, i)}
@@ -116,9 +66,9 @@ export class Board extends React.Component<IBoardProps, {}> {
                 opacity: this.getOpacity(i),
               }}
             >
-              {deck.map((card: any, j: number) => (
+              {deck.map((card, j) => (
                 <div key={j}>
-                  <Card card={card} />
+                  <CardComponent card={card} />
                 </div>
               ))}
               <div style={{ clear: 'both' }} />
@@ -132,9 +82,9 @@ export class Board extends React.Component<IBoardProps, {}> {
             marginTop: '20px',
           }}
         >
-          {this.props.G.players[this.props.playerID].cards.map(
-            (card: any, index: number) => (
-              <Card
+          {this.props.G.players[this.props.playerID as any].cards.map(
+            (card, index: number) => (
+              <CardComponent
                 key={card.number}
                 click={this.selectCard.bind(this, index)}
                 card={card}
@@ -143,9 +93,9 @@ export class Board extends React.Component<IBoardProps, {}> {
           )}
         </div>
         <div>
-          Penalty points: {this.props.G.players[this.props.playerID].penaltyCards
-            .map((card: any) => card.value)
-            .reduce((a: any, b: any) => a + b, 0)}
+          Penalty points: {this.props.G.players[this.props.playerID as any].penaltyCards
+            .map((card) => card.value)
+            .reduce((a, b) => a + b, 0)}
         </div>
       </GameLayout>
     );
