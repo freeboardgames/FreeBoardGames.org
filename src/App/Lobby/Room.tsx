@@ -72,6 +72,10 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
         return metadata;
       })
       .then((metadata) => {
+        if (metadata.numberOfPlayers === metadata.players.length) {
+          // TODO: redirect
+          console.log('redirect to game room ...');
+        }
         this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
         setTimeout(() => this.updateMetadata(), 2000);
       }, () => {
@@ -139,6 +143,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
         <h3>Currently Online</h3>
         <ul>
           <li>xyz...</li>
+          <li>waiting for friend</li>
         </ul>
       </div>
     );

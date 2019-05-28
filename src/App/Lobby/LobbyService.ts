@@ -14,6 +14,7 @@ export interface IRoomMetadata {
   roomID: string;
   players?: IPlayerInRoom[];  // only active players
   currentUser?: IPlayerInRoom;
+  numberOfPlayers: number;
   // want to know if person is the player
   // new field?
 }
@@ -62,11 +63,13 @@ export class LobbyService {
     if (playerCredential) {
       currentUser = body.players.find((player: any) => player.id === playerCredential.playerID);
     }
-    return { players, gameCode, roomID, currentUser };
+    return { players, gameCode, roomID, currentUser, numberOfPlayers: body.players.length };
   }
 
   public static getNickname(): string {
-    return localStorage.getItem('fbgNickname');
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('fbgNickname');
+    }
   }
 
   public static setNickname(name: string): void {
