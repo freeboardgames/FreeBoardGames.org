@@ -21,11 +21,13 @@ class About extends React.Component<{}, {}> {
   }
 
   _getAboutCard() {
+    // debugger;
+    const t = trans('about.header');
     return (
       <Card style={{ marginTop: '16px' }}>
         <CardContent>
           <Typography variant="h5" component="h2">
-            {trans('about.header')}
+            {t}
           </Typography>
           <Typography component="p">
             FreeBoardGame.org is a free (as in freedom), mobile-first, board game platform.

@@ -130,7 +130,7 @@
     "shuffle-array": "^1.0.1",
     "socket.io-client": "^2.2.0",
     "three": "^0.101.1",
-    "ts-easy-i18n": "^0.2.3",
+    "ts-easy-i18n": "file:../ts-easy-i18n/ts-easy-i18n-0.2.3.tgz",
     "webpack-shell-plugin-next": "^0.6.4",
     "workbox-sw": "^3.6.3",
     "workbox-webpack-plugin": "^3.6.3"

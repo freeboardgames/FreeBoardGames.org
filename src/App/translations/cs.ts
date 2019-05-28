@@ -1,6 +1,6 @@
 const cs = {
     about: {
-        header: 'Informace o FreeBoardGame.org',
+        headeraaaaa: 'Informace o FreeBoardGame.org',
     },
     messagePage: {
         invalidLocale: 'Neplatný jazyk',

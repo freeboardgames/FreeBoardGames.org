@@ -8374,10 +8374,13 @@ trim-right@^1.0.1:
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
 
-ts-easy-i18n@^0.2.3:
+"ts-easy-i18n@file:../ts-easy-i18n/ts-easy-i18n-0.2.3.tgz":
   version "0.2.3"
-  resolved "https://registry.yarnpkg.com/ts-easy-i18n/-/ts-easy-i18n-0.2.3.tgz#a7947820c368ba4cbb019af65dfe2eabbf2c261e"
-  integrity sha512-Q+g0fFpFWSXV5YKtCSRKzaxNd4ZY/pUyTm5je6wgAepPgPYFaqz3Wfxwy/BeZ9VdFCLY1e9lt0a1PmmMLTj19g==
+  resolved "file:../ts-easy-i18n/ts-easy-i18n-0.2.3.tgz#ebfc359a1a9959bf1deb861f766f4a385f7dc4f5"
+
+"ts-easy-i18n@file:../ts-easy-i18n/ts-easy-i18n-v0.2.3.tgz":
+  version "0.2.3"
+  resolved "file:../ts-easy-i18n/ts-easy-i18n-v0.2.3.tgz#7f7b7d4dba9e45e2cb23f2e40998b2dfc232f178"
 
 ts-jest@^24.0.2:
   version "24.0.2"
