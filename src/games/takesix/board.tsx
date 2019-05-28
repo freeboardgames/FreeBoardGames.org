@@ -24,7 +24,8 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   getOpacity(id: number): number {
-    if (this.props.ctx.phase === 'CARD_SELECT') {
+    if (this.props.ctx.phase === 'CARD_SELECT' ||
+      !this.props.ctx.actionPlayers.some(player => player === this.props.playerID)) {
       return 1;
     }
 
