@@ -90,7 +90,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     if (this.props.playerID === null) {
-      return (<GameLayout><div><svg></svg></div></GameLayout>)
+      return (<GameLayout><div><svg /></div></GameLayout>);
     }
 
     return (

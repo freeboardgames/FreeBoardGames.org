@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Card from './card';
 
-interface ICardProps {
+export interface ICardProps {
   card: Card;
   click?: any;
 }

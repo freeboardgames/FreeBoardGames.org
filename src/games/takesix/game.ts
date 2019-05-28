@@ -9,6 +9,102 @@ export interface IG {
   end: boolean,
 }
 
+export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
+  if (id < 0 || id >= G.players[ctx.playerID as any].cards.length) {
+    return INVALID_MOVE;
+  }
+
+  return {
+    ...G,
+    players: Object.values({
+      ...G.players,
+      [ctx.playerID]: {
+        ...G.players[ctx.playerID as any],
+        selectedCard: G.players[ctx.playerID as any].cards.find(
+          (_: Card, index: number) => index === id,
+        ), // Set card as selected
+        cards: G.players[ctx.playerID as any].cards.filter(
+          (_: Card, index: number) => index !== id,
+        ), // Remove card from player's deck
+      },
+    }),
+  };
+}
+
+export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
+  const lastCards = G.decks
+    .map((deck: Card[]) => deck[deck.length - 1])
+    .sort((a: Card, b: Card) => a.number - b.number);
+  const card = G.players[ctx.playerID as any].selectedCard;
+
+  // Card is lower than every in deck
+  if (card.number < lastCards[0].number) {
+    return {
+      ...G,
+      players: Object.values({
+        ...G.players,
+        [ctx.playerID]: {
+          ...G.players[ctx.playerID as any],
+          penaltyCards: [
+            ...G.players[ctx.playerID as any].penaltyCards,
+            ...G.decks[id], // Move current deck into penalty cards in player's deck
+          ],
+        },
+      }),
+      decks: Object.values({
+        ...G.decks,
+        [id]: [card], // Set selected card as current in selected deck
+      }),
+    };
+  } else {
+    const diffs: number[] = G.decks.map(
+      (deck: Card[]) => card.number - deck[deck.length - 1].number,
+    );
+
+    let min = Number.MAX_SAFE_INTEGER;
+    let minIndex = 0;
+    diffs.forEach((diff, index) => {
+      if (diff > 0 && diff < min) {
+        min = diff;
+        minIndex = index;
+      }
+    });
+
+    if (minIndex !== id) {
+      return INVALID_MOVE;
+    }
+
+    // If card is #6 move all cards from deck to player's hand
+    if (G.decks[id].length === 5) {
+      return {
+        ...G,
+        players: Object.values({
+          ...G.players,
+          [ctx.playerID]: {
+            ...G.players[ctx.playerID as any],
+            penaltyCards: [
+              ...G.players[ctx.playerID as any].penaltyCards,
+              ...G.decks[id],
+            ],
+          },
+        }),
+        decks: Object.values({
+          ...G.decks,
+          [id]: [card],
+        }),
+      };
+    }
+
+    return {
+      ...G,
+      decks: Object.values({
+        ...G.decks,
+        [id]: [...G.decks[id], card],
+      }),
+    };
+  }
+}
+
 export const TakeSixGame = Game({
   name: 'takesix',
   flow: {
@@ -117,99 +213,7 @@ export const TakeSixGame = Game({
   },
 
   moves: {
-    selectCard(G: IG, ctx: IGameCtx, id: number) {
-      if (id < 0 || id >= G.players[ctx.playerID as any].cards.length) {
-        return INVALID_MOVE;
-      }
-
-      return {
-        ...G,
-        players: Object.values({
-          ...G.players,
-          [ctx.playerID]: {
-            ...G.players[ctx.playerID as any],
-            selectedCard: G.players[ctx.playerID as any].cards.find(
-              (_: Card, index: number) => index === id,
-            ), // Set card as selected
-            cards: G.players[ctx.playerID as any].cards.filter(
-              (_: Card, index: number) => index !== id,
-            ), // Remove card from player's deck
-          },
-        }),
-      };
-    },
-    selectDeck(G: IG, ctx: IGameCtx, id: number) {
-      const lastCards = G.decks
-        .map((deck: Card[]) => deck[deck.length - 1])
-        .sort((a: Card, b: Card) => a.number - b.number);
-      const card = G.players[ctx.playerID as any].selectedCard;
-
-      // Card is lower than every in deck
-      if (card.number < lastCards[0].number) {
-        return {
-          ...G,
-          players: Object.values({
-            ...G.players,
-            [ctx.playerID]: {
-              ...G.players[ctx.playerID as any],
-              penaltyCards: [
-                ...G.players[ctx.playerID as any].penaltyCards,
-                ...G.decks[id], // Move current deck into penalty cards in player's deck
-              ],
-            },
-          }),
-          decks: Object.values({
-            ...G.decks,
-            [id]: [card], // Set selected card as current in selected deck
-          }),
-        };
-      } else {
-        const diffs: number[] = G.decks.map(
-          (deck: Card[]) => card.number - deck[deck.length - 1].number,
-        );
-
-        let min = Number.MAX_SAFE_INTEGER;
-        let minIndex = 0;
-        diffs.forEach((diff, index) => {
-          if (diff > 0 && diff < min) {
-            min = diff;
-            minIndex = index;
-          }
-        });
-
-        if (minIndex !== id) {
-          return INVALID_MOVE;
-        }
-
-        // If card is #6 move all cards from deck to player's hand
-        if (G.decks[id].length === 5) {
-          return {
-            ...G,
-            players: Object.values({
-              ...G.players,
-              [ctx.playerID]: {
-                ...G.players[ctx.playerID as any],
-                penaltyCards: [
-                  ...G.players[ctx.playerID as any].penaltyCards,
-                  ...G.decks[id],
-                ],
-              },
-            }),
-            decks: Object.values({
-              ...G.decks,
-              [id]: [card],
-            }),
-          };
-        }
-
-        return {
-          ...G,
-          decks: Object.values({
-            ...G.decks,
-            [id]: [...G.decks[id], card],
-          }),
-        };
-      }
-    },
+    selectCard,
+    selectDeck,
   },
 });
