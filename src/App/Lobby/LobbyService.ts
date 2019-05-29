@@ -61,7 +61,7 @@ export class LobbyService {
     const playerCredential: IPlayerCredential = this.getCredential(roomID);
     let currentUser;
     if (playerCredential) {
-      currentUser = body.players.find((player: any) => player.id === playerCredential.playerID);
+      currentUser = players.find((player: any) => player.playerID === playerCredential.playerID);
     }
     return { players, gameCode, roomID, currentUser, numberOfPlayers: body.players.length };
   }

@@ -51,10 +51,20 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       const room = this.state.roomMetadata;
       return <Game room={room} />;
     }
+    const style: React.CSSProperties = {
+      position: 'fixed',
+      width: '100%',
+      maxWidth: '500px',
+      color: 'white',
+      top: '35%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+    };
     return (
       <FreeBoardGameBar>
-        {this._getGameSharing()}
-        {this._listOfPlayers()}
+        <div style={style}>
+          {this._getGameSharing()}
+        </div>
       </FreeBoardGameBar>
     );
   }
@@ -79,12 +89,13 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       })
       .then((metadata) => {
         if (metadata.numberOfPlayers === metadata.players.length) {
-          // TODO: redirect
-          console.log('redirect to game room ...');
           this.setState((oldState) => ({ ...oldState, gameReady: true }));
+          this._stopTimer();
         }
         this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
-        setTimeout(() => this.updateMetadata(), 2000);
+        if (!this.state.gameReady) {
+          setTimeout(() => this.updateMetadata(), 2000);
+        }
       }, () => {
         throw new Error('failed to fetch room metadata');
       });
@@ -92,31 +103,29 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
 
   _getNamePrompt = (name?: string) => {
     return (
-      <AlertLayer>
-        <Card style={{ whiteSpace: 'nowrap' }}>
-          <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
-            Enter Your Name
+      <Card style={{ whiteSpace: 'nowrap' }}>
+        <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
+          Enter Your Name
         </Typography>
-          <CardContent>
-            <TextField
-              autoFocus={true}
-              type="text"
-              onChange={this._changeName}
-              value={name}
-            />
-            <br />
-            <Button
-              variant="contained"
-              color="primary"
-              // onClick={this.props.onDismiss}
-              style={{ marginTop: '16px' }}
-              onClick={this._setName}
-            >
-              Join Room
+        <CardContent>
+          <TextField
+            autoFocus={true}
+            type="text"
+            onChange={this._changeName}
+            value={name}
+          />
+          <br />
+          <Button
+            variant="contained"
+            color="primary"
+            // onClick={this.props.onDismiss}
+            style={{ marginTop: '16px' }}
+            onClick={this._setName}
+          >
+            Join Room
             </Button>
-          </CardContent>
-        </Card>
-      </AlertLayer>);
+        </CardContent>
+      </Card>);
   }
 
   _setName = () => {
@@ -135,26 +144,16 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   componentWillUnmount() {
+    this._stopTimer();
+  }
+
+  _stopTimer = () => {
     clearInterval(this.timer);
     this.timer = null;
   }
 
   _getGameSharing = () => {
     const { gameCode, roomID } = this.props.match.params;
-    return (<GameSharing gameCode={gameCode} roomID={roomID} />);
-  }
-
-  _listOfPlayers = () => {
-    const players = this.state.roomMetadata.players.map((player: IPlayerInRoom, idx: number) => {
-        return (<li key={idx}>{player.name}</li>);
-      });
-    return (
-      <div>
-        <h3>Currently Online</h3>
-        <ul>
-          {players}
-        </ul>
-      </div>
-    );
+    return (<GameSharing gameCode={gameCode} roomID={roomID} players={this.state.roomMetadata.players} />);
   }
 }

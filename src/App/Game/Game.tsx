@@ -101,9 +101,17 @@ export default class Game extends React.Component<IGameProps, {}> {
   }
 
   render() {
-    const aiLevel = this.props.match.params.aiLevel;
-    const matchCode = this.props.match.params.matchCode;
-    const playerID = (this.mode === GameMode.AI) ? '0' : this.props.match.params.playerID;
+    let aiLevel, matchCode, playerID, credentials;
+    let gameID;  // our roomID, bgio still calls this gameID
+    if (this.props.match) {
+      aiLevel = this.props.match.params.aiLevel;
+      matchCode = this.props.match.params.matchCode;
+      playerID = (this.mode === GameMode.AI) ? '0' : this.props.match.params.playerID;
+    } else {
+      playerID = this.currentUser.playerID.toString();
+      gameID = this.props.room.roomID;
+      credentials = LobbyService.getCredential(this.props.room.roomID);
+    }
     if (!this.gameDef) {
       return <MessagePageClass type={'error'} message={'Game Not Found'} />;
     }
@@ -111,8 +119,10 @@ export default class Game extends React.Component<IGameProps, {}> {
       const gameArgs = {
         gameCode: this.gameCode,
         mode: this.mode,
-        playerID: this.currentUser.playerID.toString(),
+        credentials,
+        playerID,
         matchCode,
+        gameID,
       };
       const clientConfig: any = {
         game: state.config.bgioGame,
@@ -122,8 +132,6 @@ export default class Game extends React.Component<IGameProps, {}> {
           board: state.config.bgioBoard,
           gameArgs,
         }),
-        credentials: LobbyService.getCredential(this.props.room.roomID),
-        roomID: this.props.room.roomID,
       };
       const allEnhancers = state.config.enhancers ?
         state.config.enhancers.concat(DEFAULT_ENHANCERS) : DEFAULT_ENHANCERS;

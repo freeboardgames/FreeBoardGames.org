@@ -14,10 +14,12 @@ import ReactGA from 'react-ga';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import AlertLayer from './AlertLayer';
+import { IPlayerInRoom } from '../Lobby/LobbyService';
 
 interface IGameSharingProps {
   gameCode: string;
   roomID: string;
+  players: IPlayerInRoom[];
 }
 
 export class GameSharing extends React.Component<IGameSharingProps, {}> {
@@ -37,47 +39,51 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
   render() {
     return (
       <AlertLayer>
-      <Card style={{ whiteSpace: 'nowrap' }}>
-        <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
-          Invite Your Friend
-        </Typography>
-        <CardContent>
-          <div style={{ paddingBottom: '8px' }}>
-            <Tooltip title="Send link by e-mail" aria-label="E-mail">
-              <IconButton onClick={this.sendEmailCallback}>
-                <EmailIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Share on Facebook" aria-label="Facebook">
-              <IconButton onClick={this.shareFacebookCallback}>
-                <FacebookIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Share on Twitter" aria-label="Twitter">
-              <IconButton onClick={this.shareTwitterCallback}>
-                <TwitterIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Copy link to clipboard" aria-label="Clipboard">
-              <IconButton onClick={this.copyClipboardCallback}>
-                <ContentCopyIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-          <TextField
-            defaultValue={this._getLink()}
-            label="Link"
-          />
-          <br />
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginTop: '8px' }}
-          >
-            Done
-          </Button>
-        </CardContent>
-      </Card></AlertLayer>
+        <Card style={{ whiteSpace: 'nowrap' }}>
+          <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
+            Invite Your Friend
+          </Typography>
+          <CardContent>
+            <div style={{ paddingBottom: '8px' }}>
+              <Tooltip title="Send link by e-mail" aria-label="E-mail">
+                <IconButton onClick={this.sendEmailCallback}>
+                  <EmailIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share on Facebook" aria-label="Facebook">
+                <IconButton onClick={this.shareFacebookCallback}>
+                  <FacebookIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share on Twitter" aria-label="Twitter">
+                <IconButton onClick={this.shareTwitterCallback}>
+                  <TwitterIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Copy link to clipboard" aria-label="Clipboard">
+                <IconButton onClick={this.copyClipboardCallback}>
+                  <ContentCopyIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+            <TextField
+              defaultValue={this._getLink()}
+              label="Link"
+            />
+            <br />
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginTop: '8px' }}
+            >
+              Done
+            </Button>
+            <Typography variant="body2" component="p">
+              {this._listOfPlayers()}
+            </Typography>
+          </CardContent>
+        </Card>
+      </AlertLayer>
     );
   }
 
@@ -122,6 +128,20 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     const origin = (typeof window === 'undefined') ? '' : window.location.origin;
     const gameCode = this.props.gameCode;
     const roomID = this.props.roomID;
-    return `${origin}/room/${gameCode}/online/${roomID}`;
+    return `${origin}/room/${gameCode}/${roomID}`;
+  }
+
+  _listOfPlayers = () => {
+    const playersList = this.props.players.map((player: IPlayerInRoom, idx: number) => {
+      return (<li key={idx}>{player.name}</li>);
+    });
+    return (
+      <div>
+        <h3>Currently Online</h3>
+        <ul>
+          {playersList}
+        </ul>
+      </div>
+    );
   }
 }
