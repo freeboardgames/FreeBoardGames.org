@@ -3,7 +3,7 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG } from './game';
+import { IG, getCards } from './game';
 import CardComponent from './CardComponent';
 
 interface IBoardProps {
@@ -29,10 +29,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       return 1;
     }
 
-    const lastCards = this.props.G.decks
-      .map((deck) => deck[deck.length - 1])
-      .sort((a, b) => a.number - b.number);
-    const card = this.props.G.players[this.props.playerID as any].selectedCard;
+    const { card, lastCards } = getCards(this.props.G, this.props.ctx);
     if (card.number < lastCards[0].number) {
       return 1;
     } else {

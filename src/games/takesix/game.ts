@@ -9,6 +9,39 @@ export interface IG {
   end: boolean,
 }
 
+export interface IGetCards {
+  card: Card,
+  lastCards: Card[]
+}
+
+export function getCards(G: IG, ctx: IGameCtx): IGetCards {
+  const lastCards = G.decks
+    .map((deck: Card[]) => deck[deck.length - 1])
+    .sort((a: Card, b: Card) => a.number - b.number);
+  const card = G.players[ctx.playerID as any].selectedCard;
+  return { card: card, lastCards: lastCards };
+}
+
+function moveToHand(G: IG, ctx: IGameCtx, card: Card, deckId: number): any {
+  return {
+    ...G,
+    players: Object.values({
+      ...G.players,
+      [ctx.playerID]: {
+        ...G.players[ctx.playerID as any],
+        penaltyCards: [
+          ...G.players[ctx.playerID as any].penaltyCards,
+          ...G.decks[deckId],
+        ],
+      },
+    }),
+    decks: Object.values({
+      ...G.decks,
+      [deckId]: [card],
+    }),
+  };
+}
+
 export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
   if (id < 0 || id >= G.players[ctx.playerID as any].cards.length) {
     return INVALID_MOVE;
@@ -32,30 +65,11 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
 }
 
 export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
-  const lastCards = G.decks
-    .map((deck: Card[]) => deck[deck.length - 1])
-    .sort((a: Card, b: Card) => a.number - b.number);
-  const card = G.players[ctx.playerID as any].selectedCard;
+  const { card, lastCards } = getCards(G, ctx);
 
   // Card is lower than every in deck
   if (card.number < lastCards[0].number) {
-    return {
-      ...G,
-      players: Object.values({
-        ...G.players,
-        [ctx.playerID]: {
-          ...G.players[ctx.playerID as any],
-          penaltyCards: [
-            ...G.players[ctx.playerID as any].penaltyCards,
-            ...G.decks[id], // Move current deck into penalty cards in player's deck
-          ],
-        },
-      }),
-      decks: Object.values({
-        ...G.decks,
-        [id]: [card], // Set selected card as current in selected deck
-      }),
-    };
+    return moveToHand(G, ctx, card, id);
   } else {
     const diffs: number[] = G.decks.map(
       (deck: Card[]) => card.number - deck[deck.length - 1].number,
@@ -76,23 +90,7 @@ export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
 
     // If card is #6 move all cards from deck to player's hand
     if (G.decks[id].length === 5) {
-      return {
-        ...G,
-        players: Object.values({
-          ...G.players,
-          [ctx.playerID]: {
-            ...G.players[ctx.playerID as any],
-            penaltyCards: [
-              ...G.players[ctx.playerID as any].penaltyCards,
-              ...G.decks[id],
-            ],
-          },
-        }),
-        decks: Object.values({
-          ...G.decks,
-          [id]: [card],
-        }),
-      };
+      return moveToHand(G, ctx, card, id);
     }
 
     return {
