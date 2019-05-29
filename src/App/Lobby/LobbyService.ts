@@ -19,7 +19,7 @@ export interface IRoomMetadata {
   // new field?
 }
 
-interface IPlayerCredential {
+export interface IPlayerCredential {
   playerID: number;
   credential: string;
 }
@@ -76,7 +76,7 @@ export class LobbyService {
     localStorage.setItem('fbgNickname', name);
   }
 
-  private static getCredential(roomID: string): IPlayerCredential | undefined {
+  public static getCredential(roomID: string): IPlayerCredential | undefined {
     // return an empty IPlayerInRoom object if the player's identity is for another room
     const credentials: IStoredCredentials = JSON.parse(localStorage.getItem(FBG_CREDENTIALS_KEY));
     if (credentials) {
@@ -84,7 +84,7 @@ export class LobbyService {
     }
   }
 
-  private static setCredential(player: IPlayerInRoom, credential: string): void {
+  public static setCredential(player: IPlayerInRoom, credential: string): void {
     const existing: IStoredCredentials = JSON.parse(localStorage.getItem(FBG_CREDENTIALS_KEY));
     const newCredentials = { ...existing };
     newCredentials[player.roomID] = { credential, playerID: player.playerID };

@@ -9,6 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import FreeBoardGameBar from '../FreeBoardGameBar';
 import { GameSharing } from '../Game/GameSharing';
+import Game from '../Game/Game';
 
 interface IExpectedParams {
   gameCode: string;
@@ -23,10 +24,11 @@ interface IRoomState {
   roomMetadata?: IRoomMetadata;
   nameTextField?: string;
   loading: boolean;
+  gameReady: boolean;
 }
 
 export class Room extends React.Component<IRoomProps, IRoomState> {
-  state: IRoomState = { loading: true };
+  state: IRoomState = { loading: true, gameReady: false };
   private timer: any;  // fixme loads state of room
   constructor(props: IRoomProps) {
     super(props);
@@ -44,6 +46,10 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
         'Loading...',
       );
       return <LoadingPage />;
+    }
+    if (this.state.gameReady) {
+      const room = this.state.roomMetadata;
+      return <Game room={room} />;
     }
     return (
       <FreeBoardGameBar>
@@ -75,6 +81,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
         if (metadata.numberOfPlayers === metadata.players.length) {
           // TODO: redirect
           console.log('redirect to game room ...');
+          this.setState((oldState) => ({ ...oldState, gameReady: true }));
         }
         this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
         setTimeout(() => this.updateMetadata(), 2000);
@@ -138,12 +145,14 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   _listOfPlayers = () => {
+    const players = this.state.roomMetadata.players.map((player: IPlayerInRoom, idx: number) => {
+        return (<li key={idx}>{player.name}</li>);
+      });
     return (
       <div>
         <h3>Currently Online</h3>
         <ul>
-          <li>xyz...</li>
-          <li>waiting for friend</li>
+          {players}
         </ul>
       </div>
     );

@@ -8,10 +8,12 @@ import MessagePageClass from '../MessagePageClass';
 import { applyMiddleware } from 'redux';
 import DEFAULT_ENHANCERS from './Enhancers';
 import AddressHelper from '../AddressHelper';
+import { IPlayerCredential, IRoomMetadata, IPlayerInRoom, LobbyService } from '../Lobby/LobbyService';
 
 interface IGameProps {
   match?: any;
   history?: { push: (url: string) => void };
+  room: IRoomMetadata;
 }
 
 interface IGameState {
@@ -33,12 +35,19 @@ export default class Game extends React.Component<IGameProps, {}> {
   gameCode: string;
   gameDef: IGameDef;
   gameConfigPromise: Promise<any>;
+  currentUser: IPlayerInRoom;
 
   constructor(props: IGameProps) {
     super(props);
-    this.mode = this.props.match.params.mode as GameMode;
-    this.loadAI = this.mode === GameMode.AI && typeof window !== 'undefined';
-    this.gameCode = this.props.match.params.gameCode;
+    if (this.props.room) {
+      this.mode = GameMode.OnlineFriend;
+      this.gameCode = this.props.room.gameCode;
+      this.currentUser = this.props.room.currentUser;
+    } else {
+      this.mode = this.props.match.params.mode as GameMode;
+      this.loadAI = this.mode === GameMode.AI && typeof window !== 'undefined';
+      this.gameCode = this.props.match.params.gameCode;
+    }
     this.gameDef = GAMES_MAP[this.gameCode];
   }
 
@@ -102,8 +111,8 @@ export default class Game extends React.Component<IGameProps, {}> {
       const gameArgs = {
         gameCode: this.gameCode,
         mode: this.mode,
+        playerID: this.currentUser.playerID.toString(),
         matchCode,
-        playerID,
       };
       const clientConfig: any = {
         game: state.config.bgioGame,
@@ -113,6 +122,8 @@ export default class Game extends React.Component<IGameProps, {}> {
           board: state.config.bgioBoard,
           gameArgs,
         }),
+        credentials: LobbyService.getCredential(this.props.room.roomID),
+        roomID: this.props.room.roomID,
       };
       const allEnhancers = state.config.enhancers ?
         state.config.enhancers.concat(DEFAULT_ENHANCERS) : DEFAULT_ENHANCERS;

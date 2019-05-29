@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
+import AlertLayer from './AlertLayer';
 
 interface IGameSharingProps {
   gameCode: string;
@@ -35,6 +36,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
 
   render() {
     return (
+      <AlertLayer>
       <Card style={{ whiteSpace: 'nowrap' }}>
         <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
           Invite Your Friend
@@ -75,7 +77,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
             Done
           </Button>
         </CardContent>
-      </Card>
+      </Card></AlertLayer>
     );
   }
 
