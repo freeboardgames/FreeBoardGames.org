@@ -123,7 +123,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
             onClick={this._setName}
           >
             Join Room
-            </Button>
+          </Button>
         </CardContent>
       </Card>);
   }

@@ -8,12 +8,12 @@ import MessagePageClass from '../MessagePageClass';
 import { applyMiddleware } from 'redux';
 import DEFAULT_ENHANCERS from './Enhancers';
 import AddressHelper from '../AddressHelper';
-import { IPlayerCredential, IRoomMetadata, IPlayerInRoom, LobbyService } from '../Lobby/LobbyService';
+import { IRoomMetadata, IPlayerInRoom, LobbyService } from '../Lobby/LobbyService';
 
 interface IGameProps {
   match?: any;
   history?: { push: (url: string) => void };
-  room: IRoomMetadata;
+  room?: IRoomMetadata;
 }
 
 interface IGameState {
@@ -107,10 +107,11 @@ export default class Game extends React.Component<IGameProps, {}> {
       aiLevel = this.props.match.params.aiLevel;
       matchCode = this.props.match.params.matchCode;
       playerID = (this.mode === GameMode.AI) ? '0' : this.props.match.params.playerID;
+      gameID = matchCode;
     } else {
+      credentials = LobbyService.getCredential(this.props.room.roomID).credential;
       playerID = this.currentUser.playerID.toString();
       gameID = this.props.room.roomID;
-      credentials = LobbyService.getCredential(this.props.room.roomID);
     }
     if (!this.gameDef) {
       return <MessagePageClass type={'error'} message={'Game Not Found'} />;
@@ -120,18 +121,19 @@ export default class Game extends React.Component<IGameProps, {}> {
         gameCode: this.gameCode,
         mode: this.mode,
         credentials,
-        playerID,
         matchCode,
-        gameID,
+        playerID,
       };
       const clientConfig: any = {
         game: state.config.bgioGame,
-        debug: state.config.debug || false,
+        debug: true, // state.config.debug || false,
         loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
           board: state.config.bgioBoard,
           gameArgs,
         }),
+        credentials,
+        gameID,
       };
       const allEnhancers = state.config.enhancers ?
         state.config.enhancers.concat(DEFAULT_ENHANCERS) : DEFAULT_ENHANCERS;
@@ -144,9 +146,11 @@ export default class Game extends React.Component<IGameProps, {}> {
         clientConfig.multiplayer = { server: AddressHelper.getServerAddress() };
       }
       const App = Client(clientConfig) as any;
-      return (
-        <App gameID={matchCode} playerID={playerID} />
-      );
+      if (this.mode === GameMode.OnlineFriend) {
+        return <App gameID={this.props.room.roomID} playerID={playerID} credentials={credentials} />;
+      } else {
+        return <App gameID={matchCode} playerID={playerID} />;
+      }
     } else if (state.loading) {
       const LoadingPage = getMessagePage(
         'loading',
