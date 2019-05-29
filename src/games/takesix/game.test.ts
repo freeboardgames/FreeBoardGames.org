@@ -102,3 +102,67 @@ it('should add card to a deck', () => {
   G = selectDeck(G, { playerID: '0' } as any, 0);
   expect(G.decks[0]).toHaveLength(5);
 });
+
+it('should declare player 1 as the winner', () => {
+  // set up a specific board scenario
+  const TictactoeCustomScenario = {
+    ...TakeSixGame,
+    seed: 'deadbeef',
+  };
+
+  const spec = {
+    game: TictactoeCustomScenario,
+    multiplayer: { local: true },
+  };
+
+  const p0 = Client({ ...spec, playerID: '0' } as any) as any;
+  const p1 = Client({ ...spec, playerID: '1' } as any) as any;
+
+  p0.connect();
+  p1.connect();
+
+  p0.moves.selectCard(0);
+  p1.moves.selectCard(0);
+  p1.moves.selectDeck(0);
+  p0.moves.selectDeck(2);
+  p1.moves.selectCard(1);
+  p0.moves.selectCard(2);
+  p0.moves.selectDeck(3);
+  p1.moves.selectDeck(3);
+  p0.moves.selectCard(7);
+  p1.moves.selectCard(7);
+  p0.moves.selectDeck(0);
+  p1.moves.selectDeck(1);
+  p0.moves.selectCard(0);
+  p1.moves.selectCard(0);
+  p1.moves.selectDeck(0);
+  p0.moves.selectDeck(3);
+  p0.moves.selectCard(0);
+  p1.moves.selectCard(0);
+  p0.moves.selectDeck(2);
+  p1.moves.selectDeck(1);
+  p0.moves.selectCard(0);
+  p1.moves.selectCard(0);
+  p0.moves.selectDeck(2);
+  p1.moves.selectDeck(3);
+  p0.moves.selectCard(0);
+  p1.moves.selectCard(0);
+  p0.moves.selectDeck(2);
+  p1.moves.selectDeck(2);
+  p0.moves.selectCard(0);
+  p1.moves.selectCard(0);
+  p0.moves.selectDeck(0);
+  p1.moves.selectDeck(0);
+  p0.moves.selectCard(0);
+  p1.moves.selectCard(0);
+  p0.moves.selectDeck(2);
+  p1.moves.selectDeck(2);
+  p0.moves.selectCard(0);
+  p1.moves.selectCard(0);
+  p1.moves.selectDeck(3);
+  p0.moves.selectDeck(1);
+
+  // player '1' should be declared the winner
+  const { G, ctx } = p0.getState();
+  expect(ctx.gameover).toEqual({ winner: '1' });
+});

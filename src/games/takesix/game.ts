@@ -14,11 +14,11 @@ export interface IGetCards {
   lastCards: Card[]
 }
 
-export function getCards(G: IG, ctx: IGameCtx): IGetCards {
+export function getCards(G: IG, ctx: IGameCtx, playerID: string): IGetCards {
   const lastCards = G.decks
     .map((deck: Card[]) => deck[deck.length - 1])
     .sort((a: Card, b: Card) => a.number - b.number);
-  const card = G.players[ctx.playerID as any].selectedCard;
+  const card = G.players[playerID as any].selectedCard;
   return { card: card, lastCards: lastCards };
 }
 
@@ -65,7 +65,7 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
 }
 
 export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
-  const { card, lastCards } = getCards(G, ctx);
+  const { card, lastCards } = getCards(G, ctx, ctx.playerID);
 
   // Card is lower than every in deck
   if (card.number < lastCards[0].number) {
