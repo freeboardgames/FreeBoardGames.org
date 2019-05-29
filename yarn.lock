@@ -706,10 +706,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@freeboardgame.org/boardgame.io@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.6.tgz#e9788edeb01ef4a687988fdea582aeeb8ca84c76"
-  integrity sha512-wEhN3vf86c5DR+RjxgOpzfH6PszZJYBQyZTuPKyM94aO/6cw1cSbHTXbSW4sO+NGQcViPtKVcQVZvRXNv0+cvw==
+"@freeboardgame.org/boardgame.io@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.7.tgz#907f3c9a9eae9077170874e320772acdc20614b2"
+  integrity sha512-3dwFRdDPb4fGkeNo0CivFTwbhVJGnRnnmCg28dfuy0J6J6CzJwlw5Sz9pgEqoLy7TbrxVaeg0mIVmXyXH+yZYQ==
   dependencies:
     "@koa/cors" "^2.2.1"
     flatted "^0.2.3"
@@ -724,6 +724,7 @@
     react-cookies "^0.1.0"
     react-dragtastic "^2.4.3"
     redux "^4.0.0"
+    shortid "^2.2.14"
     socket.io "^2.1.1"
     uuid "3.2.1"
 
