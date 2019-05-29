@@ -37,10 +37,10 @@ const withI18n = (WrappedComponent: any) => {
       }
       // set language based on URL, default to English
       const lang = locale || 'en';
+      registerLang('en', translations.en);
       if (lang !== 'en') {
-        registerLang('en', translations.en);
+        registerLang(lang, translations[lang]);
       }
-      registerLang(lang, translations[lang]);
       setCurrentLocale(lang);
       return <WrappedComponent {...this.props} />;
     }
