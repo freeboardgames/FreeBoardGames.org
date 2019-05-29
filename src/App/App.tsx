@@ -7,7 +7,7 @@ import About from '../About/AboutAsync';
 import getMessagePage from './MessagePage';
 import ReactGA from 'react-ga';
 import { getPageMetadata } from '../metadata';
-import { registerLang, setCurrentLocale } from 'ts-easy-i18n';
+import { registerLang, setCurrentLocale } from '@freeboardgame.org/i18n';
 import translations from './translations';
 
 ReactGA.initialize('UA-105391878-1');
@@ -37,7 +37,10 @@ const withI18n = (WrappedComponent: any) => {
       }
       // set language based on URL, default to English
       const lang = locale || 'en';
-      registerLang(lang, translations[lang]);
+      registerLang('en', translations.en);
+      if (lang !== 'en') {
+        registerLang(lang, translations[lang]);
+      }
       setCurrentLocale(lang);
       return <WrappedComponent {...this.props} />;
     }
