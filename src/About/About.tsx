@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { trans } from 'ts-easy-i18n';
+import { trans } from '@freeboardgame.org/i18n';
 
 class About extends React.Component<{}, {}> {
   render() {

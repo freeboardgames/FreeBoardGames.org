@@ -6,7 +6,7 @@ import FreeBoardGameBar from './FreeBoardGameBar';
 import SvgError from './media/SvgError';
 import Typography from '@material-ui/core/Typography';
 import { Status } from 'rrc';
-import { trans } from 'ts-easy-i18n';
+import { trans } from '@freeboardgame.org/i18n';
 
 interface IMessageState {
   linkHidden: boolean;

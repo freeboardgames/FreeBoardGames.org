@@ -727,6 +727,11 @@
     socket.io "^2.1.1"
     uuid "3.2.1"
 
+"@freeboardgame.org/i18n@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@freeboardgame.org/i18n/-/i18n-0.0.1.tgz#69acc7c77bdf685c1a542c3689e856b7e44328aa"
+  integrity sha512-SeHGnLBJeRRf8/v0mOvk74l1xtGyZzMUDSq6dfkAXKHof2wnT+fSQ/We6mCBrpOP+nOR7yeGMNMLdvXJBpuLzQ==
+
 "@jest/console@^24.7.1":
   version "24.7.1"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.7.1.tgz#32a9e42535a97aedfe037e725bd67e954b459545"
@@ -8419,14 +8424,6 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
-
-"ts-easy-i18n@file:../ts-easy-i18n/ts-easy-i18n-0.2.3.tgz":
-  version "0.2.3"
-  resolved "file:../ts-easy-i18n/ts-easy-i18n-0.2.3.tgz#ebfc359a1a9959bf1deb861f766f4a385f7dc4f5"
-
-"ts-easy-i18n@file:../ts-easy-i18n/ts-easy-i18n-v0.2.3.tgz":
-  version "0.2.3"
-  resolved "file:../ts-easy-i18n/ts-easy-i18n-v0.2.3.tgz#7f7b7d4dba9e45e2cb23f2e40998b2dfc232f178"
 
 ts-jest@^24.0.2:
   version "24.0.2"
