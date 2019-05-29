@@ -14,7 +14,7 @@ jest.mock('react-ga');
 
 // mock i18n
 // trans('examplepage.header') will render in tests as "examplepage.header"
-jest.mock('ts-easy-i18n', () => ({
+jest.mock('@freeboardgame.org/i18n', () => ({
   trans: jest.fn(attr => attr),
   registerLang: jest.fn(),
   setCurrentLocale: jest.fn()
