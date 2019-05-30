@@ -11,6 +11,17 @@ import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+const BoardTest = (props: any) => (
+  <MemoryRouter>
+    <Board
+      {...{
+        ...props,
+        gameArgs: { mode: GameMode.OnlineFriend },
+      }}
+    />
+  </MemoryRouter>
+);
+
 const TakeSixGameConstSeed = TakeSixGameForTest({ seed: 0 });
 // Decks are:
 // 1 93, 2 35, 1 51, 2 95
@@ -19,25 +30,48 @@ const TakeSixGameConstSeed = TakeSixGameForTest({ seed: 0 });
 // 7 55, 1 18, 1 28, 1 94, 1 17 ->
 // 1 57, 1 82, 1 37, 5 44, 1 102
 
+// Player 1 Hand is:
+// 1 58, 3 80, 1 43, 2 75, 1 64 ->
+// 1 39, 3 10, 3 70, 1 16, 1 1
+
 test('select a card', () => {
   const App = ReactClient({
     game: TakeSixGameConstSeed,
     debug: false,
-    board: Board,
+    board: BoardTest,
   }) as any;
-  const comp = Enzyme.mount(
-    <MemoryRouter>
-      <App playerID={'0'} gameID={'foo'} />
-    </MemoryRouter>,
-  );
+  const comp = Enzyme.mount(<App playerID={'0'} />);
 
-  expect(comp.find('PlayerHand').find('CardComponent').length).toEqual(10);
+  expect(comp.find('PlayerHand CardComponent').length).toEqual(10);
   comp
-    .find('PlayerHand')
-    .find('CardComponent')
+    .find('PlayerHand CardComponent')
     .at(0)
     .simulate('click');
-  expect(comp.find('PlayerHand').find('CardComponent').length).toEqual(9);
+  expect(comp.find('PlayerHand CardComponent').length).toEqual(9);
+});
+
+test('second player', () => {
+  const App = ReactClient({
+    game: TakeSixGameConstSeed,
+    debug: false,
+    board: BoardTest,
+  }) as any;
+  const comp = Enzyme.mount(<App playerID={'0'} />);
+
+  comp
+    .find('PlayerHand CardComponent')
+    .at(0) // Card 7 55
+    .simulate('click');
+
+  comp.setProps({ playerID: '1' });
+  comp.update();
+
+  expect(comp.find('PlayerHand CardComponent').length).toEqual(10);
+  comp
+    .find('PlayerHand CardComponent')
+    .at(0) // Card 1 58
+    .simulate('click');
+  expect(comp.find('PlayerHand CardComponent').length).toEqual(9);
 });
 
 test('win', () => {
