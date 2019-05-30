@@ -29,6 +29,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
         style={style}
       >
         <div
+          className="CardValue"
           style={{
             textAlign: 'center',
             lineHeight: '20px',
@@ -37,6 +38,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
           {this.props.card.value}
         </div>
         <div
+          className="CardNumber"
           style={{
             textAlign: 'center',
             lineHeight: '60px',

@@ -12,8 +12,14 @@ import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 Enzyme.configure({ adapter: new Adapter() });
 
 const TakeSixGameConstSeed = TakeSixGameForTest({ seed: 0 });
+// Decks are:
+// 1 93, 2 35, 1 51, 2 95
 
-/*test('full turn', () => {
+// Player 0 Hand is:
+// 7 55, 1 18, 1 28, 1 94, 1 17 ->
+// 1 57, 1 82, 1 37, 5 44, 1 102
+
+test('select a card', () => {
   const App = ReactClient({
     game: TakeSixGameConstSeed,
     debug: false,
@@ -24,30 +30,10 @@ const TakeSixGameConstSeed = TakeSixGameForTest({ seed: 0 });
       <App playerID={'0'} gameID={'foo'} />
     </MemoryRouter>
   ));
-  comp.find('button').at(1).simulate('click');
-  expect(comp.html()).to.contain('Waiting');
-});*/
 
-test('start', () => {
-  const client = Client({
-    game: TakeSixGame,
-  });
-  const state0 = client.store.getState();
-  const comp = Enzyme.mount((
-    <MemoryRouter>
-      <Board
-        G={state0.G}
-        ctx={state0.ctx}
-        moves={client.moves}
-        playerID={'0'}
-        gameArgs={{
-          gameCode: 'takesix',
-          mode: GameMode.OnlineFriend,
-        }}
-      />
-    </MemoryRouter>
-  ));
-  expect(comp.find('CardComponent').length).toBeGreaterThanOrEqual(10);
+  expect(comp.find('PlayerHand').find('CardComponent').length).toEqual(10);
+  comp.find('PlayerHand').find('CardComponent').at(0).simulate('click');
+  expect(comp.find('PlayerHand').find('CardComponent').length).toEqual(9);
 });
 
 test('win', () => {
