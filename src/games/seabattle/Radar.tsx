@@ -33,25 +33,19 @@ export class Radar extends React.Component<IRadarProps, {}> {
   }
 
   render() {
-    const result = [
-      <SvgBackground onClick={this._onClick} key="background" />,
-    ].concat(this._getShips())
+    const result = [<SvgBackground onClick={this._onClick} key="background" />]
+      .concat(this._getShips())
       .concat(this._getSalvos());
     return (
       <div className="seabattle-radar">
-        <Grid
-          rows={10}
-          cols={10}
-          outline={false}
-          onClick={this._onClick}
-        >
+        <Grid rows={10} cols={10} outline={false} onClick={this._onClick}>
           {result}
         </Grid>
       </div>
     );
   }
 
-  _onClick = (coords: { x: number, y: number }) => {
+  _onClick = (coords: { x: number; y: number }) => {
     if (this.props.editable) {
       const shipIndex = this._findShip(coords.x, coords.y);
       if (shipIndex !== -1) {
@@ -60,11 +54,11 @@ export class Radar extends React.Component<IRadarProps, {}> {
     } else {
       this.props.onClick(coords);
     }
-  }
+  };
 
   _shouldDrag = () => {
     return this.props.editable;
-  }
+  };
 
   _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
     const x = Math.round(coords.x);
@@ -78,11 +72,11 @@ export class Radar extends React.Component<IRadarProps, {}> {
       const shipIndex = this._findShip(originalX, originalY);
       this._moveShip(shipIndex, x, y);
     }
-  }
+  };
 
   _findShip(x: number, y: number): number {
-    return this.props.ships.findIndex((ship) => {
-      return ship.cells.findIndex((c) => (c.x === x && c.y === y)) !== -1;
+    return this.props.ships.findIndex(ship => {
+      return ship.cells.findIndex(c => c.x === x && c.y === y) !== -1;
     });
   }
 
@@ -107,7 +101,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     for (let i = 0; i < ship.cells.length; i++) {
       newCells.push({ x: x + vector.x * i, y: y + vector.y * i });
     }
-    const newShips = [... this.props.ships];
+    const newShips = [...this.props.ships];
     newShips[index] = { ...ship, cells: newCells };
     this.props.onEdit(newShips);
   }
@@ -118,10 +112,18 @@ export class Radar extends React.Component<IRadarProps, {}> {
     // https://github.com/smooth-code/svgr
     let ship;
     switch (size) {
-      case 2: ship = <SvgShip2 />; break;
-      case 3: ship = <SvgShip3 />; break;
-      case 4: ship = <SvgShip4 />; break;
-      case 5: ship = <SvgShip5 />; break;
+      case 2:
+        ship = <SvgShip2 />;
+        break;
+      case 3:
+        ship = <SvgShip3 />;
+        break;
+      case 4:
+        ship = <SvgShip4 />;
+        break;
+      case 5:
+        ship = <SvgShip5 />;
+        break;
     }
     if (rotation === 'v') {
       return <g transform="translate(1 0) rotate(90)">{ship}</g>;
@@ -132,14 +134,11 @@ export class Radar extends React.Component<IRadarProps, {}> {
 
   _getShips() {
     const result = [];
-    const shipStyle = { fill: 'white', strokeWidth: .05, stroke: 'red' };
+    const shipStyle = { fill: 'white', strokeWidth: 0.05, stroke: 'red' };
     let i = 0;
     for (const ship of this.props.ships) {
       const cell = ship.cells[0];
-      const shipDrawing = this._getShipDrawing(
-        ship.cells.length,
-        cell.x === ship.cells[1].x ? 'v' : 'h',
-      );
+      const shipDrawing = this._getShipDrawing(ship.cells.length, cell.x === ship.cells[1].x ? 'v' : 'h');
 
       result.push(
         <Token
@@ -171,18 +170,12 @@ export class Radar extends React.Component<IRadarProps, {}> {
       } else {
         drawing = <SvgMiss />;
       }
-      if (this.props.blinkSalvo &&
-        i === this.props.salvos.length - 1) {
+      if (this.props.blinkSalvo && i === this.props.salvos.length - 1) {
         drawing = <Blink>{drawing}</Blink>;
       }
       const player = this.props.player || 0;
       result.push(
-        <Token
-          x={salvo.cell.x}
-          y={salvo.cell.y}
-          draggable={false}
-          key={`salvo_${i}_${player}`}
-        >
+        <Token x={salvo.cell.x} y={salvo.cell.y} draggable={false} key={`salvo_${i}_${player}`}>
           {drawing}
         </Token>,
       );

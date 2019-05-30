@@ -10,7 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 interface IPawnProps {
-  color: string
+  color: string;
 }
 
 class Pawn extends React.Component<IPawnProps, {}> {

@@ -30,8 +30,8 @@ class About extends React.Component<{}, {}> {
             {t}
           </Typography>
           <Typography component="p">
-            FreeBoardGame.org is a free (as in freedom), mobile-first, board game platform.
-            Its goal is to popularize board games and to make them easy to play with friends, even from afar.
+            FreeBoardGame.org is a free (as in freedom), mobile-first, board game platform. Its goal is to popularize
+            board games and to make them easy to play with friends, even from afar.
           </Typography>
         </CardContent>
       </Card>
@@ -47,17 +47,13 @@ class About extends React.Component<{}, {}> {
           </Typography>
           <List>
             <ListItem>
-              <ListItemText
-                primary="flamecoals"
-              />
+              <ListItemText primary="flamecoals" />
               <Button size="small" color="primary" href="https://github.com/flamecoals">
                 GitHub
               </Button>
             </ListItem>
             <ListItem>
-              <ListItemText
-                primary="JasonHarrison"
-              />
+              <ListItemText primary="JasonHarrison" />
               <Button size="small" color="primary" href="https://www.jasonharrison.us/?from=freeboardgame.org">
                 Website
               </Button>
@@ -80,41 +76,31 @@ class About extends React.Component<{}, {}> {
           </Typography>
           <List>
             <ListItem>
-              <ListItemText
-                primary="Seabattle hit sound by fridobeck"
-              />
+              <ListItemText primary="Seabattle hit sound by fridobeck" />
               <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
                 freesound.org
               </Button>
             </ListItem>
             <ListItem>
-              <ListItemText
-                primary="Seabattle hit sound by qubodup"
-              />
+              <ListItemText primary="Seabattle hit sound by qubodup" />
               <Button size="small" color="primary" href="https://freesound.org/people/qubodup/sounds/182429/">
                 freesound.org
               </Button>
             </ListItem>
             <ListItem>
-              <ListItemText
-                primary="Seabattle miss sound by InspectorJ"
-              />
+              <ListItemText primary="Seabattle miss sound by InspectorJ" />
               <Button size="small" color="primary" href="https://freesound.org/people/InspectorJ/sounds/352103/">
                 freesound.org
               </Button>
             </ListItem>
             <ListItem>
-              <ListItemText
-                primary="Seabattle miss sound by CGEffex"
-              />
+              <ListItemText primary="Seabattle miss sound by CGEffex" />
               <Button size="small" color="primary" href="https://freesound.org/people/CGEffex/sounds/98335/">
                 freesound.org
               </Button>
             </ListItem>
             <ListItem>
-              <ListItemText
-                primary="Blox font (used in logo) by Brian Kent"
-              />
+              <ListItemText primary="Blox font (used in logo) by Brian Kent" />
               <Button size="small" color="primary" href="https://www.dafont.com/blox.font">
                 dafont.com
               </Button>

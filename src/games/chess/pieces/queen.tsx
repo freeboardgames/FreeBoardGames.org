@@ -10,7 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 interface IQueenProps {
-  color: string
+  color: string;
 }
 
 class Queen extends React.Component<IQueenProps, {}> {
@@ -45,34 +45,13 @@ class Queen extends React.Component<IQueenProps, {}> {
             strokeOpacity: 1,
           }}
         >
-          <path
-            d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
-            transform="translate(-1,-1)"
-          />
-          <path
-            d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
-            transform="translate(15.5,-5.5)"
-          />
-          <path
-            d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
-            transform="translate(32,-1)"
-          />
-          <path
-            d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
-            transform="translate(7,-4.5)"
-          />
-          <path
-            d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z"
-            transform="translate(24,-4)"
-          />
-          <path
-            d={path1}
-            style={{ strokeLinecap: 'butt' }}
-          />
-          <path
-            d={path2}
-            style={{ strokeLinecap: 'butt' }}
-          />
+          <path d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z" transform="translate(-1,-1)" />
+          <path d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z" transform="translate(15.5,-5.5)" />
+          <path d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z" transform="translate(32,-1)" />
+          <path d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z" transform="translate(7,-4.5)" />
+          <path d="M 9 13 A 2 2 0 1 1  5,13 A 2 2 0 1 1  9 13 z" transform="translate(24,-4)" />
+          <path d={path1} style={{ strokeLinecap: 'butt' }} />
+          <path d={path2} style={{ strokeLinecap: 'butt' }} />
           <path
             d="M 11.5,30 C 15,29 30,29 33.5,30"
             style={{

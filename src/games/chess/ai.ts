@@ -24,14 +24,14 @@ class Stockfish {
   }
 
   async getMove(fen: string): Promise<string> {
-    return await new Promise((resolve) => {
+    return await new Promise(resolve => {
       this.worker.onmessage = (event: any) => {
         const msg = event.data;
         if (msg.includes('bestmove')) {
           resolve(msg.split(' ')[1]);
         }
       };
-      const lvl = Math.round((this.level - 1) * 20.0 / 7);
+      const lvl = Math.round(((this.level - 1) * 20.0) / 7);
       this.send(`setoption name Skill Level value ${lvl}`);
       if (fen !== '') {
         this.send(`position fen ${fen}`);

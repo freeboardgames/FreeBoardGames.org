@@ -21,23 +21,33 @@ test('render squares correctly', () => {
 });
 
 test('position', () => {
-  const grid = Enzyme.mount((
+  const grid = Enzyme.mount(
     <Checkerboard>
       <Token square="b5">
         <circle r="0.25" fill="red" />
       </Token>
-    </Checkerboard>
-  ));
-  expect(grid.find('g').at(65).html()).to.contain('translate(1, 3)');
+    </Checkerboard>,
+  );
+  expect(
+    grid
+      .find('g')
+      .at(65)
+      .html(),
+  ).to.contain('translate(1, 3)');
 
-  const grid2 = Enzyme.mount((
+  const grid2 = Enzyme.mount(
     <Checkerboard invert={true}>
       <Token square="b5">
         <circle r="0.25" fill="red" />
       </Token>
-    </Checkerboard>
-  ));
-  expect(grid2.find('g').at(65).html()).to.contain('translate(6, 4)');
+    </Checkerboard>,
+  );
+  expect(
+    grid2
+      .find('g')
+      .at(65)
+      .html(),
+  ).to.contain('translate(6, 4)');
 });
 
 test('click', () => {
@@ -67,8 +77,11 @@ test('invalid square', () => {
 });
 
 test('colorMap', () => {
-  const grid = Enzyme.mount((
-    <Checkerboard highlightedSquares={{ a5: 'blue' }} />
-  ));
-  expect(grid.find('rect').at(3).html()).to.contain('blue');
+  const grid = Enzyme.mount(<Checkerboard highlightedSquares={{ a5: 'blue' }} />);
+  expect(
+    grid
+      .find('rect')
+      .at(3)
+      .html(),
+  ).to.contain('blue');
 });

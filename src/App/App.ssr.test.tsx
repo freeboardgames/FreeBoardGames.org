@@ -14,7 +14,6 @@ import { GAMES_LIST } from '../games';
 (global as any).navigator = { userAgent: 'all' };
 
 describe('App', () => {
-
   const context = {};
   it('should render home', async () => {
     const asyncContext = createAsyncContext();
@@ -33,12 +32,8 @@ describe('App', () => {
   it('should render game sharing', () => {
     const onDismiss = jest.fn();
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(
-      <GameSharing
-        gameCode={'chess'}
-        matchCode={'foo'}
-        playerID={'0'}
-        onDismiss={onDismiss}
-      />);
+      <GameSharing gameCode={'chess'} matchCode={'foo'} playerID={'0'} onDismiss={onDismiss} />,
+    );
     expect(ssrHtml).toContain('Share');
   });
 

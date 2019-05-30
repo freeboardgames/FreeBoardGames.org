@@ -56,19 +56,12 @@ export class Board extends React.Component<IBoardProps, {}> {
       this.chess.load_pgn(this.props.G.pgn);
     }
     if (this.props.ctx.gameover) {
-      return (
-        <GameLayout
-          gameOver={this._getGameOver()}
-          gameArgs={this.props.gameArgs}
-        />
-      );
+      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
     }
     return (
       <GameLayout>
         <div>
-          <h2 style={{ textAlign: 'center' }}>
-            {this._getStatus()}
-          </h2>
+          <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
           <Checkerboard
             invert={this.getPlayer() === 'b'}
             highlightedSquares={this._getHighlightedSquares()}
@@ -100,7 +93,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     } else if (this.state.selected) {
       this._tryMove(this.state.selected, square);
     }
-  }
+  };
 
   _tryMove(from: string, to: string) {
     const moves = this._getMoves();
@@ -126,7 +119,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       });
       return true;
     }
-  }
+  };
 
   _onDrag = (data: IOnDragData) => {
     const x = data.x;
@@ -146,7 +139,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         highlighted: '',
       });
     }
-  }
+  };
 
   _onDrop = (coords: ICartesianCoords) => {
     const x = coords.x;
@@ -155,7 +148,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       this.setState({ ...this.state, dragged: '' });
       this._tryMove(this.state.selected, this._getSquare(x, y));
     }
-  }
+  };
 
   _getHighlightedSquares() {
     const result = {} as IColorMap;
@@ -244,11 +237,15 @@ export class Board extends React.Component<IBoardProps, {}> {
       } else {
         return 'you lost';
       }
-    } else { // Local game
+    } else {
+      // Local game
       switch (this.props.ctx.gameover) {
-        case 'w': return 'white won';
-        case 'b': return 'black won';
-        case 'd': return 'draw';
+        case 'w':
+          return 'white won';
+        case 'b':
+          return 'black won';
+        case 'd':
+          return 'draw';
       }
     }
   }
@@ -264,13 +261,16 @@ export class Board extends React.Component<IBoardProps, {}> {
       } else {
         return 'Waiting for opponent...';
       }
-    } else { // Local game
+    } else {
+      // Local game
       if (this.chess.in_check()) {
         return 'CHECK';
       }
       switch (this.chess.turn()) {
-        case 'w': return 'White\'s turn';
-        case 'b': return 'Black\'s turn';
+        case 'w':
+          return "White's turn";
+        case 'b':
+          return "Black's turn";
       }
     }
   }
@@ -315,11 +315,7 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _isSelectable(square: string) {
     const piece = this.chess.get(square);
-    return (
-      piece &&
-      piece.color === this._getCurrentPlayer() &&
-      this.chess.moves({ square }).length > 0
-    );
+    return piece && piece.color === this._getCurrentPlayer() && this.chess.moves({ square }).length > 0;
   }
 
   _getCurrentPlayer() {

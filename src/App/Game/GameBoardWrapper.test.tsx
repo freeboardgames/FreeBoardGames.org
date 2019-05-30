@@ -21,9 +21,7 @@ test('show no warning', () => {
       mode: GameMode.OnlineFriend,
     },
   });
-  const el = Enzyme.mount((
-    <Board isConnected={true} G={{ pgn: '' }} ctx={{}} />
-  ));
+  const el = Enzyme.mount(<Board isConnected={true} G={{ pgn: '' }} ctx={{}} />);
   expect(el.find('AlertLayer').length).to.equal(0);
 });
 
@@ -35,9 +33,7 @@ test('show disconnected warning', () => {
       mode: GameMode.OnlineFriend,
     },
   });
-  const el = Enzyme.mount((
-    <Board isConnected={false} G={{ pgn: '' }} ctx={{}} />
-  ));
+  const el = Enzyme.mount(<Board isConnected={false} G={{ pgn: '' }} ctx={{}} />);
   expect(el.html()).to.contain('Connection lost');
 });
 
@@ -51,9 +47,7 @@ test('show sharing dialog and hide it', () => {
       playerID: '0',
     },
   });
-  const el = Enzyme.mount((
-    <Board isConnected={true} G={{ pgn: '' }} ctx={{}} />
-  ));
+  const el = Enzyme.mount(<Board isConnected={true} G={{ pgn: '' }} ctx={{}} />);
   expect(el.find('GameSharing').length).to.equal(1);
   (el.instance() as any)._dismissSharing();
   expect(el.state('dismissedSharing')).to.equal(true);

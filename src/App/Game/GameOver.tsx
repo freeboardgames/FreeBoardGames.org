@@ -19,9 +19,9 @@ export interface IGameOverProps {
 
 export class GameOver extends React.Component<IGameOverProps, {}> {
   render() {
-    const playAgain = (
-      (this.props.gameArgs) && ((this.props.gameArgs.mode === GameMode.AI) ||
-        (this.props.gameArgs.mode === GameMode.LocalFriend)));
+    const playAgain =
+      this.props.gameArgs &&
+      (this.props.gameArgs.mode === GameMode.AI || this.props.gameArgs.mode === GameMode.LocalFriend);
     let playAgainLink;
     let playAgainText;
     const extraCardContent = this._getOtherPlayerBoard();
@@ -34,7 +34,8 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
         >
           <ReplayIcon style={{ marginRight: '8px' }} />
           Play Again
-        </Button>);
+        </Button>
+      );
       playAgainText = 'Check out our games below.';
     } else {
       playAgainText = 'Do you want to play again? Check out our games below.';
@@ -42,7 +43,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     ReactGA.event({
       category: 'GameOver',
       label: this.props.gameArgs.gameCode,
-      action: this.props.result,  // 'red won'
+      action: this.props.result, // 'red won'
     });
     return (
       <FreeBoardGameBar>
@@ -64,13 +65,11 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     }
     const otherPlayerCard = (
       <Card>
-        <CardContent style={{ paddingBottom: '12px' }}>
-          {this.props.extraCardContent}
-        </CardContent>
+        <CardContent style={{ paddingBottom: '12px' }}>{this.props.extraCardContent}</CardContent>
       </Card>
     );
     return otherPlayerCard;
-  }
+  };
   _refreshPage = (gameArgs: IGameArgs) => (event: React.MouseEvent<HTMLElement>) => {
     ReactGA.event({
       category: 'GameOver',
@@ -78,5 +77,5 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       label: gameArgs.gameCode,
     });
     window.location.reload();
-  }
+  };
 }

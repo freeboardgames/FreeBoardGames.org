@@ -14,11 +14,11 @@ describe('ReplayIcon', () => {
       mode: GameMode.AI,
     };
 
-    const wrapper = mount((
+    const wrapper = mount(
       <MemoryRouter>
         <GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />
-      </MemoryRouter>
-    ));
+      </MemoryRouter>,
+    );
 
     expect(wrapper.find('ReplayIcon').length).to.equal(1);
   });
@@ -29,11 +29,11 @@ describe('ReplayIcon', () => {
       mode: GameMode.LocalFriend,
     };
 
-    const wrapper = mount((
+    const wrapper = mount(
       <MemoryRouter>
         <GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />
-      </MemoryRouter>
-    ));
+      </MemoryRouter>,
+    );
 
     expect(wrapper.find('ReplayIcon').length).to.equal(1);
   });
@@ -44,11 +44,11 @@ describe('ReplayIcon', () => {
       mode: GameMode.OnlineFriend,
     };
 
-    const wrapper = mount((
+    const wrapper = mount(
       <MemoryRouter>
         <GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />
-      </MemoryRouter>
-    ));
+      </MemoryRouter>,
+    );
 
     expect(wrapper.find('ReplayIcon').length).to.equal(0);
   });
@@ -58,11 +58,11 @@ describe('ReplayIcon', () => {
       gameCode: 'FooGame',
       mode: GameMode.AI,
     };
-    const wrapper = mount((
+    const wrapper = mount(
       <MemoryRouter>
         <GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />
-      </MemoryRouter>
-    ));
+      </MemoryRouter>,
+    );
 
     const mockReload = jest.fn();
     expect(mockReload.mock.calls.length).to.equal(0);
