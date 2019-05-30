@@ -24,6 +24,10 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
         gameArgs: args.gameArgs,
       };
       const child = React.createElement(args.board, props);
+      let alert;
+      if (!this.props.isConnected) {
+        alert = this._getConnectionLost();
+      }
       if (!alert) {
         return child;
       }
