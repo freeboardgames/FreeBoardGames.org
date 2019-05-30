@@ -34,10 +34,10 @@ class SeabattleBot {
   }
 
   generateMove(playerID: string, state: IPlayState) {
-    const salvos = state.G.salvos.filter((salvo: ISalvo) => (
-      salvo.player === Number(playerID) &&
-      salvo.hit === true &&
-      typeof salvo.hitShip !== 'undefined'));
+    const salvos = state.G.salvos.filter(
+      (salvo: ISalvo) =>
+        salvo.player === Number(playerID) && salvo.hit === true && typeof salvo.hitShip !== 'undefined',
+    );
     for (const salvo of salvos) {
       // if we have already fired salvos, see if we've hit any ships that remain unsunk
       if (!this.isShipSunk(state, salvo.hitShip)) {
@@ -55,8 +55,8 @@ class SeabattleBot {
   }
 
   getNextShipFoundMove(state: IPlayState, hitSalvos: ISalvo[]): ICell {
-    const xMap = hitSalvos.map((salvo) => salvo.cell.x);
-    const yMap = hitSalvos.map((salvo) => salvo.cell.y);
+    const xMap = hitSalvos.map(salvo => salvo.cell.x);
+    const yMap = hitSalvos.map(salvo => salvo.cell.y);
 
     const minPos = { x: Math.min(...xMap), y: Math.min(...yMap) };
     const maxPos = { x: Math.max(...xMap), y: Math.max(...yMap) };
@@ -68,11 +68,11 @@ class SeabattleBot {
   }
 
   isInBounds(x: number) {
-    return (x >= 0 && x <= 9);
+    return x >= 0 && x <= 9;
   }
 
   isValidMove(state: IPlayState, cell: ICell) {
-    return (this.isInBounds(cell.x) && this.isInBounds(cell.y) && this.isUniqueMove(state, cell));
+    return this.isInBounds(cell.x) && this.isInBounds(cell.y) && this.isUniqueMove(state, cell);
   }
 
   anyValidMove(state: IPlayState, moves: ICell[]) {
@@ -95,15 +95,11 @@ class SeabattleBot {
   }
 
   getOtherSalvosHitShip(state: IPlayState, id: string) {
-    return state.G.salvos.filter((salvo: ISalvo) => (
-      salvo.hitShip === id
-    ));
+    return state.G.salvos.filter((salvo: ISalvo) => salvo.hitShip === id);
   }
 
   isShipSunk(state: IPlayState, id: string) {
-    return state.G.ships.filter((ship: IShip) => (
-      ship.id === id
-    ))[0].sunk;
+    return state.G.ships.filter((ship: IShip) => ship.id === id)[0].sunk;
   }
 
   generateRandomMove(state: IPlayState) {
@@ -117,8 +113,8 @@ class SeabattleBot {
   }
 
   isUniqueMove(state: IPlayState, cell: ICell) {
-    const moves = state.G.salvos.filter((salvo: ISalvo) => (
-      salvo.player === 1 && salvo.cell.x === cell.x && salvo.cell.y === cell.y),
+    const moves = state.G.salvos.filter(
+      (salvo: ISalvo) => salvo.player === 1 && salvo.cell.x === cell.x && salvo.cell.y === cell.y,
     );
     return moves.length === 0;
   }

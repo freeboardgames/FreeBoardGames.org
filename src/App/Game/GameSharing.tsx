@@ -69,10 +69,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
                 </IconButton>
               </Tooltip>
             </div>
-            <TextField
-              defaultValue={this._getLink()}
-              label="Link"
-            />
+            <TextField defaultValue={this._getLink()} label="Link" />
             <br />
             <Typography variant="h6" component="h2" style={{ marginTop: '16px' }}>
               Players
@@ -122,7 +119,7 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
   }
 
   _getLink() {
-    const origin = (typeof window === 'undefined') ? '' : window.location.origin;
+    const origin = typeof window === 'undefined' ? '' : window.location.origin;
     const gameCode = this.props.gameCode;
     const roomID = this.props.roomID;
     return `${origin}/room/${gameCode}/${roomID}`;
@@ -138,19 +135,23 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={player.name} />
-        </ListItem>);
+        </ListItem>
+      );
     });
     const waitingList = [];
     for (let i = 0; i < this.props.roomMetadata.numberOfPlayers - playersList.length; i++) {
-      waitingList.push((
+      waitingList.push(
         <ListItem key={`waiting-${i}`}>
           <ListItemAvatar>
             <Avatar>
               <PersonAddIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText><b>Waiting for player...</b></ListItemText>
-        </ListItem>));
+          <ListItemText>
+            <b>Waiting for player...</b>
+          </ListItemText>
+        </ListItem>,
+      );
     }
     return (
       <List>
@@ -158,5 +159,5 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
         {waitingList}
       </List>
     );
-  }
+  };
 }

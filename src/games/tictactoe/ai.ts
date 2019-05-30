@@ -32,7 +32,8 @@ class TictactoeRandomBot {
 }
 const config: IAIConfig = {
   bgioAI: (level: string) => {
-    if (level === '2') {  // Hard
+    if (level === '2') {
+      // Hard
       return AI({
         enumerate: (G: any, ctx: any) => {
           const moves = [];
@@ -44,7 +45,8 @@ const config: IAIConfig = {
           return moves;
         },
       });
-    } else if (level === '1') {  // Easy
+    } else if (level === '1') {
+      // Easy
       return {
         bot: TictactoeRandomBot,
       };

@@ -27,27 +27,23 @@ export class NewRoom extends React.Component<INewRoomProps, INewRoomState> {
       this.state = { error: true };
       return;
     }
-    LobbyService.newRoom(gameCode)
-      .then((roomID) => {
+    LobbyService.newRoom(gameCode).then(
+      roomID => {
         props.history.push(`/room/${gameCode}/${roomID}`);
-      }, () => {
+      },
+      () => {
         this.setState({ error: true });
-      });
+      },
+    );
   }
 
   render() {
     // TODO test this
     if (this.state.error) {
-      const ErrorPage = getMessagePage(
-        'error',
-        'Failed to create room',
-      );
+      const ErrorPage = getMessagePage('error', 'Failed to create room');
       return <ErrorPage />;
     }
-    const LoadingPage = getMessagePage(
-      'loading',
-      'Creating room...',
-    );
+    const LoadingPage = getMessagePage('loading', 'Creating room...');
     return <LoadingPage />;
   }
 }

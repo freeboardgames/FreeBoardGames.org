@@ -30,7 +30,7 @@ interface IRoomState {
 
 export class Room extends React.Component<IRoomProps, IRoomState> {
   state: IRoomState = { error: '', loading: true, gameReady: false };
-  private timer: any;  // fixme loads state of room
+  private timer: any; // fixme loads state of room
   constructor(props: IRoomProps) {
     super(props);
     this.updateMetadata();
@@ -42,17 +42,11 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       return this._getNamePrompt();
     }
     if (this.state.error) {
-      LoadingPage = getMessagePage(
-        'error',
-        this.state.error,
-      );
+      LoadingPage = getMessagePage('error', this.state.error);
       return <LoadingPage />;
     }
     if (this.state.loading) {
-      LoadingPage = getMessagePage(
-        'loading',
-        'Loading...',
-      );
+      LoadingPage = getMessagePage('loading', 'Loading...');
       return <LoadingPage />;
     }
     if (this.state.gameReady) {
@@ -70,9 +64,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
     };
     return (
       <FreeBoardGameBar>
-        <div style={style}>
-          {this._getGameSharing()}
-        </div>
+        <div style={style}>{this._getGameSharing()}</div>
       </FreeBoardGameBar>
     );
   }
@@ -83,7 +75,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       return;
     }
     LobbyService.getRoomMetadata(gameCode, roomID)
-      .then(async (metadata) => {
+      .then(async metadata => {
         if (!metadata.currentUser) {
           const player: IPlayerInRoom = {
             playerID: metadata.players.length,
@@ -95,21 +87,24 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
         }
         return metadata;
       })
-      .then((metadata) => {
-        if (metadata.numberOfPlayers === metadata.players.length) {
-          this.setState((oldState) => ({ ...oldState, gameReady: true }));
-          this._stopTimer();
-        }
-        this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
-        if (!this.state.gameReady) {
-          setTimeout(() => this.updateMetadata(), 2000);
-        }
-      }, () => {
-        const error = 'Failed to fetch room metadata.';
-        this.setState((oldState) => ({ ...oldState, error }));
-        throw new Error(error);
-      });
-  }
+      .then(
+        metadata => {
+          if (metadata.numberOfPlayers === metadata.players.length) {
+            this.setState(oldState => ({ ...oldState, gameReady: true }));
+            this._stopTimer();
+          }
+          this.setState(oldState => ({ ...oldState, roomMetadata: metadata, loading: false }));
+          if (!this.state.gameReady) {
+            setTimeout(() => this.updateMetadata(), 2000);
+          }
+        },
+        () => {
+          const error = 'Failed to fetch room metadata.';
+          this.setState(oldState => ({ ...oldState, error }));
+          throw new Error(error);
+        },
+      );
+  };
 
   _getNamePrompt = (name?: string) => {
     return (
@@ -118,12 +113,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
           Enter Your Name
         </Typography>
         <CardContent>
-          <TextField
-            autoFocus={true}
-            type="text"
-            onChange={this._changeName}
-            value={name}
-          />
+          <TextField autoFocus={true} type="text" onChange={this._changeName} value={name} />
           <br />
           <Button
             variant="contained"
@@ -135,8 +125,9 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
             Join Room
           </Button>
         </CardContent>
-      </Card>);
-  }
+      </Card>
+    );
+  };
 
   _setName = () => {
     const name = this.state.nameTextField;
@@ -144,14 +135,14 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       LobbyService.setNickname(name);
       this.updateMetadata();
     }
-  }
+  };
 
   _changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nameTextField = event.target.value!;
-    this.setState((oldState) => {
+    this.setState(oldState => {
       return { ...oldState, nameTextField };
     });
-  }
+  };
 
   componentWillUnmount() {
     this._stopTimer();
@@ -160,15 +151,10 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
   _stopTimer = () => {
     clearInterval(this.timer);
     this.timer = null;
-  }
+  };
 
   _getGameSharing = () => {
     const { gameCode, roomID } = this.props.match.params;
-    return (
-      <GameSharing
-        gameCode={gameCode}
-        roomID={roomID}
-        roomMetadata={this.state.roomMetadata}
-      />);
-  }
+    return <GameSharing gameCode={gameCode} roomID={roomID} roomMetadata={this.state.roomMetadata} />;
+  };
 }

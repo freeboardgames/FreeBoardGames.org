@@ -10,10 +10,7 @@ const SvgShip2 = (props: any) => (
     <clipPath id="ship2_svg__a">
       <path d="M2.996 50.016V301.03s339.02 31.748 494 30c279.24-3.15 493.017-85.958 492-159.008-1.055-75.773-220.203-155.563-492-157.008-155.103-.825-494 35.002-494 35.002z" />
     </clipPath>
-    <g
-      clipPath="url(#ship2_svg__a)"
-      transform="matrix(.00202 0 0 .00276 -.003 -.001)"
-    >
+    <g clipPath="url(#ship2_svg__a)" transform="matrix(.00202 0 0 .00276 -.003 -.001)">
       <path
         d="M616 15H234v318.016h382C650.44 232.188 647.894 91.53 616 15z"
         fill="gray"
@@ -25,39 +22,14 @@ const SvgShip2 = (props: any) => (
         <path d="M1.996 18.014h243V326.03h-243z" />
       </clipPath>
       <g clipPath="url(#ship2_svg__b)">
-        <path
-          d="M247.086 24.95L-8.69 303.286l7.36 6.767L254.45 31.719l-7.364-6.767z"
-          fill="#ebebeb"
-        />
-        <path
-          d="M-10.004 44.88l252.68 281.15 7.436-6.685L-2.566 38.195l-7.438 6.684z"
-          fill="#ebebeb"
-        />
-        <ellipse
-          cx={113.231}
-          cy={175.778}
-          rx={65.769}
-          ry={50.172}
-          fill="none"
-          stroke="#fff"
-          strokeWidth={10}
-        />
+        <path d="M247.086 24.95L-8.69 303.286l7.36 6.767L254.45 31.719l-7.364-6.767z" fill="#ebebeb" />
+        <path d="M-10.004 44.88l252.68 281.15 7.436-6.685L-2.566 38.195l-7.438 6.684z" fill="#ebebeb" />
+        <ellipse cx={113.231} cy={175.778} rx={65.769} ry={50.172} fill="none" stroke="#fff" strokeWidth={10} />
         <path d="M206.5 6h10v375.02h-10z" fill="#ffd200" />
       </g>
-      <path
-        d="M374 34L267 46l-3 256 116 10 35-15-1.926-252L374 34z"
-        fill="#999"
-        stroke="#a6a6a6"
-        strokeWidth={4}
-      />
+      <path d="M374 34L267 46l-3 256 116 10 35-15-1.926-252L374 34z" fill="#999" stroke="#a6a6a6" strokeWidth={4} />
     </g>
-    <g
-      fill="#f2f2f2"
-      stroke="#ccc"
-      strokeWidth={2}
-      strokeLinecap="butt"
-      strokeLinejoin="miter"
-    >
+    <g fill="#f2f2f2" stroke="#ccc" strokeWidth={2} strokeLinecap="butt" strokeLinejoin="miter">
       <path
         d="M608.196 327.92a9.635 9.635 0 0 0-8.598-10.57l-50.733-5.21c-5.292-.545-10.023 3.305-10.567 8.597-.544 5.293 3.306 10.024 8.598 10.568l50.733 5.212c5.29.544 10.023-3.306 10.566-8.598z"
         transform="matrix(.00202 0 0 .00276 -.003 -.001)"
@@ -67,13 +39,7 @@ const SvgShip2 = (props: any) => (
         transform="matrix(.00202 0 0 .00276 -.003 -.001)"
       />
     </g>
-    <g
-      fill="#f2f2f2"
-      stroke="#ccc"
-      strokeWidth={2}
-      strokeLinecap="butt"
-      strokeLinejoin="miter"
-    >
+    <g fill="#f2f2f2" stroke="#ccc" strokeWidth={2} strokeLinecap="butt" strokeLinejoin="miter">
       <path
         d="M607.95 12.65c.544 5.292-3.306 10.023-8.598 10.567L548.62 28.43a9.636 9.636 0 0 1-10.57-8.6c-.543-5.29 3.307-10.023 8.6-10.566l50.732-5.213a9.635 9.635 0 0 1 10.568 8.6z"
         transform="matrix(.00202 0 0 .00276 -.003 -.001)"
@@ -83,31 +49,14 @@ const SvgShip2 = (props: any) => (
         transform="matrix(.00202 0 0 .00276 -.003 -.001)"
       />
     </g>
-    <ellipse
-      cx={1.577}
-      cy={0.48}
-      rx={0.215}
-      ry={0.223}
-      fill="none"
-      stroke="#999"
-      strokeWidth={0.012}
-    />
+    <ellipse cx={1.577} cy={0.48} rx={0.215} ry={0.223} fill="none" stroke="#999" strokeWidth={0.012} />
     <ellipse cx={1.571} cy={0.479} rx={0.124} ry={0.171} fill="#999" />
-    <path
-      d="M1.528.67C1.456.56 1.456.379 1.53.286l.147.098-.001.193-.148.095"
-      fill="#ccc"
-    />
+    <path d="M1.528.67C1.456.56 1.456.379 1.53.286l.147.098-.001.193-.148.095" fill="#ccc" />
     <clipPath id="ship2_svg__c">
       <path d="M756.974 243.824c-35.244-40.175-35.723-106.15 1.063-140l72.69 35.56-.532 70-73.22 34.44" />
     </clipPath>
-    <g
-      clipPath="url(#ship2_svg__c)"
-      transform="matrix(.00202 0 0 .00276 -.003 -.001)"
-    >
-      <path
-        d="M835.924 166.586l-60.796-.467-.114 14.998 60.796.468.114-15z"
-        fill="#4d4d4d"
-      />
+    <g clipPath="url(#ship2_svg__c)" transform="matrix(.00202 0 0 .00276 -.003 -.001)">
+      <path d="M835.924 166.586l-60.796-.467-.114 14.998 60.796.468.114-15z" fill="#4d4d4d" />
       <path
         d="M838.787 184.61l-66.796-.515.16-21h.002l66.795.514-.16 20.998zm-2.977-3.024l.114-15-60.796-.467-.114 14.998 60.796.468z"
         fill="#b3b3b3"
@@ -131,10 +80,7 @@ const SvgShip2 = (props: any) => (
       fill="#c69264"
     />
     <path d="M.662.321h.166v.295H.662z" fill="#737373" />
-    <path
-      d="M1.033.868l-.2-.01v-.76l.2-.012.1.222V.62l-.1.25z"
-      fill="#a6a6a6"
-    />
+    <path d="M1.033.868l-.2-.01v-.76l.2-.012.1.222V.62l-.1.25z" fill="#a6a6a6" />
     <clipPath id="ship2_svg__d">
       <path d="M512.173 315.35L413 312l.074-276 99.1-4.384L562 112.2v112.914l-49.827 90.235z" />
     </clipPath>
@@ -145,23 +91,13 @@ const SvgShip2 = (props: any) => (
       fontWeight={700}
       fontFamily="Menlo"
     >
-      <text
-        x={505.091}
-        y={154.469}
-        transform="rotate(90 491.959 104.665)"
-        fill="#666"
-      >
+      <text x={505.091} y={154.469} transform="rotate(90 491.959 104.665)" fill="#666">
         {'7'}
         <tspan x={564.876} y={154.469}>
           {'3'}
         </tspan>
       </text>
-      <text
-        x={508.9}
-        y={150.673}
-        transform="rotate(90 495.768 100.868)"
-        fill="#f2f2f2"
-      >
+      <text x={508.9} y={150.673} transform="rotate(90 495.768 100.868)" fill="#f2f2f2">
         {'7'}
         <tspan x={568.685} y={150.673}>
           {'3'}
@@ -199,22 +135,10 @@ const SvgShip2 = (props: any) => (
     <clipPath id="ship2_svg__e">
       <ellipse cx={289.516} cy={172.707} rx={46.484} ry={113.707} />
     </clipPath>
-    <g
-      clipPath="url(#ship2_svg__e)"
-      transform="matrix(.00202 0 0 .00276 -.003 -.001)"
-      fill="#4d4d4d"
-    >
+    <g clipPath="url(#ship2_svg__e)" transform="matrix(.00202 0 0 .00276 -.003 -.001)" fill="#4d4d4d">
       <path d="M369.347 167.962l-110.31-110.31-18.384 18.386 110.31 110.31 18.384-18.386zm-20 50l-110.31-110.31-18.384 18.386 110.31 110.31 18.384-18.386zm-10 60l-110.31-110.31-18.384 18.386 110.31 110.31 18.384-18.386z" />
     </g>
-    <ellipse
-      cx={0.582}
-      cy={0.475}
-      rx={0.094}
-      ry={0.313}
-      fill="none"
-      stroke="#4d4d4d"
-      strokeWidth={0.024}
-    />
+    <ellipse cx={0.582} cy={0.475} rx={0.094} ry={0.313} fill="none" stroke="#4d4d4d" strokeWidth={0.024} />
     <g>
       <path
         d="M347.41 350.742c-19.263-9.002-27.58-31.916-18.578-51.18 9.002-19.263 31.916-27.58 51.18-18.578 19.262 9.002 27.58 31.916 18.578 51.18-9.003 19.262-31.917 27.58-51.18 18.578z"
@@ -223,10 +147,7 @@ const SvgShip2 = (props: any) => (
         strokeWidth={4}
         transform="matrix(.00203 0 0 .00217 -.006 .211)"
       />
-      <path
-        d="M.706.995L.716 1 .75.92.74.916l-.034.08zM.67.977L.68.98.713.903.703.898.67.977z"
-        fill="#737373"
-      />
+      <path d="M.706.995L.716 1 .75.92.74.916l-.034.08zM.67.977L.68.98.713.903.703.898.67.977z" fill="#737373" />
     </g>
     <g>
       <path
@@ -236,10 +157,7 @@ const SvgShip2 = (props: any) => (
         strokeWidth={4}
         transform="matrix(.00203 0 0 .00209 -.007 0)"
       />
-      <path
-        d="M.695.01l-.01.003.021.08.01-.002-.021-.08zM.735 0l-.01.002.02.081.01-.003L.735 0z"
-        fill="#737373"
-      />
+      <path d="M.695.01l-.01.003.021.08.01-.002-.021-.08zM.735 0l-.01.002.02.081.01-.003L.735 0z" fill="#737373" />
     </g>
   </g>
 );

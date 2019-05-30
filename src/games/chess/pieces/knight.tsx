@@ -10,7 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 interface IKnightProps {
-  color: string
+  color: string;
 }
 
 class Knight extends React.Component<IKnightProps, {}> {

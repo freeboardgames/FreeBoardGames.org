@@ -4,10 +4,16 @@ import { GameMode } from '../../App/Game/GameModePicker';
 
 // mock functions for HTMLMediaElement
 // https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395
-(window as any).HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-(window as any).HTMLMediaElement.prototype.play = jest.fn();  //  () => { /* do nothing */ };
-(window as any).HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-(window as any).HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
+(window as any).HTMLMediaElement.prototype.load = () => {
+  /* do nothing */
+};
+(window as any).HTMLMediaElement.prototype.play = jest.fn(); //  () => { /* do nothing */ };
+(window as any).HTMLMediaElement.prototype.pause = () => {
+  /* do nothing */
+};
+(window as any).HTMLMediaElement.prototype.addTextTrack = () => {
+  /* do nothing */
+};
 
 const gameArgsOnline = {
   gameCode: 'seabattle',

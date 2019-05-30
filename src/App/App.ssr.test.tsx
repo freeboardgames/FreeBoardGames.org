@@ -14,7 +14,6 @@ import { GAMES_LIST } from '../games';
 (global as any).navigator = { userAgent: 'all' };
 
 describe('App', () => {
-
   const context = {};
   it('should render home', async () => {
     const asyncContext = createAsyncContext();
@@ -37,7 +36,8 @@ describe('App', () => {
         gameCode={'chess'}
         roomID={'0'}
         roomMetadata={{ roomID: 'foo', numberOfPlayers: 1, players: [{ playerID: 0, roomID: 'foo' }] }}
-      />);
+      />,
+    );
     expect(ssrHtml).toContain('Share');
   });
 

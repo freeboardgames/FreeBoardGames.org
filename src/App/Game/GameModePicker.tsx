@@ -22,7 +22,7 @@ interface IGameModePickerProps {
 }
 
 interface IGameModePickerState {
-  extraInfo: { [mode: string]: number }
+  extraInfo: { [mode: string]: number };
 }
 
 export interface IGameModeInfo {
@@ -55,7 +55,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
   state = { extraInfo: {} };
   _getLink = (to: string) => (props: any) => {
     return React.createElement(Link, { ...props, to, rel: 'nofollow' }, props.children);
-  }
+  };
 
   _handleSliderChange = (mode: GameMode) => (event: any, value: number) => {
     const newState: IGameModePickerState = {
@@ -66,7 +66,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     };
     newState.extraInfo[mode] = value;
     this.setState(newState);
-  }
+  };
 
   _handleClickSelection = (mode: GameMode, value: any) => (event: any) => {
     const newState: IGameModePickerState = {
@@ -77,7 +77,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     };
     newState.extraInfo[mode] = value;
     this.setState(newState);
-  }
+  };
 
   render() {
     const modes = [];
@@ -118,17 +118,9 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     const extraInfo = this._getExtraInfo(info);
     return (
       <Card key={title} style={{ marginBottom: '16px' }}>
-        <CardHeader
-          avatar={
-            <Avatar aria-label={title}>
-              {icon}
-            </Avatar>}
-          title={title}
-        />
+        <CardHeader avatar={<Avatar aria-label={title}>{icon}</Avatar>} title={title} />
         <CardContent>
-          <Typography component="p">
-            {description}
-          </Typography>
+          <Typography component="p">{description}</Typography>
         </CardContent>
         <CardActions>
           {extraInfo}
@@ -149,10 +141,10 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     if (info.extraInfo) {
       const extraInfo = info.extraInfo;
       if (extraInfo.type === 'slider') {
-        const slider = (extraInfo as IGameModeExtraInfoSlider);
+        const slider = extraInfo as IGameModeExtraInfoSlider;
         return this._getExtraInfoSlider(info, slider);
       } else if (extraInfo.type === 'dropdown') {
-        const dropdown = (extraInfo as IGameModeExtraInfoDropdown);
+        const dropdown = extraInfo as IGameModeExtraInfoDropdown;
         return this._getExtraInfoDropdown(info, dropdown);
       }
     }
@@ -192,7 +184,8 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
           selected={this._getExtraInfoValue(info) === idx}
         >
           {option}
-        </MenuItem>);
+        </MenuItem>
+      );
     });
     return (
       <div>

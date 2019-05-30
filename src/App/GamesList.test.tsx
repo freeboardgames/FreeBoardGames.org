@@ -10,7 +10,8 @@ describe('<GamesList />', () => {
     const wrapper = mount(
       <StaticRouter location={'/'} context={{}}>
         <GamesList />
-      </StaticRouter>);
+      </StaticRouter>,
+    );
     const items = wrapper.find('GameCard');
     expect(items.at(0).html()).to.contain('Chess');
   });

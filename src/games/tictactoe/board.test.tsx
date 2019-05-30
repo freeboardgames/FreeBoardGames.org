@@ -16,7 +16,7 @@ test('clicking a cell on the board', () => {
   });
   client.moves.clickCell = jest.fn();
   const state0 = client.store.getState();
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -29,9 +29,12 @@ test('clicking a cell on the board', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
-  comp.find('rect').at(0).simulate('click');
+    </MemoryRouter>,
+  );
+  comp
+    .find('rect')
+    .at(0)
+    .simulate('click');
   expect(client.moves.clickCell.mock.calls.length).to.equal(1);
 });
 
@@ -42,7 +45,7 @@ test('click a cell that has already been played', () => {
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell = jest.fn();
   const state0 = client.store.getState();
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -55,9 +58,12 @@ test('click a cell that has already been played', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
-  comp.find('rect').at(0).simulate('click');
+    </MemoryRouter>,
+  );
+  comp
+    .find('rect')
+    .at(0)
+    .simulate('click');
   expect(client.moves.clickCell.mock.calls.length).to.equal(0);
 });
 
@@ -68,7 +74,7 @@ test('render board - one X and one O - local friend', () => {
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
   const state0 = client.store.getState();
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -81,21 +87,21 @@ test('render board - one X and one O - local friend', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
-  expect(comp.html()).to.contain('Red\'s turn');
+    </MemoryRouter>,
+  );
+  expect(comp.html()).to.contain("Red's turn");
   expect(comp.find('rect').length).to.equal(9); // 9 rectangles
   expect(comp.find('.cross').length).to.equal(1); // one X
   expect(comp.find('circle').length).to.equal(1); // one O
 });
 
-test('render board - O\'s turn - local friend', () => {
+test("render board - O's turn - local friend", () => {
   const client = Client({
     game: TictactoeGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   const state0 = client.store.getState();
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -108,9 +114,9 @@ test('render board - O\'s turn - local friend', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
-  expect(comp.html()).to.contain('Green\'s turn');
+    </MemoryRouter>,
+  );
+  expect(comp.html()).to.contain("Green's turn");
 });
 
 test('render board - X wins - local friend', () => {
@@ -119,7 +125,7 @@ test('render board - X wins - local friend', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -132,8 +138,8 @@ test('render board - X wins - local friend', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('red won');
 });
 
@@ -143,7 +149,7 @@ test('render board - O wins - local friend', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -156,8 +162,8 @@ test('render board - O wins - local friend', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('green won');
 });
 
@@ -167,7 +173,7 @@ test('render board - X wins - AI', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -180,8 +186,8 @@ test('render board - X wins - AI', () => {
           mode: GameMode.AI,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('you won');
 });
 
@@ -191,7 +197,7 @@ test('render board - O wins - AI', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -204,8 +210,8 @@ test('render board - O wins - AI', () => {
           mode: GameMode.AI,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('you lost');
 });
 
@@ -215,7 +221,7 @@ test('render board - O wins - draw', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -228,8 +234,8 @@ test('render board - O wins - draw', () => {
           mode: GameMode.AI,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('draw');
 });
 
@@ -239,7 +245,7 @@ test('render board - draw - local friend', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -252,20 +258,19 @@ test('render board - draw - local friend', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('draw');
 });
 
 test('render board - our turn - online', () => {
-
   const client = Client({
     game: TictactoeGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
   const state0 = client.store.getState();
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -278,20 +283,19 @@ test('render board - our turn - online', () => {
           mode: GameMode.OnlineFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('YOUR TURN');
 });
 
 test('render board - their turn - online', () => {
-
   const client = Client({
     game: TictactoeGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
   const state0 = client.store.getState();
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -304,20 +308,19 @@ test('render board - their turn - online', () => {
           mode: GameMode.OnlineFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('Waiting for opponent');
 });
 
 test('render board - one X and one O - online', () => {
-
   const client = Client({
     game: TictactoeGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
   const state0 = client.store.getState();
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -330,8 +333,8 @@ test('render board - one X and one O - online', () => {
           mode: GameMode.OnlineFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.find('.cross').length).to.equal(1); // one X
   expect(comp.find('circle').length).to.equal(1); // one O
 });
@@ -342,7 +345,7 @@ test('render board - we win - online', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -355,8 +358,8 @@ test('render board - we win - online', () => {
           mode: GameMode.OnlineFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('you won');
 });
 
@@ -366,7 +369,7 @@ test('render board - we lose - online', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -379,8 +382,8 @@ test('render board - we lose - online', () => {
           mode: GameMode.OnlineFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('you lost');
 });
 
@@ -390,7 +393,7 @@ test('render board - draw - online', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -403,8 +406,8 @@ test('render board - draw - online', () => {
           mode: GameMode.OnlineFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   expect(comp.html()).to.contain('draw');
 });
 
@@ -413,7 +416,7 @@ test('render board - AI', () => {
     game: TictactoeGame,
   });
   const state0 = client.store.getState();
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -426,8 +429,11 @@ test('render board - AI', () => {
           mode: GameMode.AI,
         }}
       />
-    </MemoryRouter>
-  ));
-  comp.find('rect').at(0).simulate('click');
-  expect(comp.html()).to.contain('Red\'s turn');
+    </MemoryRouter>,
+  );
+  comp
+    .find('rect')
+    .at(0)
+    .simulate('click');
+  expect(comp.html()).to.contain("Red's turn");
 });

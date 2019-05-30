@@ -34,13 +34,13 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
     const elapsed = now - this.state.startTime;
     const linkHidden = elapsed < 5000;
     this.setState({
-      ... this.state,
+      ...this.state,
       linkHidden,
     });
     if (linkHidden) {
       requestAnimationFrame(this._animate(Date.now()));
     }
-  }
+  };
 
   render() {
     let icon;
@@ -57,7 +57,8 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
         <Button href="/" variant="outlined" style={{ margin: '8px' }}>
           <HomeIcon style={{ marginRight: '8px' }} />
           {trans('messagePage.goHome')}
-        </Button>);
+        </Button>
+      );
     }
     return (
       <FreeBoardGameBar>
@@ -66,7 +67,8 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
           {icon}
           <Typography variant="title" gutterBottom={true} style={{ paddingTop: '16px' }}>
             {this.props.message}
-            <br /><br />
+            <br />
+            <br />
             {linkHome}
           </Typography>
         </div>

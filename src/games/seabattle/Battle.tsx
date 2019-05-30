@@ -27,7 +27,6 @@ interface IBattleState {
 }
 
 export class Battle extends React.Component<IBattleProps, IBattleState> {
-
   constructor(props: IBattleProps) {
     super(props);
     this.state = {
@@ -39,26 +38,26 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     };
   }
   _onClick = (cell: ICell) => {
-    const uniqueMove = this.state.G.salvos.filter((salvo) => (
-      salvo.player === parseInt(this.state.currentPlayer, 10) &&
-      salvo.cell.x === cell.x &&
-      salvo.cell.y === cell.y),
-    ).length === 0;
+    const uniqueMove =
+      this.state.G.salvos.filter(
+        salvo =>
+          salvo.player === parseInt(this.state.currentPlayer, 10) && salvo.cell.x === cell.x && salvo.cell.y === cell.y,
+      ).length === 0;
     if (uniqueMove) {
       this.props.moves.salvo(cell.x, cell.y);
       if (this.props.isAIGame && !this.state.aiPlaying) {
-        this.setState((oldState) => {
+        this.setState(oldState => {
           return { ...oldState, aiPlaying: true };
         });
         setTimeout(() => {
           this.props.step();
-          this.setState((oldState) => {
+          this.setState(oldState => {
             return { ...oldState, aiPlaying: false };
           });
         }, 2500);
       }
     }
-  }
+  };
 
   componentDidUpdate(prevProps: IBattleProps) {
     if (prevProps.currentPlayer !== this.props.currentPlayer) {
@@ -76,11 +75,9 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
   }
 
   render() {
-    const player = parseInt((this.state.showSalvo) ? this.state.prevPlayer : this.state.currentPlayer, 10);
-    const ships: IShip[] = this.state.G.ships.filter((ship) => ship.player !== player);
-    const salvos: ISalvo[] = this.state.G.salvos.filter(
-      (salvo: ISalvo) => salvo.player === player,
-    );
+    const player = parseInt(this.state.showSalvo ? this.state.prevPlayer : this.state.currentPlayer, 10);
+    const ships: IShip[] = this.state.G.ships.filter(ship => ship.player !== player);
+    const salvos: ISalvo[] = this.state.G.salvos.filter((salvo: ISalvo) => salvo.player === player);
     const message = this._getMessage();
     if (this.props.getSoundPref()) {
       playSeabattleSound(message);
@@ -102,7 +99,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
 
   _getMessage() {
     if (this.state.showSalvo) {
-      return (this.state.salvo.hit) ? 'HIT' : 'MISS';
+      return this.state.salvo.hit ? 'HIT' : 'MISS';
     } else if (this.state.playerID === this.state.currentPlayer) {
       return 'CLICK TO SHOOT';
     } else {

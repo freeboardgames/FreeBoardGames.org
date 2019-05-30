@@ -6,8 +6,8 @@ const { Server } = require('@freeboardgame.org/boardgame.io/server'); // tslint:
 const PORT = process.env.BGIO_PORT || 8001;
 
 const startServer = async () => {
-  const configs = Promise.all(GAMES_LIST.map((gameDef) => gameDef.config()));
-  const games = (await configs).map((config) => config.default.bgioGame);
+  const configs = Promise.all(GAMES_LIST.map(gameDef => gameDef.config()));
+  const games = (await configs).map(config => config.default.bgioGame);
   const server = Server({ games });
   server.app.use(noCache({ global: true }));
   server.app.use(cors());

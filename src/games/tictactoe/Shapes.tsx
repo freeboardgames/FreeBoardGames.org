@@ -1,17 +1,17 @@
 import * as React from 'react';
 
 interface IShapeProps {
-  x: number,
-  y: number
+  x: number;
+  y: number;
 }
 
 const boldLineStyle = {
-  strokeWidth: .1,
+  strokeWidth: 0.1,
 };
 
 const lineStyle = {
   stroke: 'white',
-  strokeWidth: .025,
+  strokeWidth: 0.025,
 };
 
 export const Cross = (props: IShapeProps) => {
@@ -24,7 +24,8 @@ export const Cross = (props: IShapeProps) => {
         y2={props.y + 0.75}
         stroke="red"
         style={boldLineStyle}
-      />,
+      />
+      ,
       <line
         x1={props.x + 0.75}
         y1={props.y + 0.25}
@@ -41,8 +42,8 @@ export const Circle = (props: IShapeProps) => {
   return (
     <circle
       key={`circle${props.x},${props.y}`}
-      cx={props.x + .5}
-      cy={props.y + .5}
+      cx={props.x + 0.5}
+      cy={props.y + 0.5}
       r=".25"
       fill="none"
       stroke="lime"

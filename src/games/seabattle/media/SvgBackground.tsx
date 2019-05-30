@@ -1,29 +1,17 @@
 import React from 'react';
-const squares = (props: any) => Array.from({ length: 100 }).map((unused, i) => {
-  const x = i % 10;
-  const y = Math.floor(i / 10);
-  const _onClick = () => {
-    props.onClick({ x, y });
-  };
-  return (
-    <g
-      key={i}
-      onClick={_onClick}
-      transform={`translate(${x}, ${y})`}
-    >
-      <rect
-        x={0}
-        y={0}
-        fill="red"
-        fillOpacity="0"
-        width="1"
-        height="1"
-        stroke="white"
-        strokeWidth={0.005}
-      />
-    </g>
-  );
-});
+const squares = (props: any) =>
+  Array.from({ length: 100 }).map((unused, i) => {
+    const x = i % 10;
+    const y = Math.floor(i / 10);
+    const _onClick = () => {
+      props.onClick({ x, y });
+    };
+    return (
+      <g key={i} onClick={_onClick} transform={`translate(${x}, ${y})`}>
+        <rect x={0} y={0} fill="red" fillOpacity="0" width="1" height="1" stroke="white" strokeWidth={0.005} />
+      </g>
+    );
+  });
 const SvgBackground = (props: any) => (
   <g>
     // .svg starts here
@@ -45,11 +33,7 @@ const SvgBackground = (props: any) => (
         spreadMethod="pad"
       />
     </defs>
-    <path
-      fill="url(#background_svg__b)"
-      fillRule="evenodd"
-      d="M0 0h10v10H0z"
-    />
+    <path fill="url(#background_svg__b)" fillRule="evenodd" d="M0 0h10v10H0z" />
     // .svg ends here
     {squares(props)}
   </g>

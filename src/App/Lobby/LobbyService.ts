@@ -12,7 +12,7 @@ export interface IPlayerInRoom {
 export interface IRoomMetadata {
   gameCode?: string;
   roomID: string;
-  players?: IPlayerInRoom[];  // only active players
+  players?: IPlayerInRoom[]; // only active players
   currentUser?: IPlayerInRoom;
   numberOfPlayers: number;
   // want to know if person is the player
@@ -49,10 +49,10 @@ export class LobbyService {
   }
 
   public static async getRoomMetadata(gameCode: string, roomID: string): Promise<IRoomMetadata> {
-    const response = await request
-      .get(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}`);
+    const response = await request.get(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}`);
     const body = response.body;
-    const players: IPlayerInRoom[] = body.players.filter((player: any) => player.name)
+    const players: IPlayerInRoom[] = body.players
+      .filter((player: any) => player.name)
       .map((player: any) => ({
         playerID: player.id,
         name: player.name,

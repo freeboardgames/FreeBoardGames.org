@@ -14,11 +14,19 @@ import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 
 test('bishop white is rendered', () => {
-  const piece = Enzyme.mount(<svg><Bishop color="w" /></svg>);
+  const piece = Enzyme.mount(
+    <svg>
+      <Bishop color="w" />
+    </svg>,
+  );
   expect(piece.find('path').length).toBeGreaterThan(0);
 });
 
 test('bishop black is rendered', () => {
-  const piece = Enzyme.mount(<svg><Bishop color="b" /></svg>);
+  const piece = Enzyme.mount(
+    <svg>
+      <Bishop color="b" />
+    </svg>,
+  );
   expect(piece.find('path').length).toBeGreaterThan(0);
 });

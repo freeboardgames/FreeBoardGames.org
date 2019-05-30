@@ -8,7 +8,6 @@ import { GameMode } from './GameModePicker';
 import { MemoryRouter } from 'react-router';
 
 describe('Game', () => {
-
   it('should render properly for multiplayer', async () => {
     for (const gameCode in GAMES_MAP) {
       if (GAMES_MAP.hasOwnProperty(gameCode)) {

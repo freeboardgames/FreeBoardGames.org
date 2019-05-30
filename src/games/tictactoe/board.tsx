@@ -23,7 +23,6 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
-
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
       this.props.moves.clickCell(id);
@@ -31,18 +30,18 @@ export class Board extends React.Component<IBoardProps, {}> {
         setTimeout(this.props.step, 250);
       }
     }
-  }
+  };
 
   isActive(id: number) {
     return this.props.isActive && this.props.G.cells[id] === null;
   }
 
   isOnlineGame() {
-    return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend);
+    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend;
   }
 
   isAIGame() {
-    return (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI);
+    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI;
   }
 
   _getStatus() {
@@ -52,10 +51,13 @@ export class Board extends React.Component<IBoardProps, {}> {
       } else {
         return 'Waiting for opponent...';
       }
-    } else { // Local or AI game
+    } else {
+      // Local or AI game
       switch (this.props.ctx.currentPlayer) {
-        case '0': return 'Red\'s turn';
-        case '1': return 'Green\'s turn';
+        case '0':
+          return "Red's turn";
+        case '1':
+          return "Green's turn";
       }
     }
   }
@@ -74,41 +76,35 @@ export class Board extends React.Component<IBoardProps, {}> {
       }
     } else if (this.isAIGame()) {
       switch (this.props.ctx.gameover.winner) {
-        case '0': return 'you won';
-        case '1': return 'you lost';
-        case undefined: return 'draw';
+        case '0':
+          return 'you won';
+        case '1':
+          return 'you lost';
+        case undefined:
+          return 'draw';
       }
     } else {
       // Local game
       switch (this.props.ctx.gameover.winner) {
-        case '0': return 'red won';
-        case '1': return 'green won';
-        case undefined: return 'draw';
+        case '0':
+          return 'red won';
+        case '1':
+          return 'green won';
+        case undefined:
+          return 'draw';
       }
     }
   }
 
   render() {
     if (this.props.ctx.gameover) {
-      return (
-        <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />
-      );
+      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
     }
     const cells = [];
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         const id = 3 * i + j;
-        cells.push(
-          <rect
-            key={`${id}`}
-            x={i}
-            y={j}
-            width="1"
-            height="1"
-            fill="black"
-            onClick={this.onClick(id)}
-          />,
-        );
+        cells.push(<rect key={`${id}`} x={i} y={j} width="1" height="1" fill="black" onClick={this.onClick(id)} />);
         let overlay;
         if (this.props.G.cells[id] === '0') {
           overlay = <Cross x={i} y={j} key={`cross${id}`} />;
@@ -124,9 +120,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     return (
       <GameLayout>
         <div>
-          <h2 style={{ textAlign: 'center' }}>
-            {this._getStatus()}
-          </h2>
+          <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
           <svg width="100%" height="100%" viewBox="0 0 3 3">
             {cells}
             {Lines}

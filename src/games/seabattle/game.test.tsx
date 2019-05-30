@@ -40,8 +40,10 @@ describe('Seabattle', () => {
       game: SeabattleGame,
     });
     expect(() => {
-      client.moves.setShips([{ player: 0, id: 1, cells: [{ x: 0, y: 9 }, { x: 1, y: 9 }] },
-      { player: 0, id: 1, cells: [{ x: 2, y: 9 }, { x: 3, y: 9 }] }]);
+      client.moves.setShips([
+        { player: 0, id: 1, cells: [{ x: 0, y: 9 }, { x: 1, y: 9 }] },
+        { player: 0, id: 1, cells: [{ x: 2, y: 9 }, { x: 3, y: 9 }] },
+      ]);
     }).toThrow();
   });
 
@@ -125,10 +127,12 @@ describe('Seabattle', () => {
       game: SeabattleGame,
     });
     const store = client.store;
-    client.moves.setShips(VALID_SETUP_FIRST_PLAYER.map((ship) => ({
-      ...ship,
-      sunk: true,
-    })));
+    client.moves.setShips(
+      VALID_SETUP_FIRST_PLAYER.map(ship => ({
+        ...ship,
+        sunk: true,
+      })),
+    );
     client.updatePlayerID('1');
     client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
 
@@ -142,10 +146,12 @@ describe('Seabattle', () => {
     const store = client.store;
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
     client.updatePlayerID('1');
-    client.moves.setShips(VALID_SETUP_SECOND_PLAYER.map((ship) => ({
-      ...ship,
-      sunk: true,
-    })));
+    client.moves.setShips(
+      VALID_SETUP_SECOND_PLAYER.map(ship => ({
+        ...ship,
+        sunk: true,
+      })),
+    );
 
     expect(store.getState().ctx.gameover.winner).toEqual('0');
   });
@@ -216,7 +222,8 @@ describe('Seabattle', () => {
     expect(newG.salvos).toEqual([
       { player: 1, cell: { x: 0, y: 9 }, hit: true, hitShip: '5' },
       { player: 0, cell: { x: 0, y: 0 }, hit: true, hitShip: 'second 1' },
-      { player: 1, cell: { x: 1, y: 9 }, hit: true, hitShip: '5' }]);
+      { player: 1, cell: { x: 1, y: 9 }, hit: true, hitShip: '5' },
+    ]);
     expect(newG.ships[2].sunk).toEqual(true);
   });
 });

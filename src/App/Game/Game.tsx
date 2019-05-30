@@ -69,17 +69,19 @@ export default class Game extends React.Component<IGameProps, {}> {
       }
       return Promise.all([this.gameDef.config(), aiPromise]).then(
         (promises: any) => {
-          state.config = (promises[0].default as IGameConfig);
+          state.config = promises[0].default as IGameConfig;
           if (this.loadAI) {
-            state.ai = (promises[1].default as IAIConfig);
+            state.ai = promises[1].default as IAIConfig;
           }
           state.loading = false;
           state.error = false;
-        }, () => {
+        },
+        () => {
           state.config = undefined;
           state.loading = false;
           state.error = true;
-        });
+        },
+      );
     } else {
       state.config = undefined;
       state.loading = false;
@@ -102,11 +104,11 @@ export default class Game extends React.Component<IGameProps, {}> {
 
   render() {
     let aiLevel, matchCode, playerID, credentials;
-    let gameID;  // our roomID, bgio still calls this gameID
+    let gameID; // our roomID, bgio still calls this gameID
     if (this.props.match) {
       aiLevel = this.props.match.params.aiLevel;
       matchCode = this.props.match.params.matchCode;
-      playerID = (this.mode === GameMode.AI) ? '0' : this.props.match.params.playerID;
+      playerID = this.mode === GameMode.AI ? '0' : this.props.match.params.playerID;
       gameID = matchCode;
     } else {
       credentials = LobbyService.getCredential(this.props.room.roomID).credential;
@@ -135,8 +137,9 @@ export default class Game extends React.Component<IGameProps, {}> {
         credentials,
         gameID,
       };
-      const allEnhancers = state.config.enhancers ?
-        state.config.enhancers.concat(DEFAULT_ENHANCERS) : DEFAULT_ENHANCERS;
+      const allEnhancers = state.config.enhancers
+        ? state.config.enhancers.concat(DEFAULT_ENHANCERS)
+        : DEFAULT_ENHANCERS;
       const enhancers = allEnhancers.map((enhancer: any) => enhancer(gameArgs));
       clientConfig.enhancer = applyMiddleware(...enhancers);
       if (this.loadAI) {
@@ -152,16 +155,10 @@ export default class Game extends React.Component<IGameProps, {}> {
         return <App gameID={matchCode} playerID={playerID} />;
       }
     } else if (state.loading) {
-      const LoadingPage = getMessagePage(
-        'loading',
-        `Downloading ${this.gameDef.name}...`,
-      );
+      const LoadingPage = getMessagePage('loading', `Downloading ${this.gameDef.name}...`);
       return <LoadingPage />;
     } else {
-      const ErrorPage = getMessagePage(
-        'error',
-        `Failed to download ${this.gameDef.name}.`,
-      );
+      const ErrorPage = getMessagePage('error', `Failed to download ${this.gameDef.name}.`);
       return <ErrorPage />;
     }
   }
