@@ -154,6 +154,11 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
 
   _getGameSharing = () => {
     const { gameCode, roomID } = this.props.match.params;
-    return (<GameSharing gameCode={gameCode} roomID={roomID} players={this.state.roomMetadata.players} />);
+    return (
+      <GameSharing
+        gameCode={gameCode}
+        roomID={roomID}
+        roomMetadata={this.state.roomMetadata}
+      />);
   }
 }

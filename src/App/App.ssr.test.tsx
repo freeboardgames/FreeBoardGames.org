@@ -36,7 +36,7 @@ describe('App', () => {
       <GameSharing
         gameCode={'chess'}
         roomID={'0'}
-        players={[{ playerID: 0, roomID: 'foo' }]}
+        roomMetadata={{ roomID: 'foo', numberOfPlayers: 1, players: [{ playerID: 0, roomID: 'foo' }] }}
       />);
     expect(ssrHtml).toContain('Share');
   });
