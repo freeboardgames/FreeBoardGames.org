@@ -25,10 +25,11 @@ interface IRoomState {
   nameTextField?: string;
   loading: boolean;
   gameReady: boolean;
+  error: string;
 }
 
 export class Room extends React.Component<IRoomProps, IRoomState> {
-  state: IRoomState = { loading: true, gameReady: false };
+  state: IRoomState = { error: '', loading: true, gameReady: false };
   private timer: any;  // fixme loads state of room
   constructor(props: IRoomProps) {
     super(props);
@@ -39,6 +40,13 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
     const nickname = LobbyService.getNickname();
     if (!nickname) {
       return this._getNamePrompt();
+    }
+    if (this.state.error) {
+      LoadingPage = getMessagePage(
+        'error',
+        this.state.error,
+      );
+      return <LoadingPage />;
     }
     if (this.state.loading) {
       LoadingPage = getMessagePage(
@@ -97,7 +105,9 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
           setTimeout(() => this.updateMetadata(), 2000);
         }
       }, () => {
-        throw new Error('failed to fetch room metadata');
+        const error = 'Failed to fetch room metadata.';
+        this.setState((oldState) => ({ ...oldState, error }));
+        throw new Error(error);
       });
   }
 
