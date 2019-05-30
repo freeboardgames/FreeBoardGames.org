@@ -15,8 +15,6 @@ export interface IRoomMetadata {
   players?: IPlayerInRoom[]; // only active players
   currentUser?: IPlayerInRoom;
   numberOfPlayers: number;
-  // want to know if person is the player
-  // new field?
 }
 
 export interface IPlayerCredential {
