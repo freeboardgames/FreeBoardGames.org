@@ -3,10 +3,10 @@ import Card from './card';
 
 export interface ICardProps {
   card: Card;
-  click?: any;
+  click?: () => void;
 }
 
-export default class CardComponent extends React.Component<ICardProps, {}> {
+export class CardComponent extends React.Component<ICardProps, {}> {
   render() {
     const values: any = {
       1: '#ffffff',

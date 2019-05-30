@@ -1,4 +1,4 @@
-import { Game, TurnOrder, IGameCtx, INVALID_MOVE, PlayerView } from '@freeboardgame.org/boardgame.io/core';
+import { Game, TurnOrder, IGameArgs, IGameCtx, INVALID_MOVE, PlayerView } from '@freeboardgame.org/boardgame.io/core';
 import Card from './card';
 import Player from './player';
 
@@ -102,8 +102,7 @@ export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
     };
   }
 }
-
-export const TakeSixGame = Game({
+const GameConfig: IGameArgs = {
   name: 'takesix',
   flow: {
     endTurn: false,
@@ -214,4 +213,10 @@ export const TakeSixGame = Game({
     selectCard,
     selectDeck,
   },
+};
+
+export const TakeSixGame = Game(GameConfig);
+export const TakeSixGameForTest = (override: any) => Game({
+  ...GameConfig,
+  ...override,
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import CardComponent, { ICardProps } from './CardComponent';
+import { CardComponent, ICardProps } from './CardComponent';
 import Card from './card';
 
 Enzyme.configure({ adapter: new Adapter() });

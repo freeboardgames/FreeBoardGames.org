@@ -3,8 +3,10 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG, getCards } from './game';
-import CardComponent from './CardComponent';
+import { IG } from './game';
+import { Decks } from './Decks';
+import { PlayerHand } from './PlayerHand';
+import { CardComponent } from './CardComponent';
 
 interface IBoardProps {
   G: IG;
@@ -15,44 +17,9 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
-  selectCard(id: number) {
-    this.props.moves.selectCard(id);
-  }
 
-  selectDeck(id: number) {
-    this.props.moves.selectDeck(id);
-  }
-
-  getOpacity(id: number): number {
-    if (this.props.ctx.phase === 'CARD_SELECT' ||
-      !this.props.ctx.actionPlayers.some(player => player === this.props.playerID)) {
-      return 1;
-    }
-
-    const { card, lastCards } = getCards(this.props.G, this.props.ctx, this.props.playerID);
-    if (card.number < lastCards[0].number) {
-      return 1;
-    } else {
-      const diffs: number[] = this.props.G.decks.map(
-        (deck) => card.number - deck[deck.length - 1].number,
-      );
-
-      let min = Number.MAX_SAFE_INTEGER;
-      let minIndex = 0;
-      diffs.forEach((diff, index) => {
-        if (diff > 0 && diff < min) {
-          min = diff;
-          minIndex = index;
-        }
-      });
-
-      if (minIndex === id) {
-        return 1;
-      }
-    }
-
-    return 0.2;
-  }
+  _selectCard = (id: number) => this.props.moves.selectCard(id);
+  _selectDeck = (id: number) => this.props.moves.selectDeck(id);
 
   _getStatus() {
     if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
@@ -96,42 +63,17 @@ export class Board extends React.Component<IBoardProps, {}> {
         <h2 style={{ textAlign: 'center' }}>
           {this._getStatus()}
         </h2>
-        <div>
-          {this.props.G.decks.map((deck, i) => (
-            <div
-              key={i}
-              onClick={this.selectDeck.bind(this, i)}
-              style={{
-                marginBottom: '10px',
-                opacity: this.getOpacity(i),
-              }}
-            >
-              {deck.map((card, j) => (
-                <div key={j}>
-                  <CardComponent card={card} />
-                </div>
-              ))}
-              <div style={{ clear: 'both' }} />
-            </div>
-          ))}
-        </div>
-        <div
-          style={{
-            width: 400,
-            height: 160,
-            marginTop: '20px',
-          }}
-        >
-          {this.props.G.players[this.props.playerID as any].cards.map(
-            (card, index: number) => (
-              <CardComponent
-                key={card.number}
-                click={this.selectCard.bind(this, index)}
-                card={card}
-              />
-            ),
-          )}
-        </div>
+        <Decks
+          G={this.props.G}
+          ctx={this.props.ctx}
+          playerID={this.props.playerID}
+          selectDeck={this._selectDeck}
+        />
+        <PlayerHand
+          G={this.props.G}
+          playerID={this.props.playerID}
+          selectCard={this._selectCard}
+        />
         <div>
           Penalty points: {this.props.G.players[this.props.playerID as any].penaltyCards
             .map((card) => card.value)

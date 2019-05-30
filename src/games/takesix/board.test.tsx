@@ -3,13 +3,30 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
-import { TakeSixGame } from './game';
+import { TakeSixGame, TakeSixGameForTest } from './game';
 import { MemoryRouter } from 'react-router';
 import { Board } from './board';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 
 Enzyme.configure({ adapter: new Adapter() });
+
+const TakeSixGameConstSeed = TakeSixGameForTest({ seed: 0 });
+
+/*test('full turn', () => {
+  const App = ReactClient({
+    game: TakeSixGameConstSeed,
+    debug: false,
+    board: Board,
+  }) as any;
+  const comp = Enzyme.mount((
+    <MemoryRouter>
+      <App playerID={'0'} gameID={'foo'} />
+    </MemoryRouter>
+  ));
+  comp.find('button').at(1).simulate('click');
+  expect(comp.html()).to.contain('Waiting');
+});*/
 
 test('start', () => {
   const client = Client({
