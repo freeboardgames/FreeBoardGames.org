@@ -10,19 +10,19 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('Game info', () => {
   const context = {};
   it('should render chess', () => {
-    const wrapper = Enzyme.mount((
+    const wrapper = Enzyme.mount(
       <MemoryRouter>
         <GameInfo match={{ params: { gameCode: 'chess' } }} />
-      </MemoryRouter>
-    ));
+      </MemoryRouter>,
+    );
     expect(wrapper.html()).to.contain('Chess');
   });
   it('should render an error for an unknown game', () => {
-    const wrapper = Enzyme.mount((
+    const wrapper = Enzyme.mount(
       <MemoryRouter>
         <GameInfo match={{ params: { gameCode: 'doesnotexist' } }} />
-      </MemoryRouter>
-    ));
+      </MemoryRouter>,
+    );
     expect(wrapper.html()).to.contain('Not Found');
   });
 });

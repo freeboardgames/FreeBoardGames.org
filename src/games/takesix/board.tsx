@@ -17,7 +17,6 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
-
   _selectCard = (id: number) => this.props.moves.selectCard(id);
   _selectDeck = (id: number) => this.props.moves.selectDeck(id);
 
@@ -49,34 +48,28 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   render() {
     if (this.props.ctx.gameover) {
-      return (
-        <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />
-      );
+      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
     }
 
     if (this.props.playerID === null) {
-      return (<GameLayout><div><svg /></div></GameLayout>);
+      return (
+        <GameLayout>
+          <div>
+            <svg />
+          </div>
+        </GameLayout>
+      );
     }
 
     return (
       <GameLayout>
-        <h2 style={{ textAlign: 'center' }}>
-          {this._getStatus()}
-        </h2>
-        <Decks
-          G={this.props.G}
-          ctx={this.props.ctx}
-          playerID={this.props.playerID}
-          selectDeck={this._selectDeck}
-        />
-        <PlayerHand
-          G={this.props.G}
-          playerID={this.props.playerID}
-          selectCard={this._selectCard}
-        />
+        <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
+        <Decks G={this.props.G} ctx={this.props.ctx} playerID={this.props.playerID} selectDeck={this._selectDeck} />
+        <PlayerHand G={this.props.G} playerID={this.props.playerID} selectCard={this._selectCard} />
         <div>
-          Penalty points: {this.props.G.players[this.props.playerID as any].penaltyCards
-            .map((card) => card.value)
+          Penalty points:{' '}
+          {this.props.G.players[this.props.playerID as any].penaltyCards
+            .map(card => card.value)
             .reduce((a, b) => a + b, 0)}
         </div>
       </GameLayout>

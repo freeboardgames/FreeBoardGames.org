@@ -4,7 +4,7 @@ import { TakeSixGame, IG, selectCard, selectDeck } from './game';
 import Player from './player';
 import Card from './card';
 // https://github.com/nicolodavis/boardgame.io/blob/master/docs/testing.md
-it('should move player\'s card from his hand to selectedCard', () => {
+it("should move player's card from his hand to selectedCard", () => {
   const card = new Card(1, 1, 0);
   let G: IG = {
     players: [new Player([card], null)],
@@ -35,34 +35,28 @@ it('should return INVALID_MOVE', () => {
     players: [new Player([], card)],
     cardOrder: [],
     decks: [
-      [new Card(4, 1, 0),
-      new Card(5, 1, 0),
-      new Card(6, 1, 0),
-      new Card(7, 1, 0),
-      new Card(8, 1, 0)],
+      [new Card(4, 1, 0), new Card(5, 1, 0), new Card(6, 1, 0), new Card(7, 1, 0), new Card(8, 1, 0)],
       [new Card(3, 1, 0)],
       [new Card(2, 1, 0)],
-      [new Card(1, 1, 0)]],
+      [new Card(1, 1, 0)],
+    ],
     end: false,
   };
   G = selectDeck(G, { playerID: '0' } as any, 1);
   expect(G).toEqual(INVALID_MOVE);
 });
 
-it('should move whole deck to player\'s hand as penaltyCards', () => {
+it("should move whole deck to player's hand as penaltyCards", () => {
   const card = new Card(104, 1, 0);
   let G: IG = {
     players: [new Player([], card)],
     cardOrder: [],
     decks: [
-      [new Card(4, 1, 0),
-      new Card(5, 1, 0),
-      new Card(6, 1, 0),
-      new Card(7, 1, 0),
-      new Card(8, 1, 0)],
+      [new Card(4, 1, 0), new Card(5, 1, 0), new Card(6, 1, 0), new Card(7, 1, 0), new Card(8, 1, 0)],
       [new Card(3, 1, 0)],
       [new Card(2, 1, 0)],
-      [new Card(1, 1, 0)]],
+      [new Card(1, 1, 0)],
+    ],
     end: false,
   };
   G = selectDeck(G, { playerID: '0' } as any, 0);
@@ -70,7 +64,7 @@ it('should move whole deck to player\'s hand as penaltyCards', () => {
   expect(G.players[0].penaltyCards).toHaveLength(5);
 });
 
-it('should add penalty card(s) to player\'s deck', () => {
+it("should add penalty card(s) to player's deck", () => {
   const card = new Card(1, 1, 0);
   const replaced = new Card(101, 1, 0);
   let G: IG = {
@@ -90,13 +84,11 @@ it('should add card to a deck', () => {
     players: [new Player([], card)],
     cardOrder: [],
     decks: [
-      [new Card(5, 1, 0),
-      new Card(6, 1, 0),
-      new Card(7, 1, 0),
-      new Card(8, 1, 0)],
+      [new Card(5, 1, 0), new Card(6, 1, 0), new Card(7, 1, 0), new Card(8, 1, 0)],
       [new Card(3, 1, 0)],
       [new Card(2, 1, 0)],
-      [new Card(1, 1, 0)]],
+      [new Card(1, 1, 0)],
+    ],
     end: false,
   };
   G = selectDeck(G, { playerID: '0' } as any, 0);

@@ -12,12 +12,7 @@ export const GAMES_MAP: IGameDefMap = {
   takesix: takesixGameDef,
 };
 
-export const GAMES_LIST: IGameDef[] = [
-  GAMES_MAP.chess,
-  GAMES_MAP.seabattle,
-  GAMES_MAP.tictactoe,
-  GAMES_MAP.takesix,
-];
+export const GAMES_LIST: IGameDef[] = [GAMES_MAP.chess, GAMES_MAP.seabattle, GAMES_MAP.tictactoe, GAMES_MAP.takesix];
 
 // No need to edit below
 export interface IGameConfig {
@@ -43,5 +38,5 @@ export interface IGameDef {
 }
 
 export interface IGameDefMap {
-  [code: string]: IGameDef
+  [code: string]: IGameDef;
 }

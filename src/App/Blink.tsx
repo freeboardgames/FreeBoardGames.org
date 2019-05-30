@@ -26,19 +26,17 @@ export class Blink extends React.Component<IBlinkProps, IBlinkState> {
   _animate = (now: number) => () => {
     const elapsed = now - this.state.startTime;
     const done = elapsed > this.props.totalDurationMillis;
-    const blinkHidden = Math.floor(
-      elapsed / this.props.blinkDurationMillis % 2,
-    ) === 1;
+    const blinkHidden = Math.floor((elapsed / this.props.blinkDurationMillis) % 2) === 1;
     const hidden = done ? false : blinkHidden;
     this.setState({
-      ... this.state,
+      ...this.state,
       hidden,
     });
     if (!done) {
       requestAnimationFrame(this._animate(Date.now()));
     }
-  }
+  };
   render() {
-    return (this.state.hidden) ? null : this.props.children;
+    return this.state.hidden ? null : this.props.children;
   }
 }

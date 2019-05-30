@@ -7,7 +7,6 @@ import { expect } from 'chai';
 import { MemoryRouter } from 'react-router';
 
 describe('Game Mode Picker', () => {
-
   it('should show all 5 options and accept clicks', () => {
     const historyMock = { push: jest.fn() };
     const modesMock: IGameModeInfo[] = [
@@ -15,11 +14,11 @@ describe('Game Mode Picker', () => {
       { mode: GameMode.OnlineFriend },
       { mode: GameMode.LocalFriend },
     ];
-    const wrapper = mount((
+    const wrapper = mount(
       <MemoryRouter>
         <GameModePicker gameCode="foo" modes={modesMock} />
-      </MemoryRouter>
-    ));
+      </MemoryRouter>,
+    );
     expect(wrapper.find('a').length).to.equal(3);
   });
 
@@ -31,11 +30,11 @@ describe('Game Mode Picker', () => {
         extraInfo: { type: 'slider', min: 1, max: 8 } as IGameModeExtraInfoSlider,
       },
     ];
-    const wrapper = mount((
+    const wrapper = mount(
       <MemoryRouter>
         <GameModePicker gameCode="foo" modes={modesMock} />
-      </MemoryRouter>
-    ));
+      </MemoryRouter>,
+    );
     expect(wrapper.find('Slider').length).to.equal(1);
   });
 
@@ -49,12 +48,12 @@ describe('Game Mode Picker', () => {
     const wrapper = makeDropdownWrapper();
     const easy = wrapper.find('MenuItem').at(0);
     expect(easy.prop('value')).to.equal('Easy');
-    expect(easy.prop('selected')).to.equal(true);  // Easy is selected by default
+    expect(easy.prop('selected')).to.equal(true); // Easy is selected by default
 
     const hard = wrapper.find('MenuItem').at(1);
     expect(hard.prop('value')).to.equal('Hard');
 
-    expect(hard.prop('selected')).to.equal(false);  // Hard is deselected by default
+    expect(hard.prop('selected')).to.equal(false); // Hard is deselected by default
   });
 
   it('it should be a functional dropdown', () => {
@@ -73,10 +72,10 @@ function makeDropdownWrapper() {
       extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
     },
   ];
-  const wrapper = mount((
+  const wrapper = mount(
     <MemoryRouter>
       <GameModePicker gameCode="foo" modes={modesMock} />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   return wrapper;
 }

@@ -12,9 +12,7 @@ class Home extends React.Component<{}, {}> {
         <GamesList />
         <p style={{ fontSize: '12px', textAlign: 'center' }}>
           Made with ♥&nbsp;-&nbsp;
-          <Link to="/about">
-            About
-          </Link>
+          <Link to="/about">About</Link>
         </p>
       </FreeBoardGameBar>
     );

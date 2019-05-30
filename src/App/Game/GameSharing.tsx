@@ -71,17 +71,9 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
               </IconButton>
             </Tooltip>
           </div>
-          <TextField
-            defaultValue={this._getLink()}
-            label="Link"
-          />
+          <TextField defaultValue={this._getLink()} label="Link" />
           <br />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.props.onDismiss}
-            style={{ marginTop: '8px' }}
-          >
+          <Button variant="contained" color="primary" onClick={this.props.onDismiss} style={{ marginTop: '8px' }}>
             Done
           </Button>
         </CardContent>
@@ -128,8 +120,8 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
   }
 
   _getLink() {
-    const player = (this.props.playerID === '0') ? '1' : '0';
-    const origin = (typeof window === 'undefined') ? '' : window.location.origin;
+    const player = this.props.playerID === '0' ? '1' : '0';
+    const origin = typeof window === 'undefined' ? '' : window.location.origin;
     const gameCode = this.props.gameCode;
     const matchCode = this.props.matchCode;
     return `${origin}/g/${gameCode}/online/${matchCode}/${player}`;

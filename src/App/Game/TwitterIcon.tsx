@@ -2,7 +2,6 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import React from 'react';
 
 class TwitterIcon extends React.Component<{}, {}> {
-
   render() {
     const path1 = `M612,116.258c-22.525,9.981-46.694,16.75-72.088,19.772
                    c25.929-15.527,45.777-40.155,55.184-69.41

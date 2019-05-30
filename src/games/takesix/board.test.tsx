@@ -25,14 +25,18 @@ test('select a card', () => {
     debug: false,
     board: Board,
   }) as any;
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <App playerID={'0'} gameID={'foo'} />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
 
   expect(comp.find('PlayerHand').find('CardComponent').length).toEqual(10);
-  comp.find('PlayerHand').find('CardComponent').at(0).simulate('click');
+  comp
+    .find('PlayerHand')
+    .find('CardComponent')
+    .at(0)
+    .simulate('click');
   expect(comp.find('PlayerHand').find('CardComponent').length).toEqual(9);
 });
 
@@ -42,7 +46,7 @@ test('win', () => {
   });
   const state0 = client.store.getState();
   (state0.ctx as IGameCtx).gameover = { winner: '0' };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -54,9 +58,14 @@ test('win', () => {
           mode: GameMode.OnlineFriend,
         }}
       />
-    </MemoryRouter>
-  ));
-  expect(comp.find('h2').at(1).text()).toEqual('Game Over, you won!');
+    </MemoryRouter>,
+  );
+  expect(
+    comp
+      .find('h2')
+      .at(1)
+      .text(),
+  ).toEqual('Game Over, you won!');
 });
 
 test('loss', () => {
@@ -65,7 +74,7 @@ test('loss', () => {
   });
   const state0 = client.store.getState();
   (state0.ctx as IGameCtx).gameover = { winner: '1' };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -77,9 +86,14 @@ test('loss', () => {
           mode: GameMode.OnlineFriend,
         }}
       />
-    </MemoryRouter>
-  ));
-  expect(comp.find('h2').at(1).text()).toEqual('Game Over, you lost!');
+    </MemoryRouter>,
+  );
+  expect(
+    comp
+      .find('h2')
+      .at(1)
+      .text(),
+  ).toEqual('Game Over, you lost!');
 });
 
 test('draw', () => {
@@ -88,7 +102,7 @@ test('draw', () => {
   });
   const state0 = client.store.getState();
   (state0.ctx as IGameCtx).gameover = { draw: true };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -100,7 +114,12 @@ test('draw', () => {
           mode: GameMode.OnlineFriend,
         }}
       />
-    </MemoryRouter>
-  ));
-  expect(comp.find('h2').at(1).text()).toEqual('Game Over, draw!');
+    </MemoryRouter>,
+  );
+  expect(
+    comp
+      .find('h2')
+      .at(1)
+      .text(),
+  ).toEqual('Game Over, draw!');
 });

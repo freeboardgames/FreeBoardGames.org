@@ -12,10 +12,9 @@ class Header extends React.Component<{}, {}> {
           Free as in freedom
         </Typography>
         <Typography variant="body1" gutterBottom={true} style={{ marginTop: '16px' }}>
-          We at FreeBoardGame.org want to bring free games for everybody.
-          Free as in "free beer" <i>and</i> as in "freedom".
-          Not only do you get to enjoy free high quality games everywhere,
-          but you also can study how they are made, change them, and contribute back to the community!
+          We at FreeBoardGame.org want to bring free games for everybody. Free as in &quot;free beer&quot; <i>and</i> as
+          in &quot;freedom&quot;. Not only do you get to enjoy free high quality games everywhere, but you also can
+          study how they are made, change them, and contribute back to the community!
         </Typography>
         {this._links()}
       </div>

@@ -6,13 +6,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { expect } from 'chai';
 
 describe('Home', () => {
-
   it('should contain game list', () => {
     const wrapper = Enzyme.mount(
       <MemoryRouter initialEntries={['/']}>
         <Home />
-      </MemoryRouter>);
+      </MemoryRouter>,
+    );
     expect(wrapper.find(GamesList)).to.have.lengthOf(1);
   });
-
 });

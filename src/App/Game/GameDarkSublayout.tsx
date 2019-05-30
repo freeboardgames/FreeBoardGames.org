@@ -52,11 +52,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
             }}
           >
             <Link to="/" style={{ float: 'left', textDecoration: 'none' }}>
-              <img
-                src={FbgLogo}
-                alt="FreeBoardGame.org"
-                style={{ float: 'left', paddingRight: '16px' }}
-              />
+              <img src={FbgLogo} alt="FreeBoardGame.org" style={{ float: 'left', paddingRight: '16px' }} />
               <Typography
                 variant="title"
                 gutterBottom={true}
@@ -102,17 +98,17 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
 
   _openOptionsMenu = (event: any) => {
     this.setState({ menuAnchorEl: event.currentTarget });
-  }
+  };
 
   _closeOptionsMenu = (event?: any) => {
     this.setState({ menuAnchorEl: null });
-  }
+  };
 
   _wrapOnClick = (onClickFunc: () => void) => () => {
     // close menu, call onClickFunc
     this._closeOptionsMenu();
     onClickFunc();
-  }
+  };
 
   _getOptionsMenuItems = () => {
     if (!this.props.optionsMenuItems) {
@@ -121,23 +117,15 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
     const { menuAnchorEl } = this.state;
     const menuItems = this.props.optionsMenuItems().map((option: IOptionsItems, index) => {
       return (
-        <MenuItem
-          key={`option-${index}`}
-          onClick={this._wrapOnClick(option.onClick)}
-        >
+        <MenuItem key={`option-${index}`} onClick={this._wrapOnClick(option.onClick)}>
           {option.text}
         </MenuItem>
       );
     });
     return (
-      <Menu
-        id="simple-menu"
-        anchorEl={menuAnchorEl}
-        open={Boolean(menuAnchorEl)}
-        onClose={this._closeOptionsMenu}
-      >
+      <Menu id="simple-menu" anchorEl={menuAnchorEl} open={Boolean(menuAnchorEl)} onClose={this._closeOptionsMenu}>
         {menuItems}
       </Menu>
     );
-  }
+  };
 }

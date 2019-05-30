@@ -3,15 +3,15 @@ import Card from './card';
 import Player from './player';
 
 export interface IG {
-  players: Player[],
-  decks: Card[][],
-  cardOrder: string[],
-  end: boolean,
+  players: Player[];
+  decks: Card[][];
+  cardOrder: string[];
+  end: boolean;
 }
 
 export interface IGetCards {
-  card: Card,
-  lastCards: Card[]
+  card: Card;
+  lastCards: Card[];
 }
 
 export function getCards(G: IG, ctx: IGameCtx, playerID: string): IGetCards {
@@ -29,10 +29,7 @@ function moveToHand(G: IG, ctx: IGameCtx, card: Card, deckId: number): any {
       ...G.players,
       [ctx.playerID]: {
         ...G.players[ctx.playerID as any],
-        penaltyCards: [
-          ...G.players[ctx.playerID as any].penaltyCards,
-          ...G.decks[deckId],
-        ],
+        penaltyCards: [...G.players[ctx.playerID as any].penaltyCards, ...G.decks[deckId]],
       },
     }),
     decks: Object.values({
@@ -53,12 +50,8 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
       ...G.players,
       [ctx.playerID]: {
         ...G.players[ctx.playerID as any],
-        selectedCard: G.players[ctx.playerID as any].cards.find(
-          (_: Card, index: number) => index === id,
-        ), // Set card as selected
-        cards: G.players[ctx.playerID as any].cards.filter(
-          (_: Card, index: number) => index !== id,
-        ), // Remove card from player's deck
+        selectedCard: G.players[ctx.playerID as any].cards.find((_: Card, index: number) => index === id), // Set card as selected
+        cards: G.players[ctx.playerID as any].cards.filter((_: Card, index: number) => index !== id), // Remove card from player's deck
       },
     }),
   };
@@ -71,9 +64,7 @@ export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
   if (card.number < lastCards[0].number) {
     return moveToHand(G, ctx, card, id);
   } else {
-    const diffs: number[] = G.decks.map(
-      (deck: Card[]) => card.number - deck[deck.length - 1].number,
-    );
+    const diffs: number[] = G.decks.map((deck: Card[]) => card.number - deck[deck.length - 1].number);
 
     let min = Number.MAX_SAFE_INTEGER;
     let minIndex = 0;
@@ -117,15 +108,11 @@ const GameConfig: IGameArgs = {
         next: 'DECK_SELECT',
         // Determine player order
         onPhaseEnd: (G: IG) => {
-          const selectedCards = G.players.map(
-            (player: Player) => player.selectedCard,
-          );
+          const selectedCards = G.players.map((player: Player) => player.selectedCard);
           selectedCards.sort((a: Card, b: Card) => a.number - b.number);
           return {
             ...G,
-            cardOrder: selectedCards
-              .map((card: Card) => card.owner)
-              .map((x: number) => x.toString()),
+            cardOrder: selectedCards.map((card: Card) => card.owner).map((x: number) => x.toString()),
           };
         },
       },
@@ -155,13 +142,12 @@ const GameConfig: IGameArgs = {
     },
     endGameIf: (G: IG) => {
       if (G.end === true) {
-        const scoreboard = G.players.map((player, i) => ({
-          playerID: i,
-          penaltyPoints: player.penaltyCards.reduce(
-            (acc, card) => acc + card.value,
-            0,
-          ),
-        })).sort((a, b) => a.penaltyPoints - b.penaltyPoints);
+        const scoreboard = G.players
+          .map((player, i) => ({
+            playerID: i,
+            penaltyPoints: player.penaltyCards.reduce((acc, card) => acc + card.value, 0),
+          }))
+          .sort((a, b) => a.penaltyPoints - b.penaltyPoints);
 
         if (scoreboard[0].penaltyPoints === scoreboard[1].penaltyPoints) {
           return { draw: true };
@@ -216,7 +202,8 @@ const GameConfig: IGameArgs = {
 };
 
 export const TakeSixGame = Game(GameConfig);
-export const TakeSixGameForTest = (override: any) => Game({
-  ...GameConfig,
-  ...override,
-});
+export const TakeSixGameForTest = (override: any) =>
+  Game({
+    ...GameConfig,
+    ...override,
+  });

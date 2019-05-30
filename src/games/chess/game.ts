@@ -18,12 +18,7 @@ interface IGameCtx {
 
 export function getWinner(chess: any) {
   if (chess.game_over()) {
-    if (
-      chess.in_draw() ||
-      chess.in_threefold_repetition() ||
-      chess.insufficient_material() ||
-      chess.in_stalemate()
-    ) {
+    if (chess.in_draw() || chess.in_threefold_repetition() || chess.insufficient_material() || chess.in_stalemate()) {
       return 'd';
     } else {
       if (chess.turn() === 'w') {

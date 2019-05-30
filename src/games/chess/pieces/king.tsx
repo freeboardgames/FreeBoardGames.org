@@ -10,7 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 interface IKingProps {
-  color: string
+  color: string;
 }
 
 class King extends React.Component<IKingProps, {}> {
@@ -89,18 +89,9 @@ class King extends React.Component<IKingProps, {}> {
               stroke: '#000000',
             }}
           />
-          <path
-            d="M 11.5,30 C 17,27 27,27 32.5,30"
-            style={{ fill: 'none', stroke: secondaryColor }}
-          />
-          <path
-            d="M 11.5,33.5 C 17,30.5 27,30.5 32.5,33.5"
-            style={{ fill: 'none', stroke: secondaryColor }}
-          />
-          <path
-            d="M 11.5,37 C 17,34 27,34 32.5,37"
-            style={{ fill: 'none', stroke: secondaryColor }}
-          />
+          <path d="M 11.5,30 C 17,27 27,27 32.5,30" style={{ fill: 'none', stroke: secondaryColor }} />
+          <path d="M 11.5,33.5 C 17,30.5 27,30.5 32.5,33.5" style={{ fill: 'none', stroke: secondaryColor }} />
+          <path d="M 11.5,37 C 17,34 27,34 32.5,37" style={{ fill: 'none', stroke: secondaryColor }} />
           {extra}
         </g>
       </g>

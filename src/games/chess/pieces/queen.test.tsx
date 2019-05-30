@@ -14,11 +14,19 @@ import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 
 test('queen white is rendered', () => {
-  const piece = Enzyme.mount(<svg><Queen color="w" /></svg>);
+  const piece = Enzyme.mount(
+    <svg>
+      <Queen color="w" />
+    </svg>,
+  );
   expect(piece.find('path').length).toBeGreaterThan(0);
 });
 
 test('queen black is rendered', () => {
-  const piece = Enzyme.mount(<svg><Queen color="b" /></svg>);
+  const piece = Enzyme.mount(
+    <svg>
+      <Queen color="b" />
+    </svg>,
+  );
   expect(piece.find('path').length).toBeGreaterThan(0);
 });

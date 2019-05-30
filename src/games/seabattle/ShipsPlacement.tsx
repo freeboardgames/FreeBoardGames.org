@@ -10,7 +10,7 @@ interface IShipsPlacementProps {
 }
 
 interface IShipsPlacementState {
-  ships: IShip[]
+  ships: IShip[];
 }
 
 export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShipsPlacementState> {
@@ -32,11 +32,7 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
     return (
       <div>
         <h2 style={{ textAlign: 'center' }}>{message}</h2>
-        <Radar
-          ships={this.state.ships}
-          editable={true}
-          onEdit={this.onEdit}
-        />
+        <Radar ships={this.state.ships} editable={true} onEdit={this.onEdit} />
         <Button
           style={{ float: 'right', marginTop: '8px' }}
           variant="contained"
@@ -54,9 +50,9 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
     this.setState({
       ships,
     });
-  }
+  };
 
   done = () => {
     this.props.setShips(this.state.ships);
-  }
+  };
 }

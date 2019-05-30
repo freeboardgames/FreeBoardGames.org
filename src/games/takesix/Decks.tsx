@@ -12,7 +12,6 @@ interface IDecksProps {
 }
 
 export class Decks extends React.Component<IDecksProps, {}> {
-
   _selectDeck = (i: number) => () => this.props.selectDeck(i);
 
   render() {
@@ -41,8 +40,10 @@ export class Decks extends React.Component<IDecksProps, {}> {
   }
 
   getOpacity(id: number): number {
-    if (this.props.ctx.phase === 'CARD_SELECT' ||
-      !this.props.ctx.actionPlayers.some(player => player === this.props.playerID)) {
+    if (
+      this.props.ctx.phase === 'CARD_SELECT' ||
+      !this.props.ctx.actionPlayers.some(player => player === this.props.playerID)
+    ) {
       return 1;
     }
 
@@ -50,9 +51,7 @@ export class Decks extends React.Component<IDecksProps, {}> {
     if (card.number < lastCards[0].number) {
       return 1;
     } else {
-      const diffs: number[] = this.props.G.decks.map(
-        (deck) => card.number - deck[deck.length - 1].number,
-      );
+      const diffs: number[] = this.props.G.decks.map(deck => card.number - deck[deck.length - 1].number);
 
       let min = Number.MAX_SAFE_INTEGER;
       let minIndex = 0;
@@ -70,5 +69,4 @@ export class Decks extends React.Component<IDecksProps, {}> {
 
     return 0.2;
   }
-
 }

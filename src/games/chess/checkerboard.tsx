@@ -98,13 +98,7 @@ export class Checkerboard extends React.Component<any, any> {
     }
 
     return (
-      <Grid
-        rows={NUM_ROWS}
-        cols={NUM_COLS}
-        style={this.props.style}
-        onClick={this._onClick}
-        colorMap={colorMap}
-      >
+      <Grid rows={NUM_ROWS} cols={NUM_COLS} style={this.props.style} onClick={this._onClick} colorMap={colorMap}>
         {tokens}
       </Grid>
     );
@@ -137,8 +131,7 @@ export function algebraicToCartesian(square: string, invert?: boolean) {
  */
 export function cartesianToAlgebraic(x: number, y: number, invert?: boolean) {
   if (invert) {
-    const colSymbol = String.fromCharCode(
-      (NUM_COLS - x - 1) + 'a'.charCodeAt(0));
+    const colSymbol = String.fromCharCode(NUM_COLS - x - 1 + 'a'.charCodeAt(0));
     return colSymbol + (y + 1);
   } else {
     const colSymbol = String.fromCharCode(x + 'a'.charCodeAt(0));

@@ -24,10 +24,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
     };
 
     return (
-      <div
-        onClick={this.props.click}
-        style={style}
-      >
+      <div onClick={this.props.click} style={style}>
         <div
           className="CardValue"
           style={{

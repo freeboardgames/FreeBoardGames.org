@@ -3,7 +3,7 @@ import { ChessGame } from './game';
 import { expect } from 'chai';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 
-test('fool\'s move', () => {
+test("fool's move", () => {
   const client = Client({
     game: ChessGame,
   });
@@ -20,26 +20,32 @@ test('fool\'s move', () => {
 
 test('get winner', () => {
   expect(getWinner({ game_over: () => false })).to.equal(undefined);
-  expect(getWinner({
-    game_over: () => true,
-    in_draw: () => true,
-  })).to.deep.equal('d');
-  expect(getWinner({
-    game_over: () => true,
-    in_draw: () => false,
-    in_threefold_repetition: () => false,
-    insufficient_material: () => false,
-    in_stalemate: () => false,
-    in_checkmate: () => true,
-    turn: () => 'w',
-  })).to.deep.equal('b');
-  expect(getWinner({
-    game_over: () => true,
-    in_draw: () => false,
-    in_threefold_repetition: () => false,
-    insufficient_material: () => false,
-    in_stalemate: () => false,
-    in_checkmate: () => true,
-    turn: () => 'b',
-  })).to.deep.equal('w');
+  expect(
+    getWinner({
+      game_over: () => true,
+      in_draw: () => true,
+    }),
+  ).to.deep.equal('d');
+  expect(
+    getWinner({
+      game_over: () => true,
+      in_draw: () => false,
+      in_threefold_repetition: () => false,
+      insufficient_material: () => false,
+      in_stalemate: () => false,
+      in_checkmate: () => true,
+      turn: () => 'w',
+    }),
+  ).to.deep.equal('b');
+  expect(
+    getWinner({
+      game_over: () => true,
+      in_draw: () => false,
+      in_threefold_repetition: () => false,
+      insufficient_material: () => false,
+      in_stalemate: () => false,
+      in_checkmate: () => true,
+      turn: () => 'b',
+    }),
+  ).to.deep.equal('w');
 });

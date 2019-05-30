@@ -9,10 +9,18 @@ import { Client } from '@freeboardgame.org/boardgame.io/client';
 
 // mock functions for HTMLMediaElement
 // https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395
-(window as any).HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-(window as any).HTMLMediaElement.prototype.play = () => { /* do nothing */ };
-(window as any).HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-(window as any).HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
+(window as any).HTMLMediaElement.prototype.load = () => {
+  /* do nothing */
+};
+(window as any).HTMLMediaElement.prototype.play = () => {
+  /* do nothing */
+};
+(window as any).HTMLMediaElement.prototype.pause = () => {
+  /* do nothing */
+};
+(window as any).HTMLMediaElement.prototype.addTextTrack = () => {
+  /* do nothing */
+};
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -38,10 +46,19 @@ test('one phase - hit', () => {
       playerID={'1'}
       currentPlayer={store.getState().ctx.currentPlayer}
       getSoundPref={jest.fn(arg0 => true)}
-    />);
+    />,
+  );
   // should be ignored
-  grid.find({ x: 0, y: 0 }).find('Square').at(0).simulate('click');
-  grid.find({ x: 0, y: 9 }).find('Square').at(0).simulate('click');
+  grid
+    .find({ x: 0, y: 0 })
+    .find('Square')
+    .at(0)
+    .simulate('click');
+  grid
+    .find({ x: 0, y: 9 })
+    .find('Square')
+    .at(0)
+    .simulate('click');
   expect(grid.html()).to.contain('CLICK TO SHOOT');
 
   grid.setProps({
@@ -77,7 +94,8 @@ test('one phase - miss', () => {
       playerID={'1'}
       currentPlayer={store.getState().ctx.currentPlayer}
       getSoundPref={jest.fn(arg0 => true)}
-    />);
+    />,
+  );
   grid.setState({
     ...grid.state(),
     startTime: Date.now(),
