@@ -10,7 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 interface IRookProps {
-  color: string
+  color: string;
 }
 
 class Rook extends React.Component<IRookProps, {}> {
@@ -37,18 +37,9 @@ class Rook extends React.Component<IRookProps, {}> {
               strokeOpacity: 1,
             }}
           >
-            <path
-              d="M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z "
-              style={{ strokeLinecap: 'butt' }}
-            />
-            <path
-              d="M 12.5,32 L 14,29.5 L 31,29.5 L 32.5,32 L 12.5,32 z "
-              style={{ strokeLinecap: 'butt' }}
-            />
-            <path
-              d="M 12,36 L 12,32 L 33,32 L 33,36 L 12,36 z "
-              style={{ strokeLinecap: 'butt' }}
-            />
+            <path d="M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z " style={{ strokeLinecap: 'butt' }} />
+            <path d="M 12.5,32 L 14,29.5 L 31,29.5 L 32.5,32 L 12.5,32 z " style={{ strokeLinecap: 'butt' }} />
+            <path d="M 12,36 L 12,32 L 33,32 L 33,36 L 12,36 z " style={{ strokeLinecap: 'butt' }} />
             <path
               d="M 14,29.5 L 14,16.5 L 31,16.5 L 31,29.5 L 14,29.5 z "
               style={{
@@ -56,10 +47,7 @@ class Rook extends React.Component<IRookProps, {}> {
                 strokeLinejoin: 'miter',
               }}
             />
-            <path
-              d="M 14,16.5 L 11,14 L 34,14 L 31,16.5 L 14,16.5 z "
-              style={{ strokeLinecap: 'butt' }}
-            />
+            <path d="M 14,16.5 L 11,14 L 34,14 L 31,16.5 L 14,16.5 z " style={{ strokeLinecap: 'butt' }} />
             <path
               d="M 11,14 L 11,9 L 15,9 L 15,11 L 20,11 L 20,9 L 25,9 L 25,11 L 30,11 L 30,9 L 34,9 L 34,14 L 11,14 z "
               style={{ strokeLinecap: 'butt' }}
@@ -130,14 +118,8 @@ class Rook extends React.Component<IRookProps, {}> {
               strokeOpacity: 1,
             }}
           >
-            <path
-              d="M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z "
-              style={{ strokeLinecap: 'butt' }}
-            />
-            <path
-              d="M 12,36 L 12,32 L 33,32 L 33,36 L 12,36 z "
-              style={{ strokeLinecap: 'butt' }}
-            />
+            <path d="M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z " style={{ strokeLinecap: 'butt' }} />
+            <path d="M 12,36 L 12,32 L 33,32 L 33,36 L 12,36 z " style={{ strokeLinecap: 'butt' }} />
             <path
               d="M 11,14 L 11,9 L 15,9 L 15,11 L 20,11 L 20,9 L 25,9 L 25,11 L 30,11 L 30,9 L 34,9 L 34,14"
               style={{ strokeLinecap: 'butt' }}

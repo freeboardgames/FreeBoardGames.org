@@ -19,10 +19,7 @@ class GameInfo extends React.Component<IGameInfoProps, {}> {
     return (
       <FreeBoardGameBar>
         <GameCard game={gameDef} />
-        <GameModePicker
-          gameCode={gameDef.code}
-          modes={gameDef.modes}
-        />
+        <GameModePicker gameCode={gameDef.code} modes={gameDef.modes} />
       </FreeBoardGameBar>
     );
   }

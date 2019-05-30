@@ -81,11 +81,11 @@ function genReadyClient() {
 
 function bothPlayersMakeMove(client: any, x: number, y: number) {
   const player = client.store.getState().ctx.currentPlayer;
-  client.moves.salvo(x, y);  // initial player fires
+  client.moves.salvo(x, y); // initial player fires
 
-  const nextPlayer = (player === '0') ? '1' : '0';
+  const nextPlayer = player === '0' ? '1' : '0';
   client.updatePlayerID(nextPlayer);
-  client.moves.salvo(x, y);  // other player fires
+  client.moves.salvo(x, y); // other player fires
 
-  client.updatePlayerID(player);  // switch back to current player
+  client.updatePlayerID(player); // switch back to current player
 }

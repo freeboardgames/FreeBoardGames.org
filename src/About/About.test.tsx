@@ -6,13 +6,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { expect } from 'chai';
 
 describe('About', () => {
-
   it('should contain FreeBoardGameBar', () => {
     const wrapper = Enzyme.mount(
       <MemoryRouter initialEntries={['/']}>
         <About />
-      </MemoryRouter>);
+      </MemoryRouter>,
+    );
     expect(wrapper.find(FreeBoardGameBar)).to.have.lengthOf(1);
   });
-
 });

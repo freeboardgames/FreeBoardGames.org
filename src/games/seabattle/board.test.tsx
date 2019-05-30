@@ -19,12 +19,15 @@ test('set ships', () => {
     debug: false,
     board: Board,
   }) as any;
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <App playerID={'0'} gameID={'foo'} />
-    </MemoryRouter>
-  ));
-  comp.find('button').at(1).simulate('click');
+    </MemoryRouter>,
+  );
+  comp
+    .find('button')
+    .at(1)
+    .simulate('click');
   expect(comp.html()).to.contain('Waiting');
 });
 
@@ -33,7 +36,7 @@ test('start', () => {
     game: SeabattleGame,
   });
   const state0 = client.store.getState();
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state0.G}
@@ -47,11 +50,14 @@ test('start', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   // First page must have some ships
   expect(comp.find('ShipsPlacement').length).to.equal(1);
-  comp.find('button').at(1).simulate('click');
+  comp
+    .find('button')
+    .at(1)
+    .simulate('click');
 });
 
 test('waiting opponent', () => {
@@ -60,7 +66,7 @@ test('waiting opponent', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, actionPlayers: ['1'] } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -74,8 +80,8 @@ test('waiting opponent', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   // First page must have some ships
   expect(comp.html()).to.contain('Waiting');
 });
@@ -86,7 +92,7 @@ test('gameover - won', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -100,8 +106,8 @@ test('gameover - won', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   // First page must have some ships
   expect(comp.html()).to.contain('won');
 });
@@ -112,7 +118,7 @@ test('gameover - lost', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -126,8 +132,8 @@ test('gameover - lost', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   // First page must have some ships
   expect(comp.html()).to.contain('lost');
 });
@@ -138,7 +144,7 @@ test('battle', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, phase: 'play' } };
-  const comp = Enzyme.mount((
+  const comp = Enzyme.mount(
     <MemoryRouter>
       <Board
         G={state1.G}
@@ -152,8 +158,8 @@ test('battle', () => {
           mode: GameMode.LocalFriend,
         }}
       />
-    </MemoryRouter>
-  ));
+    </MemoryRouter>,
+  );
   // First page must have some ships
   expect(comp.find('Battle').length).to.equal(1);
 });

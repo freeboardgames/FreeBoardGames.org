@@ -6,10 +6,7 @@ export const seabattleGameDef: IGameDef = {
   code: 'seabattle',
   name: 'Sea Battle',
   imageURL: SeabattleThumbnail,
-  modes: [
-    { mode: GameMode.AI },
-    { mode: GameMode.OnlineFriend },
-  ],
+  modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }],
   description: 'Similar to Battleship',
   descriptionTag: `Play Sea Battle, a free online game similar\
  to Battleship. You can play single-player against the computer\

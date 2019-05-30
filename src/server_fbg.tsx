@@ -18,8 +18,7 @@ import App from './App/App';
 const HOST = '0.0.0.0';
 const PORT = Number(process.env.FBG_PORT) || 8000;
 
-const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *',
-  'Disallow: /', ''].join('\n');
+const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *', 'Disallow: /', ''].join('\n');
 
 const template = fs.readFileSync('./dist/layout.html', 'utf8');
 
@@ -31,21 +30,17 @@ function renderHtml(layout: string, metadata: IPageMetadata, reactHtml: string) 
   if (metadata.description) {
     result = result.replace(
       '<meta name="description" content="">\n',
-      `<meta name="description" content="${metadata.description}">\n`);
+      `<meta name="description" content="${metadata.description}">\n`,
+    );
   } else {
-    result = result.replace(
-      '<meta name="description" content="">\n',
-      '');
+    result = result.replace('<meta name="description" content="">\n', '');
   }
 
   if (!metadata.noindex) {
-    result = result.replace('<meta name="robots" content="noindex">\n',
-      '');
+    result = result.replace('<meta name="robots" content="noindex">\n', '');
   }
 
-  result = result.replace(
-    '<div id="root"></div>',
-    `<div id="root">${reactHtml}</div>`);
+  result = result.replace('<div id="root"></div>', `<div id="root">${reactHtml}</div>`);
   return result;
 }
 
@@ -55,20 +50,17 @@ const renderSite = async (url: string) => {
   const context = {};
   const app = (
     <AsyncComponentProvider asyncContext={asyncContext}>
-      <StaticRouter
-        location={url}
-        context={context}
-      >
+      <StaticRouter location={url} context={context}>
         <App />
       </StaticRouter>
     </AsyncComponentProvider>
   );
   await asyncBootstrapper(app);
   const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
-  return ({
+  return {
     status: (context as any).status,
     render: renderHtml(template, metadata, reactHtml),
-  });
+  };
 };
 
 const startServer = async () => {

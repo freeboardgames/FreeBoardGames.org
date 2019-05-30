@@ -31,18 +31,17 @@ Compete against your online friends or play locally. Free and open-source softwa
 ];
 
 function getGamesPageMetadata(): IPageMetadata[] {
-  return GAMES_LIST.map((gameDef) =>
-    ({
-      title: TITLE_PREFIX + `Play Free ${gameDef.name} Online`,
-      description: gameDef.descriptionTag,
-      url: new RegExp(`^/g/${gameDef.code}$`, 'i'),
-    }));
+  return GAMES_LIST.map(gameDef => ({
+    title: TITLE_PREFIX + `Play Free ${gameDef.name} Online`,
+    description: gameDef.descriptionTag,
+    url: new RegExp(`^/g/${gameDef.code}$`, 'i'),
+  }));
 }
 
 /** Given a URL, gets its title. */
 export const getPageMetadata = (url: string): IPageMetadata => {
   const allPagesMetadata = [...PAGES_METADATA, ...getGamesPageMetadata()];
-  const metadata = allPagesMetadata.find((meta) => meta.url!.test(url));
+  const metadata = allPagesMetadata.find(meta => meta.url!.test(url));
   if (!metadata) {
     return DEFAULT_METADATA;
   }

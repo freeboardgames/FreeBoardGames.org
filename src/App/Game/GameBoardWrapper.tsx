@@ -11,7 +11,7 @@ export interface IGameArgs {
 }
 
 export interface IBoardWrapperArgs {
-  gameArgs: IGameArgs
+  gameArgs: IGameArgs;
   board: any;
 }
 
@@ -41,11 +41,10 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
 
     _dismissSharing = () => {
       this.setState({ dismissedSharing: true });
-    }
+    };
 
     _getGameSharing() {
-      if (!this.state.dismissedSharing && args.gameArgs.matchCode &&
-        args.gameArgs.playerID === '0') {
+      if (!this.state.dismissedSharing && args.gameArgs.matchCode && args.gameArgs.playerID === '0') {
         return (
           <AlertLayer>
             <GameSharing

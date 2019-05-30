@@ -5,10 +5,12 @@ import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 
 describe('Header', () => {
-
   it('should contain Chess option', () => {
-    const wrapper = mount(<MemoryRouter><Header /></MemoryRouter>);
+    const wrapper = mount(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>,
+    );
     expect(wrapper.text()).to.include('Free as in freedom');
   });
-
 });

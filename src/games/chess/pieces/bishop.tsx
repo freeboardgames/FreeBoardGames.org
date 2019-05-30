@@ -10,7 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 interface IBishopProps {
-  color: string
+  color: string;
 }
 
 class Bishop extends React.Component<IBishopProps, {}> {
