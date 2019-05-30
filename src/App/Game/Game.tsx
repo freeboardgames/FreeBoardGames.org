@@ -128,7 +128,7 @@ export default class Game extends React.Component<IGameProps, {}> {
       };
       const clientConfig: any = {
         game: state.config.bgioGame,
-        debug: true, // state.config.debug || false,
+        debug: state.config.debug || false,
         loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
           board: state.config.bgioBoard,

@@ -6,8 +6,6 @@ import Button from '@material-ui/core/Button';
 import EmailIcon from '@material-ui/icons/Email';
 import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import IconButton from '@material-ui/core/IconButton';
-import PersonIcon from '@material-ui/icons/Person';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import FacebookIcon from './FacebookIcon';
 import TwitterIcon from './TwitterIcon';
 import copy from 'copy-to-clipboard';
@@ -15,9 +13,7 @@ import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
-import AlertLayer from './AlertLayer';
-import { IPlayerInRoom, IRoomMetadata } from '../Lobby/LobbyService';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core';
+import { IRoomMetadata } from '../Lobby/LobbyService';
 
 interface IGameSharingProps {
   gameCode: string;
@@ -41,13 +37,13 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
 
   render() {
     return (
-      <AlertLayer>
-        <Card style={{ whiteSpace: 'nowrap' }}>
-          <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
-            Invite Your Friend
-          </Typography>
+      <div>
+        <Card style={{ width: '250px', marginLeft: 'auto', marginRight: 'auto', whiteSpace: 'nowrap' }}>
           <CardContent>
-            <div style={{ paddingBottom: '8px' }}>
+            <Typography style={{ textAlign: 'center', paddingBottom: '8px' }} variant="h5" component="h3">
+              Invite Your Friends
+            </Typography>
+            <div style={{ textAlign: 'center' }}>
               <Tooltip title="Send link by e-mail" aria-label="E-mail">
                 <IconButton onClick={this.sendEmailCallback}>
                   <EmailIcon />
@@ -69,15 +65,10 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
                 </IconButton>
               </Tooltip>
             </div>
-            <TextField defaultValue={this._getLink()} label="Link" />
-            <br />
-            <Typography variant="h6" component="h2" style={{ marginTop: '16px' }}>
-              Players
-            </Typography>
-            {this._listOfPlayers()}
+            <TextField style={{ width: '100%' }} defaultValue={this._getLink()} label="Link" />
           </CardContent>
         </Card>
-      </AlertLayer>
+      </div>
     );
   }
 
@@ -124,40 +115,4 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     const roomID = this.props.roomID;
     return `${origin}/room/${gameCode}/${roomID}`;
   }
-
-  _listOfPlayers = () => {
-    const playersList = this.props.roomMetadata.players.map((player: IPlayerInRoom, idx: number) => {
-      return (
-        <ListItem key={`player-${idx}`}>
-          <ListItemAvatar>
-            <Avatar>
-              <PersonIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={player.name} />
-        </ListItem>
-      );
-    });
-    const waitingList = [];
-    for (let i = 0; i < this.props.roomMetadata.numberOfPlayers - playersList.length; i++) {
-      waitingList.push(
-        <ListItem key={`waiting-${i}`}>
-          <ListItemAvatar>
-            <Avatar>
-              <PersonAddIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText>
-            <b>Waiting for player...</b>
-          </ListItemText>
-        </ListItem>,
-      );
-    }
-    return (
-      <List>
-        {playersList}
-        {waitingList}
-      </List>
-    );
-  };
 }

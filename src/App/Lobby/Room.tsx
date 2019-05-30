@@ -10,6 +10,9 @@ import TextField from '@material-ui/core/TextField';
 import FreeBoardGameBar from '../FreeBoardGameBar';
 import { GameSharing } from '../Game/GameSharing';
 import Game from '../Game/Game';
+import { ListPlayers } from './ListPlayers';
+import { GameCard } from '../Game/GameCard';
+import { GAMES_MAP } from '../../games/index';
 
 interface IExpectedParams {
   gameCode: string;
@@ -53,18 +56,11 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       const room = this.state.roomMetadata;
       return <Game room={room} />;
     }
-    const style: React.CSSProperties = {
-      position: 'fixed',
-      width: '100%',
-      maxWidth: '500px',
-      color: 'white',
-      top: '35%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-    };
     return (
       <FreeBoardGameBar>
-        <div style={style}>{this._getGameSharing()}</div>
+        <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
+        {this._getGameSharing()}
+        <ListPlayers roomMetadata={this.state.roomMetadata} />
       </FreeBoardGameBar>
     );
   }
@@ -108,24 +104,36 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
 
   _getNamePrompt = (name?: string) => {
     return (
-      <Card style={{ whiteSpace: 'nowrap' }}>
-        <Typography variant="h5" component="h2" style={{ paddingTop: '16px' }}>
-          Enter Your Name
-        </Typography>
-        <CardContent>
-          <TextField autoFocus={true} type="text" onChange={this._changeName} value={name} />
-          <br />
-          <Button
-            variant="contained"
-            color="primary"
-            // onClick={this.props.onDismiss}
-            style={{ marginTop: '16px' }}
-            onClick={this._setName}
-          >
-            Join Room
-          </Button>
-        </CardContent>
-      </Card>
+      <FreeBoardGameBar>
+        <Card
+          style={{
+            marginTop: '16px',
+            whiteSpace: 'nowrap',
+            width: '250px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            textAlign: 'center',
+          }}
+        >
+          <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
+            Enter Your Nickname
+          </Typography>
+          <CardContent>
+            <div>
+              <TextField autoFocus={true} type="text" onChange={this._changeName} value={name} />
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              // onClick={this.props.onDismiss}
+              style={{ marginTop: '16px' }}
+              onClick={this._setName}
+            >
+              Join Room
+            </Button>
+          </CardContent>
+        </Card>
+      </FreeBoardGameBar>
     );
   };
 
