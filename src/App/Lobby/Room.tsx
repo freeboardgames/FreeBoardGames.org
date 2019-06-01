@@ -125,14 +125,20 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
           </Typography>
           <CardContent>
             <div>
-              <TextField autoFocus={true} type="text" onChange={this._changeName} value={name} />
+              <TextField
+                autoFocus={true}
+                type="text"
+                onChange={this._changeName}
+                value={name}
+                onKeyPress={this._setNameOnEnterButton}
+              />
             </div>
             <Button
               variant="contained"
               color="primary"
-              // onClick={this.props.onDismiss}
               style={{ marginTop: '16px' }}
               onClick={this._setName}
+              disabled={!this._nameIsValid()}
             >
               Join Room
             </Button>
@@ -155,6 +161,17 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
     this.setState(oldState => {
       return { ...oldState, nameTextField };
     });
+  };
+
+  _setNameOnEnterButton = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter' && this._nameIsValid()) {
+      this._setName();
+    }
+  };
+
+  _nameIsValid = () => {
+    const name = this.state.nameTextField;
+    return name && name.length > 0;
   };
 
   componentWillUnmount() {

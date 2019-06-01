@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
-import { IPlayerInRoom } from './LobbyService';
 import { MemoryRouter } from 'react-router';
 import { NewRoom } from './NewRoom';
 import { LobbyService } from './LobbyService';

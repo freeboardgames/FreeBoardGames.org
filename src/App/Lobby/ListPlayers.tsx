@@ -2,7 +2,7 @@ import React from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { IRoomMetadata, IPlayerInRoom } from './LobbyService';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, ListSubheader } from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, ListSubheader } from '@material-ui/core';
 
 interface IListPlayersProps {
   roomMetadata: IRoomMetadata;
