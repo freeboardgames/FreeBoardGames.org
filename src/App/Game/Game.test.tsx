@@ -17,7 +17,15 @@ describe('Game', () => {
           if (mode.mode === GameMode.OnlineFriend) {
             const app = (
               <MemoryRouter>
-                <Game match={{ params: { gameCode, mode: 'online' } }} />
+                <Game
+                  match={{ params: { gameCode, mode: 'online' } }}
+                  room={{
+                    roomID: 'foo',
+                    gameCode: 'tictactoe',
+                    numberOfPlayers: 1,
+                    players: [{ playerID: 0, roomID: 'foo' }],
+                  }}
+                />
               </MemoryRouter>
             );
             await asyncBootstrapper(app);

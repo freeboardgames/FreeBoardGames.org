@@ -32,7 +32,11 @@ describe('App', () => {
   it('should render game sharing', () => {
     const onDismiss = jest.fn();
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(
-      <GameSharing gameCode={'chess'} matchCode={'foo'} playerID={'0'} onDismiss={onDismiss} />,
+      <GameSharing
+        gameCode={'chess'}
+        roomID={'0'}
+        roomMetadata={{ roomID: 'foo', numberOfPlayers: 1, players: [{ playerID: 0, roomID: 'foo' }] }}
+      />,
     );
     expect(ssrHtml).toContain('Share');
   });

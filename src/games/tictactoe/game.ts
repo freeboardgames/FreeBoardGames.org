@@ -29,7 +29,7 @@ export function isVictory(cells: number[]) {
 }
 
 export const TictactoeGame = Game({
-  name: 'tic-tac-toe',
+  name: 'tictactoe',
 
   setup: () => ({
     cells: Array(9).fill(null),

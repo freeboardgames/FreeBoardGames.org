@@ -36,19 +36,3 @@ test('show disconnected warning', () => {
   const el = Enzyme.mount(<Board isConnected={false} G={{ pgn: '' }} ctx={{}} />);
   expect(el.html()).to.contain('Connection lost');
 });
-
-test('show sharing dialog and hide it', () => {
-  const Board = gameBoardWrapper({
-    board: MockBoard,
-    gameArgs: {
-      gameCode: 'chess',
-      mode: GameMode.OnlineFriend,
-      matchCode: 'foo',
-      playerID: '0',
-    },
-  });
-  const el = Enzyme.mount(<Board isConnected={true} G={{ pgn: '' }} ctx={{}} />);
-  expect(el.find('GameSharing').length).to.equal(1);
-  (el.instance() as any)._dismissSharing();
-  expect(el.state('dismissedSharing')).to.equal(true);
-});
