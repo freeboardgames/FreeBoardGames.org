@@ -16,9 +16,11 @@ import {
 
 interface IListPlayersProps {
   roomMetadata: IRoomMetadata;
+  editNickname: () => void;
 }
 
 export class ListPlayers extends React.Component<IListPlayersProps, {}> {
+  state = { editingNickname: false };
   render() {
     const metadata = this.props.roomMetadata;
     const playersList = metadata.players.map((player: IPlayerInRoom, idx: number) => {
@@ -32,7 +34,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
           </ListItemAvatar>
           <ListItemText primary={player.name} />
           <ListItemSecondaryAction>
-            <Button>
+            <Button onClick={this.props.editNickname}>
               <EditIcon />
             </Button>
           </ListItemSecondaryAction>

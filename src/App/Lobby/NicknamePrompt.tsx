@@ -42,7 +42,7 @@ export class NicknamePrompt extends React.Component<INicknamePromptProps, INickn
 
   _setNicknameOnEnterButton = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key === 'Enter' && this._nicknameIsValid()) {
-      this.props.setNickname(this.state.nameTextField);
+      this._onClick();
     }
   };
 
