@@ -40,9 +40,8 @@ describe('Room Lobby', () => {
     expect(wrapper.html()).to.contain('Loading');
   });
 
-  /*
   it('should join the room if the user is not in the room', async () => {
-    const mockMetadata:IRoomMetadata = { 
+    const mockMetadata: IRoomMetadata = {
       roomID: 'fooroom',
       players: [],
       numberOfPlayers: 2,
@@ -63,7 +62,7 @@ describe('Room Lobby', () => {
     const wrapper = mount(app);
     await wrapper;
     expect(joinRoomMock.mock.calls.length).to.equal(1);
-  });*/
+  });
 
   it("should show a room that isn't full", async () => {
     LobbyService.getRoomMetadata = jest.fn().mockReturnValue(new Promise(() => {}));
