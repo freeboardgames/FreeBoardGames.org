@@ -34,11 +34,12 @@ interface IRoomState {
 export class Room extends React.Component<IRoomProps, IRoomState> {
   state: IRoomState = { error: '', loading: true, gameReady: false };
   private timer: any; // fixme loads state of room
-  private promise: Promise<IRoomMetadata>;
-  constructor(props: IRoomProps) {
-    super(props);
+  private promise: Promise<IRoomMetadata | void>;
+
+  componentDidMount() {
     this.updateMetadata();
   }
+
   render() {
     const LoadingPage = getMessagePage('loading', 'Loading...');
     const nickname = LobbyService.getNickname();
@@ -102,7 +103,6 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
         () => {
           const error = 'Failed to fetch room metadata.';
           this.setState(oldState => ({ ...oldState, error }));
-          throw new Error(error);
         },
       );
   };
