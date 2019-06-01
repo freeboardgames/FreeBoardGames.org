@@ -45,6 +45,7 @@ export class NicknamePrompt extends React.Component<INicknamePromptProps, INickn
       this.props.setNickname(this.state.nameTextField);
     }
   };
+
   _nicknameIsValid = () => {
     const name = this.state.nameTextField;
     return name && name.length > 0;
