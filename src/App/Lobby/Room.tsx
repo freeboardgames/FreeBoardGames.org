@@ -34,23 +34,27 @@ interface IRoomState {
 export class Room extends React.Component<IRoomProps, IRoomState> {
   state: IRoomState = { error: '', loading: true, gameReady: false };
   private timer: any; // fixme loads state of room
+  private promise: Promise<IRoomMetadata>;
   constructor(props: IRoomProps) {
     super(props);
     this.updateMetadata();
   }
   render() {
-    let LoadingPage;
+    const LoadingPage = getMessagePage('loading', 'Loading...');
     const nickname = LobbyService.getNickname();
+    if (typeof window === 'undefined') {
+      // SSR
+      return <LoadingPage />;
+    }
     if (!nickname) {
       return this._getNamePrompt();
     }
-    if (this.state.error) {
-      LoadingPage = getMessagePage('error', this.state.error);
+    if (this.state.loading) {
       return <LoadingPage />;
     }
-    if (this.state.loading) {
-      LoadingPage = getMessagePage('loading', 'Loading...');
-      return <LoadingPage />;
+    if (this.state.error) {
+      const ErrorPage = getMessagePage('error', this.state.error);
+      return <ErrorPage />;
     }
     if (this.state.gameReady) {
       const room = this.state.roomMetadata;
@@ -70,7 +74,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
     if (!LobbyService.getNickname()) {
       return;
     }
-    LobbyService.getRoomMetadata(gameCode, roomID)
+    this.promise = LobbyService.getRoomMetadata(gameCode, roomID)
       .then(async metadata => {
         if (!metadata.currentUser) {
           const player: IPlayerInRoom = {
@@ -93,6 +97,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
           if (!this.state.gameReady) {
             setTimeout(() => this.updateMetadata(), 2000);
           }
+          return metadata;
         },
         () => {
           const error = 'Failed to fetch room metadata.';
