@@ -9,6 +9,7 @@ import { applyMiddleware } from 'redux';
 import DEFAULT_ENHANCERS from './Enhancers';
 import AddressHelper from '../AddressHelper';
 import { IRoomMetadata, IPlayerInRoom, LobbyService } from '../Lobby/LobbyService';
+import { IGameArgs } from './GameBoardWrapper';
 
 interface IGameProps {
   match?: any;
@@ -125,7 +126,10 @@ export default class Game extends React.Component<IGameProps, {}> {
         credentials,
         matchCode,
         playerID,
-      };
+      } as IGameArgs;
+      if (this.mode === GameMode.OnlineFriend) {
+        gameArgs.players = this.props.room.players;
+      }
       const clientConfig: any = {
         game: state.config.bgioGame,
         debug: state.config.debug || false,
