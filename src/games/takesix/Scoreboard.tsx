@@ -3,6 +3,7 @@ import { IScore } from './game';
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 
 interface IScoreboardProps {
@@ -21,6 +22,7 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
               <TableCell>Penalty points</TableCell>
             </TableRow>
           </TableHead>
+          <TableBody>
           {this.props.scoreboard.map((score, i) => (
             <TableRow key={score.playerID}>
               <TableCell>#{i + 1}</TableCell>
@@ -28,6 +30,7 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
               <TableCell>{score.penaltyPoints}</TableCell>
             </TableRow>
           ))}
+          </TableBody>
         </Table>
       </div>
     );
