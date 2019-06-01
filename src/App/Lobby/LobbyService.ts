@@ -2,6 +2,7 @@ import AddressHelper from '../AddressHelper';
 import request from 'superagent';
 
 const FBG_CREDENTIALS_KEY = 'fbgCredentials';
+const FBG_NICKNAME_KEY = 'fbgNickname';
 
 export interface IPlayerInRoom {
   playerID: number;
@@ -66,12 +67,12 @@ export class LobbyService {
 
   public static getNickname(): string {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('fbgNickname');
+      return localStorage.getItem(FBG_NICKNAME_KEY);
     }
   }
 
   public static setNickname(name: string): void {
-    localStorage.setItem('fbgNickname', name);
+    localStorage.setItem(FBG_NICKNAME_KEY, name);
   }
 
   public static getCredential(roomID: string): IPlayerCredential | undefined {

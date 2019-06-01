@@ -21,22 +21,25 @@ describe('New Room', () => {
     request.post = jest.fn().mockReturnValue({
       send: jest.fn().mockResolvedValue(response),
     });
-    LobbyService.setCredential = jest.fn();
+    const setItemMock = jest.fn();
+    Storage.prototype.getItem = () => JSON.stringify({}); // mock no crendetials
+    Storage.prototype.setItem = setItemMock;
     const player: IPlayerInRoom = { playerID: 0, name: 'Jason', roomID: 'fooroom' };
     await LobbyService.joinRoom('foogame', player);
-    expect((LobbyService.setCredential as any).mock.calls.length).to.equal(1);
+    expect(setItemMock.mock.calls[0][1]).to.equal(
+      JSON.stringify({ fooroom: { credential: 'foosecret', playerID: 0 } }),
+    );
   });
 
   it('should set nickname', async () => {
-    const spy = jest.spyOn(Storage.prototype, 'setItem');
+    const setItemMock = jest.fn();
+    Storage.prototype.setItem = setItemMock;
     LobbyService.setNickname('fooname');
-    expect(spy.mock.calls.length).to.equal(1);
+    expect(setItemMock.mock.calls[0][1]).to.equal('fooname');
   });
 
   it('should get nickname', async () => {
-    const spy = jest.spyOn(Storage.prototype, 'getItem');
-    const nickname = 'foonickname';
-    spy.mockReturnValue(nickname);
-    expect(LobbyService.getNickname()).to.equal(nickname);
+    Storage.prototype.getItem = jest.fn(() => 'foonickname');
+    expect(LobbyService.getNickname()).to.equal('foonickname');
   });
 });

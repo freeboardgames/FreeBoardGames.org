@@ -8,7 +8,7 @@ import { MemoryRouter } from 'react-router';
 const player1: IPlayerInRoom = { playerID: 0, name: 'foobar', roomID: 'barroom' };
 
 describe('Room Lobby', () => {
-  it('should prompt for name', () => {
+  it('should prompt for name', async () => {
     const app = (
       <MemoryRouter>
         <Room
@@ -19,6 +19,7 @@ describe('Room Lobby', () => {
       </MemoryRouter>
     );
     const wrapper = mount(app);
+    await wrapper;
     expect(wrapper.html()).to.contain('Enter Your Nickname');
   });
 });
