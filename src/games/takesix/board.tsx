@@ -3,10 +3,11 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG } from './game';
+import { IG, getScoreBoard } from './game';
 import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
-import { CardComponent } from './CardComponent';
+import { Scoreboard } from './scoreboard';
+import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: IG;
@@ -46,9 +47,26 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
   }
 
+  _getScoreBoard() {
+    return (
+      <div>
+        <Typography variant="title" align="center" style={{ marginTop: '0px', marginBottom: '16px' }}>
+          Scoreboard
+        </Typography>
+        <Scoreboard scoreboard={getScoreBoard(this.props.G)} />
+      </div>
+    );
+  }
+
   render() {
     if (this.props.ctx.gameover) {
-      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+      return (
+        <GameLayout
+          gameOver={this._getGameOver()}
+          extraCardContent={this._getScoreBoard()}
+          gameArgs={this.props.gameArgs}
+        />
+      );
     }
 
     if (this.props.playerID === null) {

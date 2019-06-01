@@ -14,6 +14,11 @@ export interface IGetCards {
   lastCards: Card[];
 }
 
+export interface IScore {
+  playerID: number;
+  penaltyPoints: number;
+}
+
 export function getCards(G: IG, ctx: IGameCtx, playerID: string): IGetCards {
   const lastCards = G.decks
     .map((deck: Card[]) => deck[deck.length - 1])
@@ -55,6 +60,15 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
       },
     }),
   };
+}
+
+export function getScoreBoard(G: IG): IScore[] {
+  return G.players
+    .map((player, i) => ({
+      playerID: i,
+      penaltyPoints: player.penaltyCards.reduce((acc, card) => acc + card.value, 0),
+    }))
+    .sort((a, b) => a.penaltyPoints - b.penaltyPoints);
 }
 
 export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
@@ -142,13 +156,7 @@ const GameConfig: IGameArgs = {
     },
     endGameIf: (G: IG) => {
       if (G.end === true) {
-        const scoreboard = G.players
-          .map((player, i) => ({
-            playerID: i,
-            penaltyPoints: player.penaltyCards.reduce((acc, card) => acc + card.value, 0),
-          }))
-          .sort((a, b) => a.penaltyPoints - b.penaltyPoints);
-
+        const scoreboard = getScoreBoard(G);
         if (scoreboard[0].penaltyPoints === scoreboard[1].penaltyPoints) {
           return { draw: true };
         } else {
