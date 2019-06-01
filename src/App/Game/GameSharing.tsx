@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -24,51 +25,46 @@ interface IGameSharingProps {
 export class GameSharing extends React.Component<IGameSharingProps, {}> {
   private sendEmailCallback: any;
   private shareFacebookCallback: any;
-  private shareTwitterCallback: any;
   private copyClipboardCallback: any;
 
   constructor(props: any) {
     super(props);
     this.sendEmailCallback = this.sendEmail.bind(this);
     this.shareFacebookCallback = this.shareFacebook.bind(this);
-    this.shareTwitterCallback = this.shareTwitter.bind(this);
     this.copyClipboardCallback = this.copyClipboard.bind(this);
   }
 
   render() {
     return (
-      <div>
-        <Card style={{ width: '250px', marginLeft: 'auto', marginRight: 'auto', whiteSpace: 'nowrap' }}>
-          <CardContent>
-            <Typography style={{ textAlign: 'center', paddingBottom: '8px' }} variant="h5" component="h3">
-              Invite Your Friends
-            </Typography>
-            <div style={{ textAlign: 'center' }}>
-              <Tooltip title="Send link by e-mail" aria-label="E-mail">
-                <IconButton onClick={this.sendEmailCallback}>
-                  <EmailIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Share on Facebook" aria-label="Facebook">
-                <IconButton onClick={this.shareFacebookCallback}>
-                  <FacebookIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Share on Twitter" aria-label="Twitter">
-                <IconButton onClick={this.shareTwitterCallback}>
-                  <TwitterIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Copy link to clipboard" aria-label="Clipboard">
-                <IconButton onClick={this.copyClipboardCallback}>
-                  <ContentCopyIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-            <TextField style={{ width: '100%' }} defaultValue={this._getLink()} label="Link" />
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardContent>
+          <Typography style={{ paddingBottom: '16px' }} variant="h5" component="h2">
+            Invite Your Friends
+          </Typography>
+          <TextField style={{ width: '100%' }} defaultValue={this._getLink()} label="Link" />
+        </CardContent>
+        <CardActions>
+          <Tooltip title="Send link by e-mail" aria-label="E-mail">
+            <IconButton onClick={this.sendEmailCallback}>
+              <EmailIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Share on Facebook" aria-label="Facebook">
+            <IconButton onClick={this.shareFacebookCallback}>
+              <FacebookIcon />
+            </IconButton>
+          </Tooltip>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.copyClipboardCallback}
+            style={{ marginLeft: 'auto' }}
+          >
+            <ContentCopyIcon style={{ marginRight: '8px' }} />
+            Copy Link
+          </Button>
+        </CardActions>
+      </Card>
     );
   }
 
@@ -88,15 +84,6 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
       label: this.props.gameCode,
     });
     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURI(this._getLink()));
-  }
-
-  shareTwitter() {
-    ReactGA.event({
-      category: 'GameSharing',
-      action: 'shareTwitter',
-      label: this.props.gameCode,
-    });
-    window.open('https://www.twitter.com/share?url=' + encodeURI(this._getLink()));
   }
 
   copyClipboard() {
