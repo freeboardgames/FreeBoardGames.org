@@ -23,13 +23,13 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
             </TableRow>
           </TableHead>
           <TableBody>
-          {this.props.scoreboard.map((score, i) => (
-            <TableRow key={score.playerID}>
-              <TableCell>#{i + 1}</TableCell>
-              <TableCell>{score.playerID}</TableCell>
-              <TableCell>{score.penaltyPoints}</TableCell>
-            </TableRow>
-          ))}
+            {this.props.scoreboard.map((score, i) => (
+              <TableRow key={score.playerID}>
+                <TableCell>#{i + 1}</TableCell>
+                <TableCell>{score.playerID}</TableCell>
+                <TableCell>{score.penaltyPoints}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>

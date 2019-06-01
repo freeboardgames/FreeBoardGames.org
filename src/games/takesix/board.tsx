@@ -6,7 +6,7 @@ import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IG, getScoreBoard } from './game';
 import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
-import { Scoreboard } from './scoreboard';
+import { Scoreboard } from './Scoreboard';
 import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
