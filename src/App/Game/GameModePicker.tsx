@@ -214,7 +214,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
       case GameMode.LocalFriend:
         return `/g/${this.props.gameCode}/local`;
       case GameMode.OnlineFriend:
-        return `/g/${this.props.gameCode}/online/${uid}/0`;
+        return `/room/new/${this.props.gameCode}`;
     }
   }
 }
