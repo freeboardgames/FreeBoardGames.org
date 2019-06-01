@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListPlayers } from './ListPlayers';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { IPlayerInRoom } from './LobbyService';
 
