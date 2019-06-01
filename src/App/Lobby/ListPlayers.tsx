@@ -22,7 +22,6 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
   render() {
     const metadata = this.props.roomMetadata;
     const playersList = metadata.players.map((player: IPlayerInRoom, idx: number) => {
-      const editButton = player.playerID === metadata.currentUser!.playerID ? 'Edit' : 'No';
       return (
         <ListItem key={`player-${idx}`}>
           <ListItemAvatar>
@@ -31,11 +30,6 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={player.name} />
-          <ListItemSecondaryAction>
-            <Button>
-              <EditIcon />
-            </Button>
-          </ListItemSecondaryAction>
         </ListItem>
       );
     });
