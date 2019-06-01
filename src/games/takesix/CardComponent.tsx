@@ -21,6 +21,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
       background: values[this.props.card.value],
       float: 'left',
       color: 'black',
+      cursor: 'pointer',
     };
 
     return (
