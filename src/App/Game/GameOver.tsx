@@ -50,11 +50,11 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
         <Typography variant="title" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           Game Over, {this.props.result}!
         </Typography>
+        {extraCardContent}
         {playAgainLink}
         <Typography variant="body1" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           {playAgainText}
         </Typography>
-        {extraCardContent}
         <GamesList />
       </FreeBoardGameBar>
     );
