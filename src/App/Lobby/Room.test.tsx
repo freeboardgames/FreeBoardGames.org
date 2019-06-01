@@ -9,6 +9,7 @@ const player1: IPlayerInRoom = { playerID: 0, name: 'foobar', roomID: 'barroom' 
 
 describe('Room Lobby', () => {
   it('should prompt for name', async () => {
+    Storage.prototype.getItem = jest.fn(() => undefined);
     const app = (
       <MemoryRouter>
         <Room
