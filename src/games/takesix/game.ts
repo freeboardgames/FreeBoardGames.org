@@ -20,9 +20,7 @@ export interface IScore {
 }
 
 export function getCards(G: IG, playerID: string): IGetCards {
-  const lastCards = G.decks
-    .map(deck => deck[deck.length - 1])
-    .sort((a, b) => a.number - b.number);
+  const lastCards = G.decks.map(deck => deck[deck.length - 1]).sort((a, b) => a.number - b.number);
   const card = G.players[playerID as any].selectedCard;
   return { card: card, lastCards: lastCards };
 }
