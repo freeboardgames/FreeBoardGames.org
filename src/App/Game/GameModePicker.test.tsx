@@ -1,7 +1,6 @@
 import React from 'react';
 import { GameModePicker, GameMode, IGameModeInfo } from './GameModePicker';
 import { IGameModeExtraInfoSlider, IGameModeExtraInfoDropdown } from './GameModePicker';
-import ListItem from '@material-ui/core/ListItem';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { MemoryRouter } from 'react-router';
