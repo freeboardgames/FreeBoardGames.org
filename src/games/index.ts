@@ -2,15 +2,17 @@ import { IGameModeInfo } from '../App/Game/GameModePicker';
 import { chessGameDef } from './chess';
 import { seabattleGameDef } from './seabattle';
 import { tictactoeGameDef } from './tictactoe';
+import { takesixGameDef } from './takesix';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
   chess: chessGameDef,
   seabattle: seabattleGameDef,
   tictactoe: tictactoeGameDef,
+  takesix: takesixGameDef,
 };
 
-export const GAMES_LIST: IGameDef[] = [GAMES_MAP.chess, GAMES_MAP.seabattle, GAMES_MAP.tictactoe];
+export const GAMES_LIST: IGameDef[] = [GAMES_MAP.chess, GAMES_MAP.takesix, GAMES_MAP.seabattle, GAMES_MAP.tictactoe];
 
 // No need to edit below
 export interface IGameConfig {

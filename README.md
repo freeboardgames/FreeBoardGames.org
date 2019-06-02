@@ -8,6 +8,7 @@ Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
 ## Games
 
 - :heavy_check_mark: Chess.
+- :heavy_check_mark: TakeSix! (similar to 6 Nimt, by [JosefKuchar](https://github.com/JosefKuchar))
 - :heavy_check_mark: Seabattle (similar to Battleship).
 - :heavy_check_mark: TicTacToe.
 - :construction: Checkers
