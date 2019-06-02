@@ -28,10 +28,10 @@ interface IStoredCredentials {
 }
 
 export class LobbyService {
-  public static async newRoom(gameCode: string): Promise<string> {
+  public static async newRoom(gameCode: string, numPlayers: number): Promise<string> {
     const response = await request
       .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/create`)
-      .send({ numPlayers: 2 });
+      .send({ numPlayers });
     const roomID = response.body.gameID;
     return roomID;
   }
