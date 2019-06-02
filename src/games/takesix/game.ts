@@ -19,10 +19,10 @@ export interface IScore {
   penaltyPoints: number;
 }
 
-export function getCards(G: IG, ctx: IGameCtx, playerID: string): IGetCards {
+export function getCards(G: IG, playerID: string): IGetCards {
   const lastCards = G.decks
-    .map((deck: Card[]) => deck[deck.length - 1])
-    .sort((a: Card, b: Card) => a.number - b.number);
+    .map(deck => deck[deck.length - 1])
+    .sort((a, b) => a.number - b.number);
   const card = G.players[playerID as any].selectedCard;
   return { card: card, lastCards: lastCards };
 }
@@ -55,8 +55,8 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
       ...G.players,
       [ctx.playerID]: {
         ...G.players[ctx.playerID as any],
-        selectedCard: G.players[ctx.playerID as any].cards.find((_: Card, index: number) => index === id), // Set card as selected
-        cards: G.players[ctx.playerID as any].cards.filter((_: Card, index: number) => index !== id), // Remove card from player's deck
+        selectedCard: G.players[ctx.playerID as any].cards.find((_, index) => index === id), // Set card as selected
+        cards: G.players[ctx.playerID as any].cards.filter((_, index) => index !== id), // Remove card from player's deck
       },
     }),
   };
@@ -72,13 +72,13 @@ export function getScoreBoard(G: IG): IScore[] {
 }
 
 export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
-  const { card, lastCards } = getCards(G, ctx, ctx.playerID);
+  const { card, lastCards } = getCards(G, ctx.playerID);
 
   // Card is lower than every in deck
   if (card.number < lastCards[0].number) {
     return moveToHand(G, ctx, card, id);
   } else {
-    const diffs: number[] = G.decks.map((deck: Card[]) => card.number - deck[deck.length - 1].number);
+    const diffs: number[] = G.decks.map(deck => card.number - deck[deck.length - 1].number);
 
     let min = Number.MAX_SAFE_INTEGER;
     let minIndex = 0;
@@ -122,11 +122,11 @@ const GameConfig: IGameArgs = {
         next: 'DECK_SELECT',
         // Determine player order
         onPhaseEnd: (G: IG) => {
-          const selectedCards = G.players.map((player: Player) => player.selectedCard);
-          selectedCards.sort((a: Card, b: Card) => a.number - b.number);
+          const selectedCards = G.players.map(player => player.selectedCard);
+          selectedCards.sort((a, b) => a.number - b.number);
           return {
             ...G,
-            cardOrder: selectedCards.map((card: Card) => card.owner).map((x: number) => x.toString()),
+            cardOrder: selectedCards.map(card => card.owner).map(owner => owner.toString()),
           };
         },
       },

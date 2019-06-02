@@ -47,7 +47,7 @@ export class Decks extends React.Component<IDecksProps, {}> {
       return 1;
     }
 
-    const { card, lastCards } = getCards(this.props.G, this.props.ctx, this.props.playerID);
+    const { card, lastCards } = getCards(this.props.G, this.props.playerID);
     if (card.number < lastCards[0].number) {
       return 1;
     } else {
