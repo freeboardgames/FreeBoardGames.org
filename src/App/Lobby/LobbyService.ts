@@ -1,4 +1,4 @@
-import AddressHelper from '../AddressHelper';
+import AddressHelper from '../Helpers/AddressHelper';
 import request from 'superagent';
 
 const FBG_CREDENTIALS_KEY = 'fbgCredentials';

@@ -7,7 +7,7 @@ import getMessagePage from '../MessagePage';
 import MessagePageClass from '../MessagePageClass';
 import { applyMiddleware } from 'redux';
 import DEFAULT_ENHANCERS from './Enhancers';
-import AddressHelper from '../AddressHelper';
+import AddressHelper from '../Helpers/AddressHelper';
 import { IRoomMetadata, IPlayerInRoom, LobbyService } from '../Lobby/LobbyService';
 import { IGameArgs } from './GameBoardWrapper';
 
