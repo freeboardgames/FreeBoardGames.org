@@ -13,16 +13,17 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
 
   render() {
     return (
-      <div
-        style={{
-          width: 400,
-          height: 160,
-          marginTop: '20px',
-        }}
-      >
-        {this.props.G.players[this.props.playerID as any].cards.map((card, index: number) => (
-          <CardComponent key={card.number} click={this._selectCard(index)} card={card} />
-        ))}
+      <div>
+        <div style={{ clear: 'both', marginTop: '8px' }}>Your hand</div>
+        <div
+          style={{
+            width: '100%',
+          }}
+        >
+          {this.props.G.players[this.props.playerID as any].cards.map((card, index: number) => (
+            <CardComponent key={card.number} click={this._selectCard(index)} card={card} />
+          ))}
+        </div>
       </div>
     );
   }

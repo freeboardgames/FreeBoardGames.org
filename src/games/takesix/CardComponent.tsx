@@ -16,8 +16,8 @@ export class CardComponent extends React.Component<ICardProps, {}> {
       7: '#8e44ad',
     };
     const style: any = {
-      width: 80,
-      height: 80,
+      maxWidth: '70px',
+      width: '20%',
       background: values[this.props.card.value],
       float: 'left',
       color: 'black',
@@ -39,9 +39,9 @@ export class CardComponent extends React.Component<ICardProps, {}> {
           className="CardNumber"
           style={{
             textAlign: 'center',
-            lineHeight: '60px',
+            lineHeight: '50px',
             verticalAlign: 'middle',
-            fontSize: '3em',
+            fontSize: '2.5em',
           }}
         >
           {this.props.card.number}

@@ -88,7 +88,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
         <Decks G={this.props.G} ctx={this.props.ctx} playerID={this.props.playerID} selectDeck={this._selectDeck} />
         <PlayerHand G={this.props.G} playerID={this.props.playerID} selectCard={this._selectCard} />
-        <div>
+        <div style={{ clear: 'left' }}>
           Penalty points:{' '}
           {this.props.G.players[this.props.playerID as any].penaltyCards
             .map(card => card.value)

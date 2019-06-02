@@ -23,7 +23,7 @@ export class Decks extends React.Component<IDecksProps, {}> {
             key={i}
             onClick={this._selectDeck(i)}
             style={{
-              marginBottom: '10px',
+              marginBottom: '4px',
               opacity: this.getOpacity(i),
             }}
           >
