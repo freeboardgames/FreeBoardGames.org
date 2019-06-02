@@ -17,8 +17,10 @@ export const takesixGameDef: IGameDef = {
   ],
   minPlayers: 2,
   maxPlayers: 10,
-  description: 'Also known as 6 Nimmt!',
-  descriptionTag: `Also known as 6 Nimmt!`,
+  description: 'Similar to 6 Nimmt!',
+  descriptionTag: `Play Take 6!, a free online game similar\
+ to 6 Nimmt. You can play multi-player from two and up to\
+ ten players online!`,
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
 };
