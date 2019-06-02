@@ -14,7 +14,7 @@ describe('New Room', () => {
       <MemoryRouter>
         <NewRoom
           match={{
-            params: { gameCode: 'chess' },
+            params: { gameCode: 'chess', numPlayers: 2 },
           }}
           history={{
             push: historyMock,
@@ -32,7 +32,7 @@ describe('New Room', () => {
       <MemoryRouter>
         <NewRoom
           match={{
-            params: { gameCode: 'notagame' },
+            params: { gameCode: 'notagame', numPlayers: 2 },
           }}
         />
       </MemoryRouter>
@@ -48,7 +48,7 @@ describe('New Room', () => {
       <MemoryRouter>
         <NewRoom
           match={{
-            params: { gameCode: 'chess' },
+            params: { gameCode: 'chess', numPlayers: 2 },
           }}
         />
       </MemoryRouter>

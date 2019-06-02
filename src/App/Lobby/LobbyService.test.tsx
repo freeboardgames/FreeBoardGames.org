@@ -12,7 +12,7 @@ describe('New Room', () => {
     request.post = jest.fn().mockReturnValue({
       send: jest.fn().mockResolvedValue(response),
     });
-    const roomID = await LobbyService.newRoom('foogame');
+    const roomID = await LobbyService.newRoom('foogame', 2);
     expect(roomID).to.equal('fooroom');
   });
 

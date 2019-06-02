@@ -5,6 +5,7 @@ import { GAMES_MAP } from '../../games';
 
 interface IExpectedParams {
   gameCode: string;
+  numPlayers: number;
 }
 
 interface INewRoomProps {
@@ -20,16 +21,16 @@ interface INewRoomState {
 export class NewRoom extends React.Component<INewRoomProps, INewRoomState> {
   state = { error: false };
 
-  constructor(props: INewRoomProps) {
-    super(props);
-    const gameCode = props.match.params.gameCode;
+  componentDidMount() {
+    const gameCode = this.props.match.params.gameCode;
+    const numPlayers = this.props.match.params.numPlayers;
     if (!(gameCode in GAMES_MAP)) {
-      this.state = { error: true };
+      this.setState({ error: true });
       return;
     }
-    LobbyService.newRoom(gameCode).then(
+    LobbyService.newRoom(gameCode, numPlayers).then(
       roomID => {
-        props.history.push(`/room/${gameCode}/${roomID}`);
+        this.props.history.push(`/room/${gameCode}/${roomID}`);
       },
       () => {
         this.setState({ error: true });
@@ -38,7 +39,6 @@ export class NewRoom extends React.Component<INewRoomProps, INewRoomState> {
   }
 
   render() {
-    // TODO test this
     if (this.state.error) {
       const ErrorPage = getMessagePage('error', 'Failed to create room');
       return <ErrorPage />;

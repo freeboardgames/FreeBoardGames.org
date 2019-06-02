@@ -7,6 +7,8 @@ export const chessGameDef: IGameDef = {
   code: 'chess',
   name: 'Chess',
   imageURL: ChessThumbnail,
+  minPlayers: 2,
+  maxPlayers: 2,
   modes: [
     {
       mode: GameMode.AI,
