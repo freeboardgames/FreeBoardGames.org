@@ -61,7 +61,9 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       const room = this.state.roomMetadata;
       return <Game room={room} />;
     }
-    const nicknamePrompt = this.state.editingName ? <AlertLayer>{this._getNamePrompt()}</AlertLayer> : null;
+    const nicknamePrompt = this.state.editingName ? (
+      <AlertLayer>{this._getNamePrompt(this.state.roomMetadata.currentUser.name)}</AlertLayer>
+    ) : null;
     return (
       <FreeBoardGameBar>
         {nicknamePrompt}
@@ -125,7 +127,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
           Enter Your Nickname
         </Typography>
         <CardContent>
-          <NicknamePrompt setNickname={this._setNickname} nickname={this.state.roomMetadata.currentUser.name} />
+          <NicknamePrompt setNickname={this._setNickname} nickname={name} />
         </CardContent>
       </Card>
     );
