@@ -1,8 +1,18 @@
 import React from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import EditIcon from '@material-ui/icons/Edit';
 import { IRoomMetadata, IPlayerInRoom } from './LobbyService';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, ListSubheader } from '@material-ui/core';
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  ListSubheader,
+  ListItemSecondaryAction,
+} from '@material-ui/core';
 
 interface IListPlayersProps {
   roomMetadata: IRoomMetadata;
@@ -10,7 +20,8 @@ interface IListPlayersProps {
 
 export class ListPlayers extends React.Component<IListPlayersProps, {}> {
   render() {
-    const playersList = this.props.roomMetadata.players.map((player: IPlayerInRoom, idx: number) => {
+    const metadata = this.props.roomMetadata;
+    const playersList = metadata.players.map((player: IPlayerInRoom, idx: number) => {
       return (
         <ListItem key={`player-${idx}`}>
           <ListItemAvatar>
@@ -23,7 +34,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
       );
     });
     const waitingList = [];
-    for (let i = 0; i < this.props.roomMetadata.numberOfPlayers - playersList.length; i++) {
+    for (let i = 0; i < metadata.numberOfPlayers - playersList.length; i++) {
       waitingList.push(
         <ListItem key={`waiting-${i}`}>
           <ListItemAvatar>

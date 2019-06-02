@@ -3,16 +3,15 @@ import getMessagePage from '../MessagePage';
 import { LobbyService, IRoomMetadata, IPlayerInRoom } from './LobbyService';
 import AlertLayer from '../Game/AlertLayer';
 import Card from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
 import FreeBoardGameBar from '../FreeBoardGameBar';
 import { GameSharing } from '../Game/GameSharing';
 import Game from '../Game/Game';
 import { ListPlayers } from './ListPlayers';
 import { GameCard } from '../Game/GameCard';
 import { GAMES_MAP } from '../../games/index';
+import { NicknamePrompt } from './NicknamePrompt';
+import { CardContent } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 interface IExpectedParams {
   gameCode: string;
@@ -124,54 +123,18 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
             Enter Your Nickname
           </Typography>
           <CardContent>
-            <div>
-              <TextField
-                autoFocus={true}
-                type="text"
-                onChange={this._changeName}
-                value={name}
-                onKeyPress={this._setNameOnEnterButton}
-              />
-            </div>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginTop: '16px' }}
-              onClick={this._setName}
-              disabled={!this._nameIsValid()}
-            >
-              Join Room
-            </Button>
+            <NicknamePrompt setNickname={this._setNickname} />
           </CardContent>
         </Card>
       </FreeBoardGameBar>
     );
   };
 
-  _setName = () => {
-    const name = this.state.nameTextField;
-    if (name.length > 0) {
-      LobbyService.setNickname(name);
+  _setNickname = (nickname: string) => {
+    if (nickname.length > 0) {
+      LobbyService.setNickname(nickname);
       this.updateMetadata();
     }
-  };
-
-  _changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const nameTextField = event.target.value!;
-    this.setState(oldState => {
-      return { ...oldState, nameTextField };
-    });
-  };
-
-  _setNameOnEnterButton = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key === 'Enter' && this._nameIsValid()) {
-      this._setName();
-    }
-  };
-
-  _nameIsValid = () => {
-    const name = this.state.nameTextField;
-    return name && name.length > 0;
   };
 
   componentWillUnmount() {
