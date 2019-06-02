@@ -6,9 +6,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import grey from '@material-ui/core/colors/grey';
+import { IPlayerInRoom } from '../../App/Lobby/LobbyService';
 
 interface IScoreboardProps {
   scoreboard: IScore[];
+  players: IPlayerInRoom[];
   playerID: string;
 }
 
@@ -32,10 +34,14 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
                   background: grey[200],
                 };
               }
+              let name = score.playerID.toString();
+              if (this.props.players) {
+                name = this.props.players.find(player => player.playerID === score.playerID).name;
+              }
               return (
                 <TableRow key={score.playerID} style={style}>
                   <TableCell>#{i + 1}</TableCell>
-                  <TableCell>{score.playerID}</TableCell>
+                  <TableCell>{name}</TableCell>
                   <TableCell>{score.penaltyPoints}</TableCell>
                 </TableRow>
               );

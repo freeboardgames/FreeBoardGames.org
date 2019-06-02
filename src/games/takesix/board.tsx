@@ -53,7 +53,11 @@ export class Board extends React.Component<IBoardProps, {}> {
         <Typography variant="title" align="center" style={{ marginTop: '0px', marginBottom: '16px' }}>
           Scoreboard
         </Typography>
-        <Scoreboard scoreboard={getScoreBoard(this.props.G)} playerID={this.props.playerID} />
+        <Scoreboard
+          scoreboard={getScoreBoard(this.props.G)}
+          playerID={this.props.playerID}
+          players={this.props.gameArgs.players}
+        />
       </div>
     );
   }
