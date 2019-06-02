@@ -49,7 +49,7 @@ export class LobbyService {
 
   public static async renameUser(gameCode: string, player: IPlayerInRoom, newName: string): Promise<void> {
     const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
-    const x = await request.post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
+    await request.post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
       playerID: player.playerID,
       playerCredentials: playerCredential.credential,
       newName,
