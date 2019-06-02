@@ -15,6 +15,8 @@ export const takesixGameDef: IGameDef = {
     },*/
     { mode: GameMode.OnlineFriend },
   ],
+  minPlayers: 2,
+  maxPlayers: 10,
   description: 'Also known as 6 Nimmt!',
   descriptionTag: `Also known as 6 Nimmt!`,
   config: () => import('./config'),
