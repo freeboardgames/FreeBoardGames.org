@@ -47,6 +47,15 @@ export class LobbyService {
     this.setCredential(player, credential);
   }
 
+  public static async renameUser(gameCode: string, player: IPlayerInRoom, newName: string): Promise<void> {
+    const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
+    await request.post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
+      playerID: player.playerID,
+      playerCredentials: playerCredential.credential,
+      newName,
+    });
+  }
+
   public static async getRoomMetadata(gameCode: string, roomID: string): Promise<IRoomMetadata> {
     const response = await request.get(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}`);
     const body = response.body;
