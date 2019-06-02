@@ -6,6 +6,8 @@ import { IGameDef } from '../../games';
 export const tictactoeGameDef: IGameDef = {
   code: 'tictactoe',
   name: 'Tic-Tac-Toe',
+  minPlayers: 2,
+  maxPlayers: 2,
   imageURL: TicTacToeThumbnail,
   modes: [
     {

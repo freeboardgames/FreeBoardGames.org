@@ -4,26 +4,56 @@ import { IGameModeExtraInfoSlider, IGameModeExtraInfoDropdown } from './GameMode
 import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { MemoryRouter } from 'react-router';
+import { IGameDef } from '../../games';
+
+const GAME_DEF_TEST: IGameDef = {
+  code: 'foocode',
+  name: 'foo name',
+  imageURL: 'foo.jpg',
+  description: 'foo desc',
+  descriptionTag: 'foo tag',
+  config: () => {
+    return null as any;
+  },
+  minPlayers: 2,
+  maxPlayers: 3,
+  modes: [],
+};
 
 describe('Game Mode Picker', () => {
   it('should show all 5 options and accept clicks', () => {
     const historyMock = { push: jest.fn() };
-    const modesMock: IGameModeInfo[] = [
+    const modes: IGameModeInfo[] = [
       { mode: GameMode.AI },
       { mode: GameMode.OnlineFriend },
       { mode: GameMode.LocalFriend },
     ];
     const wrapper = mount(
       <MemoryRouter>
-        <GameModePicker gameCode="foo" modes={modesMock} />
+        <GameModePicker gameDef={{ ...GAME_DEF_TEST, modes }} />
       </MemoryRouter>,
     );
     expect(wrapper.find('a').length).to.equal(3);
   });
 
+  it('should show # player Select', () => {
+    const historyMock = { push: jest.fn() };
+    const modes: IGameModeInfo[] = [
+      {
+        mode: GameMode.OnlineFriend,
+      },
+    ];
+    const wrapper = mount(
+      <MemoryRouter>
+        <GameModePicker gameDef={{ ...GAME_DEF_TEST, modes }} />
+      </MemoryRouter>,
+    );
+    expect(wrapper.find('Select').length).to.equal(1);
+  });
+
   it('should show a slider', () => {
     const historyMock = { push: jest.fn() };
-    const modesMock: IGameModeInfo[] = [
+    const modes: IGameModeInfo[] = [
       {
         mode: GameMode.AI,
         extraInfo: { type: 'slider', min: 1, max: 8 } as IGameModeExtraInfoSlider,
@@ -31,7 +61,7 @@ describe('Game Mode Picker', () => {
     ];
     const wrapper = mount(
       <MemoryRouter>
-        <GameModePicker gameCode="foo" modes={modesMock} />
+        <GameModePicker gameDef={{ ...GAME_DEF_TEST, modes }} />
       </MemoryRouter>,
     );
     expect(wrapper.find('Slider').length).to.equal(1);
@@ -65,7 +95,7 @@ describe('Game Mode Picker', () => {
 });
 
 function makeDropdownWrapper() {
-  const modesMock: IGameModeInfo[] = [
+  const modes: IGameModeInfo[] = [
     {
       mode: GameMode.AI,
       extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
@@ -73,7 +103,7 @@ function makeDropdownWrapper() {
   ];
   const wrapper = mount(
     <MemoryRouter>
-      <GameModePicker gameCode="foo" modes={modesMock} />
+      <GameModePicker gameDef={{ ...GAME_DEF_TEST, modes }} />
     </MemoryRouter>,
   );
   return wrapper;

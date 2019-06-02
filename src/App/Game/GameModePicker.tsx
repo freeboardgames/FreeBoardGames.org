@@ -2,11 +2,13 @@ import React from 'react';
 import AndroidIcon from '@material-ui/icons/Android';
 import GroupIcon from '@material-ui/icons/Group';
 import WifiIcon from '@material-ui/icons/Wifi';
+import PersonIcon from '@material-ui/icons/Person';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Slider from '@material-ui/lab/Slider';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Avatar from '@material-ui/core/Avatar';
@@ -15,10 +17,10 @@ import Button from '@material-ui/core/Button';
 import shortid from 'shortid';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { IGameDef } from '../../games';
 
 interface IGameModePickerProps {
-  gameCode: string;
-  modes: IGameModeInfo[];
+  gameDef: IGameDef;
 }
 
 interface IGameModePickerState {
@@ -52,36 +54,18 @@ export enum GameMode {
 }
 
 export class GameModePicker extends React.Component<IGameModePickerProps, IGameModePickerState> {
-  state = { extraInfo: {} };
   _getLink = (to: string) => (props: any) => {
     return React.createElement(Link, { ...props, to, rel: 'nofollow' }, props.children);
   };
 
-  _handleSliderChange = (mode: GameMode) => (event: any, value: number) => {
-    const newState: IGameModePickerState = {
-      ...this.state,
-      extraInfo: {
-        ...this.state.extraInfo,
-      },
-    };
-    newState.extraInfo[mode] = value;
-    this.setState(newState);
-  };
-
-  _handleClickSelection = (mode: GameMode, value: any) => (event: any) => {
-    const newState: IGameModePickerState = {
-      ...this.state,
-      extraInfo: {
-        ...this.state.extraInfo,
-      },
-    };
-    newState.extraInfo[mode] = value;
-    this.setState(newState);
-  };
+  constructor(props: IGameModePickerProps) {
+    super(props);
+    this.state = { extraInfo: { online: this.props.gameDef.minPlayers } };
+  }
 
   render() {
     const modes = [];
-    for (const mode of this.props.modes) {
+    for (const mode of this.props.gameDef.modes) {
       modes.push(this._getCard(mode));
     }
     return (
@@ -137,7 +121,16 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     );
   }
 
+  _getExtraInfoValue(info: IGameModeInfo): number {
+    return (this.state.extraInfo as any)[info.mode] || 1;
+  }
+
   _getExtraInfo(info: IGameModeInfo) {
+    if (info.mode == GameMode.OnlineFriend) {
+      if (this.props.gameDef.minPlayers < this.props.gameDef.maxPlayers) {
+        return this._getExtraInfoNumPlayers(info, this.props.gameDef.minPlayers, this.props.gameDef.maxPlayers);
+      }
+    }
     if (info.extraInfo) {
       const extraInfo = info.extraInfo;
       if (extraInfo.type === 'slider') {
@@ -151,9 +144,31 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     return null;
   }
 
-  _getExtraInfoValue(info: IGameModeInfo): number {
-    return (this.state.extraInfo as any)[info.mode] || 1;
+  _getExtraInfoNumPlayers(info: IGameModeInfo, minPlayers: number, maxPlayers: number) {
+    const options = [];
+    for (let i = minPlayers; i <= maxPlayers; i++) {
+      options.push(<MenuItem value={i}>{i} Players</MenuItem>);
+    }
+    return (
+      <div style={{ marginBottom: '8px' }}>
+        <PersonIcon style={{ position: 'relative', top: '8px', padding: '0 8px' }} />
+        <Select value={this._getExtraInfoValue(info)} onChange={this._handleNumPlayersSelect}>
+          {options}
+        </Select>
+      </div>
+    );
   }
+
+  _handleNumPlayersSelect = (event: any) => {
+    const newState: IGameModePickerState = {
+      ...this.state,
+      extraInfo: {
+        ...this.state.extraInfo,
+      },
+    };
+    newState.extraInfo[GameMode.OnlineFriend] = event.target.value;
+    this.setState(newState);
+  };
 
   _getExtraInfoSlider(info: IGameModeInfo, slider: IGameModeExtraInfoSlider) {
     const value = this._getExtraInfoValue(info);
@@ -172,6 +187,17 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
       </div>
     );
   }
+
+  _handleSliderChange = (mode: GameMode) => (event: any, value: number) => {
+    const newState: IGameModePickerState = {
+      ...this.state,
+      extraInfo: {
+        ...this.state.extraInfo,
+      },
+    };
+    newState.extraInfo[mode] = value;
+    this.setState(newState);
+  };
 
   _getExtraInfoDropdown(info: IGameModeInfo, dropdown: IGameModeExtraInfoDropdown) {
     const list: JSX.Element[] = dropdown.options.map((option, idx) => {
@@ -192,6 +218,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
         <MenuList
           style={{
             paddingTop: 0,
+            paddingBottom: 0,
             display: 'flex',
           }}
         >
@@ -201,20 +228,31 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     );
   }
 
+  _handleClickSelection = (mode: GameMode, value: any) => (event: any) => {
+    const newState: IGameModePickerState = {
+      ...this.state,
+      extraInfo: {
+        ...this.state.extraInfo,
+      },
+    };
+    newState.extraInfo[mode] = value;
+    this.setState(newState);
+  };
+
   _getUrl(info: IGameModeInfo) {
     const uid = shortid.generate();
     const mode = info.mode;
     switch (mode) {
       case GameMode.AI:
         if (info.extraInfo) {
-          return `/g/${this.props.gameCode}/AI/${this._getExtraInfoValue(info)}`;
+          return `/g/${this.props.gameDef.code}/AI/${this._getExtraInfoValue(info)}`;
         } else {
-          return `/g/${this.props.gameCode}/AI`;
+          return `/g/${this.props.gameDef.code}/AI`;
         }
       case GameMode.LocalFriend:
-        return `/g/${this.props.gameCode}/local`;
+        return `/g/${this.props.gameDef.code}/local`;
       case GameMode.OnlineFriend:
-        return `/room/new/${this.props.gameCode}`;
+        return `/room/new/${this.props.gameDef.code}/${this._getExtraInfoValue(info)}`;
     }
   }
 }
