@@ -147,7 +147,11 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
   _getExtraInfoNumPlayers(info: IGameModeInfo, minPlayers: number, maxPlayers: number) {
     const options = [];
     for (let i = minPlayers; i <= maxPlayers; i++) {
-      options.push(<MenuItem value={i}>{i} Players</MenuItem>);
+      options.push(
+        <MenuItem value={i} key={i}>
+          {i} Players
+        </MenuItem>,
+      );
     }
     return (
       <div style={{ marginBottom: '8px' }}>
