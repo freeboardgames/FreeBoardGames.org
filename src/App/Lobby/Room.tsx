@@ -140,6 +140,8 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
   _setNickname = (nickname: string) => {
     LobbyService.setNickname(nickname);
     if (this.state.editingName) {
+      const room = this.state.roomMetadata;
+      LobbyService.renameUser(room.gameCode, room.currentUser, nickname);
       this.setState(oldState => ({ ...oldState, editingName: false }));
     }
     this.updateMetadata();
