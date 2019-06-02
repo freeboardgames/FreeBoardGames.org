@@ -2,12 +2,14 @@ import React from 'react';
 import { GameMode } from './GameModePicker';
 import AlertLayer from './AlertLayer';
 import { GameSharing } from './GameSharing';
+import { IPlayerInRoom } from '../Lobby/LobbyService';
 
 export interface IGameArgs {
   gameCode: string;
   mode: GameMode;
   matchCode?: string;
   playerID?: string;
+  players?: IPlayerInRoom[];
 }
 
 export interface IBoardWrapperArgs {
