@@ -706,10 +706,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@freeboardgame.org/boardgame.io@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.7.tgz#907f3c9a9eae9077170874e320772acdc20614b2"
-  integrity sha512-3dwFRdDPb4fGkeNo0CivFTwbhVJGnRnnmCg28dfuy0J6J6CzJwlw5Sz9pgEqoLy7TbrxVaeg0mIVmXyXH+yZYQ==
+"@freeboardgame.org/boardgame.io@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.8.tgz#93d9a90e3d6e08c1c36b1546cb44e05237e7d08a"
+  integrity sha512-iXwyH9eqAWcZpwf2MJBB3oAiVdtoJLrsHzeqcP9UP4FSkoRg9k93rd3lR+V4YBibJBc9VDe89cVRPV+78Oqf4g==
   dependencies:
     "@koa/cors" "^2.2.1"
     flatted "^0.2.3"
@@ -7606,7 +7606,7 @@ realpath-native@^1.1.0:
     react-lifecycles-compat "^3.0.2"
     symbol-observable "^1.0.4"
 
-redux@^4.0.0:
+redux@^4.0.0, redux@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.1.tgz#436cae6cc40fbe4727689d7c8fae44808f1bfef5"
   integrity sha512-R7bAtSkk7nY6O/OYMVR9RiBI+XghjF9rlbl5806HJbQph0LJVHZrU5oaO4q70eUKiqMRqm4y07KLTlMZ2BlVmg==

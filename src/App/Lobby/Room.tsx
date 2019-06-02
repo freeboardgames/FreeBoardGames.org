@@ -28,10 +28,11 @@ interface IRoomState {
   loading: boolean;
   gameReady: boolean;
   error: string;
+  editingName: boolean;
 }
 
 export class Room extends React.Component<IRoomProps, IRoomState> {
-  state: IRoomState = { error: '', loading: true, gameReady: false };
+  state: IRoomState = { error: '', loading: true, gameReady: false, editingName: false };
   private timer: any; // fixme loads state of room
   private promise: Promise<IRoomMetadata | void>;
 
@@ -47,7 +48,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       return <LoadingPage />;
     }
     if (!nickname) {
-      return this._getNamePrompt();
+      return <FreeBoardGameBar>{this._getNamePrompt()}</FreeBoardGameBar>;
     }
     if (this.state.loading) {
       return <LoadingPage />;
@@ -60,11 +61,15 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
       const room = this.state.roomMetadata;
       return <Game room={room} />;
     }
+    const nicknamePrompt = this.state.editingName ? (
+      <AlertLayer>{this._getNamePrompt(this.state.roomMetadata.currentUser.name)}</AlertLayer>
+    ) : null;
     return (
       <FreeBoardGameBar>
+        {nicknamePrompt}
         <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
         {this._getGameSharing()}
-        <ListPlayers roomMetadata={this.state.roomMetadata} />
+        <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._editNickname} />
       </FreeBoardGameBar>
     );
   }
@@ -108,33 +113,38 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
 
   _getNamePrompt = (name?: string) => {
     return (
-      <FreeBoardGameBar>
-        <Card
-          style={{
-            marginTop: '16px',
-            whiteSpace: 'nowrap',
-            width: '250px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            textAlign: 'center',
-          }}
-        >
-          <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
-            Enter Your Nickname
-          </Typography>
-          <CardContent>
-            <NicknamePrompt setNickname={this._setNickname} />
-          </CardContent>
-        </Card>
-      </FreeBoardGameBar>
+      <Card
+        style={{
+          marginTop: '16px',
+          whiteSpace: 'nowrap',
+          width: '250px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          textAlign: 'center',
+        }}
+      >
+        <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
+          Enter Your Nickname
+        </Typography>
+        <CardContent>
+          <NicknamePrompt setNickname={this._setNickname} nickname={name} />
+        </CardContent>
+      </Card>
     );
   };
 
+  _editNickname = () => {
+    this.setState(oldState => ({ ...oldState, editingName: true }));
+  };
+
   _setNickname = (nickname: string) => {
-    if (nickname.length > 0) {
-      LobbyService.setNickname(nickname);
-      this.updateMetadata();
+    LobbyService.setNickname(nickname);
+    if (this.state.editingName) {
+      const room = this.state.roomMetadata;
+      LobbyService.renameUser(room.gameCode, room.currentUser, nickname);
+      this.setState(oldState => ({ ...oldState, editingName: false }));
     }
+    this.updateMetadata();
   };
 
   componentWillUnmount() {

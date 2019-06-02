@@ -10,6 +10,7 @@ describe('List of players', () => {
   it('should contain a link', () => {
     const wrapper = mount(
       <ListPlayers
+        editNickname={jest.fn()}
         roomMetadata={{
           gameCode: 'foomatch',
           roomID: 'barroom',
