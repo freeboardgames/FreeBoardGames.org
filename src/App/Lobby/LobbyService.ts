@@ -1,5 +1,6 @@
 import AddressHelper from '../Helpers/AddressHelper';
 import request from 'superagent';
+import SSRHelper from '../Helpers/SSRHelper';
 
 const FBG_CREDENTIALS_KEY = 'fbgCredentials';
 const FBG_NICKNAME_KEY = 'fbgNickname';
@@ -75,7 +76,7 @@ export class LobbyService {
   }
 
   public static getNickname(): string {
-    if (typeof window !== 'undefined') {
+    if (!SSRHelper.isSSR()) {
       return localStorage.getItem(FBG_NICKNAME_KEY);
     }
   }
