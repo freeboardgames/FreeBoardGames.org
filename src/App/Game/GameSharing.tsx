@@ -8,11 +8,15 @@ import EmailIcon from '@material-ui/icons/Email';
 import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from './FacebookIcon';
+import TwitterIcon from './TwitterIcon';
+import QrCodeIcon from './QrCodeIcon';
 import copy from 'copy-to-clipboard';
 import ReactGA from 'react-ga';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import { IRoomMetadata } from '../Lobby/LobbyService';
+import AlertLayer from './AlertLayer';
+import { QrCodePopup } from '../Lobby/QrCodePopup';
 
 interface IGameSharingProps {
   gameCode: string;
@@ -20,49 +24,69 @@ interface IGameSharingProps {
   roomMetadata: IRoomMetadata;
 }
 
-export class GameSharing extends React.Component<IGameSharingProps, {}> {
+interface IGameSharingState {
+  showingQrCode: boolean;
+}
+
+export class GameSharing extends React.Component<IGameSharingProps, IGameSharingState> {
+  state: IGameSharingState = { showingQrCode: false };
+
   private sendEmailCallback: any;
   private shareFacebookCallback: any;
   private copyClipboardCallback: any;
+  private showQrCodeCallback: any;
 
   constructor(props: any) {
     super(props);
     this.sendEmailCallback = this.sendEmail.bind(this);
     this.shareFacebookCallback = this.shareFacebook.bind(this);
     this.copyClipboardCallback = this.copyClipboard.bind(this);
+    this.showQrCodeCallback = this.showQrCode.bind(this);
   }
 
   render() {
     return (
-      <Card>
-        <CardContent>
-          <Typography style={{ paddingBottom: '16px' }} variant="h5" component="h2">
-            Invite Your Friends
-          </Typography>
-          <TextField style={{ width: '100%' }} defaultValue={this._getLink()} label="Link" />
-        </CardContent>
-        <CardActions>
-          <Tooltip title="Send link by e-mail" aria-label="E-mail">
-            <IconButton onClick={this.sendEmailCallback}>
-              <EmailIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Share on Facebook" aria-label="Facebook">
-            <IconButton onClick={this.shareFacebookCallback}>
-              <FacebookIcon />
-            </IconButton>
-          </Tooltip>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.copyClipboardCallback}
-            style={{ marginLeft: 'auto' }}
-          >
-            <ContentCopyIcon style={{ marginRight: '8px' }} />
-            Copy Link
-          </Button>
-        </CardActions>
-      </Card>
+      <div>
+        {this.state.showingQrCode ? (
+          <AlertLayer>
+            <QrCodePopup url={this._getLink()} toggleQrCode={this.showQrCodeCallback} />
+          </AlertLayer>
+        ) : null}
+        <Card>
+          <CardContent>
+            <Typography style={{ paddingBottom: '16px' }} variant="h5" component="h2">
+              Invite Your Friends
+            </Typography>
+            <TextField style={{ width: '100%' }} defaultValue={this._getLink()} label="Link" />
+          </CardContent>
+          <CardActions>
+            <Tooltip title="Send link by e-mail" aria-label="E-mail">
+              <IconButton onClick={this.sendEmailCallback}>
+                <EmailIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Share on Facebook" aria-label="Facebook">
+              <IconButton onClick={this.shareFacebookCallback}>
+                <FacebookIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Show QR code" aria-label="QR code">
+              <IconButton onClick={this.showQrCodeCallback}>
+                <QrCodeIcon />
+              </IconButton>
+            </Tooltip>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.copyClipboardCallback}
+              style={{ marginLeft: 'auto' }}
+            >
+              <ContentCopyIcon style={{ marginRight: '8px' }} />
+              Copy Link
+            </Button>
+          </CardActions>
+        </Card>
+      </div>
     );
   }
 
@@ -92,6 +116,22 @@ export class GameSharing extends React.Component<IGameSharingProps, {}> {
     });
     copy(this._getLink());
     alert('Link copied to clipboard');
+  }
+
+  showQrCode() {
+    ReactGA.event({
+      category: 'GameSharing',
+      action: 'showQrCode',
+      label: this.props.gameCode,
+    });
+    this._toggleShowingQrCode();
+  }
+
+  _toggleShowingQrCode() {
+    if (!this.state.showingQrCode) {
+      window.scrollTo(0, 0);
+    }
+    this.setState(oldState => ({ ...oldState, showingQrCode: !this.state.showingQrCode }));
   }
 
   _getLink() {
