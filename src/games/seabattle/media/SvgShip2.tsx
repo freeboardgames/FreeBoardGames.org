@@ -1,7 +1,7 @@
 /* tslint:disable */
 import React from 'react';
 
-const SvgShip2 = (props: any) => (
+const SvgShip2 = () => (
   <g>
     <path
       d="M.003.137v.691s.686.088.999.083c.565-.009.997-.237.995-.438C1.995.264 1.552.044 1.002.04.688.038.003.137.003.137z"

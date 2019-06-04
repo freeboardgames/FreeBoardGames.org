@@ -2,7 +2,6 @@ import * as React from 'react';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IG, getCards } from './game';
 import { CardComponent } from './CardComponent';
-import Card from './card';
 
 interface IDecksProps {
   G: IG;

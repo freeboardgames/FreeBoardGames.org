@@ -30,7 +30,6 @@ describe('App', () => {
   });
 
   it('should render game sharing', () => {
-    const onDismiss = jest.fn();
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(
       <GameSharing
         gameCode={'chess'}

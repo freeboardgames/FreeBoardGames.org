@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { playSeabattleSound } from './sound';
-import { GameMode } from '../../App/Game/GameModePicker';
 
 // mock functions for HTMLMediaElement
 // https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395
@@ -14,15 +13,6 @@ import { GameMode } from '../../App/Game/GameModePicker';
 (window as any).HTMLMediaElement.prototype.addTextTrack = () => {
   /* do nothing */
 };
-
-const gameArgsOnline = {
-  gameCode: 'seabattle',
-  mode: GameMode.OnlineFriend,
-  matchCode: 'foo',
-  playerID: '0',
-};
-
-const mockStateFn = jest.fn();
 
 test('should play hit sound', () => {
   playSeabattleSound('HIT');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IShip, ICell, ISalvo, getCellVector, validateShips } from './game';
+import { IShip, ICell, ISalvo, getCellVector } from './game';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import SvgShip2 from './media/SvgShip2';
@@ -134,8 +134,6 @@ export class Radar extends React.Component<IRadarProps, {}> {
 
   _getShips() {
     const result = [];
-    const shipStyle = { fill: 'white', strokeWidth: 0.05, stroke: 'red' };
-    let i = 0;
     for (const ship of this.props.ships) {
       const cell = ship.cells[0];
       const shipDrawing = this._getShipDrawing(ship.cells.length, cell.x === ship.cells[1].x ? 'v' : 'h');
@@ -152,7 +150,6 @@ export class Radar extends React.Component<IRadarProps, {}> {
           {shipDrawing}
         </Token>,
       );
-      i++;
     }
     return result;
   }

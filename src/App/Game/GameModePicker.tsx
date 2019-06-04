@@ -14,8 +14,6 @@ import MenuList from '@material-ui/core/MenuList';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import shortid from 'shortid';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { IGameDef } from '../../games';
 
@@ -232,7 +230,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     );
   }
 
-  _handleClickSelection = (mode: GameMode, value: any) => (event: any) => {
+  _handleClickSelection = (mode: GameMode, value: any) => () => {
     const newState: IGameModePickerState = {
       ...this.state,
       extraInfo: {
@@ -244,7 +242,6 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
   };
 
   _getUrl(info: IGameModeInfo) {
-    const uid = shortid.generate();
     const mode = info.mode;
     switch (mode) {
       case GameMode.AI:

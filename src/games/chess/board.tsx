@@ -20,7 +20,6 @@ import Knight from './pieces/knight';
 import Pawn from './pieces/pawn';
 import Queen from './pieces/queen';
 import Rook from './pieces/rook';
-import ReactGA from 'react-ga';
 
 const COL_NAMES = 'abcdefgh';
 const HIGHLIGHTED_COLOR = 'green';

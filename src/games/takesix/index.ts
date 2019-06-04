@@ -1,6 +1,5 @@
 import Thumbnail from './media/thumbnail.png';
 import { GameMode } from '../../App/Game/GameModePicker';
-import { IGameModeExtraInfoSlider } from '../../App/Game/GameModePicker';
 import { IGameDef } from '../../games';
 
 export const takesixGameDef: IGameDef = {

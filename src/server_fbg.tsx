@@ -6,7 +6,6 @@ import ReactDOMServer from 'react-dom/server';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { StaticRouter } from 'react-router-dom';
-import { GAMES_LIST } from './games';
 import { getPageMetadata, IPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 

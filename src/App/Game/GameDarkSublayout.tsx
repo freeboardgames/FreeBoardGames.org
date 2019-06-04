@@ -100,6 +100,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
     this.setState({ menuAnchorEl: event.currentTarget });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _closeOptionsMenu = (event?: any) => {
     this.setState({ menuAnchorEl: null });
   };

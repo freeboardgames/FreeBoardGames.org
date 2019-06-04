@@ -1,7 +1,6 @@
 import React from 'react';
 import { Board } from './board';
 import { expect } from 'chai';
-import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 import { SeabattleGame } from './game';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';

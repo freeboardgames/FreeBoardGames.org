@@ -4,7 +4,6 @@ import { IGameArgs } from './GameBoardWrapper';
 import { GamesList } from '../GamesList';
 import FreeBoardGameBar from '../FreeBoardGameBar';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ReactGA from 'react-ga';
@@ -70,6 +69,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     );
     return otherPlayerCard;
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _refreshPage = (gameArgs: IGameArgs) => (event: React.MouseEvent<HTMLElement>) => {
     ReactGA.event({
       category: 'GameOver',

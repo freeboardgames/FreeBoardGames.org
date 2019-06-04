@@ -2,7 +2,6 @@ import React from 'react';
 import { GameOver } from './GameOver';
 import { IGameArgs } from './GameBoardWrapper';
 import { GameDarkSublayout } from './GameDarkSublayout';
-import Typography from '@material-ui/core/Typography';
 import { IOptionsItems } from './GameDarkSublayout';
 
 interface IGameLayoutProps {

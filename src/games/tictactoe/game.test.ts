@@ -47,7 +47,7 @@ it('should declare a draw', () => {
 
   client.moves.clickCell(8);
   // get the latest game state
-  const { G, ctx } = client.store.getState();
+  const { ctx } = client.store.getState();
 
   // a draw should be declared
   expect(ctx.gameover).toEqual({ draw: true });

@@ -1,7 +1,6 @@
 import React from 'react';
 import { GameDarkSublayout } from './GameDarkSublayout';
-import AlertLayer from './AlertLayer';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { MemoryRouter } from 'react-router';
 
