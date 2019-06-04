@@ -5,7 +5,6 @@ import { MemoryRouter } from 'react-router';
 import { GameLayout } from './GameLayout';
 import { IGameArgs } from './GameBoardWrapper';
 import { GameMode } from './GameModePicker';
-import ReactGA from 'react-ga';
 
 describe('ReplayIcon', () => {
   it('should show ReplayIcon for AI', () => {

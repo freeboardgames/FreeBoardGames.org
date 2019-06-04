@@ -10,7 +10,7 @@ test('Easy AI - should return a move for the initial position', async () => {
   });
   client.moves.clickCell(0); // player plays
   await client.step(); // AI plays
-  const { G, ctx } = client.store.getState();
+  const { G } = client.store.getState();
   const player0Moves = G.cells.filter((cell: string) => cell === '0');
   const player1Moves = G.cells.filter((cell: string) => cell === '1');
   expect(player0Moves.length).to.equal(1);
@@ -24,7 +24,7 @@ test('Hard AI - should return a move for the initial position', async () => {
   });
   client.moves.clickCell(0); // player plays
   await client.step(); // AI plays
-  const { G, ctx } = client.store.getState();
+  const { G } = client.store.getState();
   const player0Moves = G.cells.filter((cell: string) => cell === '0');
   const player1Moves = G.cells.filter((cell: string) => cell === '1');
   expect(player0Moves.length).to.equal(1);

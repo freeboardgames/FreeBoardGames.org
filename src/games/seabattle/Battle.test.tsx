@@ -3,7 +3,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { expect } from 'chai';
 import { Battle } from './Battle';
-import { IShip, ISeabattleState, SeabattleGame } from './game';
+import { SeabattleGame } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 
@@ -45,7 +45,7 @@ test('one phase - hit', () => {
       moves={client.moves}
       playerID={'1'}
       currentPlayer={store.getState().ctx.currentPlayer}
-      getSoundPref={jest.fn(arg0 => true)}
+      getSoundPref={jest.fn(() => true)}
     />,
   );
   // should be ignored
@@ -93,7 +93,7 @@ test('one phase - miss', () => {
       moves={client.moves}
       playerID={'1'}
       currentPlayer={store.getState().ctx.currentPlayer}
-      getSoundPref={jest.fn(arg0 => true)}
+      getSoundPref={jest.fn(() => true)}
     />,
   );
   grid.setState({

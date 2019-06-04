@@ -1,11 +1,9 @@
 import React from 'react';
 import { Room } from './Room';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { IPlayerInRoom, LobbyService, IRoomMetadata } from './LobbyService';
 import { MemoryRouter } from 'react-router';
-
-const player1: IPlayerInRoom = { playerID: 0, name: 'foobar', roomID: 'barroom' };
 
 describe('Room Lobby', () => {
   it('should prompt for name', async () => {

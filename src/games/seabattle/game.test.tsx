@@ -1,5 +1,5 @@
 import { Client } from '@freeboardgame.org/boardgame.io/client';
-import { SeabattleGame, IShip, generateRandomShips, validateShips, playerView } from './game';
+import { SeabattleGame, generateRandomShips, playerView } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 
 describe('Seabattle', () => {
@@ -180,7 +180,7 @@ describe('Seabattle', () => {
 
     client.moves.salvo(0, 1);
 
-    const { G, ctx } = client.store.getState();
+    const { G } = client.store.getState();
     expect(G.salvos).toEqual([{ player: 1, cell: { x: 0, y: 1 }, hit: false }]);
   });
 
@@ -198,7 +198,7 @@ describe('Seabattle', () => {
     client.updatePlayerID('1');
     client.moves.salvo(0, 0);
 
-    const { G, ctx } = client.store.getState();
+    const { G } = client.store.getState();
 
     expect(G.salvos.length).toEqual(2);
   });

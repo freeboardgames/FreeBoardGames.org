@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'babel-polyfill';
-import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import { AsyncComponentProvider } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import App from './App/App';
 import { BrowserRouter } from 'react-router-dom';
