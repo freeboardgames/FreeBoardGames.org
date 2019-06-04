@@ -4,7 +4,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import { expect } from 'chai';
 import { MemoryRouter } from 'react-router';
 import { MessagePage } from './MessagePageClass';
-import { Link } from 'react-router-dom';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -1,4 +1,4 @@
-import { Game, TurnOrder, IGameArgs, IGameCtx, INVALID_MOVE, PlayerView } from '@freeboardgame.org/boardgame.io/core';
+import { Game, TurnOrder, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
 import Card from './card';
 import Player from './player';
 
@@ -184,10 +184,12 @@ const GameConfig: IGameArgs = {
 
     // Set initial state
     return {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       decks: new Array(4).fill(0).map(_ => [deck.pop()]),
       players: new Array(ctx.numPlayers).fill(0).map(
         (_, i) =>
           new Player(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             new Array(10).fill(0).map(__ => {
               const card = deck.pop();
               card.owner = i;

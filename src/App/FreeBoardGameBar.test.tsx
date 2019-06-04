@@ -1,6 +1,6 @@
 import React from 'react';
 import FreeBoardGameBar from './FreeBoardGameBar';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { MemoryRouter } from 'react-router-dom';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Game from './Game';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { GAMES_MAP } from '../../games';

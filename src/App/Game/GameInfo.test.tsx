@@ -8,7 +8,6 @@ import { MemoryRouter } from 'react-router';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Game info', () => {
-  const context = {};
   it('should render chess', () => {
     const wrapper = Enzyme.mount(
       <MemoryRouter>

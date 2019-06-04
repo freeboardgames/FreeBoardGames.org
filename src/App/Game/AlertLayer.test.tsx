@@ -1,6 +1,6 @@
 import React from 'react';
 import AlertLayer from './AlertLayer';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 
 describe('Alert Layer', () => {

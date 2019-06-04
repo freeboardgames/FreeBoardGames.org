@@ -1,6 +1,6 @@
 import AIConfig from './ai';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
-import { SeabattleGame, IShip, generateRandomShips, validateShips, playerView } from './game';
+import { SeabattleGame } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 
 it('should set ships correctly', async () => {

@@ -11,13 +11,14 @@ import ReactGA from 'react-ga';
 import { getPageMetadata } from '../metadata';
 import { registerLang, setCurrentLocale } from '@freeboardgame.org/i18n';
 import translations from './translations';
+import SSRHelper from './Helpers/SSRHelper';
 
 ReactGA.initialize('UA-105391878-1');
 
 const withGA = (WrappedComponent: any) => {
   class Wrapper extends React.Component<{}, {}> {
     render() {
-      if (typeof window !== 'undefined') {
+      if (!SSRHelper.isSSR()) {
         ReactGA.set({ page: window.location.pathname });
         ReactGA.pageview(window.location.pathname);
       }

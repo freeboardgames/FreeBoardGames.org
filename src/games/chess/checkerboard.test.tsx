@@ -70,7 +70,6 @@ test('click', () => {
 
 test('invalid square', () => {
   const invalidSquare = () => {
-    const checkerboard = Enzyme.shallow(<Checkerboard />).instance() as Checkerboard;
     algebraicToCartesian('*1');
   };
   expect(invalidSquare).to.throw();

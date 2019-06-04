@@ -155,6 +155,6 @@ it('should declare player 1 as the winner', () => {
   p0.moves.selectDeck(1);
 
   // player '1' should be declared the winner
-  const { G, ctx } = p0.getState();
+  const { ctx } = p0.getState();
   expect(ctx.gameover).toEqual({ winner: '1' });
 });

@@ -1,7 +1,7 @@
 /* tslint:disable */
 import React from 'react';
 
-const SvgShip5 = (props: any) => (
+const SvgShip5 = () => (
   <g>
     <path d="M4.996.42s-.271.304-.781.354L4.213.082c.51.012.783.337.783.337z" fill="#ccc" />
     <clipPath id="ship5_svg__a">

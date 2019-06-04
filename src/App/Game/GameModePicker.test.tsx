@@ -22,7 +22,6 @@ const GAME_DEF_TEST: IGameDef = {
 
 describe('Game Mode Picker', () => {
   it('should show all 5 options and accept clicks', () => {
-    const historyMock = { push: jest.fn() };
     const modes: IGameModeInfo[] = [
       { mode: GameMode.AI },
       { mode: GameMode.OnlineFriend },
@@ -37,7 +36,6 @@ describe('Game Mode Picker', () => {
   });
 
   it('should show # player Select', () => {
-    const historyMock = { push: jest.fn() };
     const modes: IGameModeInfo[] = [
       {
         mode: GameMode.OnlineFriend,
@@ -52,7 +50,6 @@ describe('Game Mode Picker', () => {
   });
 
   it('should show a slider', () => {
-    const historyMock = { push: jest.fn() };
     const modes: IGameModeInfo[] = [
       {
         mode: GameMode.AI,
