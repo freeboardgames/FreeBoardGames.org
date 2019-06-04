@@ -61,6 +61,15 @@ class About extends React.Component<{}, {}> {
                 GitHub
               </Button>
             </ListItem>
+            <ListItem>
+              <ListItemText primary="JosefKuchar" />
+              <Button size="small" color="primary" href="http://josefkuchar.com">
+                Website
+              </Button>
+              <Button size="small" color="primary" href="https://github.com/JosefKuchar">
+                GitHub
+              </Button>
+            </ListItem>
           </List>
         </CardContent>
       </Card>

@@ -2,7 +2,6 @@ import React from 'react';
 import getMessagePage from '../MessagePage';
 import { LobbyService, IRoomMetadata, IPlayerInRoom } from './LobbyService';
 import AlertLayer from '../Game/AlertLayer';
-import Card from '@material-ui/core/Card';
 import FreeBoardGameBar from '../FreeBoardGameBar';
 import { GameSharing } from '../Game/GameSharing';
 import Game from '../Game/Game';
@@ -10,8 +9,6 @@ import { ListPlayers } from './ListPlayers';
 import { GameCard } from '../Game/GameCard';
 import { GAMES_MAP } from '../../games/index';
 import { NicknamePrompt } from './NicknamePrompt';
-import { CardContent } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
 
 interface IExpectedParams {
   gameCode: string;
@@ -69,7 +66,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
         {nicknamePrompt}
         <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
         {this._getGameSharing()}
-        <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._editNickname} />
+        <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
       </FreeBoardGameBar>
     );
   }
@@ -112,29 +109,12 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
   };
 
   _getNamePrompt = (name?: string) => {
-    return (
-      <Card
-        style={{
-          marginTop: '16px',
-          whiteSpace: 'nowrap',
-          width: '250px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          textAlign: 'center',
-        }}
-      >
-        <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
-          Enter Your Nickname
-        </Typography>
-        <CardContent>
-          <NicknamePrompt setNickname={this._setNickname} nickname={name} />
-        </CardContent>
-      </Card>
-    );
+    const togglePrompt = this.state.editingName ? this._toggleEditingName : null;
+    return <NicknamePrompt setNickname={this._setNickname} nickname={name} togglePrompt={togglePrompt} />;
   };
 
-  _editNickname = () => {
-    this.setState(oldState => ({ ...oldState, editingName: true }));
+  _toggleEditingName = () => {
+    this.setState(oldState => ({ ...oldState, editingName: !this.state.editingName }));
   };
 
   _setNickname = (nickname: string) => {
@@ -142,7 +122,7 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
     if (this.state.editingName) {
       const room = this.state.roomMetadata;
       LobbyService.renameUser(room.gameCode, room.currentUser, nickname);
-      this.setState(oldState => ({ ...oldState, editingName: false }));
+      this._toggleEditingName();
     }
     this.updateMetadata();
   };
