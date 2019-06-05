@@ -99,7 +99,7 @@ it('should declare player 1 as the winner', () => {
   // set up a specific board scenario
   const TictactoeCustomScenario = {
     ...TakeSixGame,
-    seed: 'deadbeef',
+    seed: 'test',
   };
 
   const spec = {
@@ -114,45 +114,45 @@ it('should declare player 1 as the winner', () => {
   p1.connect();
 
   p0.moves.selectCard(0);
-  p1.moves.selectCard(0);
-  p1.moves.selectDeck(0);
-  p0.moves.selectDeck(2);
   p1.moves.selectCard(1);
-  p0.moves.selectCard(2);
-  p0.moves.selectDeck(3);
-  p1.moves.selectDeck(3);
-  p0.moves.selectCard(7);
-  p1.moves.selectCard(7);
-  p0.moves.selectDeck(0);
-  p1.moves.selectDeck(1);
-  p0.moves.selectCard(0);
-  p1.moves.selectCard(0);
+  p0.moves.selectDeck(2);
   p1.moves.selectDeck(0);
-  p0.moves.selectDeck(3);
-  p0.moves.selectCard(0);
-  p1.moves.selectCard(0);
-  p0.moves.selectDeck(2);
-  p1.moves.selectDeck(1);
-  p0.moves.selectCard(0);
-  p1.moves.selectCard(0);
-  p0.moves.selectDeck(2);
-  p1.moves.selectDeck(3);
-  p0.moves.selectCard(0);
-  p1.moves.selectCard(0);
-  p0.moves.selectDeck(2);
-  p1.moves.selectDeck(2);
-  p0.moves.selectCard(0);
-  p1.moves.selectCard(0);
-  p0.moves.selectDeck(0);
+  p1.moves.selectCard(1);
+  p0.moves.selectCard(4);
   p1.moves.selectDeck(0);
-  p0.moves.selectCard(0);
-  p1.moves.selectCard(0);
-  p0.moves.selectDeck(2);
-  p1.moves.selectDeck(2);
-  p0.moves.selectCard(0);
-  p1.moves.selectCard(0);
-  p1.moves.selectDeck(3);
   p0.moves.selectDeck(1);
+  p0.moves.selectCard(1);
+  p1.moves.selectCard(0);
+  p1.moves.selectDeck(2);
+  p0.moves.selectDeck(0);
+  p0.moves.selectCard(2);
+  p1.moves.selectCard(0);
+  p1.moves.selectDeck(2);
+  p0.moves.selectDeck(0);
+  p0.moves.selectCard(2);
+  p1.moves.selectCard(0);
+  p0.moves.selectDeck(1);
+  p1.moves.selectDeck(1);
+  p1.moves.selectCard(1);
+  p0.moves.selectCard(4);
+  p1.moves.selectDeck(1);
+  p0.moves.selectDeck(3);
+  p0.moves.selectCard(2);
+  p1.moves.selectCard(1);
+  p0.moves.selectDeck(0);
+  p1.moves.selectDeck(1);
+  p1.moves.selectCard(0);
+  p0.moves.selectCard(2);
+  p0.moves.selectDeck(0);
+  p1.moves.selectDeck(0);
+  p1.moves.selectCard(0);
+  p0.moves.selectCard(1);
+  p0.moves.selectDeck(2);
+  p1.moves.selectDeck(1);
+  p1.moves.selectCard(0);
+  p0.moves.selectCard(0);
+  p0.moves.selectDeck(2);
+  p1.moves.selectDeck(1);
 
   // player '1' should be declared the winner
   const { ctx } = p0.getState();
