@@ -96,7 +96,7 @@ test('win', () => {
   );
   expect(
     comp
-      .find('h2')
+      .find('h6')
       .at(1)
       .text(),
   ).toEqual('Game Over, you won!');
@@ -124,7 +124,7 @@ test('loss', () => {
   );
   expect(
     comp
-      .find('h2')
+      .find('h6')
       .at(1)
       .text(),
   ).toEqual('Game Over, you lost!');
@@ -152,7 +152,7 @@ test('draw', () => {
   );
   expect(
     comp
-      .find('h2')
+      .find('h6')
       .at(1)
       .text(),
   ).toEqual('Game Over, draw!');

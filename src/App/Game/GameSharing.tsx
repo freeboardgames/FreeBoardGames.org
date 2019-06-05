@@ -8,7 +8,6 @@ import EmailIcon from '@material-ui/icons/Email';
 import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from './FacebookIcon';
-import TwitterIcon from './TwitterIcon';
 import QrCodeIcon from './QrCodeIcon';
 import copy from 'copy-to-clipboard';
 import ReactGA from 'react-ga';
