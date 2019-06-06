@@ -21,18 +21,13 @@ class About extends React.Component<{}, {}> {
   }
 
   _getAboutCard() {
-    // debugger;
-    const t = trans('about.header');
     return (
       <Card style={{ marginTop: '16px' }}>
         <CardContent>
           <Typography variant="h5" component="h2">
-            {t}
+            {trans('about.header')}
           </Typography>
-          <Typography component="p">
-            FreeBoardGame.org is a free (as in freedom), mobile-first, board game platform. Its goal is to popularize
-            board games and to make them easy to play with friends, even from afar.
-          </Typography>
+          <Typography component="p">{trans('about.p')}</Typography>
         </CardContent>
       </Card>
     );
@@ -43,7 +38,7 @@ class About extends React.Component<{}, {}> {
       <Card style={{ marginTop: '16px' }}>
         <CardContent>
           <Typography variant="h5" component="h2">
-            Contributors
+            {trans('about.contributors')}
           </Typography>
           <List>
             <ListItem>
@@ -81,7 +76,7 @@ class About extends React.Component<{}, {}> {
       <Card style={{ marginTop: '16px' }}>
         <CardContent>
           <Typography variant="h5" component="h2">
-            Credits
+            {trans('about.credits')}
           </Typography>
           <List>
             <ListItem>

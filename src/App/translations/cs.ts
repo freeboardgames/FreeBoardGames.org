@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const cs = {
   about: {
     header: 'Informace o FreeBoardGame.org',
