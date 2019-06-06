@@ -94,9 +94,9 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@babel/core": "^7.3.3",
+    "@babel/core": "^7.4.5",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-env": "^7.4.5",
     "@freeboardgame.org/boardgame.io": "^0.0.8",
     "@freeboardgame.org/i18n": "^0.0.1",
     "@koa/cors": "2",
