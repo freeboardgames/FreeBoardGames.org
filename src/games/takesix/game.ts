@@ -19,8 +19,12 @@ export interface IScore {
   penaltyPoints: number;
 }
 
+function sortCards(a: Card, b: Card) {
+  return a.number - b.number;
+}
+
 export function getCards(G: IG, playerID: string): IGetCards {
-  const lastCards = G.decks.map(deck => deck[deck.length - 1]).sort((a, b) => a.number - b.number);
+  const lastCards = G.decks.map(deck => deck[deck.length - 1]).sort(sortCards);
   const card = G.players[playerID as any].selectedCard;
   return { card: card, lastCards: lastCards };
 }
@@ -121,7 +125,7 @@ const GameConfig: IGameArgs = {
         // Determine player order
         onPhaseEnd: (G: IG) => {
           const selectedCards = G.players.map(player => player.selectedCard);
-          selectedCards.sort((a, b) => a.number - b.number);
+          selectedCards.sort(sortCards);
           return {
             ...G,
             cardOrder: selectedCards.map(card => card.owner).map(owner => owner.toString()),
@@ -184,17 +188,22 @@ const GameConfig: IGameArgs = {
 
     // Set initial state
     return {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      decks: new Array(4).fill(0).map(_ => [deck.pop()]),
+      decks: new Array(4)
+        .fill(0)
+        .map(() => deck.pop())
+        .sort(sortCards)
+        .map(card => [card]),
       players: new Array(ctx.numPlayers).fill(0).map(
         (_, i) =>
           new Player(
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            new Array(10).fill(0).map(__ => {
-              const card = deck.pop();
-              card.owner = i;
-              return card;
-            }),
+            new Array(10)
+              .fill(0)
+              .map(() => {
+                const card = deck.pop();
+                card.owner = i;
+                return card;
+              })
+              .sort(sortCards),
             null,
           ),
       ),

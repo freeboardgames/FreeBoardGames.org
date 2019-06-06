@@ -24,15 +24,15 @@ const BoardTest = (props: any) => (
 
 const TakeSixGameConstSeed = TakeSixGameForTest({ seed: 0 });
 // Decks are:
-// 1 93, 2 35, 1 51, 2 95
+// 2 35, 1 93, 2 95, 1 51
 
 // Player 0 Hand is:
-// 7 55, 1 18, 1 28, 1 94, 1 17 ->
-// 1 57, 1 82, 1 37, 5 44, 1 102
+// 1 17, 1 18, 1 28, 1 37, 5 44, ->
+// 7 55, 1 57, 1 82, 1 94, 1 102
 
 // Player 1 Hand is:
-// 1 58, 3 80, 1 43, 2 75, 1 64 ->
-// 1 39, 3 10, 3 70, 1 16, 1 1
+// 1 1 , 3 10, 1 16, 1 39, 1 43, ->
+// 1 58, 1 64, 3 70, 2 75, 3 80
 
 test('select a card', () => {
   const App = ReactClient({
@@ -60,7 +60,7 @@ test('second player', () => {
 
   comp
     .find('PlayerHand CardComponent')
-    .at(0) // Card 7 55
+    .at(0) // Card 1 17
     .simulate('click');
 
   comp.setProps({ playerID: '1' });
@@ -69,7 +69,7 @@ test('second player', () => {
   expect(comp.find('PlayerHand CardComponent').length).toEqual(10);
   comp
     .find('PlayerHand CardComponent')
-    .at(0) // Card 1 58
+    .at(0) // Card 1 1
     .simulate('click');
   expect(comp.find('PlayerHand CardComponent').length).toEqual(9);
 });
