@@ -35,8 +35,7 @@ const config: IAIConfig = {
     if (level === '2') {
       // Hard
       return AI({
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        enumerate: (G: any, ctx: any) => {
+        enumerate: (G: any) => {
           const moves = [];
           for (let i = 0; i < 9; i++) {
             if (G.cells[i] === null) {

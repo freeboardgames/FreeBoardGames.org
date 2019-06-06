@@ -48,8 +48,7 @@ class Stockfish {
 const stockfish = new Stockfish();
 
 class StockfishBot {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async play(state: IPlayState, playerID: string) {
+  async play(state: IPlayState) {
     if (!state.ctx.gameover) {
       const move = await stockfish.getMove(state.G.fen);
       return this.makeMove(move, state.ctx.currentPlayer);
