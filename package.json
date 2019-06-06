@@ -99,7 +99,7 @@
     "@babel/preset-env": "^7.4.5",
     "@freeboardgame.org/boardgame.io": "^0.0.8",
     "@freeboardgame.org/i18n": "^0.0.1",
-    "@koa/cors": "2",
+    "@koa/cors": "3.0.0",
     "@material-ui/core": "3.3.0",
     "@material-ui/icons": "^3.0.2",
     "@material-ui/lab": "^3.0.0-alpha.30",
