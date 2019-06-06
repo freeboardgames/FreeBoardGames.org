@@ -69,8 +69,8 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     );
     return otherPlayerCard;
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _refreshPage = (gameArgs: IGameArgs) => (event: React.MouseEvent<HTMLElement>) => {
+
+  _refreshPage = (gameArgs: IGameArgs) => () => {
     ReactGA.event({
       category: 'GameOver',
       action: 'Clicked play again',

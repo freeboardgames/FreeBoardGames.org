@@ -121,8 +121,7 @@ class SeabattleBot {
 }
 
 const config: IAIConfig = {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  bgioAI: (level: string) => {
+  bgioAI: () => {
     return {
       bot: SeabattleBot,
     };
