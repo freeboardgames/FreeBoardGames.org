@@ -133,7 +133,7 @@
     "react-router-dom": "^4.2.2",
     "redux": "^4.0.1",
     "rrc": "^0.10.1",
-    "serialize-javascript": "^1.6.1",
+    "serialize-javascript": "^1.7.0",
     "shortid": "^2.2.14",
     "shuffle-array": "^1.0.1",
     "socket.io-client": "^2.2.0",
