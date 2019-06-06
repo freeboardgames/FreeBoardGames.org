@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG, getCards } from './game';
+import { IG, getCards, getAllowedDeck } from './game';
 import { CardComponent } from './CardComponent';
 
 interface IDecksProps {
@@ -50,18 +50,7 @@ export class Decks extends React.Component<IDecksProps, {}> {
     if (card.number < lastCards[0].number) {
       return 1;
     } else {
-      const diffs: number[] = this.props.G.decks.map(deck => card.number - deck[deck.length - 1].number);
-
-      let min = Number.MAX_SAFE_INTEGER;
-      let minIndex = 0;
-      diffs.forEach((diff, index) => {
-        if (diff > 0 && diff < min) {
-          min = diff;
-          minIndex = index;
-        }
-      });
-
-      if (minIndex === id) {
+      if (getAllowedDeck(this.props.G, card) === id) {
         return 1;
       }
     }
