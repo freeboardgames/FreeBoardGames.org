@@ -10,6 +10,11 @@ const en = {
     invalidLocale: 'Invalid Locale',
     goHome: 'Go Home',
   },
+  metadata: {
+    default: {
+      description: 'Free Board Game',
+    }
+  }
 };
 
 export default en;

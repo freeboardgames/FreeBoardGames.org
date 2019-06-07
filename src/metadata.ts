@@ -1,4 +1,6 @@
 import { GAMES_LIST } from './games';
+import { registerLang } from '@freeboardgame.org/i18n';
+import translations from './App/translations';
 
 export interface IPageMetadata {
   title: string;
@@ -10,8 +12,8 @@ export interface IPageMetadata {
 const TITLE_PREFIX = 'FreeBoardGame.org - ';
 
 const DEFAULT_METADATA: IPageMetadata = {
-  title: TITLE_PREFIX,
-  description: 'Free Board Game',
+  title: 'FreeBoardGame.org',
+  description: 'metadata.defaultDescription',
   noindex: true,
 };
 
@@ -38,8 +40,24 @@ function getGamesPageMetadata(): IPageMetadata[] {
   }));
 }
 
+function getLangFromURL(url: string) {
+  const match = url.match(/\/([A-Za-z]{2})/);
+  if (match) {
+    const lang = match[1].toLowerCase();
+    if (lang in translations) {
+      return lang;
+    }
+  }
+}
+
 /** Given a URL, gets its title. */
 export const getPageMetadata = (url: string): IPageMetadata => {
+  let lang = getLangFromURL(url);
+  if (!lang) {
+    // fallback to English
+    lang = 'en';
+  }
+  registerLang(lang, translations[lang]);
   const allPagesMetadata = [...PAGES_METADATA, ...getGamesPageMetadata()];
   const metadata = allPagesMetadata.find(meta => meta.url!.test(url));
   if (!metadata) {
