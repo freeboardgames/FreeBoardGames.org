@@ -113,7 +113,7 @@
     "@types/superagent": "^4.1.1",
     "chess.js": "^0.10.2",
     "copy-to-clipboard": "^3.2.0",
-    "copy-webpack-plugin": "^4.6.0",
+    "copy-webpack-plugin": "^5.0.3",
     "empty-module": "^0.0.2",
     "html-webpack-harddisk-plugin": "^1.0.1",
     "koa": "^2.7.0",
