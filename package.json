@@ -140,8 +140,8 @@
     "superagent": "^5.0.6",
     "three": "^0.105.2",
     "webpack-shell-plugin-next": "^0.6.4",
-    "workbox-sw": "^3.6.3",
-    "workbox-webpack-plugin": "^3.6.3"
+    "workbox-sw": "^4.3.1",
+    "workbox-webpack-plugin": "^4.3.1"
   },
   "jest": {
     "collectCoverageFrom": [
