@@ -20,7 +20,7 @@ class TakeSixBot {
 
   getBestDeck(G: IG, playerID: string): number {
     const { card, lastCards } = getCards(G, playerID);
-    if (card < lastCards[0]) {
+    if (card.number < lastCards[0].number) {
       return G.decks
         .map((deck, i) => ({ value: deck.reduce((acc, card) => acc + card.value, 0), id: i }), 0)
         .sort((a, b) => a.value - b.value)[0].id;
