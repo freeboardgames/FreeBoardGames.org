@@ -14,7 +14,7 @@ export class GamesList extends React.Component<{}, {}> {
     ));
     return (
       <div style={{ margin: '8px 0' }}>
-        <Typography variant="title" style={{ marginBottom: '16px' }}>
+        <Typography variant="h6" style={{ marginBottom: '16px' }}>
           Games
         </Typography>
         <div style={{ margin: '0 4px' }}>{gamesList}</div>

@@ -43,7 +43,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       const ships: IShip[] = this.props.G.ships.filter((ship: any) => ship.player === otherPlayer);
       const extraCardContent = (
         <div>
-          <Typography variant="title" align="center" style={{ marginTop: '0px', marginBottom: '16px' }}>
+          <Typography variant="h6" align="center" style={{ marginTop: '0px', marginBottom: '16px' }}>
             Your Opponent&apos;s Board
           </Typography>
           <Radar player={player} ships={ships} salvos={salvos} editable={false} />

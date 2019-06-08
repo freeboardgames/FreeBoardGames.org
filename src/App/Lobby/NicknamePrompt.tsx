@@ -8,7 +8,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 interface INicknamePromptProps {
   setNickname: (nickname: string) => void;
-  togglePrompt: () => void;
+  togglePrompt?: () => void;
   nickname?: string;
 }
 
@@ -21,7 +21,7 @@ export class NicknamePrompt extends React.Component<INicknamePromptProps, INickn
   render() {
     return (
       <div>
-        <ClickAwayListener onClickAway={this.props.togglePrompt}>
+        <ClickAwayListener onClickAway={this._togglePrompt}>
           <Card
             style={{
               marginTop: '16px',
@@ -83,5 +83,11 @@ export class NicknamePrompt extends React.Component<INicknamePromptProps, INickn
     this.setState(oldState => {
       return { ...oldState, nameTextField };
     });
+  };
+
+  _togglePrompt = () => {
+    if (this.props.togglePrompt) {
+      this.props.togglePrompt();
+    }
   };
 }
