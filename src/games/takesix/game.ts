@@ -23,6 +23,19 @@ function sortCards(a: Card, b: Card) {
   return a.number - b.number;
 }
 
+export function getAllowedDeck(G: IG, card: Card) {
+  const diffs: number[] = G.decks.map(deck => card.number - deck[deck.length - 1].number);
+  let min = Number.MAX_SAFE_INTEGER;
+  let minIndex = 0;
+  diffs.forEach((diff, index) => {
+    if (diff > 0 && diff < min) {
+      min = diff;
+      minIndex = index;
+    }
+  });
+  return minIndex;
+}
+
 export function getCards(G: IG, playerID: string): IGetCards {
   const lastCards = G.decks.map(deck => deck[deck.length - 1]).sort(sortCards);
   const card = G.players[playerID as any].selectedCard;
@@ -80,18 +93,7 @@ export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
   if (card.number < lastCards[0].number) {
     return moveToHand(G, ctx, card, id);
   } else {
-    const diffs: number[] = G.decks.map(deck => card.number - deck[deck.length - 1].number);
-
-    let min = Number.MAX_SAFE_INTEGER;
-    let minIndex = 0;
-    diffs.forEach((diff, index) => {
-      if (diff > 0 && diff < min) {
-        min = diff;
-        minIndex = index;
-      }
-    });
-
-    if (minIndex !== id) {
+    if (getAllowedDeck(G, card) !== id) {
       return INVALID_MOVE;
     }
 
