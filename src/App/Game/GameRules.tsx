@@ -9,7 +9,7 @@ interface IGameRulesProps {
 
 export class GameRules extends React.Component<IGameRulesProps, {}> {
   render() {
-    const src = 'https://www.youtube.com/embed/' + this.props.gameDef.videoId;
+    const videoId = this.props.gameDef.instructions.videoId;
 
     return (
       <Card style={{ marginBottom: 16 }}>
@@ -19,7 +19,7 @@ export class GameRules extends React.Component<IGameRulesProps, {}> {
             style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
             width="500"
             height="360"
-            src={src}
+            src={`https://www.youtube.com/embed/${videoId}`}
             allowFullScreen
             frameBorder="0"
           />

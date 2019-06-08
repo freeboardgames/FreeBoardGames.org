@@ -22,7 +22,9 @@ export const tictactoeGameDef: IGameDef = {
  free online. You can either do a single-player game against the computer,\
  a multi-player game against a friend online or share your device and play\
  locally against a friend.`,
-  videoId: 'USEjXNCTvcc',
+  instructions: {
+    videoId: 'USEjXNCTvcc',
+  },
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
