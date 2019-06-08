@@ -13,16 +13,39 @@ interface IBoardProps {
   G: IG;
   ctx: IGameCtx;
   moves: any;
+  step?: any;
   playerID: string;
   gameArgs?: IGameArgs;
 }
 
-export class Board extends React.Component<IBoardProps, {}> {
-  _selectCard = (id: number) => this.props.moves.selectCard(id);
-  _selectDeck = (id: number) => this.props.moves.selectDeck(id);
+interface IBoardState {
+  aiSecondDeck: boolean;
+}
+
+export class Board extends React.Component<IBoardProps, IBoardState> {
+  state: IBoardState = { aiSecondDeck: false };
+
+  _selectCard = async (id: number) => {
+    this.props.moves.selectCard(id);
+    if (this.isAIGame()) {
+      await this.props.step();
+      if (this.props.ctx.currentPlayer === this.props.playerID) {
+        this.setState({ aiSecondDeck: true });
+      } else {
+        this.setState({ aiSecondDeck: false });
+        this.props.step();
+      }
+    }
+  };
+  _selectDeck = (id: number) => {
+    this.props.moves.selectDeck(id);
+    if (this.isAIGame() && this.state.aiSecondDeck) {
+      this.props.step();
+    }
+  };
 
   _getStatus() {
-    if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
+    if (this.props.gameArgs) {
       if (this.props.ctx.actionPlayers.some(player => player === this.props.playerID)) {
         if (this.props.ctx.phase === 'CARD_SELECT') {
           return 'SELECT CARD';
@@ -62,12 +85,16 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
+  isAIGame() {
+    return this.props.gameArgs.mode === GameMode.AI;
+  }
+
   render() {
     if (this.props.ctx.gameover) {
       return (
         <GameLayout
           gameOver={this._getGameOver()}
-          extraCardContent={this._getScoreBoard()}
+          extraCardContent={this.isAIGame() ? null : this._getScoreBoard()}
           gameArgs={this.props.gameArgs}
         />
       );

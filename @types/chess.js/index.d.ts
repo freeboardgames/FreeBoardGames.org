@@ -8,7 +8,7 @@ declare module 'chess.js' {
     square?: string;
   }
   interface IChessHistoryOptions {
-    verbose?: boolean; 
+    verbose?: boolean;
   }
   interface IChessMove {
     color: string;
@@ -27,14 +27,14 @@ declare module 'chess.js' {
     in_checkmate: () => boolean;
     ascii: () => string;
     fen: () => string;
-    pgn: () => string;  
+    pgn: () => string;
     move: (san: string, options?: any) => void;
     turn: () => string;
     history: (options: IChessHistoryOptions) => Array<IChessMove>;
     moves: (options: IChessMovesOptions) => Array<IChessMove>;
-    in_check: () => boolean; 
+    in_check: () => boolean;
     load_pgn: (pgn: string) => void;
-    get: (square: string)=> IChessSquare;
+    get: (square: string) => IChessSquare;
   }
   export default Chess;
 }
