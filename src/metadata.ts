@@ -10,8 +10,9 @@ export interface IPageMetadata {
 const TITLE_PREFIX = 'FreeBoardGame.org - ';
 
 const DEFAULT_METADATA: IPageMetadata = {
-  title: TITLE_PREFIX,
-  description: 'Free Board Game',
+  title: 'FreeBoardGame.org',
+  description: `Play board games in your browser for free. \
+Compete against your online friends or play locally. Free and open-source software project.`,
   noindex: true,
 };
 
