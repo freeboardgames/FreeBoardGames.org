@@ -10,7 +10,7 @@
     "dev": "run-s server:build dev:watch",
     "dev:watch": "webpack --watch --progress --config webpack.dev.js",
     "fix": "yarn run lint",
-    "lint": "eslint --fix --ext .ts,.tsx src/",
+    "lint": "eslint --fix --ext .ts,.tsx src/ @types/",
     "prod": "run-s prod:build server",
     "prod:buildquietly": "run-s server:buildquietly webpack:buildquietly",
     "prod:build": "run-s server:build webpack:build",
@@ -29,7 +29,7 @@
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "webpack:build": "webpack --progress --config webpack.prod.js",
     "webpack:buildquietly": "webpack --config webpack.prod.js",
-    "verify-lint": "eslint --ext .ts,.tsx src/"
+    "verify-lint": "eslint --ext .ts,.tsx src/ @types/"
   },
   "pre-commit": [
     "precommit"
