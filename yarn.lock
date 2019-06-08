@@ -784,9 +784,10 @@
     socket.io "^2.1.1"
     uuid "3.2.1"
 
-"@freeboardgame.org/i18n@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@freeboardgame.org/i18n/-/i18n-0.0.1.tgz#69acc7c77bdf685c1a542c3689e856b7e44328aa"
+"@freeboardgame.org/i18n@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@freeboardgame.org/i18n/-/i18n-0.0.3.tgz#7536d82ce7edfdcf54a0c727264adebdc30d85e2"
+  integrity sha512-4fIXaMQ9GkW/u0KRpbWjGJTWxw1JMihMvRiaXqxFUrblWnshRTYbD7cYLUlKw75XaBxw7jxzM8Gyb/PGJTdYcw==
 
 "@hapi/address@2.x.x":
   version "2.0.0"
