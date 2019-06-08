@@ -2,6 +2,7 @@ import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameModeExtraInfoDropdown } from '../../App/Game/GameModePicker';
 import TicTacToeThumbnail from './media/thumbnail.png';
 import { IGameDef } from '../../games';
+import instructions from 'raw-loader!./instructions.md';
 
 export const tictactoeGameDef: IGameDef = {
   code: 'tictactoe',
@@ -22,6 +23,10 @@ export const tictactoeGameDef: IGameDef = {
  free online. You can either do a single-player game against the computer,\
  a multi-player game against a friend online or share your device and play\
  locally against a friend.`,
+  instructions: {
+    videoId: 'USEjXNCTvcc',
+    text: instructions,
+  },
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
