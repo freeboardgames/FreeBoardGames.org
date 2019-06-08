@@ -12,6 +12,7 @@ const GAME_DEF_TEST: IGameDef = {
   imageURL: 'foo.jpg',
   description: 'foo desc',
   descriptionTag: 'foo tag',
+  videoId: 'dQw4w9WgXcQ',
   config: () => {
     return null as any;
   },

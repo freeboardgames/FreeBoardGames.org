@@ -23,6 +23,7 @@ export const chessGameDef: IGameDef = {
  from easy to grandmaster. You can also easily share a link and play\
  chess with a friend online, or you can share your device and play\
  with a friend locally !`,
+  videoId: 'fKxG8KjH1Qg',
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
