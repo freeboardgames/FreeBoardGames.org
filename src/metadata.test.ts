@@ -31,7 +31,7 @@ describe('Metadata', () => {
 
     // DEFAULT_METADATA
     metadata = getPageMetadata('/blah');
-    expect(metadata.title).to.contain(TITLE_PREFIX);
-    expect(metadata.description).to.contain('Free Board Game');
+    expect(metadata.title).to.contain('FreeBoardGame');
+    expect(metadata.description).to.contain('Play board games in your browser for free.');
   });
 });
