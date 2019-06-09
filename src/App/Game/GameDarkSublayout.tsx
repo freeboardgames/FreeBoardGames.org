@@ -54,7 +54,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
             <Link to="/" style={{ float: 'left', textDecoration: 'none' }}>
               <img src={FbgLogo} alt="FreeBoardGame.org" style={{ float: 'left', paddingRight: '16px' }} />
               <Typography
-                variant="h2"
+                variant="h6"
                 gutterBottom={true}
                 style={{ float: 'left', paddingTop: '14px', color: 'white' }}
               >
