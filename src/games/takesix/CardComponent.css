@@ -1,0 +1,7 @@
+.Card {
+  float: left;
+  color: black;
+  cursor: pointer;
+  max-width: 70px;
+  width: 20%;
+}
