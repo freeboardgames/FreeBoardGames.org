@@ -13,6 +13,9 @@ export const seabattleGameDef: IGameDef = {
   descriptionTag: `Play Sea Battle, a free online game similar\
  to Battleship. You can play single-player against the computer\
  or multi-player against a friend online.`,
+  instructions: {
+    videoId: 'q0qpQ8doUp8',
+  },
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };

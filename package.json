@@ -126,11 +126,13 @@
     "mongo": "^0.1.0",
     "npm-run-all": "^4.1.5",
     "qrcode.react": "^0.9.3",
+    "raw-loader": "^3.0.0",
     "react": "^16.7.0",
     "react-async-bootstrapper": "^2.1.1",
     "react-async-component": "^2.0.0",
     "react-dom": "^16.7.0",
     "react-ga": "^2.5.7",
+    "react-markdown": "^4.0.8",
     "react-router-dom": "^4.2.2",
     "redux": "^4.0.1",
     "rrc": "^0.10.1",
@@ -181,7 +183,7 @@
     ],
     "moduleNameMapper": {
       "\\.worker.js": "<rootDir>/test/stockfish8Mock.js",
-      "\\.(css|jpg|png|svg|webp|mp3)$": "<rootDir>/test/empty-module.js"
+      "\\.(css|jpg|png|svg|webp|mp3|md)$": "<rootDir>/test/empty-module.js"
     }
   }
 }

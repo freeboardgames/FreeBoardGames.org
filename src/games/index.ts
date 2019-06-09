@@ -35,6 +35,10 @@ export interface IGameDef {
   minPlayers: number;
   maxPlayers: number;
   modes: IGameModeInfo[];
+  instructions: {
+    videoId: string;
+    text?: string;
+  };
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
 }

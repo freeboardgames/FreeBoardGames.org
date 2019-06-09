@@ -4,4 +4,7 @@ declare module '*.png' {
 declare module '*.mp3' {
   export default '' as string;
 }
+declare module '*.md' {
+  export default '' as string;
+}
 declare module 'react-async-bootstrapper';
