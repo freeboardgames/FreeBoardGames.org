@@ -23,7 +23,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       (this.props.gameArgs.mode === GameMode.AI || this.props.gameArgs.mode === GameMode.LocalFriend);
     let playAgainLink;
     let playAgainText;
-    const extraCardContent = this._getOtherPlayerBoard();
+    const extraCardContent = this._getExtraCardContent();
     if (playAgain) {
       playAgainLink = (
         <Button
@@ -58,7 +58,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       </FreeBoardGameBar>
     );
   }
-  _getOtherPlayerBoard = () => {
+  _getExtraCardContent = () => {
     if (!this.props.extraCardContent) {
       return null;
     }
