@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Card from './card';
+import css from './CardComponent.css';
 
 export interface ICardProps {
   card: Card;
@@ -15,17 +16,15 @@ export class CardComponent extends React.Component<ICardProps, {}> {
       5: '#e74c3c',
       7: '#8e44ad',
     };
-    const style: any = {
-      maxWidth: '70px',
-      width: '20%',
-      background: values[this.props.card.value],
-      float: 'left',
-      color: 'black',
-      cursor: 'pointer',
-    };
 
     return (
-      <div onClick={this.props.click} style={style}>
+      <div
+        onClick={this.props.click}
+        className={css.Card}
+        style={{
+          background: values[this.props.card.value],
+        }}
+      >
         <div
           className="CardValue"
           style={{
