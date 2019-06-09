@@ -1,11 +1,8 @@
 var path = require('path');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const port = process.env.PORT || 8000;
 const { GenerateSW } = require('workbox-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 var config = {
   entry: {
@@ -37,7 +34,7 @@ var config = {
   output: {
     publicPath: '/',
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name]-[chunkhash].js',
+    filename: '[name]-[hash].js',
     chunkFilename: '[chunkhash].js',
   },
 
