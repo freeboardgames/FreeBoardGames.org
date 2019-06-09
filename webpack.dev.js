@@ -12,6 +12,11 @@ module.exports = merge(common, {
     compress: true,
     port: 8000,
     hot: true,
+    writeToDisk: true,
+    publicPath: '/',
+    historyApiFallback: {
+      index: 'layout.html',
+    },
   },
   watchOptions: {
     aggregateTimeout: 300,
