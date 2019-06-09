@@ -29,7 +29,9 @@ export class GameInstructions extends React.Component<IGameInstructionsProps, {}
           />
         </div>
         <div style={{ padding: '0 8px' }}>
-          <Typography component="p">{text}</Typography>
+          <Typography variant="body2" component="div">
+            {text}
+          </Typography>
         </div>
       </Card>
     );
