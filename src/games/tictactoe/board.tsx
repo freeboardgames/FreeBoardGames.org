@@ -98,8 +98,18 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   render() {
     if (this.props.ctx.gameover) {
-      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+      return (
+        <GameLayout
+          gameOver={this._getGameOver()}
+          extraCardContent={this._getGameOverBoard()}
+          gameArgs={this.props.gameArgs}
+        />
+      );
     }
+    return <GameLayout>{this._getBoard()}</GameLayout>;
+  }
+
+  _getCells() {
     const cells = [];
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -116,17 +126,28 @@ export class Board extends React.Component<IBoardProps, {}> {
         }
       }
     }
-
+    return cells;
+  }
+  _getBoard() {
     return (
-      <GameLayout>
-        <div>
-          <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
-          <svg width="100%" height="100%" viewBox="0 0 3 3">
-            {cells}
-            {Lines}
-          </svg>
-        </div>
-      </GameLayout>
+      <div>
+        <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
+        <svg width="100%" height="100%" viewBox="0 0 3 3">
+          {this._getCells()}
+          {Lines}
+        </svg>
+      </div>
+    );
+  }
+
+  _getGameOverBoard() {
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <svg width="50%" height="50%" viewBox="0 0 3 3">
+          {this._getCells()}
+          {Lines}
+        </svg>
+      </div>
     );
   }
 }
