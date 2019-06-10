@@ -21,8 +21,7 @@ declare module '@freeboardgame.org/boardgame.io/ui' {
     animationDuration?: number;
     square?: string;
   }
-  export class Token extends React.Component<ITokenProps, any> {
-  }
+  export class Token extends React.Component<ITokenProps, any> {}
   interface IGridColorMap {
     [key: string]: string;
   }
@@ -36,13 +35,19 @@ declare module '@freeboardgame.org/boardgame.io/ui' {
     onClick: (coords: any) => void;
     children?: any;
   }
-  export class Grid extends React.Component<IGridProps, any> {
-  }
+  export class Grid extends React.Component<IGridProps, any> {}
 }
 
 declare module '@freeboardgame.org/boardgame.io/core' {
   export enum TurnOrder {
-    DEFAULT, ONCE, ANY, ANY_ONCE, OTHERS, OTHERS_ONCE, CUSTOM, CUSTOM_FROM
+    DEFAULT,
+    ONCE,
+    ANY,
+    ANY_ONCE,
+    OTHERS,
+    OTHERS_ONCE,
+    CUSTOM,
+    CUSTOM_FROM,
   }
   export class FlowObj {
     ctx: (players: number) => any;
@@ -75,7 +80,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     turn: number;
     currentPlayer: string;
     currentPlayerMoves: number;
-    actionPlayers: string[],
+    actionPlayers: string[];
     playOrder: string[];
     playOrderPos: number;
     gameover: any;
@@ -86,7 +91,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     [key: string]: (G: any, ctx: IGameCtx, ...args: any[]) => any;
   }
   interface IActionPlayers {
-    value: (G: any, ctx: IGameCtx) => number[] | string[],
+    value: (G: any, ctx: IGameCtx) => number[] | string[];
     all: boolean;
     others: boolean;
     once: boolean;
@@ -95,7 +100,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     playOrder?: (G: any, ctx: IGameCtx) => number[] | string[];
     first: (G: any, ctx: IGameCtx) => number;
     next: (G: any, ctx: IGameCtx) => number;
-    actionPlayers?: IActionPlayers
+    actionPlayers?: IActionPlayers;
   }
   interface IGameFlowPhases {
     [name: string]: {
@@ -111,7 +116,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
       onTurnBegin?: (G: any, ctx: IGameCtx) => any;
       onTurnEnd?: (G: any, ctx: IGameCtx) => any;
       onMove?: (G: any, ctx: IGameCtx) => any;
-    }
+    };
   }
   interface IGameFlowTrigger {
     conditon: (G: any, ctx: IGameCtx) => boolean;
@@ -143,7 +148,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   export const INVALID_MOVE: string;
   export const PlayerView: {
     STRIP_SECRETS: (G: any, ctx: IGameCtx, playerID: any) => any;
-  }
+  };
 }
 
 declare module '@freeboardgame.org/boardgame.io/react' {
@@ -190,7 +195,7 @@ declare module '@freeboardgame.org/boardgame.io/server' {
   import { GameObj } from '@freeboardgame.org/boardgame.io/core';
   import * as Koa from 'koa';
   interface IServerArgs {
-    games: GameObj[]
+    games: GameObj[];
   }
   function Server(serverArgs: IServerArgs): Koa;
   export = Server;
@@ -198,4 +203,3 @@ declare module '@freeboardgame.org/boardgame.io/server' {
 
 declare module '@freeboardgame.org/boardgame.io/ai';
 declare module '@freeboardgame.org/i18n';
-

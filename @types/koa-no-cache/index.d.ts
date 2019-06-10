@@ -1,1 +1,1 @@
-declare module "koa-no-cache";
+declare module 'koa-no-cache';

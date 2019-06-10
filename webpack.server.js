@@ -67,6 +67,14 @@ var config = {
           loader: "file-loader"
         }
       ]
+    },
+    {
+      test: /\.css$/,
+      use: [
+        {
+          loader: 'null-loader'
+        }
+      ],
     }
     ]
   }

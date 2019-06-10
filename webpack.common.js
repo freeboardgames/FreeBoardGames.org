@@ -1,16 +1,15 @@
-var path = require("path");
+var path = require('path');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const port = process.env.PORT || 8000;
-const {GenerateSW} = require('workbox-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-
 
 var config = {
   entry: {
-    index: path.resolve(__dirname, 'src/app.tsx')
+    index: path.resolve(__dirname, 'src/app.tsx'),
   },
 
   optimization: {
@@ -38,9 +37,9 @@ var config = {
 
   output: {
     publicPath: '/',
-    path: path.resolve(__dirname, "dist"),
-    filename: '[name]-[chunkhash].js',
-    chunkFilename: '[chunkhash].js'
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name]-[hash].js',
+    chunkFilename: '[chunkhash].js',
   },
 
   plugins: [
@@ -49,9 +48,9 @@ var config = {
       template: path.resolve(__dirname, './src/index.html'),
       filename: 'layout.html',
       inject: true,
-      chunksSortMode: 'none' // https://github.com/jantimon/html-webpack-plugin/issues/870
+      chunksSortMode: 'none', // https://github.com/jantimon/html-webpack-plugin/issues/870
     }),
-		new GenerateSW({
+    new GenerateSW({
       swDest: 'sw.js',
       clientsClaim: true,
       skipWaiting: true,
@@ -61,51 +60,63 @@ var config = {
   ],
 
   resolve: {
-    extensions: [".ts", ".tsx", ".js", "*"],
-    modules: [
-      "node_modules",
-      "src"
-    ]
+    extensions: ['.ts', '.tsx', '.js', '*'],
+    modules: ['node_modules', 'src'],
   },
 
   module: {
-    rules: [{
-      test: /\.ts(x?)$/,
-      exclude: /node_modules/,
-      use: [
-        {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  "modules": false,
-                  "targets": {
-                    "browsers": [">1%"]
-                  }
-                }
-              ]
-            ],
-            plugins: ["@babel/plugin-syntax-dynamic-import"]
-          } 
-        },
-        {
-          loader: 'ts-loader'
-        }
-      ]
-    },
-    {
-      test: /\.(png|jpg|webp|svg|mp3|wav)$/,
-      exclude: /node_modules/,
-      use: [
-        {
-          loader: "file-loader"
-        }
-      ]
-    }
-    ]
-  }
+    rules: [
+      {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    modules: false,
+                    targets: {
+                      browsers: ['>1%'],
+                    },
+                  },
+                ],
+              ],
+              plugins: ['@babel/plugin-syntax-dynamic-import'],
+            },
+          },
+          {
+            loader: 'ts-loader',
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpg|webp|svg|mp3|wav)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
 };
 
-module.exports = config
+module.exports = config;

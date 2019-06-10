@@ -125,11 +125,9 @@ export default class Game extends React.Component<IGameProps, {}> {
         mode: this.mode,
         credentials,
         matchCode,
+        players: this._getPlayers(),
         playerID,
       } as IGameArgs;
-      if (this.mode === GameMode.OnlineFriend) {
-        gameArgs.players = this.props.room.players;
-      }
       const clientConfig: any = {
         game: state.config.bgioGame,
         debug: state.config.debug || false,
@@ -165,5 +163,17 @@ export default class Game extends React.Component<IGameProps, {}> {
       const ErrorPage = getMessagePage('error', `Failed to download ${this.gameDef.name}.`);
       return <ErrorPage />;
     }
+  }
+
+  _getPlayers() {
+    switch (this.mode) {
+      case GameMode.OnlineFriend:
+        return this.props.room.players;
+      case GameMode.AI:
+        return [{ playerID: 0, name: 'You', roomID: '' }, { playerID: 1, name: 'Computer', roomID: '' }];
+      case GameMode.LocalFriend:
+        return [{ playerID: 0, name: 'Player 1', roomID: '' }, { playerID: 1, name: 'Player 2', roomID: '' }];
+    }
+    throw 'Invalid mode';
   }
 }

@@ -23,6 +23,23 @@ function sortCards(a: Card, b: Card) {
   return a.number - b.number;
 }
 
+export function isAllowedDeck(G: IG, deckId: number, playerID: string): boolean {
+  const { card, lastCards } = getCards(G, playerID);
+  if (card.number < lastCards[0].number) {
+    return true;
+  }
+  const diffs: number[] = G.decks.map(deck => card.number - deck[deck.length - 1].number);
+  let min = Number.MAX_SAFE_INTEGER;
+  let minIndex = 0;
+  diffs.forEach((diff, index) => {
+    if (diff > 0 && diff < min) {
+      min = diff;
+      minIndex = index;
+    }
+  });
+  return minIndex === deckId;
+}
+
 export function getCards(G: IG, playerID: string): IGetCards {
   const lastCards = G.decks.map(deck => deck[deck.length - 1]).sort(sortCards);
   const card = G.players[playerID as any].selectedCard;
@@ -74,41 +91,27 @@ export function getScoreBoard(G: IG): IScore[] {
 }
 
 export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
+  if (!isAllowedDeck(G, id, ctx.playerID)) {
+    return INVALID_MOVE;
+  }
   const { card, lastCards } = getCards(G, ctx.playerID);
 
-  // Card is lower than every in deck
-  if (card.number < lastCards[0].number) {
+  // Card is lower than every in deck OR
+  // card is #6 move all cards from deck to player's hand
+  if (card.number < lastCards[0].number || G.decks[id].length === 5) {
     return moveToHand(G, ctx, card, id);
-  } else {
-    const diffs: number[] = G.decks.map(deck => card.number - deck[deck.length - 1].number);
-
-    let min = Number.MAX_SAFE_INTEGER;
-    let minIndex = 0;
-    diffs.forEach((diff, index) => {
-      if (diff > 0 && diff < min) {
-        min = diff;
-        minIndex = index;
-      }
-    });
-
-    if (minIndex !== id) {
-      return INVALID_MOVE;
-    }
-
-    // If card is #6 move all cards from deck to player's hand
-    if (G.decks[id].length === 5) {
-      return moveToHand(G, ctx, card, id);
-    }
-
-    return {
-      ...G,
-      decks: Object.values({
-        ...G.decks,
-        [id]: [...G.decks[id], card],
-      }),
-    };
   }
+
+  // Append card
+  return {
+    ...G,
+    decks: Object.values({
+      ...G.decks,
+      [id]: [...G.decks[id], card],
+    }),
+  };
 }
+
 const GameConfig: IGameArgs = {
   name: 'takesix',
   flow: {
