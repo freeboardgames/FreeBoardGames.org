@@ -113,4 +113,24 @@ describe('Game', () => {
     (wrapper.find(Game).instance() as any).forceUpdate();
     expect(wrapper.html()).to.contain('Downloading');
   });
+  it('should unmount', () => {
+    const componentWillUnmount = jest.fn();
+    class TestGame extends Game {
+      constructor(props: any) {
+        super(props);
+        this.componentWillUnmount = componentWillUnmount;
+      }
+      render() {
+        return <Game {...this.props} />;
+      }
+    }
+    const app = (
+      <MemoryRouter>
+        <TestGame match={{ params: { gameCode: 'chess', mode: 'local' } }} />
+      </MemoryRouter>
+    );
+    const wrapper = mount(app);
+    wrapper.unmount();
+    expect(componentWillUnmount.mock.calls.length).to.equal(1);
+  });
 });
