@@ -33,14 +33,18 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         this.setState({ aiSecondDeck: true });
       } else {
         this.setState({ aiSecondDeck: false });
-        this.props.step();
+        setTimeout(() => {
+          this.props.step();
+        }, 1000);
       }
     }
   };
   _selectDeck = (id: number) => {
     this.props.moves.selectDeck(id);
     if (this.isAIGame() && this.state.aiSecondDeck) {
-      this.props.step();
+      setTimeout(() => {
+        this.props.step();
+      }, 1000);
     }
   };
 
