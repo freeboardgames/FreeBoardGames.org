@@ -2,6 +2,7 @@ import * as React from 'react';
 import { IScore } from './game';
 import { IPlayerInRoom } from '../../App/Lobby/LobbyService';
 import css from './ScoreBadges.css';
+import Typography from '@material-ui/core/Typography';
 
 interface IScoreBadgesProps {
   scoreboard: IScore[];
@@ -17,9 +18,15 @@ export class ScoreBadges extends React.Component<IScoreBadgesProps, {}> {
       return (
         <div className={css.ScoreBadge} key={score.playerID}>
           <span className={css.Nickname} style={{ fontWeight: isSelf ? 'bold' : undefined }}>
-            {nickname}
+            <Typography style={{ color: 'white', display: 'inline' }} variant="body2">
+              {nickname}
+            </Typography>
           </span>
-          <span>{score.penaltyPoints}</span>
+          <span>
+            <Typography style={{ color: 'white', display: 'inline' }} variant="body2">
+              {score.penaltyPoints}
+            </Typography>
+          </span>
         </div>
       );
     });
