@@ -38,7 +38,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
           className="CardNumber"
           style={{
             textAlign: 'center',
-            lineHeight: '50px',
+            lineHeight: '45px',
             verticalAlign: 'middle',
             fontSize: '2.5em',
           }}
