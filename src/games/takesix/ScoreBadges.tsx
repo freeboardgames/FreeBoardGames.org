@@ -18,12 +18,12 @@ export class ScoreBadges extends React.Component<IScoreBadgesProps, {}> {
       return (
         <div className={css.ScoreBadge} key={score.playerID}>
           <span className={css.Nickname} style={{ fontWeight: isSelf ? 'bold' : undefined }}>
-            <Typography style={{ color: 'white', display: 'inline' }} variant="body2">
+            <Typography style={{ color: 'white' }} variant="body2">
               {nickname}
             </Typography>
           </span>
           <span>
-            <Typography style={{ color: 'white', display: 'inline' }} variant="body2">
+            <Typography style={{ color: 'white' }} variant="body2">
               {score.penaltyPoints}
             </Typography>
           </span>

@@ -9,3 +9,7 @@
 .ScoreBadge .Nickname {
   padding-right: 8px;
 }
+
+.ScoreBadge p {
+  display: inline;
+}
