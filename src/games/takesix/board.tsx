@@ -7,7 +7,7 @@ import { IG, getScoreBoard, isAllowedDeck } from './game';
 import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
 import { Scoreboard } from './Scoreboard';
-import Typography from '@material-ui/core/Typography';
+import { ScoreBadges } from './ScoreBadges';
 
 interface IBoardProps {
   G: IG;
@@ -91,16 +91,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getScoreBoard() {
     return (
-      <div>
-        <Typography variant="title" align="center" style={{ marginTop: '0px', marginBottom: '16px' }}>
-          Scoreboard
-        </Typography>
-        <Scoreboard
-          scoreboard={getScoreBoard(this.props.G)}
-          playerID={this.props.playerID}
-          players={this.props.gameArgs.players}
-        />
-      </div>
+      <Scoreboard
+        scoreboard={getScoreBoard(this.props.G)}
+        playerID={this.props.playerID}
+        players={this.props.gameArgs.players}
+      />
     );
   }
 
@@ -113,7 +108,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return (
         <GameLayout
           gameOver={this._getGameOver()}
-          extraCardContent={this.isAIGame() ? null : this._getScoreBoard()}
+          extraCardContent={this._getScoreBoard()}
           gameArgs={this.props.gameArgs}
         />
       );
@@ -131,15 +126,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     return (
       <GameLayout>
-        <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
+        <h2 style={{ textAlign: 'center', marginTop: '0', marginBottom: '8px' }}>{this._getStatus()}</h2>
         <Decks G={this.props.G} ctx={this.props.ctx} playerID={this.props.playerID} selectDeck={this._selectDeck} />
         <PlayerHand G={this.props.G} playerID={this.props.playerID} selectCard={this._selectCard} />
-        <div style={{ clear: 'left' }}>
-          Penalty points:{' '}
-          {this.props.G.players[this.props.playerID as any].penaltyCards
-            .map(card => card.value)
-            .reduce((a, b) => a + b, 0)}
-        </div>
+        <ScoreBadges
+          scoreboard={getScoreBoard(this.props.G)}
+          playerID={this.props.playerID}
+          players={this.props.gameArgs.players}
+        />
       </GameLayout>
     );
   }

@@ -1,0 +1,11 @@
+.ScoreBadge {
+  margin-right: 4px;
+  border-radius: 5px;
+  padding: 0 4px;
+  float: left;
+  border: 2px solid;
+}
+
+.ScoreBadge .Nickname {
+  padding-right: 8px;
+}

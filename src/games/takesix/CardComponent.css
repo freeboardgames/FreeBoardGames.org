@@ -16,7 +16,7 @@
   float: left;
   color: black;
   cursor: pointer;
-  max-width: 70px;
+  max-width: 65px;
   width: 20%;
 	animation: bounceIn 1.5s;
 }

@@ -11,12 +11,17 @@ import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+const players = [{ playerID: 0, name: 'foo', roomID: '' }, { playerID: 1, name: 'bar', roomID: '' }];
+
 const BoardTest = (props: any) => (
   <MemoryRouter>
     <Board
       {...{
         ...props,
-        gameArgs: { mode: GameMode.OnlineFriend },
+        gameArgs: {
+          mode: GameMode.OnlineFriend,
+          players,
+        },
       }}
     />
   </MemoryRouter>
@@ -89,6 +94,7 @@ test('win', () => {
         playerID={'0'}
         gameArgs={{
           gameCode: 'takesix',
+          players,
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -117,6 +123,7 @@ test('loss', () => {
         playerID={'0'}
         gameArgs={{
           gameCode: 'takesix',
+          players,
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -145,6 +152,7 @@ test('draw', () => {
         playerID={'0'}
         gameArgs={{
           gameCode: 'takesix',
+          players,
           mode: GameMode.OnlineFriend,
         }}
       />
