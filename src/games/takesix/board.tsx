@@ -3,7 +3,7 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG, getScoreBoard } from './game';
+import { IG, getScoreBoard, isAllowedDeck } from './game';
 import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
 import { Scoreboard } from './Scoreboard';
@@ -26,6 +26,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   state: IBoardState = { aiSecondDeck: false };
 
   _selectCard = async (id: number) => {
+    if (!this._canPlay() || this.props.ctx.phase !== 'CARD_SELECT') {
+      return;
+    }
     this.props.moves.selectCard(id);
     if (this.isAIGame()) {
       await this.props.step();
@@ -39,7 +42,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       }
     }
   };
+
   _selectDeck = (id: number) => {
+    if (
+      !this._canPlay() ||
+      this.props.ctx.phase !== 'DECK_SELECT' ||
+      !isAllowedDeck(this.props.G, id, this.props.playerID)
+    ) {
+      return;
+    }
     this.props.moves.selectDeck(id);
     if (this.isAIGame() && this.state.aiSecondDeck) {
       setTimeout(() => {
@@ -49,17 +60,21 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   _getStatus() {
-    if (this.props.gameArgs) {
-      if (this.props.ctx.actionPlayers.some(player => player === this.props.playerID)) {
-        if (this.props.ctx.phase === 'CARD_SELECT') {
-          return 'SELECT CARD';
-        } else {
-          return 'SELECT BOARD';
-        }
-      } else {
-        return 'Waiting for opponent...';
-      }
+    if (!this.props.gameArgs) {
+      return;
     }
+    if (!this._canPlay()) {
+      return 'Waiting for opponent...';
+    }
+    if (this.props.ctx.phase === 'CARD_SELECT') {
+      return 'SELECT CARD';
+    } else {
+      return 'SELECT BOARD';
+    }
+  }
+
+  _canPlay() {
+    return this.props.ctx.actionPlayers.some(player => player === this.props.playerID);
   }
 
   _getGameOver() {

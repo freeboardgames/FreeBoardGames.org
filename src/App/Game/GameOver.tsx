@@ -20,7 +20,6 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       this.props.gameArgs &&
       (this.props.gameArgs.mode === GameMode.AI || this.props.gameArgs.mode === GameMode.LocalFriend);
     let playAgainLink;
-    let playAgainText;
     const extraCardContent = this._getExtraCardContent();
     if (playAgain) {
       playAgainLink = (

@@ -1,5 +1,5 @@
 import { IAIConfig } from '../index';
-import { IG, getCards, getAllowedDeck } from './game';
+import { IG, getCards, isAllowedDeck } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 
 interface IPlayState {
@@ -25,7 +25,7 @@ class TakeSixBot {
         .map((deck, i) => ({ value: deck.reduce((acc, card) => acc + card.value, 0), id: i }), 0)
         .sort((a, b) => a.value - b.value)[0].id;
     } else {
-      return getAllowedDeck(G, card);
+      return G.decks.findIndex((deck, i) => isAllowedDeck(G, i, playerID));
     }
   }
 

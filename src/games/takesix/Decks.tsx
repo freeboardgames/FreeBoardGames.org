@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG, getCards, getAllowedDeck } from './game';
+import { IG, isAllowedDeck } from './game';
 import { CardComponent } from './CardComponent';
 
 interface IDecksProps {
@@ -46,15 +46,10 @@ export class Decks extends React.Component<IDecksProps, {}> {
       return 1;
     }
 
-    const { card, lastCards } = getCards(this.props.G, this.props.playerID);
-    if (card.number < lastCards[0].number) {
+    if (isAllowedDeck(this.props.G, id, this.props.playerID)) {
       return 1;
     } else {
-      if (getAllowedDeck(this.props.G, card) === id) {
-        return 1;
-      }
+      return 0.2;
     }
-
-    return 0.2;
   }
 }
