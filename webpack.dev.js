@@ -10,6 +10,8 @@ module.exports = merge(common, {
   devServer: {
     contentBase: [path.join(__dirname, 'dist'), path.join(__dirname, 'static')],
     compress: true,
+    disableHostCheck: true,
+    host: '0.0.0.0',
     port: 8000,
     hot: true,
     writeToDisk: true,
