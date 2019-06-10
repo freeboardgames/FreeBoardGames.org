@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { IG } from './game';
 import { CardComponent } from './CardComponent';
+import Typography from '@material-ui/core/Typography';
 
 interface IPlayerHandProps {
   G: IG;
@@ -14,7 +15,11 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
   render() {
     return (
       <div>
-        <div style={{ clear: 'both', marginTop: '8px' }}>Your hand</div>
+        <div style={{ clear: 'both', marginTop: '8px' }}>
+          <Typography style={{ color: 'white' }} variant="body2">
+            Your hand
+          </Typography>
+        </div>
         <div
           style={{
             width: '100%',
