@@ -1,6 +1,10 @@
 import MoveSound from './media/move.mp3';
 
+let sound: HTMLAudioElement;
+
 export const playSound = () => {
-  const sound = new Audio(MoveSound);
+  if (!sound) {
+    sound = new Audio(MoveSound);
+  }
   sound.play();
 };
