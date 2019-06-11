@@ -8,6 +8,13 @@ import { GameMode } from '../../App/Game/GameModePicker';
 
 Enzyme.configure({ adapter: new Adapter() });
 jest.mock('react-ga');
+
+// mock functions for HTMLMediaElement
+// https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395
+(window as any).HTMLMediaElement.prototype.play = () => {
+  /* do nothing */
+};
+
 const TestBoard = (props: any) => {
   const board = React.createElement(Board, props, props.children);
   return <MemoryRouter>{board}</MemoryRouter>;

@@ -20,6 +20,8 @@ import Knight from './pieces/knight';
 import Pawn from './pieces/pawn';
 import Queen from './pieces/queen';
 import Rook from './pieces/rook';
+import { playSound } from './sound';
+import { IOptionsItems } from '../../App/Game/GameDarkSublayout';
 
 const COL_NAMES = 'abcdefgh';
 const HIGHLIGHTED_COLOR = 'green';
@@ -48,6 +50,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     selected: '',
     highlighted: '',
     dragged: '',
+    soundEnabled: true,
   };
 
   render() {
@@ -58,7 +61,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
     }
     return (
-      <GameLayout>
+      <GameLayout optionsMenuItems={this._getOptionsMenuItems}>
         <div>
           <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
           <Checkerboard
@@ -99,6 +102,9 @@ export class Board extends React.Component<IBoardProps, {}> {
     const move = moves.find(m => m.from === from && m.to === to);
     if (move) {
       this.props.moves.move(move.san);
+      if (this._getSoundPref()) {
+        playSound();
+      }
       if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
         this.props.step();
       }
@@ -207,6 +213,31 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
     return dragged.concat(result);
   }
+
+  _setSoundPref = (soundEnabled: boolean) => {
+    this.setState(oldState => {
+      return { ...oldState, soundEnabled };
+    });
+  };
+
+  _toggleSoundPref = () => {
+    this._setSoundPref(!this._getSoundPref());
+  };
+
+  _getSoundPref = () => {
+    return this.state.soundEnabled;
+  };
+
+  _getOptionsMenuItems = () => {
+    const curSoundPref = this._getSoundPref();
+    const newSoundPref = !curSoundPref;
+    const option: IOptionsItems = {
+      onClick: this._toggleSoundPref,
+      text: `${newSoundPref ? 'Enable' : 'Disable'} sound`,
+    };
+    const options = [option];
+    return options;
+  };
 
   _getPieceByTypeAndColor(type: string, color: string) {
     switch (type) {
