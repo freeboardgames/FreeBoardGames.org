@@ -11,6 +11,7 @@ export interface IG {
   points: Point[];
   players: Player[];
   mills: string[];
+  haveToRemovePiece: boolean;
 }
 
 const millsPositions = [
@@ -42,17 +43,24 @@ function getMills(G: IG) {
 }
 
 export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string {
-  if (G.points[position].piece !== null || G.players[ctx.playerID as any].haveToRemovePiece) {
+  if (G.points[position].piece !== null || G.haveToRemovePiece) {
     return INVALID_MOVE;
   }
 
-  let newG: IG = {
+  const newG: IG = {
     ...G,
     points: Object.values({
       ...G.points,
       [position]: {
         ...G.points[position],
         piece: ctx.playerID,
+      },
+    }),
+    players: Object.values({
+      ...G.players,
+      [ctx.playerID as any]: {
+        ...G.players[ctx.playerID as any],
+        pieces: G.players[ctx.playerID as any].pieces - 1,
       },
     }),
   };
@@ -62,14 +70,8 @@ export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string 
   return {
     ...newG,
     mills: newMills,
-    players: Object.values({
-      ...newG.players,
-      [ctx.playerID as any]: {
-        ...newG.players[ctx.playerID as any],
-        haveToRemovePiece:
-          newMills.filter(mill => mill === ctx.playerID).length > G.mills.filter(mill => mill === ctx.playerID).length,
-      },
-    }),
+    haveToRemovePiece:
+      newMills.filter(mill => mill === ctx.playerID).length > G.mills.filter(mill => mill === ctx.playerID).length,
   };
 }
 
@@ -78,13 +80,13 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
     G.points[position].piece !== ctx.playerID || // Check if player owns this piece
     G.points[position].piece === null || // Check if piece exists
     G.points[newPosition].piece !== null || // Check if point isn't already occupied
-    G.players[ctx.playerID as any].haveToRemovePiece || // Check if player has to remove piece
+    G.haveToRemovePiece || // Check if player has to remove piece
     !G.points[position].connections.some(point => point === newPosition) // Check if direct connection exists
   ) {
     return INVALID_MOVE;
   }
 
-  let newG: IG = {
+  const newG: IG = {
     ...G,
     points: Object.values({
       ...G.points,
@@ -104,19 +106,13 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
   return {
     ...newG,
     mills: newMills,
-    players: Object.values({
-      ...newG.players,
-      [ctx.playerID as any]: {
-        ...newG.players[ctx.playerID as any],
-        haveToRemovePiece: G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID),
-      },
-    }),
+    haveToRemovePiece: G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID),
   };
 }
 
 export function removePiece(G: IG, ctx: IGameCtx, position: number) {
   if (
-    !G.players[ctx.playerID as any].haveToRemovePiece || // Check if player is allowed
+    !G.haveToRemovePiece || // Check if player is allowed
     G.points[position].piece === ctx.playerID || // Check if doesn't player own this piece
     G.points[position].piece === null || // Check if piece exists
     G.mills
@@ -154,7 +150,7 @@ const GameConfig: IGameArgs = {
       },
     },
     onMove: (G: IG, ctx) => {
-      if (!G.players[ctx.playerID as any].haveToRemovePiece) {
+      if (!G.haveToRemovePiece) {
         ctx.events.endTurn();
       }
     },
@@ -205,6 +201,7 @@ const GameConfig: IGameArgs = {
       points,
       players,
       mills: new Array(16).fill(null),
+      haveToRemovePiece: false,
     };
   },
 };
