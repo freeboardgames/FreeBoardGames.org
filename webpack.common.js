@@ -40,6 +40,7 @@ var config = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name]-[hash].js',
     chunkFilename: '[chunkhash].js',
+    globalObject: 'this',
   },
 
   plugins: [
