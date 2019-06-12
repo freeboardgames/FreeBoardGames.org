@@ -56,10 +56,19 @@ export class Field extends React.Component<IFieldProps, {}> {
         <g fill="white">{circles}</g>
         <g fill="white">
           {this.props.points.map((point, i) => {
-            if (point.piece == null) {
+            if (point.piece === null) {
               return null;
             }
-            return <circle cx={calculated[i][0]} cy={calculated[i][1]} r={25} key={i} />;
+            console.log(point);
+            return (
+              <circle
+                cx={calculated[i][0]}
+                cy={calculated[i][1]}
+                r={25}
+                key={point.piece.key}
+                fill={point.piece.player === '0' ? 'white' : 'grey'}
+              />
+            );
           })}
         </g>
       </svg>

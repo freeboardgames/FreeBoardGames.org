@@ -1,6 +1,7 @@
 import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
 import Point from './point';
 import Player from './player';
+import Piece from './piece';
 
 enum Phase {
   Place = 'Place',
@@ -11,6 +12,7 @@ export interface IG {
   points: Point[];
   players: Player[];
   mills: string[];
+  piecesPlaced: number;
   haveToRemovePiece: boolean;
 }
 
@@ -35,9 +37,12 @@ const millsPositions = [
 
 function getMills(G: IG) {
   return millsPositions.map(positions =>
-    G.points[positions[0]].piece === G.points[positions[1]].piece &&
-    G.points[positions[1]].piece === G.points[positions[2]].piece
-      ? G.points[positions[0]].piece
+    G.points[positions[0]].piece !== null &&
+    G.points[positions[1]].piece !== null &&
+    G.points[positions[2]].piece !== null &&
+    G.points[positions[0]].piece.player === G.points[positions[1]].piece.player &&
+    G.points[positions[1]].piece.player === G.points[positions[2]].piece.player
+      ? G.points[positions[0]].piece.player
       : null,
   );
 }
@@ -53,16 +58,10 @@ export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string 
       ...G.points,
       [position]: {
         ...G.points[position],
-        piece: ctx.playerID,
+        piece: new Piece(ctx.playerID, G.piecesPlaced),
       },
     }),
-    players: Object.values({
-      ...G.players,
-      [ctx.playerID as any]: {
-        ...G.players[ctx.playerID as any],
-        pieces: G.players[ctx.playerID as any].pieces - 1,
-      },
-    }),
+    piecesPlaced: G.piecesPlaced + 1,
   };
 
   const newMills = getMills(newG);
@@ -77,11 +76,11 @@ export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string 
 
 export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: number): IG | string {
   if (
-    G.points[position].piece !== ctx.playerID || // Check if player owns this piece
-    G.points[position].piece === null || // Check if piece exists
+    G.points[position].piece === null ||
+    G.points[position].piece.player !== ctx.playerID || // Check if player owns this piece // Check if piece exists
     G.points[newPosition].piece !== null || // Check if point isn't already occupied
     G.haveToRemovePiece || // Check if player has to remove piece
-    !G.points[position].connections.some(point => point === newPosition) // Check if direct connection exists
+    !G.points[position].connections.some(connection => connection === newPosition) // Check if direct connection exists
   ) {
     return INVALID_MOVE;
   }
@@ -113,8 +112,8 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
 export function removePiece(G: IG, ctx: IGameCtx, position: number) {
   if (
     !G.haveToRemovePiece || // Check if player is allowed
-    G.points[position].piece === ctx.playerID || // Check if doesn't player own this piece
     G.points[position].piece === null || // Check if piece exists
+    G.points[position].piece.player === ctx.playerID || // Check if doesn't player own this piece
     G.mills
       .map((mill, index) => ({ owner: mill, index }))
       .filter(mill => mill.owner !== null && mill.owner !== ctx.playerID)
@@ -132,6 +131,12 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
         piece: null,
       },
     }),
+    players: Object.values({
+      ...G.players,
+      [ctx.playerID]: {
+        lostPieces: G.players[ctx.playerID as any].lostPieces + 1,
+      },
+    }),
   };
 }
 
@@ -143,7 +148,7 @@ const GameConfig: IGameArgs = {
       Place: {
         allowedMoves: ['placePiece', 'removePiece'],
         next: Phase.Move,
-        endPhaseIf: (G: IG) => G.players.reduce((acc, player) => acc + player.pieces, 0) === 0,
+        endPhaseIf: (G: IG) => G.piecesPlaced === 18,
       },
       Move: {
         allowedMoves: ['movePiece', 'removePiece'],
@@ -201,6 +206,7 @@ const GameConfig: IGameArgs = {
       points,
       players,
       mills: new Array(16).fill(null),
+      piecesPlaced: 0,
       haveToRemovePiece: false,
     };
   },

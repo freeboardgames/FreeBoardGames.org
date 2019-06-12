@@ -1,6 +1,8 @@
+import Piece from './piece';
+
 export default class Point {
   connections: number[];
-  piece: string;
+  piece: Piece;
 
   constructor() {
     this.connections = [];
