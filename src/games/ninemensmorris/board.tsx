@@ -4,6 +4,7 @@ import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { IG } from './game';
 import { Field } from './Field';
+import { Phase } from './game';
 
 interface IBoardProps {
   G: IG;
@@ -13,9 +14,26 @@ interface IBoardProps {
   gameArgs?: IGameArgs;
 }
 
+interface IBoardState {
+  selected: number;
+}
+
 export class Board extends React.Component<IBoardProps, {}> {
+  state: IBoardState = { selected: null };
+
   _selectPoint = (id: number) => {
-    this.props.moves.placePiece(id);
+    if (this.props.G.haveToRemovePiece) {
+      this.props.moves.removePiece(id);
+    } else if (this.props.ctx.phase === Phase.Place) {
+      this.props.moves.placePiece(id);
+    } else if (this.state.selected === null) {
+      if (this.props.G.points[id].piece !== null && this.props.G.points[id].piece.player === this.props.playerID) {
+        this.setState({ selected: id });
+      }
+    } else {
+      this.props.moves.movePiece(this.state.selected, id);
+      this.setState({ selected: null });
+    }
   };
 
   render() {

@@ -3,7 +3,7 @@ import Point from './point';
 import Player from './player';
 import Piece from './piece';
 
-enum Phase {
+export enum Phase {
   Place = 'Place',
   Move = 'Move',
 }
@@ -137,6 +137,7 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
         lostPieces: G.players[ctx.playerID as any].lostPieces + 1,
       },
     }),
+    haveToRemovePiece: false,
   };
 }
 

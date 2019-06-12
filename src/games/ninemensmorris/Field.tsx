@@ -1,5 +1,6 @@
 import React from 'react';
 import Point from './point';
+import css from './Field.css';
 
 interface IFieldProps {
   points: Point[];
@@ -59,7 +60,6 @@ export class Field extends React.Component<IFieldProps, {}> {
             if (point.piece === null) {
               return null;
             }
-            console.log(point);
             return (
               <circle
                 cx={calculated[i][0]}
@@ -67,6 +67,8 @@ export class Field extends React.Component<IFieldProps, {}> {
                 r={25}
                 key={point.piece.key}
                 fill={point.piece.player === '0' ? 'white' : 'grey'}
+                onClick={this._selectPoint(i)}
+                className={css.Piece}
               />
             );
           })}
