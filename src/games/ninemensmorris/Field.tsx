@@ -14,7 +14,7 @@ export class Field extends React.Component<IFieldProps, {}> {
     const coords = [[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]];
     const connectors = [0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22];
 
-    const radius = 15;
+    const radius = 10;
     const size = 500;
     const distance = 0.3;
 
@@ -51,24 +51,23 @@ export class Field extends React.Component<IFieldProps, {}> {
 
     return (
       <svg width="100%" height="100%" viewBox="-250 -250 500 500">
-        <g strokeWidth="2" stroke="white">
+        <g strokeWidth="4" stroke="#cccccc">
           {lines}
         </g>
-        <g fill="white">{circles}</g>
-        <g fill="white">
+        <g fill="#cccccc">{circles}</g>
+        <g>
           {this.props.points.map((point, i) => {
             if (point.piece === null) {
               return null;
             }
             return (
               <circle
-                cx={calculated[i][0]}
-                cy={calculated[i][1]}
                 r={25}
                 key={point.piece.key}
-                fill={point.piece.player === '0' ? 'white' : 'grey'}
+                fill={point.piece.player === '0' ? 'white' : '#333333'}
                 onClick={this._selectPoint(i)}
                 className={css.Piece}
+                style={{ transform: `translate(${calculated[i][0]}px, ${calculated[i][1]}px)` }}
               />
             );
           })}

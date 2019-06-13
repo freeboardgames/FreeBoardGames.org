@@ -21,6 +21,14 @@ interface IBoardState {
 export class Board extends React.Component<IBoardProps, {}> {
   state: IBoardState = { selected: null };
 
+  _getGameOver() {
+    if (this.props.ctx.gameover.winner === this.props.playerID) {
+      return 'you won';
+    } else {
+      return 'you lost';
+    }
+  }
+
   _selectPoint = (id: number) => {
     if (this.props.G.haveToRemovePiece) {
       this.props.moves.removePiece(id);
@@ -37,6 +45,10 @@ export class Board extends React.Component<IBoardProps, {}> {
   };
 
   render() {
+    if (this.props.ctx.gameover) {
+      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+    }
+
     return (
       <GameLayout>
         <div>

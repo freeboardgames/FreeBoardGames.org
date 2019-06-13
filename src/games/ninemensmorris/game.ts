@@ -80,7 +80,8 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
     G.points[position].piece.player !== ctx.playerID || // Check if player owns this piece // Check if piece exists
     G.points[newPosition].piece !== null || // Check if point isn't already occupied
     G.haveToRemovePiece || // Check if player has to remove piece
-    !G.points[position].connections.some(connection => connection === newPosition) // Check if direct connection exists
+    (!G.points[position].connections.some(connection => connection === newPosition) &&
+      G.players[ctx.playerID as any].lostPieces < 6) // Check if connection exists
   ) {
     return INVALID_MOVE;
   }
@@ -122,6 +123,8 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
     return INVALID_MOVE;
   }
 
+  const secondPlayerId = G.players.findIndex((_, i) => ctx.playerID !== i.toString());
+
   return {
     ...G,
     points: Object.values({
@@ -133,8 +136,8 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
     }),
     players: Object.values({
       ...G.players,
-      [ctx.playerID]: {
-        lostPieces: G.players[ctx.playerID as any].lostPieces + 1,
+      [secondPlayerId]: {
+        lostPieces: G.players[secondPlayerId].lostPieces + 1,
       },
     }),
     haveToRemovePiece: false,
@@ -161,8 +164,8 @@ const GameConfig: IGameArgs = {
       }
     },
     endGameIf: (G: IG) => {
-      if (G.players.some(player => player.lostPieces === 9)) {
-        return { winner: G.players.find(player => player.lostPieces !== 9) };
+      if (G.players.some(player => player.lostPieces === 7)) {
+        return { winner: G.players.findIndex(player => player.lostPieces !== 7).toString() };
       }
     },
   },
