@@ -13,6 +13,7 @@ import { registerLang, setCurrentLocale } from '@freeboardgame.org/i18n';
 import translations from './translations';
 import SSRHelper from './Helpers/SSRHelper';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import ScrollToTop from './ScrollToTop';
 
 ReactGA.initialize('UA-105391878-1');
 
@@ -21,6 +22,19 @@ const theme = createMuiTheme({
     useNextVariants: true,
   },
 });
+
+const withScrollToTop = (WrappedComponent: any) => {
+  class Wrapper extends React.Component<{}, {}> {
+    render() {
+      return (
+        <ScrollToTop>
+          <WrappedComponent {...this.props} />
+        </ScrollToTop>
+      );
+    }
+  }
+  return Wrapper;
+};
 
 const withGA = (WrappedComponent: any) => {
   class Wrapper extends React.Component<{}, {}> {
@@ -59,7 +73,7 @@ const withI18n = (WrappedComponent: any) => {
 };
 
 const withWrappers = (WrappedComponent: any) => {
-  return withI18n(withGA(WrappedComponent));
+  return withScrollToTop(withI18n(withGA(WrappedComponent)));
 };
 
 const BASEPATH = '/:locale([A-Za-z]{2})?';
