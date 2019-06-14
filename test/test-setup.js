@@ -25,6 +25,9 @@ jest.mock('copy-to-clipboard', () => {
   return global.copyClipboardMock;
 });
 
+// mock window.scrollTo
+global.scrollTo = jest.fn();
+
 //SW mock
 if (typeof window !== 'undefined') {
   let swRegisterMock = jest.fn();
