@@ -54,11 +54,11 @@ function getGamesPageMetadata(lang: string): IPageMetadata[] {
   });
 }
 
-function getLangFromURL(url: string) {
+export function getLangFromURL(url: string, translationsDict: any) {
   const match = url.match(/\/([A-Za-z]{2})/);
   if (match) {
     const lang = match[1].toLowerCase();
-    if (lang in translations) {
+    if (lang in translationsDict) {
       return lang;
     }
   }
@@ -66,7 +66,7 @@ function getLangFromURL(url: string) {
 
 /** Given a URL, gets its title. */
 export const getPageMetadata = (url: string): IPageMetadata => {
-  let lang = getLangFromURL(url);
+  let lang = getLangFromURL(url, translations);
   if (!lang) {
     // fallback to English
     lang = 'en';

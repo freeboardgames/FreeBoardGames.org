@@ -1,5 +1,5 @@
 import Enzyme from 'enzyme';
-import { getPageMetadata } from './metadata';
+import { getPageMetadata, getLangFromURL } from './metadata';
 import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -30,5 +30,9 @@ describe('Metadata', () => {
     metadata = getPageMetadata('/blah');
     expect(metadata.title).to.equal('metadata.default.title');
     expect(metadata.description).to.equal('metadata.default.description');
+
+    // getLangFromURL()
+    const lang = getLangFromURL('/pt/foo', { pt: {} });
+    expect(lang).to.equal('pt');
   });
 });
