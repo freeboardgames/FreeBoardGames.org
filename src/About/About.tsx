@@ -80,6 +80,12 @@ class About extends React.Component<{}, {}> {
           </Typography>
           <List>
             <ListItem>
+              <ListItemText primary="Chess move sound by SpliceSound" />
+              <Button size="small" color="primary" href="https://freesound.org/people/SpliceSound/sounds/218333/">
+                freesound.org
+              </Button>
+            </ListItem>
+            <ListItem>
               <ListItemText primary="Seabattle hit sound by fridobeck" />
               <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
                 freesound.org

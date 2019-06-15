@@ -12,8 +12,29 @@ import { getPageMetadata } from '../metadata';
 import { registerLang, setCurrentLocale } from '@freeboardgame.org/i18n';
 import translations from './translations';
 import SSRHelper from './Helpers/SSRHelper';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import ScrollToTop from './ScrollToTop';
 
 ReactGA.initialize('UA-105391878-1');
+
+const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+  },
+});
+
+const withScrollToTop = (WrappedComponent: any) => {
+  class Wrapper extends React.Component<{}, {}> {
+    render() {
+      return (
+        <ScrollToTop>
+          <WrappedComponent {...this.props} />
+        </ScrollToTop>
+      );
+    }
+  }
+  return Wrapper;
+};
 
 const withGA = (WrappedComponent: any) => {
   class Wrapper extends React.Component<{}, {}> {
@@ -52,7 +73,7 @@ const withI18n = (WrappedComponent: any) => {
 };
 
 const withWrappers = (WrappedComponent: any) => {
-  return withI18n(withGA(WrappedComponent));
+  return withScrollToTop(withI18n(withGA(WrappedComponent)));
 };
 
 const BASEPATH = '/:locale([A-Za-z]{2})?';
@@ -63,21 +84,23 @@ class Main extends React.Component<{}, {}> {
       document.title = getPageMetadata(window.location.pathname).title;
     }
     return (
-      <Switch>
-        <Route exact={true} path={BASEPATH} component={withWrappers(Home)} />
-        <Route exact={true} path={`${BASEPATH}/about`} component={withWrappers(About)} />
-        <Route exact={true} path={`${BASEPATH}/g/:gameCode`} component={withWrappers(GameInfo)} />
-        <Route exact={true} path={`${BASEPATH}/g/:gameCode/:mode`} component={withWrappers(Game)} />
-        <Route exact={true} path={`${BASEPATH}/g/:gameCode/:mode/:aiLevel`} component={withWrappers(Game)} />
-        <Route
-          exact={true}
-          path={`${BASEPATH}/g/:gameCode/:mode/:matchCode/:playerID`}
-          component={withWrappers(Game)}
-        />
-        <Route path={`${BASEPATH}/room/new/:gameCode/:numPlayers`} exact={true} component={withWrappers(NewRoom)} />
-        <Route path={`${BASEPATH}/room/:gameCode/:roomID`} exact={true} component={withWrappers(Room)} />
-        <Route exact={true} component={withWrappers(getMessagePage('error', 'Not Found'))} />
-      </Switch>
+      <MuiThemeProvider theme={theme}>
+        <Switch>
+          <Route exact={true} path={BASEPATH} component={withWrappers(Home)} />
+          <Route exact={true} path={`${BASEPATH}/about`} component={withWrappers(About)} />
+          <Route exact={true} path={`${BASEPATH}/g/:gameCode`} component={withWrappers(GameInfo)} />
+          <Route exact={true} path={`${BASEPATH}/g/:gameCode/:mode`} component={withWrappers(Game)} />
+          <Route exact={true} path={`${BASEPATH}/g/:gameCode/:mode/:aiLevel`} component={withWrappers(Game)} />
+          <Route
+            exact={true}
+            path={`${BASEPATH}/g/:gameCode/:mode/:matchCode/:playerID`}
+            component={withWrappers(Game)}
+          />
+          <Route path={`${BASEPATH}/room/new/:gameCode/:numPlayers`} exact={true} component={withWrappers(NewRoom)} />
+          <Route path={`${BASEPATH}/room/:gameCode/:roomID`} exact={true} component={withWrappers(Room)} />
+          <Route exact={true} component={withWrappers(getMessagePage('error', 'Not Found'))} />
+        </Switch>
+      </MuiThemeProvider>
     );
   }
 }

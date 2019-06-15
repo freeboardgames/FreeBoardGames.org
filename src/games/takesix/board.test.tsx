@@ -11,12 +11,17 @@ import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+const players = [{ playerID: 0, name: 'foo', roomID: '' }, { playerID: 1, name: 'bar', roomID: '' }];
+
 const BoardTest = (props: any) => (
   <MemoryRouter>
     <Board
       {...{
         ...props,
-        gameArgs: { mode: GameMode.OnlineFriend },
+        gameArgs: {
+          mode: GameMode.OnlineFriend,
+          players,
+        },
       }}
     />
   </MemoryRouter>
@@ -89,6 +94,7 @@ test('win', () => {
         playerID={'0'}
         gameArgs={{
           gameCode: 'takesix',
+          players,
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -96,7 +102,7 @@ test('win', () => {
   );
   expect(
     comp
-      .find('h2')
+      .find('h6')
       .at(1)
       .text(),
   ).toEqual('Game Over, you won!');
@@ -117,6 +123,7 @@ test('loss', () => {
         playerID={'0'}
         gameArgs={{
           gameCode: 'takesix',
+          players,
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -124,7 +131,7 @@ test('loss', () => {
   );
   expect(
     comp
-      .find('h2')
+      .find('h6')
       .at(1)
       .text(),
   ).toEqual('Game Over, you lost!');
@@ -145,6 +152,7 @@ test('draw', () => {
         playerID={'0'}
         gameArgs={{
           gameCode: 'takesix',
+          players,
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -152,7 +160,7 @@ test('draw', () => {
   );
   expect(
     comp
-      .find('h2')
+      .find('h6')
       .at(1)
       .text(),
   ).toEqual('Game Over, draw!');

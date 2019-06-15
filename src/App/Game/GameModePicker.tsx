@@ -68,7 +68,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     }
     return (
       <div>
-        <Typography variant="subheading" style={{ marginBottom: '16px' }}>
+        <Typography variant="subtitle1" style={{ marginBottom: '16px' }}>
           Choose game mode
         </Typography>
         {modes}

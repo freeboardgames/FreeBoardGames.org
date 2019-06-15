@@ -24,7 +24,7 @@ class App extends React.Component<{}, {}> {
           <AppBar position="sticky">
             <Toolbar>
               <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
-              <Typography variant="title" style={{ color: 'white' }}>
+              <Typography variant="h6" style={{ color: 'white' }}>
                 FreeBoardGame.org
               </Typography>
             </Toolbar>

@@ -2,6 +2,7 @@ import React from 'react';
 import FreeBoardGameBar from '../FreeBoardGameBar';
 import { GameCard } from './GameCard';
 import { GameModePicker } from './GameModePicker';
+import { GameInstructions } from './GameInstructions';
 import { IGameDef, GAMES_MAP } from '../../games';
 import MessagePageClass from '../MessagePageClass';
 
@@ -20,6 +21,7 @@ class GameInfo extends React.Component<IGameInfoProps, {}> {
       <FreeBoardGameBar>
         <GameCard game={gameDef} />
         <GameModePicker gameDef={gameDef} />
+        <GameInstructions gameDef={gameDef} />
       </FreeBoardGameBar>
     );
   }

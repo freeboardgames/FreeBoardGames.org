@@ -13,7 +13,8 @@ const TITLE_PREFIX = 'FreeBoardGame.org - ';
 
 const DEFAULT_METADATA: IPageMetadata = {
   title: 'FreeBoardGame.org',
-  description: 'metadata.defaultDescription',
+  description: `Play board games in your browser for free. \
+Compete against your online friends or play locally. Free and open-source software project.`,
   noindex: true,
 };
 
