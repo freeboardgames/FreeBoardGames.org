@@ -1,5 +1,5 @@
 import { GAMES_LIST } from './games';
-import { registerLang } from '@freeboardgame.org/i18n';
+import { registerLang, trans } from '@freeboardgame.org/i18n';
 import translations from './App/translations';
 
 export interface IPageMetadata {
@@ -11,34 +11,47 @@ export interface IPageMetadata {
 
 const TITLE_PREFIX = 'FreeBoardGame.org - ';
 
-const DEFAULT_METADATA: IPageMetadata = {
-  title: 'FreeBoardGame.org',
-  description: `Play board games in your browser for free. \
-Compete against your online friends or play locally. Free and open-source software project.`,
-  noindex: true,
-};
+function getDefaultMetadata(lang: string): IPageMetadata {
+  return {
+    title: trans('metadata.default.title', lang),
+    description: trans('metadata.default.description', lang),
+    noindex: true,
+  };
+}
 
 // Most specific URLs MUST come first.
 const PAGES_METADATA: IPageMetadata[] = [
   {
-    title: TITLE_PREFIX + 'About Us',
-    description: 'About FreeBoardGame.org, a free and open-source software project.',
+    title: TITLE_PREFIX + 'metadata.about.title',
+    description: 'metadata.about.description',
     url: new RegExp('^/about', 'i'),
   },
   {
-    title: TITLE_PREFIX + 'Play Free Board Games Online',
-    description: `Play board games in your browser for free. \
-Compete against your online friends or play locally. Free and open-source software project.`,
+    title: TITLE_PREFIX + 'metadata.about.title',
+    description: 'metadata.index.description',
     url: new RegExp('^/$', 'i'),
   },
 ];
 
-function getGamesPageMetadata(): IPageMetadata[] {
-  return GAMES_LIST.map(gameDef => ({
-    title: TITLE_PREFIX + `Play Free ${gameDef.name} Online`,
-    description: gameDef.descriptionTag,
-    url: new RegExp(`^/g/${gameDef.code}$`, 'i'),
-  }));
+function getAllPagesMetadata(lang: string): IPageMetadata[] {
+  const otherPagesMetadata = PAGES_METADATA.map(page => {
+    return { ...page, title: trans(page.title, lang), description: trans(page.description, lang) };
+  });
+  const gamePagesMetadata = getGamesPageMetadata(lang);
+  const allPagesMetadata: IPageMetadata[] = [...otherPagesMetadata, ...gamePagesMetadata];
+  return allPagesMetadata;
+}
+
+function getGamesPageMetadata(lang: string): IPageMetadata[] {
+  return GAMES_LIST.map(gameDef => {
+    const titleTransTemplate = trans('metadata.gameTemplate.title', lang);
+    const titleTranslated = titleTransTemplate.replace('${GAME}', gameDef.name);
+    return {
+      title: TITLE_PREFIX + titleTranslated,
+      description: trans(gameDef.descriptionTag, lang),
+      url: new RegExp(`^/g/${gameDef.code}$`, 'i'),
+    };
+  });
 }
 
 function getLangFromURL(url: string) {
@@ -59,10 +72,12 @@ export const getPageMetadata = (url: string): IPageMetadata => {
     lang = 'en';
   }
   registerLang(lang, translations[lang]);
-  const allPagesMetadata = [...PAGES_METADATA, ...getGamesPageMetadata()];
-  const metadata = allPagesMetadata.find(meta => meta.url!.test(url));
+  const allPagesMetadata = getAllPagesMetadata(lang);
+  let metadata = allPagesMetadata.find(meta => meta.url!.test(url));
   if (!metadata) {
-    return DEFAULT_METADATA;
+    metadata = getDefaultMetadata(lang);
   }
+  metadata.description = trans(metadata.description, lang);
+  metadata.title = trans(metadata.title, lang);
   return metadata;
 };

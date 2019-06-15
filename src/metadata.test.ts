@@ -13,25 +13,22 @@ describe('Metadata', () => {
 
     // PAGES_METADATA
     metadata = getPageMetadata('/');
-    expect(metadata.title).to.contain(TITLE_PREFIX);
-    expect(metadata.title).to.contain('Play Free Board Games Online');
-    expect(metadata.description).to.contain('in your browser for free. Compete against');
+    expect(metadata.title).to.equal(TITLE_PREFIX + 'metadata.about.title');
+    expect(metadata.description).to.equal('metadata.index.description');
 
     metadata = getPageMetadata('/about');
     expect(metadata.title).to.contain(TITLE_PREFIX);
-    expect(metadata.title).to.contain('About Us');
-    expect(metadata.description).to.contain('a free and');
+    expect(metadata.title).to.equal(TITLE_PREFIX + 'metadata.about.title');
+    expect(metadata.description).to.equal('metadata.about.description');
 
     // getGamesPageMetadata()
     metadata = getPageMetadata('/g/chess');
-    expect(metadata.title).to.contain(TITLE_PREFIX);
-
-    expect(metadata.title).to.contain('Chess');
-    expect(metadata.description).to.contain('chess');
+    expect(metadata.title).to.equal(TITLE_PREFIX + 'metadata.gameTemplate.title');
+    expect(metadata.description).to.contain('metadata.chess.descriptionTag');
 
     // DEFAULT_METADATA
     metadata = getPageMetadata('/blah');
-    expect(metadata.title).to.contain('FreeBoardGame');
-    expect(metadata.description).to.contain('Play board games in your browser for free.');
+    expect(metadata.title).to.equal('metadata.default.title');
+    expect(metadata.description).to.equal('metadata.default.description');
   });
 });

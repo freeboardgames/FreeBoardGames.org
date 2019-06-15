@@ -17,12 +17,8 @@ export const chessGameDef: IGameDef = {
     { mode: GameMode.OnlineFriend },
     { mode: GameMode.LocalFriend },
   ],
-  description: 'Classic game of Chess',
-  descriptionTag: `Play an online Chess game in your browser against a\
- top chess computer. You can set the computer level from 1 to 8,\
- from easy to grandmaster. You can also easily share a link and play\
- chess with a friend online, or you can share your device and play\
- with a friend locally !`,
+  description: 'metadata.chess.description',
+  descriptionTag: 'metadata.chess.descriptionTag',
   instructions: {
     videoId: 'fKxG8KjH1Qg',
   },
