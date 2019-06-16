@@ -1,11 +1,11 @@
 import { INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
-import { NineMensMorrisGame, IG, removePiece, placePiece, movePiece } from './game';
+import { NineMensMorrisGame, removePiece, placePiece, movePiece } from './game';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 
 test('invalid moves', () => {
   let G: any = {
     haveToRemovePiece: false,
-    points: [{ piece: null}]
+    points: [{ piece: null }],
   };
   const ctx: any = { playerID: '0' };
 
