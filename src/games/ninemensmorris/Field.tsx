@@ -15,6 +15,7 @@ export class Field extends React.Component<IFieldProps, {}> {
     const connectors = [0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22];
 
     const radius = 10;
+    const pieceRadius = 25;
     const size = 500;
     const distance = 0.3;
 
@@ -23,7 +24,7 @@ export class Field extends React.Component<IFieldProps, {}> {
     // Points
     let circles: any = [];
     for (let i = 0; i < 3; i++) {
-      const multiplier = (size / 2 - radius) * (1 - i * distance);
+      const multiplier = (size / 2 - pieceRadius) * (1 - i * distance);
       coords.forEach((coord, j) => {
         const cx = coord[0] * multiplier;
         const cy = coord[1] * multiplier;
@@ -50,7 +51,7 @@ export class Field extends React.Component<IFieldProps, {}> {
     });
 
     return (
-      <svg width="100%" height="100%" viewBox="-250 -250 500 500">
+      <svg width="100%" height="100%" viewBox="-250 -250 500 500" className={css.Field}>
         <g strokeWidth="4" stroke="#cccccc">
           {lines}
         </g>
@@ -62,7 +63,7 @@ export class Field extends React.Component<IFieldProps, {}> {
             }
             return (
               <circle
-                r={25}
+                r={pieceRadius}
                 key={point.piece.key}
                 fill={point.piece.player === '0' ? 'white' : '#333333'}
                 onClick={this._selectPoint(i)}

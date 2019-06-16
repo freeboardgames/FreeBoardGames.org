@@ -80,8 +80,8 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
     G.points[position].piece.player !== ctx.playerID || // Check if player owns this piece // Check if piece exists
     G.points[newPosition].piece !== null || // Check if point isn't already occupied
     G.haveToRemovePiece || // Check if player has to remove piece
-    (!G.points[position].connections.some(connection => connection === newPosition) &&
-      G.players[ctx.playerID as any].lostPieces < 6) // Check if connection exists
+    (!G.points[position].connections.some(connection => connection === newPosition) && // Check if connection exists
+      G.players[ctx.playerID as any].lostPieces < 6) // Ignore the check if player has < 4 pieces
   ) {
     return INVALID_MOVE;
   }

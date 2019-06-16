@@ -1,3 +1,9 @@
 .Piece {
     transition: all 1s;
 }
+
+.Field {
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 0 10px;
+}

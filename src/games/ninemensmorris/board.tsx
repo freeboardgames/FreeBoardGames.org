@@ -5,6 +5,8 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { IG } from './game';
 import { Field } from './Field';
 import { Phase } from './game';
+import Typography from '@material-ui/core/Typography';
+import css from './Board.css';
 
 interface IBoardProps {
   G: IG;
@@ -20,6 +22,23 @@ interface IBoardState {
 
 export class Board extends React.Component<IBoardProps, {}> {
   state: IBoardState = { selected: null };
+
+  _getStatus() {
+    if (!this.props.gameArgs) {
+      return;
+    }
+    if (this.props.ctx.currentPlayer !== this.props.playerID) {
+      return 'Waiting for opponent...';
+    } else if (this.props.G.haveToRemovePiece) {
+      return 'REMOVE PIECE';
+    }
+
+    if (this.props.ctx.phase === Phase.Place) {
+      return 'PLACE PIECE';
+    } else {
+      return 'MOVE PIECE';
+    }
+  }
 
   _getGameOver() {
     if (this.props.ctx.gameover.winner === this.props.playerID) {
@@ -51,9 +70,10 @@ export class Board extends React.Component<IBoardProps, {}> {
 
     return (
       <GameLayout>
-        <div>
-          <Field points={this.props.G.points} selectPoint={this._selectPoint}></Field>
-        </div>
+        <Typography variant="h5" className={css.Status}>
+          {this._getStatus()}
+        </Typography>
+        <Field points={this.props.G.points} selectPoint={this._selectPoint}></Field>
       </GameLayout>
     );
   }
