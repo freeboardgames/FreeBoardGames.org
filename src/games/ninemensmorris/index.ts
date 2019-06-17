@@ -13,6 +13,7 @@ export const ninemensmorrisGameDef: IGameDef = {
             extraInfo: { type: 'slider', min: 1, max: 8 } as IGameModeExtraInfoSlider,
         },*/
     { mode: GameMode.OnlineFriend },
+    { mode: GameMode.LocalFriend },
   ],
   minPlayers: 2,
   maxPlayers: 2,
