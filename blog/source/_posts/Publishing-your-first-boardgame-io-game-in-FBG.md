@@ -1,0 +1,127 @@
+---
+title: 'Publishing your first boardgame.io game in FBG'
+date: 2019-06-16 21:33:17
+tags:
+---
+
+So you created (or want to create) an awesome new game using the [boardgame.io](https://boardgame.io) framework. Even though you probably told some friends and played with them, it might still be difficult to get people to know about your game and reach its full potential. Fear not, our project (FBG) purpose is to get your game to more people, by creating a FOSS community of developers and players.
+
+In this tutorial you are going to see how easy it is to get your game up and running in [FreeBoardGame.org](https://freeboardgame.org). We are going to create Checkers for the platform and very quickly have it up and running.
+
+# Setting up the environment
+
+First, fork [FreeBoardGame repo](https://github.com/freeboardgame/FreeBoardGame.org) on GitHub:
+
+![fork button image](https://github-images.s3.amazonaws.com/help/bootcamp/Bootcamp-Fork.png)
+
+Then, `git clone` your new forked repo, run `yarn install` to install all dependencies. After everything is downloaded, run `yarn run dev` to run FBG on your machine locally, it should be available in `http://localhost:8000`.
+
+You are all set to start coding your new game !
+
+# Bootstraping your game
+
+Most of each game code live in their own folder, in `src/games/[GAME CODE]`so the first action is to create a new folder. For checkers, we can go ahead and run `mkdir src/games/checkers`.
+
+Now, let's create its first configuration file, `src/games/checkers/index.ts`:
+
+```typescript
+import Thumbnail from './media/thumbnail.png';
+import { GameMode } from '../../App/Game/GameModePicker';
+import { IGameDef } from '../../games';
+import instructions from 'raw-loader!./instructions.md';
+
+export const checkersGameDef: IGameDef = {
+  code: 'checkers',
+  name: 'Checkers',
+  imageURL: Thumbnail,
+  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.Local }],
+  minPlayers: 2,
+  maxPlayers: 2,
+  description: 'Classic game of Checkers',
+  descriptionTag: `Play Checkers (also known as Draughts) locally 
+  or online against friends!`,
+  instructions: {
+    videoId: 'yFrAN-LFZRU',
+    instructions,
+  },
+  config: () => import('./config'),
+};
+```
+
+Explaining what is going on here:
+
+- _code_: Internal code we are going to use for this game, must match the folder name.
+- _name_: Name that will show up to users.
+- _imageURL_: Tthumbnail used across the app on the home page, game page and lobby. Generally a screenshot of the game, should be 500x250 pixels.
+- _modes_: Each game mode will represent a card in the game page ([check chess here](https://freeboardgame.org/g/chess)).
+  - `GameMode.AI`: Makes the game available offline, allowing users to play single player matches against the computer (more configuration is needed).
+  - `GameMode.OnlineFriend`: Allows users to invite friends to play the game online. Users are going to need internet to connect to the server.
+  - `GameMode.Local`: Makes the game available offline, and players can alternate using the same device to play the game.
+- _minPlayers_ and _maxPlayers_: Count of min and max players allowed for the game.
+- _description_: Short description of the game that will show on the home page card.
+- _descriptionTag_: HTML tag description of the game, specially important for crawlers that can bring organic traffic to your game.
+- _instructions_:
+  - `videoId` is the YouTube video id with a tutorial for the game.
+  - `instructions` allows you import a markdown with written instructions. Also important for crawlers.
+- _config_: This is a function that returns your boardgame.io config. It needs to be a separate file because this will only load all extra resources needed (UI, game logic, etc) if the user wants to play your game.
+
+In `src/games/checkers/media/thumbnail.png`, place:
+![500x250 placeholder](http://www.biotoday.bio/wp-content/uploads/sites/2/2016/01/500x250.png)
+
+In `src/games/checkers/instructions.md`, write:
+
+```markdown
+Instructions for checkers.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+```
+
+Boardgame.io games have two main pieces, its rules (aka `Game`) and the UI (aka `Board`). We need to provide this in the bg.io specific configuration, `src/games/checkers/config.ts`:
+
+```typescript
+import { IGameConfig } from '../index';
+import { CheckersGame } from './game';
+import { Board } from './board';
+
+const config: IGameConfig = {
+  bgioGame: CheckersGame,
+  bgioBoard: Board,
+  debug: true,
+};
+
+export default config;
+```
+
+These two pieces is where the bulk of the game code will live. Let's use placeholders for now so you can see how everything ties together. In `src/games/checkers/board.ts`:
+
+```typescript
+import * as React from 'react';
+import { IGameArgs } from '../../App/Game/GameBoardWrapper';
+import { GameLayout } from '../../App/Game/GameLayout';
+import { GameMode } from '../../App/Game/GameModePicker';
+import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IG } from './game';
+import { Decks } from './Decks';
+import { PlayerHand } from './PlayerHand';
+import { Scoreboard } from './Scoreboard';
+import { ScoreBadges } from './ScoreBadges';
+
+interface IBoardProps {
+  G: IG;
+  ctx: IGameCtx;
+  moves: any;
+  playerID: string;
+  gameArgs?: IGameArgs;
+}
+
+
+export class Board extends React.Component<IBoardProps, {}> {
+  render() {
+    return (
+      <GameLayout>
+        <h2>Hello world!</h2>
+        <pre>{JSON.stringify(gameArgs, null, 2)}</pre>
+      <GameLayout>
+    );
+  }
+}
+```
