@@ -1,6 +1,7 @@
 import React from 'react';
 import Point from './point';
 import css from './Field.css';
+import red from '@material-ui/core/colors/red';
 
 interface IFieldProps {
   points: Point[];
@@ -29,7 +30,17 @@ export class Field extends React.Component<IFieldProps, {}> {
         const cx = coord[0] * multiplier;
         const cy = coord[1] * multiplier;
         const key = 8 * i + j;
-        circles.push(<circle cx={cx} cy={cy} r={radius} onClick={this._selectPoint(key)} key={key} />);
+        circles.push(<circle cx={cx} cy={cy} r={radius} key={key} />);
+        circles.push(
+          <circle
+            cx={cx}
+            cy={cy}
+            r={pieceRadius}
+            onClick={this._selectPoint(key)}
+            key={`${key}clickable`}
+            fill="none"
+          />,
+        );
         calculated.push([cx, cy]);
       });
     }
@@ -51,7 +62,7 @@ export class Field extends React.Component<IFieldProps, {}> {
     });
 
     return (
-      <svg width="100%" height="100%" viewBox="-250 -250 500 500" className={css.Field}>
+      <svg width="100%" height="100%" viewBox="-250 -250 500 500" className={css.Field} pointerEvents="visible">
         <g strokeWidth="4" stroke="#cccccc">
           {lines}
         </g>
@@ -65,7 +76,7 @@ export class Field extends React.Component<IFieldProps, {}> {
               <circle
                 r={pieceRadius}
                 key={point.piece.key}
-                fill={point.piece.player === '0' ? 'white' : '#333333'}
+                fill={point.piece.player === '0' ? 'white' : red[500]}
                 onClick={this._selectPoint(i)}
                 className={css.Piece}
                 style={{ transform: `translate(${calculated[i][0]}px, ${calculated[i][1]}px)` }}
