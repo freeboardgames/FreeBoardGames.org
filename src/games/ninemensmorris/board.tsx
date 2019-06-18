@@ -67,7 +67,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         return 'you lost';
       }
     } else {
-      if (this.props.ctx.gameover.winner === this.props.playerID) {
+      if (this.props.ctx.gameover.winner === '0') {
         return 'white won';
       } else {
         return 'red won';
