@@ -107,7 +107,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         <Typography variant="h5" className={css.Status}>
           {this._getStatus()}
         </Typography>
-        <Field points={this.props.G.points} selectPoint={this._selectPoint}></Field>
+        <Field points={this.props.G.points} selectPoint={this._selectPoint} selected={this.state.selected}></Field>
       </GameLayout>
     );
   }

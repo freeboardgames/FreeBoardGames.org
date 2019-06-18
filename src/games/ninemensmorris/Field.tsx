@@ -6,6 +6,7 @@ import red from '@material-ui/core/colors/red';
 interface IFieldProps {
   points: Point[];
   selectPoint: (index: number) => void;
+  selected: number;
 }
 
 export class Field extends React.Component<IFieldProps, {}> {
@@ -72,6 +73,7 @@ export class Field extends React.Component<IFieldProps, {}> {
             if (point.piece === null) {
               return null;
             }
+            let scale = i === this.props.selected ? 1.2 : 1;
             return (
               <circle
                 r={pieceRadius}
@@ -79,7 +81,7 @@ export class Field extends React.Component<IFieldProps, {}> {
                 fill={point.piece.player === '0' ? 'white' : red[500]}
                 onClick={this._selectPoint(i)}
                 className={css.Piece}
-                style={{ transform: `translate(${calculated[i][0]}px, ${calculated[i][1]}px)` }}
+                style={{ transform: `translate(${calculated[i][0]}px, ${calculated[i][1]}px) scale(${scale})` }}
               />
             );
           })}

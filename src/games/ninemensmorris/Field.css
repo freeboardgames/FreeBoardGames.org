@@ -1,9 +1,19 @@
 .Piece {
-    transition: all 1s;
+    transition: transform 0.5s;
+    animation: fadein 0.5s;
 }
 
 .Field {
     box-sizing: border-box;
     margin-top: 10px;
     padding: 0 10px;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
