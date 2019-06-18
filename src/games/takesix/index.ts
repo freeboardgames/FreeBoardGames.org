@@ -10,9 +10,11 @@ export const takesixGameDef: IGameDef = {
   minPlayers: 2,
   maxPlayers: 10,
   description: 'Similar to 6 Nimmt!',
-  descriptionTag: `Play Take 6!, a free online game similar\
+  descriptionTag: {
+    en: `Play Take 6!, a free online game similar\
  to 6 Nimmt. You can play multi-player from two and up to\
  ten players online!`,
+  },
   instructions: {
     videoId: 'fF0lnDygoes',
   },

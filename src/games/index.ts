@@ -30,8 +30,8 @@ export interface IGameDef {
   code: string;
   name: string;
   imageURL: string;
-  description: string;
-  descriptionTag: string;
+  description: any; // FIXME
+  descriptionTag: any; // FIXME
   minPlayers: number;
   maxPlayers: number;
   modes: IGameModeInfo[];

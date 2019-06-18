@@ -51,9 +51,10 @@ function getGamesPageMetadata(lang: string): IPageMetadata[] {
   return GAMES_LIST.map(gameDef => {
     const titleTransTemplate = trans('metadata.gameTemplate.title', undefined, lang);
     const titleTranslated = titleTransTemplate.replace('${GAME}', gameDef.name);
+    const descriptionTag = lang in gameDef.descriptionTag ? gameDef.descriptionTag[lang] : gameDef.descriptionTag['en'];
     return {
       title: TITLE_PREFIX + titleTranslated,
-      description: trans(gameDef.descriptionTag, undefined, lang),
+      description: descriptionTag,
       url: new RegExp(`${LANG_CODE_URL_OPTIONAL}g/${gameDef.code}$`, 'i'),
     };
   });
