@@ -73,7 +73,7 @@ export class Field extends React.Component<IFieldProps, {}> {
             if (point.piece === null) {
               return null;
             }
-            let scale = i === this.props.selected ? 1.2 : 1;
+            const scale = i === this.props.selected ? 1.2 : 1;
             return (
               <circle
                 r={pieceRadius}
