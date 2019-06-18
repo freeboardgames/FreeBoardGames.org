@@ -86,7 +86,8 @@ class Main extends React.Component<{}, {}> {
     return (
       <MuiThemeProvider theme={theme}>
         <Switch>
-          <Route exact={true} path={BASEPATH} component={withWrappers(Home)} />
+          <Route exact={true} path={'/'} component={withWrappers(Home)} />
+          <Route exact={true} strict={true} path={BASEPATH} component={withWrappers(Home)} />
           <Route exact={true} path={`${BASEPATH}/about`} component={withWrappers(About)} />
           <Route exact={true} path={`${BASEPATH}/g/:gameCode`} component={withWrappers(GameInfo)} />
           <Route exact={true} path={`${BASEPATH}/g/:gameCode/:mode`} component={withWrappers(Game)} />

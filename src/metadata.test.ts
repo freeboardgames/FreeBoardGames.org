@@ -13,23 +13,24 @@ describe('Metadata', () => {
 
     // PAGES_METADATA
     metadata = getPageMetadata('/');
-    expect(metadata.title).to.equal(TITLE_PREFIX + 'metadata.about.title');
-    expect(metadata.description).to.equal('metadata.index.description');
+    expect(metadata.title).to.equal('FreeBoardGame.org');
+    expect(metadata.description).to.contain('Play board games in your browser for free');
 
     metadata = getPageMetadata('/about');
     expect(metadata.title).to.contain(TITLE_PREFIX);
-    expect(metadata.title).to.equal(TITLE_PREFIX + 'metadata.about.title');
-    expect(metadata.description).to.equal('metadata.about.description');
+    expect(metadata.title).to.contain('FreeBoardGame.org - About Us');
+    expect(metadata.description).to.contain('free and open-source software project.');
 
     // getGamesPageMetadata()
     metadata = getPageMetadata('/g/chess');
-    expect(metadata.title).to.equal(TITLE_PREFIX + 'metadata.gameTemplate.title');
-    expect(metadata.description).to.contain('metadata.chess.descriptionTag');
+    expect(metadata.title).to.contain(TITLE_PREFIX);
+    expect(metadata.title).to.contain('Play Free Chess Online');
+    expect(metadata.description).to.contain('Play an online Chess game');
 
     // DEFAULT_METADATA
     metadata = getPageMetadata('/blah');
-    expect(metadata.title).to.equal('metadata.default.title');
-    expect(metadata.description).to.equal('metadata.default.description');
+    expect(metadata.title).to.equal('FreeBoardGame.org');
+    expect(metadata.description).to.contain('Play board games in your browser for free');
 
     // getLangFromURL()
     const lang = getLangFromURL('/pt/foo', { pt: {} });

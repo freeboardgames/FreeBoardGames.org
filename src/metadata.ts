@@ -1,5 +1,5 @@
 import { GAMES_LIST } from './games';
-import { registerLang, trans } from '@freeboardgame.org/i18n';
+import { registerLang, trans, setCurrentLocale } from '@freeboardgame.org/i18n';
 import translations from './App/translations';
 
 export interface IPageMetadata {
@@ -10,11 +10,12 @@ export interface IPageMetadata {
 }
 
 const TITLE_PREFIX = 'FreeBoardGame.org - ';
+const LANG_CODE_URL_OPTIONAL = "^\/([A-Za-z]{2}?\/)?"; // prettier-ignore
 
 function getDefaultMetadata(lang: string): IPageMetadata {
   return {
-    title: trans('metadata.default.title', lang),
-    description: trans('metadata.default.description', lang),
+    title: trans('metadata.default.title', undefined, lang),
+    description: trans('metadata.default.description', undefined, lang),
     noindex: true,
   };
 }
@@ -22,20 +23,24 @@ function getDefaultMetadata(lang: string): IPageMetadata {
 // Most specific URLs MUST come first.
 const PAGES_METADATA: IPageMetadata[] = [
   {
-    title: TITLE_PREFIX + 'metadata.about.title',
+    title: 'metadata.about.title',
     description: 'metadata.about.description',
     url: new RegExp('^/about', 'i'),
   },
   {
-    title: TITLE_PREFIX + 'metadata.about.title',
+    title: 'metadata.index.title',
     description: 'metadata.index.description',
-    url: new RegExp('^/$', 'i'),
+    url: new RegExp("^\/([A-Za-z]{2}?)$", 'i') // prettier-ignore
   },
 ];
 
 function getAllPagesMetadata(lang: string): IPageMetadata[] {
   const otherPagesMetadata = PAGES_METADATA.map(page => {
-    return { ...page, title: trans(page.title, lang), description: trans(page.description, lang) };
+    return {
+      ...page,
+      title: TITLE_PREFIX + trans(page.title, undefined, lang),
+      description: trans(page.description, undefined, lang),
+    };
   });
   const gamePagesMetadata = getGamesPageMetadata(lang);
   const allPagesMetadata: IPageMetadata[] = [...otherPagesMetadata, ...gamePagesMetadata];
@@ -44,12 +49,12 @@ function getAllPagesMetadata(lang: string): IPageMetadata[] {
 
 function getGamesPageMetadata(lang: string): IPageMetadata[] {
   return GAMES_LIST.map(gameDef => {
-    const titleTransTemplate = trans('metadata.gameTemplate.title', lang);
+    const titleTransTemplate = trans('metadata.gameTemplate.title', undefined, lang);
     const titleTranslated = titleTransTemplate.replace('${GAME}', gameDef.name);
     return {
       title: TITLE_PREFIX + titleTranslated,
-      description: trans(gameDef.descriptionTag, lang),
-      url: new RegExp(`^/g/${gameDef.code}$`, 'i'),
+      description: trans(gameDef.descriptionTag, undefined, lang),
+      url: new RegExp(`${LANG_CODE_URL_OPTIONAL}g/${gameDef.code}$`, 'i'),
     };
   });
 }
@@ -64,6 +69,11 @@ export function getLangFromURL(url: string, translationsDict: any) {
   }
 }
 
+export function transSSR(key: string, lang: string): string {
+  registerLang(lang, translations[lang]);
+  return trans(key, undefined, lang);
+}
+
 /** Given a URL, gets its title. */
 export const getPageMetadata = (url: string): IPageMetadata => {
   let lang = getLangFromURL(url, translations);
@@ -71,13 +81,15 @@ export const getPageMetadata = (url: string): IPageMetadata => {
     // fallback to English
     lang = 'en';
   }
+  registerLang(lang, translations.en);
   registerLang(lang, translations[lang]);
+  setCurrentLocale('pt');
   const allPagesMetadata = getAllPagesMetadata(lang);
   let metadata = allPagesMetadata.find(meta => meta.url!.test(url));
   if (!metadata) {
     metadata = getDefaultMetadata(lang);
   }
-  metadata.description = trans(metadata.description, lang);
-  metadata.title = trans(metadata.title, lang);
+  metadata.description = trans(metadata.description, undefined, lang);
+  metadata.title = trans(metadata.title, undefined, lang);
   return metadata;
 };
