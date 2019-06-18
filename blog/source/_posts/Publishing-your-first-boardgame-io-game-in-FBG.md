@@ -4,23 +4,23 @@ date: 2019-06-16 21:33:17
 tags:
 ---
 
-So you created (or want to create) an awesome new game using the [boardgame.io](https://boardgame.io) framework. Even though you probably told some friends and played with them, it might still be difficult to get people to know about your game and reach its full potential. Fear not, our project (FBG) purpose is to get your game to more people, by creating a FOSS community of developers and players.
+So you created (or want to create) an awesome new game using the [boardgame.io](https://boardgame.io) framework. Even though you probably told some friends and played with them, it might still be difficult to get people to know about your game and reach its full potential. Fear not, FreeBoardGame.org (FBG)'s purpose is to get your game to more people by creating a FOSS community of developers and players.
 
 In this tutorial you are going to see how easy it is to get your game up and running in [FreeBoardGame.org](https://freeboardgame.org). We are going to create Checkers for the platform and very quickly have it up and running.
 
 # Setting up the environment
 
-First, fork [FreeBoardGame repo](https://github.com/freeboardgame/FreeBoardGame.org) on GitHub:
+First, fork the [FreeBoardGame repo](https://github.com/freeboardgame/FreeBoardGame.org) on GitHub:
 
 ![fork button image](https://github-images.s3.amazonaws.com/help/bootcamp/Bootcamp-Fork.png)
 
-Then, `git clone` your new forked repo, run `yarn install` to install all dependencies. After everything is downloaded, run `yarn run dev` to run FBG on your machine locally, it should be available in `http://localhost:8000`.
+Then, `git clone` your new forked repo, and run `yarn install` to install all dependencies. After everything is downloaded, run `yarn run dev` to run FBG on your machine locally, it should be available at [http://localhost:8000](http://localhost:8000/).
 
-You are all set to start coding your new game !
+You are all set to start coding your new game!
 
 # Bootstraping your game
 
-Most of each game code live in their own folder, in `src/games/[GAME CODE]`so the first action is to create a new folder. For checkers, we can go ahead and run `mkdir src/games/checkers`.
+We keep most of the game code in their own folder.  The first thing we have to do is create a new folder for our new game.  For checkers, we can go ahead and run `mkdir src/games/checkers`.
 
 Now, let's create its first configuration file, `src/games/checkers/index.ts`:
 
@@ -52,7 +52,7 @@ Explaining what is going on here:
 
 - _code_: Internal code we are going to use for this game, must match the folder name.
 - _name_: Name that will show up to users.
-- _imageURL_: Tthumbnail used across the app on the home page, game page and lobby. Generally a screenshot of the game, should be 500x250 pixels.
+- _imageURL_: Thumbnail used across the app on the home page, game page and lobby. Generally a screenshot of the game, should be 500x250 pixels.
 - _modes_: Each game mode will represent a card in the game page ([check chess here](https://freeboardgame.org/g/chess)).
   - `GameMode.AI`: Makes the game available offline, allowing users to play single player matches against the computer (more configuration is needed).
   - `GameMode.OnlineFriend`: Allows users to invite friends to play the game online. Users are going to need internet to connect to the server.
