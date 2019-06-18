@@ -163,6 +163,18 @@ const GameConfig: IGameArgs = {
         ctx.events.endTurn();
       }
     },
+    onTurnBegin: (G: IG, ctx) => {
+      if (
+        ctx.phase === Phase.Move &&
+        !G.haveToRemovePiece &&
+        G.players[ctx.currentPlayer as any].lostPieces < 6 &&
+        !G.points
+          .filter(point => point.piece !== null && point.piece.player === ctx.currentPlayer)
+          .some(point => point.connections.some(connection => G.points[connection].piece === null))
+      ) {
+        ctx.events.endTurn();
+      }
+    },
     endGameIf: (G: IG) => {
       if (G.players.some(player => player.lostPieces === 7)) {
         return { winner: G.players.findIndex(player => player.lostPieces !== 7).toString() };
