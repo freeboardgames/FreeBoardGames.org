@@ -47,6 +47,19 @@ function getMills(G: IG) {
   );
 }
 
+function isThereRemovablePiece(G: IG, ctx: IGameCtx, mills: string[]) {
+  let points = G.points.map(point => ({ data: point, safe: true }));
+  mills
+    .map((mill, index) => ({ owner: mill, index }))
+    .filter(mill => mill.owner !== null && mill.owner !== ctx.playerID)
+    .forEach(mill =>
+      millsPositions[mill.index].forEach(position => {
+        points[position].safe = false;
+      }),
+    );
+  return points.some(point => point.data.piece !== null && point.safe && point.data.piece.player !== ctx.playerID);
+}
+
 export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string {
   if (G.points[position].piece !== null || G.haveToRemovePiece) {
     return INVALID_MOVE;
@@ -70,7 +83,8 @@ export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string 
     ...newG,
     mills: newMills,
     haveToRemovePiece:
-      newMills.filter(mill => mill === ctx.playerID).length > G.mills.filter(mill => mill === ctx.playerID).length,
+      newMills.filter(mill => mill === ctx.playerID).length > G.mills.filter(mill => mill === ctx.playerID).length &&
+      isThereRemovablePiece(newG, ctx, newMills),
   };
 }
 
@@ -106,7 +120,9 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
   return {
     ...newG,
     mills: newMills,
-    haveToRemovePiece: G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID),
+    haveToRemovePiece:
+      G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID) &&
+      isThereRemovablePiece(newG, ctx, newMills),
   };
 }
 
