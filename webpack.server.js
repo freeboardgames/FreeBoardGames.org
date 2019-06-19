@@ -75,6 +75,14 @@ var config = {
           loader: 'null-loader'
         }
       ],
+    },
+    {
+      test: /\.md$/,
+      use: [
+        {
+          loader: "raw-loader"
+        },
+      ]
     }
     ]
   }
