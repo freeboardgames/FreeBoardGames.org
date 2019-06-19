@@ -19,6 +19,7 @@ interface IMessageProps {
 }
 
 export class MessagePage extends React.Component<IMessageProps, IMessageState> {
+  requestID: number = null;
   constructor(props: IMessageProps) {
     super(props);
     this.state = {
@@ -26,21 +27,30 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
       startTime: Date.now(),
     };
     if (typeof window !== 'undefined' && props.type !== 'error') {
-      requestAnimationFrame(this._animate(Date.now()));
+      this.requestID = window.requestAnimationFrame(this._animate(Date.now()));
     }
   }
 
   _animate = (now: number) => () => {
-    const elapsed = now - this.state.startTime;
-    const linkHidden = elapsed < 5000;
-    this.setState({
-      ...this.state,
-      linkHidden,
-    });
-    if (linkHidden) {
-      requestAnimationFrame(this._animate(Date.now()));
+    if (this.requestID) {
+      const elapsed = now - this.state.startTime;
+      const linkHidden = elapsed < 5000;
+      this.setState({
+        ...this.state,
+        linkHidden,
+      });
+      if (linkHidden) {
+        this.requestID = window.requestAnimationFrame(this._animate(Date.now()));
+      }
     }
   };
+
+  componentWillUnmount() {
+    if (this.requestID) {
+      window.cancelAnimationFrame(this.requestID);
+      this.requestID = null;
+    }
+  }
 
   render() {
     let icon;
