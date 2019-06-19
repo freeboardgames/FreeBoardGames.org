@@ -2,7 +2,7 @@ import ChessThumbnail from './media/thumbnail.png';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameModeExtraInfoSlider } from '../../App/Game/GameModePicker';
 import { IGameDef } from '../../games';
-import instructions from 'raw-loader!./instructions.md';
+import instructions from './instructions.md';
 
 export const chessGameDef: IGameDef = {
   code: 'chess',
