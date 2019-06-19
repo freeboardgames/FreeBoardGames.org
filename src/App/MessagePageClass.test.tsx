@@ -52,17 +52,22 @@ test('MessagePage link is hidden', () => {
     </MemoryRouter>,
   ).find(MessagePage);
   msg.setState({ linkHidden: true, startTime: 0 });
+  (msg.find(MessagePage).instance() as MessagePage).requestID = 1;
   (msg.instance() as MessagePage)._animate(125)();
   expect(msg.html()).not.to.contain('messagePage.goHome');
 });
 
 test('MessagePage unhides link after 5 seconds', () => {
+  const context = { requestID: 1 };
   const msg = Enzyme.mount(
     <MemoryRouter>
       <MessagePage type={'loading'} message={'loading'} />
     </MemoryRouter>,
+    { context },
   ).find(MessagePage);
   msg.setState({ linkHidden: true, startTime: 0 });
+  // satisfy the if () in _animate
+  (msg.find(MessagePage).instance() as MessagePage).requestID = 1;
   (msg.find(MessagePage).instance() as MessagePage)._animate(6000)();
   expect(msg.html()).to.contain('messagePage.goHome');
 });
