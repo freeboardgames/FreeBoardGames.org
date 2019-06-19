@@ -17,10 +17,10 @@ export const ninemensmorrisGameDef: IGameDef = {
   ],
   minPlayers: 2,
   maxPlayers: 2,
-  description: 'Similar to 6 Nimmt!',
-  descriptionTag: `Play Take 6!, a free online game similar\
- to 6 Nimmt. You can play multi-player from two and up to\
- ten players online!`,
+  description: 'Also known as Mills',
+  descriptionTag: `Play Nine Men's Morris, a free online game also\
+ known as Mills. You can play multi-player or with your friend\
+ locally!`,
   instructions: {
     videoId: 'zvbIKOHIkRE',
   },
