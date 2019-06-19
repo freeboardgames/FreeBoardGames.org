@@ -5,7 +5,8 @@ declare module '*.mp3' {
   export default '' as string;
 }
 declare module '*.md' {
-  export default '' as string;
+  const content: string;
+  export default content;
 }
 declare module '*.css' {
   export default {} as any;
