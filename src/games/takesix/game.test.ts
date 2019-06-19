@@ -97,13 +97,13 @@ it('should add card to a deck', () => {
 
 it('should declare player 1 as the winner', () => {
   // set up a specific board scenario
-  const TictactoeCustomScenario = {
+  const TakesixCustomScenario = {
     ...TakeSixGame,
     seed: 'test',
   };
 
   const spec = {
-    game: TictactoeCustomScenario,
+    game: TakesixCustomScenario,
     multiplayer: { local: true },
   };
 
