@@ -2,6 +2,7 @@ import ChessThumbnail from './media/thumbnail.png';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameModeExtraInfoSlider } from '../../App/Game/GameModePicker';
 import { IGameDef } from '../../games';
+import instructions from 'raw-loader!./instructions.md';
 
 export const chessGameDef: IGameDef = {
   code: 'chess',
@@ -25,6 +26,7 @@ export const chessGameDef: IGameDef = {
  with a friend locally !`,
   instructions: {
     videoId: 'fKxG8KjH1Qg',
+    text: instructions,
   },
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
