@@ -16,6 +16,7 @@
     "prod:buildquietly": "run-s server:buildquietly webpack:buildquietly",
     "prod:build": "run-s server:build webpack:build",
     "pre": "yarn run precommit",
+    "precommit": "run-s precommit:format verify-lint buildtest",
     "server": "yarn run server:both",
     "server:bgio": "node server-build/server_bgio.js",
     "server:fbg": "node server-build/server_fbg.js",
