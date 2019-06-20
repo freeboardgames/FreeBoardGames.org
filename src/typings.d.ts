@@ -1,14 +1,17 @@
 declare module '*.png' {
-  export default '' as string;
+  const _default: string;
+  export default _default;
 }
 declare module '*.mp3' {
-  export default '' as string;
+  const _default: string;
+  export default _default;
 }
 declare module '*.md' {
   const content: string;
   export default content;
 }
 declare module '*.css' {
-  export default {} as any;
+  const _default: any;
+  export default _default;
 }
 declare module 'react-async-bootstrapper';
