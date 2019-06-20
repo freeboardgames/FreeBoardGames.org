@@ -13,7 +13,7 @@ export class GameInstructions extends React.Component<IGameInstructionsProps, {}
     const instructions = this.props.gameDef.instructions;
     let text = null;
     if (instructions.text) {
-      text = <ReactMarkdown source={instructions.text} />;
+      text = <ReactMarkdown linkTarget="_blank" source={instructions.text} />;
     }
 
     return (
