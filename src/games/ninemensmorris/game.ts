@@ -188,7 +188,7 @@ const GameConfig: IGameArgs = {
           .filter(point => point.piece !== null && point.piece.player === ctx.currentPlayer)
           .some(point => point.connections.some(connection => G.points[connection].piece === null))
       ) {
-        ctx.events.endTurn();
+        ctx.events.endGame({ winner: G.players.findIndex((_, i) => i.toString() !== ctx.currentPlayer).toString() });
       }
     },
     endGameIf: (G: IG) => {

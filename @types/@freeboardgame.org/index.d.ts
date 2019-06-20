@@ -71,7 +71,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   export class Events {
     endTurn: () => void;
     endPhase: () => void;
-    endGame: () => void;
+    endGame: (gameover?: any) => void;
   }
   interface IGameCtx {
     phase?: string;
