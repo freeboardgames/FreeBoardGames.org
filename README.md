@@ -11,6 +11,7 @@ Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
 - :heavy_check_mark: TakeSix! (by [JosefKuchar](https://github.com/JosefKuchar), similar to 6 Nimt)
 - :heavy_check_mark: Seabattle (similar to Battleship).
 - :heavy_check_mark: TicTacToe.
+- :heavy_check_mark: Nine Mens Morris (by [JosefKuchar](https://github.com/JosefKuchar))
 - :construction: Checkers
 
 Check the [game development kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/11)
