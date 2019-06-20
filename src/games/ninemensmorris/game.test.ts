@@ -35,7 +35,7 @@ it('should declare player 1 as the winner', () => {
   p1.moves.placePiece(14);
   p1.moves.removePiece(12);
   p0.moves.placePiece(6);
-  p0.moves.removePiece(14);
+  p0.moves.removePiece(14); // Force remove piece from mill
   p1.moves.placePiece(5);
   p0.moves.placePiece(1);
   p1.moves.placePiece(2);
