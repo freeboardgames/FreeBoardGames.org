@@ -4,3 +4,5 @@ Each player starts with sixteen pieces: eight pawns, two knights, two bishops, t
 
 The goal of the game is for each player to try and checkmate the king of the opponent.
 Checkmate is a game position in which a player's king is threatened with capture and there is no way to remove the threat. Checkmating the opponent wins the game.
+
+[Click here for each pawn's allowed moves.](https://www.chessusa.com/chess-rules.html)
