@@ -33,7 +33,7 @@ export class Field extends React.Component<IFieldProps, {}> {
           {this.getLines()}
         </g>
         <g fill="#cccccc">{this.getCircles()}</g>
-        <g>{this.getPoints()}</g>
+        <g>{this.getPieces()}</g>
       </svg>
     );
   }
@@ -52,7 +52,7 @@ export class Field extends React.Component<IFieldProps, {}> {
     return result;
   }
 
-  getPoints() {
+  getPieces() {
     const coords = this.getPointsCoords();
     return this.props.points.map((point, i) => {
       if (point.piece === null) {
@@ -65,7 +65,7 @@ export class Field extends React.Component<IFieldProps, {}> {
           key={point.piece.key}
           fill={point.piece.player === '0' ? 'white' : red[500]}
           onClick={this._selectPoint(i)}
-          className={css.Piece}
+          className={`${css.Piece} Piece`}
           style={{ transform: `translate(${coords[i].cx}px, ${coords[i].cy}px) scale(${scale})` }}
         />
       );
@@ -82,6 +82,7 @@ export class Field extends React.Component<IFieldProps, {}> {
           cy={p.cy}
           r={PIECE_RADIUS}
           onClick={this._selectPoint(p.key)}
+          className="ClickableCircle"
           key={`${p.key}clickable`}
           fill="none"
         />,
