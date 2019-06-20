@@ -47,9 +47,9 @@ function getMills(G: IG) {
   );
 }
 
-function isThereRemovablePiece(G: IG, ctx: IGameCtx, mills: string[]) {
+function isTherePieceOutsideMill(G: IG, ctx: IGameCtx) {
   let points = G.points.map(point => ({ data: point, safe: true }));
-  mills
+  G.mills
     .map((mill, index) => ({ owner: mill, index }))
     .filter(mill => mill.owner !== null && mill.owner !== ctx.playerID)
     .forEach(mill =>
@@ -78,13 +78,10 @@ export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string 
   };
 
   const newMills = getMills(newG);
-
   return {
     ...newG,
     mills: newMills,
-    haveToRemovePiece:
-      newMills.filter(mill => mill === ctx.playerID).length > G.mills.filter(mill => mill === ctx.playerID).length &&
-      isThereRemovablePiece(newG, ctx, newMills),
+    haveToRemovePiece: G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID),
   };
 }
 
@@ -116,13 +113,10 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
   };
 
   const newMills = getMills(newG);
-
   return {
     ...newG,
     mills: newMills,
-    haveToRemovePiece:
-      G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID) &&
-      isThereRemovablePiece(newG, ctx, newMills),
+    haveToRemovePiece: G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID),
   };
 }
 
@@ -131,17 +125,18 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
     !G.haveToRemovePiece || // Check if player is allowed
     G.points[position].piece === null || // Check if piece exists
     G.points[position].piece.player === ctx.playerID || // Check if doesn't player own this piece
-    G.mills
+    (G.mills
       .map((mill, index) => ({ owner: mill, index }))
       .filter(mill => mill.owner !== null && mill.owner !== ctx.playerID)
-      .some(mill => millsPositions[mill.index].some(pos => pos === position))
+      .some(mill => millsPositions[mill.index].some(pos => pos === position)) &&
+      isTherePieceOutsideMill(G, ctx))
   ) {
     return INVALID_MOVE;
   }
 
   const secondPlayerId = G.players.findIndex((_, i) => ctx.playerID !== i.toString());
 
-  return {
+  const newG = {
     ...G,
     points: Object.values({
       ...G.points,
@@ -157,6 +152,11 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
       },
     }),
     haveToRemovePiece: false,
+  };
+
+  return {
+    ...newG,
+    mills: getMills(newG),
   };
 }
 
@@ -188,7 +188,7 @@ const GameConfig: IGameArgs = {
           .filter(point => point.piece !== null && point.piece.player === ctx.currentPlayer)
           .some(point => point.connections.some(connection => G.points[connection].piece === null))
       ) {
-        ctx.events.endTurn();
+        ctx.events.endGame({ winner: G.players.findIndex((_, i) => i.toString() !== ctx.currentPlayer).toString() });
       }
     },
     endGameIf: (G: IG) => {
