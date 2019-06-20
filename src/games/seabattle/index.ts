@@ -1,6 +1,7 @@
 import SeabattleThumbnail from './media/thumbnail.png';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameDef } from '../../games';
+import instructions from './instructions.md';
 
 export const seabattleGameDef: IGameDef = {
   code: 'seabattle',
@@ -15,6 +16,7 @@ export const seabattleGameDef: IGameDef = {
  or multi-player against a friend online.`,
   instructions: {
     videoId: 'q0qpQ8doUp8',
+    text: instructions,
   },
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
