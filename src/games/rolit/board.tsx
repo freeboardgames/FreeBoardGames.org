@@ -6,11 +6,13 @@ import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IG, IScore } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard } from './Scoreboard';
+import { GameMode } from '../../App/Game/GameModePicker';
 
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import green from '@material-ui/core/colors/green';
 import blue from '@material-ui/core/colors/blue';
+import Typography from '@material-ui/core/Typography';
 
 export interface ICoords {
   x: number;
@@ -55,6 +57,35 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
+  isLocalGame() {
+    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
+  }
+
+  _getStatus() {
+    if (!this.props.gameArgs) {
+      return;
+    }
+
+    let message = '';
+    if (this.isLocalGame()) {
+      let player;
+      switch (this.props.ctx.currentPlayer) {
+        case '0': {
+          player = 'Red';
+          break;
+        }
+        case '1': {
+          player = 'Green';
+          break;
+        }
+      }
+      message = `${player}'s turn`;
+    } else if (this.props.ctx.currentPlayer !== this.props.playerID && !this.isLocalGame()) {
+      message = 'Waiting for opponent...';
+    }
+    return message;
+  }
+
   render() {
     if (this.props.ctx.gameover) {
       return (
@@ -72,6 +103,9 @@ export class Board extends React.Component<IBoardProps, {}> {
         : [red[500], green[500], yellow[500], blue[500]];
     return (
       <GameLayout>
+        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginTop: '16px' }}>
+          {this._getStatus()}
+        </Typography>
         <Grid rows={8} cols={8} onClick={this._onClick}>
           {this.props.G.points.map((point, i) => (
             <Token
