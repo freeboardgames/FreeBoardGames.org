@@ -9,13 +9,14 @@ import About from '../About/AboutAsync';
 import getMessagePage from './MessagePage';
 import ReactGA from 'react-ga';
 import { getPageMetadata } from '../metadata';
-import { registerLang, setCurrentLocale } from '@freeboardgame.org/i18n';
-import translations from './translations';
 import SSRHelper from './Helpers/SSRHelper';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import ScrollToTop from './ScrollToTop';
+import { addLocale, useLocale } from 'ttag';
 
 ReactGA.initialize('UA-105391878-1');
+
+const SUPPORTED_LOCALES = ['en', 'cs'];
 
 const theme = createMuiTheme({
   typography: {
@@ -52,20 +53,17 @@ const withGA = (WrappedComponent: any) => {
 const withI18n = (WrappedComponent: any) => {
   class Wrapper extends React.Component<any, {}> {
     render() {
-      const locale = this.props.match.params.locale;
-      if (locale === 'en' || (locale && !(locale in translations))) {
-        const ErrorPage = withWrappers(getMessagePage('error', 'messagePage.invalidLocale'));
+      let locale = this.props.match.params.locale;
+      if (locale === 'en' || (locale && !(locale in SUPPORTED_LOCALES))) {
+        const ErrorPage = withWrappers(getMessagePage('error', 'Invalid Locale'));
         // pass newProps instead of this.props to avoid an infinite-loop (because of this.props.match.params.locale)
         const newProps = { ...this.props, match: { params: { locale: '' } } };
         return <ErrorPage {...newProps} />;
       }
-      // set language based on URL, default to English
-      const lang = locale || 'en';
-      registerLang('en', translations.en);
-      if (lang !== 'en') {
-        registerLang(lang, translations[lang]);
-      }
-      setCurrentLocale(lang);
+      locale = locale || 'en';
+      const translationsObj = require(`../../i18n/${locale}.po.json`);
+      addLocale(locale, translationsObj);
+      useLocale(locale);
       return <WrappedComponent {...this.props} />;
     }
   }
