@@ -66,7 +66,10 @@ export class Board extends React.Component<IBoardProps, {}> {
       );
     }
 
-    const colors = [red[500], yellow[500], green[500], blue[500]];
+    const colors =
+      this.props.ctx.numPlayers !== 2
+        ? [red[500], yellow[500], green[500], blue[500]]
+        : [red[500], green[500], yellow[500], blue[500]];
     return (
       <GameLayout>
         <Grid rows={8} cols={8} onClick={this._onClick}>

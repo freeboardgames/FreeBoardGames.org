@@ -134,11 +134,16 @@ const GameConfig: IGameArgs = {
   moves: {
     placePiece,
   },
-  setup: (): IG => {
+  setup: (ctx): IG => {
     let points = Array(64).fill(null);
+    if (ctx.numPlayers === 2) {
+      points[toPosition(4, 4)] = '1';
+      points[toPosition(4, 3)] = '2';
+    } else {
+      points[toPosition(4, 3)] = '1';
+      points[toPosition(4, 4)] = '2';
+    }
     points[toPosition(3, 3)] = '0';
-    points[toPosition(4, 3)] = '1';
-    points[toPosition(4, 4)] = '2';
     points[toPosition(3, 4)] = '3';
     return {
       points,
