@@ -3,8 +3,9 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG } from './game';
+import { IG, IScore } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { Scoreboard } from './Scoreboard';
 
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
@@ -29,10 +30,42 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   onClick(coords: ICoords) {
     this.props.moves.placePiece(coords.x, coords.y);
-    console.log(coords);
+  }
+
+  _getGameOver() {
+    const scoreboard: IScore[] = this.props.ctx.gameover.scoreboard;
+    if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
+      return 'draw';
+    } else {
+      if (scoreboard[0].score === scoreboard[this.props.playerID as any].score) {
+        return 'you won';
+      } else {
+        return 'you lost';
+      }
+    }
+  }
+
+  _getScoreBoard() {
+    return (
+      <Scoreboard
+        scoreboard={this.props.ctx.gameover.scoreboard}
+        playerID={this.props.playerID}
+        players={this.props.gameArgs.players}
+      />
+    );
   }
 
   render() {
+    if (this.props.ctx.gameover) {
+      return (
+        <GameLayout
+          gameOver={this._getGameOver()}
+          extraCardContent={this._getScoreBoard()}
+          gameArgs={this.props.gameArgs}
+        />
+      );
+    }
+
     const colors = [red[500], yellow[500], green[500], blue[500]];
     return (
       <GameLayout>
