@@ -28,7 +28,7 @@ const BoardTest = (props: any) => (
 );
 
 function getPosition(x: number, y: number) {
-  return 64 + 8 * y + x;
+  return 8 * y + x;
 }
 
 test('round placing pieces', () => {

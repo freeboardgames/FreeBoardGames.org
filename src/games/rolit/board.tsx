@@ -7,16 +7,23 @@ import { IG, IScore } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
+import css from './Board.css';
 
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
-import green from '@material-ui/core/colors/green';
+import green from '@material-ui/core/colors/lightGreen';
 import blue from '@material-ui/core/colors/blue';
+import grey from '@material-ui/core/colors/grey';
+
 import Typography from '@material-ui/core/Typography';
 
 export interface ICoords {
   x: number;
   y: number;
+}
+
+export interface IColorMap {
+  [key: string]: string;
 }
 
 interface IBoardProps {
@@ -80,6 +87,8 @@ export class Board extends React.Component<IBoardProps, {}> {
         }
       }
       message = `${player}'s turn`;
+    } else if (this.props.ctx.currentPlayer === this.props.playerID && !this.isLocalGame()) {
+      message = 'Place piece';
     } else if (this.props.ctx.currentPlayer !== this.props.playerID && !this.isLocalGame()) {
       message = 'Waiting for opponent...';
     }
@@ -101,21 +110,39 @@ export class Board extends React.Component<IBoardProps, {}> {
       this.props.ctx.numPlayers !== 2
         ? [red[500], yellow[500], green[500], blue[500]]
         : [red[500], green[500], yellow[500], blue[500]];
+    const colorMap = {} as IColorMap;
+    for (let x = 0; x < 8; x++) {
+      for (let y = 0; y < 8; y++) {
+        const key = `${x},${y}`;
+        let color = grey[800];
+        if ((x + y) % 2 === 0) {
+          color = grey[900];
+        }
+        colorMap[key] = color;
+      }
+    }
+
     return (
       <GameLayout>
-        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginTop: '16px' }}>
+        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
           {this._getStatus()}
         </Typography>
-        <Grid rows={8} cols={8} onClick={this._onClick}>
-          {this.props.G.points.map((point, i) => (
-            <Token
-              animate={false}
-              key={i}
-              x={i % 8}
-              y={Math.floor(i / 8)}
-              style={{ fill: point === null ? 'black' : colors[point as any], transition: 'fill .5s' }}
-            ></Token>
-          ))}
+        <Grid rows={8} cols={8} onClick={this._onClick} colorMap={colorMap}>
+          {this.props.G.points
+            .map((point, i) => ({ player: point, position: i }))
+            .filter(point => point.player !== null)
+            .map(point => (
+              <Token animate={false} key={point.position} x={point.position % 8} y={Math.floor(point.position / 8)}>
+                <rect
+                  width="0.8"
+                  height="0.8"
+                  x="0.1"
+                  y="0.1"
+                  style={{ fill: colors[point.player as any] }}
+                  className={css.Piece}
+                ></rect>
+              </Token>
+            ))}
         </Grid>
       </GameLayout>
     );
