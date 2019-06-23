@@ -62,7 +62,7 @@ Explaining what is going on here:
 - _descriptionTag_: HTML tag description of the game, specially important for crawlers that can bring organic traffic to your game.
 - _instructions_:
   - `videoId` is the YouTube video id with a tutorial for the game.
-  - `text` allows you import a markdown with written instructions. Also important for crawlers.
+  - `text` allows you to import a markdown with written instructions. Also important for web search crawlers.
 - _config_: This is a function that returns your boardgame.io config. It needs to be a separate file because this will only load all extra resources needed (UI, game logic, etc) if the user wants to play your game.
 
 In `src/games/checkers/media/thumbnail.png`, place:
@@ -93,7 +93,7 @@ const config: IGameConfig = {
 export default config;
 ```
 
-These two pieces is where the bulk of the game code will live. Let's use placeholders for now so you can see how everything ties together. In `src/games/checkers/board.tsx`:
+These two pieces are where the bulk of the game code will live. Let's use placeholders for now so you can see how everything ties together. In `src/games/checkers/board.tsx`:
 
 ```typescript
 import * as React from 'react';
@@ -151,7 +151,7 @@ export const CheckersGame = Game({
 
 ## Finishing everything
 
-Now you have a skeleton of a game in your new folder, but you still need to add this game to the home page and to the server. This is easily done with three lines of code, add to the first lines of `src/games/index.ts`:
+Now you have a skeleton of a game in your new folder, but you still need to add the new game to the home page and to the server. This is easily done with three lines of code. Add the following to the first lines of `src/games/index.ts`:
 
 ```typescript
 import { checkersGameDef } from './checkers';
@@ -161,6 +161,6 @@ Then, in the same file, under `GAMES_MAP`, add `checkers: checkersGameDef,` and 
 
 Done! You can run now `yarn run dev` and you should be able to see your new game on the home page! It will have two game modes, one for playing with friends locally and another for playing with friends over the internet. Because we have `debug: true` in `config.ts`, you will be able to see the boardgame.io debug menu.
 
-There are great boardgame.io [tutorials and documentation](https://boardgame.io/#/tutorial), you can follow any of them to get started on how to create your first game. Also, feel free to look into other FBG games and see how they are implemented. Finally, if you get stuck with some issue, send a message to our comunity, we will do our best to help you out :).
+There are great boardgame.io [tutorials and documentation](https://boardgame.io/#/tutorial); you can follow any of them to get started on how to create your first game. Also, feel free to look into other FBG games and see how they are implemented. Finally, if you get stuck with some issue, send a message to our comunity!  We will do our best to help you out :).
 
-When you have your game somewhat working, feel free to open a PR to our github repo, even if it is still work in progress, just add "WIP" to the title. Wwe can help you out and review your implementation when you have it working.
+When you have your game somewhat working, feel free to open a PR to our GitHub repo. If it is still a work-in-progress, just add "WIP" to the title. We can help you out and review your implementation when you have it working.
