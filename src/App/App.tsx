@@ -78,7 +78,7 @@ const BASEPATH = '/:locale([A-Za-z]{2})?';
 
 class Main extends React.Component<{}, {}> {
   render() {
-    if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+    if (!SSRHelper.isSSR()) {
       document.title = getPageMetadata(window.location.pathname).title;
     }
     return (
