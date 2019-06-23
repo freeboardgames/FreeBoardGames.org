@@ -99,7 +99,6 @@ These two pieces is where the bulk of the game code will live. Let's use placeho
 import * as React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
-import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IG } from './game';
 
@@ -138,7 +137,7 @@ export const CheckersGame = Game({
   setup: () => ({ count: 0 }),
 
   moves: {
-    plusone(G: IG, ctx: IGameCtx) {
+    plusone(G: IG) {
       return { count: G.count + 1 };
     },
   },
