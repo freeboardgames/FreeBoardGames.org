@@ -6,7 +6,7 @@ import FreeBoardGameBar from './FreeBoardGameBar';
 import SvgError from './media/SvgError';
 import Typography from '@material-ui/core/Typography';
 import { Status } from 'rrc';
-import { trans } from '@freeboardgame.org/i18n';
+import { t } from 'ttag';
 
 interface IMessageState {
   linkHidden: boolean;
@@ -63,10 +63,11 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
       icon = <CircularProgress />;
     }
     if (!this.state.linkHidden) {
+      const goHomeText = this.props.message === 'Invalid Locale' ? 'Go Home' : t`messagePage.goHome`;
       linkHome = (
         <Button href="/" variant="outlined" style={{ margin: '8px' }}>
           <HomeIcon style={{ marginRight: '8px' }} />
-          {trans('messagePage.goHome')}
+          {goHomeText}
         </Button>
       );
     }
