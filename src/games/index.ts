@@ -4,6 +4,7 @@ import { seabattleGameDef } from './seabattle';
 import { tictactoeGameDef } from './tictactoe';
 import { takesixGameDef } from './takesix';
 import { ninemensmorrisGameDef } from './ninemensmorris';
+import { checkersGameDef } from './checkers';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
@@ -12,6 +13,7 @@ export const GAMES_MAP: IGameDefMap = {
   tictactoe: tictactoeGameDef,
   takesix: takesixGameDef,
   ninemensmorris: ninemensmorrisGameDef,
+  checkers: checkersGameDef,
 };
 
 export const GAMES_LIST: IGameDef[] = [
@@ -19,6 +21,7 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.seabattle,
   GAMES_MAP.ninemensmorris,
   GAMES_MAP.takesix,
+  GAMES_MAP.checkers,
   GAMES_MAP.tictactoe,
 ];
 
