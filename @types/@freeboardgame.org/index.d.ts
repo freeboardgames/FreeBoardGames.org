@@ -202,4 +202,3 @@ declare module '@freeboardgame.org/boardgame.io/server' {
 }
 
 declare module '@freeboardgame.org/boardgame.io/ai';
-declare module '@freeboardgame.org/i18n';

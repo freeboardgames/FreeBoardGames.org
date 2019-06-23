@@ -12,14 +12,6 @@ enzyme.configure({ adapter: new Adapter() });
 // Google analytics mock
 jest.mock('react-ga');
 
-// mock i18n
-// trans('examplepage.header') will render in tests as "examplepage.header"
-jest.mock('@freeboardgame.org/i18n', () => ({
-  trans: jest.fn(attr => attr),
-  registerLang: jest.fn(),
-  setCurrentLocale: jest.fn()
-}))
-
 jest.mock('copy-to-clipboard', () => {
   global.copyClipboardMock = jest.fn();
   return global.copyClipboardMock;
