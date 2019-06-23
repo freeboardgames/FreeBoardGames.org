@@ -85,6 +85,6 @@ describe('App', () => {
     );
     await asyncBootstrapper(app);
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
-    expect(ssrHtml).toContain('about.header');
+    expect(ssrHtml).toContain('About FreeBoardGame.org');
   });
 });

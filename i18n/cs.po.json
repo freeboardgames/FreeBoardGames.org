@@ -1,0 +1,30 @@
+{
+  "charset": "utf-8",
+  "headers": {
+    "content-type": "text/plain; charset=utf-8",
+    "plural-forms": "nplurals = 3; plural = (n == 1 ? 0 : (n >= 2 && n <= 4) ? 1 : 2);",
+    "language": "cs",
+    "mime-version": "1.0",
+    "content-transfer-encoding": "8bit"
+  },
+  "translations": {
+    "": {
+      "": {
+        "msgid": "",
+        "msgstr": [
+          "Content-Type: text/plain; charset=utf-8\nPlural-Forms: nplurals = 3; plural = (n == 1 ? 0 : (n >= 2 && n <= 4) ? 1 : 2);\nLanguage: cs\nmime-version: 1.0\nContent-Transfer-Encoding: 8bit\n"
+        ]
+      },
+      "messagePage.goHome": { "msgid": "messagePage.goHome", "msgstr": ["Domů"] },
+      "about.header": { "msgid": "about.header", "msgstr": ["Informace o FreeBoardGame.org"] },
+      "about.p": {
+        "msgid": "about.p",
+        "msgstr": [
+          "FreeBoardGame.org je bezplatná (svobodná) platforma pro deskové hry přizpůsobená pro mobilní telefony. Její cíl je popularizovat deskové hry a umožnit jejich snadné hraní s přáteli, dokonce i z daleka."
+        ]
+      },
+      "about.contributors": { "msgid": "about.contributors", "msgstr": ["Přispěvatelé"] },
+      "about.credits": { "msgid": "about.credits", "msgstr": ["Kredity"] }
+    }
+  }
+}

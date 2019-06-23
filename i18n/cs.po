@@ -1,0 +1,31 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"Plural-Forms: nplurals = 3; plural = (n == 1 ? 0 : (n >= 2 && n <= 4) ? 1 : "
+"2);\n"
+"Language: cs\n"
+"mime-version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/App/MessagePageClass.tsx:66
+msgid "messagePage.goHome"
+msgstr "Domů"
+
+#: src/About/About.tsx:28
+msgid "about.header"
+msgstr "Informace o FreeBoardGame.org"
+
+#: src/About/About.tsx:30
+msgid "about.p"
+msgstr ""
+"FreeBoardGame.org je bezplatná (svobodná) platforma pro deskové hry "
+"přizpůsobená pro mobilní telefony. Její cíl je popularizovat deskové hry a "
+"umožnit jejich snadné hraní s přáteli, dokonce i z daleka."
+
+#: src/About/About.tsx:41
+msgid "about.contributors"
+msgstr "Přispěvatelé"
+
+#: src/About/About.tsx:79
+msgid "about.credits"
+msgstr "Kredity"

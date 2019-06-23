@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { trans } from '@freeboardgame.org/i18n';
+import { t } from 'ttag';
 
 class About extends React.Component<{}, {}> {
   render() {
@@ -25,9 +25,9 @@ class About extends React.Component<{}, {}> {
       <Card style={{ marginTop: '16px' }}>
         <CardContent>
           <Typography variant="h5" component="h2">
-            {trans('about.header')}
+            {t`about.header`}
           </Typography>
-          <Typography component="p">{trans('about.p')}</Typography>
+          <Typography component="p">{t`about.p`}</Typography>
         </CardContent>
       </Card>
     );
@@ -38,7 +38,7 @@ class About extends React.Component<{}, {}> {
       <Card style={{ marginTop: '16px' }}>
         <CardContent>
           <Typography variant="h5" component="h2">
-            {trans('about.contributors')}
+            {t`about.contributors`}
           </Typography>
           <List>
             <ListItem>
@@ -76,7 +76,7 @@ class About extends React.Component<{}, {}> {
       <Card style={{ marginTop: '16px' }}>
         <CardContent>
           <Typography variant="h5" component="h2">
-            {trans('about.credits')}
+            {t`about.credits`}
           </Typography>
           <List>
             <ListItem>
