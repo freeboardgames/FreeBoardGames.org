@@ -16,3 +16,4 @@ coverage
 .env
 .idea/
 .vscode/
+i18n/*.json
