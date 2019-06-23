@@ -10,7 +10,7 @@
     "dev": "run-s server:build dev:watch",
     "dev:watch": "webpack-dev-server --progress --config webpack.dev.js",
     "fix": "yarn run lint",
-    "i18n:apply": "./i18n/applyi18n.bash",
+    "i18n:apply": "./i18n/applyi18n",
     "i18n:update": "./i18n/updatei18ntemplates.bash",
     "precommit:format": "pretty-quick --staged",
     "lint": "eslint --fix --ext .ts,.tsx src/ @types/",
