@@ -122,7 +122,7 @@ function getScoreBoard(G: IG, ctx: IGameCtx) {
 }
 
 const GameConfig: IGameArgs = {
-  name: 'rolit',
+  name: 'reversi',
   flow: {
     movesPerTurn: 1,
     endGameIf: (G: IG, ctx) => {
