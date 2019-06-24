@@ -6,7 +6,7 @@ import ReactDOMServer from 'react-dom/server';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { StaticRouter } from 'react-router-dom';
-import { getPageMetadata, IPageMetadata } from './metadata';
+import { getPageMetadata, getBreadcrumbs, IPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
 import Koa from 'koa';
@@ -21,7 +21,7 @@ const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *', 'Disallow: /', ''].join('\n');
 
 const template = fs.readFileSync('./dist/layout.html', 'utf8');
 
-function renderHtml(layout: string, metadata: IPageMetadata, reactHtml: string) {
+function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata, reactHtml: string) {
   let result = layout;
 
   result = result.replace('<title>FreeBoardGame.org</title>', `<title>${metadata.title}</title>`);
@@ -39,6 +39,12 @@ function renderHtml(layout: string, metadata: IPageMetadata, reactHtml: string) 
     result = result.replace('<meta name="robots" content="noindex">\n', '');
   }
 
+  if (breadcrumbs) {
+    result = result.replace(
+      '<script type="application/ld+json">',
+      '<script type="application/ld+json">\n' + breadcrumbs,
+    );
+  }
   result = result.replace('<div id="root"></div>', `<div id="root">${reactHtml}</div>`);
   return result;
 }
@@ -46,6 +52,7 @@ function renderHtml(layout: string, metadata: IPageMetadata, reactHtml: string) 
 const renderSite = async (url: string) => {
   const asyncContext = createAsyncContext();
   const metadata = getPageMetadata(url);
+  const breadcrumbs = getBreadcrumbs();
   const context = {};
   const app = (
     <AsyncComponentProvider asyncContext={asyncContext}>
@@ -58,7 +65,7 @@ const renderSite = async (url: string) => {
   const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
   return {
     status: (context as any).status,
-    render: renderHtml(template, metadata, reactHtml),
+    render: renderHtml(template, breadcrumbs, metadata, reactHtml),
   };
 };
 
