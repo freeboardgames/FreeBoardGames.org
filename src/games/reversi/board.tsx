@@ -46,7 +46,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
       return 'draw';
     } else {
-      if (scoreboard[0].score === scoreboard[this.props.playerID as any].score) {
+      if (scoreboard[0].score === scoreboard.find(rank => rank.playerID === this.props.playerID).score) {
         return 'you won';
       } else {
         return 'you lost';
