@@ -23,7 +23,7 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
             <TableRow>
               <TableCell>Rank</TableCell>
               <TableCell>Player</TableCell>
-              <TableCell>Penalty points</TableCell>
+              <TableCell>Score points</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
