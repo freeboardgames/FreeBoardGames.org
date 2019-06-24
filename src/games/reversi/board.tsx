@@ -110,17 +110,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       this.props.ctx.numPlayers !== 2
         ? [red[500], yellow[500], green[500], blue[500]]
         : [red[500], green[500], yellow[500], blue[500]];
-    const colorMap = {} as IColorMap;
-    for (let x = 0; x < 8; x++) {
-      for (let y = 0; y < 8; y++) {
-        const key = `${x},${y}`;
-        let color = grey[800];
-        if ((x + y) % 2 === 0) {
-          color = grey[900];
-        }
-        colorMap[key] = color;
-      }
-    }
+    const colorMap = this.getColorMap();
 
     return (
       <GameLayout>
@@ -146,5 +136,20 @@ export class Board extends React.Component<IBoardProps, {}> {
         </Grid>
       </GameLayout>
     );
+  }
+
+  getColorMap(): IColorMap {
+    const colorMap = {} as IColorMap;
+    for (let x = 0; x < 8; x++) {
+      for (let y = 0; y < 8; y++) {
+        const key = `${x},${y}`;
+        let color = grey[800];
+        if ((x + y) % 2 === 0) {
+          color = grey[900];
+        }
+        colorMap[key] = color;
+      }
+    }
+    return colorMap;
   }
 }
