@@ -38,9 +38,12 @@ function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata
   if (!metadata.noindex) {
     result = result.replace('<meta name="robots" content="noindex">\n', '');
   }
-  
+
   if (breadcrumbs) {
-    result = result.replace('<script type="application/ld+json">', '<script type="application/ld+json">\n'+breadcrumbs);
+    result = result.replace(
+      '<script type="application/ld+json">',
+      '<script type="application/ld+json">\n' + breadcrumbs,
+    );
   }
   result = result.replace('<div id="root"></div>', `<div id="root">${reactHtml}</div>`);
   return result;
