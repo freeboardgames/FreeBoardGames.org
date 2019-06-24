@@ -3,15 +3,18 @@
 
 FOSS platform for publishing your [boardgame.io](https://boardgame.io) games. We curate high quality implementations of board games and optimize your game for delivery so you can quickly reach hundreds of players.
 
+Check our tutorial on how to [publish your boardgame.io game in FBG!](https://freeboardgame.org/blog)
+
 Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
 
 ## Games
 
 - :heavy_check_mark: Chess.
 - :heavy_check_mark: TakeSix! (by [JosefKuchar](https://github.com/JosefKuchar), similar to 6 Nimt)
+- :heavy_check_mark: Nine Mens Morris (by [JosefKuchar](https://github.com/JosefKuchar))
+- :heavy_check_mark: Reversi (by [JosefKuchar](https://github.com/JosefKuchar), similar to Rollit and Othelo)
 - :heavy_check_mark: Seabattle (similar to Battleship).
 - :heavy_check_mark: TicTacToe.
-- :heavy_check_mark: Nine Mens Morris (by [JosefKuchar](https://github.com/JosefKuchar))
 - :construction: Checkers
 
 Check the [game development kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/11)
