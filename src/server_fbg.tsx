@@ -14,6 +14,8 @@ const server = new Koa();
 
 import App from './App/App';
 
+const BREADCRUMBS_ENABLED = false;
+
 const HOST = '0.0.0.0';
 const PORT = Number(process.env.FBG_PORT) || 8000;
 
@@ -39,7 +41,7 @@ function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata
     result = result.replace('<meta name="robots" content="noindex">\n', '');
   }
 
-  if (breadcrumbs) {
+  if (BREADCRUMBS_ENABLED && breadcrumbs) {
     result = result.replace(
       '<script type="application/ld+json">',
       '<script type="application/ld+json">\n' + breadcrumbs,
