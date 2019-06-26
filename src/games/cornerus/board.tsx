@@ -3,7 +3,7 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IScore } from './game';
+import { IG, IScore, IPiecePosition, rotatePiece } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 //import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
@@ -16,6 +16,8 @@ import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
 
 import Typography from '@material-ui/core/Typography';
+
+import { pieces } from './pieces';
 
 export interface ICoords {
   x: number;
@@ -34,11 +36,35 @@ interface IBoardProps {
   gameArgs?: IGameArgs;
 }
 
-export class Board extends React.Component<IBoardProps, {}> {
-  _onClick = this.onClick.bind(this);
+interface IBoardState {
+  piecePosition: IPiecePosition;
+  piece: boolean[];
+}
 
-  onClick(coords: ICoords) {
-    this.props.moves.placePiece(coords.x, coords.y);
+export class Board extends React.Component<IBoardProps, IBoardState> {
+  constructor(props: IBoardProps) {
+    super(props);
+    this.state = {
+      piecePosition: { x: 10, y: 10, rotation: 0, flipX: false, flipY: false },
+      piece: pieces[9],
+    };
+  }
+
+  _placePiece = this.placePiece.bind(this);
+
+  placePiece() {
+    this.props.moves.placePiece(9, this.state.piecePosition);
+  }
+
+  rotate(n: number) {
+    console.log(n);
+    /*
+    let piece = this.state.piece;
+    let new;
+    for (let i = 0; i < n; n++) {
+      piece = rotatePiece(piece)
+    }*/
+    //this.setState({ ...this.state, piecePosition: { ...this.state.piecePosition, rotation: (this.state.piecePosition.rotation + n) % 4 }, piece });
   }
   /*
     _getGameOver() {
@@ -95,6 +121,19 @@ export class Board extends React.Component<IBoardProps, {}> {
     return message;
   }
 
+  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
+    const x = Math.round(coords.x);
+    const y = Math.round(coords.y);
+    const originalX = coords.originalX;
+    const originalY = coords.originalY;
+    console.log(x, y);
+    this.setState({ ...this.state, piecePosition: { ...this.state.piecePosition, x, y } });
+    /*
+    if (x < 0 || y < 0 || x >= 10 || y >= 10) {
+      return;
+    }*/
+  };
+
   render() {
     /*
         if (this.props.ctx.gameover) {
@@ -114,7 +153,39 @@ export class Board extends React.Component<IBoardProps, {}> {
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
           {this._getStatus()}
         </Typography>
-        <Grid rows={20} cols={20} onClick={this._onClick} colorMap={colorMap}></Grid>
+        <Grid rows={20} cols={20} onClick={() => null} colorMap={colorMap}>
+          {this.props.G.board
+            .map((square, index) => ({ square, index }))
+            .filter(piece => piece.square !== null)
+            .map(piece => (
+              <Token x={piece.index % 20} y={Math.floor(piece.index / 20)} key={piece.index}></Token>
+            ))}
+          <Token
+            x={this.state.piecePosition.x}
+            y={this.state.piecePosition.y}
+            draggable={true}
+            shouldDrag={() => true}
+            onDrop={this._onDrop}
+          >
+            <g fill={blue[500]} opacity={0.8}>
+              {this.state.piece
+                .map((square, index) => ({ square, index }))
+                .filter(piece => piece.square)
+                .map(piece => (
+                  <rect
+                    x={piece.index % Math.sqrt(pieces[9].length)}
+                    y={Math.floor(piece.index / Math.sqrt(pieces[9].length))}
+                    width="1"
+                    height="1"
+                    key={piece.index}
+                  ></rect>
+                ))}
+            </g>
+          </Token>
+        </Grid>
+        <button onClick={this._placePiece}>Place</button>
+        <button onClick={() => this.rotate(1)}>Rotate left</button>
+        <button onClick={() => this.rotate(3)}>Rotate right</button>
       </GameLayout>
     );
   }
