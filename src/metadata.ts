@@ -38,7 +38,7 @@ Compete against your online friends or play locally. Free and open-source softwa
 
 function getGamesPageMetadata(): IPageMetadata[] {
   return GAMES_LIST.map(gameDef => ({
-    name: gameDef.name,
+    name: `Play ${gameDef.name}`,
     title: TITLE_PREFIX + `Play Free ${gameDef.name} Online`,
     description: gameDef.descriptionTag,
     url: new RegExp(`^/g/${gameDef.code}$`, 'i'),
@@ -56,24 +56,16 @@ export const getPageMetadata = (url: string): IPageMetadata => {
   return metadata;
 };
 
-export const getBreadcrumbs = (): string => {
-  const allPagesMetadata = [...PAGES_METADATA, ...getGamesPageMetadata()];
-  const pageElements = allPagesMetadata
-    .filter((pageMetadata: IPageMetadata) => {
-      return pageMetadata.name && pageMetadata.link; // check if we have both .name and .link
-    })
-    .map((pageMetadata: IPageMetadata, index: number) => {
-      return {
-        '@type': 'ListItem',
-        position: index + 1,
-        name: pageMetadata.name,
-        item: pageMetadata.link,
-      };
-    });
-  const breadcrumbList = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: pageElements,
-  };
-  return JSON.stringify(breadcrumbList);
+export const getBreadcrumbs = (url: string): string => {
+  if (url === '/') {
+    const gamePagesMetadata = getGamesPageMetadata();
+    const pageElements = gamePagesMetadata
+      .filter((pageMetadata: IPageMetadata) => {
+        return pageMetadata.name && pageMetadata.link; // check if we have both .name and .link
+      })
+      .map((pageMetadata: IPageMetadata) => {
+        return `<li itemprop="name"><a itemprop="url" href="${pageMetadata.link}">${pageMetadata.name}</a></li>`;
+      });
+    return pageElements.join('\n');
+  }
 };

@@ -14,8 +14,6 @@ const server = new Koa();
 
 import App from './App/App';
 
-const BREADCRUMBS_ENABLED = false;
-
 const HOST = '0.0.0.0';
 const PORT = Number(process.env.FBG_PORT) || 8000;
 
@@ -41,11 +39,13 @@ function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata
     result = result.replace('<meta name="robots" content="noindex">\n', '');
   }
 
-  if (BREADCRUMBS_ENABLED && breadcrumbs) {
+  if (breadcrumbs) {
     result = result.replace(
-      '<script type="application/ld+json">',
-      '<script type="application/ld+json">\n' + breadcrumbs,
+      '<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement"></ul>',
+      '<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement">\n' + breadcrumbs + '\n</ul>',
     );
+  } else {
+    result = result.replace('<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement"></ul>', '');
   }
   result = result.replace('<div id="root"></div>', `<div id="root">${reactHtml}</div>`);
   return result;
@@ -54,7 +54,7 @@ function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata
 const renderSite = async (url: string) => {
   const asyncContext = createAsyncContext();
   const metadata = getPageMetadata(url);
-  const breadcrumbs = getBreadcrumbs();
+  const breadcrumbs = getBreadcrumbs(url);
   const context = {};
   const app = (
     <AsyncComponentProvider asyncContext={asyncContext}>
