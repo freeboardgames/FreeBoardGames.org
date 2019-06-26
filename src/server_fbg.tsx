@@ -41,11 +41,14 @@ function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata
 
   if (breadcrumbs) {
     result = result.replace(
-      '<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement"></ul>',
-      '<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement">\n' + breadcrumbs + '\n</ul>',
+      '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement"></nav>',
+      '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement">\n' + breadcrumbs + '\n</nav>',
     );
   } else {
-    result = result.replace('<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement"></ul>', '');
+    result = result.replace(
+      '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement"></nav>',
+      '',
+    );
   }
   result = result.replace('<div id="root"></div>', `<div id="root">${reactHtml}</div>`);
   return result;
