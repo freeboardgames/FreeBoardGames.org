@@ -2,6 +2,7 @@ import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boar
 import Point from './point';
 import Player from './player';
 import Piece from './piece';
+import produce from 'immer';
 
 export enum Phase {
   Place = 'Place',
@@ -60,29 +61,25 @@ function isTherePieceOutsideMill(G: IG, ctx: IGameCtx) {
   return points.some(point => point.data.piece !== null && point.safe && point.data.piece.player !== ctx.playerID);
 }
 
+function calculateMills(G: IG, ctx: IGameCtx) {
+  const newMills = getMills(G);
+  return produce(G, draft => {
+    draft.mills = newMills;
+    draft.haveToRemovePiece = G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID);
+  });
+}
+
 export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string {
   if (G.points[position].piece !== null || G.haveToRemovePiece) {
     return INVALID_MOVE;
   }
 
-  const newG: IG = {
-    ...G,
-    points: Object.values({
-      ...G.points,
-      [position]: {
-        ...G.points[position],
-        piece: new Piece(ctx.playerID, G.piecesPlaced),
-      },
-    }),
-    piecesPlaced: G.piecesPlaced + 1,
-  };
+  const newG = produce(G, draft => {
+    draft.points[position].piece = new Piece(ctx.playerID, G.piecesPlaced);
+    draft.piecesPlaced++;
+  });
 
-  const newMills = getMills(newG);
-  return {
-    ...newG,
-    mills: newMills,
-    haveToRemovePiece: G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID),
-  };
+  return calculateMills(newG, ctx);
 }
 
 export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: number): IG | string {
@@ -97,27 +94,12 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
     return INVALID_MOVE;
   }
 
-  const newG: IG = {
-    ...G,
-    points: Object.values({
-      ...G.points,
-      [position]: {
-        ...G.points[position],
-        piece: null,
-      },
-      [newPosition]: {
-        ...G.points[newPosition],
-        piece: G.points[position].piece,
-      },
-    }),
-  };
+  const newG: IG = produce(G, draft => {
+    draft.points[position].piece = null;
+    draft.points[newPosition].piece = G.points[position].piece;
+  });
 
-  const newMills = getMills(newG);
-  return {
-    ...newG,
-    mills: newMills,
-    haveToRemovePiece: G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID),
-  };
+  return calculateMills(newG, ctx);
 }
 
 export function removePiece(G: IG, ctx: IGameCtx, position: number) {
@@ -134,30 +116,15 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
     return INVALID_MOVE;
   }
 
-  const secondPlayerId = G.players.findIndex((_, i) => ctx.playerID !== i.toString());
+  const newG = produce(G, draft => {
+    draft.points[position].piece = null;
+    draft.players.find((_, i) => ctx.playerID !== i.toString()).lostPieces++;
+    draft.haveToRemovePiece = false;
+  });
 
-  const newG = {
-    ...G,
-    points: Object.values({
-      ...G.points,
-      [position]: {
-        ...G.points[position],
-        piece: null,
-      },
-    }),
-    players: Object.values({
-      ...G.players,
-      [secondPlayerId]: {
-        lostPieces: G.players[secondPlayerId].lostPieces + 1,
-      },
-    }),
-    haveToRemovePiece: false,
-  };
-
-  return {
-    ...newG,
-    mills: getMills(newG),
-  };
+  return produce(newG, draft => {
+    draft.mills = getMills(newG);
+  });
 }
 
 const GameConfig: IGameArgs = {

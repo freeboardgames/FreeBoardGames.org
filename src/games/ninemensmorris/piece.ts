@@ -1,4 +1,7 @@
+import { immerable } from 'immer';
+
 export default class Piece {
+  [immerable] = true;
   player: string;
   key: number;
 
