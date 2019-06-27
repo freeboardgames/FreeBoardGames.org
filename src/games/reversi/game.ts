@@ -1,3 +1,4 @@
+import produce, { immerable } from 'immer';
 import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
 
 export interface IScore {
@@ -89,29 +90,16 @@ export function placePiece(G: IG, ctx: IGameCtx, x: number, y: number) {
 
   if (changed.length === 1) {
     if (close && !isThereValidMove(G, ctx)) {
-      return {
-        ...G,
-        points: Object.values({
-          ...G.points,
-          [toPosition(x, y)]: ctx.playerID,
-        }),
-      };
+      return produce(G, draft => {
+        draft.points[toPosition(x, y)] = ctx.playerID;
+      });
     }
 
     return INVALID_MOVE;
   } else {
-    changed.sort((a, b) => b - a);
-    return {
-      ...G,
-      points: G.points.map((point, i) => {
-        if (changed.length > 0 && i === changed[changed.length - 1]) {
-          changed.pop();
-          return ctx.playerID;
-        } else {
-          return point;
-        }
-      }),
-    };
+    return produce(G, draft => {
+      changed.forEach(change => (draft.points[change] = ctx.playerID));
+    });
   }
 }
 
