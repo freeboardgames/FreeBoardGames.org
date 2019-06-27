@@ -17,3 +17,5 @@ const app = (
 asyncBootstrapper(app).then(() => {
   ReactDOM.render(app, document.getElementById('root'));
 });
+
+(module as any).hot.accept();
