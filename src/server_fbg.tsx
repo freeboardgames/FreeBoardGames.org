@@ -14,6 +14,8 @@ const server = new Koa();
 
 import App from './App/App';
 
+const ENABLE_BREADCRUMBS = process.env.ENABLE_BREADCRUMBS === 'yes';
+
 const HOST = '0.0.0.0';
 const PORT = Number(process.env.FBG_PORT) || 8000;
 
@@ -39,7 +41,7 @@ function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata
     result = result.replace('<meta name="robots" content="noindex">\n', '');
   }
 
-  if (breadcrumbs) {
+  if (ENABLE_BREADCRUMBS && breadcrumbs) {
     result = result.replace(
       '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement"></nav>',
       '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement">\n' + breadcrumbs + '\n</nav>',
