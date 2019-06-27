@@ -14,7 +14,7 @@
     "i18n:update": "./i18n/updatei18ntemplates.bash",
     "precommit:format": "pretty-quick --staged",
     "lint": "run-s lint:ts lint:js",
-    "lint:js": "eslint -c .eslintrc-javascript.js --fix test/",
+    "lint:js": "eslint -c .eslintrc-javascript.js --fix test/ i18n/",
     "lint:ts": "eslint --fix --ext .ts,.tsx src/ @types/",
     "prod": "run-s prod:build server",
     "prod:buildquietly": "run-s server:buildquietly webpack:buildquietly",
@@ -39,7 +39,7 @@
     "webpack:buildquietly": "webpack --config webpack.prod.js",
     "verify-lint": "run-s verify-lint:ts verify-lint:js",
     "verify-lint:ts": "eslint --ext .ts,.tsx src/ @types/",
-    "verify-lint:js": "eslint -c .eslintrc-javascript.js test/"
+    "verify-lint:js": "eslint -c .eslintrc-javascript.js test/ i18n/"
   },
   "pre-commit": [
     "precommit"
