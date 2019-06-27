@@ -4,7 +4,6 @@ import Enzyme from 'enzyme';
 import { expect } from 'chai';
 import { StaticRouter } from 'react-router-dom';
 import Adapter from 'enzyme-adapter-react-16';
-import waitForExpect from 'wait-for-expect';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -16,7 +15,7 @@ describe('App', () => {
         <App />
       </StaticRouter>,
     );
-    await waitForExpect(() => {
+    setImmediate(() => {
       expect(wrapper.html()).to.contain('We at FreeBoardGame.org');
     });
   });
@@ -36,8 +35,6 @@ describe('App', () => {
         <App />
       </StaticRouter>,
     );
-    await waitForExpect(() => {
-      expect(wrapper.html()).to.contain('Invalid Locale');
-    });
+    expect(wrapper.html()).to.contain('Invalid Locale');
   });
 });
