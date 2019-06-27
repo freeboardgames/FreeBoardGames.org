@@ -1,5 +1,6 @@
 import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
 import { pieces } from './pieces';
+import produce from 'immer';
 
 export interface IScore {}
 
@@ -39,18 +40,10 @@ export function placePiece(G: IG, ctx: IGameCtx, id: number, position: IPiecePos
       return (y + position.y) * 20 + (x + position.x);
     })
     .sort((a, b) => b - a);
-  console.log(positions);
-  return {
-    ...G,
-    board: G.board.map((square, i) => {
-      if (i === positions[positions.length - 1]) {
-        positions.pop();
-        return ctx.playerID;
-      } else {
-        return square;
-      }
-    }),
-  };
+
+  return produce(G, draft => {
+    positions.forEach(position => (draft.board[position] = ctx.playerID));
+  });
 }
 
 const GameConfig: IGameArgs = {
