@@ -30,15 +30,15 @@ function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata
 
   if (metadata.description) {
     result = result.replace(
-      '<meta name="description" content="">\n',
-      `<meta name="description" content="${metadata.description}">\n`,
+      '<meta name="description" content="" />',
+      `<meta name="description" content="${metadata.description}" />`,
     );
   } else {
-    result = result.replace('<meta name="description" content="">\n', '');
+    result = result.replace('    <meta name="description" content="" />\n', '');
   }
 
   if (!metadata.noindex) {
-    result = result.replace('<meta name="robots" content="noindex">\n', '');
+    result = result.replace('    <meta name="robots" content="noindex" />\n', '');
   }
 
   if (ENABLE_BREADCRUMBS && breadcrumbs) {
