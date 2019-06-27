@@ -26,7 +26,7 @@ describe('App', () => {
     );
     await asyncBootstrapper(app);
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
-    expect(ssrHtml).toContain('FreeBoardGame.org');
+    expect(ssrHtml).toContain('We at FreeBoardGame.org');
   });
 
   it('should render game sharing', () => {
