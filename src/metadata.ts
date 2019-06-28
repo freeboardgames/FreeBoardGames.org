@@ -64,7 +64,7 @@ export const getBreadcrumbs = (url: string): string => {
         return pageMetadata.name && pageMetadata.link; // check if we have both .name and .link
       })
       .map((pageMetadata: IPageMetadata) => {
-        return `<li itemprop="name"><a itemprop="url" href="${pageMetadata.link}">${pageMetadata.name}</a></li>`;
+        return `<a itemprop="url" href="${pageMetadata.link}">${pageMetadata.name}</a>`;
       });
     return pageElements.join('\n');
   }

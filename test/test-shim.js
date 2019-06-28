@@ -5,5 +5,5 @@
  * @copyright 2004-present Facebook. All Rights Reserved.
  */
 global.requestAnimationFrame = function(callback) {
-    setTimeout(callback, 0);
+  setTimeout(callback, 0);
 };

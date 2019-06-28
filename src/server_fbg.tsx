@@ -14,6 +14,8 @@ const server = new Koa();
 
 import App from './App/App';
 
+const ENABLE_BREADCRUMBS = process.env.ENABLE_BREADCRUMBS === 'yes';
+
 const HOST = '0.0.0.0';
 const PORT = Number(process.env.FBG_PORT) || 8000;
 
@@ -28,24 +30,27 @@ function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata
 
   if (metadata.description) {
     result = result.replace(
-      '<meta name="description" content="">\n',
-      `<meta name="description" content="${metadata.description}">\n`,
+      '<meta name="description" content="" />',
+      `<meta name="description" content="${metadata.description}" />`,
     );
   } else {
-    result = result.replace('<meta name="description" content="">\n', '');
+    result = result.replace('    <meta name="description" content="" />\n', '');
   }
 
   if (!metadata.noindex) {
-    result = result.replace('<meta name="robots" content="noindex">\n', '');
+    result = result.replace('    <meta name="robots" content="noindex" />\n', '');
   }
 
-  if (breadcrumbs) {
+  if (ENABLE_BREADCRUMBS && breadcrumbs) {
     result = result.replace(
-      '<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement"></ul>',
-      '<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement">\n' + breadcrumbs + '\n</ul>',
+      '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement"></nav>',
+      '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement">\n' + breadcrumbs + '\n</nav>',
     );
   } else {
-    result = result.replace('<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement"></ul>', '');
+    result = result.replace(
+      '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement"></nav>',
+      '',
+    );
   }
   result = result.replace('<div id="root"></div>', `<div id="root">${reactHtml}</div>`);
   return result;

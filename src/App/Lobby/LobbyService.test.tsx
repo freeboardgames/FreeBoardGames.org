@@ -42,4 +42,14 @@ describe('New Room', () => {
     Storage.prototype.getItem = jest.fn(() => 'foonickname');
     expect(LobbyService.getNickname()).to.equal('foonickname');
   });
+
+  it('should rename', async () => {
+    request.post = jest.fn().mockReturnValue({
+      send: jest.fn(),
+    });
+    Storage.prototype.getItem = () => JSON.stringify({ fooroom: { playerID: 0, credential: 'foocredential' } }); // mock no crendetials
+    const player: IPlayerInRoom = { playerID: 0, name: 'Jason', roomID: 'fooroom' };
+    await LobbyService.renameUser('foogame', player, 'fooNewName');
+    expect((request.post as any).mock.calls.length).to.equal(1);
+  });
 });
