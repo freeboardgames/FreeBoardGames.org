@@ -6,13 +6,15 @@ import ReactDOMServer from 'react-dom/server';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { StaticRouter } from 'react-router-dom';
-import { getPageMetadata, IPageMetadata } from './metadata';
+import { getPageMetadata, getBreadcrumbs, IPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
 
 import Koa from 'koa';
 const server = new Koa();
 
 import App from './App/App';
+
+const ENABLE_BREADCRUMBS = process.env.ENABLE_BREADCRUMBS === 'yes';
 
 const HOST = '0.0.0.0';
 const PORT = Number(process.env.FBG_PORT) || 8000;
@@ -21,24 +23,35 @@ const RESTRICTIVE_ROBOTS_TXT = ['User-agent: *', 'Disallow: /', ''].join('\n');
 
 const template = fs.readFileSync('./dist/layout.html', 'utf8');
 
-function renderHtml(layout: string, metadata: IPageMetadata, reactHtml: string) {
+function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata, reactHtml: string) {
   let result = layout;
 
   result = result.replace('<title>FreeBoardGame.org</title>', `<title>${metadata.title}</title>`);
 
   if (metadata.description) {
     result = result.replace(
-      '<meta name="description" content="">\n',
-      `<meta name="description" content="${metadata.description}">\n`,
+      '<meta name="description" content="" />',
+      `<meta name="description" content="${metadata.description}" />`,
     );
   } else {
-    result = result.replace('<meta name="description" content="">\n', '');
+    result = result.replace('    <meta name="description" content="" />\n', '');
   }
 
   if (!metadata.noindex) {
-    result = result.replace('<meta name="robots" content="noindex">\n', '');
+    result = result.replace('    <meta name="robots" content="noindex" />\n', '');
   }
 
+  if (ENABLE_BREADCRUMBS && breadcrumbs) {
+    result = result.replace(
+      '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement"></nav>',
+      '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement">\n' + breadcrumbs + '\n</nav>',
+    );
+  } else {
+    result = result.replace(
+      '<nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement"></nav>',
+      '',
+    );
+  }
   result = result.replace('<div id="root"></div>', `<div id="root">${reactHtml}</div>`);
   return result;
 }
@@ -46,6 +59,7 @@ function renderHtml(layout: string, metadata: IPageMetadata, reactHtml: string) 
 const renderSite = async (url: string) => {
   const asyncContext = createAsyncContext();
   const metadata = getPageMetadata(url);
+  const breadcrumbs = getBreadcrumbs(url);
   const context = {};
   const app = (
     <AsyncComponentProvider asyncContext={asyncContext}>
@@ -58,7 +72,7 @@ const renderSite = async (url: string) => {
   const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
   return {
     status: (context as any).status,
-    render: renderHtml(template, metadata, reactHtml),
+    render: renderHtml(template, breadcrumbs, metadata, reactHtml),
   };
 };
 

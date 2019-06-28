@@ -115,9 +115,11 @@ export function placePiece(G: IG, ctx: IGameCtx, x: number, y: number) {
   }
 }
 
-function getScoreBoard(G: IG, ctx: IGameCtx) {
+export function getScoreBoard(G: IG, ctx: IGameCtx) {
   let scoreBoard = new Array(ctx.numPlayers).fill(0);
-  G.points.forEach(point => scoreBoard[point as any]++);
+  G.points
+    .filter(point => point !== null && parseInt(point) < ctx.numPlayers)
+    .forEach(point => scoreBoard[point as any]++);
   return scoreBoard.map((score, i) => ({ playerID: i.toString(), score })).sort((a, b) => b.score - a.score);
 }
 

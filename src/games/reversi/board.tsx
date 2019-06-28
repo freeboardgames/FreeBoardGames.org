@@ -3,10 +3,11 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IScore } from './game';
+import { IG, IScore, getScoreBoard } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
+import { ScoreBadges } from './ScoreBadges';
 import css from './Board.css';
 
 import red from '@material-ui/core/colors/red';
@@ -46,7 +47,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
       return 'draw';
     } else {
-      if (scoreboard[0].score === scoreboard[this.props.playerID as any].score) {
+      if (scoreboard[0].score === scoreboard.find(rank => rank.playerID === this.props.playerID).score) {
         return 'you won';
       } else {
         return 'you lost';
@@ -134,6 +135,12 @@ export class Board extends React.Component<IBoardProps, {}> {
               </Token>
             ))}
         </Grid>
+        <ScoreBadges
+          scoreboard={getScoreBoard(this.props.G, this.props.ctx)}
+          playerID={this.props.playerID}
+          players={this.props.gameArgs.players}
+          colors={colors}
+        />
       </GameLayout>
     );
   }
