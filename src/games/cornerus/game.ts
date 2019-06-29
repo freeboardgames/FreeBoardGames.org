@@ -22,13 +22,31 @@ export function getXY(position: number, size: number) {
 
 export function rotatePiece(squares: boolean[]) {
   const size = Math.sqrt(squares.length);
-  let rotated = [];
+  let rotated = new Array(squares.length);
   for (let n = 0; n < squares.length; n++) {
     const x = n % size;
     const y = Math.floor(n / size);
     rotated[n] = squares[(size - x - 1) * size + y];
   }
-  return squares;
+  return rotated;
+}
+
+export function flipPieceY(squares: boolean[]) {
+  const size = Math.sqrt(squares.length);
+  let flipped = new Array(squares.length);
+  for (let n = 0; n < squares.length; n++) {
+    flipped[n] = squares[n + size * (size - Math.floor(n / size) * 2 - 1)];
+  }
+  return flipped;
+}
+
+export function flipPieceX(squares: boolean[]) {
+  const size = Math.sqrt(squares.length);
+  let flipped = new Array(squares.length);
+  for (let n = 0; n < squares.length; n++) {
+    flipped[n] = squares[n + size - (n % size) * 2 - 1];
+  }
+  return flipped;
 }
 
 export function placePiece(G: IG, ctx: IGameCtx, id: number, position: IPiecePosition) {

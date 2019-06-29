@@ -3,7 +3,7 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IScore, IPiecePosition, rotatePiece } from './game';
+import { IG, IScore, IPiecePosition, rotatePiece, flipPieceY, flipPieceX } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 //import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
@@ -46,25 +46,44 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     super(props);
     this.state = {
       piecePosition: { x: 10, y: 10, rotation: 0, flipX: false, flipY: false },
-      piece: pieces[9],
+      piece: rotatePiece(pieces[9]),
     };
   }
 
   _placePiece = this.placePiece.bind(this);
+  _flipY = this.flipY.bind(this);
+  _flipX = this.flipX.bind(this);
 
   placePiece() {
     this.props.moves.placePiece(9, this.state.piecePosition);
   }
 
   rotate(n: number) {
-    console.log(n);
-    /*
-    let piece = this.state.piece;
-    let new;
-    for (let i = 0; i < n; n++) {
-      piece = rotatePiece(piece)
-    }*/
-    //this.setState({ ...this.state, piecePosition: { ...this.state.piecePosition, rotation: (this.state.piecePosition.rotation + n) % 4 }, piece });
+    let piece = rotatePiece(this.state.piece);
+    for (let i = 0; i < n - 1; i++) {
+      piece = rotatePiece(piece);
+    }
+    this.setState({
+      ...this.state,
+      piecePosition: { ...this.state.piecePosition, rotation: (this.state.piecePosition.rotation + n) % 4 },
+      piece,
+    });
+  }
+
+  flipY() {
+    this.setState({
+      ...this.state,
+      piecePosition: { ...this.state.piecePosition, flipY: !this.state.piecePosition.flipY },
+      piece: flipPieceY(this.state.piece),
+    });
+  }
+
+  flipX() {
+    this.setState({
+      ...this.state,
+      piecePosition: { ...this.state.piecePosition, flipX: !this.state.piecePosition.flipX },
+      piece: flipPieceX(this.state.piece),
+    });
   }
   /*
     _getGameOver() {
@@ -124,9 +143,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
-    const originalX = coords.originalX;
-    const originalY = coords.originalY;
-    console.log(x, y);
     this.setState({ ...this.state, piecePosition: { ...this.state.piecePosition, x, y } });
     /*
     if (x < 0 || y < 0 || x >= 10 || y >= 10) {
@@ -184,8 +200,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           </Token>
         </Grid>
         <button onClick={this._placePiece}>Place</button>
-        <button onClick={() => this.rotate(1)}>Rotate left</button>
-        <button onClick={() => this.rotate(3)}>Rotate right</button>
+        <button onClick={() => this.rotate(3)}>Rotate left</button>
+        <button onClick={() => this.rotate(1)}>Rotate right</button>
+        <button onClick={this._flipY}>Flip piece Y</button>
+        <button onClick={this._flipX}>Flip piece X</button>
       </GameLayout>
     );
   }
