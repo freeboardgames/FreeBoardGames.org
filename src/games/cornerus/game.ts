@@ -4,7 +4,7 @@ import produce from 'immer';
 
 export interface IScore {}
 
-export interface IPiecePosition {
+export interface IPieceTransform {
   x: number;
   y: number;
   rotation: number;
@@ -14,10 +14,19 @@ export interface IPiecePosition {
 
 export interface IG {
   board: string[];
+  players: number[][];
 }
 
 export function getXY(position: number, size: number) {
   return { x: position % size, y: Math.floor(position / size) };
+}
+
+export function getPosition(x: number, y: number) {
+  return x + y * 20;
+}
+
+function inBounds(x: number, y: number) {
+  return x >= 0 && x < 20 && y >= 0 && y < 20;
 }
 
 export function rotatePiece(squares: boolean[]) {
@@ -49,19 +58,58 @@ export function flipPieceX(squares: boolean[]) {
   return flipped;
 }
 
-export function placePiece(G: IG, ctx: IGameCtx, id: number, position: IPiecePosition) {
-  let positions = pieces[id]
+export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTransform) {
+  let piece = pieces[G.players[ctx.playerID as any][id]];
+
+  if (transform.flipX) {
+    piece = flipPieceX(piece);
+  }
+  if (transform.flipY) {
+    piece = flipPieceY(piece);
+  }
+  for (let i = 0; i < transform.rotation; i++) {
+    piece = rotatePiece(piece);
+  }
+
+  let positions = piece
     .map((square, index) => ({ square, index }))
     .filter(piece => piece.square)
-    .map(piece => {
-      const { x, y } = getXY(piece.index, Math.sqrt(pieces[id].length));
-      return (y + position.y) * 20 + (x + position.x);
-    })
-    .sort((a, b) => b - a);
+    .map(square => {
+      const { x, y } = getXY(square.index, Math.sqrt(piece.length));
+      return { x: x + transform.x, y: y + transform.y };
+    });
 
-  return produce(G, draft => {
-    positions.forEach(position => (draft.board[position] = ctx.playerID));
+  if (
+    positions.some(pos => !inBounds(pos.x, pos.y)) ||
+    positions.some(
+      pos =>
+        G.board[getPosition(pos.x, pos.y)] !== null ||
+        positions.some(pos =>
+          [[-1, 0], [1, 0], [0, -1], [0, 1]].some(
+            dir =>
+              inBounds(pos.x + dir[0], pos.y + dir[1]) &&
+              G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === ctx.playerID,
+          ),
+        ),
+    ) ||
+    (!positions.some(pos =>
+      [[-1, -1], [1, -1], [-1, 1], [1, 1]].some(
+        dir =>
+          inBounds(pos.x + dir[0], pos.y + dir[1]) &&
+          G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === ctx.playerID,
+      ),
+    ) &&
+      !(typeof ctx.stats.phase.numMoves[ctx.playerID] === 'undefined'))
+  ) {
+    return INVALID_MOVE;
+  }
+
+  const newG = produce(G, draft => {
+    positions.forEach(pos => (draft.board[getPosition(pos.x, pos.y)] = ctx.playerID));
+    draft.players[ctx.playerID as any].splice(id, 1);
   });
+
+  return newG;
 }
 
 const GameConfig: IGameArgs = {
@@ -76,6 +124,13 @@ const GameConfig: IGameArgs = {
   setup: (ctx): IG => {
     return {
       board: Array(400).fill(null),
+      players: Array(ctx.numPlayers)
+        .fill(0)
+        .map(() =>
+          Array(pieces.length)
+            .fill(0)
+            .map((_, i) => i),
+        ),
     };
   },
 };

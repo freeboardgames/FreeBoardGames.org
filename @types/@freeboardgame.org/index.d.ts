@@ -84,6 +84,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     playOrder: string[];
     playOrderPos: number;
     gameover: any;
+    stats: IGameStats;
     random: Random;
     events: Events;
   }
@@ -149,6 +150,20 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   export const PlayerView: {
     STRIP_SECRETS: (G: any, ctx: IGameCtx, playerID: any) => any;
   };
+
+  interface IGameStats {
+    turn: IStats;
+    phase: IStats;
+  }
+
+  interface IStats {
+    numMoves: IMoveStats;
+    allPlayed: true;
+  }
+
+  interface IMoveStats {
+    [key: string]: number;
+  }
 }
 
 declare module '@freeboardgame.org/boardgame.io/react' {

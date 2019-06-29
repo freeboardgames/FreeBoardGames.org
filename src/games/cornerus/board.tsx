@@ -3,7 +3,7 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IScore, IPiecePosition, rotatePiece, flipPieceY, flipPieceX } from './game';
+import { IG, IScore, IPieceTransform, rotatePiece, flipPieceY, flipPieceX } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 //import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
@@ -14,6 +14,13 @@ import yellow from '@material-ui/core/colors/yellow';
 import green from '@material-ui/core/colors/lightGreen';
 import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
+
+import Done from '@material-ui/icons/Done';
+import RotateLeft from '@material-ui/icons/RotateLeft';
+import RotateRight from '@material-ui/icons/RotateRight';
+import Flip from '@material-ui/icons/Flip';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 
 import Typography from '@material-ui/core/Typography';
 
@@ -37,7 +44,8 @@ interface IBoardProps {
 }
 
 interface IBoardState {
-  piecePosition: IPiecePosition;
+  pieceTransform: IPieceTransform;
+  pieceIndex: number;
   piece: boolean[];
 }
 
@@ -45,8 +53,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   constructor(props: IBoardProps) {
     super(props);
     this.state = {
-      piecePosition: { x: 10, y: 10, rotation: 0, flipX: false, flipY: false },
-      piece: rotatePiece(pieces[9]),
+      pieceTransform: { x: 10, y: 10, rotation: 0, flipX: false, flipY: false },
+      pieceIndex: 0,
+      piece: pieces[0],
     };
   }
 
@@ -55,7 +64,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _flipX = this.flipX.bind(this);
 
   placePiece() {
-    this.props.moves.placePiece(9, this.state.piecePosition);
+    this.props.moves.placePiece(this.state.pieceIndex, this.state.pieceTransform);
   }
 
   rotate(n: number) {
@@ -65,7 +74,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
     this.setState({
       ...this.state,
-      piecePosition: { ...this.state.piecePosition, rotation: (this.state.piecePosition.rotation + n) % 4 },
+      pieceTransform: { ...this.state.pieceTransform, rotation: (this.state.pieceTransform.rotation + n) % 4 },
       piece,
     });
   }
@@ -73,7 +82,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   flipY() {
     this.setState({
       ...this.state,
-      piecePosition: { ...this.state.piecePosition, flipY: !this.state.piecePosition.flipY },
+      pieceTransform: {
+        ...this.state.pieceTransform,
+        flipY: !this.state.pieceTransform.flipY,
+        rotation:
+          this.state.pieceTransform.rotation % 2 === 0
+            ? this.state.pieceTransform.rotation
+            : (this.state.pieceTransform.rotation + 2) % 4,
+      },
       piece: flipPieceY(this.state.piece),
     });
   }
@@ -81,8 +97,26 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   flipX() {
     this.setState({
       ...this.state,
-      piecePosition: { ...this.state.piecePosition, flipX: !this.state.piecePosition.flipX },
+      pieceTransform: {
+        ...this.state.pieceTransform,
+        flipX: !this.state.pieceTransform.flipX,
+        rotation:
+          this.state.pieceTransform.rotation % 2 === 0
+            ? this.state.pieceTransform.rotation
+            : (this.state.pieceTransform.rotation + 2) % 4,
+      },
       piece: flipPieceX(this.state.piece),
+    });
+  }
+
+  select(offset: number) {
+    const pieceIndex =
+      (this.state.pieceIndex + offset) % this.props.G.players[this.props.ctx.currentPlayer as any].length;
+    this.setState({
+      ...this.state,
+      pieceIndex,
+      piece: pieces[this.props.G.players[this.props.ctx.currentPlayer as any][pieceIndex]],
+      pieceTransform: { ...this.state.pieceTransform, flipX: false, flipY: false, rotation: 0 },
     });
   }
   /*
@@ -143,7 +177,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
-    this.setState({ ...this.state, piecePosition: { ...this.state.piecePosition, x, y } });
+    this.setState({ ...this.state, pieceTransform: { ...this.state.pieceTransform, x, y } });
     /*
     if (x < 0 || y < 0 || x >= 10 || y >= 10) {
       return;
@@ -164,6 +198,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     const colorMap = this.getColorMap();
 
+    const colors =
+      this.props.ctx.numPlayers !== 2
+        ? [red[500], yellow[500], green[500], blue[500]]
+        : [red[500], green[500], yellow[500], blue[500]];
+
     return (
       <GameLayout>
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
@@ -174,11 +213,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             .map((square, index) => ({ square, index }))
             .filter(piece => piece.square !== null)
             .map(piece => (
-              <Token x={piece.index % 20} y={Math.floor(piece.index / 20)} key={piece.index}></Token>
+              <Token
+                x={piece.index % 20}
+                y={Math.floor(piece.index / 20)}
+                key={piece.index}
+                style={{ fill: colors[piece.square as any] }}
+              ></Token>
             ))}
           <Token
-            x={this.state.piecePosition.x}
-            y={this.state.piecePosition.y}
+            x={this.state.pieceTransform.x}
+            y={this.state.pieceTransform.y}
             draggable={true}
             shouldDrag={() => true}
             onDrop={this._onDrop}
@@ -189,8 +233,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 .filter(piece => piece.square)
                 .map(piece => (
                   <rect
-                    x={piece.index % Math.sqrt(pieces[9].length)}
-                    y={Math.floor(piece.index / Math.sqrt(pieces[9].length))}
+                    x={piece.index % Math.sqrt(this.state.piece.length)}
+                    y={Math.floor(piece.index / Math.sqrt(this.state.piece.length))}
                     width="1"
                     height="1"
                     key={piece.index}
@@ -199,11 +243,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             </g>
           </Token>
         </Grid>
-        <button onClick={this._placePiece}>Place</button>
-        <button onClick={() => this.rotate(3)}>Rotate left</button>
-        <button onClick={() => this.rotate(1)}>Rotate right</button>
-        <button onClick={this._flipY}>Flip piece Y</button>
-        <button onClick={this._flipX}>Flip piece X</button>
+        <Done onClick={this._placePiece} />
+        <RotateLeft onClick={() => this.rotate(3)} />
+        <RotateRight onClick={() => this.rotate(1)} />
+        <Flip onClick={this._flipY} style={{ transform: 'rotate(90deg)' }} />
+        <Flip onClick={this._flipX} />
+        <ChevronLeft
+          onClick={() => this.select(this.props.G.players[this.props.ctx.currentPlayer as any].length - 1)}
+        />
+        <ChevronRight onClick={() => this.select(1)} />
       </GameLayout>
     );
   }
