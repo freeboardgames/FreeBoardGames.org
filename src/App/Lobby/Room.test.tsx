@@ -21,6 +21,7 @@ describe('Room Lobby', () => {
     await wrapper;
     expect(wrapper.html()).to.contain('Enter Your Nickname');
   });
+
   it('should load when given a nickname', async () => {
     LobbyService.getRoomMetadata = jest.fn().mockReturnValue(new Promise(() => {}));
     Storage.prototype.getItem = jest.fn(() => 'nickname');
@@ -36,6 +37,34 @@ describe('Room Lobby', () => {
     const wrapper = mount(app);
     await wrapper;
     expect(wrapper.html()).to.contain('Loading');
+  });
+
+  it('should show error page when metadata cannot be fetched', async () => {
+    const metaPlayer: IPlayerInRoom = { playerID: 0, name: 'fooplayer', roomID: 'fooroom' };
+    const mockMetadata: IRoomMetadata = {
+      gameCode: 'chess',
+      roomID: 'fooroom',
+      numberOfPlayers: 2,
+      players: [metaPlayer],
+      currentUser: metaPlayer,
+    };
+    LobbyService.joinRoom = jest.fn().mockResolvedValue(mockMetadata);
+    LobbyService.getRoomMetadata = jest.fn().mockRejectedValue(undefined);
+    Storage.prototype.getItem = jest.fn(() => 'fooplayer');
+    const app = (
+      <MemoryRouter>
+        <Room
+          match={{
+            params: { gameCode: 'chess', roomID: 'fooroom' },
+          }}
+        />
+      </MemoryRouter>
+    );
+    jest.useFakeTimers();
+    const wrapper = mount(app);
+    await wrapper;
+    await (wrapper.find('Room').instance() as any).promise;
+    expect(wrapper.html()).to.contain('Failed to fetch room metadata');
   });
 
   it('should join the room if the user is not in the room', async () => {
