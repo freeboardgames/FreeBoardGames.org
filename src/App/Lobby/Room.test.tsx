@@ -4,6 +4,7 @@ import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { IPlayerInRoom, LobbyService, IRoomMetadata } from './LobbyService';
 import { MemoryRouter } from 'react-router';
+import EditIcon from '@material-ui/icons/Edit';
 
 describe('Room Lobby', () => {
   it('should prompt for name', async () => {
@@ -117,6 +118,37 @@ describe('Room Lobby', () => {
     await wrapper;
     await (wrapper.find('Room').instance() as any).promise;
     expect(wrapper.html()).to.contain('fooplayer');
+  });
+
+  it('should edit nickname', async () => {
+    LobbyService.getRoomMetadata = jest.fn().mockReturnValue(new Promise(() => {}));
+    const metaPlayer: IPlayerInRoom = { playerID: 0, name: 'fooplayer', roomID: 'fooroom' };
+    const mockMetadata: IRoomMetadata = {
+      gameCode: 'chess',
+      roomID: 'fooroom',
+      numberOfPlayers: 2,
+      players: [metaPlayer],
+      currentUser: metaPlayer,
+    };
+    LobbyService.getRoomMetadata = jest.fn().mockResolvedValue(mockMetadata);
+    Storage.prototype.getItem = jest.fn(() => 'fooplayer');
+    const app = (
+      <MemoryRouter>
+        <Room
+          match={{
+            params: { gameCode: 'chess', roomID: 'fooroom' },
+          }}
+        />
+      </MemoryRouter>
+    );
+    jest.useFakeTimers();
+    const wrapper = mount(app);
+    await wrapper;
+    await (wrapper.find('Room').instance() as any).promise;
+    wrapper.update();
+    const editIcon = wrapper.find(EditIcon);
+    editIcon.simulate('click');
+    expect(wrapper.html()).to.contain('Enter Your Nickname');
   });
 
   it('should show the game if room is full', async () => {

@@ -33,7 +33,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
           </ListItemAvatar>
           <ListItemText primary={player.name} />
           <ListItemSecondaryAction>
-            <Button onClick={this.props.editNickname}>
+            <Button id="editNickname" onClick={this.props.editNickname}>
               <EditIcon />
             </Button>
           </ListItemSecondaryAction>
