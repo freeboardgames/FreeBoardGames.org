@@ -206,7 +206,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s precommit:format verify-lint buildtest"
+      "pre-commit": "run-s format:staged verify-lint buildtest"
     }
   }
 }
