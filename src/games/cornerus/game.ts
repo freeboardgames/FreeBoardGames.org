@@ -29,6 +29,28 @@ function inBounds(x: number, y: number) {
   return x >= 0 && x < 20 && y >= 0 && y < 20;
 }
 
+export function getPlayer(ctx: IGameCtx, playerID: string) {
+  const numMoves = ctx.stats.phase.numMoves[playerID];
+  if (ctx.numPlayers === 2) {
+    if (playerID === '0') {
+      return numMoves % 2 === 1 ? '1' : '0';
+    } else {
+      return numMoves % 2 === 1 ? '3' : '2';
+    }
+  } else {
+    return playerID;
+  }
+}
+
+function isFirstTurn(ctx: IGameCtx) {
+  const numMoves = ctx.stats.phase.numMoves[ctx.playerID];
+  if (ctx.numPlayers === 2) {
+    return typeof numMoves === 'undefined' || numMoves === 1;
+  } else {
+    return typeof numMoves === 'undefined';
+  }
+}
+
 export function rotatePiece(squares: boolean[]) {
   const size = Math.sqrt(squares.length);
   let rotated = new Array(squares.length);
@@ -58,8 +80,12 @@ export function flipPieceX(squares: boolean[]) {
   return flipped;
 }
 
+const corners = [[0, 0], [19, 0], [19, 19], [0, 19]];
+
 export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTransform) {
-  let piece = pieces[G.players[ctx.playerID as any][id]];
+  const playerID = getPlayer(ctx, ctx.playerID);
+
+  let piece = pieces[G.players[playerID as any][id]];
 
   if (transform.flipX) {
     piece = flipPieceX(piece);
@@ -80,36 +106,37 @@ export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTr
     });
 
   if (
-    positions.some(pos => !inBounds(pos.x, pos.y)) ||
+    positions.some(pos => !inBounds(pos.x, pos.y)) || // Check if piece is on board
     positions.some(
+      // Check if squares don't touch with edges
       pos =>
         G.board[getPosition(pos.x, pos.y)] !== null ||
         positions.some(pos =>
           [[-1, 0], [1, 0], [0, -1], [0, 1]].some(
             dir =>
               inBounds(pos.x + dir[0], pos.y + dir[1]) &&
-              G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === ctx.playerID,
+              G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === playerID,
           ),
         ),
     ) ||
-    (!positions.some(pos =>
+    (!positions.some((
+      pos, // Check if squares are touching with corner atleast 1 time
+    ) =>
       [[-1, -1], [1, -1], [-1, 1], [1, 1]].some(
         dir =>
-          inBounds(pos.x + dir[0], pos.y + dir[1]) &&
-          G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === ctx.playerID,
+          inBounds(pos.x + dir[0], pos.y + dir[1]) && G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === playerID,
       ),
     ) &&
-      !(typeof ctx.stats.phase.numMoves[ctx.playerID] === 'undefined'))
+      (!isFirstTurn(ctx) ||
+        !positions.some(pos => pos.x === corners[playerID as any][0] && pos.y === corners[playerID as any][1])))
   ) {
     return INVALID_MOVE;
   }
 
-  const newG = produce(G, draft => {
-    positions.forEach(pos => (draft.board[getPosition(pos.x, pos.y)] = ctx.playerID));
-    draft.players[ctx.playerID as any].splice(id, 1);
+  return produce(G, draft => {
+    positions.forEach(pos => (draft.board[getPosition(pos.x, pos.y)] = playerID));
+    draft.players[playerID as any].splice(id, 1);
   });
-
-  return newG;
 }
 
 const GameConfig: IGameArgs = {
@@ -124,7 +151,7 @@ const GameConfig: IGameArgs = {
   setup: (ctx): IG => {
     return {
       board: Array(400).fill(null),
-      players: Array(ctx.numPlayers)
+      players: Array(4)
         .fill(0)
         .map(() =>
           Array(pieces.length)

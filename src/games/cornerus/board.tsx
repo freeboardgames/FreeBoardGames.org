@@ -3,7 +3,7 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IScore, IPieceTransform, rotatePiece, flipPieceY, flipPieceX } from './game';
+import { IG, IScore, IPieceTransform, rotatePiece, flipPieceY, flipPieceX, getPlayer } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 //import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
@@ -110,12 +110,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   select(offset: number) {
-    const pieceIndex =
-      (this.state.pieceIndex + offset) % this.props.G.players[this.props.ctx.currentPlayer as any].length;
+    const playerID = getPlayer(this.props.ctx, this.props.ctx.currentPlayer);
+    const pieceIndex = (this.state.pieceIndex + offset) % this.props.G.players[playerID as any].length;
     this.setState({
       ...this.state,
       pieceIndex,
-      piece: pieces[this.props.G.players[this.props.ctx.currentPlayer as any][pieceIndex]],
+      piece: pieces[this.props.G.players[playerID as any][pieceIndex]],
       pieceTransform: { ...this.state.pieceTransform, flipX: false, flipY: false, rotation: 0 },
     });
   }
@@ -178,11 +178,18 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
     this.setState({ ...this.state, pieceTransform: { ...this.state.pieceTransform, x, y } });
-    /*
-    if (x < 0 || y < 0 || x >= 10 || y >= 10) {
-      return;
-    }*/
   };
+
+  componentDidUpdate(prevProps: IBoardProps) {
+    if (prevProps.ctx.currentPlayer !== this.props.ctx.currentPlayer) {
+      this.setState({
+        ...this.state,
+        pieceIndex: 0,
+        piece: pieces[this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any][0]],
+        pieceTransform: { ...this.state.pieceTransform, flipX: false, flipY: false, rotation: 0, x: 10, y: 10 },
+      });
+    }
+  }
 
   render() {
     /*
@@ -198,10 +205,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     const colorMap = this.getColorMap();
 
-    const colors =
-      this.props.ctx.numPlayers !== 2
-        ? [red[500], yellow[500], green[500], blue[500]]
-        : [red[500], green[500], yellow[500], blue[500]];
+    const colors = [blue[500], yellow[500], red[500], green[500]];
 
     return (
       <GameLayout>
@@ -220,28 +224,35 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 style={{ fill: colors[piece.square as any] }}
               ></Token>
             ))}
-          <Token
-            x={this.state.pieceTransform.x}
-            y={this.state.pieceTransform.y}
-            draggable={true}
-            shouldDrag={() => true}
-            onDrop={this._onDrop}
-          >
-            <g fill={blue[500]} opacity={0.8}>
-              {this.state.piece
-                .map((square, index) => ({ square, index }))
-                .filter(piece => piece.square)
-                .map(piece => (
-                  <rect
-                    x={piece.index % Math.sqrt(this.state.piece.length)}
-                    y={Math.floor(piece.index / Math.sqrt(this.state.piece.length))}
-                    width="1"
-                    height="1"
-                    key={piece.index}
-                  ></rect>
-                ))}
-            </g>
-          </Token>
+          {this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID ? (
+            <Token
+              x={this.state.pieceTransform.x}
+              y={this.state.pieceTransform.y}
+              draggable={true}
+              shouldDrag={() => true}
+              onDrop={this._onDrop}
+            >
+              <g>
+                <g fill={colors[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any]} opacity={0.8}>
+                  {this.state.piece
+                    .map((square, index) => ({ square, index }))
+                    .filter(piece => piece.square)
+                    .map(piece => (
+                      <rect
+                        x={piece.index % Math.sqrt(this.state.piece.length)}
+                        y={Math.floor(piece.index / Math.sqrt(this.state.piece.length))}
+                        width="1"
+                        height="1"
+                        key={piece.index}
+                      ></rect>
+                    ))}
+                </g>
+                <rect width="50" height="50" x="-25" y="-25" fill="none" style={{ pointerEvents: 'all' }}></rect>
+              </g>
+            </Token>
+          ) : (
+            <div></div>
+          )}
         </Grid>
         <Done onClick={this._placePiece} />
         <RotateLeft onClick={() => this.rotate(3)} />
@@ -249,7 +260,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         <Flip onClick={this._flipY} style={{ transform: 'rotate(90deg)' }} />
         <Flip onClick={this._flipX} />
         <ChevronLeft
-          onClick={() => this.select(this.props.G.players[this.props.ctx.currentPlayer as any].length - 1)}
+          onClick={() =>
+            this.select(this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].length - 1)
+          }
         />
         <ChevronRight onClick={() => this.select(1)} />
       </GameLayout>
@@ -262,7 +275,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       for (let y = 0; y < 20; y++) {
         const key = `${x},${y}`;
         let color = grey[800];
-        if ((x + y) % 2 === 0) {
+        if (x === 0 && y === 0) {
+          color = blue[500];
+        } else if (x === 19 && y === 0) {
+          color = yellow[500];
+        } else if (x === 19 && y === 19) {
+          color = red[500];
+        } else if (x === 0 && y === 19) {
+          color = green[500];
+        } else if ((x + y) % 2 === 0) {
           color = grey[900];
         }
         colorMap[key] = color;
