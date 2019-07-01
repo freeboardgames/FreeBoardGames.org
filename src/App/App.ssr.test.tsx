@@ -4,12 +4,13 @@
 
 import React from 'react';
 import App from './App';
-import { StaticRouter } from 'react-router-dom';
+import { StaticRouter, MemoryRouter } from 'react-router-dom';
 import ReactDOMServer from 'react-dom/server';
 import { GameSharing } from './Game/GameSharing';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { GAMES_LIST } from '../games';
+import { Room } from './Lobby/Room';
 
 (global as any).navigator = { userAgent: 'all' };
 
@@ -86,5 +87,23 @@ describe('App', () => {
     await asyncBootstrapper(app);
     const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
     expect(ssrHtml).toContain('About FreeBoardGame.org');
+  });
+
+  it('should render room loading page for SSR', async () => {
+    const asyncContext = createAsyncContext();
+    const app = (
+      <AsyncComponentProvider asyncContext={asyncContext}>
+        <MemoryRouter>
+          <Room
+            match={{
+              params: { gameCode: 'chess', roomID: 'fooroom' },
+            }}
+          />
+        </MemoryRouter>
+      </AsyncComponentProvider>
+    );
+    await asyncBootstrapper(app);
+    const ssrHtml = ReactDOMServer.renderToStaticMarkup(app);
+    expect(ssrHtml).toContain('Loading');
   });
 });
