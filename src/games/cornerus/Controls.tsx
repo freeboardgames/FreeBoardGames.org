@@ -78,11 +78,11 @@ export default class Controls extends React.Component<IControlsProps, {}> {
 
   select(offset: number) {
     const playerID = getPlayer(this.props.ctx, this.props.ctx.currentPlayer);
-    const index = (this.props.piece.index + offset) % this.props.G.players[playerID as any].length;
+    const index = (this.props.piece.index + offset) % this.props.G.players[playerID as any].pieces.length;
     this.props.modifyPiece({
       ...this.props.piece,
       index,
-      data: pieces[this.props.G.players[playerID as any][index]],
+      data: pieces[this.props.G.players[playerID as any].pieces[index]],
       transform: { ...this.props.piece.transform, flipX: false, flipY: false, rotation: 0 },
     });
   }
@@ -104,7 +104,9 @@ export default class Controls extends React.Component<IControlsProps, {}> {
         </IconButton>
         <IconButton
           onClick={() =>
-            this.select(this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].length - 1)
+            this.select(
+              this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].pieces.length - 1,
+            )
           }
         >
           <ChevronLeft />

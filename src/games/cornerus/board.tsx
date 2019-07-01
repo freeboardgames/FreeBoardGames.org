@@ -3,11 +3,10 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IPieceTransform, getPlayer } from './game';
+import { IG, IPieceTransform, IScore, getPlayer } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-//import { Scoreboard } from './Scoreboard';
+import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
-import AlertLayer from '../../App/Game/AlertLayer';
 import css from './Board.css';
 
 import red from '@material-ui/core/colors/red';
@@ -79,6 +78,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   endGame() {
+    this.closeDialog();
     this.props.moves.endGame();
   }
 
@@ -89,29 +89,29 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   placePiece() {
     this.props.moves.placePiece(this.state.piece.index, this.state.piece.transform);
   }
-  /*
-    _getGameOver() {
-        const scoreboard: IScore[] = this.props.ctx.gameover.scoreboard;
-        if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
-            return 'draw';
-        } else {
-            if (scoreboard[0].score === scoreboard[this.props.playerID as any].score) {
-                return 'you won';
-            } else {
-                return 'you lost';
-            }
-        }
-    }*/
-  /*
-    _getScoreBoard() {
-        return (
-            <Scoreboard
-                scoreboard={this.props.ctx.gameover.scoreboard}
-                playerID={this.props.playerID}
-                players={this.props.gameArgs.players}
-            />
-        );
-    }*/
+
+  _getGameOver() {
+    const scoreboard: IScore[] = this.props.ctx.gameover.scoreboard;
+    if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
+      return 'draw';
+    } else {
+      if (scoreboard[0].score === scoreboard[this.props.playerID as any].score) {
+        return 'you won';
+      } else {
+        return 'you lost';
+      }
+    }
+  }
+
+  _getScoreBoard() {
+    return (
+      <Scoreboard
+        scoreboard={this.props.ctx.gameover.scoreboard}
+        playerID={this.props.playerID}
+        players={this.props.gameArgs.players}
+      />
+    );
+  }
 
   isLocalGame() {
     return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
@@ -154,30 +154,31 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   componentDidUpdate(prevProps: IBoardProps) {
-    if (prevProps.ctx.currentPlayer !== this.props.ctx.currentPlayer) {
+    if (
+      getPlayer(prevProps.ctx, prevProps.ctx.currentPlayer) !== getPlayer(this.props.ctx, this.props.ctx.currentPlayer)
+    ) {
       this.setState({
         ...this.state,
         piece: {
           ...this.state.piece,
           index: 0,
           transform: { ...this.state.piece.transform, flipX: false, flipY: false, rotation: 0, x: 10, y: 10 },
-          data: pieces[this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any][0]],
+          data: pieces[this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].pieces[0]],
         },
       });
     }
   }
 
   render() {
-    /*
-        if (this.props.ctx.gameover) {
-            return (
-                <GameLayout
-                    gameOver={this._getGameOver()}
-                    extraCardContent={this._getScoreBoard()}
-                    gameArgs={this.props.gameArgs}
-                />
-            );
-        }*/
+    if (this.props.ctx.gameover) {
+      return (
+        <GameLayout
+          gameOver={this._getGameOver()}
+          extraCardContent={this._getScoreBoard()}
+          gameArgs={this.props.gameArgs}
+        />
+      );
+    }
 
     const colorMap = this.getColorMap();
 

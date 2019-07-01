@@ -2,7 +2,10 @@ import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boar
 import { pieces } from './pieces';
 import produce from 'immer';
 
-export interface IScore {}
+export interface IScore {
+  playerID: string;
+  score: number;
+}
 
 export interface IPieceTransform {
   x: number;
@@ -12,9 +15,14 @@ export interface IPieceTransform {
   flipY: boolean;
 }
 
+export interface IPlayer {
+  end: boolean;
+  pieces: number[];
+}
+
 export interface IG {
   board: string[];
-  players: number[][];
+  players: IPlayer[];
 }
 
 export function getXY(position: number, size: number) {
@@ -48,6 +56,22 @@ function isFirstTurn(ctx: IGameCtx) {
     return typeof numMoves === 'undefined' || numMoves === 1;
   } else {
     return typeof numMoves === 'undefined';
+  }
+}
+
+function getScoreBoard(G: IG, ctx: IGameCtx) {
+  const scoreBoard: IScore[] = G.players.map((player, i) => ({
+    playerID: i.toString(),
+    score: player.pieces.reduce((acc, piece) => acc - pieces[piece].filter(square => square).length, 0),
+  }));
+
+  if (ctx.numPlayers === 2) {
+    return [
+      { playerID: '0', score: scoreBoard[0].score + scoreBoard[1].score },
+      { playerID: '1', score: scoreBoard[2].score + scoreBoard[3].score },
+    ];
+  } else {
+    return scoreBoard;
   }
 }
 
@@ -85,7 +109,7 @@ const corners = [[0, 0], [19, 0], [19, 19], [0, 19]];
 export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTransform) {
   const playerID = getPlayer(ctx, ctx.playerID);
 
-  let piece = pieces[G.players[playerID as any][id]];
+  let piece = pieces[G.players[playerID as any].pieces[id]];
 
   if (transform.flipX) {
     piece = flipPieceX(piece);
@@ -135,32 +159,50 @@ export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTr
 
   return produce(G, draft => {
     positions.forEach(pos => (draft.board[getPosition(pos.x, pos.y)] = playerID));
-    draft.players[playerID as any].splice(id, 1);
+    draft.players[playerID as any].pieces.splice(id, 1);
   });
 }
 
-export function endGame(G: IG, ctx: IGameCtx) {}
+export function endGame(G: IG, ctx: IGameCtx) {
+  return produce(G, draft => {
+    draft.players[getPlayer(ctx, ctx.playerID) as any].end = true;
+  });
+}
 
 const GameConfig: IGameArgs = {
   name: 'cornerus',
   flow: {
     movesPerTurn: 1,
-    endGameIf: (G: IG, ctx) => {},
+    endGameIf: (G: IG, ctx) => {
+      if (!G.players.some(player => !player.end)) {
+        return { scoreboard: getScoreBoard(G, ctx) };
+      }
+    },
+    onTurnBegin: (G: IG, ctx) => {
+      if (G.players[getPlayer(ctx, ctx.currentPlayer) as any].end === true) {
+        ctx.stats.phase.numMoves[ctx.currentPlayer as any] += 1;
+        ctx.currentPlayer = ((parseInt(ctx.currentPlayer) + 1) % ctx.numPlayers).toString();
+        ctx.actionPlayers = [ctx.currentPlayer];
+        ctx.playOrderPos = (ctx.playOrderPos + 1) % ctx.numPlayers;
+        ctx.events.endTurn();
+      }
+    },
   },
   moves: {
     placePiece,
     endGame,
   },
-  setup: (ctx): IG => {
+  setup: (): IG => {
     return {
       board: Array(400).fill(null),
       players: Array(4)
         .fill(0)
-        .map(() =>
-          Array(pieces.length)
+        .map(() => ({
+          end: false,
+          pieces: Array(pieces.length)
             .fill(0)
             .map((_, i) => i),
-        ),
+        })),
     };
   },
 };
