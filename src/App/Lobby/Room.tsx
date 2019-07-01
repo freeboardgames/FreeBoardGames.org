@@ -47,12 +47,12 @@ export class Room extends React.Component<IRoomProps, IRoomState> {
     if (!nickname) {
       return <FreeBoardGameBar>{this._getNamePrompt()}</FreeBoardGameBar>;
     }
-    if (this.state.loading) {
-      return <LoadingPage />;
-    }
     if (this.state.error) {
       const ErrorPage = getMessagePage('error', this.state.error);
       return <ErrorPage />;
+    }
+    if (this.state.loading) {
+      return <LoadingPage />;
     }
     if (this.state.gameReady) {
       const room = this.state.roomMetadata;
