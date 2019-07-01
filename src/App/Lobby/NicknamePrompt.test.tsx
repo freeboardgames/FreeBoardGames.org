@@ -10,14 +10,17 @@ describe('Nickname Prompt', () => {
   let setNicknamePromptMock: jest.Mock;
   let togglePromptMock: jest.Mock;
   let wrapper: Enzyme.ReactWrapper;
+
   beforeEach(() => {
     setNicknamePromptMock = jest.fn();
     togglePromptMock = jest.fn();
     wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} togglePrompt={togglePromptMock} />);
   });
+
   it('should prompt for nickname', () => {
     expect(wrapper.html()).toContain('Set Nickname');
   });
+
   it('should set nickname on click', () => {
     const input = wrapper.find('input');
     input.simulate('change', {
@@ -27,6 +30,7 @@ describe('Nickname Prompt', () => {
     setButton.simulate('click');
     expect(setNicknamePromptMock).toHaveBeenCalledWith('foobar');
   });
+
   it('should set nickname on enter button', () => {
     const input = wrapper.find('input');
     input.simulate('change', {
@@ -35,6 +39,7 @@ describe('Nickname Prompt', () => {
     input.simulate('keypress', { key: 'Enter' });
     expect(setNicknamePromptMock).toHaveBeenCalledWith('foobar');
   });
+
   it('should call this.props.togglePrompt on click away', () => {
     const instance = wrapper.instance() as any;
     instance._togglePrompt();
