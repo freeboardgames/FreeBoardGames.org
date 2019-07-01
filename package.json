@@ -43,9 +43,6 @@
     "verify-lint:ts": "eslint --ext .ts,.tsx src/ @types/",
     "verify-lint:js": "eslint -c .eslintrc-javascript.js test/ i18n/"
   },
-  "pre-commit": [
-    "precommit"
-  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:freeboardgame/FreeBoardGame.org.git"
@@ -88,7 +85,6 @@
     "html-webpack-plugin": "^3.2.0",
     "husky": "^2.4.1",
     "jest": "^24.8.0",
-    "pre-commit": "^1.2.2",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1",
     "prettylint": "^1.0.0",
