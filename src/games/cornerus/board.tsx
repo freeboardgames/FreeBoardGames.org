@@ -7,6 +7,7 @@ import { IG, IScore, IPieceTransform, rotatePiece, flipPieceY, flipPieceX, getPl
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 //import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
+import AlertLayer from '../../App/Game/AlertLayer';
 import css from './Board.css';
 
 import red from '@material-ui/core/colors/red';
@@ -21,10 +22,12 @@ import RotateRight from '@material-ui/icons/RotateRight';
 import Flip from '@material-ui/icons/Flip';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
+import Close from '@material-ui/icons/Close';
 
 import IconButton from '@material-ui/core/IconButton';
-
 import Typography from '@material-ui/core/Typography';
+
+import EndGameDialog from './EndGameDialog';
 
 import { pieces } from './pieces';
 
@@ -49,6 +52,7 @@ interface IBoardState {
   pieceTransform: IPieceTransform;
   pieceIndex: number;
   piece: boolean[];
+  dialogOpen: boolean;
 }
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
@@ -58,12 +62,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       pieceTransform: { x: 10, y: 10, rotation: 0, flipX: false, flipY: false },
       pieceIndex: 0,
       piece: pieces[0],
+      dialogOpen: true,
     };
   }
 
   _placePiece = this.placePiece.bind(this);
   _flipY = this.flipY.bind(this);
   _flipX = this.flipX.bind(this);
+  _openDialog = this.openDialog.bind(this);
+  _closeDialog = this.closeDialog.bind(this);
+  _endGame = this.endGame.bind(this);
 
   placePiece() {
     this.props.moves.placePiece(this.state.pieceIndex, this.state.pieceTransform);
@@ -120,6 +128,18 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       piece: pieces[this.props.G.players[playerID as any][pieceIndex]],
       pieceTransform: { ...this.state.pieceTransform, flipX: false, flipY: false, rotation: 0 },
     });
+  }
+
+  openDialog() {
+    this.setState({ ...this.state, dialogOpen: true });
+  }
+
+  closeDialog() {
+    this.setState({ ...this.state, dialogOpen: false });
+  }
+
+  endGame() {
+    this.props.moves.endGame();
   }
   /*
     _getGameOver() {
@@ -210,79 +230,85 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const colors = [blue[500], yellow[500], red[500], green[500]];
 
     return (
-      <GameLayout>
-        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
-          {this._getStatus()}
-        </Typography>
-        <Grid rows={20} cols={20} onClick={() => null} colorMap={colorMap}>
-          {this.props.G.board
-            .map((square, index) => ({ square, index }))
-            .filter(piece => piece.square !== null)
-            .map(piece => (
-              <Token x={piece.index % 20} y={Math.floor(piece.index / 20)} key={piece.index}>
-                <rect width="1" height="1" style={{ fill: colors[piece.square as any] }} className={css.Piece}></rect>
-              </Token>
-            ))}
-          {this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID ? (
-            <Token
-              x={this.state.pieceTransform.x}
-              y={this.state.pieceTransform.y}
-              draggable={true}
-              shouldDrag={() => true}
-              onDrop={this._onDrop}
-            >
-              <g>
-                <g fill={colors[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any]} opacity={0.8}>
-                  {this.state.piece
-                    .map((square, index) => ({ square, index }))
-                    .filter(piece => piece.square)
-                    .map(piece => (
-                      <rect
-                        x={piece.index % Math.sqrt(this.state.piece.length)}
-                        y={Math.floor(piece.index / Math.sqrt(this.state.piece.length))}
-                        width="1"
-                        height="1"
-                        key={piece.index}
-                      ></rect>
-                    ))}
+      <div>
+        <EndGameDialog open={this.state.dialogOpen} handleClose={this._closeDialog} accept={this._endGame} />
+        <GameLayout>
+          <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+            {this._getStatus()}
+          </Typography>
+          <Grid rows={20} cols={20} onClick={() => null} colorMap={colorMap}>
+            {this.props.G.board
+              .map((square, index) => ({ square, index }))
+              .filter(piece => piece.square !== null)
+              .map(piece => (
+                <Token x={piece.index % 20} y={Math.floor(piece.index / 20)} key={piece.index}>
+                  <rect width="1" height="1" style={{ fill: colors[piece.square as any] }} className={css.Piece}></rect>
+                </Token>
+              ))}
+            {this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID ? (
+              <Token
+                x={this.state.pieceTransform.x}
+                y={this.state.pieceTransform.y}
+                draggable={true}
+                shouldDrag={() => true}
+                onDrop={this._onDrop}
+              >
+                <g>
+                  <g fill={colors[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any]} opacity={0.8}>
+                    {this.state.piece
+                      .map((square, index) => ({ square, index }))
+                      .filter(piece => piece.square)
+                      .map(piece => (
+                        <rect
+                          x={piece.index % Math.sqrt(this.state.piece.length)}
+                          y={Math.floor(piece.index / Math.sqrt(this.state.piece.length))}
+                          width="1"
+                          height="1"
+                          key={piece.index}
+                        ></rect>
+                      ))}
+                  </g>
+                  <rect width="50" height="50" x="-25" y="-25" fill="none" style={{ pointerEvents: 'all' }}></rect>
                 </g>
-                <rect width="50" height="50" x="-25" y="-25" fill="none" style={{ pointerEvents: 'all' }}></rect>
-              </g>
-            </Token>
-          ) : (
-            <div></div>
-          )}
-        </Grid>
-        <div className={css.Controls}>
-          <IconButton onClick={() => this.rotate(3)}>
-            <RotateLeft />
-          </IconButton>
-          <IconButton onClick={() => this.rotate(1)}>
-            <RotateRight />
-          </IconButton>
-          <IconButton onClick={this._flipY} style={{ transform: 'rotate(90deg)' }}>
-            <Flip />
-          </IconButton>
-          <IconButton onClick={this._flipX}>
-            <Flip />
-          </IconButton>
-          <IconButton
-            onClick={() =>
-              this.select(
-                this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].length - 1,
-              )
-            }
-          >
-            <ChevronLeft />
-          </IconButton>
-          <IconButton onClick={() => this.select(1)}>
-            <ChevronRight />
-          </IconButton>
-          <IconButton onClick={this._placePiece}>
-            <Done />
-          </IconButton>
-        </div>
-      </GameLayout>
+              </Token>
+            ) : (
+              <div></div>
+            )}
+          </Grid>
+          <div className={css.Controls}>
+            <IconButton onClick={() => this.rotate(3)}>
+              <RotateLeft />
+            </IconButton>
+            <IconButton onClick={() => this.rotate(1)}>
+              <RotateRight />
+            </IconButton>
+            <IconButton onClick={this._flipY} style={{ transform: 'rotate(90deg)' }}>
+              <Flip />
+            </IconButton>
+            <IconButton onClick={this._flipX}>
+              <Flip />
+            </IconButton>
+            <IconButton
+              onClick={() =>
+                this.select(
+                  this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].length - 1,
+                )
+              }
+            >
+              <ChevronLeft />
+            </IconButton>
+            <IconButton onClick={() => this.select(1)}>
+              <ChevronRight />
+            </IconButton>
+            <IconButton onClick={this._placePiece}>
+              <Done />
+            </IconButton>
+            <IconButton onClick={this._openDialog}>
+              <Close />
+            </IconButton>
+          </div>
+        </GameLayout>
+      </div>
     );
   }
 

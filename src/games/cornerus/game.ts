@@ -139,6 +139,8 @@ export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTr
   });
 }
 
+export function endGame(G: IG, ctx: IGameCtx) {}
+
 const GameConfig: IGameArgs = {
   name: 'cornerus',
   flow: {
@@ -147,6 +149,7 @@ const GameConfig: IGameArgs = {
   },
   moves: {
     placePiece,
+    endGame,
   },
   setup: (ctx): IG => {
     return {
