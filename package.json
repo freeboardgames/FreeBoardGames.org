@@ -148,7 +148,7 @@
     "react-async-bootstrapper": "^2.1.1",
     "react-async-component": "^2.0.0",
     "react-dom": "^16.7.0",
-    "react-ga": "^2.5.7",
+    "react-ga": "^2.6.0",
     "react-markdown": "^4.0.8",
     "react-router-dom": "^4.2.2",
     "redux": "^4.0.1",
