@@ -149,7 +149,7 @@
     "shortid": "^2.2.14",
     "shuffle-array": "^1.0.1",
     "socket.io-client": "^2.2.0",
-    "superagent": "^5.0.6",
+    "superagent": "^5.1.0",
     "three": "^0.105.2",
     "ttag": "^1.7.17",
     "webpack-shell-plugin-next": "^0.6.4",
