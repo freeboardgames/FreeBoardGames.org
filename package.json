@@ -149,7 +149,7 @@
     "react-async-component": "^2.0.0",
     "react-dom": "^16.7.0",
     "react-ga": "^2.5.7",
-    "react-markdown": "^4.0.8",
+    "react-markdown": "^4.1.0",
     "react-router-dom": "^4.2.2",
     "redux": "^4.0.1",
     "rrc": "^0.10.1",
