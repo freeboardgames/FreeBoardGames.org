@@ -2,14 +2,6 @@
   animation: fadeIn 0.5s;
 }
 
-.Controls {
-  text-align: center;
-}
-
-.Controls * {
-  color: white;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
