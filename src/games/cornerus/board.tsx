@@ -22,6 +22,8 @@ import Flip from '@material-ui/icons/Flip';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
+import IconButton from '@material-ui/core/IconButton';
+
 import Typography from '@material-ui/core/Typography';
 
 import { pieces } from './pieces';
@@ -217,12 +219,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             .map((square, index) => ({ square, index }))
             .filter(piece => piece.square !== null)
             .map(piece => (
-              <Token
-                x={piece.index % 20}
-                y={Math.floor(piece.index / 20)}
-                key={piece.index}
-                style={{ fill: colors[piece.square as any] }}
-              ></Token>
+              <Token x={piece.index % 20} y={Math.floor(piece.index / 20)} key={piece.index}>
+                <rect width="1" height="1" style={{ fill: colors[piece.square as any] }} className={css.Piece}></rect>
+              </Token>
             ))}
           {this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID ? (
             <Token
@@ -254,17 +253,35 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             <div></div>
           )}
         </Grid>
-        <Done onClick={this._placePiece} />
-        <RotateLeft onClick={() => this.rotate(3)} />
-        <RotateRight onClick={() => this.rotate(1)} />
-        <Flip onClick={this._flipY} style={{ transform: 'rotate(90deg)' }} />
-        <Flip onClick={this._flipX} />
-        <ChevronLeft
-          onClick={() =>
-            this.select(this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].length - 1)
-          }
-        />
-        <ChevronRight onClick={() => this.select(1)} />
+        <div className={css.Controls}>
+          <IconButton onClick={() => this.rotate(3)}>
+            <RotateLeft />
+          </IconButton>
+          <IconButton onClick={() => this.rotate(1)}>
+            <RotateRight />
+          </IconButton>
+          <IconButton onClick={this._flipY} style={{ transform: 'rotate(90deg)' }}>
+            <Flip />
+          </IconButton>
+          <IconButton onClick={this._flipX}>
+            <Flip />
+          </IconButton>
+          <IconButton
+            onClick={() =>
+              this.select(
+                this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].length - 1,
+              )
+            }
+          >
+            <ChevronLeft />
+          </IconButton>
+          <IconButton onClick={() => this.select(1)}>
+            <ChevronRight />
+          </IconButton>
+          <IconButton onClick={this._placePiece}>
+            <Done />
+          </IconButton>
+        </div>
       </GameLayout>
     );
   }
