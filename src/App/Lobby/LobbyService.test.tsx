@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { LobbyService, IPlayerInRoom } from './LobbyService';
+import { LobbyService, IPlayerInRoom, IStoredCredentials } from './LobbyService';
 import request from 'superagent';
 
 describe('New Room', () => {
@@ -70,7 +70,8 @@ describe('New Room', () => {
   it('should get room metadata with currentUser', async () => {
     const mockResponse = { body: { players: [{ id: 0, name: 'Jason', roomID: 'fooroom' }] } };
     request.get = jest.fn().mockReturnValue(mockResponse);
-    Storage.prototype.getItem = () => JSON.stringify({ fooroom: { playerID: 0, credential: 'foocredential' } });
+    const mockStoredCredentials: IStoredCredentials = { fooroom: { playerID: 0, credential: 'foocredential' } };
+    Storage.prototype.getItem = () => JSON.stringify(mockStoredCredentials);
     const response = await LobbyService.getRoomMetadata('foogame', 'fooroom');
     expect(response).to.eql({
       players: [{ playerID: 0, name: 'Jason', roomID: 'fooroom' }],
