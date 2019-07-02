@@ -46,8 +46,7 @@ export function getPlayer(ctx: IGameCtx, playerID: string) {
     } else {
       return numMoves % 2 === 1 ? '3' : '2';
     }
-  }
-  else if (ctx.numPlayers === 3) {
+  } else if (ctx.numPlayers === 3) {
     return (ctx.turn + 1) % 4 === 0 ? '3' : playerID;
   } else {
     return playerID;
@@ -58,8 +57,7 @@ function isFirstTurn(ctx: IGameCtx) {
   const numMoves = ctx.stats.phase.numMoves[ctx.playerID];
   if (ctx.numPlayers === 2) {
     return typeof numMoves === 'undefined' || numMoves === 1;
-  }
-  else if (ctx.numPlayers === 3) {
+  } else if (ctx.numPlayers === 3) {
     return typeof numMoves === 'undefined' || ctx.turn === 3;
   } else {
     return typeof numMoves === 'undefined';
@@ -77,8 +75,7 @@ function getScoreBoard(G: IG, ctx: IGameCtx) {
       { playerID: '0', score: scoreboard[0].score + scoreboard[1].score },
       { playerID: '1', score: scoreboard[2].score + scoreboard[3].score },
     ].sort((a, b) => b.score - a.score);
-  }
-  else if (ctx.numPlayers === 3) {
+  } else if (ctx.numPlayers === 3) {
     return scoreboard.filter((_, i) => i !== 3).sort((a, b) => b.score - a.score);
   } else {
     return scoreboard.sort((a, b) => b.score - a.score);
@@ -238,10 +235,13 @@ const GameConfig: IGameArgs = {
   },
   setup: (ctx): IG => {
     const turnOrder = (() => {
-      switch(ctx.numPlayers) {
-        case 2: return ['0', '1'];
-        case 3: return ['0', '1', '2', '0', '0', '1', '2', '1', '0', '1', '2', '2'];
-        case 4: return ['0', '1', '2', '3'];
+      switch (ctx.numPlayers) {
+        case 2:
+          return ['0', '1'];
+        case 3:
+          return ['0', '1', '2', '0', '0', '1', '2', '1', '0', '1', '2', '2'];
+        case 4:
+          return ['0', '1', '2', '3'];
       }
     })();
 
@@ -255,7 +255,7 @@ const GameConfig: IGameArgs = {
             .fill(0)
             .map((_, i) => i),
         })),
-      turnOrder
+      turnOrder,
     };
   },
 };
