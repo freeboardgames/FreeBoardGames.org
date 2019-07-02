@@ -14,7 +14,7 @@ class MockBoard extends React.Component<any, any> {
 }
 
 describe('GameBoardWrapper', () => {
-  it('should show warning', () => {
+  it('should not show warning', () => {
     const Board = gameBoardWrapper({
       board: MockBoard,
       gameArgs: {
