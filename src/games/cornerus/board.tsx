@@ -7,7 +7,6 @@ import { IG, IPieceTransform, IScore, getPlayer } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
-import css from './Board.css';
 
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
@@ -182,9 +181,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       );
     }
 
-    const colorMap = this.getColorMap();
-
-    const colors = [blue[500], yellow[500], red[500], green[500]];
+    const colors = [blue, yellow, red, green];
+    const colorMap = this.getColorMap(colors);
 
     return (
       <div>
@@ -194,14 +192,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             {this._getStatus()}
           </Typography>
           <Grid rows={20} cols={20} onClick={() => null} colorMap={colorMap}>
-            {this.props.G.board
-              .map((square, index) => ({ square, index }))
-              .filter(piece => piece.square !== null)
-              .map(piece => (
-                <Token x={piece.index % 20} y={Math.floor(piece.index / 20)} key={piece.index}>
-                  <rect width="1" height="1" style={{ fill: colors[piece.square as any] }} className={css.Piece}></rect>
-                </Token>
-              ))}
             {this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID ? (
               <Token
                 x={this.state.piece.transform.x}
@@ -211,7 +201,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 onDrop={this._onDrop}
               >
                 <g>
-                  <g fill={colors[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any]} opacity={0.7}>
+                  <g fill={colors[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any][600]} opacity={0.9}>
                     {this.state.piece.data
                       .map((square, index) => ({ square, index }))
                       .filter(piece => piece.square)
@@ -245,13 +235,24 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   }
 
-  getColorMap(): IColorMap {
+  getColorMap(colors: any[]): IColorMap {
     const colorMap = {} as IColorMap;
-    for (let x = 0; x < 20; x++) {
-      for (let y = 0; y < 20; y++) {
+
+    this.props.G.board
+      .map((square, index) => ({ square, index }))
+      .forEach(piece => {
+        const x = piece.index % 20;
+        const y = Math.floor(piece.index / 20);
+
         const key = `${x},${y}`;
         let color = grey[800];
-        if (x === 0 && y === 0) {
+        if (piece.square !== null) {
+          if ((x + y) % 2 === 0) {
+            color = colors[piece.square as any][700];
+          } else {
+            color = colors[piece.square as any][600];
+          }
+        } else if (x === 0 && y === 0) {
           color = blue[400];
         } else if (x === 19 && y === 0) {
           color = yellow[400];
@@ -263,8 +264,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           color = grey[900];
         }
         colorMap[key] = color;
-      }
-    }
+      });
+
     return colorMap;
   }
 }
