@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ReactGA from 'react-ga';
+import getMessagePage from '../MessagePage';
+import { LobbyService } from '../Lobby/LobbyService';
 
 export interface IGameOverProps {
   result: string;
@@ -14,23 +16,28 @@ export interface IGameOverProps {
   extraCardContent?: React.ReactNode;
 }
 
+export interface IGameOverState {
+  loading: boolean;
+}
+
 export class GameOver extends React.Component<IGameOverProps, {}> {
+  state = { loading: false };
   render() {
-    const playAgain =
-      this.props.gameArgs &&
-      (this.props.gameArgs.mode === GameMode.AI || this.props.gameArgs.mode === GameMode.LocalFriend);
-    let playAgainLink;
+    if (this.state.loading) return getMessagePage('loading', 'Loading...');
+    let playAgain;
     const extraCardContent = this._getExtraCardContent();
-    if (playAgain) {
-      playAgainLink = (
-        <Button
-          onClick={this._refreshPage(this.props.gameArgs)}
-          variant="outlined"
-          style={{ width: '150px', marginRight: '50%', marginLeft: '35%', marginBottom: '24px' }}
-        >
-          <ReplayIcon style={{ marginRight: '8px' }} />
-          Play Again
-        </Button>
+    if (this.props.gameArgs) {
+      playAgain = (
+        <div style={{ textAlign: 'center' }}>
+          <Button
+            onClick={this._playAgainHandle}
+            variant="outlined"
+            style={{ marginRight: 'auto', marginLeft: 'auto', marginBottom: '24px' }}
+          >
+            <ReplayIcon style={{ marginRight: '8px' }} />
+            Play Again
+          </Button>
+        </div>
       );
     }
     ReactGA.event({
@@ -43,7 +50,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
         <Typography variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           Game Over, {this.props.result}!
         </Typography>
-        {playAgainLink}
+        {playAgain}
         {extraCardContent}
         <GamesList />
       </FreeBoardGameBar>
@@ -57,12 +64,20 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     return otherPlayerCard;
   };
 
-  _refreshPage = (gameArgs: IGameArgs) => () => {
+  _playAgainHandle = async () => {
+    const args = this.props.gameArgs;
     ReactGA.event({
       category: 'GameOver',
       action: 'Clicked play again',
-      label: gameArgs.gameCode,
+      label: args.gameCode,
     });
-    window.location.reload();
+
+    if (args.mode === GameMode.AI || args.mode === GameMode.LocalFriend) {
+      window.location.reload();
+    } else {
+      this.setState({ loading: true });
+      const nextRoomId = await LobbyService.getPlayAgainNextRoom(args.gameCode, args.matchCode, args.players.length);
+      window.location.replace(`/room/${args.gameCode}/${nextRoomId}` as any);
+    }
   };
 }
