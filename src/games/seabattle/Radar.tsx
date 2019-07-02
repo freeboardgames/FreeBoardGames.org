@@ -27,9 +27,6 @@ interface IRadarProps {
 export class Radar extends React.Component<IRadarProps, {}> {
   constructor(props: IRadarProps) {
     super(props);
-    this.state = {
-      ships: props.ships,
-    };
   }
 
   render() {

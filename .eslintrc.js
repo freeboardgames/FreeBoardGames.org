@@ -17,6 +17,7 @@ module.exports = {
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
     'react/display-name': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
+    'react/no-unused-state': 'warn',
   },
   settings: {
     react: {
