@@ -18,7 +18,6 @@ export interface IBoardWrapperArgs {
 
 export function gameBoardWrapper(args: IBoardWrapperArgs) {
   class Board extends React.Component<any, {}> {
-    state = { dismissedSharing: false };
     render() {
       const props: any = {
         ...this.props,
@@ -39,10 +38,6 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
         </div>
       );
     }
-
-    _dismissSharing = () => {
-      this.setState({ dismissedSharing: true });
-    };
 
     _getConnectionLost() {
       return (

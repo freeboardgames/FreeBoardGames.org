@@ -13,26 +13,28 @@ class MockBoard extends React.Component<any, any> {
   }
 }
 
-test('show no warning', () => {
-  const Board = gameBoardWrapper({
-    board: MockBoard,
-    gameArgs: {
-      gameCode: 'chess',
-      mode: GameMode.OnlineFriend,
-    },
+describe('GameBoardWrapper', () => {
+  it('should not show warning', () => {
+    const Board = gameBoardWrapper({
+      board: MockBoard,
+      gameArgs: {
+        gameCode: 'chess',
+        mode: GameMode.OnlineFriend,
+      },
+    });
+    const wrapper = Enzyme.mount(<Board isConnected={true} G={{ pgn: '' }} ctx={{}} />);
+    expect(wrapper.find('AlertLayer').length).to.equal(0);
   });
-  const el = Enzyme.mount(<Board isConnected={true} G={{ pgn: '' }} ctx={{}} />);
-  expect(el.find('AlertLayer').length).to.equal(0);
-});
 
-test('show disconnected warning', () => {
-  const Board = gameBoardWrapper({
-    board: MockBoard,
-    gameArgs: {
-      gameCode: 'chess',
-      mode: GameMode.OnlineFriend,
-    },
+  it('should show disconnected warning', () => {
+    const Board = gameBoardWrapper({
+      board: MockBoard,
+      gameArgs: {
+        gameCode: 'chess',
+        mode: GameMode.OnlineFriend,
+      },
+    });
+    const wrapper = Enzyme.mount(<Board isConnected={false} G={{ pgn: '' }} ctx={{}} />);
+    expect(wrapper.html()).to.contain('Connection lost');
   });
-  const el = Enzyme.mount(<Board isConnected={false} G={{ pgn: '' }} ctx={{}} />);
-  expect(el.html()).to.contain('Connection lost');
 });
