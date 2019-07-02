@@ -95,10 +95,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
       return 'draw';
     } else {
-      if (scoreboard[0].score === scoreboard[this.props.playerID as any].score) {
-        return 'you won';
+      if (this.isLocalGame()) {
+        return scoreboard[0].score > scoreboard[1].score ? 'blue/yellow won' : 'red/green won';
       } else {
-        return 'you lost';
+        if (scoreboard[0].score === scoreboard[this.props.playerID as any].score) {
+          return 'you won';
+        } else {
+          return 'you lost';
+        }
       }
     }
   }
@@ -127,11 +131,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       let player;
       switch (this.props.ctx.currentPlayer) {
         case '0': {
-          player = 'Red';
+          player = 'Blue/yellow';
           break;
         }
         case '1': {
-          player = 'Green';
+          player = 'Red/green';
           break;
         }
       }
