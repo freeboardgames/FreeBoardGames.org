@@ -24,7 +24,7 @@ export interface IPlayerCredential {
   credential: string;
 }
 
-interface IStoredCredentials {
+export interface IStoredCredentials {
   [key: string]: IPlayerCredential;
 }
 

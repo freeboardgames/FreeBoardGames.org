@@ -20,7 +20,6 @@ interface IListPlayersProps {
 }
 
 export class ListPlayers extends React.Component<IListPlayersProps, {}> {
-  state = { editingNickname: false };
   render() {
     const metadata = this.props.roomMetadata;
     const playersList = metadata.players.map((player: IPlayerInRoom, idx: number) => {

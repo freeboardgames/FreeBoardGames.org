@@ -1,5 +1,5 @@
 import Enzyme from 'enzyme';
-import { getPageMetadata } from './metadata';
+import { getPageMetadata, getBreadcrumbs } from './metadata';
 import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -33,5 +33,16 @@ describe('Metadata', () => {
     metadata = getPageMetadata('/blah');
     expect(metadata.title).to.contain('FreeBoardGame');
     expect(metadata.description).to.contain('Play board games in your browser for free.');
+  });
+
+  it('should return breadcrumbs', () => {
+    const breadcrumbs = getBreadcrumbs('/');
+    expect(breadcrumbs).to.contain('itemprop');
+    expect(breadcrumbs).to.contain('Play Chess');
+  });
+
+  it('should not return breadcrumbs for paths other than /', () => {
+    const breadcrumbs = getBreadcrumbs('/foo');
+    expect(breadcrumbs).to.be.an('undefined');
   });
 });
