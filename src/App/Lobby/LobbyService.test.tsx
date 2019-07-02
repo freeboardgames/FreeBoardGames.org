@@ -47,9 +47,37 @@ describe('New Room', () => {
     request.post = jest.fn().mockReturnValue({
       send: jest.fn(),
     });
-    Storage.prototype.getItem = () => JSON.stringify({ fooroom: { playerID: 0, credential: 'foocredential' } }); // mock no crendetials
+    Storage.prototype.getItem = () => JSON.stringify({ fooroom: { playerID: 0, credential: 'foocredential' } });
     const player: IPlayerInRoom = { playerID: 0, name: 'Jason', roomID: 'fooroom' };
     await LobbyService.renameUser('foogame', player, 'fooNewName');
     expect((request.post as any).mock.calls.length).to.equal(1);
+  });
+
+  it('should get room metadata without currentUser', async () => {
+    const mockResponse = { body: { players: [{ id: 0, name: 'Jason', roomID: 'fooroom' }] } };
+    request.get = jest.fn().mockReturnValue(mockResponse);
+    Storage.prototype.getItem = () => JSON.stringify({}); // mock no crendetials
+    const response = await LobbyService.getRoomMetadata('foogame', 'fooroom');
+    expect(response).to.eql({
+      players: [{ playerID: 0, name: 'Jason', roomID: 'fooroom' }],
+      gameCode: 'foogame',
+      roomID: 'fooroom',
+      currentUser: undefined,
+      numberOfPlayers: 1,
+    });
+  });
+
+  it('should get room metadata with currentUser', async () => {
+    const mockResponse = { body: { players: [{ id: 0, name: 'Jason', roomID: 'fooroom' }] } };
+    request.get = jest.fn().mockReturnValue(mockResponse);
+    Storage.prototype.getItem = () => JSON.stringify({ fooroom: { playerID: 0, credential: 'foocredential' } });
+    const response = await LobbyService.getRoomMetadata('foogame', 'fooroom');
+    expect(response).to.eql({
+      players: [{ playerID: 0, name: 'Jason', roomID: 'fooroom' }],
+      gameCode: 'foogame',
+      roomID: 'fooroom',
+      currentUser: { playerID: 0, name: 'Jason', roomID: 'fooroom' },
+      numberOfPlayers: 1,
+    });
   });
 });
