@@ -14,7 +14,7 @@
     "i18n:update": "./i18n/updatei18ntemplates.bash",
     "format": "pretty-quick",
     "format:staged": "pretty-quick --staged",
-    "format:check": "prettylint src/**/*.ts* @types/**/*.ts*",
+    "format:check": "prettylint \"src/**/*.{ts,tsx}\"",
     "lint": "run-s lint:ts lint:js format",
     "lint:js": "eslint -c .eslintrc-javascript.js --fix test/ i18n/",
     "lint:ts": "eslint --fix --ext .ts,.tsx src/ @types/",
