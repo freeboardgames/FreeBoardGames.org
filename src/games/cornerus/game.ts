@@ -1,4 +1,4 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { Game, IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
 import { pieces } from './pieces';
 
 export interface IScore {
@@ -22,6 +22,7 @@ export interface IPlayer {
 export interface IG {
   board: string[];
   players: IPlayer[];
+  turnOrder: string[];
 }
 
 export function getXY(position: number, size: number) {
@@ -36,6 +37,7 @@ function inBounds(x: number, y: number) {
   return x >= 0 && x < 20 && y >= 0 && y < 20;
 }
 
+// Map real playerID to 'fake' one
 export function getPlayer(ctx: IGameCtx, playerID: string) {
   const numMoves = ctx.stats.phase.numMoves[playerID];
   if (ctx.numPlayers === 2) {
@@ -44,6 +46,9 @@ export function getPlayer(ctx: IGameCtx, playerID: string) {
     } else {
       return numMoves % 2 === 1 ? '3' : '2';
     }
+  }
+  else if (ctx.numPlayers === 3) {
+    return (ctx.turn + 1) % 4 === 0 ? '3' : playerID;
   } else {
     return playerID;
   }
@@ -53,24 +58,30 @@ function isFirstTurn(ctx: IGameCtx) {
   const numMoves = ctx.stats.phase.numMoves[ctx.playerID];
   if (ctx.numPlayers === 2) {
     return typeof numMoves === 'undefined' || numMoves === 1;
+  }
+  else if (ctx.numPlayers === 3) {
+    return typeof numMoves === 'undefined' || ctx.turn === 3;
   } else {
     return typeof numMoves === 'undefined';
   }
 }
 
 function getScoreBoard(G: IG, ctx: IGameCtx) {
-  const scoreBoard: IScore[] = G.players.map((player, i) => ({
+  const scoreboard: IScore[] = G.players.map((player, i) => ({
     playerID: i.toString(),
     score: player.pieces.reduce((acc, piece) => acc - pieces[piece].filter(square => square).length, 0),
   }));
 
   if (ctx.numPlayers === 2) {
     return [
-      { playerID: '0', score: scoreBoard[0].score + scoreBoard[1].score },
-      { playerID: '1', score: scoreBoard[2].score + scoreBoard[3].score },
+      { playerID: '0', score: scoreboard[0].score + scoreboard[1].score },
+      { playerID: '1', score: scoreboard[2].score + scoreboard[3].score },
     ].sort((a, b) => b.score - a.score);
+  }
+  else if (ctx.numPlayers === 3) {
+    return scoreboard.filter((_, i) => i !== 3).sort((a, b) => b.score - a.score);
   } else {
-    return scoreBoard.sort((a, b) => b.score - a.score);
+    return scoreboard.sort((a, b) => b.score - a.score);
   }
 }
 
@@ -202,6 +213,7 @@ const GameConfig: IGameArgs = {
   name: 'cornerus',
   flow: {
     movesPerTurn: 1,
+    turnOrder: TurnOrder.CUSTOM_FROM('turnOrder'),
     endGameIf: (G: IG, ctx) => {
       if (!G.players.some(player => !player.end && player.pieces.length > 0)) {
         return { scoreboard: getScoreBoard(G, ctx) };
@@ -211,9 +223,9 @@ const GameConfig: IGameArgs = {
       if (playerEnded(G, ctx)) {
         do {
           ctx.stats.phase.numMoves[ctx.currentPlayer as any] += 1;
-          ctx.currentPlayer = ((parseInt(ctx.currentPlayer) + 1) % ctx.numPlayers).toString();
-          ctx.actionPlayers = [ctx.currentPlayer];
           ctx.playOrderPos = (ctx.playOrderPos + 1) % ctx.playOrder.length;
+          ctx.currentPlayer = ctx.playOrder[ctx.playOrderPos];
+          ctx.actionPlayers = [ctx.currentPlayer];
           ctx.turn++;
         } while (playerEnded(G, ctx));
         ctx.events.endTurn();
@@ -224,7 +236,15 @@ const GameConfig: IGameArgs = {
     placePiece,
     endGame,
   },
-  setup: (): IG => {
+  setup: (ctx): IG => {
+    const turnOrder = (() => {
+      switch(ctx.numPlayers) {
+        case 2: return ['0', '1'];
+        case 3: return ['0', '1', '2', '0', '0', '1', '2', '1', '0', '1', '2', '2'];
+        case 4: return ['0', '1', '2', '3'];
+      }
+    })();
+
     return {
       board: Array(400).fill(null),
       players: Array(4)
@@ -235,6 +255,7 @@ const GameConfig: IGameArgs = {
             .fill(0)
             .map((_, i) => i),
         })),
+      turnOrder
     };
   },
 };

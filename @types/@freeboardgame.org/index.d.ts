@@ -39,16 +39,17 @@ declare module '@freeboardgame.org/boardgame.io/ui' {
 }
 
 declare module '@freeboardgame.org/boardgame.io/core' {
-  export enum TurnOrder {
-    DEFAULT,
-    ONCE,
-    ANY,
-    ANY_ONCE,
-    OTHERS,
-    OTHERS_ONCE,
-    CUSTOM,
-    CUSTOM_FROM,
+  export namespace TurnOrder {
+    const DEFAULT: ITurnOrder;
+    const ONCE: ITurnOrder;
+    const ANY: ITurnOrder;
+    const ANY_ONCE: ITurnOrder;
+    const OTHERS: ITurnOrder;
+    const OTHERS_ONCE: ITurnOrder;
+    const CUSTOM: (playOrder: any) => ITurnOrder;
+    const CUSTOM_FROM: (playOrderField: string) => ITurnOrder;
   }
+
   export class FlowObj {
     ctx: (players: number) => any;
     processGameEvent: (state: any, gameEvent: any) => any;
@@ -106,7 +107,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   interface IGameFlowPhases {
     [name: string]: {
       movesPerTurn?: number;
-      turnOrder?: TurnOrder | ITurnOrder;
+      turnOrder?: ITurnOrder;
       next?: string;
       allowedMoves?: string[];
       endPhaseIf?: (G: any, ctx: IGameCtx) => boolean | object;
@@ -136,6 +137,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     onMove?: (G: any, ctx: IGameCtx) => any;
     triggers?: IGameFlowTrigger[];
     phases?: IGameFlowPhases;
+    turnOrder?: ITurnOrder;
   }
   interface IGameArgs {
     name?: string;
