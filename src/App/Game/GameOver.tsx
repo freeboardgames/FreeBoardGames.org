@@ -23,7 +23,10 @@ export interface IGameOverState {
 export class GameOver extends React.Component<IGameOverProps, {}> {
   state = { loading: false };
   render() {
-    if (this.state.loading) return getMessagePage('loading', 'Loading...');
+    if (this.state.loading) {
+      const Page = getMessagePage('loading', 'Loading...');
+      return <Page />;
+    }
     let playAgain;
     const extraCardContent = this._getExtraCardContent();
     if (this.props.gameArgs) {
