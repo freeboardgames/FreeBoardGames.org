@@ -37,17 +37,4 @@ describe('GameBoardWrapper', () => {
     const wrapper = Enzyme.mount(<Board isConnected={false} G={{ pgn: '' }} ctx={{}} />);
     expect(wrapper.html()).to.contain('Connection lost');
   });
-
-  it('should dismiss sharing', () => {
-    const Board = gameBoardWrapper({
-      board: MockBoard,
-      gameArgs: {
-        gameCode: 'chess',
-        mode: GameMode.OnlineFriend,
-      },
-    });
-    const wrapper = Enzyme.mount(<Board isConnected={true} G={{ pgn: '' }} ctx={{}} />);
-    (wrapper.instance() as any)._dismissSharing();
-    expect(wrapper.state('dismissedSharing')).to.equal(true);
-  });
 });
