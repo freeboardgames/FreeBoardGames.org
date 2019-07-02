@@ -98,7 +98,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       if (this.isLocalGame()) {
         return scoreboard[0].score > scoreboard[1].score ? 'blue/yellow won' : 'red/green won';
       } else {
-        if (scoreboard[0].score === scoreboard[this.props.playerID as any].score) {
+        if (scoreboard[0].score === scoreboard.find(rank => rank.playerID === this.props.playerID).score) {
           return 'you won';
         } else {
           return 'you lost';

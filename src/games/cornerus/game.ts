@@ -1,6 +1,5 @@
 import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
 import { pieces } from './pieces';
-import produce from 'immer';
 
 export interface IScore {
   playerID: string;
@@ -69,9 +68,9 @@ function getScoreBoard(G: IG, ctx: IGameCtx) {
     return [
       { playerID: '0', score: scoreBoard[0].score + scoreBoard[1].score },
       { playerID: '1', score: scoreBoard[2].score + scoreBoard[3].score },
-    ];
+    ].sort((a, b) => b.score - a.score);
   } else {
-    return scoreBoard;
+    return scoreBoard.sort((a, b) => b.score - a.score);
   }
 }
 
@@ -132,7 +131,8 @@ export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTr
     .map(square => {
       const { x, y } = getXY(square.index, Math.sqrt(piece.length));
       return { x: x + transform.x, y: y + transform.y };
-    });
+    })
+    .sort((a, b) => getPosition(b.x, b.y) - getPosition(a.x, a.y));
 
   if (
     positions.some(pos => !inBounds(pos.x, pos.y)) || // Check if piece is on board
@@ -162,16 +162,40 @@ export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTr
     return INVALID_MOVE;
   }
 
-  return produce(G, draft => {
-    positions.forEach(pos => (draft.board[getPosition(pos.x, pos.y)] = playerID));
-    draft.players[playerID as any].pieces.splice(id, 1);
-  });
+  return {
+    ...G,
+    board: G.board.map((square, i) => {
+      if (
+        positions.length > 0 &&
+        i === getPosition(positions[positions.length - 1].x, positions[positions.length - 1].y)
+      ) {
+        positions.pop();
+        return playerID;
+      } else {
+        return square;
+      }
+    }),
+    players: Object.values({
+      ...G.players,
+      [playerID]: {
+        ...G.players[playerID as any],
+        pieces: G.players[playerID as any].pieces.filter((_, i) => i !== id),
+      },
+    }),
+  };
 }
 
 export function endGame(G: IG, ctx: IGameCtx) {
-  return produce(G, draft => {
-    draft.players[getPlayer(ctx, ctx.playerID) as any].end = true;
-  });
+  return {
+    ...G,
+    players: Object.values({
+      ...G.players,
+      [getPlayer(ctx, ctx.playerID)]: {
+        ...G.players[getPlayer(ctx, ctx.playerID) as any],
+        end: true,
+      },
+    }),
+  };
 }
 
 const GameConfig: IGameArgs = {
