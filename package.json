@@ -22,24 +22,24 @@
     "prod:buildquietly": "run-s server:buildquietly webpack:buildquietly",
     "prod:build": "run-s server:build webpack:build",
     "pre": "yarn run precommit",
-    "precommit": "run-s format:staged verify-lint buildtest",
+    "precommit": "run-s verify-lint buildtest",
     "server": "yarn run server:both",
     "server:bgio": "node server-build/server_bgio.js",
     "server:fbg": "node server-build/server_fbg.js",
     "server:both": "run-p server:bgio server:fbg",
     "server:build": "yarn run i18n:apply && webpack --progress --config webpack.server.js",
     "server:buildquietly": "yarn run i18n:apply && webpack --config webpack.server.js",
-    "test": "jest --detectOpenHandles",
-    "test:changed": "jest --detectOpenHandles --onlyChanged",
-    "test:changed:watch": "jest --detectOpenHandles --watch --onlyChanged",
-    "test:changed:coverage": "jest --coverage --forceExit --detectOpenHandles --onlyChanged",
-    "test:watch": "jest --watch --detectOpenHandles",
-    "test:watchverbose": "jest --watch --verbose=true --detectOpenHandles",
-    "test:coverage": "jest --coverage --forceExit --detectOpenHandles",
+    "test": "jest",
+    "test:changed": "jest --onlyChanged",
+    "test:changed:watch": "jest --watch --onlyChanged",
+    "test:changed:coverage": "jest --coverage --forceExit --onlyChanged",
+    "test:watch": "jest --watch",
+    "test:watchverbose": "jest --watch --verbose=true",
+    "test:coverage": "jest --coverage --forceExit",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "webpack:build": "webpack --progress --config webpack.prod.js",
     "webpack:buildquietly": "webpack --config webpack.prod.js",
-    "verify-lint": "run-s format:check verify-lint:ts verify-lint:js",
+    "verify-lint": "run-s verify-lint:ts verify-lint:js format:check" ,
     "verify-lint:ts": "eslint --max-warnings=0 --ext .ts,.tsx src/ @types/",
     "verify-lint:js": "eslint --max-warnings=0 -c .eslintrc-javascript.js test/ i18n/"
   },
@@ -198,7 +198,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s format:staged verify-lint buildtest"
+      "pre-commit": "yarn run precommit"
     }
   }
 }
