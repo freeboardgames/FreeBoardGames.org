@@ -211,7 +211,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 onDrop={this._onDrop}
               >
                 <g>
-                  <g fill={colors[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any]} opacity={0.8}>
+                  <g fill={colors[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any]} opacity={0.7}>
                     {this.state.piece.data
                       .map((square, index) => ({ square, index }))
                       .filter(piece => piece.square)
@@ -252,13 +252,13 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         const key = `${x},${y}`;
         let color = grey[800];
         if (x === 0 && y === 0) {
-          color = blue[500];
+          color = blue[400];
         } else if (x === 19 && y === 0) {
-          color = yellow[500];
+          color = yellow[400];
         } else if (x === 19 && y === 19) {
-          color = red[500];
+          color = red[400];
         } else if (x === 0 && y === 19) {
-          color = green[500];
+          color = green[400];
         } else if ((x + y) % 2 === 0) {
           color = grey[900];
         }

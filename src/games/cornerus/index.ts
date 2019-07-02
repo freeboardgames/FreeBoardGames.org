@@ -18,7 +18,9 @@ export const cornerusGameDef: IGameDef = {
   minPlayers: 2,
   maxPlayers: 4,
   description: 'Similar to Blokus',
-  descriptionTag: 'TODO',
+  descriptionTag: `Play Cornerus, a free online game similar\
+ to Blokus. You can play multi-player online or\
+ share your device and play locally against a friend.`,
   instructions: {
     videoId: 'Yw8pK6Ak5oE',
   },
