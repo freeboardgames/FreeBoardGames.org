@@ -104,6 +104,11 @@ export function flipPieceX(squares: boolean[]) {
   return flipped;
 }
 
+function playerEnded(G: IG, ctx: IGameCtx) {
+  const player = G.players[getPlayer(ctx, ctx.currentPlayer) as any];
+  return player.end || player.pieces.length === 0;
+}
+
 const corners = [[0, 0], [19, 0], [19, 19], [0, 19]];
 
 export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTransform) {
@@ -174,16 +179,19 @@ const GameConfig: IGameArgs = {
   flow: {
     movesPerTurn: 1,
     endGameIf: (G: IG, ctx) => {
-      if (!G.players.some(player => !player.end)) {
+      if (!G.players.some(player => !player.end && player.pieces.length > 0)) {
         return { scoreboard: getScoreBoard(G, ctx) };
       }
     },
     onTurnBegin: (G: IG, ctx) => {
-      if (G.players[getPlayer(ctx, ctx.currentPlayer) as any].end === true) {
-        ctx.stats.phase.numMoves[ctx.currentPlayer as any] += 1;
-        ctx.currentPlayer = ((parseInt(ctx.currentPlayer) + 1) % ctx.numPlayers).toString();
-        ctx.actionPlayers = [ctx.currentPlayer];
-        ctx.playOrderPos = (ctx.playOrderPos + 1) % ctx.numPlayers;
+      if (playerEnded(G, ctx)) {
+        do {
+          ctx.stats.phase.numMoves[ctx.currentPlayer as any] += 1;
+          ctx.currentPlayer = ((parseInt(ctx.currentPlayer) + 1) % ctx.numPlayers).toString();
+          ctx.actionPlayers = [ctx.currentPlayer];
+          ctx.playOrderPos = (ctx.playOrderPos + 1) % ctx.playOrder.length;
+          ctx.turn++;
+        } while (playerEnded(G, ctx));
         ctx.events.endTurn();
       }
     },

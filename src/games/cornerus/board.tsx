@@ -158,9 +158,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   componentDidUpdate(prevProps: IBoardProps) {
-    if (
-      getPlayer(prevProps.ctx, prevProps.ctx.currentPlayer) !== getPlayer(this.props.ctx, this.props.ctx.currentPlayer)
-    ) {
+    if (prevProps.ctx.turn !== this.props.ctx.turn) {
       this.setState({
         ...this.state,
         piece: {
