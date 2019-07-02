@@ -40,8 +40,8 @@
     "webpack:build": "webpack --progress --config webpack.prod.js",
     "webpack:buildquietly": "webpack --config webpack.prod.js",
     "verify-lint": "run-s format:check verify-lint:ts verify-lint:js",
-    "verify-lint:ts": "eslint --ext .ts,.tsx src/ @types/",
-    "verify-lint:js": "eslint -c .eslintrc-javascript.js test/ i18n/"
+    "verify-lint:ts": "eslint --max-warnings=0 --ext .ts,.tsx src/ @types/",
+    "verify-lint:js": "eslint --max-warnings=0 -c .eslintrc-javascript.js test/ i18n/"
   },
   "repository": {
     "type": "git",
