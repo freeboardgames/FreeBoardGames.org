@@ -90,16 +90,16 @@ export default class Controls extends React.Component<IControlsProps, {}> {
   render() {
     return (
       <div className={css.Controls}>
-        <IconButton onClick={() => this.rotate(3)}>
+        <IconButton onClick={() => this.rotate(3)} id="rotate-left">
           <RotateLeft />
         </IconButton>
-        <IconButton onClick={() => this.rotate(1)}>
+        <IconButton onClick={() => this.rotate(1)} id="rotate-right">
           <RotateRight />
         </IconButton>
-        <IconButton onClick={this._flipY} style={{ transform: 'rotate(90deg)' }}>
+        <IconButton onClick={this._flipY} style={{ transform: 'rotate(90deg)' }} id="flip-y">
           <Flip />
         </IconButton>
-        <IconButton onClick={this._flipX}>
+        <IconButton onClick={this._flipX} id="flip-x">
           <Flip />
         </IconButton>
         <IconButton
@@ -108,13 +108,14 @@ export default class Controls extends React.Component<IControlsProps, {}> {
               this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].pieces.length - 1,
             )
           }
+          id="select-prev"
         >
           <ChevronLeft />
         </IconButton>
-        <IconButton onClick={() => this.select(1)}>
+        <IconButton onClick={() => this.select(1)} id="select-next">
           <ChevronRight />
         </IconButton>
-        <IconButton onClick={this.props.placePiece}>
+        <IconButton onClick={this.props.placePiece} id="place">
           <Done />
         </IconButton>
         <IconButton onClick={this.props.openDialog}>
