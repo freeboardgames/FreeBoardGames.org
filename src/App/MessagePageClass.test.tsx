@@ -71,3 +71,21 @@ test('MessagePage unhides link after 5 seconds', () => {
   (msg.find(MessagePage).instance() as MessagePage)._animate(6000)();
   expect(msg.html()).to.contain('messagePage.goHome');
 });
+
+test('MessagePage calls cancelAnimationFrame if requestID is not null', () => {
+  const windowMock = jest.fn();
+  (global as any).cancelAnimationFrame = windowMock;
+  const context = { requestID: 1 };
+  const msg = Enzyme.mount(
+    <MemoryRouter>
+      <MessagePage type={'loading'} message={'loading'} />
+    </MemoryRouter>,
+    { context },
+  ).find(MessagePage);
+  msg.setState({ linkHidden: true, startTime: 0 });
+  // satisfy the if () in _animate
+  (msg.find(MessagePage).instance() as MessagePage).requestID = 1;
+  (msg.find(MessagePage).instance() as MessagePage)._animate(6000)();
+  (msg.find(MessagePage).instance() as MessagePage).componentWillUnmount();
+  expect(windowMock.mock.calls.length).to.equal(1);
+});
