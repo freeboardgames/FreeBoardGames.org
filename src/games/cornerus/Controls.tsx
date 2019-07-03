@@ -12,15 +12,14 @@ import RotateRight from '@material-ui/icons/RotateRight';
 import Flip from '@material-ui/icons/Flip';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
-import Close from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 
 import css from './Controls.css';
 
 interface IControlsProps {
   placePiece: () => void;
-  openDialog: () => void;
   modifyPiece: (piece: IPiece) => void;
+  validTransform: boolean;
   piece: IPiece;
   G: IG;
   ctx: IGameCtx;
@@ -115,11 +114,13 @@ export default class Controls extends React.Component<IControlsProps, {}> {
         <IconButton onClick={() => this.select(1)} id="select-next">
           <ChevronRight />
         </IconButton>
-        <IconButton onClick={this.props.placePiece} id="place">
+        <IconButton
+          onClick={this.props.placePiece}
+          id="place"
+          disabled={!this.props.validTransform}
+          style={{ opacity: this.props.validTransform ? 1 : 0.5 }}
+        >
           <Done />
-        </IconButton>
-        <IconButton onClick={this.props.openDialog}>
-          <Close />
         </IconButton>
       </div>
     );

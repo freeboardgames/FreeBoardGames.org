@@ -118,22 +118,8 @@ function playerEnded(G: IG, ctx: IGameCtx) {
 
 const corners = [[0, 0], [19, 0], [19, 19], [0, 19]];
 
-export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTransform) {
-  const playerID = getPlayer(ctx, ctx.playerID);
-
-  let piece = pieces[G.players[playerID as any].pieces[id]];
-
-  if (transform.flipX) {
-    piece = flipPieceX(piece);
-  }
-  if (transform.flipY) {
-    piece = flipPieceY(piece);
-  }
-  for (let i = 0; i < transform.rotation; i++) {
-    piece = rotatePiece(piece);
-  }
-
-  let positions = piece
+export function getPositions(G: IG, ctx: IGameCtx, piece: boolean[], transform: IPieceTransform, playerID: string) {
+  const positions = piece
     .map((square, index) => ({ square, index }))
     .filter(piece => piece.square)
     .map(square => {
@@ -167,6 +153,28 @@ export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTr
       (!isFirstTurn(ctx) ||
         !positions.some(pos => pos.x === corners[playerID as any][0] && pos.y === corners[playerID as any][1])))
   ) {
+    return null;
+  }
+  return positions;
+}
+
+export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTransform) {
+  const playerID = getPlayer(ctx, ctx.playerID);
+  let piece = pieces[G.players[playerID as any].pieces[id]];
+
+  if (transform.flipX) {
+    piece = flipPieceX(piece);
+  }
+  if (transform.flipY) {
+    piece = flipPieceY(piece);
+  }
+  for (let i = 0; i < transform.rotation; i++) {
+    piece = rotatePiece(piece);
+  }
+
+  const positions = getPositions(G, ctx, piece, transform, playerID);
+
+  if (positions === null) {
     return INVALID_MOVE;
   }
 

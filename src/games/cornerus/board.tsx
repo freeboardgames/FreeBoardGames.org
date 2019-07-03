@@ -3,10 +3,11 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IPieceTransform, IScore, getPlayer } from './game';
+import { IG, IPieceTransform, IScore, getPlayer, getPositions } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard } from './Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
+import { IOptionsItems } from '../../App/Game/GameDarkSublayout';
 
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
@@ -16,7 +17,6 @@ import grey from '@material-ui/core/colors/grey';
 
 import Typography from '@material-ui/core/Typography';
 
-import EndGameDialog from './EndGameDialog';
 import Controls from './Controls';
 
 import { pieces } from './pieces';
@@ -46,7 +46,7 @@ interface IBoardProps {
 
 interface IBoardState {
   piece: IPiece;
-  dialogOpen: boolean;
+  validTransform: boolean;
 }
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
@@ -58,31 +58,20 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         index: 0,
         data: pieces[0],
       },
-      dialogOpen: false,
+      validTransform: false,
     };
   }
 
-  _openDialog = this.openDialog.bind(this);
-  _closeDialog = this.closeDialog.bind(this);
   _endGame = this.endGame.bind(this);
   _modifyPiece = this.modifyPiece.bind(this);
   _placePiece = this.placePiece.bind(this);
 
-  openDialog() {
-    this.setState({ ...this.state, dialogOpen: true });
-  }
-
-  closeDialog() {
-    this.setState({ ...this.state, dialogOpen: false });
-  }
-
   endGame() {
-    this.closeDialog();
     this.props.moves.endGame();
   }
 
   modifyPiece(piece: IPiece) {
-    this.setState({ ...this.state, piece });
+    this.setState({ ...this.state, piece, validTransform: this.isTransformValid(piece.data, piece.transform) });
   }
 
   placePiece() {
@@ -120,6 +109,18 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
   }
 
+  isTransformValid(data: boolean[], transform: IPieceTransform) {
+    return (
+      getPositions(
+        this.props.G,
+        this.props.ctx,
+        data,
+        transform,
+        getPlayer(this.props.ctx, this.props.ctx.currentPlayer),
+      ) !== null
+    );
+  }
+
   _getStatus() {
     if (!this.props.gameArgs) {
       return;
@@ -150,22 +151,37 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
+    const transform = { ...this.state.piece.transform, x, y };
     this.setState({
       ...this.state,
-      piece: { ...this.state.piece, transform: { ...this.state.piece.transform, x, y } },
+      piece: { ...this.state.piece, transform },
+      validTransform: this.isTransformValid(this.state.piece.data, transform),
     });
+  };
+
+  _getOptionsMenuItems = () => {
+    const option: IOptionsItems = {
+      onClick: this._endGame,
+      text: `End game`,
+    };
+    const options = [option];
+    return options;
   };
 
   componentDidUpdate(prevProps: IBoardProps) {
     if (prevProps.ctx.turn !== this.props.ctx.turn) {
+      const transform = { ...this.state.piece.transform, flipX: false, flipY: false, rotation: 0, x: 10, y: 10 };
+      const data =
+        pieces[this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].pieces[0]];
       this.setState({
         ...this.state,
         piece: {
           ...this.state.piece,
           index: 0,
-          transform: { ...this.state.piece.transform, flipX: false, flipY: false, rotation: 0, x: 10, y: 10 },
-          data: pieces[this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].pieces[0]],
+          transform,
+          data,
         },
+        validTransform: this.isTransformValid(data, transform),
       });
     }
   }
@@ -186,8 +202,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     return (
       <div>
-        <EndGameDialog open={this.state.dialogOpen} handleClose={this._closeDialog} accept={this._endGame} />
-        <GameLayout>
+        <GameLayout optionsMenuItems={this._getOptionsMenuItems}>
           <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
             {this._getStatus()}
           </Typography>
@@ -224,8 +239,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           </Grid>
           <Controls
             placePiece={this._placePiece}
-            openDialog={this._openDialog}
             modifyPiece={this._modifyPiece}
+            validTransform={this.state.validTransform}
             piece={this.state.piece}
             G={this.props.G}
             ctx={this.props.ctx}
