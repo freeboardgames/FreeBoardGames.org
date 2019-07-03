@@ -3,8 +3,6 @@ import Enzyme from 'enzyme';
 import { expect } from 'chai';
 import { MemoryRouter } from 'react-router';
 import { GameSharing } from './GameSharing';
-import { IGameArgs } from './GameBoardWrapper';
-import { GameMode } from './GameModePicker';
 import { IRoomMetadata } from '../Lobby/LobbyService';
 import QrCodeIcon from './QrCodeIcon';
 import { QrCodePopup } from '../Lobby/QrCodePopup';
