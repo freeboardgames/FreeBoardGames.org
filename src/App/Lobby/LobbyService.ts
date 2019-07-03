@@ -75,6 +75,14 @@ export class LobbyService {
     return { players, gameCode, roomID, currentUser, numberOfPlayers: body.players.length };
   }
 
+  public static async getPlayAgainNextRoom(gameCode: string, roomID: string, numPlayers: number): Promise<string> {
+    const playerCredential: IPlayerCredential = this.getCredential(roomID);
+    const response = await request
+      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}/playAgain`)
+      .send({ playerID: playerCredential.playerID, credentials: playerCredential.credential, numPlayers });
+    return response.body.nextRoomID;
+  }
+
   public static getNickname(): string {
     if (!SSRHelper.isSSR()) {
       return localStorage.getItem(FBG_NICKNAME_KEY);

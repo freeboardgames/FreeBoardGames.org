@@ -105,16 +105,14 @@ export default class Game extends React.Component<IGameProps, {}> {
 
   render() {
     let aiLevel, matchCode, playerID, credentials;
-    let gameID; // our roomID, bgio still calls this gameID
     if (this.props.match) {
       aiLevel = this.props.match.params.aiLevel;
       matchCode = this.props.match.params.matchCode;
       playerID = this.mode === GameMode.AI ? '0' : this.props.match.params.playerID;
-      gameID = matchCode;
     } else {
       credentials = LobbyService.getCredential(this.props.room.roomID).credential;
       playerID = this.currentUser.playerID.toString();
-      gameID = this.props.room.roomID;
+      matchCode = this.props.room.roomID;
     }
     if (!this.gameDef) {
       return <MessagePageClass type={'error'} message={'Game Not Found'} />;
@@ -137,7 +135,7 @@ export default class Game extends React.Component<IGameProps, {}> {
           gameArgs,
         }),
         credentials,
-        gameID,
+        gameID: matchCode,
       };
       const allEnhancers = state.config.enhancers
         ? state.config.enhancers.concat(DEFAULT_ENHANCERS)
@@ -152,7 +150,7 @@ export default class Game extends React.Component<IGameProps, {}> {
       }
       const App = Client(clientConfig) as any;
       if (this.mode === GameMode.OnlineFriend) {
-        return <App gameID={this.props.room.roomID} playerID={playerID} credentials={credentials} />;
+        return <App gameID={matchCode} playerID={playerID} credentials={credentials} />;
       } else {
         return <App gameID={matchCode} playerID={playerID} />;
       }
