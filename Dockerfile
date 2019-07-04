@@ -1,4 +1,4 @@
-FROM node:11-stretch
+FROM node:12.6.0-stretch
 ARG BGIO_SERVER_URL
 EXPOSE 8000
 EXPOSE 8001
