@@ -24,8 +24,8 @@
     "pre": "yarn run precommit",
     "precommit": "run-s verify-lint buildtest",
     "server": "yarn run server:both",
-    "server:bgio": "node server-build/server_bgio.js",
-    "server:fbg": "node server-build/server_fbg.js",
+    "server:bgio": "node server-dist/server_bgio.js",
+    "server:fbg": "node server-dist/server_fbg.js",
     "server:both": "run-p server:bgio server:fbg",
     "server:build": "yarn run i18n:apply && webpack --progress --config webpack.server.js",
     "server:buildquietly": "yarn run i18n:apply && webpack --config webpack.server.js",
@@ -189,7 +189,7 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/dist/",
-      "/server-build/"
+      "/server-dist/"
     ],
     "moduleNameMapper": {
       "\\.worker.js": "<rootDir>/test/stockfish8Mock.js",

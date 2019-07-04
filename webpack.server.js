@@ -17,13 +17,13 @@ var config = {
 
   output: {
     publicPath: '/',
-    path: path.resolve(__dirname, 'server-build'),
+    path: path.resolve(__dirname, 'server-dist'),
     filename: '[name].js',
     chunkFilename: '[chunkhash].js',
   },
 
   plugins: [
-    new CleanWebpackPlugin(['server-build'], { root: __dirname, dry: false, exclude: [] }),
+    new CleanWebpackPlugin(['server-dist'], { root: __dirname, dry: false, exclude: [] }),
     new HardSourceWebpackPlugin(),
   ],
 
