@@ -114,16 +114,13 @@ describe('Game', () => {
     expect(wrapper.html()).to.contain('Downloading');
   });
 
-  it('should call clear()', () => {
-    const clearMock = jest.fn();
+  it('should call componentWillUnmount() without error', () => {
     const app = (
       <MemoryRouter>
         <Game match={{ params: { gameCode: 'chess', mode: 'local' } }} />
       </MemoryRouter>
     );
     const wrapper = mount(app);
-    (wrapper.find(Game).instance() as any).clear = clearMock;
     (wrapper.find(Game).instance() as any).componentWillUnmount();
-    expect(clearMock.mock.calls.length).to.equal(1);
   });
 });
