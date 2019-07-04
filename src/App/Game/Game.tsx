@@ -172,6 +172,5 @@ export default class Game extends React.Component<IGameProps, {}> {
       case GameMode.LocalFriend:
         return [{ playerID: 0, name: 'Player 1', roomID: '' }, { playerID: 1, name: 'Player 2', roomID: '' }];
     }
-    throw 'Invalid mode';
   }
 }
