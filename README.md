@@ -14,8 +14,8 @@ Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
 - :heavy_check_mark: Nine Mens Morris (by [JosefKuchar](https://github.com/JosefKuchar))
 - :heavy_check_mark: Reversi (by [JosefKuchar](https://github.com/JosefKuchar), similar to Rollit and Othelo)
 - :heavy_check_mark: Seabattle (similar to Battleship).
+- :heavy_check_mark: Cornerus (by [JosefKuchar](https://github.com/JosefKuchar), similar to Blokus)
 - :heavy_check_mark: TicTacToe.
-- :construction: Checkers
 
 Check the [game development kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/11)
 
