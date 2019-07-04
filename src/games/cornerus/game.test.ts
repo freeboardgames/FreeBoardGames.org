@@ -1,11 +1,32 @@
 import { INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
-import { CornerusGame, placePiece } from './game';
+import { CornerusGame, placePiece, getPlayer, isFirstTurn, getScoreBoard } from './game';
 
 test('invalid moves', () => {
   const G: any = { players: [{ pieces: [0, 1, 2] }] };
   const ctx: any = { playerID: '0', numPlayers: 2, stats: { phase: { numMoves: { '0': 0 } } } };
   expect(placePiece(G, ctx, 0, { x: 30, y: 30, rotation: 0, flipX: false, flipY: false })).toEqual(INVALID_MOVE);
+});
+
+test('playerID mapping', () => {
+  const ctx: any = { stats: { phase: { numMoves: { '0': 0, '1': 0, '2': 0, '3': 0 } } } };
+  expect(getPlayer({ ...ctx, numPlayers: 3 } as any, '2')).toEqual('2');
+  expect(getPlayer({ ...ctx, numPlayers: 3, turn: 3 } as any, '2')).toEqual('3');
+  expect(getPlayer({ ...ctx, numPlayers: 4 } as any, '3')).toEqual('3');
+});
+
+test('first turn detection', () => {
+  const ctx: any = { playerID: '0', stats: { phase: { numMoves: { '0': 1, '1': 1, '2': 1, '3': 1 } } } };
+  expect(isFirstTurn({ ...ctx, numPlayers: 3 } as any)).toEqual(false);
+  expect(isFirstTurn({ ...ctx, numPlayers: 4 } as any)).toEqual(false);
+});
+
+test('scoreboard', () => {
+  const G: any = {
+    players: [{ pieces: [10] }, { pieces: [10] }, { pieces: [10] }, { pieces: [10] }],
+  };
+  expect(getScoreBoard(G, { numPlayers: 3 } as any).length).toEqual(3);
+  expect(getScoreBoard(G, { numPlayers: 4 } as any).length).toEqual(4);
 });
 
 it('should declare player 1 as the winner', () => {

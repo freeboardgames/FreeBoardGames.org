@@ -53,7 +53,7 @@ export function getPlayer(ctx: IGameCtx, playerID: string) {
   }
 }
 
-function isFirstTurn(ctx: IGameCtx) {
+export function isFirstTurn(ctx: IGameCtx) {
   const numMoves = ctx.stats.phase.numMoves[ctx.playerID];
   if (ctx.numPlayers === 2) {
     return typeof numMoves === 'undefined' || numMoves === 1;
@@ -64,7 +64,7 @@ function isFirstTurn(ctx: IGameCtx) {
   }
 }
 
-function getScoreBoard(G: IG, ctx: IGameCtx) {
+export function getScoreBoard(G: IG, ctx: IGameCtx) {
   const scoreboard: IScore[] = G.players.map((player, i) => ({
     playerID: i.toString(),
     score: player.pieces.reduce((acc, piece) => acc - pieces[piece].filter(square => square).length, 0),
@@ -242,16 +242,7 @@ const GameConfig: IGameArgs = {
     endGame,
   },
   setup: (ctx): IG => {
-    const turnOrder = (() => {
-      switch (ctx.numPlayers) {
-        case 2:
-          return ['0', '1'];
-        case 3:
-          return ['0', '1', '2', '0', '0', '1', '2', '1', '0', '1', '2', '2'];
-        case 4:
-          return ['0', '1', '2', '3'];
-      }
-    })();
+    const turnOrders = [['0', '1'], ['0', '1', '2', '0', '0', '1', '2', '1', '0', '1', '2', '2'], ['0', '1', '2', '3']];
 
     return {
       board: Array(400).fill(null),
@@ -263,7 +254,7 @@ const GameConfig: IGameArgs = {
             .fill(0)
             .map((_, i) => i),
         })),
-      turnOrder,
+      turnOrder: turnOrders[ctx.numPlayers - 2],
     };
   },
 };
