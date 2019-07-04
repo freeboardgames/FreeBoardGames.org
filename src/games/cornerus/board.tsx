@@ -5,7 +5,7 @@ import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IG, IPieceTransform, IScore, getPlayer, getPositions } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { Scoreboard } from './Scoreboard';
+import { Scoreboard } from '../../common/Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IOptionsItems } from '../../App/Game/GameDarkSublayout';
 

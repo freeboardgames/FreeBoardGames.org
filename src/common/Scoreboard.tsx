@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { IScore } from './game';
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import grey from '@material-ui/core/colors/grey';
-import { IPlayerInRoom } from '../../App/Lobby/LobbyService';
+import { IPlayerInRoom } from '../App/Lobby/LobbyService';
+
+export interface IScore {
+  playerID: string;
+  score: number;
+}
 
 interface IScoreboardProps {
   scoreboard: IScore[];
@@ -23,7 +27,7 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
             <TableRow>
               <TableCell>Rank</TableCell>
               <TableCell>Player</TableCell>
-              <TableCell>Score points</TableCell>
+              <TableCell>Score</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
