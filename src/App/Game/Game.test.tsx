@@ -113,4 +113,14 @@ describe('Game', () => {
     (wrapper.find(Game).instance() as any).forceUpdate();
     expect(wrapper.html()).to.contain('Downloading');
   });
+
+  it('should call componentWillUnmount() without error', () => {
+    const app = (
+      <MemoryRouter>
+        <Game match={{ params: { gameCode: 'chess', mode: 'local' } }} />
+      </MemoryRouter>
+    );
+    const wrapper = mount(app);
+    (wrapper.find(Game).instance() as any).componentWillUnmount();
+  });
 });
