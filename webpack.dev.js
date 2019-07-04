@@ -29,7 +29,7 @@ module.exports = merge(common, {
     new HardSourceWebpackPlugin(),
     new WebpackShellPlugin({
       onBuildEnd: {
-        scripts: ['node server-build/server_bgio.js'],
+        scripts: ['node server-dist/server_bgio.js'],
         blocking: false,
         parallel: true,
       },
