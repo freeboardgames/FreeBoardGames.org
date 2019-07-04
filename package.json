@@ -39,7 +39,7 @@
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "webpack:build": "webpack --progress --config webpack.prod.js",
     "webpack:buildquietly": "webpack --config webpack.prod.js",
-    "verify-lint": "run-s verify-lint:ts verify-lint:js format:check" ,
+    "verify-lint": "run-s verify-lint:ts verify-lint:js format:check",
     "verify-lint:ts": "eslint --max-warnings=0 --ext .ts,.tsx src/ @types/",
     "verify-lint:js": "eslint --max-warnings=0 -c .eslintrc-javascript.js test/ i18n/"
   },
@@ -96,7 +96,7 @@
     "ts-loader": "^5.3.3",
     "ttag-cli": "^1.7.17",
     "typescript": "^3.3.1",
-    "webpack": "^4.35.0",
+    "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
