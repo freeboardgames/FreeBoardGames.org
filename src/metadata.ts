@@ -39,7 +39,7 @@ Compete against your online friends or play locally. Free and open-source softwa
 function getGamesPageMetadata(): IPageMetadata[] {
   return GAMES_LIST.map(gameDef => ({
     name: `Play ${gameDef.name}`,
-    title: TITLE_PREFIX + `Play Free ${gameDef.name} Online`,
+    title: TITLE_PREFIX + `Play ${gameDef.name}, ${gameDef.description}`,
     description: gameDef.descriptionTag,
     url: new RegExp(`^/g/${gameDef.code}$`, 'i'),
     link: `${URL_BASE}/g/${gameDef.code}`,
