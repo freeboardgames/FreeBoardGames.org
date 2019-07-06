@@ -16,6 +16,7 @@ interface IScoreboardProps {
   scoreboard: IScore[];
   players: IPlayerInRoom[];
   playerID: string;
+  scoreName?: string;
 }
 
 export class Scoreboard extends React.Component<IScoreboardProps, {}> {
@@ -27,7 +28,7 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
             <TableRow>
               <TableCell>Rank</TableCell>
               <TableCell>Player</TableCell>
-              <TableCell>Score</TableCell>
+              <TableCell>{this.props.scoreName || 'Score'}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

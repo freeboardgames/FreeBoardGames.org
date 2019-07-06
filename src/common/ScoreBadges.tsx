@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IScore } from './game';
-import { IPlayerInRoom } from '../../App/Lobby/LobbyService';
+import { IScore } from './Scoreboard';
+import { IPlayerInRoom } from '../App/Lobby/LobbyService';
 import css from './ScoreBadges.css';
 import Typography from '@material-ui/core/Typography';
 
@@ -8,7 +8,7 @@ interface IScoreBadgesProps {
   scoreboard: IScore[];
   players: IPlayerInRoom[];
   playerID: string;
-  colors: string[];
+  colors?: string[];
 }
 
 export class ScoreBadges extends React.Component<IScoreBadgesProps, {}> {
@@ -20,7 +20,7 @@ export class ScoreBadges extends React.Component<IScoreBadgesProps, {}> {
         <div
           className={css.ScoreBadge}
           key={score.playerID}
-          style={{ borderColor: this.props.colors[score.playerID as any] }}
+          style={{ borderColor: this.props.colors ? this.props.colors[score.playerID as any] : 'white' }}
         >
           <span className={css.Nickname}>
             <Typography style={{ color: 'white' }} className={isSelf ? css.Self : undefined} variant="body2">
