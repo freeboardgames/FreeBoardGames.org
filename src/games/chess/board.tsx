@@ -99,8 +99,10 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _tryMove(from: string, to: string) {
     const moves = this._getMoves();
+    // check if this is a valid move
     const move = moves.find(m => m.from === from && m.to === to);
     if (move) {
+      // actually make the move
       this.props.moves.move(move.san);
       if (this._getSoundPref()) {
         playSound();
@@ -109,6 +111,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         this.props.step();
       }
     }
+    // clear the selection and highlighted piece
     this.setState({ ...this.state, selected: '', highlighted: '' });
   }
 

@@ -29,7 +29,7 @@ export function getPosition(x: number, y: number) {
   return x + y * 20;
 }
 
-function inBounds(x: number, y: number) {
+export function inBounds(x: number, y: number) {
   return x >= 0 && x < 20 && y >= 0 && y < 20;
 }
 
