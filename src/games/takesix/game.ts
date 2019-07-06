@@ -1,4 +1,5 @@
 import { Game, TurnOrder, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { IScore } from '../../common/Scoreboard';
 import Card from './card';
 import Player from './player';
 
@@ -12,11 +13,6 @@ export interface IG {
 export interface IGetCards {
   card: Card;
   lastCards: Card[];
-}
-
-export interface IScore {
-  playerID: number;
-  penaltyPoints: number;
 }
 
 function sortCards(a: Card, b: Card) {
@@ -84,10 +80,10 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
 export function getScoreBoard(G: IG): IScore[] {
   return G.players
     .map((player, i) => ({
-      playerID: i,
-      penaltyPoints: player.penaltyCards.reduce((acc, card) => acc + card.value, 0),
+      playerID: i.toString(),
+      score: player.penaltyCards.reduce((acc, card) => acc + card.value, 0),
     }))
-    .sort((a, b) => a.penaltyPoints - b.penaltyPoints);
+    .sort((a, b) => a.score - b.score);
 }
 
 export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
@@ -162,7 +158,7 @@ const GameConfig: IGameArgs = {
     endGameIf: (G: IG) => {
       if (G.end === true) {
         const scoreboard = getScoreBoard(G);
-        if (scoreboard[0].penaltyPoints === scoreboard[1].penaltyPoints) {
+        if (scoreboard[0].score === scoreboard[1].score) {
           return { draw: true };
         } else {
           return { winner: scoreboard[0].playerID.toString() };
