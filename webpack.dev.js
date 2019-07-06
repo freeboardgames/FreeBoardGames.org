@@ -3,6 +3,7 @@ const common = require('./webpack.common.js');
 const WebpackShellPlugin = require('webpack-shell-plugin-next');
 const webpack = require('webpack');
 const path = require('path');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'development',
@@ -25,9 +26,10 @@ module.exports = merge(common, {
     poll: 1000,
   },
   plugins: [
+    new HardSourceWebpackPlugin(),
     new WebpackShellPlugin({
       onBuildEnd: {
-        scripts: ['node server-build/server_bgio.js'],
+        scripts: ['node server-dist/server_bgio.js'],
         blocking: false,
         parallel: true,
       },

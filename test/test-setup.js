@@ -4,8 +4,8 @@
  * @link http://airbnb.io/enzyme/docs/installation/#working-with-react-16
  * @copyright 2017 Airbnb, Inc.
  */
-const enzyme = require("enzyme");
-const Adapter = require("enzyme-adapter-react-16");
+const enzyme = require('enzyme');
+const Adapter = require('enzyme-adapter-react-16');
 
 enzyme.configure({ adapter: new Adapter() });
 
@@ -23,13 +23,11 @@ global.scrollTo = jest.fn();
 //SW mock
 if (typeof window !== 'undefined') {
   let swRegisterMock = jest.fn();
-  let mockPromise = new Promise(function (resolve, reject) {
+  let mockPromise = new Promise(function(resolve) {
     resolve({ update: jest.fn() });
   });
-  swRegisterMock.mockReturnValue(mockPromise)
+  swRegisterMock.mockReturnValue(mockPromise);
   global.navigator.serviceWorker = {
-    register: swRegisterMock
+    register: swRegisterMock,
   };
 }
-
-

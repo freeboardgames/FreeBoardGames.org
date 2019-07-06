@@ -18,7 +18,7 @@ export const tictactoeGameDef: IGameDef = {
     { mode: GameMode.OnlineFriend },
     { mode: GameMode.LocalFriend },
   ],
-  description: 'Classic Tic-Tac-Toe Game',
+  description: 'A Classic Game',
   descriptionTag: `Play Tic-Tac-Toe (also called Noughts and Crosses) for \
  free online. You can either do a single-player game against the computer,\
  a multi-player game against a friend online or share your device and play\

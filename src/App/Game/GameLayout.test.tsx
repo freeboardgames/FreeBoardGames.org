@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router';
 import { GameLayout } from './GameLayout';
 import { IGameArgs } from './GameBoardWrapper';
 import { GameMode } from './GameModePicker';
+import { LobbyService } from '../Lobby/LobbyService';
 
 describe('ReplayIcon', () => {
   it('should show ReplayIcon for AI', () => {
@@ -37,10 +38,14 @@ describe('ReplayIcon', () => {
     expect(wrapper.find('ReplayIcon').length).to.equal(1);
   });
 
-  it('should not show ReplayIcon for OnlineFriend', () => {
+  it('should redirect to room returned by play again endpoint', async () => {
+    const p = Promise.resolve('roomfoo');
+    LobbyService.getPlayAgainNextRoom = jest.fn().mockReturnValue(p);
     const gameArgs: IGameArgs = {
       gameCode: 'FooGame',
       mode: GameMode.OnlineFriend,
+      players: [],
+      matchCode: 'baz',
     };
 
     const wrapper = mount(
@@ -49,7 +54,15 @@ describe('ReplayIcon', () => {
       </MemoryRouter>,
     );
 
-    expect(wrapper.find('ReplayIcon').length).to.equal(0);
+    const mockReload = jest.fn();
+    Object.defineProperty(window.location, 'replace', {
+      writable: true,
+      value: mockReload,
+    });
+
+    wrapper.find('ReplayIcon').simulate('click');
+    await p;
+    expect(mockReload.mock.calls.length).to.equal(1);
   });
 
   it('should call window.location.reload', () => {

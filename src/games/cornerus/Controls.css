@@ -1,0 +1,11 @@
+.Controls {
+  text-align: center;
+}
+
+.Controls * {
+  color: white;
+}
+
+.Controls .disabled {
+  color: red;
+}

@@ -1,2 +1,8 @@
 node_modules
 npm-debug.log
+yarn-error.log
+dist
+server-dist
+.git
+test
+coverage
