@@ -3,9 +3,9 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IPieceTransform, IScore, getPlayer, getPositions } from './game';
+import { IG, IPieceTransform, getPlayer, getPositions } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { Scoreboard } from '../../common/Scoreboard';
+import { Scoreboard, IScore } from '../../common/Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IOptionsItems } from '../../App/Game/GameDarkSublayout';
 

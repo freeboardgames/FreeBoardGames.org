@@ -3,11 +3,12 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IScore, getScoreBoard } from './game';
+import { IG, getScoreBoard } from './game';
+import { IScore } from '../../common/Scoreboard';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { Scoreboard } from './Scoreboard';
+import { Scoreboard } from '../../common/Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
-import { ScoreBadges } from './ScoreBadges';
+import { ScoreBadges } from '../../common/ScoreBadges';
 import css from './Board.css';
 
 import red from '@material-ui/core/colors/red';

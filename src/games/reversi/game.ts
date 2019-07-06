@@ -1,9 +1,5 @@
 import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
 
-export interface IScore {
-  playerID: string;
-  score: number;
-}
 export interface IG {
   points: string[];
 }

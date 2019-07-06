@@ -6,8 +6,8 @@ import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IG, getScoreBoard, isAllowedDeck } from './game';
 import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
-import { Scoreboard } from './Scoreboard';
-import { ScoreBadges } from './ScoreBadges';
+import { Scoreboard } from '../../common/Scoreboard';
+import { ScoreBadges } from '../../common/ScoreBadges';
 
 interface IBoardProps {
   G: IG;
@@ -95,6 +95,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         scoreboard={getScoreBoard(this.props.G)}
         playerID={this.props.playerID}
         players={this.props.gameArgs.players}
+        scoreName="Penalty points"
       />
     );
   }

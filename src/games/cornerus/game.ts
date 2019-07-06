@@ -1,10 +1,6 @@
 import { Game, IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
+import { IScore } from '../../common/Scoreboard';
 import { pieces } from './pieces';
-
-export interface IScore {
-  playerID: string;
-  score: number;
-}
 
 export interface IPieceTransform {
   x: number;
