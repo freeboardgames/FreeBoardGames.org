@@ -19,13 +19,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     return (
       <GameLayout>
         <Checkerboard>
-          <Token
-            x={1}
-            y={1}
-            square={"a6"}
-          >
-
-          </Token>
+          <Token x={1} y={1} square={'a6'}></Token>
         </Checkerboard>
       </GameLayout>
     );

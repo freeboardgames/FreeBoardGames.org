@@ -9,7 +9,13 @@
 import React from 'react';
 
 import Chess from './chessjswrapper';
-import { Checkerboard, IAlgebraicCoords, ICartesianCoords, IColorMap, cartesianToAlgebraic } from '../../common/Checkerboard';
+import {
+  Checkerboard,
+  IAlgebraicCoords,
+  ICartesianCoords,
+  IColorMap,
+  cartesianToAlgebraic,
+} from '../../common/Checkerboard';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
