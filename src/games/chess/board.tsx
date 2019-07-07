@@ -15,6 +15,7 @@ import {
   ICartesianCoords,
   IColorMap,
   cartesianToAlgebraic,
+  IOnDragData,
 } from '../../common/Checkerboard';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
@@ -44,12 +45,7 @@ interface IBoardProps {
   isConnected: boolean;
   gameArgs?: IGameArgs;
 }
-interface IOnDragData {
-  x: number;
-  y: number;
-  originalX: number;
-  originalY: number;
-}
+
 export class Board extends React.Component<IBoardProps, {}> {
   chess = Chess();
   state = {

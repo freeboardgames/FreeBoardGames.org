@@ -41,6 +41,12 @@ export interface ICartesianCoords {
   x: number;
   y: number;
 }
+export interface IOnDragData {
+  x: number;
+  y: number;
+  originalX: number;
+  originalY: number;
+}
 export interface IColorMap {
   [key: string]: string;
 }
@@ -56,8 +62,8 @@ interface ICheckerboardProps {
 export class Checkerboard extends React.Component<any, any> {
   static defaultProps = {
     invert: false,
-    primaryColor: '#d18b47',
-    secondaryColor: '#ffce9e',
+    primaryColor: '#ffce9e',
+    secondaryColor: '#d18b47',
     highlightedSquares: {},
     style: {},
   };
@@ -71,9 +77,13 @@ export class Checkerboard extends React.Component<any, any> {
   render() {
     // Convert the square="" prop to x and y.
     const tokens = React.Children.map(this.props.children, (child: any) => {
-      const square = child.props.square;
-      const { x, y } = algebraicToCartesian(square, this.props.invert);
-      return React.cloneElement(child, { x, y });
+      if (child.props.square) {
+        const square = child.props.square;
+        const { x, y } = algebraicToCartesian(square, this.props.invert);
+        return React.cloneElement(child, { x, y });
+      } else {
+        return child;
+      }
     });
 
     // Build colorMap with checkerboard pattern.

@@ -1,4 +1,5 @@
 # FreeBoardGame.org
+
 [![Build Status](https://travis-ci.com/freeboardgame/FreeBoardGame.org.svg?branch=master)](https://travis-ci.com/freeboardgame/FreeBoardGame.org)
 
 FOSS platform for publishing your [boardgame.io](https://boardgame.io) games. We curate high quality implementations of board games and optimize your game for delivery so you can quickly reach hundreds of players.
@@ -49,6 +50,7 @@ yarn install
 
 yarn run dev
 ```
+
 Open [http://localhost:8000/](http://localhost:8000/)
 
 ## Running with [Docker Compose](https://docs.docker.com/compose/)
