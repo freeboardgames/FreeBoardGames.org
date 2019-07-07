@@ -10,15 +10,21 @@ interface ICoord {
   y: number;
 }
 
+interface ICheckerPieceWithCoord {
+  data: ICheckerPiece;
+  coord: ICoord;
+}
+
 interface IMove {
   from: ICoord;
   to: ICoord;
-  jumped: boolean;
+  jumped: ICoord;
 }
 
 type Piece = ICheckerPiece | null;
 export interface IG {
   board: Piece[];
+  jumping: ICheckerPieceWithCoord;
 }
 
 const piece = (id: number, player: number): ICheckerPiece => ({ id, playerID: player.toString(), isKing: false });
@@ -90,6 +96,10 @@ const INITIAL_BOARD: Piece[] = [
   null,
 ];
 
+const MAN_DIRS = [[{ x: -1, y: -1 }, { x: 1, y: -1 }], [{ x: -1, y: 1 }, { x: 1, y: 1 }]];
+
+const KING_DIRS = [{ x: -1, y: 1 }, { x: 1, y: 1 }, { x: -1, y: -1 }, { x: 1, y: -1 }];
+
 export function sumCoords(a: ICoord, b: ICoord) {
   return { x: a.x + b.x, y: a.y + b.y };
 }
@@ -112,120 +122,153 @@ export function toIndex(coord: ICoord) {
   return coord.x + coord.y * 8;
 }
 
-export function normalizeCoord(coord: ICoord) {
-  const length = Math.floor(coord.x ** 2 + coord.y ** 2);
-  return {
-    x: coord.x / length,
-    y: coord.y / length,
-    length,
-  };
-}
-
 export function areCoordsEqual(a: ICoord, b: ICoord) {
   return a.x === b.x && a.y === b.y;
 }
 
-export function getValidMoves(G: IG, ctx: IGameCtx) {
-  let dirs = [{ x: -1, y: 1 }, { x: 1, y: 1 }];
-  if (ctx.playerID === '0') {
-    dirs = [{ x: -1, y: -1 }, { x: 1, y: -1 }];
-  }
-
+export function checkPosition(G: IG, ctx: IGameCtx, piece: ICheckerPiece, coord: ICoord) {
+  const dirs = piece.isKing ? KING_DIRS : MAN_DIRS[ctx.playerID as any];
   let moves: IMove[] = [];
   let jumped = false;
 
-  G.board.forEach((piece, index) => {
-    if (piece !== null && piece.playerID === ctx.playerID) {
-      const coord = toCoord(index);
-      dirs.forEach(dir => {
-        // Look into all valid directions
-        let opponentBefore = false;
-        for (let i = 1; piece.isKing ? true : i < 3; i++) {
-          const final = sumCoords(coord, multiplyCoord(dir, i));
+  dirs.forEach(dir => {
+    // Look into all valid directions
+    let opponentBefore = null;
+    for (let i = 1; piece.isKing ? true : i < 3; i++) {
+      const final = sumCoords(coord, multiplyCoord(dir, i));
 
-          // Break if move is out of bounds
-          if (!inBounds(final)) {
-            break;
-          }
+      // Break if move is out of bounds
+      if (!inBounds(final)) {
+        break;
+      }
 
-          const moveTo = G.board[toIndex(final)];
+      const moveTo = G.board[toIndex(final)];
 
-          // Break if we encounter our piece
-          if (moveTo !== null && moveTo.playerID === ctx.playerID) {
-            break;
-          }
+      // Break if we encounter our piece
+      if (moveTo !== null && moveTo.playerID === ctx.playerID) {
+        break;
+      }
 
-          if (moveTo !== null && moveTo.playerID !== ctx.playerID) {
-            // If we already encountered opponent the directions is blocked
-            if (opponentBefore) {
-              break;
-            }
-            opponentBefore = true;
-          }
-
-          if (moveTo === null) {
-            moves.push({ from: coord, to: final, jumped: opponentBefore });
-            if (opponentBefore) {
-              jumped = true;
-              break;
-            }
-
-            // If there is nothing and the piece isn't king there is no need to continue
-            if (!piece.isKing) {
-              break;
-            }
-          }
+      if (moveTo !== null && moveTo.playerID !== ctx.playerID) {
+        // If we already encountered opponent the directions is blocked
+        if (opponentBefore) {
+          break;
         }
-      });
+        opponentBefore = final;
+      }
+
+      if (moveTo === null) {
+        moves.push({ from: coord, to: final, jumped: opponentBefore });
+        if (opponentBefore) {
+          jumped = true;
+          break;
+        }
+
+        // If there is nothing and the piece isn't king there is no need to continue
+        if (!piece.isKing) {
+          break;
+        }
+      }
     }
   });
 
-  if (jumped) {
-    return moves.filter(move => move.jumped);
+  return { moves, jumped };
+}
+
+export function getValidMoves(G: IG, ctx: IGameCtx, jumping?: ICheckerPieceWithCoord) {
+  let movesTotal: IMove[] = [];
+  let jumpedTotal = false;
+
+  if (typeof jumping === 'undefined') {
+    G.board.forEach((piece, index) => {
+      if (piece !== null && piece.playerID === ctx.playerID) {
+        const coord = toCoord(index);
+        const { moves, jumped } = checkPosition(G, ctx, piece, coord);
+        movesTotal.push(...moves);
+        jumpedTotal = jumpedTotal || jumped;
+      }
+    });
   } else {
-    return moves;
+    const { moves, jumped } = checkPosition(G, ctx, jumping.data, jumping.coord);
+    movesTotal = moves;
+    jumpedTotal = jumped;
+  }
+
+  if (jumpedTotal) {
+    return movesTotal.filter(move => move.jumped);
+  } else {
+    return movesTotal;
   }
 }
 
-export function move(G: IG, ctx: IGameCtx, from: ICoord, to: ICoord) {
+export function move(G: IG, ctx: IGameCtx, from: ICoord, to: ICoord): IG | string {
   const indexFrom = toIndex(from);
   const indexTo = toIndex(to);
   const piece = G.board[indexFrom];
+  const crownhead = ctx.playerID === '0' ? 0 : 7;
 
-  if (
-    piece === null ||
-    piece.playerID !== ctx.playerID ||
-    G.board[indexTo] !== null ||
-    !getValidMoves(G, ctx).some(move => areCoordsEqual(move.from, from) && areCoordsEqual(move.to, to))
-  ) {
+  if (piece === null || piece.playerID !== ctx.playerID || G.board[indexTo] !== null) {
     return INVALID_MOVE;
   }
 
-  return {
+  const moves = G.jumping === null ? getValidMoves(G, ctx) : getValidMoves(G, ctx, G.jumping);
+  const move = moves.find(move => areCoordsEqual(move.from, from) && areCoordsEqual(move.to, to));
+
+  if (typeof move === 'undefined') {
+    return INVALID_MOVE;
+  }
+
+  const jumped = move.jumped !== null ? toIndex(move.jumped) : -1;
+  const isKing = piece.isKing || to.y === crownhead;
+
+  const newG: IG = {
     ...G,
     board: G.board.map((square, i) => {
       switch (i) {
         case indexFrom:
           return null;
         case indexTo:
-          return piece;
+          return {
+            ...piece,
+            isKing,
+          };
+        case jumped:
+          return null;
         default:
           return square;
       }
     }),
+    jumping: null,
   };
+
+  if (move.jumped === null) {
+    return newG;
+  }
+
+  const jumping = { data: piece, coord: to };
+  const postMoves = getValidMoves(newG, ctx, jumping);
+
+  if (postMoves.length > 0 && postMoves[0].jumped !== null) {
+    return {
+      ...newG,
+      jumping,
+    };
+  }
+
+  return newG;
 }
 
 export const CheckersGame = Game({
   name: 'checkers',
-
-  setup: () => ({ board: INITIAL_BOARD }),
-
+  setup: (): IG => ({ board: INITIAL_BOARD, jumping: null }),
   moves: {
     move,
   },
-
   flow: {
     movesPerTurn: 1,
+    turnOrder: {
+      first: () => 0,
+      next: (G: IG, ctx) => (G.jumping === null ? (ctx.playOrderPos + 1) % ctx.numPlayers : ctx.playOrderPos),
+    },
   },
 });
