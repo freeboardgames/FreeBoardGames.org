@@ -7,6 +7,8 @@ Check our tutorial on how to [publish your boardgame.io game in FBG!](https://fr
 
 Play now at [FreeBoardGame.org](https://FreeBoardGame.org/)
 
+Download our [Android app here](https://play.google.com/store/apps/details?id=org.freeboardgame)
+
 ## Games
 
 - :heavy_check_mark: Chess.
