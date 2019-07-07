@@ -78,7 +78,7 @@ const renderSite = async (url: string) => {
 
 const startServer = async () => {
   server.use(noCache({ global: true }));
-  server.use(KoaStatic('./static'));
+  server.use(KoaStatic('./static', { hidden: true }));
   server.use(KoaStatic('./dist'));
   const router = new Router();
   server.use(router.routes());
@@ -100,8 +100,6 @@ const startServer = async () => {
     }
     ctx.response.body = render;
   });
-
-  // app.listen()
 
   server.listen(PORT, HOST, () => {
     console.log(`Serving FreeBoardGame.org at: http://${HOST}:${PORT}/`); // tslint:disable-line
