@@ -18,4 +18,6 @@ asyncBootstrapper(app).then(() => {
   ReactDOM.render(app, document.getElementById('root'));
 });
 
-(module as any).hot.accept();
+if ((module as any).hot) {
+  (module as any).hot.accept();
+}
