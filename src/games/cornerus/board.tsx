@@ -3,7 +3,7 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IG, IPieceTransform, getPlayer, getPositions } from './game';
+import { IG, IPieceTransform, getPlayer, getValidPositions, inBounds, getAllPositions } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard, IScore } from '../../common/Scoreboard';
 import { GameMode } from '../../App/Game/GameModePicker';
@@ -111,7 +111,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   isTransformValid(data: boolean[], transform: IPieceTransform) {
     return (
-      getPositions(
+      getValidPositions(
         this.props.G,
         this.props.ctx,
         data,
@@ -152,11 +152,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
     const transform = { ...this.state.piece.transform, x, y };
-    this.setState({
-      ...this.state,
-      piece: { ...this.state.piece, transform },
-      validTransform: this.isTransformValid(this.state.piece.data, transform),
-    });
+    const positions = getAllPositions(this.state.piece.data, transform);
+    if (positions.every(pos => inBounds(pos.x, pos.y))) {
+      this.setState({
+        ...this.state,
+        piece: { ...this.state.piece, transform },
+        validTransform: this.isTransformValid(this.state.piece.data, transform),
+      });
+    }
   };
 
   _getOptionsMenuItems = () => {
