@@ -55,7 +55,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (ctx.phase === 'setup' && (this.props.playerID === null || ctx.actionPlayers.includes(this.props.playerID))) {
       child = <ShipsPlacement playerID={this.props.playerID} setShips={this._setShips} />;
     } else if (ctx.phase === 'setup') {
-      child = <h1>Waiting for opponent...</h1>;
+      child = (
+        <Typography variant="h4" style={{ color: 'white' }}>
+          Waiting for opponent...
+        </Typography>
+      );
     } else {
       child = (
         <Battle

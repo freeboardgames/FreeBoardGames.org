@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Card from './card';
 import css from './CardComponent.css';
+import Typography from '@material-ui/core/Typography';
 
 export interface ICardProps {
   card: Card;
@@ -25,26 +26,27 @@ export class CardComponent extends React.Component<ICardProps, {}> {
           background: values[this.props.card.value],
         }}
       >
-        <div
+        <Typography
           className="CardValue"
           style={{
             textAlign: 'center',
             lineHeight: '20px',
           }}
+          variant="body2"
         >
           {this.props.card.value}
-        </div>
-        <div
+        </Typography>
+        <Typography
           className="CardNumber"
           style={{
             textAlign: 'center',
             lineHeight: '45px',
             verticalAlign: 'middle',
-            fontSize: '2.5em',
           }}
+          variant="h4"
         >
           {this.props.card.number}
-        </div>
+        </Typography>
       </div>
     );
   }

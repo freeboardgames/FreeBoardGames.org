@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { IShip, generateRandomShips, validateShips } from './game';
 import { Radar } from './Radar';
+import Typography from '@material-ui/core/Typography';
 
 interface IShipsPlacementProps {
   playerID: string;
@@ -31,7 +32,9 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
     }
     return (
       <div>
-        <h2 style={{ textAlign: 'center' }}>{message}</h2>
+        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+          {message}
+        </Typography>
         <Radar ships={this.state.ships} editable={true} onEdit={this.onEdit} />
         <Button
           style={{ float: 'right', marginTop: '8px' }}

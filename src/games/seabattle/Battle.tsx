@@ -3,6 +3,7 @@ import React from 'react';
 import { Radar } from './Radar';
 import { ISeabattleState, IShip, ISalvo, ICell } from './game';
 import { playSeabattleSound } from './sound';
+import Typography from '@material-ui/core/Typography';
 
 interface IBattleProps {
   G: ISeabattleState;
@@ -84,7 +85,9 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     }
     return (
       <div>
-        <h2 style={{ textAlign: 'center' }}>{message}</h2>
+        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+          {message}
+        </Typography>
         <Radar
           player={player}
           ships={ships}
