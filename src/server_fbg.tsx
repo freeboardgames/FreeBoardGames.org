@@ -3,11 +3,10 @@ import Router from 'koa-router';
 import KoaStatic from 'koa-static';
 import fs from 'fs';
 import ReactDOMServer from 'react-dom/server';
-import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
-import asyncBootstrapper from 'react-async-bootstrapper';
 import { StaticRouter } from 'react-router-dom';
 import { getPageMetadata, getBreadcrumbs, IPageMetadata } from './metadata';
 import noCache from 'koa-no-cache';
+import Loadable from 'react-loadable';
 
 import Koa from 'koa';
 const server = new Koa();
@@ -57,18 +56,15 @@ function renderHtml(layout: string, breadcrumbs: string, metadata: IPageMetadata
 }
 
 const renderSite = async (url: string) => {
-  const asyncContext = createAsyncContext();
   const metadata = getPageMetadata(url);
   const breadcrumbs = getBreadcrumbs(url);
   const context = {};
   const app = (
-    <AsyncComponentProvider asyncContext={asyncContext}>
-      <StaticRouter location={url} context={context}>
-        <App />
-      </StaticRouter>
-    </AsyncComponentProvider>
+    <StaticRouter location={url} context={context}>
+      <App />
+    </StaticRouter>
   );
-  await asyncBootstrapper(app);
+  await Loadable.preloadAll();
   const reactHtml = ReactDOMServer.renderToStaticMarkup(app);
   return {
     status: (context as any).status,
@@ -100,7 +96,6 @@ const startServer = async () => {
     }
     ctx.response.body = render;
   });
-
   server.listen(PORT, HOST, () => {
     console.log(`Serving FreeBoardGame.org at: http://${HOST}:${PORT}/`); // tslint:disable-line
   });

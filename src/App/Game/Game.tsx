@@ -19,27 +19,24 @@ interface IGameProps {
 
 interface IGameState {
   loading: boolean;
-  error: boolean;
-  config: IGameConfig | undefined;
-  ai?: IAIConfig | undefined;
+  config?: IGameConfig;
+  ai?: IAIConfig;
 }
 
-const state: IGameState = {
-  loading: true,
-  error: false,
-  config: undefined,
-};
-
-export default class Game extends React.Component<IGameProps, {}> {
+export default class Game extends React.Component<IGameProps, IGameState> {
   mode: GameMode;
   loadAI: boolean;
   gameCode: string;
   gameDef: IGameDef;
   gameConfigPromise: Promise<any>;
   currentUser: IPlayerInRoom;
+  promise: any; // for testing
 
   constructor(props: IGameProps) {
     super(props);
+    this.state = {
+      loading: true,
+    };
     if (this.props.room) {
       this.mode = GameMode.OnlineFriend;
       this.gameCode = this.props.room.gameCode;
@@ -53,13 +50,9 @@ export default class Game extends React.Component<IGameProps, {}> {
   }
 
   clear() {
-    state.loading = true;
-    state.error = false;
-    state.config = undefined;
-  }
-
-  bootstrap() {
-    return this.load();
+    this.setState({
+      loading: true,
+    });
   }
 
   load() {
@@ -70,32 +63,29 @@ export default class Game extends React.Component<IGameProps, {}> {
       }
       return Promise.all([this.gameDef.config(), aiPromise]).then(
         (promises: any) => {
-          state.config = promises[0].default as IGameConfig;
-          if (this.loadAI) {
-            state.ai = promises[1].default as IAIConfig;
-          }
-          state.loading = false;
-          state.error = false;
+          this.setState(() => ({
+            config: promises[0].default as IGameConfig,
+            ai: this.loadAI ? (promises[1].default as IAIConfig) : null,
+            loading: false,
+          }));
         },
         () => {
-          state.config = undefined;
-          state.loading = false;
-          state.error = true;
+          this.setState({
+            loading: false,
+          });
         },
       );
     } else {
-      state.config = undefined;
-      state.loading = false;
-      state.error = true;
+      this.setState({
+        loading: false,
+      });
       return Promise.resolve();
     }
   }
 
   componentDidMount() {
     if (this.gameDef) {
-      this.load().then(() => {
-        this.forceUpdate();
-      });
+      this.promise = this.load();
     }
   }
 
@@ -117,7 +107,7 @@ export default class Game extends React.Component<IGameProps, {}> {
     if (!this.gameDef) {
       return <MessagePageClass type={'error'} message={'Game Not Found'} />;
     }
-    if (!state.loading && state.config) {
+    if (!this.state.loading && this.state.config) {
       const gameArgs = {
         gameCode: this.gameCode,
         mode: this.mode,
@@ -127,23 +117,24 @@ export default class Game extends React.Component<IGameProps, {}> {
         playerID,
       } as IGameArgs;
       const clientConfig: any = {
-        game: state.config.bgioGame,
-        debug: state.config.debug || false,
+        game: this.state.config.bgioGame,
+        debug: this.state.config.debug || false,
         loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
-          board: state.config.bgioBoard,
+          board: this.state.config.bgioBoard,
           gameArgs,
         }),
         credentials,
         gameID: matchCode,
       };
-      const allEnhancers = state.config.enhancers
-        ? state.config.enhancers.concat(DEFAULT_ENHANCERS)
+      const allEnhancers = this.state.config.enhancers
+        ? this.state.config.enhancers.concat(DEFAULT_ENHANCERS)
         : DEFAULT_ENHANCERS;
       const enhancers = allEnhancers.map((enhancer: any) => enhancer(gameArgs));
       clientConfig.enhancer = applyMiddleware(...enhancers);
-      if (this.loadAI) {
-        clientConfig.ai = state.ai.bgioAI(aiLevel);
+      const ai = this.state.ai;
+      if (this.loadAI && ai) {
+        clientConfig.ai = ai.bgioAI(aiLevel);
       }
       if (this.mode === GameMode.OnlineFriend) {
         clientConfig.multiplayer = { server: AddressHelper.getServerAddress() };
@@ -154,7 +145,7 @@ export default class Game extends React.Component<IGameProps, {}> {
       } else {
         return <App gameID={matchCode} playerID={playerID} />;
       }
-    } else if (state.loading) {
+    } else if (this.state.loading) {
       const LoadingPage = getMessagePage('loading', `Downloading ${this.gameDef.name}...`);
       return <LoadingPage />;
     } else {
