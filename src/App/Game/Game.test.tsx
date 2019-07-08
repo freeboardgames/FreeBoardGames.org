@@ -1,6 +1,3 @@
-it('should should', () => {});
-
-/*
 import React from 'react';
 import Game from './Game';
 import { mount } from 'enzyme';
@@ -31,7 +28,8 @@ describe('Game', () => {
               </MemoryRouter>
             );
             const wrapper = mount(app);
-            await wrapper;
+            await (wrapper.find(Game).instance() as any).promise;
+            wrapper.update();
             expect(wrapper.html()).to.contain('Connecting');
           }
         }
@@ -52,7 +50,8 @@ describe('Game', () => {
               </MemoryRouter>
             );
             const wrapper = mount(app);
-            await wrapper;
+            await (wrapper.find(Game).instance() as any).promise;
+            wrapper.update();
             expect(wrapper.find('Board').length).to.be.greaterThan(0);
           }
         }
@@ -73,7 +72,8 @@ describe('Game', () => {
               </MemoryRouter>
             );
             const wrapper = mount(app);
-            await wrapper;
+            await (wrapper.find(Game).instance() as any).promise;
+            wrapper.update();
             expect(wrapper.find('Board').length).to.be.greaterThan(0);
           }
         }
@@ -89,7 +89,8 @@ describe('Game', () => {
       </MemoryRouter>
     );
     const wrapper = mount(app);
-    await wrapper;
+    await (wrapper.find(Game).instance() as any).promise;
+    wrapper.update();
     expect(wrapper.html()).to.contain('Fail');
   });
 
@@ -100,7 +101,8 @@ describe('Game', () => {
       </MemoryRouter>
     );
     const wrapper = mount(app);
-    await wrapper;
+    await (wrapper.find(Game).instance() as any).promise;
+    wrapper.update();
     expect(wrapper.html()).to.contain('Game Not Found');
   });
 
@@ -125,4 +127,4 @@ describe('Game', () => {
     const wrapper = mount(app);
     (wrapper.find(Game).instance() as any).componentWillUnmount();
   });
-});*/
+});

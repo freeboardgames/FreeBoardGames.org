@@ -30,6 +30,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   gameDef: IGameDef;
   gameConfigPromise: Promise<any>;
   currentUser: IPlayerInRoom;
+  promise: any; // for testing
 
   constructor(props: IGameProps) {
     super(props);
@@ -62,11 +63,11 @@ export default class Game extends React.Component<IGameProps, IGameState> {
       }
       return Promise.all([this.gameDef.config(), aiPromise]).then(
         (promises: any) => {
-          this.setState({
+          this.setState(() => ({
             config: promises[0].default as IGameConfig,
             ai: this.loadAI ? (promises[1].default as IAIConfig) : null,
             loading: false,
-          });
+          }));
         },
         () => {
           this.setState({
@@ -84,7 +85,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
   componentDidMount() {
     if (this.gameDef) {
-      this.load();
+      this.promise = this.load();
     }
   }
 
