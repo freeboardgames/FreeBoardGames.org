@@ -1,0 +1,8 @@
+server-dist
+dist
+android
+blog
+i18n
+node_modules
+coverage
+static
