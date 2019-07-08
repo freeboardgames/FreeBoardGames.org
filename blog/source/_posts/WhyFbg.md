@@ -6,7 +6,7 @@ tags: why motivation boardgame.io freeboardgame.org
 
 One of the main pain points I experienced trying to play board games online with friends are all the fragmented implementations out there. Some amazing games only work for iOS, or others only for Android, or some only in Desktop. Most of these versions don't have multiplayer modes that can be played with each other, some are extremely expensive, and most require their own account. Besides, having one friend with the "wrong" OS will make it impossible for the party of friends to play together.
 
-So if there are so many board game implementations out there, how would someone in their sane mind think that [yet another board game project would help ?](https://xkcd.com/927/) 
+So if there are so many board game implementations out there, how would someone in their sane mind think that [yet another board game project would help ?](https://xkcd.com/927/)
 
 ![XKCD](https://imgs.xkcd.com/comics/standards.png)
 

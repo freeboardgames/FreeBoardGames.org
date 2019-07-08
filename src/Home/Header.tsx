@@ -33,7 +33,7 @@ class Header extends React.Component<{}, {}> {
           <CodeIcon style={{ marginRight: '4px' }} />
           Code
         </Button>
-        <Button href="https://freeboardgame.org/blog" target="_blank" variant="outlined" style={{ margin: '4px' }}>
+        <Button href="/blog" target="_blank" variant="outlined" style={{ margin: '4px' }}>
           <SubjectIcon style={{ marginRight: '4px' }} />
           Blog
         </Button>

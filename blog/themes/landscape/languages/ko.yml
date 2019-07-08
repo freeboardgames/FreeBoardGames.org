@@ -7,7 +7,7 @@ prev: 이전
 next: 다음
 comment: 댓글
 archive_a: 아카이브
-archive_b: "아카이브: %s"
+archive_b: '아카이브: %s'
 page: 페이지 %d
 recent_posts: 최근 포스트
 newer: 최신
