@@ -82,7 +82,7 @@ export class Checkerboard extends React.Component<any, any> {
         const { x, y } = algebraicToCartesian(square, this.props.invert);
         return React.cloneElement(child, { x, y });
       } else {
-        return child;
+        return React.cloneElement(child, applyInvertion({ x: child.props.x, y: child.props.y }, this.props.invert));
       }
     });
 
@@ -146,4 +146,11 @@ export function cartesianToAlgebraic(x: number, y: number, invert?: boolean) {
     const colSymbol = String.fromCharCode(x + 'a'.charCodeAt(0));
     return colSymbol + (NUM_ROWS - y);
   }
+}
+
+export function applyInvertion(coord: ICartesianCoords, invert: boolean) {
+  if (invert) {
+    return { x: NUM_COLS - coord.x - 1, y: NUM_ROWS - coord.y - 1 };
+  }
+  return coord;
 }

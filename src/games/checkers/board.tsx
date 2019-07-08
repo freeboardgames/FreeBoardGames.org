@@ -3,7 +3,14 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IG, toCoord } from './game';
-import { Checkerboard, IAlgebraicCoords, ICartesianCoords, IOnDragData } from '../../common/Checkerboard';
+import {
+  Checkerboard,
+  IAlgebraicCoords,
+  ICartesianCoords,
+  IOnDragData,
+  applyInvertion,
+} from '../../common/Checkerboard';
+import { GameMode } from '../../App/Game/GameModePicker';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 
 interface IBoardProps {
@@ -23,9 +30,13 @@ function roundCoords(coords: ICartesianCoords) {
 }
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
-  state = {
-    selected: null as ICartesianCoords,
+  state: IBoardState = {
+    selected: null,
   };
+
+  isInverted() {
+    return this.isOnlineGame() && this.props.playerID === '1';
+  }
 
   _onClick = (coords: IAlgebraicCoords) => {
     console.log(coords);
@@ -39,7 +50,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (Math.sqrt((x - originalX) ** 2 + (y - originalY) ** 2) > 0.2) {
       this.setState({
         ...this.state,
-        selected: { x: originalX, y: originalY },
+        selected: applyInvertion({ x: originalX, y: originalY }, this.isInverted()),
         //highlighted: this._getSquare(x, y),
       });
     } else {
@@ -53,8 +64,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _onDrop = (coords: ICartesianCoords) => {
     if (this.state.selected) {
-      console.log('test move');
-      this.props.moves.move(this.state.selected, roundCoords(coords));
+      this.props.moves.move(this.state.selected, applyInvertion(roundCoords(coords), this.isInverted()));
     }
   };
 
@@ -75,16 +85,49 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             animate={true}
             key={piece.data.id}
           >
-            <circle r="0.4" fill={piece.data.playerID === '1' ? 'white' : 'black'} cx="0.5" cy="0.5"></circle>
+            <circle r="0.4" fill={piece.data.playerID === '0' ? 'white' : 'black'} cx="0.5" cy="0.5"></circle>
           </Token>
         );
       });
   };
 
+  isLocalGame() {
+    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
+  }
+
+  isOnlineGame() {
+    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend;
+  }
+
+  _getGameOver() {
+    const winner = this.props.ctx.gameover.winner;
+    if (winner) {
+      if (this.isLocalGame()) {
+        if (winner === '0') {
+          return 'white won';
+        } else {
+          return 'black won';
+        }
+      } else {
+        if (winner === this.props.playerID) {
+          return 'you won';
+        } else {
+          return 'you lost';
+        }
+      }
+    }
+  }
+
   render() {
+    if (this.props.ctx.gameover) {
+      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+    }
+
     return (
       <GameLayout>
-        <Checkerboard onClick={this._onClick}>{this.getPieces()}</Checkerboard>
+        <Checkerboard onClick={this._onClick} invert={this.isInverted()}>
+          {this.getPieces()}
+        </Checkerboard>
       </GameLayout>
     );
   }
