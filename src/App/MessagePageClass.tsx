@@ -5,7 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FreeBoardGameBar from './FreeBoardGameBar';
 import SvgError from './media/SvgError';
 import Typography from '@material-ui/core/Typography';
-import { Status } from 'rrc';
+import Status from './Status';
 import { t } from 'ttag';
 
 interface IMessageState {
