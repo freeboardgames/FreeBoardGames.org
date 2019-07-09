@@ -1,20 +1,27 @@
 .use-motion .sidebar .motion-element { opacity: 1; }
 
 .sidebar {
-  margin-left: -100%;
   right: auto;
   bottom: auto;
 
   // Do NOT delete this line
   // or Affix (position: fixed) will not work in Google Chrome.
   -webkit-transform: none;
+
+  a, span.exturl {
+    color: $black-light;
+
+    &:hover {
+      color: $black-deep;
+      border-bottom-color: $black-deep;
+    }
+  }
 }
 
-
 .sidebar-inner {
-//padding: 20px 10px 0;
+  //padding: 20px 10px 0;
   box-sizing: border-box;
-  width: 240px;
+  width: $sidebar-desktop;
   color: $text-color;
   background: white;
   box-shadow: $box-shadow;
@@ -29,7 +36,6 @@
   &.affix-bottom {
     position: absolute;
   }
-
 }
 
 .site-overview {
@@ -41,40 +47,25 @@
   clearfix();
 }
 
-.sidebar a {
-  color: $black-light;
-
-  &:hover { color: $black-deep; }
-}
-
 .site-state-item {
   padding: 0 10px;
 }
 
-.links-of-author-item {
-  a:before { display: none; }
-  a {
-    border-bottom: none;
-    text-decoration: underline;
-  }
-}
-
-.feed-link {
+.feed-link, .chat {
   border-top: 1px dotted $grey-light;
   border-bottom: 1px dotted $grey-light;
   text-align: center;
-}
+  a {
+    show();
+    color: $orange;
+    border: none !important;
 
-.feed-link a {
-  display: block;
-  color: $orange;
-  border: none;
+    &:hover {
+      background: none;
+      color: darken($orange, 20%);
 
-  &:hover {
-    background: none;
-    color: darken($orange, 20%);
-
-    i { color: darken($orange, 20%); }
+      i { color: darken($orange, 20%); }
+    }
   }
 }
 
@@ -83,12 +74,22 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
+  span.exturl {
+    font-size: 13px;
+  }
 }
+
 .links-of-author-item {
   sidebar-inline-links-item();
+  a:before, span.exturl:before { display: none; }
+  a, span.exturl {
+    border-bottom: none;
+    text-decoration: underline;
+  }
 
-  a {
-    display: block;
+  a, span.exturl {
+    show();
     text-decoration: none;
 
     &:hover {
@@ -104,14 +105,10 @@
   .fa-globe { font-size: 15px; }
 }
 
-
 .links-of-blogroll {
   text-align: center;
-  margin-top: 20px;
   padding: 3px 0 0;
-  border-top: 1px dotted $grey-light;
 }
-.links-of-blogroll-title { margin-top: 0; }
 .links-of-blogroll-item { padding: 0; }
 .links-of-blogroll-inline {
   clearfix();

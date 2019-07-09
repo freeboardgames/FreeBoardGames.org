@@ -11,6 +11,7 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { Circle, Cross, Lines } from './Shapes';
+import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: any;
@@ -131,7 +132,9 @@ export class Board extends React.Component<IBoardProps, {}> {
   _getBoard() {
     return (
       <div>
-        <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
+        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+          {this._getStatus()}
+        </Typography>
         <svg width="100%" height="100%" viewBox="0 0 3 3">
           {this._getCells()}
           {Lines}

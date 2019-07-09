@@ -27,7 +27,7 @@ test('invalid positioning', () => {
     </MemoryRouter>,
   );
   placement.find(ShipsPlacement).setState({ ships: [] });
-  expect(placement.find('h2').html()).to.contain('INVALID POSITIONING');
+  expect(placement.html()).to.contain('INVALID POSITIONING');
 });
 
 test('sanity - rotate ship', () => {

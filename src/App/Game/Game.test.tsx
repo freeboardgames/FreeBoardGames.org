@@ -2,7 +2,6 @@ import React from 'react';
 import Game from './Game';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
-import asyncBootstrapper from 'react-async-bootstrapper';
 import { GAMES_MAP } from '../../games';
 import { GameMode } from './GameModePicker';
 import { MemoryRouter } from 'react-router';
@@ -28,8 +27,9 @@ describe('Game', () => {
                 />
               </MemoryRouter>
             );
-            await asyncBootstrapper(app);
             const wrapper = mount(app);
+            await (wrapper.find(Game).instance() as any).promise;
+            wrapper.update();
             expect(wrapper.html()).to.contain('Connecting');
           }
         }
@@ -49,8 +49,9 @@ describe('Game', () => {
                 <Game match={{ params: { gameCode, mode: 'local' } }} />
               </MemoryRouter>
             );
-            await asyncBootstrapper(app);
             const wrapper = mount(app);
+            await (wrapper.find(Game).instance() as any).promise;
+            wrapper.update();
             expect(wrapper.find('Board').length).to.be.greaterThan(0);
           }
         }
@@ -70,8 +71,9 @@ describe('Game', () => {
                 <Game match={{ params: { gameCode, mode: 'AI' } }} />
               </MemoryRouter>
             );
-            await asyncBootstrapper(app);
             const wrapper = mount(app);
+            await (wrapper.find(Game).instance() as any).promise;
+            wrapper.update();
             expect(wrapper.find('Board').length).to.be.greaterThan(0);
           }
         }
@@ -86,8 +88,9 @@ describe('Game', () => {
         <Game match={{ params: { gameCode: 'chess', mode: 'local' } }} />
       </MemoryRouter>
     );
-    await asyncBootstrapper(app);
     const wrapper = mount(app);
+    await (wrapper.find(Game).instance() as any).promise;
+    wrapper.update();
     expect(wrapper.html()).to.contain('Fail');
   });
 
@@ -97,8 +100,9 @@ describe('Game', () => {
         <Game match={{ params: { gameCode: 'notagame', mode: 'local' } }} />
       </MemoryRouter>
     );
-    await asyncBootstrapper(app);
     const wrapper = mount(app);
+    await (wrapper.find(Game).instance() as any).promise;
+    wrapper.update();
     expect(wrapper.html()).to.contain('Game Not Found');
   });
 

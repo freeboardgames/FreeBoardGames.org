@@ -2,6 +2,7 @@ import React from 'react';
 import { GameMode } from './GameModePicker';
 import AlertLayer from './AlertLayer';
 import { IPlayerInRoom } from '../Lobby/LobbyService';
+import Typography from '@material-ui/core/Typography';
 
 export interface IGameArgs {
   gameCode: string;
@@ -42,8 +43,8 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
     _getConnectionLost() {
       return (
         <AlertLayer>
-          <h1>Connection lost</h1>
-          Trying to connect...
+          <Typography variant="h4">Connection lost</Typography>
+          <Typography variant="body1">Trying to connect...</Typography>
         </AlertLayer>
       );
     }

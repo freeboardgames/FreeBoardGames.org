@@ -7,7 +7,7 @@ prev: Précédent
 next: Suivant
 comment: Commentaires
 archive_a: Archives
-archive_b: "Archives: %s"
+archive_b: 'Archives: %s'
 page: Page %d
 recent_posts: Articles récents
 newer: Récent

@@ -29,7 +29,7 @@ export function getPosition(x: number, y: number) {
   return x + y * 20;
 }
 
-function inBounds(x: number, y: number) {
+export function inBounds(x: number, y: number) {
   return x >= 0 && x < 20 && y >= 0 && y < 20;
 }
 
@@ -114,8 +114,8 @@ function playerEnded(G: IG, ctx: IGameCtx) {
 
 const corners = [[0, 0], [19, 0], [19, 19], [0, 19]];
 
-export function getPositions(G: IG, ctx: IGameCtx, piece: boolean[], transform: IPieceTransform, playerID: string) {
-  const positions = piece
+export function getAllPositions(piece: boolean[], transform: IPieceTransform) {
+  return piece
     .map((square, index) => ({ square, index }))
     .filter(piece => piece.square)
     .map(square => {
@@ -123,7 +123,16 @@ export function getPositions(G: IG, ctx: IGameCtx, piece: boolean[], transform: 
       return { x: x + transform.x, y: y + transform.y };
     })
     .sort((a, b) => getPosition(b.x, b.y) - getPosition(a.x, a.y));
+}
 
+export function getValidPositions(
+  G: IG,
+  ctx: IGameCtx,
+  piece: boolean[],
+  transform: IPieceTransform,
+  playerID: string,
+) {
+  const positions = getAllPositions(piece, transform);
   if (
     positions.some(pos => !inBounds(pos.x, pos.y)) || // Check if piece is on board
     positions.some(
@@ -168,7 +177,7 @@ export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTr
     piece = rotatePiece(piece);
   }
 
-  const positions = getPositions(G, ctx, piece, transform, playerID);
+  const positions = getValidPositions(G, ctx, piece, transform, playerID);
 
   if (positions === null) {
     return INVALID_MOVE;
