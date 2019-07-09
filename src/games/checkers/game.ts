@@ -29,7 +29,7 @@ export interface IG {
 
 const piece = (id: number, player: number): ICheckerPiece => ({ id, playerID: player.toString(), isKing: false });
 
-const INITIAL_BOARD: Piece[] = [
+export const INITIAL_BOARD: Piece[] = [
   null,
   piece(0, 1),
   null,

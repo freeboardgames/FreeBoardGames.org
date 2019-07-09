@@ -12,6 +12,7 @@ import {
 } from '../../common/Checkerboard';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
+import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: IG;
@@ -99,6 +100,23 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend;
   }
 
+  _getStatus() {
+    if (this.isOnlineGame()) {
+      if (this.props.ctx.currentPlayer === this.props.playerID) {
+        return 'Move piece';
+      } else {
+        return 'Waiting for opponent...';
+      }
+    } else {
+      switch (this.props.ctx.currentPlayer) {
+        case '0':
+          return "White's turn";
+        case '1':
+          return "Black's turn";
+      }
+    }
+  }
+
   _getGameOver() {
     const winner = this.props.ctx.gameover.winner;
     if (winner) {
@@ -125,6 +143,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     return (
       <GameLayout>
+        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+          {this._getStatus()}
+        </Typography>
         <Checkerboard onClick={this._onClick} invert={this.isInverted()}>
           {this.getPieces()}
         </Checkerboard>
