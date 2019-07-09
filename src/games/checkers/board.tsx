@@ -2,13 +2,14 @@ import * as React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG, toCoord } from './game';
+import { IG, toCoord, IMove, getValidMoves, areCoordsEqual } from './game';
 import {
   Checkerboard,
   IAlgebraicCoords,
   ICartesianCoords,
   IOnDragData,
   applyInvertion,
+  algebraicToCartesian,
 } from '../../common/Checkerboard';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
@@ -26,6 +27,7 @@ interface IBoardProps {
 
 interface IBoardState {
   selected: ICartesianCoords;
+  validMoves: IMove[];
 }
 
 function roundCoords(coords: ICartesianCoords) {
@@ -35,14 +37,31 @@ function roundCoords(coords: ICartesianCoords) {
 export class Board extends React.Component<IBoardProps, IBoardState> {
   state: IBoardState = {
     selected: null,
+    validMoves: getValidMoves(this.props.G, this.props.ctx.currentPlayer),
   };
 
   isInverted() {
     return this.isOnlineGame() && this.props.playerID === '1';
   }
 
+  _isSelectable = (coords: ICartesianCoords) => {
+    return this.state.validMoves.some(move => areCoordsEqual(move.from, coords));
+  };
+
   _onClick = (coords: IAlgebraicCoords) => {
-    console.log(coords);
+    const position = algebraicToCartesian(coords.square);
+    if (this.state.selected === null && this._isSelectable(position)) {
+      this.setState({
+        ...this.state,
+        selected: position,
+      });
+    } else {
+      this._move(position);
+    }
+  };
+
+  _shouldDrag = (coords: ICartesianCoords) => {
+    return this._isSelectable(applyInvertion(coords, this.isInverted()));
   };
 
   _onDrag = (coords: IOnDragData) => {
@@ -76,10 +95,22 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _onDrop = async (coords: ICartesianCoords) => {
     if (this.state.selected) {
-      this.props.moves.move(this.state.selected, applyInvertion(roundCoords(coords), this.isInverted()));
-      if (this.isAIGame() && this.props.ctx.currentPlayer === '1') {
-        this.stepAI();
-      }
+      this._move(applyInvertion(roundCoords(coords), this.isInverted()));
+    }
+  };
+
+  _move = (coords: ICartesianCoords) => {
+    if (this.state.selected === null || coords === null) {
+      return false;
+    }
+
+    this.props.moves.move(this.state.selected, coords);
+    this.setState({
+      ...this.state,
+      selected: null,
+    });
+    if (this.isAIGame() && this.props.ctx.currentPlayer === '1') {
+      this.stepAI();
     }
   };
 
@@ -94,7 +125,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             x={x}
             y={y}
             draggable={true}
-            shouldDrag={() => true}
+            shouldDrag={this._shouldDrag}
             onDrop={this._onDrop}
             onDrag={this._onDrag}
             animate={true}
@@ -156,6 +187,18 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           return 'you lost';
         }
       }
+    }
+  }
+
+  componentDidUpdate(prevProps: IBoardProps) {
+    if (prevProps.ctx.turn !== this.props.ctx.turn) {
+      this.setState({
+        ...this.state,
+        validMoves:
+          this.props.G.jumping === null
+            ? getValidMoves(this.props.G, this.props.ctx.currentPlayer)
+            : getValidMoves(this.props.G, this.props.ctx.currentPlayer, this.props.G.jumping),
+      });
     }
   }
 
