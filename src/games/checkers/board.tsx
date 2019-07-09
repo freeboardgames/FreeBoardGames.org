@@ -13,6 +13,7 @@ import {
 import { GameMode } from '../../App/Game/GameModePicker';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import Typography from '@material-ui/core/Typography';
+import grey from '@material-ui/core/colors/grey';
 
 interface IBoardProps {
   G: IG;
@@ -99,7 +100,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             animate={true}
             key={piece.data.id}
           >
-            <circle r="0.4" fill={piece.data.playerID === '0' ? 'white' : 'black'} cx="0.5" cy="0.5"></circle>
+            <g>
+              <circle r="0.4" fill={piece.data.playerID === '0' ? grey[50] : grey[900]} cx="0.5" cy="0.5" />
+              {piece.data.isKing ? (
+                <circle r="0.2" cx="0.5" cy="0.5" fill={piece.data.playerID === '1' ? grey[800] : grey[400]} />
+              ) : null}
+            </g>
           </Token>
         );
       });
