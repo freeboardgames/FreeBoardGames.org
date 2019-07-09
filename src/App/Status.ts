@@ -9,9 +9,8 @@ interface IStatusProps extends RouteComponentProps {
 
 class Status extends React.Component<IStatusProps, {}> {
   componentWillMount() {
-    const staticContext = this.props.staticContext;
-    if (staticContext) {
-      staticContext.status = this.props.code;
+    if (this.props.staticContext) {
+      this.props.staticContext.status = this.props.code;
     }
   }
 
