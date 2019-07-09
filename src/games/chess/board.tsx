@@ -22,6 +22,7 @@ import Queen from './pieces/queen';
 import Rook from './pieces/rook';
 import { playSound } from './sound';
 import { IOptionsItems } from '../../App/Game/GameDarkSublayout';
+import Typography from '@material-ui/core/Typography';
 
 const COL_NAMES = 'abcdefgh';
 const HIGHLIGHTED_COLOR = 'green';
@@ -63,7 +64,9 @@ export class Board extends React.Component<IBoardProps, {}> {
     return (
       <GameLayout optionsMenuItems={this._getOptionsMenuItems}>
         <div>
-          <h2 style={{ textAlign: 'center' }}>{this._getStatus()}</h2>
+          <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+            {this._getStatus()}
+          </Typography>
           <Checkerboard
             invert={this.getPlayer() === 'b'}
             highlightedSquares={this._getHighlightedSquares()}

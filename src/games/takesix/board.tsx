@@ -8,6 +8,7 @@ import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
 import { Scoreboard } from '../../common/Scoreboard';
 import { ScoreBadges } from '../../common/ScoreBadges';
+import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: IG;
@@ -127,7 +128,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     return (
       <GameLayout>
-        <h2 style={{ textAlign: 'center', marginTop: '0', marginBottom: '8px' }}>{this._getStatus()}</h2>
+        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+          {this._getStatus()}
+        </Typography>
         <Decks G={this.props.G} ctx={this.props.ctx} playerID={this.props.playerID} selectDeck={this._selectDeck} />
         <PlayerHand G={this.props.G} playerID={this.props.playerID} selectCard={this._selectCard} />
         <ScoreBadges
