@@ -3,8 +3,6 @@ import { Client } from '@freeboardgame.org/boardgame.io/client';
 import { CheckersGame, IG, move, INITIAL_BOARD } from './game';
 
 test('invalid moves', () => {
-  let points = new Array(64).fill(null);
-  points[0] = '0';
   let G: IG = {
     board: INITIAL_BOARD,
     jumping: null,

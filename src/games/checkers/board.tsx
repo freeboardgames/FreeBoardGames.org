@@ -18,6 +18,7 @@ interface IBoardProps {
   G: IG;
   ctx: IGameCtx;
   moves: any;
+  step?: any;
   playerID: string;
   gameArgs?: IGameArgs;
 }
@@ -63,9 +64,21 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
   };
 
-  _onDrop = (coords: ICartesianCoords) => {
+  stepAI = () => {
+    setTimeout(async () => {
+      await this.props.step();
+      if (this.props.ctx.currentPlayer === '1') {
+        this.stepAI();
+      }
+    }, 1000);
+  };
+
+  _onDrop = async (coords: ICartesianCoords) => {
     if (this.state.selected) {
       this.props.moves.move(this.state.selected, applyInvertion(roundCoords(coords), this.isInverted()));
+      if (this.isAIGame() && this.props.ctx.currentPlayer === '1') {
+        this.stepAI();
+      }
     }
   };
 
@@ -98,6 +111,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   isOnlineGame() {
     return this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend;
+  }
+
+  isAIGame() {
+    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI;
   }
 
   _getStatus() {

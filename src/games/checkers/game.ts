@@ -15,7 +15,7 @@ interface ICheckerPieceWithCoord {
   coord: ICoord;
 }
 
-interface IMove {
+export interface IMove {
   from: ICoord;
   to: ICoord;
   jumped: ICoord;
