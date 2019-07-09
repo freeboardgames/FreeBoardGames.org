@@ -7,12 +7,12 @@ test('invalid moves', () => {
   points[0] = '0';
   let G: IG = {
     board: INITIAL_BOARD,
-    jumping: null
+    jumping: null,
   };
 
   const ctx: any = { playerID: '1' };
-  expect(move(G, ctx, {x: 4, y: 4}, {x: 4, y: 5})).toEqual(INVALID_MOVE);
-  expect(move(G, ctx, {x: 1, y: 0}, {x: 4, y: 4})).toEqual(INVALID_MOVE);
+  expect(move(G, ctx, { x: 4, y: 4 }, { x: 4, y: 5 })).toEqual(INVALID_MOVE);
+  expect(move(G, ctx, { x: 1, y: 0 }, { x: 4, y: 4 })).toEqual(INVALID_MOVE);
 });
 
 it('should declare player 1 as the winner', () => {
