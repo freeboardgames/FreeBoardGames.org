@@ -12,6 +12,12 @@ USER appuser
 # add node_modules to PATH
 ENV PATH /appdata/node_modules/.bin:$PATH
 
+# build blog:
+COPY --chown=appuser blog /appdata/blog
+WORKDIR /appdata/blog/
+RUN yarn run hexo generate
+WORKDIR /appdata
+
 # install and cache app dependencies
 COPY --chown=appuser package.json yarn.lock /appdata/
 WORKDIR /appdata
@@ -20,13 +26,6 @@ COPY --chown=appuser blog/package.json /appdata/blog
 COPY --chown=appuser blog/yarn.lock /appdata/blog
 WORKDIR /appdata/blog
 RUN yarn install
-
-# for blog:
-COPY --chown=appuser blog /appdata/blog
-WORKDIR /appdata/blog/
-RUN yarn run hexo generate
-WORKDIR /appdata
-
 
 # build app
 WORKDIR /appdata
