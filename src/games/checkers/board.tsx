@@ -10,11 +10,14 @@ import {
   IOnDragData,
   applyInvertion,
   algebraicToCartesian,
+  IColorMap,
+  cartesianToAlgebraic,
 } from '../../common/Checkerboard';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
+import blue from '@material-ui/core/colors/blue';
 
 interface IBoardProps {
   G: IG;
@@ -45,6 +48,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _isSelectable = (coords: ICartesianCoords) => {
+    if (this.isOnlineGame() && this.props.playerID !== this.props.ctx.currentPlayer) {
+      return false;
+    }
+
     return this.state.validMoves.some(move => areCoordsEqual(move.from, coords));
   };
 
@@ -73,13 +80,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       this.setState({
         ...this.state,
         selected: applyInvertion({ x: originalX, y: originalY }, this.isInverted()),
-        //highlighted: this._getSquare(x, y),
       });
     } else {
       this.setState({
         ...this.state,
         selected: null,
-        //highlighted: '',
       });
     }
   };
@@ -101,7 +106,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _move = (coords: ICartesianCoords) => {
     if (this.state.selected === null || coords === null) {
-      return false;
+      return;
     }
 
     this.props.moves.move(this.state.selected, coords);
@@ -113,6 +118,21 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       this.stepAI();
     }
   };
+
+  _getHighlightedSquares() {
+    const result = {} as IColorMap;
+
+    if (this.state.selected !== null) {
+      result[cartesianToAlgebraic(this.state.selected.x, this.state.selected.y, false)] = blue[700];
+      this.state.validMoves
+        .filter(move => areCoordsEqual(this.state.selected, move.from))
+        .forEach(move => {
+          result[cartesianToAlgebraic(move.to.x, move.to.y, false)] = blue[500];
+        });
+    }
+
+    return result;
+  }
 
   getPieces = () => {
     return this.props.G.board
@@ -212,7 +232,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
           {this._getStatus()}
         </Typography>
-        <Checkerboard onClick={this._onClick} invert={this.isInverted()}>
+        <Checkerboard
+          onClick={this._onClick}
+          invert={this.isInverted()}
+          highlightedSquares={this._getHighlightedSquares()}
+        >
           {this.getPieces()}
         </Checkerboard>
       </GameLayout>
