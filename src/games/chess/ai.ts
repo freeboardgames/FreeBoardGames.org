@@ -7,8 +7,8 @@ interface IPlayState {
   ctx: any;
 }
 
-const LVL_MOVETIMES = [100, 200, 300, 400, 600, 800, 1000, 2000];
-const LVL_DEPTHS = [1, 1, 2, 3, 5, 8, 13, 22];
+const LVL_MOVETIMES = [25, 50, 100, 200, 400, 600, 1000, 2000]; // prettier-ignore
+const LVL_DEPTHS =    [ 1,   1,   2,   3,   5,   8,   13,  22]; // prettier-ignore
 
 class Stockfish {
   worker: any;
