@@ -5,6 +5,7 @@ import { Board } from './board';
 const config: IGameConfig = {
   bgioGame: ColonizersGame,
   bgioBoard: Board,
+  debug: true,
 };
 
 export default config;

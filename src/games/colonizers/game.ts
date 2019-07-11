@@ -36,21 +36,22 @@ interface ICoords {
 }
 
 class Tile {
-  pos: ICoords;
-  number: number;
+  readonly pos: ICoords;
+  readonly number: number;
+  readonly type: Resource;
   buildings: number[]; // Adjacent building indices
   roads: number[]; // Adjacent road indices
-  type: Resource;
 
-  constructor(pos: ICoords) {
-    this.number = 0;
+  constructor(pos: ICoords, type: Resource, number: number) {
+    this.number = number;
     this.pos = pos;
     this.buildings = new Array(6);
     this.roads = new Array(6);
+    this.type = type;
   }
 }
 
-interface IG {
+export interface IG {
   tiles: Tile[];
   buildings: Building[];
   roads: boolean[];
@@ -83,14 +84,40 @@ const GameConfig: IGameArgs = {
   name: 'colonizers',
   flow: {},
   moves: {},
-  setup: (): IG => {
+  setup: (ctx): IG => {
+    let resources = ctx.random.Shuffle([
+      Resource.Ore,
+      Resource.Ore,
+      Resource.Ore,
+      Resource.Grain,
+      Resource.Grain,
+      Resource.Grain,
+      Resource.Grain,
+      Resource.Lumber,
+      Resource.Lumber,
+      Resource.Lumber,
+      Resource.Lumber,
+      Resource.Wool,
+      Resource.Wool,
+      Resource.Wool,
+      Resource.Wool,
+      Resource.Brick,
+      Resource.Brick,
+      Resource.Brick,
+      Resource.Nothing,
+    ]);
+
+    let numbers = ctx.random.Shuffle([2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]);
+
     // Init tiles
     let tiles: Tile[] = new Array();
     for (let x = -2; x <= 2; x++) {
       for (let y = -2; y <= 2; y++) {
         for (let z = -2; z <= 2; z++) {
           if (x + y + z === 0) {
-            tiles[toIndex({ x, y })] = new Tile({ x, y, z });
+            const resource = resources.pop();
+            const number = resource === Resource.Nothing ? 7 : numbers.pop();
+            tiles[toIndex({ x, y })] = new Tile({ x, y, z }, resource, number);
           }
         }
       }
