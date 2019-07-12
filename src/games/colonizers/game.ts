@@ -31,7 +31,14 @@ enum Building {
 
 interface IBuilding {
   tileRefs: ITileRef[];
+  roadRefs: number[];
   type: Building;
+  owner: string;
+}
+
+interface IRoad {
+  tileRefs: ITileRef[];
+  buildingRefs: number[];
   owner: string;
 }
 
@@ -43,7 +50,7 @@ interface ICoords {
 
 interface ITileRef {
   tile: number; // Index of one of adjacent tiles
-  corner: number;
+  dir: number; // Edge or corner
 }
 
 export class Tile {
@@ -73,7 +80,7 @@ export class Player {
 export interface IG {
   tiles: Tile[];
   buildings: IBuilding[];
-  roads: boolean[];
+  roads: IRoad[];
 }
 
 function sumCoords(a: ICoords, b: ICoords) {
@@ -106,9 +113,7 @@ enum Phase {
 export function placeBuilding(G: IG, ctx: IGameCtx, index: number): IG | string {
   // Check "distance rule"
   if (
-    G.buildings[index].tileRefs.some(
-      ref => G.buildings[G.tiles[ref.tile].buildings[(ref.corner + 1) % 6]].type !== null,
-    )
+    G.buildings[index].tileRefs.some(ref => G.buildings[G.tiles[ref.tile].buildings[(ref.dir + 1) % 6]].type !== null)
   ) {
     return INVALID_MOVE;
   }
@@ -180,17 +185,31 @@ const GameConfig: IGameArgs = {
     }
 
     // Init roads and buildings
-    let roads: boolean[] = [];
+    let roads: IRoad[] = [];
     let buildings: IBuilding[] = [];
     tiles.forEach((tile, j) => {
       DIRS.forEach((dir, i) => {
         if (typeof tile.roads[i] === 'undefined') {
-          roads.push(false);
+          roads.push({
+            owner: null,
+            tileRefs: [
+              {
+                dir: i,
+                tile: j,
+              },
+            ],
+            buildingRefs: [],
+          });
+
           tile.roads[i] = roads.length - 1;
           // Check if adjacent tile exists
           const sum = sumCoords(tile.pos, dir);
           if (inBounds(sum)) {
             tiles[toIndex(sum)].roads[(i + 3) % 6] = roads.length - 1;
+            roads[roads.length - 1].tileRefs.push({
+              dir: (i + 3) % 6,
+              tile: toIndex(sum),
+            });
           }
         }
 
@@ -199,11 +218,12 @@ const GameConfig: IGameArgs = {
             type: null,
             tileRefs: [
               {
-                corner: i,
+                dir: i,
                 tile: j,
               },
             ],
             owner: null,
+            roadRefs: [],
           });
 
           tile.buildings[i] = buildings.length - 1;
@@ -212,7 +232,7 @@ const GameConfig: IGameArgs = {
           if (inBounds(sumUp)) {
             tiles[toIndex(sumUp)].buildings[(i + 2) % 6] = buildings.length - 1;
             buildings[buildings.length - 1].tileRefs.push({
-              corner: (i + 2) % 6,
+              dir: (i + 2) % 6,
               tile: toIndex(sumUp),
             });
           }
@@ -221,7 +241,7 @@ const GameConfig: IGameArgs = {
           if (inBounds(sumRight)) {
             tiles[toIndex(sumRight)].buildings[(i + 4) % 6] = buildings.length - 1;
             buildings[buildings.length - 1].tileRefs.push({
-              corner: (i + 4) % 6,
+              dir: (i + 4) % 6,
               tile: toIndex(sumRight),
             });
           }
@@ -229,7 +249,22 @@ const GameConfig: IGameArgs = {
       });
     });
 
-    console.log(buildings.length);
+    // Build road references
+    roads.forEach(road => {
+      const tileRef = road.tileRefs[0];
+      road.buildingRefs.push(tiles[tileRef.tile].buildings[tileRef.dir]);
+      road.buildingRefs.push(tiles[tileRef.tile].buildings[(tileRef.dir + 5) % 6]);
+    });
+
+    // Build building references
+    buildings.forEach(building => {
+      let roadRefs = new Set<number>();
+      building.tileRefs.forEach(ref => {
+        roadRefs.add(tiles[ref.tile].roads[ref.dir]);
+        roadRefs.add(tiles[ref.tile].roads[(ref.dir + 1) % 6]);
+      });
+      building.roadRefs = Array.from(roadRefs);
+    });
 
     return {
       tiles,

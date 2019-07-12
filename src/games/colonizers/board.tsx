@@ -63,7 +63,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           </g>
           <g>
             {this.props.G.buildings.map((building, i) => {
-              const angle = (Math.PI / 3) * building.tileRefs[0].corner - Math.PI / 3;
+              const angle = (Math.PI / 3) * building.tileRefs[0].dir - Math.PI / 3;
               const { x, y } = this.getTilePos(this.props.G.tiles[building.tileRefs[0].tile]);
               const playerColors = [red[500], blue[500], grey[50], orange[500]];
               const fill = building.owner === null ? 'white' : playerColors[building.owner as any];
