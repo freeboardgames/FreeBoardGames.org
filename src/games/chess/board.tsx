@@ -59,7 +59,16 @@ export class Board extends React.Component<IBoardProps, {}> {
       this.chess.load_pgn(this.props.G.pgn);
     }
     if (this.props.ctx.gameover) {
-      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+      const gameOverBoard = (
+        <div style={{ width: '50%', height: '50%', marginLeft: 'auto', marginRight: 'auto' }}>
+          <Checkerboard invert={this.getPlayer() === 'b'} onClick={(): undefined => undefined}>
+            {this._getPieces()}
+          </Checkerboard>
+        </div>
+      );
+      return (
+        <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} extraCardContent={gameOverBoard} />
+      );
     }
     return (
       <GameLayout optionsMenuItems={this._getOptionsMenuItems}>
