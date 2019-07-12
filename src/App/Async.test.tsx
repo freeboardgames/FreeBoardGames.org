@@ -1,27 +1,26 @@
 import getAsync from './Async';
 import React from 'react';
-import Enzyme from 'enzyme';
-import { expect } from 'chai';
+import { render, waitForElement } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
+require('@testing-library/jest-dom/extend-expect');
 
 it('should render loading page', () => {
   const AboutAsync = getAsync('About', () => import('../About/About'));
-  const wrapper = Enzyme.mount(
+  const { getByText } = render(
     <MemoryRouter initialIndex={0} initialEntries={['/About']}>
       <AboutAsync />
     </MemoryRouter>,
   );
-  expect(wrapper.html()).to.contain('Loading About Page');
+  expect(getByText(/Loading About/)).toBeInTheDocument();
 });
 
-it('should render error page', () => {
+it('should render error page', async () => {
   const AboutAsync = getAsync('About', () => Promise.reject(new Error('error')));
-  const wrapper = Enzyme.mount(
+  const { getByText } = render(
     <MemoryRouter initialIndex={0} initialEntries={['/About']}>
       <AboutAsync />
     </MemoryRouter>,
   );
-  setImmediate(() => {
-    expect(wrapper.html()).to.contain('Error Loading');
-  });
+  const wrapper = await waitForElement(() => getByText(/Error/));
+  expect(wrapper).toHaveTextContent('Error Loading About Page');
 });
