@@ -1,4 +1,4 @@
-import { Game, IGameArgs } from '@freeboardgame.org/boardgame.io/core';
+import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
 
 const DIRS: ICoords[] = [
   { x: 0, y: 1, z: -1 },
@@ -29,13 +29,24 @@ enum Building {
   City,
 }
 
+interface IBuilding {
+  tileRefs: ITileRef[];
+  type: Building;
+  owner: string;
+}
+
 interface ICoords {
   x: number;
   y: number;
   z?: number;
 }
 
-class Tile {
+interface ITileRef {
+  tile: number; // Index of one of adjacent tiles
+  corner: number;
+}
+
+export class Tile {
   readonly pos: ICoords;
   readonly number: number;
   readonly type: Resource;
@@ -51,9 +62,17 @@ class Tile {
   }
 }
 
+export class Player {
+  readonly playerID: string;
+
+  constructor(playerID: string) {
+    this.playerID = playerID;
+  }
+}
+
 export interface IG {
   tiles: Tile[];
-  buildings: Building[];
+  buildings: IBuilding[];
   roads: boolean[];
 }
 
@@ -80,10 +99,47 @@ export function toPosition(index: number): ICoords {
   };
 }
 
+enum Phase {
+  Place = 'Place',
+}
+
+export function placeBuilding(G: IG, ctx: IGameCtx, index: number): IG | string {
+  // Check "distance rule"
+  if (
+    G.buildings[index].tileRefs.some(
+      ref => G.buildings[G.tiles[ref.tile].buildings[(ref.corner + 1) % 6]].type !== null,
+    )
+  ) {
+    return INVALID_MOVE;
+  }
+
+  return {
+    ...G,
+    buildings: G.buildings.map((building, i) =>
+      index === i
+        ? {
+            ...building,
+            type: Building.Settlement,
+            owner: ctx.playerID,
+          }
+        : building,
+    ),
+  };
+}
+
 const GameConfig: IGameArgs = {
   name: 'colonizers',
-  flow: {},
-  moves: {},
+  flow: {
+    startingPhase: Phase.Place,
+    phases: {
+      Place: {
+        allowedMoves: ['placeBuilding'],
+      },
+    },
+  },
+  moves: {
+    placeBuilding,
+  },
   setup: (ctx): IG => {
     let resources = ctx.random.Shuffle([
       Resource.Ore,
@@ -125,8 +181,8 @@ const GameConfig: IGameArgs = {
 
     // Init roads and buildings
     let roads: boolean[] = [];
-    let buildings: Building[] = [];
-    tiles.forEach(tile => {
+    let buildings: IBuilding[] = [];
+    tiles.forEach((tile, j) => {
       DIRS.forEach((dir, i) => {
         if (typeof tile.roads[i] === 'undefined') {
           roads.push(false);
@@ -139,21 +195,41 @@ const GameConfig: IGameArgs = {
         }
 
         if (typeof tile.buildings[i] === 'undefined') {
-          buildings.push(null);
+          buildings.push({
+            type: null,
+            tileRefs: [
+              {
+                corner: i,
+                tile: j,
+              },
+            ],
+            owner: null,
+          });
+
           tile.buildings[i] = buildings.length - 1;
 
           const sumUp = sumCoords(tile.pos, dir);
           if (inBounds(sumUp)) {
             tiles[toIndex(sumUp)].buildings[(i + 2) % 6] = buildings.length - 1;
+            buildings[buildings.length - 1].tileRefs.push({
+              corner: (i + 2) % 6,
+              tile: toIndex(sumUp),
+            });
           }
 
           const sumRight = sumCoords(tile.pos, DIRS[(i + 1) % 6]);
           if (inBounds(sumRight)) {
             tiles[toIndex(sumRight)].buildings[(i + 4) % 6] = buildings.length - 1;
+            buildings[buildings.length - 1].tileRefs.push({
+              corner: (i + 4) % 6,
+              tile: toIndex(sumRight),
+            });
           }
         }
       });
     });
+
+    console.log(buildings.length);
 
     return {
       tiles,
