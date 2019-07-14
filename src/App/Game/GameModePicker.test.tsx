@@ -1,10 +1,10 @@
 import React from 'react';
 import { GameModePicker, GameMode, IGameModeInfo } from './GameModePicker';
 import { IGameModeExtraInfoSlider, IGameModeExtraInfoDropdown } from './GameModePicker';
-import { mount } from 'enzyme';
-import { expect } from 'chai';
 import { MemoryRouter } from 'react-router';
 import { IGameDef } from '../../games';
+import { render, fireEvent, RenderResult, cleanup, wait } from '@testing-library/react';
+require('@testing-library/jest-dom/extend-expect');
 
 const GAME_DEF_TEST: IGameDef = {
   code: 'foocode',
@@ -23,6 +23,16 @@ const GAME_DEF_TEST: IGameDef = {
   modes: [],
 };
 
+function getWrapper(modes: IGameModeInfo[]): RenderResult {
+  return render(
+    <MemoryRouter>
+      <GameModePicker gameDef={{ ...GAME_DEF_TEST, modes }} />
+    </MemoryRouter>,
+  );
+}
+
+afterEach(cleanup);
+
 describe('Game Mode Picker', () => {
   it('should show all 5 options and accept clicks', () => {
     const modes: IGameModeInfo[] = [
@@ -30,12 +40,10 @@ describe('Game Mode Picker', () => {
       { mode: GameMode.OnlineFriend },
       { mode: GameMode.LocalFriend },
     ];
-    const wrapper = mount(
-      <MemoryRouter>
-        <GameModePicker gameDef={{ ...GAME_DEF_TEST, modes }} />
-      </MemoryRouter>,
-    );
-    expect(wrapper.find('a').length).to.equal(3);
+    const wrapper = getWrapper(modes);
+    expect(wrapper.queryByText('Online Friend')).toBeInTheDocument();
+    expect(wrapper.queryByText('Computer (AI)')).toBeInTheDocument();
+    expect(wrapper.queryByText('Local Friend')).toBeInTheDocument();
   });
 
   it('should show # player Select', () => {
@@ -44,12 +52,8 @@ describe('Game Mode Picker', () => {
         mode: GameMode.OnlineFriend,
       },
     ];
-    const wrapper = mount(
-      <MemoryRouter>
-        <GameModePicker gameDef={{ ...GAME_DEF_TEST, modes }} />
-      </MemoryRouter>,
-    );
-    expect(wrapper.find('Select').length).to.equal(1);
+    const wrapper = getWrapper(modes);
+    expect(wrapper.queryByText('2 Players')).toBeInTheDocument();
   });
 
   it('should show a slider', () => {
@@ -59,49 +63,47 @@ describe('Game Mode Picker', () => {
         extraInfo: { type: 'slider', min: 1, max: 8 } as IGameModeExtraInfoSlider,
       },
     ];
-    const wrapper = mount(
-      <MemoryRouter>
-        <GameModePicker gameDef={{ ...GAME_DEF_TEST, modes }} />
-      </MemoryRouter>,
-    );
-    expect(wrapper.find('Slider').length).to.equal(1);
+    const wrapper = getWrapper(modes);
+    expect(wrapper.queryByRole('slider')).toBeInTheDocument();
   });
 
   it('should show a dropdown', () => {
     const wrapper = makeDropdownWrapper();
-    expect(wrapper.find('MenuList').length).to.equal(1);
-    expect(wrapper.find('MenuItem').length).to.equal(2);
+    expect(wrapper.queryAllByRole('menuitem').length).toEqual(2);
+    expect(wrapper.queryByText('Easy')).toBeInTheDocument();
+    expect(wrapper.queryByText('Hard')).toBeInTheDocument();
   });
 
-  it('should have the correct dropdown defaults', () => {
+  it('should have the correct dropdown defaults', async () => {
     const wrapper = makeDropdownWrapper();
-    const easy = wrapper.find('MenuItem').at(0);
-    expect(easy.prop('value')).to.equal('Easy');
-    expect(easy.prop('selected')).to.equal(true); // Easy is selected by default
-
-    const hard = wrapper.find('MenuItem').at(1);
-    expect(hard.prop('value')).to.equal('Hard');
-
-    expect(hard.prop('selected')).to.equal(false); // Hard is deselected by default
+    const hard = wrapper.queryAllByRole('menuitem')[1];
+    const playButton = wrapper.getByRole('button');
+    expect(playButton.getAttribute('href')).toEqual('/g/foocode/AI/1');
   });
 
   it('it should be a functional dropdown', () => {
     const wrapper = makeDropdownWrapper();
-    const hard = wrapper.find('MenuItem').at(1);
-    expect(hard.html()).not.to.contain('selected');
-    hard.simulate('click');
-    expect(hard.html()).to.contain('selected');
+    const easy = wrapper.queryAllByRole('menuitem')[0];
+    const hard = wrapper.queryAllByRole('menuitem')[1];
+
+    fireEvent.click(hard);
+    const afterHardClicked = wrapper.getByRole('button');
+    expect(afterHardClicked.getAttribute('href')).toEqual('/g/foocode/AI/2');
+
+    fireEvent.click(easy);
+    const afterEasyClicked = wrapper.getByRole('button');
+    expect(afterEasyClicked.getAttribute('href')).toEqual('/g/foocode/AI/1');
   });
 });
 
-function makeDropdownWrapper() {
+function makeDropdownWrapper(): RenderResult {
   const modes: IGameModeInfo[] = [
     {
       mode: GameMode.AI,
       extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
     },
   ];
-  const wrapper = mount(
+  const wrapper = render(
     <MemoryRouter>
       <GameModePicker gameDef={{ ...GAME_DEF_TEST, modes }} />
     </MemoryRouter>,
