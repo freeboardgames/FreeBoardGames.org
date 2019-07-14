@@ -3,7 +3,7 @@ import { GameModePicker, GameMode, IGameModeInfo } from './GameModePicker';
 import { IGameModeExtraInfoSlider, IGameModeExtraInfoDropdown } from './GameModePicker';
 import { MemoryRouter } from 'react-router';
 import { IGameDef } from '../../games';
-import { render, fireEvent, RenderResult, cleanup, wait } from '@testing-library/react';
+import { render, fireEvent, RenderResult, cleanup } from '@testing-library/react';
 require('@testing-library/jest-dom/extend-expect');
 
 const GAME_DEF_TEST: IGameDef = {
@@ -99,7 +99,6 @@ describe('Game Mode Picker', () => {
 
   it('should have the correct dropdown defaults', async () => {
     const wrapper = makeDropdownWrapper();
-    const hard = wrapper.queryAllByRole('menuitem')[1];
     const playButton = wrapper.getByRole('button');
     expect(playButton.getAttribute('href')).toEqual('/g/foocode/AI/1');
   });
