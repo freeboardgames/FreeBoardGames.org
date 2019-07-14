@@ -28,7 +28,7 @@ function getPosition(x: number, y: number) {
   return 8 * x + y;
 }
 
-test('highlighting', () => {
+test('highlighting', async () => {
   const App = ReactClient({
     game: CheckersGame,
     debug: false,
@@ -36,31 +36,31 @@ test('highlighting', () => {
   }) as any;
   const comp = Enzyme.mount(<App playerID={'0'} />);
 
-  comp
+  await comp
     .find('rect')
     .at(getPosition(0, 5))
     .simulate('click');
-  comp
+  await comp
     .find('rect')
     .at(getPosition(1, 4))
     .simulate('click');
   comp.setProps({ playerID: '1' });
   comp.update();
-  comp
+  await comp
     .find('rect')
     .at(getPosition(3, 2))
     .simulate('click');
-  comp
+  await comp
     .find('rect')
     .at(getPosition(2, 3))
     .simulate('click');
   comp.setProps({ playerID: '0' });
   comp.update();
-  comp
+  await comp
     .find('rect')
     .at(getPosition(1, 4))
     .simulate('click');
-  comp
+  await comp
     .find('rect')
     .at(getPosition(3, 2))
     .simulate('click');
