@@ -107,6 +107,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
         <CardActions>
           {extraInfo}
           <Button
+            data-testid="playButton"
             component={this._getLink(this._getUrl(info))}
             variant="contained"
             color="primary"
