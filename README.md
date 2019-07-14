@@ -19,6 +19,7 @@ Download our [Android app here](https://play.google.com/store/apps/details?id=or
 - :heavy_check_mark: Seabattle (similar to Battleship).
 - :heavy_check_mark: Cornerus (by [JosefKuchar](https://github.com/JosefKuchar), similar to Blokus)
 - :heavy_check_mark: TicTacToe.
+- :heavy_check_mark: Checkers
 
 Check the [game development kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/11)
 
