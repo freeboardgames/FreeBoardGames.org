@@ -46,7 +46,7 @@ describe('Game Mode Picker', () => {
     expect(wrapper.queryByText('Local Friend')).toBeInTheDocument();
   });
 
-  it('should show # player Select', () => {
+  it('should show option to select number of players', () => {
     const modes: IGameModeInfo[] = [
       {
         mode: GameMode.OnlineFriend,
@@ -54,6 +54,29 @@ describe('Game Mode Picker', () => {
     ];
     const wrapper = getWrapper(modes);
     expect(wrapper.queryByText('2 Players')).toBeInTheDocument();
+  });
+
+  it('should select 3 players', () => {
+    const modes: IGameModeInfo[] = [
+      {
+        mode: GameMode.OnlineFriend,
+      },
+    ];
+    const wrapper = getWrapper(modes);
+
+    const playButtonBeforeClick = wrapper.getByTestId('playButton');
+    expect(playButtonBeforeClick.getAttribute('href')).toEqual('/room/new/foocode/2');
+
+    // select dropdown
+    const twoPlayers = wrapper.getByText('2 Players');
+    fireEvent.click(twoPlayers);
+
+    // select 3 players
+    const threePlayers = wrapper.getByText('3 Players');
+    fireEvent.click(threePlayers);
+
+    const playButtonAfterClick = wrapper.getByTestId('playButton');
+    expect(playButtonAfterClick.getAttribute('href')).toEqual('/room/new/foocode/3');
   });
 
   it('should show a slider', () => {
