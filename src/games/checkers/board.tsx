@@ -109,7 +109,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return;
     }
 
-    /*await*/ this.props.moves.move(this.state.selected, coords);
+    await this.props.moves.move(this.state.selected, coords);
     this.setState({
       ...this.state,
       selected: null,
