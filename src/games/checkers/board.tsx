@@ -104,12 +104,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
   };
 
-  _move = (coords: ICartesianCoords) => {
+  _move = async (coords: ICartesianCoords) => {
     if (this.state.selected === null || coords === null) {
       return;
     }
 
-    this.props.moves.move(this.state.selected, coords);
+    /*await*/ this.props.moves.move(this.state.selected, coords);
     this.setState({
       ...this.state,
       selected: null,
