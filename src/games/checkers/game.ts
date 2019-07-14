@@ -126,12 +126,17 @@ export function areCoordsEqual(a: ICoord, b: ICoord) {
   return a.x === b.x && a.y === b.y;
 }
 
-export function checkPosition(G: IG, playerID: string, piece: ICheckerPiece, coord: ICoord) {
+export function checkPosition(
+  G: IG,
+  playerID: string,
+  piece: ICheckerPiece,
+  coord: ICoord,
+): { moves: IMove[]; jumped: boolean } {
   const dirs = piece.isKing ? KING_DIRS : MAN_DIRS[playerID as any];
   let moves: IMove[] = [];
   let jumped = false;
 
-  dirs.forEach(dir => {
+  for (const dir of dirs) {
     // Look into all valid directions
     let opponentBefore = null;
     for (let i = 1; piece.isKing ? true : i < 3; i++) {
@@ -170,7 +175,7 @@ export function checkPosition(G: IG, playerID: string, piece: ICheckerPiece, coo
         }
       }
     }
-  });
+  }
 
   return { moves, jumped };
 }
