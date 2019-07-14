@@ -14,7 +14,9 @@ import red from '@material-ui/core/colors/red';
 import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
 
-interface IBoardState {}
+interface IBoardState {
+  selectedBuilding: number;
+}
 
 interface IBoardProps {
   G: IG;
@@ -25,8 +27,13 @@ interface IBoardProps {
 }
 
 const SIZE = 100;
+const PLAYER_COLORS = [red[500], blue[500], grey[50], orange[500]];
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
+  state = {
+    selectedBuilding: null as number,
+  };
+
   getTilePos(tile: Tile) {
     return {
       x: SIZE * (3 / 2) * tile.pos.x,
@@ -34,12 +41,25 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     };
   }
 
-  onTileClick(index: number) {
-    console.log(index);
+  dirToAngle(dir: number) {
+    return (Math.PI / 3) * dir - Math.PI / 3;
   }
 
   onBuildingClick(index: number) {
-    this.props.moves.placeBuilding(index);
+    this.setState({
+      ...this.state,
+      selectedBuilding: index,
+    });
+  }
+
+  onRoadClick(index: number) {
+    if (this.state.selectedBuilding !== null) {
+      this.props.moves.placeInitial(this.state.selectedBuilding, index);
+      this.setState({
+        ...this.state,
+        selectedBuilding: null,
+      });
+    }
   }
 
   render() {
@@ -56,17 +76,36 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                   fill={colors[tile.type]}
                   d="M0 86.60254037844386L50 0L150 0L200 86.60254037844386L150 173.20508075688772L50 173.20508075688772Z"
                   style={{ transform: `translate(${x - SIZE}px, ${y - (SIZE * Math.sqrt(3)) / 2}px)` }}
-                  onClick={() => this.onTileClick(i)}
                 ></path>
               );
             })}
           </g>
           <g>
+            {this.props.G.roads.map((road, i) => {
+              const angle1 = this.dirToAngle(road.tileRefs[0].dir);
+              const angle2 = this.dirToAngle((road.tileRefs[0].dir + 5) % 6);
+              const { x, y } = this.getTilePos(this.props.G.tiles[road.tileRefs[0].tile]);
+              const stroke = road.owner === null ? 'black' : PLAYER_COLORS[road.owner as any];
+
+              return (
+                <line
+                  x1={x + SIZE * Math.cos(angle1)}
+                  y1={y + SIZE * Math.sin(angle1)}
+                  x2={x + SIZE * Math.cos(angle2)}
+                  y2={y + SIZE * Math.sin(angle2)}
+                  strokeWidth={10}
+                  stroke={stroke}
+                  onClick={() => this.onRoadClick(i)}
+                  key={i}
+                ></line>
+              );
+            })}
+          </g>
+          <g>
             {this.props.G.buildings.map((building, i) => {
-              const angle = (Math.PI / 3) * building.tileRefs[0].dir - Math.PI / 3;
+              const angle = this.dirToAngle(building.tileRefs[0].dir);
               const { x, y } = this.getTilePos(this.props.G.tiles[building.tileRefs[0].tile]);
-              const playerColors = [red[500], blue[500], grey[50], orange[500]];
-              const fill = building.owner === null ? 'white' : playerColors[building.owner as any];
+              const fill = building.owner === null ? 'black' : PLAYER_COLORS[building.owner as any];
               return (
                 <circle
                   key={i}

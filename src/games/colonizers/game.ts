@@ -1,4 +1,4 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { Game, IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
 
 const DIRS: ICoords[] = [
   { x: 0, y: 1, z: -1 },
@@ -69,18 +69,17 @@ export class Tile {
   }
 }
 
-export class Player {
-  readonly playerID: string;
-
-  constructor(playerID: string) {
-    this.playerID = playerID;
-  }
+export interface IPlayer {
+  id: string;
+  resources: number[];
 }
 
 export interface IG {
   tiles: Tile[];
   buildings: IBuilding[];
   roads: IRoad[];
+  players: IPlayer[];
+  initialTurnOrder: string[];
 }
 
 function sumCoords(a: ICoords, b: ICoords) {
@@ -108,12 +107,18 @@ export function toPosition(index: number): ICoords {
 
 enum Phase {
   Place = 'Place',
+  Game = 'Game',
 }
 
-export function placeBuilding(G: IG, ctx: IGameCtx, index: number): IG | string {
-  // Check "distance rule"
+// Place settlement and connected road
+export function placeInitial(G: IG, ctx: IGameCtx, settlementIndex: number, roadIndex: number): IG | string {
   if (
-    G.buildings[index].tileRefs.some(ref => G.buildings[G.tiles[ref.tile].buildings[(ref.dir + 1) % 6]].type !== null)
+    // Check "distance rule"
+    G.buildings[settlementIndex].tileRefs.some(
+      ref => G.buildings[G.tiles[ref.tile].buildings[(ref.dir + 1) % 6]].type !== null,
+    ) ||
+    // Check if road is connected to the new settlement
+    !G.buildings[settlementIndex].roadRefs.some(ref => ref === roadIndex)
   ) {
     return INVALID_MOVE;
   }
@@ -121,13 +126,21 @@ export function placeBuilding(G: IG, ctx: IGameCtx, index: number): IG | string 
   return {
     ...G,
     buildings: G.buildings.map((building, i) =>
-      index === i
+      settlementIndex === i
         ? {
             ...building,
             type: Building.Settlement,
             owner: ctx.playerID,
           }
         : building,
+    ),
+    roads: G.roads.map((road, i) =>
+      roadIndex === i
+        ? {
+            ...road,
+            owner: ctx.playerID,
+          }
+        : road,
     ),
   };
 }
@@ -138,12 +151,43 @@ const GameConfig: IGameArgs = {
     startingPhase: Phase.Place,
     phases: {
       Place: {
-        allowedMoves: ['placeBuilding'],
+        allowedMoves: ['placeInitial'],
+        movesPerTurn: 1,
+        turnOrder: TurnOrder.CUSTOM_FROM('initialTurnOrder'),
+        endPhaseIf: (_, ctx) => ctx.turn === ctx.numPlayers * 2,
+        next: Phase.Game,
+      },
+      Game: {
+        onTurnBegin: (G: IG, ctx): IG => {
+          const roll = ctx.random.D6() + ctx.random.D6();
+
+          const players = new Array(ctx.numPlayers).fill(0).map(() => new Array(5).fill(0));
+
+          G.tiles
+            .filter(tile => tile.number === roll)
+            .forEach(tile =>
+              tile.buildings
+                .filter(ref => G.buildings[ref].owner !== null)
+                .forEach(
+                  ref =>
+                    (players[G.buildings[ref].owner as any][tile.type] +=
+                      G.buildings[ref].type === Building.Settlement ? 1 : 2),
+                ),
+            );
+
+          return {
+            ...G,
+            players: G.players.map((player, i) => ({
+              ...player,
+              resources: player.resources.map((resource, j) => resource + players[i][j]),
+            })),
+          };
+        },
       },
     },
   },
   moves: {
-    placeBuilding,
+    placeInitial,
   },
   setup: (ctx): IG => {
     let resources = ctx.random.Shuffle([
@@ -266,10 +310,26 @@ const GameConfig: IGameArgs = {
       building.roadRefs = Array.from(roadRefs);
     });
 
+    // Build turn order
+    let initialTurnOrder = [];
+    for (let i = 0; i < ctx.numPlayers; i++) {
+      initialTurnOrder.push(i.toString());
+    }
+    for (let i = ctx.numPlayers - 1; i >= 0; i--) {
+      initialTurnOrder.push(i.toString());
+    }
+
+    const players = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
+      id: i.toString(),
+      resources: new Array(5).fill(0),
+    }));
+
     return {
       tiles,
       buildings,
       roads,
+      players,
+      initialTurnOrder,
     };
   },
 };
