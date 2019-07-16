@@ -497,6 +497,7 @@ describe('sound toggle', () => {
   let moveMock: jest.Mock;
   let testBoard: Enzyme.ReactWrapper;
   let board: Enzyme.ReactWrapper;
+
   beforeEach(() => {
     moveMock = jest.fn();
     testBoard = Enzyme.mount(
@@ -520,10 +521,11 @@ describe('sound toggle', () => {
     );
     board = testBoard.find(Board);
   });
-  // 0, 6, a2
+
   it('should start with sound enabled', () => {
     expect(board.state('soundEnabled')).to.be.true;
   });
+
   it('should toggle sound preference', () => {
     (board.instance() as any)._toggleSoundPref();
     expect(board.state('soundEnabled')).to.be.false;
