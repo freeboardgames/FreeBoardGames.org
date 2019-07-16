@@ -81,4 +81,15 @@ describe('New Room', () => {
       numberOfPlayers: 1,
     });
   });
+
+  it('should get next room', async () => {
+    const mockResponse = { body: { nextRoomID: 'barroom' } };
+    request.post = jest.fn().mockReturnValue({
+      send: jest.fn().mockResolvedValue(mockResponse),
+    });
+    const mockStoredCredentials: IStoredCredentials = { fooroom: { playerID: 0, credential: 'foocredential' } };
+    Storage.prototype.getItem = () => JSON.stringify(mockStoredCredentials);
+    const response = await LobbyService.getPlayAgainNextRoom('foogame', 'fooroom', 2);
+    expect(response).to.equal('barroom');
+  });
 });
