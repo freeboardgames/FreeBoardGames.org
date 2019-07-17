@@ -9,7 +9,14 @@
 import React from 'react';
 
 import Chess from './chessjswrapper';
-import { Checkerboard, IAlgebraicCoords, ICartesianCoords, IColorMap, cartesianToAlgebraic } from './checkerboard';
+import {
+  Checkerboard,
+  IAlgebraicCoords,
+  ICartesianCoords,
+  IColorMap,
+  cartesianToAlgebraic,
+  IOnDragData,
+} from '../../common/Checkerboard';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
@@ -37,14 +44,9 @@ interface IBoardProps {
   playerID: string;
   isActive: boolean;
   isConnected: boolean;
-  gameArgs?: IGameArgs;
+  gameArgs: IGameArgs;
 }
-interface IOnDragData {
-  x: number;
-  y: number;
-  originalX: number;
-  originalY: number;
-}
+
 export class Board extends React.Component<IBoardProps, {}> {
   chess = Chess();
   state = {
@@ -59,7 +61,16 @@ export class Board extends React.Component<IBoardProps, {}> {
       this.chess.load_pgn(this.props.G.pgn);
     }
     if (this.props.ctx.gameover) {
-      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+      const gameOverBoard = (
+        <div style={{ width: '50%', height: '50%', marginLeft: 'auto', marginRight: 'auto' }}>
+          <Checkerboard invert={this.getPlayer() === 'b'} onClick={(): undefined => undefined}>
+            {this._getPieces()}
+          </Checkerboard>
+        </div>
+      );
+      return (
+        <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} extraCardContent={gameOverBoard} />
+      );
     }
     return (
       <GameLayout optionsMenuItems={this._getOptionsMenuItems}>
@@ -264,7 +275,7 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getGameOver() {
     const gameArgs = this.props.gameArgs;
-    const mode = typeof gameArgs !== 'undefined' ? gameArgs.mode : GameMode.LocalFriend;
+    const mode = gameArgs.mode;
     if (mode === GameMode.OnlineFriend || mode === GameMode.AI) {
       if (this.props.ctx.gameover === this.getPlayer()) {
         return 'you won';

@@ -24,9 +24,7 @@ export interface IOptionsItems {
 export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
   constructor(props: IGameDarkSublayoutProps) {
     super(props);
-    if (typeof window !== 'undefined') {
-      document.body.style.backgroundColor = 'black';
-    }
+    document.body.style.backgroundColor = 'black';
     this.state = { menuAnchorEl: null };
   }
 
@@ -87,6 +85,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
         <Button
           onClick={this._openOptionsMenu}
           target="_blank"
+          aria-label="Open options"
           variant="outlined"
           style={{ margin: '8px', float: 'right' }}
         >

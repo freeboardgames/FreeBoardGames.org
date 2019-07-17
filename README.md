@@ -1,4 +1,5 @@
 # FreeBoardGame.org
+
 [![Build Status](https://travis-ci.com/freeboardgame/FreeBoardGame.org.svg?branch=master)](https://travis-ci.com/freeboardgame/FreeBoardGame.org)
 
 FOSS platform for publishing your [boardgame.io](https://boardgame.io) games. We curate high quality implementations of board games and optimize your game for delivery so you can quickly reach hundreds of players.
@@ -18,6 +19,7 @@ Download our [Android app here](https://play.google.com/store/apps/details?id=or
 - :heavy_check_mark: Seabattle (similar to Battleship).
 - :heavy_check_mark: Cornerus (by [JosefKuchar](https://github.com/JosefKuchar), similar to Blokus)
 - :heavy_check_mark: TicTacToe.
+- :heavy_check_mark: Checkers
 
 Check the [game development kanban](https://github.com/freeboardgame/FreeBoardGame.org/projects/11)
 
@@ -51,6 +53,7 @@ yarn install
 
 yarn run dev
 ```
+
 Open [http://localhost:8000/](http://localhost:8000/)
 
 ## Running with [Docker Compose](https://docs.docker.com/compose/)

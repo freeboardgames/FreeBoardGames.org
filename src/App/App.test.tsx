@@ -1,40 +1,35 @@
 import React from 'react';
 import App from './App';
-import Enzyme from 'enzyme';
-import { expect } from 'chai';
 import { StaticRouter } from 'react-router-dom';
-import Adapter from 'enzyme-adapter-react-16';
-
-Enzyme.configure({ adapter: new Adapter() });
+import { render, wait } from '@testing-library/react';
+require('@testing-library/jest-dom/extend-expect');
 
 describe('App', () => {
   const context = {};
   it('should go to home', async () => {
-    const wrapper = Enzyme.mount(
+    const { getByText } = render(
       <StaticRouter location={'/'} context={context}>
         <App />
       </StaticRouter>,
     );
-    setImmediate(() => {
-      expect(wrapper.html()).to.contain('We at FreeBoardGame.org');
-    });
+    await wait(() => expect(getByText(/We at FreeBoardGame.org/)).toBeTruthy());
   });
 
-  it('should show not found page', () => {
-    const wrapper = Enzyme.mount(
+  it('should show not found page', async () => {
+    const { getByText } = render(
       <StaticRouter location={'/doesnotexist'} context={context}>
         <App />
       </StaticRouter>,
     );
-    expect(wrapper.html()).to.contain('Not Found');
+    await wait(() => expect(getByText(/Not Found/)).toBeTruthy());
   });
 
   it('should show invalid locale', async () => {
-    const wrapper = Enzyme.mount(
-      <StaticRouter location={'/pt/about'} context={context}>
+    const { getByText } = render(
+      <StaticRouter location={'/xx/about'} context={context}>
         <App />
       </StaticRouter>,
     );
-    expect(wrapper.html()).to.contain('Invalid Locale');
+    await wait(() => expect(getByText(/Invalid Locale/)).toBeTruthy());
   });
 });

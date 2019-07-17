@@ -80,7 +80,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
               onClick={this.copyClipboardCallback}
               style={{ marginLeft: 'auto' }}
             >
-              <ContentCopyIcon style={{ marginRight: '8px' }} />
+              <ContentCopyIcon aria-label="Copy" style={{ marginRight: '8px' }} />
               Copy Link
             </Button>
           </CardActions>
@@ -134,7 +134,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
   }
 
   _getLink() {
-    const origin = typeof window === 'undefined' ? '' : window.location.origin;
+    const origin = window.location.origin;
     const gameCode = this.props.gameCode;
     const roomID = this.props.roomID;
     return `${origin}/room/${gameCode}/${roomID}`;

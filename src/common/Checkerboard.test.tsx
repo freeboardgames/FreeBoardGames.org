@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Checkerboard, algebraicToCartesian } from './checkerboard';
+import { Checkerboard, algebraicToCartesian } from './Checkerboard';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { expect } from 'chai';
 import Enzyme from 'enzyme';

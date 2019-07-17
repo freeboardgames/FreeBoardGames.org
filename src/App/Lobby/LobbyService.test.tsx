@@ -56,7 +56,7 @@ describe('New Room', () => {
   it('should get room metadata without currentUser', async () => {
     const mockResponse = { body: { players: [{ id: 0, name: 'Jason', roomID: 'fooroom' }] } };
     request.get = jest.fn().mockReturnValue(mockResponse);
-    Storage.prototype.getItem = () => JSON.stringify({}); // mock no crendetials
+    Storage.prototype.getItem = () => JSON.stringify(null);
     const response = await LobbyService.getRoomMetadata('foogame', 'fooroom');
     expect(response).to.eql({
       players: [{ playerID: 0, name: 'Jason', roomID: 'fooroom' }],
@@ -80,5 +80,16 @@ describe('New Room', () => {
       currentUser: { playerID: 0, name: 'Jason', roomID: 'fooroom' },
       numberOfPlayers: 1,
     });
+  });
+
+  it('should get next room', async () => {
+    const mockResponse = { body: { nextRoomID: 'barroom' } };
+    request.post = jest.fn().mockReturnValue({
+      send: jest.fn().mockResolvedValue(mockResponse),
+    });
+    const mockStoredCredentials: IStoredCredentials = { fooroom: { playerID: 0, credential: 'foocredential' } };
+    Storage.prototype.getItem = () => JSON.stringify(mockStoredCredentials);
+    const response = await LobbyService.getPlayAgainNextRoom('foogame', 'fooroom', 2);
+    expect(response).to.equal('barroom');
   });
 });
