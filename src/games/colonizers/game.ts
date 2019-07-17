@@ -61,13 +61,15 @@ export class Tile {
   readonly type: Resource;
   buildings: number[]; // Adjacent building indices
   roads: number[]; // Adjacent road indices
+  index: number;
 
-  constructor(pos: ICoords, type: Resource, number: number) {
+  constructor(pos: ICoords, type: Resource, number: number, index: number) {
     this.number = number;
     this.pos = pos;
     this.buildings = new Array(6);
     this.roads = new Array(6);
     this.type = type;
+    this.index = index;
   }
 }
 
@@ -112,15 +114,23 @@ enum Phase {
   Game = 'Game',
 }
 
+export function isValidBuildingPosition(G: IG, index: number) {
+  return !G.buildings[index].tileRefs.some(
+    ref => G.buildings[G.tiles[ref.tile].buildings[(ref.dir + 1) % 6]].type !== null,
+  );
+}
+
+export function isRoadConnected(G: IG, settlementIndex: number, roadIndex: number) {
+  return G.buildings[settlementIndex].roadRefs.some(ref => ref === roadIndex);
+}
+
 // Place settlement and connected road
 export function placeInitial(G: IG, ctx: IGameCtx, settlementIndex: number, roadIndex: number): IG | string {
   if (
     // Check "distance rule"
-    G.buildings[settlementIndex].tileRefs.some(
-      ref => G.buildings[G.tiles[ref.tile].buildings[(ref.dir + 1) % 6]].type !== null,
-    ) ||
+    !isValidBuildingPosition(G, settlementIndex) ||
     // Check if road is connected to the new settlement
-    !G.buildings[settlementIndex].roadRefs.some(ref => ref === roadIndex)
+    !isRoadConnected(G, settlementIndex, roadIndex)
   ) {
     return INVALID_MOVE;
   }
@@ -228,7 +238,7 @@ const GameConfig: IGameArgs = {
           if (x + y + z === 0) {
             const resource = resources.pop();
             const number = resource === Resource.Nothing ? 7 : numbers.pop();
-            tiles[toIndex({ x, y })] = new Tile({ x, y, z }, resource, number);
+            tiles[toIndex({ x, y })] = new Tile({ x, y, z }, resource, number, toIndex({ x, y }));
           }
         }
       }

@@ -2,7 +2,8 @@ import React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG, Tile } from './game';
+import { IG, Tile, isValidBuildingPosition, isRoadConnected } from './game';
+import { GameMode } from '../../App/Game/GameModePicker';
 
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import amber from '@material-ui/core/colors/amber';
@@ -36,6 +37,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     selectedBuilding: null as number,
   };
 
+  isLocalGame() {
+    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
+  }
+
   getTilePos(tile: Tile) {
     return {
       x: SIZE * (3 / 2) * tile.pos.x,
@@ -47,17 +52,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return (Math.PI / 3) * dir - Math.PI / 3;
   }
 
-  isBuildingSelectable(index: number) {
-    return this.props.G.buildings[index].tileRefs.some(
-      ref => this.props.G.buildings[this.props.G.tiles[ref.tile].buildings[(ref.dir + 1) % 6]].type !== null,
-    );
-  }
-
   onBuildingClick(index: number) {
-    if (this.isBuildingSelectable(index)) {
-      return;
-    }
-
     this.setState({
       ...this.state,
       selectedBuilding: index,
@@ -76,7 +71,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   getRoads() {
     return this.props.G.roads
-      .filter(road => road.owner !== null || this.state.selectedBuilding !== null)
+      .filter(
+        road =>
+          road.owner !== null ||
+          (this.state.selectedBuilding !== null &&
+            isRoadConnected(this.props.G, this.state.selectedBuilding, road.index)),
+      )
       .map(road => {
         const angle1 = this.dirToAngle(road.tileRefs[0].dir);
         const angle2 = this.dirToAngle((road.tileRefs[0].dir + 5) % 6);
@@ -101,7 +101,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   getBuildings() {
     return this.props.G.buildings
-      .filter(building => building.owner !== null || !this.isBuildingSelectable(building.index))
+      .filter(
+        building =>
+          building.owner !== null ||
+          (isValidBuildingPosition(this.props.G, building.index) &&
+            (this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID)),
+      )
       .map(building => {
         const angle = this.dirToAngle(building.tileRefs[0].dir);
         const { x, y } = this.getTilePos(this.props.G.tiles[building.tileRefs[0].tile]);
@@ -131,12 +136,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           <g>
             {this.props.G.tiles
               .filter(tile => tile !== null)
-              .map((tile, i) => {
+              .map(tile => {
                 console.log(tile);
                 const { x, y } = this.getTilePos(tile);
                 const colors = [blueGrey[500], amber[500], green[800], lightGreen[600], orange[800], deepPurple[500]];
                 return (
-                  <g key={i}>
+                  <g key={tile.index}>
                     <path
                       fill={colors[tile.type]}
                       d="M0 86.60254037844386L50 0L150 0L200 86.60254037844386L150 173.20508075688772L50 173.20508075688772Z"
