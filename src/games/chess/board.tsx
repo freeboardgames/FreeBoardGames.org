@@ -44,7 +44,7 @@ interface IBoardProps {
   playerID: string;
   isActive: boolean;
   isConnected: boolean;
-  gameArgs?: IGameArgs;
+  gameArgs: IGameArgs;
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
@@ -275,7 +275,7 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getGameOver() {
     const gameArgs = this.props.gameArgs;
-    const mode = typeof gameArgs !== 'undefined' ? gameArgs.mode : GameMode.LocalFriend;
+    const mode = gameArgs.mode;
     if (mode === GameMode.OnlineFriend || mode === GameMode.AI) {
       if (this.props.ctx.gameover === this.getPlayer()) {
         return 'you won';

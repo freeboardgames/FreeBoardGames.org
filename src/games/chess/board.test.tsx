@@ -43,6 +43,18 @@ test('render board - all states - local friend', () => {
     />,
   );
   expect(board.html()).to.contain('draw');
+  // squares should not be selectable after the game ends:
+  // attempt to select a2
+  board
+    .find('rect')
+    .at(rowColAt(2, 1))
+    .simulate('click');
+  expect(
+    board
+      .find('rect')
+      .at(rowColAt(2, 1))
+      .html(),
+  ).to.not.contain('green');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -423,4 +435,99 @@ test('castling fix', () => {
     { san: 'O-O', color: 'b' },
     { from: 'h8', to: 'f8' },
   ]);
+});
+
+describe('drag and drop', () => {
+  let moveMock: jest.Mock;
+  let testBoard: Enzyme.ReactWrapper;
+  let board: Enzyme.ReactWrapper;
+  beforeEach(() => {
+    moveMock = jest.fn();
+    testBoard = Enzyme.mount(
+      <TestBoard
+        G={{ pgn: '' }}
+        ctx={{
+          numPlayer: 2,
+          turn: 0,
+          currentPlayer: '0',
+          currentPlayerMoves: 0,
+        }}
+        moves={{ move: moveMock }}
+        playerID="0"
+        isActive={true}
+        isConnected={true}
+        gameArgs={{
+          gameCode: 'chess',
+          mode: GameMode.LocalFriend,
+        }}
+      />,
+    );
+    board = testBoard.find(Board);
+  });
+
+  it('should drag', () => {
+    (board.instance() as any)._shouldDrag({ x: 0, y: 6 });
+    expect(board.state('dragged')).to.equal('a2');
+  });
+
+  it("should not drag opponent's pieces", () => {
+    (board.instance() as any)._shouldDrag({ x: 0, y: 1 });
+    expect(board.state('dragged')).to.equal('');
+  });
+
+  it('should drag and drop', () => {
+    (board.instance() as any)._onDrag({ x: 6, y: 4, originalX: 6, originalY: 6 });
+    (board.instance() as any)._onDrop({ x: 6, y: 4 });
+    expect(moveMock.mock.calls[0]).to.deep.equal(['g4']);
+  });
+
+  it('should not drag and drop unless a square is selected', () => {
+    (board.instance() as any)._onDrop({ x: 6, y: 4 });
+    expect(moveMock.mock.calls.length).to.equal(0);
+  });
+
+  it('should not drag and drop when not fully moved into position', () => {
+    (board.instance() as any)._onDrag({ x: 6, y: 5.9, originalX: 6, originalY: 6 });
+    expect(board.state('selected')).to.equal('');
+    expect(moveMock.mock.calls.length).to.equal(0);
+  });
+});
+
+describe('sound toggle', () => {
+  let moveMock: jest.Mock;
+  let testBoard: Enzyme.ReactWrapper;
+  let board: Enzyme.ReactWrapper;
+
+  beforeEach(() => {
+    moveMock = jest.fn();
+    testBoard = Enzyme.mount(
+      <TestBoard
+        G={{ pgn: '' }}
+        ctx={{
+          numPlayer: 2,
+          turn: 0,
+          currentPlayer: '0',
+          currentPlayerMoves: 0,
+        }}
+        moves={{ move: moveMock }}
+        playerID="0"
+        isActive={true}
+        isConnected={true}
+        gameArgs={{
+          gameCode: 'chess',
+          mode: GameMode.LocalFriend,
+        }}
+      />,
+    );
+    board = testBoard.find(Board);
+  });
+
+  it('should start with sound enabled', () => {
+    expect(board.state('soundEnabled')).to.be.true;
+  });
+
+  it('should toggle sound preference', () => {
+    (board.instance() as any)._toggleSoundPref();
+    expect(board.state('soundEnabled')).to.be.false;
+  });
 });
