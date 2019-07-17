@@ -87,8 +87,13 @@ class Main extends React.Component<{}, {}> {
           <Route exact={true} path={BASEPATH} component={withWrappers(Home)} />
           <Route exact={true} path={`${BASEPATH}/about`} component={withWrappers(About)} />
           <Route exact={true} path={`${BASEPATH}/g/:gameCode`} component={withWrappers(GameInfo)} />
-          <Route exact={true} path={`${BASEPATH}/g/:gameCode/local`} component={withWrappers(Game)} />
-          <Route exact={true} path={`${BASEPATH}/g/:gameCode/ai/:aiLevel`} component={withWrappers(Game)} />
+          <Route exact={true} path={`${BASEPATH}/g/:gameCode/:mode`} component={withWrappers(Game)} />
+          <Route exact={true} path={`${BASEPATH}/g/:gameCode/:mode/:aiLevel`} component={withWrappers(Game)} />
+          <Route
+            exact={true}
+            path={`${BASEPATH}/g/:gameCode/:mode/:matchCode/:playerID`}
+            component={withWrappers(Game)}
+          />
           <Route path={`${BASEPATH}/room/new/:gameCode/:numPlayers`} exact={true} component={withWrappers(NewRoom)} />
           <Route path={`${BASEPATH}/room/:gameCode/:roomID`} exact={true} component={withWrappers(Room)} />
           <Route exact={true} component={withWrappers(getMessagePage('error', 'Not Found'))} />
