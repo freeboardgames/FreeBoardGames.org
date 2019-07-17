@@ -56,7 +56,7 @@ describe('New Room', () => {
   it('should get room metadata without currentUser', async () => {
     const mockResponse = { body: { players: [{ id: 0, name: 'Jason', roomID: 'fooroom' }] } };
     request.get = jest.fn().mockReturnValue(mockResponse);
-    Storage.prototype.getItem = () => JSON.stringify({}); // mock no crendetials
+    Storage.prototype.getItem = () => JSON.stringify(null);
     const response = await LobbyService.getRoomMetadata('foogame', 'fooroom');
     expect(response).to.eql({
       players: [{ playerID: 0, name: 'Jason', roomID: 'fooroom' }],

@@ -96,7 +96,9 @@ export class LobbyService {
   public static getCredential(roomID: string): IPlayerCredential | undefined {
     // return an empty IPlayerInRoom object if the player's identity is for another room
     const credentials: IStoredCredentials = JSON.parse(localStorage.getItem(FBG_CREDENTIALS_KEY));
-    return credentials[roomID];
+    if (credentials) {
+      return credentials[roomID];
+    }
   }
 
   public static setCredential(player: IPlayerInRoom, credential: string): void {
