@@ -34,12 +34,14 @@ interface IBuilding {
   roadRefs: number[];
   type: Building;
   owner: string;
+  index: number;
 }
 
 interface IRoad {
   tileRefs: ITileRef[];
   buildingRefs: number[];
   owner: string;
+  index: number;
 }
 
 interface ICoords {
@@ -161,27 +163,31 @@ const GameConfig: IGameArgs = {
         onTurnBegin: (G: IG, ctx): IG => {
           const roll = ctx.random.D6() + ctx.random.D6();
 
-          const players = new Array(ctx.numPlayers).fill(0).map(() => new Array(5).fill(0));
+          // Normal round
+          if (roll === 7) {
+            const players = new Array(ctx.numPlayers).fill(0).map(() => new Array(5).fill(0));
+            G.tiles
+              .filter(tile => tile.number === roll)
+              .forEach(tile =>
+                tile.buildings
+                  .filter(ref => G.buildings[ref].owner !== null)
+                  .forEach(
+                    ref =>
+                      (players[G.buildings[ref].owner as any][tile.type] +=
+                        G.buildings[ref].type === Building.Settlement ? 1 : 2),
+                  ),
+              );
 
-          G.tiles
-            .filter(tile => tile.number === roll)
-            .forEach(tile =>
-              tile.buildings
-                .filter(ref => G.buildings[ref].owner !== null)
-                .forEach(
-                  ref =>
-                    (players[G.buildings[ref].owner as any][tile.type] +=
-                      G.buildings[ref].type === Building.Settlement ? 1 : 2),
-                ),
-            );
-
-          return {
-            ...G,
-            players: G.players.map((player, i) => ({
-              ...player,
-              resources: player.resources.map((resource, j) => resource + players[i][j]),
-            })),
-          };
+            return {
+              ...G,
+              players: G.players.map((player, i) => ({
+                ...player,
+                resources: player.resources.map((resource, j) => resource + players[i][j]),
+              })),
+            };
+            // Robber round
+          } else {
+          }
         },
       },
     },
@@ -243,6 +249,7 @@ const GameConfig: IGameArgs = {
               },
             ],
             buildingRefs: [],
+            index: roads.length,
           });
 
           tile.roads[i] = roads.length - 1;
@@ -268,6 +275,7 @@ const GameConfig: IGameArgs = {
             ],
             owner: null,
             roadRefs: [],
+            index: buildings.length,
           });
 
           tile.buildings[i] = buildings.length - 1;

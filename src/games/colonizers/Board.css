@@ -1,0 +1,8 @@
+.Building {
+  r: 30px;
+  transition: all 0.5s;
+}
+
+.SelectedBuilding {
+  r: 35px;
+}
