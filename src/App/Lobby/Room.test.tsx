@@ -38,6 +38,7 @@ describe('Room Lobby', () => {
   });
 
   it('should show error page when metadata cannot be fetched', async () => {
+    jest.useFakeTimers();
     const metaPlayer: IPlayerInRoom = { playerID: 0, name: 'fooplayer', roomID: 'fooroom' };
     const mockMetadata: IRoomMetadata = {
       gameCode: 'chess',
@@ -49,7 +50,6 @@ describe('Room Lobby', () => {
     LobbyService.joinRoom = jest.fn().mockResolvedValue(mockMetadata);
     LobbyService.getRoomMetadata = jest.fn().mockRejectedValue(undefined);
     Storage.prototype.getItem = jest.fn(() => 'fooplayer');
-    jest.useFakeTimers();
     const { getByText } = render(
       <MemoryRouter>
         <Room
@@ -86,6 +86,7 @@ describe('Room Lobby', () => {
   });
 
   it("should show a room that isn't full", async () => {
+    jest.useFakeTimers();
     LobbyService.getRoomMetadata = jest.fn().mockReturnValue(new Promise(() => {}));
     const metaPlayer: IPlayerInRoom = { playerID: 0, name: 'fooplayer', roomID: 'fooroom' };
     const mockMetadata: IRoomMetadata = {
@@ -106,7 +107,6 @@ describe('Room Lobby', () => {
         />
       </MemoryRouter>,
     );
-    jest.useFakeTimers();
     await wait(() => expect(getByText(/fooplayer/)).toBeTruthy());
   });
 
@@ -121,8 +121,16 @@ describe('Room Lobby', () => {
       currentUser: metaPlayer,
     };
     LobbyService.getRoomMetadata = jest.fn().mockResolvedValue(mockMetadata);
-    Storage.prototype.getItem = jest.fn(() => 'fooplayer');
-    const { container, getByText, getByTestId } = render(
+    LobbyService.renameUser = jest.fn();
+    Storage.prototype.getItem = jest.fn((key: string) => {
+      if (key === 'fbgNickname') {
+        return 'fooplayer';
+      }
+      if (key === 'fbgCredentials') {
+        return JSON.stringify({ fooroom: { playerID: 0, credential: 'sekret' } });
+      }
+    });
+    const wrapper = render(
       <MemoryRouter>
         <Room
           match={{
@@ -131,14 +139,22 @@ describe('Room Lobby', () => {
         />
       </MemoryRouter>,
     );
-    jest.useFakeTimers();
-    await wait(() => expect(getByText(/fooplayer/)).toBeTruthy());
-    fireEvent.click(getByTestId('editNickname'));
-    expect(container).toHaveTextContent('Enter Your Nickname');
+    await wait(() => expect(wrapper.getByText(/fooplayer/)).toBeTruthy());
+    fireEvent.click(wrapper.getByTestId('editNickname'));
+    expect(wrapper.container).toHaveTextContent('Enter Your Nickname');
+
+    const input = wrapper.getByDisplayValue('fooplayer');
+    fireEvent.change(input, { target: { value: 'barplayer' } });
+    fireEvent.click(wrapper.getByText('Set Nickname'));
+
+    expect(LobbyService.renameUser).toHaveBeenCalledWith(
+      'chess',
+      { name: 'fooplayer', playerID: 0, roomID: 'fooroom' },
+      'barplayer',
+    );
   });
 
-  it('should show the game if room is full', async () => {
-    LobbyService.getRoomMetadata = jest.fn().mockReturnValue(new Promise(() => {}));
+  it('should start the game if room is full', async () => {
     const metaPlayer: IPlayerInRoom = { playerID: 0, name: 'fooplayer', roomID: 'fooroom' };
     const mockMetadata: IRoomMetadata = {
       gameCode: 'chess',
@@ -156,7 +172,7 @@ describe('Room Lobby', () => {
         return JSON.stringify({ fooroom: { playerID: 0, credential: 'sekret' } });
       }
     });
-    const { getByText } = render(
+    const wrapper = render(
       <MemoryRouter>
         <Room
           match={{
@@ -165,8 +181,50 @@ describe('Room Lobby', () => {
         />
       </MemoryRouter>,
     );
-    jest.useFakeTimers();
     // Game starts:
-    await wait(() => expect(getByText(/Connecting.../)).toBeTruthy());
+    await wait(() => expect(wrapper.getByText(/Connecting.../)).toBeTruthy());
+  });
+
+  it('should update metadata', async () => {
+    jest.useRealTimers();
+    const metaPlayer0: IPlayerInRoom = { playerID: 0, name: 'fooplayer', roomID: 'fooroom' };
+    const mockMetadata0: IRoomMetadata = {
+      gameCode: 'chess',
+      roomID: 'fooroom',
+      numberOfPlayers: 2,
+      players: [metaPlayer0],
+      currentUser: metaPlayer0,
+    };
+    LobbyService.getRoomMetadata = jest.fn().mockResolvedValue(mockMetadata0);
+    const metaPlayer1: IPlayerInRoom = { playerID: 1, name: 'barplayer', roomID: 'fooroom' };
+    const mockMetadata1: IRoomMetadata = {
+      gameCode: 'chess',
+      roomID: 'fooroom',
+      numberOfPlayers: 2,
+      players: [metaPlayer0, metaPlayer1],
+      currentUser: metaPlayer0,
+    };
+    Storage.prototype.getItem = jest.fn((key: string) => {
+      if (key === 'fbgNickname') {
+        return 'fooplayer';
+      }
+      if (key === 'fbgCredentials') {
+        return JSON.stringify({ fooroom: { playerID: 0, credential: 'sekret' } });
+      }
+    });
+    const wrapper = render(
+      <MemoryRouter>
+        <Room
+          match={{
+            params: { gameCode: 'chess', roomID: 'fooroom' },
+          }}
+        />
+      </MemoryRouter>,
+    );
+    await wait(() => expect(wrapper.getByText(/Waiting.../)).toBeTruthy());
+    // Second player joins:
+    LobbyService.getRoomMetadata = jest.fn().mockResolvedValue(mockMetadata1);
+    // Game starts:
+    await wait(() => expect(wrapper.getByText(/Connecting.../)).toBeTruthy());
   });
 });
