@@ -1,8 +1,23 @@
 .Building {
   r: 30px;
   transition: all 0.5s;
+  animation: fadeIn 0.5s;
+}
+
+.Road {
+  transition: all 0.5s;
+  animation: fadeIn 0.5s;
 }
 
 .SelectedBuilding {
   r: 35px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

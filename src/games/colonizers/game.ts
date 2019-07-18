@@ -27,6 +27,8 @@ export enum Development {
 enum Building {
   Settlement,
   City,
+  Road,
+  Development,
 }
 
 interface IBuilding {
@@ -115,6 +117,10 @@ enum Phase {
 }
 
 export function isValidBuildingPosition(G: IG, index: number) {
+  if (G.buildings[index].owner !== null) {
+    return false;
+  }
+
   return !G.buildings[index].tileRefs.some(
     ref => G.buildings[G.tiles[ref.tile].buildings[(ref.dir + 1) % 6]].type !== null,
   );
@@ -122,6 +128,20 @@ export function isValidBuildingPosition(G: IG, index: number) {
 
 export function isRoadConnected(G: IG, settlementIndex: number, roadIndex: number) {
   return G.buildings[settlementIndex].roadRefs.some(ref => ref === roadIndex);
+}
+
+export function isAnyOwnRoadConnected(G: IG, ctx: IGameCtx, index: number) {
+  return G.buildings[index].roadRefs.some(ref => G.roads[ref].owner === ctx.playerID);
+}
+
+export function isRoadConnectedToOwned(G: IG, ctx: IGameCtx, index: number) {
+  return G.roads[index].buildingRefs.some(
+    ref =>
+      // Check if road is connected to settlement/city
+      G.buildings[ref].owner === ctx.playerID ||
+      // Or if it's connected to another road
+      G.buildings[ref].roadRefs.reduce((acc, roadRef) => (G.roads[roadRef].owner === null ? acc : acc + 1), 0) >= 2,
+  );
 }
 
 // Place settlement and connected road
@@ -157,6 +177,67 @@ export function placeInitial(G: IG, ctx: IGameCtx, settlementIndex: number, road
   };
 }
 
+export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG | string {
+  switch (type) {
+    case Building.Settlement:
+      // Check distance rule and if road is connected to new settlement
+      if (!isValidBuildingPosition(G, index) || !isAnyOwnRoadConnected(G, ctx, index)) {
+        return INVALID_MOVE;
+      }
+
+      return {
+        ...G,
+        buildings: G.buildings.map((building, i) =>
+          index === i
+            ? {
+                ...building,
+                type: Building.Settlement,
+                owner: ctx.playerID,
+              }
+            : building,
+        ),
+      };
+    case Building.City:
+      // Check if player owns the settlement
+      if (G.buildings[index].owner !== ctx.playerID || G.buildings[index].type !== Building.Settlement) {
+        return INVALID_MOVE;
+      }
+
+      return {
+        ...G,
+        buildings: G.buildings.map((building, i) =>
+          index === i
+            ? {
+                ...building,
+                type: Building.City,
+              }
+            : building,
+        ),
+      };
+    case Building.Road:
+      // Check if road is connected to anything that player owns
+      if (!isRoadConnectedToOwned(G, ctx, index)) {
+        return INVALID_MOVE;
+      }
+
+      return {
+        ...G,
+        roads: G.roads.map((road, i) =>
+          index === i
+            ? {
+                ...road,
+                owner: ctx.playerID,
+              }
+            : road,
+        ),
+      };
+    case Building.Development:
+
+    default:
+      return INVALID_MOVE;
+  }
+}
+
 const GameConfig: IGameArgs = {
   name: 'colonizers',
   flow: {
@@ -170,6 +251,7 @@ const GameConfig: IGameArgs = {
         next: Phase.Game,
       },
       Game: {
+        allowedMoves: ['build'],
         onTurnBegin: (G: IG, ctx): IG => {
           const roll = ctx.random.D6() + ctx.random.D6();
 

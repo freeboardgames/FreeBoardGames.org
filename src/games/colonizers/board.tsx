@@ -17,8 +17,12 @@ import grey from '@material-ui/core/colors/grey';
 
 import css from './Board.css';
 
+import BuildingDialog from './BuildingDialog';
+import Button from '@material-ui/core/Button';
+
 interface IBoardState {
   selectedBuilding: number;
+  buildingDialogOpen: boolean;
 }
 
 interface IBoardProps {
@@ -35,7 +39,25 @@ const PLAYER_COLORS = [red[500], blue[500], grey[50], orange[500]];
 export class Board extends React.Component<IBoardProps, IBoardState> {
   state = {
     selectedBuilding: null as number,
+    buildingDialogOpen: false,
   };
+
+  _closeBuildingDialog = this.closeBuildingDialog.bind(this);
+  _openBuildingDialog = this.openBuildingDialog.bind(this);
+
+  closeBuildingDialog() {
+    this.setState({
+      ...this.state,
+      buildingDialogOpen: false,
+    });
+  }
+
+  openBuildingDialog() {
+    this.setState({
+      ...this.state,
+      buildingDialogOpen: true,
+    });
+  }
 
   isLocalGame() {
     return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
@@ -94,6 +116,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             stroke={stroke}
             onClick={() => this.onRoadClick(road.index)}
             key={road.index}
+            className={css.Road}
           ></line>
         );
       });
@@ -122,6 +145,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             fill={fill}
             cx={x + SIZE * Math.cos(angle)}
             cy={y + SIZE * Math.sin(angle)}
+            r="30"
             onClick={() => this.onBuildingClick(building.index)}
             className={`${css.Building} ${selected ? css.SelectedBuilding : null}`}
           ></circle>
@@ -132,12 +156,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     return (
       <GameLayout>
+        <BuildingDialog open={this.state.buildingDialogOpen} handleClose={this._closeBuildingDialog} />
         <svg viewBox="-400 -434 800 868">
           <g>
             {this.props.G.tiles
               .filter(tile => tile !== null)
               .map(tile => {
-                console.log(tile);
                 const { x, y } = this.getTilePos(tile);
                 const colors = [blueGrey[500], amber[500], green[800], lightGreen[600], orange[800], deepPurple[500]];
                 return (
@@ -165,6 +189,13 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           <g>{this.getRoads()}</g>
           <g>{this.getBuildings()}</g>
         </svg>
+        <Button
+          variant="outlined"
+          style={{ color: 'white', borderColor: grey[500] }}
+          onClick={this._openBuildingDialog}
+        >
+          Build
+        </Button>
       </GameLayout>
     );
   }
