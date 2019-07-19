@@ -1,6 +1,7 @@
 import Thumbnail from './media/thumbnail.png';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameDef } from '../../games';
+import instructions from './instructions.md';
 
 export const takesixGameDef: IGameDef = {
   code: 'takesix',
@@ -15,6 +16,7 @@ export const takesixGameDef: IGameDef = {
  ten players online!`,
   instructions: {
     videoId: 'fF0lnDygoes',
+    text: instructions,
   },
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
