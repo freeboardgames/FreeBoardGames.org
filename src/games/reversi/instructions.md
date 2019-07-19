@@ -1,4 +1,4 @@
-Based on reversi, this game allows up to 4 players, similarly to Rolit and Othello. There are up to four colors, and each player controls one color.
+Similarly to Rolit, this game is a variation of reversi that allows up to 4 players. There are up to four colors, and each player controls one color.
 
 The objective of the game is to own more squares than all of your opponents. In order to do so, each player can place a piece on an empty square as long as it captures enemy pieces.
 
