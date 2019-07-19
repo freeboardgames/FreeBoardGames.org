@@ -10,7 +10,7 @@ interface IExpectedParams {
 
 interface INewRoomProps {
   match: { params: IExpectedParams };
-  history?: { push: (url: string) => void };
+  history?: { replace: (url: string) => void };
 }
 
 interface INewRoomState {
@@ -30,7 +30,7 @@ export class NewRoom extends React.Component<INewRoomProps, INewRoomState> {
     }
     LobbyService.newRoom(gameCode, numPlayers).then(
       roomID => {
-        this.props.history.push(`/room/${gameCode}/${roomID}`);
+        this.props.history.replace(`/room/${gameCode}/${roomID}`);
       },
       () => {
         this.setState({ error: true });
