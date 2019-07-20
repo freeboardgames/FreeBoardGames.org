@@ -1,3 +1,4 @@
+import instructions from './instructions.md';
 import Thumbnail from './media/thumbnail.png';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameDef } from '../../games';
@@ -21,6 +22,7 @@ export const colonizersGameDef: IGameDef = {
   descriptionTag: `TODO`,
   instructions: {
     videoId: 'cPhX_1RiwEg',
+    text: instructions,
   },
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
