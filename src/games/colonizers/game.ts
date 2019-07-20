@@ -24,7 +24,7 @@ export enum Development {
   Victory,
 }
 
-enum Building {
+export enum Building {
   Settlement,
   City,
   Road,
@@ -88,6 +88,11 @@ export interface IG {
   initialTurnOrder: string[];
 }
 
+export interface IMoves {
+  placeInitial: (settlementIndex: number, roadIndex: number) => IG | string;
+  build: (type: Building, index?: number) => IG | string;
+}
+
 function sumCoords(a: ICoords, b: ICoords) {
   return { x: a.x + b.x, y: a.y + b.y, z: a.z + b.z };
 }
@@ -111,7 +116,7 @@ export function toPosition(index: number): ICoords {
   };
 }
 
-enum Phase {
+export enum Phase {
   Place = 'Place',
   Game = 'Game',
 }
@@ -130,17 +135,17 @@ export function isRoadConnected(G: IG, settlementIndex: number, roadIndex: numbe
   return G.buildings[settlementIndex].roadRefs.some(ref => ref === roadIndex);
 }
 
-export function isAnyOwnRoadConnected(G: IG, ctx: IGameCtx, index: number) {
-  return G.buildings[index].roadRefs.some(ref => G.roads[ref].owner === ctx.playerID);
+export function isAnyOwnRoadConnected(G: IG, playerID: string, index: number) {
+  return G.buildings[index].roadRefs.some(ref => G.roads[ref].owner === playerID);
 }
 
-export function isRoadConnectedToOwned(G: IG, ctx: IGameCtx, index: number) {
+export function isRoadConnectedToOwned(G: IG, playerID: string, index: number) {
   return G.roads[index].buildingRefs.some(
     ref =>
       // Check if road is connected to settlement/city
-      G.buildings[ref].owner === ctx.playerID ||
+      G.buildings[ref].owner === playerID ||
       // Or if it's connected to another road
-      G.buildings[ref].roadRefs.reduce((acc, roadRef) => (G.roads[roadRef].owner === null ? acc : acc + 1), 0) >= 2,
+      G.buildings[ref].roadRefs.reduce((acc, roadRef) => (G.roads[roadRef].owner === playerID ? acc + 1 : acc), 0) >= 1,
   );
 }
 
@@ -181,7 +186,7 @@ export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG 
   switch (type) {
     case Building.Settlement:
       // Check distance rule and if road is connected to new settlement
-      if (!isValidBuildingPosition(G, index) || !isAnyOwnRoadConnected(G, ctx, index)) {
+      if (!isValidBuildingPosition(G, index) || !isAnyOwnRoadConnected(G, ctx.playerID, index)) {
         return INVALID_MOVE;
       }
 
@@ -216,7 +221,7 @@ export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG 
       };
     case Building.Road:
       // Check if road is connected to anything that player owns
-      if (!isRoadConnectedToOwned(G, ctx, index)) {
+      if (G.roads[index].owner !== null || !isRoadConnectedToOwned(G, ctx.playerID, index)) {
         return INVALID_MOVE;
       }
 
@@ -252,11 +257,15 @@ const GameConfig: IGameArgs = {
       },
       Game: {
         allowedMoves: ['build'],
+        // Little hack to for https://github.com/nicolodavis/boardgame.io/issues/394
+        onPhaseBegin: (_, ctx) => {
+          ctx.events.endTurn({ next: '0' });
+        },
         onTurnBegin: (G: IG, ctx): IG => {
           const roll = ctx.random.D6() + ctx.random.D6();
-
+          console.log(roll);
           // Normal round
-          if (roll === 7) {
+          if (roll !== 7) {
             const players = new Array(ctx.numPlayers).fill(0).map(() => new Array(5).fill(0));
             G.tiles
               .filter(tile => tile.number === roll)
@@ -286,6 +295,7 @@ const GameConfig: IGameArgs = {
   },
   moves: {
     placeInitial,
+    build,
   },
   setup: (ctx): IG => {
     let resources = ctx.random.Shuffle([

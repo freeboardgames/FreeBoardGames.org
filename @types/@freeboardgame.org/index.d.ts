@@ -70,7 +70,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     D20: () => number;
   }
   export class Events {
-    endTurn: () => void;
+    endTurn: (next?: INext) => void;
     endPhase: () => void;
     endGame: (gameover?: any) => void;
   }
@@ -165,6 +165,10 @@ declare module '@freeboardgame.org/boardgame.io/core' {
 
   interface IMoveStats {
     [key: string]: number;
+  }
+
+  interface INext {
+    next: string;
   }
 }
 

@@ -2,7 +2,17 @@ import React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG, Tile, isValidBuildingPosition, isRoadConnected } from './game';
+import {
+  IG,
+  Tile,
+  isValidBuildingPosition,
+  isRoadConnected,
+  Phase,
+  Building,
+  IMoves,
+  isRoadConnectedToOwned,
+  isAnyOwnRoadConnected,
+} from './game';
 import { GameMode } from '../../App/Game/GameModePicker';
 
 import blueGrey from '@material-ui/core/colors/blueGrey';
@@ -22,13 +32,14 @@ import Button from '@material-ui/core/Button';
 
 interface IBoardState {
   selectedBuilding: number;
+  selectedRecipe: Building;
   buildingDialogOpen: boolean;
 }
 
 interface IBoardProps {
   G: IG;
   ctx: IGameCtx;
-  moves: any;
+  moves: IMoves;
   playerID: string;
   gameArgs?: IGameArgs;
 }
@@ -40,10 +51,20 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   state = {
     selectedBuilding: null as number,
     buildingDialogOpen: false,
+    selectedRecipe: null as number,
   };
 
   _closeBuildingDialog = this.closeBuildingDialog.bind(this);
   _openBuildingDialog = this.openBuildingDialog.bind(this);
+  _chooseBuilding = this.chooseBuilding.bind(this);
+
+  chooseBuilding(index: number) {
+    this.setState({
+      ...this.state,
+      buildingDialogOpen: false,
+      selectedRecipe: index,
+    });
+  }
 
   closeBuildingDialog() {
     this.setState({
@@ -75,19 +96,41 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   onBuildingClick(index: number) {
-    this.setState({
-      ...this.state,
-      selectedBuilding: index,
-    });
+    if (!isValidBuildingPosition(this.props.G, index)) {
+      return;
+    }
+
+    if (this.props.ctx.phase === Phase.Game) {
+      this.props.moves.build(this.state.selectedRecipe, index);
+      this.setState({
+        ...this.state,
+        selectedRecipe: null,
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        selectedBuilding: index,
+      });
+    }
   }
 
   onRoadClick(index: number) {
-    if (this.state.selectedBuilding !== null) {
-      this.props.moves.placeInitial(this.state.selectedBuilding, index);
-      this.setState({
-        ...this.state,
-        selectedBuilding: null,
-      });
+    if (this.props.ctx.phase === Phase.Game) {
+      if (this.state.selectedRecipe === Building.Road) {
+        this.props.moves.build(this.state.selectedRecipe, index);
+        this.setState({
+          ...this.state,
+          selectedRecipe: null,
+        });
+      }
+    } else {
+      if (this.state.selectedBuilding !== null) {
+        this.props.moves.placeInitial(this.state.selectedBuilding, index);
+        this.setState({
+          ...this.state,
+          selectedBuilding: null,
+        });
+      }
     }
   }
 
@@ -96,7 +139,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       .filter(
         road =>
           road.owner !== null ||
-          (this.state.selectedBuilding !== null &&
+          (this.props.ctx.phase === Phase.Game &&
+            this.state.selectedRecipe === Building.Road &&
+            isRoadConnectedToOwned(this.props.G, this.props.ctx.currentPlayer, road.index)) ||
+          (this.props.ctx.phase === Phase.Place &&
+            this.state.selectedBuilding !== null &&
             isRoadConnected(this.props.G, this.state.selectedBuilding, road.index)),
       )
       .map(road => {
@@ -128,7 +175,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         building =>
           building.owner !== null ||
           (isValidBuildingPosition(this.props.G, building.index) &&
-            (this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID)),
+            ((this.state.selectedRecipe === Building.Settlement &&
+              isAnyOwnRoadConnected(this.props.G, this.props.ctx.currentPlayer, building.index)) ||
+              (this.props.ctx.phase === Phase.Place &&
+                (this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID)))),
       )
       .map(building => {
         const angle = this.dirToAngle(building.tileRefs[0].dir);
@@ -156,8 +206,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     return (
       <GameLayout>
-        <BuildingDialog open={this.state.buildingDialogOpen} handleClose={this._closeBuildingDialog} />
-        <svg viewBox="-400 -434 800 868">
+        <BuildingDialog
+          open={this.state.buildingDialogOpen}
+          handleClose={this._closeBuildingDialog}
+          handleClick={this._chooseBuilding}
+        />
+        <svg viewBox="-435 -469 870 938">
           <g>
             {this.props.G.tiles
               .filter(tile => tile !== null)
