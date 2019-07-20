@@ -5,51 +5,40 @@ import { IGameDef } from '../../games';
 import { GameMode } from './GameModePicker';
 require('@testing-library/jest-dom/extend-expect');
 
-afterAll(cleanup);
+afterEach(cleanup);
+
+const gameDefNoText: IGameDef = {
+  code: 'foogame',
+  instructions: { videoId: 'videoId' },
+  description: 'foodescription',
+  descriptionTag: 'foodescriptiontag',
+  name: 'foogame',
+  imageURL: 'fooimage',
+  minPlayers: 2,
+  maxPlayers: 2,
+  config: jest.fn(),
+  modes: [{ mode: GameMode.LocalFriend }],
+};
+
+const gameDefWithText: IGameDef = {
+  ...gameDefNoText,
+  instructions: { ...gameDefNoText.instructions, text: 'foo game instructions' },
+};
 
 describe('Game Instructions', () => {
   it('should contain video', () => {
-    const wrapper = renderWrapper(false);
-    expect(wrapper.queryByTestId('gameinstructionsvideo')).toBeInTheDocument();
+    const wrapper = render(<GameInstructions gameDef={gameDefWithText} />);
+    const video = wrapper.queryByTestId('gameinstructionsvideo');
+    expect(video).toBeInTheDocument();
+    const src = (video as any).src;
+    expect(src).toEqual('https://www.youtube.com/embed/videoId');
   });
   it('should not contain text instructions', () => {
-    const wrapper = renderWrapper(false);
+    const wrapper = render(<GameInstructions gameDef={gameDefNoText} />);
     expect(wrapper.queryByText('foo game instructions')).not.toBeInTheDocument();
   });
   it('should contain text instructions', () => {
-    const wrapper = renderWrapper(true);
+    const wrapper = render(<GameInstructions gameDef={gameDefWithText} />);
     expect(wrapper.queryByText('foo game instructions')).toBeInTheDocument();
   });
 });
-
-function renderWrapper(withTextInstructions: boolean) {
-  let mockGameDef: IGameDef;
-  if (withTextInstructions) {
-    mockGameDef = {
-      code: 'foogame',
-      instructions: { videoId: 'video', text: 'foo game instructions' },
-      description: 'foodescription',
-      descriptionTag: 'foodescriptiontag',
-      name: 'foogame',
-      imageURL: 'fooimage',
-      minPlayers: 2,
-      maxPlayers: 2,
-      config: jest.fn(),
-      modes: [{ mode: GameMode.LocalFriend }],
-    };
-  } else {
-    mockGameDef = {
-      code: 'foogame',
-      instructions: { videoId: 'video' },
-      description: 'foodescription',
-      descriptionTag: 'foodescriptiontag',
-      name: 'foogame',
-      imageURL: 'fooimage',
-      minPlayers: 2,
-      maxPlayers: 2,
-      config: jest.fn(),
-      modes: [{ mode: GameMode.LocalFriend }],
-    };
-  }
-  return render(<GameInstructions gameDef={mockGameDef} />);
-}
