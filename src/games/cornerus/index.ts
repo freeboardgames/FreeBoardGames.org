@@ -1,6 +1,7 @@
 import Thumbnail from './media/thumbnail.png';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameDef } from '../../games';
+import instructions from './instructions.md';
 
 export const cornerusGameDef: IGameDef = {
   code: 'cornerus',
@@ -23,6 +24,7 @@ export const cornerusGameDef: IGameDef = {
  share your device and play locally against a friend.`,
   instructions: {
     videoId: 'Yw8pK6Ak5oE',
+    text: instructions,
   },
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),

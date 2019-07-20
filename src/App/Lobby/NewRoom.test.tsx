@@ -9,8 +9,8 @@ require('@testing-library/jest-dom/extend-expect');
 describe('New Room', () => {
   afterEach(cleanup);
   it('should redirect', async () => {
-    const p = Promise.resolve('roomfoo');
-    LobbyService.newRoom = jest.fn().mockReturnValue(p);
+    const newRoomMock = jest.fn().mockResolvedValue('roomfoo');
+    LobbyService.newRoom = newRoomMock;
     const historyMock = jest.fn();
     const app = (
       <MemoryRouter>
@@ -19,13 +19,13 @@ describe('New Room', () => {
             params: { gameCode: 'chess', numPlayers: 2 },
           }}
           history={{
-            push: historyMock,
+            replace: historyMock,
           }}
         />
       </MemoryRouter>
     );
     mount(app);
-    await p;
+    await newRoomMock;
     expect(historyMock).toHaveBeenCalled();
   });
 

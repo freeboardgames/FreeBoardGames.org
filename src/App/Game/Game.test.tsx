@@ -106,6 +106,18 @@ describe('Game', () => {
     expect(wrapper.html()).to.contain('Game Not Found');
   });
 
+  it('should render error correctly with invalid game mode', async () => {
+    const app = (
+      <MemoryRouter>
+        <Game match={{ params: { gameCode: 'chess', mode: 'invalid' } }} />
+      </MemoryRouter>
+    );
+    const wrapper = mount(app);
+    await (wrapper.find(Game).instance() as any).promise;
+    wrapper.update();
+    expect(wrapper.html()).to.contain('Invalid Game Mode');
+  });
+
   it('should render loading correctly', () => {
     const app = (
       <MemoryRouter>

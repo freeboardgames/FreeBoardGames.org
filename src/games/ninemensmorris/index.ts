@@ -1,6 +1,7 @@
 import Thumbnail from './media/thumbnail.png';
 import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameDef } from '../../games';
+import instructions from './instructions.md';
 
 export const ninemensmorrisGameDef: IGameDef = {
   code: 'ninemensmorris',
@@ -23,6 +24,7 @@ export const ninemensmorrisGameDef: IGameDef = {
  locally!`,
   instructions: {
     videoId: 'zvbIKOHIkRE',
+    text: instructions,
   },
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
