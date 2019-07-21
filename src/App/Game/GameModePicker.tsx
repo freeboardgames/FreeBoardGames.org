@@ -7,7 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import Slider from '@material-ui/lab/Slider';
+import Slider from '@material-ui/core/Slider';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
@@ -52,9 +52,10 @@ export enum GameMode {
 }
 
 export class GameModePicker extends React.Component<IGameModePickerProps, IGameModePickerState> {
-  _getLink = (to: string) => (props: any) => {
-    return React.createElement(Link, { ...props, to, rel: 'nofollow' }, props.children);
-  };
+  _getLink = (to: string) =>
+    React.forwardRef((props: any, ref: any) => {
+      return <Link to={to} rel="nofollow" {...props} ref={ref} />;
+    });
 
   constructor(props: IGameModePickerProps) {
     super(props);

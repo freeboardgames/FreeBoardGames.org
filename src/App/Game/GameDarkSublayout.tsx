@@ -84,7 +84,6 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
       return (
         <Button
           onClick={this._openOptionsMenu}
-          target="_blank"
           aria-label="Open options"
           variant="outlined"
           style={{ margin: '8px', float: 'right' }}
