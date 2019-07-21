@@ -1,6 +1,6 @@
 var path = require('path');
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
@@ -22,10 +22,7 @@ var config = {
     chunkFilename: '[chunkhash].js',
   },
 
-  plugins: [
-    new CleanWebpackPlugin(['server-dist'], { root: __dirname, dry: false, exclude: [] }),
-    new HardSourceWebpackPlugin(),
-  ],
+  plugins: [new CleanWebpackPlugin(), new HardSourceWebpackPlugin()],
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '*'],
