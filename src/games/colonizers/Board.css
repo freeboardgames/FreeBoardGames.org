@@ -4,6 +4,10 @@
   animation: fadeIn 0.5s;
 }
 
+.Building:hover {
+  r: 35px;
+}
+
 .Road {
   transition: all 0.5s;
   animation: fadeIn 0.5s;

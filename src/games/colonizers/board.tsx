@@ -29,6 +29,8 @@ import css from './Board.css';
 
 import BuildingDialog from './BuildingDialog';
 import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
 
 interface IBoardState {
   selectedBuilding: number;
@@ -40,12 +42,14 @@ interface IBoardProps {
   G: IG;
   ctx: IGameCtx;
   moves: IMoves;
+  events: any;
   playerID: string;
   gameArgs?: IGameArgs;
 }
 
 const SIZE = 100;
 const PLAYER_COLORS = [red[500], blue[500], grey[50], orange[500]];
+const RESOURCE_COLORS = [blueGrey[500], amber[500], green[800], lightGreen[600], orange[800], deepPurple[500]];
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
   state = {
@@ -57,6 +61,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _closeBuildingDialog = this.closeBuildingDialog.bind(this);
   _openBuildingDialog = this.openBuildingDialog.bind(this);
   _chooseBuilding = this.chooseBuilding.bind(this);
+  _endTurn = this.endTurn.bind(this);
 
   chooseBuilding(index: number) {
     this.setState({
@@ -64,6 +69,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       buildingDialogOpen: false,
       selectedRecipe: index,
     });
+  }
+
+  endTurn() {
+    this.props.events.endTurn();
   }
 
   closeBuildingDialog() {
@@ -150,7 +159,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         const angle1 = this.dirToAngle(road.tileRefs[0].dir);
         const angle2 = this.dirToAngle((road.tileRefs[0].dir + 5) % 6);
         const { x, y } = this.getTilePos(this.props.G.tiles[road.tileRefs[0].tile]);
-        const stroke = road.owner === null ? 'black' : PLAYER_COLORS[road.owner as any];
+        const stroke = road.owner === null ? grey[900] : PLAYER_COLORS[road.owner as any];
 
         return (
           <line
@@ -184,7 +193,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         const angle = this.dirToAngle(building.tileRefs[0].dir);
         const { x, y } = this.getTilePos(this.props.G.tiles[building.tileRefs[0].tile]);
         const selected = this.state.selectedBuilding === building.index;
-        let fill = building.owner === null ? 'black' : PLAYER_COLORS[building.owner as any];
+        let fill = building.owner === null ? grey[900] : PLAYER_COLORS[building.owner as any];
         if (selected) {
           fill = PLAYER_COLORS[this.props.ctx.currentPlayer as any];
         }
@@ -211,17 +220,23 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           handleClose={this._closeBuildingDialog}
           handleClick={this._chooseBuilding}
         />
+        <Grid container justify="center" alignItems="center">
+          {this.props.G.players[this.props.ctx.currentPlayer as any].resources.map((resource, i) => (
+            <Avatar key={i} style={{ margin: '0 5px', background: RESOURCE_COLORS[i] }}>
+              {resource}
+            </Avatar>
+          ))}
+        </Grid>
         <svg viewBox="-435 -469 870 938">
           <g>
             {this.props.G.tiles
               .filter(tile => tile !== null)
               .map(tile => {
                 const { x, y } = this.getTilePos(tile);
-                const colors = [blueGrey[500], amber[500], green[800], lightGreen[600], orange[800], deepPurple[500]];
                 return (
                   <g key={tile.index}>
                     <path
-                      fill={colors[tile.type]}
+                      fill={RESOURCE_COLORS[tile.type]}
                       d="M0 86.60254037844386L50 0L150 0L200 86.60254037844386L150 173.20508075688772L50 173.20508075688772Z"
                       style={{ transform: `translate(${x - SIZE}px, ${y - (SIZE * Math.sqrt(3)) / 2}px)` }}
                     ></path>
@@ -249,6 +264,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           onClick={this._openBuildingDialog}
         >
           Build
+        </Button>
+        <Button variant="outlined" style={{ color: 'white', borderColor: grey[500] }}>
+          Trade
+        </Button>
+        <Button variant="outlined" style={{ color: 'white', borderColor: grey[500] }} onClick={this._endTurn}>
+          End turn
         </Button>
       </GameLayout>
     );

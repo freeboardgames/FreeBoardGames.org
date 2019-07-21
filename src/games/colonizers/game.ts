@@ -1,4 +1,5 @@
 import { Game, IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
+import { buildingRecipes } from './buildingRecipes';
 
 const DIRS: ICoords[] = [
   { x: 0, y: 1, z: -1 },
@@ -183,6 +184,27 @@ export function placeInitial(G: IG, ctx: IGameCtx, settlementIndex: number, road
 }
 
 export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG | string {
+  const newResources = buildingRecipes[type].requirements.map(
+    (resource, i) => G.players[ctx.playerID as any].resources[i] - resource,
+  );
+
+  // Check if player has enough resources
+  if (newResources.some(resource => resource < 0)) {
+    return INVALID_MOVE;
+  }
+
+  const newG: IG = {
+    ...G,
+    players: G.players.map(player =>
+      player.id === ctx.playerID
+        ? {
+            ...G.players[ctx.playerID as any],
+            resources: newResources,
+          }
+        : player,
+    ),
+  };
+
   switch (type) {
     case Building.Settlement:
       // Check distance rule and if road is connected to new settlement
@@ -191,7 +213,7 @@ export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG 
       }
 
       return {
-        ...G,
+        ...newG,
         buildings: G.buildings.map((building, i) =>
           index === i
             ? {
@@ -209,7 +231,7 @@ export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG 
       }
 
       return {
-        ...G,
+        ...newG,
         buildings: G.buildings.map((building, i) =>
           index === i
             ? {
@@ -226,7 +248,7 @@ export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG 
       }
 
       return {
-        ...G,
+        ...newG,
         roads: G.roads.map((road, i) =>
           index === i
             ? {
