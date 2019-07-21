@@ -10,7 +10,6 @@ import getMessagePage from './MessagePage';
 import ReactGA from 'react-ga';
 import { getPageMetadata } from '../metadata';
 import SSRHelper from './Helpers/SSRHelper';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import ScrollToTop from './ScrollToTop';
 import { addLocale, useLocale } from 'ttag';
 
