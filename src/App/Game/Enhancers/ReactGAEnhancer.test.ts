@@ -1,14 +1,26 @@
 import ReactGAEnhancer from './ReactGAEnhancer';
-import { expect } from 'chai';
 import { GameMode } from '../GameModePicker';
 import { IGameArgs } from '../GameBoardWrapper';
+import ReactGA from 'react-ga';
 
-describe('Alert Layer', () => {
+describe('ReactGAEnhancer', () => {
   const gameArgs: IGameArgs = { gameCode: 'foogame', mode: GameMode.AI };
-  const action = { type: 'NOT_UPDATE' };
-  const nextMock = jest.fn();
-  it('sanity check', () => {
+  it('should call next() without calling ReactGA.event() if action.type = UPDATE', () => {
+    const action = { type: 'UPDATE' };
+    const nextMock = jest.fn();
     ReactGAEnhancer(gameArgs)()(nextMock)(action);
-    expect(nextMock.mock.calls.length).to.equal(1);
+    expect(nextMock).toHaveBeenCalled();
+    expect(ReactGA.event as any).not.toHaveBeenCalled();
+  });
+
+  it('should call next() AND call ReactGA.event() if action.type = NOT_UPDATE', () => {
+    const action = { type: 'NOT_UPDATE' };
+    const nextMock = jest.fn();
+    ReactGAEnhancer(gameArgs)()(nextMock)(action);
+    expect(ReactGA.event as any).toHaveBeenCalledWith({
+      action: 'NOT_UPDATE',
+      category: 'ReactGAEnhancer',
+      label: 'foogame',
+    });
   });
 });
