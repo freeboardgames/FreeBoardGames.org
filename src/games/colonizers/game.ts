@@ -40,7 +40,7 @@ interface IBuilding {
   index: number;
 }
 
-interface IRoad {
+export interface IRoad {
   tileRefs: ITileRef[];
   buildingRefs: number[];
   owner: string;
