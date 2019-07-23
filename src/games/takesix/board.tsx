@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
-import { GameMode } from '../../App/Game/GameModePicker';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IG, getScoreBoard, isAllowedDeck } from './game';
 import { Decks } from './Decks';
@@ -9,6 +8,7 @@ import { PlayerHand } from './PlayerHand';
 import { Scoreboard } from '../../common/Scoreboard';
 import { ScoreBadges } from '../../common/ScoreBadges';
 import Typography from '@material-ui/core/Typography';
+import { isAIGame } from '../../common/gameMode';
 
 interface IBoardProps {
   G: IG;
@@ -31,7 +31,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return;
     }
     this.props.moves.selectCard(id);
-    if (this.isAIGame()) {
+    if (isAIGame(this.props.gameArgs)) {
       await this.props.step();
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         this.setState({ aiSecondDeck: true });
@@ -53,7 +53,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return;
     }
     this.props.moves.selectDeck(id);
-    if (this.isAIGame() && this.state.aiSecondDeck) {
+    if (isAIGame(this.props.gameArgs) && this.state.aiSecondDeck) {
       setTimeout(() => {
         this.props.step();
       }, 1000);
@@ -99,10 +99,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         scoreName="Penalty points"
       />
     );
-  }
-
-  isAIGame() {
-    return this.props.gameArgs.mode === GameMode.AI;
   }
 
   render() {

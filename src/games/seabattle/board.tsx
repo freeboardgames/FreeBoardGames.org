@@ -2,13 +2,13 @@ import React from 'react';
 
 import { ShipsPlacement } from './ShipsPlacement';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
-import { GameMode } from '../../App/Game/GameModePicker';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { ISalvo, IShip } from './game';
 import { Battle } from './Battle';
 import { Radar } from './Radar';
 import Typography from '@material-ui/core/Typography';
 import { IOptionsItems } from '../../App/Game/GameDarkSublayout';
+import { isAIGame } from '../../common/gameMode';
 
 interface IBoardProps {
   G: any;
@@ -69,16 +69,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           playerID={this.props.playerID}
           currentPlayer={ctx.currentPlayer}
           step={this.props.step}
-          isAIGame={this.isAIGame()}
+          isAIGame={isAIGame(this.props.gameArgs)}
           getSoundPref={this._getSoundPref}
         />
       );
     }
     return <GameLayout optionsMenuItems={this._getOptionsMenuItems}>{child}</GameLayout>;
-  }
-
-  isAIGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI;
   }
 
   _setSoundPref = (soundEnabled: boolean) => {
@@ -108,7 +104,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _setShips = (ships: IShip[]) => {
     this.props.moves.setShips(ships);
-    if (this.isAIGame()) {
+    if (isAIGame(this.props.gameArgs)) {
       setTimeout(this.props.step, 250); // place ships
       setTimeout(this.props.step, 1000); // make first move
     }

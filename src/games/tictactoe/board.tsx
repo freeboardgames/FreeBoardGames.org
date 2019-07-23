@@ -9,9 +9,9 @@
 import * as React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
-import { GameMode } from '../../App/Game/GameModePicker';
 import { Circle, Cross, Lines } from './Shapes';
 import Typography from '@material-ui/core/Typography';
+import { isOnlineGame, isAIGame } from '../../common/gameMode';
 
 interface IBoardProps {
   G: any;
@@ -27,7 +27,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
       this.props.moves.clickCell(id);
-      if (this.isAIGame()) {
+      if (isAIGame(this.props.gameArgs)) {
         setTimeout(this.props.step, 250);
       }
     }
@@ -37,16 +37,8 @@ export class Board extends React.Component<IBoardProps, {}> {
     return this.props.isActive && this.props.G.cells[id] === null;
   }
 
-  isOnlineGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend;
-  }
-
-  isAIGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI;
-  }
-
   _getStatus() {
-    if (this.isOnlineGame()) {
+    if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'YOUR TURN';
       } else {
@@ -64,7 +56,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getGameOver() {
-    if (this.isOnlineGame()) {
+    if (isOnlineGame(this.props.gameArgs)) {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
         if (this.props.ctx.gameover.winner === this.props.playerID) {
@@ -75,7 +67,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       } else {
         return 'draw';
       }
-    } else if (this.isAIGame()) {
+    } else if (isAIGame(this.props.gameArgs)) {
       switch (this.props.ctx.gameover.winner) {
         case '0':
           return 'you won';
