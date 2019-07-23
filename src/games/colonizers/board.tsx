@@ -12,8 +12,10 @@ import {
   IMoves,
   isRoadConnectedToOwned,
   isAnyOwnRoadConnected,
+  getScoreBoard,
 } from './game';
 import { GameMode } from '../../App/Game/GameModePicker';
+import { ScoreBadges } from '../../common/ScoreBadges';
 
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import amber from '@material-ui/core/colors/amber';
@@ -105,7 +107,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   onBuildingClick(index: number) {
-    if (!isValidBuildingPosition(this.props.G, index)) {
+    if (this.state.selectedRecipe !== Building.City && !isValidBuildingPosition(this.props.G, index)) {
       return;
     }
 
@@ -213,6 +215,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   render() {
+    const robberPos = this.getTilePos(this.props.G.tiles[this.props.G.robber]);
+
     return (
       <GameLayout>
         <BuildingDialog
@@ -257,7 +261,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           </g>
           <g>{this.getRoads()}</g>
           <g>{this.getBuildings()}</g>
+          <g>
+            <circle cx={robberPos.x} cy={robberPos.y} r="40" fill="black" />
+          </g>
         </svg>
+        <ScoreBadges
+          scoreboard={getScoreBoard(this.props.G)}
+          playerID={this.props.playerID}
+          players={this.props.gameArgs.players}
+          colors={PLAYER_COLORS}
+        />
         <Button
           variant="outlined"
           style={{ color: 'white', borderColor: grey[500] }}

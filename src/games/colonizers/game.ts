@@ -79,6 +79,7 @@ export class Tile {
 export interface IPlayer {
   id: string;
   resources: number[];
+  score: number;
 }
 
 export interface IG {
@@ -86,6 +87,7 @@ export interface IG {
   buildings: IBuilding[];
   roads: IRoad[];
   players: IPlayer[];
+  robber: number;
   initialTurnOrder: string[];
 }
 
@@ -106,20 +108,13 @@ function toIndex(coords: ICoords): number {
   return coords.x + 2 + 5 * (coords.y + 2);
 }
 
-export function toPosition(index: number): ICoords {
-  const x = (index % 5) - 2;
-  const y = Math.floor(index / 5) - 2;
-
-  return {
-    x,
-    y,
-    z: -x - y,
-  };
-}
-
 export enum Phase {
   Place = 'Place',
   Game = 'Game',
+}
+
+export function getScoreBoard(G: IG) {
+  return G.players.map(player => ({ playerID: player.id, score: player.score })).sort((a, b) => b.score - a.score);
 }
 
 export function isValidBuildingPosition(G: IG, index: number) {
@@ -180,6 +175,14 @@ export function placeInitial(G: IG, ctx: IGameCtx, settlementIndex: number, road
           }
         : road,
     ),
+    players: G.players.map(player =>
+      ctx.playerID === player.id
+        ? {
+            ...G.players[ctx.playerID as any],
+            score: G.players[ctx.playerID as any].score + 1,
+          }
+        : player,
+    ),
   };
 }
 
@@ -200,6 +203,10 @@ export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG 
         ? {
             ...G.players[ctx.playerID as any],
             resources: newResources,
+            score:
+              type === Building.Settlement || type === Building.City
+                ? G.players[ctx.playerID as any].score + 1
+                : G.players[ctx.playerID as any].score,
           }
         : player,
     ),
@@ -211,6 +218,8 @@ export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG 
       if (!isValidBuildingPosition(G, index) || !isAnyOwnRoadConnected(G, ctx.playerID, index)) {
         return INVALID_MOVE;
       }
+
+      //TODO: Check if road has been broken
 
       return {
         ...newG,
@@ -247,6 +256,8 @@ export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG 
         return INVALID_MOVE;
       }
 
+      //TODO: Check for longest road
+
       return {
         ...newG,
         roads: G.roads.map((road, i) =>
@@ -281,7 +292,7 @@ const GameConfig: IGameArgs = {
         allowedMoves: ['build'],
         // Little hack to for https://github.com/nicolodavis/boardgame.io/issues/394
         onPhaseBegin: (_, ctx) => {
-          ctx.events.endTurn({ next: '0' });
+          ctx.events.endTurn({ next: ctx.currentPlayer });
         },
         onTurnBegin: (G: IG, ctx): IG => {
           const roll = ctx.random.D6() + ctx.random.D6();
@@ -290,7 +301,8 @@ const GameConfig: IGameArgs = {
           if (roll !== 7) {
             const players = new Array(ctx.numPlayers).fill(0).map(() => new Array(5).fill(0));
             G.tiles
-              .filter(tile => tile.number === roll)
+              // Check if tile isn't occupied with robber
+              .filter(tile => tile.number === roll && tile.index !== G.robber)
               .forEach(tile =>
                 tile.buildings
                   .filter(ref => G.buildings[ref].owner !== null)
@@ -313,6 +325,11 @@ const GameConfig: IGameArgs = {
           }
         },
       },
+    },
+    endGameIf: (G: IG) => {
+      if (G.players.some(player => player.score >= 10)) {
+        return { scoreboard: getScoreBoard(G) };
+      }
     },
   },
   moves: {
@@ -344,6 +361,8 @@ const GameConfig: IGameArgs = {
 
     let numbers = ctx.random.Shuffle([2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]);
 
+    let robber: number = 2;
+
     // Init tiles
     let tiles: Tile[] = new Array();
     for (let x = -2; x <= 2; x++) {
@@ -351,8 +370,12 @@ const GameConfig: IGameArgs = {
         for (let z = -2; z <= 2; z++) {
           if (x + y + z === 0) {
             const resource = resources.pop();
-            const number = resource === Resource.Nothing ? 7 : numbers.pop();
+            const number = resource === Resource.Nothing ? null : numbers.pop();
             tiles[toIndex({ x, y })] = new Tile({ x, y, z }, resource, number, toIndex({ x, y }));
+
+            if (number === null) {
+              robber = toIndex({ x, y });
+            }
           }
         }
       }
@@ -454,6 +477,7 @@ const GameConfig: IGameArgs = {
     const players = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
       id: i.toString(),
       resources: new Array(5).fill(0),
+      score: 0,
     }));
 
     return {
@@ -462,6 +486,7 @@ const GameConfig: IGameArgs = {
       roads,
       players,
       initialTurnOrder,
+      robber,
     };
   },
 };
