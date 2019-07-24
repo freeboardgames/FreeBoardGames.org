@@ -6,6 +6,7 @@ import { GameLayout } from './GameLayout';
 import { IGameArgs } from './GameBoardWrapper';
 import { GameMode } from './GameModePicker';
 import { LobbyService } from '../Lobby/LobbyService';
+import ReplayIcon from '@material-ui/icons/Replay';
 
 describe('ReplayIcon', () => {
   it('should show ReplayIcon for AI', () => {
@@ -19,8 +20,7 @@ describe('ReplayIcon', () => {
         <GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />
       </MemoryRouter>,
     );
-
-    expect(wrapper.find('ReplayIcon').length).to.equal(1);
+    expect(wrapper.find(ReplayIcon).length).to.equal(1);
   });
 
   it('should show ReplayIcon for LocalFriend', () => {
@@ -35,7 +35,7 @@ describe('ReplayIcon', () => {
       </MemoryRouter>,
     );
 
-    expect(wrapper.find('ReplayIcon').length).to.equal(1);
+    expect(wrapper.find(ReplayIcon).length).to.equal(1);
   });
 
   it('should redirect to room returned by play again endpoint', async () => {
@@ -60,7 +60,7 @@ describe('ReplayIcon', () => {
       value: mockReload,
     });
 
-    wrapper.find('ReplayIcon').simulate('click');
+    wrapper.find(ReplayIcon).simulate('click');
     await p;
     expect(mockReload.mock.calls.length).to.equal(1);
   });
@@ -84,7 +84,7 @@ describe('ReplayIcon', () => {
       value: mockReload,
     });
 
-    wrapper.find('ReplayIcon').simulate('click');
+    wrapper.find(ReplayIcon).simulate('click');
     expect(mockReload.mock.calls.length).to.equal(1);
   });
 });

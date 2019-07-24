@@ -13,11 +13,11 @@ import {
   IColorMap,
   cartesianToAlgebraic,
 } from '../../common/Checkerboard';
-import { GameMode } from '../../App/Game/GameModePicker';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
+import { isOnlineGame, isLocalGame, isAIGame } from '../../common/gameMode';
 
 interface IBoardProps {
   G: IG;
@@ -44,11 +44,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   isInverted() {
-    return this.isOnlineGame() && this.props.playerID === '1';
+    return isOnlineGame(this.props.gameArgs) && this.props.playerID === '1';
   }
 
   _isSelectable = (coords: ICartesianCoords) => {
-    if (this.isOnlineGame() && this.props.playerID !== this.props.ctx.currentPlayer) {
+    if (isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer) {
       return false;
     }
 
@@ -114,7 +114,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       ...this.state,
       selected: null,
     });
-    if (this.isAIGame() && this.props.ctx.currentPlayer === '1') {
+    if (isAIGame(this.props.gameArgs) && this.props.ctx.currentPlayer === '1') {
       this.stepAI();
     }
   };
@@ -162,20 +162,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       });
   };
 
-  isLocalGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
-  }
-
-  isOnlineGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend;
-  }
-
-  isAIGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI;
-  }
-
   _getStatus() {
-    if (this.isOnlineGame()) {
+    if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'Move piece';
       } else {
@@ -194,7 +182,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _getGameOver() {
     const winner = this.props.ctx.gameover.winner;
     if (winner) {
-      if (this.isLocalGame()) {
+      if (isLocalGame(this.props.gameArgs)) {
         if (winner === '0') {
           return 'white won';
         } else {

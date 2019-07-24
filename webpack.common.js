@@ -1,6 +1,6 @@
 var path = require('path');
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const port = process.env.PORT || 8000;
@@ -44,7 +44,7 @@ var config = {
   },
 
   plugins: [
-    new CleanWebpackPlugin(['dist'], { root: __dirname, verbose: true, dry: false, exclude: [] }),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
       filename: 'layout.html',
@@ -120,10 +120,10 @@ var config = {
         test: /\.md$/,
         use: [
           {
-            loader: "raw-loader"
+            loader: 'raw-loader',
           },
-        ]
-      }
+        ],
+      },
     ],
   },
 };
