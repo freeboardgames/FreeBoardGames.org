@@ -2,12 +2,12 @@ import React from 'react';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
-import { GameMode } from '../../App/Game/GameModePicker';
 import { IG } from './game';
 import { Field } from './Field';
 import { Phase } from './game';
 import Typography from '@material-ui/core/Typography';
 import css from './Board.css';
+import { isOnlineGame, isAIGame, isLocalGame } from '../../common/gameMode';
 
 interface IBoardProps {
   G: IG;
@@ -24,29 +24,17 @@ interface IBoardState {
 export class Board extends React.Component<IBoardProps, {}> {
   state: IBoardState = { selected: null };
 
-  isOnlineGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend;
-  }
-
-  isAIGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI;
-  }
-
-  isLocalGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
-  }
-
   _getStatus() {
     if (!this.props.gameArgs) {
       return;
     }
 
     let prefix = '';
-    if (this.isLocalGame()) {
+    if (isLocalGame(this.props.gameArgs)) {
       prefix = this.props.ctx.currentPlayer === '0' ? '[WHITE]' : '[RED]';
     }
 
-    if (this.props.ctx.currentPlayer !== this.props.playerID && !this.isLocalGame()) {
+    if (this.props.ctx.currentPlayer !== this.props.playerID && !isLocalGame(this.props.gameArgs)) {
       return 'Waiting for opponent...';
     } else if (this.props.G.haveToRemovePiece) {
       return `${prefix} REMOVE PIECE`;
@@ -60,7 +48,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getGameOver() {
-    if (this.isOnlineGame() || this.isAIGame()) {
+    if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
@@ -76,7 +64,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _selectPoint = (id: number) => {
-    if (this.props.playerID !== this.props.ctx.currentPlayer && !this.isLocalGame()) {
+    if (this.props.playerID !== this.props.ctx.currentPlayer && !isLocalGame(this.props.gameArgs)) {
       return;
     }
 

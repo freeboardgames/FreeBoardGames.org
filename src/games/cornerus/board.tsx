@@ -6,7 +6,6 @@ import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IG, IPieceTransform, getPlayer, getValidPositions, inBounds, getAllPositions } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard, IScore } from '../../common/Scoreboard';
-import { GameMode } from '../../App/Game/GameModePicker';
 import { IOptionsItems } from '../../App/Game/GameDarkSublayout';
 
 import red from '@material-ui/core/colors/red';
@@ -20,6 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import Controls from './Controls';
 
 import { pieces } from './pieces';
+import { isLocalGame } from '../../common/gameMode';
 
 export interface ICoords {
   x: number;
@@ -83,7 +83,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
       return 'draw';
     } else {
-      if (this.isLocalGame()) {
+      if (isLocalGame(this.props.gameArgs)) {
         return scoreboard[0].score > scoreboard[1].score ? 'blue/yellow won' : 'red/green won';
       } else {
         if (scoreboard[0].score === scoreboard.find(rank => rank.playerID === this.props.playerID).score) {
@@ -105,10 +105,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   }
 
-  isLocalGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
-  }
-
   isTransformValid(data: boolean[], transform: IPieceTransform) {
     return (
       getValidPositions(
@@ -127,7 +123,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     let message = '';
-    if (this.isLocalGame()) {
+    if (this.props.gameArgs) {
       let player;
       switch (this.props.ctx.currentPlayer) {
         case '0': {
@@ -140,9 +136,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         }
       }
       message = `${player}'s turn`;
-    } else if (this.props.ctx.currentPlayer === this.props.playerID && !this.isLocalGame()) {
+    } else if (this.props.ctx.currentPlayer === this.props.playerID && !isLocalGame(this.props.gameArgs)) {
       message = 'Place piece';
-    } else if (this.props.ctx.currentPlayer !== this.props.playerID && !this.isLocalGame()) {
+    } else if (this.props.ctx.currentPlayer !== this.props.playerID && !isLocalGame(this.props.gameArgs)) {
       message = 'Waiting for opponent...';
     }
     return message;
@@ -210,7 +206,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             {this._getStatus()}
           </Typography>
           <Grid rows={20} cols={20} onClick={() => null} colorMap={colorMap}>
-            {this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID ? (
+            {isLocalGame(this.props.gameArgs) || this.props.ctx.currentPlayer === this.props.playerID ? (
               <Token
                 x={this.state.piece.transform.x}
                 y={this.state.piece.transform.y}
