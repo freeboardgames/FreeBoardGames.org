@@ -131,6 +131,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
   }
 
+  onTileClick(index: number) {
+    if (this.props.ctx.phase === Phase.Robber) {
+      this.props.moves.moveRobber(index);
+    }
+  }
+
   render() {
     const robberPos = getTilePos(this.props.G.tiles[this.props.G.robber]);
 
@@ -155,7 +161,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
               .map(tile => {
                 const { x, y } = getTilePos(tile);
                 return (
-                  <g key={tile.index}>
+                  <g key={tile.index} onClick={() => this.onTileClick(tile.index)}>
                     <path
                       fill={RESOURCE_COLORS[tile.type]}
                       d="M0 86.60254037844386L50 0L150 0L200 86.60254037844386L150 173.20508075688772L50 173.20508075688772Z"

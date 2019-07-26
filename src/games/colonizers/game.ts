@@ -94,6 +94,7 @@ export interface IG {
 export interface IMoves {
   placeInitial: (settlementIndex: number, roadIndex: number) => IG | string;
   build: (type: Building, index?: number) => IG | string;
+  moveRobber: (index: number) => IG | string;
 }
 
 function sumCoords(a: ICoords, b: ICoords) {
@@ -109,8 +110,9 @@ function toIndex(coords: ICoords): number {
 }
 
 export enum Phase {
-  Place = 'Place',
+  Place = 'Place', // Initial settlement and road placement
   Game = 'Game',
+  Robber = 'Robber', // Move robber
 }
 
 export function getScoreBoard(G: IG) {
@@ -276,6 +278,17 @@ export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG 
   }
 }
 
+export function moveRobber(G: IG, _: IGameCtx, index: number): IG | string {
+  if (G.robber === index) {
+    return INVALID_MOVE;
+  }
+
+  return {
+    ...G,
+    robber: index,
+  };
+}
+
 const GameConfig: IGameArgs = {
   name: 'colonizers',
   flow: {
@@ -322,8 +335,13 @@ const GameConfig: IGameArgs = {
             };
             // Robber round
           } else {
+            ctx.events.endPhase({ next: Phase.Robber });
           }
         },
+      },
+      Robber: {
+        allowedMoves: ['moveRobber'],
+        onMove: (_, ctx) => ctx.events.endPhase({ next: Phase.Game }),
       },
     },
     endGameIf: (G: IG) => {
@@ -335,6 +353,7 @@ const GameConfig: IGameArgs = {
   moves: {
     placeInitial,
     build,
+    moveRobber,
   },
   setup: (ctx): IG => {
     let resources = ctx.random.Shuffle([
