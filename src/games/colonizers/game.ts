@@ -1,5 +1,8 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
-import { buildingRecipes } from './buildingRecipes';
+import { Game, IGameArgs } from '@freeboardgame.org/boardgame.io/core';
+import { placePhase, placeInitial } from './phase/place';
+import { gamePhase, build } from './phase/game';
+import { robberPhase, moveRobber } from './phase/robber';
+import { Phase } from './phase';
 
 const DIRS: ICoords[] = [
   { x: 0, y: 1, z: -1 },
@@ -109,12 +112,6 @@ function toIndex(coords: ICoords): number {
   return coords.x + 2 + 5 * (coords.y + 2);
 }
 
-export enum Phase {
-  Place = 'Place', // Initial settlement and road placement
-  Game = 'Game',
-  Robber = 'Robber', // Move robber
-}
-
 export function getScoreBoard(G: IG) {
   return G.players.map(player => ({ playerID: player.id, score: player.score })).sort((a, b) => b.score - a.score);
 }
@@ -147,202 +144,14 @@ export function isRoadConnectedToOwned(G: IG, playerID: string, index: number) {
   );
 }
 
-// Place settlement and connected road
-export function placeInitial(G: IG, ctx: IGameCtx, settlementIndex: number, roadIndex: number): IG | string {
-  if (
-    // Check "distance rule"
-    !isValidBuildingPosition(G, settlementIndex) ||
-    // Check if road is connected to the new settlement
-    !isRoadConnected(G, settlementIndex, roadIndex)
-  ) {
-    return INVALID_MOVE;
-  }
-
-  return {
-    ...G,
-    buildings: G.buildings.map((building, i) =>
-      settlementIndex === i
-        ? {
-            ...building,
-            type: Building.Settlement,
-            owner: ctx.playerID,
-          }
-        : building,
-    ),
-    roads: G.roads.map((road, i) =>
-      roadIndex === i
-        ? {
-            ...road,
-            owner: ctx.playerID,
-          }
-        : road,
-    ),
-    players: G.players.map(player =>
-      ctx.playerID === player.id
-        ? {
-            ...G.players[ctx.playerID as any],
-            score: G.players[ctx.playerID as any].score + 1,
-          }
-        : player,
-    ),
-  };
-}
-
-export function build(G: IG, ctx: IGameCtx, type: Building, index?: number): IG | string {
-  const newResources = buildingRecipes[type].requirements.map(
-    (resource, i) => G.players[ctx.playerID as any].resources[i] - resource,
-  );
-
-  // Check if player has enough resources
-  if (newResources.some(resource => resource < 0)) {
-    return INVALID_MOVE;
-  }
-
-  const newG: IG = {
-    ...G,
-    players: G.players.map(player =>
-      player.id === ctx.playerID
-        ? {
-            ...G.players[ctx.playerID as any],
-            resources: newResources,
-            score:
-              type === Building.Settlement || type === Building.City
-                ? G.players[ctx.playerID as any].score + 1
-                : G.players[ctx.playerID as any].score,
-          }
-        : player,
-    ),
-  };
-
-  switch (type) {
-    case Building.Settlement:
-      // Check distance rule and if road is connected to new settlement
-      if (!isValidBuildingPosition(G, index) || !isAnyOwnRoadConnected(G, ctx.playerID, index)) {
-        return INVALID_MOVE;
-      }
-
-      //TODO: Check if road has been broken
-
-      return {
-        ...newG,
-        buildings: G.buildings.map((building, i) =>
-          index === i
-            ? {
-                ...building,
-                type: Building.Settlement,
-                owner: ctx.playerID,
-              }
-            : building,
-        ),
-      };
-    case Building.City:
-      // Check if player owns the settlement
-      if (G.buildings[index].owner !== ctx.playerID || G.buildings[index].type !== Building.Settlement) {
-        return INVALID_MOVE;
-      }
-
-      return {
-        ...newG,
-        buildings: G.buildings.map((building, i) =>
-          index === i
-            ? {
-                ...building,
-                type: Building.City,
-              }
-            : building,
-        ),
-      };
-    case Building.Road:
-      // Check if road is connected to anything that player owns
-      if (G.roads[index].owner !== null || !isRoadConnectedToOwned(G, ctx.playerID, index)) {
-        return INVALID_MOVE;
-      }
-
-      //TODO: Check for longest road
-
-      return {
-        ...newG,
-        roads: G.roads.map((road, i) =>
-          index === i
-            ? {
-                ...road,
-                owner: ctx.playerID,
-              }
-            : road,
-        ),
-      };
-    case Building.Development:
-
-    default:
-      return INVALID_MOVE;
-  }
-}
-
-export function moveRobber(G: IG, _: IGameCtx, index: number): IG | string {
-  if (G.robber === index) {
-    return INVALID_MOVE;
-  }
-
-  return {
-    ...G,
-    robber: index,
-  };
-}
-
 const GameConfig: IGameArgs = {
   name: 'colonizers',
   flow: {
     startingPhase: Phase.Place,
     phases: {
-      Place: {
-        allowedMoves: ['placeInitial'],
-        movesPerTurn: 1,
-        turnOrder: TurnOrder.CUSTOM_FROM('initialTurnOrder'),
-        endPhaseIf: (_, ctx) => ctx.turn === ctx.numPlayers * 2,
-        next: Phase.Game,
-      },
-      Game: {
-        allowedMoves: ['build'],
-        // Little hack to for https://github.com/nicolodavis/boardgame.io/issues/394
-        onPhaseBegin: (_, ctx) => {
-          ctx.events.endTurn({ next: ctx.currentPlayer });
-        },
-        onTurnBegin: (G: IG, ctx): IG => {
-          const roll = ctx.random.D6() + ctx.random.D6();
-          console.log(roll);
-          // Normal round
-          if (roll !== 7) {
-            const players = new Array(ctx.numPlayers).fill(0).map(() => new Array(5).fill(0));
-            G.tiles
-              // Check if tile isn't occupied with robber
-              .filter(tile => tile.number === roll && tile.index !== G.robber)
-              .forEach(tile =>
-                tile.buildings
-                  .filter(ref => G.buildings[ref].owner !== null)
-                  .forEach(
-                    ref =>
-                      (players[G.buildings[ref].owner as any][tile.type] +=
-                        G.buildings[ref].type === Building.Settlement ? 1 : 2),
-                  ),
-              );
-
-            return {
-              ...G,
-              players: G.players.map((player, i) => ({
-                ...player,
-                resources: player.resources.map((resource, j) => resource + players[i][j]),
-              })),
-            };
-            // Robber round
-          } else {
-            ctx.events.endPhase({ next: Phase.Robber });
-          }
-        },
-      },
-      Robber: {
-        allowedMoves: ['moveRobber'],
-        onMove: (_, ctx) => ctx.events.endPhase({ next: Phase.Game }),
-      },
+      Place: placePhase,
+      Game: gamePhase,
+      Robber: robberPhase,
     },
     endGameIf: (G: IG) => {
       if (G.players.some(player => player.score >= 10)) {

@@ -1,8 +1,9 @@
 import React from 'react';
-import { IG, isValidBuildingPosition, isAnyOwnRoadConnected, Building, Phase } from './game';
+import { IG, isValidBuildingPosition, isAnyOwnRoadConnected, Building } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { dirToAngle, getTilePos } from './board';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
+import { Phase } from './phase';
 import css from './Building.css';
 
 import grey from '@material-ui/core/colors/grey';

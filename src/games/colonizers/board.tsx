@@ -2,9 +2,10 @@ import React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG, Tile, isValidBuildingPosition, Phase, Building, IMoves, getScoreBoard } from './game';
+import { IG, Tile, isValidBuildingPosition, Building, IMoves, getScoreBoard } from './game';
 import { ScoreBadges } from '../../common/ScoreBadges';
 import { Roads } from './Roads';
+import { Phase } from './phase';
 
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import amber from '@material-ui/core/colors/amber';

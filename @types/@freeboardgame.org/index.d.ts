@@ -104,22 +104,26 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     next: (G: any, ctx: IGameCtx) => number;
     actionPlayers?: IActionPlayers;
   }
-  interface IGameFlowPhases {
-    [name: string]: {
-      movesPerTurn?: number;
-      turnOrder?: ITurnOrder;
-      next?: string;
-      allowedMoves?: string[];
-      endPhaseIf?: (G: any, ctx: IGameCtx) => boolean | object;
-      onPhaseBegin?: (G: any, ctx: IGameCtx) => any;
-      onPhaseEnd?: (G: any, ctx: IGameCtx) => any;
-      endTurnIf?: (G: any, ctx: IGameCtx) => boolean | object;
-      endGameIf?: (G: any, ctx: IGameCtx) => void;
-      onTurnBegin?: (G: any, ctx: IGameCtx) => any;
-      onTurnEnd?: (G: any, ctx: IGameCtx) => any;
-      onMove?: (G: any, ctx: IGameCtx) => any;
-    };
+
+  interface IGameFlowPhase {
+    movesPerTurn?: number;
+    turnOrder?: ITurnOrder;
+    next?: string;
+    allowedMoves?: string[];
+    endPhaseIf?: (G: any, ctx: IGameCtx) => boolean | object;
+    onPhaseBegin?: (G: any, ctx: IGameCtx) => any;
+    onPhaseEnd?: (G: any, ctx: IGameCtx) => any;
+    endTurnIf?: (G: any, ctx: IGameCtx) => boolean | object;
+    endGameIf?: (G: any, ctx: IGameCtx) => void;
+    onTurnBegin?: (G: any, ctx: IGameCtx) => any;
+    onTurnEnd?: (G: any, ctx: IGameCtx) => any;
+    onMove?: (G: any, ctx: IGameCtx) => any;
   }
+
+  interface IGameFlowPhases {
+    [name: string]: IGameFlowPhase;
+  }
+
   interface IGameFlowTrigger {
     conditon: (G: any, ctx: IGameCtx) => boolean;
     action: (G: any, ctx: IGameCtx) => any;

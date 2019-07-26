@@ -1,7 +1,8 @@
 import React from 'react';
-import { isRoadConnectedToOwned, isRoadConnected, IG, Building, Phase } from './game';
+import { isRoadConnectedToOwned, isRoadConnected, IG, Building } from './game';
 import { dirToAngle, getTilePos } from './board';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { Phase } from './phase';
 import grey from '@material-ui/core/colors/grey';
 import css from './Road.css';
 
