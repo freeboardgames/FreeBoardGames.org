@@ -3,10 +3,10 @@ import { IG, isValidBuildingPosition, isAnyOwnRoadConnected, Building, Phase } f
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { dirToAngle, getTilePos } from './board';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
-import { GameMode } from '../../App/Game/GameModePicker';
 import css from './Building.css';
 
 import grey from '@material-ui/core/colors/grey';
+import { isLocalGame } from '../../common/gameMode';
 
 interface IBuildingsProps {
   G: IG;
@@ -21,10 +21,6 @@ interface IBuildingsProps {
 }
 
 export class Buildings extends React.Component<IBuildingsProps, {}> {
-  isLocalGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
-  }
-
   render() {
     return (
       <g>
@@ -36,7 +32,7 @@ export class Buildings extends React.Component<IBuildingsProps, {}> {
                 ((this.props.selectedRecipe === Building.Settlement &&
                   isAnyOwnRoadConnected(this.props.G, this.props.ctx.currentPlayer, building.index)) ||
                   (this.props.ctx.phase === Phase.Place &&
-                    (this.isLocalGame() || this.props.ctx.currentPlayer === this.props.playerID)))),
+                    (isLocalGame(this.props.gameArgs) || this.props.ctx.currentPlayer === this.props.playerID)))),
           )
           .map(building => {
             const angle = dirToAngle(building.tileRefs[0].dir);

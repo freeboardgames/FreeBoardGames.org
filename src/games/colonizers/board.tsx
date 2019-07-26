@@ -3,7 +3,6 @@ import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IG, Tile, isValidBuildingPosition, Phase, Building, IMoves, getScoreBoard } from './game';
-import { GameMode } from '../../App/Game/GameModePicker';
 import { ScoreBadges } from '../../common/ScoreBadges';
 import { Roads } from './Roads';
 
@@ -91,10 +90,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       ...this.state,
       buildingDialogOpen: true,
     });
-  }
-
-  isLocalGame() {
-    return this.props.gameArgs && this.props.gameArgs.mode === GameMode.LocalFriend;
   }
 
   onBuildingClick(index: number) {
