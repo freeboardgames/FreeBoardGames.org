@@ -3,6 +3,7 @@ import { placePhase, placeInitial } from './phase/place';
 import { gamePhase, build } from './phase/game';
 import { robberPhase, moveRobber } from './phase/robber';
 import { Phase } from './phase';
+import { discardPhase, discardResources } from './phase/discard';
 
 const DIRS: ICoords[] = [
   { x: 0, y: 1, z: -1 },
@@ -98,6 +99,7 @@ export interface IMoves {
   placeInitial: (settlementIndex: number, roadIndex: number) => IG | string;
   build: (type: Building, index?: number) => IG | string;
   moveRobber: (index: number) => IG | string;
+  discardResources: (resources: number[]) => IG | string;
 }
 
 function sumCoords(a: ICoords, b: ICoords) {
@@ -152,6 +154,7 @@ const GameConfig: IGameArgs = {
       Place: placePhase,
       Game: gamePhase,
       Robber: robberPhase,
+      Discard: discardPhase,
     },
     endGameIf: (G: IG) => {
       if (G.players.some(player => player.score >= 10)) {
@@ -163,6 +166,7 @@ const GameConfig: IGameArgs = {
     placeInitial,
     build,
     moveRobber,
+    discardResources,
   },
   setup: (ctx): IG => {
     let resources = ctx.random.Shuffle([

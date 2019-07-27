@@ -5,7 +5,12 @@ import { Phase } from './index';
 export const robberPhase: IGameFlowPhase = {
   movesPerTurn: 1,
   allowedMoves: ['moveRobber'],
-  onMove: (_, ctx) => ctx.events.endPhase({ next: Phase.Game }),
+  onMove: (G: IG, ctx) =>
+    ctx.events.endPhase({
+      next: G.players.some(player => player.resources.reduce((acc, resource) => acc + resource, 0) >= 7)
+        ? Phase.Discard
+        : Phase.Game,
+    }),
 };
 
 export function moveRobber(G: IG, _: IGameCtx, index: number): IG | string {
