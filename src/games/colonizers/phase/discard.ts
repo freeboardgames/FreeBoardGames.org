@@ -18,15 +18,16 @@ export const discardPhase: IGameFlowPhase = {
       once: true,
     },
   },
+  endPhaseIf: (_, ctx) => ctx.actionPlayers.length === 0,
 };
 
 export function discardResources(G: IG, ctx: IGameCtx, resources: number[]): IG | string {
-  const newResources = G.players[ctx.playerID as any].resources.map((resource, i) => resource + resources[i]);
+  const newResources = G.players[ctx.playerID as any].resources.map((resource, i) => resource - resources[i]);
 
   if (
     newResources.some(resource => resource < 0) ||
     newResources.reduce((acc, resource) => acc + resource, 0) !==
-      Math.floor(G.players[ctx.playerID as any].resources.reduce((acc, resource) => acc + resource, 0) / 2)
+      Math.ceil(G.players[ctx.playerID as any].resources.reduce((acc, resource) => acc + resource, 0) / 2)
   ) {
     return INVALID_MOVE;
   }

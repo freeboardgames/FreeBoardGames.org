@@ -22,11 +22,13 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import { Buildings } from './Buildings';
+import { isLocalGame } from '../../common/gameMode';
 
 interface IBoardState {
   selectedBuilding: number;
   selectedRecipe: Building;
   buildingDialogOpen: boolean;
+  discardResources: number[];
 }
 
 interface IBoardProps {
@@ -58,6 +60,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     selectedBuilding: null as number,
     buildingDialogOpen: false,
     selectedRecipe: null as number,
+    discardResources: new Array(5).fill(0),
   };
 
   _closeBuildingDialog = this.closeBuildingDialog.bind(this);
@@ -138,7 +141,44 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
   }
 
+  onResourceClick(index: number) {
+    if (
+      this.props.ctx.phase === Phase.Discard &&
+      this.props.ctx.actionPlayers.some(player => player === this.props.playerID) &&
+      this.props.G.players[this.props.playerID as any].resources[index] - this.state.discardResources[index] > 0
+    ) {
+      this.setState(
+        {
+          ...this.state,
+          discardResources: this.state.discardResources.map((resource, i) => (i === index ? resource + 1 : resource)),
+        },
+        () => {
+          if (
+            Math.floor(
+              this.props.G.players[this.props.playerID as any].resources.reduce((acc, resource) => acc + resource, 0) /
+                2,
+            ) === this.state.discardResources.reduce((acc, resource) => acc + resource, 0)
+          ) {
+            this.props.moves.discardResources(this.state.discardResources);
+            this.setState({
+              ...this.state,
+              discardResources: new Array(5).fill(0),
+            });
+          }
+        },
+      );
+    }
+  }
+
   render() {
+    if (isLocalGame(this.props.gameArgs)) {
+      return (
+        <div>
+          <svg />
+        </div>
+      );
+    }
+
     const robberPos = getTilePos(this.props.G.tiles[this.props.G.robber]);
 
     return (
@@ -149,11 +189,17 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           handleClick={this._chooseBuilding}
         />
         <Grid container justify="center" alignItems="center">
-          {this.props.G.players[this.props.ctx.currentPlayer as any].resources.map((resource, i) => (
-            <Avatar key={i} style={{ margin: '0 5px', background: RESOURCE_COLORS[i] }}>
-              {resource}
-            </Avatar>
-          ))}
+          {this.props.G.players[this.props.playerID as any].resources
+            .map((resource, i) => resource - this.state.discardResources[i])
+            .map((resource, i) => (
+              <Avatar
+                key={i}
+                style={{ margin: '0 5px', background: RESOURCE_COLORS[i] }}
+                onClick={() => this.onResourceClick(i)}
+              >
+                {resource}
+              </Avatar>
+            ))}
         </Grid>
         <svg viewBox="-435 -469 870 938">
           <g>

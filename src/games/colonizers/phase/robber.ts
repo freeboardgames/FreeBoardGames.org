@@ -7,7 +7,7 @@ export const robberPhase: IGameFlowPhase = {
   allowedMoves: ['moveRobber'],
   onMove: (G: IG, ctx) =>
     ctx.events.endPhase({
-      next: G.players.some(player => player.resources.reduce((acc, resource) => acc + resource, 0) >= 7)
+      next: G.players.some(player => player.resources.reduce((acc, resource) => acc + resource, 0) > 7)
         ? Phase.Discard
         : Phase.Game,
     }),
