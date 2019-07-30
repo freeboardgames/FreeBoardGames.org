@@ -26,7 +26,7 @@ export class Roads extends React.Component<IRoadsProps, {}> {
               road.owner !== null ||
               (this.props.ctx.phase === Phase.Game &&
                 this.props.selectedRecipe === Building.Road &&
-                isRoadConnectedToOwned(this.props.G, this.props.ctx.currentPlayer, road.index)) ||
+                isRoadConnectedToOwned(this.props.G, this.props.ctx.playerID, road.index)) ||
               (this.props.ctx.phase === Phase.Place &&
                 this.props.selectedBuilding !== null &&
                 isRoadConnected(this.props.G, this.props.selectedBuilding, road.index)),

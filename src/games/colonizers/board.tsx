@@ -245,7 +245,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             playerColors={PLAYER_COLORS}
             selectedRecipe={this.state.selectedRecipe}
             selectedBuilding={this.state.selectedBuilding}
-            gameArgs={this.props.gameArgs}
             playerID={this.props.playerID}
             click={this._onBuildingClick}
           />
