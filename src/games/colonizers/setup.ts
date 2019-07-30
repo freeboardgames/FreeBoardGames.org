@@ -1,5 +1,9 @@
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IG, Resource, Tile, IRoad, toIndex, IBuilding, sumCoords, inBounds, ICoords } from './game';
+import { IG, Resource, Tile, IRoad, IBuilding, sumCoords, inBounds, ICoords } from './game';
+
+function toIndex(coords: ICoords): number {
+  return coords.x + 2 + 5 * (coords.y + 2);
+}
 
 export function gameSetup(ctx: IGameCtx): IG {
   const DIRS: ICoords[] = [
@@ -33,8 +37,6 @@ export function gameSetup(ctx: IGameCtx): IG {
     Resource.Nothing,
   ]);
 
-  let numbers = ctx.random.Shuffle([2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]);
-
   let robber: number = 2;
 
   // Init tiles
@@ -44,14 +46,38 @@ export function gameSetup(ctx: IGameCtx): IG {
       for (let z = -2; z <= 2; z++) {
         if (x + y + z === 0) {
           const resource = resources.pop();
-          const number = resource === Resource.Nothing ? null : numbers.pop();
-          tiles[toIndex({ x, y })] = new Tile({ x, y, z }, resource, number, toIndex({ x, y }));
-
-          if (number === null) {
+          tiles[toIndex({ x, y })] = new Tile({ x, y, z }, resource, toIndex({ x, y }));
+          if (resource === Resource.Nothing) {
             robber = toIndex({ x, y });
           }
         }
       }
+    }
+  }
+
+  // Fill 6s and 8s in
+  let safeIndices = ctx.random.Shuffle(
+    tiles.filter(tile => tile !== null && tile.type !== Resource.Nothing).map(tile => tile.index),
+  );
+  let specialNumbers = [6, 6, 8, 8];
+  while (specialNumbers.length > 0) {
+    const number = specialNumbers.pop();
+    const index = safeIndices.pop();
+    const tile = tiles[index];
+    tile.number = number;
+    DIRS.forEach(dir => {
+      const sum = sumCoords(tile.pos, dir);
+      if (inBounds(sum)) {
+        safeIndices = safeIndices.filter(index => index !== toIndex(sum));
+      }
+    });
+  }
+
+  // Fill other numbers
+  let numbers = ctx.random.Shuffle([2, 3, 3, 4, 4, 5, 5, 9, 9, 10, 10, 11, 11, 12]);
+  for (const tile of tiles) {
+    if (typeof tile !== 'undefined' && tile.number === null && tile.type !== Resource.Nothing) {
+      tile.number = numbers.pop();
     }
   }
 

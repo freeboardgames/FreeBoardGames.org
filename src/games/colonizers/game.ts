@@ -56,19 +56,19 @@ interface ITileRef {
 
 export class Tile {
   readonly pos: ICoords;
-  readonly number: number;
   readonly type: Resource;
+  number: number;
   buildings: number[]; // Adjacent building indices
   roads: number[]; // Adjacent road indices
   index: number;
 
-  constructor(pos: ICoords, type: Resource, number: number, index: number) {
-    this.number = number;
+  constructor(pos: ICoords, type: Resource, index: number) {
     this.pos = pos;
     this.buildings = new Array(6);
     this.roads = new Array(6);
     this.type = type;
     this.index = index;
+    this.number = null;
   }
 }
 
@@ -100,10 +100,6 @@ export function sumCoords(a: ICoords, b: ICoords) {
 
 export function inBounds(pos: ICoords) {
   return pos.x >= -2 && pos.x <= 2 && pos.y >= -2 && pos.y <= 2 && pos.z >= -2 && pos.z <= 2;
-}
-
-export function toIndex(coords: ICoords): number {
-  return coords.x + 2 + 5 * (coords.y + 2);
 }
 
 export function getScoreBoard(G: IG) {

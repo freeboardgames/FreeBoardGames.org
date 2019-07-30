@@ -61,7 +61,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   export class Random {
     Shuffle: (deck: any[]) => any[];
     Number: () => number;
-    Die: (spotvalue: number, diceCount: number) => number;
+    Die: (spotvalue: number, diceCount?: number) => number;
     D4: () => number;
     D6: () => number;
     D8: () => number;
