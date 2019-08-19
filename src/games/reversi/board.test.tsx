@@ -3,7 +3,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
-import { RolitGame } from './game';
+import { ReversiGame } from './game';
 import { MemoryRouter } from 'react-router';
 import { Board } from './board';
 import { GameMode } from '../../App/Game/GameModePicker';
@@ -33,7 +33,7 @@ function getPosition(x: number, y: number) {
 
 test('round placing pieces', () => {
   const App = ReactClient({
-    game: RolitGame,
+    game: ReversiGame,
     debug: false,
     board: BoardTest,
   }) as any;
@@ -69,7 +69,7 @@ test('round placing pieces', () => {
 
 test('gameover - won', () => {
   const client = Client({
-    game: RolitGame,
+    game: ReversiGame,
   });
   const state0 = client.store.getState();
   const state1 = {
@@ -96,7 +96,7 @@ test('gameover - won', () => {
 
 test('gameover - lost', () => {
   const client = Client({
-    game: RolitGame,
+    game: ReversiGame,
   });
   const state0 = client.store.getState();
   const state1 = {
@@ -123,7 +123,7 @@ test('gameover - lost', () => {
 
 test('gameover - draw', () => {
   const client = Client({
-    game: RolitGame,
+    game: ReversiGame,
   });
   const state0 = client.store.getState();
   const state1 = {

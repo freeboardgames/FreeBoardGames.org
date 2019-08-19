@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
-import { RolitGame, IG, placePiece } from './game';
+import { ReversiGame, IG, placePiece } from './game';
 
 test('invalid moves', () => {
   let points = new Array(64).fill(null);
@@ -16,7 +16,7 @@ test('invalid moves', () => {
 
 it('should declare player 0 as the winner', () => {
   const spec = {
-    game: RolitGame,
+    game: ReversiGame,
     multiplayer: { local: true },
   };
 

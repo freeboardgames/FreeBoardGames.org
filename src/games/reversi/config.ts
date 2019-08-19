@@ -1,9 +1,9 @@
 import { IGameConfig } from '../index';
-import { RolitGame } from './game';
+import { ReversiGame } from './game';
 import { Board } from './board';
 
 const config: IGameConfig = {
-  bgioGame: RolitGame,
+  bgioGame: ReversiGame,
   bgioBoard: Board,
 };
 
