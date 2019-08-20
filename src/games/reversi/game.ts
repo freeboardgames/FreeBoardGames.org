@@ -12,11 +12,12 @@ function inBounds(x: number, y: number) {
   return x >= 0 && x < 8 && y >= 0 && y < 8;
 }
 
-function isThereValidMove(G: IG, ctx: IGameCtx) {
-  return G.points
+export function getValidMoves(G: IG, playerID: string) {
+  let validMoves: Set<number> = new Set();
+  G.points
     .map((player, position) => ({ player, position }))
-    .filter(point => point.player === ctx.playerID)
-    .some(point => {
+    .filter(point => point.player === playerID)
+    .forEach(point => {
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
           if (i === 0 && j === 0) {
@@ -28,10 +29,12 @@ function isThereValidMove(G: IG, ctx: IGameCtx) {
           let currX = x + i;
           let currY = y + j;
           let k = 1;
-          let ends = false;
-          while (inBounds(currX, currY) && G.points[toPosition(currX, currY)] !== ctx.playerID) {
-            if (G.points[toPosition(currX, currY)] === null) {
-              ends = true;
+          let end: number = null;
+
+          while (inBounds(currX, currY) && G.points[toPosition(currX, currY)] !== playerID) {
+            const position = toPosition(currX, currY);
+            if (G.points[position] === null) {
+              end = position;
               break;
             }
 
@@ -40,12 +43,37 @@ function isThereValidMove(G: IG, ctx: IGameCtx) {
             currY = y + j * k;
           }
 
-          if (ends && k > 1) {
-            return true;
+          if (end !== null && k > 1) {
+            validMoves.add(end);
           }
         }
       }
     });
+
+  if (validMoves.size > 0) {
+    return validMoves;
+  }
+
+  G.points
+    .map((player, position) => ({ player, position }))
+    .filter(point => point.player === null)
+    .forEach(point => {
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          if (i === 0 && j === 0) {
+            continue;
+          }
+
+          const x = point.position % 8;
+          const y = Math.floor(point.position / 8);
+          if (inBounds(x + i, y + j) && G.points[toPosition(x + i, y + j)] !== null) {
+            validMoves.add(point.position);
+          }
+        }
+      }
+    });
+
+  return validMoves;
 }
 
 export function placePiece(G: IG, ctx: IGameCtx, x: number, y: number) {
@@ -53,7 +81,6 @@ export function placePiece(G: IG, ctx: IGameCtx, x: number, y: number) {
     return INVALID_MOVE;
   }
 
-  let close = false; // Touching by side or corner
   let changed: number[] = [toPosition(x, y)]; // Changed positions
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
@@ -66,7 +93,6 @@ export function placePiece(G: IG, ctx: IGameCtx, x: number, y: number) {
       let currX = x + i;
       let currY = y + j;
       for (let k = 2; inBounds(currX, currY) && G.points[toPosition(currX, currY)] !== null; k++) {
-        close = true;
         if (G.points[toPosition(currX, currY)] === ctx.currentPlayer) {
           valid = true;
           break;
@@ -84,7 +110,7 @@ export function placePiece(G: IG, ctx: IGameCtx, x: number, y: number) {
   }
 
   if (changed.length === 1) {
-    if (close && !isThereValidMove(G, ctx)) {
+    if (getValidMoves(G, ctx.playerID).has(toPosition(x, y))) {
       return {
         ...G,
         points: Object.values({
@@ -149,4 +175,4 @@ const GameConfig: IGameArgs = {
   },
 };
 
-export const RolitGame = Game(GameConfig);
+export const ReversiGame = Game(GameConfig);

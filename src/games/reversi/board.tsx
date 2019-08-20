@@ -18,6 +18,7 @@ import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
 
 import Typography from '@material-ui/core/Typography';
+import { isAIGame } from '../../common/gameMode';
 
 export interface ICoords {
   x: number;
@@ -32,6 +33,7 @@ interface IBoardProps {
   G: IG;
   ctx: IGameCtx;
   moves: any;
+  step?: any;
   playerID: string;
   gameArgs?: IGameArgs;
 }
@@ -39,8 +41,15 @@ interface IBoardProps {
 export class Board extends React.Component<IBoardProps, {}> {
   _onClick = this.onClick.bind(this);
 
-  onClick(coords: ICoords) {
-    this.props.moves.placePiece(coords.x, coords.y);
+  async onClick(coords: ICoords) {
+    if (isAIGame(this.props.gameArgs) && this.props.ctx.currentPlayer === '1') {
+      return;
+    }
+
+    await this.props.moves.placePiece(coords.x, coords.y);
+    if (isAIGame(this.props.gameArgs) && this.props.ctx.currentPlayer === '1') {
+      setTimeout(() => this.props.step(), 1000);
+    }
   }
 
   _getGameOver() {
