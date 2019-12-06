@@ -144,7 +144,7 @@
     "react-markdown": "^4.1.0",
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
-    "serialize-javascript": "^1.7.0",
+    "serialize-javascript": "^2.1.1",
     "shortid": "^2.2.14",
     "shuffle-array": "^1.0.1",
     "socket.io-client": "^2.2.0",
