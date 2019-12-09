@@ -1,0 +1,3 @@
+Tic-Tac-Toe-Plus (ttt+) is a nice varaint of the classis Tic-Tac-Toe. In ttt+, there is a 4x4 board (vs. 3x3 in classic) and two players (as in classic). 
+
+Usually, the 4x4 varaint of the classic game is considered baised or leads to a draw. In order to over come this limitation, ttt+ introduces a wildcard symbol - namely the "plus" symbol, which represent both a circle and a cross. Each time a player takes a turn, a dice is rolled to decide it the wildcard is shown or not, wherein a wild card will be shown if the dice-outcome evaluates to 6.

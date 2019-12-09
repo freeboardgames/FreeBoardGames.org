@@ -40,7 +40,7 @@ export const Cross = (props: IShapeProps) => {
 
 export const WildCardChar = (props: IShapeProps) => {
   return (
-    <g className="cross" key={`cross${props.x},${props.y}`}>
+    <g className="wild" key={`wild${props.x},${props.y}`}>
       <line
         x1={props.x + 0.25}
         y1={props.y + 0.5}
