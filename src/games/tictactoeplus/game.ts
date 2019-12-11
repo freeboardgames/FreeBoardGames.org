@@ -61,7 +61,7 @@ export const TictactoeGame = Game({
       const cells = [...G.cells];
 
       if (cells[id] === null) {
-        if (Math.random() > 0.833 && cells.filter(v => v === '2').length < 3) {
+        if (ctx.random.D6() === 6 && cells.filter(v => v === '2').length < 3) {
           cells[id] = '2';
         } else {
           cells[id] = ctx.currentPlayer;

@@ -1,5 +1,5 @@
 import { GameMode } from '../../App/Game/GameModePicker';
-// import { IGameModeExtraInfoDropdown } from '../../App/Game/GameModePicker';
+import { IGameModeExtraInfoDropdown } from '../../App/Game/GameModePicker';
 import TicTacToeThumbnail from './media/thumbnail.png';
 import { IGameDef } from '../../games';
 import instructions from './instructions.md';
@@ -11,10 +11,10 @@ export const tictactoeplusGameDef: IGameDef = {
   maxPlayers: 2,
   imageURL: TicTacToeThumbnail,
   modes: [
-    // {
-    //   mode: GameMode.AI,
-    //   extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
-    // },
+    {
+      mode: GameMode.AI,
+      extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
+    },
     { mode: GameMode.OnlineFriend },
     { mode: GameMode.LocalFriend },
   ],
@@ -28,5 +28,5 @@ export const tictactoeplusGameDef: IGameDef = {
     text: instructions,
   },
   config: () => import('./config'),
-  // aiConfig: () => import('./ai'),
+  aiConfig: () => import('./ai'),
 };

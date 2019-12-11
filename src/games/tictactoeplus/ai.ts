@@ -37,7 +37,7 @@ const config: IAIConfig = {
       return AI({
         enumerate: (G: any) => {
           const moves = [];
-          for (let i = 0; i < 9; i++) {
+          for (let i = 0; i < 16; i++) {
             if (G.cells[i] === null) {
               moves.push({ move: 'clickCell', args: [i] });
             }

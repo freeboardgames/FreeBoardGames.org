@@ -25,7 +25,7 @@ test('clicking a cell on the board', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.LocalFriend,
         }}
       />
@@ -54,7 +54,7 @@ test('click a cell that has already been played', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.LocalFriend,
         }}
       />
@@ -83,16 +83,15 @@ test('render board - one X and one O - local friend', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.LocalFriend,
         }}
       />
     </MemoryRouter>,
   );
   expect(comp.html()).to.contain("Red's turn");
-  expect(comp.find('rect').length).to.equal(9); // 9 rectangles
-  expect(comp.find('.cross').length).to.equal(1); // one X
-  expect(comp.find('circle').length).to.equal(1); // one O
+  expect(comp.find('rect').length).to.equal(16); // 16 rectangles
+  expect(comp.find('.cross').length + comp.find('circle').length + comp.find('circle').length).to.equal(2); // total 2 items
 });
 
 test("render board - O's turn - local friend", () => {
@@ -110,7 +109,7 @@ test("render board - O's turn - local friend", () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.LocalFriend,
         }}
       />
@@ -134,7 +133,7 @@ test('render board - X wins - local friend', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.LocalFriend,
         }}
       />
@@ -158,7 +157,7 @@ test('render board - O wins - local friend', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.LocalFriend,
         }}
       />
@@ -182,7 +181,7 @@ test('render board - X wins - AI', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.AI,
         }}
       />
@@ -206,7 +205,7 @@ test('render board - O wins - AI', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.AI,
         }}
       />
@@ -230,7 +229,7 @@ test('render board - O wins - draw', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.AI,
         }}
       />
@@ -254,7 +253,7 @@ test('render board - draw - local friend', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.LocalFriend,
         }}
       />
@@ -279,7 +278,7 @@ test('render board - our turn - online', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -304,7 +303,7 @@ test('render board - their turn - online', () => {
         playerID={'1'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -329,7 +328,7 @@ test('render board - one X and one O - online', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -354,7 +353,7 @@ test('render board - we win - online', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -378,7 +377,7 @@ test('render board - we lose - online', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -402,7 +401,7 @@ test('render board - draw - online', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.OnlineFriend,
         }}
       />
@@ -425,7 +424,7 @@ test('render board - AI', () => {
         playerID={'0'}
         isActive={true}
         gameArgs={{
-          gameCode: 'tictactoe',
+          gameCode: 'tictactoeplus',
           mode: GameMode.AI,
         }}
       />

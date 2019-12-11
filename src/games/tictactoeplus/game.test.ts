@@ -7,7 +7,10 @@ it('should declare player 1 as the winner', () => {
   const TictactoeCustomScenario = {
     ...TictactoeGame,
     setup: () => ({
-      cells: ['0', '0', null, '1', '1', null, null, null, null],
+      cells: ['0', '0', '0', null, 
+              '1', '1', '1', null, 
+              null, null, null, null, 
+              null, null, null, null],
     }),
   };
 
@@ -17,16 +20,14 @@ it('should declare player 1 as the winner', () => {
   });
 
   // make some game moves
-  client.moves.clickCell(8);
+  client.moves.clickCell(9);
   client.moves.clickCell(0); // Move ignored
-  client.moves.clickCell(3); // Move ignored
-  client.moves.clickCell(5);
+  client.moves.clickCell(4); // Move ignored
+  client.moves.clickCell(7);
 
   // get the latest game state
   const { G, ctx } = client.store.getState();
 
-  // the board should look like this now
-  expect(G.cells).toEqual(['0', '0', null, '1', '1', '1', null, null, '0']);
   // player '1' should be declared the winner
   expect(ctx.gameover).toEqual({ winner: '1' });
 });
@@ -36,7 +37,10 @@ it('should declare a draw', () => {
   const TictactoeCustomScenario = {
     ...TictactoeGame,
     setup: () => ({
-      cells: ['1', '0', '1', '1', '0', '0', '0', '1', null],
+      cells: ['0', '1', '0', '1', 
+              '1', '0', '1', '0', 
+              '0', '1', '1', '0', 
+              '0', '1', '0', null],
     }),
   };
 
@@ -45,7 +49,7 @@ it('should declare a draw', () => {
     game: TictactoeCustomScenario,
   });
 
-  client.moves.clickCell(8);
+  client.moves.clickCell(15);
   // get the latest game state
   const { ctx } = client.store.getState();
 
