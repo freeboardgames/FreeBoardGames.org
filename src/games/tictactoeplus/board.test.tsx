@@ -91,7 +91,7 @@ test('render board - one X and one O - local friend', () => {
   );
   expect(comp.html()).to.contain("Red's turn");
   expect(comp.find('rect').length).to.equal(16); // 16 rectangles
-  expect(comp.find('.cross').length + comp.find('circle').length + comp.find('circle').length).to.equal(2); // total 2 items
+  expect(comp.find('.cross').length + comp.find('circle').length + comp.find('.wild').length).to.equal(2); // total 2 items
 });
 
 test("render board - O's turn - local friend", () => {
@@ -334,8 +334,8 @@ test('render board - one X and one O - online', () => {
       />
     </MemoryRouter>,
   );
-  expect(comp.find('.cross').length).to.equal(1); // one X
-  expect(comp.find('circle').length).to.equal(1); // one O
+  expect(comp.find('.cross').length + comp.find('.wild').length).to.be.at.least(1); // one X
+  expect(comp.find('circle').length + comp.find('.wild').length).to.be.at.least(1); // one O
 });
 
 test('render board - we win - online', () => {
