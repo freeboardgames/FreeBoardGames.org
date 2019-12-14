@@ -23,7 +23,7 @@ it('should declare player 1 as the winner', () => {
   client.moves.clickCell(7);
 
   // get the latest game state
-  const { G, ctx } = client.store.getState();
+  const { ctx } = client.store.getState();
 
   // player '1' should be declared the winner
   expect(ctx.gameover).toEqual({ winner: '1' });
