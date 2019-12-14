@@ -9,7 +9,6 @@ import { reversiGameDef } from './reversi';
 import { cornerusGameDef } from './cornerus';
 import { tictactoeplusGameDef } from './tictactoeplus';
 
-
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
   chess: chessGameDef,
@@ -20,7 +19,7 @@ export const GAMES_MAP: IGameDefMap = {
   ninemensmorris: ninemensmorrisGameDef,
   checkers: checkersGameDef,
   reversi: reversiGameDef,
-  tictactoeplus: tictactoeplusGameDef, 
+  tictactoeplus: tictactoeplusGameDef,
 };
 
 export const GAMES_LIST: IGameDef[] = [

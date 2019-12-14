@@ -7,10 +7,7 @@ it('should declare player 1 as the winner', () => {
   const TictactoeCustomScenario = {
     ...TictactoeGame,
     setup: () => ({
-      cells: ['0', '0', '0', null, 
-              '1', '1', '1', null, 
-              null, null, null, null, 
-              null, null, null, null],
+      cells: ['0', '0', '0', null, '1', '1', '1', null, null, null, null, null, null, null, null, null],
     }),
   };
 
@@ -37,10 +34,7 @@ it('should declare a draw', () => {
   const TictactoeCustomScenario = {
     ...TictactoeGame,
     setup: () => ({
-      cells: ['0', '1', '0', '1', 
-              '1', '0', '1', '0', 
-              '0', '1', '1', '0', 
-              '0', '1', '0', null],
+      cells: ['0', '1', '0', '1', '1', '0', '1', '0', '0', '1', '1', '0', '0', '1', '0', null],
     }),
   };
 
