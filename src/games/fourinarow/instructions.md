@@ -1,0 +1,1 @@
+This is the classic Four In A Row game. To win the game, you need to get four 
