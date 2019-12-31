@@ -1,28 +1,66 @@
-/*
- * Copyright 2017 The boardgame.io Authors
- *
- * Use of this source code is governed by a MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
 
 import { Game } from '@freeboardgame.org/boardgame.io/core';
-import { numOfColumns, numOfRows } from './constants';
+import { numOfColumns, numOfRows, neededToWin } from './constants';
 
-export function isVictory(cells: number[][]) {
+function checkCellForVictory(grid: number[][], colId:any, rowId: any, player: any) {
 
-  if(Math.random() > 0.9995) {
+  let fourCells = new Array(neededToWin);
+
+  // check horizontally
+  for(var i=0; i<neededToWin; i++) {
+    fourCells[i] = grid[colId][rowId + i];
+  }
+  if(fourCells.every(function(val) { return val === player})) {
     return true;
   }
 
+  // check vertically
+  for(var i=0; i<neededToWin; i++) {
+    fourCells[i] = grid[colId + i][rowId];
+  }
+  if(fourCells.every(function(val) { return val === player})) {
+    return true;
+  }
+
+  // check diagonally-downwards 
+  for(var i=0; i<neededToWin; i++) {
+    fourCells[i] = grid[colId + i][rowId + i];
+  }
+  if(fourCells.every(function(val) { return val === player})) {
+    return true;
+  }
+
+  // check diagonally-upwards 
+  for(var i=0; i<neededToWin; i++) {
+    try{
+      fourCells[i] = grid[colId - i][rowId + i];
+    } catch(e) {
+      fourCells[i] = null;
+    }
+  }
+  if(fourCells.every(function(val) { return val === player})) {
+    return true;
+  }
+
+}
+
+export function isVictory(grid: number[][], player: any) {
+
+  for(var colId=0; colId < numOfColumns-neededToWin+1; colId++){
+    for(var rowId=0; rowId < numOfRows-neededToWin+1; rowId++){
+      if(checkCellForVictory(grid, colId, rowId, player)){
+        return true;
+      }
+    }
+  }
   return false;
 }
 
-export function isDraw(cells: number[][]) {
+export function isDraw(grid: number[][]) {
 
-  for (var rowIdx = numOfRows - 1; rowIdx >= 0; rowIdx--) {
-    for (var colIdx = numOfColumns - 1; colIdx >= 0; colIdx--) {
-      if (cells[rowIdx][colIdx] === null) {
+  for (var colIdx = numOfColumns - 1; colIdx >= 0; colIdx--) {
+    for (var rowIdx = numOfRows - 1; rowIdx >= 0; rowIdx--) {
+      if (grid[colIdx][rowIdx] === null) {
         return false;
       }
     }
@@ -32,8 +70,8 @@ export function isDraw(cells: number[][]) {
 
 function generateGrid(){
   const grid: any = {};
-    for (var rowIdx = 0; rowIdx < numOfRows; rowIdx++) {
-      grid[rowIdx] = Array(numOfColumns).fill(null);
+    for (var rowIdx = 0; rowIdx < numOfColumns; rowIdx++) {
+      grid[rowIdx] = Array(numOfRows).fill(null);
     }
   return grid;
 }
@@ -49,10 +87,10 @@ export const FourinarowGame = Game({
 
     selectColumn(G, ctx, id) {
 
-      const rowId = Math.floor(id/10); 
-      for (var colIdx = numOfRows - 1; colIdx >= 0; colIdx--) {
-        if (G.grid[rowId][colIdx] === null) {
-          G.grid[rowId][colIdx] = ctx.currentPlayer;
+      const colId = Math.floor(id/10); 
+      for (var rowID = numOfRows - 1; rowID >= 0; rowID--) {
+        if (G.grid[colId][rowID] === null) {
+          G.grid[colId][rowID] = ctx.currentPlayer;
           return;
         }
       }
@@ -65,7 +103,7 @@ export const FourinarowGame = Game({
     movesPerTurn: 1,
 
     endGameIf: (G, ctx) => {
-      if (isVictory(G.grid)) {
+      if (isVictory(G.grid, ctx.currentPlayer)) {
         return { winner: ctx.currentPlayer };
       }
       if (isDraw(G.grid)) {

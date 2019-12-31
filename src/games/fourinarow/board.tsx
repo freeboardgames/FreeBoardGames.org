@@ -1,18 +1,11 @@
-/*
- * Copyright 2017 The boardgame.io Authors.
- *
- * Use of this source code is governed by a MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
 
 import * as React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
-import { EmptyDisk, CircleBlue, CircleGreen, Lines } from './Shapes';
+import { EmptyDisk, CircleBlue, CircleGreen } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isOnlineGame, isAIGame } from '../../common/gameMode';
-import { numOfColumns, numOfRows } from './constants';
+import { numOfColumns, numOfRows, localPlayerNames } from './constants';
 
 
 interface IBoardProps {
@@ -36,9 +29,9 @@ export class Board extends React.Component<IBoardProps, {}> {
   };
 
   isActive(id: number) {
-    const colId = id % 10; 
-    const rowId = Math.floor(id/10);
-    return this.props.isActive && this.props.G.grid[rowId][colId] === null;
+    const rowId = id % 10; 
+    const colId = Math.floor(id/10);
+    return this.props.isActive && this.props.G.grid[colId][rowId] === null;
   }
 
   _getStatus() {
@@ -52,9 +45,9 @@ export class Board extends React.Component<IBoardProps, {}> {
       // Local or AI game
       switch (this.props.ctx.currentPlayer) {
         case '0':
-          return "Red's turn";
+          return localPlayerNames[this.props.ctx.currentPlayer] + "'s turn";
         case '1':
-          return "Green's turn";
+          return localPlayerNames[this.props.ctx.currentPlayer] + "'s turn";
       }
     }
   }
@@ -84,9 +77,9 @@ export class Board extends React.Component<IBoardProps, {}> {
       // Local game
       switch (this.props.ctx.gameover.winner) {
         case '0':
-          return 'red won';
+          return localPlayerNames[this.props.ctx.currentPlayer] + ' won';
         case '1':
-          return 'green won';
+          return localPlayerNames[this.props.ctx.currentPlayer] + ' won';
         case undefined:
           return 'draw';
       }
@@ -108,17 +101,17 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getCells() {
     const cells = [];
-    for (let i = 0; i < numOfRows; i++) {
-      for (let j = 0; j < numOfColumns; j++) {
+    for (let i = 0; i < numOfColumns; i++) {
+      for (let j = 0; j < numOfRows; j++) {
         const id = 10*i + j;
-        cells.push(<rect key={`cell_${id}`} x={i+1} y={j} width="1" height="1" fill="#dac292" strokeWidth="0" onClick={this.onClick(id)}/> );
-        cells.push(<circle key={`empty_${id}`} cx={i+0.5} cy={j+0.5} r=".3" fill="rgb(250,250,250)" onClick={this.onClick(id)}/> );
+        cells.push(<rect key={`cell_${id}`} x={i} y={j} width="1" height="1" fill="#dac292" stroke="#dac292" strokeWidth="0.05"/> );
+        cells.push(<circle key={`empty_${id}`} cx={i+0.5} cy={j+0.5} r=".35" fill="rgb(250,250,250)" strokeWidth="0.05" stroke="#c4a870" onClick={this.onClick(id)}/> );
         
         let overlay;
         if (this.props.G.grid[i][j] === '0') {
-          overlay = <CircleBlue x={i} y={j} key={`cross_${id}`} />;
+          overlay = <CircleBlue x={i} y={j} key={`chip_${id}`} />;
         } else if (this.props.G.grid[i][j] === '1') {
-          overlay = <CircleGreen x={i} y={j} key={`circle_${id}`} />;
+          overlay = <CircleGreen x={i} y={j} key={`chip_${id}`} />;
         }
         if (overlay) {
           cells.push(overlay);
@@ -135,7 +128,6 @@ export class Board extends React.Component<IBoardProps, {}> {
         </Typography>
         <svg width="100%" height="100%" viewBox="0 0 7 6">
           {this._getCells()}
-          {Lines}
         </svg>
       </div>
     );
@@ -146,7 +138,6 @@ export class Board extends React.Component<IBoardProps, {}> {
       <div style={{ textAlign: 'center' }}>
         <svg width="50%" height="50%" viewBox="0 0 7 6">
           {this._getCells()}
-          {Lines}
         </svg>
       </div>
     );
