@@ -5,21 +5,33 @@ interface IShapeProps {
   y: number;
 }
 
-// export const EmptyDisk = (props: IShapeProps) => {
-//   return (
-//     <circle key={`circle${props.x},${props.y}`} cx={props.x + 0.5} cy={props.y + 0.5} r=".3" fill="rgb(225,225,225)" />
-//   );
-// };
+const diskRadius = 0.375;
+const strokeWidth = 0.05;
+
+export const EmptyDisk = (props: any) => {
+  return (
+    <circle
+      key={`empty_circle${props.x},${props.y}`}
+      cx={props.x + 0.5}
+      cy={props.y + 0.5}
+      r={diskRadius}
+      fill="rgb(250,250,250)"
+      strokeWidth={strokeWidth}
+      stroke="#c4a870"
+      onClick={props.onClick}
+    />
+  );
+};
 
 export const CircleGreen = (props: IShapeProps) => {
   return (
     <circle
-      key={`circle${props.x},${props.y}`}
+      key={`green_circle${props.x},${props.y}`}
       cx={props.x + 0.5}
       cy={props.y + 0.5}
-      r=".35"
+      r={diskRadius}
       fill="rgb(21, 255, 0)"
-      strokeWidth="0.05"
+      strokeWidth={strokeWidth}
       stroke="#c4a870"
     />
   );
@@ -28,12 +40,12 @@ export const CircleGreen = (props: IShapeProps) => {
 export const CircleBlue = (props: IShapeProps) => {
   return (
     <circle
-      key={`circle${props.x},${props.y}`}
+      key={`blue_circle${props.x},${props.y}`}
       cx={props.x + 0.5}
       cy={props.y + 0.5}
-      r=".35"
+      r={diskRadius}
       fill="rgb(80, 80, 253)"
-      strokeWidth="0.05"
+      strokeWidth={strokeWidth}
       stroke="#c4a870"
     />
   );

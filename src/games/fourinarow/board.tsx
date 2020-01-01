@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
-import { CircleBlue, CircleGreen } from './Shapes';
+import { EmptyDisk, CircleBlue, CircleGreen } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isOnlineGame, isAIGame } from '../../common/gameMode';
 import { numOfColumns, numOfRows, localPlayerNames } from './constants';
@@ -41,12 +41,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       }
     } else {
       // Local or AI game
-      switch (this.props.ctx.currentPlayer) {
-        case '0':
-          return localPlayerNames[this.props.ctx.currentPlayer] + "'s turn";
-        case '1':
-          return localPlayerNames[this.props.ctx.currentPlayer] + "'s turn";
-      }
+      return localPlayerNames[this.props.ctx.currentPlayer] + "'s turn";
     }
   }
 
@@ -75,9 +70,9 @@ export class Board extends React.Component<IBoardProps, {}> {
       // Local game
       switch (this.props.ctx.gameover.winner) {
         case '0':
-          return localPlayerNames[this.props.ctx.currentPlayer] + ' won';
+          return localPlayerNames['0'] + ' won';
         case '1':
-          return localPlayerNames[this.props.ctx.currentPlayer] + ' won';
+          return localPlayerNames['1'] + ' won';
         case undefined:
           return 'draw';
       }
@@ -114,18 +109,7 @@ export class Board extends React.Component<IBoardProps, {}> {
             strokeWidth="0.05"
           />,
         );
-        cells.push(
-          <circle
-            key={`empty_${id}`}
-            cx={i + 0.5}
-            cy={j + 0.5}
-            r=".35"
-            fill="rgb(250,250,250)"
-            strokeWidth="0.05"
-            stroke="#c4a870"
-            onClick={this.onClick(id)}
-          />,
-        );
+        cells.push(<EmptyDisk x={i} y={j} key={`empty_chip_${id}`} onClick={this.onClick(id)} />);
 
         let overlay;
         if (this.props.G.grid[i][j] === '0') {

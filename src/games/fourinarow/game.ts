@@ -6,7 +6,11 @@ function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: a
 
   // check horizontally
   for (var i = 0; i < neededToWin; i++) {
-    fourCells[i] = grid[colId][rowId + i];
+    try {
+      fourCells[i] = grid[colId][rowId + i];
+    } catch (e) {
+      fourCells[i] = null;
+    }
   }
   if (
     fourCells.every(function(val) {
@@ -18,7 +22,11 @@ function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: a
 
   // check vertically
   for (var i = 0; i < neededToWin; i++) {
-    fourCells[i] = grid[colId + i][rowId];
+    try {
+      fourCells[i] = grid[colId + i][rowId];
+    } catch (e) {
+      fourCells[i] = null;
+    }
   }
   if (
     fourCells.every(function(val) {
@@ -30,7 +38,11 @@ function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: a
 
   // check diagonally-downwards
   for (var i = 0; i < neededToWin; i++) {
-    fourCells[i] = grid[colId + i][rowId + i];
+    try {
+      fourCells[i] = grid[colId + i][rowId + i];
+    } catch (e) {
+      fourCells[i] = null;
+    }
   }
   if (
     fourCells.every(function(val) {
@@ -58,8 +70,8 @@ function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: a
 }
 
 export function isVictory(grid: number[][], player: any) {
-  for (var colId = 0; colId < numOfColumns - neededToWin + 1; colId++) {
-    for (var rowId = 0; rowId < numOfRows - neededToWin + 1; rowId++) {
+  for (var colId = 0; colId < numOfColumns; colId++) {
+    for (var rowId = 0; rowId < numOfRows; rowId++) {
       if (checkCellForVictory(grid, colId, rowId, player)) {
         return true;
       }
