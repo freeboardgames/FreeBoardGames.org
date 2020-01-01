@@ -19,7 +19,7 @@ export const GAMES_MAP: IGameDefMap = {
   ninemensmorris: ninemensmorrisGameDef,
   checkers: checkersGameDef,
   reversi: reversiGameDef,
-  fourinarow: fourinarowGameDef
+  fourinarow: fourinarowGameDef,
 };
 
 export const GAMES_LIST: IGameDef[] = [
@@ -31,7 +31,7 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.cornerus,
   GAMES_MAP.seabattle,
   GAMES_MAP.tictactoe,
-  GAMES_MAP.fourinarow
+  GAMES_MAP.fourinarow,
 ];
 
 // No need to edit below

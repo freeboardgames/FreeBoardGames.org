@@ -1,5 +1,5 @@
 import { GameMode } from '../../App/Game/GameModePicker';
-import { IGameModeExtraInfoDropdown } from '../../App/Game/GameModePicker';
+// import { IGameModeExtraInfoDropdown } from '../../App/Game/GameModePicker';
 import FourInARowThumbnail from './media/thumbnail.png';
 import { IGameDef } from '../../games';
 import instructions from './instructions.md';
@@ -25,5 +25,5 @@ export const fourinarowGameDef: IGameDef = {
     text: instructions,
   },
   config: () => import('./config'),
-//   aiConfig: () => import('./ai'),
+  //   aiConfig: () => import('./ai'),
 };

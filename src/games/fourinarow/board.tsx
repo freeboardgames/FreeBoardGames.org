@@ -1,12 +1,10 @@
-
 import * as React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
-import { EmptyDisk, CircleBlue, CircleGreen } from './Shapes';
+import { CircleBlue, CircleGreen } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isOnlineGame, isAIGame } from '../../common/gameMode';
 import { numOfColumns, numOfRows, localPlayerNames } from './constants';
-
 
 interface IBoardProps {
   G: any;
@@ -21,7 +19,7 @@ interface IBoardProps {
 export class Board extends React.Component<IBoardProps, {}> {
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
-    this.props.moves.selectColumn(id);
+      this.props.moves.selectColumn(id);
       if (isAIGame(this.props.gameArgs)) {
         setTimeout(this.props.step, 250);
       }
@@ -29,8 +27,8 @@ export class Board extends React.Component<IBoardProps, {}> {
   };
 
   isActive(id: number) {
-    const rowId = id % 10; 
-    const colId = Math.floor(id/10);
+    const rowId = id % 10;
+    const colId = Math.floor(id / 10);
     return this.props.isActive && this.props.G.grid[colId][rowId] === null;
   }
 
@@ -103,10 +101,32 @@ export class Board extends React.Component<IBoardProps, {}> {
     const cells = [];
     for (let i = 0; i < numOfColumns; i++) {
       for (let j = 0; j < numOfRows; j++) {
-        const id = 10*i + j;
-        cells.push(<rect key={`cell_${id}`} x={i} y={j} width="1" height="1" fill="#dac292" stroke="#dac292" strokeWidth="0.05"/> );
-        cells.push(<circle key={`empty_${id}`} cx={i+0.5} cy={j+0.5} r=".35" fill="rgb(250,250,250)" strokeWidth="0.05" stroke="#c4a870" onClick={this.onClick(id)}/> );
-        
+        const id = 10 * i + j;
+        cells.push(
+          <rect
+            key={`cell_${id}`}
+            x={i}
+            y={j}
+            width="1"
+            height="1"
+            fill="#dac292"
+            stroke="#dac292"
+            strokeWidth="0.05"
+          />,
+        );
+        cells.push(
+          <circle
+            key={`empty_${id}`}
+            cx={i + 0.5}
+            cy={j + 0.5}
+            r=".35"
+            fill="rgb(250,250,250)"
+            strokeWidth="0.05"
+            stroke="#c4a870"
+            onClick={this.onClick(id)}
+          />,
+        );
+
         let overlay;
         if (this.props.G.grid[i][j] === '0') {
           overlay = <CircleBlue x={i} y={j} key={`chip_${id}`} />;
