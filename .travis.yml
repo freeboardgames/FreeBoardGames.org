@@ -13,6 +13,8 @@ cache:
   directories:
     # cache folder with Cypress binary
     - ~/.cache
+    # next.js build cache
+    - .next/cache
 
 install:
   - yarn install
