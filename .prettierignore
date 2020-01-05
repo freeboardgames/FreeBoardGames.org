@@ -1,8 +1,14 @@
-server-dist
-dist
-android
-blog
-i18n
-node_modules
-coverage
-static
+# package.json is formatted by package managers, so we ignore it here
+package.json
+package-lock.json
+yarn.lock
+package.json
+.next/
+node_modules/
+coverage/
+coverage-cypress/
+jest-cypress/
+stockfish8.worker.js
+sw.js
+blog/
+bgio/dist/

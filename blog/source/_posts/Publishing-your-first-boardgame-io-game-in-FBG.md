@@ -4,13 +4,13 @@ date: 2019-06-16 21:33:17
 tags:
 ---
 
-So you created (or want to create) an awesome new game using the [boardgame.io](https://boardgame.io) framework. Even though you probably told some friends and played with them, it might still be difficult to get people to know about your game and reach its full potential. Fear not, FreeBoardGame.org (FBG)'s purpose is to get your game to more people by creating a FOSS community of developers and players.
+So you created (or want to create) an awesome new game using the [boardgame.io](https://boardgame.io) framework. Even though you probably told some friends and played with them, it might still be difficult to get people to know about your game and reach its full potential. Fear not, FreeBoardGames.org (FBG)'s purpose is to get your game to more people by creating a FOSS community of developers and players.
 
-In this tutorial you are going to see how easy it is to get your game up and running in [FreeBoardGame.org](https://freeboardgame.org). We are going to create a game for the platform and very quickly have it up and running.
+In this tutorial you are going to see how easy it is to get your game up and running in [FreeBoardGames.org](https://www.freeboardgame.org). We are going to create a game for the platform and very quickly have it up and running.
 
 # Setting up the environment
 
-First, fork the [FreeBoardGame repo](https://github.com/freeboardgame/FreeBoardGame.org) on GitHub:
+First, fork the [FreeBoardGame repo](https://github.com/freeboardgames/FreeBoardGames.org) on GitHub:
 
 ![fork button image](https://github-images.s3.amazonaws.com/help/bootcamp/Bootcamp-Fork.png)
 
@@ -52,7 +52,7 @@ Explaining what is going on here:
 - _code_: Internal code we are going to use for this game, must match the folder name.
 - _name_: Name that will show up to users.
 - _imageURL_: Thumbnail used across the app on the home page, game page and lobby. Generally a screenshot of the game, should be 500x250 pixels.
-- _modes_: Each game mode will represent a card in the game page ([check chess here](https://freeboardgame.org/g/chess)).
+- _modes_: Each game mode will represent a card in the game page ([check chess here](https://www.freeboardgames.org/play/chess)).
   - `GameMode.AI`: Makes the game available offline, allowing users to play single player matches against the computer (more configuration is needed).
   - `GameMode.OnlineFriend`: Allows users to invite friends to play the game online. Users are going to need internet to connect to the server.
   - `GameMode.LocalFriend`: Makes the game available offline, and players can alternate using the same device to play the game.

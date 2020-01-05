@@ -1,27 +1,39 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
-    "module": "esnext",
-    "target": "es6",
-    "jsx": "react",
-    "allowSyntheticDefaultImports": true,
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "esModuleInterop": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "plugins": [
-      { "name": "tslint-language-service"}
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "types": [
+      "cypress"
     ],
     "typeRoots": [
       "node_modules/@types",
       "@types",
       "./@types"
     ],
-    "lib": ["es2017", "dom"]
+    "incremental": true
   },
-  "include": [
-    "./src/**/*"
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
   ],
-	"exclude": [
-			"node_modules",
-			"**/*.spec.ts"
-	]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

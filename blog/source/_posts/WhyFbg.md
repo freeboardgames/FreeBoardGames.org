@@ -1,7 +1,7 @@
 ---
-title: Why FreeBoardGame.org?
+title: Why FreeBoardGames.org?
 date: 2019-05-28 21:32:00
-tags: why motivation boardgame.io freeboardgame.org
+tags: why motivation boardgame.io freeboardgames freeboardgames.org
 ---
 
 One of the main pain points I experienced trying to play board games online with friends are all the fragmented implementations out there. Some amazing games only work for iOS, or others only for Android, or some only in Desktop. Most of these versions don't have multiplayer modes that can be played with each other, some are extremely expensive, and most require their own account. Besides, having one friend with the "wrong" OS will make it impossible for the party of friends to play together.

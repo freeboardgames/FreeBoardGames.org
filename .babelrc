@@ -1,0 +1,19 @@
+{
+  "presets": ["next/babel"],
+  "plugins": ["@babel/plugin-syntax-dynamic-import"],
+  "env": {
+    "production": {
+      "plugins": ["babel-plugin-jsx-remove-data-test-id"],
+      "presets": [["minify", { "builtIns": false }]]
+    },
+    "development": {
+      "plugins": ["styled-jsx/babel-test", "istanbul"]
+    },
+    "test": {
+      "plugins": ["styled-jsx/babel-test"]
+    },
+    "cypress": {
+      "plugins": ["istanbul"]
+    }
+  }
+}

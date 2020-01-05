@@ -1,19 +1,24 @@
 sudo: false
 language: node_js
 node_js:
-  - 'stable'
+  - "stable"
+addons:
+  apt:
+    packages:
+      # for cypress
+      - libgconf-2-4
 
 cache:
+  yarn: true
   directories:
-    - node_modules
+    # cache folder with Cypress binary
+    - ~/.cache
 
 install:
   - yarn install
 
 script:
-  - yarn run verify-lint
-  - yarn run prod:buildquietly
-  - yarn run test:coverage
+  - yarn run ci
 
 after_success:
   - yarn run test:coveralls

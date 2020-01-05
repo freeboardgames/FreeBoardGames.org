@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: FreeBoardGame.org Blog
+title: FreeBoardGames.org Blog
 subtitle: Free, open-source board games on your phone.
-description: FreeBoardGame.org blog
+description: FreeBoardGames.org blog
 keywords: chess board game online play tutorial guide create develop
 author: Flamecoals
 language: English
@@ -13,7 +13,7 @@ timezone: America/Los_Angeles
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://FreeBoardGame.org/blog
+url: https://www.FreeBoardGames.org/blog
 root: /blog/
 permalink: :year/:month/:day/:title/
 permalink_defaults:

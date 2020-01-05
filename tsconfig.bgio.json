@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    // "isolatedModules": true,
+    "jsx": "react",
+    "typeRoots": [
+      "node_modules/@types",
+      "@types",
+      "./@types"
+    ],
+    "incremental": true,
+    "outDir": "bgio/"
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ],
+  "include": [
+    // "next-env.d.ts",
+    // "next-env.d.ts",
+    // "**/*.ts",
+    // "**/*.tsx"
+    "bgio/typings.d.ts",
+    "bgio/*.ts",
+  ]
+}
