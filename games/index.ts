@@ -24,14 +24,14 @@ export const GAMES_MAP: IGameDefMap = {
 
 export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.chess,
-  GAMES_MAP.ninemensmorris,
-  GAMES_MAP.reversi,
+  GAMES_MAP.tictactoeplus,
   GAMES_MAP.takesix,
   GAMES_MAP.checkers,
+  GAMES_MAP.reversi,
+  GAMES_MAP.ninemensmorris,
   GAMES_MAP.cornerus,
   GAMES_MAP.seabattle,
   GAMES_MAP.tictactoe,
-  GAMES_MAP.tictactoeplus,
 ];
 
 // No need to edit below
@@ -55,8 +55,8 @@ export interface IGameDef {
   minPlayers: number;
   maxPlayers: number;
   modes: IGameModeInfo[];
-  instructions: {
-    videoId: string;
+  instructions?: {
+    videoId?: string;
     text?: string;
   };
   config: () => Promise<any>;
