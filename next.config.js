@@ -89,6 +89,10 @@ module.exports = withWorkers(
             );
           }
 
+          if (!BABEL_ENV_IS_PROD) {
+            config.optimization.minimizer = [];
+          }
+
           return config;
         },
       }),
