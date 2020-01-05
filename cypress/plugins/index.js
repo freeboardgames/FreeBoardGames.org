@@ -1,7 +1,7 @@
 const wp = require('@cypress/webpack-preprocessor');
-// const is = require('@cypress/code-coverage/use-browserify-istanbul')
+const { addMatchImageSnapshotPlugin } = require('cypress-image-snapshot/plugin');
 
-module.exports = on => {
+module.exports = (on, config) => {
   const options = {
     webpackOptions: {
       resolve: {
@@ -20,4 +20,5 @@ module.exports = on => {
   };
   on('file:preprocessor', wp(options));
   on('task', require('@cypress/code-coverage/task'));
+  addMatchImageSnapshotPlugin(on, config);
 };

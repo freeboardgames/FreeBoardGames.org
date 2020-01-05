@@ -14,7 +14,7 @@ class App extends React.Component<{}, {}> {
     if (!isProdChannel) {
       appBarStyle = { background: 'red' };
       versionInfo = (
-        <Typography variant="h6" style={{ color: 'white', marginLeft: 'auto' }}>
+        <Typography data-test-id="gitrev" variant="h6" style={{ color: 'white', marginLeft: 'auto' }}>
           {process.env.VERSION}
         </Typography>
       );

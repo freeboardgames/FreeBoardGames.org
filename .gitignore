@@ -110,6 +110,8 @@ typings/
 # Cypress
 cypress/videos
 cypress/screenshots
+cypress/snapshots
+cypress/__diff_output__
 
 # FBG-specific
 bgio/dist
