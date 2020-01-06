@@ -6,7 +6,7 @@ const childProcess = require('child_process');
 const withWorkers = require('@zeit/next-workers');
 
 const CHANNEL = process.env.CHANNEL || 'development';
-const BGIO_SERVER_URL = process.env.BGIO_SERVER_URL || 'development';
+const BGIO_SERVER_URL = process.env.BGIO_SERVER_URL;
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
 const VERSION = process.env.GIT_REV || getGitHash();
 
