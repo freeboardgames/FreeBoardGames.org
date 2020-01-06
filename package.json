@@ -3,7 +3,6 @@
   "version": "2.0.0",
   "license": "BSD-3-Clause",
   "scripts": {
-    "ci": "run-s lint format:check test:coverage test:cypress:ci report:combined",
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx pages src/ @types/ components/ tests/",
     "pre": "run-s lint format:check test:coverage test:cypress report:combined",
     "autopre": "run-s format lint test:coverage test:cypress report:combined",

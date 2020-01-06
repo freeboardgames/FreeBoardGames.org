@@ -20,7 +20,7 @@ install:
   - yarn install
 
 script:
-  - yarn run ci
+  - yarn run pre
 
 after_success:
   - yarn run test:coveralls
