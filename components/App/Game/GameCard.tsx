@@ -47,7 +47,7 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
       );
     }
     return (
-      <div style={mainDivStyle}>
+      <div style={mainDivStyle} data-test-id={`gamecard-${this.props.game.code}`}>
         <div
           style={{
             ...baseBadgeStyle,

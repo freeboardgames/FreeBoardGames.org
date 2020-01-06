@@ -4,6 +4,8 @@ import App from 'next/app';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from '../src/theme';
 import { SelfXSSWarning } from '../components/App/SelfXSSWarning';
+import withError from 'next-with-error';
+import ErrorPage from './_error';
 
 class defaultApp extends App {
   componentDidMount() {
@@ -24,4 +26,4 @@ class defaultApp extends App {
   }
 }
 
-export default defaultApp;
+export default withError(ErrorPage)(defaultApp);

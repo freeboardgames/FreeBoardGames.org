@@ -5,7 +5,7 @@ import { GameModePicker } from '../../../components/App/Game/GameModePicker';
 import { GameInstructions } from '../../../components/App/Game/GameInstructions';
 import { IGameDef, GAMES_MAP } from '../../../games';
 import { withRouter } from 'next/router';
-import Error from '../../_error';
+import { generatePageError } from 'next-with-error';
 
 interface gameInfoProps {
   gameDef: IGameDef;
@@ -13,9 +13,6 @@ interface gameInfoProps {
 
 class GameInfo extends React.Component<gameInfoProps, {}> {
   render() {
-    if (!this.props.gameDef) {
-      return <Error />;
-    }
     return (
       <FreeBoardGamesBar>
         <GameCard game={this.props.gameDef} />
@@ -28,8 +25,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
     const gameCode = router.query.gameCode as string;
     const gameDef: IGameDef = GAMES_MAP[gameCode];
     if (!gameDef && router.res) {
-      router.res.statusCode = 404;
-      router.res.end();
+      return generatePageError(404);
     }
     return { gameDef };
   }
