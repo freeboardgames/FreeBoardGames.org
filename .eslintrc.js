@@ -18,6 +18,7 @@ module.exports = {
     'react/display-name': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
     'react/no-unused-state': 'warn',
+    'no-console': 'warn',
   },
   settings: {
     react: {
