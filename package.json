@@ -14,7 +14,7 @@
     "build:staging": "cross-env NODE_ENV=production CHANNEL=staging next build",
     "format": "prettier --write \"./**/*.*(js|jsx|ts|tsx)\"",
     "format:staged": "pretty-quick --staged",
-    "format:check": "prettier --check './**/*.ts' './**/*.tsx' './**/*.js' './**/*.jsx'",
+    "format:check": "prettier --check \"./**/*.ts\" \"./**/*.tsx\" \"./**/*.js\" \"./**/*.jsx\"",
     "run:bgio": "node bgio/dist/server_bgio.js",
     "start": "cross-env CHANNEL=production NODE_ENV=production node server.js",
     "cyp:build": "cross-env NODE_ENV=production CHANNEL=staging BABEL_ENV=cypress next build",
