@@ -49,8 +49,8 @@ export function isVictory(cells: string[]) {
   return false;
 }
 
-export const TictactoeGame = Game({
-  name: 'tictactoe',
+export const TictactoePlusGame = Game({
+  name: 'tictactoeplus',
 
   setup: () => ({
     cells: Array(16).fill(null),

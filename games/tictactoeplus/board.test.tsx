@@ -5,14 +5,14 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { MemoryRouter } from 'react-router';
 import { GameMode } from '../../App/Game/GameModePicker';
-import { TictactoeGame } from './game';
+import { TictactoePlusGame } from './game';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 test('clicking a cell on the board', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   client.moves.clickCell = jest.fn();
   const state0 = client.store.getState();
@@ -40,7 +40,7 @@ test('clicking a cell on the board', () => {
 
 test('click a cell that has already been played', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell = jest.fn();
@@ -69,7 +69,7 @@ test('click a cell that has already been played', () => {
 
 test('render board - one X and one O - local friend', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
@@ -96,7 +96,7 @@ test('render board - one X and one O - local friend', () => {
 
 test("render board - O's turn - local friend", () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   const state0 = client.store.getState();
@@ -120,7 +120,7 @@ test("render board - O's turn - local friend", () => {
 
 test('render board - X wins - local friend', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
@@ -144,7 +144,7 @@ test('render board - X wins - local friend', () => {
 
 test('render board - O wins - local friend', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
@@ -168,7 +168,7 @@ test('render board - O wins - local friend', () => {
 
 test('render board - X wins - AI', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
@@ -192,7 +192,7 @@ test('render board - X wins - AI', () => {
 
 test('render board - O wins - AI', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
@@ -216,7 +216,7 @@ test('render board - O wins - AI', () => {
 
 test('render board - O wins - draw', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
@@ -240,7 +240,7 @@ test('render board - O wins - draw', () => {
 
 test('render board - draw - local friend', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
@@ -264,7 +264,7 @@ test('render board - draw - local friend', () => {
 
 test('render board - our turn - online', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
@@ -289,7 +289,7 @@ test('render board - our turn - online', () => {
 
 test('render board - their turn - online', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
@@ -314,7 +314,7 @@ test('render board - their turn - online', () => {
 
 test('render board - one X and one O - online', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
@@ -340,7 +340,7 @@ test('render board - one X and one O - online', () => {
 
 test('render board - we win - online', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
@@ -364,7 +364,7 @@ test('render board - we win - online', () => {
 
 test('render board - we lose - online', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
@@ -388,7 +388,7 @@ test('render board - we lose - online', () => {
 
 test('render board - draw - online', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
@@ -412,7 +412,7 @@ test('render board - draw - online', () => {
 
 test('render board - AI', () => {
   const client = Client({
-    game: TictactoeGame,
+    game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
   const comp = Enzyme.mount(

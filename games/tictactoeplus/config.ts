@@ -1,9 +1,9 @@
 import { IGameConfig } from '../';
-import { TictactoeGame } from './game';
+import { TictactoePlusGame } from './game';
 import { Board } from './board';
 
 const config: IGameConfig = {
-  bgioGame: TictactoeGame,
+  bgioGame: TictactoePlusGame,
   bgioBoard: Board,
 };
 

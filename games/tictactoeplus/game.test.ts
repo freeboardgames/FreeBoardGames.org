@@ -1,11 +1,11 @@
 import { Client } from '@freeboardgame.org/boardgame.io/client';
-import { TictactoeGame } from './game';
+import { TictactoePlusGame } from './game';
 
 // https://github.com/nicolodavis/boardgame.io/blob/master/docs/testing.md
 it('should declare player 1 as the winner', () => {
   // set up a specific board scenario
   const TictactoeCustomScenario = {
-    ...TictactoeGame,
+    ...TictactoePlusGame,
     setup: () => ({
       cells: ['0', '0', '0', null, '1', '1', '1', null, null, null, null, null, null, null, null, null],
     }),
@@ -32,7 +32,7 @@ it('should declare player 1 as the winner', () => {
 it('should declare a draw', () => {
   // set up a specific board scenario
   const TictactoeCustomScenario = {
-    ...TictactoeGame,
+    ...TictactoePlusGame,
     setup: () => ({
       cells: ['0', '1', '0', '1', '1', '0', '1', '0', '0', '1', '1', '0', '0', '1', '0', null],
     }),
