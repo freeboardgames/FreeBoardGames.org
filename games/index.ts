@@ -7,6 +7,7 @@ import { ninemensmorrisGameDef } from './ninemensmorris';
 import { checkersGameDef } from './checkers';
 import { reversiGameDef } from './reversi';
 import { cornerusGameDef } from './cornerus';
+import { tictactoeplusGameDef } from './tictactoeplus';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
@@ -18,14 +19,16 @@ export const GAMES_MAP: IGameDefMap = {
   ninemensmorris: ninemensmorrisGameDef,
   checkers: checkersGameDef,
   reversi: reversiGameDef,
+  tictactoeplus: tictactoeplusGameDef,
 };
 
 export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.chess,
-  GAMES_MAP.ninemensmorris,
-  GAMES_MAP.reversi,
+  GAMES_MAP.tictactoeplus,
   GAMES_MAP.takesix,
   GAMES_MAP.checkers,
+  GAMES_MAP.reversi,
+  GAMES_MAP.ninemensmorris,
   GAMES_MAP.cornerus,
   GAMES_MAP.seabattle,
   GAMES_MAP.tictactoe,
@@ -52,8 +55,8 @@ export interface IGameDef {
   minPlayers: number;
   maxPlayers: number;
   modes: IGameModeInfo[];
-  instructions: {
-    videoId: string;
+  instructions?: {
+    videoId?: string;
     text?: string;
   };
   config: () => Promise<any>;
