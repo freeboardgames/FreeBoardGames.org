@@ -128,6 +128,7 @@
     "pretty-quick": "^2.0.1",
     "react-test-renderer": "^16.12.0",
     "responsive-loader": "^1.2.0",
+    "rimraf": "^3.0.0",
     "sharp": "^0.23.4",
     "start-server-and-test": "^1.10.6",
     "svg-sprite-loader": "^4.1.6",

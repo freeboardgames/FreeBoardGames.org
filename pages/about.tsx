@@ -7,11 +7,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import SEO from '../components/SEO';
 
 class About extends React.Component<{}, {}> {
   render() {
     return (
       <FreeBoardGamesBar>
+        <SEO title={'About'} description={'About FreeBoardGames.org, a free and open-source software project.'} />
         {this._getAboutCard()}
         {this._getContributorsCard()}
         {this._getCreditsCard()}

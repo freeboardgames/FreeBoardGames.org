@@ -8,6 +8,7 @@ interface SeoProps {
 }
 
 function getDefaultValues() {
+  // const defaults = {};
   const defaults: NextSeoProps = { noindex: GLOBAL_NOINDEX, nofollow: GLOBAL_NOINDEX };
   return defaults;
 }
@@ -16,7 +17,13 @@ export default function SEO(props: NextSeoProps & SeoProps) {
   if (props.overrideTitle) {
     props = { ...props, title: props.overrideTitle };
   } else {
-    props = { ...props, title: `${props.title} - FreeBoardGames.org` };
+    let title = props.title;
+    if (!props.title) {
+      title = `FreeBoardGames.org`;
+    } else {
+      title += ` - FreeBoardGames.org`;
+    }
+    props = { ...props, title };
   }
   return <NextSeo {...getDefaultValues()} {...props} />;
 }

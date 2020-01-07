@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import SubjectIcon from '@material-ui/icons/Subject';
+import InfoIcon from '@material-ui/icons/Info';
 import CodeIcon from '@material-ui/icons/Code';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ class Header extends React.Component<{}, {}> {
     return (
       <div style={{ padding: '0 8px' }}>
         <Typography variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
-          Free as in freedom{' '}
+          Free as in freedom
         </Typography>
         <Typography variant="body2" gutterBottom={true} style={{ marginTop: '16px' }}>
           We at FreeBoardGames.org want to bring free games for everybody. Free as in &quot;free beer&quot; <i>and</i>
@@ -34,11 +34,11 @@ class Header extends React.Component<{}, {}> {
           <CodeIcon style={{ marginRight: '4px' }} />
           Code
         </Button>
-        <Link href="/blog">
+        <Link href="/about">
           <a style={{ textDecoration: 'none' }}>
             <Button variant="outlined" style={{ margin: '4px' }}>
-              <SubjectIcon style={{ marginRight: '4px' }} />
-              Blog
+              <InfoIcon style={{ marginRight: '4px' }} />
+              About
             </Button>
           </a>
         </Link>
