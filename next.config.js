@@ -52,6 +52,7 @@ module.exports = withWorkers(
           VERSION,
           BGIO_SERVER_URL,
           BABEL_ENV_IS_PROD,
+          GA_TRACKING_CODE: process.env.GA_TRACKING_CODE,
         },
         webpack: config => {
           config.module.rules.push({
