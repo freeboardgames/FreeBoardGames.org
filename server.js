@@ -22,7 +22,7 @@ app
     server.use('/blog', express.static(join(__dirname, 'blog/dist')));
 
     server.get('/robots.txt', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'freeboardgames.org') {
+      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
         res.sendStatus(404);
       } else {
         const filePath = `${STATIC_DIR}/restrictiveRobots.txt`;
