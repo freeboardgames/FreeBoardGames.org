@@ -15,8 +15,8 @@ class Header extends React.Component<{}, {}> {
         </Typography>
         <Typography variant="body2" gutterBottom={true} style={{ marginTop: '16px' }}>
           We at FreeBoardGames.org want to bring free games for everybody. Free as in &quot;free beer&quot; <i>and</i>
-          as in &quot;freedom&quot;. Not only do you get to enjoy free high quality games everywhere, but you also can
-          study how they are made, change them, and contribute back to the community!
+          &nbsp; as in &quot;freedom&quot;. Not only do you get to enjoy free high quality games everywhere, but you
+          also can study how they are made, change them, and contribute back to the community!
         </Typography>
         {this._links()}
       </div>
