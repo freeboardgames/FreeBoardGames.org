@@ -17,10 +17,10 @@
 apply plugin: 'com.android.application'
 
 def twaManifest = [
-    applicationId: 'org.freeboardgame',
-    hostName: 'freeboardgame.org', // The domain being opened in the TWA.
+    applicationId: 'org.freeboardgames',
+    hostName: 'www.freeboardgames.org', // The domain being opened in the TWA.
     launchUrl: '/', // The start path for the TWA. Must be relative to the domain.
-    name: 'FreeBoardGame', // The name shown on the Android Launcher.
+    name: 'FreeBoardGames', // The name shown on the Android Launcher.
     themeColor: '#3f51b5', // The color used for the status bar.
     backgroundColor: '#ffffff', // The color used for the splash screen background.
     enableNotifications: false // Set to true to enable notification delegation
@@ -32,8 +32,8 @@ android {
         applicationId twaManifest.applicationId
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.1.1"
+        versionCode 1
+        versionName '1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // The name for the application on the Android Launcher
@@ -74,7 +74,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
         }
     }
     compileOptions {
