@@ -3,7 +3,7 @@ import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
 const { Server } = require('@freeboardgame.org/boardgame.io/server'); // tslint:disable-line
 
-const PORT = process.env.BGIO_PORT || 8001;
+const PORT = process.env.BGIO_PORT || '8001';
 
 const startServer = async () => {
   const configs = Promise.all(GAMES_LIST.map(gameDef => gameDef.config()));
