@@ -17,9 +17,7 @@ function getGitHash() {
       .execSync('git rev-parse --short HEAD')
       .toString()
       .trim();
-  } catch (e) {
-    console.error('In next.config.js: could not get git hash');
-  }
+  } catch (e) {}
   return hash;
 }
 
