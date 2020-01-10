@@ -1,47 +1,47 @@
-import * as React from 'react';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
-import { GameLayout } from '../../components/App/Game/GameLayout';
-import { EmptyDisk, CircleBlue, CircleGreen } from './Shapes';
-import Typography from '@material-ui/core/Typography';
-import { isOnlineGame, isAIGame } from '../common/gameMode';
-import { numOfColumns, numOfRows, localPlayerNames } from './constants';
+import * as React from 'react'
+import { IGameArgs } from '../../components/App/Game/GameBoardWrapper'
+import { GameLayout } from '../../components/App/Game/GameLayout'
+import { EmptyDisk, CircleBlue, CircleGreen } from './Shapes'
+import Typography from '@material-ui/core/Typography'
+import { isOnlineGame, isAIGame } from '../common/gameMode'
+import { numOfColumns, numOfRows, localPlayerNames } from './constants'
 
 interface IBoardProps {
-  G: any;
-  ctx: any;
-  moves: any;
-  playerID: string;
-  isActive: boolean;
-  gameArgs?: IGameArgs;
-  step?: any;
+  G: any
+  ctx: any
+  moves: any
+  playerID: string
+  isActive: boolean
+  gameArgs?: IGameArgs
+  step?: any
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
-      this.props.moves.selectColumn(id);
+      this.props.moves.selectColumn(id)
       if (isAIGame(this.props.gameArgs)) {
-        setTimeout(this.props.step, 250);
+        setTimeout(this.props.step, 250)
       }
     }
   };
 
   isActive(id: number) {
-    const rowId = id % 10;
-    const colId = Math.floor(id / 10);
-    return this.props.isActive && this.props.G.grid[colId][rowId] === null;
+    const rowId = id % 10
+    const colId = Math.floor(id / 10)
+    return this.props.isActive && this.props.G.grid[colId][rowId] === null
   }
 
   _getStatus() {
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'YOUR TURN';
+        return 'YOUR TURN'
       } else {
-        return 'Waiting for opponent...';
+        return 'Waiting for opponent...'
       }
     } else {
       // Local or AI game
-      return localPlayerNames[this.props.ctx.currentPlayer] + "'s turn";
+      return localPlayerNames[this.props.ctx.currentPlayer] + "'s turn"
     }
   }
 
@@ -50,31 +50,31 @@ export class Board extends React.Component<IBoardProps, {}> {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
         if (this.props.ctx.gameover.winner === this.props.playerID) {
-          return 'you won';
+          return 'you won'
         } else {
-          return 'you lost';
+          return 'you lost'
         }
       } else {
-        return 'draw';
+        return 'draw'
       }
     } else if (isAIGame(this.props.gameArgs)) {
       switch (this.props.ctx.gameover.winner) {
         case '0':
-          return 'you won';
+          return 'you won'
         case '1':
-          return 'you lost';
+          return 'you lost'
         case undefined:
-          return 'draw';
+          return 'draw'
       }
     } else {
       // Local game
       switch (this.props.ctx.gameover.winner) {
         case '0':
-          return localPlayerNames['0'] + ' won';
+          return localPlayerNames['0'] + ' won'
         case '1':
-          return localPlayerNames['1'] + ' won';
+          return localPlayerNames['1'] + ' won'
         case undefined:
-          return 'draw';
+          return 'draw'
       }
     }
   }
@@ -87,16 +87,16 @@ export class Board extends React.Component<IBoardProps, {}> {
           extraCardContent={this._getGameOverBoard()}
           gameArgs={this.props.gameArgs}
         />
-      );
+      )
     }
-    return <GameLayout>{this._getBoard()}</GameLayout>;
+    return <GameLayout>{this._getBoard()}</GameLayout>
   }
 
   _getCells() {
-    const cells = [];
+    const cells = []
     for (let i = 0; i < numOfColumns; i++) {
       for (let j = 0; j < numOfRows; j++) {
-        const id = 10 * i + j;
+        const id = 10 * i + j
         cells.push(
           <rect
             key={`cell_${id}`}
@@ -104,25 +104,25 @@ export class Board extends React.Component<IBoardProps, {}> {
             y={j}
             width="1"
             height="1"
-            fill="#dac292"
-            stroke="#dac292"
+            //fill="#dac292"
+            //stroke="#dac292"
             strokeWidth="0.05"
           />,
-        );
-        cells.push(<EmptyDisk x={i} y={j} key={`empty_chip_${id}`} onClick={this.onClick(id)} />);
+        )
+        cells.push(<EmptyDisk x={i} y={j} key={`empty_chip_${id}`} onClick={this.onClick(id)} />)
 
-        let overlay;
+        let overlay
         if (this.props.G.grid[i][j] === '0') {
-          overlay = <CircleBlue x={i} y={j} key={`chip_${id}`} />;
+          overlay = <CircleBlue x={i} y={j} key={`chip_${id}`} />
         } else if (this.props.G.grid[i][j] === '1') {
-          overlay = <CircleGreen x={i} y={j} key={`chip_${id}`} />;
+          overlay = <CircleGreen x={i} y={j} key={`chip_${id}`} />
         }
         if (overlay) {
-          cells.push(overlay);
+          cells.push(overlay)
         }
       }
     }
-    return cells;
+    return cells
   }
   _getBoard() {
     return (
@@ -134,7 +134,7 @@ export class Board extends React.Component<IBoardProps, {}> {
           {this._getCells()}
         </svg>
       </div>
-    );
+    )
   }
 
   _getGameOverBoard() {
@@ -144,8 +144,8 @@ export class Board extends React.Component<IBoardProps, {}> {
           {this._getCells()}
         </svg>
       </div>
-    );
+    )
   }
 }
 
-export default Board;
+export default Board

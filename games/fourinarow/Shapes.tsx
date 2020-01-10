@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { grey, red, blue } from '@material-ui/core/colors';
 
 interface IShapeProps {
   x: number;
@@ -15,9 +16,8 @@ export const EmptyDisk = (props: any) => {
       cx={props.x + 0.5}
       cy={props.y + 0.5}
       r={diskRadius}
-      fill="rgb(250,250,250)"
       strokeWidth={strokeWidth}
-      stroke="#c4a870"
+      stroke={grey[50]}
       onClick={props.onClick}
     />
   );
@@ -30,9 +30,9 @@ export const CircleGreen = (props: IShapeProps) => {
       cx={props.x + 0.5}
       cy={props.y + 0.5}
       r={diskRadius}
-      fill="rgb(21, 255, 0)"
+      fill={red[500]}
       strokeWidth={strokeWidth}
-      stroke="#c4a870"
+      stroke={grey[50]}
     />
   );
 };
@@ -44,9 +44,9 @@ export const CircleBlue = (props: IShapeProps) => {
       cx={props.x + 0.5}
       cy={props.y + 0.5}
       r={diskRadius}
-      fill="rgb(80, 80, 253)"
+      fill={blue[500]}
       strokeWidth={strokeWidth}
-      stroke="#c4a870"
+      stroke={grey[50]}
     />
   );
 };
