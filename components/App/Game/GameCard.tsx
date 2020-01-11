@@ -46,6 +46,15 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
         </div>
       );
     }
+    const gameNameHeading = this.props.isLink ? (
+      <Typography gutterBottom={false} variant="h4" component="h4" style={{ fontWeight: 300 }}>
+        {this.props.game.name}
+      </Typography>
+    ) : (
+      <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
+        Play {this.props.game.name}
+      </Typography>
+    );
     return (
       <div style={mainDivStyle} data-test-id={`gamecard-${this.props.game.code}`}>
         <div
@@ -56,9 +65,7 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
             paddingTop: '4px',
           }}
         >
-          <Typography gutterBottom={false} variant="h4" component="h4" style={{ fontWeight: 300 }}>
-            {this.props.game.name}
-          </Typography>
+          {gameNameHeading}
         </div>
         <div
           style={{
@@ -67,7 +74,7 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
             left: '8px',
           }}
         >
-          <Typography gutterBottom={false} variant="overline" component="p">
+          <Typography gutterBottom={false} variant="overline" component="h5">
             {this.props.game.description}
           </Typography>
         </div>

@@ -32,7 +32,7 @@ module.exports = withWorkers(
           skipWaiting: true,
           runtimeCaching: [
             {
-              urlPattern: /^https?.*/,
+              urlPattern: /^\/.*/,
               handler: 'NetworkFirst',
               options: {
                 cacheName: 'offlineCache',

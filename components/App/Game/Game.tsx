@@ -10,6 +10,7 @@ import DEFAULT_ENHANCERS from './Enhancers';
 import AddressHelper from '../Helpers/AddressHelper';
 import { IRoomMetadata, IPlayerInRoom, LobbyService } from '../Lobby/LobbyService';
 import { IGameArgs } from './GameBoardWrapper';
+import ReactGA from 'react-ga';
 
 interface IGameProps {
   // FIXME: fix which props are req
@@ -151,6 +152,11 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         clientConfig.multiplayer = { server: AddressHelper.getServerAddress() };
       }
       const App = Client(clientConfig) as any;
+      ReactGA.event({
+        category: 'Game',
+        label: gameArgs.gameCode,
+        action: `Started ${this.mode} game`,
+      });
       if (this.mode === GameMode.OnlineFriend) {
         return <App gameID={matchCode} playerID={playerID} credentials={credentials} />;
       } else {
