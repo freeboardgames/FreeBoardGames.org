@@ -104,8 +104,8 @@ export class Board extends React.Component<IBoardProps, {}> {
             y={j}
             width="1"
             height="1"
-            fill="#dac292"
-            stroke="#dac292"
+            //fill="#dac292"
+            //stroke="#dac292"
             strokeWidth="0.05"
           />,
         );
