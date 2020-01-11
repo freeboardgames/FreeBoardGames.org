@@ -1,0 +1,122 @@
+exports.ids = [4];
+exports.modules = {
+
+/***/ "./src/common/gameMode.ts":
+/*!********************************!*\
+  !*** ./src/common/gameMode.ts ***!
+  \********************************/
+/*! exports provided: isLocalGame, isOnlineGame, isAIGame */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"isLocalGame\", function() { return isLocalGame; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"isOnlineGame\", function() { return isOnlineGame; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"isAIGame\", function() { return isAIGame; });\n/* harmony import */ var _App_Game_GameModePicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../App/Game/GameModePicker */ \"./src/App/Game/GameModePicker.tsx\");\n\nfunction isLocalGame(gameArgs) {\n  return gameArgs && gameArgs.mode === _App_Game_GameModePicker__WEBPACK_IMPORTED_MODULE_0__[\"GameMode\"].LocalFriend;\n}\nfunction isOnlineGame(gameArgs) {\n  return gameArgs && gameArgs.mode === _App_Game_GameModePicker__WEBPACK_IMPORTED_MODULE_0__[\"GameMode\"].OnlineFriend;\n}\nfunction isAIGame(gameArgs) {\n  return gameArgs && gameArgs.mode === _App_Game_GameModePicker__WEBPACK_IMPORTED_MODULE_0__[\"GameMode\"].AI;\n}\n\n//# sourceURL=webpack:///./src/common/gameMode.ts?");
+
+/***/ }),
+
+/***/ "./src/games/ninemensmorris/Board.css":
+/*!********************************************!*\
+  !*** ./src/games/ninemensmorris/Board.css ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("\n\n//# sourceURL=webpack:///./src/games/ninemensmorris/Board.css?");
+
+/***/ }),
+
+/***/ "./src/games/ninemensmorris/Field.css":
+/*!********************************************!*\
+  !*** ./src/games/ninemensmorris/Field.css ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("\n\n//# sourceURL=webpack:///./src/games/ninemensmorris/Field.css?");
+
+/***/ }),
+
+/***/ "./src/games/ninemensmorris/Field.tsx":
+/*!********************************************!*\
+  !*** ./src/games/ninemensmorris/Field.tsx ***!
+  \********************************************/
+/*! exports provided: Field */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Field\", function() { return Field; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _Field_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Field.css */ \"./src/games/ninemensmorris/Field.css\");\n/* harmony import */ var _Field_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_Field_css__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/colors/red */ \"@material-ui/core/colors/red\");\n/* harmony import */ var _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_2__);\n\n\n\nconst COORDS = [[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]];\nconst CONNECTORS = [0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22];\nconst RADIUS = 10;\nconst PIECE_RADIUS = 25;\nconst SIZE = 500;\nconst DISTANCE = 0.3;\nclass Field extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {\n  constructor() {\n    super(...arguments);\n\n    this._selectPoint = i => () => this.props.selectPoint(i);\n  }\n\n  render() {\n    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"svg\", {\n      width: \"100%\",\n      height: \"100%\",\n      viewBox: \"-250 -250 500 500\",\n      className: _Field_css__WEBPACK_IMPORTED_MODULE_1___default.a.Field,\n      pointerEvents: \"visible\"\n    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"g\", {\n      strokeWidth: \"4\",\n      stroke: \"#cccccc\"\n    }, this.getLines()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"g\", {\n      fill: \"#cccccc\"\n    }, this.getCircles()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"g\", null, this.getPieces()));\n  }\n\n  getPointsCoords() {\n    const result = [];\n\n    for (let i = 0; i < 3; i++) {\n      const multiplier = (SIZE / 2 - PIECE_RADIUS) * (1 - i * DISTANCE);\n      COORDS.forEach((coord, j) => {\n        const cx = coord[0] * multiplier;\n        const cy = coord[1] * multiplier;\n        const key = 8 * i + j;\n        result.push({\n          cx,\n          cy,\n          key\n        });\n      });\n    }\n\n    return result;\n  }\n\n  getPieces() {\n    const coords = this.getPointsCoords();\n    return this.props.points.map((point, i) => {\n      if (point.piece === null) {\n        return null;\n      }\n\n      const scale = i === this.props.selected ? 1.2 : 1;\n      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"circle\", {\n        r: PIECE_RADIUS,\n        key: point.piece.key,\n        fill: point.piece.player === '0' ? 'white' : _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_2___default.a[500],\n        onClick: this._selectPoint(i),\n        className: `${_Field_css__WEBPACK_IMPORTED_MODULE_1___default.a.Piece} Piece`,\n        style: {\n          transform: `translate(${coords[i].cx}px, ${coords[i].cy}px) scale(${scale})`\n        }\n      });\n    });\n  }\n\n  getCircles() {\n    const result = [];\n\n    for (const p of this.getPointsCoords()) {\n      result.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"circle\", {\n        cx: p.cx,\n        cy: p.cy,\n        r: RADIUS,\n        key: p.key\n      }));\n      result.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"circle\", {\n        cx: p.cx,\n        cy: p.cy,\n        r: PIECE_RADIUS,\n        onClick: this._selectPoint(p.key),\n        className: \"ClickableCircle\",\n        key: `${p.key}clickable`,\n        fill: \"none\"\n      }));\n    }\n\n    return result;\n  }\n\n  getLines() {\n    const coords = this.getPointsCoords();\n    return CONNECTORS.map(i => this.props.points[i].connections.map(connection => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"line\", {\n      x1: coords[i].cx,\n      y1: coords[i].cy,\n      x2: coords[connection].cx,\n      y2: coords[connection].cy,\n      key: i * 100 + connection\n    })));\n  }\n\n}\n\n//# sourceURL=webpack:///./src/games/ninemensmorris/Field.tsx?");
+
+/***/ }),
+
+/***/ "./src/games/ninemensmorris/board.tsx":
+/*!********************************************!*\
+  !*** ./src/games/ninemensmorris/board.tsx ***!
+  \********************************************/
+/*! exports provided: Board */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Board\", function() { return Board; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _App_Game_GameLayout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../App/Game/GameLayout */ \"./src/App/Game/GameLayout.tsx\");\n/* harmony import */ var _Field__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Field */ \"./src/games/ninemensmorris/Field.tsx\");\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./game */ \"./src/games/ninemensmorris/game.ts\");\n/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/Typography */ \"@material-ui/core/Typography\");\n/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var _Board_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Board.css */ \"./src/games/ninemensmorris/Board.css\");\n/* harmony import */ var _Board_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_Board_css__WEBPACK_IMPORTED_MODULE_5__);\n/* harmony import */ var _common_gameMode__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../common/gameMode */ \"./src/common/gameMode.ts\");\n\n\n\n\n\n\n\nclass Board extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {\n  constructor() {\n    super(...arguments);\n    this.state = {\n      selected: null\n    };\n\n    this._selectPoint = id => {\n      if (this.props.playerID !== this.props.ctx.currentPlayer && !Object(_common_gameMode__WEBPACK_IMPORTED_MODULE_6__[\"isLocalGame\"])(this.props.gameArgs)) {\n        return;\n      }\n\n      if (this.props.G.haveToRemovePiece) {\n        this.props.moves.removePiece(id);\n      } else if (this.props.ctx.phase === _game__WEBPACK_IMPORTED_MODULE_3__[\"Phase\"].Place) {\n        this.props.moves.placePiece(id);\n      } else if (this.state.selected === null) {\n        if (this.props.G.points[id].piece !== null && this.props.G.points[id].piece.player === this.props.ctx.currentPlayer) {\n          this.setState({\n            selected: id\n          });\n        }\n      } else {\n        this.props.moves.movePiece(this.state.selected, id);\n        this.setState({\n          selected: null\n        });\n      }\n    };\n  }\n\n  _getStatus() {\n    if (!this.props.gameArgs) {\n      return;\n    }\n\n    let prefix = '';\n\n    if (Object(_common_gameMode__WEBPACK_IMPORTED_MODULE_6__[\"isLocalGame\"])(this.props.gameArgs)) {\n      prefix = this.props.ctx.currentPlayer === '0' ? '[WHITE]' : '[RED]';\n    }\n\n    if (this.props.ctx.currentPlayer !== this.props.playerID && !Object(_common_gameMode__WEBPACK_IMPORTED_MODULE_6__[\"isLocalGame\"])(this.props.gameArgs)) {\n      return 'Waiting for opponent...';\n    } else if (this.props.G.haveToRemovePiece) {\n      return `${prefix} REMOVE PIECE`;\n    }\n\n    if (this.props.ctx.phase === _game__WEBPACK_IMPORTED_MODULE_3__[\"Phase\"].Place) {\n      return `${prefix} PLACE PIECE`;\n    } else {\n      return `${prefix} MOVE PIECE`;\n    }\n  }\n\n  _getGameOver() {\n    if (Object(_common_gameMode__WEBPACK_IMPORTED_MODULE_6__[\"isOnlineGame\"])(this.props.gameArgs) || Object(_common_gameMode__WEBPACK_IMPORTED_MODULE_6__[\"isAIGame\"])(this.props.gameArgs)) {\n      if (this.props.ctx.gameover.winner === this.props.playerID) {\n        return 'you won';\n      } else {\n        return 'you lost';\n      }\n    } else {\n      if (this.props.ctx.gameover.winner === '0') {\n        return 'white won';\n      } else {\n        return 'red won';\n      }\n    }\n  }\n\n  render() {\n    if (this.props.ctx.gameover) {\n      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_App_Game_GameLayout__WEBPACK_IMPORTED_MODULE_1__[\"GameLayout\"], {\n        gameOver: this._getGameOver(),\n        gameArgs: this.props.gameArgs\n      });\n    }\n\n    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_App_Game_GameLayout__WEBPACK_IMPORTED_MODULE_1__[\"GameLayout\"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_4___default.a, {\n      variant: \"h5\",\n      className: _Board_css__WEBPACK_IMPORTED_MODULE_5___default.a.Status\n    }, this._getStatus()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Field__WEBPACK_IMPORTED_MODULE_2__[\"Field\"], {\n      points: this.props.G.points,\n      selectPoint: this._selectPoint,\n      selected: this.state.selected\n    }));\n  }\n\n}\n\n//# sourceURL=webpack:///./src/games/ninemensmorris/board.tsx?");
+
+/***/ }),
+
+/***/ "./src/games/ninemensmorris/config.ts":
+/*!********************************************!*\
+  !*** ./src/games/ninemensmorris/config.ts ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ \"./src/games/ninemensmorris/game.ts\");\n/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./board */ \"./src/games/ninemensmorris/board.tsx\");\n\n\nconst config = {\n  bgioGame: _game__WEBPACK_IMPORTED_MODULE_0__[\"NineMensMorrisGame\"],\n  bgioBoard: _board__WEBPACK_IMPORTED_MODULE_1__[\"Board\"]\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (config);\n\n//# sourceURL=webpack:///./src/games/ninemensmorris/config.ts?");
+
+/***/ }),
+
+/***/ "./src/games/ninemensmorris/game.ts":
+/*!******************************************!*\
+  !*** ./src/games/ninemensmorris/game.ts ***!
+  \******************************************/
+/*! exports provided: Phase, placePiece, movePiece, removePiece, NineMensMorrisGame */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Phase\", function() { return Phase; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"placePiece\", function() { return placePiece; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"movePiece\", function() { return movePiece; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"removePiece\", function() { return removePiece; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"NineMensMorrisGame\", function() { return NineMensMorrisGame; });\n/* harmony import */ var _freeboardgame_org_boardgame_io_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @freeboardgame.org/boardgame.io/core */ \"@freeboardgame.org/boardgame.io/core\");\n/* harmony import */ var _freeboardgame_org_boardgame_io_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_freeboardgame_org_boardgame_io_core__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _point__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./point */ \"./src/games/ninemensmorris/point.ts\");\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./player */ \"./src/games/ninemensmorris/player.ts\");\n/* harmony import */ var _piece__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./piece */ \"./src/games/ninemensmorris/piece.ts\");\n\n\n\n\nvar Phase;\n\n(function (Phase) {\n  Phase[\"Place\"] = \"Place\";\n  Phase[\"Move\"] = \"Move\";\n})(Phase || (Phase = {}));\n\nconst millsPositions = [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 0], [8, 9, 10], [10, 11, 12], [12, 13, 14], [14, 15, 8], [16, 17, 18], [18, 19, 20], [20, 21, 22], [22, 23, 16], [1, 9, 17], [3, 11, 19], [5, 13, 21], [7, 15, 23]];\n\nfunction getMills(G) {\n  return millsPositions.map(positions => G.points[positions[0]].piece !== null && G.points[positions[1]].piece !== null && G.points[positions[2]].piece !== null && G.points[positions[0]].piece.player === G.points[positions[1]].piece.player && G.points[positions[1]].piece.player === G.points[positions[2]].piece.player ? G.points[positions[0]].piece.player : null);\n}\n\nfunction isTherePieceOutsideMill(G, ctx) {\n  let points = G.points.map(point => ({\n    data: point,\n    safe: true\n  }));\n  G.mills.map((mill, index) => ({\n    owner: mill,\n    index\n  })).filter(mill => mill.owner !== null && mill.owner !== ctx.playerID).forEach(mill => millsPositions[mill.index].forEach(position => {\n    points[position].safe = false;\n  }));\n  return points.some(point => point.data.piece !== null && point.safe && point.data.piece.player !== ctx.playerID);\n}\n\nfunction placePiece(G, ctx, position) {\n  if (G.points[position].piece !== null || G.haveToRemovePiece) {\n    return _freeboardgame_org_boardgame_io_core__WEBPACK_IMPORTED_MODULE_0__[\"INVALID_MOVE\"];\n  }\n\n  const newG = Object.assign({}, G, {\n    points: Object.values(Object.assign({}, G.points, {\n      [position]: Object.assign({}, G.points[position], {\n        piece: new _piece__WEBPACK_IMPORTED_MODULE_3__[\"default\"](ctx.playerID, G.piecesPlaced)\n      })\n    })),\n    piecesPlaced: G.piecesPlaced + 1\n  });\n  const newMills = getMills(newG);\n  return Object.assign({}, newG, {\n    mills: newMills,\n    haveToRemovePiece: G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID)\n  });\n}\nfunction movePiece(G, ctx, position, newPosition) {\n  if (G.points[position].piece === null || G.points[position].piece.player !== ctx.playerID || // Check if player owns this piece // Check if piece exists\n  G.points[newPosition].piece !== null || // Check if point isn't already occupied\n  G.haveToRemovePiece || // Check if player has to remove piece\n  !G.points[position].connections.some(connection => connection === newPosition) && // Check if connection exists\n  G.players[ctx.playerID].lostPieces < 6 // Ignore the check if player has < 4 pieces\n  ) {\n      return _freeboardgame_org_boardgame_io_core__WEBPACK_IMPORTED_MODULE_0__[\"INVALID_MOVE\"];\n    }\n\n  const newG = Object.assign({}, G, {\n    points: Object.values(Object.assign({}, G.points, {\n      [position]: Object.assign({}, G.points[position], {\n        piece: null\n      }),\n      [newPosition]: Object.assign({}, G.points[newPosition], {\n        piece: G.points[position].piece\n      })\n    }))\n  });\n  const newMills = getMills(newG);\n  return Object.assign({}, newG, {\n    mills: newMills,\n    haveToRemovePiece: G.mills.some((mill, index) => mill !== ctx.playerID && newMills[index] === ctx.playerID)\n  });\n}\nfunction removePiece(G, ctx, position) {\n  if (!G.haveToRemovePiece || // Check if player is allowed\n  G.points[position].piece === null || // Check if piece exists\n  G.points[position].piece.player === ctx.playerID || // Check if doesn't player own this piece\n  G.mills.map((mill, index) => ({\n    owner: mill,\n    index\n  })).filter(mill => mill.owner !== null && mill.owner !== ctx.playerID).some(mill => millsPositions[mill.index].some(pos => pos === position)) && isTherePieceOutsideMill(G, ctx)) {\n    return _freeboardgame_org_boardgame_io_core__WEBPACK_IMPORTED_MODULE_0__[\"INVALID_MOVE\"];\n  }\n\n  const secondPlayerId = G.players.findIndex((_, i) => ctx.playerID !== i.toString());\n  const newG = Object.assign({}, G, {\n    points: Object.values(Object.assign({}, G.points, {\n      [position]: Object.assign({}, G.points[position], {\n        piece: null\n      })\n    })),\n    players: Object.values(Object.assign({}, G.players, {\n      [secondPlayerId]: {\n        lostPieces: G.players[secondPlayerId].lostPieces + 1\n      }\n    })),\n    haveToRemovePiece: false\n  });\n  return Object.assign({}, newG, {\n    mills: getMills(newG)\n  });\n}\nconst GameConfig = {\n  name: 'ninemensmorris',\n  flow: {\n    startingPhase: Phase.Place,\n    phases: {\n      Place: {\n        allowedMoves: ['placePiece', 'removePiece'],\n        next: Phase.Move,\n        endPhaseIf: G => G.piecesPlaced === 18\n      },\n      Move: {\n        allowedMoves: ['movePiece', 'removePiece']\n      }\n    },\n    onMove: (G, ctx) => {\n      if (!G.haveToRemovePiece) {\n        ctx.events.endTurn();\n      }\n    },\n    onTurnBegin: (G, ctx) => {\n      if (ctx.phase === Phase.Move && !G.haveToRemovePiece && G.players[ctx.currentPlayer].lostPieces < 6 && !G.points.filter(point => point.piece !== null && point.piece.player === ctx.currentPlayer).some(point => point.connections.some(connection => G.points[connection].piece === null))) {\n        ctx.events.endGame({\n          winner: G.players.findIndex((_, i) => i.toString() !== ctx.currentPlayer).toString()\n        });\n      }\n    },\n    endGameIf: G => {\n      if (G.players.some(player => player.lostPieces === 7)) {\n        return {\n          winner: G.players.findIndex(player => player.lostPieces !== 7).toString()\n        };\n      }\n    }\n  },\n  moves: {\n    placePiece,\n    movePiece,\n    removePiece\n  },\n  setup: ctx => {\n    /* 00-------01-------02\n     * |        |         |\n     * |  08----09----10  |\n     * |  |     |      |  |\n     * |  |  16-17-18  |  |\n     * |  |  |      |  |  |\n     * 07-15-23    19-11-03\n     * |  |  |      |  |  |\n     * |  |  22-21-20  |  |\n     * |  |     |      |  |\n     * |  14----13----12  |\n     * |        |         |\n     * 06-------05-------04\n     */\n    const points = new Array(24).fill(0).map(() => new _point__WEBPACK_IMPORTED_MODULE_1__[\"default\"]()); // Connect \"circles\"\n\n    points.forEach((point, i) => {\n      const prev = i % 8 === 0 ? i + 7 : i - 1;\n      const next = (i + 1) % 8 === 0 ? i - 7 : i + 1;\n      point.connections.push(prev, next);\n    }); // Connect junctions\n\n    for (let i = 1; i < 9; i += 2) {\n      points[i].connections.push(i + 8);\n      points[i + 8].connections.push(i, i + 16);\n      points[i + 16].connections.push(i + 8);\n    }\n\n    const players = new Array(ctx.numPlayers).fill(0).map(() => new _player__WEBPACK_IMPORTED_MODULE_2__[\"default\"]());\n    return {\n      points,\n      players,\n      mills: new Array(16).fill(null),\n      piecesPlaced: 0,\n      haveToRemovePiece: false\n    };\n  }\n};\nconst NineMensMorrisGame = Object(_freeboardgame_org_boardgame_io_core__WEBPACK_IMPORTED_MODULE_0__[\"Game\"])(GameConfig);\n\n//# sourceURL=webpack:///./src/games/ninemensmorris/game.ts?");
+
+/***/ }),
+
+/***/ "./src/games/ninemensmorris/piece.ts":
+/*!*******************************************!*\
+  !*** ./src/games/ninemensmorris/piece.ts ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Piece; });\nclass Piece {\n  constructor(player, key) {\n    this.player = player;\n    this.key = key;\n  }\n\n}\n\n//# sourceURL=webpack:///./src/games/ninemensmorris/piece.ts?");
+
+/***/ }),
+
+/***/ "./src/games/ninemensmorris/player.ts":
+/*!********************************************!*\
+  !*** ./src/games/ninemensmorris/player.ts ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Player; });\nclass Player {\n  constructor() {\n    this.lostPieces = 0;\n  }\n\n}\n\n//# sourceURL=webpack:///./src/games/ninemensmorris/player.ts?");
+
+/***/ }),
+
+/***/ "./src/games/ninemensmorris/point.ts":
+/*!*******************************************!*\
+  !*** ./src/games/ninemensmorris/point.ts ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Point; });\nclass Point {\n  constructor() {\n    this.connections = [];\n    this.piece = null;\n  }\n\n}\n\n//# sourceURL=webpack:///./src/games/ninemensmorris/point.ts?");
+
+/***/ })
+
+};;

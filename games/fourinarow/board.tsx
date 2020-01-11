@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import { GameLayout } from '../../components/App/Game/GameLayout';
-import { EmptyDisk, CircleBlue, CircleGreen } from './Shapes';
+import { EmptyDisk, CircleBlue, CircleRed } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isOnlineGame, isAIGame } from '../common/gameMode';
 import { numOfColumns, numOfRows, localPlayerNames } from './constants';
@@ -115,7 +115,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         if (this.props.G.grid[i][j] === '0') {
           overlay = <CircleBlue x={i} y={j} key={`chip_${id}`} />;
         } else if (this.props.G.grid[i][j] === '1') {
-          overlay = <CircleGreen x={i} y={j} key={`chip_${id}`} />;
+          overlay = <CircleRed x={i} y={j} key={`chip_${id}`} />;
         }
         if (overlay) {
           cells.push(overlay);

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>FreeBoardGame.org</title>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="description" content="" />
+    <meta name="robots" content="noindex" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="FreeBoardGame.org" />
+    <meta name="apple-mobile-web-app-title" content="FreeBoardGame.org" />
+    <meta name="theme-color" content="#3f51b5" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#ffc40d" />
+    <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        overscroll-behavior: none;
+      }
+      .client {
+        position: unset !important;
+      }
+      .seabattle-radar rect {
+        stroke: white;
+        stroke-width: 0.01px;
+      }
+    </style>
+    <nav itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement"></nav>
+  </head>
+  <body style="margin:0;">
+    <div id="root"></div>
+    <script>
+      if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && navigator.serviceWorker) {
+        navigator.serviceWorker.register('/sw.js').then(function(reg) {
+          reg.onupdatefound = function() {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = function() {
+              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('New FreeBoardGame.org version found, reloading.');
+                location.reload();
+              }
+            };
+          };
+        });
+      }
+    </script>
+  <script type="text/javascript" src="/489c62c30ebb1500e0fa.js"></script><script type="text/javascript" src="/e9386c1cb632de43cede.js"></script><script type="text/javascript" src="/7d2487ba1b55c671ab6c.js"></script><script type="text/javascript" src="/234e8b43a910dadac6ee.js"></script><script type="text/javascript" src="/83be599c27e4f11df0e6.js"></script><script type="text/javascript" src="/0280616dd105662b01f0.js"></script><script type="text/javascript" src="/99e2be0e4f234b34cf03.js"></script><script type="text/javascript" src="/3140a0a7c8b6a9954aee.js"></script><script type="text/javascript" src="/8a98f39d952cbd77d504.js"></script><script type="text/javascript" src="/5769263a82f61480442e.js"></script><script type="text/javascript" src="/e9cbdc79be9abc92e16a.js"></script><script type="text/javascript" src="/ebb92df29e229022f8d4.js"></script><script type="text/javascript" src="/ceb5cab3005d09064ba9.js"></script><script type="text/javascript" src="/a9e16a830e8b9fddbfa2.js"></script><script type="text/javascript" src="/58b1a9a9bba362b60b94.js"></script><script type="text/javascript" src="/2548b737ccabba38a2fe.js"></script><script type="text/javascript" src="/6eb4fbbd153fee4059f3.js"></script><script type="text/javascript" src="/c59c1bdae47c85bb5206.js"></script><script type="text/javascript" src="/c2757fe365009d947260.js"></script><script type="text/javascript" src="/42cf1e5d2ee2b5f94f6c.js"></script><script type="text/javascript" src="/eed9b1d0c54b14a9ba4f.js"></script><script type="text/javascript" src="/252c23640462093966bb.js"></script><script type="text/javascript" src="/7c1be49ea550ecb12293.js"></script><script type="text/javascript" src="/9b116dee755997694139.js"></script><script type="text/javascript" src="/19e203a1682a0ad7ad65.js"></script><script type="text/javascript" src="/2bfb000af1a5401e83c0.js"></script><script type="text/javascript" src="/1336d7e35fbea0579085.js"></script><script type="text/javascript" src="/366d7dc9bc240bfb09b7.js"></script><script type="text/javascript" src="/bfe51caf91d8aae48d55.js"></script><script type="text/javascript" src="/e60f84cd6db96ff9bb1f.js"></script><script type="text/javascript" src="/8e2e76b9fa233bf24e59.js"></script><script type="text/javascript" src="/0d8fe64c8ba26f85d5c8.js"></script><script type="text/javascript" src="/06c0abc7c58b67d52ea5.js"></script><script type="text/javascript" src="/91cdcb4c41bde7098b11.js"></script><script type="text/javascript" src="/2528c0c5d4f6383d8c38.js"></script><script type="text/javascript" src="/43132c59aa835fe46e52.js"></script><script type="text/javascript" src="/599bf94af627cca1a1a3.js"></script><script type="text/javascript" src="/e398922bf5be09f5a750.js"></script><script type="text/javascript" src="/60f7d7e98ab2ced9d07f.js"></script><script type="text/javascript" src="/2b1d0b2e10639f70786f.js"></script><script type="text/javascript" src="/528a8593c6bccfa379bd.js"></script><script type="text/javascript" src="/7cbd5008053e6ed25996.js"></script><script type="text/javascript" src="/949f146a4eb6f54cad30.js"></script><script type="text/javascript" src="/48f787c67773a7b28608.js"></script><script type="text/javascript" src="/837f1c22beaa8a27e94c.js"></script><script type="text/javascript" src="/6e8920d194d0d1540c76.js"></script><script type="text/javascript" src="/1148ca51fa91204b437e.js"></script><script type="text/javascript" src="/b8f42a7483719009f1bb.js"></script><script type="text/javascript" src="/6b9e47a194d35d7dc55c.js"></script><script type="text/javascript" src="/b58f18b39a16fdb6ab8d.js"></script><script type="text/javascript" src="/d9f255de3eef53fa179c.js"></script><script type="text/javascript" src="/6d0475e99e13c1429b3c.js"></script><script type="text/javascript" src="/3c32fdcad9201f711a10.js"></script><script type="text/javascript" src="/a0d4c74f6ef6868956ed.js"></script><script type="text/javascript" src="/a6160613619225b7bcf3.js"></script><script type="text/javascript" src="/9ea6b08a180db1184207.js"></script><script type="text/javascript" src="/5d6722eda7a2a350a5c8.js"></script><script type="text/javascript" src="/cdde63a88b0c66f56144.js"></script><script type="text/javascript" src="/389bbfff25c6d8f2dfd0.js"></script><script type="text/javascript" src="/a895bffcad9f4019b54d.js"></script><script type="text/javascript" src="/49964af00962b34ac0d2.js"></script><script type="text/javascript" src="/a59153869e16ae986a19.js"></script><script type="text/javascript" src="/e1cfa45dc4dbfa2ca02d.js"></script><script type="text/javascript" src="/c7570e579992a0993b2a.js"></script><script type="text/javascript" src="/4862291532ece7fd243d.js"></script><script type="text/javascript" src="/fa8e4f2e57a430e3839e.js"></script><script type="text/javascript" src="/a1cbaf630877bd3fbf86.js"></script><script type="text/javascript" src="/b445c9bb4f20331104c2.js"></script><script type="text/javascript" src="/91e4589060054ce1ac11.js"></script><script type="text/javascript" src="/f023e9aa5dd7e3d3d423.js"></script><script type="text/javascript" src="/01c6fc8c936fd4e93797.js"></script><script type="text/javascript" src="/0994b964da5996e646d6.js"></script><script type="text/javascript" src="/bdd8d2e53550a01d665c.js"></script><script type="text/javascript" src="/74808569c185a77361b4.js"></script><script type="text/javascript" src="/0229139eb8e52279131d.js"></script><script type="text/javascript" src="/c372539838fff55a1511.js"></script><script type="text/javascript" src="/a74b0891cabf87ffa592.js"></script><script type="text/javascript" src="/90900fbdb4830a88676a.js"></script><script type="text/javascript" src="/226cda287deecc33630c.js"></script><script type="text/javascript" src="/0e82e859abee7ea68756.js"></script><script type="text/javascript" src="/405d16e6c0b744b83cb8.js"></script><script type="text/javascript" src="/6d43e1fc1ad410c3dab9.js"></script><script type="text/javascript" src="/22bbfc4a2150445f5786.js"></script><script type="text/javascript" src="/e4d0beb9abf1cf756708.js"></script><script type="text/javascript" src="/bacdd5e07bb20b47ebe7.js"></script><script type="text/javascript" src="/7365685eaaf021a4eda8.js"></script><script type="text/javascript" src="/1a3c37a95a532986ceba.js"></script><script type="text/javascript" src="/292752916a1ef338ad93.js"></script><script type="text/javascript" src="/4eccfa3b3f73bbe52630.js"></script><script type="text/javascript" src="/6d30c5d48bcaaf693ffe.js"></script><script type="text/javascript" src="/09e9f86589b9f370ec6c.js"></script><script type="text/javascript" src="/36232c1ec18e1e98e2bf.js"></script><script type="text/javascript" src="/63f1118d1be1120f29d3.js"></script><script type="text/javascript" src="/2f6fbb91b5322b5d5cf6.js"></script><script type="text/javascript" src="/9f0dd893a03d32d4ec8c.js"></script><script type="text/javascript" src="/9948a2d24b92f385afcb.js"></script><script type="text/javascript" src="/runtime-474ab37080a4d4855ed2.js"></script></body>
+</html>
