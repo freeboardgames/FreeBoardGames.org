@@ -23,7 +23,7 @@ export const EmptyDisk = (props: any) => {
   );
 };
 
-export const CircleGreen = (props: IShapeProps) => {
+export const CircleRed = (props: IShapeProps) => {
   return (
     <circle
       key={`green_circle${props.x},${props.y}`}
