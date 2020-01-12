@@ -50,21 +50,3 @@ export const CircleBlue = (props: IShapeProps) => {
     />
   );
 };
-
-// function getGridLines() {
-//   let lines: any = [];
-
-//   // add all rows
-//   for (let i = 0; i < numOfRows; i++) {
-//     lines.push(<line key={`line_row_${i}`} x1="0" y1={`${i}`} x2={`${numOfColumns}`} y2={`${i}`} style={lineStyle} />);
-//   }
-
-//   // add all columns
-//   for (let i = 0; i < numOfColumns; i++) {
-//     lines.push(<line key={`line_col_${i}`} x1={`${i}`} y1="0" x2={`${i}`} y2={`${numOfColumns}`} style={lineStyle} />);
-//   }
-
-//   return lines;
-// }
-
-// export const Lines = getGridLines();
