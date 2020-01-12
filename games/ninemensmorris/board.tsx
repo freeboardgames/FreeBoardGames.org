@@ -91,7 +91,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     return (
-      <GameLayout>
+      <GameLayout gameArgs={this.props.gameArgs}>
         <Typography variant="h5" className={css.Status}>
           {this._getStatus()}
         </Typography>

@@ -74,7 +74,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         />
       );
     }
-    return <GameLayout optionsMenuItems={this._getOptionsMenuItems}>{child}</GameLayout>;
+    return (
+      <GameLayout optionsMenuItems={this._getOptionsMenuItems} gameArgs={this.props.gameArgs}>
+        {child}
+      </GameLayout>
+    );
   }
 
   _setSoundPref = (soundEnabled: boolean) => {

@@ -6,10 +6,13 @@ import Button from '@material-ui/core/Button';
 import MoreVert from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { IGameArgs } from './GameBoardWrapper';
+import { GAMES_MAP } from './../../../games/index';
 
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;
   optionsMenuItems?: () => IOptionsItems[];
+  gameArgs?: IGameArgs;
 }
 
 interface IGameDarkSublayoutState {
@@ -38,7 +41,11 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
     let fbgTopLeftText;
     if (isProdChannel) {
       fbgTopLeftText = (
-        <Typography variant="h6" gutterBottom={true} style={{ float: 'left', paddingTop: '14px', color: 'white' }}>
+        <Typography
+          variant="h6"
+          gutterBottom={true}
+          style={{ float: 'left', lineHeight: '48px', color: 'white', margin: 0 }}
+        >
           FreeBoardGames.org
         </Typography>
       );
@@ -71,12 +78,19 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
           >
             <Link href="/">
               <a style={{ float: 'left', textDecoration: 'none' }}>
-                <img src={FbgLogo} alt="FreeBoardGames.org" style={{ float: 'left', paddingRight: '16px' }} />
+                <img
+                  src={FbgLogo}
+                  alt="FreeBoardGames.org"
+                  style={{ float: 'left', paddingRight: '16px', paddingLeft: '6px' }}
+                />
                 {fbgTopLeftText}
               </a>
             </Link>
             {this._getOptionsMenuButton()}
             {this._getOptionsMenuItems()}
+            <Typography variant="h6" style={{ textAlign: 'center', clear: 'both', color: 'white', fontSize: '1em' }}>
+              {GAMES_MAP[this.props.gameArgs.gameCode].name}
+            </Typography>
           </div>
         </div>
         <div
