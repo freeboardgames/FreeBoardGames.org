@@ -12,3 +12,4 @@ stockfish8.worker.js
 sw.js
 blog/
 bgio/dist/
+.cache/
