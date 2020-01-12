@@ -89,7 +89,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
             {this._getOptionsMenuButton()}
             {this._getOptionsMenuItems()}
             <Typography variant="h6" style={{ textAlign: 'center', clear: 'both', color: 'white', fontSize: '1em' }}>
-              {GAMES_MAP[this.props.gameArgs.gameCode].name}
+              {typeof this.props.gameArgs !== undefined ? GAMES_MAP[this.props.gameArgs.gameCode].name : undefined}
             </Typography>
           </div>
         </div>
