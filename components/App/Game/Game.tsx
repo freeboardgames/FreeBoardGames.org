@@ -35,7 +35,6 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   loadAI: boolean;
   gameCode: string;
   gameDef: IGameDef;
-  gameConfigPromise: Promise<any>;
   currentUser: IPlayerInRoom;
   promise: any; // for testing
 
