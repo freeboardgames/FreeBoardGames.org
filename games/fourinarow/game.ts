@@ -100,7 +100,7 @@ export function generateGrid() {
 }
 
 export const ConnectFourGame = Game({
-  name: 'ConnectFour',
+  name: 'fourinarow',
 
   setup: () => {
     return { grid: generateGrid() };
