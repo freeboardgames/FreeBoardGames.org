@@ -24,10 +24,10 @@ export function isVictory(cells: string[]) {
 
   for (const pos of positions) {
     // find the first non-wildcard character in winning positions array
-    let symbol = cells[pos[0]];
-    for (const j in pos) {
-      if (cells[pos[j]] !== '2') {
-        symbol = cells[pos[j]];
+    let symbol = null;
+    for (const i of pos) {
+      if (cells[i] !== '2' && cells[i] !== null) {
+        symbol = cells[i];
         break;
       }
     }
@@ -42,7 +42,7 @@ export function isVictory(cells: string[]) {
       }
     }
     if (winner != null) {
-      return true;
+      return winner;
     }
   }
 
@@ -75,8 +75,9 @@ export const TictactoePlusGame = Game({
     movesPerTurn: 1,
 
     endGameIf: (G, ctx) => {
-      if (isVictory(G.cells)) {
-        return { winner: ctx.currentPlayer };
+      const winner = isVictory(G.cells);
+      if (winner) {
+        return { winner };
       }
       if (G.cells.filter((c: any) => c === null).length === 0) {
         return { draw: true };
