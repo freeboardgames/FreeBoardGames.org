@@ -12,7 +12,7 @@ import { GAMES_MAP } from './../../../games/index';
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;
   optionsMenuItems?: () => IOptionsItems[];
-  gameArgs?: IGameArgs;
+  gameArgs: IGameArgs;
 }
 
 interface IGameDarkSublayoutState {
@@ -38,13 +38,16 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
 
   render() {
     const isProdChannel = process.env.CHANNEL === 'production';
+    const gameName = GAMES_MAP[this.props.gameArgs.gameCode].name;
     let fbgTopLeftText;
     if (isProdChannel) {
-      fbgTopLeftText = (
-        <Typography variant="h6" gutterBottom={true} style={{ float: 'left', paddingTop: '9px', color: 'white' }}>
-          FreeBoardGames.org
-        </Typography>
-      );
+      if (gameName) {
+        fbgTopLeftText = (
+          <Typography variant="h6" gutterBottom={true} style={{ float: 'left', paddingTop: '9px', color: 'white' }}>
+            {gameName}
+          </Typography>
+        );
+      }
     } else {
       fbgTopLeftText = (
         <Typography
@@ -52,12 +55,10 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
           gutterBottom={true}
           style={{ float: 'left', marginTop: '10px', backgroundColor: 'red', color: 'white' }}
         >
-          &nbsp;{process.env.VERSION}&nbsp;
+          &nbsp;{gameName}&nbsp;
         </Typography>
       );
     }
-
-    const gameName = GAMES_MAP[this.props.gameArgs?.gameCode]?.name;
 
     return (
       <div>
@@ -83,15 +84,6 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
             </Link>
             {this._getOptionsMenuButton()}
             {this._getOptionsMenuItems()}
-            {gameName && (
-              <Typography
-                variant="h6"
-                gutterBottom={true}
-                style={{ float: 'right', paddingTop: '10px', color: 'white' }}
-              >
-                {gameName}
-              </Typography>
-            )}
           </div>
         </div>
         <div
