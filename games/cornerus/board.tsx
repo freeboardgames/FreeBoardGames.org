@@ -1,12 +1,12 @@
 import React from 'react';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
-import { GameLayout } from '../../components/App/Game/GameLayout';
+import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
+import { GameLayout } from 'components/App/Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IG, IPieceTransform, getPlayer, getValidPositions, inBounds, getAllPositions } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard, IScore } from '../common/Scoreboard';
-import { IOptionsItems } from '../../components/App/Game/GameDarkSublayout';
+import { IOptionsItems } from 'components/App/Game/GameDarkSublayout';
 
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';

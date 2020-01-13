@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
-import { GameLayout } from '../../components/App/Game/GameLayout';
+import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
+import { GameLayout } from 'components/App/Game/GameLayout';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { IG, getScoreBoard, isAllowedDeck } from './game';
 import { Decks } from './Decks';

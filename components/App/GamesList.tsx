@@ -1,6 +1,6 @@
 import React from 'react';
-import { GAMES_LIST } from '../../games';
-import { GameCard } from '../App/Game/GameCard';
+import { GAMES_LIST } from 'games';
+import { GameCard } from './Game/GameCard';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
 

@@ -5,7 +5,7 @@ import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
 import { NineMensMorrisGame } from './game';
 
 import { Board } from './board';
-import { GameMode } from '../../App/Game/GameModePicker';
+import { GameMode } from 'components/App/Game/GameModePicker';
 
 Enzyme.configure({ adapter: new Adapter() });
 

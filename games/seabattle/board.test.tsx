@@ -5,7 +5,7 @@ import { SeabattleGame } from './game';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
 
-import { GameMode } from '../../App/Game/GameModePicker';
+import { GameMode } from 'components/App/Game/GameModePicker';
 
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';

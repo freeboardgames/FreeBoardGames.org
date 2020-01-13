@@ -1,7 +1,7 @@
 import React from 'react';
 import { GameInstructions } from './GameInstructions';
 import { render, cleanup } from '@testing-library/react';
-import { IGameDef } from '../../games';
+import { IGameDef } from 'games';
 import { GameMode } from './GameModePicker';
 require('@testing-library/jest-dom/extend-expect');
 

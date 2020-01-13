@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import ReactMarkdown from 'react-markdown';
 import Typography from '@material-ui/core/Typography';
-import { IGameDef } from '../../../games';
+import { IGameDef } from 'games';
 
 interface IGameInstructionsProps {
   gameDef: IGameDef;

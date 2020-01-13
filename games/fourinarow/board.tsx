@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
-import { GameLayout } from '../../components/App/Game/GameLayout';
+import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
+import { GameLayout } from 'components/App/Game/GameLayout';
 import { EmptyDisk, CircleBlue, CircleRed } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isOnlineGame, isAIGame } from '../common/gameMode';

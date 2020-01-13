@@ -18,9 +18,9 @@ import {
   IOnDragData,
 } from '../common/Checkerboard';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
-import { GameLayout } from '../../components/App/Game/GameLayout';
-import { GameMode } from '../../components/App/Game/GameModePicker';
+import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
+import { GameLayout } from 'components/App/Game/GameLayout';
+import { GameMode } from 'components/App/Game/GameModePicker';
 import Bishop from './pieces/bishop';
 import King from './pieces/king';
 import Knight from './pieces/knight';
@@ -28,7 +28,7 @@ import Pawn from './pieces/pawn';
 import Queen from './pieces/queen';
 import Rook from './pieces/rook';
 import { playSound } from './sound';
-import { IOptionsItems } from '../../components/App/Game/GameDarkSublayout';
+import { IOptionsItems } from 'components/App/Game/GameDarkSublayout';
 import Typography from '@material-ui/core/Typography';
 
 const COL_NAMES = 'abcdefgh';

@@ -1,13 +1,13 @@
 import React from 'react';
-import { IGameArgs } from '../../components/App//Game/GameBoardWrapper';
-import { GameLayout } from '../../components/App//Game/GameLayout';
+import { IGameArgs } from 'components/App//Game/GameBoardWrapper';
+import { GameLayout } from 'components/App//Game/GameLayout';
 import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import { IG, getScoreBoard } from './game';
 import { IScore } from '../common/Scoreboard';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard } from '../common/Scoreboard';
-import { GameMode } from '../../components/App/Game/GameModePicker';
+import { GameMode } from 'components/App/Game/GameModePicker';
 import { ScoreBadges } from '../common/ScoreBadges';
 import css from './Board.css';
 
