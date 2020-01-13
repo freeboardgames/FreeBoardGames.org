@@ -7,11 +7,13 @@ require('@testing-library/jest-dom/extend-expect');
 
 afterEach(cleanup);
 
+const mockGameArgs: IGameArgs = { gameCode: 'tictactoe', mode: GameMode.LocalFriend };
+
 describe('Game Dark Sublayout - No Options Menu', () => {
   let wrapper: RenderResult;
   beforeEach(() => {
     wrapper = render(
-      <GameDarkSublayout>
+      <GameDarkSublayout gameArgs={mockGameArgs}>
         <p>Foobar Game</p>
       </GameDarkSublayout>,
     );
@@ -33,7 +35,7 @@ describe('Game Dark Sublayout - Options Menu', () => {
       },
     ];
     wrapper = render(
-      <GameDarkSublayout optionsMenuItems={() => options}>
+      <GameDarkSublayout gameArgs={mockGameArgs} optionsMenuItems={() => options}>
         <p>Foobar Game</p>
       </GameDarkSublayout>,
     );
@@ -56,7 +58,6 @@ describe('Game Dark Sublayout - Options Menu', () => {
 
 describe('Game Dark Sublayout - With Game Name', () => {
   let wrapper: RenderResult;
-  const mockGameArgs: IGameArgs = { gameCode: 'tictactoe', mode: GameMode.LocalFriend };
   beforeEach(() => {
     wrapper = render(
       <GameDarkSublayout gameArgs={mockGameArgs}>
