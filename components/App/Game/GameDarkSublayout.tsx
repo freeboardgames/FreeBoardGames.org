@@ -41,11 +41,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
     let fbgTopLeftText;
     if (isProdChannel) {
       fbgTopLeftText = (
-        <Typography
-          variant="h6"
-          gutterBottom={true}
-          style={{ float: 'left', lineHeight: '48px', color: 'white', margin: 0 }}
-        >
+        <Typography variant="h6" gutterBottom={true} style={{ float: 'left', paddingTop: '9px', color: 'white' }}>
           FreeBoardGames.org
         </Typography>
       );
@@ -60,6 +56,9 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
         </Typography>
       );
     }
+
+    const gameName = GAMES_MAP[this.props.gameArgs?.gameCode]?.name;
+
     return (
       <div>
         <div
@@ -78,19 +77,21 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
           >
             <Link href="/">
               <a style={{ float: 'left', textDecoration: 'none' }}>
-                <img
-                  src={FbgLogo}
-                  alt="FreeBoardGames.org"
-                  style={{ float: 'left', paddingRight: '16px', paddingLeft: '6px' }}
-                />
+                <img src={FbgLogo} alt="FreeBoardGames.org" style={{ float: 'left', paddingRight: '16px' }} />
                 {fbgTopLeftText}
               </a>
             </Link>
             {this._getOptionsMenuButton()}
             {this._getOptionsMenuItems()}
-            <Typography variant="h6" style={{ textAlign: 'center', clear: 'both', color: 'white', fontSize: '1em' }}>
-              {typeof this.props.gameArgs !== 'undefined' ? GAMES_MAP[this.props.gameArgs.gameCode].name : undefined}
-            </Typography>
+            {gameName && (
+              <Typography
+                variant="h6"
+                gutterBottom={true}
+                style={{ float: 'right', paddingTop: '10px', color: 'white' }}
+              >
+                {gameName}
+              </Typography>
+            )}
           </div>
         </div>
         <div
