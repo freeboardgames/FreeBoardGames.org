@@ -1,11 +1,11 @@
 import React from 'react';
-import { GameMode } from '../../../../components/App/Game/GameModePicker';
+import { GameMode } from 'components/App/Game/GameModePicker';
 import dynamic from 'next/dynamic';
-import { IGameDef, GAMES_MAP } from '../../../../games';
-import Error from '../../../_error';
-import SEO from '../../../../components/SEO';
+import { IGameDef, GAMES_MAP } from 'games';
+import Error from 'pages/_error';
+import SEO from 'components/SEO';
 
-const GameWrapper = dynamic(import('../../../../components/App/Game/Game'), {
+const GameWrapper = dynamic(import('components/App/Game/Game'), {
   ssr: false,
   loading: () => <div>Loading...</div>,
 });

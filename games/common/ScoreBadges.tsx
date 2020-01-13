@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IScore } from './Scoreboard';
-import { IPlayerInRoom } from '../../components/App/Lobby/LobbyService';
+import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 import css from './ScoreBadges.css';
 import Typography from '@material-ui/core/Typography';
 

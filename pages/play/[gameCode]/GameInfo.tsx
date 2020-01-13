@@ -1,12 +1,12 @@
 import React from 'react';
-import FreeBoardGamesBar from '../../../components/App/FreeBoardGamesBar';
-import { GameCard } from '../../../components/App/Game/GameCard';
-import { GameModePicker } from '../../../components/App/Game/GameModePicker';
-import { GameInstructions } from '../../../components/App/Game/GameInstructions';
-import { IGameDef, GAMES_MAP } from '../../../games';
+import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
+import { GameCard } from 'components/App/Game/GameCard';
+import { GameModePicker } from 'components/App/Game/GameModePicker';
+import { GameInstructions } from 'components/App/Game/GameInstructions';
+import { IGameDef, GAMES_MAP } from 'games';
 import { withRouter } from 'next/router';
 import { generatePageError } from 'next-with-error';
-import SEO from '../../../components/SEO';
+import SEO from 'components/SEO';
 
 interface gameInfoProps {
   gameDef: IGameDef;
