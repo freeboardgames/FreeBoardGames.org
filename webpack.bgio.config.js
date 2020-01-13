@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 var config = {
   mode: 'development',
@@ -26,6 +27,7 @@ var config = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '*'],
     modules: ['node_modules', 'src'],
+    plugins: [new TSConfigPathsPlugin()],
   },
 
   module: {
