@@ -75,9 +75,9 @@ export const TictactoePlusGame = Game({
     movesPerTurn: 1,
 
     endGameIf: (G, ctx) => {
-      const _winner = isVictory(G.cells);
-      if (_winner) {
-        return { winner: _winner };
+      const winner = isVictory(G.cells);
+      if (winner) {
+        return { winner };
       }
       if (G.cells.filter((c: any) => c === null).length === 0) {
         return { draw: true };
