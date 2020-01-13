@@ -15,4 +15,5 @@ module.exports = {
     },
   },
   coverageDirectory: 'coverage-jest',
+  modulePaths: ['<rootDir>'],
 };

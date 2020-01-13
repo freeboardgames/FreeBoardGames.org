@@ -1,6 +1,6 @@
-import { GameMode, IGameModeExtraInfoDropdown } from '../../components/App/Game/GameModePicker';
+import { GameMode, IGameModeExtraInfoDropdown } from 'components/App/Game/GameModePicker';
 import TicTacToePlusThumbnail from './media/thumbnail.png';
-import { IGameDef } from '../../games';
+import { IGameDef } from 'games';
 import instructions from './instructions.md';
 
 export const tictactoeplusGameDef: IGameDef = {

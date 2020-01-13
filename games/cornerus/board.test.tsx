@@ -6,7 +6,7 @@ import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
 import { CornerusGame } from './game';
 
 import { Board } from './board';
-import { GameMode } from '../../App/Game/GameModePicker';
+import { GameMode } from 'components/App/Game/GameModePicker';
 import { expect } from 'chai';
 import blue from '@material-ui/core/colors/blue';
 

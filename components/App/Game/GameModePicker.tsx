@@ -15,7 +15,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Link from 'next/link';
-import { IGameDef } from '../../../games';
+import { IGameDef } from 'games';
 import { LobbyService } from '../Lobby/LobbyService';
 import Router from 'next/router';
 

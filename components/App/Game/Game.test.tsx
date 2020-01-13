@@ -1,7 +1,7 @@
 import React from 'react';
 import Game from './Game';
 import { mount } from 'enzyme';
-import { GAMES_MAP } from '../../../games';
+import { GAMES_MAP } from 'games';
 import { GameMode } from './GameModePicker';
 import { LobbyService } from '../Lobby/LobbyService';
 

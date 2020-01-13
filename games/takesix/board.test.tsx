@@ -6,7 +6,7 @@ import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
 import { TakeSixGame, TakeSixGameForTest } from './game';
 
 import { Board } from './board';
-import { GameMode } from '../../components/App/Game/GameModePicker';
+import { GameMode } from 'components/App/Game/GameModePicker';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 
 Enzyme.configure({ adapter: new Adapter() });

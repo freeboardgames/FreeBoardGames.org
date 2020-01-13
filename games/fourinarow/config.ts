@@ -1,4 +1,4 @@
-import { IGameConfig } from '../../games';
+import { IGameConfig } from 'games';
 import { ConnectFourGame } from './game';
 import { Board } from './board';
 

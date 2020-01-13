@@ -7,7 +7,7 @@ import MoreVert from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { IGameArgs } from './GameBoardWrapper';
-import { GAMES_MAP } from './../../../games/index';
+import { GAMES_MAP } from 'games';
 
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;

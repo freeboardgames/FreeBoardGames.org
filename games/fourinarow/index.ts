@@ -1,6 +1,6 @@
-import { GameMode } from '../../components/App/Game/GameModePicker';
+import { GameMode } from 'components/App/Game/GameModePicker';
 import FourInARowThumbnail from './media/thumbnail.png';
-import { IGameDef } from '../../games';
+import { IGameDef } from 'games';
 import instructions from './instructions.md';
 
 export const fourinarowGameDef: IGameDef = {

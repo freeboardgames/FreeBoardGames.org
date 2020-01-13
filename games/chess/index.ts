@@ -1,7 +1,7 @@
 import ChessThumbnail from './media/thumbnail.png';
-import { GameMode } from '../../components/App/Game/GameModePicker';
-import { IGameModeExtraInfoSlider } from '../../components/App/Game/GameModePicker';
-import { IGameDef } from '../../games';
+import { GameMode } from 'components/App/Game/GameModePicker';
+import { IGameModeExtraInfoSlider } from 'components/App/Game/GameModePicker';
+import { IGameDef } from 'games';
 import instructions from './instructions.md';
 
 export const chessGameDef: IGameDef = {

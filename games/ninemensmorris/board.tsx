@@ -1,7 +1,7 @@
 import React from 'react';
-import { GameLayout } from '../../components/App/Game/GameLayout';
+import { GameLayout } from 'components/App/Game/GameLayout';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
+import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { IG } from './game';
 import { Field } from './Field';
 import { Phase } from './game';

@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { MemoryRouter } from 'react-router';
-import { GameMode } from '../../App/Game/GameModePicker';
+import { GameMode } from 'components/App/Game/GameModePicker';
 import { TictactoePlusGame } from './game';
 import { Client } from '@freeboardgame.org/boardgame.io/client';
 

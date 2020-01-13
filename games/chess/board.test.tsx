@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import { GameMode } from '../../App/Game/GameModePicker';
+import { GameMode } from 'components/App/Game/GameModePicker';
 
 Enzyme.configure({ adapter: new Adapter() });
 jest.mock('react-ga');

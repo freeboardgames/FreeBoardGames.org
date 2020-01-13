@@ -1,7 +1,7 @@
 import React from 'react';
 import getMessagePage from '../MessagePage';
 import { LobbyService } from './LobbyService';
-import { GAMES_MAP } from '../../../games';
+import { GAMES_MAP } from 'games';
 
 interface IExpectedParams {
   gameCode: string;

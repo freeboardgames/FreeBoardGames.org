@@ -1,5 +1,5 @@
 import React from 'react';
-import { IGameDef } from '../../../games';
+import { IGameDef } from 'games';
 import IconButton from '@material-ui/core/IconButton';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Typography from '@material-ui/core/Typography';

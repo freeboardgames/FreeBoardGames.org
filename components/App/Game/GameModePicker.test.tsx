@@ -2,7 +2,7 @@ import React from 'react';
 import { GameModePicker, GameMode, IGameModeInfo } from './GameModePicker';
 import { IGameModeExtraInfoSlider, IGameModeExtraInfoDropdown } from './GameModePicker';
 
-import { IGameDef } from '../../games';
+import { IGameDef } from 'games';
 import { render, fireEvent, RenderResult, cleanup } from '@testing-library/react';
 require('@testing-library/jest-dom/extend-expect');
 

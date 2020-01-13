@@ -9,7 +9,7 @@ import SvgShip5 from './media/SvgShip5';
 import SvgBackground from './media/SvgBackground';
 import SvgHit from './media/SvgHit';
 import SvgMiss from './media/SvgMiss';
-import { Blink } from '../../components/App/Blink';
+import { Blink } from 'components/App/Blink';
 
 export interface IColorMap {
   [key: string]: string;
