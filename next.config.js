@@ -4,6 +4,7 @@ const withOffline = require('next-offline');
 const withOptimizedImages = require('next-optimized-images');
 const childProcess = require('child_process');
 const withWorkers = require('@zeit/next-workers');
+const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const CHANNEL = process.env.CHANNEL || 'development';
 const BGIO_SERVER_URL = process.env.BGIO_SERVER_URL;
@@ -89,6 +90,12 @@ module.exports = withWorkers(
                 basic: false,
               }),
             );
+          }
+
+          if (config.resolve.plugins) {
+            config.resolve.plugins.push(new TSConfigPathsPlugin());
+          } else {
+            config.plugins = [new TSConfigPathsPlugin()];
           }
 
           if (!BABEL_ENV_IS_PROD) {
