@@ -1,4 +1,4 @@
-import { IGameModeInfo } from '../components/App/Game/GameModePicker';
+import { IGameModeInfo } from 'components/App/Game/GameModePicker';
 import { chessGameDef } from './chess';
 import { seabattleGameDef } from './seabattle';
 import { tictactoeGameDef } from './tictactoe';

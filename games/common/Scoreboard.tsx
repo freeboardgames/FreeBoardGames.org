@@ -5,7 +5,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import grey from '@material-ui/core/colors/grey';
-import { IPlayerInRoom } from '../../components/App/Lobby/LobbyService';
+import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 
 export interface IScore {
   playerID: string;

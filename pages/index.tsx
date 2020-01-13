@@ -1,8 +1,8 @@
 import React from 'react';
-import FreeBoardGamesBar from '../components/App/FreeBoardGamesBar';
-import Header from '../components/Header';
-import { GamesList } from '../components/App/GamesList';
-import SEO from '../components/SEO';
+import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
+import Header from 'components/Header';
+import { GamesList } from 'components/App/GamesList';
+import SEO from 'components/SEO';
 
 class Home extends React.Component<{}, {}> {
   render() {
