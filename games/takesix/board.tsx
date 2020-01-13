@@ -123,7 +123,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     return (
-      <GameLayout>
+      <GameLayout gameArgs={this.props.gameArgs}>
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
           {this._getStatus()}
         </Typography>

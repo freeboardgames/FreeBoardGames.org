@@ -73,7 +73,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       );
     }
     return (
-      <GameLayout optionsMenuItems={this._getOptionsMenuItems}>
+      <GameLayout optionsMenuItems={this._getOptionsMenuItems} gameArgs={this.props.gameArgs}>
         <div>
           <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
             {this._getStatus()}

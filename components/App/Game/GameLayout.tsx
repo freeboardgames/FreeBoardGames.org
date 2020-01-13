@@ -24,7 +24,9 @@ export class GameLayout extends React.Component<IGameLayoutProps, {}> {
       );
     } else {
       return (
-        <GameDarkSublayout optionsMenuItems={this.props.optionsMenuItems}>{this.props.children}</GameDarkSublayout>
+        <GameDarkSublayout optionsMenuItems={this.props.optionsMenuItems} gameArgs={this.props.gameArgs}>
+          {this.props.children}
+        </GameDarkSublayout>
       );
     }
   }

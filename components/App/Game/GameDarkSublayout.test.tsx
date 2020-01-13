@@ -1,6 +1,8 @@
 import React from 'react';
 import { GameDarkSublayout, IOptionsItems } from './GameDarkSublayout';
 import { render, fireEvent, RenderResult, cleanup, wait } from '@testing-library/react';
+import { GameMode } from './GameModePicker';
+import { IGameArgs } from './GameBoardWrapper';
 require('@testing-library/jest-dom/extend-expect');
 
 afterEach(cleanup);
@@ -49,5 +51,21 @@ describe('Game Dark Sublayout - Options Menu', () => {
     const option = wrapper.getByText('toggle me');
     fireEvent.click(option);
     await wait(() => expect(wrapper.queryByText('toggle me')).not.toBeInTheDocument());
+  });
+});
+
+describe('Game Dark Sublayout - With Game Name', () => {
+  let wrapper: RenderResult;
+  const mockGameArgs: IGameArgs = { gameCode: 'tictactoe', mode: GameMode.LocalFriend };
+  beforeEach(() => {
+    wrapper = render(
+      <GameDarkSublayout gameArgs={mockGameArgs}>
+        <p>Foobar Game</p>
+      </GameDarkSublayout>,
+    );
+  });
+
+  it('should display game name', () => {
+    expect(wrapper.getByText(/Tic-Tac-Toe/)).toBeTruthy();
   });
 });

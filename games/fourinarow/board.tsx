@@ -89,7 +89,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         />
       );
     }
-    return <GameLayout>{this._getBoard()}</GameLayout>;
+    return <GameLayout gameArgs={this.props.gameArgs}>{this._getBoard()}</GameLayout>;
   }
 
   _getCells() {

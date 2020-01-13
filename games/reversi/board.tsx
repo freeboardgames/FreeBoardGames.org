@@ -124,7 +124,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     const colorMap = this.getColorMap();
 
     return (
-      <GameLayout>
+      <GameLayout gameArgs={this.props.gameArgs}>
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
           {this._getStatus()}
         </Typography>

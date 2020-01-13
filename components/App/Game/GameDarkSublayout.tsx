@@ -6,10 +6,13 @@ import Button from '@material-ui/core/Button';
 import MoreVert from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { IGameArgs } from './GameBoardWrapper';
+import { GAMES_MAP } from './../../../games/index';
 
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;
   optionsMenuItems?: () => IOptionsItems[];
+  gameArgs?: IGameArgs;
 }
 
 interface IGameDarkSublayoutState {
@@ -38,7 +41,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
     let fbgTopLeftText;
     if (isProdChannel) {
       fbgTopLeftText = (
-        <Typography variant="h6" gutterBottom={true} style={{ float: 'left', paddingTop: '14px', color: 'white' }}>
+        <Typography variant="h6" gutterBottom={true} style={{ float: 'left', paddingTop: '9px', color: 'white' }}>
           FreeBoardGames.org
         </Typography>
       );
@@ -53,6 +56,9 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
         </Typography>
       );
     }
+
+    const gameName = GAMES_MAP[this.props.gameArgs?.gameCode]?.name;
+
     return (
       <div>
         <div
@@ -77,6 +83,15 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
             </Link>
             {this._getOptionsMenuButton()}
             {this._getOptionsMenuItems()}
+            {gameName && (
+              <Typography
+                variant="h6"
+                gutterBottom={true}
+                style={{ float: 'right', paddingTop: '10px', color: 'white' }}
+              >
+                {gameName}
+              </Typography>
+            )}
           </div>
         </div>
         <div
