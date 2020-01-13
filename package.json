@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx pages src/ @types/ components/ tests/",
     "pre": "run-s lint format:check test:coverage test:cypress report:combined",
-    "autopre": "run-s format lint test:coverage test:cypress report:combined",
+    "autopre": "run-s format:staged lint test:coverage test:cypress report:combined",
     "dev": "node server.js",
     "prod": "run-s build start",
     "build:bgio": "webpack --color --progress --config webpack.bgio.config.js",
