@@ -6,8 +6,6 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Game } from 'boardgame.io/core';
-
 export function isVictory(cells: string[]) {
   const positions = [
     [0, 1, 2, 3],

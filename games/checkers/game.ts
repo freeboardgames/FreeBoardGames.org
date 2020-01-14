@@ -1,4 +1,4 @@
-import { Game, IGameCtx, INVALID_MOVE, IGameArgs } from 'boardgame.io/core';
+import { IGameCtx, INVALID_MOVE, IGameArgs } from 'boardgame.io/core';
 interface ICheckerPiece {
   id: number;
   playerID: string;

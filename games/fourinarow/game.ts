@@ -1,4 +1,3 @@
-import { Game } from 'boardgame.io/core';
 import { numOfColumns, numOfRows, neededToWin } from './constants';
 
 function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: any) {

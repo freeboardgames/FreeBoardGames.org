@@ -1,4 +1,4 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
+import { IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 
 export interface IG {
   points: string[];

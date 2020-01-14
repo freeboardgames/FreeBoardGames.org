@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Game, IGameArgs } from 'boardgame.io/core';
+import { IGameArgs } from 'boardgame.io/core';
 import Chess from './chessjswrapper';
 
 interface IGameCtx {

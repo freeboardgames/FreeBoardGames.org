@@ -1,4 +1,4 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
+import { IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
 import { IScore } from '../common/Scoreboard';
 import { pieces } from './pieces';
 

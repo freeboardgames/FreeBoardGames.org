@@ -1,4 +1,4 @@
-import { Game, TurnOrder } from 'boardgame.io/core';
+import { TurnOrder } from 'boardgame.io/core';
 import shortid from 'shortid';
 
 export interface IShip {
