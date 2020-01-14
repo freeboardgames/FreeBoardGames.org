@@ -46,9 +46,6 @@ module.exports = withWorkers(
         },
 
         poweredByHeader: false,
-        experimental: {
-          granularChunks: true,
-        },
         env: {
           CHANNEL,
           VERSION,
