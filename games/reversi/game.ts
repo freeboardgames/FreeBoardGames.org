@@ -148,13 +148,13 @@ export function getScoreBoard(G: IG, ctx: IGameCtx) {
 
 const GameConfig: IGameArgs = {
   name: 'reversi',
-  flow: {
-    movesPerTurn: 1,
-    endGameIf: (G: IG, ctx) => {
-      if (!G.points.some(point => point === null)) {
-        return { scoreboard: getScoreBoard(G, ctx) };
-      }
-    },
+  turn: {
+    moveLimit: 1,
+  },
+  endIf: (G: IG, ctx) => {
+    if (!G.points.some(point => point === null)) {
+      return { scoreboard: getScoreBoard(G, ctx) };
+    }
   },
   moves: {
     placePiece,

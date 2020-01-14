@@ -64,6 +64,10 @@ declare module 'boardgame.io/core' {
     next: (G: any, ctx: IGameCtx) => number;
     actionPlayers?: IActionPlayers;
   }
+  interface ITurn {
+    order?: ITurnOrder;
+    moveLimit?: number;
+  }
   interface IGameFlowPhases {
     [name: string]: {
       movesPerTurn?: number;
@@ -106,6 +110,8 @@ declare module 'boardgame.io/core' {
     playerView?: (G: any, ctx: IGameCtx, playerID: string) => any;
     flow?: IGameFlow;
     seed?: string;
+    turn?: ITurn;
+    endIf?: (G: any, ctx: IGameCtx) => void;
   }
   export function Game(gameArgs: IGameArgs): GameObj;
   export const INVALID_MOVE: string;

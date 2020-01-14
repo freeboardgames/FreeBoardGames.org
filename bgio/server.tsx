@@ -1,4 +1,4 @@
-import { GAMES_LIST } from '../games';
+import { GAMES_LIST } from 'games';
 import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
 const { Server } = require('boardgame.io/server'); // tslint:disable-line
