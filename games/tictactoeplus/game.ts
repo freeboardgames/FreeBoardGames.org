@@ -1,3 +1,5 @@
+import { IGameArgs } from 'boardgame.io/core';
+
 /*
  * Copyright 2017 The boardgame.io Authors
  *
@@ -47,7 +49,7 @@ export function isVictory(cells: string[]) {
   return false;
 }
 
-export const TictactoePlusGame = {
+export const TictactoePlusGame: IGameArgs = {
   name: 'tictactoeplus',
 
   setup: () => ({
@@ -69,17 +71,16 @@ export const TictactoePlusGame = {
     },
   },
 
-  flow: {
-    movesPerTurn: 1,
-
-    endGameIf: (G, ctx) => {
-      const winner = isVictory(G.cells);
-      if (winner) {
-        return { winner };
-      }
-      if (G.cells.filter((c: any) => c === null).length === 0) {
-        return { draw: true };
-      }
-    },
+  turn: {
+    moveLimit: 1,
+  },
+  endIf: G => {
+    const winner = isVictory(G.cells);
+    if (winner) {
+      return { winner };
+    }
+    if (G.cells.filter((c: any) => c === null).length === 0) {
+      return { draw: true };
+    }
   },
 };
