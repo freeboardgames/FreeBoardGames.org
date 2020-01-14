@@ -1,4 +1,4 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 import Point from './point';
 import Player from './player';
 import Piece from './piece';
@@ -256,4 +256,4 @@ const GameConfig: IGameArgs = {
   },
 };
 
-export const NineMensMorrisGame = Game(GameConfig);
+export const NineMensMorrisGame = GameConfig;

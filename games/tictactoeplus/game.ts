@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Game } from '@freeboardgame.org/boardgame.io/core';
+import { Game } from 'boardgame.io/core';
 
 export function isVictory(cells: string[]) {
   const positions = [
@@ -49,7 +49,7 @@ export function isVictory(cells: string[]) {
   return false;
 }
 
-export const TictactoePlusGame = Game({
+export const TictactoePlusGame = {
   name: 'tictactoeplus',
 
   setup: () => ({
@@ -84,4 +84,4 @@ export const TictactoePlusGame = Game({
       }
     },
   },
-});
+};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Client } from '@freeboardgame.org/boardgame.io/react';
+import { Client } from 'boardgame.io/react';
 import { IGameDef, GAMES_MAP, IGameConfig, IAIConfig } from 'games';
 import { gameBoardWrapper } from './GameBoardWrapper';
 import { GameMode } from './GameModePicker';

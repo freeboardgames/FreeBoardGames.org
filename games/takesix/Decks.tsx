@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 import { IG, isAllowedDeck } from './game';
 import { CardComponent } from './CardComponent';
 

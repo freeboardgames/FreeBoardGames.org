@@ -1,4 +1,4 @@
-declare module '@freeboardgame.org/boardgame.io/core' {
+declare module 'boardgame.io/core' {
   export namespace TurnOrder {
     const DEFAULT: ITurnOrder;
     const ONCE: ITurnOrder;
@@ -128,8 +128,8 @@ declare module '@freeboardgame.org/boardgame.io/core' {
   }
 }
 
-declare module '@freeboardgame.org/boardgame.io/react' {
-  import { GameObj, IGameMoves } from '@freeboardgame.org/boardgame.io/core';
+declare module 'boardgame.io/react' {
+  import { GameObj, IGameMoves } from 'boardgame.io/core';
   export class WrapperBoard {
     moves: any;
     events: any;
@@ -147,8 +147,8 @@ declare module '@freeboardgame.org/boardgame.io/react' {
   export function Client(clientArgs: IClientArgs): WrapperBoard;
 }
 
-declare module '@freeboardgame.org/boardgame.io/client' {
-  import { GameObj, IGameMoves } from '@freeboardgame.org/boardgame.io/core';
+declare module 'boardgame.io/client' {
+  import { GameObj, IGameMoves } from 'boardgame.io/core';
   export class WrapperBoard {
     moves: any;
     events: any;
@@ -168,8 +168,8 @@ declare module '@freeboardgame.org/boardgame.io/client' {
   export function Client(clientArgs: IClientArgs): WrapperBoard;
 }
 
-declare module '@freeboardgame.org/boardgame.io/server' {
-  import { GameObj } from '@freeboardgame.org/boardgame.io/core';
+declare module 'boardgame.io/server' {
+  import { GameObj } from 'boardgame.io/core';
   import * as Koa from 'koa';
   interface IServerArgs {
     games: GameObj[];
@@ -178,4 +178,4 @@ declare module '@freeboardgame.org/boardgame.io/server' {
   export = Server;
 }
 
-declare module '@freeboardgame.org/boardgame.io/ai';
+declare module 'boardgame.io/ai';

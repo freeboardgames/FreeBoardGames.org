@@ -1,4 +1,4 @@
-import { Game, TurnOrder, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { Game, TurnOrder, IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 import { IScore } from '../common/Scoreboard';
 import Card from './card';
 import Player from './player';
@@ -217,9 +217,8 @@ const GameConfig: IGameArgs = {
   },
 };
 
-export const TakeSixGame = Game(GameConfig);
-export const TakeSixGameForTest = (override: any) =>
-  Game({
-    ...GameConfig,
-    ...override,
-  });
+export const TakeSixGame = GameConfig;
+export const TakeSixGameForTest = (override: any) => ({
+  ...GameConfig,
+  ...override,
+});

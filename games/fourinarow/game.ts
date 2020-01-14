@@ -1,4 +1,4 @@
-import { Game } from '@freeboardgame.org/boardgame.io/core';
+import { Game } from 'boardgame.io/core';
 import { numOfColumns, numOfRows, neededToWin } from './constants';
 
 function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: any) {
@@ -99,7 +99,7 @@ export function generateGrid() {
   return grid;
 }
 
-export const ConnectFourGame = Game({
+export const ConnectFourGame = {
   name: 'fourinarow',
 
   setup: () => {
@@ -131,4 +131,4 @@ export const ConnectFourGame = Game({
       }
     },
   },
-});
+};

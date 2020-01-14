@@ -1,5 +1,5 @@
-import { INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { INVALID_MOVE } from 'boardgame.io/core';
+import { Client } from 'boardgame.io/client';
 import { CornerusGame, placePiece, getPlayer, isFirstTurn, getScoreBoard } from './game';
 
 test('invalid moves', () => {

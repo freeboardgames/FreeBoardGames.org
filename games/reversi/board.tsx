@@ -5,7 +5,7 @@ import { Grid } from 'ui';
 import { Token } from 'ui';
 import { IG, getScoreBoard } from './game';
 import { IScore } from '../common/Scoreboard';
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 import { Scoreboard } from '../common/Scoreboard';
 import { GameMode } from 'components/App/Game/GameModePicker';
 import { ScoreBadges } from '../common/ScoreBadges';

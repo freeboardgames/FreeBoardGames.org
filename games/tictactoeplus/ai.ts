@@ -1,5 +1,5 @@
 import { IAIConfig } from '../index';
-import { AI } from '@freeboardgame.org/boardgame.io/ai';
+//import { AI } from 'boardgame.io/ai';
 
 interface IPlayState {
   G: any;
@@ -32,7 +32,7 @@ class TictactoeRandomBot {
 }
 const config: IAIConfig = {
   bgioAI: (level: string) => {
-    if (level === '2') {
+    /*if (level === '2') {
       // Hard
       return AI({
         enumerate: (G: any) => {
@@ -45,7 +45,9 @@ const config: IAIConfig = {
           return moves;
         },
       });
-    } else if (level === '1') {
+    } else */ if (
+      level === '1'
+    ) {
       // Easy
       return {
         bot: TictactoeRandomBot,

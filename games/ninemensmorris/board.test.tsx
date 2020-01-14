@@ -1,7 +1,7 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
+import { Client as ReactClient } from 'boardgame.io/react';
 import { NineMensMorrisGame } from './game';
 
 import { Board } from './board';

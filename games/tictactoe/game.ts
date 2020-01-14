@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Game } from '@freeboardgame.org/boardgame.io/core';
+import { Game, TurnOrder } from 'boardgame.io/core';
 
 export function isVictory(cells: number[]) {
   const positions = [
@@ -37,7 +37,7 @@ export function isVictory(cells: number[]) {
   return false;
 }
 
-export const TictactoeGame = Game({
+export const TictactoeGame = {
   name: 'tictactoe',
 
   setup: () => ({
@@ -55,16 +55,16 @@ export const TictactoeGame = Game({
     },
   },
 
-  flow: {
-    movesPerTurn: 1,
-
-    endGameIf: (G, ctx) => {
-      if (isVictory(G.cells)) {
-        return { winner: ctx.currentPlayer };
-      }
-      if (G.cells.filter((c: any) => c === null).length === 0) {
-        return { draw: true };
-      }
-    },
+  turn: {
+    moveLimit: 1,
   },
-});
+
+  endIf: (G, ctx) => {
+    if (isVictory(G.cells)) {
+      return { winner: ctx.currentPlayer };
+    }
+    if (G.cells.filter((c: any) => c === null).length === 0) {
+      return { draw: true };
+    }
+  },
+};

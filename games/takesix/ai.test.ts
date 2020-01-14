@@ -1,5 +1,5 @@
 import AIConfig from './ai';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 import { IG, TakeSixGameForTest } from './game';
 
 function getClient() {

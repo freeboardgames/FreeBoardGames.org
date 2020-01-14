@@ -1,7 +1,7 @@
 import AIConfig from './ai';
 import { expect } from 'chai';
 import { TictactoePlusGame } from './game';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 
 test('Easy AI - should return a move for the initial position', async () => {
   const client = Client({

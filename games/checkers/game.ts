@@ -1,4 +1,4 @@
-import { Game, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { Game, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 interface ICheckerPiece {
   id: number;
   playerID: string;
@@ -283,7 +283,7 @@ export function move(G: IG, ctx: IGameCtx, from: ICoord, to: ICoord): IG | strin
   return newG;
 }
 
-export const CheckersGame = Game({
+export const CheckersGame = {
   name: 'checkers',
   setup: (): IG => ({ board: INITIAL_BOARD, jumping: null }),
   moves: {
@@ -301,4 +301,4 @@ export const CheckersGame = Game({
       }
     },
   },
-});
+};

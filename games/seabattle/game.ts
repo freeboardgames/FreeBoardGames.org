@@ -1,4 +1,4 @@
-import { Game, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
+import { Game, TurnOrder } from 'boardgame.io/core';
 import shortid from 'shortid';
 
 export interface IShip {
@@ -46,7 +46,7 @@ export const playerView = (G: ISeabattleState, ctx: ICtx, playerID: string): ISe
   };
 };
 
-export const SeabattleGame = Game({
+export const SeabattleGame = {
   name: 'seabattle',
 
   setup: (): ISeabattleState => ({
@@ -114,7 +114,7 @@ export const SeabattleGame = Game({
   },
 
   playerView,
-});
+};
 
 // Helper function for generating random ships positioning.
 export function generateRandomShips(player: number): IShip[] {

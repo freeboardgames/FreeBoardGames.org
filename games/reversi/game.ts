@@ -1,4 +1,4 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 
 export interface IG {
   points: string[];
@@ -176,4 +176,4 @@ const GameConfig: IGameArgs = {
   },
 };
 
-export const ReversiGame = Game(GameConfig);
+export const ReversiGame = GameConfig;

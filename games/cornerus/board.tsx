@@ -4,7 +4,7 @@ import { GameLayout } from 'components/App/Game/GameLayout';
 import { Grid } from 'ui';
 import { Token } from 'ui';
 import { IG, IPieceTransform, getPlayer, getValidPositions, inBounds, getAllPositions } from './game';
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 import { Scoreboard, IScore } from '../common/Scoreboard';
 import { IOptionsItems } from 'components/App/Game/GameDarkSublayout';
 

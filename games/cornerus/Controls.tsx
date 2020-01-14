@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 
 import { IG, rotatePiece, flipPieceY, flipPieceX, getPlayer } from './game';
 import { IPiece } from './board';

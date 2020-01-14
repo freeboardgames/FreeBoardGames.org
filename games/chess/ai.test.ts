@@ -1,7 +1,7 @@
 import AIConfig from './ai';
 import { expect } from 'chai';
 import { ChessGame } from './game';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 
 test('should return a move for the initial position', async () => {
   const Bot = AIConfig.bgioAI('1').bot;

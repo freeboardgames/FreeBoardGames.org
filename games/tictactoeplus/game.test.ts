@@ -1,4 +1,4 @@
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 import { TictactoePlusGame } from './game';
 
 // https://github.com/nicolodavis/boardgame.io/blob/master/docs/testing.md

@@ -1,4 +1,4 @@
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 import { ConnectFourGame, generateGrid } from './game';
 import { numOfColumns, neededToWin } from './constants';
 

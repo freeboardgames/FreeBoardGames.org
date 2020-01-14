@@ -1,6 +1,6 @@
-import { INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { INVALID_MOVE } from 'boardgame.io/core';
 import { NineMensMorrisGame, removePiece, placePiece, movePiece } from './game';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 
 test('invalid moves', () => {
   let G: any = {

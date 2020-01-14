@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Game } from '@freeboardgame.org/boardgame.io/core';
+import { Game } from 'boardgame.io/core';
 import Chess from './chessjswrapper';
 
 interface IGameCtx {
@@ -30,7 +30,7 @@ export function getWinner(chess: any) {
   }
 }
 
-export const ChessGame = Game({
+export const ChessGame = {
   name: 'chess',
 
   setup: () => ({ pgn: '', fen: '' }),
@@ -52,4 +52,4 @@ export const ChessGame = Game({
       return getWinner(chess);
     },
   },
-});
+};

@@ -1,4 +1,4 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from '@freeboardgame.org/boardgame.io/core';
+import { Game, IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
 import { IScore } from '../common/Scoreboard';
 import { pieces } from './pieces';
 
@@ -283,4 +283,4 @@ const GameConfig: IGameArgs = {
   },
 };
 
-export const CornerusGame = Game(GameConfig);
+export const CornerusGame = GameConfig;

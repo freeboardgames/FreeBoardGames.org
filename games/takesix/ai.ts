@@ -1,6 +1,6 @@
 import { IAIConfig } from '../index';
 import { IG, getCards, isAllowedDeck } from './game';
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 
 interface IPlayState {
   G: IG;
