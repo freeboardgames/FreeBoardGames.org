@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Game } from 'boardgame.io/core';
+import { Game, IGameArgs } from 'boardgame.io/core';
 import Chess from './chessjswrapper';
 
 interface IGameCtx {
@@ -30,7 +30,7 @@ export function getWinner(chess: any) {
   }
 }
 
-export const ChessGame = {
+export const ChessGame: IGameArgs = {
   name: 'chess',
 
   setup: () => ({ pgn: '', fen: '' }),
@@ -43,13 +43,12 @@ export const ChessGame = {
       return { pgn: chess.pgn(), fen: chess.fen() };
     },
   },
-
-  flow: {
-    movesPerTurn: 1,
-    endGameIf: (G: any) => {
-      const chess = Chess();
-      chess.load_pgn(G.pgn);
-      return getWinner(chess);
-    },
+  turn: {
+    moveLimit: 1,
+  },
+  endIf: (G: any) => {
+    const chess = Chess();
+    chess.load_pgn(G.pgn);
+    return getWinner(chess);
   },
 };
