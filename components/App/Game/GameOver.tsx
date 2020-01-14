@@ -44,9 +44,9 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       );
     }
     ReactGA.event({
-      category: 'GameOver',
+      category: 'Game',
       label: this.props.gameArgs.gameCode,
-      action: this.props.result, // 'red won'
+      action: 'Game over',
     });
     return (
       <FreeBoardGamesBar>
