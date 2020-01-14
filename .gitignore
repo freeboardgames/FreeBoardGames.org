@@ -120,6 +120,7 @@ Dockerfile
 docker_run.sh
 dockerbuild
 reports/
+.config/
 .dockerignore
 
 # syn
