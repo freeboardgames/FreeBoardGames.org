@@ -11,7 +11,7 @@ test('SSR', () => {
   let ssrRender = ReactDOMServer.renderToString(
     <UI>
       <Card />
-    </UI>
+    </UI>,
   );
   expect(ssrRender).toContain('bgio-card');
 });

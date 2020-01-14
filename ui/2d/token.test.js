@@ -18,7 +18,7 @@ test('animation', () => {
   const token = Enzyme.shallow(
     <Token x={1} y={2} animate={true}>
       <p>foo</p>
-    </Token>
+    </Token>,
   );
   token.setState({
     ...token.state(),
@@ -49,7 +49,7 @@ test('props change', () => {
   const token = Enzyme.mount(
     <Token x={1} y={2} animate={true}>
       <p>foo</p>
-    </Token>
+    </Token>,
   );
   token.setProps({ x: 0, y: 2 });
   expect(token.state('originX')).toEqual(1);
@@ -60,7 +60,7 @@ test('debounce', () => {
   const token = Enzyme.mount(
     <Token x={1} y={2} animate={true}>
       <p>foo</p>
-    </Token>
+    </Token>,
   );
   token.setProps({ x: 0, y: 2 });
   expect(token.state('originX')).toEqual(1);
@@ -76,7 +76,7 @@ test('click handler', () => {
   const token = Enzyme.mount(
     <Token x={0} y={0} animate={false} onClick={onClick}>
       <p>foo</p>
-    </Token>
+    </Token>,
   );
 
   token.simulate('click');
@@ -89,7 +89,7 @@ test('mouse over handler', () => {
   const token = Enzyme.mount(
     <Token x={0} y={0} animate={false} onMouseOver={onMouseOver}>
       <p>foo</p>
-    </Token>
+    </Token>,
   );
 
   token.simulate('mouseOver');
@@ -102,7 +102,7 @@ test('mouse out handler', () => {
   const token = Enzyme.mount(
     <Token x={0} y={0} animate={false} onMouseOut={onMouseOut}>
       <p>foo</p>
-    </Token>
+    </Token>,
   );
 
   token.simulate('mouseOut');
@@ -117,7 +117,7 @@ test('shouldDrag', () => {
       <Token x={0} y={0} draggable={true} shouldDrag={shouldDrag}>
         <circle r={0.25} />
       </Token>
-    </Grid>
+    </Grid>,
   );
 
   const mouseDownEvt = new window['MouseEvent']('mousedown', {});
@@ -134,17 +134,10 @@ test('click', () => {
   const onClick = jest.fn();
   const grid = Enzyme.mount(
     <Grid rows={2} cols={2} onClick={onClick}>
-      <Token
-        x={0}
-        y={0}
-        draggable={true}
-        shouldDrag={() => true}
-        onDrag={onDrag}
-        onClick={onClick}
-      >
+      <Token x={0} y={0} draggable={true} shouldDrag={() => true} onDrag={onDrag} onClick={onClick}>
         <circle r={0.25} />
       </Token>
-    </Grid>
+    </Grid>,
   );
 
   // Workaround because of JSDOM quirks
@@ -171,18 +164,10 @@ test('drag and drop - desktop', () => {
   const onClick = jest.fn();
   const grid = Enzyme.mount(
     <Grid rows={2} cols={2}>
-      <Token
-        x={0}
-        y={0}
-        draggable={true}
-        shouldDrag={() => true}
-        onDrag={onDrag}
-        onDrop={onDrop}
-        onClick={onClick}
-      >
+      <Token x={0} y={0} draggable={true} shouldDrag={() => true} onDrag={onDrag} onDrop={onDrop} onClick={onClick}>
         <circle r={0.25} />
       </Token>
-    </Grid>
+    </Grid>,
   );
 
   // Workaround because of JSDOM quirks
@@ -209,17 +194,10 @@ test('drag and drop - mobile', () => {
   const onClick = jest.fn();
   const grid = Enzyme.mount(
     <Grid rows={2} cols={2}>
-      <Token
-        x={0}
-        y={0}
-        draggable={true}
-        shouldDrag={() => true}
-        onDrop={onDrop}
-        onClick={onClick}
-      >
+      <Token x={0} y={0} draggable={true} shouldDrag={() => true} onDrop={onDrop} onClick={onClick}>
         <circle r={0.25} />
       </Token>
-    </Grid>
+    </Grid>,
   );
 
   // Workaround because of JSDOM quirks
@@ -230,12 +208,8 @@ test('drag and drop - mobile', () => {
   grid.getDOMNode().removeEventListener = () => {};
   const token = grid.find('Token');
   const preventDefault = () => {};
-  token
-    .instance()
-    ._startDrag({ preventDefault, touches: [{ pageX: 1, pageY: 2 }] });
-  token
-    .instance()
-    ._drag({ preventDefault, touches: [{ pageX: 200, pageY: 200 }] });
+  token.instance()._startDrag({ preventDefault, touches: [{ pageX: 1, pageY: 2 }] });
+  token.instance()._drag({ preventDefault, touches: [{ pageX: 200, pageY: 200 }] });
   token.instance()._endDrag({ preventDefault });
 
   expect(onDrop).toHaveBeenCalled();
@@ -248,18 +222,10 @@ test('ignore drag and drop events of non-dragged element', () => {
   const onClick = jest.fn();
   const grid = Enzyme.mount(
     <Grid rows={2} cols={2}>
-      <Token
-        x={0}
-        y={0}
-        draggable={true}
-        shouldDrag={() => true}
-        onDrag={onDrag}
-        onDrop={onDrop}
-        onClick={onClick}
-      >
+      <Token x={0} y={0} draggable={true} shouldDrag={() => true} onDrag={onDrag} onDrop={onDrop} onClick={onClick}>
         <circle r={0.25} />
       </Token>
-    </Grid>
+    </Grid>,
   );
 
   // Workaround because of JSDOM quirks
@@ -270,9 +236,7 @@ test('ignore drag and drop events of non-dragged element', () => {
   grid.getDOMNode().removeEventListener = () => {};
   const token = grid.find('Token');
   const preventDefault = () => {};
-  token
-    .instance()
-    ._drag({ preventDefault, touches: [{ pageX: 200, pageY: 200 }] });
+  token.instance()._drag({ preventDefault, touches: [{ pageX: 200, pageY: 200 }] });
   token.instance()._endDrag({ preventDefault });
 
   expect(onDrag).not.toHaveBeenCalled();

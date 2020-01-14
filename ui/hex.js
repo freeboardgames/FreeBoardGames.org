@@ -12,11 +12,7 @@ import { Hex as Hex2D, HexGrid as HexGrid2D } from './2d/hex';
 import { Hex as Hex3D, HexGrid as HexGrid3D } from './3d/hex';
 
 export const Hex = props => {
-  return props.three ? (
-    <Hex3D {...props}>{props.children}</Hex3D>
-  ) : (
-    <Hex2D {...props}>{props.children}</Hex2D>
-  );
+  return props.three ? <Hex3D {...props}>{props.children}</Hex3D> : <Hex2D {...props}>{props.children}</Hex2D>;
 };
 
 Hex.propTypes = {

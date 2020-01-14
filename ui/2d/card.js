@@ -34,12 +34,7 @@ export function GetDraggable(props, classNames, cardStyle, onClick) {
   };
 }
 
-export function GetDragComponent(
-  props,
-  classNames,
-  ref,
-  isOverAcceptedCallback
-) {
+export function GetDragComponent(props, classNames, ref, isOverAcceptedCallback) {
   /* eslint-disable-next-line react/display-name, react/prop-types */
   return ({ x, y, isOverAccepted, currentlyHoveredDroppableId }) => {
     const classes = [...classNames];
@@ -139,31 +134,18 @@ export class CardImpl extends React.Component {
 
     return (
       <div>
-        <Draggable
-          id={this.id}
-          type={this.props.dragZone}
-          data={this.props.data}
-        >
+        <Draggable id={this.id} type={this.props.dragZone} data={this.props.data}>
           {GetDraggable(this.props, classNames, cardStyle, this.onClick)}
         </Draggable>
 
         <DragComponent for={this.id}>
-          {GetDragComponent(
-            this.props,
-            classNames,
-            this.dragComponentRef,
-            o => (this.isOverAccepted = o)
-          )}
+          {GetDragComponent(this.props, classNames, this.dragComponentRef, o => (this.isOverAccepted = o))}
         </DragComponent>
       </div>
     );
   }
 }
 
-const Card = props => (
-  <UIContext.Consumer>
-    {context => <CardImpl {...props} context={context} />}
-  </UIContext.Consumer>
-);
+const Card = props => <UIContext.Consumer>{context => <CardImpl {...props} context={context} />}</UIContext.Consumer>;
 
 export { Card };

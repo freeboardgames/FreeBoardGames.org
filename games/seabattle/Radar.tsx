@@ -42,7 +42,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     );
   }
 
-  _onClick = (coords: { x: number; y: number; }) => {
+  _onClick = (coords: { x: number; y: number }) => {
     if (this.props.editable) {
       const shipIndex = this._findShip(coords.x, coords.y);
       if (shipIndex !== -1) {
@@ -57,7 +57,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     return this.props.editable;
   };
 
-  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number; }) => {
+  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
     const originalX = coords.originalX;

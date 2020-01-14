@@ -37,10 +37,7 @@ export class HexGrid extends React.Component {
     onClick: PropTypes.func,
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.element),
-      PropTypes.element,
-    ]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.element), PropTypes.element]),
   };
 
   static defaultProps = {
@@ -83,7 +80,7 @@ export class HexGrid extends React.Component {
             onClick={this.onClick}
             onMouseOver={this.onMouseOver}
             onMouseOut={this.onMouseOut}
-          />
+          />,
         );
       }
     }
@@ -121,11 +118,7 @@ export class HexGrid extends React.Component {
 
     const t = this.props.cellSize * this.props.levels * 2;
     return (
-      <svg
-        ref={this._svgRef}
-        viewBox={-t + ' ' + -t + ' ' + 2 * t + ' ' + 2 * t}
-        style={this.props.style}
-      >
+      <svg ref={this._svgRef} viewBox={-t + ' ' + -t + ' ' + 2 * t + ' ' + 2 * t} style={this.props.style}>
         <g>{this._getGrid()}</g>
         {tokens}
       </svg>
@@ -243,14 +236,7 @@ export class Hex extends React.Component {
     const ye = -h / 2.0;
     const yf = ye;
 
-    const flatTop = [
-      `${xa},${ya}`,
-      `${xb},${yb}`,
-      `${xc},${yc}`,
-      `${xd},${yd}`,
-      `${xe},${ye}`,
-      `${xf},${yf}`,
-    ];
+    const flatTop = [`${xa},${ya}`, `${xb},${yb}`, `${xc},${yc}`, `${xd},${yd}`, `${xe},${ye}`, `${xf},${yf}`];
 
     return flatTop.join(' ');
   }
@@ -280,14 +266,7 @@ export class Hex extends React.Component {
     const ty = this.center.y;
 
     // If no child, render a hex.
-    let children = (
-      <polygon
-        style={this.props.style}
-        points={this.points}
-        stroke="#aaa"
-        strokeWidth={0.01}
-      />
-    );
+    let children = <polygon style={this.props.style} points={this.points} stroke="#aaa" strokeWidth={0.01} />;
     // If a child is passed, render child.
     if (this.props.children) {
       children = this.props.children;

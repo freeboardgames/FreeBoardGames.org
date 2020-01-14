@@ -24,7 +24,7 @@ test('render correctly', () => {
   const grid = Enzyme.mount(
     <Grid rows={3} cols={4} style={{ width: '500px' }}>
       <MockChild />
-    </Grid>
+    </Grid>,
   );
   expect(grid.html()).toContain('4 3');
   expect(grid.html()).toContain('width: 500px');
@@ -60,9 +60,7 @@ test('click handler', () => {
 test('mouse over handler', () => {
   {
     const onMouseOver = jest.fn();
-    const grid = Enzyme.mount(
-      <Grid rows={3} cols={4} onMouseOver={onMouseOver} />
-    );
+    const grid = Enzyme.mount(<Grid rows={3} cols={4} onMouseOver={onMouseOver} />);
     grid
       .find('Square')
       .at(0)
@@ -83,9 +81,7 @@ test('mouse over handler', () => {
 test('mouse out handler', () => {
   {
     const onMouseOut = jest.fn();
-    const grid = Enzyme.mount(
-      <Grid rows={3} cols={4} onMouseOut={onMouseOut} />
-    );
+    const grid = Enzyme.mount(<Grid rows={3} cols={4} onMouseOut={onMouseOut} />);
     grid
       .find('Square')
       .at(0)
@@ -109,7 +105,7 @@ test('correct x and y', () => {
       <Token x={1} y={2}>
         <MockChild />
       </Token>
-    </Grid>
+    </Grid>,
   );
   expect(grid.html()).toContain('1, 2');
 

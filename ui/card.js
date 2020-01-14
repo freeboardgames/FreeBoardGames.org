@@ -14,13 +14,7 @@ import { Card as Card3D } from './3d/card';
 
 export const Card = props => (
   <UIContext.Consumer>
-    {context =>
-      context.three ? (
-        <Card3D {...props} context={context} />
-      ) : (
-        <Card2D {...props} context={context} />
-      )
-    }
+    {context => (context.three ? <Card3D {...props} context={context} /> : <Card2D {...props} context={context} />)}
   </UIContext.Consumer>
 );
 

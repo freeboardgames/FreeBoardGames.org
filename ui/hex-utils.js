@@ -22,9 +22,14 @@ const isContained = (a, points) => points.some(isSame(a));
  *
  */
 export const getAllNeighbors = point =>
-  [[1, -1, 0], [1, 0, -1], [0, 1, -1], [0, -1, 1], [-1, 1, 0], [-1, 0, 1]].map(
-    ([dx, dy, dz]) => addPoint(point, { x: dx, y: dy, z: dz })
-  );
+  [
+    [1, -1, 0],
+    [1, 0, -1],
+    [0, 1, -1],
+    [0, -1, 1],
+    [-1, 1, 0],
+    [-1, 0, 1],
+  ].map(([dx, dy, dz]) => addPoint(point, { x: dx, y: dy, z: dz }));
 
 /**
  * Get distance
@@ -39,8 +44,7 @@ export const getAllNeighbors = point =>
  *   z       - Z coordinate (cube coordinates)
  *
  */
-export const getDistance = (a, b) =>
-  (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2;
+export const getDistance = (a, b) => (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2;
 
 /**
  * Get range

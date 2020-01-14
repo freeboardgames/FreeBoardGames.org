@@ -93,7 +93,7 @@ test('child', () => {
     const grid = Enzyme.mount(
       <HexGrid layers={1} outline={false}>
         <Token />
-      </HexGrid>
+      </HexGrid>,
     );
     // No errors unmounting
     grid
@@ -110,7 +110,7 @@ test('child', () => {
         <Token>
           <div />
         </Token>
-      </HexGrid>
+      </HexGrid>,
     );
     expect(grid.html()).not.toContain('polygon');
   }

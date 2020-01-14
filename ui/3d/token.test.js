@@ -34,15 +34,9 @@ test('click handler', () => {
   const token = Enzyme.mount(
     <UI three={true}>
       <Grid rows={3} cols={4}>
-        <Token
-          x={1}
-          y={2}
-          onClick={onClick}
-          onMouseOut={onMouseOut}
-          onMouseOver={onMouseOver}
-        />
+        <Token x={1} y={2} onClick={onClick} onMouseOut={onMouseOut} onMouseOver={onMouseOver} />
       </Grid>
-    </UI>
+    </UI>,
   );
 
   const uiIns = token.instance();
@@ -69,13 +63,11 @@ test('correct x and y', () => {
       <Grid rows={3} cols={4}>
         <Token x={1} y={2} />
       </Grid>
-    </UI>
+    </UI>,
   );
   const tokenIns = grid.find('TokenImpl').instance();
-  const x =
-    tokenIns.props.x * (tokenIns.props.boardSize + tokenIns.props.padding);
-  const y =
-    tokenIns.props.y * (tokenIns.props.boardSize + tokenIns.props.padding);
+  const x = tokenIns.props.x * (tokenIns.props.boardSize + tokenIns.props.padding);
+  const y = tokenIns.props.y * (tokenIns.props.boardSize + tokenIns.props.padding);
   expect(tokenIns.prevMesh.position.x).toBe(x);
   expect(tokenIns.prevMesh.position.z).toBe(y);
 

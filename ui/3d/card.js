@@ -45,11 +45,7 @@ export class CardImpl extends React.Component {
     super(props);
 
     this.originalY = props.thickness / 2 - 0.0001;
-    const geometry = new THREE.BoxGeometry(
-      props.width,
-      props.thickness,
-      props.height
-    );
+    const geometry = new THREE.BoxGeometry(props.width, props.thickness, props.height);
 
     let opts = { color: 0x777777 };
     if (props.image) {
@@ -106,10 +102,6 @@ export class CardImpl extends React.Component {
   }
 }
 
-const Card = props => (
-  <UIContext.Consumer>
-    {context => <CardImpl {...props} context={context} />}
-  </UIContext.Consumer>
-);
+const Card = props => <UIContext.Consumer>{context => <CardImpl {...props} context={context} />}</UIContext.Consumer>;
 
 export { Card };

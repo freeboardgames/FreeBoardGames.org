@@ -25,15 +25,13 @@ describe('basic', () => {
           <Card />
           <Card />
         </Deck>
-      </UI>
+      </UI>,
     );
     expect(deck.find(Card)).toHaveLength(2);
   });
 
   test('custom class', () => {
-    const deck = Enzyme.shallow(
-      <DeckImpl className="custom" context={context} />
-    );
+    const deck = Enzyme.shallow(<DeckImpl className="custom" context={context} />);
     expect(deck.html()).toContain('custom');
   });
 });
@@ -46,7 +44,7 @@ describe('onClick', () => {
           <Card />
           <Card />
         </Deck>
-      </UI>
+      </UI>,
     );
     root
       .find('DeckImpl')
@@ -68,7 +66,7 @@ describe('onClick', () => {
         <Deck onClick={onClick}>
           <Card data={'data'} />
         </Deck>
-      </UI>
+      </UI>,
     );
     deck
       .find('DeckImpl')
@@ -89,7 +87,7 @@ describe('onDrop', () => {
         <Deck onDrop={onDrop} context={context}>
           <Card context={context} data={1} />
         </Deck>
-      </UI>
+      </UI>,
     );
   });
 
@@ -120,17 +118,12 @@ describe('onDrop', () => {
 });
 
 test('splayWidth', () => {
-  const cards = [
-    <Card key={0} />,
-    <Card key={1} />,
-    <Card key={2} />,
-    <Card key={3} />,
-  ];
+  const cards = [<Card key={0} />, <Card key={1} />, <Card key={2} />, <Card key={3} />];
   const splayWidth = 10;
   const deck = Enzyme.shallow(
     <UI>
       <Deck splayWidth={splayWidth}>{cards}</Deck>
-    </UI>
+    </UI>,
   );
 
   deck.find('.bgio-card').forEach((node, index) => {

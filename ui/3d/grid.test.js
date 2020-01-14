@@ -37,7 +37,7 @@ test('render correctly', () => {
       <Grid rows={3} cols={4}>
         <MockChild />
       </Grid>
-    </UI>
+    </UI>,
   );
   expect(grid.html()).toContain('rect');
   expect(grid.html()).toContain('bgio-canvas');
@@ -53,16 +53,10 @@ test('click handler', () => {
     const onMouseOut = jest.fn();
     const grid = Enzyme.mount(
       <UI three={true}>
-        <Grid
-          rows={3}
-          cols={4}
-          onClick={onClick}
-          onMouseOut={onMouseOut}
-          onMouseOver={onMouseOver}
-        >
+        <Grid rows={3} cols={4} onClick={onClick} onMouseOut={onMouseOut} onMouseOver={onMouseOver}>
           <MockChild />
         </Grid>
-      </UI>
+      </UI>,
     );
     const uiIns = grid.instance();
     const gridIns = grid.find('GridImpl').instance();
@@ -87,7 +81,7 @@ test('click handler', () => {
       <Grid rows={3} cols={4}>
         <MockChild />
       </Grid>
-    </UI>
+    </UI>,
   );
   const uiIns = grid.instance();
   const gridIns = grid.find('GridImpl').instance();
@@ -108,10 +102,8 @@ test('colorMap', () => {
   const grid = Enzyme.mount(
     <UI three={true}>
       <Grid rows={1} cols={1} colorMap={colorMap} />
-    </UI>
+    </UI>,
   );
   let gridIns = grid.find('GridImpl').instance();
-  expect(gridIns.squareGroup.children[0].material.color.getHexString()).toBe(
-    'd18b47'
-  );
+  expect(gridIns.squareGroup.children[0].material.color.getHexString()).toBe('d18b47');
 });

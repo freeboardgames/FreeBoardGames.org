@@ -34,11 +34,7 @@ export class DeckImpl extends React.Component {
     super(props);
 
     this.originalY = props.thickness / 2 - 0.0001;
-    const geometry = new THREE.BoxGeometry(
-      props.width,
-      props.thickness,
-      props.height
-    );
+    const geometry = new THREE.BoxGeometry(props.width, props.thickness, props.height);
     const material = new THREE.MeshLambertMaterial({ color: 0xcccccc });
     this.obj = new THREE.Mesh(geometry, material);
     this.obj.userData.droppable = true;
@@ -73,10 +69,6 @@ export class DeckImpl extends React.Component {
   }
 }
 
-const Deck = props => (
-  <UIContext.Consumer>
-    {context => <DeckImpl {...props} context={context} />}
-  </UIContext.Consumer>
-);
+const Deck = props => <UIContext.Consumer>{context => <DeckImpl {...props} context={context} />}</UIContext.Consumer>;
 
 export { Deck };

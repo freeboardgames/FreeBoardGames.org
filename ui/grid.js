@@ -12,11 +12,7 @@ import { Grid as Grid2D, Square as Square2D } from './2d/grid';
 import { Grid as Grid3D, Square as Square3D } from './3d/grid';
 
 export const Grid = props => {
-  return props.three ? (
-    <Grid3D {...props}>{props.children}</Grid3D>
-  ) : (
-    <Grid2D {...props}>{props.children}</Grid2D>
-  );
+  return props.three ? <Grid3D {...props}>{props.children}</Grid3D> : <Grid2D {...props}>{props.children}</Grid2D>;
 };
 
 Grid.propTypes = {

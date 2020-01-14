@@ -14,13 +14,7 @@ import { Deck as Deck3D } from './3d/deck';
 
 export const Deck = props => (
   <UIContext.Consumer>
-    {context =>
-      context.three ? (
-        <Deck3D {...props} context={context} />
-      ) : (
-        <Deck2D {...props} context={context} />
-      )
-    }
+    {context => (context.three ? <Deck3D {...props} context={context} /> : <Deck2D {...props} context={context} />)}
   </UIContext.Consumer>
 );
 

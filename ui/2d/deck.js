@@ -69,7 +69,7 @@ export class DeckImpl extends React.Component {
         dragZone: this.props.dragZone,
         inDeck: true,
         deckPosition: cardIndex++,
-      })
+      }),
     );
 
     return (
@@ -101,10 +101,6 @@ export class DeckImpl extends React.Component {
   }
 }
 
-const Deck = props => (
-  <UIContext.Consumer>
-    {context => <DeckImpl {...props} context={context} />}
-  </UIContext.Consumer>
-);
+const Deck = props => <UIContext.Consumer>{context => <DeckImpl {...props} context={context} />}</UIContext.Consumer>;
 
 export { Deck };

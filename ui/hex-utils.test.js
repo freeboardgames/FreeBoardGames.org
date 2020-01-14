@@ -6,13 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import {
-  getAllNeighbors,
-  getDistance,
-  getRange,
-  getReachable,
-  createCoordinate,
-} from './hex-utils';
+import { getAllNeighbors, getDistance, getRange, getReachable, createCoordinate } from './hex-utils';
 
 test('neighbors of origo', () => {
   const coordinate = createCoordinate([0, 0, 0]);
@@ -68,7 +62,7 @@ test('range from origo', () => {
       [0, 1, -1],
       [1, -1, 0],
       [1, 0, -1],
-    ].map(createCoordinate)
+    ].map(createCoordinate),
   );
 });
 
@@ -96,7 +90,7 @@ test('range not from origo', () => {
       [4, -5, 1],
       [4, -4, 0],
       [4, -3, -1],
-    ].map(createCoordinate)
+    ].map(createCoordinate),
   );
 });
 
@@ -112,7 +106,7 @@ test('getReachable', () => {
       [0, -1, 1],
       [-1, 0, 1],
       [-2, 2, 0],
-    ].map(createCoordinate)
+    ].map(createCoordinate),
   );
   expect(result).toEqual(
     [
@@ -135,6 +129,6 @@ test('getReachable', () => {
       [-2, 0, 2],
       [-3, 2, 1],
       [-3, 1, 2],
-    ].map(createCoordinate)
+    ].map(createCoordinate),
   );
 });

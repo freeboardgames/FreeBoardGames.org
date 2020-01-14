@@ -21,7 +21,7 @@ describe('Card', () => {
     const card = Enzyme.shallow(
       <UI>
         <Card />
-      </UI>
+      </UI>,
     );
     expect(card.html()).toContain('<div class="bgio-card');
   });
@@ -30,7 +30,7 @@ describe('Card', () => {
     const card = Enzyme.shallow(
       <UI>
         <Card className="custom" />
-      </UI>
+      </UI>,
     );
     expect(card.html()).toContain('custom');
   });
@@ -43,9 +43,7 @@ describe('Card', () => {
 
     test('passed in', () => {
       const onClick = jest.fn();
-      const root = Enzyme.mount(
-        <CardImpl context={context} onClick={onClick} data={{}} />
-      );
+      const root = Enzyme.mount(<CardImpl context={context} onClick={onClick} data={{}} />);
       root.instance().onClick();
       expect(onClick).toHaveBeenCalled();
     });
@@ -66,11 +64,7 @@ describe('GetDraggable', () => {
   });
 
   test('isFaceUp', () => {
-    const Draggable = GetDraggable(
-      { isFaceUp: true, front: 'front-content' },
-      [],
-      {}
-    );
+    const Draggable = GetDraggable({ isFaceUp: true, front: 'front-content' }, [], {});
     const root = Enzyme.mount(<Draggable />);
     expect(root.html()).toContain('front-content');
   });
@@ -87,33 +81,14 @@ describe('GetDragComponent', () => {
 
   test('isOverAccepted callback', () => {
     const DragComponent = GetDragComponent({}, [], React.createRef(), callback);
-    const root = Enzyme.mount(
-      <DragComponent
-        x={0}
-        y={0}
-        isOverAccepted={true}
-        currentlyHoveredDroppableId="id"
-      />
-    );
+    const root = Enzyme.mount(<DragComponent x={0} y={0} isOverAccepted={true} currentlyHoveredDroppableId="id" />);
     expect(root.html()).toContain('accept');
     expect(callback).toBeCalledWith(true);
   });
 
   test('isFaceUp', () => {
-    const DragComponent = GetDragComponent(
-      { isFaceUp: true, front: 'front-content' },
-      [],
-      React.createRef(),
-      callback
-    );
-    const root = Enzyme.mount(
-      <DragComponent
-        x={0}
-        y={0}
-        isOverAccepted={true}
-        currentlyHoveredDroppableId="id"
-      />
-    );
+    const DragComponent = GetDragComponent({ isFaceUp: true, front: 'front-content' }, [], React.createRef(), callback);
+    const root = Enzyme.mount(<DragComponent x={0} y={0} isOverAccepted={true} currentlyHoveredDroppableId="id" />);
     expect(root.html()).toContain('front-content');
   });
 });

@@ -133,9 +133,7 @@ export class Token extends React.Component {
       e.preventDefault();
       // Whether this is a drop or a click depends if the mouse moved after drag.
       // Android will issue very small drag events, so we need a distance.
-      const dist = Math.sqrt(
-        (this.state.x - this.props.x) ** 2 + (this.state.y - this.props.y) ** 2
-      );
+      const dist = Math.sqrt((this.state.x - this.props.x) ** 2 + (this.state.y - this.props.y) ** 2);
       if (dist > 0.2) {
         this.props.onDrop({
           x: this.state.x,
@@ -226,21 +224,13 @@ export class Token extends React.Component {
       let elapsed = now - this.state.originTime;
       let svgCoord = this.getCoords();
       if (elapsed < this.props.animationDuration && this.props.animate) {
-        const percentage = this._easeInOutCubic(
-          elapsed,
-          0,
-          1,
-          this.props.animationDuration
-        );
+        const percentage = this._easeInOutCubic(elapsed, 0, 1, this.props.animationDuration);
 
         this.setState({
           ...this.state,
-          x:
-            (svgCoord.x - this.state.originX) * percentage + this.state.originX,
-          y:
-            (svgCoord.y - this.state.originY) * percentage + this.state.originY,
-          z:
-            (svgCoord.z - this.state.originZ) * percentage + this.state.originZ,
+          x: (svgCoord.x - this.state.originX) * percentage + this.state.originX,
+          y: (svgCoord.y - this.state.originY) * percentage + this.state.originY,
+          z: (svgCoord.z - this.state.originZ) * percentage + this.state.originZ,
         });
 
         requestAnimationFrame(this._animate(Date.now()));

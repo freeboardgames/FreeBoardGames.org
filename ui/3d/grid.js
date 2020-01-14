@@ -37,9 +37,7 @@ import * as THREE from 'three';
  * </Grid>
  */
 export const Grid = props => (
-  <UIContext.Consumer>
-    {context => <GridImpl {...props} context={context} />}
-  </UIContext.Consumer>
+  <UIContext.Consumer>{context => <GridImpl {...props} context={context} />}</UIContext.Consumer>
 );
 
 class GridImpl extends React.Component {
@@ -54,10 +52,7 @@ class GridImpl extends React.Component {
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
     context: PropTypes.any,
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.element),
-      PropTypes.element,
-    ]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.element), PropTypes.element]),
   };
   static defaultProps = {
     colorMap: {},
@@ -72,12 +67,8 @@ class GridImpl extends React.Component {
     this.tokenGroup = new THREE.Group();
     this.boardGroup.add(this.tokenGroup);
     // translate the board to center on (0,0,0)
-    this.boardGroup.translateX(
-      (-(this.props.padding + this.props.cellSize) * (this.props.cols - 1)) / 2
-    );
-    this.boardGroup.translateZ(
-      (-(this.props.padding + this.props.cellSize) * (this.props.rows - 1)) / 2
-    );
+    this.boardGroup.translateX((-(this.props.padding + this.props.cellSize) * (this.props.cols - 1)) / 2);
+    this.boardGroup.translateZ((-(this.props.padding + this.props.cellSize) * (this.props.rows - 1)) / 2);
   }
 
   _getCellColor(x, y) {
@@ -175,11 +166,7 @@ export class Square extends THREE.Mesh {
       ...props,
     };
     props = this.userData;
-    this.geometry = new THREE.BoxBufferGeometry(
-      props.size,
-      props.thickness,
-      props.size
-    );
+    this.geometry = new THREE.BoxBufferGeometry(props.size, props.thickness, props.size);
     this.material = new THREE.MeshLambertMaterial({ color: props.color });
 
     this.receiveShadow = true;

@@ -63,12 +63,7 @@ export class UI extends React.Component {
 
     // Set up camera.
 
-    this.camera = new THREE.PerspectiveCamera(
-      45,
-      this.props.width / this.props.height,
-      0.1,
-      1000
-    );
+    this.camera = new THREE.PerspectiveCamera(45, this.props.width / this.props.height, 0.1, 1000);
     this.camera.position.z = 7;
     this.camera.position.y = 10;
     this.camera.lookAt(new THREE.Vector3());
@@ -121,20 +116,8 @@ export class UI extends React.Component {
       console.log('Loading Complete!');
     };
 
-    THREE.DefaultLoadingManager.onProgress = function(
-      url,
-      itemsLoaded,
-      itemsTotal
-    ) {
-      console.log(
-        'Loading file: ' +
-          url +
-          '\nLoaded ' +
-          itemsLoaded +
-          ' of ' +
-          itemsTotal +
-          ' files.'
-      );
+    THREE.DefaultLoadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
+      console.log('Loading file: ' + url + '\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
     };
 
     THREE.DefaultLoadingManager.onError = function(url) {
@@ -180,10 +163,7 @@ export class UI extends React.Component {
     const dispatchMouseCallbacks = (e, objects) => {
       if (objects === undefined) {
         this.raycaster.setFromCamera(mouse, this.camera);
-        objects = this.raycaster.intersectObjects(
-          this.childGroup.children,
-          true
-        );
+        objects = this.raycaster.intersectObjects(this.childGroup.children, true);
       }
       if (this.props.onMouseEvent) {
         this.props.onMouseEvent(e, objects);
@@ -209,15 +189,10 @@ export class UI extends React.Component {
       const type = getClickType(e);
 
       this.raycaster.setFromCamera(mouse, this.camera);
-      const objects = this.raycaster.intersectObjects(
-        this.childGroup.children,
-        true
-      );
+      const objects = this.raycaster.intersectObjects(this.childGroup.children, true);
 
       if (type == 'leftclick') {
-        dragging_ = objects.filter(
-          obj => obj.object.userData.draggable && obj.object.userData.responsive
-        );
+        dragging_ = objects.filter(obj => obj.object.userData.draggable && obj.object.userData.responsive);
       } else {
         e = { ...e, type };
       }
@@ -232,17 +207,12 @@ export class UI extends React.Component {
 
     const onMouseUp = e => {
       this.raycaster.setFromCamera(mouse, this.camera);
-      const objects = this.raycaster.intersectObjects(
-        this.childGroup.children,
-        true
-      );
+      const objects = this.raycaster.intersectObjects(this.childGroup.children, true);
 
       dispatchMouseCallbacks(e, objects);
 
       if (dragging_.length > 0) {
-        const droppable = objects.filter(
-          obj => obj.object.userData.droppable && obj.object.userData.responsive
-        );
+        const droppable = objects.filter(obj => obj.object.userData.droppable && obj.object.userData.responsive);
 
         if (droppable.length > 0) {
           const what = dragging_.map(o => o.object);

@@ -43,10 +43,7 @@ export class Grid extends React.Component {
     onClick: PropTypes.func,
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.element),
-      PropTypes.element,
-    ]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.element), PropTypes.element]),
   };
 
   static defaultProps = {
@@ -84,7 +81,7 @@ export class Grid extends React.Component {
             onClick={this.onClick}
             onMouseOver={this.onMouseOver}
             onMouseOut={this.onMouseOut}
-          />
+          />,
         );
       }
     }
@@ -122,11 +119,7 @@ export class Grid extends React.Component {
     });
 
     return (
-      <svg
-        ref={this._svgRef}
-        viewBox={'0 0 ' + this.props.cols + ' ' + this.props.rows}
-        style={this.props.style}
-      >
+      <svg ref={this._svgRef} viewBox={'0 0 ' + this.props.cols + ' ' + this.props.rows} style={this.props.style}>
         <g>{this._getGrid()}</g>
         {tokens}
       </svg>
@@ -214,15 +207,7 @@ export class Square extends React.Component {
     const ty = this.props.y * this.props.size;
 
     // If no child, render a square.
-    let children = (
-      <rect
-        style={this.props.style}
-        width={this.props.size}
-        height={this.props.size}
-        x={0}
-        y={0}
-      />
-    );
+    let children = <rect style={this.props.style} width={this.props.size} height={this.props.size} x={0} y={0} />;
     // If a child is passed, render child.
     if (this.props.children) {
       children = this.props.children;

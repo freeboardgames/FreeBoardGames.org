@@ -49,9 +49,7 @@ import * as THREE from 'three';
  *
  */
 export const Token = props => (
-  <UIContext.Consumer>
-    {context => <TokenImpl {...props} context={context} />}
-  </UIContext.Consumer>
+  <UIContext.Consumer>{context => <TokenImpl {...props} context={context} />}</UIContext.Consumer>
 );
 
 class TokenImpl extends React.Component {
@@ -110,10 +108,8 @@ class TokenImpl extends React.Component {
     mesh.scale.set(scale, scale, scale);
     // set the mesh to the ground
     if (this.props.boardSize && this.props.lift && this.props.padding) {
-      mesh.position.x =
-        this.props.x * (this.props.boardSize + this.props.padding);
-      mesh.position.z =
-        this.props.y * (this.props.boardSize + this.props.padding);
+      mesh.position.x = this.props.x * (this.props.boardSize + this.props.padding);
+      mesh.position.z = this.props.y * (this.props.boardSize + this.props.padding);
       mesh.position.y = -bbox.min.y + this.props.lift;
     } else {
       mesh.position.x = this.props.x;
@@ -146,7 +142,7 @@ class TokenImpl extends React.Component {
     if (!mesh) {
       mesh = new THREE.Mesh(
         new THREE.BoxBufferGeometry(1, 1 * 0.3, 1),
-        new THREE.MeshLambertMaterial({ color: '#eeeeee' })
+        new THREE.MeshLambertMaterial({ color: '#eeeeee' }),
       );
       this._attachMesh(mesh);
     } else if (mesh.isObject3D) {

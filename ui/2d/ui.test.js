@@ -33,7 +33,7 @@ describe('basic', () => {
         <div />
 
         <Card />
-      </UI>
+      </UI>,
     );
   });
 
