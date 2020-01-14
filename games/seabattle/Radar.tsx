@@ -1,7 +1,7 @@
 import React from 'react';
 import { IShip, ICell, ISalvo, getCellVector } from './game';
-import { Grid } from '@freeboardgame.org/boardgame.io/ui';
-import { Token } from '@freeboardgame.org/boardgame.io/ui';
+import { Grid } from 'ui';
+import { Token } from 'ui';
 import SvgShip2 from './media/SvgShip2';
 import SvgShip3 from './media/SvgShip3';
 import SvgShip4 from './media/SvgShip4';
@@ -42,7 +42,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     );
   }
 
-  _onClick = (coords: { x: number; y: number }) => {
+  _onClick = (coords: { x: number; y: number; }) => {
     if (this.props.editable) {
       const shipIndex = this._findShip(coords.x, coords.y);
       if (shipIndex !== -1) {
@@ -57,7 +57,7 @@ export class Radar extends React.Component<IRadarProps, {}> {
     return this.props.editable;
   };
 
-  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
+  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number; }) => {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
     const originalX = coords.originalX;

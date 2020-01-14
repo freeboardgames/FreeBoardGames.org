@@ -13,7 +13,7 @@ import {
   IColorMap,
   cartesianToAlgebraic,
 } from '../common/Checkerboard';
-import { Token } from '@freeboardgame.org/boardgame.io/ui';
+import { Token } from 'ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';

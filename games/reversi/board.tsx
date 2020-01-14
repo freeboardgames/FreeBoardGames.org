@@ -1,8 +1,8 @@
 import React from 'react';
 import { IGameArgs } from 'components/App//Game/GameBoardWrapper';
 import { GameLayout } from 'components/App//Game/GameLayout';
-import { Grid } from '@freeboardgame.org/boardgame.io/ui';
-import { Token } from '@freeboardgame.org/boardgame.io/ui';
+import { Grid } from 'ui';
+import { Token } from 'ui';
 import { IG, getScoreBoard } from './game';
 import { IScore } from '../common/Scoreboard';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';

@@ -17,7 +17,7 @@ import {
   cartesianToAlgebraic,
   IOnDragData,
 } from '../common/Checkerboard';
-import { Token } from '@freeboardgame.org/boardgame.io/ui';
+import { Token } from 'ui';
 import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { GameLayout } from 'components/App/Game/GameLayout';
 import { GameMode } from 'components/App/Game/GameModePicker';

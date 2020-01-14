@@ -1,8 +1,8 @@
 import React from 'react';
 import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { GameLayout } from 'components/App/Game/GameLayout';
-import { Grid } from '@freeboardgame.org/boardgame.io/ui';
-import { Token } from '@freeboardgame.org/boardgame.io/ui';
+import { Grid } from 'ui';
+import { Token } from 'ui';
 import { IG, IPieceTransform, getPlayer, getValidPositions, inBounds, getAllPositions } from './game';
 import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
 import { Scoreboard, IScore } from '../common/Scoreboard';
@@ -144,7 +144,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return message;
   }
 
-  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
+  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number; }) => {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
     const transform = { ...this.state.piece.transform, x, y };
@@ -233,8 +233,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 </g>
               </Token>
             ) : (
-              <div></div>
-            )}
+                <div></div>
+              )}
           </Grid>
           <Controls
             placePiece={this._placePiece}
