@@ -8,7 +8,7 @@
     "autopre": "run-s format:staged lint test:coverage test:cypress report:combined",
     "dev": "node server.js",
     "prod": "run-s build start",
-    "build:bgio": "webpack --color --progress --config webpack.bgio.config.js",
+    "build:bgio": "cross-env BABEL_ENV=unoptimized webpack --color --progress --config webpack.bgio.config.js",
     "bgio": "run-s build:bgio run:bgio",
     "build": "cross-env BABEL_ENV=production NODE_ENV=production CHANNEL=production next build",
     "build:staging": "cross-env NODE_ENV=production CHANNEL=staging next build",
