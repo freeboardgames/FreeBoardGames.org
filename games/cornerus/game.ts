@@ -234,7 +234,7 @@ export function endGame(G: IG, ctx: IGameCtx) {
   };
 }
 
-const GameConfig: IGameArgs = {
+const GameConfig /*: IGameArgs*/ = {
   name: 'cornerus',
   flow: {
     movesPerTurn: 1,

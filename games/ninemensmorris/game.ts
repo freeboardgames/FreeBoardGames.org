@@ -172,7 +172,7 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
   };
 }
 
-const GameConfig: IGameArgs = {
+const GameConfig /*: IGameArgs*/ = {
   name: 'ninemensmorris',
   flow: {
     startingPhase: Phase.Place,

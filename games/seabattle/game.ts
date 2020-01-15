@@ -1,4 +1,4 @@
-import { TurnOrder } from 'boardgame.io/core';
+import { TurnOrder, IGameArgs } from 'boardgame.io/core';
 import shortid from 'shortid';
 
 export interface IShip {
@@ -46,7 +46,42 @@ export const playerView = (G: ISeabattleState, ctx: ICtx, playerID: string): ISe
   };
 };
 
-export const SeabattleGame = {
+function setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
+  const player = parseInt(ctx.playerID, 10);
+  const validation = validateShips(ships, player);
+  if (!validation.valid) {
+    throw new Error(validation.error);
+  }
+  return { ...G, ships: [...G.ships, ...ships] };
+}
+
+function salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
+  const player = parseInt(ctx.playerID, 10);
+  const shipIndex = findShipWithCell(G.ships, { x, y }, player);
+  // Do not allow the same cells to be shot twice
+  const uniqueMove =
+    G.salvos.filter(salvo => salvo.player === player && salvo.cell.x === x && salvo.cell.y === y).length === 0;
+  if (!uniqueMove) {
+    return { ...G };
+  }
+  if (shipIndex === -1) {
+    // Miss
+    return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y } }] };
+  }
+  const ship = G.ships[shipIndex];
+  // Hit
+  const newShips = [...G.ships];
+  if (countShipHits(G.salvos, ship.id) + 1 === ship.cells.length) {
+    newShips[shipIndex] = { ...newShips[shipIndex], sunk: true };
+  }
+  return {
+    ...G,
+    ships: newShips,
+    salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: ship.id }],
+  };
+}
+
+export const SeabattleGame: IGameArgs = {
   name: 'seabattle',
 
   setup: (): ISeabattleState => ({
@@ -54,63 +89,27 @@ export const SeabattleGame = {
     salvos: [],
   }),
 
-  moves: {
-    setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
-      const player = parseInt(ctx.playerID, 10);
-      const validation = validateShips(ships, player);
-      if (!validation.valid) {
-        throw new Error(validation.error);
-      }
-      return { ...G, ships: [...G.ships, ...ships] };
+  phases: {
+    setup: {
+      moves: { setShips },
+      //turnOrder: TurnOrder.ANY_ONCE,
+      order: TurnOrder.ONCE,
+      next: 'play',
+      start: true,
     },
-    salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
-      const player = parseInt(ctx.playerID, 10);
-      const shipIndex = findShipWithCell(G.ships, { x, y }, player);
-      // Do not allow the same cells to be shot twice
-      const uniqueMove =
-        G.salvos.filter(salvo => salvo.player === player && salvo.cell.x === x && salvo.cell.y === y).length === 0;
-      if (!uniqueMove) {
-        return { ...G };
-      }
-      if (shipIndex === -1) {
-        // Miss
-        return { ...G, salvos: [...G.salvos, { player, hit: false, cell: { x, y } }] };
-      }
-      const ship = G.ships[shipIndex];
-      // Hit
-      const newShips = [...G.ships];
-      if (countShipHits(G.salvos, ship.id) + 1 === ship.cells.length) {
-        newShips[shipIndex] = { ...newShips[shipIndex], sunk: true };
-      }
-      return {
-        ...G,
-        ships: newShips,
-        salvos: [...G.salvos, { player, hit: true, cell: { x, y }, hitShip: ship.id }],
-      };
+    play: {
+      moves: { salvo },
+      moveLimit: 1,
     },
   },
 
-  flow: {
-    startingPhase: 'setup',
-    phases: {
-      setup: {
-        allowedMoves: ['setShips'],
-        turnOrder: TurnOrder.ANY_ONCE,
-        next: 'play',
-      },
-      play: {
-        endGameIf: G => {
-          if (checkAllShipsSunk(G.ships, 0)) {
-            return { winner: '1' };
-          }
-          if (checkAllShipsSunk(G.ships, 1)) {
-            return { winner: '0' };
-          }
-        },
-        allowedMoves: ['salvo'],
-        movesPerTurn: 1,
-      },
-    },
+  endIf: G => {
+    if (checkAllShipsSunk(G.ships, 0)) {
+      return { winner: '1' };
+    }
+    if (checkAllShipsSunk(G.ships, 1)) {
+      return { winner: '0' };
+    }
   },
 
   playerView,

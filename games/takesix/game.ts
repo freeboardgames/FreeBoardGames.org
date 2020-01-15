@@ -108,7 +108,7 @@ export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
   };
 }
 
-const GameConfig: IGameArgs = {
+const GameConfig /*: IGameArgs*/ = {
   name: 'takesix',
   flow: {
     endTurn: false,
