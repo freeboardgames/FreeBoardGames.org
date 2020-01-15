@@ -22,6 +22,10 @@ var config = {
     chunkFilename: '[chunkhash].js',
   },
 
+  optimization: {
+    minimize: false,
+  },
+
   plugins: [new CleanWebpackPlugin(), new HardSourceWebpackPlugin()],
 
   resolve: {
@@ -33,12 +37,13 @@ var config = {
   module: {
     rules: [
       {
-        test: /\.ts(x?)$/,
+        test: /\.(j|t)s(x?)$/,
         exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader',
             options: {
+              cacheDirectory: true,
               presets: [
                 [
                   '@babel/preset-env',

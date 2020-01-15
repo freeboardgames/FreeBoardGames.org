@@ -14,6 +14,9 @@
     },
     "cypress": {
       "plugins": ["istanbul"]
+    },
+    "unoptimized": {
+      "compact": false
     }
   }
 }
