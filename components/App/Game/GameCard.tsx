@@ -13,12 +13,12 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
   render() {
     let navigateButton = null;
     const mainDivStyle: React.CSSProperties = {
-      marginBottom: '16px',
       position: 'relative',
       height: '250px',
       width: '100%',
       backgroundPosition: 'left center',
       backgroundImage: `url(${this.props.game.imageURL})`,
+      backgroundSize: 'cover',
     };
     const baseBadgeStyle: React.CSSProperties = {
       position: 'absolute',

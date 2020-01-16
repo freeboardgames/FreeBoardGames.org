@@ -13,7 +13,7 @@ class Header extends React.Component<{}, {}> {
         <Typography variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           Free as in freedom
         </Typography>
-        <Typography variant="body2" gutterBottom={true} style={{ marginTop: '16px' }}>
+        <Typography variant="body2" gutterBottom={true} style={{ marginTop: '16px', marginBottom: '16px' }}>
           We at FreeBoardGames.org want to bring free games for everybody. Free as in &quot;free beer&quot; <i>and</i>
           &nbsp; as in &quot;freedom&quot;. Not only do you get to enjoy free high quality games everywhere, but you
           also can study how they are made, change them, and contribute back to the community!

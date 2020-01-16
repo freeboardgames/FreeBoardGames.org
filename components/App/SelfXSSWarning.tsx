@@ -9,7 +9,7 @@ export class SelfXSSWarning extends React.Component<{}, {}> {
         console.log.bind(
           console,
           '%c%s',
-          'font-size:50px; font-weight:bold; background: yellow; color:red; -webkit-text-stroke:1px black;',
+          'font-size:40px; font-weight:bold; background: yellow; color:red; -webkit-text-stroke:1px black;',
           ' WARNING! ',
         ),
       );
@@ -17,8 +17,8 @@ export class SelfXSSWarning extends React.Component<{}, {}> {
         console.log.bind(
           console,
           '%cUsing this console may allow attackers to impersonate you and steal your information using an attack called Self-XSS.\n%cDo not enter or paste code that you do not understand.',
-          'font-family:helvetica; font-size:20px;',
-          'font-family:helvetica; font-size:20px; font-weight:bold',
+          'font-family:helvetica; font-size:16px;',
+          'font-family:helvetica; font-size:16px; font-weight:bold',
         ),
       );
     }

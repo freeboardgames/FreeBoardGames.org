@@ -23,7 +23,7 @@ class App extends React.Component<{}, {}> {
     return (
       <div
         style={{
-          maxWidth: '500px',
+          maxWidth: '1200px',
           marginLeft: 'auto',
           marginRight: 'auto',
         }}
