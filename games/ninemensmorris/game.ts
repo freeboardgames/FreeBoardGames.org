@@ -172,26 +172,21 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
   };
 }
 
-const GameConfig /*: IGameArgs*/ = {
+const GameConfig: IGameArgs = {
   name: 'ninemensmorris',
-  flow: {
-    startingPhase: Phase.Place,
-    phases: {
-      Place: {
-        allowedMoves: ['placePiece', 'removePiece'],
-        next: Phase.Move,
-        endPhaseIf: (G: IG) => G.piecesPlaced === 18,
-      },
-      Move: {
-        allowedMoves: ['movePiece', 'removePiece'],
-      },
+  phases: {
+    Place: {
+      moves: { placePiece, removePiece },
+      next: Phase.Move,
+      endIf: (G: IG) => G.piecesPlaced === 18,
+      start: true,
     },
-    onMove: (G: IG, ctx) => {
-      if (!G.haveToRemovePiece) {
-        ctx.events.endTurn();
-      }
+    Move: {
+      moves: { movePiece, removePiece },
     },
-    onTurnBegin: (G: IG, ctx) => {
+  },
+  turn: {
+    onBegin: (G: IG, ctx) => {
       if (
         ctx.phase === Phase.Move &&
         !G.haveToRemovePiece &&
@@ -203,11 +198,16 @@ const GameConfig /*: IGameArgs*/ = {
         ctx.events.endGame({ winner: G.players.findIndex((_, i) => i.toString() !== ctx.currentPlayer).toString() });
       }
     },
-    endGameIf: (G: IG) => {
-      if (G.players.some(player => player.lostPieces === 7)) {
-        return { winner: G.players.findIndex(player => player.lostPieces !== 7).toString() };
+    onMove: (G: IG, ctx) => {
+      if (!G.haveToRemovePiece) {
+        ctx.events.endTurn();
       }
     },
+  },
+  endIf: (G: IG) => {
+    if (G.players.some(player => player.lostPieces === 7)) {
+      return { winner: G.players.findIndex(player => player.lostPieces !== 7).toString() };
+    }
   },
   moves: {
     placePiece,

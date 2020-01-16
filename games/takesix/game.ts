@@ -119,7 +119,7 @@ const GameConfig /*: IGameArgs*/ = {
       // Everyone needs to select card
       CARD_SELECT: {
         allowedMoves: ['selectCard'],
-        turnOrder: TurnOrder.ANY_ONCE,
+        //turnOrder: TurnOrder.ANY_ONCE,
         next: 'DECK_SELECT',
         // Determine player order
         onPhaseEnd: (G: IG) => {
