@@ -116,8 +116,6 @@ cypress/__diff_output__
 # FBG-specific
 bgio/dist
 okteto.yml
-Dockerfile
-docker_run.sh
 dockerbuild
 reports/
 .config/
