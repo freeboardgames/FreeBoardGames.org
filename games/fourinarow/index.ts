@@ -11,7 +11,9 @@ export const fourinarowGameDef: IGameDef = {
   imageURL: FourInARowThumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   description: 'Also Known as Connect Four',
-  descriptionTag: `Four in a Row is a two-player connection game in which the players first choose a color and then take turns dropping one colored disc from the top into a seven-column, six-row vertically suspended grid. The pieces fall straight down, occupying the lowest available space within the column. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs.`,
+  descriptionTag: `Play Four in a Row for free.  You can play\
+ a multi-player game against a friend online, or share your device and play\
+ locally against a friend.`,
   instructions: {
     videoId: 'utXzIFEVPjA',
     text: instructions,
