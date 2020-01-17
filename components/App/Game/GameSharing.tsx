@@ -15,7 +15,15 @@ import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import { IRoomMetadata } from '../Lobby/LobbyService';
 import AlertLayer from './AlertLayer';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { QrCodePopup } from '../Lobby/QrCodePopup';
+import { lightGreen } from '@material-ui/core/colors';
+
+const theme = createMuiTheme({
+  palette: {
+    secondary: lightGreen,
+  },
+});
 
 interface IGameSharingProps {
   gameCode: string;
@@ -25,10 +33,11 @@ interface IGameSharingProps {
 
 interface IGameSharingState {
   showingQrCode: boolean;
+  copyButtonRecentlyPressed: boolean;
 }
 
 export class GameSharing extends React.Component<IGameSharingProps, IGameSharingState> {
-  state: IGameSharingState = { showingQrCode: false };
+  state: IGameSharingState = { showingQrCode: false, copyButtonRecentlyPressed: false };
 
   private sendEmailCallback: any;
   private shareFacebookCallback: any;
@@ -44,48 +53,59 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
   }
 
   render() {
+    let copyButtonColor;
+    let copyButtonText;
+    if (this.state.copyButtonRecentlyPressed) {
+      copyButtonText = 'Copied!';
+      copyButtonColor = 'secondary';
+    } else {
+      copyButtonText = 'Copy Link';
+      copyButtonColor = 'primary';
+    }
     return (
-      <div>
-        {this.state.showingQrCode ? (
-          <AlertLayer>
-            <QrCodePopup url={this._getLink()} toggleQrCode={this.showQrCodeCallback} />
-          </AlertLayer>
-        ) : null}
-        <Card>
-          <CardContent>
-            <Typography style={{ paddingBottom: '16px' }} variant="h5" component="h2">
-              Invite Your Friends
-            </Typography>
-            <TextField style={{ width: '100%' }} defaultValue={this._getLink()} label="Link" />
-          </CardContent>
-          <CardActions>
-            <Tooltip title="Send link by e-mail" aria-label="E-mail">
-              <IconButton onClick={this.sendEmailCallback}>
-                <EmailIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Share on Facebook" aria-label="Facebook">
-              <IconButton onClick={this.shareFacebookCallback}>
-                <FacebookIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Show QR code" aria-label="QR code">
-              <IconButton onClick={this.showQrCodeCallback}>
-                <QrCodeIcon />
-              </IconButton>
-            </Tooltip>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.copyClipboardCallback}
-              style={{ marginLeft: 'auto' }}
-            >
-              <ContentCopyIcon aria-label="Copy" style={{ marginRight: '8px' }} />
-              Copy Link
-            </Button>
-          </CardActions>
-        </Card>
-      </div>
+      <MuiThemeProvider theme={theme}>
+        <div>
+          {this.state.showingQrCode ? (
+            <AlertLayer>
+              <QrCodePopup url={this._getLink()} toggleQrCode={this.showQrCodeCallback} />
+            </AlertLayer>
+          ) : null}
+          <Card>
+            <CardContent>
+              <Typography style={{ paddingBottom: '16px' }} variant="h5" component="h2">
+                Invite Your Friends
+              </Typography>
+              <TextField style={{ width: '100%' }} defaultValue={this._getLink()} label="Link" />
+            </CardContent>
+            <CardActions>
+              <Tooltip title="Send link by e-mail" aria-label="E-mail">
+                <IconButton onClick={this.sendEmailCallback}>
+                  <EmailIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share on Facebook" aria-label="Facebook">
+                <IconButton onClick={this.shareFacebookCallback}>
+                  <FacebookIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Show QR code" aria-label="QR code">
+                <IconButton onClick={this.showQrCodeCallback}>
+                  <QrCodeIcon />
+                </IconButton>
+              </Tooltip>
+              <Button
+                variant="contained"
+                color={copyButtonColor}
+                onClick={this.copyClipboardCallback}
+                style={{ marginLeft: 'auto' }}
+              >
+                <ContentCopyIcon aria-label="Copy" style={{ marginRight: '8px' }} />
+                {copyButtonText}
+              </Button>
+            </CardActions>
+          </Card>
+        </div>
+      </MuiThemeProvider>
     );
   }
 
@@ -114,7 +134,8 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
       label: this.props.gameCode,
     });
     copy(this._getLink());
-    alert('Link copied to clipboard');
+    setTimeout(() => this.setState({ copyButtonRecentlyPressed: false }), 3000);
+    this.setState({ copyButtonRecentlyPressed: true });
   }
 
   showQrCode() {

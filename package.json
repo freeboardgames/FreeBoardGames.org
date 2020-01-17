@@ -4,9 +4,10 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx pages src/ @types/ components/ tests/",
-    "pre": "run-s lint format:check test:coverage test:cypress report:combined",
-    "autopre": "run-s format:staged lint test:coverage test:cypress report:combined",
+    "pre": "run-s lint format:check build:bgio test:coverage test:cypress report:combined",
+    "autopre": "run-s format:staged lint build:bgio test:coverage test:cypress report:combined",
     "dev": "node server.js",
+    "bgio:dev": "nodemon -e js,ts --exec yarn run bgio",
     "prod": "run-s build start",
     "build:bgio": "cross-env BABEL_ENV=unoptimized webpack --color --progress --config webpack.bgio.config.js",
     "bgio": "run-s build:bgio run:bgio",
@@ -15,7 +16,7 @@
     "format": "prettier --write \"./**/*.*(js|jsx|ts|tsx)\"",
     "format:staged": "pretty-quick --staged",
     "format:check": "prettier --check \"./**/*.ts\" \"./**/*.tsx\" \"./**/*.js\" \"./**/*.jsx\"",
-    "run:bgio": "node bgio/dist/server_bgio.js",
+    "start:bgio": "node bgio/dist/server_bgio.js",
     "start": "cross-env CHANNEL=production NODE_ENV=production node server.js",
     "cyp:build": "cross-env NODE_ENV=production CHANNEL=staging BABEL_ENV=cypress next build",
     "cyp:startserver": "cross-env NODE_ENV=production CHANNEL=staging BABEL_ENV=cypress SERVER_PORT=13000 node server.js",
@@ -59,9 +60,9 @@
     "empty-module": "^0.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
-    "eslint-plugin-react": "^7.17.0",
-    "mongodb": "3.0.3",
-    "next": "9.1.8-canary.6",
+    "eslint-plugin-react": "^7.18.0",
+    "mongodb": "3.5.0",
+    "next": "9.2.0",
     "next-offline": "^4.0.6",
     "next-seo": "^3.3.0",
     "next-with-error": "^1.0.0",
@@ -86,12 +87,12 @@
     "@testing-library/react": "^9.4.0",
     "@types/enzyme": "^3.10.4",
     "@types/enzyme-adapter-react-16": "^1.0.5",
-    "@types/jest": "^24.0.25",
-    "@types/node": "^13.1.6",
+    "@types/jest": "^24.9.0",
+    "@types/node": "^13.1.7",
     "@types/react": "^16.9.17",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
     "@typescript-eslint/parser": "^2.15.0",
-    "autoprefixer": "^9.7.3",
+    "autoprefixer": "^9.7.4",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-istanbul": "^6.0.0",
@@ -104,7 +105,6 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "express": "^4.17.1",
     "hard-source-webpack-plugin": "^0.13.1",
-    "husky": "^4.0.7",
     "ignore-loader": "^0.1.2",
     "image-trace-loader": "^1.0.2",
     "imagemin-gifsicle": "^6.0.1",
@@ -120,6 +120,7 @@
     "move-cli": "^1.2.1",
     "ncp": "^2.0.0",
     "next-optimized-images": "^2.5.4",
+    "nodemon": "^2.0.2",
     "null-loader": "^3.0.0",
     "nyc": "^15.0.0",
     "prettier": "^1.19.1",
@@ -139,10 +140,5 @@
   },
   "nyc": {
     "report-dir": "coverage-cypress"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn run format:staged"
-    }
   }
 }

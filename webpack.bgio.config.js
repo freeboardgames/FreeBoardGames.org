@@ -12,7 +12,7 @@ var config = {
   externals: [nodeExternals()],
 
   entry: {
-    server_bgio: path.resolve(__dirname, 'bgio/server.tsx'),
+    server_bgio: path.resolve(__dirname, 'bgio/server.ts'),
   },
 
   output: {

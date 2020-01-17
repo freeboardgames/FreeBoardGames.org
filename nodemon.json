@@ -1,0 +1,3 @@
+{
+    "ignore": ["test/*", "docs/*", "bgio/dist/*", ".git/*"]
+  }

@@ -5,7 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import FbgLogo from './media/fbg_logo_white_48.png';
 import Link from 'next/link';
 
-class App extends React.Component<{}, {}> {
+interface FBGBarProps {
+  FEATURE_FLAG_readyForDesktopView?: boolean;
+}
+
+class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
   render() {
     const isProdChannel = process.env.CHANNEL === 'production';
     let appBarStyle;
@@ -20,10 +24,12 @@ class App extends React.Component<{}, {}> {
       );
     }
 
+    const maxWidth = this.props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
+
     return (
       <div
         style={{
-          maxWidth: '500px',
+          maxWidth,
           marginLeft: 'auto',
           marginRight: 'auto',
         }}
@@ -33,7 +39,7 @@ class App extends React.Component<{}, {}> {
             <a style={{ textDecoration: 'none' }}>
               <Toolbar>
                 <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
-                <Typography variant="h6" style={{ color: 'white' }}>
+                <Typography component="h1" variant="h6" style={{ color: 'white' }}>
                   FreeBoardGames.org
                 </Typography>
                 {versionInfo}
@@ -47,4 +53,4 @@ class App extends React.Component<{}, {}> {
   }
 }
 
-export default App;
+export default FreeBoardGamesBar;

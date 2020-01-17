@@ -13,12 +13,12 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
   render() {
     let navigateButton = null;
     const mainDivStyle: React.CSSProperties = {
-      marginBottom: '16px',
       position: 'relative',
       height: '250px',
       width: '100%',
       backgroundPosition: 'left center',
       backgroundImage: `url(${this.props.game.imageURL})`,
+      backgroundSize: 'cover',
     };
     const baseBadgeStyle: React.CSSProperties = {
       position: 'absolute',
@@ -47,7 +47,7 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
       );
     }
     const gameNameHeading = this.props.isLink ? (
-      <Typography gutterBottom={false} variant="h4" component="h4" style={{ fontWeight: 300 }}>
+      <Typography gutterBottom={false} variant="h4" component="h3" style={{ fontWeight: 300 }}>
         {this.props.game.name}
       </Typography>
     ) : (
