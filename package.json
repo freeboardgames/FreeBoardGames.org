@@ -7,7 +7,7 @@
     "pre": "run-s lint format:check build:bgio test:coverage test:cypress report:combined",
     "autopre": "run-s format:staged lint build:bgio test:coverage test:cypress report:combined",
     "dev": "node server.js",
-    "bgio:dev": "nodemon -e js,jsx,ts,tsx --exec yarn run bgio",
+    "bgio:dev": "nodemon -e js,ts --exec yarn run bgio",
     "prod": "run-s build start",
     "build:bgio": "webpack --color --progress --config webpack.bgio.config.js",
     "bgio": "run-s build:bgio start:bgio",
