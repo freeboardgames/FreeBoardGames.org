@@ -209,11 +209,6 @@ const GameConfig: IGameArgs = {
       return { winner: G.players.findIndex(player => player.lostPieces !== 7).toString() };
     }
   },
-  moves: {
-    placePiece,
-    movePiece,
-    removePiece,
-  },
   setup: (ctx): IG => {
     /* 00-------01-------02
      * |        |         |
