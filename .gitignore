@@ -120,6 +120,7 @@ dockerbuild
 reports/
 .config/
 .dockerignore
+static/sitemap.xml
 
 # syn
 .syn/
