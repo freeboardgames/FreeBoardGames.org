@@ -10,13 +10,18 @@ class Header extends React.Component<{}, {}> {
   render() {
     return (
       <div style={{ padding: '0 8px' }}>
-        <Typography variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
-          Free as in freedom
+        <Typography component="h1" variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
+          Play Free (as in Freedom) Board Games
         </Typography>
-        <Typography variant="body2" gutterBottom={true} style={{ marginTop: '16px', marginBottom: '16px' }}>
-          We at FreeBoardGames.org want to bring free games for everybody. Free as in &quot;free beer&quot; <i>and</i>
-          &nbsp; as in &quot;freedom&quot;. Not only do you get to enjoy free high quality games everywhere, but you
-          also can study how they are made, change them, and contribute back to the community!
+        <Typography
+          component="h2"
+          variant="body2"
+          gutterBottom={true}
+          style={{ marginTop: '16px', marginBottom: '16px' }}
+        >
+          FreeBoardGames.org is a <b>free and open-source</b> board game platform. Enjoy free high-quality games on any
+          device that can access the web. Study how the games are made, change them, and contribute back to the
+          community!
         </Typography>
         {this._links()}
       </div>

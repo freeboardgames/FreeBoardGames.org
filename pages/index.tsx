@@ -7,7 +7,7 @@ import SEO from 'components/SEO';
 class Home extends React.Component<{}, {}> {
   render() {
     return (
-      <FreeBoardGamesBar>
+      <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <SEO
           title={'Play Free Board Games Online'}
           description={
