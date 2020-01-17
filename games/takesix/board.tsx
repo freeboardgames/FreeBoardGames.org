@@ -75,7 +75,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _canPlay() {
-    return this.props.ctx.actionPlayers.some(player => player === this.props.playerID);
+    return this.props.playerID === this.props.ctx.currentPlayer;
   }
 
   _getGameOver() {

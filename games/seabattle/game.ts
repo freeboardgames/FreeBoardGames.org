@@ -93,13 +93,13 @@ export const SeabattleGame: IGameArgs = {
     setup: {
       moves: { setShips },
       //turnOrder: TurnOrder.ANY_ONCE,
-      order: TurnOrder.ONCE,
+      //order: TurnOrder.ONCE,
       next: 'play',
       start: true,
     },
     play: {
       moves: { salvo },
-      moveLimit: 1,
+      //moveLimit: 1,
     },
   },
 

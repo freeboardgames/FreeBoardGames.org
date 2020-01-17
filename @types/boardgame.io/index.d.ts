@@ -8,6 +8,10 @@ declare module 'boardgame.io/core' {
     const CUSTOM_FROM: (playOrderField: string) => ITurnOrder;
   }
 
+  export namespace Stage {
+    const NULL: string;
+  }
+
   export namespace ActivePlayers {
     const ALL: IActivePlayers;
     const ALL_ONCE: IActivePlayers;
@@ -38,6 +42,14 @@ declare module 'boardgame.io/core' {
     endTurn: () => void;
     endPhase: () => void;
     endGame: (gameover?: any) => void;
+    setStage: (stage: string) => void;
+    endStage: () => void;
+    setActivePlayers: (activePlayers: IActivePlayers) => void;
+  }
+  interface IEvents {
+    endTurn?: boolean;
+    endPhase?: boolean;
+    endGame?: boolean;
   }
   interface IGameCtx {
     phase?: string;
@@ -57,19 +69,23 @@ declare module 'boardgame.io/core' {
   interface IGameMoves {
     [key: string]: (G: any, ctx: IGameCtx, ...args: any[]) => any;
   }
-  interface IActionPlayers {
-    value: (G: any, ctx: IGameCtx) => number[] | string[];
-    all: boolean;
-    others: boolean;
-    once: boolean;
-  }
   interface ITurnOrder {
     playOrder?: (G: any, ctx: IGameCtx) => number[] | string[];
     first: (G: any, ctx: IGameCtx) => number;
     next: (G: any, ctx: IGameCtx) => number;
     actionPlayers?: IActionPlayers;
   }
-  interface IActivePlayers {}
+  interface IActivePlayers {
+    currentPlayer?: string;
+    others?: string;
+    all?: string;
+    value?: {
+      [key: string]: string;
+    };
+    moveLimit?: number;
+    revert?: boolean;
+    next?: IActivePlayers;
+  }
   interface IStages {
     [name: string]: {
       moveLimit?: number;
@@ -87,23 +103,19 @@ declare module 'boardgame.io/core' {
     activePlayers?: IActivePlayers;
     stages?: IStages;
   }
-  interface IGameFlowPhases {
+  interface IGamePhases {
     [name: string]: {
-      moveLimit?: number;
       next?: string;
       start?: boolean;
       moves?: IGameMoves;
-      order?: ITurnOrder;
       endIf?: (G: any, ctx: IGameCtx) => boolean | object;
       onBegin?: (G: any, ctx: IGameCtx) => any;
       onEnd?: (G: any, ctx: IGameCtx) => any;
       onMove?: (G: any, ctx: IGameCtx) => any;
+      turn?: ITurn;
     };
   }
-  interface IGameFlowTrigger {
-    conditon: (G: any, ctx: IGameCtx) => boolean;
-    action: (G: any, ctx: IGameCtx) => any;
-  }
+
   interface IGameArgs {
     name?: string;
     setup: (ctx: IGameCtx) => any;
@@ -112,7 +124,8 @@ declare module 'boardgame.io/core' {
     seed?: string;
     turn?: ITurn;
     endIf?: (G: any, ctx: IGameCtx) => void;
-    phases?: IGameFlowPhases;
+    phases?: IGamePhases;
+    events?: IEvents;
   }
   export function Game(gameArgs: IGameArgs): GameObj;
   export const INVALID_MOVE: string;
