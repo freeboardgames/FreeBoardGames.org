@@ -3,6 +3,7 @@
 * `yarn run dev` builds and starts the development **web** server.
 * `yarn run prod` builds and starts the production **web** server.
 * `yarn run bgio` builds and starts the **boardgame.io** server.
+* `yarn run bgio:dev` builds and starts the **boardgame.io** server.  The **boardgame.io** server will automatically recompile/restart on file changes.
 * `yarn run test` runs all **unit tests**.
 * `yarn run cyp:buildandstartserver` builds and starts an unoptimized production server for use with Cypress visual testing.
 * `yarn run cyp:run` runs Cypress visual tests.
