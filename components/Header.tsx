@@ -11,7 +11,7 @@ class Header extends React.Component<{}, {}> {
     return (
       <div style={{ padding: '0 8px' }}>
         <Typography component="h1" variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
-          Play Free (as in Freedom) Board Games
+          Play Free Board Games
         </Typography>
         <Typography
           component="h2"
