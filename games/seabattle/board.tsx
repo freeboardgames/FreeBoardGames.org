@@ -52,7 +52,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return <GameLayout gameOver={result} extraCardContent={extraCardContent} gameArgs={this.props.gameArgs} />;
     }
     let child;
-    if (ctx.phase === 'setup' && (this.props.playerID === null || ctx.actionPlayers.includes(this.props.playerID))) {
+    if (
+      ctx.phase === 'setup' &&
+      this.props.playerID !== null &&
+      ctx.activePlayers !== null &&
+      Object.keys(ctx.activePlayers).includes(this.props.playerID)
+    ) {
       child = <ShipsPlacement playerID={this.props.playerID} setShips={this._setShips} />;
     } else if (ctx.phase === 'setup') {
       child = (

@@ -6,7 +6,6 @@ const config: IGameConfig = {
   bgioGame: SeabattleGame,
   bgioBoard: SeabattleBoard,
   enhancers: [],
-  debug: true,
 };
 
 export default config;

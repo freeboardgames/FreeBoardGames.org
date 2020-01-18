@@ -1,4 +1,4 @@
-import { TurnOrder, IGameArgs } from 'boardgame.io/core';
+import { TurnOrder, IGameArgs, ActivePlayers, IGameCtx } from 'boardgame.io/core';
 import shortid from 'shortid';
 
 export interface IShip {
@@ -46,12 +46,17 @@ export const playerView = (G: ISeabattleState, ctx: ICtx, playerID: string): ISe
   };
 };
 
-function setShips(G: ISeabattleState, ctx: ICtx, ships: IShip[]) {
+function setShips(G: ISeabattleState, ctx: IGameCtx, ships: IShip[]) {
   const player = parseInt(ctx.playerID, 10);
   const validation = validateShips(ships, player);
   if (!validation.valid) {
     throw new Error(validation.error);
   }
+
+  if (Object.keys(ctx.activePlayers).length === 1) {
+    ctx.events.endPhase();
+  }
+
   return { ...G, ships: [...G.ships, ...ships] };
 }
 
@@ -91,27 +96,30 @@ export const SeabattleGame: IGameArgs = {
 
   phases: {
     setup: {
+      onBegin: (_, ctx) => {
+        ctx.events.setActivePlayers(ActivePlayers.ALL_ONCE);
+      },
       moves: { setShips },
-      //turnOrder: TurnOrder.ANY_ONCE,
-      //order: TurnOrder.ONCE,
       next: 'play',
       start: true,
     },
     play: {
       moves: { salvo },
-      //moveLimit: 1,
     },
   },
-
-  endIf: G => {
-    if (checkAllShipsSunk(G.ships, 0)) {
-      return { winner: '1' };
-    }
-    if (checkAllShipsSunk(G.ships, 1)) {
-      return { winner: '0' };
+  endIf: (G, ctx) => {
+    if (ctx.phase === 'play') {
+      if (checkAllShipsSunk(G.ships, 0)) {
+        return { winner: '1' };
+      }
+      if (checkAllShipsSunk(G.ships, 1)) {
+        return { winner: '0' };
+      }
     }
   },
-
+  turn: {
+    moveLimit: 1,
+  },
   playerView,
 };
 
