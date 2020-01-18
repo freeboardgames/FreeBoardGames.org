@@ -10,7 +10,7 @@
     "bgio:dev": "nodemon -e js,ts --exec yarn run bgio",
     "prod": "run-s build start",
     "build:bgio": "webpack --color --progress --config webpack.bgio.config.js",
-    "bgio": "run-s build:bgio start:bgio",
+    "bgio": "cross-env BABEL_ENV=unoptimized run-s build:bgio start:bgio",
     "build": "cross-env BABEL_ENV=production NODE_ENV=production CHANNEL=production next build",
     "build:staging": "cross-env NODE_ENV=production CHANNEL=staging next build",
     "format": "prettier --write \"./**/*.*(js|jsx|ts|tsx)\"",

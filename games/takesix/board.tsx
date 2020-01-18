@@ -75,7 +75,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _canPlay() {
-    return this.props.playerID === this.props.ctx.currentPlayer;
+    if (this.props.ctx.phase === 'CARD_SELECT') {
+      return this.props.ctx.activePlayers !== null && Object.keys(this.props.ctx.activePlayers)?.some(player => player === this.props.playerID);
+    } else {
+      return this.props.playerID === this.props.ctx.currentPlayer;
+    }
   }
 
   _getGameOver() {

@@ -58,7 +58,9 @@ declare module 'boardgame.io/core' {
     turn: number;
     currentPlayer: string;
     currentPlayerMoves: number;
-    actionPlayers: string[];
+    activePlayers: {
+      [key: string]: string;
+    };
     playOrder: string[];
     playOrderPos: number;
     gameover: any;

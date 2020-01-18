@@ -64,6 +64,10 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
     return INVALID_MOVE;
   }
 
+  if (Object.keys(ctx.activePlayers).length === 1) {
+    ctx.events.endPhase();
+  }
+
   return {
     ...G,
     players: Object.values({
@@ -114,8 +118,10 @@ const GameConfig: IGameArgs = {
     // Everyone needs to select card
     CARD_SELECT: {
       moves: { selectCard },
-      //turnOrder: TurnOrder.ANY_ONCE,
       next: 'DECK_SELECT',
+      onBegin: (_, ctx) => {
+        ctx.events.setActivePlayers(ActivePlayers.ALL_ONCE);
+      },
       // Determine player order
       onEnd: (G: IG) => {
         const selectedCards = G.players.map(player => player.selectedCard);
@@ -124,11 +130,6 @@ const GameConfig: IGameArgs = {
           ...G,
           cardOrder: selectedCards.map(card => card.owner).map(owner => owner.toString()),
         };
-      },
-      turn: {
-        moveLimit: 1,
-        order: TurnOrder.ONCE,
-        activePlayers: ActivePlayers.ALL_ONCE,
       },
       start: true,
     },
