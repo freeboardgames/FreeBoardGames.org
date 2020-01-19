@@ -35,6 +35,7 @@ export function inBounds(x: number, y: number) {
 
 // Map real playerID to 'fake' one
 export function getPlayer(ctx: IGameCtx, playerID: string) {
+  console.log(ctx);
   const numMoves = ctx.stats.phase.numMoves[playerID];
   if (ctx.numPlayers === 2) {
     if (playerID === '0') {

@@ -70,7 +70,7 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
       ...G.players,
       [ctx.playerID]: {
         ...G.players[ctx.playerID as any],
-        selectedCard: G.players[ctx.playerID as any].cards.find((_, index) => index === id), // Set card as selected
+        selectedCard: G.players[ctx.playerID as any].cards[id], // Set card as selected
         cards: G.players[ctx.playerID as any].cards.filter((_, index) => index !== id), // Remove card from player's deck
       },
     }),

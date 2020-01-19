@@ -78,7 +78,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (this.props.ctx.phase === 'CARD_SELECT') {
       return (
         this.props.ctx.activePlayers !== null &&
-        Object.keys(this.props.ctx.activePlayers)?.some(player => player === this.props.playerID)
+        Object.keys(this.props.ctx.activePlayers)?.includes(this.props.playerID)
       );
     } else {
       return this.props.playerID === this.props.ctx.currentPlayer;

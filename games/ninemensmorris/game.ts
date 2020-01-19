@@ -94,7 +94,7 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
     G.points[position].piece.player !== ctx.playerID || // Check if player owns this piece // Check if piece exists
     G.points[newPosition].piece !== null || // Check if point isn't already occupied
     G.haveToRemovePiece || // Check if player has to remove piece
-    (!G.points[position].connections.some(connection => connection === newPosition) && // Check if connection exists
+    (!G.points[position].connections.includes(newPosition) && // Check if connection exists
       G.players[ctx.playerID as any].lostPieces < 6) // Ignore the check if player has < 4 pieces
   ) {
     return INVALID_MOVE;
@@ -134,7 +134,7 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
     (G.mills
       .map((mill, index) => ({ owner: mill, index }))
       .filter(mill => mill.owner !== null && mill.owner !== ctx.playerID)
-      .some(mill => millsPositions[mill.index].some(pos => pos === position)) &&
+      .some(mill => millsPositions[mill.index].includes(position)) &&
       isTherePieceOutsideMill(G, ctx))
   ) {
     return INVALID_MOVE;

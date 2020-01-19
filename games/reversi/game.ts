@@ -152,7 +152,7 @@ const GameConfig: IGameArgs = {
     moveLimit: 1,
   },
   endIf: (G: IG, ctx) => {
-    if (!G.points.some(point => point === null)) {
+    if (!G.points.includes(null)) {
       return { scoreboard: getScoreBoard(G, ctx) };
     }
   },
