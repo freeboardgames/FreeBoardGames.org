@@ -113,7 +113,6 @@ declare module 'boardgame.io/core' {
       endIf?: (G: any, ctx: IGameCtx) => boolean | object;
       onBegin?: (G: any, ctx: IGameCtx) => any;
       onEnd?: (G: any, ctx: IGameCtx) => any;
-      onMove?: (G: any, ctx: IGameCtx) => any;
       turn?: ITurn;
     };
   }

@@ -53,10 +53,6 @@ function setShips(G: ISeabattleState, ctx: IGameCtx, ships: IShip[]) {
     throw new Error(validation.error);
   }
 
-  if (Object.keys(ctx.activePlayers).length === 1) {
-    ctx.events.endPhase();
-  }
-
   return { ...G, ships: [...G.ships, ...ships] };
 }
 
@@ -102,6 +98,13 @@ export const SeabattleGame: IGameArgs = {
       moves: { setShips },
       next: 'play',
       start: true,
+      turn: {
+        onMove: (_, ctx) => {
+          if (ctx.activePlayers === null) {
+            ctx.events.endPhase();
+          }
+        },
+      },
     },
     play: {
       moves: { salvo },

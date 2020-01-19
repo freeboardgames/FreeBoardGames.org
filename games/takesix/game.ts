@@ -64,10 +64,6 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
     return INVALID_MOVE;
   }
 
-  if (Object.keys(ctx.activePlayers).length === 1) {
-    ctx.events.endPhase();
-  }
-
   return {
     ...G,
     players: Object.values({
@@ -132,6 +128,13 @@ const GameConfig: IGameArgs = {
         };
       },
       start: true,
+      turn: {
+        onMove: (_, ctx) => {
+          if (ctx.activePlayers === null) {
+            ctx.events.endPhase();
+          }
+        },
+      },
     },
     // Select deck
     DECK_SELECT: {
