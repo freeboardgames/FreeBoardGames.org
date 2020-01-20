@@ -104,7 +104,8 @@ export default class Controls extends React.Component<IControlsProps, {}> {
         <IconButton
           onClick={() =>
             this.select(
-              this.props.G.players[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any].pieces.length - 1,
+              this.props.G.players[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any].pieces
+                .length - 1,
             )
           }
           id="select-prev"

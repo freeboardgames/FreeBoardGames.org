@@ -166,7 +166,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return message;
   }
 
-  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number; }) => {
+  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
     const transform = { ...this.state.piece.transform, x, y };
@@ -193,7 +193,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (prevProps.ctx.turn !== this.props.ctx.turn) {
       const transform = { ...this.state.piece.transform, flipX: false, flipY: false, rotation: 0, x: 10, y: 10 };
       const data =
-        pieces[this.props.G.players[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any].pieces[0]];
+        pieces[
+          this.props.G.players[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any].pieces[0]
+        ];
       this.setState({
         ...this.state,
         piece: {
@@ -237,7 +239,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 onDrop={this._onDrop}
               >
                 <g>
-                  <g fill={colors[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any][600]} opacity={0.9}>
+                  <g
+                    fill={colors[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any][600]}
+                    opacity={0.9}
+                  >
                     {this.state.piece.data
                       .map((square, index) => ({ square, index }))
                       .filter(piece => piece.square)
@@ -255,8 +260,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 </g>
               </Token>
             ) : (
-                <div></div>
-              )}
+              <div></div>
+            )}
           </Grid>
           <Controls
             placePiece={this._placePiece}
