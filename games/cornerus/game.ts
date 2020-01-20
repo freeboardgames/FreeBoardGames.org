@@ -19,6 +19,8 @@ export interface IG {
   board: string[];
   players: IPlayer[];
   turnOrder: string[];
+  turn: number;
+  playOrderPos: number;
 }
 
 export function getXY(position: number, size: number) {
@@ -34,8 +36,21 @@ export function inBounds(x: number, y: number) {
 }
 
 // Map real playerID to 'fake' one
-export function getPlayer(ctx: IGameCtx, playerID: string) {
-  console.log(ctx);
+export function getPlayer(ctx: IGameCtx, G: IG, playerID: string) {
+  if (ctx.numPlayers === 2) {
+    if (playerID === '0') {
+      return G.turn % 4 === 1 ? '0' : '1';
+    } else {
+      return G.turn % 4 === 2 ? '2' : '3';
+    }
+  } else if (ctx.numPlayers === 3) {
+    return ctx.turn % 4 === 0 ? '3' : playerID;
+  } else {
+    return playerID;
+  }
+  //console.log(ctx);
+  //return playerID;
+  /*
   const numMoves = ctx.stats.phase.numMoves[playerID];
   if (ctx.numPlayers === 2) {
     if (playerID === '0') {
@@ -47,18 +62,11 @@ export function getPlayer(ctx: IGameCtx, playerID: string) {
     return (ctx.turn + 1) % 4 === 0 ? '3' : playerID;
   } else {
     return playerID;
-  }
+  }*/
 }
 
 export function isFirstTurn(ctx: IGameCtx) {
-  const numMoves = ctx.stats.phase.numMoves[ctx.playerID];
-  if (ctx.numPlayers === 2) {
-    return typeof numMoves === 'undefined' || numMoves === 1;
-  } else if (ctx.numPlayers === 3) {
-    return typeof numMoves === 'undefined' || ctx.turn === 3;
-  } else {
-    return typeof numMoves === 'undefined';
-  }
+  return ctx.turn <= 4;
 }
 
 export function getScoreBoard(G: IG, ctx: IGameCtx) {
@@ -108,8 +116,8 @@ export function flipPieceX(squares: boolean[]) {
   return flipped;
 }
 
-function playerEnded(G: IG, ctx: IGameCtx) {
-  const player = G.players[getPlayer(ctx, ctx.currentPlayer) as any];
+function playerEnded(G: IG, ctx: IGameCtx, playerID: string) {
+  const player = G.players[getPlayer(ctx, G, playerID) as any];
   return player.end || player.pieces.length === 0;
 }
 
@@ -180,7 +188,7 @@ export function getValidPositions(
 }
 
 export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTransform) {
-  const playerID = getPlayer(ctx, ctx.playerID);
+  const playerID = getPlayer(ctx, G, ctx.playerID);
   let piece = pieces[G.players[playerID as any].pieces[id]];
 
   if (transform.flipX) {
@@ -227,35 +235,49 @@ export function endGame(G: IG, ctx: IGameCtx) {
     ...G,
     players: Object.values({
       ...G.players,
-      [getPlayer(ctx, ctx.playerID)]: {
-        ...G.players[getPlayer(ctx, ctx.playerID) as any],
+      [getPlayer(ctx, G, ctx.playerID)]: {
+        ...G.players[getPlayer(ctx, G, ctx.playerID) as any],
         end: true,
       },
     }),
   };
 }
 
-const GameConfig /*: IGameArgs*/ = {
+const GameConfig: IGameArgs = {
   name: 'cornerus',
-  flow: {
-    movesPerTurn: 1,
-    turnOrder: TurnOrder.CUSTOM_FROM('turnOrder'),
-    endGameIf: (G: IG, ctx) => {
+  endIf: (G: IG, ctx) => {
+    if (!G.players.some(player => !player.end && player.pieces.length > 0)) {
+      return { scoreboard: getScoreBoard(G, ctx) };
+    }
+  },
+  turn: {
+    order: TurnOrder.CUSTOM_FROM('turnOrder'),
+    onMove: (G, ctx) => {
       if (!G.players.some(player => !player.end && player.pieces.length > 0)) {
-        return { scoreboard: getScoreBoard(G, ctx) };
+        ctx.events.endGame({ scoreboard: getScoreBoard(G, ctx) });
+        return;
       }
-    },
-    onTurnBegin: (G: IG, ctx) => {
-      if (playerEnded(G, ctx)) {
-        do {
-          ctx.stats.phase.numMoves[ctx.currentPlayer as any] += 1;
-          ctx.playOrderPos = (ctx.playOrderPos + 1) % ctx.playOrder.length;
-          ctx.currentPlayer = ctx.playOrder[ctx.playOrderPos];
-          ctx.actionPlayers = [ctx.currentPlayer];
-          ctx.turn++;
-        } while (playerEnded(G, ctx));
-        ctx.events.endTurn();
+
+      let nextPlayer = ctx.playOrder[(G.playOrderPos + 1) % ctx.playOrder.length];
+      let newG = {
+        ...G,
+        turn: G.turn + 1,
+        playOrderPos: (G.playOrderPos + 1) % ctx.playOrder.length,
+      };
+      let turnPlus = 1;
+
+      for (let i = 2; playerEnded(newG, ctx, nextPlayer); i++) {
+        nextPlayer = ctx.playOrder[(G.playOrderPos + i) % ctx.playOrder.length];
+        newG = {
+          ...newG,
+          turn: newG.turn + 1,
+          playOrderPos: (newG.playOrderPos + 1) % ctx.playOrder.length,
+        };
+        turnPlus++;
       }
+
+      ctx.events.endTurn({ next: ctx.playOrder[(G.playOrderPos + turnPlus) % ctx.playOrder.length] });
+      return newG;
     },
   },
   moves: {
@@ -280,6 +302,8 @@ const GameConfig /*: IGameArgs*/ = {
             .map((_, i) => i),
         })),
       turnOrder: turnOrders[ctx.numPlayers - 2],
+      turn: 1,
+      playOrderPos: 0,
     };
   },
 };

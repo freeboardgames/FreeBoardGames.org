@@ -76,7 +76,7 @@ export default class Controls extends React.Component<IControlsProps, {}> {
   }
 
   select(offset: number) {
-    const playerID = getPlayer(this.props.ctx, this.props.ctx.currentPlayer);
+    const playerID = getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer);
     const index = (this.props.piece.index + offset) % this.props.G.players[playerID as any].pieces.length;
     this.props.modifyPiece({
       ...this.props.piece,
@@ -104,7 +104,7 @@ export default class Controls extends React.Component<IControlsProps, {}> {
         <IconButton
           onClick={() =>
             this.select(
-              this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].pieces.length - 1,
+              this.props.G.players[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any].pieces.length - 1,
             )
           }
           id="select-prev"

@@ -19,7 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import Controls from './Controls';
 
 import { pieces } from './pieces';
-import { isLocalGame } from '../common/gameMode';
+import { isLocalGame, isOnlineGame } from '../common/gameMode';
 
 export interface ICoords {
   x: number;
@@ -112,7 +112,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         this.props.ctx,
         data,
         transform,
-        getPlayer(this.props.ctx, this.props.ctx.currentPlayer),
+        getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer),
       ) !== null
     );
   }
@@ -125,16 +125,38 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     let message = '';
     if (this.props.gameArgs) {
       let player;
-      switch (this.props.ctx.currentPlayer) {
-        case '0': {
-          player = 'Blue/yellow';
-          break;
+      if (this.props.ctx.numPlayers !== 2) {
+        switch (this.props.ctx.currentPlayer) {
+          case '0': {
+            player = 'Blue';
+            break;
+          }
+          case '1': {
+            player = 'Yellow';
+            break;
+          }
+          case '2': {
+            player = 'Red';
+            break;
+          }
+          case '3': {
+            player = 'Green';
+            break;
+          }
         }
-        case '1': {
-          player = 'Red/green';
-          break;
+      } else {
+        switch (this.props.ctx.currentPlayer) {
+          case '0': {
+            player = 'Blue/yellow';
+            break;
+          }
+          case '1': {
+            player = 'Red/green';
+            break;
+          }
         }
       }
+
       message = `${player}'s turn`;
     } else if (this.props.ctx.currentPlayer === this.props.playerID && !isLocalGame(this.props.gameArgs)) {
       message = 'Place piece';
@@ -144,7 +166,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return message;
   }
 
-  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number }) => {
+  _onDrop = (coords: { x: number; y: number; originalX: number; originalY: number; }) => {
     const x = Math.round(coords.x);
     const y = Math.round(coords.y);
     const transform = { ...this.state.piece.transform, x, y };
@@ -171,7 +193,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (prevProps.ctx.turn !== this.props.ctx.turn) {
       const transform = { ...this.state.piece.transform, flipX: false, flipY: false, rotation: 0, x: 10, y: 10 };
       const data =
-        pieces[this.props.G.players[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any].pieces[0]];
+        pieces[this.props.G.players[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any].pieces[0]];
       this.setState({
         ...this.state,
         piece: {
@@ -215,7 +237,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 onDrop={this._onDrop}
               >
                 <g>
-                  <g fill={colors[getPlayer(this.props.ctx, this.props.ctx.currentPlayer) as any][600]} opacity={0.9}>
+                  <g fill={colors[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any][600]} opacity={0.9}>
                     {this.state.piece.data
                       .map((square, index) => ({ square, index }))
                       .filter(piece => piece.square)
@@ -233,8 +255,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 </g>
               </Token>
             ) : (
-              <div></div>
-            )}
+                <div></div>
+              )}
           </Grid>
           <Controls
             placePiece={this._placePiece}

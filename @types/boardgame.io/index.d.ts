@@ -39,12 +39,15 @@ declare module 'boardgame.io/core' {
     D20: () => number;
   }
   export class Events {
-    endTurn: () => void;
+    endTurn: (nextPlayer?: INextPlayer) => void;
     endPhase: () => void;
     endGame: (gameover?: any) => void;
     setStage: (stage: string) => void;
     endStage: () => void;
     setActivePlayers: (activePlayers: IActivePlayers) => void;
+  }
+  interface INextPlayer {
+    next: string;
   }
   interface IEvents {
     endTurn?: boolean;
@@ -57,14 +60,12 @@ declare module 'boardgame.io/core' {
     numPlayers: number;
     turn: number;
     currentPlayer: string;
-    currentPlayerMoves: number;
     activePlayers: {
       [key: string]: string;
     };
     playOrder: string[];
     playOrderPos: number;
     gameover: any;
-    stats: IGameStats;
     random: Random;
     events: Events;
   }
@@ -133,20 +134,6 @@ declare module 'boardgame.io/core' {
   export const PlayerView: {
     STRIP_SECRETS: (G: any, ctx: IGameCtx, playerID: any) => any;
   };
-
-  interface IGameStats {
-    turn: IStats;
-    phase: IStats;
-  }
-
-  interface IStats {
-    numMoves: IMoveStats;
-    allPlayed: true;
-  }
-
-  interface IMoveStats {
-    [key: string]: number;
-  }
 }
 
 declare module 'boardgame.io/react' {

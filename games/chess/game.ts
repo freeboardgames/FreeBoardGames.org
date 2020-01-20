@@ -6,15 +6,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { IGameArgs } from 'boardgame.io/core';
+import { IGameArgs, IGameCtx } from 'boardgame.io/core';
 import Chess from './chessjswrapper';
-
-interface IGameCtx {
-  numPlayers: number;
-  turn: number;
-  currentPlayer: string;
-  currentPlayerMoves: number;
-}
 
 export function getWinner(chess: any) {
   if (chess.game_over()) {
