@@ -7,13 +7,19 @@
       "presets": [["minify", { "builtIns": false }]]
     },
     "development": {
-      "plugins": ["styled-jsx/babel-test", "istanbul"]
+      "plugins": ["styled-jsx/babel-test", "istanbul"],
+      "compact": false
     },
     "test": {
-      "plugins": ["styled-jsx/babel-test"]
+      "plugins": ["styled-jsx/babel-test"],
+      "compact": false
     },
     "cypress": {
-      "plugins": ["istanbul"]
+      "plugins": ["istanbul"],
+      "compact": false
+    },
+    "unoptimized": {
+      "compact": false
     }
   }
 }
