@@ -52,8 +52,10 @@ ${urls.join('')}
   return sitemapXML.replace(/(\r\n|\n|\r)/gm, '');
 }
 
-const sitemapXML = generateSiteMapXML(app.pagesManifest);
-fs.writeFileSync(`${STATIC_DIR}/sitemap.xml`, sitemapXML);
+if (!dev) {
+  const sitemapXML = generateSiteMapXML(app.pagesManifest);
+  fs.writeFileSync(`${STATIC_DIR}/sitemap.xml`, sitemapXML);
+}
 
 app
   .prepare()
