@@ -1,0 +1,1 @@
+Hangman is a well-know two player game. In this game, a player is asked to guess a word, given its character length and a hint. The player gets a negative score based on the number of wrong letters guessed before the word was identified.
