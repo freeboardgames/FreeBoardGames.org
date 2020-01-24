@@ -8,14 +8,14 @@ import grey from '@material-ui/core/colors/grey';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 
 export interface IScore {
-  playerID: string;
+  playerID?: string;
   score: number;
 }
 
 interface IScoreboardProps {
   scoreboard: IScore[];
   players: IPlayerInRoom[];
-  playerID: string;
+  playerID?: string;
   scoreName?: string;
 }
 

@@ -10,7 +10,7 @@ interface IBoardProps {
   G: any;
   ctx: any;
   moves: any;
-  playerID: string;
+  playerID?: string;
   isActive: boolean;
   gameArgs?: IGameArgs;
   step?: any;
@@ -34,7 +34,9 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getStatus() {
     if (isOnlineGame(this.props.gameArgs)) {
-      if (this.props.ctx.currentPlayer === this.props.playerID) {
+      if (this.props.playerID === undefined){
+        return 'Spectator';
+      } else if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'YOUR TURN';
       } else {
         return 'Waiting for opponent...';
@@ -49,6 +51,9 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (isOnlineGame(this.props.gameArgs)) {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
+        if(this.props.playerID === undefined) {
+          return 'someone won';
+        }
         if (this.props.ctx.gameover.winner === this.props.playerID) {
           return 'you won';
         } else {

@@ -105,7 +105,7 @@ interface IBoardProps {
   G: IG;
   ctx: IGameCtx;
   moves: any;
-  playerID: string;
+  playerID?: string;
   gameArgs?: IGameArgs;
 }
 
