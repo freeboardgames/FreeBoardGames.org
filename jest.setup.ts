@@ -13,6 +13,11 @@ jest.mock('copy-to-clipboard', () => {
   return (global as any).copyClipboardMock;
 });
 
+// mock window.location
+const { location } = global as any;
+delete (global as any).location;
+(global as any).location = { ...location, reload: jest.fn() };
+
 // mock window.scrollTo
 (global as any).scrollTo = jest.fn();
 

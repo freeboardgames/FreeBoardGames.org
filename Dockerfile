@@ -1,4 +1,4 @@
-FROM node:13.6.0-buster
+FROM node:13.7.0-buster
 ARG BGIO_SERVER_URL
 
 # do not run as root
