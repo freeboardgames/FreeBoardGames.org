@@ -4,7 +4,7 @@ import HangmanThumbail from './media/thumbnail.png';
 import { IGameDef } from 'games';
 import instructions from './instructions.md';
 
-export const tictactoeGameDef: IGameDef = {
+export const hangmanGameDef: IGameDef = {
   code: 'hangman',
   name: 'Hangman',
   minPlayers: 2,

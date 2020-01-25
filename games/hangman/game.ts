@@ -5,25 +5,31 @@ export const HangmanGame = Game({
     name: 'hangman',
 
     setup: () => ({
-        letters: {
-            0: Array(20).fill(null),
-            1: Array(20).fill(null)
+        status: {
+            word : 'somethinghard',
+            correct: '',    // array of correct gusses 
+            wrong: ''       // array of wrong guesses 
         }
     }), 
 
     moves: {
-        letterEntered(G:any, ctx:any, letter:string) {
+        letterSelected(G: any, ctx: any, letter:string) {
 
-            let letters = [ ...G.letters ]; 
-            letters[ctx.currentPlayer][0] = letter; 
-            return { ...G, letter};
+            const status = { ...G.status };
+            
+            if ( G.status.word.indexOf(letter) > -1 ) {
+                status.correct = G.status.correct + letter; 
+            } else {
+                status.wrong = G.status.wrong + letter; 
+            }
 
+            return { ...G, status };
         }
     }, 
 
 
     flow: {
-        endGameIf: (G, ctx) => {
+        endGameIf: (G:any, ctx:any) => {
 
         },
     }
