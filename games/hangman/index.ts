@@ -11,12 +11,8 @@ export const hangmanGameDef: IGameDef = {
   maxPlayers: 2,
   imageURL: HangmanThumbail,
   modes: [
-    // {
-    //   mode: GameMode.AI,
-    //   extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
-    // },
     { mode: GameMode.OnlineFriend },
-    { mode: GameMode.LocalFriend },
+    // { mode: GameMode.LocalFriend },
   ],
   description: 'A Classic Game',
   descriptionTag: `Play Hangman for free online. You can either play a multi-player game against a friend online, or share your device and play locally against a friend.`,
