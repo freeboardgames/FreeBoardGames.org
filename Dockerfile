@@ -26,13 +26,13 @@ WORKDIR /appdata
 RUN yarn install
 
 # config
-COPY --chown=appuser tsconfig.bgio.json webpack.bgio.config.js /appdata/
+COPY --chown=appuser tsconfig.server.json webpack.server.config.js /appdata/
 
 # bgio
-COPY --chown=appuser bgio /appdata/bgio
+COPY --chown=appuser server /appdata/server
 COPY --chown=appuser games /appdata/games
 COPY --chown=appuser components /appdata/components
-RUN yarn run build:bgio
+RUN yarn run build:server
 
 
 # build app
@@ -49,6 +49,5 @@ RUN yarn run build
 
 
 WORKDIR /appdata
-COPY --chown=appuser server.js /appdata/
 COPY --chown=appuser docker_run.sh /appdata/
 CMD ./docker_run.sh
