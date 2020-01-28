@@ -31,6 +31,7 @@ COPY --chown=appuser tsconfig.server.json webpack.server.config.js /appdata/
 # bgio
 COPY --chown=appuser server /appdata/server
 COPY --chown=appuser games /appdata/games
+COPY --chown=appuser hooks /appdata/hooks
 COPY --chown=appuser components /appdata/components
 RUN yarn run build:server
 
