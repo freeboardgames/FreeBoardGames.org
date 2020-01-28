@@ -28,7 +28,7 @@
     "cyp:base": "cypress run --env type=base --config screenshotsFolder=cypress/snapshots/base",
     "cyp": "trash \"./cypress/snapshots/**/__diff_output__\" && yarn run cypress",
     "cyp:update": "trash \"./cypress/snapshots\" && yarn run cyp run --env updateSnapshots=true",
-    "cyp:run": "cypress run --config video=true,baseUrl=http://localhost:13000",
+    "cyp:run": "cypress run --config video=false,baseUrl=http://localhost:13000",
     "cyp:buildandstartserver": "run-s cyp:build cyp:startserver",
     "test": "jest",
     "test:changed": "jest --onlyChanged",
