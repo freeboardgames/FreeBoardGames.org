@@ -14,6 +14,7 @@ import { GameInstructionsText } from 'components/App/Game/GameInstructionsText';
 
 interface gameInfoProps {
   gameDef: IGameDef;
+  userAgent?: string;
 }
 
 const DESKTOP_MOBILE_THRESHOLD = 768;
@@ -24,7 +25,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <SEO title={`Play ${gameDef.name}, ${gameDef.description}`} description={gameDef.descriptionTag} />
-        <DesktopView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
+        <DesktopView userAgent={this.props.userAgent} thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
           <div style={{ padding: '0 8px', display: 'inline-flex' }}>
             <span style={{ marginTop: '18px', minWidth: '500px' }}>
               <GameCard game={gameDef} />
@@ -40,7 +41,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
           <GameModePicker gameDef={gameDef} />
           <GameInstructionsVideo gameDef={gameDef} />
         </DesktopView>
-        <MobileView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
+        <MobileView userAgent={this.props.userAgent} thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
           <GameCard game={gameDef} NO_MAX_WIDTH />
           <GameModePicker gameDef={gameDef} />
           <GameInstructionsVideo gameDef={gameDef} />
@@ -49,10 +50,10 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
       </FreeBoardGamesBar>
     );
   }
-  static async getInitialProps(router) {
-    const gameCode = router.query.gameCode as string;
+  static async getInitialProps({ res, query }) {
+    const gameCode = query.gameCode as string;
     const gameDef: IGameDef = GAMES_MAP[gameCode];
-    if (!gameDef && router.res) {
+    if (!gameDef && res) {
       return generatePageError(404);
     }
     return { gameDef };
