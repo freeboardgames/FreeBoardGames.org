@@ -1,5 +1,4 @@
 FROM node:13.7.0-buster
-ARG BGIO_SERVER_URL
 
 # do not run as root
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
@@ -43,9 +42,10 @@ COPY --chown=appuser pages /appdata/pages
 COPY --chown=appuser static /appdata/static
 COPY --chown=appuser jest.setup.ts jest.config.js tsconfig.jest.json .babelrc next.config.js /appdata/
 
-ARG GIT_REV
 ARG GA_TRACKING_CODE
 ARG GTM_ID
+ARG BGIO_SERVER_URL
+ARG GIT_REV
 RUN yarn run build
 
 
