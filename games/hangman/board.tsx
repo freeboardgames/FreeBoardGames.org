@@ -51,11 +51,9 @@ export class Board extends React.Component<IBoardProps, {}> {
               return 'Waiting for opponent...';
             }
           }
-        return 'Someone is playing';
     }
 
     _getWord() {
-        console.log(this.props.ctx.currentPlayer, this.props.G.status)
         const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
         const word = playerStatus.correctGuess; 
         const breakLen = 8; 
@@ -87,10 +85,10 @@ export class Board extends React.Component<IBoardProps, {}> {
         for (var i = 0; i < albhabets.length; i++) {    
             let textColor = "blue"; 
             if(playerStatus.correctGuess.indexOf(albhabets[i]) > -1) {
-                textColor = "green"; 
+                textColor = "green";
             } 
             else if(playerStatus.wrongGuess.indexOf(albhabets[i]) > -1) {
-                textColor = "red";
+                textColor = "#ff4d4d";
             }    
             let x:number = i;
             let y:number = 7;
@@ -104,8 +102,8 @@ export class Board extends React.Component<IBoardProps, {}> {
             }
             cells.push(
                 <g key={'alph_group'+ i} onClick={this.onClick(albhabets[i])} >
-                    <rect key={ "alph_rect_" + i} x={x} y={y} width="1" height="1" fill="white" />
-                    <text key={ "alph_" + i} x={x + 0.3} y={y + 0.7} fontSize={0.7} fill={textColor}>{albhabets[i]}</text>   
+                    <rect key={ "alph_rect_" + i} x={x} y={y} width="1" height="1" fill={textColor} />
+                    <text key={ "alph_" + i} x={x + 0.3} y={y + 0.7} fontSize={0.7} fill="white">{albhabets[i]}</text>   
                 </g>
             )
         };
@@ -165,10 +163,18 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     _getGameOver() {
+        // Online game
         if (isOnlineGame(this.props.gameArgs)) {
-
+            if (this.props.ctx.gameover.winner !== undefined) {
+                if (this.props.ctx.gameover.winner === this.props.playerID) {
+                    return 'you won';
+                } else {
+                    return 'you lost';
+                }
+            } else {
+                return 'draw';
+            }
         }
-        return 'someone won';
     }
 
     _getGameOverBoard() {
