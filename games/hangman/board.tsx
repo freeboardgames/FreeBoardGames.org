@@ -5,6 +5,7 @@ import { GameLayout } from 'components/App/Game/GameLayout';
 import Typography from '@material-ui/core/Typography';
 import {EnterWordPrompt} from './EnterWordPrompt';
 import { isOnlineGame } from '../common/gameMode';
+import { grey, red, blue } from '@material-ui/core/colors';
 
 interface IBoardProps {
     G: any;
@@ -57,23 +58,71 @@ export class Board extends React.Component<IBoardProps, {}> {
         const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
         const word = playerStatus.correctGuess; 
         const breakLen = 8; 
-        let xOffset = 1; 
-        const yOffset = 3;
         const cells = []
 
-        for(var y = 0; y < 3; y++){
+        // max 2 lines are allowed, each with max 8 characters 
+        for(var y = 0; y < 2; y++) {
+            
+            // decide the offset based on number of letters in current line 
+            let charsOnLine = word.length - y * breakLen;
+            let xOffset = 5 - ( charsOnLine < breakLen ? charsOnLine : breakLen ) / 2;
+            let numOfLines = Math.ceil(word.lenth / breakLen);
+            let yOffset = 1 + ( 1 + y ) * 0.3 + ( numOfLines === 1 ? 0.8 : 0); 
+
             for(var x = 0; x < breakLen; x++ ) {
                 const idx = y*breakLen+x;
                 if ( idx >= word.length ) break; 
                 var letter = word[idx];
                 cells.push(
                     <g key={'word_group'+ idx}>
-                        <rect key={ "word_rect_" + idx} x={x+xOffset} y={y+yOffset} width="1" height="1" fill="white" />
-                        <text key={ "word_letter_" + idx} x={x + xOffset + 0.3} y={y + yOffset + 0.7} fontSize={0.7} fill="green">{letter}</text>   
+                        <text 
+                            key={ "word_letter_" + idx} 
+                            x={x + xOffset + 0.5} y={y + yOffset}
+                            fontSize={0.85} textAnchor="middle"
+                            fill="#40c4ff"
+                        >
+                            {letter !== '_' ? letter.toUpperCase() : ' '}
+                        </text>  
+                        <line
+                            x1={x + xOffset + 0.1}
+                            y1={y + yOffset + 0.25}
+                            x2={x + xOffset + 0.9}
+                            y2={y + yOffset + 0.25}
+                            stroke="#40c4ff"
+                            style={{"strokeWidth": 0.125}}
+                        /> 
                     </g>
                 );
             }
         }
+
+        // add hint 
+        // split string into data of equal size
+        let splittedHint = "This is the hint text.......asdsdfsdf sdfstsdvsgfst  dsfsdfr fsdfs........ha hahah  .... ".match(/.{1,40}/g);
+        let hintText = [ <tspan key={'hint_text_hint'} x={1.2} y={4} fontWeight="bold" > Hint: </tspan> ]; 
+        let hintLineNo = 1; 
+        for(var h of splittedHint){
+            hintText.push(<tspan key={'hint_text_'+h} x={1.2} dy={0.6} >{h}</tspan>);
+            hintLineNo = hintLineNo + 1;
+        }
+
+        cells.push(
+            <g key={'hint_group'}>
+            {/* <rect 
+                key= {"hint box"}
+                x={1} y={4} width={8} height={2}
+                fill={grey[700]}
+            /> */}
+            <text 
+                key={ "hint text"} 
+                x={1.2} y={4}
+                fontSize={0.5} alignmentBaseline="before-edge"
+                fill={ grey[400] }
+            >
+                { hintText }                
+            </text>  
+            </g>
+        )
         return cells;
     }
 
@@ -83,27 +132,36 @@ export class Board extends React.Component<IBoardProps, {}> {
         const cells = []; 
         const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
         for (var i = 0; i < albhabets.length; i++) {    
-            let textColor = "blue"; 
+            let textColor = null; 
             if(playerStatus.correctGuess.indexOf(albhabets[i]) > -1) {
-                textColor = "green";
+                textColor = "#00e676";
             } 
             else if(playerStatus.wrongGuess.indexOf(albhabets[i]) > -1) {
-                textColor = "#ff4d4d";
+                textColor = "#ff1744";
             }    
-            let x:number = i;
-            let y:number = 7;
-            if (i >= 10 && i < 19) {
-                x = ( i - 10 ) + 0.5; 
-                y = y + 1
-            } 
-            if (i >= 19 ) {
-                x = (i - 19) + 1.5; 
-                y = y + 2;
+            let lineNo = Math.floor(i/9); 
+            let x:number = ( i - ( 9 * lineNo ) ) * 1.1 + 0.1
+            let y:number = 6.5 + lineNo * 1.2;            
+            if (i >= 18 ) {
+                x = (i - 18) * 1.1 + 0.6; 
             }
             cells.push(
                 <g key={'alph_group'+ i} onClick={this.onClick(albhabets[i])} >
-                    <rect key={ "alph_rect_" + i} x={x} y={y} width="1" height="1" fill={textColor} />
-                    <text key={ "alph_" + i} x={x + 0.3} y={y + 0.7} fontSize={0.7} fill="white">{albhabets[i]}</text>   
+                    <circle   
+                        key={ "alph_rect_" + i} 
+                        cx={x+0.5} cy={y+0.5} r={0.45} 
+                        fill={textColor} 
+                        strokeWidth={0.05}
+                        stroke={grey[50]}                        
+                    />
+                    <text 
+                        key={ "alph_" + i} 
+                        x={x + 0.5} y={y + 0.5} 
+                        fontSize={0.65} dy={0.2}
+                        fill="white" textAnchor="middle"
+                    >
+                        {albhabets[i].toUpperCase()}
+                    </text>   
                 </g>
             )
         };
