@@ -60,24 +60,27 @@ export const HangmanGame = Game({
                 wordLen: 0,         // 
                 correctGuess: '',   // array of correct gusses 
                 wrongGuess: '',      // array of wrong guesses 
+                wordHint:'',
                 score: 0
             }, 
             '1': {
                 wordLen: 0,         // 
                 correctGuess: '',   // array of correct gusses 
                 wrongGuess: '',      // array of wrong guesses 
+                wordHint: '',
                 score:0
             }
         }
     }), 
 
     moves: {
-        setWords(G:any, ctx: any, word:string){
+        setWords(G:any, ctx: any, word:string, hint:string){
             
             const otherPlayer = ctx.currentPlayer === '0' ? '1' : '0';
             let playerStatus = { ...G.status[otherPlayer] };
             playerStatus.wordLen = word.length; 
             playerStatus.correctGuess = new Array(word.length + 1).join( '_' );
+            playerStatus.wordHint = hint;
 
             return { 
                 ...G, 

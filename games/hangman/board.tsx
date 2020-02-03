@@ -98,8 +98,8 @@ export class Board extends React.Component<IBoardProps, {}> {
 
         // add hint 
         // split string into data of equal size
-        let splittedHint = "This is the hint text.......asdsdfsdf sdfstsdvsgfst  dsfsdfr fsdfs........ha hahah  .... ".match(/.{1,40}/g);
-        let hintText = [ <tspan key={'hint_text_hint'} x={1.2} y={4} fontWeight="bold" > Hint: </tspan> ]; 
+        let splittedHint = playerStatus.wordHint.match(/.{1,33}/g);
+        let hintText = [ <tspan key={'hint_text_hint'} x={1.2} y={3.6} fontWeight="bold" > Hint: </tspan> ]; 
         let hintLineNo = 1; 
         for(var h of splittedHint){
             hintText.push(<tspan key={'hint_text_'+h} x={1.2} dy={0.6} >{h}</tspan>);
@@ -115,7 +115,7 @@ export class Board extends React.Component<IBoardProps, {}> {
             /> */}
             <text 
                 key={ "hint text"} 
-                x={1.2} y={4}
+                x={1.2} y={3.6}
                 fontSize={0.5} alignmentBaseline="before-edge"
                 fill={ grey[400] }
             >
@@ -123,6 +123,16 @@ export class Board extends React.Component<IBoardProps, {}> {
             </text>  
             </g>
         )
+
+        // cells.push(
+        //     <div>
+        //         <Typography variant="subtitle2" style={{ textAlign: 'center', color: grey[400], marginBottom: '16px' }}>
+        //             {playerStatus.wordHint}
+        //         </Typography>
+        //     </div>
+        // )
+
+
         return cells;
     }
 
@@ -168,8 +178,8 @@ export class Board extends React.Component<IBoardProps, {}> {
         return cells;
     }
 
-    _setWordForOpponent(word: string) {
-        this.props.moves.setWords(word);
+    _setWordForOpponent(word: string, hint:string) {
+        this.props.moves.setWords(word, hint);
         this.props.events.endTurn({ next: this.props.ctx.currentPlayer === '0' ? '1' : '0'})
     }
 
