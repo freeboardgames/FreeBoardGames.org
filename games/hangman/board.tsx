@@ -6,6 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import {EnterWordPrompt} from './EnterWordPrompt';
 import { isOnlineGame } from '../common/gameMode';
 import { grey, red, blue } from '@material-ui/core/colors';
+import { Modal } from '@material-ui/core';
+
+interface IBoardState {
+    modalState: boolean;
+  }
 
 interface IBoardProps {
     G: any;
@@ -18,11 +23,14 @@ interface IBoardProps {
     events?:any;
 }
 
-export class Board extends React.Component<IBoardProps, {}> {
+export class Board extends React.Component<IBoardProps, IBoardState> {
 
     constructor(props) {
         super(props);
         this._setWordForOpponent = this._setWordForOpponent.bind(this)
+        this.state = {
+            modalState: false
+          };
     }
 
     onClick = (letter: string) => () => {
@@ -98,11 +106,11 @@ export class Board extends React.Component<IBoardProps, {}> {
 
         // add hint 
         // split string into data of equal size
-        let splittedHint = playerStatus.wordHint.match(/.{1,33}/g);
-        let hintText = [ <tspan key={'hint_text_hint'} x={1.2} y={3.6} fontWeight="bold" > Hint: </tspan> ]; 
+        let splittedHint = playerStatus.wordHint.match(/.{1,40}/g);
+        let hintText = [ <tspan key={'hint_text_hint'} x={1.2} y={4} fontWeight="bold" > Hint: </tspan> ]; 
         let hintLineNo = 1; 
         for(var h of splittedHint){
-            hintText.push(<tspan key={'hint_text_'+h} x={1.2} dy={0.6} >{h}</tspan>);
+            hintText.push(<tspan key={'hint_text_'+h} x={1.2} dy={0.5} >{h}</tspan>);
             hintLineNo = hintLineNo + 1;
         }
 
@@ -115,8 +123,8 @@ export class Board extends React.Component<IBoardProps, {}> {
             /> */}
             <text 
                 key={ "hint text"} 
-                x={1.2} y={3.6}
-                fontSize={0.5} alignmentBaseline="before-edge"
+                x={1.2} y={4}
+                fontSize={0.45} alignmentBaseline="before-edge"
                 fill={ grey[400] }
             >
                 { hintText }                
@@ -212,10 +220,49 @@ export class Board extends React.Component<IBoardProps, {}> {
             }
         } else {
             toShow = (
+                <div>
                 <svg width="100%" height="100%" viewBox="0 0 10 10">
                     {this._getWord()} 
                     {this._getAlphabets()}
                 </svg>
+                
+                <div>
+                    <button type="button" onClick={() => this.setState({ modalState: true })}
+                        style={{
+                            marginTop: '16px',
+                            whiteSpace: 'nowrap',
+                            width: '250px',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            textAlign: 'center',
+                          }}
+                    >
+                        See Hint
+                    </button>
+                    <Modal
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                        open={this.state.modalState}
+                        onClose={() => this.setState({ modalState: false })}
+                        style={{
+                            marginTop: '20px',
+                            whiteSpace: 'nowrap',
+                            width: '250px',
+                            height: '350px',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            textAlign: 'center',
+                            backgroundColor: 'white',
+                        }}
+                    >
+                        <div>
+                            <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
+                                This is your Hint
+                            </Typography>
+                        </div>
+                    </Modal>
+                </div>
+                </div>
             );
         }
 
@@ -224,6 +271,7 @@ export class Board extends React.Component<IBoardProps, {}> {
                 <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
                     {this._getStatus()}
                 </Typography>
+
                 { toShow }
 
             </div>

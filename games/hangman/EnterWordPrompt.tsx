@@ -9,7 +9,6 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 interface IEnterWordPromptProps {
   setEnterWord: (word: string, hint:string) => void;
   togglePrompt?: () => void;
-  guessWord?: string;
 }
 
 interface IEnterWordPromptState {
