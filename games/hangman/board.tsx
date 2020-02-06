@@ -5,8 +5,9 @@ import { GameLayout } from 'components/App/Game/GameLayout';
 import Typography from '@material-ui/core/Typography';
 import {EnterWordPrompt} from './EnterWordPrompt';
 import { isOnlineGame } from '../common/gameMode';
+import { Grid } from '@freeboardgame.org/boardgame.io/ui';
 import { grey, red, blue } from '@material-ui/core/colors';
-import { Modal } from '@material-ui/core';
+import { Modal, Button } from '@material-ui/core';
 
 interface IBoardState {
     modalState: boolean;
@@ -221,24 +222,25 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         } else {
             toShow = (
                 <div>
-                <svg width="100%" height="100%" viewBox="0 0 10 10">
-                    {this._getWord()} 
-                    {this._getAlphabets()}
-                </svg>
+                    <svg width="100%" height="100%" viewBox="0 0 10 10">
+                        {this._getWord()} 
+                        {this._getAlphabets()}
+                    </svg>
                 
-                <div>
-                    <button type="button" onClick={() => this.setState({ modalState: true })}
-                        style={{
-                            marginTop: '16px',
-                            whiteSpace: 'nowrap',
-                            width: '250px',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            textAlign: 'center',
+                
+                    <Button 
+                        type="button" 
+                        onClick={() => this.setState({ modalState: true })}
+                        style={{ 
+                            width: '120px',
+                            alignItems: 'center',
+                            justifyContent: 'center'
                           }}
+                        variant="outlined"
+                        color="primary"
                     >
                         See Hint
-                    </button>
+                    </Button>
                     <Modal
                         aria-labelledby="simple-modal-title"
                         aria-describedby="simple-modal-description"
@@ -261,7 +263,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                             </Typography>
                         </div>
                     </Modal>
-                </div>
+                
                 </div>
             );
         }
