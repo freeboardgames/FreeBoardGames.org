@@ -86,7 +86,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
   _wordisValid = () => {
     const name = this.state.wordTextField;
     const hint = this.state.hintTextField;
-    return name && name.length > 0 && name.length < 16 && hint.length < 100;
+    return name && name.length > 0 && name.length <= 16 && hint.length <= 120;
   };
 
   _onClick = () => {
