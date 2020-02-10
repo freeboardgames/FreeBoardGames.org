@@ -71,6 +71,15 @@ app
 
     server.use('/blog', express.static(join(__dirname, 'blog/dist')));
 
+    server.get('/.well-known/assetlinks.json', (req, res) => {
+      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+        const filePath = `${STATIC_DIR}/.well-known/assetlinks.json`;
+        app.serveStatic(req, res, filePath);
+      } else {
+        res.sendStatus(404);
+      }
+    });
+
     server.get('/sitemap.xml', (req, res) => {
       if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
         const filePath = `${STATIC_DIR}/sitemap.xml`;
