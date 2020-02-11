@@ -11,5 +11,5 @@ coverage-jest/
 stockfish8.worker.js
 sw.js
 blog/
-bgio/dist/
+server/dist/
 .cache/

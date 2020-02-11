@@ -1,6 +1,8 @@
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import 'jest-extended';
+import '@testing-library/jest-dom';
+
 Enzyme.configure({ adapter: new Adapter() });
 
 // Google analytics mock
@@ -12,6 +14,11 @@ jest.mock('copy-to-clipboard', () => {
   (global as any).copyClipboardMock = jest.fn();
   return (global as any).copyClipboardMock;
 });
+
+// mock window.location
+const { location } = global as any;
+delete (global as any).location;
+(global as any).location = { ...location, reload: jest.fn() };
 
 // mock window.scrollTo
 (global as any).scrollTo = jest.fn();

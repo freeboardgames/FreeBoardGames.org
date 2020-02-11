@@ -61,12 +61,7 @@ describe('ReplayIcon', () => {
     const mockReload = jest.fn();
     expect(mockReload.mock.calls.length).toEqual(0);
 
-    Object.defineProperty(window.location, 'reload', {
-      writable: true,
-      value: mockReload,
-    });
-
     wrapper.find(ReplayIcon).simulate('click');
-    expect(mockReload.mock.calls.length).toEqual(1);
+    expect((window.location.reload as any).mock.calls.length).toEqual(1);
   });
 });

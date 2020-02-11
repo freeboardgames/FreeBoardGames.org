@@ -27,28 +27,37 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
     const maxWidth = this.props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
 
     return (
-      <div
-        style={{
-          maxWidth,
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
-      >
-        <AppBar position="sticky" style={appBarStyle}>
-          <Link href="/">
-            <a style={{ textDecoration: 'none' }}>
-              <Toolbar>
-                <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
-                <Typography component="h1" variant="h6" style={{ color: 'white' }}>
-                  FreeBoardGames.org
-                </Typography>
-                {versionInfo}
-              </Toolbar>
-            </a>
-          </Link>
-        </AppBar>
-        {this.props.children}
-      </div>
+      <React.Fragment>
+        <div
+          style={{
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          <AppBar position="sticky" style={appBarStyle}>
+            <Link href="/">
+              <a style={{ textDecoration: 'none' }}>
+                <Toolbar>
+                  <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
+                  <Typography component="h1" variant="h6" style={{ color: 'white' }}>
+                    FreeBoardGames.org
+                  </Typography>
+                  {versionInfo}
+                </Toolbar>
+              </a>
+            </Link>
+          </AppBar>
+        </div>
+        <div
+          style={{
+            maxWidth,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          {this.props.children}
+        </div>
+      </React.Fragment>
     );
   }
 }

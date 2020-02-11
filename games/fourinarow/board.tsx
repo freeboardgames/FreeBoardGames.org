@@ -34,7 +34,7 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getStatus() {
     if (isOnlineGame(this.props.gameArgs)) {
-      if (this.props.playerID === undefined){
+      if (this.props.playerID === undefined) {
         return 'Spectator';
       } else if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'YOUR TURN';
@@ -51,7 +51,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (isOnlineGame(this.props.gameArgs)) {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
-        if(this.props.playerID === undefined) {
+        if (this.props.playerID === undefined) {
           return 'someone won';
         }
         if (this.props.ctx.gameover.winner === this.props.playerID) {

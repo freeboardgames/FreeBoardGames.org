@@ -7,20 +7,20 @@ import Card from '@material-ui/core/Card';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 interface IEnterWordPromptProps {
-  setEnterWord: (word: string, hint:string) => void;
+  setEnterWord: (word: string, hint: string) => void;
   togglePrompt?: () => void;
   promptTitle: string;
 }
 
 interface IEnterWordPromptState {
   wordTextField: string;
-  hintTextField: string
+  hintTextField: string;
 }
 
 export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnterWordPromptState> {
-  state = { 
-    wordTextField: '', 
-    hintTextField: ''
+  state = {
+    wordTextField: '',
+    hintTextField: '',
   };
   render() {
     return (
@@ -44,19 +44,20 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
                 <TextField
                   autoFocus={true}
                   type="text"
-                  label = "Word (max 16 chars)"
+                  label="Word (max 16 chars)"
                   fullWidth
                   onChange={this._onWordChange}
                   onKeyPress={this._setEnterWordOnEnterButton}
-                  style={{ margin: '8px', width: '90%'}}
+                  style={{ margin: '8px', width: '90%' }}
                 />
               </div>
               <div>
                 <TextField
                   type="text"
                   label="Hint (max 120 chars)"
-                  multiline fullWidth
-                  rowsMax = {4}
+                  multiline
+                  fullWidth
+                  rowsMax={4}
                   onChange={this._onHintChange}
                   onKeyPress={this._setEnterWordOnEnterButton}
                   style={{ margin: '8px', width: '90%' }}
