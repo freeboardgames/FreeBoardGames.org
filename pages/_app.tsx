@@ -35,13 +35,27 @@ class defaultApp extends App {
     this.logPageView(window.location.pathname);
   }
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, userAgent } = this.props as any;
     return (
       <ThemeProvider theme={theme}>
         <SelfXSSWarning />
-        <Component {...pageProps} />
+        <Component {...pageProps} {...{ userAgent }} />
       </ThemeProvider>
     );
+  }
+  static async getInitialProps({ Component, ctx }) {
+    let pageProps = {};
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+    let userAgent;
+    if (ctx.req) {
+      userAgent = ctx.req.headers['user-agent'];
+    } else if (window) {
+      userAgent = window.navigator.userAgent;
+    }
+    return { pageProps, userAgent };
   }
 }
 

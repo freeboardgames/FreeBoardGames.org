@@ -23,15 +23,15 @@ export const GAMES_MAP: IGameDefMap = {
   reversi: reversiGameDef,
   tictactoeplus: tictactoeplusGameDef,
   fourinarow: fourinarowGameDef,
-  hangman: hangmanGameDef
+  hangman: hangmanGameDef,
 };
 
 export const GAMES_LIST: IGameDef[] = [
-  GAMES_MAP.hangman,
   GAMES_MAP.chess,
   GAMES_MAP.takesix,
   GAMES_MAP.checkers,
   GAMES_MAP.fourinarow,
+  GAMES_MAP.hangman,
   GAMES_MAP.reversi,
   GAMES_MAP.tictactoeplus,
   GAMES_MAP.ninemensmorris,

@@ -54,9 +54,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
   render() {
     let icon;
     let linkHome;
-    let status;
     if (this.props.type === 'error') {
-      status = <p>404</p>;
       icon = <SvgError style={{ height: '128px' }} />;
     } else {
       icon = <CircularProgress />;
@@ -77,7 +75,6 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
     return (
       <FreeBoardGamesBar>
         <div style={{ paddingTop: '16px', textAlign: 'center' }}>
-          {status}
           {icon}
           <Typography variant="h6" gutterBottom={true} style={{ paddingTop: '16px' }}>
             {this.props.message}

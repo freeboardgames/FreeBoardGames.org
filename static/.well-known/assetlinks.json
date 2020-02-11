@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.freeboardgames",
+      "sha256_cert_fingerprints": [
+        "40:29:A7:57:39:1E:24:13:FD:C0:1A:19:70:0F:DE:3F:5F:19:7E:7E:CC:2D:0A:4C:E1:0C:17:5F:8F:74:F9:08"
+      ]
+    }
+  }
+]

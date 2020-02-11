@@ -40,8 +40,8 @@ export class LobbyService {
 
   public static async joinRoom(gameCode: string, player: IPlayerInRoom): Promise<void> {
     let toSend = {
-      playerName: player.name
-    }
+      playerName: player.name,
+    };
     if (player.playerID !== null) {
       toSend['playerID'] = player.playerID;
     }

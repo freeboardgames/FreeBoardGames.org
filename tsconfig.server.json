@@ -22,7 +22,7 @@
       "./@types"
     ],
     "incremental": true,
-    "outDir": "bgio/"
+    "outDir": "server/"
   },
   "exclude": [
     "node_modules",
@@ -36,7 +36,7 @@
     // "next-env.d.ts",
     // "**/*.ts",
     // "**/*.tsx"
-    "bgio/typings.d.ts",
-    "bgio/*.ts",
+    "server/typings.d.ts",
+    "server/*.ts",
   ]
 }

@@ -70,14 +70,48 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     for (const mode of this.props.gameDef.modes) {
       modes.push(this._getCard(mode));
     }
+    const mediaRules = this._getMediaRules();
     return (
       <div>
-        <Typography variant="subtitle1" style={{ marginBottom: '16px' }}>
+        <Typography variant="subtitle1" style={{ marginLeft: '10px', marginBottom: '16px' }}>
           Choose game mode
         </Typography>
-        {modes}
+        <style jsx>{`
+          .modes {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-gap: 1.25rem;
+            align-self: center;
+            justify-self: center;
+            justify-items: center;
+          }
+        `}</style>
+        {mediaRules}
+        <div className="modes">{modes}</div>
       </div>
     );
+  }
+  _getMediaRules() {
+    let mediaRules = '';
+    const numberOfGameModes = this.props.gameDef.modes.length;
+    if (numberOfGameModes >= 2) {
+      mediaRules += `
+          @media (min-width: 500px) {
+            .modes {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }`;
+    }
+    if (numberOfGameModes >= 3) {
+      mediaRules += `
+          @media (min-width: 768px) {
+            .modes {
+              grid-template-columns: repeat(3, 1fr);
+            }
+          }`;
+    }
+    return <style jsx>{mediaRules}</style>;
   }
 
   _getCard(info: IGameModeInfo) {
@@ -133,7 +167,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
         <Link href={linkHref} as={linkAs}>
           <Button
             data-testid={`playbutton-${this.props.gameDef.code}-${info.mode}`}
-            component="a"
+            component={'a'}
             variant="contained"
             color="primary"
             style={{ marginLeft: 'auto' }}
@@ -141,6 +175,17 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
             Play
           </Button>
         </Link>
+        // <Button
+        //   data-testid={`playbutton-${this.props.gameDef.code}-${info.mode}`}
+        //   component={ButtonLink as any}
+        //   href={linkHref}
+        //   hrefAs={linkAs}
+        //   variant="contained"
+        //   color="primary"
+        //   style={{ marginLeft: 'auto' }}
+        // >
+        //   Play
+        // </Button>
       );
     }
     return (
@@ -284,6 +329,11 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
         </MenuList>
       </div>
     );
+  }
+
+  _getNumOfCardsToDisplay(cardsToDisplay) {
+    const numberOfGameModes = this.props.gameDef.modes.length;
+    return Math.max(cardsToDisplay, numberOfGameModes);
   }
 
   _handleClickSelection = (mode: GameMode, value: any) => () => {
