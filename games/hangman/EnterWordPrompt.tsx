@@ -9,6 +9,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 interface IEnterWordPromptProps {
   setEnterWord: (word: string, hint:string) => void;
   togglePrompt?: () => void;
+  promptTitle: string;
 }
 
 interface IEnterWordPromptState {
@@ -36,7 +37,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
             }}
           >
             <Typography style={{ paddingTop: '16px' }} variant="h6" component="h3" noWrap={true}>
-              Enter Word to Guess
+              { this.props.promptTitle }
             </Typography>
             <CardContent>
               <div>

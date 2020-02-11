@@ -36,19 +36,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     onClick = (letter: string) => () => {
         this.props.moves.letterSelected(letter);
 
-        // when online, change turns only if the user is done guessing 
-        if (isOnlineGame(this.props.gameArgs)) {
-            const currentPlayer = this.props.ctx.currentPlayer; 
-            const nextPlayer = currentPlayer==='0' ? '1': '0'; 
-            const playerStatus = this.props.G.status[currentPlayer]; 
+        // change turns only if the user is done guessing         
+        const currentPlayer = this.props.ctx.currentPlayer; 
+        const nextPlayer = currentPlayer==='0' ? '1': '0'; 
+        const playerStatus = this.props.G.status[currentPlayer]; 
 
-            // check if current player is done 
-            if ( playerStatus.correctGuess.length > 0 && 
-                (!playerStatus.correctGuess.includes('_') || playerStatus.wrongGuess.length >= 10)) {
-                    this.props.events.endTurn({'next': nextPlayer})
-            } else {
-                this.props.events.endTurn({'next': currentPlayer})
-            }                
+        // check if current player is done 
+        if ( !playerStatus.correctGuess.includes('_') ) {
+                this.props.events.endTurn({'next': nextPlayer})
+        } else {
+            this.props.events.endTurn({'next': currentPlayer})                            
         } 
     };
 
@@ -59,7 +56,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             } else {
               return 'Opponent is Guessing';
             }
-          }
+        }
+        else {
+            const currentPlayer = this.props.ctx.currentPlayer === '0' ? '1':'2';
+            return 'Player ' + currentPlayer + "'s Turn";
+        }
     }
 
     _getWord() {
@@ -113,7 +114,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
         for (var i = 0; i < albhabets.length; i++) {    
             let backgroundColor = null; 
-            let textColor = this.props.playerID === this.props.ctx.currentPlayer ? grey[100]:grey[500];
+            let textColor =  grey[100];
+            if (isOnlineGame(this.props.gameArgs)){
+                textColor = this.props.playerID === this.props.ctx.currentPlayer ? grey[100]:grey[500];
+            }
             if(playerStatus.correctGuess.indexOf(albhabets[i]) > -1) {
                 backgroundColor = "#00e676";
                 textColor =  grey[100];
@@ -227,25 +231,32 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         // if the words are not available, ask players to enter them 
         if (this.props.G.status['0'].correctGuess.length === 0 || this.props.G.status['1'].correctGuess.length === 0) {
 
-            if ( this.props.playerID === '0') {
-                if (this.props.G.status['1'].correctGuess.length === 0 && this.props.ctx.currentPlayer === '0') {
-                    toShow = <EnterWordPrompt setEnterWord={this._setWordForOpponent} />
+            const otherPlayer = this.props.ctx.currentPlayer==='0' ? '1': '0';
+            if (isOnlineGame(this.props.gameArgs)) {
+                if ( this.props.playerID === this.props.ctx.currentPlayer && 
+                     this.props.G.status[otherPlayer].correctGuess.length === 0 ) {
+                    toShow = (
+                        <EnterWordPrompt 
+                            setEnterWord={this._setWordForOpponent} 
+                            promptTitle={"Enter Word to Guess"}
+                        />
+                    );
                 } else {
-                    toShow = 
-                        <Typography variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px'  }}>
+                    toShow = ( 
+                        <Typography 
+                            variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px'  }}>
                             Waiting for the Opponent to Enter a Word for you ... 
                         </Typography>
+                    );
                 }
-                
-            } else if (this.props.playerID === '1') {
-                if (this.props.G.status['0'].correctGuess.length === 0 && this.props.ctx.currentPlayer === '1') {
-                    toShow = <EnterWordPrompt setEnterWord={this._setWordForOpponent} />
-                } else {
-                    toShow = 
-                        <Typography variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px' }}>
-                            Waiting for the Opponent to Enter a Word for you ... 
-                        </Typography>
-                }
+            } else {
+                toShow = (
+                    <EnterWordPrompt 
+                        key={"prompt_key_" + otherPlayer}
+                        setEnterWord={this._setWordForOpponent} 
+                        promptTitle={"Enter Word for Player " + (this.props.ctx.currentPlayer==='0' ? '1':'2') }
+                    />
+                );
             }
         } else {
 
@@ -264,9 +275,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                         Next
                     </Button>
                 );
-                if (this.props.playerID !== this.props.ctx.currentPlayer){
-                    guessMessage = `Your Opponent's guess was ${guessOutcome}.`;
-                    nextButton = null;
+                if (isOnlineGame(this.props.gameArgs)){
+                    if (this.props.playerID !== this.props.ctx.currentPlayer){
+                        guessMessage = `Your Opponent's guess was ${guessOutcome}.`;
+                        nextButton = null;
+                    }
                 }
                 toShow = this.props.ctx.currentPlayer === '0' ? (
                     <div>
@@ -313,11 +326,21 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             } else {
                 return 'draw';
             }
+        } else {
+            // Local game
+            switch (this.props.ctx.gameover.winner) {
+              case '0':
+                return 'Player 1 won';
+              case '1':
+                return 'Player 2 won';
+              case undefined:
+                return 'draw';
+            }
         }
     }
 
     _getGameOverBoard() {
-        if (isOnlineGame(this.props.gameArgs)) {
+        // if (isOnlineGame(this.props.gameArgs)) {
             const playerStatus = this.props.G.status[this.props.ctx.currentPlayer]; 
             const guessOutcome = playerStatus.wrongGuess.length >= 10 ? 'INCORRECT': 'CORRECT';
             let guessMessage = `Your guess was ${guessOutcome}. The word to be guessed was ${playerStatus.correctGuess.toUpperCase()}.`; 
@@ -331,7 +354,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                     </Typography>
                 </div> 
             );     
-        }
+        // }
     }
 
     render() {
