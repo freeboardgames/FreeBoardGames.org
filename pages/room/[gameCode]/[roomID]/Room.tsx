@@ -11,6 +11,8 @@ import { GameCard } from '../../../../components/App/Game/GameCard';
 import { NicknamePrompt } from '../../../../components/App/Lobby/NicknamePrompt';
 import { useRouter, NextRouter } from 'next/router';
 
+const MAX_TIMES_TO_UPDATE_METADATA = 2000;
+
 interface IRoomProps {
   gameCode: string;
   roomID: string;
@@ -25,10 +27,18 @@ interface IRoomState {
   error: string;
   editingName: boolean;
   interval: number | undefined;
+  numberOfTimesUpdatedMetadata: number;
 }
 
 class Room extends React.Component<IRoomProps, IRoomState> {
-  state: IRoomState = { error: '', loading: true, gameReady: false, editingName: false, interval: undefined };
+  state: IRoomState = {
+    error: '',
+    loading: true,
+    gameReady: false,
+    editingName: false,
+    interval: undefined,
+    numberOfTimesUpdatedMetadata: 0,
+  };
   private timer: any; // fixme loads state of room
   private promise: Promise<IRoomMetadata | void>;
 
@@ -84,6 +94,15 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     if (!LobbyService.getNickname()) {
       return;
     }
+    if (this.state.numberOfTimesUpdatedMetadata > MAX_TIMES_TO_UPDATE_METADATA) {
+      const error = 'Session expired.  Please refresh the page.';
+      this.setState(oldState => ({ ...oldState, error }));
+      return;
+    }
+    this.setState(oldState => ({
+      ...oldState,
+      numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
+    }));
     this.promise = LobbyService.getRoomMetadata(gameCode, roomID)
       .then(async metadata => {
         if (!metadata.currentUser) {

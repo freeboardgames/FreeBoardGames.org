@@ -1,12 +1,13 @@
-const next = require('next');
-const express = require('express');
-const { join } = require('path');
-const fs = require('fs');
-const { parse } = require('url');
+import next from 'next';
+import express from 'express';
+import { join } from 'path';
+import fs from 'fs';
+import { parse } from 'url';
+import { GAMES_LIST } from 'games';
 
 const dev = process.env.NODE_ENV !== 'production';
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
-const APP_DIR = join(__dirname) + '/';
+const APP_DIR = './';
 const STATIC_DIR = APP_DIR + 'static/';
 
 const PORT = process.env.SERVER_PORT || 3000;
@@ -14,7 +15,7 @@ const isProdChannel = process.env.CHANNEL === 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const excludedPaths = ['/_error', '/_document', '/_app'];
+const excludedPaths = ['/_error', '/_document', '/_app', '/play'];
 
 function isExcludedPath(path) {
   if (path.includes('[')) {
@@ -37,6 +38,11 @@ function generateSiteMapXML(pagesManifest) {
     if (!isExcludedPath(path)) {
       paths.push(path);
     }
+  }
+
+  // games
+  for (const game of GAMES_LIST) {
+    paths.push(`/play/${game.code}`);
   }
 
   const urls = [];
@@ -65,18 +71,27 @@ app
 
     server.use('/blog', express.static(join(__dirname, 'blog/dist')));
 
+    server.get('/.well-known/assetlinks.json', (req, res) => {
+      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+        const filePath = `${STATIC_DIR}/.well-known/assetlinks.json`;
+        app.serveStatic(req, res, filePath);
+      } else {
+        res.sendStatus(404);
+      }
+    });
+
     server.get('/sitemap.xml', (req, res) => {
       if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
         const filePath = `${STATIC_DIR}/sitemap.xml`;
         app.serveStatic(req, res, filePath);
       } else {
-        res.sendstatus(404);
+        res.sendStatus(404);
       }
     });
 
     server.get('/robots.txt', (req, res) => {
       if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
-        res.sendstatus(404);
+        res.sendStatus(404);
       } else {
         const filePath = `${STATIC_DIR}/restrictiveRobots.txt`;
         app.serveStatic(req, res, filePath);

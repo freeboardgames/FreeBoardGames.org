@@ -114,7 +114,7 @@ cypress/snapshots
 cypress/__diff_output__
 
 # FBG-specific
-bgio/dist
+server/dist
 okteto.yml
 dockerbuild
 reports/

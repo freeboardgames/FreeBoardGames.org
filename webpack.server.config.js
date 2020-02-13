@@ -7,17 +7,17 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 var config = {
-  mode: 'development',
   target: 'node',
   externals: [nodeExternals()],
 
   entry: {
-    server_bgio: path.resolve(__dirname, 'bgio/server.ts'),
+    server_bgio: path.resolve(__dirname, 'server/bgio.ts'),
+    server_web: path.resolve(__dirname, 'server/web.ts'),
   },
 
   output: {
     publicPath: '/',
-    path: path.resolve(__dirname, 'bgio/dist'),
+    path: path.resolve(__dirname, 'server/dist'),
     filename: '[name].js',
     chunkFilename: '[chunkhash].js',
   },
@@ -60,7 +60,7 @@ var config = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: 'tsconfig.bgio.json',
+              configFile: 'tsconfig.server.json',
             },
           },
         ],

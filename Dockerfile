@@ -1,5 +1,4 @@
-FROM node:13.6.0-buster
-ARG BGIO_SERVER_URL
+FROM node:13.8.0-buster
 
 # do not run as root
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
@@ -26,13 +25,14 @@ WORKDIR /appdata
 RUN yarn install
 
 # config
-COPY --chown=appuser tsconfig.bgio.json webpack.bgio.config.js /appdata/
+COPY --chown=appuser tsconfig.server.json webpack.server.config.js /appdata/
 
 # bgio
-COPY --chown=appuser bgio /appdata/bgio
+COPY --chown=appuser server /appdata/server
 COPY --chown=appuser games /appdata/games
+COPY --chown=appuser hooks /appdata/hooks
 COPY --chown=appuser components /appdata/components
-RUN yarn run build:bgio
+RUN yarn run build:server
 
 
 # build app
@@ -42,13 +42,13 @@ COPY --chown=appuser pages /appdata/pages
 COPY --chown=appuser static /appdata/static
 COPY --chown=appuser jest.setup.ts jest.config.js tsconfig.jest.json .babelrc next.config.js /appdata/
 
-ARG GIT_REV
 ARG GA_TRACKING_CODE
 ARG GTM_ID
+ARG BGIO_SERVER_URL
+ARG GIT_REV
 RUN yarn run build
 
 
 WORKDIR /appdata
-COPY --chown=appuser server.js /appdata/
 COPY --chown=appuser docker_run.sh /appdata/
 CMD ./docker_run.sh

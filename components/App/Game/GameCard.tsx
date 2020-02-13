@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 interface IGameCardProps {
   game: IGameDef;
   isLink?: boolean;
+  NO_MAX_WIDTH?: boolean;
 }
 
 export class GameCard extends React.Component<IGameCardProps, {}> {
@@ -15,6 +16,7 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
     const mainDivStyle: React.CSSProperties = {
       position: 'relative',
       height: '250px',
+      maxWidth: this.props.NO_MAX_WIDTH ? undefined : '500px',
       width: '100%',
       backgroundPosition: 'left center',
       backgroundImage: `url(${this.props.game.imageURL})`,
@@ -63,6 +65,7 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
             top: '12px',
             left: '8px',
             paddingTop: '4px',
+            maxWidth: '500px',
           }}
         >
           {gameNameHeading}
