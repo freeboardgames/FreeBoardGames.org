@@ -32,14 +32,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
     this.props.moves.selectCard(id);
     if (isAIGame(this.props.gameArgs)) {
-      await this.props.step();
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         this.setState({ aiSecondDeck: true });
       } else {
         this.setState({ aiSecondDeck: false });
-        setTimeout(() => {
-          this.props.step();
-        }, 1000);
       }
     }
   };
@@ -53,11 +49,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return;
     }
     this.props.moves.selectDeck(id);
-    if (isAIGame(this.props.gameArgs) && this.state.aiSecondDeck) {
-      setTimeout(() => {
-        this.props.step();
-      }, 1000);
-    }
   };
 
   _getStatus() {

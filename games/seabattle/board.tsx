@@ -73,7 +73,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           moves={this.props.moves}
           playerID={this.props.playerID}
           currentPlayer={ctx.currentPlayer}
-          step={this.props.step}
           isAIGame={isAIGame(this.props.gameArgs)}
           getSoundPref={this._getSoundPref}
         />
@@ -113,9 +112,5 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _setShips = (ships: IShip[]) => {
     this.props.moves.setShips(ships);
-    if (isAIGame(this.props.gameArgs)) {
-      setTimeout(this.props.step, 250); // place ships
-      setTimeout(this.props.step, 1000); // make first move
-    }
   };
 }

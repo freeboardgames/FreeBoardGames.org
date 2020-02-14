@@ -47,9 +47,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     await this.props.moves.placePiece(coords.x, coords.y);
-    if (isAIGame(this.props.gameArgs) && this.props.ctx.currentPlayer === '1') {
-      setTimeout(() => this.props.step(), 1000);
-    }
   }
 
   _getGameOver() {

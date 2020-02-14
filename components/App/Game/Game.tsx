@@ -11,7 +11,7 @@ import AddressHelper from '../Helpers/AddressHelper';
 import { IRoomMetadata, IPlayerInRoom, LobbyService } from '../Lobby/LobbyService';
 import { IGameArgs } from './GameBoardWrapper';
 import ReactGA from 'react-ga';
-import { SocketIO } from 'boardgame.io/multiplayer';
+import { SocketIO, Local } from 'boardgame.io/multiplayer';
 
 interface IGameProps {
   // FIXME: fix which props are req
@@ -146,7 +146,14 @@ export default class Game extends React.Component<IGameProps, IGameState> {
       clientConfig.enhancer = applyMiddleware(...enhancers);
       const ai = this.state.ai;
       if (this.loadAI && ai) {
-        clientConfig.ai = ai.bgioAI(aiLevel);
+        const gameAIConfig = ai.bgioAI(aiLevel);
+        const gameAI = gameAIConfig.ai || gameAIConfig.bot || gameAIConfig;
+        const gameAIType = gameAIConfig.type || gameAI;
+
+        clientConfig.multiplayer = Local({
+          bots: { '1': gameAIType },
+        });
+        clientConfig.game.ai = gameAI;
       }
       if (this.mode === GameMode.OnlineFriend) {
         clientConfig.multiplayer = SocketIO({ server: AddressHelper.getServerAddress() });

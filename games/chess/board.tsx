@@ -121,9 +121,6 @@ export class Board extends React.Component<IBoardProps, {}> {
       if (this._getSoundPref()) {
         playSound();
       }
-      if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.AI) {
-        this.props.step();
-      }
     }
     // clear the selection and highlighted piece
     this.setState({ ...this.state, selected: '', highlighted: '' });

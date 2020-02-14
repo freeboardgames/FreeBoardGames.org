@@ -20,9 +20,6 @@ export class Board extends React.Component<IBoardProps, {}> {
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
       this.props.moves.selectColumn(id);
-      if (isAIGame(this.props.gameArgs)) {
-        setTimeout(this.props.step, 250);
-      }
     }
   };
 

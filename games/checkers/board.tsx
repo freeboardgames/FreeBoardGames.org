@@ -89,15 +89,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
   };
 
-  stepAI = () => {
-    setTimeout(async () => {
-      await this.props.step();
-      if (this.props.ctx.currentPlayer === '1') {
-        this.stepAI();
-      }
-    }, 1000);
-  };
-
   _onDrop = async (coords: ICartesianCoords) => {
     if (this.state.selected) {
       this._move(applyInvertion(roundCoords(coords), this.isInverted()));
@@ -114,9 +105,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       ...this.state,
       selected: null,
     });
-    if (isAIGame(this.props.gameArgs) && this.props.ctx.currentPlayer === '1') {
-      this.stepAI();
-    }
   };
 
   _getHighlightedSquares() {

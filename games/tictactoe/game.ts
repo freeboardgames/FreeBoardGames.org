@@ -6,8 +6,6 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { TurnOrder } from 'boardgame.io/core';
-
 export function isVictory(cells: number[]) {
   const positions = [
     [0, 1, 2],
