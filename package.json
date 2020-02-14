@@ -141,7 +141,7 @@
     "typescript": "^3.7.5",
     "webp-loader": "^0.6.0",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.10",
+    "webpack-cli": "^3.3.11",
     "webpack-node-externals": "^1.7.2"
   },
   "nyc": {
