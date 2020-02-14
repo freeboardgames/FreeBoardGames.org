@@ -11,9 +11,11 @@ import { DesktopView, MobileView } from 'components/DesktopMobileView';
 import { Typography, Card } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 import { GameInstructionsText } from 'components/App/Game/GameInstructionsText';
+import Breadcrumbs from 'components/Breadcrumbs';
 
 interface gameInfoProps {
   gameDef: IGameDef;
+  asPath: string;
   userAgent?: string;
 }
 
@@ -25,6 +27,20 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <SEO title={`Play ${gameDef.name}, ${gameDef.description}`} description={gameDef.descriptionTag} />
+        <Breadcrumbs
+          itemListElements={[
+            {
+              position: 1,
+              name: 'Play',
+              item: '/play',
+            },
+            {
+              position: 2,
+              name: gameDef.name,
+              item: this.props.asPath,
+            },
+          ]}
+        />
         <DesktopView userAgent={this.props.userAgent} thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
           <div style={{ padding: '0 8px', display: 'inline-flex' }}>
             <span style={{ marginTop: '18px', minWidth: '500px' }}>
@@ -50,13 +66,13 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
       </FreeBoardGamesBar>
     );
   }
-  static async getInitialProps({ res, query }) {
+  static async getInitialProps({ res, query, asPath }) {
     const gameCode = query.gameCode as string;
     const gameDef: IGameDef = GAMES_MAP[gameCode];
     if (!gameDef && res) {
       return generatePageError(404);
     }
-    return { gameDef };
+    return { gameDef, asPath };
   }
 }
 
