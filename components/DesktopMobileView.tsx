@@ -13,7 +13,8 @@ const DEFAULT_THRESHOLD_WIDTH = 550;
 function isMobile(props: DesktopMobileViewProps) {
   const hasJssSSRStyles = typeof document !== 'undefined' && !!document?.querySelector('#jss-server-side');
   let width = useWindowDimensions().width;
-  if (!process.browser || hasJssSSRStyles) {
+  const isBrowser = typeof window !== 'undefined';
+  if ((isBrowser || hasJssSSRStyles) && props.userAgent) {
     // keep the isDesktop() return uniform if JSS styles exist
     const md = new MobileDetect(props.userAgent);
     const isMobile = !!md.mobile() && !md.tablet();

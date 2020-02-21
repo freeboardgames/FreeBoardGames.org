@@ -6,8 +6,10 @@ import Button from '@material-ui/core/Button';
 import MoreVert from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import FeedbackIcon from '@material-ui/icons/Feedback';
 import { IGameArgs } from './GameBoardWrapper';
 import { GAMES_MAP } from 'games';
+import { DesktopView } from 'components/DesktopMobileView';
 
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;
@@ -16,6 +18,7 @@ interface IGameDarkSublayoutProps {
 }
 
 interface IGameDarkSublayoutState {
+  feedback: boolean;
   menuAnchorEl: any;
   prevBgColor: string;
 }
@@ -28,7 +31,7 @@ export interface IOptionsItems {
 export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
   constructor(props: IGameDarkSublayoutProps) {
     super(props);
-    this.state = { menuAnchorEl: null, prevBgColor: document.body.style.backgroundColor };
+    this.state = { feedback: null, menuAnchorEl: null, prevBgColor: document.body.style.backgroundColor };
     document.body.style.backgroundColor = 'black';
   }
 
@@ -60,6 +63,28 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
       );
     }
 
+    let feedbackButtonOrText;
+    if (this.state.feedback) {
+      feedbackButtonOrText = (
+        <Typography variant="h6" gutterBottom={true} style={{ float: 'right', paddingTop: '10px', color: 'white' }}>
+          Desktop View is Experimental.
+        </Typography>
+      );
+    } else {
+      feedbackButtonOrText = (
+        <DesktopView thresholdWidth={680}>
+          <Button
+            onClick={this._toggleFeedback}
+            aria-label="Desktop View is Experimental."
+            variant="outlined"
+            style={{ float: 'right', paddingTop: '14px' }}
+          >
+            <FeedbackIcon style={{ color: 'white' }} />
+          </Button>
+        </DesktopView>
+      );
+    }
+
     return (
       <div>
         <div
@@ -84,6 +109,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
             </Link>
             {this._getOptionsMenuButton()}
             {this._getOptionsMenuItems()}
+            {feedbackButtonOrText}
           </div>
         </div>
         <div
@@ -116,6 +142,13 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
       );
     }
   }
+
+  _toggleFeedback = () => {
+    setTimeout(() => {
+      this.setState({ feedback: false });
+    }, 5000);
+    this.setState({ feedback: !this.state.feedback });
+  };
 
   _openOptionsMenu = (event: any) => {
     this.setState({ menuAnchorEl: event.currentTarget });
