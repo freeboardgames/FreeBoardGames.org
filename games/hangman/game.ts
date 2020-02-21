@@ -1,6 +1,6 @@
 import { Game } from '@freeboardgame.org/boardgame.io/core';
 
-function isVictory(status: any) {
+function isDoneGuessing(status: any){
   if (status['0'].correctGuess.length === 0 || status['1'].correctGuess.length === 0) {
     return false;
   }
@@ -10,42 +10,20 @@ function isVictory(status: any) {
   ) {
     return false;
   }
-  // if both players guessed the words correctly,
-  if (!status['0'].correctGuess.includes('_') && !status['1'].correctGuess.includes('_')) {
-    var scoreP0 = status['0'].correctGuess.length - status['0'].wrongGuess.length;
-    var scoreP1 = status['1'].correctGuess.length - status['1'].wrongGuess.length;
-    if (scoreP0 > scoreP1) {
-      return '0';
-    } else if (scoreP1 > scoreP0) {
-      return '1';
-    } else if (scoreP0 === scoreP1) {
-      if (status['0'].correctGuess.length === status['1'].correctGuess.length) {
-        return status['1'].wrongGuess.length > status['0'].wrongGuess.length ? '0' : '1';
-      }
-      return status['0'].correctGuess.length > status['1'].correctGuess.length ? '0' : '1';
-    }
-  }
-  // if player 0 guessed the word correctly
-  else if (!status['0'].correctGuess.includes('_')) {
-    return '0';
-  }
-  // if player 1 guessed the word correctly
-  else if (!status['1'].correctGuess.includes('_')) {
-    return '1';
-  }
-  return false;
+  return true;
 }
 
-function isDraw(status: any) {
-  // if both players guessed 10 incorrect words, then declare draw
-  if (status['0'].wrongGuess.length >= 10 && status['1'].wrongGuess.length >= 10) {
-    return true;
-  } else if (!status['0'].correctGuess.includes('_') && !status['1'].correctGuess.includes('_')) {
-    if (
-      status['0'].correctGuess.length === status['1'].correctGuess.length &&
-      status['0'].wrongGuess.length === status['1'].wrongGuess.length
-    ) {
-      return true;
+function isVictory(status: any) {
+
+  if (isDoneGuessing(status)){
+    var scoreP0 = status['0'].score;
+    var scoreP1 = status['1'].score;
+    if (scoreP0 > scoreP1) {
+      return { winner: '0' };
+    } else if (scoreP1 > scoreP0) {
+      return { winner: '1' };
+    } else if (scoreP0 === scoreP1) {
+      return { draw: true };
     }
   }
   return false;
@@ -110,11 +88,15 @@ export const HangmanGame = Game({
           }
         }
         playerStatus.correctGuess = newCorrectGuess;
-      } else {
+      } else if (letter !== '*') {
         playerStatus.wrongGuess = playerStatus.wrongGuess + letter;
       }
 
-      if (!playerStatus.correctGuess.includes('_') || playerStatus.wrongGuess.length >= 10) {
+      const right = playerStatus.correctGuess.replace(/\_/g, '').length;
+      const wrong = playerStatus.wrongGuess.length;
+      playerStatus.score = wrong < 10 ? Math.round((right / (wrong + right)) * 100) : 0; 
+
+      if (!playerStatus.correctGuess.includes('_') || wrong >= 10) {
         playerStatus.correctGuess = secretWord;
       }
 
@@ -129,13 +111,10 @@ export const HangmanGame = Game({
   },
 
   flow: {
-    endGameIf: (G: any, ctx: any) => {
-      if (isDraw(G.status)) {
-        return { draw: true };
-      }
+    endGameIf: (G: any) => {
       const winner = isVictory(G.status);
       if (winner) {
-        return { winner: winner };
+        return winner;
       }
     },
   },

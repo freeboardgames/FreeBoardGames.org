@@ -155,148 +155,161 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         return cells;
     }
 
-  _getHintButton() {
-    let hintButton = null;
-    if (this.props.playerID === this.props.ctx.currentPlayer) {
-      hintButton = (
-        <g key={'hint_button'} onClick={() => this.setState({ modalState: true })}>
-          <rect key={'hb_rect'} x={3.7} y={9} width={2.6} height={0.8} strokeWidth={0.045} stroke={grey[200]} />
-          <text key={'hb_text'} x={5} y={9.55} fontSize={0.45} fill={grey[200]} textAnchor="middle">
-            {'See Hint'}
-          </text>
-        </g>
-      );
-    }
-    return hintButton;
-  }
-
-  _getHintModal() {
-    const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
-    return (
-      <div>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          BackdropProps={{ invisible: true }}
-          open={this.state.modalState}
-          onClose={() => this.setState({ modalState: false })}
-          style={{
-            marginTop: '20px',
-            width: '250px',
-            height: '400px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            backgroundColor: 'white',
-          }}
-        >
-          <div>
-            <Typography style={{ padding: '16px' }} variant="h5" component="h3">
-              Hint
-            </Typography>
-            <Typography style={{ padding: '16px' }} variant="body1">
-              {playerStatus.wordHint}
-            </Typography>
-          </div>
-        </Modal>
-      </div>
-    );
-  }
-
-  _setWordForOpponent(word: string, hint: string) {
-    this.props.moves.setWords(word, hint);
-    this.props.events.endTurn({ next: this.props.ctx.currentPlayer === '0' ? '1' : '0' });
-  }
-
-  _showConclusion() {}
-
-  _getBoard() {
-
-        let toShow = null;
-        // if the words are not available, ask players to enter them 
-        if (this.props.G.status['0'].correctGuess.length === 0 || this.props.G.status['1'].correctGuess.length === 0) {
-
-            const otherPlayer = this.props.ctx.currentPlayer==='0' ? '1': '0';
-            if (isOnlineGame(this.props.gameArgs)) {
-                if ( this.props.playerID === this.props.ctx.currentPlayer && 
-                        this.props.G.status[otherPlayer].correctGuess.length === 0 ) {
-                    toShow = (
-                        <EnterWordPrompt 
-                            setEnterWord={this._setWordForOpponent} 
-                            promptTitle={"Enter Word to Guess"}
-                        />
-                    );
-                } else {
-                    toShow = ( 
-                        <Typography 
-                            variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px'  }}>
-                            Waiting for the Opponent to Enter a Word for you ... 
-                        </Typography>
-                    );
-                }
-            } else {
-                toShow = (
-                    <EnterWordPrompt 
-                        key={"prompt_key_" + otherPlayer}
-                        setEnterWord={this._setWordForOpponent} 
-                        promptTitle={"Enter Word for Player " + (this.props.ctx.currentPlayer==='0' ? '1':'2') }
-                    />
-                );
-            }
-                    
-        } else {
-
-            // show results if player has finished guessing 
-            const playerStatus = this.props.G.status[this.props.ctx.currentPlayer]; 
-            if ( !playerStatus.correctGuess.includes('_') ) {
-                const guessOutcome = playerStatus.wrongGuess.length >= 10 ? 'INCORRECT': 'CORRECT';
-                let guessMessage = `Your guess was ${guessOutcome}. The word to be guessed was ${playerStatus.correctGuess.toUpperCase()}.`; 
-                let nextButton = (
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        style={{ marginTop: '16px', marginLeft:'auto', marginRight:'auto', alignContent:'center' }}
-                        onClick={this.onClick('*')}
-                    >
-                        Next
-                    </Button>
-                );
-                if (isOnlineGame(this.props.gameArgs)){
-                    if (this.props.playerID !== this.props.ctx.currentPlayer){
-                        guessMessage = `Your Opponent's guess was ${guessOutcome}.`;
-                        nextButton = null;
-                    }
-                }
-                toShow = this.props.ctx.currentPlayer === '0' ? (
-                    <div>
-                        <Typography variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px' }}>
-                            { guessMessage }
-                            <br /> 
-                            { nextButton }
-                        </Typography>
-                    </div>
-                ) : null ;
-            } else {
-                toShow = (
-                    <div>
-                        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
-                            {this._getStatus()}
-                        </Typography>
-                        <svg width="100%" height="100%" viewBox="0 0 10 10">
-                            {this._getWord()} 
-                            {this._getAlphabets()}
-                            {this._getHintButton()}                        
-                        </svg>
-                        {this._getHintModal()}                
-                    </div>
-                );
-            }
+    _getHintButton() {
+        let hintButton = null;
+        if (this.props.playerID === this.props.ctx.currentPlayer) {
+        hintButton = (
+            <g key={'hint_button'} onClick={() => this.setState({ modalState: true })}>
+            <rect key={'hb_rect'} x={3.7} y={9} width={2.6} height={0.8} strokeWidth={0.045} stroke={grey[200]} />
+            <text key={'hb_text'} x={5} y={9.55} fontSize={0.45} fill={grey[200]} textAnchor="middle">
+                {'See Hint'}
+            </text>
+            </g>
+        );
         }
+        return hintButton;
+    }
 
-        return(
+    _getHintModal() {
+        const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
+        return (
+        <div>
+            <Modal
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+            BackdropProps={{ invisible: true }}
+            open={this.state.modalState}
+            onClose={() => this.setState({ modalState: false })}
+            style={{
+                marginTop: '20px',
+                width: '250px',
+                height: '400px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                backgroundColor: 'white',
+            }}
+            >
             <div>
-                { toShow }
+                <Typography style={{ padding: '16px' }} variant="h5" component="h3">
+                Hint
+                </Typography>
+                <Typography style={{ padding: '16px' }} variant="body1">
+                {playerStatus.wordHint}
+                </Typography>
+            </div>
+            </Modal>
+        </div>
+        );
+    }
+
+    _setWordForOpponent(word: string, hint: string) {
+        this.props.moves.setWords(word, hint);
+        this.props.events.endTurn({ next: this.props.ctx.currentPlayer === '0' ? '1' : '0' });
+    }
+
+    _showConclusion() {
+        const playerStatus = this.props.G.status[this.props.ctx.currentPlayer]; 
+        const guessOutcome = playerStatus.wrongGuess.length >= 10 ? 'INCORRECT': 'CORRECT';
+        let guessMessage = `Your guess was ${guessOutcome}.`;
+        let extraMessage = playerStatus.wrongGuess.length >= 10 ? `The word to be guessed was ${playerStatus.correctGuess.toUpperCase()}.` : `Your score is ${playerStatus.score} points.`; 
+        let nextButton = (
+            <Button
+                variant="contained"
+                color="primary"
+                style={{ marginTop: '16px', marginLeft:'auto', marginRight:'auto', alignContent:'center' }}
+                onClick={this.onClick('*')}
+            >
+                Next
+            </Button>
+        );
+        if (isOnlineGame(this.props.gameArgs)){
+            if (this.props.playerID !== this.props.ctx.currentPlayer){
+                guessMessage = `Your Opponent's guess was ${guessOutcome}.`;
+                extraMessage = `He/She has scored ${playerStatus.score} points.`
+                nextButton = null;
+            }
+        } 
+        let textColor = 'white';
+        if (this.props.ctx.currentPlayer === '1') {
+            nextButton = null;
+            textColor = 'black';
+        }
+        return (
+            <div>
+                <Typography variant="h6" style={{ textAlign: 'center', color: textColor, margin: '16px', padding: '16px' }}>
+                    { guessMessage }
+                    <br /> 
+                    { extraMessage }
+                    <br /> 
+                    { nextButton }
+                </Typography>
             </div>
         );
+    }
+
+    _getBoard() {
+
+            let toShow = null;
+            // if the words are not available, ask players to enter them 
+            if (this.props.G.status['0'].correctGuess.length === 0 || this.props.G.status['1'].correctGuess.length === 0) {
+
+                const otherPlayer = this.props.ctx.currentPlayer==='0' ? '1': '0';
+                if (isOnlineGame(this.props.gameArgs)) {
+                    if ( this.props.playerID === this.props.ctx.currentPlayer && 
+                            this.props.G.status[otherPlayer].correctGuess.length === 0 ) {
+                        toShow = (
+                            <EnterWordPrompt 
+                                setEnterWord={this._setWordForOpponent} 
+                                promptTitle={"Enter Word to Guess"}
+                            />
+                        );
+                    } else {
+                        toShow = ( 
+                            <Typography 
+                                variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px'  }}>
+                                Waiting for the Opponent to Enter a Word for you ... 
+                            </Typography>
+                        );
+                    }
+                } else {
+                    toShow = (
+                        <EnterWordPrompt 
+                            key={"prompt_key_" + otherPlayer}
+                            setEnterWord={this._setWordForOpponent} 
+                            promptTitle={"Enter Word for Player " + (this.props.ctx.currentPlayer==='0' ? '1':'2') }
+                        />
+                    );
+                }
+                        
+            } else {
+
+                // show conclusion when player has finished guessing 
+                const playerStatus = this.props.G.status[this.props.ctx.currentPlayer]; 
+                if ( !playerStatus.correctGuess.includes('_') ) {                    
+                    toShow =this._showConclusion();
+
+                } else {
+                    toShow = (
+                        <div>
+                            <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+                                {this._getStatus()}
+                            </Typography>
+                            <svg width="100%" height="100%" viewBox="0 0 10 10">
+                                {this._getWord()} 
+                                {this._getAlphabets()}
+                                {this._getHintButton()}                        
+                            </svg>
+                            {this._getHintModal()}                
+                        </div>
+                    );
+                }
+            }
+
+            return(
+                <div>
+                    { toShow }
+                </div>
+            );
     }
 
     _getGameOver() {
@@ -325,32 +338,18 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     _getGameOverBoard() {
-        // if (isOnlineGame(this.props.gameArgs)) {
-            const playerStatus = this.props.G.status[this.props.ctx.currentPlayer]; 
-            const guessOutcome = playerStatus.wrongGuess.length >= 10 ? 'INCORRECT': 'CORRECT';
-            let guessMessage = `Your guess was ${guessOutcome}. The word to be guessed was ${playerStatus.correctGuess.toUpperCase()}.`; 
-            if (this.props.playerID !== this.props.ctx.currentPlayer){
-                guessMessage = `Your Opponent's guess was ${guessOutcome}.`;
-            }
-            return (
-                <div>
-                    <Typography variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px', backgroundColor:'black' }}>
-                        {guessMessage}
-                    </Typography>
-                </div> 
-            );     
-        // }
+        return this._showConclusion();
     }  
 
     render() {
         if (this.props.ctx.gameover) {
-        return (
-            <GameLayout
-            gameOver={this._getGameOver()}
-            extraCardContent={this._getGameOverBoard()}
-            gameArgs={this.props.gameArgs}
-            />
-        );
+            return (
+                <GameLayout
+                gameOver={this._getGameOver()}
+                extraCardContent={this._getBoard()}
+                gameArgs={this.props.gameArgs}
+                />
+            );
         }
         return <GameLayout gameArgs={this.props.gameArgs}>{this._getBoard()}</GameLayout>;
     }
