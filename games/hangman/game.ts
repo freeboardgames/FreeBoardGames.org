@@ -83,12 +83,12 @@ export const HangmanGame = Game({
         for (var i = 0; i < playerStatus.correctGuess.length; i++) {
           if (secretWord.charAt(i) === letter) {
             newCorrectGuess = newCorrectGuess + letter;
-          } else if (letter !== '*') {
+          } else {
             newCorrectGuess = newCorrectGuess + playerStatus.correctGuess.charAt(i);
           }
         }
         playerStatus.correctGuess = newCorrectGuess;
-      } else if (letter !== '*') {
+      } else if (letter !== '*' && !playerStatus.wrongGuess.includes(letter)) {
         playerStatus.wrongGuess = playerStatus.wrongGuess + letter;
       }
 

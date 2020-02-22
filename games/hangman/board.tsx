@@ -156,9 +156,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     _getHintButton() {
-        let hintButton = null;
-        if (this.props.playerID === this.props.ctx.currentPlayer) {
-        hintButton = (
+        let hintButton = (
             <g key={'hint_button'} onClick={() => this.setState({ modalState: true })}>
             <rect key={'hb_rect'} x={3.7} y={9} width={2.6} height={0.8} strokeWidth={0.045} stroke={grey[200]} />
             <text key={'hb_text'} x={5} y={9.55} fontSize={0.45} fill={grey[200]} textAnchor="middle">
@@ -166,6 +164,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             </text>
             </g>
         );
+        if (isOnlineGame(this.props.gameArgs)) {
+            if (this.props.playerID !== this.props.ctx.currentPlayer) {
+                hintButton = null;
+            }
         }
         return hintButton;
     }
@@ -276,7 +278,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                         <EnterWordPrompt 
                             key={"prompt_key_" + otherPlayer}
                             setEnterWord={this._setWordForOpponent} 
-                            promptTitle={"Enter Word for Player " + (this.props.ctx.currentPlayer==='0' ? '1':'2') }
+                            promptTitle={"Player " + (this.props.ctx.currentPlayer==='0' ? '1':'2') + ": Enter Word" }
                         />
                     );
                 }
@@ -336,10 +338,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             }
         }
     }
-
-    _getGameOverBoard() {
-        return this._showConclusion();
-    }  
 
     render() {
         if (this.props.ctx.gameover) {
