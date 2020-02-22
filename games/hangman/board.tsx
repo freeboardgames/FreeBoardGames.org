@@ -33,6 +33,13 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     onClick = (letter: string) => () => {
+        
+        if (isOnlineGame(this.props.gameArgs)) {
+            if (this.props.playerID !== this.props.ctx.currentPlayer){
+                return;
+            }
+        } 
+
         this.props.moves.letterSelected(letter);
 
         // change turns only if the user is done guessing         
