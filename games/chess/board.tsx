@@ -74,18 +74,16 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
     return (
       <GameLayout optionsMenuItems={this._getOptionsMenuItems} gameArgs={this.props.gameArgs}>
-        <div>
-          <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
-            {this._getStatus()}
-          </Typography>
-          <Checkerboard
-            invert={this.getPlayer() === 'b'}
-            highlightedSquares={this._getHighlightedSquares()}
-            onClick={this._click}
-          >
-            {this._getPieces()}
-          </Checkerboard>
-        </div>
+        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+          {this._getStatus()}
+        </Typography>
+        <Checkerboard
+          invert={this.getPlayer() === 'b'}
+          highlightedSquares={this._getHighlightedSquares()}
+          onClick={this._click}
+        >
+          {this._getPieces()}
+        </Checkerboard>
       </GameLayout>
     );
   }
