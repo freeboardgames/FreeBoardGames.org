@@ -37,7 +37,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
             }}
           >
             <Typography style={{ paddingTop: '16px' }} variant="h6" component="h3" noWrap={true}>
-              { this.props.promptTitle }
+              {this.props.promptTitle}
             </Typography>
             <CardContent>
               <div>
