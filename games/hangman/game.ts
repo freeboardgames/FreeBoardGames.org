@@ -1,6 +1,6 @@
 import { Game } from '@freeboardgame.org/boardgame.io/core';
 
-function isDoneGuessing(status: any){
+function isDoneGuessing(status: any) {
   if (status['0'].correctGuess.length === 0 || status['1'].correctGuess.length === 0) {
     return false;
   }
@@ -14,8 +14,7 @@ function isDoneGuessing(status: any){
 }
 
 function isVictory(status: any) {
-
-  if (isDoneGuessing(status)){
+  if (isDoneGuessing(status)) {
     var scoreP0 = status['0'].score;
     var scoreP1 = status['1'].score;
     if (scoreP0 > scoreP1) {
@@ -94,7 +93,7 @@ export const HangmanGame = Game({
 
       const right = playerStatus.correctGuess.replace(/\_/g, '').length;
       const wrong = playerStatus.wrongGuess.length;
-      playerStatus.score = wrong < 10 ? Math.round((right / (wrong + right)) * 100) : 0; 
+      playerStatus.score = wrong < 10 ? Math.round((right / (wrong + right)) * 100) : 0;
 
       if (!playerStatus.correctGuess.includes('_') || wrong >= 10) {
         playerStatus.correctGuess = secretWord;
