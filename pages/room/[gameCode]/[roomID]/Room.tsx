@@ -111,11 +111,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
             roomID,
             name: LobbyService.getNickname(),
           };
-
-          if (metadata.players.length == metadata.numberOfPlayers) {
-            player.playerID = null;
-          }
-
           await LobbyService.joinRoom(gameCode, player);
           return LobbyService.getRoomMetadata(gameCode, roomID);
         }

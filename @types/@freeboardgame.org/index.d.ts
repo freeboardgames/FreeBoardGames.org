@@ -143,7 +143,7 @@ declare module '@freeboardgame.org/boardgame.io/core' {
     name?: string;
     setup: (ctx: IGameCtx) => any;
     moves: IGameMoves;
-    playerView?: (G: any, ctx: IGameCtx, playerID?: string) => any;
+    playerView?: (G: any, ctx: IGameCtx, playerID: string) => any;
     flow?: IGameFlow;
     seed?: string;
   }

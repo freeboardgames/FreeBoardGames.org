@@ -6,7 +6,7 @@ const FBG_CREDENTIALS_KEY = 'fbgCredentials';
 const FBG_NICKNAME_KEY = 'fbgNickname';
 
 export interface IPlayerInRoom {
-  playerID?: number;
+  playerID: number;
   name?: string;
   roomID: string;
 }
@@ -39,15 +39,12 @@ export class LobbyService {
   }
 
   public static async joinRoom(gameCode: string, player: IPlayerInRoom): Promise<void> {
-    let toSend = {
-      playerName: player.name,
-    };
-    if (player.playerID !== null) {
-      toSend['playerID'] = player.playerID;
-    }
     const response = await request
       .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/join`)
-      .send(toSend);
+      .send({
+        playerID: player.playerID,
+        playerName: player.name,
+      });
     const credential = response.body.playerCredentials;
     this.setCredential(player, credential);
   }

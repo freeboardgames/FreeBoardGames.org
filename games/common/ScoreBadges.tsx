@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 interface IScoreBadgesProps {
   scoreboard: IScore[];
   players: IPlayerInRoom[];
-  playerID?: string;
+  playerID: string;
   colors?: string[];
 }
 
