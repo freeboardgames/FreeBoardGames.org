@@ -228,8 +228,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.playerID !== this.props.ctx.currentPlayer) {
-        guessMessage = `Your Opponent's guess was ${guessOutcome}.`;
-        extraMessage = `He/She has scored ${playerStatus.score} points.`;
+        guessMessage = `Your opponent's guess was ${guessOutcome}.`;
+        extraMessage = `Your opponent has scored ${playerStatus.score} points.`;
         nextButton = null;
       }
     }
