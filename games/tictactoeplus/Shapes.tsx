@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ShjImg from './media/ShjSqr.png'
 
 interface IShapeProps {
   x: number;
@@ -40,25 +41,10 @@ export const Cross = (props: IShapeProps) => {
 
 export const WildCardChar = (props: IShapeProps) => {
   return (
-    <g className="wild" key={`wild${props.x},${props.y}`}>
-      <line
-        x1={props.x + 0.25}
-        y1={props.y + 0.5}
-        x2={props.x + 0.75}
-        y2={props.y + 0.5}
-        stroke="rgb(22,150,243)"
-        style={boldLineStyle}
-      />
-      ,
-      <line
-        x1={props.x + 0.5}
-        y1={props.y + 0.25}
-        x2={props.x + 0.5}
-        y2={props.y + 0.75}
-        stroke="rgb(22,150,243)"
-        style={boldLineStyle}
-      />
-    </g>
+    <image 
+      x={props.x + 0.05} y={props.y + 0.05} width="0.9" height="0.9"
+      href={ShjImg}
+      /> 
   );
 };
 

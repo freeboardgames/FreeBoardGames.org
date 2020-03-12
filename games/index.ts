@@ -25,16 +25,17 @@ export const GAMES_MAP: IGameDefMap = {
 };
 
 export const GAMES_LIST: IGameDef[] = [
-  GAMES_MAP.chess,
-  GAMES_MAP.takesix,
-  GAMES_MAP.checkers,
+  GAMES_MAP.tictactoeplus,
   GAMES_MAP.fourinarow,
   GAMES_MAP.reversi,
-  GAMES_MAP.tictactoeplus,
+  GAMES_MAP.checkers,
   GAMES_MAP.ninemensmorris,
-  GAMES_MAP.cornerus,
-  GAMES_MAP.seabattle,
-  GAMES_MAP.tictactoe,
+
+  // GAMES_MAP.chess,
+  // GAMES_MAP.takesix,
+  // GAMES_MAP.cornerus,
+  // GAMES_MAP.seabattle,
+  // GAMES_MAP.tictactoe,
 ];
 
 // No need to edit below

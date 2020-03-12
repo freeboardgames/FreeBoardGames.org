@@ -17,7 +17,11 @@ import { Token } from '@freeboardgame.org/boardgame.io/ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
+import green from '@material-ui/core/colors/lightGreen';
 import { isOnlineGame, isLocalGame, isAIGame } from '../common/gameMode';
+
+import ShjImg from './media/ShjSqr.png';
+import GopImg from './media/GopSqr.png';
 
 interface IBoardProps {
   G: IG;
@@ -123,11 +127,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const result = {} as IColorMap;
 
     if (this.state.selected !== null) {
-      result[cartesianToAlgebraic(this.state.selected.x, this.state.selected.y, false)] = blue[700];
+      result[cartesianToAlgebraic(this.state.selected.x, this.state.selected.y, false)] = green[600];
       this.state.validMoves
         .filter(move => areCoordsEqual(this.state.selected, move.from))
         .forEach(move => {
-          result[cartesianToAlgebraic(move.to.x, move.to.y, false)] = blue[500];
+          result[cartesianToAlgebraic(move.to.x, move.to.y, false)] = green[300];
         });
     }
 
@@ -152,10 +156,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             key={piece.data.id}
           >
             <g>
-              <circle r="0.4" fill={piece.data.playerID === '0' ? grey[50] : grey[900]} cx="0.5" cy="0.5" />
-              {piece.data.isKing ? (
-                <circle r="0.2" cx="0.5" cy="0.5" fill={piece.data.playerID === '1' ? grey[800] : grey[400]} />
-              ) : null}
+              <circle r="0.4" fill={piece.data.isKing ? blue[300] : grey[50]} cx="0.5" cy="0.5" />
+              <image 
+                x="0.11" y="0.11" width="0.78" height="0.78"
+                href={ piece.data.playerID === '0' ? ShjImg : GopImg }
+                /> 
             </g>
           </Token>
         );
