@@ -29,7 +29,7 @@ function isExcludedPath(path) {
   }
 }
 
-const domain = 'https://www.freeboardgames.org';
+const domain = 'https://www.sahajanand-games.com';
 
 function generateSiteMapXML(pagesManifest) {
   let pathsFromManifest = Object.keys(pagesManifest).reverse();

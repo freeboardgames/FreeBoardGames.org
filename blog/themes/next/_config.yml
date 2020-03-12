@@ -157,7 +157,7 @@ baidu_push: false
 # Value after `||` delimiter is the name of FontAwesome icon. If icon (with or without delimiter) is not specified, question icon will be loaded.
 # External url should start with http:// or https://
 menu:
-  home: https://www.freeboardgames.org/ || home
+  home: https://www.sahajanand-games.com/ || home
   #about: /about/ || user
   #tags: /tags/ || tags
   #categories: /categories/ || th
