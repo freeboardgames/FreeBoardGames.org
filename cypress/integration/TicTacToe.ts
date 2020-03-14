@@ -1,4 +1,4 @@
-it.only('plays a local game', () => {
+it('plays a local game', () => {
   let x, y;
   cy.visit('/play/tictactoe/local');
   cy.contains("Red's turn");

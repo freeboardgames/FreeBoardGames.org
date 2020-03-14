@@ -16,7 +16,7 @@
     "jsx": "preserve",
     "types": ["cypress"],
     "typeRoots": ["node_modules/@types", "@types", "./@types"],
-    "incremental": true
+    // "incremental": true
   },
   "exclude": ["node_modules", "**/*.spec.ts"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
