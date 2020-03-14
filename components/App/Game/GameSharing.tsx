@@ -8,6 +8,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from './FacebookIcon';
+import WhatsAppIcon from './WhatsAppIcon';
 import QrCodeIcon from './QrCodeIcon';
 import copy from 'copy-to-clipboard';
 import ReactGA from 'react-ga';
@@ -43,6 +44,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
   private shareFacebookCallback: any;
   private copyClipboardCallback: any;
   private showQrCodeCallback: any;
+  private shareWhatsAppCallback: any;
 
   constructor(props: any) {
     super(props);
@@ -50,6 +52,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
     this.shareFacebookCallback = this.shareFacebook.bind(this);
     this.copyClipboardCallback = this.copyClipboard.bind(this);
     this.showQrCodeCallback = this.showQrCode.bind(this);
+    this.shareWhatsAppCallback = this.shareWhatsApp.bind(this);
   }
 
   render() {
@@ -86,6 +89,11 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
               <Tooltip title="Share on Facebook" aria-label="Facebook">
                 <IconButton onClick={this.shareFacebookCallback}>
                   <FacebookIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Share on WhatsApp" aria-label="WhatsApp">
+                <IconButton onClick={this.shareWhatsAppCallback}>
+                  <WhatsAppIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Show QR code" aria-label="QR code">
@@ -125,6 +133,15 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
       label: this.props.gameCode,
     });
     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURI(this._getLink()));
+  }
+
+  shareWhatsApp() {
+    ReactGA.event({
+      category: 'GameSharing',
+      action: 'shareWhatsApp',
+      label: this.props.gameCode,
+    });
+    window.open('https://api.whatsapp.com/send?text=' + encodeURI(this._getLink()));
   }
 
   copyClipboard() {
