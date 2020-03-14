@@ -31,7 +31,7 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.fourinarow,
   GAMES_MAP.reversi,
   GAMES_MAP.checkers,
-  GAMES_MAP.hangmanGameDef,
+  GAMES_MAP.hangman,
   GAMES_MAP.ninemensmorris,
 
   // GAMES_MAP.chess,
