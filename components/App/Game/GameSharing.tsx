@@ -141,7 +141,6 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
       action: 'shareWhatsApp',
       label: this.props.gameCode,
     });
-    // window.open('whatsapp://send?text='+ encodeURI(this._getLink()));
     window.open('https://api.whatsapp.com/send?text=' + encodeURI(this._getLink()));
   }
 

@@ -1,7 +1,7 @@
 import SvgIcon from '@material-ui/core/SvgIcon';
 import React from 'react';
 
-class WhatsappIcon extends React.Component<{}, {}> {
+export default class extends React.Component<{}, {}> {
   render() {
     return (
       <SvgIcon>
@@ -10,5 +10,3 @@ class WhatsappIcon extends React.Component<{}, {}> {
     );
   }
 }
-
-export default WhatsappIcon;
