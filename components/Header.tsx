@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+// import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import InfoIcon from '@material-ui/icons/Info';
-import CodeIcon from '@material-ui/icons/Code';
+// import CodeIcon from '@material-ui/icons/Code';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
 
@@ -11,7 +11,7 @@ class Header extends React.Component<{}, {}> {
     return (
       <div style={{ padding: '0 8px' }}>
         <Typography component="h1" variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
-          Play Free Board Games
+          || Jai Shree Swaminarayan ||
         </Typography>
         <Typography
           component="h2"
@@ -19,10 +19,17 @@ class Header extends React.Component<{}, {}> {
           gutterBottom={true}
           style={{ marginTop: '16px', marginBottom: '16px' }}
         >
-          FreeBoardGames.org is a <b>free and open-source</b> board game platform. Enjoy free high-quality games on any
-          device that can access the web. Study how the games are made, change them, and contribute back to the
-          community!
+          Play Satsang related games for free and enjoy Satsang in a new way ! Use these games in your Satsang-Mandal or play them with your friends/family. If you have any feedback or would like to help us make games, you can always contact us via email.           
         </Typography>
+      </div>
+    );
+  }
+}
+
+class Footer extends React.Component<{}, {}> {
+  render() {
+    return (
+      <div style={{ padding: '8px 8px 15px 8px' }}>
         {this._links()}
       </div>
     );
@@ -30,7 +37,7 @@ class Header extends React.Component<{}, {}> {
   _links() {
     return (
       <div style={{ textAlign: 'center', marginTop: '4px' }}>
-        <Button
+        {/* <Button
           href="https://github.com/freeboardgames/FreeBoardGames.org"
           target="_blank"
           variant="outlined"
@@ -38,7 +45,7 @@ class Header extends React.Component<{}, {}> {
         >
           <CodeIcon style={{ marginRight: '4px' }} />
           Code
-        </Button>
+        </Button> */}
         <Link href="/about">
           <a style={{ textDecoration: 'none' }}>
             <Button variant="outlined" style={{ margin: '4px' }}>
@@ -47,13 +54,13 @@ class Header extends React.Component<{}, {}> {
             </Button>
           </a>
         </Link>
-        <Button href="https://discord.gg/AaE6n3n" target="_blank" variant="outlined" style={{ margin: '4px' }}>
+        {/* <Button href="https://discord.gg/AaE6n3n" target="_blank" variant="outlined" style={{ margin: '4px' }}>
           <QuestionAnswerIcon style={{ marginRight: '4px' }} />
           Chat
-        </Button>
+        </Button> */}
       </div>
     );
   }
 }
 
-export default Header;
+export { Header, Footer };

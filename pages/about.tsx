@@ -37,11 +37,10 @@ function getAboutCard() {
     <Card style={{ marginTop: '16px' }}>
       <CardContent>
         <Typography variant="h5" component="h2" style={{ marginBottom: '17px' }}>
-          About FreeBoardGames.org
+          About Sahajanad Games
         </Typography>
         <Typography component="p">
-          FreeBoardGames.org is a free (as in freedom), mobile-first, board game platform. Its goal is to popularize
-          board games and to make them easy to play with friends, even from afar.
+          Sahajanand Games is a platform for Satsangis to play games. This project is Open Source and it is maintained by volunteer Satsangies, who do this to get the belssings of Shreeji Maharaj and great Saints. If you would like to help us make new games, you can always contact us via our email (sahajanand.games@gmail.com). 
         </Typography>
       </CardContent>
     </Card>
@@ -57,26 +56,17 @@ function getContributorsCard() {
         </Typography>
         <List>
           <ListItem>
-            <ListItemText primary="JasonHarrison" />
-            <Button size="small" color="primary" href="https://www.jasonharrison.us/?from=freeboardgame.org">
+            <ListItemText primary="Gaurav Patel" />
+            {/* <Button size="small" color="primary" href="https://www.jasonharrison.us/?from=freeboardgame.org">
               Website
-            </Button>
-            <Button size="small" color="primary" href="https://github.com/jasonharrison">
+            </Button> */}
+            <Button size="small" color="primary" href="https://github.com/gk-patel">
               GitHub
             </Button>
           </ListItem>
           <ListItem>
-            <ListItemText primary="flamecoals" />
-            <Button size="small" color="primary" href="https://github.com/flamecoals">
-              GitHub
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="JosefKuchar" />
-            <Button size="small" color="primary" href="http://josefkuchar.com">
-              Website
-            </Button>
-            <Button size="small" color="primary" href="https://github.com/JosefKuchar">
+            <ListItemText primary="Sandip Sorathiya" />
+            <Button size="small" color="primary" href="https://github.com/sandipsorathiya">
               GitHub
             </Button>
           </ListItem>
@@ -94,40 +84,10 @@ function getCreditsCard() {
           Credits
         </Typography>
         <List>
-          <ListItem>
-            <ListItemText primary="Chess move sound by SpliceSound" />
-            <Button size="small" color="primary" href="https://freesound.org/people/SpliceSound/sounds/218333/">
-              freesound.org
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Seabattle hit sound by fridobeck" />
-            <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
-              freesound.org
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Seabattle hit sound by qubodup" />
-            <Button size="small" color="primary" href="https://freesound.org/people/qubodup/sounds/182429/">
-              freesound.org
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Seabattle miss sound by InspectorJ" />
-            <Button size="small" color="primary" href="https://freesound.org/people/InspectorJ/sounds/352103/">
-              freesound.org
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Seabattle miss sound by CGEffex" />
-            <Button size="small" color="primary" href="https://freesound.org/people/CGEffex/sounds/98335/">
-              freesound.org
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Blox font (used in logo) by Brian Kent" />
-            <Button size="small" color="primary" href="https://www.dafont.com/blox.font">
-              dafont.com
+        <ListItem>
+            <ListItemText primary="Project is a Fork of " />
+            <Button size="small" color="primary" href="https://github.com/freeboardgames/FreeBoardGames.org">
+              FreeBoardGames.org
             </Button>
           </ListItem>
         </List>

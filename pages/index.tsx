@@ -1,6 +1,6 @@
 import React from 'react';
 import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
-import Header from 'components/Header';
+import {Header, Footer} from 'components/Header';
 import { GamesList } from 'components/App/GamesList';
 import SEO from 'components/SEO';
 
@@ -9,13 +9,14 @@ class Home extends React.Component<{}, {}> {
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <SEO
-          title={'Play Free Board Games Online'}
+          title={'Sahajanand Games'}
           description={
-            'Play board games in your browser for free.  Compete against your online friends or play locally.  Free and open-source software project.'
+            'Play Satsang related games in your browser and mobile for free. Use it in your Bal-Madal, Kishor-Mandal, etc or compete against your online friends or play locally with your family. We hope you get Sahajanand while playing this game. Jai Swaminarayan.'
           }
         />
         <Header />
         <GamesList />
+        <Footer />
       </FreeBoardGamesBar>
     );
   }
