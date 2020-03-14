@@ -49,6 +49,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
                   onChange={this._onWordChange}
                   onKeyPress={this._setEnterWordOnEnterButton}
                   style={{ margin: '8px', width: '90%' }}
+                  data-test-id="wordTextField"
                 />
               </div>
               <div>
@@ -61,6 +62,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
                   onChange={this._onHintChange}
                   onKeyPress={this._setEnterWordOnEnterButton}
                   style={{ margin: '8px', width: '90%' }}
+                  data-test-id="hintTextField"
                 />
               </div>
               <Button
@@ -69,6 +71,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
                 style={{ marginTop: '16px' }}
                 onClick={this._onClick}
                 disabled={!this._wordisValid()}
+                data-test-id="playButton"
               >
                 Play
               </Button>

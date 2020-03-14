@@ -4,7 +4,7 @@ import { GameLayout } from 'components/App/Game/GameLayout';
 import Typography from '@material-ui/core/Typography';
 import { EnterWordPrompt } from './EnterWordPrompt';
 import { isOnlineGame } from '../common/gameMode';
-import { grey, red, blue } from '@material-ui/core/colors';
+import { grey } from '@material-ui/core/colors';
 import { Modal, Button } from '@material-ui/core';
 
 interface IBoardState {
@@ -112,30 +112,31 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _getAlphabets() {
-    const albhabets = 'abcdefghijklmnopqrstuvwxyz';
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
     const cells = [];
     const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
-    for (var i = 0; i < albhabets.length; i++) {
+    for (var i = 0; i < alphabet.length; i++) {
+      const letter = alphabet[i].toUpperCase();
       let backgroundColor = null;
       let textColor = grey[100];
       if (isOnlineGame(this.props.gameArgs)) {
         textColor = this.props.playerID === this.props.ctx.currentPlayer ? grey[100] : grey[500];
       }
-      if (playerStatus.correctGuess.indexOf(albhabets[i]) > -1) {
+      if (playerStatus.correctGuess.indexOf(alphabet[i]) > -1) {
         backgroundColor = '#00e676';
         textColor = grey[100];
-      } else if (playerStatus.wrongGuess.indexOf(albhabets[i]) > -1) {
+      } else if (playerStatus.wrongGuess.indexOf(alphabet[i]) > -1) {
         backgroundColor = '#ff1744';
         textColor = grey[100];
       }
       let lineNo = Math.floor(i / 9);
-      let x: number = (i - 9 * lineNo) * 1.1 + 0.1;
-      let y: number = 5 + lineNo * 1.2;
+      let x = (i - 9 * lineNo) * 1.1 + 0.1;
+      let y = 5 + lineNo * 1.2;
       if (i >= 18) {
         x = (i - 18) * 1.1 + 0.6;
       }
       cells.push(
-        <g key={'alph_group' + i} onClick={this.onClick(albhabets[i])}>
+        <g key={'alph_group' + i} onClick={this.onClick(alphabet[i])} data-test-id={`letter-${letter}`}>
           <circle
             key={'alph_rect_' + i}
             cx={x + 0.5}
@@ -144,9 +145,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             fill={backgroundColor}
             strokeWidth={0.045}
             stroke={textColor}
+            data-test-id={`letter-${letter}-cir`}
           />
           <text key={'alph_' + i} x={x + 0.5} y={y + 0.5} fontSize={0.55} dy={0.2} fill={textColor} textAnchor="middle">
-            {albhabets[i].toUpperCase()}
+            {alphabet[i].toUpperCase()}
           </text>
         </g>,
       );
