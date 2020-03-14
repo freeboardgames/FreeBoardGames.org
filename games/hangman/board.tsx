@@ -224,7 +224,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         color="primary"
         style={{ marginTop: '16px', marginLeft: 'auto', marginRight: 'auto', alignContent: 'center' }}
         onClick={this.onClick('*')}
-        data-test-id='next-button'
+        data-test-id="next-button"
       >
         Next
       </Button>

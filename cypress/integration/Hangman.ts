@@ -36,14 +36,14 @@ it('plays a local game', () => {
   // guess is correct
   cy.get('[data-test-id="letter-A-cir"]')
     .should('have.css', 'fill')
-    .and('eq', 'rgb(0, 230, 118)');  // green
+    .and('eq', 'rgb(0, 230, 118)'); // green
 
   // guess Z
   cy.get('[data-test-id="letter-Z"]').click();
   // guess is wrong
   cy.get('[data-test-id="letter-Z-cir"]')
     .should('have.css', 'fill')
-    .and('eq', 'rgb(255, 23, 68)');  // red
+    .and('eq', 'rgb(255, 23, 68)'); // red
 
   // solve: BARWORD
   cy.get('[data-test-id="letter-B"]').click();
@@ -53,15 +53,15 @@ it('plays a local game', () => {
   cy.get('[data-test-id="letter-D"]').click();
 
   // solved
-  cy.contains("CORRECT");
+  cy.contains('CORRECT');
   cy.get('[data-test-id="next-button"]').click();
-  
+
   // p2's turn
   cy.contains("Player 2's Turn");
   cy.get('[data-test-id="letter-Z"]').click();
   cy.get('[data-test-id="letter-Z-cir"]')
     .should('have.css', 'fill')
-    .and('eq', 'rgb(255, 23, 68)');  // red
+    .and('eq', 'rgb(255, 23, 68)'); // red
 
   // we guess random letters
   cy.get('[data-test-id="letter-Q"]').click();
@@ -75,9 +75,9 @@ it('plays a local game', () => {
   cy.get('[data-test-id="letter-L"]').click();
 
   // we are an awful player and lose
-  cy.contains("INCORRECT");
-  cy.contains("Player 1 won");
-  cy.contains("FOOWORD");
+  cy.contains('INCORRECT');
+  cy.contains('Player 1 won');
+  cy.contains('FOOWORD');
 });
 
 export {};
