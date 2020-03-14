@@ -44,7 +44,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
   private shareFacebookCallback: any;
   private copyClipboardCallback: any;
   private showQrCodeCallback: any;
-  private shareWhatappCallback: any;
+  private shareWhatsAppCallback: any;
 
   constructor(props: any) {
     super(props);
@@ -52,7 +52,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
     this.shareFacebookCallback = this.shareFacebook.bind(this);
     this.copyClipboardCallback = this.copyClipboard.bind(this);
     this.showQrCodeCallback = this.showQrCode.bind(this);
-    this.shareWhatappCallback = this.shareWhatsApp.bind(this);
+    this.shareWhatsAppCallback = this.shareWhatsApp.bind(this);
   }
 
   render() {
@@ -92,7 +92,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
                 </IconButton>
               </Tooltip>
               <Tooltip title="Share on WhatsApp" aria-label="WhatsApp">
-                <IconButton onClick={this.shareWhatappCallback}>
+                <IconButton onClick={this.shareWhatsAppCallback}>
                   <WhatsAppIcon />
                 </IconButton>
               </Tooltip>
