@@ -92,7 +92,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
                 </IconButton>
               </Tooltip>
               <Tooltip title="Share on Whatsapp" aria-lable="WhatsApp">
-              <IconButton onClick={this.shareWhatappCallback}>
+                <IconButton onClick={this.shareWhatappCallback}>
                   <WhatsappIcon />
                 </IconButton>
               </Tooltip>
@@ -142,7 +142,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
       label: this.props.gameCode,
     });
     // window.open('whatsapp://send?text='+ encodeURI(this._getLink()));
-    window.open('https://api.whatsapp.com/send?text='+ encodeURI(this._getLink()));
+    window.open('https://api.whatsapp.com/send?text=' + encodeURI(this._getLink()));
   }
 
   copyClipboard() {
