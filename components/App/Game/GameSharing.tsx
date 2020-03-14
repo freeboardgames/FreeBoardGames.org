@@ -8,7 +8,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from './FacebookIcon';
-import WhatsappIcon from './WhatsappIcon';
+import WhatsAppIcon from './WhatsAppIcon';
 import QrCodeIcon from './QrCodeIcon';
 import copy from 'copy-to-clipboard';
 import ReactGA from 'react-ga';
@@ -93,7 +93,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
               </Tooltip>
               <Tooltip title="Share on WhatsApp" aria-label="WhatsApp">
                 <IconButton onClick={this.shareWhatappCallback}>
-                  <WhatsappIcon />
+                  <WhatsAppIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Show QR code" aria-label="QR code">
