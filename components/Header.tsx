@@ -5,6 +5,7 @@ import InfoIcon from '@material-ui/icons/Info';
 // import CodeIcon from '@material-ui/icons/Code';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
+import {Link as MuiLink} from '@material-ui/core';
 
 class Header extends React.Component<{}, {}> {
   render() {
@@ -19,7 +20,15 @@ class Header extends React.Component<{}, {}> {
           gutterBottom={true}
           style={{ marginTop: '16px', marginBottom: '16px' }}
         >
-          Play Satsang related games for free and enjoy Satsang in a new way ! Use these games in your Satsang-Mandal or play them with your friends/family. If you have any feedback or would like to help us make games, you can always contact us via email.           
+          Play satsang-related games for free and enjoy satsang in a new way ! Use these games in your Satsang-Mandal or play them with your friends/family. If you have any feedback or would like to help us make games, you can contact us via {''}
+            <MuiLink href="mailto:sahajanand.games@gmail.com" target="_blank"> 
+              email
+            </MuiLink>
+          {''} or chat with us on {''}
+            <MuiLink href="https://discord.gg/uRKYUY" target="_blank"> 
+              Discord
+            </MuiLink>
+          .
         </Typography>
       </div>
     );

@@ -26,6 +26,7 @@ export default () => {
       />
       <SEO title={'About'} description={'About FreeBoardGames.org, a free and open-source software project.'} />
       {getAboutCard()}
+      {getContactCard()}
       {getContributorsCard()}
       {getCreditsCard()}
     </FreeBoardGamesBar>
@@ -40,12 +41,42 @@ function getAboutCard() {
           About Sahajanad Games
         </Typography>
         <Typography component="p">
-          Sahajanand Games is a platform for Satsangis to play games. This project is Open Source and it is maintained by volunteer Satsangies, who do this to get the belssings of Shreeji Maharaj and great Saints. If you would like to help us make new games, you can always contact us via our email (sahajanand.games@gmail.com). 
+          {'    '} Sahajanand Games is a platform for Satsangis to play games. The aim of this project is to connect with Satsang in a new way. In future, we will continuously add new games and make our platform more interactive.
+          <br></br><br></br>
+          {'    '} This project is Open Source and it is maintained by volunteer Satsangies, who do this to get the belssings of Shreeji Maharaj and great Saints. If you any suggestion or would like to help us make new games, you can always contact us via email or chat with on Discord. 
         </Typography>
       </CardContent>
     </Card>
   );
 }
+
+function getContactCard() {
+  return (
+    <Card style={{ marginTop: '16px' }}>
+    <CardContent>
+      <Typography variant="h5" component="h2">
+        Contributors
+      </Typography>
+      <List>
+        <ListItem>
+          <ListItemText primary="Email" />
+          <Button size="small" color="primary" href="mailto:sahajanand.games@gmail.com" target="_blank">
+            sahajanand.games@gmail.com
+          </Button>
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Chat" />
+          <Button size="small" color="primary" href="https://discord.gg/uRKYUY"  target="_blank">
+            Discord
+          </Button>
+        </ListItem>
+      </List>
+    </CardContent>
+  </Card>
+
+  );
+}
+
 
 function getContributorsCard() {
   return (
