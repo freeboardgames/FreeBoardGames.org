@@ -72,7 +72,7 @@ app
     server.use('/blog', express.static(join(__dirname, 'blog/dist')));
 
     server.get('/.well-known/assetlinks.json', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+      if (isProdChannel && req.hostname.toLowerCase().indexOf('sahajanand-games.com') >= 0 ) {
         const filePath = `${STATIC_DIR}/.well-known/assetlinks.json`;
         app.serveStatic(req, res, filePath);
       } else {
@@ -81,7 +81,7 @@ app
     });
 
     server.get('/sitemap.xml', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+      if (isProdChannel && req.hostname.toLowerCase().indexOf('sahajanand-games.com') >= 0 ) {
         const filePath = `${STATIC_DIR}/sitemap.xml`;
         app.serveStatic(req, res, filePath);
       } else {
@@ -90,7 +90,7 @@ app
     });
 
     server.get('/robots.txt', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+      if (isProdChannel && req.hostname.toLowerCase().indexOf('sahajanand-games.com') >= 0 ) {
         res.sendStatus(404);
       } else {
         const filePath = `${STATIC_DIR}/restrictiveRobots.txt`;

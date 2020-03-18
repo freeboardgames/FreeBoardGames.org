@@ -38,7 +38,7 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
             <Link href="/">
               <a style={{ textDecoration: 'none' }}>
                 <Toolbar>
-                  <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
+                  <img style={{ marginRight: '8px', height: '48px', width: "48px" }} src={FbgLogo} alt="FbG" />
                   <Typography component="h1" variant="h6" style={{ color: 'white' }}>
                     Sahajanand Games
                   </Typography>
