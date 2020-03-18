@@ -16,8 +16,8 @@
    version="1.1"
    id="svg41"
    inkscape:export-filename="/home/gaurav/Desktop/Sahajanad Games/FreeBoardGames.org/static/icons/mstile-150x150.png"
-   inkscape:export-xdpi="28.125"
-   inkscape:export-ydpi="28.125"
+   inkscape:export-xdpi="28.125002"
+   inkscape:export-ydpi="28.125002"
    inkscape:version="0.92.4 (unknown)"
    sodipodi:docname="safari-pinned-tab.svg">
   <defs
@@ -39,10 +39,10 @@
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="1"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="179.05593"
+     inkscape:cx="68.698787"
      inkscape:cy="317.10862"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -61,7 +61,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -441,7 +441,7 @@
          id="rect1523-7"
          height="99.610939"
          width="87.812721"
-         style="fill:#bbdefb;fill-opacity:1;stroke-width:2.92841268"
+         style="fill:#eed7f4;fill-opacity:1;stroke-width:2.92841268"
          y="173.51732"
          x="24.114052" />
       <image
