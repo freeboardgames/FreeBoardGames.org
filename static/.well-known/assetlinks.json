@@ -3,9 +3,9 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "org.freeboardgames",
+      "package_name": "com.sahajanand-games",
       "sha256_cert_fingerprints": [
-        "40:29:A7:57:39:1E:24:13:FD:C0:1A:19:70:0F:DE:3F:5F:19:7E:7E:CC:2D:0A:4C:E1:0C:17:5F:8F:74:F9:08"
+        "17:71:29:10:C7:3B:88:1B:3B:15:EC:68:16:F5:42:D1:03:DD:89:E4:71:B5:34:A3:01:3A:1F:E7:61:80:49:E6"
       ]
     }
   }

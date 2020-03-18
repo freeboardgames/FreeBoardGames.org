@@ -25,7 +25,7 @@ class Header extends React.Component<{}, {}> {
               email
             </MuiLink>
           {''} or chat with us on {''}
-            <MuiLink href="https://discord.gg/uRKYUY" target="_blank"> 
+            <MuiLink href="https://discord.gg/yZYEaVR" target="_blank"> 
               Discord
             </MuiLink>
           .

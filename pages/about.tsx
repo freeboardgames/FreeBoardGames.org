@@ -66,7 +66,7 @@ function getContactCard() {
         </ListItem>
         <ListItem>
           <ListItemText primary="Chat" />
-          <Button size="small" color="primary" href="https://discord.gg/uRKYUY"  target="_blank">
+          <Button size="small" color="primary" href="https://discord.gg/yZYEaVR"  target="_blank">
             Discord
           </Button>
         </ListItem>
