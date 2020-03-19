@@ -1,4 +1,4 @@
-FROM node:13.8.0-buster
+FROM node:13.10.1-buster
 
 # do not run as root
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
