@@ -259,7 +259,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         const y = Math.floor(piece.index / 20);
 
         const key = `${x},${y}`;
-        let color = grey[800];
+        let color: any = grey[800];
         if (piece.square !== null) {
           if ((x + y) % 2 === 0) {
             color = colors[piece.square as any][700];

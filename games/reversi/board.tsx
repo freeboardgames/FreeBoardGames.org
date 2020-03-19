@@ -160,7 +160,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     for (let x = 0; x < 8; x++) {
       for (let y = 0; y < 8; y++) {
         const key = `${x},${y}`;
-        let color = grey[800];
+        let color: any = grey[800];
         if ((x + y) % 2 === 0) {
           color = grey[900];
         }
