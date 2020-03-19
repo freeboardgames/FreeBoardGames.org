@@ -128,6 +128,7 @@ declare module 'boardgame.io/core' {
     endIf?: (G: any, ctx: IGameCtx) => void;
     phases?: IGamePhases;
     events?: IEvents;
+    flow?: any;
   }
   export function Game(gameArgs: IGameArgs): GameObj;
   export const INVALID_MOVE: string;

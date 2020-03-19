@@ -28,7 +28,7 @@ function isVictory(status: any) {
   return false;
 }
 
-export const HangmanGame = Game({
+export const HangmanGame = {
   name: 'hangman',
 
   setup: () => ({
@@ -117,4 +117,4 @@ export const HangmanGame = Game({
       }
     },
   },
-});
+};
