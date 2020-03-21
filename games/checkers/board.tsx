@@ -177,9 +177,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     } else {
       switch (this.props.ctx.currentPlayer) {
         case '0':
-          return "White's turn";
+          return "Shreeji's turn";
         case '1':
-          return "Black's turn";
+          return "Gopinathji's turn";
       }
     }
   }

@@ -19,6 +19,8 @@ import grey from '@material-ui/core/colors/grey';
 
 import ShjImg from './media/ShjSqr.png';
 import GopImg from './media/GopSqr.png';
+import NarNImg from './media/NarNSqr.png';
+import HanuImg from './media/HanumSqr.png';
 
 import Typography from '@material-ui/core/Typography';
 import { isAIGame } from '../common/gameMode';
@@ -130,8 +132,8 @@ export class Board extends React.Component<IBoardProps, {}> {
 
     const murti = 
       this.props.ctx.numPlayers !== 2
-        ? [GopImg, GopImg, ShjImg, ShjImg]
-        : [GopImg, ShjImg, GopImg, ShjImg];
+        ? [GopImg, NarNImg, ShjImg, HanuImg]
+        : [GopImg, ShjImg, NarNImg, HanuImg];
 
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
