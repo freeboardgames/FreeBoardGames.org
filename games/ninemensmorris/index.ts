@@ -5,7 +5,7 @@ import instructions from './instructions.md';
 
 export const ninemensmorrisGameDef: IGameDef = {
   code: 'ninemensmorris',
-  name: 'Nine Mens Morris',
+  name: 'Shreeji Mills',
   imageURL: Thumbnail,
   modes: [
     /*
@@ -18,7 +18,7 @@ export const ninemensmorrisGameDef: IGameDef = {
   ],
   minPlayers: 2,
   maxPlayers: 2,
-  description: 'Also Known as Mills',
+  description: 'ત્રણ મૂર્તિ ગોઠવી ને સામે વાળા ને Out કરો',
   descriptionTag: `Play Nine Men's Morris, a free online game also\
  known as Mills. You can play multi-player or with your friend\
  locally!`,

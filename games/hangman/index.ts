@@ -5,12 +5,12 @@ import instructions from './instructions.md';
 
 export const hangmanGameDef: IGameDef = {
   code: 'hangman',
-  name: 'Hangman',
+  name: 'Guess the Word',
   minPlayers: 2,
   maxPlayers: 2,
   imageURL: HangmanThumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
-  description: 'A Classic Game',
+  description: 'પરસ્પર શબ્દ નું અનુમાન લગાવો',
   descriptionTag: `Play Hangman for free online. You can either play a multi-player game against a friend online, or share your device and play locally against a friend.`,
   instructions: {
     videoId: 'USEjXNCTvcc',

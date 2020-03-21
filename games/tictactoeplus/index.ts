@@ -5,7 +5,7 @@ import instructions from './instructions.md';
 
 export const tictactoeplusGameDef: IGameDef = {
   code: 'tictactoeplus',
-  name: 'Tic-Tac-Toe-Plus',
+  name: 'Tic-Tac-Toe',
   minPlayers: 2,
   maxPlayers: 2,
   imageURL: TicTacToePlusThumbnail,
@@ -17,7 +17,7 @@ export const tictactoeplusGameDef: IGameDef = {
     { mode: GameMode.OnlineFriend },
     { mode: GameMode.LocalFriend },
   ],
-  description: 'A new variant with a plus',
+  description: 'નવી સુન-ચોકડી જેમાં શ્રીજી પધારશે',
   descriptionTag: `Play Tic-Tac-Toe-Plus for \
  free online. You can either play a single-player game against the computer,\
  a multi-player game against a friend online, or share your device and play\

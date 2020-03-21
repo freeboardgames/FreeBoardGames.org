@@ -10,7 +10,7 @@ export const reversiGameDef: IGameDef = {
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 4,
-  description: 'Similar to Rollit and Othello',
+  description: 'બીજા ની મૂર્તિ ફેરવી ને તમારી કરીલો',
   descriptionTag: `Play Reversi, a free online game similar\
  to Rollit and Othello. You can play multi-player online or \
  share your device and play locally against a friend.`,
