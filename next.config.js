@@ -1,6 +1,7 @@
 const withCSS = require('@zeit/next-css');
 const WebpackBar = require('webpackbar');
 const withOffline = require('next-offline');
+const withPWA = require('next-pwa')
 const withOptimizedImages = require('next-optimized-images');
 const childProcess = require('child_process');
 const withWorkers = require('@zeit/next-workers');
@@ -25,10 +26,13 @@ function getGitHash() {
 module.exports = withWorkers(
   withOptimizedImages(
     withCSS(
-      withOffline({
+      withPWA({
         cssModules: true,
-        dontAutoRegisterSw: true,
-        generateInDevMode: false,
+        // dontAutoRegisterSw: true,
+        // generateInDevMode: false,
+        pwa: {
+          dest: '.next'
+        },
         workboxOpts: {
           skipWaiting: true,
           runtimeCaching: [
