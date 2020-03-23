@@ -10,7 +10,7 @@ export const checkersGameDef: IGameDef = {
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
-  description: 'મગજ કસવા માટે સરસ રમત',
+  description: 'મગજ કસવા માટે ઉત્તમ રમત',
   descriptionTag: `Play Checkers (also known as Draughts) locally
   or online against friends!`,
   instructions: {
