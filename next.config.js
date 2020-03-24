@@ -1,7 +1,6 @@
 const withCSS = require('@zeit/next-css');
 const WebpackBar = require('webpackbar');
-const withOffline = require('next-offline');
-const withPWA = require('next-pwa')
+const withPWA = require('next-pwa');
 const withOptimizedImages = require('next-optimized-images');
 const childProcess = require('child_process');
 const withWorkers = require('@zeit/next-workers');
@@ -31,7 +30,7 @@ module.exports = withWorkers(
         // dontAutoRegisterSw: true,
         // generateInDevMode: false,
         pwa: {
-          dest: '.next'
+          dest: 'static',
         },
         workboxOpts: {
           skipWaiting: true,

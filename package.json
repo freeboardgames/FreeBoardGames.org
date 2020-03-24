@@ -70,7 +70,6 @@
     "mobile-detect": "^1.4.4",
     "mongodb": "3.5.5",
     "next": "9.3.1",
-    "next-offline": "^5.0.0",
     "next-pwa": "^2.3.1",
     "next-seo": "^4.4.0",
     "next-with-error": "^1.2.0",

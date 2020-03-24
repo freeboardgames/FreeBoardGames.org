@@ -13,3 +13,5 @@ sw.js
 blog/
 server/dist/
 .cache/
+static/
+public/
