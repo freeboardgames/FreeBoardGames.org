@@ -1,7 +1,7 @@
 {
   "name": "FreeBoardGame.org",
   "version": "2.0.0",
-  "license": "AGPL",
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx pages src/ @types/ components/ tests/",
     "pre": "run-s lint format:check build:server test:coverage test:cypress report:combined",
