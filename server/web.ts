@@ -100,7 +100,16 @@ app
 
     server.get('/sw.js', (req, res) => {
       if (BABEL_ENV_IS_PROD) {
-        const filePath = `${APP_DIR}/.next/service-worker.js`;
+        const filePath = `${APP_DIR}/static/sw.js`;
+        app.serveStatic(req, res, filePath);
+      } else {
+        res.sendStatus(404);
+      }
+    });
+
+    server.get('/workbox*', (req, res) => {
+      if (BABEL_ENV_IS_PROD) {
+        const filePath = `${APP_DIR}/static/${req.path}`;
         app.serveStatic(req, res, filePath);
       } else {
         res.sendStatus(404);
