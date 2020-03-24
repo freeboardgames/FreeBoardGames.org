@@ -20,11 +20,6 @@ if (process.env.NODE_ENV === 'production') {
 
 export default class MyDocument extends Document {
   render() {
-    let regSW;
-    if (process.env.BABEL_ENV_IS_PROD) {
-      regSW = <script src="/static/regsw.js"></script>;
-    }
-
     return (
       <html lang="en">
         <Head>
@@ -52,7 +47,6 @@ export default class MyDocument extends Document {
         <body style={{ margin: 0 }}>
           <Main />
           <NextScript />
-          {regSW}
         </body>
       </html>
     );
