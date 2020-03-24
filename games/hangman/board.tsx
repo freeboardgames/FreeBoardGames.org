@@ -118,7 +118,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     for (var i = 0; i < alphabet.length; i++) {
       const letter = alphabet[i].toUpperCase();
       let backgroundColor = null;
-      let textColor = grey[100];
+      let textColor: any = grey[100];
       if (isOnlineGame(this.props.gameArgs)) {
         textColor = this.props.playerID === this.props.ctx.currentPlayer ? grey[100] : grey[500];
       }
@@ -224,6 +224,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         color="primary"
         style={{ marginTop: '16px', marginLeft: 'auto', marginRight: 'auto', alignContent: 'center' }}
         onClick={this.onClick('*')}
+        data-test-id="next-button"
       >
         Next
       </Button>
