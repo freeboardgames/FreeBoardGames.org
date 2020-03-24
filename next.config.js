@@ -27,8 +27,6 @@ module.exports = withWorkers(
     withCSS(
       withPWA({
         cssModules: true,
-        // dontAutoRegisterSw: true,
-        // generateInDevMode: false,
         pwa: {
           dest: 'static',
         },
