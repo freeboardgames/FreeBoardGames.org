@@ -1,10 +1,21 @@
 {
     "name": "sahajanand-games.com",
     "short_name": "sahajanand-games.com",
+    "start_url": "/",
     "icons": [
+        {
+            "src": "/static/logo/fbg_logo_black_144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
         {
             "src": "/static/icons/android-chrome-192x192.png",
             "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/logo/fbg_logo_black_256.png",
+            "sizes": "256x256",
             "type": "image/png"
         },
         {
