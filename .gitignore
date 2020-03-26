@@ -20,8 +20,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
-coverage-jest
-coverage-cypress
+coverage-*/
 
 *.lcov
 
@@ -154,3 +153,6 @@ proguard/
 # IntelliJ
 *.iml
 android/local.properties
+
+# puppeteer
+__diff_output__

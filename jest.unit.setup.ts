@@ -2,6 +2,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import 'jest-extended';
 import '@testing-library/jest-dom';
+import 'expect-puppeteer';
 
 Enzyme.configure({ adapter: new Adapter() });
 

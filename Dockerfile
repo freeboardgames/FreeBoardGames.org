@@ -40,7 +40,7 @@ COPY --chown=appuser src /appdata/src
 COPY --chown=appuser @types /appdata/@types
 COPY --chown=appuser pages /appdata/pages
 COPY --chown=appuser static /appdata/static
-COPY --chown=appuser jest.setup.ts jest.config.js tsconfig.jest.json .babelrc next.config.js /appdata/
+COPY --chown=appuser .babelrc next.config.js /appdata/
 
 ARG GA_TRACKING_CODE
 ARG GTM_ID

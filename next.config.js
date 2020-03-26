@@ -29,6 +29,7 @@ module.exports = withWorkers(
         cssModules: true,
         pwa: {
           dest: 'static',
+          disable: CHANNEL !== 'production',
         },
         workboxOpts: {
           skipWaiting: true,

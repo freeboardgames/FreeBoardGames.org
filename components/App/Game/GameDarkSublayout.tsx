@@ -40,7 +40,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
   }
 
   render() {
-    const isProdChannel = process.env.CHANNEL === 'production';
+    const isProdChannel = process.env.NODE_ENV === 'production';
     const gameName = GAMES_MAP[this.props.gameArgs.gameCode].name;
     let fbgTopLeftText;
     if (isProdChannel) {

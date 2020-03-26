@@ -11,7 +11,7 @@ interface FBGBarProps {
 
 class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
   render() {
-    const isProdChannel = process.env.CHANNEL === 'production';
+    const isProdChannel = process.env.NODE_ENV === 'production';
     let appBarStyle;
     let versionInfo;
 
