@@ -122,6 +122,7 @@ reports/
 .dockerignore
 static/sitemap.xml
 static/sw.js
+static/sw.js.map
 static/workbox-*
 
 # syn
