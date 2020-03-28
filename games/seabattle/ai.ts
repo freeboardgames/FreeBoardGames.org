@@ -20,6 +20,9 @@ class SeabattleBot {
       const shipPositions = generateRandomShips(1);
       return this.makeSetShipsMove(shipPositions, playerID);
     } else {
+      // if this is the first turn for our AI, wait only 500ms.  Else 2500ms
+      const sleepMs = state.G.salvos.length === 0 ? 500 : 2500;
+      await sleep(sleepMs);
       const cell = this.generateMove(playerID, state);
       return this.makeSalvoMove(cell, playerID);
     }
@@ -127,4 +130,11 @@ const config: IAIConfig = {
     };
   },
 };
+
+function sleep(milliseconds: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
 export default config;
