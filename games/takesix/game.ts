@@ -129,6 +129,7 @@ const GameConfig: IGameArgs = {
       },
       start: true,
       turn: {
+        moveLimit: 1,
         onMove: (_, ctx) => {
           if (ctx.activePlayers === null) {
             ctx.events.endPhase();
