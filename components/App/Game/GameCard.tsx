@@ -26,6 +26,8 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
       padding: '0px 8px',
       borderRadius: '8px',
       backgroundColor: 'white',
+      color: 'black',
+      textDecoration: 'none',
     };
     if (this.props.isLink) {
       mainDivStyle.boxShadow = '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)';

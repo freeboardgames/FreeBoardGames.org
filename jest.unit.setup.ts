@@ -37,6 +37,7 @@ if (typeof window !== 'undefined') {
 }
 
 jest.mock('next/router', () => ({
+  push: jest.fn(),
   useRouter() {
     return {
       route: '',
