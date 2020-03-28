@@ -58,7 +58,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
           <GameInstructionsVideo gameDef={gameDef} />
         </DesktopView>
         <MobileView userAgent={this.props.userAgent} thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
-          <GameCard game={gameDef} NO_MAX_WIDTH />
+          <GameCard game={gameDef} />
           <GameModePicker gameDef={gameDef} />
           <GameInstructionsVideo gameDef={gameDef} />
           <GameInstructionsText gameDef={gameDef} />
