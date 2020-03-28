@@ -70,48 +70,14 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     for (const mode of this.props.gameDef.modes) {
       modes.push(this._getCard(mode));
     }
-    const mediaRules = this._getMediaRules();
     return (
-      <div>
-        <Typography variant="subtitle1" style={{ marginLeft: '10px', marginBottom: '16px' }}>
+      <div style={{ marginTop: '8px' }}>
+        <Typography variant="h6" component="h2" style={{ marginBottom: '16px' }}>
           Choose game mode
         </Typography>
-        <style jsx>{`
-          .modes {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-gap: 1.25rem;
-            align-self: center;
-            justify-self: center;
-            justify-items: center;
-          }
-        `}</style>
-        {mediaRules}
-        <div className="modes">{modes}</div>
+        <div>{modes}</div>
       </div>
     );
-  }
-  _getMediaRules() {
-    let mediaRules = '';
-    const numberOfGameModes = this.props.gameDef.modes.length;
-    if (numberOfGameModes >= 2) {
-      mediaRules += `
-          @media (min-width: 500px) {
-            .modes {
-              grid-template-columns: repeat(2, 1fr);
-            }
-          }`;
-    }
-    if (numberOfGameModes >= 3) {
-      mediaRules += `
-          @media (min-width: 768px) {
-            .modes {
-              grid-template-columns: repeat(3, 1fr);
-            }
-          }`;
-    }
-    return <style jsx>{mediaRules}</style>;
   }
 
   _getCard(info: IGameModeInfo) {
@@ -175,21 +141,10 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
             Play
           </Button>
         </Link>
-        // <Button
-        //   data-testid={`playbutton-${this.props.gameDef.code}-${info.mode}`}
-        //   component={ButtonLink as any}
-        //   href={linkHref}
-        //   hrefAs={linkAs}
-        //   variant="contained"
-        //   color="primary"
-        //   style={{ marginLeft: 'auto' }}
-        // >
-        //   Play
-        // </Button>
       );
     }
     return (
-      <Card key={title} style={{ marginBottom: '16px' }}>
+      <Card key={title} style={{ margin: '0 0 16px 0', maxWidth: '450px' }}>
         <CardHeader avatar={<Avatar aria-label={title}>{icon}</Avatar>} title={title} />
         <CardContent>
           <Typography component="p">{description}</Typography>
@@ -276,7 +231,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
   _getExtraInfoSlider(info: IGameModeInfo, slider: IGameModeExtraInfoSlider) {
     const value = this._getExtraInfoValue(info);
     return (
-      <div style={{ marginBottom: '18px', width: '80%' }}>
+      <div style={{ margin: '8px', width: '80%' }}>
         <Typography id="label" style={{ marginBottom: '8px' }}>
           Difficulty {value}/{slider.max}
         </Typography>

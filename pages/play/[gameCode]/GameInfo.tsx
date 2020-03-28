@@ -42,28 +42,35 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
           ]}
         />
         <DesktopView userAgent={this.props.userAgent} thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
-          <div style={{ padding: '0 8px', display: 'inline-flex' }}>
-            <span style={{ marginTop: '18px', minWidth: '500px' }}>
+          <div style={{ padding: '18px 8px', display: 'flex' }}>
+            <div style={{ flex: '60%' }}>
+              <Typography variant="h4" component="h2">
+                {gameDef.name}
+              </Typography>
+              <Typography variant="body1" component="div">
+                <ReactMarkdown linkTarget="_blank" source={gameDef.instructions.text} />
+              </Typography>
+              <div style={{ marginTop: '32px' }}>
+                <GameModePicker gameDef={gameDef} />
+              </div>
+            </div>
+            <div style={{ flex: '40%', padding: '8px' }}>
               <GameCard game={gameDef} />
-            </span>
-            <span style={{ marginTop: '18px' }}>
-              <Card style={{ maxHeight: '250px', overflowY: 'auto' }}>
-                <Typography style={{ marginLeft: '16px' }} variant="body2" component="div">
-                  <ReactMarkdown linkTarget="_blank" source={gameDef.instructions.text} />
-                </Typography>
-              </Card>
-            </span>
+              <div style={{ marginTop: '16px' }}>
+                <GameInstructionsVideo gameDef={gameDef} />
+              </div>
+            </div>
           </div>
-          <GameModePicker gameDef={gameDef} />
-          <GameInstructionsVideo gameDef={gameDef} />
         </DesktopView>
         <MobileView userAgent={this.props.userAgent} thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
           <GameCard game={gameDef} NO_MAX_WIDTH />
-          <GameModePicker gameDef={gameDef} />
-          <GameInstructionsVideo gameDef={gameDef} />
-          <GameInstructionsText gameDef={gameDef} />
+          <div style={{ padding: '8px' }}>
+            <GameModePicker gameDef={gameDef} />
+            <GameInstructionsVideo gameDef={gameDef} />
+            <GameInstructionsText gameDef={gameDef} />
+          </div>
         </MobileView>
-      </FreeBoardGamesBar>
+      </FreeBoardGamesBar >
     );
   }
   static async getInitialProps({ res, query, asPath }) {
