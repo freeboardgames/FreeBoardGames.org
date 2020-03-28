@@ -8,7 +8,7 @@ import { withRouter } from 'next/router';
 import { generatePageError } from 'next-with-error';
 import SEO from 'components/SEO';
 import { DesktopView, MobileView } from 'components/DesktopMobileView';
-import { Typography, Card } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 import { GameInstructionsText } from 'components/App/Game/GameInstructionsText';
 import Breadcrumbs from 'components/Breadcrumbs';
