@@ -63,7 +63,9 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     if (!this.props.extraCardContent) {
       return null;
     }
-    const otherPlayerCard = <div style={{ paddingBottom: '12px' }}>{this.props.extraCardContent}</div>;
+    const otherPlayerCard = (
+      <div style={{ paddingBottom: '12px', maxWidth: '500px', margin: 'auto' }}>{this.props.extraCardContent}</div>
+    );
     return otherPlayerCard;
   };
 
