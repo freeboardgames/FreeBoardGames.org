@@ -70,7 +70,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
             <GameInstructionsText gameDef={gameDef} />
           </div>
         </MobileView>
-      </FreeBoardGamesBar >
+      </FreeBoardGamesBar>
     );
   }
   static async getInitialProps({ res, query, asPath }) {

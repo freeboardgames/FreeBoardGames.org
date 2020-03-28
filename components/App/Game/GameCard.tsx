@@ -29,7 +29,7 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
       borderRadius: '8px',
       backgroundColor: 'white',
       color: 'black',
-      textDecoration: 'none'
+      textDecoration: 'none',
     };
     if (this.props.isLink) {
       mainDivStyle.boxShadow = '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)';
@@ -55,10 +55,10 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
         {this.props.game.name}
       </Typography>
     ) : (
-        <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
-          Play {this.props.game.name}
-        </Typography>
-      );
+      <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
+        Play {this.props.game.name}
+      </Typography>
+    );
     return (
       <div style={mainDivStyle} data-test-id={`gamecard-${this.props.game.code}`}>
         <div
