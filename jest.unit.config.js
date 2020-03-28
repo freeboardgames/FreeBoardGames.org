@@ -1,7 +1,7 @@
 module.exports = {
   roots: ['<rootDir>/tests', '<rootDir>/components'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
-  setupFilesAfterEnv: ['./jest.setup.ts'],
+  setupFilesAfterEnv: ['./jest.unit.setup.ts'],
   transform: {
     '^.+\\.[t|j]sx?$': 'babel-jest',
   },
@@ -14,6 +14,8 @@ module.exports = {
       isolatedModules: true,
     },
   },
-  coverageDirectory: 'coverage-jest',
+  collectCoverage: true,
+  coverageReporters: ['json', 'lcov'],
+  coverageDirectory: 'coverage-unit',
   modulePaths: ['<rootDir>'],
 };

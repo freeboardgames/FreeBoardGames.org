@@ -1,4 +1,4 @@
-FROM node:13.10.1-buster
+FROM node:13.11.0-buster                                                                       
 
 # do not run as root
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
@@ -40,7 +40,7 @@ COPY --chown=appuser src /appdata/src
 COPY --chown=appuser @types /appdata/@types
 COPY --chown=appuser pages /appdata/pages
 COPY --chown=appuser static /appdata/static
-COPY --chown=appuser jest.setup.ts jest.config.js tsconfig.jest.json .babelrc next.config.js /appdata/
+COPY --chown=appuser .babelrc next.config.js /appdata/
 
 ARG GA_TRACKING_CODE
 ARG GTM_ID

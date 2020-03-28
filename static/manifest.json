@@ -1,31 +1,19 @@
 {
-    "name": "FreeBoardGame.org",
-    "short_name": "F.B.G.",
-    "lang": "en-US",
-    "start_url": "/?utm_source=web_app_manifest",
-    "display": "standalone",
+    "name": "FreeBoardGames.org",
+    "short_name": "FreeBoardGames.org",
     "icons": [
         {
-            "src": "/logo/fbg_logo_black_144.png",
-            "sizes": "144x144",
-            "type": "image/png"
-        },
-        {
-            "src": "/logo/fbg_logo_black_192.png",
+            "src": "/static/icons/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/logo/fbg_logo_black_256.png",
-            "sizes": "256x256",
-            "type": "image/png"
-        },
-        {
-            "src": "/logo/fbg_logo_black_512.png",
+            "src": "/static/icons/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
     ],
-    "theme_color": "#3f51b5",
-    "background_color": "#ffffff"
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
 }

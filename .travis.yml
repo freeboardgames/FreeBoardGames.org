@@ -2,17 +2,10 @@ os: linux
 language: node_js
 node_js:
   - "stable"
-addons:
-  apt:
-    packages:
-      # for cypress
-      - libgconf-2-4
 
 cache:
   yarn: true
   directories:
-    # cache folder with Cypress binary
-    - ~/.cache
     # next.js build cache
     - .next/cache
 

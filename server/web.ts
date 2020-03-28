@@ -29,7 +29,8 @@ function isExcludedPath(path) {
   }
 }
 
-const domain = 'https://www.freeboardgames.org';
+const DOMAIN = 'www.freeboardgames.org';
+const URL = 'https://' + DOMAIN;
 
 function generateSiteMapXML(pagesManifest) {
   let pathsFromManifest = Object.keys(pagesManifest).reverse();
@@ -47,7 +48,7 @@ function generateSiteMapXML(pagesManifest) {
 
   const urls = [];
   for (const path of paths) {
-    urls.push(`<url><loc>${domain}${path}</loc></url>`);
+    urls.push(`<url><loc>${URL}${path}</loc></url>`);
   }
 
   const sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>
@@ -72,7 +73,7 @@ app
     server.use('/blog', express.static(join(__dirname, 'blog/dist')));
 
     server.get('/.well-known/assetlinks.json', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+      if (isProdChannel && isOfficialSite(req.hostname)) {
         const filePath = `${STATIC_DIR}/.well-known/assetlinks.json`;
         app.serveStatic(req, res, filePath);
       } else {
@@ -81,7 +82,7 @@ app
     });
 
     server.get('/sitemap.xml', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+      if (isProdChannel && isOfficialSite(req.hostname)) {
         const filePath = `${STATIC_DIR}/sitemap.xml`;
         app.serveStatic(req, res, filePath);
       } else {
@@ -90,7 +91,7 @@ app
     });
 
     server.get('/robots.txt', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+      if (isProdChannel && isOfficialSite(req.hostname)) {
         res.sendStatus(404);
       } else {
         const filePath = `${STATIC_DIR}/restrictiveRobots.txt`;
@@ -101,6 +102,15 @@ app
     server.get('/sw.js', (req, res) => {
       if (BABEL_ENV_IS_PROD) {
         const filePath = `${APP_DIR}/static/sw.js`;
+        app.serveStatic(req, res, filePath);
+      } else {
+        res.sendStatus(404);
+      }
+    });
+
+    server.get('/manifest.json', (req, res) => {
+      if (isProdChannel && isOfficialSite(req.hostname)) {
+        const filePath = `${APP_DIR}/static/manifest.json`;
         app.serveStatic(req, res, filePath);
       } else {
         res.sendStatus(404);
@@ -132,3 +142,9 @@ app
     console.error(e.stack);
     process.exit(1);
   });
+
+function isOfficialSite(rawHostname: string) {
+  const hostname = rawHostname.toLowerCase();
+  const officialSite = hostname === DOMAIN;
+  return officialSite;
+}

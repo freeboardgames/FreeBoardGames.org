@@ -6,8 +6,7 @@ package.json
 .next/
 node_modules/
 coverage/
-coverage-cypress/
-coverage-jest/
+coverage-*/
 stockfish8.worker.js
 sw.js
 blog/

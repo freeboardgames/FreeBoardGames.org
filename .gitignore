@@ -20,8 +20,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
-coverage-jest
-coverage-cypress
+coverage-*/
 
 *.lcov
 
@@ -121,6 +120,9 @@ reports/
 .config/
 .dockerignore
 static/sitemap.xml
+static/sw.js
+static/sw.js.map
+static/workbox-*
 
 # syn
 .syn/
@@ -151,3 +153,6 @@ proguard/
 # IntelliJ
 *.iml
 android/local.properties
+
+# puppeteer
+__diff_output__
