@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx pages src/ @types/ components/ tests/",
     "pre": "run-s lint format:check build:server test:unit ci:test:e2e report:combined",
-    "autopre": "run-s format lint build:server test:coverage ci:test:e2e report:combined",
+    "autopre": "run-s format lint build:server test:unit ci:test:e2e report:combined",
     "dev": "run-s build:server:dev dev:runserver",
     "dev:runserver": "node server/dist/server_web.js",
     "bgio:dev": "nodemon -e js,ts --exec yarn run bgio",
