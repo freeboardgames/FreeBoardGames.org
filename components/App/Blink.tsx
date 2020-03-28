@@ -11,6 +11,7 @@ interface IBlinkProps {
 }
 
 export class Blink extends React.Component<IBlinkProps, IBlinkState> {
+  requestID: number = null;
   static defaultProps = {
     totalDurationMillis: 2000,
     blinkDurationMillis: 300,
@@ -21,7 +22,13 @@ export class Blink extends React.Component<IBlinkProps, IBlinkState> {
       hidden: false,
       startTime: Date.now(),
     };
-    requestAnimationFrame(this._animate(Date.now()));
+    this.requestID = requestAnimationFrame(this._animate(Date.now()));
+  }
+  componentWillUnmount() {
+    if (this.requestID) {
+      window.cancelAnimationFrame(this.requestID);
+      this.requestID = null;
+    }
   }
   _animate = (now: number) => () => {
     const elapsed = now - this.state.startTime;
@@ -34,7 +41,7 @@ export class Blink extends React.Component<IBlinkProps, IBlinkState> {
       hidden,
     });
     if (!done) {
-      requestAnimationFrame(this._animate(Date.now()));
+      this.requestID = requestAnimationFrame(this._animate(Date.now()));
     }
   };
   render() {

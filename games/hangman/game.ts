@@ -1,4 +1,4 @@
-import { Game } from '@freeboardgame.org/boardgame.io/core';
+import { Game } from 'boardgame.io/core';
 
 function isDoneGuessing(status: any) {
   if (status['0'].correctGuess.length === 0 || status['1'].correctGuess.length === 0) {
@@ -28,7 +28,7 @@ function isVictory(status: any) {
   return false;
 }
 
-export const HangmanGame = Game({
+export const HangmanGame = {
   name: 'hangman',
 
   setup: () => ({
@@ -117,4 +117,4 @@ export const HangmanGame = Game({
       }
     },
   },
-});
+};

@@ -66,9 +66,7 @@ class StockfishBot {
 const config: IAIConfig = {
   bgioAI: (level: string) => {
     stockfish.level = Number(level);
-    return {
-      bot: StockfishBot,
-    };
+    return StockfishBot;
   },
 };
 export default config;

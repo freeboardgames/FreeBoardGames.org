@@ -1,5 +1,5 @@
-import { Game } from '@freeboardgame.org/boardgame.io/core';
 import { numOfColumns, numOfRows, neededToWin } from './constants';
+import { IGameArgs } from 'boardgame.io/core';
 
 function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: any) {
   let fourCells = new Array(neededToWin);
@@ -99,7 +99,7 @@ export function generateGrid() {
   return grid;
 }
 
-export const ConnectFourGame = Game({
+export const ConnectFourGame: IGameArgs = {
   name: 'fourinarow',
 
   setup: () => {
@@ -118,17 +118,15 @@ export const ConnectFourGame = Game({
       // return { ...G, grid };
     },
   },
-
-  flow: {
-    movesPerTurn: 1,
-
-    endGameIf: (G, ctx) => {
-      if (isVictory(G.grid, ctx.currentPlayer)) {
-        return { winner: ctx.currentPlayer };
-      }
-      if (isDraw(G.grid)) {
-        return { draw: true };
-      }
-    },
+  turn: {
+    moveLimit: 1,
   },
-});
+  endIf: (G, ctx) => {
+    if (isVictory(G.grid, ctx.currentPlayer)) {
+      return { winner: ctx.currentPlayer };
+    }
+    if (isDraw(G.grid)) {
+      return { draw: true };
+    }
+  },
+};

@@ -11,7 +11,6 @@ interface IBattleProps {
   moves: any;
   playerID: string;
   currentPlayer: string;
-  step?: any;
   isAIGame?: boolean;
   getSoundPref: () => boolean;
 }
@@ -51,7 +50,6 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
           return { ...oldState, aiPlaying: true };
         });
         setTimeout(() => {
-          this.props.step();
           this.setState(oldState => {
             return { ...oldState, aiPlaying: false };
           });

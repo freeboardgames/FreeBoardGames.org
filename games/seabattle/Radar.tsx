@@ -1,7 +1,7 @@
 import React from 'react';
 import { IShip, ICell, ISalvo, getCellVector } from './game';
-import { Grid } from '@freeboardgame.org/boardgame.io/ui';
-import { Token } from '@freeboardgame.org/boardgame.io/ui';
+import { Grid } from 'ui';
+import { Token } from 'ui';
 import SvgShip2 from './media/SvgShip2';
 import SvgShip3 from './media/SvgShip3';
 import SvgShip4 from './media/SvgShip4';

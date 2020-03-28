@@ -1,5 +1,5 @@
 import { IAIConfig } from '../index';
-import { AI } from '@freeboardgame.org/boardgame.io/ai';
+import { MCTSBot } from 'boardgame.io/ai';
 
 interface IPlayState {
   G: any;
@@ -35,22 +35,23 @@ const config: IAIConfig = {
   bgioAI: (level: string) => {
     if (level === '2') {
       // Hard
-      return AI({
-        enumerate: (G: any) => {
-          const moves = [];
-          for (let i = 0; i < 9; i++) {
-            if (G.cells[i] === null) {
-              moves.push({ move: 'clickCell', args: [i] });
+      return {
+        type: MCTSBot,
+        ai: {
+          enumerate: (G: any) => {
+            const moves = [];
+            for (let i = 0; i < 9; i++) {
+              if (G.cells[i] === null) {
+                moves.push({ move: 'clickCell', args: [i] });
+              }
             }
-          }
-          return moves;
+            return moves;
+          },
         },
-      });
+      };
     } else if (level === '1') {
       // Easy
-      return {
-        bot: TictactoeRandomBot,
-      };
+      return { ai: TictactoeRandomBot };
     }
   },
 };

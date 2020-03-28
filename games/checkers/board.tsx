@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { GameLayout } from 'components/App/Game/GameLayout';
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 import { IG, toCoord, IMove, getValidMoves, areCoordsEqual } from './game';
 import {
   Checkerboard,
@@ -13,7 +13,7 @@ import {
   IColorMap,
   cartesianToAlgebraic,
 } from '../common/Checkerboard';
-import { Token } from '@freeboardgame.org/boardgame.io/ui';
+import { Token } from 'ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
@@ -89,15 +89,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
   };
 
-  stepAI = () => {
-    setTimeout(async () => {
-      await this.props.step();
-      if (this.props.ctx.currentPlayer === '1') {
-        this.stepAI();
-      }
-    }, 1000);
-  };
-
   _onDrop = async (coords: ICartesianCoords) => {
     if (this.state.selected) {
       this._move(applyInvertion(roundCoords(coords), this.isInverted()));
@@ -114,9 +105,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       ...this.state,
       selected: null,
     });
-    if (isAIGame(this.props.gameArgs) && this.props.ctx.currentPlayer === '1') {
-      this.stepAI();
-    }
   };
 
   _getHighlightedSquares() {

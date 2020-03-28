@@ -1,4 +1,4 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 import Point from './point';
 import Player from './player';
 import Piece from './piece';
@@ -94,7 +94,7 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
     G.points[position].piece.player !== ctx.playerID || // Check if player owns this piece // Check if piece exists
     G.points[newPosition].piece !== null || // Check if point isn't already occupied
     G.haveToRemovePiece || // Check if player has to remove piece
-    (!G.points[position].connections.some(connection => connection === newPosition) && // Check if connection exists
+    (!G.points[position].connections.includes(newPosition) && // Check if connection exists
       G.players[ctx.playerID as any].lostPieces < 6) // Ignore the check if player has < 4 pieces
   ) {
     return INVALID_MOVE;
@@ -134,7 +134,7 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
     (G.mills
       .map((mill, index) => ({ owner: mill, index }))
       .filter(mill => mill.owner !== null && mill.owner !== ctx.playerID)
-      .some(mill => millsPositions[mill.index].some(pos => pos === position)) &&
+      .some(mill => millsPositions[mill.index].includes(position)) &&
       isTherePieceOutsideMill(G, ctx))
   ) {
     return INVALID_MOVE;
@@ -174,24 +174,19 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
 
 const GameConfig: IGameArgs = {
   name: 'ninemensmorris',
-  flow: {
-    startingPhase: Phase.Place,
-    phases: {
-      Place: {
-        allowedMoves: ['placePiece', 'removePiece'],
-        next: Phase.Move,
-        endPhaseIf: (G: IG) => G.piecesPlaced === 18,
-      },
-      Move: {
-        allowedMoves: ['movePiece', 'removePiece'],
-      },
+  phases: {
+    Place: {
+      moves: { placePiece, removePiece },
+      next: Phase.Move,
+      endIf: (G: IG) => G.piecesPlaced === 18,
+      start: true,
     },
-    onMove: (G: IG, ctx) => {
-      if (!G.haveToRemovePiece) {
-        ctx.events.endTurn();
-      }
+    Move: {
+      moves: { movePiece, removePiece },
     },
-    onTurnBegin: (G: IG, ctx) => {
+  },
+  turn: {
+    onBegin: (G: IG, ctx) => {
       if (
         ctx.phase === Phase.Move &&
         !G.haveToRemovePiece &&
@@ -203,16 +198,16 @@ const GameConfig: IGameArgs = {
         ctx.events.endGame({ winner: G.players.findIndex((_, i) => i.toString() !== ctx.currentPlayer).toString() });
       }
     },
-    endGameIf: (G: IG) => {
-      if (G.players.some(player => player.lostPieces === 7)) {
-        return { winner: G.players.findIndex(player => player.lostPieces !== 7).toString() };
+    onMove: (G: IG, ctx) => {
+      if (!G.haveToRemovePiece) {
+        ctx.events.endTurn();
       }
     },
   },
-  moves: {
-    placePiece,
-    movePiece,
-    removePiece,
+  endIf: (G: IG) => {
+    if (G.players.some(player => player.lostPieces === 7)) {
+      return { winner: G.players.findIndex(player => player.lostPieces !== 7).toString() };
+    }
   },
   setup: (ctx): IG => {
     /* 00-------01-------02
@@ -256,4 +251,4 @@ const GameConfig: IGameArgs = {
   },
 };
 
-export const NineMensMorrisGame = Game(GameConfig);
+export const NineMensMorrisGame = GameConfig;

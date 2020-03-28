@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Grid } from '@freeboardgame.org/boardgame.io/ui';
+import { Grid } from 'ui';
 
 /**
  * Checkerboard

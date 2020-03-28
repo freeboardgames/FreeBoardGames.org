@@ -2,8 +2,8 @@ import React from 'react';
 import { Board } from './board';
 import { expect } from 'chai';
 import { SeabattleGame } from './game';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
-import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
+import { Client } from 'boardgame.io/client';
+import { Client as ReactClient } from 'boardgame.io/react';
 
 import { GameMode } from 'components/App/Game/GameModePicker';
 

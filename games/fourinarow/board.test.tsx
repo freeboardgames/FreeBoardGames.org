@@ -5,7 +5,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { GameMode } from 'components/App/Game/GameModePicker';
 import { ConnectFourGame } from './game';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 import { localPlayerNames } from './constants';
 
 Enzyme.configure({ adapter: new Adapter() });

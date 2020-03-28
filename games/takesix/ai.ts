@@ -1,6 +1,6 @@
 import { IAIConfig } from '../index';
 import { IG, getCards, isAllowedDeck } from './game';
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 
 interface IPlayState {
   G: IG;
@@ -9,6 +9,7 @@ interface IPlayState {
 
 class TakeSixBot {
   async play(state: IPlayState, playerID: string) {
+    await sleep(300);
     if (state.ctx.phase === 'CARD_SELECT') {
       // const randomCard = Math.floor(state.G.players[playerID as any].cards.length * Math.random());  // https://github.com/babel/minify/issues/904
       const randomCard = (state.G.players[playerID as any].cards.length * Math.random()) << 0;
@@ -46,4 +47,11 @@ const config: IAIConfig = {
     };
   },
 };
+
+function sleep(milliseconds: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
 export default config;

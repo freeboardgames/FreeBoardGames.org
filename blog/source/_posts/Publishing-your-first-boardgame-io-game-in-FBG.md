@@ -98,7 +98,7 @@ These two pieces are where the bulk of the game code will live. Let's use placeh
 import * as React from 'react';
 import { IGameArgs } from '../../App/Game/GameBoardWrapper';
 import { GameLayout } from '../../App/Game/GameLayout';
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 import { IG } from './game';
 
 interface IBoardProps {
@@ -124,7 +124,7 @@ export class Board extends React.Component<IBoardProps, {}> {
 The file above will be responsible to translate the game state to what the user sees. Now we only need to create a file for your game rules, which boardgame.io calls `Game`. In `src/games/foobar/game.ts`:
 
 ```typescript
-import { Game, IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 
 export interface IG {
   count: number;

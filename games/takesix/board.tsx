@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { GameLayout } from 'components/App/Game/GameLayout';
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 import { IG, getScoreBoard, isAllowedDeck } from './game';
 import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
@@ -32,14 +32,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
     this.props.moves.selectCard(id);
     if (isAIGame(this.props.gameArgs)) {
-      await this.props.step();
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         this.setState({ aiSecondDeck: true });
       } else {
         this.setState({ aiSecondDeck: false });
-        setTimeout(() => {
-          this.props.step();
-        }, 1000);
       }
     }
   };
@@ -53,11 +49,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return;
     }
     this.props.moves.selectDeck(id);
-    if (isAIGame(this.props.gameArgs) && this.state.aiSecondDeck) {
-      setTimeout(() => {
-        this.props.step();
-      }, 1000);
-    }
   };
 
   _getStatus() {
@@ -75,7 +66,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _canPlay() {
-    return this.props.ctx.actionPlayers.some(player => player === this.props.playerID);
+    if (this.props.ctx.phase === 'CARD_SELECT') {
+      return (
+        this.props.ctx.activePlayers !== null &&
+        Object.keys(this.props.ctx.activePlayers)?.includes(this.props.playerID)
+      );
+    } else {
+      return this.props.playerID === this.props.ctx.currentPlayer;
+    }
   }
 
   _getGameOver() {

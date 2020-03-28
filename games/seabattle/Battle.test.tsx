@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { Battle } from './Battle';
 import { SeabattleGame } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 
 // mock functions for HTMLMediaElement
 // https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395

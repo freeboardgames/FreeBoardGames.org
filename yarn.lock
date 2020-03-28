@@ -1106,28 +1106,6 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
   integrity sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==
 
-"@freeboardgame.org/boardgame.io@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@freeboardgame.org/boardgame.io/-/boardgame.io-0.0.12.tgz#cff2cfe0dc31d1f6064ccb6b3848537def174e43"
-  integrity sha512-sIEZrbhrq+qRDVI1FUIhHEjDbt2SIWEZMJtu57oNIpSd6uYdZkXJ3tw6FkgheWiQ84RC6AFyISQPiMGVVI+97w==
-  dependencies:
-    "@koa/cors" "^2.2.1"
-    flatted "^0.2.3"
-    immer "^3.1.3"
-    koa "^2.7.0"
-    koa-body "^4.1.0"
-    koa-router "^7.2.1"
-    koa-socket-2 "^1.0.17"
-    lru-cache "^4.1.1"
-    mousetrap "^1.6.1"
-    prop-types "^15.5.10"
-    react-cookies "^0.1.0"
-    react-dragtastic "^2.4.3"
-    redux "^4.0.0"
-    shortid "^2.2.14"
-    socket.io "^2.1.1"
-    uuid "3.2.1"
-
 "@hapi/address@2.x.x", "@hapi/address@^2.1.2":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -3936,6 +3914,27 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
   integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
+
+boardgame.io@^0.39.3:
+  version "0.39.3"
+  resolved "https://registry.yarnpkg.com/boardgame.io/-/boardgame.io-0.39.3.tgz#af688f5a3e6f24363551b6044b48feaf4a6c47cd"
+  integrity sha512-VDrj95U2B1Uo47JrmlTSIuD12ntknL79RW/d84m8jbZBqeF54uIArxsYWuP7E3waYRSutJzqkP+GJicMj7hw5A==
+  dependencies:
+    "@koa/cors" "^2.2.1"
+    flatted "^0.2.3"
+    immer "^1.8.0"
+    koa "^2.7.0"
+    koa-body "^4.1.0"
+    koa-router "^7.2.1"
+    koa-socket-2 "^1.0.17"
+    lru-cache "^4.1.1"
+    prop-types "^15.5.10"
+    react-cookies "^0.1.0"
+    redux "^4.0.0"
+    shortid "^2.2.14"
+    socket.io "^2.1.1"
+    ts-toolbelt "^6.3.6"
+    uuid "3.2.1"
 
 body-parser@1.19.0:
   version "1.19.0"
@@ -8215,10 +8214,10 @@ img-loader@^3.0.1:
   dependencies:
     loader-utils "^1.1.0"
 
-immer@^3.1.3:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-3.3.0.tgz#ee7cf3a248d5dd2d4eedfbe7dfc1e9be8c72041d"
-  integrity sha512-vlWRjnZqoTHuEjadquVHK3GxsXe1gNoATffLEA8Qbrdd++Xb+wHEFiWtwAKTscMBoi1AsvEMXhYRzAXA8Ex9FQ==
+immer@^1.8.0:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-1.12.1.tgz#40c6e5b292c00560836c2993bda3a24379d466f5"
+  integrity sha512-3fmKM6ovaqDt0CdC9daXpNi5x/YCYS3i4cwLdTVkhJdk5jrDXoPs7lCm3IqM3yhfSnz4tjjxbRG2CziQ7m8ztg==
 
 import-cwd@^2.0.0:
   version "2.1.0"
@@ -11193,11 +11192,6 @@ mount-point@^3.0.0:
     pify "^2.3.0"
     pinkie-promise "^2.0.1"
 
-mousetrap@^1.6.1:
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/mousetrap/-/mousetrap-1.6.5.tgz#8a766d8c272b08393d5f56074e0b5ec183485bf9"
-  integrity sha512-QNo4kEepaIBwiT8CDhP98umTetp+JNfQYBWvC1pc6/OAibuXtRcxZ58Qz8skvEHYvURne/7R8T5VoOI7rDsEUA==
-
 move-cli@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/move-cli/-/move-cli-1.2.1.tgz#c41d98933e741a375b3433dce981bed8bae9c78c"
@@ -13543,13 +13537,6 @@ react-dom@16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-dragtastic@^2.4.3:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/react-dragtastic/-/react-dragtastic-2.4.3.tgz#9cf5531c45cc52020b30f454f9b219852307f6ef"
-  integrity sha512-AQwmi3Ri9/Fpf8FKabxnsxSh6gRYZHIQqRBubu3NSBvWQ7bOOpqGxlTtxZVkj3QiSg3h2S3xYZoxB27A6dV0xg==
-  dependencies:
-    prop-types "^15.6.0"
-
 react-error-overlay@5.1.6:
   version "5.1.6"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.6.tgz#0cd73407c5d141f9638ae1e0c63e7b2bf7e9929d"
@@ -15782,6 +15769,11 @@ ts-pnp@^1.1.2:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.1.6.tgz#389a24396d425a0d3162e96d2b4638900fdc289a"
   integrity sha512-CrG5GqAAzMT7144Cl+UIFP7mz/iIhiy+xQ6GGcnjTezhALT02uPMRw7tgDSESgB5MsfKt55+GPWw4ir1kVtMIQ==
+
+ts-toolbelt@^6.3.6:
+  version "6.3.6"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.3.6.tgz#2bde29106c013ed520c32f30e1248daf8fd4f5f9"
+  integrity sha512-eVzym+LyQodOCfyVyQDQ6FGYbO2Xf9Nc4dGLRKlKSUpAs+8qQWHG+grDiA3ciEuNPNZ0qJnNIYkdqBW1rCWuUA==
 
 tsconfig-paths-webpack-plugin@^3.2.0:
   version "3.2.0"

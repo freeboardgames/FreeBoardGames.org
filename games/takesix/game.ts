@@ -1,4 +1,4 @@
-import { Game, TurnOrder, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { TurnOrder, IGameArgs, IGameCtx, INVALID_MOVE, ActivePlayers } from 'boardgame.io/core';
 import { IScore } from '../common/Scoreboard';
 import Card from './card';
 import Player from './player';
@@ -70,7 +70,7 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
       ...G.players,
       [ctx.playerID]: {
         ...G.players[ctx.playerID as any],
-        selectedCard: G.players[ctx.playerID as any].cards.find((_, index) => index === id), // Set card as selected
+        selectedCard: G.players[ctx.playerID as any].cards[id], // Set card as selected
         cards: G.players[ctx.playerID as any].cards.filter((_, index) => index !== id), // Remove card from player's deck
       },
     }),
@@ -110,33 +110,45 @@ export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
 
 const GameConfig: IGameArgs = {
   name: 'takesix',
-  flow: {
-    endTurn: false,
-    endPhase: false,
-    endGame: false,
-    startingPhase: 'CARD_SELECT', // Start by selecting cards
-    phases: {
-      // Everyone needs to select card
-      CARD_SELECT: {
-        allowedMoves: ['selectCard'],
-        turnOrder: TurnOrder.ANY_ONCE,
-        next: 'DECK_SELECT',
-        // Determine player order
-        onPhaseEnd: (G: IG) => {
-          const selectedCards = G.players.map(player => player.selectedCard);
-          selectedCards.sort(sortCards);
-          return {
-            ...G,
-            cardOrder: selectedCards.map(card => card.owner).map(owner => owner.toString()),
-          };
+  phases: {
+    // Everyone needs to select card
+    CARD_SELECT: {
+      moves: { selectCard },
+      next: 'DECK_SELECT',
+      onBegin: (_, ctx) => {
+        ctx.events.setActivePlayers(ActivePlayers.ALL_ONCE);
+      },
+      // Determine player order
+      onEnd: (G: IG) => {
+        const selectedCards = G.players.map(player => player.selectedCard);
+        selectedCards.sort(sortCards);
+        return {
+          ...G,
+          cardOrder: selectedCards.map(card => card.owner).map(owner => owner.toString()),
+        };
+      },
+      start: true,
+      turn: {
+        moveLimit: 1,
+        onMove: (_, ctx) => {
+          if (ctx.activePlayers === null) {
+            ctx.events.endPhase();
+          }
         },
       },
-      // Select deck
-      DECK_SELECT: {
-        allowedMoves: ['selectDeck'],
-        next: 'CARD_SELECT',
-        // Implement CUSTOM_FROM_ONCE
-        turnOrder: {
+    },
+    // Select deck
+    DECK_SELECT: {
+      moves: { selectDeck },
+      next: 'CARD_SELECT',
+      onEnd: (G: IG) => {
+        if (G.players[0].cards.length === 0) {
+          G.end = true;
+        }
+      },
+      turn: {
+        moveLimit: 1,
+        order: {
           playOrder: (G: IG) => G.cardOrder,
           first: () => 0,
           next: (_, ctx) => {
@@ -145,26 +157,23 @@ const GameConfig: IGameArgs = {
             }
           },
         },
-        onMove: (_, ctx) => {
-          ctx.events.endTurn();
-        },
-        onPhaseEnd: (G: IG) => {
-          if (G.players[0].cards.length === 0) {
-            G.end = true;
-          }
-        },
       },
     },
-    endGameIf: (G: IG) => {
-      if (G.end === true) {
-        const scoreboard = getScoreBoard(G);
-        if (scoreboard[0].score === scoreboard[1].score) {
-          return { draw: true };
-        } else {
-          return { winner: scoreboard[0].playerID.toString() };
-        }
+  },
+  endIf: (G: IG) => {
+    if (G.end === true) {
+      const scoreboard = getScoreBoard(G);
+      if (scoreboard[0].score === scoreboard[1].score) {
+        return { draw: true };
+      } else {
+        return { winner: scoreboard[0].playerID.toString() };
       }
-    },
+    }
+  },
+  events: {
+    endTurn: false,
+    endGame: false,
+    endPhase: false,
   },
   // playerView: PlayerView.STRIP_SECRETS,
   setup: (ctx): IG => {
@@ -210,16 +219,10 @@ const GameConfig: IGameArgs = {
       end: false,
     };
   },
-
-  moves: {
-    selectCard,
-    selectDeck,
-  },
 };
 
-export const TakeSixGame = Game(GameConfig);
-export const TakeSixGameForTest = (override: any) =>
-  Game({
-    ...GameConfig,
-    ...override,
-  });
+export const TakeSixGame = GameConfig;
+export const TakeSixGameForTest = (override: any) => ({
+  ...GameConfig,
+  ...override,
+});

@@ -1,3 +1,5 @@
+import { IGameArgs } from 'boardgame.io/core';
+
 /*
  * Copyright 2017 The boardgame.io Authors
  *
@@ -5,8 +7,6 @@
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  */
-
-import { Game } from '@freeboardgame.org/boardgame.io/core';
 
 export function isVictory(cells: string[]) {
   const positions = [
@@ -49,7 +49,7 @@ export function isVictory(cells: string[]) {
   return false;
 }
 
-export const TictactoePlusGame = Game({
+export const TictactoePlusGame: IGameArgs = {
   name: 'tictactoeplus',
 
   setup: () => ({
@@ -71,17 +71,16 @@ export const TictactoePlusGame = Game({
     },
   },
 
-  flow: {
-    movesPerTurn: 1,
-
-    endGameIf: (G, ctx) => {
-      const winner = isVictory(G.cells);
-      if (winner) {
-        return { winner };
-      }
-      if (G.cells.filter((c: any) => c === null).length === 0) {
-        return { draw: true };
-      }
-    },
+  turn: {
+    moveLimit: 1,
   },
-});
+  endIf: G => {
+    const winner = isVictory(G.cells);
+    if (winner) {
+      return { winner };
+    }
+    if (G.cells.filter((c: any) => c === null).length === 0) {
+      return { draw: true };
+    }
+  },
+};

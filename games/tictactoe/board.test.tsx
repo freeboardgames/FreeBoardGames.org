@@ -6,7 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import { GameMode } from 'components/App/Game/GameModePicker';
 import { TictactoeGame } from './game';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -6,15 +6,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Game } from '@freeboardgame.org/boardgame.io/core';
+import { IGameArgs, IGameCtx } from 'boardgame.io/core';
 import Chess from './chessjswrapper';
-
-interface IGameCtx {
-  numPlayers: number;
-  turn: number;
-  currentPlayer: string;
-  currentPlayerMoves: number;
-}
 
 export function getWinner(chess: any) {
   if (chess.game_over()) {
@@ -30,7 +23,7 @@ export function getWinner(chess: any) {
   }
 }
 
-export const ChessGame = Game({
+export const ChessGame: IGameArgs = {
   name: 'chess',
 
   setup: () => ({ pgn: '', fen: '' }),
@@ -43,13 +36,12 @@ export const ChessGame = Game({
       return { pgn: chess.pgn(), fen: chess.fen() };
     },
   },
-
-  flow: {
-    movesPerTurn: 1,
-    endGameIf: (G: any) => {
-      const chess = Chess();
-      chess.load_pgn(G.pgn);
-      return getWinner(chess);
-    },
+  turn: {
+    moveLimit: 1,
   },
-});
+  endIf: (G: any) => {
+    const chess = Chess();
+    chess.load_pgn(G.pgn);
+    return getWinner(chess);
+  },
+};

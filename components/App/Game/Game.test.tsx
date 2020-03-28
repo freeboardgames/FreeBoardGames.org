@@ -48,8 +48,7 @@ describe('Game', () => {
 
   it('should render properly for ai', async () => {
     const gameCode = 'tictactoe';
-    // const app = <Game match={{ params: { gameCode, mode: 'AI' } }} />;
-    const app = <Game gameCode={gameCode} mode={GameMode.AI} />;
+    const app = <Game gameCode={gameCode} mode={GameMode.AI} aiLevel={'1'} />;
     const wrapper = mount(app);
     await (wrapper.find(Game).instance() as any).promise;
     wrapper.update();

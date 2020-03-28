@@ -1,4 +1,4 @@
-import { Game, IGameArgs, IGameCtx, INVALID_MOVE } from '@freeboardgame.org/boardgame.io/core';
+import { IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 
 export interface IG {
   points: string[];
@@ -148,13 +148,13 @@ export function getScoreBoard(G: IG, ctx: IGameCtx) {
 
 const GameConfig: IGameArgs = {
   name: 'reversi',
-  flow: {
-    movesPerTurn: 1,
-    endGameIf: (G: IG, ctx) => {
-      if (!G.points.some(point => point === null)) {
-        return { scoreboard: getScoreBoard(G, ctx) };
-      }
-    },
+  turn: {
+    moveLimit: 1,
+  },
+  endIf: (G: IG, ctx) => {
+    if (!G.points.includes(null)) {
+      return { scoreboard: getScoreBoard(G, ctx) };
+    }
   },
   moves: {
     placePiece,
@@ -176,4 +176,4 @@ const GameConfig: IGameArgs = {
   },
 };
 
-export const ReversiGame = Game(GameConfig);
+export const ReversiGame = GameConfig;

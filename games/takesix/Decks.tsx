@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IGameCtx } from '@freeboardgame.org/boardgame.io/core';
+import { IGameCtx } from 'boardgame.io/core';
 import { IG, isAllowedDeck } from './game';
 import { CardComponent } from './CardComponent';
 
@@ -39,10 +39,7 @@ export class Decks extends React.Component<IDecksProps, {}> {
   }
 
   getOpacity(id: number): number {
-    if (
-      this.props.ctx.phase === 'CARD_SELECT' ||
-      !this.props.ctx.actionPlayers.some(player => player === this.props.playerID)
-    ) {
+    if (this.props.ctx.phase === 'CARD_SELECT' || this.props.ctx.currentPlayer !== this.props.playerID) {
       return 1;
     }
 

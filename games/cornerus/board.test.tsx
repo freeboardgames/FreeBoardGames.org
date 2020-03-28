@@ -1,8 +1,8 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { Client } from '@freeboardgame.org/boardgame.io/client';
-import { Client as ReactClient } from '@freeboardgame.org/boardgame.io/react';
+import { Client } from 'boardgame.io/client';
+import { Client as ReactClient } from 'boardgame.io/react';
 import { CornerusGame } from './game';
 
 import { Board } from './board';
