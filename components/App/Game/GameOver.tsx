@@ -49,7 +49,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       action: 'Game over',
     });
     return (
-      <FreeBoardGamesBar>
+      <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <Typography variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           Game Over, {this.props.result}!
         </Typography>
