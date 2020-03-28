@@ -6,6 +6,10 @@ import { GameMode } from './GameModePicker';
 import { LobbyService } from '../Lobby/LobbyService';
 import ReplayIcon from '@material-ui/icons/Replay';
 
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
 describe('ReplayIcon', () => {
   it('should show ReplayIcon for AI', () => {
     const gameArgs: IGameArgs = {
@@ -57,11 +61,7 @@ describe('ReplayIcon', () => {
       mode: GameMode.AI,
     };
     const wrapper = mount(<GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />);
-
-    const mockReload = jest.fn();
-    expect(mockReload.mock.calls.length).toEqual(0);
-
     wrapper.find(ReplayIcon).simulate('click');
-    expect((window.location.reload as any).mock.calls.length).toEqual(1);
+    expect(window.location.replace).toHaveBeenCalled();
   });
 });
