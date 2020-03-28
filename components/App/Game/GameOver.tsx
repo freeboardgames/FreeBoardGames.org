@@ -76,7 +76,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     });
 
     if (args.mode === GameMode.AI || args.mode === GameMode.LocalFriend) {
-      window.location.reload();
+      window.location.replace(window.location.pathname);
     } else {
       this.setState({ loading: true });
       const nextRoomId = await LobbyService.getPlayAgainNextRoom(args.gameCode, args.matchCode, args.players.length);
