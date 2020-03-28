@@ -17,7 +17,7 @@ export class GameInstructionsText extends React.Component<IGameInstructionsProps
     return (
       <Card style={{ marginBottom: 16 }}>
         <div style={{ padding: '0 8px' }}>
-          <Typography variant="body2" component="div">
+          <Typography variant="body1" component="div">
             <ReactMarkdown linkTarget="_blank" source={instructions.text} />
           </Typography>
         </div>

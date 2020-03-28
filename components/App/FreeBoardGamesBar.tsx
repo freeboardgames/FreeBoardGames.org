@@ -16,7 +16,6 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
     let versionInfo;
 
     if (!isProdChannel) {
-      appBarStyle = { background: 'red' };
       versionInfo = (
         <Typography data-test-id="gitrev" variant="h6" style={{ color: 'white', marginLeft: 'auto' }}>
           {process.env.VERSION}
