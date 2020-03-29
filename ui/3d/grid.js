@@ -36,8 +36,8 @@ import * as THREE from 'three';
  *   <Token x={1} y={2}/>
  * </Grid>
  */
-export const Grid = props => (
-  <UIContext.Consumer>{context => <GridImpl {...props} context={context} />}</UIContext.Consumer>
+export const Grid = (props) => (
+  <UIContext.Consumer>{(context) => <GridImpl {...props} context={context} />}</UIContext.Consumer>
 );
 
 class GridImpl extends React.Component {
@@ -108,7 +108,7 @@ class GridImpl extends React.Component {
         const square = new Square(squareProps);
         this.squareGroup.add(square);
 
-        const onEvent = e => {
+        const onEvent = (e) => {
           if (e.type == 'click') {
             if (this.props.onClick) this.props.onClick({ x: x, y: y });
           } else if (e.type == 'mouseOver') {
@@ -123,7 +123,7 @@ class GridImpl extends React.Component {
     }
 
     // set tokens
-    const tokens = React.Children.map(this.props.children, child => {
+    const tokens = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         three: true,
         boardSize: this.props.cellSize,

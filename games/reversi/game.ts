@@ -16,8 +16,8 @@ export function getValidMoves(G: IG, playerID: string) {
   let validMoves: Set<number> = new Set();
   G.points
     .map((player, position) => ({ player, position }))
-    .filter(point => point.player === playerID)
-    .forEach(point => {
+    .filter((point) => point.player === playerID)
+    .forEach((point) => {
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
           if (i === 0 && j === 0) {
@@ -57,8 +57,8 @@ export function getValidMoves(G: IG, playerID: string) {
 
   G.points
     .map((player, position) => ({ player, position }))
-    .filter(point => point.player === null)
-    .forEach(point => {
+    .filter((point) => point.player === null)
+    .forEach((point) => {
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
           if (i === 0 && j === 0) {
@@ -141,8 +141,8 @@ export function placePiece(G: IG, ctx: IGameCtx, x: number, y: number) {
 export function getScoreBoard(G: IG, ctx: IGameCtx) {
   let scoreBoard = new Array(ctx.numPlayers).fill(0);
   G.points
-    .filter(point => point !== null && parseInt(point) < ctx.numPlayers)
-    .forEach(point => scoreBoard[point as any]++);
+    .filter((point) => point !== null && parseInt(point) < ctx.numPlayers)
+    .forEach((point) => scoreBoard[point as any]++);
   return scoreBoard.map((score, i) => ({ playerID: i.toString(), score })).sort((a, b) => b.score - a.score);
 }
 

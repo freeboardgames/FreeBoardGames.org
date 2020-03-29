@@ -112,7 +112,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   _tryMove(from: string, to: string) {
     const moves = this._getMoves();
     // check if this is a valid move
-    const move = moves.find(m => m.from === from && m.to === to);
+    const move = moves.find((m) => m.from === from && m.to === to);
     if (move) {
       // actually make the move
       this.props.moves.move(move.san);
@@ -227,7 +227,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _setSoundPref = (soundEnabled: boolean) => {
-    this.setState(oldState => {
+    this.setState((oldState) => {
       return { ...oldState, soundEnabled };
     });
   };

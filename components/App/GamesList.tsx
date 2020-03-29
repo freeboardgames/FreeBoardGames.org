@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export class GamesList extends React.Component<{}, {}> {
   public render() {
-    const gamesList = GAMES_LIST.map(game => (
+    const gamesList = GAMES_LIST.map((game) => (
       <Link href={`/play/[gameCode]`} as={`/play/${game.code}`} key={game.code}>
         <a style={{ textDecoration: 'none', flex: 1, minWidth: '300px', maxWidth: '380px', margin: '8px' }}>
           <GameCard game={game} isLink={true} />

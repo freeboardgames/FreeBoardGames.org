@@ -14,7 +14,7 @@ import { UI as UI3D } from './3d/ui';
 /**
  * Root component of the UI framework.
  */
-export const UI = props => {
+export const UI = (props) => {
   return props.three ? <UI3D {...props}>{props.children}</UI3D> : <UI2D {...props}>{props.children}</UI2D>;
 };
 

@@ -15,7 +15,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import * as THREE from 'three';
 
 // mock renderer function
-THREE.WebGLRenderer = jest.fn(function() {
+THREE.WebGLRenderer = jest.fn(function () {
   this.shadowMap = {};
   this.setSize = () => {
     return null;
@@ -73,9 +73,6 @@ test('correct x and y', () => {
 
   // No crash when componentWillUnmount
   {
-    grid
-      .find('TokenImpl')
-      .instance()
-      .componentWillUnmount();
+    grid.find('TokenImpl').instance().componentWillUnmount();
   }
 });

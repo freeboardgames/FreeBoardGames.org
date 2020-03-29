@@ -168,7 +168,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
     if (!this.state.showingQrCode) {
       window.scrollTo(0, 0);
     }
-    this.setState(oldState => ({ ...oldState, showingQrCode: !this.state.showingQrCode }));
+    this.setState((oldState) => ({ ...oldState, showingQrCode: !this.state.showingQrCode }));
   }
 
   _getLink() {

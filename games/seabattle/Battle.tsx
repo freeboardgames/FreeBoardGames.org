@@ -40,17 +40,17 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
   _onClick = (cell: ICell) => {
     const uniqueMove =
       this.state.G.salvos.filter(
-        salvo =>
+        (salvo) =>
           salvo.player === parseInt(this.state.currentPlayer, 10) && salvo.cell.x === cell.x && salvo.cell.y === cell.y,
       ).length === 0;
     if (uniqueMove) {
       this.props.moves.salvo(cell.x, cell.y);
       if (this.props.isAIGame && !this.state.aiPlaying) {
-        this.setState(oldState => {
+        this.setState((oldState) => {
           return { ...oldState, aiPlaying: true };
         });
         setTimeout(() => {
-          this.setState(oldState => {
+          this.setState((oldState) => {
             return { ...oldState, aiPlaying: false };
           });
         }, 2500);
@@ -75,7 +75,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
 
   render() {
     const player = parseInt(this.state.showSalvo ? this.state.prevPlayer : this.state.currentPlayer, 10);
-    const ships: IShip[] = this.state.G.ships.filter(ship => ship.player !== player);
+    const ships: IShip[] = this.state.G.ships.filter((ship) => ship.player !== player);
     const salvos: ISalvo[] = this.state.G.salvos.filter((salvo: ISalvo) => salvo.player === player);
     const message = this._getMessage();
     if (this.props.getSoundPref()) {

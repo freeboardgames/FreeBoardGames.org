@@ -34,34 +34,16 @@ test('highlighting', async () => {
   }) as any;
   const comp = Enzyme.mount(<App playerID={'0'} />);
 
-  await comp
-    .find('rect')
-    .at(getPosition(0, 5))
-    .simulate('click');
-  await comp
-    .find('rect')
-    .at(getPosition(1, 4))
-    .simulate('click');
+  await comp.find('rect').at(getPosition(0, 5)).simulate('click');
+  await comp.find('rect').at(getPosition(1, 4)).simulate('click');
   comp.setProps({ playerID: '1' });
   comp.update();
-  await comp
-    .find('rect')
-    .at(getPosition(3, 2))
-    .simulate('click');
-  await comp
-    .find('rect')
-    .at(getPosition(2, 3))
-    .simulate('click');
+  await comp.find('rect').at(getPosition(3, 2)).simulate('click');
+  await comp.find('rect').at(getPosition(2, 3)).simulate('click');
   comp.setProps({ playerID: '0' });
   comp.update();
-  await comp
-    .find('rect')
-    .at(getPosition(1, 4))
-    .simulate('click');
-  await comp
-    .find('rect')
-    .at(getPosition(3, 2))
-    .simulate('click');
+  await comp.find('rect').at(getPosition(1, 4)).simulate('click');
+  await comp.find('rect').at(getPosition(3, 2)).simulate('click');
 
   expect(comp.find('Token').length).toEqual(23);
 });

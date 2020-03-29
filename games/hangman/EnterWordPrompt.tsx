@@ -102,14 +102,14 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
 
   _onWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const wordTextField = event.target.value!;
-    this.setState(oldState => {
+    this.setState((oldState) => {
       return { ...oldState, wordTextField };
     });
   };
 
   _onHintChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const hintTextField = event.target.value!;
-    this.setState(oldState => {
+    this.setState((oldState) => {
       return { ...oldState, hintTextField };
     });
   };

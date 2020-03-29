@@ -13,5 +13,5 @@ it('should make random move', async () => {
   const client = getClient();
   await client.step();
   const G: IG = client.store.getState().G;
-  expect(G.points.filter(point => point !== null).length).toEqual(5);
+  expect(G.points.filter((point) => point !== null).length).toEqual(5);
 });

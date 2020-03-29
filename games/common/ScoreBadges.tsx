@@ -13,8 +13,8 @@ interface IScoreBadgesProps {
 
 export class ScoreBadges extends React.Component<IScoreBadgesProps, {}> {
   render() {
-    const badges = this.props.scoreboard.map(score => {
-      const nickname = this.props.players.find(player => player.playerID.toString() === score.playerID).name;
+    const badges = this.props.scoreboard.map((score) => {
+      const nickname = this.props.players.find((player) => player.playerID.toString() === score.playerID).name;
       const isSelf = score.playerID.toString() === this.props.playerID;
       return (
         <div

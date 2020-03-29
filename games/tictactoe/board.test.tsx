@@ -29,10 +29,7 @@ test('clicking a cell on the board', () => {
       }}
     />,
   );
-  comp
-    .find('rect')
-    .at(0)
-    .simulate('click');
+  comp.find('rect').at(0).simulate('click');
   expect(client.moves.clickCell.mock.calls.length).toEqual(1);
 });
 
@@ -56,10 +53,7 @@ test('click a cell that has already been played', () => {
       }}
     />,
   );
-  comp
-    .find('rect')
-    .at(0)
-    .simulate('click');
+  comp.find('rect').at(0).simulate('click');
   expect(client.moves.clickCell.mock.calls.length).toEqual(0);
 });
 
@@ -397,9 +391,6 @@ test('render board - AI', () => {
       }}
     />,
   );
-  comp
-    .find('rect')
-    .at(0)
-    .simulate('click');
+  comp.find('rect').at(0).simulate('click');
   expect(comp.html()).to.contain("Red's turn");
 });

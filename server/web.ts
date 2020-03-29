@@ -130,7 +130,7 @@ app
       return handle(req, res);
     });
 
-    server.listen(PORT, err => {
+    server.listen(PORT, (err) => {
       if (err) {
         throw err;
       }
@@ -138,7 +138,7 @@ app
       console.log(`Listening on http://0.0.0.0:${PORT}`);
     });
   })
-  .catch(e => {
+  .catch((e) => {
     console.error(e.stack);
     process.exit(1);
   });

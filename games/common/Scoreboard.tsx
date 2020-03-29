@@ -39,7 +39,7 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
                   background: grey[200],
                 };
               }
-              const name = this.props.players.find(player => player.playerID.toString() === score.playerID).name;
+              const name = this.props.players.find((player) => player.playerID.toString() === score.playerID).name;
               return (
                 <TableRow key={score.playerID} style={style}>
                   <TableCell>#{i + 1}</TableCell>

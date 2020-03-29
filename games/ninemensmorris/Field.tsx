@@ -102,8 +102,8 @@ export class Field extends React.Component<IFieldProps, {}> {
 
   getLines() {
     const coords = this.getPointsCoords();
-    return CONNECTORS.map(i =>
-      this.props.points[i].connections.map(connection => (
+    return CONNECTORS.map((i) =>
+      this.props.points[i].connections.map((connection) => (
         <line
           x1={coords[i].cx}
           y1={coords[i].cy}

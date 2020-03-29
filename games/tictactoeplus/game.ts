@@ -61,7 +61,7 @@ export const TictactoePlusGame: IGameArgs = {
       const cells = [...G.cells];
 
       if (cells[id] === null) {
-        if (ctx.random.D6() === 6 && cells.filter(v => v === '2').length < 3) {
+        if (ctx.random.D6() === 6 && cells.filter((v) => v === '2').length < 3) {
           cells[id] = '2';
         } else {
           cells[id] = ctx.currentPlayer;
@@ -74,7 +74,7 @@ export const TictactoePlusGame: IGameArgs = {
   turn: {
     moveLimit: 1,
   },
-  endIf: G => {
+  endIf: (G) => {
     const winner = isVictory(G.cells);
     if (winner) {
       return { winner };

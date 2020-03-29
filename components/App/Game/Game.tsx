@@ -115,7 +115,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     if (!this.gameDef) {
       return <MessagePageClass type={'error'} message={'Game Not Found'} />;
     }
-    const validGameModes = this.gameDef.modes.map(mode => mode.mode.toLowerCase());
+    const validGameModes = this.gameDef.modes.map((mode) => mode.mode.toLowerCase());
     if (!validGameModes.includes(this.mode.toLowerCase())) {
       return <MessagePageClass type={'error'} message={'Invalid Game Mode'} />;
     }

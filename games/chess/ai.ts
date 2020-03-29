@@ -25,7 +25,7 @@ class Stockfish {
   }
 
   async getMove(fen: string): Promise<string> {
-    return await new Promise(resolve => {
+    return await new Promise((resolve) => {
       this.worker.onmessage = (event: any) => {
         const msg = event.data;
         if (msg.includes('bestmove')) {

@@ -47,11 +47,11 @@ export class DeckImpl extends React.Component {
     }
   };
 
-  onDrop = cardData => {
+  onDrop = (cardData) => {
     // Don't fire onDrop if the top card of this deck was
     // dragged away and then dropped back.
     let isChild = false;
-    React.Children.forEach(this.props.children, card => {
+    React.Children.forEach(this.props.children, (card) => {
       if (cardData !== undefined && card.props.data === cardData) {
         isChild = true;
       }
@@ -64,7 +64,7 @@ export class DeckImpl extends React.Component {
 
   render() {
     let cardIndex = 0;
-    const cards = React.Children.map(this.props.children, card =>
+    const cards = React.Children.map(this.props.children, (card) =>
       React.cloneElement(card, {
         dragZone: this.props.dragZone,
         inDeck: true,
@@ -101,6 +101,8 @@ export class DeckImpl extends React.Component {
   }
 }
 
-const Deck = props => <UIContext.Consumer>{context => <DeckImpl {...props} context={context} />}</UIContext.Consumer>;
+const Deck = (props) => (
+  <UIContext.Consumer>{(context) => <DeckImpl {...props} context={context} />}</UIContext.Consumer>
+);
 
 export { Deck };

@@ -72,7 +72,7 @@ export function isFirstTurn(ctx: IGameCtx) {
 export function getScoreBoard(G: IG, ctx: IGameCtx) {
   const scoreboard: IScore[] = G.players.map((player, i) => ({
     playerID: i.toString(),
-    score: player.pieces.reduce((acc, piece) => acc - pieces[piece].filter(square => square).length, 0),
+    score: player.pieces.reduce((acc, piece) => acc - pieces[piece].filter((square) => square).length, 0),
   }));
 
   if (ctx.numPlayers === 2) {
@@ -131,8 +131,8 @@ const corners = [
 export function getAllPositions(piece: boolean[], transform: IPieceTransform) {
   return piece
     .map((square, index) => ({ square, index }))
-    .filter(piece => piece.square)
-    .map(square => {
+    .filter((piece) => piece.square)
+    .map((square) => {
       const { x, y } = getXY(square.index, Math.sqrt(piece.length));
       return { x: x + transform.x, y: y + transform.y };
     })
@@ -148,19 +148,19 @@ export function getValidPositions(
 ) {
   const positions = getAllPositions(piece, transform);
   if (
-    positions.some(pos => !inBounds(pos.x, pos.y)) || // Check if piece is on board
+    positions.some((pos) => !inBounds(pos.x, pos.y)) || // Check if piece is on board
     positions.some(
       // Check if squares don't touch with edges
-      pos =>
+      (pos) =>
         G.board[getPosition(pos.x, pos.y)] !== null ||
-        positions.some(pos =>
+        positions.some((pos) =>
           [
             [-1, 0],
             [1, 0],
             [0, -1],
             [0, 1],
           ].some(
-            dir =>
+            (dir) =>
               inBounds(pos.x + dir[0], pos.y + dir[1]) &&
               G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === playerID,
           ),
@@ -175,12 +175,12 @@ export function getValidPositions(
         [-1, 1],
         [1, 1],
       ].some(
-        dir =>
+        (dir) =>
           inBounds(pos.x + dir[0], pos.y + dir[1]) && G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === playerID,
       ),
     ) &&
       (!isFirstTurn(ctx) ||
-        !positions.some(pos => pos.x === corners[playerID as any][0] && pos.y === corners[playerID as any][1])))
+        !positions.some((pos) => pos.x === corners[playerID as any][0] && pos.y === corners[playerID as any][1])))
   ) {
     return null;
   }
@@ -246,14 +246,14 @@ export function endGame(G: IG, ctx: IGameCtx) {
 const GameConfig: IGameArgs = {
   name: 'cornerus',
   endIf: (G: IG, ctx) => {
-    if (!G.players.some(player => !player.end && player.pieces.length > 0)) {
+    if (!G.players.some((player) => !player.end && player.pieces.length > 0)) {
       return { scoreboard: getScoreBoard(G, ctx) };
     }
   },
   turn: {
     order: TurnOrder.CUSTOM_FROM('turnOrder'),
     onMove: (G, ctx) => {
-      if (!G.players.some(player => !player.end && player.pieces.length > 0)) {
+      if (!G.players.some((player) => !player.end && player.pieces.length > 0)) {
         ctx.events.endGame({ scoreboard: getScoreBoard(G, ctx) });
         return;
       }

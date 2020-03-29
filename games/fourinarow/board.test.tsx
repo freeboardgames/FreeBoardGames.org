@@ -41,10 +41,7 @@ test('click a cell on the border', () => {
   const client = getTestClient();
   client.moves.selectColumn = jest.fn();
   const comp = getTestComp(client, GameMode.LocalFriend);
-  comp
-    .find('circle')
-    .at(0)
-    .simulate('click');
+  comp.find('circle').at(0).simulate('click');
   expect(client.moves.selectColumn.mock.calls.length).to.equal(1);
 });
 

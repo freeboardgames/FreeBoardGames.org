@@ -87,26 +87,26 @@ export class HexGrid extends React.Component {
     return hexes;
   }
 
-  onClick = args => {
+  onClick = (args) => {
     if (this.props.onClick) {
       this.props.onClick(args);
     }
   };
 
-  onMouseOver = args => {
+  onMouseOver = (args) => {
     if (this.props.onMouseOver) {
       this.props.onMouseOver(args);
     }
   };
 
-  onMouseOut = args => {
+  onMouseOut = (args) => {
     if (this.props.onMouseOut) {
       this.props.onMouseOut(args);
     }
   };
 
   render() {
-    const tokens = React.Children.map(this.props.children, child => {
+    const tokens = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         template: Hex,
         onClick: this.onClick,
@@ -241,15 +241,15 @@ export class Hex extends React.Component {
     return flatTop.join(' ');
   }
 
-  onClick = e => {
+  onClick = (e) => {
     this.props.onClick(this.getCoords(), e);
   };
 
-  onMouseOver = e => {
+  onMouseOver = (e) => {
     this.props.onMouseOver(this.getCoords(), e);
   };
 
-  onMouseOut = e => {
+  onMouseOut = (e) => {
     this.props.onMouseOut(this.getCoords(), e);
   };
 

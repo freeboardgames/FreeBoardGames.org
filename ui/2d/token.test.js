@@ -121,10 +121,7 @@ test('shouldDrag', () => {
   );
 
   const mouseDownEvt = new window['MouseEvent']('mousedown', {});
-  grid
-    .find('Token')
-    .getDOMNode()
-    .dispatchEvent(mouseDownEvt);
+  grid.find('Token').getDOMNode().dispatchEvent(mouseDownEvt);
 
   expect(shouldDrag).toHaveBeenCalled();
 });
@@ -268,10 +265,7 @@ test('unmount regression', () => {
   grid.setState({ show: true });
 
   const mouseDownEvt = new window['MouseEvent']('mousedown', {});
-  grid
-    .find('Token')
-    .getDOMNode()
-    .dispatchEvent(mouseDownEvt);
+  grid.find('Token').getDOMNode().dispatchEvent(mouseDownEvt);
 
   grid.unmount();
 });

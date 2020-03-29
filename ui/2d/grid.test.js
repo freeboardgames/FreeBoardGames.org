@@ -40,20 +40,14 @@ test('click handler', () => {
   {
     const onClick = jest.fn();
     const grid = Enzyme.mount(<Grid rows={3} cols={4} onClick={onClick} />);
-    grid
-      .find('Square')
-      .at(0)
-      .simulate('click');
+    grid.find('Square').at(0).simulate('click');
     expect(onClick).toHaveBeenCalled();
   }
 
   // No crash when onClick is not provided.
   {
     const grid = Enzyme.mount(<Grid rows={3} cols={4} />);
-    grid
-      .find('Square')
-      .at(0)
-      .simulate('click');
+    grid.find('Square').at(0).simulate('click');
   }
 });
 
@@ -61,20 +55,14 @@ test('mouse over handler', () => {
   {
     const onMouseOver = jest.fn();
     const grid = Enzyme.mount(<Grid rows={3} cols={4} onMouseOver={onMouseOver} />);
-    grid
-      .find('Square')
-      .at(0)
-      .simulate('mouseOver');
+    grid.find('Square').at(0).simulate('mouseOver');
     expect(onMouseOver).toHaveBeenCalled();
   }
 
   // No crash when onMouseOver is not provided.
   {
     const grid = Enzyme.mount(<Grid rows={3} cols={4} />);
-    grid
-      .find('Square')
-      .at(0)
-      .simulate('mouseOver');
+    grid.find('Square').at(0).simulate('mouseOver');
   }
 });
 
@@ -82,20 +70,14 @@ test('mouse out handler', () => {
   {
     const onMouseOut = jest.fn();
     const grid = Enzyme.mount(<Grid rows={3} cols={4} onMouseOut={onMouseOut} />);
-    grid
-      .find('Square')
-      .at(0)
-      .simulate('mouseOut');
+    grid.find('Square').at(0).simulate('mouseOut');
     expect(onMouseOut).toHaveBeenCalled();
   }
 
   // No crash when onMouseOut is not provided.
   {
     const grid = Enzyme.mount(<Grid rows={3} cols={4} />);
-    grid
-      .find('Square')
-      .at(0)
-      .simulate('mouseOut');
+    grid.find('Square').at(0).simulate('mouseOut');
   }
 });
 
@@ -111,11 +93,7 @@ test('correct x and y', () => {
 
   // No crash when componentWillUnmount
   {
-    grid
-      .find('Square')
-      .at(12)
-      .instance()
-      .componentWillUnmount();
+    grid.find('Square').at(12).instance().componentWillUnmount();
   }
 });
 

@@ -34,18 +34,12 @@ test('round placing pieces', () => {
   }) as any;
   const comp = Enzyme.mount(<App playerID={'0'} />);
 
-  comp
-    .find('.ClickableCircle')
-    .at(0)
-    .simulate('click');
+  comp.find('.ClickableCircle').at(0).simulate('click');
 
   comp.setProps({ playerID: '1' });
   comp.update();
   expect(comp.find('.Piece').length).toEqual(1);
 
-  comp
-    .find('.ClickableCircle')
-    .at(1)
-    .simulate('click');
+  comp.find('.ClickableCircle').at(1).simulate('click');
   expect(comp.find('.Piece').length).toEqual(2);
 });

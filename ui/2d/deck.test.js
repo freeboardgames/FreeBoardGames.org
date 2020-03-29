@@ -46,10 +46,7 @@ describe('onClick', () => {
         </Deck>
       </UI>,
     );
-    root
-      .find('DeckImpl')
-      .instance()
-      .onClick();
+    root.find('DeckImpl').instance().onClick();
   });
 
   test('calls props.onClick - no top card', () => {
@@ -68,10 +65,7 @@ describe('onClick', () => {
         </Deck>
       </UI>,
     );
-    deck
-      .find('DeckImpl')
-      .instance()
-      .onClick();
+    deck.find('DeckImpl').instance().onClick();
     expect(onClick).toHaveBeenCalledWith('data');
   });
 });

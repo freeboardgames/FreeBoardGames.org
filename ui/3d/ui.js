@@ -116,11 +116,11 @@ export class UI extends React.Component {
       console.log('Loading Complete!');
     };
 
-    THREE.DefaultLoadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
+    THREE.DefaultLoadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
       console.log('Loading file: ' + url + '\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
     };
 
-    THREE.DefaultLoadingManager.onError = function(url) {
+    THREE.DefaultLoadingManager.onError = function (url) {
       console.log('There was an error loading: ' + url);
     };
   }
@@ -136,7 +136,7 @@ export class UI extends React.Component {
     // mouse intersects.
     this.raycaster = new THREE.Raycaster();
 
-    const getClickType = e => {
+    const getClickType = (e) => {
       if (e.which !== undefined) {
         switch (e.which) {
           case 1:
@@ -185,14 +185,14 @@ export class UI extends React.Component {
       }
     };
 
-    const onMouseDown = e => {
+    const onMouseDown = (e) => {
       const type = getClickType(e);
 
       this.raycaster.setFromCamera(mouse, this.camera);
       const objects = this.raycaster.intersectObjects(this.childGroup.children, true);
 
       if (type == 'leftclick') {
-        dragging_ = objects.filter(obj => obj.object.userData.draggable && obj.object.userData.responsive);
+        dragging_ = objects.filter((obj) => obj.object.userData.draggable && obj.object.userData.responsive);
       } else {
         e = { ...e, type };
       }
@@ -205,17 +205,17 @@ export class UI extends React.Component {
       }
     };
 
-    const onMouseUp = e => {
+    const onMouseUp = (e) => {
       this.raycaster.setFromCamera(mouse, this.camera);
       const objects = this.raycaster.intersectObjects(this.childGroup.children, true);
 
       dispatchMouseCallbacks(e, objects);
 
       if (dragging_.length > 0) {
-        const droppable = objects.filter(obj => obj.object.userData.droppable && obj.object.userData.responsive);
+        const droppable = objects.filter((obj) => obj.object.userData.droppable && obj.object.userData.responsive);
 
         if (droppable.length > 0) {
-          const what = dragging_.map(o => o.object);
+          const what = dragging_.map((o) => o.object);
           dispatchMouseCallbacks({ ...e, type: 'drop', what }, droppable);
         }
 
@@ -224,7 +224,7 @@ export class UI extends React.Component {
       }
     };
 
-    const onMouseMove = e => {
+    const onMouseMove = (e) => {
       let x = e.clientX;
       let y = e.clientY;
 
@@ -254,7 +254,7 @@ export class UI extends React.Component {
 
       if (r.length > 0) {
         const e = { ...e, type: 'drag' };
-        dragging_.forEach(obj => {
+        dragging_.forEach((obj) => {
           e.point = r[0].point;
           if (obj.object.id in this.callbacks_) {
             this.callbacks_[obj.object.id](e);
@@ -266,7 +266,7 @@ export class UI extends React.Component {
       }
     };
 
-    const onMouseWheel = e => {
+    const onMouseWheel = (e) => {
       dispatchMouseCallbacks(e);
 
       if (e.defaultPrevented) {
@@ -290,7 +290,7 @@ export class UI extends React.Component {
     root.addEventListener('mousedown', onMouseDown);
     root.addEventListener('mouseup', onMouseUp);
     root.addEventListener('click', dispatchMouseCallbacks);
-    root.addEventListener('contextmenu', e => e.preventDefault());
+    root.addEventListener('contextmenu', (e) => e.preventDefault());
   }
 
   animate = () => {
@@ -317,7 +317,7 @@ export class UI extends React.Component {
     return {
       three: true,
       add: this.add,
-      remove: obj => this.scene.remove(obj),
+      remove: (obj) => this.scene.remove(obj),
       scene: this.scene,
       camera: this.camera,
       regCall: this.registerCallback,
@@ -336,7 +336,7 @@ export class UI extends React.Component {
   }
 
   render() {
-    const children = React.Children.map(this.props.children, child => {
+    const children = React.Children.map(this.props.children, (child) => {
       return React.cloneElement(child, {
         three: true,
       });

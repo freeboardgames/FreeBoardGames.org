@@ -72,8 +72,8 @@ export class Radar extends React.Component<IRadarProps, {}> {
   };
 
   _findShip(x: number, y: number): number {
-    return this.props.ships.findIndex(ship => {
-      return ship.cells.findIndex(c => c.x === x && c.y === y) !== -1;
+    return this.props.ships.findIndex((ship) => {
+      return ship.cells.findIndex((c) => c.x === x && c.y === y) !== -1;
     });
   }
 

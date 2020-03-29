@@ -29,7 +29,7 @@ export class NewRoom extends React.Component<INewRoomProps, INewRoomState> {
       return;
     }
     LobbyService.newRoom(gameCode, numPlayers).then(
-      roomID => {
+      (roomID) => {
         this.props.history.replace(`/room/${gameCode}/${roomID}`);
       },
       () => {

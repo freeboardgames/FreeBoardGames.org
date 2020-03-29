@@ -36,7 +36,7 @@ const millsPositions = [
 ];
 
 function getMills(G: IG) {
-  return millsPositions.map(positions =>
+  return millsPositions.map((positions) =>
     G.points[positions[0]].piece !== null &&
     G.points[positions[1]].piece !== null &&
     G.points[positions[2]].piece !== null &&
@@ -48,16 +48,16 @@ function getMills(G: IG) {
 }
 
 function isTherePieceOutsideMill(G: IG, ctx: IGameCtx) {
-  let points = G.points.map(point => ({ data: point, safe: true }));
+  let points = G.points.map((point) => ({ data: point, safe: true }));
   G.mills
     .map((mill, index) => ({ owner: mill, index }))
-    .filter(mill => mill.owner !== null && mill.owner !== ctx.playerID)
-    .forEach(mill =>
-      millsPositions[mill.index].forEach(position => {
+    .filter((mill) => mill.owner !== null && mill.owner !== ctx.playerID)
+    .forEach((mill) =>
+      millsPositions[mill.index].forEach((position) => {
         points[position].safe = false;
       }),
     );
-  return points.some(point => point.data.piece !== null && point.safe && point.data.piece.player !== ctx.playerID);
+  return points.some((point) => point.data.piece !== null && point.safe && point.data.piece.player !== ctx.playerID);
 }
 
 export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string {
@@ -133,8 +133,8 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
     G.points[position].piece.player === ctx.playerID || // Check if doesn't player own this piece
     (G.mills
       .map((mill, index) => ({ owner: mill, index }))
-      .filter(mill => mill.owner !== null && mill.owner !== ctx.playerID)
-      .some(mill => millsPositions[mill.index].includes(position)) &&
+      .filter((mill) => mill.owner !== null && mill.owner !== ctx.playerID)
+      .some((mill) => millsPositions[mill.index].includes(position)) &&
       isTherePieceOutsideMill(G, ctx))
   ) {
     return INVALID_MOVE;
@@ -192,8 +192,8 @@ const GameConfig: IGameArgs = {
         !G.haveToRemovePiece &&
         G.players[ctx.currentPlayer as any].lostPieces < 6 &&
         !G.points
-          .filter(point => point.piece !== null && point.piece.player === ctx.currentPlayer)
-          .some(point => point.connections.some(connection => G.points[connection].piece === null))
+          .filter((point) => point.piece !== null && point.piece.player === ctx.currentPlayer)
+          .some((point) => point.connections.some((connection) => G.points[connection].piece === null))
       ) {
         ctx.events.endGame({ winner: G.players.findIndex((_, i) => i.toString() !== ctx.currentPlayer).toString() });
       }
@@ -205,8 +205,8 @@ const GameConfig: IGameArgs = {
     },
   },
   endIf: (G: IG) => {
-    if (G.players.some(player => player.lostPieces === 7)) {
-      return { winner: G.players.findIndex(player => player.lostPieces !== 7).toString() };
+    if (G.players.some((player) => player.lostPieces === 7)) {
+      return { winner: G.players.findIndex((player) => player.lostPieces !== 7).toString() };
     }
   },
   setup: (ctx): IG => {

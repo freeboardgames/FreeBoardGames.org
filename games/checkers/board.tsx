@@ -52,7 +52,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return false;
     }
 
-    return this.state.validMoves.some(move => areCoordsEqual(move.from, coords));
+    return this.state.validMoves.some((move) => areCoordsEqual(move.from, coords));
   };
 
   _onClick = (coords: IAlgebraicCoords) => {
@@ -113,8 +113,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (this.state.selected !== null) {
       result[cartesianToAlgebraic(this.state.selected.x, this.state.selected.y, false)] = blue[700];
       this.state.validMoves
-        .filter(move => areCoordsEqual(this.state.selected, move.from))
-        .forEach(move => {
+        .filter((move) => areCoordsEqual(this.state.selected, move.from))
+        .forEach((move) => {
           result[cartesianToAlgebraic(move.to.x, move.to.y, false)] = blue[500];
         });
     }
@@ -125,8 +125,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   getPieces = () => {
     return this.props.G.board
       .map((piece, index) => ({ data: piece, index }))
-      .filter(piece => piece.data !== null)
-      .map(piece => {
+      .filter((piece) => piece.data !== null)
+      .map((piece) => {
         const { x, y } = toCoord(piece.index);
         return (
           <Token

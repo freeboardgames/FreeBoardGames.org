@@ -40,32 +40,16 @@ test('round placing pieces', () => {
   }) as any;
   const comp = Enzyme.mount(<App playerID={'0'} />);
 
-  comp
-    .find('rect')
-    .at(getPosition(5, 3))
-    .simulate('click');
+  comp.find('rect').at(getPosition(5, 3)).simulate('click');
 
-  expect(
-    comp
-      .find('rect')
-      .at(getPosition(5, 3))
-      .prop('style').fill,
-  ).to.not.equal('black');
+  expect(comp.find('rect').at(getPosition(5, 3)).prop('style').fill).to.not.equal('black');
 
   comp.setProps({ playerID: '1' });
   comp.update();
 
-  comp
-    .find('rect')
-    .at(getPosition(4, 2))
-    .simulate('click');
+  comp.find('rect').at(getPosition(4, 2)).simulate('click');
 
-  expect(
-    comp
-      .find('rect')
-      .at(getPosition(4, 2))
-      .prop('style').fill,
-  ).to.not.equal('black');
+  expect(comp.find('rect').at(getPosition(4, 2)).prop('style').fill).to.not.equal('black');
 });
 
 test('gameover - won', () => {

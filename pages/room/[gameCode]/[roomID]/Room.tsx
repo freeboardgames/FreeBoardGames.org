@@ -96,15 +96,15 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     }
     if (this.state.numberOfTimesUpdatedMetadata > MAX_TIMES_TO_UPDATE_METADATA) {
       const error = 'Session expired.  Please refresh the page.';
-      this.setState(oldState => ({ ...oldState, error }));
+      this.setState((oldState) => ({ ...oldState, error }));
       return;
     }
-    this.setState(oldState => ({
+    this.setState((oldState) => ({
       ...oldState,
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
     this.promise = LobbyService.getRoomMetadata(gameCode, roomID)
-      .then(async metadata => {
+      .then(async (metadata) => {
         if (!metadata.currentUser) {
           const player: IPlayerInRoom = {
             playerID: metadata.players.length,
@@ -117,17 +117,17 @@ class Room extends React.Component<IRoomProps, IRoomState> {
         return metadata;
       })
       .then(
-        metadata => {
+        (metadata) => {
           if (metadata.numberOfPlayers === metadata.players.length) {
-            this.setState(oldState => ({ ...oldState, gameReady: true }));
+            this.setState((oldState) => ({ ...oldState, gameReady: true }));
             this._componentCleanup();
           }
-          this.setState(oldState => ({ ...oldState, roomMetadata: metadata, loading: false }));
+          this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
           return metadata;
         },
         () => {
           const error = 'Failed to fetch room metadata.';
-          this.setState(oldState => ({ ...oldState, error }));
+          this.setState((oldState) => ({ ...oldState, error }));
         },
       );
   };
@@ -138,7 +138,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   };
 
   _toggleEditingName = () => {
-    this.setState(oldState => ({ ...oldState, editingName: !this.state.editingName }));
+    this.setState((oldState) => ({ ...oldState, editingName: !this.state.editingName }));
   };
 
   _setNickname = (nickname: string) => {
@@ -168,7 +168,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   };
 }
 
-const roomWithRouter = props => {
+const roomWithRouter = (props) => {
   const router = useRouter();
   return <Room {...props} router={router} />;
 };

@@ -19,10 +19,7 @@ test('set ships', () => {
     board: Board,
   }) as any;
   const comp = Enzyme.mount(<App playerID={'0'} gameID={'foo'} />);
-  comp
-    .find('button')
-    .at(1)
-    .simulate('click');
+  comp.find('button').at(1).simulate('click');
   expect(comp.html()).to.contain('Waiting');
 });
 
@@ -47,10 +44,7 @@ test('start', () => {
   );
   // First page must have some ships
   expect(comp.find('ShipsPlacement').length).toEqual(1);
-  comp
-    .find('button')
-    .at(1)
-    .simulate('click');
+  comp.find('button').at(1).simulate('click');
 });
 
 test('waiting opponent', () => {

@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-export const isSame = a => b => a.x === b.x && a.y === b.y && a.z === b.z;
+export const isSame = (a) => (b) => a.x === b.x && a.y === b.y && a.z === b.z;
 export const createCoordinate = ([x, y, z]) => ({ x, y, z });
 const addPoint = (a, b) => ({ x: a.x + b.x, y: a.y + b.y, z: a.z + b.z });
 const isContained = (a, points) => points.some(isSame(a));
@@ -21,7 +21,7 @@ const isContained = (a, points) => points.some(isSame(a));
  *   point      (Cube coorinates)
  *
  */
-export const getAllNeighbors = point =>
+export const getAllNeighbors = (point) =>
   [
     [1, -1, 0],
     [1, 0, -1],
@@ -90,8 +90,8 @@ export const getReachable = (start, movement, blocked) => {
     fringes[i - 1]
       .map(getAllNeighbors)
       .reduce((prev, curr) => prev.concat(curr), [])
-      .filter(neighbor => !isContained(neighbor, blocked.concat(visited)))
-      .forEach(neighbor => {
+      .filter((neighbor) => !isContained(neighbor, blocked.concat(visited)))
+      .forEach((neighbor) => {
         visited.push(neighbor);
         fringes[i].push(neighbor);
       });

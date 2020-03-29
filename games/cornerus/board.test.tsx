@@ -37,46 +37,16 @@ test('controls', () => {
   }) as any;
   const comp = Enzyme.mount(<App playerID={'0'} />);
 
-  comp
-    .find('#rotate-left')
-    .at(0)
-    .simulate('click');
-  comp
-    .find('#rotate-right')
-    .at(0)
-    .simulate('click');
-  comp
-    .find('#flip-x')
-    .at(0)
-    .simulate('click');
-  comp
-    .find('#flip-y')
-    .at(0)
-    .simulate('click');
-  comp
-    .find('#rotate-left')
-    .at(0)
-    .simulate('click');
-  comp
-    .find('#flip-x')
-    .at(0)
-    .simulate('click');
-  comp
-    .find('#flip-y')
-    .at(0)
-    .simulate('click');
-  comp
-    .find('#select-next')
-    .at(0)
-    .simulate('click');
-  comp
-    .find('#select-prev')
-    .at(0)
-    .simulate('click');
-  comp
-    .find('#place')
-    .at(0)
-    .simulate('click');
+  comp.find('#rotate-left').at(0).simulate('click');
+  comp.find('#rotate-right').at(0).simulate('click');
+  comp.find('#flip-x').at(0).simulate('click');
+  comp.find('#flip-y').at(0).simulate('click');
+  comp.find('#rotate-left').at(0).simulate('click');
+  comp.find('#flip-x').at(0).simulate('click');
+  comp.find('#flip-y').at(0).simulate('click');
+  comp.find('#select-next').at(0).simulate('click');
+  comp.find('#select-prev').at(0).simulate('click');
+  comp.find('#place').at(0).simulate('click');
 
   expect(comp.find('Token').length).toEqual(1);
 });
@@ -105,12 +75,7 @@ test('pieces', () => {
     />,
   );
 
-  expect(
-    comp
-      .find('rect')
-      .at(0)
-      .prop('style').fill,
-  ).toEqual(blue[700]);
+  expect(comp.find('rect').at(0).prop('style').fill).toEqual(blue[700]);
 });
 
 test('gameover - won', () => {

@@ -45,16 +45,8 @@ test('render board - all states - local friend', () => {
   expect(board.html()).to.contain('draw');
   // squares should not be selectable after the game ends:
   // attempt to select a2
-  board
-    .find('rect')
-    .at(rowColAt(2, 1))
-    .simulate('click');
-  expect(
-    board
-      .find('rect')
-      .at(rowColAt(2, 1))
-      .html(),
-  ).to.not.contain('green');
+  board.find('rect').at(rowColAt(2, 1)).simulate('click');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -201,46 +193,19 @@ test('little game', () => {
   );
   expect(board.html()).to.contain('YOUR TURN');
   // select a2
-  board
-    .find('rect')
-    .at(rowColAt(2, 1))
-    .simulate('click');
-  expect(
-    board
-      .find('rect')
-      .at(rowColAt(2, 1))
-      .html(),
-  ).to.contain('green');
+  board.find('rect').at(rowColAt(2, 1)).simulate('click');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.contain('green');
 
   // unselect
-  board
-    .find('rect')
-    .at(rowColAt(2, 1))
-    .simulate('click');
-  expect(
-    board
-      .find('rect')
-      .at(rowColAt(2, 1))
-      .html(),
-  ).to.not.contain('green');
+  board.find('rect').at(rowColAt(2, 1)).simulate('click');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
 
   // select f2
-  board
-    .find('rect')
-    .at(rowColAt(2, 6))
-    .simulate('click');
-  expect(
-    board
-      .find('rect')
-      .at(rowColAt(2, 6))
-      .html(),
-  ).to.contain('green');
+  board.find('rect').at(rowColAt(2, 6)).simulate('click');
+  expect(board.find('rect').at(rowColAt(2, 6)).html()).to.contain('green');
 
   // move to f4
-  board
-    .find('rect')
-    .at(rowColAt(4, 6))
-    .simulate('click');
+  board.find('rect').at(rowColAt(4, 6)).simulate('click');
   expect(moveMock.mock.calls[0]).to.deep.equal(['f4']);
 
   // mock move
@@ -257,16 +222,8 @@ test('little game', () => {
   expect(board.html()).to.contain('Waiting for opponent');
 
   // try invalid selection
-  board
-    .find('rect')
-    .at(rowColAt(2, 1))
-    .simulate('click');
-  expect(
-    board
-      .find('rect')
-      .at(rowColAt(2, 1))
-      .html(),
-  ).to.not.contain('green');
+  board.find('rect').at(rowColAt(2, 1)).simulate('click');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
 
   // test inactive
   board.setProps({
@@ -275,16 +232,8 @@ test('little game', () => {
   });
 
   // cant select a7
-  board
-    .find('rect')
-    .at(rowColAt(7, 1))
-    .simulate('click');
-  expect(
-    board
-      .find('rect')
-      .at(rowColAt(7, 1))
-      .html(),
-  ).to.not.contain('green');
+  board.find('rect').at(rowColAt(7, 1)).simulate('click');
+  expect(board.find('rect').at(rowColAt(7, 1)).html()).to.not.contain('green');
 
   // make it active again
   board.setProps({
@@ -293,22 +242,11 @@ test('little game', () => {
   });
 
   // select a7
-  board
-    .find('rect')
-    .at(rowColAt(7, 1))
-    .simulate('click');
-  expect(
-    board
-      .find('rect')
-      .at(rowColAt(7, 1))
-      .html(),
-  ).to.contain('green');
+  board.find('rect').at(rowColAt(7, 1)).simulate('click');
+  expect(board.find('rect').at(rowColAt(7, 1)).html()).to.contain('green');
 
   // move to a5
-  board
-    .find('rect')
-    .at(rowColAt(5, 1))
-    .simulate('click');
+  board.find('rect').at(rowColAt(5, 1)).simulate('click');
   expect(moveMock.mock.calls[1]).to.deep.equal(['a5']);
 });
 
@@ -336,16 +274,10 @@ test('little AI game', () => {
     />,
   );
   // select f2
-  board
-    .find('rect')
-    .at(rowColAt(2, 6))
-    .simulate('click');
+  board.find('rect').at(rowColAt(2, 6)).simulate('click');
 
   // move to f4
-  board
-    .find('rect')
-    .at(rowColAt(4, 6))
-    .simulate('click');
+  board.find('rect').at(rowColAt(4, 6)).simulate('click');
   expect(moveMock.mock.calls[0]).to.deep.equal(['f4']);
   expect(stepMock.mock.calls.length).toEqual(1);
 });

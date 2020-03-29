@@ -36,10 +36,7 @@ test('rotate ships correctly', () => {
     />,
   );
   (radar.instance() as Radar)._onClick({ x: 0, y: 0 });
-  radar
-    .find('Token')
-    .at(0)
-    .simulate('click');
+  radar.find('Token').at(0).simulate('click');
   expect(onEdit.mock.calls[0]).to.deep.equal([
     [
       {

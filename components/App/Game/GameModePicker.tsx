@@ -164,7 +164,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     const numPlayers = this._getExtraInfoValue(info);
     // `/room/new/${this.props.gameDef.code}/${this._getExtraInfoValue(info)}`,
     LobbyService.newRoom(gameCode, numPlayers).then(
-      roomID => {
+      (roomID) => {
         // we use .replace instead of .push so that the browser back button works correctly
         Router.replace(`/room/${gameCode}/${roomID}`);
       },

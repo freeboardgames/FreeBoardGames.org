@@ -60,7 +60,7 @@ export class CardImpl extends React.Component {
     this.obj.userData.responsive = props.responsive;
   }
 
-  onEvent = e => {
+  onEvent = (e) => {
     if (!this.props.responsive) {
       return;
     }
@@ -102,6 +102,8 @@ export class CardImpl extends React.Component {
   }
 }
 
-const Card = props => <UIContext.Consumer>{context => <CardImpl {...props} context={context} />}</UIContext.Consumer>;
+const Card = (props) => (
+  <UIContext.Consumer>{(context) => <CardImpl {...props} context={context} />}</UIContext.Consumer>
+);
 
 export { Card };

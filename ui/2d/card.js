@@ -139,13 +139,15 @@ export class CardImpl extends React.Component {
         </Draggable>
 
         <DragComponent for={this.id}>
-          {GetDragComponent(this.props, classNames, this.dragComponentRef, o => (this.isOverAccepted = o))}
+          {GetDragComponent(this.props, classNames, this.dragComponentRef, (o) => (this.isOverAccepted = o))}
         </DragComponent>
       </div>
     );
   }
 }
 
-const Card = props => <UIContext.Consumer>{context => <CardImpl {...props} context={context} />}</UIContext.Consumer>;
+const Card = (props) => (
+  <UIContext.Consumer>{(context) => <CardImpl {...props} context={context} />}</UIContext.Consumer>
+);
 
 export { Card };

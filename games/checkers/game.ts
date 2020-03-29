@@ -214,7 +214,7 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
   }
 
   if (jumpedTotal) {
-    return movesTotal.filter(move => move.jumped);
+    return movesTotal.filter((move) => move.jumped);
   } else {
     return movesTotal;
   }
@@ -231,7 +231,7 @@ export function move(G: IG, ctx: IGameCtx, from: ICoord, to: ICoord): IG | strin
   }
 
   const moves = G.jumping === null ? getValidMoves(G, ctx.playerID) : getValidMoves(G, ctx.playerID, G.jumping);
-  const move = moves.find(move => areCoordsEqual(move.from, from) && areCoordsEqual(move.to, to));
+  const move = moves.find((move) => areCoordsEqual(move.from, from) && areCoordsEqual(move.to, to));
 
   if (typeof move === 'undefined') {
     return INVALID_MOVE;

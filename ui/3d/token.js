@@ -48,8 +48,8 @@ import * as THREE from 'three';
  * </Grid>
  *
  */
-export const Token = props => (
-  <UIContext.Consumer>{context => <TokenImpl {...props} context={context} />}</UIContext.Consumer>
+export const Token = (props) => (
+  <UIContext.Consumer>{(context) => <TokenImpl {...props} context={context} />}</UIContext.Consumer>
 );
 
 class TokenImpl extends React.Component {
@@ -95,7 +95,7 @@ class TokenImpl extends React.Component {
     }
   }
 
-  _attachMesh = mesh => {
+  _attachMesh = (mesh) => {
     const size = this.size;
     let meshSize = new THREE.Vector3();
     let meshCenter = new THREE.Vector3();
@@ -118,7 +118,7 @@ class TokenImpl extends React.Component {
     }
     this.parent.add(mesh);
     // register the event
-    const onEvent = e => {
+    const onEvent = (e) => {
       if (e.type == 'click') {
         this.props.onClick({ x: this.props.x, y: this.props.y });
       } else if (e.type == 'mouseOver') {

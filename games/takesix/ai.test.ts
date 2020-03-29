@@ -36,5 +36,5 @@ it('should select deck with forced option', async () => {
   client.moves.selectCard(5);
   await client.step();
   const G: IG = client.store.getState().G;
-  expect(Math.max(...G.decks.map(deck => deck.length))).toEqual(2);
+  expect(Math.max(...G.decks.map((deck) => deck.length))).toEqual(2);
 });

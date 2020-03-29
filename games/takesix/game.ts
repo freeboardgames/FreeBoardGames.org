@@ -24,7 +24,7 @@ export function isAllowedDeck(G: IG, deckId: number, playerID: string): boolean 
   if (card.number < lastCards[0].number) {
     return true;
   }
-  const diffs: number[] = G.decks.map(deck => card.number - deck[deck.length - 1].number);
+  const diffs: number[] = G.decks.map((deck) => card.number - deck[deck.length - 1].number);
   let min = Number.MAX_SAFE_INTEGER;
   let minIndex = 0;
   diffs.forEach((diff, index) => {
@@ -37,7 +37,7 @@ export function isAllowedDeck(G: IG, deckId: number, playerID: string): boolean 
 }
 
 export function getCards(G: IG, playerID: string): IGetCards {
-  const lastCards = G.decks.map(deck => deck[deck.length - 1]).sort(sortCards);
+  const lastCards = G.decks.map((deck) => deck[deck.length - 1]).sort(sortCards);
   const card = G.players[playerID as any].selectedCard;
   return { card: card, lastCards: lastCards };
 }
@@ -120,11 +120,11 @@ const GameConfig: IGameArgs = {
       },
       // Determine player order
       onEnd: (G: IG) => {
-        const selectedCards = G.players.map(player => player.selectedCard);
+        const selectedCards = G.players.map((player) => player.selectedCard);
         selectedCards.sort(sortCards);
         return {
           ...G,
-          cardOrder: selectedCards.map(card => card.owner).map(owner => owner.toString()),
+          cardOrder: selectedCards.map((card) => card.owner).map((owner) => owner.toString()),
         };
       },
       start: true,
@@ -200,7 +200,7 @@ const GameConfig: IGameArgs = {
         .fill(0)
         .map(() => deck.pop())
         .sort(sortCards)
-        .map(card => [card]),
+        .map((card) => [card]),
       players: new Array(ctx.numPlayers).fill(0).map(
         (_, i) =>
           new Player(

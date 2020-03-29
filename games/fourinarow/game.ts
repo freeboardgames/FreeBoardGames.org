@@ -13,7 +13,7 @@ function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: a
     }
   }
   if (
-    fourCells.every(function(val) {
+    fourCells.every(function (val) {
       return val === player;
     })
   ) {
@@ -29,7 +29,7 @@ function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: a
     }
   }
   if (
-    fourCells.every(function(val) {
+    fourCells.every(function (val) {
       return val === player;
     })
   ) {
@@ -45,7 +45,7 @@ function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: a
     }
   }
   if (
-    fourCells.every(function(val) {
+    fourCells.every(function (val) {
       return val === player;
     })
   ) {
@@ -61,7 +61,7 @@ function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: a
     }
   }
   if (
-    fourCells.every(function(val) {
+    fourCells.every(function (val) {
       return val === player;
     })
   ) {

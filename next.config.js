@@ -14,10 +14,7 @@ const VERSION = process.env.GIT_REV || getGitHash();
 function getGitHash() {
   let hash = 'unknown';
   try {
-    hash = childProcess
-      .execSync('git rev-parse --short HEAD')
-      .toString()
-      .trim();
+    hash = childProcess.execSync('git rev-parse --short HEAD').toString().trim();
   } catch (e) {}
   return hash;
 }
@@ -39,7 +36,7 @@ module.exports = withWorkers(
           BABEL_ENV_IS_PROD,
           GA_TRACKING_CODE: process.env.GA_TRACKING_CODE,
         },
-        webpack: config => {
+        webpack: (config) => {
           config.module.rules.push({
             test: /\.test.(js|jsx|ts|tsx)$/,
             loader: 'ignore-loader',

@@ -58,8 +58,8 @@ class SeabattleBot {
   }
 
   getNextShipFoundMove(state: IPlayState, hitSalvos: ISalvo[]): ICell {
-    const xMap = hitSalvos.map(salvo => salvo.cell.x);
-    const yMap = hitSalvos.map(salvo => salvo.cell.y);
+    const xMap = hitSalvos.map((salvo) => salvo.cell.x);
+    const yMap = hitSalvos.map((salvo) => salvo.cell.y);
 
     const minPos = { x: Math.min(...xMap), y: Math.min(...yMap) };
     const maxPos = { x: Math.max(...xMap), y: Math.max(...yMap) };
@@ -132,7 +132,7 @@ const config: IAIConfig = {
 };
 
 function sleep(milliseconds: number) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, milliseconds);
   });
 }

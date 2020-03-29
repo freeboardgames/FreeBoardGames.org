@@ -179,7 +179,7 @@ describe('Seabattle', () => {
     });
     const store = client.store;
     client.moves.setShips(
-      VALID_SETUP_FIRST_PLAYER.map(ship => ({
+      VALID_SETUP_FIRST_PLAYER.map((ship) => ({
         ...ship,
         sunk: true,
       })),
@@ -198,7 +198,7 @@ describe('Seabattle', () => {
     client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
     client.updatePlayerID('1');
     client.moves.setShips(
-      VALID_SETUP_SECOND_PLAYER.map(ship => ({
+      VALID_SETUP_SECOND_PLAYER.map((ship) => ({
         ...ship,
         sunk: true,
       })),

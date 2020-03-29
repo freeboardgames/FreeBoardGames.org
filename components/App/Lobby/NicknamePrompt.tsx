@@ -80,7 +80,7 @@ export class NicknamePrompt extends React.Component<INicknamePromptProps, INickn
 
   _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nameTextField = event.target.value!;
-    this.setState(oldState => {
+    this.setState((oldState) => {
       return { ...oldState, nameTextField };
     });
   };

@@ -86,7 +86,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       if (isLocalGame(this.props.gameArgs)) {
         return scoreboard[0].score > scoreboard[1].score ? 'blue/yellow won' : 'red/green won';
       } else {
-        if (scoreboard[0].score === scoreboard.find(rank => rank.playerID === this.props.playerID).score) {
+        if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
           return 'you won';
         } else {
           return 'you lost';
@@ -171,7 +171,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const y = Math.round(coords.y);
     const transform = { ...this.state.piece.transform, x, y };
     const positions = getAllPositions(this.state.piece.data, transform);
-    if (positions.every(pos => inBounds(pos.x, pos.y))) {
+    if (positions.every((pos) => inBounds(pos.x, pos.y))) {
       this.setState({
         ...this.state,
         piece: { ...this.state.piece, transform },
@@ -245,8 +245,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                   >
                     {this.state.piece.data
                       .map((square, index) => ({ square, index }))
-                      .filter(piece => piece.square)
-                      .map(piece => (
+                      .filter((piece) => piece.square)
+                      .map((piece) => (
                         <rect
                           x={piece.index % Math.sqrt(this.state.piece.data.length)}
                           y={Math.floor(piece.index / Math.sqrt(this.state.piece.data.length))}
@@ -281,7 +281,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     this.props.G.board
       .map((square, index) => ({ square, index }))
-      .forEach(piece => {
+      .forEach((piece) => {
         const x = piece.index % 20;
         const y = Math.floor(piece.index / 20);
 

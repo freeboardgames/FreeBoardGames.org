@@ -42,7 +42,7 @@ export class DeckImpl extends React.Component {
     this.obj.position.y = this.originalY;
   }
 
-  onEvent = e => {
+  onEvent = (e) => {
     if (e.type == 'drop') {
       e.what[0].position.x = -2;
       e.what[0].position.z = 0;
@@ -69,6 +69,8 @@ export class DeckImpl extends React.Component {
   }
 }
 
-const Deck = props => <UIContext.Consumer>{context => <DeckImpl {...props} context={context} />}</UIContext.Consumer>;
+const Deck = (props) => (
+  <UIContext.Consumer>{(context) => <DeckImpl {...props} context={context} />}</UIContext.Consumer>
+);
 
 export { Deck };

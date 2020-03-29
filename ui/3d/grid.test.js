@@ -13,7 +13,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import * as THREE from 'three';
 
-THREE.WebGLRenderer = jest.fn(function() {
+THREE.WebGLRenderer = jest.fn(function () {
   this.shadowMap = {};
   this.setSize = () => {
     return null;

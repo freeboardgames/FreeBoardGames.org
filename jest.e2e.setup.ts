@@ -13,7 +13,7 @@ expect.extend({ toMatchImageSnapshot });
 //SW mock
 if (typeof window !== 'undefined') {
   let swRegisterMock = jest.fn();
-  let mockPromise = new Promise(function(resolve) {
+  let mockPromise = new Promise(function (resolve) {
     resolve({ update: jest.fn() });
   });
   swRegisterMock.mockReturnValue(mockPromise);

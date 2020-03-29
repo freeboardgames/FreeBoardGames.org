@@ -26,7 +26,7 @@ export class Decks extends React.Component<IDecksProps, {}> {
               opacity: this.getOpacity(i),
             }}
           >
-            {deck.map(card => (
+            {deck.map((card) => (
               <div key={card.number}>
                 <CardComponent card={card} />
               </div>

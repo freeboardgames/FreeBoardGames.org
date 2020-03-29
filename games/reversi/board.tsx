@@ -54,7 +54,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
       return 'draw';
     } else {
-      if (scoreboard[0].score === scoreboard.find(rank => rank.playerID === this.props.playerID).score) {
+      if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
         return 'you won';
       } else {
         return 'you lost';
@@ -128,8 +128,8 @@ export class Board extends React.Component<IBoardProps, {}> {
         <Grid rows={8} cols={8} onClick={this._onClick} colorMap={colorMap}>
           {this.props.G.points
             .map((point, i) => ({ player: point, position: i }))
-            .filter(point => point.player !== null)
-            .map(point => (
+            .filter((point) => point.player !== null)
+            .map((point) => (
               <Token animate={false} key={point.position} x={point.position % 8} y={(point.position / 8) << 0}>
                 <rect
                   width="0.8"

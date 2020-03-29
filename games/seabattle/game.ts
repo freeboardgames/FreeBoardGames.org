@@ -39,7 +39,7 @@ const VALID_SHIPS_COUNT: { [size: number]: number } = {
 
 export const playerView = (G: ISeabattleState, ctx: ICtx, playerID: string): ISeabattleState => {
   const player = parseInt(playerID, 10);
-  const ships: IShip[] = G.ships.filter(ship => ship.player === player || ship.sunk);
+  const ships: IShip[] = G.ships.filter((ship) => ship.player === player || ship.sunk);
   return {
     ...G,
     ships,
@@ -61,7 +61,7 @@ function salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
   const shipIndex = findShipWithCell(G.ships, { x, y }, player);
   // Do not allow the same cells to be shot twice
   const uniqueMove =
-    G.salvos.filter(salvo => salvo.player === player && salvo.cell.x === x && salvo.cell.y === y).length === 0;
+    G.salvos.filter((salvo) => salvo.player === player && salvo.cell.x === x && salvo.cell.y === y).length === 0;
   if (!uniqueMove) {
     return { ...G };
   }
@@ -196,12 +196,12 @@ function getRandomInt(max: number): number {
 
 function findShipWithCell(ships: IShip[], cell: ICell, player: number): number {
   return ships.findIndex(
-    ship => ship.cells.findIndex(c => c.x === cell.x && c.y === cell.y) !== -1 && ship.player !== player,
+    (ship) => ship.cells.findIndex((c) => c.x === cell.x && c.y === cell.y) !== -1 && ship.player !== player,
   );
 }
 
 function countShipHits(salvos: ISalvo[], shipId: string): number {
-  return salvos.filter(s => s.hitShip === shipId).length;
+  return salvos.filter((s) => s.hitShip === shipId).length;
 }
 
 interface IShipsValidationResult {
