@@ -1,10 +1,9 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import InfoIcon from '@material-ui/icons/Info';
+import SubjectIcon from '@material-ui/icons/Subject';
 import CodeIcon from '@material-ui/icons/Code';
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 
 class Header extends React.Component<{}, {}> {
   render() {
@@ -39,14 +38,10 @@ class Header extends React.Component<{}, {}> {
           <CodeIcon style={{ marginRight: '4px' }} />
           Code
         </Button>
-        <Link href="/about">
-          <a style={{ textDecoration: 'none' }}>
-            <Button variant="outlined" style={{ margin: '4px' }}>
-              <InfoIcon style={{ marginRight: '4px' }} />
-              About
-            </Button>
-          </a>
-        </Link>
+        <Button href="/blog/" target="_blank" variant="outlined" style={{ margin: '4px' }}>
+          <SubjectIcon style={{ marginRight: '4px' }} />
+          Blog
+        </Button>
         <Button href="https://discord.gg/AaE6n3n" target="_blank" variant="outlined" style={{ margin: '4px' }}>
           <QuestionAnswerIcon style={{ marginRight: '4px' }} />
           Chat
