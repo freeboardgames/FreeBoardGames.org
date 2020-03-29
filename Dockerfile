@@ -9,14 +9,14 @@ RUN mkdir -p /appdata/blog
 # add node_modules to PATH
 ENV PATH /appdata/node_modules/.bin:$PATH
 
-# # blog
-# COPY --chown=appuser blog/yarn.lock /appdata/blog
-# COPY --chown=appuser blog/package.json /appdata/blog
-# WORKDIR /appdata/blog/
-# RUN yarn install
-# # build blog:
-# COPY --chown=appuser blog /appdata/blog
-# RUN yarn run hexo generate
+# blog
+COPY --chown=appuser blog/yarn.lock /appdata/blog
+COPY --chown=appuser blog/package.json /appdata/blog
+WORKDIR /appdata/blog/
+RUN yarn install
+# build blog:
+COPY --chown=appuser blog /appdata/blog
+RUN yarn run hexo generate
 
 # install and cache app dependencies
 COPY --chown=appuser tsconfig.json package.json yarn.lock /appdata/

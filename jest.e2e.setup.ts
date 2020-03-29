@@ -2,7 +2,11 @@ import 'jest-extended';
 import '@testing-library/jest-dom';
 import 'expect-puppeteer';
 
-import { toMatchImageSnapshot } from 'jest-image-snapshot';
+import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
+
+const toMatchImageSnapshot = configureToMatchImageSnapshot({
+  blur: 0.5,
+});
 
 expect.extend({ toMatchImageSnapshot });
 

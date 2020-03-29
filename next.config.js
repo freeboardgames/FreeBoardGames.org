@@ -31,22 +31,6 @@ module.exports = withWorkers(
           dest: 'static',
           disable: CHANNEL !== 'production',
         },
-        workboxOpts: {
-          skipWaiting: true,
-          runtimeCaching: [
-            {
-              urlPattern: /^\/.*/,
-              handler: 'NetworkFirst',
-              options: {
-                cacheName: 'offlineCache',
-                expiration: {
-                  maxEntries: 200,
-                },
-              },
-            },
-          ],
-        },
-
         poweredByHeader: false,
         env: {
           CHANNEL,

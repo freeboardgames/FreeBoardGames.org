@@ -124,6 +124,9 @@ static/sw.js
 static/sw.js.map
 static/workbox-*
 
+# FBG Blog
+blog/dist
+
 # syn
 .syn/
 .stignore

@@ -34,7 +34,7 @@ const URL = 'https://' + DOMAIN;
 
 function generateSiteMapXML(pagesManifest) {
   let pathsFromManifest = Object.keys(pagesManifest).reverse();
-  const paths = [];
+  const paths = ['/blog/'];
   for (const path of pathsFromManifest) {
     if (!isExcludedPath(path)) {
       paths.push(path);
@@ -70,7 +70,7 @@ app
     const server = express();
     server.disable('x-powered-by');
 
-    server.use('/blog', express.static(join(__dirname, 'blog/dist')));
+    server.use('/blog', express.static(APP_DIR + '/blog/dist'));
 
     server.get('/.well-known/assetlinks.json', (req, res) => {
       if (isProdChannel && isOfficialSite(req.hostname)) {

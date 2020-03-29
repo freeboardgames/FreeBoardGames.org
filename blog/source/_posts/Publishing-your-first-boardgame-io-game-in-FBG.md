@@ -2,6 +2,7 @@
 title: 'Publishing your first boardgame.io game in FBG'
 date: 2019-06-16 21:33:17
 tags:
+author: Flamecoals
 ---
 
 So you created (or want to create) an awesome new game using the [boardgame.io](https://boardgame.io) framework. Even though you probably told some friends and played with them, it might still be difficult to get people to know about your game and reach its full potential. Fear not, FreeBoardGames.org (FBG)'s purpose is to get your game to more people by creating a FOSS community of developers and players.
