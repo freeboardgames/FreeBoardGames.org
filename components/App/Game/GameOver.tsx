@@ -49,7 +49,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       action: 'Game over',
     });
     return (
-      <FreeBoardGamesBar>
+      <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <Typography variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
           Game Over, {this.props.result}!
         </Typography>
@@ -63,7 +63,9 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     if (!this.props.extraCardContent) {
       return null;
     }
-    const otherPlayerCard = <div style={{ paddingBottom: '12px' }}>{this.props.extraCardContent}</div>;
+    const otherPlayerCard = (
+      <div style={{ paddingBottom: '12px', maxWidth: '500px', margin: 'auto' }}>{this.props.extraCardContent}</div>
+    );
     return otherPlayerCard;
   };
 
