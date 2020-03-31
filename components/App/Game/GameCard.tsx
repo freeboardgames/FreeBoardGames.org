@@ -49,12 +49,12 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
       );
     }
     const gameNameHeading = this.props.isLink ? (
-      <Typography gutterBottom={false} variant="h4" component="h3" style={{ fontWeight: 300 }}>
-        {this.props.game.name}
+      <Typography gutterBottom={false} variant="h4" component="h2" style={{ fontWeight: 300 }}>
+        Play {this.props.game.name}
       </Typography>
     ) : (
       <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
-        Play {this.props.game.name}
+        {this.props.game.name}
       </Typography>
     );
     return (
