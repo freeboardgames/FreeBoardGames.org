@@ -5,7 +5,7 @@ import 'expect-puppeteer';
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 
 const toMatchImageSnapshot = configureToMatchImageSnapshot({
-  blur: 0.5,
+  blur: 0.75,
 });
 
 expect.extend({ toMatchImageSnapshot });
