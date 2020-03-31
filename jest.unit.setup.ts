@@ -37,7 +37,6 @@ if (typeof window !== 'undefined') {
 }
 
 jest.mock('next/router', () => ({
-  push: jest.fn(),
   useRouter() {
     return {
       route: '',
@@ -47,5 +46,3 @@ jest.mock('next/router', () => ({
     };
   },
 }));
-
-const useRouter = jest.spyOn(require('next/router'), 'useRouter');
