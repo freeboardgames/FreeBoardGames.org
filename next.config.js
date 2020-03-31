@@ -27,6 +27,18 @@ module.exports = withWorkers(
         pwa: {
           dest: 'static',
           disable: CHANNEL !== 'production',
+          runtimeCaching: [
+            {
+              urlPattern: /^\/.*/,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'offlineCache',
+                expiration: {
+                  maxEntries: 200,
+                },
+              },
+            },
+          ],
         },
         poweredByHeader: false,
         env: {
