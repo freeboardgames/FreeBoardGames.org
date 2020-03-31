@@ -43,21 +43,21 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
         />
         <DesktopView userAgent={this.props.userAgent} thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
           <div style={{ padding: '18px 8px', display: 'flex' }}>
-            <div style={{ flex: '60%' }}>
+            <div style={{ flex: '60%', paddingRight: '32px' }}>
               <Typography variant="h4" component="h1">
                 Play {gameDef.name}
               </Typography>
-              <Typography variant="body1" component="p">
-                <ReactMarkdown linkTarget="_blank" source={gameDef.instructions.text} />
-              </Typography>
+              <GameModePicker gameDef={gameDef} />
               <div style={{ marginTop: '32px' }}>
-                <GameModePicker gameDef={gameDef} />
+                <GameInstructionsVideo gameDef={gameDef} />
               </div>
             </div>
             <div style={{ flex: '40%', padding: '8px' }}>
               <GameCard game={gameDef} />
               <div style={{ marginTop: '16px' }}>
-                <GameInstructionsVideo gameDef={gameDef} />
+                <Typography variant="body1" component="p">
+                  <ReactMarkdown linkTarget="_blank" source={gameDef.instructions.text} />
+                </Typography>
               </div>
             </div>
           </div>
