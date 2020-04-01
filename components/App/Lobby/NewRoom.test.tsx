@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 
 import { NewRoom } from './NewRoom';
 import { LobbyService } from './LobbyService';
-import { render, wait, cleanup } from '@testing-library/react';
+import { render, waitFor, cleanup } from '@testing-library/react';
 require('@testing-library/jest-dom/extend-expect');
 
 describe('New Room', () => {
@@ -35,7 +35,7 @@ describe('New Room', () => {
         }}
       />,
     );
-    await wait(() => expect(getByText(/Failed to create room/)).toBeTruthy());
+    await waitFor(() => expect(getByText(/Failed to create room/)).toBeTruthy());
   });
 
   it('should show error if promise does not resolve', async () => {
@@ -48,6 +48,6 @@ describe('New Room', () => {
         }}
       />,
     );
-    await wait(() => expect(getByText(/Failed to create room/)).toBeTruthy());
+    await waitFor(() => expect(getByText(/Failed to create room/)).toBeTruthy());
   });
 });

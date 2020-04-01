@@ -1,6 +1,6 @@
 import React from 'react';
 import { GameDarkSublayout, IOptionsItems } from './GameDarkSublayout';
-import { render, fireEvent, RenderResult, cleanup, wait } from '@testing-library/react';
+import { render, fireEvent, RenderResult, cleanup, waitFor } from '@testing-library/react';
 import { GameMode } from './GameModePicker';
 import { IGameArgs } from './GameBoardWrapper';
 require('@testing-library/jest-dom/extend-expect');
@@ -52,7 +52,7 @@ describe('Game Dark Sublayout - Options Menu', () => {
 
     const option = wrapper.getByText('toggle me');
     fireEvent.click(option);
-    await wait(() => expect(wrapper.queryByText('toggle me')).not.toBeInTheDocument());
+    await waitFor(() => expect(wrapper.queryByText('toggle me')).not.toBeInTheDocument());
   });
 });
 
