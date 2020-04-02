@@ -11,6 +11,8 @@ declare class PuppeteerEnvironment implements JestEnvironment {
 declare global {
   const baseURL: string;
   const viewports: { PHONE_WIDTH: number; PHONE_HEIGHT: number; TABLET_WIDTH: number; TABLET_HEIGHT: number };
+  const setPhoneViewport: () => void;
+  const setTabletViewport: () => void;
 }
 
 export = PuppeteerEnvironment;

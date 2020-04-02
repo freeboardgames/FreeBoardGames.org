@@ -48,16 +48,16 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
                 Play {gameDef.name}
               </Typography>
               <GameModePicker gameDef={gameDef} />
-              <div style={{ marginTop: '32px' }}>
-                <GameInstructionsVideo gameDef={gameDef} />
-              </div>
             </div>
-            <div style={{ flex: '40%', padding: '8px' }}>
+            <div style={{ flex: '55%', padding: '8px' }}>
               <GameCard game={gameDef} />
               <div style={{ marginTop: '16px' }}>
                 <Typography variant="body1" component="p">
                   <ReactMarkdown linkTarget="_blank" source={gameDef.instructions.text} />
                 </Typography>
+              </div>
+              <div style={{ marginTop: '32px' }}>
+                <GameInstructionsVideo gameDef={gameDef} />
               </div>
             </div>
           </div>

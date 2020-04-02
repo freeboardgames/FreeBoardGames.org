@@ -18,7 +18,7 @@ export const tictactoeplusGameDef: IGameDef = {
     { mode: GameMode.LocalFriend },
   ],
   description: 'A new variant with a plus',
-  descriptionTag: `Play Tic-Tac-Toe-Plus for \
+  descriptionTag: `Play Tic-Tac-Toe-Plus for\
  free online. You can either play a single-player game against the computer,\
  a multi-player game against a friend online, or share your device and play\
  locally against a friend.`,

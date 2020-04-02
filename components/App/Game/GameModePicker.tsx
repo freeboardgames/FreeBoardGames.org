@@ -71,7 +71,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
       modes.push(this._getCard(mode));
     }
     return (
-      <div style={{ marginTop: '8px' }}>
+      <div style={{ marginTop: '8px', maxWidth: '500px' }}>
         <Typography variant="h6" component="h2" style={{ marginBottom: '16px' }}>
           Choose game mode
         </Typography>

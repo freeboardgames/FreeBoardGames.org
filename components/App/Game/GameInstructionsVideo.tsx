@@ -13,7 +13,7 @@ export class GameInstructionsVideo extends React.Component<IGameInstructionsProp
       return null;
     }
     return (
-      <Card style={{ marginBottom: 16 }}>
+      <Card style={{ marginBottom: 16, maxWidth: '1200px' }}>
         <div
           style={{
             position: 'relative',
