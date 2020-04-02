@@ -6,6 +6,8 @@ import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 
 const toMatchImageSnapshot = configureToMatchImageSnapshot({
   blur: 0.75,
+  failureThreshold: 0.01,
+  failureThresholdType: 'percent',
 });
 
 expect.extend({ toMatchImageSnapshot });
