@@ -55,7 +55,10 @@ export interface IAIConfig {
 export interface IGameDef {
   code: string;
   name: string;
-  imageURL: string;
+  imageURL: {
+    src: string;
+    0: string;
+  };
   description: string;
   descriptionTag: string;
   minPlayers: number;

@@ -1,5 +1,5 @@
+const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'components/App/Game/GameModePicker';
-import FourInARowThumbnail from './media/thumbnail.png';
 import { IGameDef } from 'games';
 import instructions from './instructions.md';
 
@@ -8,7 +8,7 @@ export const fourinarowGameDef: IGameDef = {
   name: 'Four in a Row',
   minPlayers: 2,
   maxPlayers: 2,
-  imageURL: FourInARowThumbnail,
+  imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   description: 'Also Known as Connect Four',
   descriptionTag: `Play Four in a Row for free.  You can play\

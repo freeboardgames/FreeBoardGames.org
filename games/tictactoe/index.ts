@@ -1,6 +1,6 @@
+const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'components/App/Game/GameModePicker';
 import { IGameModeExtraInfoDropdown } from 'components/App/Game/GameModePicker';
-import TicTacToeThumbnail from './media/thumbnail.png';
 import { IGameDef } from 'games';
 import instructions from './instructions.md';
 
@@ -9,7 +9,7 @@ export const tictactoeGameDef: IGameDef = {
   name: 'Tic-Tac-Toe',
   minPlayers: 2,
   maxPlayers: 2,
-  imageURL: TicTacToeThumbnail,
+  imageURL: Thumbnail,
   modes: [
     {
       mode: GameMode.AI,

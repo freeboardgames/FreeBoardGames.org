@@ -6,7 +6,7 @@ module.exports = {
     '^.+\\.[t|j]sx?$': 'babel-jest',
   },
   moduleNameMapper: {
-    '\\.(css|less|sass|scss|png|mp3|md)$': '<rootDir>/__mocks__/emptyModule.js',
+    '\\.(css|less|sass|scss|png|mp3|md).*$': '<rootDir>/__mocks__/emptyModule.js',
   },
   coverageReporters: ['json', 'lcov', 'text', 'text-summary'],
   globals: {

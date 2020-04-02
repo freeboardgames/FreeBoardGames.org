@@ -12,12 +12,14 @@ interface IGameCardProps {
 export class GameCard extends React.Component<IGameCardProps, {}> {
   render() {
     let navigateButton = null;
+    const image = this.props.game.imageURL;
     const mainDivStyle: React.CSSProperties = {
       position: 'relative',
       height: '250px',
       width: '100%',
       backgroundPosition: 'left center',
-      backgroundImage: `url(${this.props.game.imageURL})`,
+      backgroundColor: image[0],
+      backgroundImage: `url(${image.src})`,
       backgroundSize: 'cover',
     };
     const baseBadgeStyle: React.CSSProperties = {

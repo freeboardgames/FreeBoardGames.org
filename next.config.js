@@ -40,6 +40,13 @@ module.exports = withWorkers(
             },
           ],
         },
+        // next-optimized-images
+        optimizedImages: {
+          defaultImageLoader: 'responsive-loader',
+          optipng: {
+            optimizationLevel: 7,
+          },
+        },
         poweredByHeader: false,
         env: {
           CHANNEL,

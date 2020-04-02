@@ -33,6 +33,7 @@ class Header extends React.Component<{}, {}> {
           href="https://github.com/freeboardgames/FreeBoardGames.org"
           target="_blank"
           variant="outlined"
+          rel="noopener"
           style={{ margin: '8px' }}
         >
           <CodeIcon style={{ marginRight: '4px' }} />
@@ -42,7 +43,13 @@ class Header extends React.Component<{}, {}> {
           <SubjectIcon style={{ marginRight: '4px' }} />
           Blog
         </Button>
-        <Button href="https://discord.gg/AaE6n3n" target="_blank" variant="outlined" style={{ margin: '4px' }}>
+        <Button
+          href="https://discord.gg/AaE6n3n"
+          target="_blank"
+          variant="outlined"
+          rel="noopener"
+          style={{ margin: '4px' }}
+        >
           <QuestionAnswerIcon style={{ marginRight: '4px' }} />
           Chat
         </Button>
