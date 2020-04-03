@@ -27,12 +27,13 @@
       "node_modules/@types",
       "@types",
       "./@types"
-    ],
-    "experimentalDecorators": true
+    ]
   },
   "exclude": [
     "node_modules",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "backend",
+    "blog"
   ],
   "include": [
     "next-env.d.ts",
