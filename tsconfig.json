@@ -27,7 +27,8 @@
       "node_modules/@types",
       "@types",
       "./@types"
-    ]
+    ],
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules",
@@ -37,5 +38,5 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ]
+  ],
 }

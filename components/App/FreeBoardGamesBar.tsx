@@ -4,26 +4,28 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import FbgLogo from './media/fbg_logo_white_48.png';
 import Link from 'next/link';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core';
+import LoginForm from './Auth/LoginForm';
 
 interface FBGBarProps {
   FEATURE_FLAG_readyForDesktopView?: boolean;
 }
 
-class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
+interface FBGBarState {
+  loginFormOpen: boolean;
+}
+
+class FreeBoardGamesBar extends React.Component<FBGBarProps, FBGBarState> {
+  constructor(props: FBGBarProps) {
+    super(props);
+    this.state = { loginFormOpen: false };
+  }
+
   render() {
-    const isProdChannel = process.env.NODE_ENV === 'production';
-    let appBarStyle;
-    let versionInfo;
-
-    if (!isProdChannel) {
-      versionInfo = (
-        <Typography data-test-id="gitrev" variant="h6" style={{ color: 'white', marginLeft: 'auto' }}>
-          {process.env.VERSION}
-        </Typography>
-      );
-    }
-
     const maxWidth = this.props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
+
+    const WhiteButton = withStyles({ root: { color: 'white' } })(Button);
 
     return (
       <React.Fragment>
@@ -33,15 +35,17 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
             marginRight: 'auto',
           }}
         >
-          <AppBar position="sticky" style={appBarStyle}>
+          <AppBar position="sticky">
             <Link href="/">
               <a style={{ textDecoration: 'none' }}>
                 <Toolbar>
-                  <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
+                  <img style={{ marginRight: '12px', height: '48px' }} src={FbgLogo} alt="FbG" />
                   <Typography component="h1" variant="h6" style={{ color: 'white' }}>
                     FreeBoardGames.org
                   </Typography>
-                  {versionInfo}
+                  <WhiteButton style={{ marginLeft: 'auto' }} onClick={this._openLoginForm}>
+                    Log in
+                  </WhiteButton>
                 </Toolbar>
               </a>
             </Link>
@@ -54,11 +58,18 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
             marginRight: 'auto',
           }}
         >
+          {this.state.loginFormOpen && <LoginForm />}
           {this.props.children}
         </div>
       </React.Fragment>
     );
   }
+
+  _openLoginForm = () => {
+    this.setState((oldState) => {
+      return { ...oldState, loginFormOpen: true };
+    });
+  };
 }
 
 export default FreeBoardGamesBar;

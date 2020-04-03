@@ -156,7 +156,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         clientConfig.game.ai = gameAI;
       }
       if (this.mode === GameMode.OnlineFriend) {
-        clientConfig.multiplayer = SocketIO({ server: AddressHelper.getServerAddress() });
+        clientConfig.multiplayer = SocketIO({ server: AddressHelper.getGameServerAddress() });
       }
       const App = Client(clientConfig) as any;
       ReactGA.event({

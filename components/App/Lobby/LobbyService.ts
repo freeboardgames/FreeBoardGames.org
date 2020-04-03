@@ -31,16 +31,15 @@ export interface IStoredCredentials {
 export class LobbyService {
   public static async newRoom(gameCode: string, numPlayers: number): Promise<string> {
     const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/create`)
+      .post(`${AddressHelper.getGameServerAddress()}/games/${gameCode}/create`)
       .send({ numPlayers });
     const roomID = response.body.gameID;
     return roomID;
-    // return 'foo';
   }
 
   public static async joinRoom(gameCode: string, player: IPlayerInRoom): Promise<void> {
     const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/join`)
+      .post(`${AddressHelper.getGameServerAddress()}/games/${gameCode}/${player.roomID}/join`)
       .send({
         playerID: player.playerID,
         playerName: player.name,
@@ -51,7 +50,7 @@ export class LobbyService {
 
   public static async renameUser(gameCode: string, player: IPlayerInRoom, newName: string): Promise<void> {
     const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
-    await request.post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
+    await request.post(`${AddressHelper.getGameServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
       playerID: player.playerID,
       credentials: playerCredential.credential,
       newName,
@@ -59,7 +58,7 @@ export class LobbyService {
   }
 
   public static async getRoomMetadata(gameCode: string, roomID: string): Promise<IRoomMetadata> {
-    const response = await request.get(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}`);
+    const response = await request.get(`${AddressHelper.getGameServerAddress()}/games/${gameCode}/${roomID}`);
     const body = response.body;
     const players: IPlayerInRoom[] = body.players
       .filter((player: any) => player.name)
@@ -79,7 +78,7 @@ export class LobbyService {
   public static async getPlayAgainNextRoom(gameCode: string, roomID: string, numPlayers: number): Promise<string> {
     const playerCredential: IPlayerCredential = this.getCredential(roomID);
     const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}/playAgain`)
+      .post(`${AddressHelper.getGameServerAddress()}/games/${gameCode}/${roomID}/playAgain`)
       .send({ playerID: playerCredential.playerID, credentials: playerCredential.credential, numPlayers });
     return response.body.nextRoomID;
   }
