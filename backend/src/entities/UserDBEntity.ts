@@ -5,8 +5,11 @@ export class UserDBEntity extends BaseEntity {
   @PrimaryColumn()
   id!: number;
 
-  @Column()
+  @Column({ unique: true })
   email!: string;
+
+  @Column({ unique: true })
+  username!: string;
 
   @Column()
   passwordHash!: string;

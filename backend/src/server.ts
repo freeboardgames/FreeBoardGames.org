@@ -4,8 +4,8 @@ import express from 'express';
 import cors from 'cors';
 import 'reflect-metadata';
 import morgan from 'morgan';
-import { AuthResponse } from './dto';
-import User, { RESULT_CODE } from './User';
+import { AuthResponse, RegResponse } from './dto';
+import User from './User';
 import bodyParser from 'body-parser';
 
 const PORT = 8002;
@@ -40,6 +40,18 @@ async function serve() {
 
   app.get('/healthz', function (_req, res) {
     res.send('OK');
+  });
+
+  app.post('/api/users/register', async (req, res) => {
+    const { email, username, password } = req.body;
+    if (!email || !username || !password) {
+      res.status(400).send();
+      return;
+    }
+    const user = new User(username);
+    const addResult = await user.addUser(email, password);
+    const result: RegResponse = { status: addResult };
+    res.send(result);
   });
 
   app.post('/api/users/auth', async (req, res) => {

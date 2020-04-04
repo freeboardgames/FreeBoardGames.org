@@ -17,7 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CardContent from '@material-ui/core/CardContent';
-import { LoginService, RESULT_CODE } from './LoginService';
+import { LoginService, AUTH_RESULT_CODE, REG_RESULT_CODE } from './LoginService';
 
 const styles = (theme: Theme) => ({
   margin: {
@@ -36,9 +36,11 @@ interface Props {
 
 interface State {
   email: string;
+  username: string;
   password: string;
   submitButtonEnabled: boolean;
-  loginStatus: RESULT_CODE;
+  loginStatus: AUTH_RESULT_CODE;
+  regStatus: REG_RESULT_CODE;
   isRegistering: boolean;
 }
 
@@ -46,21 +48,29 @@ class LoginForm extends React.Component<Props, State> {
   emailInput: HTMLDivElement;
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '', submitButtonEnabled: false, isRegistering: false, loginStatus: null };
+    this.state = {
+      username: '',
+      email: '',
+      password: '',
+      submitButtonEnabled: false,
+      isRegistering: false,
+      loginStatus: null,
+      regStatus: null,
+    };
   }
 
   render() {
     const { classes } = this.props;
     const { loginStatus, isRegistering } = this.state;
-    const headerText = isRegistering ? 'Register' : 'Log in';
+    const actionText = isRegistering ? 'Register' : 'Login';
     let usernameErrorText: string;
     switch (loginStatus) {
-      case RESULT_CODE.UNKNOWN_EMAIL:
+      case AUTH_RESULT_CODE.UNKNOWN_EMAIL:
         usernameErrorText = 'Unknown email';
     }
     let passwordErrorText: string;
     switch (loginStatus) {
-      case RESULT_CODE.BAD_PASSWORD:
+      case AUTH_RESULT_CODE.BAD_PASSWORD:
         passwordErrorText = 'Incorrect password';
     }
     return (
@@ -85,7 +95,7 @@ class LoginForm extends React.Component<Props, State> {
             disableTypography
             title={
               <Typography style={{ marginLeft: '25%' }} variant="h6" component="h3" noWrap={true}>
-                {headerText}
+                {actionText}
               </Typography>
             }
           />
@@ -144,6 +154,7 @@ class LoginForm extends React.Component<Props, State> {
                   error={!!passwordErrorText}
                   helperText={passwordErrorText}
                   onChange={this._onChange}
+                  onKeyPress={!isRegistering ? this._catchEnterKey : undefined}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -162,6 +173,7 @@ class LoginForm extends React.Component<Props, State> {
                     fullWidth
                     required
                     onChange={this._onChange}
+                    onKeyPress={this._catchEnterKey}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -195,7 +207,7 @@ class LoginForm extends React.Component<Props, State> {
                 onClick={this._submitButtonClicked}
                 style={{ marginTop: '16px' }}
               >
-                Login
+                {actionText}
               </Button>
             </div>
           </CardContent>
@@ -203,6 +215,14 @@ class LoginForm extends React.Component<Props, State> {
       </AlertLayer>
     );
   }
+
+  _catchEnterKey = async (e: React.KeyboardEvent) => {
+    if (e.key == 'Enter') {
+      if (this.state.submitButtonEnabled) {
+        this._submitButtonClicked();
+      }
+    }
+  };
 
   _loginButtonClicked = async () => {
     this.setState((oldState: State) => ({ ...oldState, isRegistering: false, loginStatus: null }));
@@ -215,10 +235,16 @@ class LoginForm extends React.Component<Props, State> {
   };
 
   _submitButtonClicked = async () => {
-    const { email, password } = this.state;
     this.setState((oldState: State) => ({ ...oldState, submitButtonEnabled: false }));
-    const res = await LoginService.authenticate(email, password);
-    this.setState((oldState: State) => ({ ...oldState, loginStatus: res.status, submitButtonEnabled: true }));
+    if (this.state.isRegistering) {
+      const { email, username, password } = this.state;
+      const res = await LoginService.register(email, username, password);
+      this.setState((oldState: State) => ({ ...oldState, regStatus: res.status, submitButtonEnabled: true }));
+    } else {
+      const { email, password } = this.state;
+      const res = await LoginService.authenticate(email, password);
+      this.setState((oldState: State) => ({ ...oldState, loginStatus: res.status, submitButtonEnabled: true }));
+    }
   };
 
   _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
