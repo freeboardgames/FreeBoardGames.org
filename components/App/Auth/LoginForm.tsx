@@ -14,6 +14,7 @@ import {
 import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import CloseIcon from '@material-ui/icons/Close';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CardContent from '@material-ui/core/CardContent';
 import { LoginService, RESULT_CODE } from './LoginService';
@@ -42,6 +43,7 @@ interface State {
 }
 
 class LoginForm extends React.Component<Props, State> {
+  emailInput: HTMLDivElement;
   constructor(props) {
     super(props);
     this.state = { email: '', password: '', submitButtonEnabled: false, isRegistering: false, loginStatus: null };
@@ -100,6 +102,9 @@ class LoginForm extends React.Component<Props, State> {
                   error={!!usernameErrorText}
                   helperText={usernameErrorText}
                   onChange={this._onChange}
+                  inputRef={(input) => {
+                    this.emailInput = input;
+                  }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -109,6 +114,26 @@ class LoginForm extends React.Component<Props, State> {
                   }}
                 />
               </div>
+              {isRegistering && (
+                <div style={{ paddingTop: '24px' }}>
+                  <TextField
+                    id="username"
+                    label="Username"
+                    fullWidth
+                    required
+                    error={!!usernameErrorText}
+                    helperText={usernameErrorText}
+                    onChange={this._onChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircleIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+              )}
               <div style={{ paddingTop: '24px' }}>
                 <TextField
                   id="password"
@@ -181,10 +206,12 @@ class LoginForm extends React.Component<Props, State> {
 
   _loginButtonClicked = async () => {
     this.setState((oldState: State) => ({ ...oldState, isRegistering: false, loginStatus: null }));
+    this.emailInput.focus();
   };
 
   _registerButtonClicked = async () => {
     this.setState((oldState: State) => ({ ...oldState, isRegistering: true, loginStatus: null }));
+    this.emailInput.focus();
   };
 
   _submitButtonClicked = async () => {
