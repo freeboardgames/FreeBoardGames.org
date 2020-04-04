@@ -18,7 +18,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CardContent from '@material-ui/core/CardContent';
 import { LoginService, AUTH_RESULT_CODE, REG_RESULT_CODE } from './LoginService';
-import { withCookies } from 'react-cookie';
 
 const styles = (theme: Theme) => ({
   margin: {
@@ -33,7 +32,6 @@ const styles = (theme: Theme) => ({
 interface Props {
   closeLoginForm: () => void;
   classes: any; // FIXME
-  cookies: any; // FIXME
 }
 
 interface State {
@@ -237,7 +235,6 @@ class LoginForm extends React.Component<Props, State> {
   };
 
   _submitButtonClicked = async () => {
-    const xsrfToken = this.props.cookies.get('XSRF-TOKEN');
     this.setState((oldState: State) => ({ ...oldState, submitButtonEnabled: false }));
     if (this.state.isRegistering) {
       const { email, username, password } = this.state;
@@ -245,7 +242,7 @@ class LoginForm extends React.Component<Props, State> {
       this.setState((oldState: State) => ({ ...oldState, regStatus: res.status, submitButtonEnabled: true }));
     } else {
       const { email, password } = this.state;
-      const res = await LoginService.authenticate(xsrfToken, email, password);
+      const res = await LoginService.authenticate(email, password);
       this.setState((oldState: State) => ({ ...oldState, loginStatus: res.status, submitButtonEnabled: true }));
     }
   };
@@ -307,4 +304,4 @@ class LoginForm extends React.Component<Props, State> {
   };
 }
 
-export default withStyles(styles)(withCookies(LoginForm));
+export default withStyles(styles)(LoginForm);
