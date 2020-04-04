@@ -5587,6 +5587,13 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
+disable-scroll@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/disable-scroll/-/disable-scroll-0.5.1.tgz#f58ce9f64cc7375fecf19bc7c7434fa5634c4966"
+  integrity sha512-3lngZdv1vCg0qioEZS0B+g9mYFofyGpkVvCs6P8sfDm5QomYqAXHuvPANF4iPMAQStaBO5WvY77oRSSB8xfKuA==
+  dependencies:
+    scrollingelement "^1.5.2"
+
 discontinuous-range@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/discontinuous-range/-/discontinuous-range-1.0.0.tgz#e38331f0844bba49b9a9cb71c771585aab1bc65a"
@@ -13571,6 +13578,11 @@ schema-utils@^2.0.0, schema-utils@^2.0.1, schema-utils@^2.5.0, schema-utils@^2.6
   dependencies:
     ajv "^6.12.0"
     ajv-keywords "^3.4.1"
+
+scrollingelement@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/scrollingelement/-/scrollingelement-1.5.2.tgz#b63b71114d864e3671ca1e854ea1f93af61f107e"
+  integrity sha1-tjtxEU2GTjZxyh6FTqH5OvYfEH4=
 
 seek-bzip@^1.0.5:
   version "1.0.5"

@@ -18,6 +18,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CardContent from '@material-ui/core/CardContent';
 import { LoginService, AUTH_RESULT_CODE, REG_RESULT_CODE } from './LoginService';
+import disableScroll from 'disable-scroll';
 
 const styles = (theme: Theme) => ({
   margin: {
@@ -57,6 +58,15 @@ class LoginForm extends React.Component<Props, State> {
       loginStatus: null,
       regStatus: null,
     };
+  }
+
+  componentDidMount() {
+    window.scrollTo(0, 0);
+    disableScroll.on();
+  }
+
+  componentWillUnmount() {
+    disableScroll.off();
   }
 
   render() {
