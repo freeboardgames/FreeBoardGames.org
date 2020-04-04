@@ -4,6 +4,7 @@ import express from 'express';
 import { join } from 'path';
 import fs from 'fs';
 import { GAMES_LIST } from 'games';
+import SSROnlyUtil from './SSROnlyUtil';
 
 const dev = process.env.NODE_ENV !== 'production';
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
@@ -124,6 +125,11 @@ app
       } else {
         res.sendStatus(404);
       }
+    });
+
+    server.use((req, res, next) => {
+      req.SSROnlyUtil = SSROnlyUtil;
+      return next();
     });
 
     server.get('*', (req, res) => {

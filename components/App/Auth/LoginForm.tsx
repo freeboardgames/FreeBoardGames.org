@@ -302,6 +302,9 @@ class LoginForm extends React.Component<Props, State> {
       );
     }
   };
+  // static async getInitialProps(router) {
+  //   console.log((router as any).SSROnlyUtil.secret());
+  // }
 }
 
 export default withStyles(styles)(LoginForm);

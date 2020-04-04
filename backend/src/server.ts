@@ -7,8 +7,11 @@ import morgan from 'morgan';
 import { AuthResponse, RegResponse } from './dto';
 import User from './User';
 import bodyParser from 'body-parser';
+import csrf from 'csurf';
 
 const PORT = 8002;
+
+const csrfProtection = csrf({ cookie: true });
 
 const dbConnectionOptions: any = {
   type: 'sqlite',
@@ -22,7 +25,9 @@ async function serve() {
   const app: express.Application = express();
   app.disable('x-powered-by');
   app.use(bodyParser.json());
-  app.use(cors());
+  if (process.env.NODE_ENV === 'development') {
+    app.use(cors());
+  }
 
   // :method :url :status :response-time ms - :res[content-length]
   // GET /myroute 200 339.051 ms - 242
@@ -64,6 +69,11 @@ async function serve() {
     const authResult = await user.checkPassword(password);
     const result: AuthResponse = { status: authResult };
     res.send(result);
+  });
+
+  app.get('/api/getCSRF', csrfProtection, function (req, res) {
+    // pass the csrfToken to the view
+    res.send({ csrfToken: req.csrfToken() });
   });
 
   app.listen(PORT, function () {
