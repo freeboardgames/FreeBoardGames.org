@@ -1,0 +1,52 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-gap: 0.5rem;
+
+    height: 400px;
+    width: 500px;
+}
+
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 3px;
+    border: 1px solid black;
+}
+
+.teamsContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 2fr 1fr;
+
+    max-width: 500px;
+
+    text-align: center;
+}
+
+.team {
+    font-family: sans-serif;
+}
+
+.team ul {
+    text-align: left;
+}
+
+.teamBlue {
+    color: blue;
+}
+
+.teamRed {
+    color: red;
+}
+
+.unassigned {
+    grid-column: span 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
