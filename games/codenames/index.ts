@@ -7,7 +7,7 @@ export const codenamesGameDef: IGameDef = {
     code: 'codenames',
     name: 'Codenames',
     imageURL: Thumbnail,
-    modes: [{ mode: GameMode.OnlineFriend }],
+    modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],
     minPlayers: 1, // TODO set to min of 3
     maxPlayers: 20,
     description: 'The board game Codenames',
@@ -15,7 +15,7 @@ export const codenamesGameDef: IGameDef = {
  based on the board game Codenames! you can play multi-player\
  from three and up to thirty players online!`,
     instructions: {
-       videoId: 'fF0lnDygoes',
+       videoId: 'zQVHkl8oQEU',
        text: instructions,
     },
     config: () => import('./config'),
