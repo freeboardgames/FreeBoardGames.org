@@ -62,11 +62,11 @@ class LoginForm extends React.Component<Props, State> {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    disableScroll.on();
+    (disableScroll as any).on();
   }
 
   componentWillUnmount() {
-    disableScroll.off();
+    (disableScroll as any).off();
   }
 
   render() {
