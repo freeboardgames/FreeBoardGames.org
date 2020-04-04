@@ -1,8 +1,19 @@
 import React from 'react';
 import AlertLayer from '../Game/AlertLayer';
-import { Card, Typography, Button, TextField, Theme, FormControl, withStyles } from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import {
+  Card,
+  Typography,
+  Button,
+  TextField,
+  Theme,
+  FormControl,
+  withStyles,
+  CardHeader,
+  IconButton,
+} from '@material-ui/core';
+import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import CloseIcon from '@material-ui/icons/Close';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CardContent from '@material-ui/core/CardContent';
 import { LoginService, RESULT_CODE } from './LoginService';
@@ -11,24 +22,45 @@ const styles = (theme: Theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
+  cardHeader: {
+    padding: '0px',
+    paddingTop: '16px',
+  },
 });
+
+interface Props {
+  closeLoginForm: () => void;
+  classes: any; // FIXME
+}
 
 interface State {
   email: string;
   password: string;
-  loginButtonEnabled: boolean;
+  submitButtonEnabled: boolean;
   loginStatus: RESULT_CODE;
+  isRegistering: boolean;
 }
 
-class LoginForm extends React.Component<any, State> {
+class LoginForm extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '', loginButtonEnabled: false, loginStatus: null };
+    this.state = { email: '', password: '', submitButtonEnabled: false, isRegistering: false, loginStatus: null };
   }
 
   render() {
     const { classes } = this.props;
-    const { loginStatus } = this.state;
+    const { loginStatus, isRegistering } = this.state;
+    const headerText = isRegistering ? 'Register' : 'Log in';
+    let usernameErrorText: string;
+    switch (loginStatus) {
+      case RESULT_CODE.UNKNOWN_EMAIL:
+        usernameErrorText = 'Unknown email';
+    }
+    let passwordErrorText: string;
+    switch (loginStatus) {
+      case RESULT_CODE.BAD_PASSWORD:
+        passwordErrorText = 'Incorrect password';
+    }
     return (
       <AlertLayer>
         <Card
@@ -41,9 +73,20 @@ class LoginForm extends React.Component<any, State> {
             textAlign: 'center',
           }}
         >
-          <Typography style={{ paddingTop: '16px' }} variant="h6" component="h3" noWrap={true}>
-            Log in
-          </Typography>
+          <CardHeader
+            action={
+              <IconButton aria-label="settings" style={{ marginRight: '8px' }} onClick={this.props.closeLoginForm}>
+                <CloseIcon />
+              </IconButton>
+            }
+            className={classes.cardHeader}
+            disableTypography
+            title={
+              <Typography style={{ marginLeft: '25%' }} variant="h6" component="h3" noWrap={true}>
+                {headerText}
+              </Typography>
+            }
+          />
           <CardContent>
             <FormControl className={classes.margin}>
               <div>
@@ -54,13 +97,13 @@ class LoginForm extends React.Component<any, State> {
                   fullWidth
                   autoFocus
                   required
-                  error={loginStatus === RESULT_CODE.UNKNOWN_EMAIL}
-                  helperText={loginStatus === RESULT_CODE.UNKNOWN_EMAIL ? 'Unknown email' : null}
+                  error={!!usernameErrorText}
+                  helperText={usernameErrorText}
                   onChange={this._onChange}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <AccountCircleIcon />
+                        <EmailIcon />
                       </InputAdornment>
                     ),
                   }}
@@ -73,8 +116,8 @@ class LoginForm extends React.Component<any, State> {
                   type="password"
                   fullWidth
                   required
-                  error={loginStatus === RESULT_CODE.BAD_PASSWORD}
-                  helperText={loginStatus === RESULT_CODE.BAD_PASSWORD ? 'Incorrect password' : null}
+                  error={!!passwordErrorText}
+                  helperText={passwordErrorText}
                   onChange={this._onChange}
                   InputProps={{
                     startAdornment: (
@@ -85,18 +128,46 @@ class LoginForm extends React.Component<any, State> {
                   }}
                 />
               </div>
+              {isRegistering && (
+                <div style={{ paddingTop: '24px' }}>
+                  <TextField
+                    id="password"
+                    label="Confirm password"
+                    type="password"
+                    fullWidth
+                    required
+                    onChange={this._onChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <VpnKeyIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+              )}
             </FormControl>
-            <div style={{ marginTop: '8px' }}>
-              <Button disableFocusRipple disableRipple style={{ textTransform: 'none' }} variant="text" color="primary">
-                Forgot password?
-              </Button>
-            </div>
+            {!isRegistering && (
+              <div style={{ marginTop: '8px' }}>
+                <Button
+                  disableFocusRipple
+                  disableRipple
+                  style={{ textTransform: 'none' }}
+                  variant="text"
+                  color="primary"
+                >
+                  Forgot password?
+                </Button>
+              </div>
+            )}
+            {this._registerOrLoginButton()}
             <div>
               <Button
                 variant="contained"
                 color="primary"
-                disabled={!this.state.loginButtonEnabled}
-                onClick={this._loginButtonClicked}
+                disabled={!this.state.submitButtonEnabled}
+                onClick={this._submitButtonClicked}
                 style={{ marginTop: '16px' }}
               >
                 Login
@@ -109,9 +180,18 @@ class LoginForm extends React.Component<any, State> {
   }
 
   _loginButtonClicked = async () => {
+    this.setState((oldState: State) => ({ ...oldState, isRegistering: false, loginStatus: null }));
+  };
+
+  _registerButtonClicked = async () => {
+    this.setState((oldState: State) => ({ ...oldState, isRegistering: true, loginStatus: null }));
+  };
+
+  _submitButtonClicked = async () => {
     const { email, password } = this.state;
+    this.setState((oldState: State) => ({ ...oldState, submitButtonEnabled: false }));
     const res = await LoginService.authenticate(email, password);
-    this.setState((oldState: State) => ({ ...oldState, loginStatus: res.status }));
+    this.setState((oldState: State) => ({ ...oldState, loginStatus: res.status, submitButtonEnabled: true }));
   };
 
   _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +199,7 @@ class LoginForm extends React.Component<any, State> {
     this.setState((oldState: State) => {
       const newState = { ...oldState };
       newState[id] = value;
-      newState.loginButtonEnabled = this._validateFields(newState);
+      newState.submitButtonEnabled = this._validateFields(newState);
       return newState;
     });
   };
@@ -134,6 +214,40 @@ class LoginForm extends React.Component<any, State> {
   _validateEmail = (email: string) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email.toLowerCase());
+  };
+
+  _registerOrLoginButton = () => {
+    if (this.state.isRegistering) {
+      return (
+        <div style={{ marginTop: '8px' }}>
+          <Button
+            disableFocusRipple
+            disableRipple
+            style={{ textTransform: 'none' }}
+            onClick={this._loginButtonClicked}
+            variant="text"
+            color="primary"
+          >
+            Already have an account?
+          </Button>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ marginTop: '8px' }}>
+          <Button
+            disableFocusRipple
+            disableRipple
+            style={{ textTransform: 'none' }}
+            onClick={this._registerButtonClicked}
+            variant="text"
+            color="primary"
+          >
+            Register
+          </Button>
+        </div>
+      );
+    }
   };
 }
 

@@ -1,6 +1,6 @@
 import { Page } from 'puppeteer';
 
-beforeEach(async () => {
+beforeAll(async () => {
   await page.goto(baseURL + '/play/tictactoe');
 });
 
@@ -16,6 +16,7 @@ it('has title', async () => {
 describe('phone', () => {
   beforeAll(async () => {
     await setPhoneViewport();
+    await page.goto(baseURL + '/play/tictactoe');
   });
 
   it('has game instruction video', async () => {
@@ -32,6 +33,7 @@ describe('phone', () => {
 describe('tablet', () => {
   beforeAll(async () => {
     await setTabletViewport();
+    await page.goto(baseURL + '/play/tictactoe');
   });
 
   it('has game instruction video', async () => {

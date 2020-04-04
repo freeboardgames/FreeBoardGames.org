@@ -43,7 +43,11 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, FBGBarState> {
                   <Typography component="h1" variant="h6" style={{ color: 'white' }}>
                     FreeBoardGames.org
                   </Typography>
-                  <WhiteButton style={{ marginLeft: 'auto' }} onClick={this._openLoginForm}>
+                  <WhiteButton
+                    data-testid={'loginorprofilebutton'}
+                    style={{ marginLeft: 'auto' }}
+                    onClick={this._openLoginForm}
+                  >
                     Log in
                   </WhiteButton>
                 </Toolbar>
@@ -58,7 +62,7 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, FBGBarState> {
             marginRight: 'auto',
           }}
         >
-          {this.state.loginFormOpen && <LoginForm />}
+          {this.state.loginFormOpen && <LoginForm closeLoginForm={this._closeLoginForm} />}
           {this.props.children}
         </div>
       </React.Fragment>
@@ -68,6 +72,12 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, FBGBarState> {
   _openLoginForm = () => {
     this.setState((oldState) => {
       return { ...oldState, loginFormOpen: true };
+    });
+  };
+
+  _closeLoginForm = () => {
+    this.setState((oldState) => {
+      return { ...oldState, loginFormOpen: false };
     });
   };
 }

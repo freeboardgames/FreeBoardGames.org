@@ -31,6 +31,7 @@ async function serve() {
 
   app.use(
     morgan(method, {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       skip: (req: any, _res: any) => req.url === '/healthz',
     }),
   );
@@ -41,7 +42,7 @@ async function serve() {
     res.send('OK');
   });
 
-  app.post('/users/auth', async (req, res) => {
+  app.post('/api/users/auth', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
       res.status(400).send();
@@ -54,6 +55,7 @@ async function serve() {
   });
 
   app.listen(PORT, function () {
+    // eslint-disable-next-line no-console
     console.log('listening on port ' + PORT);
   });
 }
