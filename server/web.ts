@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
 import next from 'next';
 import express from 'express';
-import { join } from 'path';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import csurf from 'csurf';
+import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 import fs from 'fs';
 import { GAMES_LIST } from 'games';
 import SSROnlyUtil from './SSROnlyUtil';
@@ -15,6 +18,8 @@ const PORT = process.env.SERVER_PORT || 3000;
 const isProdChannel = process.env.CHANNEL === 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+
+const csrfProtection = csurf({ cookie: true });
 
 const excludedPaths = ['/_error', '/_document', '/_app', '/play'];
 
@@ -70,6 +75,19 @@ app
   .then(() => {
     const server = express();
     server.disable('x-powered-by');
+    server.use(cookieParser());
+
+    // :method :url :status :response-time ms - :res[content-length]
+    // GET /myroute 200 339.051 ms - 242
+    // was dev
+    // const method = ':date[iso] :remote-addr   :method :url :status   :response-time ms (:res[content-length])';
+
+    // server.use(
+    //   morgan(method, {
+    //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    //     skip: (req: any, _res: any) => req.url === '/healthz',
+    //   }),
+    // );
 
     server.use('/blog', express.static(APP_DIR + '/blog/dist'));
 
@@ -127,12 +145,15 @@ app
       }
     });
 
+    server.use('/api', createProxyMiddleware({ target: 'http://localhost:8002', changeOrigin: true }));
+
     server.use((req, res, next) => {
       req.SSROnlyUtil = SSROnlyUtil;
       return next();
     });
 
-    server.get('*', (req, res) => {
+    server.get('*', csrfProtection, (req, res) => {
+      res.cookie('XSRF-TOKEN', req.csrfToken());
       return handle(req, res);
     });
 

@@ -1,13 +1,13 @@
 import { createConnection } from 'typeorm';
 import { UserDBEntity } from './entities/UserDBEntity';
 import express from 'express';
-import cors from 'cors';
 import 'reflect-metadata';
 import morgan from 'morgan';
 import { AuthResponse, RegResponse } from './dto';
 import User from './User';
 import bodyParser from 'body-parser';
 import csrf from 'csurf';
+import cookieParser from 'cookie-parser';
 
 const PORT = 8002;
 
@@ -25,9 +25,7 @@ async function serve() {
   const app: express.Application = express();
   app.disable('x-powered-by');
   app.use(bodyParser.json());
-  if (process.env.NODE_ENV === 'development') {
-    app.use(cors());
-  }
+  app.use(cookieParser());
 
   // :method :url :status :response-time ms - :res[content-length]
   // GET /myroute 200 339.051 ms - 242
@@ -47,7 +45,7 @@ async function serve() {
     res.send('OK');
   });
 
-  app.post('/api/users/register', async (req, res) => {
+  app.post('/api/users/register', csrfProtection, async (req, res) => {
     const { email, username, password } = req.body;
     if (!email || !username || !password) {
       res.status(400).send();
@@ -59,7 +57,8 @@ async function serve() {
     res.send(result);
   });
 
-  app.post('/api/users/auth', async (req, res) => {
+  app.post('/api/users/auth', csrfProtection, async (req, res) => {
+    console.log('Cookies: ', req.cookies);
     const { email, password } = req.body;
     if (!email || !password) {
       res.status(400).send();
@@ -69,11 +68,6 @@ async function serve() {
     const authResult = await user.checkPassword(password);
     const result: AuthResponse = { status: authResult };
     res.send(result);
-  });
-
-  app.get('/api/getCSRF', csrfProtection, function (req, res) {
-    // pass the csrfToken to the view
-    res.send({ csrfToken: req.csrfToken() });
   });
 
   app.listen(PORT, function () {
