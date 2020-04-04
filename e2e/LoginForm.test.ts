@@ -4,7 +4,7 @@ beforeEach(async () => {
 
 it('has log in button', async () => {
   await expect(page).toMatchElement('button', { text: 'Log in', visible: true });
-  // await expect(page).toClick('button', { text: 'Log in' })
+  await expect(page).toClick('button', { text: 'Log in' });
 });
 
 describe('phone', () => {
@@ -12,8 +12,12 @@ describe('phone', () => {
     await setPhoneViewport();
   });
 
-  describe('logged out', () => {
+  describe('logging in', () => {
     it('matches golden', async () => {
+      await expect(page).toClick('button', { text: 'Log in' });
+      // blur so the input field isn't auto-focused (cursor blinking causes diffs)
+      page.$eval('input[id=email]', (e) => (e as any).blur());
+      await sleep(500);
       const image = await page.screenshot();
       expect(image).toMatchImageSnapshot();
     });
@@ -25,12 +29,22 @@ describe('tablet', () => {
     await setTabletViewport();
   });
 
-  describe('logged out', () => {
+  describe('logging in', () => {
     it('matches golden', async () => {
+      await expect(page).toClick('button', { text: 'Log in' });
+      // blur so the input field isn't auto-focused (cursor blinking causes diffs)
+      page.$eval('input[id=email]', (e) => (e as any).blur());
+      await sleep(500);
       const image = await page.screenshot();
       expect(image).toMatchImageSnapshot();
     });
   });
 });
+
+function sleep(milliseconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
 
 export {};
