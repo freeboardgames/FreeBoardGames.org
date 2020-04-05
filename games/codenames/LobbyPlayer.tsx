@@ -20,7 +20,7 @@ export class LobbyPlayer extends React.Component<ILobbyPlayerProps, ILobbyPlayer
 
     render() {
         return (
-            <li key={this.props.playerIndex}>
+            <li>
                 {this.props.player.isSpymaster ? <span>[S] </span> : ''}
                 {this.props.players[this.props.playerIndex].name}
                 {!this.props.player.isSpymaster && this.props.isHost

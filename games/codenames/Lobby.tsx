@@ -45,6 +45,7 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
         for (const playerIndex in this.props.G.players) {
             const player = this.props.G.players[playerIndex];
             const item = <LobbyPlayer
+                key={playerIndex}
                 playerIndex={playerIndex}
                 moves={this.props.moves}
                 player={player}
