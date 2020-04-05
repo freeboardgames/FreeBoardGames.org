@@ -6,6 +6,7 @@ import css from './board.css';
 import {CARD_COLOR} from './card';
 import {GameLayout} from '../../components/App/Game/GameLayout';
 import {Lobby} from './Lobby';
+import './global.css';
 
 interface IBoardProps {
     G: IG;

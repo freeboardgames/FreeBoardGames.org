@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Player from './player';
+import css from './Lobby.css';
 
 interface ILobbyPlayerProps {
     moves: any;
@@ -25,7 +26,8 @@ export class LobbyPlayer extends React.Component<ILobbyPlayerProps, ILobbyPlayer
                 {this.props.players[this.props.playerIndex].name}
                 {!this.props.player.isSpymaster && this.props.isHost
                     ? <button
-                        onClick={() => this._makeSpymaster(this.props.player)}>make spymaster</button>
+                        className={[css.btn, css.btnSpymaster].join(' ')}
+                        onClick={() => this._makeSpymaster(this.props.player)}>Make Spymaster</button>
                     : ''}
             </li>
         );

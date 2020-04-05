@@ -1,7 +1,6 @@
 import * as React from 'react';
-import Player from './player';
-import css from './board.css';
 import {IG} from './game';
+import css from './Lobby.css';
 
 interface ILobbyTeamProps {
     G: IG;
@@ -34,8 +33,9 @@ export class LobbyTeam extends React.Component<ILobbyTeamProps, ILobbyTeamState>
     render() {
         return (
             <div className={this.props.classes}>
-                <h2>{this.props.teamName}</h2>
+                <h3>{this.props.teamName}</h3>
                 <button
+                    className={css.btn}
                     onClick={() => this._switchTeam(this.props.teamID)}
                     disabled={!this.canSwitchToTeam(this.props.teamID)}>Switch to {this.props.teamName}
                 </button>
