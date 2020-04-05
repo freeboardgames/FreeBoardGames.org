@@ -17,36 +17,18 @@
     border: 1px solid black;
 }
 
-.teamsContainer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 2fr 1fr;
-
-    max-width: 500px;
-
-    text-align: center;
+.cardBlue {
+    background-color: blue;
 }
 
-.team {
-    font-family: sans-serif;
+.cardRed {
+    background-color: red;
 }
 
-.team ul {
-    text-align: left;
+.cardCivilian {
+    background-color: beige;
 }
 
-.teamBlue {
-    color: blue;
-}
-
-.teamRed {
-    color: red;
-}
-
-.unassigned {
-    grid-column: span 2;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.cardAssassin {
+    background-color: dimgray;
 }
