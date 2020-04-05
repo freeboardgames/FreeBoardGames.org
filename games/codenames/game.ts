@@ -150,6 +150,7 @@ const GameConfig: IGameArgs = {
     },
 
     playerView: (G: IG, ctx: IGameCtx, playerID: string): any => {
+        if (playerID === null) return G;
         if (ctx.phase !== PHASES.PLAY) return G;
         if (ctx.playOrder.includes(playerID)) return G;
 

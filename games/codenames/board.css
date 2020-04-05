@@ -1,11 +1,39 @@
+.main {
+    background-color: var(--background-color);
+
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 .8rem;
+    padding: 0.8rem 0;
+
+    font-family: sans-serif;
+}
+
+.header {
+    color: var(--gray);
+}
+
+.header h1 {
+    text-align: center;
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     grid-gap: 0.5rem;
 
-    height: 400px;
-    width: 500px;
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
 .card {
@@ -13,22 +41,78 @@
     justify-content: center;
     align-items: center;
 
+    /* vw - 2 * margin-l + margin-r - all grid-gap / card columns*/
+    height: calc((100vw - 1.6rem - 2rem) / 5);
+    max-height: 100px;
+    padding: 0.2rem;
+
     border-radius: 3px;
-    border: 1px solid black;
+    box-shadow: var(--box-shadow);
+
+    color: #fff;
+    fill: var(--gray);
+    background-color: #f7f7f7;
+
+    text-transform: capitalize;
+    transition: box-shadow 200ms ease-out, transform 200ms ease-out;
+}
+
+.card:not(.cardRevealed):hover {
+    box-shadow: var(--box-shadow-md);
+    transform: scale(1.03);
+    cursor: pointer;
+}
+
+.card svg {
+    width: 100%;
+    height: 100%;
 }
 
 .cardBlue {
-    background-color: blue;
+    background-color: var(--blue-card--background-color);
+    fill: #fff;
 }
 
 .cardRed {
-    background-color: red;
+    background-color: var(--red-card--background-color);
+    fill: #fff;
 }
 
 .cardCivilian {
-    background-color: beige;
+    background-color: var(--civilian-card--background-color);
+    fill: var(--gray);
 }
 
 .cardAssassin {
-    background-color: dimgray;
+    background-color: var(--assassin-card--background-color);
+    fill: #fff;
+}
+
+.btn {
+    color: white;
+    border-radius: 3px;
+    border: none;
+    padding: 8px 16px;
+
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: background-color 200ms ease-out;
+
+    outline: none;
+}
+
+.btn[disabled] {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: not-allowed;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.btn:not([disabled]):hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
 }

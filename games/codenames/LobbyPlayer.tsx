@@ -24,7 +24,7 @@ export class LobbyPlayer extends React.Component<ILobbyPlayerProps, ILobbyPlayer
             <li>
                 {this.props.player.isSpymaster ? <span>[S] </span> : ''}
                 {this.props.players[this.props.playerIndex].name}
-                {!this.props.player.isSpymaster && this.props.isHost
+                {!this.props.player.isSpymaster && this.props.isHost && this.props.player.teamID !== null
                     ? <button
                         className={[css.btn, css.btnSpymaster].join(' ')}
                         onClick={() => this._makeSpymaster(this.props.player)}>Make Spymaster</button>

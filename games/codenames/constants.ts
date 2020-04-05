@@ -73,7 +73,7 @@ export const wordsAlt = [
 export const wordsNL = [
     'post', 'roulette', 'draak', 'oorlog', 'honing', 'bom', 'casino', 'wolkenkrabber', 'saturnus', 'astronaut', 'zweep',
     'antarctica', 'sneeuwpop', 'concert', 'chocolade', 'vliegtuig', 'miljonair', 'dinosaurus', 'kameleon', 'trompet',
-    'pinguÏn', 'spin', 'raket', 'ambassade', 'pistool', 'ziekte', 'spion', 'prinses', 'genie', 'dief', 'opera', 'ridder',
+    'pinguïn', 'spin', 'raket', 'ambassade', 'pistool', 'ziekte', 'spion', 'prinses', 'genie', 'dief', 'opera', 'ridder',
     'stadion', 'limousine', 'spook', 'bus', 'lolly', 'laser', 'dood', 'ziekenhuis', 'ambulance', 'inktvis', 'helikopter',
     'kangoeroe', 'microscoop', 'pretpark', 'superheld', 'telescoop', 'parachute', 'vampier', 'rotonde', 'satelliet',
     'engel', 'robot', 'eenhoorn', 'heks', 'kolonist', 'duiker', 'gif', 'brug', 'vuur', 'cobra', 'walvis', 'maan', 'vis',
@@ -86,7 +86,7 @@ export const wordsNL = [
     'krijt', 'bord', 'box', 'scherm', 'stuk', 'spot', 'knop', 'mond', 'etiket', 'hand', 'bed', 'muur', 'toren', 'kaart',
     'bad', 'diamant', 'kruis', 'net', 'punt', 'noot', 'plaat', 'hol', 'wijzer', 'kracht', 'sleutel', 'machine',
     'overgang', 'stroom', 'hoofd', 'paal', 'centrum', 'ongeluk', 'schat', 'slot', 'code', 'cirkel', 'link', 'pijp',
-    'amsterdam', 'nederland', 'limburg', 'brussel', 'egypte', 'londen', 'carnaval', 'rotterdam', 'belgiË', 'hunebed',
+    'amsterdam', 'nederland', 'limburg', 'brussel', 'egypte', 'londen', 'carnaval', 'rotterdam', 'belgië', 'hunebed',
     'hollywood', 'griekenland', 'rome', 'ardennen', 'ninja', 'pool', 'shoarma', 'duitsland', 'provincie', 'amerika',
     'atlantis', 'engeland', 'loempia', 'afrika', 'tablet', 'frankrijk', 'klomp', 'polder', 'euro', 'voetbal', 'zeeland',
     'berlijn', 'pizza', 'dolfijn', 'hawaÏ', 'motor', 'laars', 'caravan', 'friet', 'alpen', 'seizoen', 'kamer', 'blik',

@@ -88,7 +88,9 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
                         </div>
                     </div>
 
-                    <p className={css.text}>In order to start the game all players need to join a team and each team must have a spymaster.</p>
+                    {!this.gameCanStart()
+                        ? <p className={css.text}>In order to start the game all players need to join a team and each team must have a spymaster.</p>
+                        : ''}
 
                     {this.props.isHost || isLocalGame(this.props.gameArgs)
                         ? <button

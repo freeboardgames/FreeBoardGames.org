@@ -8,7 +8,7 @@ export const codenamesGameDef: IGameDef = {
     name: 'Codenames',
     imageURL: Thumbnail,
     modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],
-    minPlayers: 1, // TODO set to min of 3
+    minPlayers: 3,
     maxPlayers: 20,
     description: 'The board game Codenames',
     descriptionTag: `Play Codenames, a free online game\
