@@ -68,6 +68,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         } else {
             if (this.props.ctx.activePlayers[this.props.ctx.currentPlayer] !== STAGES.GUESS) return;
         }
+        if (this.props.G.cards[cardIndex].revealed) return;
 
         this.props.moves.chooseCard(cardIndex);
     };
