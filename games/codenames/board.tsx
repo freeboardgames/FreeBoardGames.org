@@ -3,6 +3,7 @@ import {IG, PHASES, STAGES} from './game';
 import {IGameCtx} from 'boardgame.io/core';
 import {IGameArgs} from '../../components/App/Game/GameBoardWrapper';
 import css from './board.css';
+import lobbyCss from './Lobby.css';
 import {CARD_COLOR} from './card';
 import {GameLayout} from '../../components/App/Game/GameLayout';
 import {Lobby} from './Lobby';
@@ -157,14 +158,20 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     _getScoreBoard = () => {
         return (
-            <div>boe</div>
+            <div className={[lobbyCss.team, lobbyCss.unassigned, css.winners].join(' ')}>
+                <h3>Winners!</h3>
+
+                {this.props.ctx.gameover.winner.players.map(p => {
+                    return <p>{this.props.gameArgs.players[p.playerID].name}</p>
+                })}
+            </div>
         );
     };
 
     render() {
         if (this.props.ctx.gameover) return (
             <GameLayout
-                gameOver={'TEAM wins!'}
+                gameOver={this.props.ctx.gameover.winner.teamId ? 'Red Team wins' : 'Blue Team wins'}
                 extraCardContent={this._getScoreBoard()}
                 gameArgs={this.props.gameArgs}
             />

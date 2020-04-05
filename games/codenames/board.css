@@ -116,3 +116,8 @@
     display: flex;
     justify-content: space-around;
 }
+
+.winners {
+    font-family: sans-serif;
+    color: #fff;
+}
