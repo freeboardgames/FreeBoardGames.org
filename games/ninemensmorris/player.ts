@@ -1,6 +1,3 @@
-export default class Player {
+export default interface Player {
   lostPieces: number;
-  constructor() {
-    this.lostPieces = 0;
-  }
 }
