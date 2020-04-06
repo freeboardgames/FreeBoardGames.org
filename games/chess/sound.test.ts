@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { playSound } from './sound';
 
 // mock functions for HTMLMediaElement
