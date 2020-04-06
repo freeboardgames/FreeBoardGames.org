@@ -1,6 +1,5 @@
 import React from 'react';
 import { Board } from './board';
-import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -77,7 +76,7 @@ test('render board - one X and one O - local friend', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain("Red's turn");
+  expect(comp.html()).toContain("Red's turn");
   expect(comp.find('rect').length).toEqual(9); // 9 rectangles
   expect(comp.find('.cross').length).toEqual(1); // one X
   expect(comp.find('circle').length).toEqual(1); // one O
@@ -102,7 +101,7 @@ test("render board - O's turn - local friend", () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain("Green's turn");
+  expect(comp.html()).toContain("Green's turn");
 });
 
 test('render board - X wins - local friend', () => {
@@ -124,7 +123,7 @@ test('render board - X wins - local friend', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('red won');
+  expect(comp.html()).toContain('red won');
 });
 
 test('render board - O wins - local friend', () => {
@@ -146,7 +145,7 @@ test('render board - O wins - local friend', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('green won');
+  expect(comp.html()).toContain('green won');
 });
 
 test('render board - X wins - AI', () => {
@@ -168,7 +167,7 @@ test('render board - X wins - AI', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('you won');
+  expect(comp.html()).toContain('you won');
 });
 
 test('render board - O wins - AI', () => {
@@ -190,7 +189,7 @@ test('render board - O wins - AI', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('you lost');
+  expect(comp.html()).toContain('you lost');
 });
 
 test('render board - O wins - draw', () => {
@@ -212,7 +211,7 @@ test('render board - O wins - draw', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('draw');
+  expect(comp.html()).toContain('draw');
 });
 
 test('render board - draw - local friend', () => {
@@ -234,7 +233,7 @@ test('render board - draw - local friend', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('draw');
+  expect(comp.html()).toContain('draw');
 });
 
 test('render board - our turn - online', () => {
@@ -257,7 +256,7 @@ test('render board - our turn - online', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('YOUR TURN');
+  expect(comp.html()).toContain('YOUR TURN');
 });
 
 test('render board - their turn - online', () => {
@@ -280,7 +279,7 @@ test('render board - their turn - online', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('Waiting for opponent');
+  expect(comp.html()).toContain('Waiting for opponent');
 });
 
 test('render board - one X and one O - online', () => {
@@ -326,7 +325,7 @@ test('render board - we win - online', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('you won');
+  expect(comp.html()).toContain('you won');
 });
 
 test('render board - we lose - online', () => {
@@ -348,7 +347,7 @@ test('render board - we lose - online', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('you lost');
+  expect(comp.html()).toContain('you lost');
 });
 
 test('render board - draw - online', () => {
@@ -370,7 +369,7 @@ test('render board - draw - online', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('draw');
+  expect(comp.html()).toContain('draw');
 });
 
 test('render board - AI', () => {
@@ -392,5 +391,5 @@ test('render board - AI', () => {
     />,
   );
   comp.find('rect').at(0).simulate('click');
-  expect(comp.html()).to.contain("Red's turn");
+  expect(comp.html()).toContain("Red's turn");
 });
