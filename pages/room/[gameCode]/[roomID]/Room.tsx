@@ -177,6 +177,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   _tryAgain = () => {
     this.setState((oldState) => ({ ...oldState, error: '' }));
     this.updateMetadata();
+    this.timer = setInterval(() => this.updateMetadata(), 2000);
   };
 }
 
