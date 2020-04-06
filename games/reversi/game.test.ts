@@ -1,5 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
+import { Local } from 'boardgame.io/multiplayer';
 import { ReversiGame, IG, placePiece } from './game';
 
 test('invalid moves', () => {
@@ -17,14 +18,14 @@ test('invalid moves', () => {
 it('should declare player 0 as the winner', () => {
   const spec = {
     game: ReversiGame,
-    multiplayer: { local: true },
+    multiplayer: Local(),
   };
 
   const p0 = Client({ ...spec, playerID: '0' } as any) as any;
   const p1 = Client({ ...spec, playerID: '1' } as any) as any;
 
-  p0.connect();
-  p1.connect();
+  p0.start();
+  p1.start();
 
   p0.moves.placePiece(5, 3);
   p1.moves.placePiece(2, 2);

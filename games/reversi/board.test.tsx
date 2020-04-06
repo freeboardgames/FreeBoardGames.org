@@ -7,7 +7,6 @@ import { ReversiGame } from './game';
 
 import { Board } from './board';
 import { GameMode } from 'components/App/Game/GameModePicker';
-import { expect } from 'chai';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -21,6 +20,7 @@ const BoardTest = (props: any) => (
     {...{
       ...props,
       gameArgs: {
+        gameCode: 'reversi',
         mode: GameMode.OnlineFriend,
         players,
       },
@@ -42,14 +42,14 @@ test('round placing pieces', () => {
 
   comp.find('rect').at(getPosition(5, 3)).simulate('click');
 
-  expect(comp.find('rect').at(getPosition(5, 3)).prop('style').fill).to.not.equal('black');
+  expect(comp.find('rect').at(getPosition(5, 3)).prop('style').fill).not.toEqual('black');
 
   comp.setProps({ playerID: '1' });
   comp.update();
 
   comp.find('rect').at(getPosition(4, 2)).simulate('click');
 
-  expect(comp.find('rect').at(getPosition(4, 2)).prop('style').fill).to.not.equal('black');
+  expect(comp.find('rect').at(getPosition(4, 2)).prop('style').fill).not.toEqual('black');
 });
 
 test('gameover - won', () => {
@@ -82,7 +82,7 @@ test('gameover - won', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('won');
+  expect(comp.html()).toContain('won');
 });
 
 test('gameover - lost', () => {
@@ -115,7 +115,7 @@ test('gameover - lost', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('lost');
+  expect(comp.html()).toContain('lost');
 });
 
 test('gameover - draw', () => {
@@ -148,5 +148,5 @@ test('gameover - draw', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('draw');
+  expect(comp.html()).toContain('draw');
 });
