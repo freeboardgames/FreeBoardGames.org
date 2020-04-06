@@ -1,6 +1,5 @@
 import { getWinner } from './game';
 import { ChessGame } from './game';
-import { expect } from 'chai';
 import { Client } from 'boardgame.io/client';
 
 test("fool's move", () => {
@@ -25,7 +24,7 @@ test('get winner', () => {
       game_over: () => true,
       in_draw: () => true,
     }),
-  ).to.deep.equal('d');
+  ).toEqual('d');
   expect(
     getWinner({
       game_over: () => true,
@@ -36,7 +35,7 @@ test('get winner', () => {
       in_checkmate: () => true,
       turn: () => 'w',
     }),
-  ).to.deep.equal('b');
+  ).toEqual('b');
   expect(
     getWinner({
       game_over: () => true,
@@ -47,5 +46,5 @@ test('get winner', () => {
       in_checkmate: () => true,
       turn: () => 'b',
     }),
-  ).to.deep.equal('w');
+  ).toEqual('w');
 });

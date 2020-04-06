@@ -1,5 +1,4 @@
 import AIConfig from './ai';
-import { expect } from 'chai';
 import { ChessGame } from './game';
 import { Client } from 'boardgame.io/client';
 
@@ -30,5 +29,5 @@ test('should return empty object when game is over', async () => {
   const Bot = AIConfig.bgioAI('1').bot;
   const bot = new Bot();
   const move = await bot.play({ G: {}, ctx: { gameover: '1' } }, '0');
-  expect(move).to.deep.equal({});
+  expect(move).toEqual({});
 });
