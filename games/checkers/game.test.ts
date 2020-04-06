@@ -1,6 +1,7 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
 import { CheckersGame, IG, move, INITIAL_BOARD } from './game';
+import { Local } from 'boardgame.io/multiplayer';
 
 test('invalid moves', () => {
   let G: IG = {
@@ -16,14 +17,14 @@ test('invalid moves', () => {
 it('should declare player 1 as the winner', () => {
   const spec = {
     game: CheckersGame,
-    multiplayer: { local: true },
+    multiplayer: Local(),
   };
 
   const p0 = Client({ ...spec, playerID: '0' } as any) as any;
   const p1 = Client({ ...spec, playerID: '1' } as any) as any;
 
-  p0.connect();
-  p1.connect();
+  p0.start();
+  p1.start();
 
   p0.moves.move({ x: 4, y: 5 }, { x: 5, y: 4 });
   p1.moves.move({ x: 5, y: 2 }, { x: 4, y: 3 });

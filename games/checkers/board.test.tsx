@@ -15,6 +15,7 @@ const BoardTest = (props: any) => (
     {...{
       ...props,
       gameArgs: {
+        gameCode: 'checkers',
         mode: GameMode.LocalFriend,
       },
     }}
@@ -44,7 +45,7 @@ test('highlighting', async () => {
   await comp.find('rect').at(getPosition(1, 4)).simulate('click');
   await comp.find('rect').at(getPosition(3, 2)).simulate('click');
 
-  expect(comp.find('Token').length).toEqual(23);
+  expect(comp.find('Token').length).toEqual(46); // 2 tokens per piece, 23 pieces.
 });
 
 test('gameover - won', () => {
