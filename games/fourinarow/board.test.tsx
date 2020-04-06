@@ -1,6 +1,5 @@
 import React from 'react';
 import { Board } from './board';
-import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { GameMode } from 'components/App/Game/GameModePicker';
@@ -42,7 +41,7 @@ test('click a cell on the border', () => {
   client.moves.selectColumn = jest.fn();
   const comp = getTestComp(client, GameMode.LocalFriend);
   comp.find('circle').at(0).simulate('click');
-  expect(client.moves.selectColumn.mock.calls.length).to.equal(1);
+  expect(client.moves.selectColumn.mock.calls.length).toEqual(1);
 });
 
 test("render Blue's turn - local friend", () => {
@@ -50,14 +49,14 @@ test("render Blue's turn - local friend", () => {
   client.moves.selectColumn(0);
   client.moves.selectColumn(0);
   const comp = getTestComp(client, GameMode.LocalFriend);
-  expect(comp.html()).to.contain(localPlayerNames['0'] + "'s turn");
+  expect(comp.html()).toContain(localPlayerNames['0'] + "'s turn");
 });
 
 test("render Green's turn - local friend", () => {
   const client = getTestClient();
   client.moves.selectColumn(0);
   const comp = getTestComp(client, GameMode.LocalFriend);
-  expect(comp.html()).to.contain(localPlayerNames['1'] + "'s turn");
+  expect(comp.html()).toContain(localPlayerNames['1'] + "'s turn");
 });
 
 test('render Blue wins - local friend', () => {
@@ -65,7 +64,7 @@ test('render Blue wins - local friend', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
   const comp = getTestComp(client, GameMode.LocalFriend, state1);
-  expect(comp.html()).to.contain(localPlayerNames['0'] + ' won');
+  expect(comp.html()).toContain(localPlayerNames['0'] + ' won');
 });
 
 test('render Green wins - local friend', () => {
@@ -73,7 +72,7 @@ test('render Green wins - local friend', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
   const comp = getTestComp(client, GameMode.LocalFriend, state1);
-  expect(comp.html()).to.contain(localPlayerNames['1'] + ' won');
+  expect(comp.html()).toContain(localPlayerNames['1'] + ' won');
 });
 
 test('render Draw - local freind', () => {
@@ -81,7 +80,7 @@ test('render Draw - local freind', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
   const comp = getTestComp(client, GameMode.LocalFriend, state1);
-  expect(comp.html()).to.contain('draw');
+  expect(comp.html()).toContain('draw');
 });
 
 test('render your turn - online friend', () => {
@@ -89,14 +88,14 @@ test('render your turn - online friend', () => {
   client.moves.selectColumn(0);
   client.moves.selectColumn(0);
   const comp = getTestComp(client, GameMode.OnlineFriend);
-  expect(comp.html()).to.contain('YOUR TURN');
+  expect(comp.html()).toContain('YOUR TURN');
 });
 
 test('render your turn - online friend', () => {
   const client = getTestClient();
   client.moves.selectColumn(0);
   const comp = getTestComp(client, GameMode.OnlineFriend);
-  expect(comp.html()).to.contain('Waiting for opponent...');
+  expect(comp.html()).toContain('Waiting for opponent...');
 });
 
 test('render you won - Online friend', () => {
@@ -104,7 +103,7 @@ test('render you won - Online friend', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
   const comp = getTestComp(client, GameMode.OnlineFriend, state1);
-  expect(comp.html()).to.contain('you won');
+  expect(comp.html()).toContain('you won');
 });
 
 test('render you lost - Online friend', () => {
@@ -112,7 +111,7 @@ test('render you lost - Online friend', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
   const comp = getTestComp(client, GameMode.OnlineFriend, state1);
-  expect(comp.html()).to.contain('you lost');
+  expect(comp.html()).toContain('you lost');
 });
 
 test('render Draw - Online freind', () => {
@@ -120,5 +119,5 @@ test('render Draw - Online freind', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
   const comp = getTestComp(client, GameMode.OnlineFriend, state1);
-  expect(comp.html()).to.contain('draw');
+  expect(comp.html()).toContain('draw');
 });

@@ -1,18 +1,19 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
 import { CornerusGame, placePiece, getPlayer, isFirstTurn, getScoreBoard } from './game';
+import { Local } from 'boardgame.io/multiplayer';
 
 test('invalid moves', () => {
-  const G: any = { players: [{ pieces: [0, 1, 2] }] };
+  const G: any = { players: [{ pieces: [0, 1, 2] }, { pieces: [0, 1, 2] }, { pieces: [0, 1, 2] }] };
   const ctx: any = { playerID: '0', numPlayers: 2, stats: { phase: { numMoves: { '0': 0 } } } };
   expect(placePiece(G, ctx, 0, { x: 30, y: 30, rotation: 0, flipX: false, flipY: false })).toEqual(INVALID_MOVE);
 });
 
 test('playerID mapping', () => {
   const ctx: any = { stats: { phase: { numMoves: { '0': 0, '1': 0, '2': 0, '3': 0 } } } };
-  expect(getPlayer({ ...ctx, numPlayers: 3 } as any, '2')).toEqual('2');
-  expect(getPlayer({ ...ctx, numPlayers: 3, turn: 3 } as any, '2')).toEqual('3');
-  expect(getPlayer({ ...ctx, numPlayers: 4 } as any, '3')).toEqual('3');
+  expect(getPlayer({ ...ctx, numPlayers: 3, turn: 1 } as any, {} as any, '2')).toEqual('2');
+  expect(getPlayer({ ...ctx, numPlayers: 3, turn: 4 } as any, {} as any, '2')).toEqual('3');
+  expect(getPlayer({ ...ctx, numPlayers: 4 } as any, {} as any, '3')).toEqual('3');
 });
 
 test('first turn detection', () => {
@@ -32,14 +33,14 @@ test('scoreboard', () => {
 it('should declare player 1 as the winner', () => {
   const spec = {
     game: CornerusGame,
-    multiplayer: { local: true },
+    multiplayer: Local(),
   };
 
   const p0 = Client({ ...spec, playerID: '0' } as any) as any;
   const p1 = Client({ ...spec, playerID: '1' } as any) as any;
 
-  p0.connect();
-  p1.connect();
+  p0.start();
+  p1.start();
 
   p0.moves.placePiece(3, { x: 0, y: 0, rotation: 0, flipX: false, flipY: false });
   p1.moves.placePiece(6, { x: 16, y: 17, rotation: 0, flipX: false, flipY: false });
