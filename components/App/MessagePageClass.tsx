@@ -15,6 +15,7 @@ interface IMessageState {
 interface IMessageProps {
   type: string;
   message: string;
+  actionComponent?: JSX.Element;
 }
 
 export class MessagePage extends React.Component<IMessageProps, IMessageState> {
@@ -81,6 +82,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
             <br />
             <br />
             {linkHome}
+            {this.props.actionComponent}
           </Typography>
         </div>
       </FreeBoardGamesBar>
