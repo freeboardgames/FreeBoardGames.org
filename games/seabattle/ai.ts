@@ -14,7 +14,7 @@ interface IPlayState {
   ctx: any;
 }
 
-class SeabattleBot {
+export class SeabattleBot {
   async play(state: IPlayState, playerID: string) {
     if (state.ctx.phase === 'setup') {
       const shipPositions = generateRandomShips(1);
@@ -123,7 +123,7 @@ class SeabattleBot {
   }
 }
 
-const config: IAIConfig = {
+export const config: IAIConfig = {
   bgioAI: () => {
     return {
       bot: SeabattleBot,

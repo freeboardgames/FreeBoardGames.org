@@ -1,7 +1,6 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { expect } from 'chai';
 import { Battle } from './Battle';
 import { SeabattleGame } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
@@ -51,20 +50,20 @@ test('one phase - hit', () => {
   // should be ignored
   grid.find({ x: 0, y: 0 }).find('Square').at(0).simulate('click');
   grid.find({ x: 0, y: 9 }).find('Square').at(0).simulate('click');
-  expect(grid.html()).to.contain('CLICK TO SHOOT');
+  expect(grid.html()).toContain('CLICK TO SHOOT');
 
   grid.setProps({
     ...grid.props(),
     G: store.getState().G,
     currentPlayer: store.getState().ctx.currentPlayer,
   });
-  expect(grid.html()).to.contain('HIT');
+  expect(grid.html()).toContain('HIT');
 
   // End Animation...
   (grid.instance() as Battle)._animate(grid.state('startTime'))();
   (grid.instance() as Battle)._animate((grid.state('startTime') as number) + 1e4)();
 
-  expect(grid.html()).to.contain('Waiting for opponent...');
+  expect(grid.html()).toContain('Waiting for opponent...');
 });
 
 test('one phase - miss', () => {
@@ -94,5 +93,5 @@ test('one phase - miss', () => {
     salvo: { hit: false },
     showSalvo: true,
   });
-  expect(grid.html()).to.contain('MISS');
+  expect(grid.html()).toContain('MISS');
 });

@@ -1,7 +1,8 @@
-import AIConfig from './ai';
+import { config, SeabattleBot } from './ai';
 import { Client } from 'boardgame.io/client';
 import { SeabattleGame } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
+import { Step } from 'boardgame.io/ai';
 
 it('should set ships correctly', async () => {
   const client = genClient();
@@ -10,7 +11,7 @@ it('should set ships correctly', async () => {
   client.updatePlayerID('1');
 
   // AI setShips
-  await client.step();
+  await Step(client, new SeabattleBot());
 
   expect(client.store.getState().ctx.phase).toEqual('play');
 });
@@ -19,7 +20,7 @@ it('should shoot a salvo randomly', async () => {
   const client = genReadyClient();
 
   // AI shoots random salvo
-  await client.step();
+  await Step(client, new SeabattleBot());
 
   const state = client.store.getState();
   expect(state.G.salvos.length).toEqual(1);
@@ -34,7 +35,7 @@ it('should shoot a salvo at a random neighbor', async () => {
   bothPlayersMakeMove(client, 8, 3);
 
   // AI shoots random salvo
-  await client.step();
+  await Step(client, new SeabattleBot());
 
   const state = client.store.getState();
   const lastSalvo = state.G.salvos[state.G.salvos.length - 1];
@@ -51,7 +52,7 @@ it('should shoot a salvo at a cell between min/max SalvoPos', async () => {
   bothPlayersMakeMove(client, 6, 4);
 
   // AI shoots random salvo
-  await client.step();
+  await Step(client, new SeabattleBot());
 
   const state = client.store.getState();
   const lastSalvo = state.G.salvos[state.G.salvos.length - 1];
@@ -64,7 +65,7 @@ it('should shoot a salvo at a cell between min/max SalvoPos', async () => {
 function genClient() {
   return Client({
     game: SeabattleGame,
-    ai: AIConfig.bgioAI('1'),
+    ai: config.bgioAI('1'),
   });
 }
 

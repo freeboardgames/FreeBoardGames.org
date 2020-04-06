@@ -1,6 +1,5 @@
 import React from 'react';
 import { Radar } from './Radar';
-import { expect } from 'chai';
 
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -37,7 +36,7 @@ test('rotate ships correctly', () => {
   );
   (radar.instance() as Radar)._onClick({ x: 0, y: 0 });
   radar.find('Token').at(0).simulate('click');
-  expect(onEdit.mock.calls[0]).to.deep.equal([
+  expect(onEdit.mock.calls[0]).toEqual([
     [
       {
         player: 0,
@@ -92,7 +91,7 @@ test('move ships correctly', () => {
   (radar.instance() as Radar)._onDrop({ x: 4, y: 0, originalX: 0, originalY: 0 });
   (radar.instance() as Radar)._onClick({ x: 4, y: 0 });
   expect((radar.instance() as Radar)._shouldDrag()).toEqual(true);
-  expect(onEdit.mock.calls[0]).to.deep.equal([
+  expect(onEdit.mock.calls[0]).toEqual([
     [
       {
         player: 0,
@@ -189,5 +188,5 @@ test('shoot ships correctly', () => {
     .find('rect')
     .at(2 * 10 + 1)
     .simulate('click');
-  expect(onClick.mock.calls[0]).to.deep.equal([{ x: 1, y: 2 }]);
+  expect(onClick.mock.calls[0]).toEqual([{ x: 1, y: 2 }]);
 });
