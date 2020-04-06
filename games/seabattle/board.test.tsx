@@ -1,6 +1,5 @@
 import React from 'react';
 import { Board } from './board';
-import { expect } from 'chai';
 import { SeabattleGame } from './game';
 import { Client } from 'boardgame.io/client';
 import { Client as ReactClient } from 'boardgame.io/react';
@@ -12,15 +11,27 @@ import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+const BoardTest = (props: any) => (
+  <Board
+    {...{
+      ...props,
+      gameArgs: {
+        gameCode: 'seabattle',
+        mode: GameMode.LocalFriend,
+      },
+    }}
+  />
+);
+
 test('set ships', () => {
   const App = ReactClient({
     game: SeabattleGame,
     debug: false,
-    board: Board,
+    board: BoardTest,
   }) as any;
   const comp = Enzyme.mount(<App playerID={'0'} gameID={'foo'} />);
-  comp.find('button').at(1).simulate('click');
-  expect(comp.html()).to.contain('Waiting');
+  comp.find('button').at(2).simulate('click');
+  expect(comp.html()).toContain('Waiting');
 });
 
 test('start', () => {
@@ -52,7 +63,7 @@ test('waiting opponent', () => {
     game: SeabattleGame,
   });
   const state0 = client.store.getState();
-  const state1 = { ...state0, ctx: { ...state0.ctx, actionPlayers: ['1'] } };
+  const state1 = { ...state0, ctx: { ...state0.ctx, activePlayers: { '1': null } } };
   const comp = Enzyme.mount(
     <Board
       G={state1.G}
@@ -68,7 +79,7 @@ test('waiting opponent', () => {
     />,
   );
   // First page must have some ships
-  expect(comp.html()).to.contain('Waiting');
+  expect(comp.html()).toContain('Waiting');
 });
 
 test('gameover - won', () => {
@@ -92,7 +103,7 @@ test('gameover - won', () => {
     />,
   );
   // First page must have some ships
-  expect(comp.html()).to.contain('won');
+  expect(comp.html()).toContain('won');
 });
 
 test('gameover - lost', () => {
@@ -116,7 +127,7 @@ test('gameover - lost', () => {
     />,
   );
   // First page must have some ships
-  expect(comp.html()).to.contain('lost');
+  expect(comp.html()).toContain('lost');
 });
 
 test('battle', () => {
