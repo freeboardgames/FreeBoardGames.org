@@ -39,7 +39,7 @@ export function isAllowedDeck(G: IG, deckId: number, playerID: string): boolean 
 export function getCards(G: IG, playerID: string): IGetCards {
   const lastCards = G.decks.map((deck) => deck[deck.length - 1]).sort(sortCards);
   const card = G.players[playerID as any].selectedCard;
-  return { card: card, lastCards: lastCards };
+  return { card, lastCards: lastCards };
 }
 
 function moveToHand(G: IG, ctx: IGameCtx, card: Card, deckId: number): any {
