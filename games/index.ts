@@ -9,7 +9,6 @@ import { reversiGameDef } from './reversi';
 import { cornerusGameDef } from './cornerus';
 import { tictactoeplusGameDef } from './tictactoeplus';
 import { fourinarowGameDef } from './fourinarow';
-import { hangmanGameDef } from './hangman';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
