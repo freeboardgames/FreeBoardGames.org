@@ -1,6 +1,6 @@
+jest.mock('./stockfish8.worker');
 import React from 'react';
 import { Board } from './board';
-import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -15,13 +15,27 @@ jest.mock('react-ga');
   /* do nothing */
 };
 
-const TestBoard = (props: any) => {
-  const board = React.createElement(Board, props, props.children);
-  return { board };
-};
+const players = [
+  { playerID: 0, name: 'foo', roomID: '' },
+  { playerID: 1, name: 'bar', roomID: '' },
+];
+
+const getTestBoard = (mode: GameMode) => (props: any) => (
+  <Board
+    {...{
+      ...props,
+      gameArgs: {
+        gameCode: 'chess',
+        mode,
+        players,
+      },
+    }}
+  />
+);
 
 test('render board - all states - local friend', () => {
   const moveMock = jest.fn();
+  const TestBoard = getTestBoard(GameMode.LocalFriend);
   const board = Enzyme.mount(
     <TestBoard
       G={{ pgn: '' }}
@@ -36,17 +50,13 @@ test('render board - all states - local friend', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
-      gameArgs={{
-        gameCode: 'chess',
-        mode: GameMode.LocalFriend,
-      }}
     />,
   );
-  expect(board.html()).to.contain('draw');
+  expect(board.html()).toContain('draw');
   // squares should not be selectable after the game ends:
   // attempt to select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).not.toContain('green');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -57,7 +67,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('black won');
+  expect(board.html()).toContain('black won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -68,7 +78,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('white won');
+  expect(board.html()).toContain('white won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -78,7 +88,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain("White's turn");
+  expect(board.html()).toContain("White's turn");
   board.setProps({
     ...board.props(),
     ctx: {
@@ -89,7 +99,7 @@ test('render board - all states - local friend', () => {
     },
     G: { pgn: '1.f4' },
   });
-  expect(board.html()).to.contain("Black's turn");
+  expect(board.html()).toContain("Black's turn");
   board.setProps({
     ...board.props(),
     ctx: {
@@ -100,11 +110,12 @@ test('render board - all states - local friend', () => {
     },
     G: { pgn: '1.f4 e5 2.g4 Qh4#' },
   });
-  expect(board.html()).to.contain('CHECK');
+  expect(board.html()).toContain('CHECK');
 });
 
 test('render board - all states - online friend', () => {
   const moveMock = jest.fn();
+  const TestBoard = getTestBoard(GameMode.OnlineFriend);
   const board = Enzyme.mount(
     <TestBoard
       G={{ pgn: '' }}
@@ -119,13 +130,9 @@ test('render board - all states - online friend', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
-      gameArgs={{
-        gameCode: 'chess',
-        mode: GameMode.OnlineFriend,
-      }}
     />,
   );
-  expect(board.html()).to.contain('draw');
+  expect(board.html()).toContain('draw');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -136,7 +143,7 @@ test('render board - all states - online friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('you lost');
+  expect(board.html()).toContain('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -147,12 +154,12 @@ test('render board - all states - online friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('you won');
+  expect(board.html()).toContain('you won');
   board.setProps({
     ...board.props(),
     playerID: '1',
   });
-  expect(board.html()).to.contain('you lost');
+  expect(board.html()).toContain('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -163,7 +170,7 @@ test('render board - all states - online friend', () => {
     },
     G: { pgn: '1.f4 e5 2.g4 Qh4#' },
   });
-  expect(board.html()).to.contain('CHECK');
+  expect(board.html()).toContain('CHECK');
 });
 
 function rowColAt(row: number, col: number) {
@@ -172,6 +179,7 @@ function rowColAt(row: number, col: number) {
 
 test('little game', () => {
   const moveMock = jest.fn();
+  const TestBoard = getTestBoard(GameMode.OnlineFriend);
   const board = Enzyme.mount(
     <TestBoard
       G={{ pgn: '' }}
@@ -185,28 +193,24 @@ test('little game', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
-      gameArgs={{
-        gameCode: 'chess',
-        mode: GameMode.OnlineFriend,
-      }}
     />,
   );
-  expect(board.html()).to.contain('YOUR TURN');
+  expect(board.html()).toContain('YOUR TURN');
   // select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).toContain('green');
 
   // unselect
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).not.toContain('green');
 
   // select f2
   board.find('rect').at(rowColAt(2, 6)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 6)).html()).to.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 6)).html()).toContain('green');
 
   // move to f4
   board.find('rect').at(rowColAt(4, 6)).simulate('click');
-  expect(moveMock.mock.calls[0]).to.deep.equal(['f4']);
+  expect(moveMock.mock.calls[0]).toEqual(['f4']);
 
   // mock move
   board.setProps({
@@ -219,11 +223,11 @@ test('little game', () => {
     },
     G: { pgn: '1.f4' },
   });
-  expect(board.html()).to.contain('Waiting for opponent');
+  expect(board.html()).toContain('Waiting for opponent');
 
   // try invalid selection
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).not.toContain('green');
 
   // test inactive
   board.setProps({
@@ -233,7 +237,7 @@ test('little game', () => {
 
   // cant select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(7, 1)).html()).to.not.contain('green');
+  expect(board.find('rect').at(rowColAt(7, 1)).html()).not.toContain('green');
 
   // make it active again
   board.setProps({
@@ -243,16 +247,16 @@ test('little game', () => {
 
   // select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(7, 1)).html()).to.contain('green');
+  expect(board.find('rect').at(rowColAt(7, 1)).html()).toContain('green');
 
   // move to a5
   board.find('rect').at(rowColAt(5, 1)).simulate('click');
-  expect(moveMock.mock.calls[1]).to.deep.equal(['a5']);
+  expect(moveMock.mock.calls[1]).toEqual(['a5']);
 });
 
 test('little AI game', () => {
   const moveMock = jest.fn();
-  const stepMock = jest.fn();
+  const TestBoard = getTestBoard(GameMode.AI);
   const board = Enzyme.mount(
     <TestBoard
       G={{ pgn: '' }}
@@ -266,11 +270,6 @@ test('little AI game', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
-      gameArgs={{
-        gameCode: 'chess',
-        mode: GameMode.AI,
-      }}
-      step={stepMock}
     />,
   );
   // select f2
@@ -278,13 +277,13 @@ test('little AI game', () => {
 
   // move to f4
   board.find('rect').at(rowColAt(4, 6)).simulate('click');
-  expect(moveMock.mock.calls[0]).to.deep.equal(['f4']);
-  expect(stepMock.mock.calls.length).toEqual(1);
+  expect(moveMock.mock.calls[0]).toEqual(['f4']);
 });
 
 test('AI gameover - all cases', () => {
   const moveMock = jest.fn();
   const stepMock = jest.fn();
+  const TestBoard = getTestBoard(GameMode.AI);
   const board = Enzyme.mount(
     <TestBoard
       G={{ pgn: '' }}
@@ -299,14 +298,10 @@ test('AI gameover - all cases', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
-      gameArgs={{
-        gameCode: 'chess',
-        mode: GameMode.AI,
-      }}
       step={stepMock}
     />,
   );
-  expect(board.html()).to.contain('draw');
+  expect(board.html()).toContain('draw');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -317,7 +312,7 @@ test('AI gameover - all cases', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('you lost');
+  expect(board.html()).toContain('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -328,10 +323,11 @@ test('AI gameover - all cases', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('you won');
+  expect(board.html()).toContain('you won');
 });
 
 test('castling fix', () => {
+  const TestBoard = getTestBoard(GameMode.LocalFriend);
   const board = Enzyme.mount(
     <TestBoard
       G={{ pgn: '' }}
@@ -345,10 +341,6 @@ test('castling fix', () => {
       playerID="0"
       isActive={true}
       isConnected={true}
-      gameArgs={{
-        gameCode: 'chess',
-        mode: GameMode.LocalFriend,
-      }}
     />,
   );
   const result = (board.find('Board').instance() as any)._fixHistory([
@@ -357,7 +349,7 @@ test('castling fix', () => {
     { san: 'O-O', color: 'w' },
     { san: 'O-O', color: 'b' },
   ]);
-  expect(result).to.deep.equal([
+  expect(result).toEqual([
     { san: 'O-O-O', color: 'w' },
     { from: 'a1', to: 'd1' },
     { san: 'O-O-O', color: 'b' },
@@ -374,6 +366,7 @@ describe('drag and drop', () => {
   let testBoard: Enzyme.ReactWrapper;
   let board: Enzyme.ReactWrapper;
   beforeEach(() => {
+    const TestBoard = getTestBoard(GameMode.LocalFriend);
     moveMock = jest.fn();
     testBoard = Enzyme.mount(
       <TestBoard
@@ -388,10 +381,6 @@ describe('drag and drop', () => {
         playerID="0"
         isActive={true}
         isConnected={true}
-        gameArgs={{
-          gameCode: 'chess',
-          mode: GameMode.LocalFriend,
-        }}
       />,
     );
     board = testBoard.find(Board);
@@ -410,7 +399,7 @@ describe('drag and drop', () => {
   it('should drag and drop', () => {
     (board.instance() as any)._onDrag({ x: 6, y: 4, originalX: 6, originalY: 6 });
     (board.instance() as any)._onDrop({ x: 6, y: 4 });
-    expect(moveMock.mock.calls[0]).to.deep.equal(['g4']);
+    expect(moveMock.mock.calls[0]).toEqual(['g4']);
   });
 
   it('should not drag and drop unless a square is selected', () => {
@@ -432,6 +421,7 @@ describe('sound toggle', () => {
 
   beforeEach(() => {
     moveMock = jest.fn();
+    const TestBoard = getTestBoard(GameMode.LocalFriend);
     testBoard = Enzyme.mount(
       <TestBoard
         G={{ pgn: '' }}
@@ -445,21 +435,17 @@ describe('sound toggle', () => {
         playerID="0"
         isActive={true}
         isConnected={true}
-        gameArgs={{
-          gameCode: 'chess',
-          mode: GameMode.LocalFriend,
-        }}
       />,
     );
     board = testBoard.find(Board);
   });
 
   it('should start with sound enabled', () => {
-    expect(board.state('soundEnabled')).to.be.true;
+    expect(board.state('soundEnabled')).toBeTrue();
   });
 
   it('should toggle sound preference', () => {
     (board.instance() as any)._toggleSoundPref();
-    expect(board.state('soundEnabled')).to.be.false;
+    expect(board.state('soundEnabled')).toBeFalse();
   });
 });

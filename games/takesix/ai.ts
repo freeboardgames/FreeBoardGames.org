@@ -7,7 +7,7 @@ interface IPlayState {
   ctx: IGameCtx;
 }
 
-class TakeSixBot {
+export class TakeSixBot {
   async play(state: IPlayState, playerID: string) {
     await sleep(300);
     if (state.ctx.phase === 'CARD_SELECT') {
@@ -40,7 +40,7 @@ class TakeSixBot {
   }
 }
 
-const config: IAIConfig = {
+export const config: IAIConfig = {
   bgioAI: () => {
     return {
       bot: TakeSixBot,

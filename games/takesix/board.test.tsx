@@ -21,6 +21,7 @@ const BoardTest = (props: any) => (
     {...{
       ...props,
       gameArgs: {
+        gameCode: 'takesix',
         mode: GameMode.OnlineFriend,
         players,
       },

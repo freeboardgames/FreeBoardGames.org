@@ -7,7 +7,7 @@ interface IPlayState {
   ctx: IGameCtx;
 }
 
-class ReversiRandomBot {
+export class ReversiRandomBot {
   async play(state: IPlayState, playerID: string) {
     const moves = Array.from(getValidMoves(state.G, playerID));
     // const move = moves[Math.floor(Math.random() * moves.length)];  // https://github.com/babel/minify/issues/904
@@ -21,7 +21,7 @@ class ReversiRandomBot {
     return { action: { type: 'MAKE_MOVE', payload: { type: 'placePiece', args: [x, y], playerID } } };
   }
 }
-const config: IAIConfig = {
+export const config: IAIConfig = {
   bgioAI: () => {
     return {
       bot: ReversiRandomBot,

@@ -48,21 +48,6 @@ export function getPlayer(ctx: IGameCtx, G: IG, playerID: string) {
   } else {
     return playerID;
   }
-  //console.log(ctx);
-  //return playerID;
-  /*
-  const numMoves = ctx.stats.phase.numMoves[playerID];
-  if (ctx.numPlayers === 2) {
-    if (playerID === '0') {
-      return numMoves % 2 === 1 ? '1' : '0';
-    } else {
-      return numMoves % 2 === 1 ? '3' : '2';
-    }
-  } else if (ctx.numPlayers === 3) {
-    return (ctx.turn + 1) % 4 === 0 ? '3' : playerID;
-  } else {
-    return playerID;
-  }*/
 }
 
 export function isFirstTurn(ctx: IGameCtx) {
@@ -189,7 +174,7 @@ export function getValidPositions(
 
 export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTransform) {
   const playerID = getPlayer(ctx, G, ctx.playerID);
-  let piece = pieces[G.players[playerID as any].pieces[id]];
+  let piece = pieces[G.players[parseInt(playerID)].pieces[id]];
 
   if (transform.flipX) {
     piece = flipPieceX(piece);

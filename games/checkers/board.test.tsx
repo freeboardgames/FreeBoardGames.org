@@ -7,7 +7,6 @@ import { CheckersGame } from './game';
 
 import { Board } from './board';
 import { GameMode } from 'components/App/Game/GameModePicker';
-import { expect } from 'chai';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -16,6 +15,7 @@ const BoardTest = (props: any) => (
     {...{
       ...props,
       gameArgs: {
+        gameCode: 'checkers',
         mode: GameMode.LocalFriend,
       },
     }}
@@ -45,7 +45,7 @@ test('highlighting', async () => {
   await comp.find('rect').at(getPosition(1, 4)).simulate('click');
   await comp.find('rect').at(getPosition(3, 2)).simulate('click');
 
-  expect(comp.find('Token').length).toEqual(23);
+  expect(comp.find('Token').length).toEqual(46); // 2 tokens per piece, 23 pieces.
 });
 
 test('gameover - won', () => {
@@ -69,7 +69,7 @@ test('gameover - won', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('white');
+  expect(comp.html()).toContain('white');
 });
 
 test('gameover - lost', () => {
@@ -93,7 +93,7 @@ test('gameover - lost', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('black');
+  expect(comp.html()).toContain('black');
 });
 
 test('gameover - won online', () => {
@@ -117,7 +117,7 @@ test('gameover - won online', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('won');
+  expect(comp.html()).toContain('won');
 });
 
 test('gameover - lost online', () => {
@@ -141,5 +141,5 @@ test('gameover - lost online', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('lost');
+  expect(comp.html()).toContain('lost');
 });

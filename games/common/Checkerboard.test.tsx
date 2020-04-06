@@ -9,7 +9,6 @@
 import React from 'react';
 import { Checkerboard, algebraicToCartesian } from './Checkerboard';
 import { Token } from 'ui';
-import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -28,7 +27,7 @@ test('position', () => {
       </Token>
     </Checkerboard>,
   );
-  expect(grid.find('g').at(65).html()).to.contain('translate(1, 3)');
+  expect(grid.find('g').at(65).html()).toContain('translate(1, 3)');
 
   const grid2 = Enzyme.mount(
     <Checkerboard invert={true}>
@@ -37,29 +36,29 @@ test('position', () => {
       </Token>
     </Checkerboard>,
   );
-  expect(grid2.find('g').at(65).html()).to.contain('translate(6, 4)');
+  expect(grid2.find('g').at(65).html()).toContain('translate(6, 4)');
 });
 
 test('click', () => {
   const onClick = jest.fn();
   const grid = Enzyme.mount(<Checkerboard onClick={onClick} />);
   grid.find('rect').at(5).simulate('click');
-  expect(onClick.mock.calls[0]).to.deep.equal([{ square: 'a3' }]);
+  expect(onClick.mock.calls[0]).toEqual([{ square: 'a3' }]);
 
   const onClick2 = jest.fn();
   const grid2 = Enzyme.mount(<Checkerboard onClick={onClick2} invert={true} />);
   grid2.find('rect').at(2).simulate('click');
-  expect(onClick2.mock.calls[0]).to.deep.equal([{ square: 'h3' }]);
+  expect(onClick2.mock.calls[0]).toEqual([{ square: 'h3' }]);
 });
 
 test('invalid square', () => {
   const invalidSquare = () => {
     algebraicToCartesian('*1');
   };
-  expect(invalidSquare).to.throw();
+  expect(invalidSquare).toThrow();
 });
 
 test('colorMap', () => {
   const grid = Enzyme.mount(<Checkerboard highlightedSquares={{ a5: 'blue' }} />);
-  expect(grid.find('rect').at(3).html()).to.contain('blue');
+  expect(grid.find('rect').at(3).html()).toContain('blue');
 });

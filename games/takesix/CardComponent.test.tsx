@@ -7,7 +7,7 @@ import Card from './card';
 Enzyme.configure({ adapter: new Adapter() });
 
 test('Check color of Card', () => {
-  const card = new Card(1, 2, 0);
+  const card = { number: 1, value: 2, owner: 0 };
   const component = Enzyme.mount(<CardComponent card={card} />);
   expect(component.find('div').get(0).props.style.background).toEqual('#3498db');
 });

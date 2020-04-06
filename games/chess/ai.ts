@@ -1,6 +1,4 @@
 import { IAIConfig } from '../index';
-// @ts-ignore
-// import StockfishWorker from 'worker-loader?name=[hash].stockfish.worker.js&inline=true&fallback=false!./stockfish8';
 import StockfishWorker from './stockfish8.worker';
 
 interface IPlayState {
@@ -11,12 +9,16 @@ interface IPlayState {
 const LVL_MOVETIMES = [100, 200, 300, 400, 600, 800, 1000, 2000];
 const LVL_DEPTHS = [1, 1, 2, 3, 5, 8, 13, 22];
 
+let botLevel = 1;
+
 class Stockfish {
   worker: any;
-  level: number;
 
   constructor() {
     this.worker = new StockfishWorker();
+  }
+
+  start() {
     this.send('isready');
   }
 
@@ -28,30 +30,36 @@ class Stockfish {
     return await new Promise((resolve) => {
       this.worker.onmessage = (event: any) => {
         const msg = event.data;
-        if (msg.includes('bestmove')) {
+        if (msg && msg.includes('bestmove')) {
           resolve(msg.split(' ')[1]);
         }
       };
-      const lvl = Math.round(((this.level - 1) * 20.0) / 7);
+      const lvl = Math.round(((botLevel - 1) * 20.0) / 7);
       this.send(`setoption name Skill Level value ${lvl}`);
       if (fen !== '') {
         this.send(`position fen ${fen}`);
       } else {
         this.send('position startpos');
       }
-      const depth = LVL_DEPTHS[this.level - 1];
-      const movetime = LVL_MOVETIMES[this.level - 1];
+      const depth = LVL_DEPTHS[botLevel - 1];
+      const movetime = LVL_MOVETIMES[botLevel - 1];
       this.send(`go depth ${depth} movetime ${movetime}`);
     });
   }
 }
 
-const stockfish = new Stockfish();
+export class StockfishBot {
+  stockfish = new Stockfish();
 
-class StockfishBot {
+  constructor(isTest = false) {
+    if (!isTest) {
+      this.stockfish.start();
+    }
+  }
+
   async play(state: IPlayState) {
     if (!state.ctx.gameover) {
-      const move = await stockfish.getMove(state.G.fen);
+      const move = await this.stockfish.getMove(state.G.fen);
       return this.makeMove(move, state.ctx.currentPlayer);
     } else {
       return {};
@@ -65,7 +73,7 @@ class StockfishBot {
 
 const config: IAIConfig = {
   bgioAI: (level: string) => {
-    stockfish.level = Number(level);
+    botLevel = Number(level);
     return StockfishBot;
   },
 };

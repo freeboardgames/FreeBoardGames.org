@@ -110,16 +110,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       );
     }
 
-    if (this.props.playerID === null) {
-      return (
-        <GameLayout>
-          <div>
-            <svg />
-          </div>
-        </GameLayout>
-      );
-    }
-
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
