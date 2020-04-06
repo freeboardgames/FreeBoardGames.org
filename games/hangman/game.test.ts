@@ -26,13 +26,12 @@ function getInitialGameState() {
 
 it('should declare player 1 as the winner', () => {
   let gameState = getInitialGameState();
-  gameState.secret['0'] = 'hangman';
-  gameState.secret['1'] = 'hangman';
+  gameState = { ...gameState, secret: { 0: 'hangman', 1: 'hangman' } };
 
   const gameClient = Client({
     game: {
       ...HangmanGame,
-      setup: () => ({ gameState }),
+      setup: () => ({ ...gameState }),
     },
   });
 
@@ -53,8 +52,7 @@ it('should declare player 1 as the winner', () => {
 
 it('should declare a draw', () => {
   let gameState = getInitialGameState();
-  gameState.secret['0'] = 'hangman';
-  gameState.secret['1'] = 'hangman';
+  gameState = { ...gameState, secret: { 0: 'hangman', 1: 'hangman' } };
 
   const gameClient = Client({
     game: {
