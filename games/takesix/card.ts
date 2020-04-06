@@ -1,11 +1,5 @@
-export default class Card {
+export default interface Card {
   number: number;
   value: number;
-  owner: number;
-
-  constructor(num: number, value: number, owner: number) {
-    this.number = num;
-    this.value = value;
-    this.owner = owner;
-  }
+  owner: number | null;
 }

@@ -63,7 +63,6 @@ export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
   if (id < 0 || id >= G.players[ctx.playerID as any].cards.length) {
     return INVALID_MOVE;
   }
-
   return {
     ...G,
     players: Object.values({
@@ -115,9 +114,6 @@ const GameConfig: IGameArgs = {
     CARD_SELECT: {
       moves: { selectCard },
       next: 'DECK_SELECT',
-      onBegin: (_, ctx) => {
-        ctx.events.setActivePlayers(ActivePlayers.ALL_ONCE);
-      },
       // Determine player order
       onEnd: (G: IG) => {
         const selectedCards = G.players.map((player) => player.selectedCard);
@@ -129,7 +125,7 @@ const GameConfig: IGameArgs = {
       },
       start: true,
       turn: {
-        moveLimit: 1,
+        activePlayers: ActivePlayers.ALL_ONCE,
         onMove: (_, ctx) => {
           if (ctx.activePlayers === null) {
             ctx.events.endPhase();
@@ -190,7 +186,7 @@ const GameConfig: IGameArgs = {
         } else if ((i + 1) % 5 === 0) {
           value = 2;
         }
-        return new Card(i + 1, value, null);
+        return { number: i + 1, value, owner: null };
       }),
     );
 
@@ -201,20 +197,17 @@ const GameConfig: IGameArgs = {
         .map(() => deck.pop())
         .sort(sortCards)
         .map((card) => [card]),
-      players: new Array(ctx.numPlayers).fill(0).map(
-        (_, i) =>
-          new Player(
-            new Array(10)
-              .fill(0)
-              .map(() => {
-                const card = deck.pop();
-                card.owner = i;
-                return card;
-              })
-              .sort(sortCards),
-            null,
-          ),
-      ),
+      players: new Array(ctx.numPlayers).fill(0).map((_, i) => ({
+        cards: new Array(10)
+          .fill(0)
+          .map(() => {
+            const card = deck.pop();
+            card.owner = i;
+            return card;
+          })
+          .sort(sortCards),
+        penaltyCards: [],
+      })),
       cardOrder: [],
       end: false,
     };
