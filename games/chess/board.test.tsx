@@ -1,6 +1,5 @@
 import React from 'react';
 import { Board } from './board';
-import { expect } from 'chai';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -42,11 +41,11 @@ test('render board - all states - local friend', () => {
       }}
     />,
   );
-  expect(board.html()).to.contain('draw');
+  expect(board.html()).toContain('draw');
   // squares should not be selectable after the game ends:
   // attempt to select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).not.toContain('green');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -57,7 +56,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('black won');
+  expect(board.html()).toContain('black won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -68,7 +67,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('white won');
+  expect(board.html()).toContain('white won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -78,7 +77,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain("White's turn");
+  expect(board.html()).toContain("White's turn");
   board.setProps({
     ...board.props(),
     ctx: {
@@ -89,7 +88,7 @@ test('render board - all states - local friend', () => {
     },
     G: { pgn: '1.f4' },
   });
-  expect(board.html()).to.contain("Black's turn");
+  expect(board.html()).toContain("Black's turn");
   board.setProps({
     ...board.props(),
     ctx: {
@@ -100,7 +99,7 @@ test('render board - all states - local friend', () => {
     },
     G: { pgn: '1.f4 e5 2.g4 Qh4#' },
   });
-  expect(board.html()).to.contain('CHECK');
+  expect(board.html()).toContain('CHECK');
 });
 
 test('render board - all states - online friend', () => {
@@ -125,7 +124,7 @@ test('render board - all states - online friend', () => {
       }}
     />,
   );
-  expect(board.html()).to.contain('draw');
+  expect(board.html()).toContain('draw');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -136,7 +135,7 @@ test('render board - all states - online friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('you lost');
+  expect(board.html()).toContain('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -147,12 +146,12 @@ test('render board - all states - online friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('you won');
+  expect(board.html()).toContain('you won');
   board.setProps({
     ...board.props(),
     playerID: '1',
   });
-  expect(board.html()).to.contain('you lost');
+  expect(board.html()).toContain('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -163,7 +162,7 @@ test('render board - all states - online friend', () => {
     },
     G: { pgn: '1.f4 e5 2.g4 Qh4#' },
   });
-  expect(board.html()).to.contain('CHECK');
+  expect(board.html()).toContain('CHECK');
 });
 
 function rowColAt(row: number, col: number) {
@@ -191,18 +190,18 @@ test('little game', () => {
       }}
     />,
   );
-  expect(board.html()).to.contain('YOUR TURN');
+  expect(board.html()).toContain('YOUR TURN');
   // select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).toContain('green');
 
   // unselect
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).not.toContain('green');
 
   // select f2
   board.find('rect').at(rowColAt(2, 6)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 6)).html()).to.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 6)).html()).toContain('green');
 
   // move to f4
   board.find('rect').at(rowColAt(4, 6)).simulate('click');
@@ -219,11 +218,11 @@ test('little game', () => {
     },
     G: { pgn: '1.f4' },
   });
-  expect(board.html()).to.contain('Waiting for opponent');
+  expect(board.html()).toContain('Waiting for opponent');
 
   // try invalid selection
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(2, 1)).html()).to.not.contain('green');
+  expect(board.find('rect').at(rowColAt(2, 1)).html()).not.toContain('green');
 
   // test inactive
   board.setProps({
@@ -233,7 +232,7 @@ test('little game', () => {
 
   // cant select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(7, 1)).html()).to.not.contain('green');
+  expect(board.find('rect').at(rowColAt(7, 1)).html()).not.toContain('green');
 
   // make it active again
   board.setProps({
@@ -243,7 +242,7 @@ test('little game', () => {
 
   // select a7
   board.find('rect').at(rowColAt(7, 1)).simulate('click');
-  expect(board.find('rect').at(rowColAt(7, 1)).html()).to.contain('green');
+  expect(board.find('rect').at(rowColAt(7, 1)).html()).toContain('green');
 
   // move to a5
   board.find('rect').at(rowColAt(5, 1)).simulate('click');
@@ -306,7 +305,7 @@ test('AI gameover - all cases', () => {
       step={stepMock}
     />,
   );
-  expect(board.html()).to.contain('draw');
+  expect(board.html()).toContain('draw');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -317,7 +316,7 @@ test('AI gameover - all cases', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('you lost');
+  expect(board.html()).toContain('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -328,7 +327,7 @@ test('AI gameover - all cases', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).to.contain('you won');
+  expect(board.html()).toContain('you won');
 });
 
 test('castling fix', () => {
