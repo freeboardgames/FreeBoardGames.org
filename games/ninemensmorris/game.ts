@@ -74,7 +74,7 @@ export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string 
       ...G.points,
       [position]: {
         ...G.points[position],
-        piece: new Piece(ctx.playerID, G.piecesPlaced),
+        piece: { player: ctx.playerID, key: G.piecesPlaced },
       },
     }) as any,
     piecesPlaced: G.piecesPlaced + 1,
@@ -225,7 +225,7 @@ const GameConfig: IGameArgs = {
      * 06-------05-------04
      */
 
-    const points = new Array(24).fill(0).map(() => new Point());
+    const points: Point[] = new Array(24).fill(0).map(() => ({ connections: [], piece: null }));
     // Connect "circles"
     points.forEach((point, i) => {
       const prev = i % 8 === 0 ? i + 7 : i - 1;
@@ -239,7 +239,7 @@ const GameConfig: IGameArgs = {
       points[i + 16].connections.push(i + 8);
     }
 
-    const players = new Array(ctx.numPlayers).fill(0).map(() => new Player());
+    const players: Player[] = new Array(ctx.numPlayers).fill(0).map(() => ({ lostPieces: 0 }));
 
     return {
       points,
