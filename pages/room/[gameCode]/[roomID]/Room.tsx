@@ -1,5 +1,5 @@
 import React from 'react';
-import getMessagePage from '../../../../components/App/MessagePage';
+import MessagePage from 'components/App/MessagePageClass';
 import { LobbyService, IRoomMetadata, IPlayerInRoom } from '../../../../components/App/Lobby/LobbyService';
 import { GAMES_MAP } from '../../../../games';
 import AlertLayer from '../../../../components/App/Game/AlertLayer';
@@ -10,6 +10,8 @@ import { ListPlayers } from '../../../../components/App/Lobby/ListPlayers';
 import { GameCard } from '../../../../components/App/Game/GameCard';
 import { NicknamePrompt } from '../../../../components/App/Lobby/NicknamePrompt';
 import { useRouter, NextRouter } from 'next/router';
+import Button from '@material-ui/core/Button';
+import ReplayIcon from '@material-ui/icons/Replay';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -54,17 +56,21 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   render() {
-    const LoadingPage = getMessagePage('loading', 'Loading...');
     const nickname = LobbyService.getNickname();
     if (!nickname) {
       return <FreeBoardGamesBar>{this._getNamePrompt()}</FreeBoardGamesBar>;
     }
     if (this.state.error) {
-      const ErrorPage = getMessagePage('error', this.state.error);
-      return <ErrorPage />;
+      const TryAgain = (
+        <Button variant="outlined" style={{ margin: '8px' }} onClick={this._tryAgain}>
+          <ReplayIcon style={{ marginRight: '8px' }} />
+          Try Again
+        </Button>
+      );
+      return <MessagePage type={'error'} message={this.state.error} actionComponent={TryAgain} />;
     }
     if (this.state.loading) {
-      return <LoadingPage />;
+      return <MessagePage type={'loading'} message={'Loading...'} />;
     }
     if (this.state.gameReady) {
       const room = this.state.roomMetadata;
@@ -127,6 +133,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
         },
         () => {
           const error = 'Failed to fetch room metadata.';
+          this._componentCleanup();
           this.setState((oldState) => ({ ...oldState, error }));
         },
       );
@@ -165,6 +172,11 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     const gameCode = this.props.router.query.gameCode as string;
     const roomID = this.props.router.query.roomID as string;
     return <GameSharing gameCode={gameCode} roomID={roomID} roomMetadata={this.state.roomMetadata} />;
+  };
+
+  _tryAgain = () => {
+    this.setState((oldState) => ({ ...oldState, error: '' }));
+    this.updateMetadata();
   };
 }
 
