@@ -7,7 +7,6 @@ import { CornerusGame } from './game';
 
 import { Board } from './board';
 import { GameMode } from 'components/App/Game/GameModePicker';
-import { expect } from 'chai';
 import blue from '@material-ui/core/colors/blue';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -22,6 +21,7 @@ const BoardTest = (props: any) => (
     {...{
       ...props,
       gameArgs: {
+        gameCode: 'cornerus',
         mode: GameMode.OnlineFriend,
         players,
       },
@@ -48,7 +48,7 @@ test('controls', () => {
   comp.find('#select-prev').at(0).simulate('click');
   comp.find('#place').at(0).simulate('click');
 
-  expect(comp.find('Token').length).toEqual(1);
+  expect(comp.find('Token').length).toEqual(2);
 });
 
 test('pieces', () => {
@@ -109,7 +109,7 @@ test('gameover - won', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('won');
+  expect(comp.html()).toContain('won');
 });
 
 test('gameover - lost', () => {
@@ -142,7 +142,7 @@ test('gameover - lost', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('lost');
+  expect(comp.html()).toContain('lost');
 });
 
 test('gameover - draw', () => {
@@ -175,5 +175,5 @@ test('gameover - draw', () => {
       }}
     />,
   );
-  expect(comp.html()).to.contain('draw');
+  expect(comp.html()).toContain('draw');
 });
