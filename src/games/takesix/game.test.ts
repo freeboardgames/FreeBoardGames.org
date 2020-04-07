@@ -2,8 +2,8 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer';
 import { TakeSixGame, IG, selectCard, selectDeck } from './game';
-import Player from './player';
 import Card from './card';
+
 // https://github.com/nicolodavis/boardgame.io/blob/master/docs/testing.md
 it("should move player's card from his hand to selectedCard", () => {
   const card: Card = { number: 1, value: 1, owner: 0 };

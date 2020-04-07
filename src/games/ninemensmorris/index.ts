@@ -1,7 +1,7 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'components/App/Game/GameModePicker';
-import { IGameDef } from 'games';
 import instructions from './instructions.md';
+import { IGameDef } from 'games';
 
 export const ninemensmorrisGameDef: IGameDef = {
   code: 'ninemensmorris',

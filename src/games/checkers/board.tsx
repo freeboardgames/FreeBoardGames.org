@@ -17,7 +17,7 @@ import { Token } from 'ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
-import { isOnlineGame, isLocalGame, isAIGame } from '../common/gameMode';
+import { isOnlineGame, isLocalGame } from '../common/gameMode';
 
 interface IBoardProps {
   G: IG;

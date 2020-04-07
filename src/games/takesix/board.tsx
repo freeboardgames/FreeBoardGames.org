@@ -8,7 +8,6 @@ import { PlayerHand } from './PlayerHand';
 import { Scoreboard } from '../common/Scoreboard';
 import { ScoreBadges } from '../common/ScoreBadges';
 import Typography from '@material-ui/core/Typography';
-import { isAIGame } from '../common/gameMode';
 
 interface IBoardProps {
   G: IG;
@@ -24,20 +23,11 @@ interface IBoardState {
 }
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
-  state: IBoardState = { aiSecondDeck: false };
-
   _selectCard = async (id: number) => {
     if (!this._canPlay() || this.props.ctx.phase !== 'CARD_SELECT') {
       return;
     }
     this.props.moves.selectCard(id);
-    if (isAIGame(this.props.gameArgs)) {
-      if (this.props.ctx.currentPlayer === this.props.playerID) {
-        this.setState({ aiSecondDeck: true });
-      } else {
-        this.setState({ aiSecondDeck: false });
-      }
-    }
   };
 
   _selectDeck = (id: number) => {

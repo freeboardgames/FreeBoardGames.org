@@ -5,7 +5,6 @@ import { Client } from 'boardgame.io/client';
 import { Client as ReactClient } from 'boardgame.io/react';
 
 import { GameMode } from 'components/App/Game/GameModePicker';
-
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 

@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import next from 'next';
 import express from 'express';
-import { join } from 'path';
 import fs from 'fs';
 import { GAMES_LIST } from 'games';
 

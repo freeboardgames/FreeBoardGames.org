@@ -1,12 +1,13 @@
 module.exports = {
-  roots: ['<rootDir>/tests', '<rootDir>/components', '<rootDir>/games'],
+  rootDir: 'src/',
+  roots: ['<rootDir>/../tests', '<rootDir>/components', '<rootDir>/games'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
-  setupFilesAfterEnv: ['./jest.unit.setup.ts'],
+  setupFilesAfterEnv: ['../jest.unit.setup.ts'],
   transform: {
     '^.+\\.[t|j]sx?$': 'babel-jest',
   },
   moduleNameMapper: {
-    '\\.(css|less|sass|scss|png|mp3|md).*$': '<rootDir>/__mocks__/emptyModule.js',
+    '\\.(css|less|sass|scss|png|mp3|md).*$': '<rootDir>/../tests/__mocks__/emptyModule.js',
   },
   coverageReporters: ['json', 'lcov', 'text', 'text-summary'],
   globals: {
@@ -15,7 +16,8 @@ module.exports = {
     },
   },
   collectCoverage: true,
+  collectCoverageFrom: ['**', '!games/chess/stockfish8.worker.js'],
   coverageReporters: ['json', 'lcov'],
-  coverageDirectory: 'coverage-unit',
+  coverageDirectory: '../coverage-unit',
   modulePaths: ['<rootDir>'],
 };
