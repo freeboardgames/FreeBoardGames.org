@@ -91,7 +91,8 @@ export default class RoomCard extends React.Component<Props, State> {
               }}
             >
               <Typography gutterBottom={false} variant="overline" component="h5" data-testid={'names'}>
-                {playerNames}<b>{extraPlayerNames}</b>
+                {playerNames}
+                <b>{extraPlayerNames}</b>
               </Typography>
             </div>
             <Button
