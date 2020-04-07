@@ -27,28 +27,19 @@ RUN yarn install
 # config
 COPY --chown=appuser tsconfig.server.json webpack.server.config.js /appdata/
 
-# bgio
+# build server
+COPY --chown=appuser src /appdata/src
 COPY --chown=appuser server /appdata/server
-COPY --chown=appuser games /appdata/games
-COPY --chown=appuser hooks /appdata/hooks
-COPY --chown=appuser components /appdata/components
-COPY --chown=appuser ui /appdata/ui
-COPY --chown=appuser @types /appdata/@types
 RUN yarn run build:server
 
-
-# build app
-COPY --chown=appuser src /appdata/src
-COPY --chown=appuser pages /appdata/pages
-COPY --chown=appuser static /appdata/static
-COPY --chown=appuser .babelrc next.config.js /appdata/
-
+# build website
 ARG GA_TRACKING_CODE
 ARG GTM_ID
 ARG BGIO_SERVER_URL
 ARG GIT_REV
+COPY --chown=appuser .babelrc next.config.js /appdata/
+COPY --chown=appuser static /appdata/static
 RUN yarn run build
-
 
 WORKDIR /appdata
 COPY --chown=appuser docker_run.sh /appdata/
