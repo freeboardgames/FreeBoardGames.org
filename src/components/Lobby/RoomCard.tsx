@@ -45,17 +45,16 @@ export default class RoomCard extends React.Component<Props, State> {
       textDecoration: 'none',
     };
     const gameNameHeading = (
-      <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
+      <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }} data-testid={'gamename'}>
         {this.props.game.name}
       </Typography>
     );
     const numPlayersAndCapacity = (
-      <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
+      <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }} data-testid={'capacity'}>
         {this.props.players.length}/{this.props.capacity}
       </Typography>
     );
-    // TODO handle name overflow (foo, bar, baz, <b>+3 more...</b>)
-    const playerNames = this.props.players.join(', ');
+    const playerNames = this._getNames();
     return (
       <MuiThemeProvider theme={theme}>
         <Card>
@@ -89,7 +88,7 @@ export default class RoomCard extends React.Component<Props, State> {
                 left: '8px',
               }}
             >
-              <Typography gutterBottom={false} variant="overline" component="h5">
+              <Typography gutterBottom={false} variant="overline" component="h5" data-testid={'names'}>
                 {playerNames}
               </Typography>
             </div>
@@ -97,6 +96,7 @@ export default class RoomCard extends React.Component<Props, State> {
               variant="contained"
               color={'primary'}
               style={{ position: 'absolute', bottom: '10px', left: '300px' }}
+              data-testid={'joinbutton'}
               // TODO: onClick
             >
               Join
@@ -106,4 +106,26 @@ export default class RoomCard extends React.Component<Props, State> {
       </MuiThemeProvider>
     );
   }
+
+  /** Create a human-readable list of player names in a lobby. */
+  _getNames = () => {
+    // TODO
+    let names = '';
+    const players = this.props.players;
+    const NUM_OF_NAMES_LIMIT = 2;
+    if (players.length === 1) {
+      return players[0];
+    }
+    players.every((name, index) => {
+      const notLastName = index < players.length - 1 && index < NUM_OF_NAMES_LIMIT - 1;
+      const separator = notLastName ? ', ' : '';
+      names += name + separator;
+      if (!notLastName) {
+        const remaining = players.length - index - 1;
+        names += `, +${remaining} more`;
+      }
+      return notLastName; // returning true breaks the .every() loop
+    });
+    return names;
+  };
 }
