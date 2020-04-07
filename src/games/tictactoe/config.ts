@@ -1,4 +1,4 @@
-import { IGameConfig } from '../';
+import { IGameConfig } from '..';
 import { TictactoeGame } from './game';
 import { Board } from './board';
 

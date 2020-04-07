@@ -1,4 +1,4 @@
-import { TurnOrder, IGameArgs, ActivePlayers, IGameCtx } from 'boardgame.io/core';
+import { IGameArgs, ActivePlayers, IGameCtx } from 'boardgame.io/core';
 import shortid from 'shortid';
 
 export interface IShip {

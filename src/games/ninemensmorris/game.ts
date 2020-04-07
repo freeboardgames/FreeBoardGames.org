@@ -1,7 +1,6 @@
 import { IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 import Point from './point';
 import Player from './player';
-import Piece from './piece';
 
 export enum Phase {
   Place = 'Place',

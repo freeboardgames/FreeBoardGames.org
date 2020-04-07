@@ -19,7 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import Controls from './Controls';
 
 import { pieces } from './pieces';
-import { isLocalGame, isOnlineGame } from '../common/gameMode';
+import { isLocalGame } from '../common/gameMode';
 
 export interface ICoords {
   x: number;
