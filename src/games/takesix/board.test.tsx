@@ -97,7 +97,7 @@ test('win', () => {
       }}
     />,
   );
-  expect(comp.find('h6').at(1).text()).toEqual('Game Over, you won!');
+  expect(comp.find('h6').at(0).text()).toEqual('Game Over, you won!');
 });
 
 test('loss', () => {
@@ -119,7 +119,7 @@ test('loss', () => {
       }}
     />,
   );
-  expect(comp.find('h6').at(1).text()).toEqual('Game Over, you lost!');
+  expect(comp.find('h6').at(0).text()).toEqual('Game Over, you lost!');
 });
 
 test('draw', () => {
@@ -141,5 +141,5 @@ test('draw', () => {
       }}
     />,
   );
-  expect(comp.find('h6').at(1).text()).toEqual('Game Over, draw!');
+  expect(comp.find('h6').at(0).text()).toEqual('Game Over, draw!');
 });
