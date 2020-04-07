@@ -21,6 +21,8 @@ interface Props {
 
 interface State {}
 
+const MAX_NUM_OF_NAMES = 2;
+
 export default class RoomCard extends React.Component<Props, State> {
   state: State = {};
 
@@ -54,7 +56,7 @@ export default class RoomCard extends React.Component<Props, State> {
         {this.props.players.length}/{this.props.capacity}
       </Typography>
     );
-    const playerNames = this._getNames();
+    const [playerNames, extraPlayerNames] = this._getNames();
     return (
       <MuiThemeProvider theme={theme}>
         <Card>
@@ -89,7 +91,7 @@ export default class RoomCard extends React.Component<Props, State> {
               }}
             >
               <Typography gutterBottom={false} variant="overline" component="h5" data-testid={'names'}>
-                {playerNames}
+                {playerNames}<b>{extraPlayerNames}</b>
               </Typography>
             </div>
             <Button
@@ -109,22 +111,11 @@ export default class RoomCard extends React.Component<Props, State> {
 
   /** Create a human-readable list of player names in a lobby. */
   _getNames = () => {
-    let names = '';
     const players = this.props.players;
-    const NUM_OF_NAMES_LIMIT = 2;
-    if (players.length === 1) {
-      return players[0];
+    if (players.length < MAX_NUM_OF_NAMES) {
+      return [players.join(', '), ''];
     }
-    players.every((name, index) => {
-      const notLastName = index < players.length - 1 && index < NUM_OF_NAMES_LIMIT - 1;
-      const separator = notLastName ? ', ' : '';
-      names += name + separator;
-      if (!notLastName) {
-        const remaining = players.length - index - 1;
-        names += `, +${remaining} more`;
-      }
-      return notLastName; // returning true breaks the .every() loop
-    });
-    return names;
+    // [playerNames, excessNames]
+    return [`${players[0]}, ${players[1]}`, `, + ${players.length - 2} more`];
   };
 }

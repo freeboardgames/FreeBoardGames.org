@@ -32,5 +32,5 @@ it('truncates names', () => {
   const players = ['Alice', 'Bob', 'Carol', 'Craig', 'Dan', 'Erin'];
   comp.setProps({ players, capacity: 8 });
   const playerNames = comp.find({ 'data-testid': 'names' }).at(0).text();
-  expect(playerNames).toEqual('Alice, Bob, +4 more');
+  expect(playerNames).toEqual('Alice, Bob, + 4 more');
 });
