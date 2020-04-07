@@ -109,7 +109,6 @@ export default class RoomCard extends React.Component<Props, State> {
 
   /** Create a human-readable list of player names in a lobby. */
   _getNames = () => {
-    // TODO
     let names = '';
     const players = this.props.players;
     const NUM_OF_NAMES_LIMIT = 2;
