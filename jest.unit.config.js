@@ -17,6 +17,6 @@ module.exports = {
   },
   collectCoverage: true,
   coverageReporters: ['json', 'lcov'],
-  coverageDirectory: 'coverage-unit',
+  coverageDirectory: '../coverage-unit',
   modulePaths: ['<rootDir>'],
 };
