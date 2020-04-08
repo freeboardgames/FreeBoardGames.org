@@ -9,6 +9,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import ReactGA from 'react-ga';
 import getMessagePage from '../MessagePage';
 import { LobbyService } from '../Lobby/LobbyService';
+import Router from 'next/router';
 
 export interface IGameOverProps {
   result: string;
@@ -78,11 +79,11 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     });
 
     if (args.mode === GameMode.AI || args.mode === GameMode.LocalFriend) {
-      window.location.replace(window.location.pathname);
+      Router.push(window.location.pathname);
     } else {
       this.setState({ loading: true });
       const nextRoomId = await LobbyService.getPlayAgainNextRoom(args.gameCode, args.matchCode, args.players.length);
-      window.location.replace(`/room/${args.gameCode}/${nextRoomId}` as any);
+      Router.push(`/room/${args.gameCode}/${nextRoomId}` as any);
     }
   };
 }
