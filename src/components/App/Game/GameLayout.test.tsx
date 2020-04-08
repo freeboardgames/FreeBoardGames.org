@@ -6,7 +6,6 @@ import { GameMode } from './GameModePicker';
 import { LobbyService } from '../Lobby/LobbyService';
 import ReplayIcon from '@material-ui/icons/Replay';
 import Router from 'next/router';
-// jest.mock('next/router', ()=> ({push: jest.fn()}))
 
 beforeEach(() => {
   jest.resetAllMocks();
