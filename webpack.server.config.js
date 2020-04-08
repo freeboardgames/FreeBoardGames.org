@@ -35,6 +35,14 @@ var config = {
   module: {
     rules: [
       {
+        test: /.*\.worker\.js$/,
+        use: [
+          {
+            loader: 'worker-loader',
+          },
+        ],
+      },
+      {
         test: /\.(j|t)s(x?)$/,
         exclude: /node_modules/,
         use: [
