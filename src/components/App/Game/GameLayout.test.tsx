@@ -5,6 +5,7 @@ import { IGameArgs } from './GameBoardWrapper';
 import { GameMode } from './GameModePicker';
 import { LobbyService } from '../Lobby/LobbyService';
 import ReplayIcon from '@material-ui/icons/Replay';
+import Router from 'next/router';
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -44,15 +45,9 @@ describe('ReplayIcon', () => {
 
     const wrapper = mount(<GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />);
 
-    const mockReload = jest.fn();
-    Object.defineProperty(window.location, 'replace', {
-      writable: true,
-      value: mockReload,
-    });
-
     wrapper.find(ReplayIcon).simulate('click');
     await p;
-    expect(mockReload.mock.calls.length).toEqual(1);
+    expect(Router.push).toHaveBeenCalledWith('/room/FooGame/roomfoo');
   });
 
   it('should call window.location.reload', () => {
@@ -62,6 +57,6 @@ describe('ReplayIcon', () => {
     };
     const wrapper = mount(<GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />);
     wrapper.find(ReplayIcon).simulate('click');
-    expect(window.location.replace).toHaveBeenCalled();
+    expect(Router.push).toHaveBeenCalled();
   });
 });
