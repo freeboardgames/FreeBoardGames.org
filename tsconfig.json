@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
     "baseUrl": "./src/",
+    "paths": {
+      "dto/*": [
+        "../backend/src/dto/*",
+      ]
+    },
     "target": "es5",
     "lib": [
       "dom",

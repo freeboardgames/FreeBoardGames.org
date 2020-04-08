@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.6",
     "@types/csurf": "^1.9.36",
     "@types/jest": "^25.1.5",

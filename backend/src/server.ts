@@ -3,7 +3,8 @@ import { UserDBEntity } from './entities/UserDBEntity';
 import express from 'express';
 import 'reflect-metadata';
 import morgan from 'morgan';
-import { AuthResponse, RegResponse } from './dto';
+import { AuthResponse, RegResponse } from './dto/User';
+import { Room, RoomResponse } from './dto/Room';
 import User from './User';
 import bodyParser from 'body-parser';
 import csrf from 'csurf';
@@ -58,7 +59,6 @@ async function serve() {
   });
 
   app.post('/api/users/auth', csrfProtection, async (req, res) => {
-    console.log('Cookies: ', req.cookies);
     const { email, password } = req.body;
     if (!email || !password) {
       res.status(400).send();
@@ -67,6 +67,16 @@ async function serve() {
     const user = new User(email);
     const authResult = await user.checkPassword(password);
     const result: AuthResponse = { status: authResult };
+    res.send(result);
+  });
+
+  /** list rooms */
+  app.get('/api/rooms', csrfProtection, async (_req, res) => {
+    const room: Room = { gameCode: 'chess', capacity: 2, players: ['Jason'] };
+    const room2: Room = { gameCode: 'tictactoe', capacity: 2, players: ['Jason'] };
+    const room3: Room = { gameCode: 'chess', capacity: 2, players: ['Jason'] };
+    const result: Room[] = [room, room2, room3];
+    console.log(result);
     res.send(result);
   });
 

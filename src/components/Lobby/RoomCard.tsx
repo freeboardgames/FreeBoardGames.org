@@ -4,8 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { lightBlue } from '@material-ui/core/colors';
+import { Room } from 'dto/Room';
 
-import { IGameDef } from 'games';
+import { GAMES_MAP } from 'games';
 
 const theme = createMuiTheme({
   palette: {
@@ -14,9 +15,10 @@ const theme = createMuiTheme({
 });
 
 interface Props {
-  game: IGameDef;
-  players: string[];
-  capacity: number;
+  // game: IGameDef;
+  room: Room;
+  // players: string[];
+  // capacity: number;
 }
 
 interface State {}
@@ -27,11 +29,13 @@ export default class RoomCard extends React.Component<Props, State> {
   state: State = {};
 
   render() {
-    const image = this.props.game.imageURL;
+    const room = this.props.room;
+    const game = GAMES_MAP[room.gameCode];
+    const image = game.imageURL;
     const mainDivStyle: React.CSSProperties = {
       position: 'relative',
       height: '188px', // 250px
-      width: '380px', // 500px
+      width: '375px', // 500px
       backgroundPosition: 'left center',
       backgroundColor: image[0],
       backgroundImage: `url(${image.src})`,
@@ -48,12 +52,12 @@ export default class RoomCard extends React.Component<Props, State> {
     };
     const gameNameHeading = (
       <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }} data-testid={'gamename'}>
-        {this.props.game.name}
+        {game.name}
       </Typography>
     );
     const numPlayersAndCapacity = (
       <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }} data-testid={'capacity'}>
-        {this.props.players.length}/{this.props.capacity}
+        {room.players.length}/{room.capacity}
       </Typography>
     );
     const [playerNames, extraPlayerNames] = this._getNames();
@@ -98,7 +102,7 @@ export default class RoomCard extends React.Component<Props, State> {
             <Button
               variant="contained"
               color={'primary'}
-              style={{ position: 'absolute', bottom: '10px', left: '300px' }}
+              style={{ position: 'relative', top: '143px', left: '300px' }}
               data-testid={'joinbutton'}
               // TODO: onClick
             >
@@ -112,7 +116,7 @@ export default class RoomCard extends React.Component<Props, State> {
 
   /** Create a human-readable list of player names in a lobby. */
   _getNames = () => {
-    const players = this.props.players;
+    const players = this.props.room.players;
     if (players.length < MAX_NUM_OF_NAMES) {
       return [players.join(', '), ''];
     }
