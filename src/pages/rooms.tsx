@@ -17,7 +17,24 @@ class Rooms extends React.Component<{}, {}> {
             Rooms
           </Typography>
           <div style={{ margin: '0 4px', display: 'flex', flexWrap: 'wrap' }}>
-            <RoomCard game={GAMES_LIST[0]} capacity={2} players={['Jason']} />
+            <div style={{ textDecoration: 'none', flex: 1, minWidth: '300px', maxWidth: '380px', margin: '8px' }}>
+              <RoomCard game={GAMES_LIST[0]} capacity={2} players={['Jason']} />
+            </div>
+            <div style={{ textDecoration: 'none', flex: 1, minWidth: '300px', maxWidth: '380px', margin: '8px' }}>
+              <RoomCard game={GAMES_LIST[0]} capacity={2} players={['Jason']} />
+            </div>
+            <div style={{ textDecoration: 'none', flex: 1, minWidth: '300px', maxWidth: '380px', margin: '8px' }}>
+              <RoomCard game={GAMES_LIST[0]} capacity={2} players={['Jason']} />
+            </div>
+            <div style={{ textDecoration: 'none', flex: 1, minWidth: '300px', maxWidth: '380px', margin: '8px' }}>
+              <RoomCard game={GAMES_LIST[0]} capacity={2} players={['Jason']} />
+            </div>
+            <div style={{ textDecoration: 'none', flex: 1, minWidth: '300px', maxWidth: '380px', margin: '8px' }}>
+              <RoomCard game={GAMES_LIST[0]} capacity={2} players={['Jason']} />
+            </div>
+            <div style={{ textDecoration: 'none', flex: 1, minWidth: '300px', maxWidth: '380px', margin: '8px' }}>
+              <RoomCard game={GAMES_LIST[0]} capacity={2} players={['Jason']} />
+            </div>
           </div>
         </div>
       </FreeBoardGamesBar>

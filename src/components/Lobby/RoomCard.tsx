@@ -31,7 +31,7 @@ export default class RoomCard extends React.Component<Props, State> {
     const mainDivStyle: React.CSSProperties = {
       position: 'relative',
       height: '188px', // 250px
-      width: '375px', // 500px
+      width: '380px', // 500px
       backgroundPosition: 'left center',
       backgroundColor: image[0],
       backgroundImage: `url(${image.src})`,
