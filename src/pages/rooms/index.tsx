@@ -1,8 +1,7 @@
 import React from 'react';
 import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
 import Typography from '@material-ui/core/Typography';
-import RoomCard from 'components/Lobby/RoomCard';
-import RoomList from 'components/Lobby/RoomList';
+import GamesWithRooms from 'components/Lobby/GamesWithRooms';
 import { LobbyService } from 'components/Lobby/LobbyService';
 import { Room } from 'dto/Room';
 
@@ -22,24 +21,12 @@ class Rooms extends React.Component<Props, {}> {
           >
             Rooms
           </Typography>
-          <div
-            style={{
-              margin: '0 4px',
-              display: 'flex',
-              flexWrap: 'wrap',
-              // TODO: Do we want to center the rooms?
-              // alignItems: 'center',
-              // justifyContent: 'center',
-            }}
-          >
-            <RoomList rooms={this.props.rooms} />
-          </div>
+          <GamesWithRooms rooms={this.props.rooms} />
         </div>
       </FreeBoardGamesBar>
     );
   }
-  static async getInitialProps(ctx: any) {
-    console.log('ctx', ctx);
+  static async getInitialProps() {
     const rooms = await LobbyService.list();
     return { rooms };
   }

@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "lint": "eslint --max-warnings=0 --ext .ts,.tsx src/ tests/",
-    "lint:fix": "eslint --fix --max-warnings=0 --ext .ts,.tsx src/ tests/",
+    "lint": "eslint --max-warnings=0 --ext .ts,.tsx src/",
+    "lint:fix": "eslint --fix --max-warnings=0 --ext .ts,.tsx src/",
     "pre": "run-s lint format:check build:server test:unit ci:test:e2e report:combined",
     "autopre": "run-s format lint:fix build:server test:unit ci:test:e2e report:combined",
     "dev": "run-s build:server:dev dev:runserver",
@@ -27,6 +27,7 @@
     "e2e:buildandstartserver": "run-s build:server e2e:build e2e:startserver",
     "ci:test:e2e": "start-server-and-test e2e:buildandstartserver http://localhost:3000 test:e2e",
     "test:unit": "jest -c jest.unit.config.js",
+    "test:unit:nocov": "jest -c jest.unit.config.js --coverage=false",
     "test:e2e": "jest -c jest.e2e.config.js",
     "test": "run-s test:unit test:e2e",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
