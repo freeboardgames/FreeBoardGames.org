@@ -3,6 +3,7 @@ import {IGameCtx} from "boardgame.io/core";
 import {IGameArgs} from '../../components/App/Game/GameBoardWrapper';
 import * as React from 'react';
 import css from './board.css';
+import mainCss from './main.css';
 import {CARD_COLOR} from './card';
 import {isLocalGame, isOnlineGame} from '../common/gameMode';
 
@@ -127,7 +128,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
         if (this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === STAGES.GIVE_CLUE &&
             this.props.isActive && isLocalOrSpymaster) {
             buttons.push(
-                <button key={buttons.length} className={css.btn} onClick={this._clueGiven}>
+                <button key={buttons.length} className={mainCss.btn} onClick={this._clueGiven}>
                     I've given my clue!
                 </button>
             );
@@ -135,14 +136,14 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
         if (this.props.ctx.activePlayers[this.props.playerID] === STAGES.GUESS ||
             (isLocal && this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === STAGES.GUESS)) {
             buttons.push(
-                <button key={buttons.length} className={css.btn} onClick={this._endTurn}>
+                <button key={buttons.length} className={mainCss.btn} onClick={this._endTurn}>
                     Pass to the other team
                 </button>
             );
         }
         if (isLocalOrSpymaster) {
             buttons.push(
-                <button key={buttons.length} className={css.btn} onClick={this._toggleSpymasterView}>
+                <button key={buttons.length} className={mainCss.btn} onClick={this._toggleSpymasterView}>
                     Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal'}
                 </button>
             );
@@ -153,8 +154,8 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
     render() {
         return (
-            <main className={css.main}>
-                <div className={css.wrapper}>
+            <main className={mainCss.main}>
+                <div className={mainCss.wrapper}>
                     {this._renderHeader()}
 
                     {this._renderCardGrid()}

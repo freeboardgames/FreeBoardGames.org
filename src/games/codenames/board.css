@@ -1,23 +1,3 @@
-.main {
-    background-color: var(--background-color);
-
-    display: flex;
-    justify-content: center;
-}
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    width: 100%;
-    max-width: 1024px;
-    margin: 0 .8rem;
-    padding: 0.8rem 0;
-
-    font-family: sans-serif;
-}
-
 .header {
     color: var(--gray);
 }
@@ -86,29 +66,6 @@
 .cardAssassin {
     background-color: var(--assassin-card--background-color);
     fill: #fff;
-}
-
-.btn {
-    color: white;
-    border-radius: 3px;
-    border: none;
-    padding: 8px 16px;
-
-    background-color: rgba(0, 0, 0, 0.2);
-    transition: background-color 200ms ease-out;
-
-    outline: none;
-}
-
-.btn[disabled] {
-    background-color: rgba(255, 255, 255, 0.1);
-    cursor: not-allowed;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.btn:not([disabled]):hover {
-    background-color: rgba(0, 0, 0, 0.4);
-    cursor: pointer;
 }
 
 .buttons {

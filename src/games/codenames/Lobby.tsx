@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { IG } from './game';
 import css from './Lobby.css';
+import mainCss from './main.css';
 import { LobbyTeam } from './LobbyTeam';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import { LobbyPlayer } from './LobbyPlayer';
@@ -60,8 +61,8 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
     }
 
     return (
-      <main className={css.main}>
-        <div className={css.wrapper}>
+      <main className={mainCss.main}>
+        <div className={mainCss.wrapper}>
           <h1 className={css.title}>Codenames</h1>
 
           <div className={css.teamsContainer}>
@@ -99,7 +100,7 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
 
           {this.props.isHost || isLocalGame(this.props.gameArgs) ? (
             <button
-              className={[css.btn, css.btnStartGame].join(' ')}
+              className={[mainCss.btn, css.btnStartGame].join(' ')}
               onClick={this._startGame}
               disabled={!this.gameCanStart()}
             >
