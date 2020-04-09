@@ -134,7 +134,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             this.props.isActive &&
             (isLocalGame(this.props.gameArgs) || isSpymaster) ? (
               <button className={css.btn} onClick={this._clueGiven}>
-                Clue given
+                I've given my clue!
               </button>
             ) : (
               ''
@@ -143,14 +143,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             (isLocalGame(this.props.gameArgs) &&
               this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === STAGES.GUESS) ? (
               <button className={css.btn} onClick={this._endTurn}>
-                End guessing
+                Pass to the other team
               </button>
             ) : (
               ''
             )}
             {isLocalGame(this.props.gameArgs) || isSpymaster ? (
               <button className={css.btn} onClick={this._toggleSpymasterView}>
-                Toggle Spymaster View
+                Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal' }
               </button>
             ) : (
               ''
