@@ -110,7 +110,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     } else {
       aiLevel = this.props.aiLevel;
       matchCode = this.props.matchCode;
-      playerID = this.mode === GameMode.AI ? '0' : this.props.playerID;
+      playerID = this.mode === GameMode.AI ? '1' : this.props.playerID;
     }
     if (!this.gameDef) {
       return <MessagePageClass type={'error'} message={'Game Not Found'} />;
@@ -151,7 +151,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         const gameAIType = gameAIConfig.type || gameAI;
 
         clientConfig.multiplayer = Local({
-          bots: { '1': gameAIType },
+          bots: { '0': gameAIType },
         });
         clientConfig.game.ai = gameAI;
       }
@@ -184,8 +184,8 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         return this.props.room.players;
       case GameMode.AI:
         return [
-          { playerID: 0, name: 'You', roomID: '' },
-          { playerID: 1, name: 'Computer', roomID: '' },
+          { playerID: 0, name: 'Computer', roomID: '' },
+          { playerID: 1, name: 'You', roomID: '' },
         ];
       case GameMode.LocalFriend:
         return [
