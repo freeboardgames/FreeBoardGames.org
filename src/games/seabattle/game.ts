@@ -92,14 +92,11 @@ export const SeabattleGame: IGameArgs = {
 
   phases: {
     setup: {
-      onBegin: (_, ctx) => {
-        ctx.events.setActivePlayers(ActivePlayers.ALL_ONCE);
-      },
       moves: { setShips },
       next: 'play',
       start: true,
       turn: {
-        moveLimit: 1,
+        activePlayers: ActivePlayers.ALL_ONCE,
         onMove: (_, ctx) => {
           if (ctx.activePlayers === null) {
             ctx.events.endPhase();
