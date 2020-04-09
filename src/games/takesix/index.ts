@@ -7,7 +7,7 @@ export const takesixGameDef: IGameDef = {
   code: 'takesix',
   name: 'Take 6!',
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.OnlineFriend }],
+  modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }],
   minPlayers: 2,
   maxPlayers: 10,
   description: 'Similar To 6 Nimmt!',

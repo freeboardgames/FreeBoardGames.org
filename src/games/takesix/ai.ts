@@ -42,9 +42,7 @@ export class TakeSixBot {
 
 export const config: IAIConfig = {
   bgioAI: () => {
-    return {
-      bot: TakeSixBot,
-    };
+    return TakeSixBot;
   },
 };
 
