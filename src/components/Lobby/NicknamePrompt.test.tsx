@@ -1,5 +1,5 @@
 import React from 'react';
-import { NicknamePrompt } from './NicknamePrompt';
+import NicknamePrompt from './NicknamePrompt';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Button from '@material-ui/core/Button';
@@ -14,7 +14,7 @@ describe('Nickname Prompt', () => {
   beforeEach(() => {
     setNicknamePromptMock = jest.fn();
     togglePromptMock = jest.fn();
-    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} togglePrompt={togglePromptMock} />);
+    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} closePrompt={togglePromptMock} />);
   });
 
   it('should prompt for nickname', () => {
@@ -40,9 +40,22 @@ describe('Nickname Prompt', () => {
     expect(setNicknamePromptMock).toHaveBeenCalledWith('foobar');
   });
 
-  it('should call this.props.togglePrompt on click away', () => {
-    const instance = wrapper.instance() as any;
-    instance._togglePrompt();
-    expect(togglePromptMock).toHaveBeenCalled();
+  it('should not set nickname on anything except enter button', () => {
+    const input = wrapper.find('input');
+    input.simulate('change', {
+      target: { value: 'foobar' },
+    });
+    input.simulate('keypress', { key: 'Escape' });
+    expect(setNicknamePromptMock).not.toHaveBeenCalled();
+  });
+
+  it('should not set nickname when invalid', () => {
+    wrapper.setState({ nameTextField: '' });
+    const setButton = wrapper.find(Button);
+    setButton.simulate('click');
+    expect(setNicknamePromptMock).not.toHaveBeenCalled();
+
+    const errorText: string = wrapper.state('errorText');
+    expect(errorText).toEqual('Invalid name.');
   });
 });

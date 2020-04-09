@@ -46,6 +46,7 @@
     "@material-ui/core": "^4.9.9",
     "@material-ui/icons": "^4.5.1",
     "@tweenjs/tween.js": "^18.5.0",
+    "@types/js-cookie": "^2.2.5",
     "@types/socket.io-client": "^1.4.32",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-workers": "^1.0.0",

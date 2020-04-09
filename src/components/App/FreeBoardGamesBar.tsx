@@ -6,25 +6,32 @@ import FbgLogo from './media/fbg_logo_white_48.png';
 import Link from 'next/link';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core';
-import LoginForm from './Auth/LoginForm';
+import NicknamePrompt from 'components/Lobby/NicknamePrompt';
+import Cookies from 'js-cookie';
 
-interface FBGBarProps {
+interface Props {
   FEATURE_FLAG_readyForDesktopView?: boolean;
+  nicknameRequired?: boolean;
 }
 
-interface FBGBarState {
-  loginFormOpen: boolean;
+interface State {
+  loginFormOpen?: boolean;
+  nickname?: string;
 }
 
-class FreeBoardGamesBar extends React.Component<FBGBarProps, FBGBarState> {
-  constructor(props: FBGBarProps) {
+class FreeBoardGamesBar extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
-    this.state = { loginFormOpen: false };
+    if (props.nicknameRequired) {
+      const nickname = Cookies.get('nickname');
+      this.state = { loginFormOpen: !nickname, nickname };
+    } else {
+      this.state = { loginFormOpen: false, nickname: '' };
+    }
   }
 
   render() {
     const maxWidth = this.props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
-
     const WhiteButton = withStyles({ root: { color: 'white' } })(Button);
 
     return (
@@ -36,23 +43,25 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, FBGBarState> {
           }}
         >
           <AppBar position="sticky">
-            <Link href="/">
-              <a style={{ textDecoration: 'none' }}>
-                <Toolbar>
-                  <img style={{ marginRight: '12px', height: '48px' }} src={FbgLogo} alt="FbG" />
-                  <Typography component="h1" variant="h6" style={{ color: 'white' }}>
+            <Toolbar>
+              <Link href="/">
+                <a style={{ display: 'contents', textDecoration: 'none' }}>
+                  <img style={{ paddingRight: '12px', height: '48px' }} src={FbgLogo} alt="FbG" />
+                  <Typography component="h1" variant="h6" style={{ color: 'white', padding: '8px' }}>
                     FreeBoardGames.org
                   </Typography>
-                  <WhiteButton
-                    data-testid={'loginorprofilebutton'}
-                    style={{ marginLeft: 'auto' }}
-                    onClick={this._openLoginForm}
-                  >
-                    Log in
-                  </WhiteButton>
-                </Toolbar>
-              </a>
-            </Link>
+                </a>
+              </Link>
+              {this.props.nicknameRequired && (
+                <WhiteButton
+                  data-testid={'loginorprofilebutton'}
+                  style={{ marginLeft: 'auto' }}
+                  onClick={this._openNicknamePrompt}
+                >
+                  {this.state.nickname}
+                </WhiteButton>
+              )}
+            </Toolbar>
           </AppBar>
         </div>
         <div
@@ -62,20 +71,31 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, FBGBarState> {
             marginRight: 'auto',
           }}
         >
-          {this.state.loginFormOpen && <LoginForm closeLoginForm={this._closeLoginForm} />}
+          {this.state.loginFormOpen && (
+            <NicknamePrompt
+              nickname={this.state.nickname}
+              setNickname={this._setNickname}
+              closePrompt={this._closeNicknamePrompt}
+            />
+          )}
           {this.props.children}
         </div>
       </React.Fragment>
     );
   }
 
-  _openLoginForm = () => {
+  _setNickname = (nickname: string) => {
+    Cookies.set('nickname', nickname, { sameSite: 'strict' });
+    this.setState((oldState) => ({ ...oldState, nickname }));
+  };
+
+  _openNicknamePrompt = () => {
     this.setState((oldState) => {
       return { ...oldState, loginFormOpen: true };
     });
   };
 
-  _closeLoginForm = () => {
+  _closeNicknamePrompt = () => {
     this.setState((oldState) => {
       return { ...oldState, loginFormOpen: false };
     });

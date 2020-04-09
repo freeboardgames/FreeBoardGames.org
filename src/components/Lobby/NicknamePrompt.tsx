@@ -4,77 +4,82 @@ import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import AlertLayer from 'components/App/Game/AlertLayer';
 
-interface INicknamePromptProps {
+interface Props {
   setNickname: (nickname: string) => void;
-  togglePrompt?: () => void;
   nickname?: string;
+  closePrompt?: () => void;
 }
 
-interface INicknamePromptState {
+interface State {
   nameTextField: string;
+  errorText: string;
 }
 
-export class NicknamePrompt extends React.Component<INicknamePromptProps, INicknamePromptState> {
-  state = { nameTextField: '' };
+class NicknamePrompt extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { nameTextField: props.nickname, errorText: '' };
+  }
   render() {
     return (
-      <div>
-        <ClickAwayListener onClickAway={this._togglePrompt}>
-          <Card
-            style={{
-              marginTop: '16px',
-              whiteSpace: 'nowrap',
-              width: '250px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              textAlign: 'center',
-            }}
-          >
-            <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
-              Enter Your Nickname
-            </Typography>
-            <CardContent>
-              <div>
-                <TextField
-                  autoFocus={true}
-                  type="text"
-                  defaultValue={this.props.nickname}
-                  onChange={this._onChange}
-                  onKeyPress={this._setNicknameOnEnterButton}
-                />
-              </div>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ marginTop: '16px' }}
-                onClick={this._onClick}
-                disabled={!this._nicknameIsValid()}
-              >
-                Set Nickname
-              </Button>
-            </CardContent>
-          </Card>
-        </ClickAwayListener>
-      </div>
+      <AlertLayer>
+        <Card
+          style={{
+            marginTop: '16px',
+            whiteSpace: 'nowrap',
+            width: '250px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            textAlign: 'center',
+          }}
+        >
+          <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
+            Enter Your Nickname
+          </Typography>
+          <CardContent>
+            <div>
+              <TextField
+                autoFocus={true}
+                type="text"
+                defaultValue={this.props.nickname}
+                error={!!this.state.errorText}
+                helperText={this.state.errorText}
+                onChange={this._onChange}
+                onKeyPress={this._setNicknameOnEnterButton}
+              />
+            </div>
+            <Button variant="contained" color="primary" style={{ marginTop: '16px' }} onClick={this._onClick}>
+              Set Nickname
+            </Button>
+          </CardContent>
+        </Card>
+      </AlertLayer>
     );
   }
 
   _setNicknameOnEnterButton = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key === 'Enter' && this._nicknameIsValid()) {
+    if (event.key === 'Enter') {
       this._onClick();
     }
   };
 
-  _nicknameIsValid = () => {
+  _getErrors = () => {
     const name = this.state.nameTextField;
-    return name && name.length > 0;
+    let errorText = '';
+    if (!name || name.length < 1 || name.length > 12) {
+      errorText = 'Invalid name.';
+    }
+    this.setState({ errorText });
+    return errorText;
   };
 
   _onClick = () => {
-    if (this._nicknameIsValid()) {
+    const errors = this._getErrors();
+    if (!errors) {
       this.props.setNickname(this.state.nameTextField);
+      this.props.closePrompt();
     }
   };
 
@@ -84,10 +89,6 @@ export class NicknamePrompt extends React.Component<INicknamePromptProps, INickn
       return { ...oldState, nameTextField };
     });
   };
-
-  _togglePrompt = () => {
-    if (this.props.togglePrompt) {
-      this.props.togglePrompt();
-    }
-  };
 }
+
+export default NicknamePrompt;
