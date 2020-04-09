@@ -1,7 +1,7 @@
 import { IGameArgs, IGameCtx, Stage } from 'boardgame.io/core';
 import Player from './player';
 import Team from './team';
-import { wordsNL as words } from './constants';
+import { words } from './constants';
 import { Card, CARD_COLOR } from './card';
 
 export interface IG {
