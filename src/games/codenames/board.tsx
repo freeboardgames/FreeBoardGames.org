@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { IG, PHASES, STAGES } from './game';
+import { IG, PHASES } from './game';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import css from './board.css';
 import lobbyCss from './Lobby.css';
-import { CARD_COLOR } from './card';
 import { GameLayout } from '../../components/App/Game/GameLayout';
 import { Lobby } from './Lobby';
 import './global.css';
-import { isLocalGame, isOnlineGame } from '../common/gameMode';
-import {PlayBoard} from './PlayBoard';
+import { PlayBoard } from './PlayBoard';
 
 interface IBoardProps {
   G: IG;
@@ -44,16 +42,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _renderPlayBoard = () => {
     return (
-        <PlayBoard
-            G={this.props.G}
-            ctx={this.props.ctx}
-            moves={this.props.moves}
-            events={this.props.events}
-            playerID={this.props.playerID}
-            gameArgs={this.props.gameArgs}
-            isActive={this.props.isActive}
-            isHost={this.isHost()}
-        />
+      <PlayBoard
+        G={this.props.G}
+        ctx={this.props.ctx}
+        moves={this.props.moves}
+        events={this.props.events}
+        playerID={this.props.playerID}
+        gameArgs={this.props.gameArgs}
+        isActive={this.props.isActive}
+        isHost={this.isHost()}
+      />
     );
   };
 
