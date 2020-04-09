@@ -44,7 +44,6 @@ class defaultApp extends App {
     );
   }
   static async getInitialProps({ Component, ctx }) {
-    // console.log((ctx.req as any).SSROnlyUtil.secret());
     let pageProps = {};
 
     if (Component.getInitialProps) {
