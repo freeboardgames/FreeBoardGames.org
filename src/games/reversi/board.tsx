@@ -42,7 +42,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   _onClick = this.onClick.bind(this);
 
   async onClick(coords: ICoords) {
-    if (isAIGame(this.props.gameArgs) && this.props.ctx.currentPlayer === '1') {
+    if (isAIGame(this.props.gameArgs) && this.props.ctx.currentPlayer === this.props.ctx.playerID) {
       return;
     }
 

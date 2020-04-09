@@ -293,8 +293,9 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getStatus() {
-    // Online Multiplayer
-    if (this.props.gameArgs && this.props.gameArgs.mode === GameMode.OnlineFriend) {
+    // Online Multiplayer or AI
+    const mode = this.props.gameArgs.mode;
+    if (this.props.gameArgs && (mode === GameMode.OnlineFriend || mode === GameMode.AI)) {
       if (this.chess.in_check()) {
         return 'CHECK';
       }
