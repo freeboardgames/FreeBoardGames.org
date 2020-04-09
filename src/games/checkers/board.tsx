@@ -17,7 +17,7 @@ import { Token } from 'ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
-import { isOnlineGame, isLocalGame } from '../common/gameMode';
+import { isOnlineGame, isLocalGame, isAIGame } from '../common/gameMode';
 
 interface IBoardProps {
   G: IG;
@@ -151,7 +151,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   _getStatus() {
-    if (isOnlineGame(this.props.gameArgs)) {
+    if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'Move piece';
       } else {

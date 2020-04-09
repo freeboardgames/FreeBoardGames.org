@@ -17,7 +17,7 @@ interface IPlayState {
 export class SeabattleBot {
   async play(state: IPlayState, playerID: string) {
     if (state.ctx.phase === 'setup') {
-      const shipPositions = generateRandomShips(1);
+      const shipPositions = generateRandomShips(parseInt(state.ctx.currentPlayer));
       return this.makeSetShipsMove(shipPositions, playerID);
     } else {
       // if this is the first turn for our AI, wait only 500ms.  Else 2500ms
@@ -117,7 +117,8 @@ export class SeabattleBot {
 
   isUniqueMove(state: IPlayState, cell: ICell) {
     const moves = state.G.salvos.filter(
-      (salvo: ISalvo) => salvo.player === 1 && salvo.cell.x === cell.x && salvo.cell.y === cell.y,
+      (salvo: ISalvo) =>
+        salvo.player === parseInt(state.ctx.currentPlayer) && salvo.cell.x === cell.x && salvo.cell.y === cell.y,
     );
     return moves.length === 0;
   }
