@@ -389,5 +389,5 @@ test('render board - AI', () => {
     />,
   );
   comp.find('rect').at(0).simulate('click');
-  expect(comp.html()).toContain("Red's turn");
+  expect(comp.html()).toContain('YOUR TURN');
 });
