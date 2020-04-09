@@ -7,11 +7,11 @@ import { Step } from 'boardgame.io/ai';
 it('should set ships correctly', async () => {
   const client = genClient();
 
-  client.moves.setShips(VALID_SETUP_FIRST_PLAYER);
+  await Step(client, new SeabattleBot());
   client.updatePlayerID('1');
 
   // AI setShips
-  await Step(client, new SeabattleBot());
+  client.moves.setShips(VALID_SETUP_SECOND_PLAYER);
 
   expect(client.store.getState().ctx.phase).toEqual('play');
 });

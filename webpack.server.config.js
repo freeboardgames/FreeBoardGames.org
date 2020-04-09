@@ -36,7 +36,7 @@ var config = {
     rules: [
       {
         test: /\.(j|t)s(x?)$/,
-        exclude: /node_modules/,
+        exclude: [/node_modules/, /.*worker.*js$/],
         use: [
           'cache-loader',
           {
