@@ -8,13 +8,13 @@ Enzyme.configure({ adapter: new Adapter() });
 
 describe('Nickname Prompt', () => {
   let setNicknamePromptMock: jest.Mock;
-  let togglePromptMock: jest.Mock;
+  let closePromptMock: jest.Mock;
   let wrapper: Enzyme.ReactWrapper;
 
   beforeEach(() => {
     setNicknamePromptMock = jest.fn();
-    togglePromptMock = jest.fn();
-    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} closePrompt={togglePromptMock} />);
+    closePromptMock = jest.fn();
+    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} closePrompt={closePromptMock} />);
   });
 
   it('should prompt for nickname', () => {
@@ -57,5 +57,18 @@ describe('Nickname Prompt', () => {
 
     const errorText: string = wrapper.state('errorText');
     expect(errorText).toEqual('Invalid name.');
+  });
+
+  it('requires user to choose a nickname', () => {
+    const instance = wrapper.instance() as any;
+    instance._handleClickaway();
+    expect(closePromptMock).not.toHaveBeenCalled();
+  });
+
+  it('allows clickaway if a nickname has already been chosen', () => {
+    wrapper.setProps({ nickname: 'foo' });
+    const instance = wrapper.instance() as any;
+    instance._handleClickaway();
+    expect(closePromptMock).toHaveBeenCalled();
   });
 });

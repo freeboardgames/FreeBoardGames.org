@@ -15,15 +15,15 @@ interface Props {
 }
 
 interface State {
-  loginFormOpen?: boolean;
-  nickname?: string;
+  loginFormOpen: boolean;
+  nickname: string;
 }
 
 class FreeBoardGamesBar extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     if (props.nicknameRequired) {
-      const nickname = Cookies.get('nickname');
+      const nickname = Cookies.get('nickname') || '';
       this.state = { loginFormOpen: !nickname, nickname };
     } else {
       this.state = { loginFormOpen: false, nickname: '' };
