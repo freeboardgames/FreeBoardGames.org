@@ -3,30 +3,42 @@ import LobbyGameCard from 'components/Lobby/LobbyGameCard';
 import { Room } from 'dto/Room';
 import { GAMES_MAP } from 'games';
 
-const MIN_CARD_WIDTH = '370px';
-const MAX_CARD_WIDTH = '375px';
+const CARD_STYLE = {
+  textDecoration: 'none',
+  flex: 1,
+  minWidth: '370px',
+  maxWidth: '375px',
+  margin: '8px',
+};
 
 interface Props {
   rooms: Room[];
+  wantGameCode?: string;
 }
 
 class GamesWithRooms extends React.Component<Props, {}> {
   render() {
     const gamesWithRooms = this._getGamesWithRooms();
-    const cards = gamesWithRooms.map((gameCode, idx) => (
-      <div
-        key={`gwr-${idx}`}
-        style={{
-          textDecoration: 'none',
-          flex: 1,
-          minWidth: MIN_CARD_WIDTH,
-          maxWidth: MAX_CARD_WIDTH,
-          margin: '8px',
-        }}
-      >
-        <LobbyGameCard game={GAMES_MAP[gameCode]} rooms={this._roomsForGame(gameCode)} />
-      </div>
-    ));
+
+    // if our user selected a game, show that first:
+    let cardsForWantedGame: JSX.Element[] = [];
+    let otherCards: JSX.Element[] = [];
+    gamesWithRooms.forEach((gameCode, idx) => {
+      if (this.props.wantGameCode === gameCode) {
+        cardsForWantedGame.push(
+          <div key={`gwr-${idx}`} style={CARD_STYLE}>
+            <LobbyGameCard game={GAMES_MAP[gameCode]} rooms={this._roomsForGame(gameCode)} />
+          </div>,
+        );
+      } else {
+        otherCards.push(
+          <div key={`gwr-${idx}`} style={CARD_STYLE}>
+            <LobbyGameCard game={GAMES_MAP[gameCode]} rooms={this._roomsForGame(gameCode)} />
+          </div>,
+        );
+      }
+    });
+    const cards = cardsForWantedGame.concat(otherCards);
     return (
       <div
         style={{
