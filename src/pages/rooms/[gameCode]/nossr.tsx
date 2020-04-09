@@ -5,6 +5,8 @@ import GamesWithRooms from 'components/Lobby/GamesWithRooms';
 import { LobbyService } from 'components/Lobby/LobbyService';
 import { Room } from 'dto/Room';
 import { withRouter } from 'next/router';
+import MessagePage from 'components/App/MessagePageClass';
+import TryAgainReloadButton from 'components/App/TryAgainReloadButton';
 
 interface Props {
   router: any;
@@ -12,11 +14,16 @@ interface Props {
 
 interface State {
   rooms: Room[];
+  error: boolean;
 }
 
 class Rooms extends React.Component<Props, State> {
-  state = { rooms: [] };
+  state = { rooms: [], error: false };
   render() {
+    if (this.state.error)
+      return (
+        <MessagePage message={'Failed to load rooms.'} type={'error'} actionComponent={<TryAgainReloadButton />} />
+      );
     const gameCode = this.props.router.query.gameCode;
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView nicknameRequired>
@@ -35,8 +42,12 @@ class Rooms extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const rooms = await LobbyService.list();
-    this.setState((oldState) => ({ ...oldState, rooms }));
+    try {
+      const rooms = await LobbyService.list();
+      this.setState((oldState) => ({ ...oldState, rooms }));
+    } catch (e) {
+      this.setState((oldState) => ({ ...oldState, error: true }));
+    }
   }
 }
 
