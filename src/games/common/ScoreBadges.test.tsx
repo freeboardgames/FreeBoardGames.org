@@ -18,12 +18,13 @@ const players: IPlayerInRoom[] = [
 let comp: Enzyme.ReactWrapper;
 
 beforeEach(() => {
-  comp = Enzyme.mount(<ScoreBadges scoreboard={scoreBoard} playerID={'0'} players={players} />);
+  const fakeCtx: any = { currentPlayer: '0', activePlayers: null };
+  comp = Enzyme.mount(<ScoreBadges scoreboard={scoreBoard} playerID={'0'} players={players} ctx={fakeCtx} />);
 });
 
 it("has player 0's name", () => {
   const name = comp.find('[data-testid="nickname-0"]').at(0);
-  expect(name.text()).toEqual('Foo');
+  expect(name.text()).toContain('Foo');
 });
 
 it("has player 0's score", () => {
@@ -32,13 +33,13 @@ it("has player 0's score", () => {
 });
 
 it("has player 1's name", () => {
-  const name = comp.find('[data-testid="nickname-1"]').at(0);
-  expect(name.text()).toEqual('Bar');
+  const name = comp.find('[data-testid="nickname-1"]').at(0).text();
+  expect(name).toEqual('Bar');
 });
 
 it("has player 1's score", () => {
-  const name = comp.find('[data-testid="score-1"]').at(0);
-  expect(name.text()).toEqual('10');
+  const name = comp.find('[data-testid="score-1"]').at(0).text();
+  expect(name).toEqual('10');
 });
 
 it('shows my name in bold', () => {
@@ -51,18 +52,21 @@ it("does not show other player's name in bold", () => {
   expect(name.hasClass('Self')).not.toBeTruthy();
 });
 
-it("shows player at 100% opacity when it's their turn", () => {
-  comp.setProps({ currentPlayer: '0' });
-  const name = comp.find('[data-testid="nickname-0"]').at(0);
-  const opacity = name.prop('style').opacity;
-  expect(opacity).toEqual('100%');
+it('shows player with clock when it is their turn', () => {
+  const name = comp.find('[data-testid="nickname-0"]').at(0).text();
+  expect(name).toContain('🕒');
 });
 
-it("shows player at 50% opacity when it's their opponent's turn", () => {
-  comp.setProps({ currentPlayer: '1' });
-  const name = comp.find('[data-testid="nickname-0"]').at(0);
-  const opacity = name.prop('style').opacity;
-  expect(opacity).toEqual('50%');
+it('shows player with clock when it they are active', () => {
+  comp.setProps({ ctx: { currentPlayer: '1', activePlayers: { '0': null } } });
+  const name = comp.find('[data-testid="nickname-0"]').at(0).text();
+  expect(name).toContain('🕒');
+});
+
+it('does not show the clock when it isnt their turn', () => {
+  comp.setProps({ ctx: { currentPlayer: '1', activePlayers: null } });
+  const name = comp.find('[data-testid="nickname-0"]').at(0).text();
+  expect(name).not.toContain('🕒');
 });
 
 it('uses custom colors', () => {
