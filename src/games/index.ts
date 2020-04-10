@@ -26,18 +26,20 @@ export const GAMES_MAP: IGameDefMap = {
   hangman: hangmanGameDef,
 };
 
+// Order roughly by popularity.
+// See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
-  GAMES_MAP.chess,
   GAMES_MAP.takesix,
-  GAMES_MAP.checkers,
-  GAMES_MAP.fourinarow,
-  GAMES_MAP.reversi,
-  GAMES_MAP.tictactoeplus,
-  GAMES_MAP.ninemensmorris,
-  GAMES_MAP.cornerus,
+  GAMES_MAP.chess,
   GAMES_MAP.seabattle,
-  GAMES_MAP.hangman,
   GAMES_MAP.tictactoe,
+  GAMES_MAP.fourinarow,
+  GAMES_MAP.checkers,
+  GAMES_MAP.cornerus,
+  GAMES_MAP.tictactoeplus,
+  GAMES_MAP.reversi,
+  GAMES_MAP.ninemensmorris,
+  GAMES_MAP.hangman,
 ];
 
 // No need to edit below

@@ -36,12 +36,6 @@ describe('GameSharing', () => {
     expect(window.open as any).toHaveBeenCalled();
   });
 
-  it('should correctly generate link', () => {
-    const button = wrapper.getByLabelText('E-mail');
-    fireEvent.click(button);
-    expect(window.location.assign as any).toHaveBeenCalledWith(`mailto:?body=${GAME_LINK}`);
-  });
-
   it('should copy link', () => {
     const button = wrapper.getByLabelText('Copy');
     fireEvent.click(button);

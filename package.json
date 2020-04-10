@@ -3,11 +3,11 @@
   "version": "2.0.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "pre": "run-s lint format:check build:server test:unit ci:test:e2e",
+    "pre": "run-s lint format:check build:server test ci:test:e2e",
     "ci": "run-s lint format:check build:server ci:test:unit ci:test:e2e report:combined",
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx src/ tests/",
     "lint:fix": "eslint --fix --max-warnings=0 --ext .ts,.tsx src/ tests/",
-    "autopre": "run-s format lint:fix build:server test:unit ci:test:e2e report:combined",
+    "autopre": "run-s format lint:fix build:server test ci:test:e2e report:combined",
     "dev": "run-s build:server:dev dev:runserver",
     "dev:runserver": "node server/dist/server_web.js",
     "bgio:dev": "nodemon -e js,ts --exec yarn run bgio",
@@ -17,6 +17,7 @@
     "bgio": "run-s build:server start:bgio",
     "build": "cross-env BABEL_ENV=production NODE_ENV=production CHANNEL=production next build",
     "build:staging": "cross-env NODE_ENV=production CHANNEL=staging next build",
+    "cyp:run": "cypress run --config video=false",
     "format": "prettier --write \"./**/*.*(js|jsx|ts|tsx)\"",
     "format:staged": "pretty-quick --staged",
     "format:check": "prettier --check \"./**/*.ts\" \"./**/*.tsx\" \"./**/*.js\"",
@@ -26,11 +27,9 @@
     "e2e:build": "cross-env NODE_ENV=production CHANNEL=staging BABEL_ENV=e2e next build",
     "e2e:startserver": "cross-env NODE_ENV=production CHANNEL=staging BABEL_ENV=e2e node server/dist/server_web.js",
     "e2e:buildandstartserver": "run-s build:server e2e:build e2e:startserver",
-    "ci:test:unit": "jest -c jest.unit.config.js --coverage",
-    "ci:test:e2e": "start-server-and-test e2e:buildandstartserver http://localhost:3000 test:e2e",
-    "test:unit": "jest -c jest.unit.config.js",
-    "test:e2e": "jest -c jest.e2e.config.js",
-    "test": "run-s test:unit test:e2e",
+    "ci:test:unit": "jest --coverage",
+    "ci:test:e2e": "start-server-and-test e2e:buildandstartserver http://localhost:3000 cyp:run",
+    "test": "jest",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "mkdir:reports": "rimraf reports && mkdirp reports",
     "precopy:reports": "yarn run mkdir:reports",
@@ -79,6 +78,8 @@
     "worker-loader": "^2.0.0"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.1.0",
+    "@cypress/webpack-preprocessor": "^5.1.1",
     "@testing-library/jest-dom": "^5.4.0",
     "@testing-library/react": "^10.0.2",
     "@types/enzyme": "^3.10.5",
@@ -100,9 +101,11 @@
     "clean-css": "^4.2.1",
     "clean-webpack-plugin": "^3.0.0",
     "coveralls": "^3.0.11",
+    "cypress": "^4.3.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "express": "^4.17.1",
+    "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
     "image-trace-loader": "^1.0.2",
     "imagemin-gifsicle": "^7.0.0",
@@ -112,8 +115,6 @@
     "istanbul-lib-coverage": "^3.0.0",
     "jest": "^25.3.0",
     "jest-extended": "^0.11.4",
-    "jest-image-snapshot": "^3.0.1",
-    "jest-puppeteer": "^4.4.0",
     "jest-puppeteer-istanbul": "^0.5.1",
     "koa-no-cache": "^2.0.0",
     "lqip-loader": "^2.2.0",
@@ -126,7 +127,6 @@
     "nyc": "^15.0.1",
     "prettier": "^2.0.4",
     "pretty-quick": "^2.0.1",
-    "puppeteer": "^2.1.1",
     "rimraf": "^3.0.2",
     "sharp": "^0.25.2",
     "start-server-and-test": "^1.10.11",
@@ -139,5 +139,8 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-node-externals": "^1.7.2"
+  },
+  "nyc": {
+    "report-dir": "coverage-e2e"
   }
 }

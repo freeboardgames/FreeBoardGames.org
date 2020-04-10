@@ -18,7 +18,7 @@ import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
 
 import Typography from '@material-ui/core/Typography';
-import { isAIGame } from '../common/gameMode';
+import { isAIGame, isOnlineGame } from '../common/gameMode';
 
 export interface ICoords {
   x: number;
@@ -54,10 +54,19 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
       return 'draw';
     } else {
-      if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
-        return 'you won';
+      if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
+        if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
+          return 'you won';
+        } else {
+          return 'you lost';
+        }
       } else {
-        return 'you lost';
+        // local game
+        if (scoreboard[0].score > scoreboard[1].score) {
+          return 'Player 1 wins';
+        } else {
+          return 'Player 2 wins';
+        }
       }
     }
   }
@@ -147,6 +156,7 @@ export class Board extends React.Component<IBoardProps, {}> {
           playerID={this.props.playerID}
           players={this.props.gameArgs.players}
           colors={colors}
+          ctx={this.props.ctx}
         />
       </GameLayout>
     );
