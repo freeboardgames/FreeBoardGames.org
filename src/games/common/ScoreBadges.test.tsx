@@ -33,13 +33,13 @@ it("has player 0's score", () => {
 });
 
 it("has player 1's name", () => {
-  const name = comp.find('[data-testid="nickname-1"]').at(0);
-  expect(name.text()).toEqual('Bar');
+  const name = comp.find('[data-testid="nickname-1"]').at(0).text();
+  expect(name).toEqual('Bar');
 });
 
 it("has player 1's score", () => {
-  const name = comp.find('[data-testid="score-1"]').at(0);
-  expect(name.text()).toEqual('10');
+  const name = comp.find('[data-testid="score-1"]').at(0).text();
+  expect(name).toEqual('10');
 });
 
 it('shows my name in bold', () => {
@@ -53,19 +53,19 @@ it("does not show other player's name in bold", () => {
 });
 
 it('shows player with clock when it is their turn', () => {
-  const name = comp.find('[data-testid="nickname-0"]').at(0);
+  const name = comp.find('[data-testid="nickname-0"]').at(0).text();
   expect(name).toContain('🕒');
 });
 
 it('shows player with clock when it they are active', () => {
   comp.setProps({ ctx: { currentPlayer: '1', activePlayers: { '0': null } } });
-  const name = comp.find('[data-testid="nickname-0"]').at(0);
+  const name = comp.find('[data-testid="nickname-0"]').at(0).text();
   expect(name).toContain('🕒');
 });
 
 it('does not show the clock when it isnt their turn', () => {
   comp.setProps({ ctx: { currentPlayer: '1', activePlayers: null } });
-  const name = comp.find('[data-testid="nickname-0"]').at(0);
+  const name = comp.find('[data-testid="nickname-0"]').at(0).text();
   expect(name).not.toContain('🕒');
 });
 
