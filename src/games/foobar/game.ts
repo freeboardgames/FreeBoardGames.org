@@ -4,7 +4,7 @@ export interface IG {
   count: number;
 }
 
-export const FooBarGame = Game ({
+export const FooBarGame = {
   name: 'foobar',
 
   setup: () => ({ count: 0 }),
@@ -18,4 +18,4 @@ export const FooBarGame = Game ({
   flow: {
     movesPerTurn: 1,
   },
-});
+};

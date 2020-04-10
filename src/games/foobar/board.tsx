@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IGameArgs } from '../../App/Game/GameBoardWrapper';
-import { GameLayout } from '../../App/Game/GameLayout';
+import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
+import { GameLayout } from '../../components/App/Game/GameLayout';
 import { IGameCtx } from 'boardgame.io/core';
 import { IG } from './game';
 
