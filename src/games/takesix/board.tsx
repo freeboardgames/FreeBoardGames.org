@@ -111,6 +111,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           scoreboard={getScoreBoard(this.props.G)}
           playerID={this.props.playerID}
           players={this.props.gameArgs.players}
+          ctx={this.props.ctx}
         />
       </GameLayout>
     );
