@@ -6,6 +6,8 @@ node_js:
 cache:
   yarn: true
   directories:
+    # cache folder with Cypress binary
+    - ~/.cache
     # next.js build cache
     - .next/cache
 
