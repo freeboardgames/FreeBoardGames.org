@@ -14,6 +14,7 @@ function isDoneGuessing(status: any) {
 }
 
 function isVictory(status: any) {
+
   if (isDoneGuessing(status)) {
     var scoreP0 = status['0'].score;
     var scoreP1 = status['1'].score;
@@ -108,13 +109,12 @@ export const HangmanGame = {
       };
     },
   },
-
-  flow: {
-    endGameIf: (G: any) => {
-      const winner = isVictory(G.status);
-      if (winner) {
-        return winner;
-      }
-    },
+  
+  endIf: (G: any) => {
+    const winner = isVictory(G.status);
+    if (winner) {
+      return winner;
+    }
   },
+
 };

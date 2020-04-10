@@ -39,18 +39,19 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     this.props.moves.letterSelected(letter);
-
     // change turns only if the user is done guessing
     const currentPlayer = this.props.ctx.currentPlayer;
     const nextPlayer = currentPlayer === '0' ? '1' : '0';
     const playerStatus = this.props.G.status[currentPlayer];
 
     // check if current player is done
-    if (!playerStatus.correctGuess.includes('_')) {
-      this.props.events.endTurn({ next: nextPlayer });
-    } else {
-      this.props.events.endTurn({ next: currentPlayer });
-    }
+    if (!this.props.ctx.gameOver) {
+      if (!playerStatus.correctGuess.includes('_')) {
+        this.props.events.endTurn({ next: nextPlayer });
+      } else {
+        this.props.events.endTurn({ next: currentPlayer });
+      }
+    }    
   };
 
   _getStatus() {
@@ -109,6 +110,28 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       }
     }
     return cells;
+  }
+
+  _getGuesseRemaining(){
+    const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
+    const wrongLen = playerStatus.wrongGuess.length;
+    let textColor: any = grey[100];
+    if (isOnlineGame(this.props.gameArgs)) {
+      textColor = this.props.playerID === this.props.ctx.currentPlayer ? grey[100] : grey[500];
+    }
+
+    return(
+      <text
+        key={'guess_remaining_message'}
+        x={5}
+        y={4.5}
+        fontSize={0.4}
+        textAnchor="middle"
+        fill={textColor}
+      >
+        {'Guess Remaining: ' + (10-wrongLen)}
+      </text>
+    )
   }
 
   _getAlphabets() {
@@ -220,6 +243,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         : `Your score is ${playerStatus.score} points.`;
     let nextButton = (
       <Button
+        key="key_hangman_next"
+        id="id_hangman_next"
         variant="contained"
         color="primary"
         style={{ marginTop: '16px', marginLeft: 'auto', marginRight: 'auto', alignContent: 'center' }}
@@ -284,7 +309,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     } else {
       // show conclusion when player has finished guessing
       const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
-      if (!playerStatus.correctGuess.includes('_')) {
+      if (!playerStatus.correctGuess.includes('_') || playerStatus.wrongGuess.length >= 10) {
         toShow = this._showConclusion();
       } else {
         toShow = (
@@ -294,6 +319,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             </Typography>
             <svg width="100%" height="100%" viewBox="0 0 10 10">
               {this._getWord()}
+              {this._getGuesseRemaining()}
               {this._getAlphabets()}
               {this._getHintButton()}
             </svg>
@@ -334,7 +360,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     if (this.props.ctx.gameover) {
       return (
-        <GameLayout gameOver={this._getGameOver()} extraCardContent={this._getBoard()} gameArgs={this.props.gameArgs} />
+        <GameLayout 
+          gameOver={this._getGameOver()} 
+          extraCardContent={this._getBoard()} 
+          gameArgs={this.props.gameArgs} 
+        />
       );
     }
     return <GameLayout gameArgs={this.props.gameArgs}>{this._getBoard()}</GameLayout>;

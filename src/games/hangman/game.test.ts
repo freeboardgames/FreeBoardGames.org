@@ -1,22 +1,22 @@
-import { Client } from '@freeboardgame.org/boardgame.io/client';
+import { Client } from 'boardgame.io/client';
 import { HangmanGame } from './game';
 
-function getInitialGameState() {
+export function getInitialGameState(toGuessFor0='', toGuessFor1='') {
   return {
     secret: {
-      '0': '',
-      '1': '',
+      '0': toGuessFor0,
+      '1': toGuessFor1,
     },
     status: {
       '0': {
-        correctGuess: '', // array of correct gusses
-        wrongGuess: '', // array of wrong guesses
+        correctGuess: new Array(toGuessFor0.length + 1).join('_'), 
+        wrongGuess: '', 
         wordHint: '',
         score: 0,
       },
       '1': {
-        correctGuess: '', // array of correct gusses
-        wrongGuess: '', // array of wrong guesses
+        correctGuess: new Array(toGuessFor1.length + 1).join('_'), 
+        wrongGuess: '', 
         wordHint: '',
         score: 0,
       },
@@ -24,50 +24,66 @@ function getInitialGameState() {
   };
 }
 
-it('should declare player 1 as the winner', () => {
+it('should declare a draw', () => {
   let gameState = getInitialGameState();
-  gameState.secret['0'] = 'hangman';
-  gameState.secret['1'] = 'hangman';
-
+  
   const gameClient = Client({
     game: {
       ...HangmanGame,
-      setup: () => ({ gameState }),
+      setup: () => (gameState),
     },
   });
 
-  for (const c of 'bdcefijxyzq') {
+  // set word for each player, and also change turns as this is not automatic.
+  gameClient.moves.setWords('hangman','');
+  gameClient.events.endTurn({ next: '1' });
+  gameClient.moves.setWords('hangman','');
+
+  // input from player 0
+  gameClient.events.endTurn({ next: '0' });
+  for (const c of 'bcdefijklo') {
     gameClient.moves.letterSelected(c);
   }
-  //should change to player 1
-  for (const c of 'rthangman') {
+
+  // input from player 1
+  gameClient.events.endTurn({ next: '1' });
+  for (const c of 'jsnhangm') {
     gameClient.moves.letterSelected(c);
   }
 
   // get the latest game state
-  const { ctx } = gameClient.store.getState();
+  const { G, ctx } = gameClient.store.getState();
 
   // player '1' should be declared the winner
   expect(ctx.gameover).toEqual({ winner: '1' });
 });
 
+
+
 it('should declare a draw', () => {
   let gameState = getInitialGameState();
-  gameState.secret['0'] = 'hangman';
-  gameState.secret['1'] = 'hangman';
-
+  
   const gameClient = Client({
     game: {
       ...HangmanGame,
-      setup: () => ({ gameState }),
+      setup: () => (gameState),
     },
   });
 
-  for (const c of 'bdcefijxyzq') {
+  // set word for each player, and also change turns as this is not automatic.
+  gameClient.moves.setWords('hangman','');
+  gameClient.events.endTurn({ next: '1' });
+  gameClient.moves.setWords('hangman','');
+
+  // input from player 0
+  gameClient.events.endTurn({ next: '0' });
+  for (const c of 'bcdefijklo') {
     gameClient.moves.letterSelected(c);
   }
 
-  for (const c of 'bdcefijxyzq') {
+  // input from player 1
+  gameClient.events.endTurn({ next: '1' });
+  for (const c of 'bcdefijklo') {
     gameClient.moves.letterSelected(c);
   }
 
