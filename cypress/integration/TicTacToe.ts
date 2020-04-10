@@ -1,12 +1,9 @@
-beforeAll(async () => {
-  await page.goto(baseURL + '/play/tictactoe/local');
-});
-
-it('plays a local game', async () => {
-  await expect(page).toMatch("Red's turn");
-  let x: number, y: number;
+it('plays a local game', () => {
+  let x, y;
+  cy.visit('/play/tictactoe/local');
+  cy.contains("Red's turn");
   [x, y] = [0, 0];
-  await page.click(`[x="${x}"][y="${y}"]`);
+  cy.get(`[x="${x}"][y="${y}"]`).click();
   //      |     |
   //   X  |  -  |  -
   // _____|_____|_____
@@ -17,10 +14,9 @@ it('plays a local game', async () => {
   //   -  |  -  |  -
   //      |     |
 
-  await expect(page).toMatch("Green's turn");
-
+  cy.contains("Green's turn");
   [x, y] = [1, 0];
-  await page.click(`[x="${x}"][y="${y}"]`);
+  cy.get(`[x="${x}"][y="${y}"]`).click();
   //      |     |
   //   X  |  O  |  -
   // _____|_____|_____
@@ -32,7 +28,7 @@ it('plays a local game', async () => {
   //      |     |
 
   [x, y] = [1, 1];
-  await page.click(`[x="${x}"][y="${y}"]`);
+  cy.get(`[x="${x}"][y="${y}"]`).click();
   //      |     |
   //   X  |  O  |  -
   // _____|_____|_____
@@ -44,7 +40,7 @@ it('plays a local game', async () => {
   //      |     |
 
   [x, y] = [2, 0];
-  await page.click(`[x="${x}"][y="${y}"]`);
+  cy.get(`[x="${x}"][y="${y}"]`).click();
   //      |     |
   //   X  |  O  |  O
   // _____|_____|_____
@@ -56,7 +52,7 @@ it('plays a local game', async () => {
   //      |     |
 
   [x, y] = [2, 2];
-  await page.click(`[x="${x}"][y="${y}"]`);
+  cy.get(`[x="${x}"][y="${y}"]`).click();
   //      |     |
   //   X  |  O  |  O
   // _____|_____|_____
@@ -67,9 +63,9 @@ it('plays a local game', async () => {
   //   -  |  -  |  X
   //      |     |
 
-  await expect(page).toMatch('red won');
-  await expect(page).toMatch('Games'); // more games
-  await expect(page).toMatch('Play Again'); // more games
+  cy.contains('red won');
+  cy.contains('Games'); // more games
+  cy.contains('Play Again');
 });
 
 export {};

@@ -11,22 +11,4 @@ it('has title', async () => {
   expect(title).toEqual('Play Free Board Games Online - FreeBoardGames.org');
 });
 
-describe('mobile', () => {
-  it('matches golden', async () => {
-    const image = await page.screenshot();
-    expect(image).toMatchImageSnapshot();
-  });
-});
-
-describe('desktop', () => {
-  beforeAll(async () => {
-    await page.setViewport({ height: viewports.TABLET_HEIGHT, width: viewports.TABLET_WIDTH });
-  });
-
-  it('matches golden', async () => {
-    const image = await page.screenshot();
-    expect(image).toMatchImageSnapshot();
-  });
-});
-
 export {};
