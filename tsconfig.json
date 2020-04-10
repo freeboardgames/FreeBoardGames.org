@@ -24,9 +24,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "types": [
-      "puppeteer",
-      "jest-environment-puppeteer",
-      "expect-puppeteer"
+      "expect-puppeteer",
+      "cypress"
     ],
     "typeRoots": [
       "node_modules/@types",
@@ -43,5 +42,5 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+  ]
 }
