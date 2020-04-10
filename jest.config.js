@@ -2,7 +2,7 @@ module.exports = {
   rootDir: 'src/',
   roots: ['<rootDir>/../tests', '<rootDir>/components', '<rootDir>/games'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
-  setupFilesAfterEnv: ['../jest.unit.setup.ts'],
+  setupFilesAfterEnv: ['../jest.setup.ts'],
   transform: {
     '^.+\\.[t|j]sx?$': 'babel-jest',
   },
