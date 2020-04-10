@@ -147,6 +147,7 @@ export class Board extends React.Component<IBoardProps, {}> {
           playerID={this.props.playerID}
           players={this.props.gameArgs.players}
           colors={colors}
+          ctx={this.props.ctx}
         />
       </GameLayout>
     );
