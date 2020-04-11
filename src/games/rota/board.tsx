@@ -41,7 +41,7 @@ export class Board extends React.Component<IBoardProps, {}> {
                 <Typography variant='h5' style={{color: 'white', textAlign: 'center'}}>
                     {this._getStatus()}
                 </Typography>
-                <Field />
+                <Field points={this.props.G.points}/>
             </GameLayout>
         );
       }

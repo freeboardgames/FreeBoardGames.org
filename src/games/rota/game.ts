@@ -7,7 +7,7 @@ export enum Phase {
   Move = 'Move',
 }
 
-interface Point {
+export interface Point {
   x: number, 
   y: number,
   playerID: string;
@@ -16,6 +16,7 @@ interface Point {
 export interface IG {
   points: Point[];
   piecesPlaced: number;
+  selectedPoint: Point;
 }
 
 export function placePiece(G: IG, ctx: IGameCtx,) {
@@ -36,13 +37,15 @@ const GameConfig: IGameArgs = {
       * |  |        |      |   |
       * |  -1,-1---0,-1- -1,-1 |
       */   
+
+      console.log(ctx);
       let points: Point[] = []; 
       for(let x=-1; x<2; x++){
         for(let y=-1; y<2; y++){
           points.push({x,y,playerID:null});
         }
       }
-      return { points, piecesPlaced: 0 };
+      return { points, piecesPlaced: 0, selectedPoint: null };
     },
     phases: {
       Place: {
