@@ -15,7 +15,9 @@ interface IBoardProps {
 export class Board extends React.Component<IBoardProps, {}> {
   render() {
     return (
-      <GameLayout>
+      <GameLayout
+          gameArgs={this.props.gameArgs}
+          >
         <h2>Hello world!</h2>
         <pre>{JSON.stringify(this.props.gameArgs, null, 2)}</pre>
       </GameLayout>

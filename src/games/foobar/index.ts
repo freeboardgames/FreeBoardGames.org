@@ -7,7 +7,10 @@ export const fooBarGameDef: IGameDef = {
   code: 'foobar',
   name: 'Foo Bar Game',
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
+  modes: [
+    { mode: GameMode.OnlineFriend },
+    { mode: GameMode.LocalFriend }
+  ],
   minPlayers: 2,
   maxPlayers: 2,
   description: 'Classic game of foo and bar!',

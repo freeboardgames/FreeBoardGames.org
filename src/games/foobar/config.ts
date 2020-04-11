@@ -1,4 +1,4 @@
-import { IGameConfig } from '../index';
+import { IGameConfig } from '..';
 import { FooBarGame } from './game';
 import { Board } from './board';
 
