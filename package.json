@@ -7,7 +7,7 @@
     "ci": "run-s lint format:check build:server ci:test:unit ci:test:e2e report:combined",
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx src/ tests/",
     "lint:fix": "eslint --fix --max-warnings=0 --ext .ts,.tsx src/ tests/",
-    "autopre": "run-s format lint:fix build:server test ci:test:e2e report:combined",
+    "autopre": "run-s format lint:fix build:server test ci:test:e2e",
     "dev": "run-s build:server:dev dev:runserver",
     "dev:runserver": "node server/dist/server_web.js",
     "bgio:dev": "nodemon -e js,ts --exec yarn run bgio",
