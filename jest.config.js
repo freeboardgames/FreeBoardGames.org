@@ -16,7 +16,7 @@ module.exports = {
       isolatedModules: true,
     },
   },
-  collectCoverageFrom: ['**', '!games/chess/stockfish8.worker.js'],
+  collectCoverageFrom: ['**', '!games/chess/stockfish8.worker.js', '!ui/**'],
   coverageReporters: ['json', 'lcov'],
   coverageDirectory: '../coverage-unit',
   modulePaths: ['<rootDir>'],
