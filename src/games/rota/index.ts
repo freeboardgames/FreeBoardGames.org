@@ -7,10 +7,7 @@ export const rotaGameDef: IGameDef = {
   code: 'rota',
   name: 'Rota',
   imageURL: Thumbnail,
-  modes: [
-    { mode: GameMode.OnlineFriend },
-    { mode: GameMode.LocalFriend },
-  ],
+  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
   description: 'A classic Roman Game',

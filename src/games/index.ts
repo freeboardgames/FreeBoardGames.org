@@ -23,7 +23,7 @@ export const GAMES_MAP: IGameDefMap = {
   reversi: reversiGameDef,
   tictactoeplus: tictactoeplusGameDef,
   fourinarow: fourinarowGameDef,
-  rota: rotaGameDef
+  rota: rotaGameDef,
 };
 
 // Order roughly by popularity.

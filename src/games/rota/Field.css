@@ -1,0 +1,10 @@
+.RotaPiece {
+    transition: transform 1.75s;
+  }
+
+.RotaField {
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 0 10px;
+}
+  
