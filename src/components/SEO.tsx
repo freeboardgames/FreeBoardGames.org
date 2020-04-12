@@ -1,6 +1,7 @@
 import React from 'react';
 import { NextSeo, NextSeoProps } from 'next-seo';
 
+/* istanbul ignore next */
 const GLOBAL_NOINDEX = process.env.NODE_ENV !== 'production';
 
 interface SeoProps {
@@ -8,7 +9,6 @@ interface SeoProps {
 }
 
 function getDefaultValues() {
-  // const defaults = {};
   const defaults: NextSeoProps = { noindex: GLOBAL_NOINDEX, nofollow: GLOBAL_NOINDEX };
   return defaults;
 }

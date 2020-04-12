@@ -1,35 +1,31 @@
-import React from 'react';
+import Enzyme from 'enzyme';
 import { GameInstructionsVideo } from './GameInstructionsVideo';
-import { render, cleanup } from '@testing-library/react';
 import { IGameDef } from 'games';
 import { GameMode } from './GameModePicker';
 
-afterEach(cleanup);
-
-const gameDefNoText: IGameDef = {
+const gameDef: IGameDef = {
   code: 'foogame',
-  instructions: { videoId: 'videoId' },
   description: 'foodescription',
   descriptionTag: 'foodescriptiontag',
   name: 'foogame',
-  imageURL: 'fooimage',
+  imageURL: { src: 'fooimage', 0: 'fooimage' },
   minPlayers: 2,
   maxPlayers: 2,
   config: jest.fn(),
   modes: [{ mode: GameMode.LocalFriend }],
 };
 
-const gameDefWithText: IGameDef = {
-  ...gameDefNoText,
-  instructions: { ...gameDefNoText.instructions, text: 'foo game instructions' },
-};
+let comp: Enzyme.ReactWrapper;
 
-describe('Game Instructions', () => {
-  it('should contain video', () => {
-    const wrapper = render(<GameInstructionsVideo gameDef={gameDefWithText} />);
-    const video = wrapper.queryByTestId('gameinstructionsvideo');
-    expect(video).toBeInTheDocument();
-    const src = (video as any).src;
-    expect(src).toEqual('https://www.youtube.com/embed/videoId');
-  });
+beforeEach(() => {
+  comp = Enzyme.mount(<GameInstructionsVideo gameDef={gameDef} />);
+});
+
+it('should not contain video', () => {
+  expect(comp.find('iframe').length).toEqual(0);
+});
+
+it('should contain video', () => {
+  comp.setProps({ gameDef: { ...gameDef, instructions: { videoId: 'foo' } } });
+  expect(comp.find('iframe').length).toEqual(1);
 });

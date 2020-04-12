@@ -20,7 +20,8 @@
     "jsx": "preserve",
     "types": [
       "expect-puppeteer",
-      "cypress"
+      "cypress",
+      "jest"
     ],
     "typeRoots": [
       "node_modules/@types",
