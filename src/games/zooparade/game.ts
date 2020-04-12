@@ -1,5 +1,6 @@
 import { IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 import { TextareaAutosize } from '@material-ui/core';
+import { transcode } from 'buffer';
 
 // Helpers
 function idToColor(id: number) {
@@ -44,6 +45,7 @@ export interface IHand {
 
 export interface IG {
   deck: ICard[];
+  deckindex: number;
   trash: ICard[];
   piles: ICard[][];
 
@@ -56,6 +58,7 @@ export interface IG {
 // Setup
 function setup(ctx: IGameCtx): IG {
   // Create Deck
+  var deckindex = 49
   var deck = Array(50).fill(null)
   for (var i = 0; i < 50; i++) {
     deck[i] = <ICard> {
@@ -66,6 +69,9 @@ function setup(ctx: IGameCtx): IG {
   }
   var deck = ctx.random.Shuffle(deck)
   var piles: ICard[][] = Array(5).fill(null)
+  for ( var i = 0; i < 5; i++) {
+    piles[i] = Array(0)
+  }
   var trash: ICard[] = Array(0)
 
   // Create Player Hands
@@ -82,8 +88,9 @@ function setup(ctx: IGameCtx): IG {
                          cards: Array(nrCards).fill(null),
                          hints: Array(nrCards).fill(null)}
     for (var i = 0; i < nrCards; i++) {
-      hands[j].cards[i] = deck.pop()
-      hands[j].hints[i] = null
+      hands[j].cards[i] = deck[deckindex]
+      deckindex -= 1
+      hands[j].hints[i] = <IHint> { color: null, value: null }
     }
   }
 
@@ -95,6 +102,7 @@ function setup(ctx: IGameCtx): IG {
 
   var finalG = <IG> {
     deck: deck,
+    deckindex: deckindex,
     trash: trash,
     piles: piles,
     hands: hands, 
@@ -125,28 +133,12 @@ function isLose(G: IG) {
     return true
   }
 }
-function isEnd(G: IG) {
-  if (!( G.deck.length === 0)) {
-    return false
-    // Still some cards to pick up
+function isEnd(G: IG, ctx: IGameCtx) {
+  if ( G.deckindex === ( - 1 - ctx.numPlayers)) {
+    return true 
+    // Every player has made a move after the deck turned empty
   }
-  var plNr : number = G.hands.length
-  var nrCards : number = 5
-  if (plNr < 4 ) {
-    nrCards = 4
-  }
-  for ( var i = 0 ; i < plNr ; i++ )
-  {
-    if (!( G.hands[plNr].cards.length === nrCards - 1)) {
-      // This player still has full hand.
-      return false
-    }
-  }
-
-  // Deck is empty and all players are missing one card.
-  return true
 }
-
 function getScore(G: IG): number {
   var score = 0
   for (var i = 0; i < 5 ; i++) {
@@ -158,33 +150,215 @@ function getScore(G: IG): number {
 }
 
 // Moves
-
-function testMove(G: IG) {
-  G.treats += 1
-  return G
-}
-
-function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) {
-  console.log("Move Discard 1")
-  var currentPl : number = parseInt(ctx.currentPlayer)
-
-  console.log("Move Discard 2")
-  G.trash.push(G.hands[currentPl].cards[IDInHand])
-  
-  console.log("Move Discard 3")
-  if (G.deck.length > 0) {
-    console.log("Move Discard 4")
-    G.hands[currentPl].cards[IDInHand] = G.deck.pop()
+function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
+  if (isNaN(IDInHand)) {
+    return INVALID_MOVE
+  } else if (IDInHand < 0 || IDInHand >= (ctx.numPlayers > 3 ? 4 : 5) ) {
+    return INVALID_MOVE
   }
 
-  console.log("Move Discard 5")
-  G.hands[currentPl].hints[IDInHand] = null
-  console.log("Move Discard 6")
+  var currentPl : number = parseInt(ctx.currentPlayer)
 
-  console.log(G)
-  return G
+  // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
+  // However, the game automatically ends, once all players couldn't pick up a card, thus
+  // you always have max_cards in hand, and can never play a 'null'.
+
+  return {
+    ...G,
+    hands: G.hands.map((hand: IHand, index: number) => {
+      if (!(hand.player === currentPl)) {
+        return hand
+      }
+      return <IHand> {
+        player: currentPl,
+        cards: hand.cards.map((card: ICard, indexHand: number) => {
+          if (!(indexHand === IDInHand)) {
+            return card
+          }
+          if (G.deckindex >= 0) {
+            return <ICard> {
+              id: G.deck[G.deckindex].id,
+              value: G.deck[G.deckindex].value,
+              color: G.deck[G.deckindex].color
+            }
+          }
+          return null // no more cards in deck
+        }),
+        hints: hand.hints.map((hint: IHint, indexHint: number) => {
+          if (!(indexHint===IDInHand)) {
+            return hint
+          }
+          return <IHint> { color: null, value: null}
+        })
+      }
+    }),
+    deckindex: G.deckindex - 1,
+    piles: G.piles.map((pile: ICard[], index: number) => {
+      if (!(index === G.hands[currentPl].cards[IDInHand].color)) {
+        return pile // wrong colored pile
+      }
+
+      if (pile.length === 0) { // First card for pile
+        if (G.hands[currentPl].cards[IDInHand].value === 1) {
+          return <ICard[]> [G.hands[currentPl].cards[IDInHand]]
+        }
+        return pile
+      }
+
+      if (pile[pile.length - 1].value === G.hands[currentPl].cards[IDInHand].value - 1) {
+        // correct Value
+        return <ICard[]> [...pile, G.hands[currentPl].cards[IDInHand]]
+      }
+    }),
+    trash:
+      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value - 1)) // Is the played card the next value?
+      ?
+      G.trash // Unchanged if success in put to piles
+      :
+      [...G.trash,  G.hands[currentPl].cards[IDInHand] ], // If you played the wrong card, it gets discarded
+
+    countdown:
+      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value - 1)) // Is the played card the next value?
+      ?
+      G.countdown
+      :
+      G.countdown - 1
+  }
 }
+function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
+  if (isNaN(IDInHand)) {
+    return INVALID_MOVE
+  } else if (IDInHand < 0 || IDInHand > (ctx.numPlayers > 3 ? 4 : 5) ) {
+    return INVALID_MOVE
+  }
 
+  var currentPl : number = parseInt(ctx.currentPlayer)
+
+  // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
+  // However, the game automatically ends, once all players couldn't pick up a card, thus
+  // you always have max_cards in hand, and can never play a 'null'.
+  console.log("TODO: How to force! / return Invalid Move if this is true.")
+  console.log("Note : This action cannot be performed if all the blue tokens are in the lid of the box.The player has to perform another action.")
+
+  return {
+    ...G,
+    hands: G.hands.map((hand: IHand, index: number) => {
+      if (!(hand.player === currentPl)) {
+        return hand
+      }
+      return <IHand> {
+        player: currentPl,
+        cards: hand.cards.map((card: ICard, indexHand: number) => {
+          if (!(indexHand === IDInHand)) {
+            return card
+          }
+          if (G.deckindex >= 0) {
+            return <ICard> {
+              id: G.deck[G.deckindex].id,
+              value: G.deck[G.deckindex].value,
+              color: G.deck[G.deckindex].color
+            }
+          }
+          return null // no more cards in deck
+        }),
+        hints: hand.hints.map((hint: IHint, indexHint: number) => {
+          if (!(indexHint===IDInHand)) {
+            return hint
+          }
+          return <IHint> { color: null, value: null}
+        })
+      }
+    }),
+    trash: [...G.trash, G.hands[currentPl].cards[IDInHand]],
+    deckindex: G.deckindex - 1
+  }
+}
+function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValue: number) : any {
+  var currentPl : number = parseInt(ctx.currentPlayer)
+  if (isNaN(IDPlayer)) {
+    return INVALID_MOVE
+  } else if (IDPlayer < 0 || IDPlayer >= ctx.numPlayers  ) {
+    return INVALID_MOVE
+  } else if (IDPlayer == currentPl) {
+    return INVALID_MOVE
+  }
+  if (isNaN(IDHintValue)) {
+    return INVALID_MOVE
+  } else if (IDHintValue < 1 || IDHintValue > 5) {
+    return INVALID_MOVE
+  }
+  console.log("TODO: How to force! / return Invalid Move if this is true.")
+  console.log("Note: This action cannot be performed if the lid of the box is empty of blue tokens.The player has to perform another action")
+
+  console.log("TODO: Clarify rules: Is it possible to give a Hint about a Value/Color that the player doesn't have?")
+  console.log(" Example: Player doesn't have any card with Value 1, however the hint he/she recieves is Value=1 ... thus nothing shows up, and the player knows none of his cards are 1s.")
+
+  return {
+    ...G,
+    treats: G.treats - 1,
+    hands: G.hands.map((hand: IHand, index: number) => {
+      if (!(index === IDPlayer)) {
+        return hand
+      }
+      return <IHand> {
+        player: G.hands[IDPlayer].player,
+        cards: G.hands[IDPlayer].cards,
+        hints:
+          G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
+              return <IHint> { 
+                value : (G.hands[IDPlayer].cards[indexHint].value === IDHintValue) ? IDHintValue : hint.value,
+                color: hint.color
+              }
+            }
+          )
+      }
+
+    })
+  }
+}
+function moveHintColor(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintColor: number) : any {
+  var currentPl : number = parseInt(ctx.currentPlayer)
+  if (isNaN(IDPlayer)) {
+    return INVALID_MOVE
+  } else if (IDPlayer < 0 || IDPlayer >= ctx.numPlayers  ) {
+    return INVALID_MOVE
+  } else if (IDPlayer == currentPl) {
+    return INVALID_MOVE
+  }
+  if (isNaN(IDHintColor)) {
+    return INVALID_MOVE
+  } else if (IDHintColor < 0 || IDHintColor > 4) {
+    return INVALID_MOVE
+  }
+  console.log("TODO: How to force! / return Invalid Move if this is true.")
+  console.log("Note: This action cannot be performed if the lid of the box is empty of blue tokens.The player has to perform another action")
+
+  console.log("TODO: Clarify rules: Is it possible to give a Hint about a Value/Color that the player doesn't have?")
+  console.log(" Example: Player doesn't have any card with Value 1, however the hint he/she recieves is Value=1 ... thus nothing shows up, and the player knows none of his cards are 1s.")
+
+  return {
+    ...G,
+    treats: G.treats - 1,
+    hands: G.hands.map((hand: IHand, index: number) => {
+      if (!(index === IDPlayer)) {
+        return hand
+      }
+      return <IHand> {
+        player: G.hands[IDPlayer].player,
+        cards: G.hands[IDPlayer].cards,
+        hints:
+          G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
+              return <IHint> { 
+                color: (G.hands[IDPlayer].cards[indexHint].color === IDHintColor) ? IDHintColor : hint.color,
+                value: hint.value
+              }
+            }
+          )
+      }
+
+    })
+  }
+}
 
 // Game
 export const ZooParadeGame = {
@@ -193,6 +367,7 @@ export const ZooParadeGame = {
   setup: setup,
 
   playerView: (G, ctx, playerID) => {
+    return G
     for (var i = 0; i < G.deck.length; i++) {
       G.deck[i] = null
     }
@@ -211,8 +386,10 @@ export const ZooParadeGame = {
   },
 
   moves: {
-    testMove,
+    movePlay,
     moveDiscard,
+    moveHintValue,
+    moveHintColor,
   },
 
   turn: { moveLimit: 1 },
@@ -224,7 +401,7 @@ export const ZooParadeGame = {
     if (isWin(G)) {
       return { draw: true }; // TODO: RETURN THE SCORE
     }
-    if (isEnd(G)) {
+    if (isEnd(G, ctx)) {
       return { draw: true }; // TODO: RETURN THE SCORE
     }
   },
