@@ -1,6 +1,6 @@
 import React from 'react';
 import { Point } from './game';
-import red from '@material-ui/core/colors/red';
+import {red, blue} from '@material-ui/core/colors';
 
 
 const PIECE_RADIUS = 25;
@@ -9,8 +9,13 @@ const CIRCLE_RADIUS = BOARD_SIZE * 0.38;
 
 interface IFieldProps {
   points: Point[];
-  selectPoint?: (index: number) => void;
+  selectPoint: (pointID: number) => void;
   selected?: number;
+}
+
+const playerColors = {
+  '0': red[400],
+  '1': blue[400]
 }
 
 export class Field extends React.Component<IFieldProps, {}> {
@@ -49,7 +54,7 @@ export class Field extends React.Component<IFieldProps, {}> {
             x1="0" y1="0" 
             x2={point.x*CIRCLE_RADIUS*radiusFactor} 
             y2={point.y*CIRCLE_RADIUS*radiusFactor}  
-            strokeWidth={CIRCLE_RADIUS*0.0025}
+            strokeWidth={CIRCLE_RADIUS*0.004}
             stroke="white"
           />
         )
@@ -67,7 +72,8 @@ export class Field extends React.Component<IFieldProps, {}> {
             fill="black"
             stroke="white"
             strokeWidth={CIRCLE_RADIUS*0.015}
-          />
+            onClick={ () => this.props.selectPoint(point.id) }
+            />
         )
       })
 
@@ -75,9 +81,26 @@ export class Field extends React.Component<IFieldProps, {}> {
     }
 
     placePieces(){
-        return(
-            <div></div>
-        );
+      const cells = []; 
+
+      // place pieces on their points
+      this.props.points.forEach((point, idx) => {
+        if(point.playerID !== null) {
+          const radiusFactor = 1 / (Math.sqrt(point.x**2 + point.y**2) || 1);
+          cells.push(
+            <circle
+              key={`rota_piece_${idx}`}
+              cx={point.x*CIRCLE_RADIUS*radiusFactor}
+              cy={point.y*CIRCLE_RADIUS*radiusFactor}
+              r={PIECE_RADIUS}
+              fill={playerColors[point.playerID]}
+              stroke="white"
+              strokeWidth={CIRCLE_RADIUS*0.015}
+            />
+          )          
+        }
+      });
+        return( cells );
     }
 
 }
