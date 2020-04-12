@@ -82,7 +82,7 @@ test('gameover - won', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('won');
+  expect(comp.html()).toContain('Player 1 wins');
 });
 
 test('gameover - lost', () => {
@@ -97,7 +97,7 @@ test('gameover - lost', () => {
       gameover: {
         scoreboard: [
           { playerID: '0', score: 38 },
-          { playerID: '1', score: 26 },
+          { playerID: '1', score: 46 },
         ],
       },
     },
@@ -115,7 +115,7 @@ test('gameover - lost', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('lost');
+  expect(comp.html()).toContain('Player 2 wins');
 });
 
 test('gameover - draw', () => {

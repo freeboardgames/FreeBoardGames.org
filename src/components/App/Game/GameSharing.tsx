@@ -4,7 +4,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import EmailIcon from '@material-ui/icons/Email';
 import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from './FacebookIcon';
@@ -40,19 +39,8 @@ interface IGameSharingState {
 export class GameSharing extends React.Component<IGameSharingProps, IGameSharingState> {
   state: IGameSharingState = { showingQrCode: false, copyButtonRecentlyPressed: false };
 
-  private sendEmailCallback: any;
-  private shareFacebookCallback: any;
-  private copyClipboardCallback: any;
-  private showQrCodeCallback: any;
-  private shareWhatsAppCallback: any;
-
   constructor(props: any) {
     super(props);
-    this.sendEmailCallback = this.sendEmail.bind(this);
-    this.shareFacebookCallback = this.shareFacebook.bind(this);
-    this.copyClipboardCallback = this.copyClipboard.bind(this);
-    this.showQrCodeCallback = this.showQrCode.bind(this);
-    this.shareWhatsAppCallback = this.shareWhatsApp.bind(this);
   }
 
   render() {
@@ -70,7 +58,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
         <div>
           {this.state.showingQrCode ? (
             <AlertLayer>
-              <QrCodePopup url={this._getLink()} toggleQrCode={this.showQrCodeCallback} />
+              <QrCodePopup url={this._getLink()} toggleQrCode={this._toggleShowingQrCode} />
             </AlertLayer>
           ) : null}
           <Card>
@@ -81,30 +69,25 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
               <TextField style={{ width: '100%' }} defaultValue={this._getLink()} label="Link" />
             </CardContent>
             <CardActions>
-              <Tooltip title="Send link by e-mail" aria-label="E-mail">
-                <IconButton onClick={this.sendEmailCallback}>
-                  <EmailIcon />
-                </IconButton>
-              </Tooltip>
               <Tooltip title="Share on Facebook" aria-label="Facebook">
-                <IconButton onClick={this.shareFacebookCallback}>
+                <IconButton onClick={this._shareFacebook}>
                   <FacebookIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Share on WhatsApp" aria-label="WhatsApp">
-                <IconButton onClick={this.shareWhatsAppCallback}>
+                <IconButton onClick={this._shareWhatsApp}>
                   <WhatsAppIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Show QR code" aria-label="QR code">
-                <IconButton onClick={this.showQrCodeCallback}>
+                <IconButton onClick={this._showQrCode}>
                   <QrCodeIcon />
                 </IconButton>
               </Tooltip>
               <Button
                 variant="contained"
                 color={copyButtonColor}
-                onClick={this.copyClipboardCallback}
+                onClick={this._copyClipboard}
                 style={{ marginLeft: 'auto' }}
               >
                 <ContentCopyIcon aria-label="Copy" style={{ marginRight: '8px' }} />
@@ -117,34 +100,25 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
     );
   }
 
-  sendEmail() {
-    ReactGA.event({
-      category: 'GameSharing',
-      action: 'sendEmail',
-      label: this.props.gameCode,
-    });
-    location.assign('mailto:?body=' + this._getLink());
-  }
-
-  shareFacebook() {
+  _shareFacebook = () => {
     ReactGA.event({
       category: 'GameSharing',
       action: 'shareFacebook',
       label: this.props.gameCode,
     });
     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURI(this._getLink()));
-  }
+  };
 
-  shareWhatsApp() {
+  _shareWhatsApp = () => {
     ReactGA.event({
       category: 'GameSharing',
       action: 'shareWhatsApp',
       label: this.props.gameCode,
     });
     window.open('https://api.whatsapp.com/send?text=' + encodeURI(this._getLink()));
-  }
+  };
 
-  copyClipboard() {
+  _copyClipboard = () => {
     ReactGA.event({
       category: 'GameSharing',
       action: 'copyClipboard',
@@ -153,28 +127,28 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
     copy(this._getLink());
     setTimeout(() => this.setState({ copyButtonRecentlyPressed: false }), 3000);
     this.setState({ copyButtonRecentlyPressed: true });
-  }
+  };
 
-  showQrCode() {
+  _showQrCode = () => {
     ReactGA.event({
       category: 'GameSharing',
       action: 'showQrCode',
       label: this.props.gameCode,
     });
     this._toggleShowingQrCode();
-  }
+  };
 
-  _toggleShowingQrCode() {
+  _toggleShowingQrCode = () => {
     if (!this.state.showingQrCode) {
       window.scrollTo(0, 0);
     }
     this.setState((oldState) => ({ ...oldState, showingQrCode: !this.state.showingQrCode }));
-  }
+  };
 
-  _getLink() {
+  _getLink = () => {
     const origin = window.location.origin;
     const gameCode = this.props.gameCode;
     const roomID = this.props.roomID;
     return `${origin}/room/${gameCode}/${roomID}`;
-  }
+  };
 }
