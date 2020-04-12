@@ -51,7 +51,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       } else {
         this.props.events.endTurn({ next: currentPlayer });
       }
-    }    
+    }
   };
 
   _getStatus() {
@@ -112,7 +112,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return cells;
   }
 
-  _getGuesseRemaining(){
+  _getGuesseRemaining() {
     const playerStatus = this.props.G.status[this.props.ctx.currentPlayer];
     const wrongLen = playerStatus.wrongGuess.length;
     let textColor: any = grey[100];
@@ -120,18 +120,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       textColor = this.props.playerID === this.props.ctx.currentPlayer ? grey[100] : grey[500];
     }
 
-    return(
-      <text
-        key={'guess_remaining_message'}
-        x={5}
-        y={4.5}
-        fontSize={0.4}
-        textAnchor="middle"
-        fill={textColor}
-      >
-        {'Guess Remaining: ' + (10-wrongLen)}
+    return (
+      <text key={'guess_remaining_message'} x={5} y={4.5} fontSize={0.4} textAnchor="middle" fill={textColor}>
+        {'Guess Remaining: ' + (10 - wrongLen)}
       </text>
-    )
+    );
   }
 
   _getAlphabets() {
@@ -360,11 +353,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     if (this.props.ctx.gameover) {
       return (
-        <GameLayout 
-          gameOver={this._getGameOver()} 
-          extraCardContent={this._getBoard()} 
-          gameArgs={this.props.gameArgs} 
-        />
+        <GameLayout gameOver={this._getGameOver()} extraCardContent={this._getBoard()} gameArgs={this.props.gameArgs} />
       );
     }
     return <GameLayout gameArgs={this.props.gameArgs}>{this._getBoard()}</GameLayout>;
