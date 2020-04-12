@@ -8,4 +8,6 @@ export class LobbyService {
     const result = response.body;
     return result;
   }
+
+  public static async pickNickname(): Promise<
 }

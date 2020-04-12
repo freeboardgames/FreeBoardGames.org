@@ -1,13 +1,25 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "src/*",
+      ]
+    },
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "outDir": "build",
-    "types": ["node", "jest"],
-    "typeRoots": ["src/@types", "node_modules/@types"],
+    "types": [
+      "node",
+      "jest"
+    ],
+    "typeRoots": [
+      "src/@types",
+      "node_modules/@types"
+    ],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

@@ -1,11 +1,11 @@
-import { UserDBEntity } from './entities/UserDBEntity';
+import { UserDbEntity } from './entities/UserDbEntity';
 import * as bcrypt from 'bcrypt';
 import User from './User';
 
 jest.mock('./entities/UserDBEntity');
 jest.mock('bcrypt');
 
-const mockedUserDBEntity = UserDBEntity as jest.MockedClass<typeof UserDBEntity>;
+const mockedUserDBEntity = UserDbEntity as jest.MockedClass<typeof UserDbEntity>;
 
 beforeEach(() => {
   jest.resetAllMocks();

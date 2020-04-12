@@ -1,5 +1,5 @@
 import { createConnection } from 'typeorm';
-import { UserDBEntity } from './entities/UserDBEntity';
+import { UserDbEntity } from './entities/UserDbEntity';
 import express from 'express';
 import 'reflect-metadata';
 import morgan from 'morgan';
@@ -17,7 +17,7 @@ const csrfProtection = csrf({ cookie: true });
 const dbConnectionOptions: any = {
   type: 'sqlite',
   database: ':memory:',
-  entities: [UserDBEntity],
+  entities: [UserDbEntity],
   synchronize: true,
   logging: true,
 };
