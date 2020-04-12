@@ -1,5 +1,5 @@
-import { HangmanState } from './definitions';
-import { setSecret, selectLetter, getWinner } from './util';
+import { HangmanState, Guesses } from './definitions';
+import { setSecret, selectLetter, getWinner, getMaskedWord, isValidWord } from './util';
 
 describe('hangman', () => {
   describe('setSecret()', () => {
@@ -18,6 +18,23 @@ describe('hangman', () => {
           '0': { secret: 'banana', secretLength: 6, hint: 'fruit', guesses: {} },
         },
       });
+    });
+  });
+
+  describe('getMaskedWord()', () => {
+    it('should return expected value', () => {
+      const guesses: Guesses = {
+        a: [0],
+        p: [1, 2],
+      };
+      const result = getMaskedWord(guesses, 5);
+      expect(result).toEqual(['a', 'p', 'p', undefined, undefined]);
+    });
+  });
+
+  describe('isValidWord()', () => {
+    it('should fail for an weird word', () => {
+      expect(isValidWord('boo!')).toEqual(false);
     });
   });
 

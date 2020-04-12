@@ -4,6 +4,7 @@ import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 import css from './ScoreBadges.css';
 import Typography from '@material-ui/core/Typography';
 import { IGameCtx } from 'boardgame.io/core';
+import { isPlayersTurn } from './GameUtil';
 
 interface IScoreBadgesProps {
   scoreboard: IScore[];
@@ -18,8 +19,6 @@ export class ScoreBadges extends React.Component<IScoreBadgesProps, {}> {
     const badges = this.props.scoreboard.map((score) => {
       const nickname = this.props.players.find((player) => player.playerID.toString() === score.playerID).name;
       const isSelf = score.playerID.toString() === this.props.playerID;
-      const isActive = this.props.ctx.activePlayers !== null && score.playerID in this.props.ctx.activePlayers;
-      const isCurrentPlayer = this.props.ctx.activePlayers === null && this.props.ctx.currentPlayer === score.playerID;
       return (
         <div
           className={css.ScoreBadge}
@@ -34,7 +33,7 @@ export class ScoreBadges extends React.Component<IScoreBadgesProps, {}> {
               className={isSelf ? css.Self : undefined}
               variant="body2"
             >
-              {isActive || isCurrentPlayer ? '🕒 ' : ''}
+              {isPlayersTurn(score.playerID, this.props.ctx) ? '🕒 ' : ''}
               {nickname}
             </Typography>
           </span>

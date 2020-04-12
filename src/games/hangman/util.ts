@@ -1,6 +1,6 @@
-import { HangmanState, Guesses } from './definitions';
+import { HangmanState, Guesses, PlayerState } from './definitions';
 import { IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
-import { MAX_WORD_LENGTH, MAX_MISTAKE_COUNT } from './constants';
+import { MAX_WORD_LENGTH, MAX_MISTAKE_COUNT, ALPHABET } from './constants';
 
 /** Called when users selects the initial word and (possibly) hint. */
 export function setSecret(G: HangmanState, ctx: IGameCtx, secret: string, hint?: string) {
@@ -8,6 +8,9 @@ export function setSecret(G: HangmanState, ctx: IGameCtx, secret: string, hint?:
     return INVALID_MOVE;
   }
   secret = secret.toLowerCase();
+  if (ctx.currentPlayer == '1') {
+    ctx.events.endPhase();
+  }
   return {
     players: {
       ...G.players,
@@ -21,7 +24,7 @@ export function setSecret(G: HangmanState, ctx: IGameCtx, secret: string, hint?:
   };
 }
 
-function getOpponent(playerID: string) {
+export function getOpponent(playerID: string) {
   switch (playerID) {
     case '0':
       return '1';
@@ -41,7 +44,19 @@ function getWordIndexes(word: string, letter: string): number[] {
   return indexes;
 }
 
-function getMistakeCount(guesses: Guesses) {
+/** Gets array representing masked word. */
+export function getMaskedWord(guesses: Guesses, secretLength: number): (string | undefined)[] {
+  const result = new Array(secretLength);
+  for (const [letter, guessResult] of Object.entries(guesses)) {
+    for (const index of guessResult) {
+      result[index] = letter;
+    }
+  }
+  return result;
+}
+
+/** Gets count of mistakes made in a set of guesses. */
+export function getMistakeCount(guesses: Guesses) {
   let count = 0;
   for (const indexes of Object.values(guesses)) {
     if (indexes.length === 0) {
@@ -57,6 +72,17 @@ function getCorrectLettersCount(guesses: Guesses) {
     count += indexes.length;
   }
   return count;
+}
+
+/** Valides if all characters on this word is valid. */
+export function isValidWord(word: string) {
+  for (let i = 0; i < word.length; i++) {
+    const letter = word[i].toLowerCase();
+    if (!ALPHABET.includes(letter)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /** Called when users selects letter. */

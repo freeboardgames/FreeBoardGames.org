@@ -4,12 +4,12 @@ import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { MAX_WORD_LENGTH } from './constants';
+import { isValidWord } from './util';
 
 interface IEnterWordPromptProps {
-  setEnterWord: (word: string, hint: string) => void;
-  togglePrompt?: () => void;
-  promptTitle: string;
+  setSecret: (word: string, hint: string) => void;
+  title: string;
 }
 
 interface IEnterWordPromptState {
@@ -22,62 +22,60 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
     wordTextField: '',
     hintTextField: '',
   };
+
   render() {
     return (
       <div>
-        <ClickAwayListener onClickAway={this._togglePrompt}>
-          <Card
-            style={{
-              marginTop: '16px',
-              whiteSpace: 'nowrap',
-              width: '250px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              textAlign: 'center',
-            }}
-          >
-            <Typography style={{ paddingTop: '16px' }} variant="h6" component="h3" noWrap={true}>
-              {this.props.promptTitle}
-            </Typography>
-            <CardContent>
-              <div>
-                <TextField
-                  autoFocus={true}
-                  type="text"
-                  label="Word (max 16 chars)"
-                  fullWidth
-                  onChange={this._onWordChange}
-                  onKeyPress={this._setEnterWordOnEnterButton}
-                  style={{ margin: '8px', width: '90%' }}
-                  data-test-id="wordTextField"
-                />
-              </div>
-              <div>
-                <TextField
-                  type="text"
-                  label="Hint (max 120 chars)"
-                  multiline
-                  fullWidth
-                  rowsMax={4}
-                  onChange={this._onHintChange}
-                  onKeyPress={this._setEnterWordOnEnterButton}
-                  style={{ margin: '8px', width: '90%' }}
-                  data-test-id="hintTextField"
-                />
-              </div>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ marginTop: '16px' }}
-                onClick={this._onClick}
-                disabled={!this._wordisValid()}
-                data-test-id="playButton"
-              >
-                Play
-              </Button>
-            </CardContent>
-          </Card>
-        </ClickAwayListener>
+        <Card
+          style={{
+            marginTop: '16px',
+            whiteSpace: 'nowrap',
+            width: '250px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            textAlign: 'center',
+          }}
+        >
+          <Typography style={{ paddingTop: '16px' }} variant="h6" component="h3" noWrap={true}>
+            {this.props.title}
+          </Typography>
+          <CardContent>
+            <div>
+              <TextField
+                autoFocus={true}
+                type="text"
+                label={`Word (max ${MAX_WORD_LENGTH} chars)`}
+                fullWidth
+                onChange={this._onWordChange}
+                onKeyPress={this._setEnterWordOnEnterButton}
+                style={{ margin: '8px', width: '90%' }}
+                data-test-id="wordTextField"
+              />
+            </div>
+            <div>
+              <TextField
+                type="text"
+                label="Hint (max 120 chars)"
+                multiline
+                fullWidth
+                rowsMax={4}
+                onChange={this._onHintChange}
+                style={{ margin: '8px', width: '90%' }}
+                data-test-id="hintTextField"
+              />
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginTop: '16px' }}
+              onClick={this._onClick}
+              disabled={!this._wordisValid()}
+              data-test-id="playButton"
+            >
+              Play
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -91,12 +89,16 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
   _wordisValid = () => {
     const name = this.state.wordTextField;
     const hint = this.state.hintTextField;
-    return name && name.length > 0 && name.length <= 16 && hint.length <= 120;
+    return name && name.length > 0 && name.length <= MAX_WORD_LENGTH && hint.length <= 120 && isValidWord(name);
   };
 
   _onClick = () => {
     if (this._wordisValid()) {
-      this.props.setEnterWord(this.state.wordTextField, this.state.hintTextField);
+      this.setState({
+        wordTextField: '',
+        hintTextField: '',
+      });
+      this.props.setSecret(this.state.wordTextField, this.state.hintTextField);
     }
   };
 
@@ -112,11 +114,5 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
     this.setState((oldState) => {
       return { ...oldState, hintTextField };
     });
-  };
-
-  _togglePrompt = () => {
-    if (this.props.togglePrompt) {
-      this.props.togglePrompt();
-    }
   };
 }

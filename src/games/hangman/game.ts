@@ -1,6 +1,7 @@
 import { ActivePlayers, IGameArgs } from 'boardgame.io/core';
 import { HANGMAN_INITIAL_STATE } from './constants';
 import { setSecret, selectLetter, getWinner } from './util';
+import { HangmanState } from './definitions';
 
 export const HangmanGame: IGameArgs = {
   name: 'hangman',
@@ -12,15 +13,10 @@ export const HangmanGame: IGameArgs = {
       //moves: { setSecret: { move: setSecret, client: false } },
       moves: { setSecret },
       start: true,
-      next: 'play',
       turn: {
-        activePlayers: ActivePlayers.ALL_ONCE,
-        onMove: (_, ctx) => {
-          if (ctx.activePlayers === null) {
-            ctx.events.endPhase();
-          }
-        },
+        moveLimit: 1,
       },
+      next: 'play',
     },
     play: {
       //moves: { selectLetter: { move: selectLetter, client: false } },
