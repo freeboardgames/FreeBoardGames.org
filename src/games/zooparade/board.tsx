@@ -73,6 +73,19 @@ export class Board extends React.Component<IBoardProps, {}> {
           </tr> 
           </tbody>
         </table>
+        <table>
+          <thead>
+          <tr>
+            <th> Trash </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th> {JSON.stringify(this.props.G.trash)}</th>
+          </tr> 
+          </tbody>
+        </table>
+
         <pre>{JSON.stringify(this.props.ctx, null, 2)}</pre>
       </GameLayout>
     );
