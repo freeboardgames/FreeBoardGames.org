@@ -10,10 +10,12 @@ import { cornerusGameDef } from './cornerus';
 import { tictactoeplusGameDef } from './tictactoeplus';
 import { fourinarowGameDef } from './fourinarow';
 import { fooBarGameDef } from './foobar';
+import { zooParadeGameDef } from './zooparade';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
   foobar: fooBarGameDef,
+  zooparade: zooParadeGameDef,
   chess: chessGameDef,
   seabattle: seabattleGameDef,
   tictactoe: tictactoeGameDef,
@@ -29,6 +31,7 @@ export const GAMES_MAP: IGameDefMap = {
 // Order roughly by popularity.
 // See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
+  GAMES_MAP.zooparade,
   GAMES_MAP.foobar,
   GAMES_MAP.takesix,
   GAMES_MAP.chess,
