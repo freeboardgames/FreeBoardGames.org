@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { IG } from './definitions';
 import css from './Lobby.css';
-import mainCss from './main.css';
 import { LobbyTeam } from './LobbyTeam';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import { LobbyPlayer } from './LobbyPlayer';
