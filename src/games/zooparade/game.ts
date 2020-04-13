@@ -2,6 +2,7 @@ import { IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 import { TextareaAutosize } from '@material-ui/core';
 import { transcode } from 'buffer';
 
+import { ICard, IHand, IHint, IG} from './interfaces';
 // Helpers
 function idToColor(id: number) {
   return Math.floor(id / 10)
@@ -25,35 +26,6 @@ function idToValue(id: number) {
   }
 }
 
-// Interfaces 
-export interface ICard {
-  id: number;
-  color: number;
-  value: number;
-}
-
-export interface IHint {
-  color: number;
-  value: number;
-}
-
-export interface IHand {
-  player: number;
-  cards: ICard[];
-  hints: IHint[];
-}
-
-export interface IG {
-  deck: ICard[];
-  deckindex: number;
-  trash: ICard[];
-  piles: ICard[][];
-
-  hands: IHand[];
-
-  countdown: number;
-  treats: number;
-}
 
 // Setup
 function setup(ctx: IGameCtx): IG {

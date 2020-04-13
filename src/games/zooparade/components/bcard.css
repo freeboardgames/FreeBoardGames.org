@@ -1,0 +1,28 @@
+.image {
+    position: relative;
+    width: 200px;
+}
+
+h2 {
+    position: absolute;
+    top: 37%;
+    left: 46%;
+    font-size: 60pt;
+    color: #000;
+}
+h3 {
+    position: absolute;
+    top: -10%;
+    left: 80%;
+    font-size: 60pt;
+    color: #000;
+}
+
+h4 {
+    position: absolute;
+    top: -15%;
+    left: 10%;
+    font-size: 60pt;
+    color: #000;
+}
+
