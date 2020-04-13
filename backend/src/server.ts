@@ -1,14 +1,12 @@
 import { createConnection } from 'typeorm';
-import { UserDbEntity } from './entities/UserDbEntity';
+import { UserDbEntity } from './entities/User';
 import express from 'express';
 import 'reflect-metadata';
 import morgan from 'morgan';
-import { AuthResponse, RegResponse } from './dto/User';
-import { Room, RoomResponse } from './dto/Room';
-import User from './User';
 import bodyParser from 'body-parser';
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
+import { Room } from 'entities/Room';
 
 const PORT = 8002;
 
@@ -44,30 +42,6 @@ async function serve() {
 
   app.get('/healthz', function (_req, res) {
     res.send('OK');
-  });
-
-  app.post('/api/users/register', csrfProtection, async (req, res) => {
-    const { email, username, password } = req.body;
-    if (!email || !username || !password) {
-      res.status(400).send();
-      return;
-    }
-    const user = new User(username);
-    const addResult = await user.addUser(email, password);
-    const result: RegResponse = { status: addResult };
-    res.send(result);
-  });
-
-  app.post('/api/users/auth', csrfProtection, async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      res.status(400).send();
-      return;
-    }
-    const user = new User(email);
-    const authResult = await user.checkPassword(password);
-    const result: AuthResponse = { status: authResult };
-    res.send(result);
   });
 
   /** list rooms */

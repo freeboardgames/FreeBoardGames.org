@@ -1,10 +1,8 @@
-import {UserDevice} from 'dto/UserDevice';
-import { UserDeviceDbEntity} from 'entities/UserDeviceDbEntity';
-
+import { UserDevice } from 'dto/UserDevice';
+import { UserDeviceDbEntity } from 'entities/Room';
 
 class UserService {
-  checkDeviceAuthorized(userDevice: UserDevice) {
-  }
+  checkDeviceAuthorized(userDevice: UserDevice) {}
 }
 
 export default UserService;

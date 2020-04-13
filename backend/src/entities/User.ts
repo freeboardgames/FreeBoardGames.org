@@ -8,3 +8,8 @@ export class UserDbEntity extends BaseEntity {
   @Column()
   credential!: string;
 }
+
+export interface User {
+  nickname: string;
+  credential: string;
+}

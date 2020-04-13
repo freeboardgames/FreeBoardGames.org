@@ -5,3 +5,7 @@ export class UserDeviceDbEntity extends BaseEntity {
   @Column({ unique: true })
   token!: string;
 }
+
+export interface UserDevice {
+  token: string;
+}
