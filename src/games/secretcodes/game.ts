@@ -139,7 +139,7 @@ const chooseCard = (G: IG, ctx: IGameCtx, cardIndex: number): any => {
 };
 
 const GameConfig: IGameArgs = {
-  name: 'codenames',
+  name: 'secretcode',
 
   setup: (ctx: IGameCtx): IG => {
     return {

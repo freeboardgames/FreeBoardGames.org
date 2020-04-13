@@ -63,7 +63,7 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
     return (
       <main className={mainCss.main}>
         <div className={mainCss.wrapper}>
-          <h1 className={css.title}>Codenames</h1>
+          <h1 className={css.title}>Secret Codes</h1>
 
           <div className={css.teamsContainer}>
             <LobbyTeam

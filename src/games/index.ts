@@ -9,7 +9,7 @@ import { reversiGameDef } from './reversi';
 import { cornerusGameDef } from './cornerus';
 import { tictactoeplusGameDef } from './tictactoeplus';
 import { fourinarowGameDef } from './fourinarow';
-import { codenamesGameDef } from './codenames';
+import { secretcodesGameDef } from './secretcodes';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
@@ -23,7 +23,7 @@ export const GAMES_MAP: IGameDefMap = {
   reversi: reversiGameDef,
   tictactoeplus: tictactoeplusGameDef,
   fourinarow: fourinarowGameDef,
-  codenames: codenamesGameDef,
+  secretcodes: secretcodesGameDef,
 };
 
 // Order roughly by popularity.
@@ -31,6 +31,7 @@ export const GAMES_MAP: IGameDefMap = {
 export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.takesix,
   GAMES_MAP.chess,
+  GAMES_MAP.secretcodes,
   GAMES_MAP.seabattle,
   GAMES_MAP.tictactoe,
   GAMES_MAP.fourinarow,
@@ -39,7 +40,6 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.tictactoeplus,
   GAMES_MAP.reversi,
   GAMES_MAP.ninemensmorris,
-  GAMES_MAP.codenames,
 ];
 
 // No need to edit below
