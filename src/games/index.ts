@@ -10,6 +10,7 @@ import { cornerusGameDef } from './cornerus';
 import { tictactoeplusGameDef } from './tictactoeplus';
 import { fourinarowGameDef } from './fourinarow';
 import { secretcodesGameDef } from './secretcodes';
+import { hangmanGameDef } from './hangman';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
@@ -24,6 +25,7 @@ export const GAMES_MAP: IGameDefMap = {
   tictactoeplus: tictactoeplusGameDef,
   fourinarow: fourinarowGameDef,
   secretcodes: secretcodesGameDef,
+  hangman: hangmanGameDef,
 };
 
 // Order roughly by popularity.
@@ -40,6 +42,7 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.tictactoeplus,
   GAMES_MAP.reversi,
   GAMES_MAP.ninemensmorris,
+  GAMES_MAP.hangman,
 ];
 
 // No need to edit below
