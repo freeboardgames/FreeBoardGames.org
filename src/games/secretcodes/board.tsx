@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IG, PHASES } from './game';
+import { IG, Phases } from './definitions';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import css from './board.css';
@@ -77,7 +77,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         />
       );
 
-    if (this.props.ctx.phase === PHASES.LOBBY) {
+    if (this.props.ctx.phase === Phases.lobby) {
       return this._renderLobby();
     } else {
       return this._renderPlayBoard();

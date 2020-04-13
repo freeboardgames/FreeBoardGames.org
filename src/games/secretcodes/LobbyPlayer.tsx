@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Player from './player';
+import { Player } from './definitions';
 import css from './Lobby.css';
 
 interface ILobbyPlayerProps {

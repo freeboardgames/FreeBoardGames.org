@@ -1,10 +1,9 @@
-import { IG, STAGES } from './game';
+import { IG, Stages, CardColor } from './definitions';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import * as React from 'react';
 import css from './board.css';
 import mainCss from './main.css';
-import { CARD_COLOR } from './card';
 import { isLocalGame, isOnlineGame } from '../common/gameMode';
 
 interface IPlayBoardProps {
@@ -46,7 +45,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       if (!this.props.isActive) return;
       if (this.props.ctx.activePlayers[parseInt(this.props.playerID)] === null) return;
     } else {
-      if (this.props.ctx.activePlayers[this.props.ctx.currentPlayer] !== STAGES.GUESS) return;
+      if (this.props.ctx.activePlayers[this.props.ctx.currentPlayer] !== Stages.guess) return;
     }
     if (this.props.G.cards[cardIndex].revealed) return;
 
@@ -61,7 +60,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     const currentPlayerID = parseInt(this.props.ctx.currentPlayer);
     let instruction;
 
-    if (this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === STAGES.GIVE_CLUE) {
+    if (this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === Stages.giveClue) {
       instruction = (
         <p>
           <strong>{this.props.gameArgs.players[currentPlayerID].name}</strong> give your teammates a clue!
@@ -94,10 +93,10 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
       const classes = [css.card];
       if (card.revealed || this._showSpymasterView(isSpymaster)) {
-        if (card.color === CARD_COLOR.BLUE) classes.push(css.cardBlue);
-        else if (card.color === CARD_COLOR.RED) classes.push(css.cardRed);
-        else if (card.color === CARD_COLOR.CIVILIAN) classes.push(css.cardCivilian);
-        else if (card.color === CARD_COLOR.ASSASSIN) classes.push(css.cardAssassin);
+        if (card.color === CardColor.blue) classes.push(css.cardBlue);
+        else if (card.color === CardColor.red) classes.push(css.cardRed);
+        else if (card.color === CardColor.civilian) classes.push(css.cardCivilian);
+        else if (card.color === CardColor.assassin) classes.push(css.cardAssassin);
 
         classes.push(css.cardRevealed);
       }
@@ -124,7 +123,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     let buttons = [];
 
     if (
-      this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === STAGES.GIVE_CLUE &&
+      this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === Stages.giveClue &&
       this.props.isActive &&
       isLocalOrSpymaster
     ) {
@@ -135,8 +134,8 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       );
     }
     if (
-      this.props.ctx.activePlayers[this.props.playerID] === STAGES.GUESS ||
-      (isLocal && this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === STAGES.GUESS)
+      this.props.ctx.activePlayers[this.props.playerID] === Stages.guess ||
+      (isLocal && this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === Stages.guess)
     ) {
       buttons.push(
         <button key={buttons.length} className={mainCss.btn} onClick={this._endTurn}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IG } from './game';
+import { IG } from './definitions';
 import css from './Lobby.css';
 import mainCss from './main.css';
 import { LobbyTeam } from './LobbyTeam';
