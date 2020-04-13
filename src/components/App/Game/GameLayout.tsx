@@ -5,9 +5,9 @@ import { GameDarkSublayout } from './GameDarkSublayout';
 import { IOptionsItems } from './GameDarkSublayout';
 
 interface IGameLayoutProps {
+  gameArgs: IGameArgs;
   children?: React.ReactNode;
   gameOver?: string;
-  gameArgs?: IGameArgs;
   allowWiderScreen?: boolean;
   optionsMenuItems?: () => IOptionsItems[];
   extraCardContent?: React.ReactNode;
