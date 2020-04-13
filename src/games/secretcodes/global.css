@@ -1,11 +1,4 @@
-:global html, :global body, :global #__next, :global .bgio-client, :global .bgio-client main {
-    width: 100%;
-    height: 100%;
-}
-
-:global * {
-    box-sizing: border-box;
-}
+/*
 
 :root {
     --gray: #50514F;
@@ -13,8 +6,6 @@
     --yellow: #FFE066;
     --blue: #247BA0;
     --green: #70C1B3;
-
-    --background-color: #70C1B3;
 
     --blue-team--background-color: var(--blue);
     --red-team--background-color: var(--red);
@@ -29,3 +20,5 @@
     --box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);
     --box-shadow-md: 0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);
 }
+
+*/

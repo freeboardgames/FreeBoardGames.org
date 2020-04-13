@@ -7,6 +7,7 @@ import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import { LobbyPlayer } from './LobbyPlayer';
 import { IGameCtx } from 'boardgame.io/core';
 import { isLocalGame } from '../common/gameMode';
+import Button from '@material-ui/core/Button';
 
 interface ILobbyProps {
   G: IG;
@@ -61,56 +62,52 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
     }
 
     return (
-      <main className={mainCss.main}>
-        <div className={mainCss.wrapper}>
-          <h1 className={css.title}>Secret Codes</h1>
+      <div className={css.wrapper}>
+        <h1 className={css.title}>Select teams</h1>
 
-          <div className={css.teamsContainer}>
-            <LobbyTeam
-              moves={this.props.moves}
-              G={this.props.G}
-              playerID={this.props.playerID}
-              classes={[css.team, css.teamBlue].join(' ')}
-              teamName={'Blue Team'}
-              teamPlayers={teams[0]}
-              teamID={0}
-            />
-            <LobbyTeam
-              moves={this.props.moves}
-              G={this.props.G}
-              playerID={this.props.playerID}
-              classes={[css.team, css.teamRed].join(' ')}
-              teamName={'Red Team'}
-              teamPlayers={teams[1]}
-              teamID={1}
-            />
-            <div className={[css.team, css.unassigned].join(' ')}>
-              <h3>Unassigned</h3>
-              <ul>{teams.unassigned}</ul>
-            </div>
+        <div className={css.teamsContainer}>
+          <LobbyTeam
+            moves={this.props.moves}
+            G={this.props.G}
+            playerID={this.props.playerID}
+            classes={[css.team, css.teamBlue].join(' ')}
+            teamName={'Blue Team'}
+            teamPlayers={teams[0]}
+            teamID={0}
+          />
+          <LobbyTeam
+            moves={this.props.moves}
+            G={this.props.G}
+            playerID={this.props.playerID}
+            classes={[css.team, css.teamRed].join(' ')}
+            teamName={'Red Team'}
+            teamPlayers={teams[1]}
+            teamID={1}
+          />
+          <div className={[css.team, css.unassigned].join(' ')}>
+            <h3>Unassigned</h3>
+            <ul>{teams.unassigned}</ul>
           </div>
-
-          {!this.gameCanStart() ? (
-            <p className={css.text}>
-              In order to start the game all players need to join a team and each team must have a spymaster.
-            </p>
-          ) : (
-            ''
-          )}
-
-          {this.props.isHost || isLocalGame(this.props.gameArgs) ? (
-            <button
-              className={[mainCss.btn, css.btnStartGame].join(' ')}
-              onClick={this._startGame}
-              disabled={!this.gameCanStart()}
-            >
-              Start game
-            </button>
-          ) : (
-            ''
-          )}
         </div>
-      </main>
+
+        {!this.gameCanStart() ? (
+          <p className={css.text}>
+            In order to start the game all players need to join a team and each team must have a spymaster.
+          </p>
+        ) : null}
+
+        {this.props.isHost || isLocalGame(this.props.gameArgs) ? (
+          <Button
+            style={{ float: 'right' }}
+            variant="contained"
+            onClick={this._startGame}
+            color="primary"
+            disabled={!this.gameCanStart()}
+          >
+            Done, play!
+          </Button>
+        ) : null}
+      </div>
     );
   }
 }

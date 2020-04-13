@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { IG } from './definitions';
 import css from './Lobby.css';
+import Button from '@material-ui/core/Button';
 
 interface ILobbyTeamProps {
   G: IG;
@@ -32,14 +33,16 @@ export class LobbyTeam extends React.Component<ILobbyTeamProps, ILobbyTeamState>
     return (
       <div className={this.props.classes}>
         <h3>{this.props.teamName}</h3>
-        <button
-          className={css.btn}
+        <ul>{this.props.teamPlayers}</ul>
+        <Button
+          className={css.selectTeamBtn}
+          variant="contained"
           onClick={() => this._switchTeam(this.props.teamID)}
+          color="secondary"
           disabled={!this.canSwitchToTeam(this.props.teamID)}
         >
-          Switch to {this.props.teamName}
-        </button>
-        <ul>{this.props.teamPlayers}</ul>
+          Select
+        </Button>
       </div>
     );
   }

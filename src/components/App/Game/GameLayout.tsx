@@ -8,6 +8,7 @@ interface IGameLayoutProps {
   children?: React.ReactNode;
   gameOver?: string;
   gameArgs?: IGameArgs;
+  allowWiderScreen?: boolean;
   optionsMenuItems?: () => IOptionsItems[];
   extraCardContent?: React.ReactNode;
 }
@@ -24,7 +25,11 @@ export class GameLayout extends React.Component<IGameLayoutProps, {}> {
       );
     } else {
       return (
-        <GameDarkSublayout optionsMenuItems={this.props.optionsMenuItems} gameArgs={this.props.gameArgs}>
+        <GameDarkSublayout
+          optionsMenuItems={this.props.optionsMenuItems}
+          allowWiderScreen={this.props.allowWiderScreen}
+          gameArgs={this.props.gameArgs}
+        >
           {this.props.children}
         </GameDarkSublayout>
       );

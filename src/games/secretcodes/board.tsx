@@ -77,11 +77,17 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         />
       );
 
+    let content;
     if (this.props.ctx.phase === Phases.lobby) {
-      return this._renderLobby();
+      content = this._renderLobby();
     } else {
-      return this._renderPlayBoard();
+      content = this._renderPlayBoard();
     }
+    return (
+      <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
+        {content}
+      </GameLayout>
+    );
   }
 }
 
