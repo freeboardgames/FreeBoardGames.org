@@ -3,7 +3,6 @@ import { IG, Phases } from './definitions';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import css from './board.css';
-import lobbyCss from './Lobby.css';
 import { GameLayout } from '../../components/App/Game/GameLayout';
 import { Lobby } from './Lobby';
 import { PlayBoard } from './PlayBoard';
