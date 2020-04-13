@@ -21,6 +21,12 @@ interface ILobbyProps {
 interface ILobbyState {}
 
 export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
+  componentDidMount() {
+    if (isLocalGame(this.props.gameArgs) && this.gameCanStart()) {
+      this.props.events.endPhase();
+    }
+  }
+
   gameCanStart = (): boolean => {
     const { numPlayers } = this.props.ctx;
     if (this.props.G.teams[0].spymaster === null || this.props.G.teams[1].spymaster === null) return false;
@@ -28,10 +34,8 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
   };
 
   _startGame = () => {
-    if (!isLocalGame(this.props.gameArgs)) {
-      if (this.props.playerID !== '0') return;
-      if (!this.gameCanStart()) return;
-    }
+    if (this.props.isHost) return;
+    if (!this.gameCanStart()) return;
 
     this.props.events.endPhase();
   };
@@ -95,7 +99,7 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
           </p>
         ) : null}
 
-        {this.props.isHost || isLocalGame(this.props.gameArgs) ? (
+        {this.props.isHost ? (
           <Button
             style={{ float: 'right' }}
             variant="contained"

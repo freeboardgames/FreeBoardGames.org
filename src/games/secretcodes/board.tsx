@@ -6,7 +6,6 @@ import css from './board.css';
 import lobbyCss from './Lobby.css';
 import { GameLayout } from '../../components/App/Game/GameLayout';
 import { Lobby } from './Lobby';
-import './global.css';
 import { PlayBoard } from './PlayBoard';
 
 interface IBoardProps {
@@ -57,8 +56,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getScoreBoard = () => {
     return (
-      <div className={[lobbyCss.team, lobbyCss.unassigned, css.winners].join(' ')}>
-        <h3>Winners!</h3>
+      <div className={[css.winners].join(' ')}>
+        <h3>Winners</h3>
 
         {this.props.ctx.gameover.winner.players.map((p) => {
           return <p key={p.playerID}>{this.props.gameArgs.players[p.playerID].name}</p>;

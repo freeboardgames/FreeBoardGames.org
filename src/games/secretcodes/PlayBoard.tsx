@@ -3,8 +3,8 @@ import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import * as React from 'react';
 import css from './board.css';
-import mainCss from './main.css';
 import { isLocalGame, isOnlineGame } from '../common/gameMode';
+import Button from '@material-ui/core/Button';
 
 interface IPlayBoardProps {
   G: IG;
@@ -64,20 +64,27 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       instruction = (
         <p>
           <strong>{this.props.gameArgs.players[currentPlayerID].name}</strong> give your teammates a clue!
+          <Button className={css.playActionBtn} variant="contained" onClick={this._clueGiven} color="primary">
+            Done
+          </Button>
         </p>
       );
     } else {
       instruction = (
         <p>
           <strong>{this.props.G.teams[currentPlayerID].teamID ? 'Red' : 'Blue'} Team</strong> make your guess!
+          <Button className={css.playActionBtn} variant="contained" onClick={this._endTurn}>
+            Pass
+          </Button>
         </p>
       );
     }
 
     return (
       <div className={css.header}>
-        <h1>{this.props.G.teams[currentPlayerID].teamID ? 'Red' : 'Blue'} Team</h1>
-
+        <h3 className={this.props.G.teams[currentPlayerID].teamID ? css.redTitle : css.blueTitle}>
+          {this.props.G.teams[currentPlayerID].teamID ? 'Red' : 'Blue'} Team
+        </h3>
         {instruction}
       </div>
     );
@@ -103,11 +110,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
       board.push(
         <div className={classes.join(' ')} key={i} onClick={() => this._chooseCard(i)}>
-          <svg viewBox="0 0 100 100">
-            <text textAnchor="middle" dominantBaseline="middle" x={50} y={50}>
-              {card.word}
-            </text>
-          </svg>
+          {card.word}
         </div>,
       );
     }
@@ -116,55 +119,22 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   };
 
   _renderActionButtons = () => {
-    const player = this.props.G.players[this.props.playerID || parseInt(this.props.ctx.currentPlayer)];
-    const { isSpymaster } = player;
-    const isLocal = isLocalGame(this.props.gameArgs);
-    const isLocalOrSpymaster = isLocal || isSpymaster;
-    let buttons = [];
-
-    if (
-      this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === Stages.giveClue &&
-      this.props.isActive &&
-      isLocalOrSpymaster
-    ) {
-      buttons.push(
-        <button key={buttons.length} className={mainCss.btn} onClick={this._clueGiven}>
-          I&apos;ve given my clue!
-        </button>,
-      );
-    }
-    if (
-      this.props.ctx.activePlayers[this.props.playerID] === Stages.guess ||
-      (isLocal && this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === Stages.guess)
-    ) {
-      buttons.push(
-        <button key={buttons.length} className={mainCss.btn} onClick={this._endTurn}>
-          Pass to the other team
-        </button>,
-      );
-    }
-    if (isLocalOrSpymaster) {
-      buttons.push(
-        <button key={buttons.length} className={mainCss.btn} onClick={this._toggleSpymasterView}>
-          Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal'}
-        </button>,
-      );
-    }
-
-    return buttons;
+    return (
+      <Button className={css.selectTeamBtn} variant="contained" onClick={this._toggleSpymasterView}>
+        Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal'}
+      </Button>
+    );
   };
 
   render() {
     return (
-      <main className={mainCss.main}>
-        <div className={mainCss.wrapper}>
-          {this._renderHeader()}
+      <div>
+        {this._renderHeader()}
 
-          {this._renderCardGrid()}
+        {this._renderCardGrid()}
 
-          <div className={css.buttons}>{this._renderActionButtons()}</div>
-        </div>
-      </main>
+        <div className={css.buttons}>{this._renderActionButtons()}</div>
+      </div>
     );
   }
 }
