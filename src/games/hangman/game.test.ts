@@ -1,5 +1,4 @@
 import { Client } from 'boardgame.io/client';
-import { Local } from 'boardgame.io/multiplayer';
 import { HangmanGame } from './game';
 
 describe('hangman rules', () => {

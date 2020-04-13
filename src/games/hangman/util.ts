@@ -1,4 +1,4 @@
-import { HangmanState, Guesses, PlayerState } from './definitions';
+import { HangmanState, Guesses } from './definitions';
 import { IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 import { MAX_WORD_LENGTH, MAX_MISTAKE_COUNT, ALPHABET } from './constants';
 

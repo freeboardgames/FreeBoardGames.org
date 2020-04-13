@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { EnterWordPrompt } from './EnterWordPrompt';
 import { isOnlineGame } from '../common/gameMode';
 import { grey } from '@material-ui/core/colors';
-import { Modal, Button } from '@material-ui/core';
+import { Modal } from '@material-ui/core';
 import { isPlayersTurn } from 'games/common/GameUtil';
 import { IGameCtx } from 'boardgame.io/core';
 import { HangmanState, PlayerState } from './definitions';
@@ -105,7 +105,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return cells;
   }
 
-  _getGuesseRemaining() {
+  _getGuessesRemaining() {
     const mistakeCount = getMistakeCount(this._playerState().guesses);
     let textColor: any = grey[100];
     if (isOnlineGame(this.props.gameArgs)) {
@@ -143,7 +143,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         x = (i - 18) * 1.1 + 0.6;
       }
       cells.push(
-        <g key={'alph_group' + i} onClick={this.onClick(letter)} data-test-id={`letter-${letter}`}>
+        <g key={'alph_group' + i} onClick={this.onClick(letter)} data-testid={`letter-${letter}`}>
           <circle
             key={'alph_rect_' + i}
             cx={x + 0.5}
@@ -152,7 +152,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             fill={backgroundColor}
             strokeWidth={0.045}
             stroke={textColor}
-            data-test-id={`letter-${letter}-cir`}
+            data-testid={`letter-${letter}-cir`}
           />
           <text key={'alph_' + i} x={x + 0.5} y={y + 0.5} fontSize={0.55} dy={0.2} fill={textColor} textAnchor="middle">
             {letter.toUpperCase()}
@@ -226,14 +226,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       case '1':
         return 'B';
     }
-    return '?';
+    return '?'; // so TS doesn't think our type is string|undefined
   }
 
   _renderPrepare() {
     if (!isPlayersTurn(this.props.ctx.currentPlayer, this.props.ctx)) {
       return (
         <Typography variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px' }}>
-          Waiting for the Opponent ...
+          Waiting for Your Opponent ...
         </Typography>
       );
     }
@@ -249,7 +249,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         </Typography>
         <svg width="100%" height="100%" viewBox="0 0 10 10">
           {this._getWord()}
-          {this._getGuesseRemaining()}
+          {this._getGuessesRemaining()}
           {this._getAlphabets()}
           {this._getHintButton()}
         </svg>
