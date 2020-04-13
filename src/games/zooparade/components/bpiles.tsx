@@ -13,13 +13,12 @@ export class BPiles extends React.Component< InnerWrapper, {}> {
             { this.props.piles.map((pile, index) => 
                 {
                     if (pile.length === 0) {
-                        return <BCard card={ null } hint={ null } showhint={ null } >
+                        return <BCard card={ null } empty = {index} >
                             </BCard>
                     }
                     return <BCard 
                         card={ pile[pile.length - 1]}
-                        hint={ null }
-                        showhint={ false }
+                        empty = { null }
                     ></BCard>
                 })
             }

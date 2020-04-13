@@ -2,9 +2,9 @@ import React from 'react';
 import { ICard, IHint } from '../interfaces';
 
 interface InnerWrapper {
-    card: ICard
-    hint: IHint
-    showhint: boolean
+    card : ICard, // if null, show back of card. 
+    empty: number , // If -1, then 'empty', if 0-5 base color
+                    // 'empty' should take precidence, if not null
 }
 
 export class BCard extends React.Component< InnerWrapper, {}> {
@@ -19,7 +19,6 @@ export class BCard extends React.Component< InnerWrapper, {}> {
             color = this.props.card.color
             if (color === 0) {
                 image = require('./media/elefant.png');
-
             } else if (color === 1) {
                 image = require('./media/giraffe.png');
             } else if (color === 2) {
@@ -33,17 +32,11 @@ export class BCard extends React.Component< InnerWrapper, {}> {
 
         //
         var cardValue = this.props.card ? this.props.card.value : ""
-        var cardColor = this.props.card ? this.props.card.value : ""
-        // Hint
-        var hintValue = this.props.hint ? this.props.hint.value : ""
-        var hintColor = this.props.hint ? this.props.hint.color : ""
 
         return (
             <div className="image">
-                <img src={image}></img>
+                <img src={image} height="100" width="100"></img>
                 <h2> { cardValue } </h2>
-                <h3> { hintValue } </h3>
-                <h4> { hintColor } </h4>
             </div>
         )
     }

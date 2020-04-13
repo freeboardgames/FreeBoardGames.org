@@ -10,10 +10,10 @@ export class BTrash extends React.Component< InnerWrapper, {}> {
     render() {
         return (
                 <BCard 
-                    card={ this.props.card }
-                    hint={ null }
-                    showhint={ false }>
-                    </BCard>
+                    card  = { this.props.card }
+                    empty = { this.props.card ? null : -1 }
+                    >
+                 </BCard>
         )
     }
 }

@@ -8,6 +8,8 @@ import { BHand } from './components/bhand';
 import { BTrash } from './components/btrash'; 
 import { BPiles } from './components/bpiles'; 
 import { BToken } from './components/btoken';
+import { BDeck } from './components/bdeck';
+import { BButtons } from './components/bbuttons';
 
 interface IBoardProps {
   G: IG;
@@ -19,33 +21,49 @@ interface IBoardProps {
 
 export class Board extends React.Component<IBoardProps,  {}> {
   render() {
+
+    var me = this.props.playerID ? parseInt(this.props.playerID) : 1
+
     return (
       <GameLayout
           gameArgs={this.props.gameArgs}
           >
           <table>
-            <tbody>
-          { this.props.G.hands.map((hand, index) => {
-              return (
-                <tr>
-                  <BHand hand={hand} >
-                  </BHand>
-                </tr>
-                )
-          })}
-            </tbody>
+          <tbody>
+            <tr>
+              <th>
+            <table>
+              <tbody>
+            { this.props.G.hands.map((hand, index) => {
+                return (
+                  <tr>
+                    <th>
+                      { index === me ? null : <BButtons></BButtons>}
+                    </th>
+                    <th>
+                      <BHand hand={ hand } me={me === index}>
+                      </BHand>
+                    </th>
+                  </tr>
+                  )
+            })}
+              </tbody>
+            </table>
+              </th>
+              <th>
+                <BTrash card={this.props.G.trash[this.props.G.trash.length - 1]} >
+                  </BTrash>
+                <BToken countdown={this.props.G.countdown}
+                        treats={this.props.G.treats}></BToken>
+                <BDeck cardsLeft={this.props.G.deckindex}>
+                  </BDeck>
+              </th>
+              <th>
+                <BPiles piles={this.props.G.piles}></BPiles>
+              </th>
+            </tr>
+          </tbody>
           </table>
-
-
-          <BTrash card={this.props.G.trash[this.props.G.trash.length - 1]} >
-            </BTrash>
-
-        {/*
-        <BPiles piles={this.props.G.piles}></BPiles>
-        */}
-        
-        
-
 
       </GameLayout>
     );
