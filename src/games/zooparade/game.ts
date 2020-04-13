@@ -167,20 +167,21 @@ function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
     deckindex: G.deckindex - 1,
     piles: G.piles.map((pile: ICard[], index: number) => {
       if (!(index === G.hands[currentPl].cards[IDInHand].color)) {
-        return pile // wrong colored pile
+        return pile // wrong colored pile, leave this pile untouched
       }
 
       if (pile.length === 0) { // First card for pile
         if (G.hands[currentPl].cards[IDInHand].value === 1) {
-          return <ICard[]> [G.hands[currentPl].cards[IDInHand]]
+          return <ICard[]> [G.hands[currentPl].cards[IDInHand]] // Put the played card on the pile
         }
-        return pile
+        return pile //
       }
 
       if (pile[pile.length - 1].value === G.hands[currentPl].cards[IDInHand].value - 1) {
         // correct Value
         return <ICard[]> [...pile, G.hands[currentPl].cards[IDInHand]]
       }
+      return pile // wrong number for pile
     }),
     trash:
       (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value - 1)) // Is the played card the next value?
@@ -339,6 +340,7 @@ export const ZooParadeGame = {
   setup: setup,
 
   playerView: (G, ctx, playerID) => {
+    return G
     for (var i = 0; i < G.deck.length; i++) {
       G.deck[i] = null
     }
