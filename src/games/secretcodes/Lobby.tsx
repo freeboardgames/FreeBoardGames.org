@@ -34,9 +34,6 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
   };
 
   _startGame = () => {
-    if (this.props.isHost) return;
-    if (!this.gameCanStart()) return;
-
     this.props.events.endPhase();
   };
 
