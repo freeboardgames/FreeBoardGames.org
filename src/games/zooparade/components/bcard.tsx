@@ -1,9 +1,10 @@
 import React from 'react';
 import { ICard, IHint } from '../interfaces';
-import './bcard.css';
+
 interface InnerWrapper {
     card: ICard
     hint: IHint
+    showhint: boolean
 }
 
 export class BCard extends React.Component< InnerWrapper, {}> {
@@ -31,11 +32,11 @@ export class BCard extends React.Component< InnerWrapper, {}> {
         }
 
         //
-        var cardValue = this.props.card.value ? this.props.card.value : ""
-        var cardColor = this.props.card.value ? this.props.card.value : ""
+        var cardValue = this.props.card ? this.props.card.value : ""
+        var cardColor = this.props.card ? this.props.card.value : ""
         // Hint
-        var hintValue = this.props.hint.value ? this.props.hint.value : ""
-        var hintColor = this.props.hint.color ? this.props.hint.color : ""
+        var hintValue = this.props.hint ? this.props.hint.value : ""
+        var hintColor = this.props.hint ? this.props.hint.color : ""
 
         return (
             <div className="image">

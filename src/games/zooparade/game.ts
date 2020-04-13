@@ -339,7 +339,6 @@ export const ZooParadeGame = {
   setup: setup,
 
   playerView: (G, ctx, playerID) => {
-    return G
     for (var i = 0; i < G.deck.length; i++) {
       G.deck[i] = null
     }

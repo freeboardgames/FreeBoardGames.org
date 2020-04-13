@@ -5,6 +5,9 @@ import { IGameCtx } from 'boardgame.io/core';
 import { IG } from './interfaces';
 
 import { BHand } from './components/bhand'; 
+import { BTrash } from './components/btrash'; 
+import { BPiles } from './components/bpiles'; 
+import { BToken } from './components/btoken';
 
 interface IBoardProps {
   G: IG;
@@ -20,9 +23,30 @@ export class Board extends React.Component<IBoardProps,  {}> {
       <GameLayout
           gameArgs={this.props.gameArgs}
           >
-          
-          <BHand hand={this.props.G.hands[0]} >
-            </BHand>
+          <table>
+            <tbody>
+          { this.props.G.hands.map((hand, index) => {
+              return (
+                <tr>
+                  <BHand hand={hand} >
+                  </BHand>
+                </tr>
+                )
+          })}
+            </tbody>
+          </table>
+
+
+          <BTrash card={this.props.G.trash[this.props.G.trash.length - 1]} >
+            </BTrash>
+
+        {/*
+        <BPiles piles={this.props.G.piles}></BPiles>
+        */}
+        
+        
+
+
       </GameLayout>
     );
   }
