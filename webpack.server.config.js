@@ -1,9 +1,7 @@
 var path = require('path');
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 var config = {
@@ -26,7 +24,7 @@ var config = {
     minimize: false,
   },
 
-  plugins: [new CleanWebpackPlugin(), new HardSourceWebpackPlugin()],
+  plugins: [new CleanWebpackPlugin()],
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '*'],
@@ -37,12 +35,14 @@ var config = {
   module: {
     rules: [
       {
-        test: /\.ts(x?)$/,
-        exclude: /node_modules/,
+        test: /\.(j|t)s(x?)$/,
+        exclude: [/node_modules/, /.*worker.*js$/],
         use: [
+          'cache-loader',
           {
             loader: 'babel-loader',
             options: {
+              cacheDirectory: true,
               presets: [
                 [
                   '@babel/preset-env',

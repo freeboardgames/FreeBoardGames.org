@@ -1,7 +1,7 @@
 import React from 'react';
-import Room from '../../../../pages/room/[gameCode]/[roomID]/Room';
-import { IPlayerInRoom, LobbyService, IRoomMetadata } from '../../../../components/App/Lobby/LobbyService';
-import { render, wait, cleanup, fireEvent } from '@testing-library/react';
+import Room from 'pages/room/[gameCode]/[roomID]/Room';
+import { IPlayerInRoom, LobbyService, IRoomMetadata } from 'components/App/Lobby/LobbyService';
+import { render, waitFor, cleanup, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 afterEach(cleanup);
@@ -16,7 +16,7 @@ describe('Room Lobby', () => {
         }}
       />,
     );
-    await wait(() => expect(getByText(/Enter Your Nickname/)).toBeTruthy());
+    await waitFor(() => expect(getByText(/Enter Your Nickname/)).toBeTruthy());
   });
 
   it('should load when given a nickname', async () => {
@@ -29,7 +29,7 @@ describe('Room Lobby', () => {
         }}
       />,
     );
-    await wait(() => expect(getByText(/Loading/)).toBeTruthy());
+    await waitFor(() => expect(getByText(/Loading/)).toBeTruthy());
   });
 
   it('should show error page when metadata cannot be fetched', async () => {
@@ -52,7 +52,7 @@ describe('Room Lobby', () => {
         }}
       />,
     );
-    await wait(() => expect(getByText(/Failed to fetch room metadata/)).toBeTruthy());
+    await waitFor(() => expect(getByText(/Failed to fetch room metadata/)).toBeTruthy());
   });
 
   it('should join the room if the user is not in the room', async () => {
@@ -73,7 +73,7 @@ describe('Room Lobby', () => {
         }}
       />,
     );
-    await wait(() => expect(joinRoomMock).toHaveBeenCalled());
+    await waitFor(() => expect(joinRoomMock).toHaveBeenCalled());
   });
 
   it("should show a room that isn't full", async () => {
@@ -96,7 +96,7 @@ describe('Room Lobby', () => {
         }}
       />,
     );
-    await wait(() => expect(getByText(/fooplayer/)).toBeTruthy());
+    await waitFor(() => expect(getByText(/fooplayer/)).toBeTruthy());
   });
 
   it('should edit nickname', async () => {
@@ -126,7 +126,7 @@ describe('Room Lobby', () => {
         }}
       />,
     );
-    await wait(() => expect(wrapper.getByText(/fooplayer/)).toBeTruthy());
+    await waitFor(() => expect(wrapper.getByText(/fooplayer/)).toBeTruthy());
     fireEvent.click(wrapper.getByTestId('editNickname'));
     // expect(wrapper.container).toContain('Enter Your Nickname');
     expect(wrapper.container).toHaveTextContent('Enter Your Nickname');

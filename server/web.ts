@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import next from 'next';
 import express from 'express';
-import { join } from 'path';
 import fs from 'fs';
 import { GAMES_LIST } from 'games';
 
@@ -29,11 +28,12 @@ function isExcludedPath(path) {
   }
 }
 
-const domain = 'https://www.sahajanand-games.com';
+const DOMAIN = 'www.sahajanand-games.com';
+const URL = 'https://' + DOMAIN;
 
 function generateSiteMapXML(pagesManifest) {
   let pathsFromManifest = Object.keys(pagesManifest).reverse();
-  const paths = [];
+  const paths = ['/blog/'];
   for (const path of pathsFromManifest) {
     if (!isExcludedPath(path)) {
       paths.push(path);
@@ -47,7 +47,7 @@ function generateSiteMapXML(pagesManifest) {
 
   const urls = [];
   for (const path of paths) {
-    urls.push(`<url><loc>${domain}${path}</loc></url>`);
+    urls.push(`<url><loc>${URL}${path}</loc></url>`);
   }
 
   const sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>
@@ -69,10 +69,10 @@ app
     const server = express();
     server.disable('x-powered-by');
 
-    server.use('/blog', express.static(join(__dirname, 'blog/dist')));
+    server.use('/blog', express.static(APP_DIR + '/blog/dist'));
 
     server.get('/.well-known/assetlinks.json', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+      if (isProdChannel && isOfficialSite(req.hostname)) {
         const filePath = `${STATIC_DIR}/.well-known/assetlinks.json`;
         app.serveStatic(req, res, filePath);
       } else {
@@ -81,7 +81,7 @@ app
     });
 
     server.get('/sitemap.xml', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+      if (isProdChannel && isOfficialSite(req.hostname)) {
         const filePath = `${STATIC_DIR}/sitemap.xml`;
         app.serveStatic(req, res, filePath);
       } else {
@@ -90,7 +90,7 @@ app
     });
 
     server.get('/robots.txt', (req, res) => {
-      if (isProdChannel && req.hostname.toLowerCase() === 'www.freeboardgames.org') {
+      if (isProdChannel && isOfficialSite(req.hostname)) {
         res.sendStatus(404);
       } else {
         const filePath = `${STATIC_DIR}/restrictiveRobots.txt`;
@@ -101,6 +101,15 @@ app
     server.get('/sw.js', (req, res) => {
       if (BABEL_ENV_IS_PROD) {
         const filePath = `${APP_DIR}/static/sw.js`;
+        app.serveStatic(req, res, filePath);
+      } else {
+        res.sendStatus(404);
+      }
+    });
+
+    server.get('/manifest.json', (req, res) => {
+      if (isProdChannel && isOfficialSite(req.hostname)) {
+        const filePath = `${APP_DIR}/static/manifest.json`;
         app.serveStatic(req, res, filePath);
       } else {
         res.sendStatus(404);
@@ -120,7 +129,7 @@ app
       return handle(req, res);
     });
 
-    server.listen(PORT, err => {
+    server.listen(PORT, (err) => {
       if (err) {
         throw err;
       }
@@ -128,7 +137,13 @@ app
       console.log(`Listening on http://0.0.0.0:${PORT}`);
     });
   })
-  .catch(e => {
+  .catch((e) => {
     console.error(e.stack);
     process.exit(1);
   });
+
+function isOfficialSite(rawHostname: string) {
+  const hostname = rawHostname.toLowerCase();
+  const officialSite = hostname === DOMAIN;
+  return officialSite;
+}

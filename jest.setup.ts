@@ -26,7 +26,7 @@ delete (global as any).location;
 //SW mock
 if (typeof window !== 'undefined') {
   let swRegisterMock = jest.fn();
-  let mockPromise = new Promise(function(resolve) {
+  let mockPromise = new Promise(function (resolve) {
     resolve({ update: jest.fn() });
   });
   swRegisterMock.mockReturnValue(mockPromise);
@@ -36,6 +36,7 @@ if (typeof window !== 'undefined') {
 }
 
 jest.mock('next/router', () => ({
+  push: jest.fn(),
   useRouter() {
     return {
       route: '',

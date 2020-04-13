@@ -14,7 +14,7 @@
       "plugins": ["styled-jsx/babel-test"],
       "compact": false
     },
-    "cypress": {
+    "e2e": {
       "plugins": ["istanbul"],
       "compact": false
     },
