@@ -1,6 +1,6 @@
 import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
-import { CodenamesGame } from './game';
+import { SecretcodesGame } from './game';
 import Board from './board';
 import { GameMode } from 'components/App/Game/GameModePicker';
 import { WrapperBoard } from 'boardgame.io/react';
@@ -15,7 +15,7 @@ let client: WrapperBoard;
 describe('Secretcodes UI', () => {
   beforeEach(() => {
     client = Client({
-      game: CodenamesGame,
+      game: SecretcodesGame,
     });
     const state0 = client.store.getState();
     wrapper = Enzyme.shallow(

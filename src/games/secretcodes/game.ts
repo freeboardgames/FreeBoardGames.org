@@ -172,4 +172,4 @@ const GameConfig: IGameArgs = {
   },
 };
 
-export const CodenamesGame = GameConfig;
+export const SecretcodesGame = GameConfig;

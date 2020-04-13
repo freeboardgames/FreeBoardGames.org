@@ -1,9 +1,9 @@
 import { IGameConfig } from '../index';
-import { CodenamesGame } from './game';
+import { SecretcodesGame } from './game';
 import { Board } from './board';
 
 const config: IGameConfig = {
-  bgioGame: CodenamesGame,
+  bgioGame: SecretcodesGame,
   bgioBoard: Board,
 };
 
