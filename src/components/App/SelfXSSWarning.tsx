@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+/* istanbul ignore next */
 export class SelfXSSWarning extends React.Component<{}, {}> {
   componentDidMount() {
     if (process.browser && process.env.NODE_ENV !== 'development') {
