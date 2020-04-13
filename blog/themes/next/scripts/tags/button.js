@@ -14,21 +14,16 @@ function postButton(args) {
   var title = args[3] || '';
 
   if (!url) {
-    hexo.log.warn('URL can NOT be empty');
+    hexo.log.warn('URL can NOT be empty.');
   }
 
   text = text.trim();
   icon = icon.trim();
   title = title.trim();
 
-  var result = [`<a class="btn" href="${url}"`];
-  title.length > 0 && result.push(` title="${title}"`);
-  result.push('>');
-  icon.length > 0 && result.push(`<i class="fa fa-${icon}"></i>`);
-  text.length > 0 && result.push(text);
-  result.push('</a>');
-
-  return result.join('');
+  return `<a class="btn" href="${url}"${title.length > 0 ? ` title="${title}"` : ''}>
+            ${icon.length > 0 ? `<i class="fa fa-${icon}"></i>` : ''}${text}
+          </a>`;
 }
 
 hexo.extend.tag.register('button', postButton, {ends: false});
