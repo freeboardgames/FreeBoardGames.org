@@ -34,7 +34,6 @@ export const GAMES_MAP: IGameDefMap = {
 // See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.zooparade,
-  GAMES_MAP.foobar,
   GAMES_MAP.takesix,
   GAMES_MAP.chess,
   GAMES_MAP.secretcodes,
