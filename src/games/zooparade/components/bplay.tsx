@@ -1,10 +1,27 @@
 import React from 'react';
 
-export class BPlay extends React.Component< {} > {
+interface InnerWrapper {
+    onPlay(): any;
+    onTrash(): any;
+    myTurn: boolean;
+}
+
+export class BPlay extends React.Component< InnerWrapper, { } > {
     render() {
+        if (this.props.myTurn){
+            return (
+                <div>
+                    <div onClick={this.props.onPlay}>PLAY</div>
+                    |
+                    <div onClick={this.props.onTrash}>TRASH</div>
+                </div>
+            )
+        }
         return (
             <div>
-                PLAY | TRASH
+                <div > waiting </div>
+                |
+                <div> waiting </div>
             </div>
         )
     }

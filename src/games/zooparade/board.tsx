@@ -22,7 +22,9 @@ interface IBoardProps {
 export class Board extends React.Component<IBoardProps,  {}> {
   render() {
 
-    var me = this.props.playerID ? parseInt(this.props.playerID) : 1
+    var me = this.props.playerID ? parseInt(this.props.playerID) : 1 // TODO : Local Fix
+    var playerID = this.props.playerID ? parseInt(this.props.playerID) : "1" // TODO : Local Fix
+
 
     return (
       <GameLayout
@@ -38,10 +40,17 @@ export class Board extends React.Component<IBoardProps,  {}> {
                 return (
                   <tr>
                     <th>
-                      { index === me ? null : <BButtons></BButtons>}
+                      { index === me ? null : <BButtons onHintColor={(value: number) => {this.props.moves.moveHintColor(index, value)}}
+                                                        onHintValue={(value: number) => {this.props.moves.moveHintValue(index, value)}}
+                                                        myTurn={this.props.ctx.currentPlayer === playerID}> 
+                      </BButtons>}
                     </th>
                     <th>
-                      <BHand hand={ hand } me={me === index}>
+                      <BHand hand={ hand } 
+                             me={me === index} 
+                             onPlay={(id: number) => {this.props.moves.movePlay(index, id)}}
+                             onTrash={(id: number) => {this.props.moves.moveDiscard(index, id)}}
+                             myTurn={this.props.ctx.currentPlayer === playerID}> 
                       </BHand>
                     </th>
                   </tr>

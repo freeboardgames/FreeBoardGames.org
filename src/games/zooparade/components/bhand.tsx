@@ -6,8 +6,12 @@ import { BPlay } from './bplay';
 import AddressHelper from 'components/App/Helpers/AddressHelper';
 
 interface InnerWrapper {
-    hand: IHand ,
-    me: boolean 
+    hand: IHand ;
+    me: boolean ;
+
+    onPlay(id: number): any;
+    onTrash(id: number): any;
+    myTurn: boolean;
 }
 
 export class BHand extends React.Component< InnerWrapper, {}> {
@@ -35,7 +39,15 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                         card={ newCard }
                                         empty = { null } >
                                     </BCard>
-                                    { this.props.me ?  <BPlay> </BPlay> : null}
+                                    { this.props.me 
+                                        ? 
+                                        <BPlay onPlay={() => {this.props.onPlay(index)}} 
+                                               onTrash={() => {this.props.onTrash(index)}} 
+                                               myTurn={this.props.myTurn}> 
+                                               </BPlay> 
+                                        : 
+                                        null
+                                    }
                                     </th>
                                 )
                             })

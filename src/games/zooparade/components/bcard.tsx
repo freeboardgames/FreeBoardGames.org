@@ -10,8 +10,6 @@ interface InnerWrapper {
 
 export class BCard extends React.Component< InnerWrapper, {}> {
     render() {
-        console.log("HELLO")
-        console.log(this.props.empty === null)
         if (!(this.props.empty === null)) {
             // No Real Card Face
             var image: any
@@ -55,7 +53,7 @@ export class BCard extends React.Component< InnerWrapper, {}> {
             } else if (color === 4) {
                 image = require('./media/blue_with.png');
             } else if (color === -1) {
-                image = require('./media/empty.png');
+                image = require('./media/deck.png');
             }
         }
 
