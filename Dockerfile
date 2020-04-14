@@ -47,7 +47,7 @@ COPY --chown=appuser static /appdata/static
 RUN yarn run build
 
 # copy in our blog
-COPY --from=blog --chown=appuser /appdata/blog /appdata/blog
+COPY --from=blog --chown=appuser /appdata/blog/dist /appdata/blog/dist
 
 COPY --chown=appuser docker_run.sh /appdata/
 CMD ./docker_run.sh
