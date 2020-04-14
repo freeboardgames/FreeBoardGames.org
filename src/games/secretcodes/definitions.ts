@@ -6,8 +6,8 @@ export interface Player {
 
 export enum TeamID {
   blue = 0,
-  red = 1
-};
+  red = 1,
+}
 
 export interface Team {
   teamID: TeamID;

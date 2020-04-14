@@ -8,7 +8,7 @@ export const secretcodesGameDef: IGameDef = {
   name: 'Secret Codes',
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],
-  minPlayers: 3,
+  minPlayers: 4,
   maxPlayers: 20,
   description: 'Similar to Codenames',
   descriptionTag: `Play Secret Codes, a free online game\

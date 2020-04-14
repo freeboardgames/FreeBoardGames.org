@@ -24,7 +24,7 @@ interface IPlayBoardState {
 
 export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState> {
   state = {
-    spymasterView: isOnlineGame(this.props.gameArgs),
+    spymasterView: false,
   };
 
   _isActive() {
@@ -33,7 +33,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
   _currentPlayerInRoom(): IPlayerInRoom {
     return this.props.gameArgs.players[this._currentPlayerID()];
-  };
+  }
 
   _currentPlayerTeam(): Team {
     return this.props.G.teams[this._currentPlayerID()];
@@ -41,7 +41,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
   _currentPlayerID(): number {
     return parseInt(this.props.ctx.currentPlayer);
-  };
+  }
 
   _currentPlayerStage(): Stages {
     return this.props.ctx.activePlayers[this.props.ctx.currentPlayer] as Stages;
@@ -51,7 +51,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     if (isLocalGame(this.props.gameArgs)) {
       return this._currentPlayerID();
     } else {
-      return parseInt(this.props.ctx.playerID);
+      return parseInt(this.props.playerID);
     }
   }
 
@@ -76,6 +76,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   _chooseCard = (cardIndex: number) => {
     if (!this._isActive()) return;
     if (this._currentPlayerStage() != Stages.guess) return;
+    if (isOnlineGame(this.props.gameArgs) && this._player().isSpymaster) return;
     if (this.props.G.cards[cardIndex].revealed) return;
 
     this.props.moves.chooseCard(cardIndex);
@@ -87,14 +88,14 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     this.props.events.endTurn();
   };
 
-
   _renderHeader = () => {
     let instruction;
 
     if (this._currentPlayerStage() === Stages.giveClue) {
-      const button = (this._isActive()) ? (<Button className={css.playActionBtn} variant="contained" onClick={this._clueGiven} color="primary">
-        Done
-      </Button>
+      const button = this._isActive() ? (
+        <Button className={css.playActionBtn} variant="contained" onClick={this._clueGiven} color="primary">
+          Done
+        </Button>
       ) : null;
       instruction = (
         <p>
@@ -103,7 +104,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
         </p>
       );
     } else {
-      const button = (this._isActive()) ? (
+      const button = this._isActive() ? (
         <Button className={css.playActionBtn} variant="contained" onClick={this._endTurn}>
           Pass
         </Button>
