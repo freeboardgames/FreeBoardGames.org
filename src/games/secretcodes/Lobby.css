@@ -1,0 +1,71 @@
+.title {
+  color: white;
+  text-align: center;
+}
+
+.text {
+  color: white;
+}
+
+.wrapper {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.teamsContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 2fr 1fr;
+  grid-gap: 0.8rem;
+  max-height: 480px;
+
+  margin-bottom: 1em;
+
+  text-align: center;
+  color: white;
+}
+
+.team {
+  position: relative;
+  border-radius: 4px;
+  box-shadow: var(--box-shadow);
+}
+
+.team ul {
+  text-align: left;
+  color: black;
+}
+
+.team h3 {
+  margin-bottom: 0.4em;
+}
+
+.teamBlue {
+  background-color: #247BA0;
+}
+
+.teamRed {
+  background-color: #F25F5C;
+}
+
+.selectTeamBtn {
+  position: absolute;
+  margin: 8px;
+  bottom: 0;
+  right: 0;
+}
+
+.unassigned {
+  grid-column: span 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: #FFE066;
+}
+
+.unassigned h3 {
+  color: black;
+}

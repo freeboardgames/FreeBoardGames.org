@@ -11,7 +11,7 @@ interface IGameInstructionsProps {
 export class GameInstructionsText extends React.Component<IGameInstructionsProps, {}> {
   render() {
     const instructions = this.props.gameDef.instructions;
-    if (!instructions) {
+    if (!instructions || !instructions.text) {
       return null;
     }
     return (
