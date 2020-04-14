@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, ListItem, ListItemText, ListSubheader } from '@material-ui/core';
-import { Room } from 'dto/Room';
+import { Room } from 'entities/Room';
 
 interface Props {
   rooms: Room[];
@@ -15,7 +15,7 @@ export class ListRooms extends React.Component<Props, {}> {
           <ListItemText
             style={{ marginLeft: '16px' }}
             primary={`Room #${idx + 1}`}
-            secondary={`${room.players.length}/${room.capacity}`}
+            secondary={`${room.users.length}/${room.capacity}`}
           />
         </ListItem>
       );

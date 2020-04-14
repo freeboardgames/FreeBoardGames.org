@@ -1,6 +1,6 @@
 import React from 'react';
 import LobbyGameCard from 'components/Lobby/LobbyGameCard';
-import { Room } from 'dto/Room';
+import { Room } from 'entities/Room';
 import { GAMES_MAP } from 'games';
 
 const CARD_STYLE = {
@@ -62,7 +62,7 @@ class GamesWithRooms extends React.Component<Props, {}> {
   _getGamesWithRooms = () => {
     const gameCodes = [];
     for (const room of this.props.rooms) {
-      if (room.players.length > 0 && !gameCodes.includes(room.gameCode)) {
+      if (room.users.length > 0 && !gameCodes.includes(room.gameCode)) {
         gameCodes.push(room.gameCode);
       }
     }

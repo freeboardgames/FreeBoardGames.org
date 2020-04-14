@@ -6,7 +6,8 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
-import { Room } from 'entities/Room';
+import { RoomDbEntity, Room } from './entities/Room';
+import RoomService from './services/RoomService';
 
 const PORT = 8002;
 
@@ -15,7 +16,7 @@ const csrfProtection = csrf({ cookie: true });
 const dbConnectionOptions: any = {
   type: 'sqlite',
   database: ':memory:',
-  entities: [UserDbEntity],
+  entities: [UserDbEntity, RoomDbEntity],
   synchronize: true,
   logging: true,
 };
@@ -45,13 +46,24 @@ async function serve() {
   });
 
   /** list rooms */
-  app.get('/api/rooms', csrfProtection, async (_req, res) => {
-    const room: Room = { gameCode: 'chess', capacity: 2, players: ['Jason'] };
-    const room2: Room = { gameCode: 'tictactoe', capacity: 2, players: ['Jason'] };
-    const room3: Room = { gameCode: 'chess', capacity: 2, players: ['Jason'] };
-    const result: Room[] = [room, room2, room3];
-    console.log(result);
-    res.send(result);
+  // app.get('/api/rooms', csrfProtection, async (_req, res) => {
+  //   const room: Room = { gameCode: 'chess', capacity: 2, players: ['Jason'] };
+  //   const room2: Room = { gameCode: 'tictactoe', capacity: 2, players: ['Jason'] };
+  //   const room3: Room = { gameCode: 'chess', capacity: 2, players: ['Jason'] };
+  //   const result: Room[] = [room, room2, room3];
+  //   console.log(result);
+  //   res.send(result);
+  // });
+
+  app.post('/api/rooms/new', csrfProtection, async (req, res) => {
+    const { gameCode, capacity } = req.body;
+    if (!gameCode || !capacity) {
+      res.status(400).send();
+      return;
+    }
+    const roomDto: Room = { gameCode, capacity };
+    const room = await RoomService.newRoom(roomDto);
+    res.send(room);
   });
 
   app.listen(PORT, function () {

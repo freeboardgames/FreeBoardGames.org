@@ -1,6 +1,6 @@
 import superagent from 'superagent';
 import AddressHelper from 'components/App/Helpers/AddressHelper';
-import { Room } from 'dto/Room';
+import { Room } from 'entities/Room';
 
 export class LobbyService {
   public static async list(): Promise<Room[]> {
@@ -8,6 +8,4 @@ export class LobbyService {
     const result = response.body;
     return result;
   }
-
-  public static async pickNickname(): Promise<
 }

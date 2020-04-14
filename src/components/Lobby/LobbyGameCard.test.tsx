@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme from 'enzyme';
 
 import LobbyGameCard from './LobbyGameCard';
-import { Room } from 'dto/Room';
+import { Room } from 'entities/Room';
 
 const mockGameDef = { name: 'foogame', imageURL: { src: 'imageurl', 0: 'imageurl' } };
 
