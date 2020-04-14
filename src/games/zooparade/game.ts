@@ -285,7 +285,6 @@ function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValue: numb
             }
           )
       }
-
     })
   }
 }
@@ -359,10 +358,22 @@ export const ZooParadeGame = {
   },
 
   moves: {
-    movePlay,
-    moveDiscard,
-    moveHintValue,
-    moveHintColor,
+    movePlay: {
+      move: movePlay,
+      client: false
+    },
+    moveDiscard: {
+      move: moveDiscard,
+      client: false
+    },
+    moveHintColor: {
+      move: moveHintColor,
+      client: false
+    },
+    moveHintValue: {
+      move: moveHintValue,
+      client: false
+    },
   },
 
   turn: { moveLimit: 1 },
