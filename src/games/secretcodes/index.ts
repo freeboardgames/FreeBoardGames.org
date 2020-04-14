@@ -8,12 +8,12 @@ export const secretcodesGameDef: IGameDef = {
   name: 'Secret Codes',
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],
-  minPlayers: 3,
+  minPlayers: 4,
   maxPlayers: 20,
   description: 'Similar to Codenames',
   descriptionTag: `Play Secret Codes, a free online game\
- similar to the board game Codenames! you can play multi-player\
- from three and up to twenty players online!`,
+ similar to the board game Codenames! You can play multi-player\
+ from four and up to twenty players online!`,
   instructions: {
     videoId: 'zQVHkl8oQEU',
     text: instructions,

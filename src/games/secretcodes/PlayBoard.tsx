@@ -1,10 +1,11 @@
-import { IG, Stages, CardColor } from './definitions';
+import { IG, Stages, CardColor, Team, TeamID, Player } from './definitions';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import * as React from 'react';
 import css from './board.css';
 import { isLocalGame, isOnlineGame } from '../common/gameMode';
 import Button from '@material-ui/core/Button';
+import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 
 interface IPlayBoardProps {
   G: IG;
@@ -23,67 +24,103 @@ interface IPlayBoardState {
 
 export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState> {
   state = {
-    spymasterView: isOnlineGame(this.props.gameArgs),
+    spymasterView: false,
   };
 
+  _isActive() {
+    return isLocalGame(this.props.gameArgs) || this.props.isActive;
+  }
+
+  _currentPlayerInRoom(): IPlayerInRoom {
+    return this.props.gameArgs.players[this._currentPlayerID()];
+  }
+
+  _currentPlayerTeam(): Team {
+    return this.props.G.teams[this._currentPlayerID()];
+  }
+
+  _currentPlayerID(): number {
+    return parseInt(this.props.ctx.currentPlayer);
+  }
+
+  _currentPlayerStage(): Stages {
+    return this.props.ctx.activePlayers[this.props.ctx.currentPlayer] as Stages;
+  }
+
+  _playerID(): number {
+    if (isLocalGame(this.props.gameArgs)) {
+      return this._currentPlayerID();
+    } else {
+      return parseInt(this.props.playerID);
+    }
+  }
+
+  _player(): Player {
+    return this.props.G.players[this._playerID()];
+  }
+
+  _playerTeam(): Team {
+    return this.props.G.teams[this._playerID()];
+  }
+
+  _showSpymasterView = (): boolean => this._player().isSpymaster && this.state.spymasterView;
+
+  _toggleSpymasterView = (): void => this.setState({ spymasterView: !this.state.spymasterView });
+
   _clueGiven = () => {
-    if (!this.props.isActive) return;
+    if (!this._isActive()) return;
 
     this.props.moves.clueGiven();
   };
 
-  _endTurn = () => {
-    if (!isLocalGame(this.props.gameArgs)) {
-      if (!this.props.isActive) return;
-    }
-
-    this.props.events.endTurn();
-  };
-
   _chooseCard = (cardIndex: number) => {
-    if (!isLocalGame(this.props.gameArgs)) {
-      if (!this.props.isActive) return;
-      if (this.props.ctx.activePlayers[parseInt(this.props.playerID)] === null) return;
-    } else {
-      if (this.props.ctx.activePlayers[this.props.ctx.currentPlayer] !== Stages.guess) return;
-    }
+    if (!this._isActive()) return;
+    if (this._currentPlayerStage() != Stages.guess) return;
+    if (isOnlineGame(this.props.gameArgs) && this._player().isSpymaster) return;
     if (this.props.G.cards[cardIndex].revealed) return;
 
     this.props.moves.chooseCard(cardIndex);
   };
 
-  _showSpymasterView = (isSpymaster: boolean): boolean => isSpymaster && this.state.spymasterView;
+  _endTurn = () => {
+    if (!this._isActive()) return;
 
-  _toggleSpymasterView = (): void => this.setState({ spymasterView: !this.state.spymasterView });
+    this.props.events.endTurn();
+  };
 
   _renderHeader = () => {
-    const currentPlayerID = parseInt(this.props.ctx.currentPlayer);
     let instruction;
 
-    if (this.props.ctx.activePlayers[this.props.ctx.currentPlayer] === Stages.giveClue) {
+    if (this._currentPlayerStage() === Stages.giveClue) {
+      const button = this._isActive() ? (
+        <Button className={css.playActionBtn} variant="contained" onClick={this._clueGiven} color="primary">
+          Done
+        </Button>
+      ) : null;
       instruction = (
         <p>
-          <strong>{this.props.gameArgs.players[currentPlayerID].name}</strong> give your teammates a clue!
-          <Button className={css.playActionBtn} variant="contained" onClick={this._clueGiven} color="primary">
-            Done
-          </Button>
+          <strong>{this._currentPlayerInRoom().name}</strong> give your teammates a clue!
+          {button}
         </p>
       );
     } else {
+      const button = this._isActive() ? (
+        <Button className={css.playActionBtn} variant="contained" onClick={this._endTurn}>
+          Pass
+        </Button>
+      ) : null;
       instruction = (
         <p>
-          <strong>{this.props.G.teams[currentPlayerID].teamID ? 'Red' : 'Blue'} Team</strong> make your guess!
-          <Button className={css.playActionBtn} variant="contained" onClick={this._endTurn}>
-            Pass
-          </Button>
+          <strong>{this._currentPlayerTeam().teamID === TeamID.red ? 'Red' : 'Blue'} Team</strong> make your guess!
+          {button}
         </p>
       );
     }
 
     return (
       <div className={css.header}>
-        <h3 className={this.props.G.teams[currentPlayerID].teamID ? css.redTitle : css.blueTitle}>
-          {this.props.G.teams[currentPlayerID].teamID ? 'Red' : 'Blue'} Team
+        <h3 className={this._currentPlayerTeam().teamID === TeamID.red ? css.redTitle : css.blueTitle}>
+          {this._currentPlayerTeam().teamID === TeamID.red ? 'Red' : 'Blue'} Team
         </h3>
         {instruction}
       </div>
@@ -91,15 +128,13 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   };
 
   _renderCardGrid = () => {
-    const player = this.props.G.players[this.props.playerID || parseInt(this.props.ctx.currentPlayer)];
-    const { isSpymaster } = player;
     let board = [];
 
     for (let i = 0; i < 25; i += 1) {
       const card = this.props.G.cards[i];
 
       const classes = [css.card];
-      if (card.revealed || this._showSpymasterView(isSpymaster)) {
+      if (card.revealed || this._showSpymasterView()) {
         if (card.color === CardColor.blue) classes.push(css.cardBlue);
         else if (card.color === CardColor.red) classes.push(css.cardRed);
         else if (card.color === CardColor.civilian) classes.push(css.cardCivilian);
@@ -119,11 +154,13 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   };
 
   _renderActionButtons = () => {
-    return (
-      <Button className={css.selectTeamBtn} variant="contained" onClick={this._toggleSpymasterView}>
-        Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal'}
-      </Button>
-    );
+    if (this._player().isSpymaster) {
+      return (
+        <Button className={css.selectTeamBtn} variant="contained" onClick={this._toggleSpymasterView}>
+          Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal'}
+        </Button>
+      );
+    }
   };
 
   render() {
