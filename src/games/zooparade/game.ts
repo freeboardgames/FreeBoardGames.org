@@ -339,7 +339,7 @@ export const ZooParadeGame = {
   setup: setup,
 
   playerView: (G, ctx, playerID) => {
-    // return G
+    return G
     for (var i = 0; i < G.deck.length; i++) {
       G.deck[i] = null
     }
@@ -358,22 +358,26 @@ export const ZooParadeGame = {
   },
 
   moves: {
-    movePlay: {
-      move: movePlay,
-      client: false
-    },
-    moveDiscard: {
-      move: moveDiscard,
-      client: false
-    },
-    moveHintColor: {
-      move: moveHintColor,
-      client: false
-    },
-    moveHintValue: {
-      move: moveHintValue,
-      client: false
-    },
+    movePlay,
+    moveDiscard,
+    moveHintColor,
+    moveHintValue,
+    // movePlay: {
+    //   move: movePlay,
+    //   client: false
+    // },
+    // moveDiscard: {
+    //   move: moveDiscard,
+    //   client: false
+    // },
+    // moveHintColor: {
+    //   move: moveHintColor,
+    //   client: false
+    // },
+    // moveHintValue: {
+    //   move: moveHintValue,
+    //   client: false
+    // },
   },
 
   turn: { moveLimit: 1 },
