@@ -22,7 +22,7 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                 const hint =  this.props.hand.hints[index]
                                 var newCard : ICard = { id: card.id, value: card.value, color: card.color }
                                 if (this.props.me) {
-                                    newCard.color = hint.color
+                                    newCard.color = hint.color ? hint.color : -1 
                                     newCard.value = hint.value
                                 }
 
@@ -32,7 +32,7 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                         hint={ hint } >
                                     </BHint>
                                     <BCard 
-                                        card={ newCard}
+                                        card={ newCard }
                                         empty = { null } >
                                     </BCard>
                                     { this.props.me ?  <BPlay> </BPlay> : null}

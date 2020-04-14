@@ -3,30 +3,59 @@ import { ICard, IHint } from '../interfaces';
 
 interface InnerWrapper {
     card : ICard, // if null, show back of card. 
-    empty: number , // If -1, then 'empty', if 0-5 base color
+    empty: number , // If -1, then 'empty', if 0-4 base color
                     // 'empty' should take precidence, if not null
+                    // if -2 then 'backside'
 }
 
 export class BCard extends React.Component< InnerWrapper, {}> {
     render() {
+        console.log("HELLO")
+        console.log(this.props.empty === null)
+        if (!(this.props.empty === null)) {
+            // No Real Card Face
+            var image: any
+            if (this.props.empty === 0) {
+                image = require('./media/green.png');
+            } else if (this.props.empty=== 1) {
+                image = require('./media/gray.png');
+            } else if (this.props.empty=== 2) {
+                image = require('./media/brown.png');
+            } else if (this.props.empty=== 3) {
+                image = require('./media/yellow.png');
+            } else if (this.props.empty=== 4) {
+                image = require('./media/blue.png');
+            } else if (this.props.empty=== -1) {
+                image = require('./media/empty.png');
+            } else if (this.props.empty=== -2) {
+                image = require('./media/deck.png');
+            }
+            return <div className="image">
+                        <img src={ image } height="100" width="100"></img>
+                        <h2> Empty: { this.props.empty } </h2>
+                    </div>
+
+        }
         // Card
         var image: any
         var color: any
         if (!this.props.card) { // Card is null, so its hidden
-            image = require('./media/background.png');
+            image = require('./media/white.png');
             color = "" 
         } else {
             color = this.props.card.color
             if (color === 0) {
-                image = require('./media/elefant.png');
+                image = require('./media/green_with.png');
             } else if (color === 1) {
-                image = require('./media/giraffe.png');
+                image = require('./media/gray_with.png');
             } else if (color === 2) {
-                image = require('./media/lion.png');
+                image = require('./media/brown_with.png');
             } else if (color === 3) {
-                image = require('./media/parrot.png');
+                image = require('./media/yellow_with.png');
             } else if (color === 4) {
-                image = require('./media/manta.png');
+                image = require('./media/blue_with.png');
+            } else if (color === -1) {
+                image = require('./media/empty.png');
             }
         }
 

@@ -51,10 +51,16 @@ export class Board extends React.Component<IBoardProps,  {}> {
             </table>
               </th>
               <th>
-                <BTrash card={this.props.G.trash[this.props.G.trash.length - 1]} >
-                  </BTrash>
-                <BToken countdown={this.props.G.countdown}
-                        treats={this.props.G.treats}></BToken>
+                {
+                  this.props.G.trash.length === 0
+                  ?
+                  <BTrash card={ null } >
+                    </BTrash>
+                  :
+                  <BTrash card={this.props.G.trash[this.props.G.trash.length - 1]} >
+                    </BTrash>
+                }
+                <BToken treats={this.props.G.treats} countdown={this.props.G.countdown}></BToken>
                 <BDeck cardsLeft={this.props.G.deckindex}>
                   </BDeck>
               </th>

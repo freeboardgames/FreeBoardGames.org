@@ -11,7 +11,7 @@ export class BDeck extends React.Component< InnerWrapper, {}> {
         return (
             <div>
                 <BCard 
-                    card = { null } empty = { null }>
+                    card = { null } empty = { -2 }>
                 </BCard>
                 <div> { this.props.cardsLeft + 1} </div>
             </div>
