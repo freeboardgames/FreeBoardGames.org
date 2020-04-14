@@ -4,8 +4,13 @@ export interface Player {
   isSpymaster: boolean;
 }
 
+export enum TeamID {
+  blue = 0,
+  red = 1
+};
+
 export interface Team {
-  teamID: number;
+  teamID: TeamID;
   players: Player[];
   spymaster: null | Player;
   start: boolean;
