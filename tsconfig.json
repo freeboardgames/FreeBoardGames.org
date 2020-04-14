@@ -4,6 +4,9 @@
     "paths": {
       "entities/*": [
         "../backend/src/entities/*"
+      ],
+      "services/*": [
+        "../backend/src/services/*"
       ]
     },
     "target": "es5",

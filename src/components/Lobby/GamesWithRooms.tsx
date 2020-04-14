@@ -62,7 +62,7 @@ class GamesWithRooms extends React.Component<Props, {}> {
   _getGamesWithRooms = () => {
     const gameCodes = [];
     for (const room of this.props.rooms) {
-      if (room.users.length > 0 && !gameCodes.includes(room.gameCode)) {
+      if (room.users && room.users.length > 0 && !gameCodes.includes(room.gameCode)) {
         gameCodes.push(room.gameCode);
       }
     }

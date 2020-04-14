@@ -11,6 +11,7 @@
     "@types/morgan": "^1.9.0",
     "@types/node": "^13.11.0",
     "@types/socket.io": "^2.1.4",
+    "@types/uuid": "^7.0.2",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
@@ -19,7 +20,8 @@
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.1.1",
     "typeorm": "^0.2.24",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "uuid": "^7.0.3"
   },
   "scripts": {
     "format": "prettier --write \"src/**/*.*(js|jsx|ts|tsx)\"",

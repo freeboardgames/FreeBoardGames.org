@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import AlertLayer from 'components/App/Game/AlertLayer';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { LobbyService } from 'components/Lobby/LobbyService';
 
 interface Props {
   setNickname: (nickname: string) => void;
@@ -75,7 +76,7 @@ class NicknamePrompt extends React.Component<Props, State> {
     }
   };
 
-  _getErrors = () => {
+  _getValidationErrors = () => {
     const name = this.state.nameTextField;
     let errorText = '';
     if (!name || name.length < 1 || name.length > 12) {
@@ -85,11 +86,14 @@ class NicknamePrompt extends React.Component<Props, State> {
     return errorText;
   };
 
-  _onClick = () => {
-    const errors = this._getErrors();
-    if (!errors) {
-      this.props.setNickname(this.state.nameTextField);
-      this.props.closePrompt();
+  _onClick = async () => {
+    const validationErrors = this._getValidationErrors();
+    if (!validationErrors) {
+      const nickname = this.state.nameTextField;
+      const result = LobbyService.checkin(nickname);
+      console.log('status', result);
+      // this.props.setNickname(this.state.nameTextField);
+      // this.props.closePrompt();
     }
   };
 

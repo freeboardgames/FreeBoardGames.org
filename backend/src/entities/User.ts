@@ -18,8 +18,8 @@ export class UserDbEntity extends BaseEntity {
 
 export interface User {
   nickname: string;
-  credential: string;
-  rooms: Room[];
+  credential?: string;
+  rooms?: Room[];
 }
 
 // export class UserService {

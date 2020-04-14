@@ -1,13 +1,14 @@
 import { createConnection } from 'typeorm';
-import { UserDbEntity } from './entities/User';
 import express from 'express';
 import 'reflect-metadata';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
+import { UserDbEntity, User } from './entities/User';
 import { RoomDbEntity, Room } from './entities/Room';
-import RoomService from './services/RoomService';
+import { RoomService } from './services/RoomService';
+import { UserService } from './services/UserService';
 
 const PORT = 8002;
 
@@ -45,23 +46,31 @@ async function serve() {
     res.send('OK');
   });
 
-  /** list rooms */
-  // app.get('/api/rooms', csrfProtection, async (_req, res) => {
-  //   const room: Room = { gameCode: 'chess', capacity: 2, players: ['Jason'] };
-  //   const room2: Room = { gameCode: 'tictactoe', capacity: 2, players: ['Jason'] };
-  //   const room3: Room = { gameCode: 'chess', capacity: 2, players: ['Jason'] };
-  //   const result: Room[] = [room, room2, room3];
-  //   console.log(result);
-  //   res.send(result);
-  // });
-
-  app.post('/api/rooms/new', csrfProtection, async (req, res) => {
-    const { gameCode, capacity } = req.body;
-    if (!gameCode || !capacity) {
+  app.post('/api/users', async (req, res) => {
+    const { nickname } = req.body;
+    if (!nickname) {
       res.status(400).send();
       return;
     }
-    const roomDto: Room = { gameCode, capacity };
+    const user: User = { nickname };
+    const result = await UserService.checkIn(user);
+    res.send(result);
+  });
+
+  /** list rooms */
+  app.get('/api/rooms', csrfProtection, async (_req, res) => {
+    const rooms = await RoomService.listRooms();
+    res.send(rooms);
+  });
+
+  // TODO csrfProtection
+  app.post('/api/rooms/new', async (req, res) => {
+    const { gameCode, capacity, unlisted } = req.body;
+    if (!gameCode || !capacity || typeof unlisted === 'undefined') {
+      res.status(400).send();
+      return;
+    }
+    const roomDto: Room = { gameCode, capacity, unlisted };
     const room = await RoomService.newRoom(roomDto);
     res.send(room);
   });
