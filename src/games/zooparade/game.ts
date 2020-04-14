@@ -335,12 +335,12 @@ function moveHintColor(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintColor: numb
 
 // Game
 export const ZooParadeGame = {
-  name: "ZooParade",
+  name: 'zooparade',
 
   setup: setup,
 
   playerView: (G, ctx, playerID) => {
-    return G
+    // return G
     for (var i = 0; i < G.deck.length; i++) {
       G.deck[i] = null
     }

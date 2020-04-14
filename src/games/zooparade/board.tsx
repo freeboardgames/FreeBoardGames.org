@@ -22,8 +22,8 @@ interface IBoardProps {
 export class Board extends React.Component<IBoardProps,  {}> {
   render() {
 
-    var me = this.props.playerID ? parseInt(this.props.playerID) : 1 // TODO : Local Fix
-    var playerID = this.props.playerID ? parseInt(this.props.playerID) : "1" // TODO : Local Fix
+    var me = this.props.playerID ? parseInt(this.props.playerID) : 1 // TODO : Local Fix - defaults to player 1
+    var playerID = this.props.playerID ? this.props.playerID : "1" // TODO : Local Fix
 
 
     return (

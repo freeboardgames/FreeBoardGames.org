@@ -5,11 +5,11 @@ import instructions from './instructions.md';
 
 export const zooParadeGameDef: IGameDef = {
   code: 'zooparade',
-  name: 'Zoo Parade',
+  name: 'zooparade',
   imageURL: Thumbnail,
   modes: [
     { mode: GameMode.OnlineFriend },
-    { mode: GameMode.LocalFriend }
+    { mode: GameMode.LocalFriend },
   ],
   minPlayers: 2,
   maxPlayers: 5,
