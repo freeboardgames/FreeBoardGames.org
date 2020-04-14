@@ -9317,13 +9317,6 @@ jest-pnp-resolver@^1.2.1:
   resolved "https://registry.yarnpkg.com/jest-pnp-resolver/-/jest-pnp-resolver-1.2.1.tgz#ecdae604c077a7fbc70defb6d517c3c1c898923a"
   integrity sha512-pgFw2tm54fzgYvc/OHrnysABEObZCUNFnhjoRjaVOCN8NYc032/gVjPaHD4Aq6ApkSieWtfKAFQtmDKAmhupnQ==
 
-jest-puppeteer-istanbul@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/jest-puppeteer-istanbul/-/jest-puppeteer-istanbul-0.5.1.tgz#d6fdd0fc6b851713e8e3ccc4ef74a901b89e9a96"
-  integrity sha512-NV5S6tb0LS2U76RUjFUs00KqO0k5N5RAVRblrM7InpPRmA4wnTO0fvfuFz7wDrZRapbCeHv1MjB9x7110swVMA==
-  dependencies:
-    jest "^24.0.0 || ^25.0.0"
-
 jest-regex-util@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-regex-util/-/jest-regex-util-24.9.0.tgz#c13fb3380bde22bf6575432c493ea8fe37965636"
@@ -9509,7 +9502,7 @@ jest-worker@^25.2.6:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-"jest@^24.0.0 || ^25.0.0", jest@^25.3.0:
+jest@^25.3.0:
   version "25.3.0"
   resolved "https://registry.yarnpkg.com/jest/-/jest-25.3.0.tgz#7a5e59741d94b8662664c77a9f346246d6bf228b"
   integrity sha512-iKd5ShQSHzFT5IL/6h5RZJhApgqXSoPxhp5HEi94v6OAw9QkF8T7X+liEU2eEHJ1eMFYTHmeWLrpBWulsDpaUg==
@@ -14540,10 +14533,10 @@ supports-hyperlinks@^2.0.0:
     has-flag "^4.0.0"
     supports-color "^7.0.0"
 
-svg-baker-runtime@^1.4.5:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/svg-baker-runtime/-/svg-baker-runtime-1.4.5.tgz#ccec3b7d227e1844348691191a2b446b7b977106"
-  integrity sha512-X9HvVjekaDUBIqnRrZI+fBbalZXpHxZA9F8wmpMOcAFXIltvaJFbJEiT7YBgCeo1eFrANVy7Ey7nkh38HGkESw==
+svg-baker-runtime@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/svg-baker-runtime/-/svg-baker-runtime-1.4.6.tgz#73499736c636610121a9e17ae6ceb2ea1023ec6b"
+  integrity sha512-n+Uq23mafI12WLHXahkjSY00qHJaNfeB9XgVKdo0C4kzrcn8JnunXNajvOlqkFaTqj7xT7MwTlFl3Hga8AevcQ==
   dependencies:
     deepmerge "1.3.2"
     mitt "1.1.2"
@@ -14568,10 +14561,10 @@ svg-baker@^1.5.0, svg-baker@^1.7.0:
     query-string "^4.3.2"
     traverse "^0.6.6"
 
-svg-sprite-loader@^4.2.3:
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/svg-sprite-loader/-/svg-sprite-loader-4.2.3.tgz#1fb39ebc886827b11c53bf82a5ce0490e1e4febf"
-  integrity sha512-BKZpTttCpIugyvezWGGXRI7GCuk7BMeuFjM+1m42NpvmhNQHavVye8HdKQ+j3z+SbFbC0oObFNLTT7TLZk1Jsg==
+svg-sprite-loader@^4.2.5:
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/svg-sprite-loader/-/svg-sprite-loader-4.2.5.tgz#4848a2c36efaabb77753481f52ad0b256355537e"
+  integrity sha512-0upgOBcJKI/stFhBqrPj0x99zhkKUR6JDOtQLozDY5HrIAHEIMW5iY8W9/1CfPT6G+ymqqKV0nLtwiUEwfHKrg==
   dependencies:
     bluebird "^3.5.0"
     deepmerge "1.3.2"
@@ -14580,7 +14573,7 @@ svg-sprite-loader@^4.2.3:
     html-webpack-plugin "^3.2.0"
     loader-utils "^1.1.0"
     svg-baker "^1.5.0"
-    svg-baker-runtime "^1.4.5"
+    svg-baker-runtime "^1.4.6"
     url-slug "2.0.0"
 
 svgo@^1.3.2:

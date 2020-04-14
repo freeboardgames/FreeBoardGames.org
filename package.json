@@ -74,6 +74,7 @@
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "superagent": "^5.2.2",
+    "svg-sprite-loader": "^4.2.5",
     "three": "^0.115.0",
     "webpackbar": "^4.0.0",
     "worker-loader": "^2.0.0"
@@ -116,7 +117,6 @@
     "istanbul-lib-coverage": "^3.0.0",
     "jest": "^25.3.0",
     "jest-extended": "^0.11.4",
-    "jest-puppeteer-istanbul": "^0.5.1",
     "koa-no-cache": "^2.0.0",
     "lqip-loader": "^2.2.0",
     "mkdirp": "^1.0.4",
@@ -131,7 +131,6 @@
     "rimraf": "^3.0.2",
     "sharp": "^0.25.2",
     "start-server-and-test": "^1.10.11",
-    "svg-sprite-loader": "^4.2.3",
     "trash-cli": "^3.0.0",
     "ts-jest": "^25.3.1",
     "ts-loader": "^6.2.2",
