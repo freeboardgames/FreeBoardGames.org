@@ -123,6 +123,7 @@ function getScore(G: IG): number {
 
 // Moves
 function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
+  console.log("MOVE PLAY: ", IDInHand)
   if (isNaN(IDInHand)) {
     return INVALID_MOVE
   } else if (IDInHand < 0 || IDInHand >= (ctx.numPlayers > 3 ? 4 : 5) ) {
@@ -130,6 +131,7 @@ function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
   }
 
   var currentPl : number = parseInt(ctx.currentPlayer)
+  // if (currentPl)
 
   // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
   // However, the game automatically ends, once all players couldn't pick up a card, thus
@@ -339,45 +341,54 @@ export const ZooParadeGame = {
   setup: setup,
 
   playerView: (G, ctx, playerID) => {
-    return G
-    for (var i = 0; i < G.deck.length; i++) {
-      G.deck[i] = null
-    }
-
     // Hide your own cards
     var id = parseInt(playerID) 
-    if (!(isNaN(id))) { // However, if this is not a multiplayer then this is NaN. For testing only, as this game can only be played Multiplayer.
-      console.log("Hiding for player", id)
-      var len = G.hands[id].length
-      for (var i = 0; i < len; i++) {
-        G.hands[id].cards = null
-      }
+
+    if (isNaN(id)) { // However, if this is not a multiplayer then this is NaN. 
+            //     // For testing only, as this game can only be played Multiplayer.
+      console.log(playerID)
+
+      return G
     }
 
-    return G
+    return {
+      ...G,
+      deck: G.deck.map((value, index) => { return null}),
+      hands: G.hands.map((hand: IHand, index: number) => {
+            if (index !== id) {
+              return hand
+            }
+            return <IHand> {
+              cards: hand.cards.map((card: ICard,  index_card: number) => {return null}),
+              hints: hand.hints,
+              player: hand.player
+            }
+      })
+    }
   },
 
+
   moves: {
-    movePlay,
-    moveDiscard,
-    moveHintColor,
-    moveHintValue,
-    // movePlay: {
-    //   move: movePlay,
-    //   client: false
-    // },
-    // moveDiscard: {
-    //   move: moveDiscard,
-    //   client: false
-    // },
-    // moveHintColor: {
-    //   move: moveHintColor,
-    //   client: false
-    // },
-    // moveHintValue: {
-    //   move: moveHintValue,
-    //   client: false
-    // },
+  //  movePlay,
+  //  moveDiscard,
+  //  moveHintColor,
+  //  moveHintValue,
+    movePlay: {
+      move: movePlay,
+      client: false
+    },
+    moveDiscard: {
+      move: moveDiscard,
+      client: false
+    },
+    moveHintColor: {
+      move: moveHintColor,
+      client: false
+    },
+    moveHintValue: {
+      move: moveHintValue,
+      client: false
+    },
   },
 
   turn: { moveLimit: 1 },
