@@ -78,7 +78,13 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
       ?
       G.countdown
       :
-      G.countdown - 1
+      G.countdown - 1,
+    treats:
+      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value - 1)) // Is the played card the next value?
+      ?
+      G.treats + 1
+      :
+      G.treats
   }
 }
 export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
