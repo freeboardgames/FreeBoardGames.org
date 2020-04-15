@@ -20,14 +20,17 @@ export class BHand extends React.Component< InnerWrapper, {}> {
         return (
                 <div>
                     <tr>
-                        { hand.cards.map((card, index) => 
+                        { hand.cards.map((card, card_index) => 
                             {
                                 // If player, then 'overwrite' the card with the info from the hint
-                                const hint =  this.props.hand.hints[index]
-                                var newCard : ICard = { id: card.id, value: card.value, color: card.color }
+                                const hint =  this.props.hand.hints[card_index]
+                                var newCard : ICard 
                                 if (this.props.me) {
-                                    newCard.color = hint.color ? hint.color : -1 
-                                    newCard.value = hint.value
+                                    newCard = { id: -1, 
+                                                value: hint.value,
+                                                color: hint.color ? hint.color : -1}
+                                } else {
+                                    newCard = { id: card.id, value: card.value, color: card.color }
                                 }
 
                                 return (
@@ -41,8 +44,8 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                     </BCard>
                                     { this.props.me 
                                         ? 
-                                        <BPlay onPlay={() => {this.props.onPlay(index)}} 
-                                               onTrash={() => {this.props.onTrash(index)}} 
+                                        <BPlay onPlay={() => {this.props.onPlay(card_index)}} 
+                                               onTrash={() => {this.props.onTrash(card_index)}} 
                                                myTurn={this.props.myTurn}> 
                                                </BPlay> 
                                         : 
