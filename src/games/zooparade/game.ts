@@ -41,7 +41,7 @@ function setup(ctx: IGameCtx): IG {
     for (var i = 0; i < nrCards; i++) {
       hands[j].cards[i] = deck[deckindex]
       deckindex -= 1
-      hands[j].hints[i] = <IHint> { color: null, value: null }
+      hands[j].hints[i] = <IHint> { color: [0,0,0,0,0], value: [0,0,0,0,0]} 
     }
   }
 

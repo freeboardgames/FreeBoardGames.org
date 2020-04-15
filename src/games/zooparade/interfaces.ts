@@ -7,8 +7,8 @@ export interface ICard {
 }
 
 export interface IHint {
-  color: number;
-  value: number;
+  color: number[]; // Array of size 5 [ , , , , ] where a -1 = not this color/value, 0 = unknonw , 1 = this color
+  value: number[]; // same
 }
 
 export interface IHand {

@@ -43,7 +43,7 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
           if (!(indexHint===IDInHand)) {
             return hint
           }
-          return <IHint> { color: null, value: null}
+          return <IHint> { color: [0,0,0,0,0], value: [0,0,0,0,0]}
         })
       }
     }),
@@ -54,7 +54,7 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
       }
 
       if (pile.length === 0) { // First card for pile
-        if (G.hands[currentPl].cards[IDInHand].value === 1) {
+        if (G.hands[currentPl].cards[IDInHand].value === 0) {
           return <ICard[]> [G.hands[currentPl].cards[IDInHand]] // Put the played card on the pile
         }
         return pile //
@@ -67,26 +67,45 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
       return pile // wrong number for pile
     }),
     trash:
-      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value - 1)) // Is the played card the next value?
+      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value)) // Is the played card the next value?
       ?
       G.trash // Unchanged if success in put to piles
       :
       [...G.trash,  G.hands[currentPl].cards[IDInHand] ], // If you played the wrong card, it gets discarded
 
     countdown:
-      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value - 1)) // Is the played card the next value?
+      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value)) // Is the played card the next value?
       ?
       G.countdown
       :
       G.countdown - 1,
     treats:
-      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value - 1)) // Is the played card the next value?
+      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value)) // Is the played card the next value?
       ?
-      G.treats + 1
+      (G.treats === 8) ? 8 : G.treats + 1 // max 8 Treats
       :
       G.treats
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
   if (isNaN(IDInHand)) {
     return INVALID_MOVE
@@ -127,7 +146,7 @@ export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
           if (!(indexHint===IDInHand)) {
             return hint
           }
-          return <IHint> { color: null, value: null}
+          return <IHint> { color: [0,0,0,0,0], value: [0,0,0,0,0]}
         })
       }
     }),
@@ -135,6 +154,18 @@ export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
     deckindex: G.deckindex - 1
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValue: number) : any {
   var currentPl : number = parseInt(ctx.currentPlayer)
   if (isNaN(IDPlayer)) {
@@ -146,7 +177,7 @@ export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValu
   }
   if (isNaN(IDHintValue)) {
     return INVALID_MOVE
-  } else if (IDHintValue < 1 || IDHintValue > 5) {
+  } else if (IDHintValue < 0 || IDHintValue > 4) {
     return INVALID_MOVE
   }
   console.log("TODO: How to force! / return Invalid Move if this is true.")
@@ -167,9 +198,11 @@ export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValu
         cards: G.hands[IDPlayer].cards,
         hints:
           G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
+              var newHintValue = Object.assign([], hint.value)
+              newHintValue[IDHintValue] = (G.hands[IDPlayer].cards[indexHint].value === IDHintValue) ? 1 : -1
               return <IHint> { 
-                value : (G.hands[IDPlayer].cards[indexHint].value === IDHintValue) ? IDHintValue : hint.value,
-                color: hint.color
+                value : newHintValue,
+                color : hint.color
               }
             }
           )
@@ -177,6 +210,14 @@ export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValu
     })
   }
 }
+
+
+
+
+
+
+
+
 export function moveHintColor(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintColor: number) : any {
   var currentPl : number = parseInt(ctx.currentPlayer)
   if (isNaN(IDPlayer)) {
@@ -209,8 +250,10 @@ export function moveHintColor(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintColo
         cards: G.hands[IDPlayer].cards,
         hints:
           G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
+              var newHintColor = Object.assign([], hint.color)
+              newHintColor[IDHintColor] = (G.hands[IDPlayer].cards[indexHint].color === IDHintColor) ? 1 : -1
               return <IHint> { 
-                color: (G.hands[IDPlayer].cards[indexHint].color === IDHintColor) ? IDHintColor : hint.color,
+                color: newHintColor,
                 value: hint.value
               }
             }

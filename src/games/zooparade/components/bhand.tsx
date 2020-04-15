@@ -24,11 +24,13 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                             {
                                 // If player, then 'overwrite' the card with the info from the hint
                                 const hint =  this.props.hand.hints[card_index]
-                                var newCard : ICard 
+
+                                var newCard : ICard
+
                                 if (this.props.me) {
                                     newCard = { id: -1, 
-                                                value: hint.value,
-                                                color: hint.color ? hint.color : -1}
+                                                value: hint.value.indexOf(1) !== -1 ? hint.value.indexOf(1) : null,
+                                                color: hint.color.indexOf(1) !== -1 ? hint.color.indexOf(1) : -1}
                                 } else {
                                     newCard = { id: card.id, value: card.value, color: card.color }
                                 }

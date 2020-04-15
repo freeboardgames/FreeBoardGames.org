@@ -7,7 +7,7 @@ interface InnerWrapper {
     myTurn: boolean;
 }
 
-const Values = [1,2,3,4,5]
+const Values = [0, 1,2,3,4]
 
 export class BButtons extends React.Component< InnerWrapper, {} > {
     render() {
@@ -31,7 +31,7 @@ export class BButtons extends React.Component< InnerWrapper, {} > {
                                             <div onClick={() => {this.props.onHintValue(value)}}> { value  }</div>
                                         </th>
                                         <th>
-                                            <div onClick={() => {this.props.onHintColor(value -1)}}> { value - 1}</div>
+                                            <div onClick={() => {this.props.onHintColor(value)}}> { value }</div>
                                         </th>
                                     </tr>
                                     )
@@ -41,7 +41,7 @@ export class BButtons extends React.Component< InnerWrapper, {} > {
                                         <div> { value  }</div>
                                     </th>
                                     <th>
-                                        <div> { value - 1}</div>
+                                        <div> { value }</div>
                                     </th>
                                 </tr>
                                 )
