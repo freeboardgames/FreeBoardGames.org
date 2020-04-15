@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICard, IHint } from '../interfaces';
+import { ICard } from '../interfaces';
 import { BCard } from './bcard';
 
 interface InnerWrapper {

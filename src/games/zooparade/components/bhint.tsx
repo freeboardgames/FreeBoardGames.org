@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICard, IHint } from '../interfaces';
+import { IHint } from '../interfaces';
 
 interface InnerWrapper {
     hint: IHint
