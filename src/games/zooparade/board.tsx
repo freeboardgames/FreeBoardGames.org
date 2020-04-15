@@ -48,8 +48,8 @@ export class Board extends React.Component<IBoardProps,  {}> {
                     <th>
                       <BHand hand={ hand } 
                              me={me === index} 
-                             onPlay={(id: number) => {this.props.moves.movePlay(index, id)}}
-                             onTrash={(id: number) => {this.props.moves.moveDiscard(index, id)}}
+                             onPlay={(id: number) => {this.props.moves.movePlay(id)}}
+                             onTrash={(id: number) => {this.props.moves.moveDiscard(id)}}
                              myTurn={this.props.ctx.currentPlayer === playerID}> 
                       </BHand>
                     </th>
