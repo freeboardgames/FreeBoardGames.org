@@ -5,12 +5,34 @@ interface InnerWrapper {
     hint: IHint
 }
 
+const squares = [
+    require('./media/green_square.png'),
+    require('./media/gray_square.png'),
+    require('./media/brown_square.png'),
+    require('./media/yellow_square.png'),
+    require('./media/blue_square.png'),
+    require('./media/black_square.png')
+]
+
 export class BHint extends React.Component< InnerWrapper, {}> {
     render() {
         return (
             <div>
-                C { this.props.hint.color } | 
-                V { this.props.hint.value }
+                { this.props.hint.color.map((value: number , index: number ) =>
+                        {
+                            return <img src={(value !== -1) ? squares[index] : squares[5]} height="15" width="15"></img>
+                        })
+                }
+                { this.props.hint.value.map((value: number , index: number ) =>
+                        {
+                            return(
+                                <div>
+                                    <img src={squares[5]} height="15" width="15"></img>
+                                    <div> {(value !== -1) ? index : " "} </div>
+                                </div>
+                            )
+                        })
+                }
             </div>
         )
     }

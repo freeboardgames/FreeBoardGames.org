@@ -29,7 +29,7 @@ export class BCard extends React.Component< InnerWrapper, {}> {
                 image = require('./media/deck.png');
             }
             return <div className="image">
-                        <img src={ image } height="100" width="100"></img>
+                        <img src={image} width="56" height="88.9"></img>
                     </div>
 
         }
@@ -61,7 +61,7 @@ export class BCard extends React.Component< InnerWrapper, {}> {
 
         return (
             <div className="image">
-                <img src={image} height="100" width="100"></img>
+                <img src={image} width="56" height="88.9"></img>
                 <h2> { cardValue } </h2>
             </div>
         )
