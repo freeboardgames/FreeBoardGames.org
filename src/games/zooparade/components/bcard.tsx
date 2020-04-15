@@ -30,7 +30,6 @@ export class BCard extends React.Component< InnerWrapper, {}> {
             }
             return <div className="image">
                         <img src={ image } height="100" width="100"></img>
-                        <h2> Empty: { this.props.empty } </h2>
                     </div>
 
         }
