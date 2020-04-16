@@ -1,6 +1,8 @@
 import { Client } from 'boardgame.io/client';
 import { SecretcodesGame } from './game';
 import { IGameCtx } from 'boardgame.io/core';
+import { Local } from 'boardgame.io/multiplayer';
+import { IG } from './definitions';
 
 describe('secret codes rules', () => {
   it('should work for a simple game', () => {

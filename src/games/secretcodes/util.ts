@@ -1,5 +1,5 @@
-import { IG, Stages, Player, Team, CardColor, Card } from './definitions';
-import { Stage, IGameCtx } from 'boardgame.io/core';
+import { IG, Stages, TeamColor, Team, CardColor, Card } from './definitions';
+import { Stage, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 
 export function switchTeam(G: IG, ctx: IGameCtx, teamID: number) {
   const player = getPlayer(G, ctx);
@@ -41,43 +41,29 @@ export function clueGiven(G: IG, ctx: IGameCtx) {
   );
 }
 
-export function makeSpymaster(G: IG, ctx: IGameCtx, p: Player) {
-  const player = G.players[p.playerID];
-  const { teamID, playerID } = player;
+export function getTeamByColor(G: IG, teamColor: TeamColor): Team | undefined {
+  return G.teams.find((t) => t.color === teamColor);
+}
 
-  const spymaster = G.teams[teamID].spymaster;
-  if (spymaster !== null) {
-    if (spymaster.playerID === playerID) return;
-
-    spymaster.isSpymaster = false;
+export function makeSpymaster(G: IG, ctx: IGameCtx, teamColor: TeamColor, playerID: number) {
+  const team = getTeamByColor(G, teamColor);
+  if (ctx.playerID !== '0' || playerID < 0 || playerID >= ctx.numPlayers || !team) {
+    return INVALID_MOVE;
   }
 
-  G.teams[teamID].spymaster = player;
-  G.players[playerID].isSpymaster = true;
+  team.spymasterID = playerID;
 }
 
-export function getPlayer(G: IG, ctx: IGameCtx): Player {
-  return G.players[parseInt(ctx.playerID)];
-}
-
-export function getCurrentPlayer(G: IG, ctx: IGameCtx): Player {
-  return G.players[parseInt(ctx.currentPlayer)];
-}
-
-export function getCurrentTeam(G: IG, ctx: IGameCtx): Team {
-  return G.teams[parseInt(ctx.currentPlayer)];
+export function getPlayerTeam(G: IG, playerID: number): Team | undefined {
+  return G.teams.find((team) => team.playersID.includes(playerID));
 }
 
 export function makeCard(word: string): Card {
   return { word, color: CardColor.civilian, revealed: false };
 }
 
-export function makeTeam(teamID: number): Team {
-  return { teamID, players: [], spymaster: null, start: false };
-}
-
-export function makePlayer(playerID: number): Player {
-  return { playerID, teamID: null, isSpymaster: false };
+export function makeTeam(color: TeamColor): Team {
+  return { color, playersID: [], spymasterID: null, start: false };
 }
 
 export function chooseCard(G: IG, ctx: IGameCtx, cardIndex: number) {
