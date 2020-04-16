@@ -3,7 +3,7 @@ import MessagePage from 'components/App/MessagePageClass';
 import { LobbyService, IRoomMetadata, IPlayerInRoom } from '../../../../components/App/Lobby/LobbyService';
 import { GAMES_MAP } from '../../../../games';
 import AlertLayer from '../../../../components/App/Game/AlertLayer';
-import FreeBoardGamesBar from '../../../../components/App/FreeBoardGamesBar';
+import FreeBoardGamesBar from 'components/App/FBGBar';
 import { GameSharing } from '../../../../components/App/Game/GameSharing';
 import Game from '../../../../components/App/Game/Game';
 import { ListPlayers } from '../../../../components/App/Lobby/ListPlayers';

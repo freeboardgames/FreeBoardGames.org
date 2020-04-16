@@ -2,7 +2,7 @@ import React from 'react';
 import { GameMode } from './GameModePicker';
 import { IGameArgs } from './GameBoardWrapper';
 import { GamesList } from '../GamesList';
-import FreeBoardGamesBar from '../FreeBoardGamesBar';
+import FreeBoardGamesBar from '../FBGBar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';

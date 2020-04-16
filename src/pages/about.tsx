@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
+import FreeBoardGamesBar from 'components/App/FBGBar';
 import SEO from 'components/SEO';
 import Breadcrumbs from 'components/Breadcrumbs';
 import { useRouter } from 'next/router';

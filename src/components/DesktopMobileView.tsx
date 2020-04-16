@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import useWindowDimensions from 'hooks/useWindowDimensions';
-import MobileDetect from 'mobile-detect';
+import UaContext from 'misc/UaContext';
 
 interface DesktopMobileViewProps {
   children: React.ReactNode;
@@ -11,14 +11,16 @@ interface DesktopMobileViewProps {
 const DEFAULT_THRESHOLD_WIDTH = 550;
 
 function isMobile(props: DesktopMobileViewProps) {
-  const hasJssSSRStyles = typeof document !== 'undefined' && !!document?.querySelector('#jss-server-side');
   let width = useWindowDimensions().width;
-  const isBrowser = typeof window !== 'undefined';
+  const hasJssSSRStyles = typeof document !== 'undefined' && !!document?.querySelector('#jss-server-side');
+
   let isMobileResult: boolean;
-  if ((!isBrowser || hasJssSSRStyles) && props.userAgent) {
-    // keep the isDesktop() return uniform if JSS styles exist
-    const md = new MobileDetect(props.userAgent);
-    isMobileResult = !!md.mobile() && !md.tablet();
+  const isBrowser = typeof window !== 'undefined';
+  const userAgentDetails = useContext(UaContext);
+  const isMobile = userAgentDetails?.isMobile;
+
+  if ((!isBrowser || hasJssSSRStyles) && typeof isMobile !== 'undefined') {
+    isMobileResult = userAgentDetails.isMobile;
   } else {
     const thresholdWidth = props.thresholdWidth || DEFAULT_THRESHOLD_WIDTH;
     isMobileResult = width <= thresholdWidth;
