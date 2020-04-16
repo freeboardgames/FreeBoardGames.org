@@ -5,6 +5,7 @@ interface InnerWrapper {
     onHintColor(nr: number): any
 
     myTurn: boolean;
+    keyPropagation: string;
 }
 
 const Values = [0, 1,2,3,4]
@@ -28,7 +29,7 @@ export class BButtons extends React.Component< InnerWrapper, {} > {
                         {
                             Values.map( (value: number) => {
                                 if (this.props.myTurn){
-                                    return (<tr key={value}>
+                                    return (<tr key={this.props.keyPropagation + "BButton" + value.toString()}>
                                         <th>
                                             <div onClick={() => {this.props.onHintValue(value)}}> 
                                                 <div className="image">
@@ -47,7 +48,7 @@ export class BButtons extends React.Component< InnerWrapper, {} > {
                                     </tr>
                                     )
                                 }
-                                return (<tr key={value}>
+                                return (<tr key={this.props.keyPropagation + "BButton2" + value.toString()}>
                                     <th>
                                         <div> { value  }</div>
                                     </th>

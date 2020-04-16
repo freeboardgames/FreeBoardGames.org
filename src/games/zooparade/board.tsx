@@ -25,7 +25,6 @@ export class Board extends React.Component<IBoardProps,  {}> {
     var me = this.props.playerID ? parseInt(this.props.playerID) : 1 // TODO : Local Fix - defaults to player 1
     var playerID = this.props.playerID ? this.props.playerID : "1" // TODO : Local Fix
 
-
     return (
       <GameLayout
           gameArgs={this.props.gameArgs}
@@ -38,20 +37,28 @@ export class Board extends React.Component<IBoardProps,  {}> {
               <tbody>
             { this.props.G.hands.map((hand, index) => {
                 return (
-                  <tr key={index}>
+                  <tr key={"Board" + index.toString()}>
                     <th>
                       { index === me ? null : <BButtons onHintColor={(value: number) => {this.props.moves.moveHintColor(index, value)}}
                                                         onHintValue={(value: number) => {this.props.moves.moveHintValue(index, value)}}
-                                                        myTurn={this.props.ctx.currentPlayer === playerID}> 
+                                                        myTurn={this.props.ctx.currentPlayer === playerID}
+                                                        keyPropagation={"Board" + index.toString()}
+                                                        > 
                       </BButtons>}
                     </th>
                     <th>
+                      <table>
+                      <tbody>
                       <BHand hand={ hand } 
                              me={me === index} 
                              onPlay={(id: number) => {this.props.moves.movePlay(id)}}
                              onTrash={(id: number) => {this.props.moves.moveDiscard(id)}}
-                             myTurn={this.props.ctx.currentPlayer === playerID}> 
+                             myTurn={this.props.ctx.currentPlayer === playerID}
+                             keyPropagation={"Board" + index.toString()}
+                             >
                       </BHand>
+                      </tbody>
+                      </table>
                     </th>
                   </tr>
                   )
@@ -74,7 +81,9 @@ export class Board extends React.Component<IBoardProps,  {}> {
                   </BDeck>
               </th>
               <th>
-                <BPiles piles={this.props.G.piles}></BPiles>
+                <BPiles piles={this.props.G.piles}
+                            keyPropagation={"Board"}
+                            ></BPiles>
               </th>
             </tr>
           </tbody>

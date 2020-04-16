@@ -11,13 +11,14 @@ interface InnerWrapper {
     onPlay(id: number): any;
     onTrash(id: number): any;
     myTurn: boolean;
+
+    keyPropagation: string;
 }
 
 export class BHand extends React.Component< InnerWrapper, {}> {
     render() {
         var hand = this.props.hand
         return (
-                <div>
                     <tr>
                         { hand.cards.map((card, card_index) => 
                             {
@@ -35,19 +36,23 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                 }
 
                                 return (
-                                    <th key={card_index}>
+                                    <th key={this.props.keyPropagation + "BHand" + card_index.toString()}>
                                         <BHint
-                                            hint={ hint } >
+                                            hint={ hint } 
+                                            keyPropagation={this.props.keyPropagation + "BHand" + card_index.toString()}
+                                            >
                                         </BHint>
                                         <BCard 
                                             card={ newCard }
-                                            empty = { null } >
+                                            empty = { null } 
+                                            >
                                         </BCard>
                                         { this.props.me 
                                             ? 
                                             <BPlay onPlay={() => {this.props.onPlay(card_index)}} 
                                                    onTrash={() => {this.props.onTrash(card_index)}} 
-                                                   myTurn={this.props.myTurn}> 
+                                                   myTurn={this.props.myTurn}
+                                                   > 
                                                    </BPlay> 
                                             : 
                                             null
@@ -57,7 +62,6 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                             })
                         }
                     </tr>
-                </div>
         )
     }
 }
