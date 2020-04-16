@@ -1,6 +1,6 @@
 import * as React from 'react';
 import css from './Lobby.css';
-import {getPlayerTeam, isPlayerSpymaster} from './util';
+import { getPlayerTeam, isPlayerSpymaster } from './util';
 import { IG } from './definitions';
 
 interface ILobbyPlayerProps {

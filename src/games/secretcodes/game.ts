@@ -1,6 +1,6 @@
-import {IGameArgs, IGameCtx} from 'boardgame.io/core';
-import {words} from './constants';
-import {Card, CardColor, IG, Phases, Stages, Team, TeamColor} from './definitions';
+import { IGameArgs, IGameCtx } from 'boardgame.io/core';
+import { words } from './constants';
+import { Card, CardColor, IG, Phases, Stages, Team, TeamColor } from './definitions';
 import {
   chooseCard,
   clueGiven,
@@ -9,7 +9,7 @@ import {
   makeCard,
   makeSpymaster,
   makeTeam,
-  switchTeam
+  switchTeam,
 } from './util';
 
 const onBegin = {

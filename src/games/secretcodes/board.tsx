@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IG, Phases, TeamColor} from './definitions';
+import { IG, Phases, TeamColor } from './definitions';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import css from './board.css';
@@ -66,7 +66,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   _getGameOverText = (): string => {
-    if(this.props.ctx.gameover.winner.color === TeamColor.Blue) {
+    if (this.props.ctx.gameover.winner.color === TeamColor.Blue) {
       return 'Blue Team wins';
     }
 

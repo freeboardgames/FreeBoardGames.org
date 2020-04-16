@@ -1,4 +1,4 @@
-import {IG, Stages, CardColor, Team, TeamColor} from './definitions';
+import { IG, Stages, CardColor, Team, TeamColor } from './definitions';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import * as React from 'react';
@@ -6,7 +6,7 @@ import css from './board.css';
 import { isLocalGame, isOnlineGame } from '../common/gameMode';
 import Button from '@material-ui/core/Button';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
-import {getPlayerTeam, isPlayerSpymaster} from './util';
+import { getPlayerTeam, isPlayerSpymaster } from './util';
 
 interface IPlayBoardProps {
   G: IG;

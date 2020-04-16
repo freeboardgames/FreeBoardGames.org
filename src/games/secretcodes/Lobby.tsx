@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {IG, TeamColor} from './definitions';
+import { IG, TeamColor } from './definitions';
 import css from './Lobby.css';
-import {LobbyTeam} from './LobbyTeam';
-import {IGameArgs} from '../../components/App/Game/GameBoardWrapper';
-import {LobbyPlayer} from './LobbyPlayer';
-import {IGameCtx} from 'boardgame.io/core';
-import {isLocalGame} from '../common/gameMode';
+import { LobbyTeam } from './LobbyTeam';
+import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
+import { LobbyPlayer } from './LobbyPlayer';
+import { IGameCtx } from 'boardgame.io/core';
+import { isLocalGame } from '../common/gameMode';
 import Button from '@material-ui/core/Button';
-import {getPlayerTeam} from './util';
+import { getPlayerTeam } from './util';
 
 interface ILobbyProps {
   G: IG;

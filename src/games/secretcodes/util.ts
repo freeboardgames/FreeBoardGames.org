@@ -5,15 +5,14 @@ export function switchTeam(G: IG, ctx: IGameCtx, teamColor: TeamColor) {
   const oldTeam = getPlayerTeam(G, ctx.playerID);
   const newTeam = getTeamByColor(G, teamColor);
 
-  if(typeof oldTeam !== 'undefined') {
+  if (typeof oldTeam !== 'undefined') {
     if (oldTeam.color === teamColor) return;
 
-
-    if(oldTeam.spymasterID === ctx.playerID) {
+    if (oldTeam.spymasterID === ctx.playerID) {
       oldTeam.spymasterID = null;
     }
 
-    oldTeam.playersID = oldTeam.playersID.filter(id => id !== ctx.playerID);
+    oldTeam.playersID = oldTeam.playersID.filter((id) => id !== ctx.playerID);
   }
 
   newTeam.playersID.push(ctx.playerID);
