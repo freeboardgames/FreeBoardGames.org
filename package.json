@@ -83,6 +83,7 @@
     "superagent": "^5.2.2",
     "svg-sprite-loader": "^4.2.5",
     "three": "^0.115.0",
+    "typeorm": "^0.2.24",
     "webpackbar": "^4.0.0",
     "worker-loader": "^2.0.0"
   },
