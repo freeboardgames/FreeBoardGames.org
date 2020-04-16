@@ -5,8 +5,8 @@ export enum TeamColor {
 
 export interface Team {
   color: TeamColor;
-  playersID: number[];
-  spymasterID: null | number;
+  playersID: string[];
+  spymasterID: null | string;
   start: boolean;
 }
 

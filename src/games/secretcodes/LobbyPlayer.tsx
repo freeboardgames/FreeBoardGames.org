@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Player } from './definitions';
 import css from './Lobby.css';
+import {getPlayerTeam, isPlayerSpymaster} from './util';
+import { IG } from './definitions';
 
 interface ILobbyPlayerProps {
+  G: IG;
   moves: any;
-  playerIndex: string;
-  player: Player;
+  playerID: string;
   players: any;
   isHost: boolean;
 }
@@ -13,19 +14,23 @@ interface ILobbyPlayerProps {
 interface ILobbyPlayerState {}
 
 export class LobbyPlayer extends React.Component<ILobbyPlayerProps, ILobbyPlayerState> {
-  _makeSpymaster = (player: Player) => {
-    this.props.moves.makeSpymaster(player);
+  _makeSpymaster = (playerID: string) => {
+    this.props.moves.makeSpymaster(playerID);
+  };
+
+  _isPlayerInTeam = (): boolean => {
+    return getPlayerTeam(this.props.G, this.props.playerID) !== undefined;
   };
 
   render() {
     return (
       <li>
-        {this.props.player.isSpymaster ? <span>[S] </span> : ''}
-        {this.props.players[this.props.playerIndex].name}
-        {!this.props.player.isSpymaster && this.props.isHost && this.props.player.teamID !== null ? (
+        {isPlayerSpymaster(this.props.G, this.props.playerID) ? <span>[S] </span> : ''}
+        {this.props.players[this.props.playerID].name}
+        {!isPlayerSpymaster(this.props.G, this.props.playerID) && this.props.isHost && this._isPlayerInTeam() ? (
           <button
             className={[css.btn, css.btnSpymaster].join(' ')}
-            onClick={() => this._makeSpymaster(this.props.player)}
+            onClick={() => this._makeSpymaster(this.props.playerID)}
           >
             Make Spymaster
           </button>

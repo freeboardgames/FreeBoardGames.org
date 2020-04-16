@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { IG } from './definitions';
+import {IG, TeamColor} from './definitions';
 import css from './Lobby.css';
 import Button from '@material-ui/core/Button';
+import { getPlayerTeam } from './util';
 
 interface ILobbyTeamProps {
   G: IG;
@@ -10,23 +11,24 @@ interface ILobbyTeamProps {
   classes: string;
   teamPlayers: any;
   teamName: string;
-  teamID: number;
+  teamColor: TeamColor;
 }
 
 interface ILobbyTeamState {}
 
 export class LobbyTeam extends React.Component<ILobbyTeamProps, ILobbyTeamState> {
-  _switchTeam = (teamID: number) => {
+  _switchTeam = (teamColor: TeamColor) => {
     if (this.props.playerID === null) return;
-    if (!this.canSwitchToTeam(teamID)) return;
+    if (!this.canSwitchToTeam(teamColor)) return;
 
-    this.props.moves.switchTeam(teamID);
+    this.props.moves.switchTeam(teamColor);
   };
 
-  canSwitchToTeam = (teamID: number) => {
+  canSwitchToTeam = (teamColor: TeamColor): boolean => {
     if (this.props.playerID === null) return false;
+    const team = getPlayerTeam(this.props.G, this.props.playerID);
 
-    return this.props.G.players[this.props.playerID].teamID !== teamID;
+    return team?.color !== teamColor;
   };
 
   render() {
@@ -37,9 +39,9 @@ export class LobbyTeam extends React.Component<ILobbyTeamProps, ILobbyTeamState>
         <Button
           className={css.selectTeamBtn}
           variant="contained"
-          onClick={() => this._switchTeam(this.props.teamID)}
+          onClick={() => this._switchTeam(this.props.teamColor)}
           color="secondary"
-          disabled={!this.canSwitchToTeam(this.props.teamID)}
+          disabled={!this.canSwitchToTeam(this.props.teamColor)}
         >
           Select
         </Button>
