@@ -19,7 +19,7 @@ export class BPiles extends React.Component< InnerWrapper, {}> {
                     return <BCard 
                         card={ pile[pile.length - 1]}
                         empty={ null }
-                        key={ pile }
+                        key={ index }
                     ></BCard>
                 })
             }

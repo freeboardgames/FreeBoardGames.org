@@ -35,7 +35,7 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                 }
 
                                 return (
-                                    <th key={card}>
+                                    <th key={card_index}>
                                         <BHint
                                             hint={ hint } >
                                         </BHint>
