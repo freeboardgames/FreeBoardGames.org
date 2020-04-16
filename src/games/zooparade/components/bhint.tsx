@@ -20,13 +20,13 @@ export class BHint extends React.Component< InnerWrapper, {}> {
             <div>
                 { this.props.hint.color.map((value: number , index: number ) =>
                         {
-                            return <img src={(value !== -1) ? squares[index] : squares[5]} height="15" width="15"></img>
+                            return <img key={value} src={(value !== -1) ? squares[index] : squares[5]} height="15" width="15"></img>
                         })
                 }
                 { this.props.hint.value.map((value: number , index: number ) =>
                         {
                             return(
-                                <div>
+                                <div key={value}>
                                     <img src={squares[5]} height="15" width="15"></img>
                                     <div> {(value !== -1) ? index : " "} </div>
                                 </div>

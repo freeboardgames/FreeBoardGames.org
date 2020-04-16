@@ -28,7 +28,7 @@ export class BButtons extends React.Component< InnerWrapper, {} > {
                         {
                             Values.map( (value: number) => {
                                 if (this.props.myTurn){
-                                    return (<tr>
+                                    return (<tr key={value}>
                                         <th>
                                             <div onClick={() => {this.props.onHintValue(value)}}> 
                                                 <div className="image">
@@ -47,7 +47,7 @@ export class BButtons extends React.Component< InnerWrapper, {} > {
                                     </tr>
                                     )
                                 }
-                                return (<tr>
+                                return (<tr key={value}>
                                     <th>
                                         <div> { value  }</div>
                                     </th>

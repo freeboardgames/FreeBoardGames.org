@@ -8,6 +8,7 @@ interface InnerWrapper {
 
 var play = require('./media/countdown1.png')
 var trash = require('./media/countdown3.png')
+var wait = require('./media/countdown2.png')
 
 export class BPlay extends React.Component< InnerWrapper, { } > {
     render() {
@@ -26,9 +27,9 @@ export class BPlay extends React.Component< InnerWrapper, { } > {
         }
         return (
             <div>
-                <div > waiting </div>
-                |
-                <div> waiting </div>
+                <div>
+                    <img src={ wait } height="50" width="50"></img>
+                </div>
             </div>
         )
     }

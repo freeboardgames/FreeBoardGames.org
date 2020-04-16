@@ -35,23 +35,23 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                 }
 
                                 return (
-                                    <th>
-                                    <BHint
-                                        hint={ hint } >
-                                    </BHint>
-                                    <BCard 
-                                        card={ newCard }
-                                        empty = { null } >
-                                    </BCard>
-                                    { this.props.me 
-                                        ? 
-                                        <BPlay onPlay={() => {this.props.onPlay(card_index)}} 
-                                               onTrash={() => {this.props.onTrash(card_index)}} 
-                                               myTurn={this.props.myTurn}> 
-                                               </BPlay> 
-                                        : 
-                                        null
-                                    }
+                                    <th key={card}>
+                                        <BHint
+                                            hint={ hint } >
+                                        </BHint>
+                                        <BCard 
+                                            card={ newCard }
+                                            empty = { null } >
+                                        </BCard>
+                                        { this.props.me 
+                                            ? 
+                                            <BPlay onPlay={() => {this.props.onPlay(card_index)}} 
+                                                   onTrash={() => {this.props.onTrash(card_index)}} 
+                                                   myTurn={this.props.myTurn}> 
+                                                   </BPlay> 
+                                            : 
+                                            null
+                                        }
                                     </th>
                                 )
                             })
