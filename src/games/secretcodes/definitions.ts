@@ -1,18 +1,12 @@
-export interface Player {
-  playerID: number;
-  teamID: null | number;
-  isSpymaster: boolean;
-}
-
-export enum TeamID {
-  blue = 0,
-  red = 1,
+export enum TeamColor {
+  Blue = 'blue',
+  Red = 'red',
 }
 
 export interface Team {
-  teamID: TeamID;
-  players: Player[];
-  spymaster: null | Player;
+  color: TeamColor;
+  playersID: string[];
+  spymasterID: null | string;
   start: boolean;
 }
 
@@ -30,7 +24,6 @@ export interface Card {
 }
 
 export interface IG {
-  players: Player[];
   teams: Team[];
   cards: Card[];
 }
