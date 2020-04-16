@@ -1,8 +1,7 @@
 import { Client } from 'boardgame.io/client';
 import { SecretcodesGame } from './game';
 import { IGameCtx } from 'boardgame.io/core';
-import { Local } from 'boardgame.io/multiplayer';
-import { IG } from './definitions';
+import { TeamColor } from './definitions';
 
 describe('secret codes rules', () => {
   it('should work for a simple game', () => {
@@ -33,7 +32,7 @@ describe('secret codes rules', () => {
     client.moves.chooseCard(19); // "cloak", blue card, correct. Blue wins.
 
     const ctx: IGameCtx = client.store.getState().ctx;
-    expect(ctx.gameover.winner.teamID).toEqual(0);
+    expect(ctx.gameover.winner.color).toEqual(TeamColor.Blue);
   });
 
   it('should lose if select assassin', () => {
@@ -63,6 +62,6 @@ describe('secret codes rules', () => {
     client.moves.chooseCard(12); // "model", assassin card, loses the game.
 
     const ctx: IGameCtx = client.store.getState().ctx;
-    expect(ctx.gameover.winner.teamID).toEqual(1);
+    expect(ctx.gameover.winner.color).toEqual(TeamColor.Red);
   });
 });
