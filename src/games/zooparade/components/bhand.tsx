@@ -3,7 +3,6 @@ import { IHand, ICard } from '../interfaces';
 import { BCard } from './bcard';
 import { BHint } from './bhint';
 import { BPlay } from './bplay';
-import AddressHelper from 'components/App/Helpers/AddressHelper';
 
 interface InnerWrapper {
     hand: IHand ;

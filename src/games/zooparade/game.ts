@@ -78,20 +78,19 @@ export const ZooParadeGame = {
 
     if (isNaN(id)) { // However, if this is not a multiplayer then this is NaN. 
             //     // For testing only, as this game can only be played Multiplayer.
-      console.log(playerID)
 
       return G
     }
 
     return {
       ...G,
-      deck: G.deck.map((value, index) => { return null}),
+      deck: G.deck.map(() => { return null}),
       hands: G.hands.map((hand: IHand, index: number) => {
             if (index !== id) {
               return hand
             }
             return <IHand> {
-              cards: hand.cards.map((card: ICard,  index_card: number) => {return null}),
+              cards: hand.cards.map(() => {return null}),
               hints: hand.hints,
               player: hand.player
             }

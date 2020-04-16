@@ -38,7 +38,7 @@ export class Board extends React.Component<IBoardProps,  {}> {
               <tbody>
             { this.props.G.hands.map((hand, index) => {
                 return (
-                  <tr>
+                  <tr key={index}>
                     <th>
                       { index === me ? null : <BButtons onHintColor={(value: number) => {this.props.moves.moveHintColor(index, value)}}
                                                         onHintValue={(value: number) => {this.props.moves.moveHintValue(index, value)}}

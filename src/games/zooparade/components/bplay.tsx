@@ -6,8 +6,8 @@ interface InnerWrapper {
     myTurn: boolean;
 }
 
-var play = require('./media/play.jpeg')
-var trash = require('./media/trash.jpeg')
+var play = require('./media/countdown1.png')
+var trash = require('./media/countdown3.png')
 
 export class BPlay extends React.Component< InnerWrapper, { } > {
     render() {

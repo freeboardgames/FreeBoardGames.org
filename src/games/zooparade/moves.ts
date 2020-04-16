@@ -4,7 +4,6 @@ import { ICard, IHand, IHint, IG} from './interfaces';
 
 // Moves
 export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
-  console.log("MOVE PLAY: ", IDInHand)
   if (isNaN(IDInHand)) {
     return INVALID_MOVE
   } else if (IDInHand < 0 || IDInHand >= (ctx.numPlayers > 3 ? 4 : 5) ) {
@@ -20,7 +19,7 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
 
   return {
     ...G,
-    hands: G.hands.map((hand: IHand, index: number) => {
+    hands: G.hands.map((hand: IHand) => {
       if (!(hand.player === currentPl)) {
         return hand
       }
@@ -118,12 +117,10 @@ export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
   // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
   // However, the game automatically ends, once all players couldn't pick up a card, thus
   // you always have max_cards in hand, and can never play a 'null'.
-  console.log("TODO: How to force! / return Invalid Move if this is true.")
-  console.log("Note : This action cannot be performed if all the blue tokens are in the lid of the box.The player has to perform another action.")
 
   return {
     ...G,
-    hands: G.hands.map((hand: IHand, index: number) => {
+    hands: G.hands.map((hand: IHand) => {
       if (!(hand.player === currentPl)) {
         return hand
       }
@@ -180,11 +177,6 @@ export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValu
   } else if (IDHintValue < 0 || IDHintValue > 4) {
     return INVALID_MOVE
   }
-  console.log("TODO: How to force! / return Invalid Move if this is true.")
-  console.log("Note: This action cannot be performed if the lid of the box is empty of blue tokens.The player has to perform another action")
-
-  console.log("TODO: Clarify rules: Is it possible to give a Hint about a Value/Color that the player doesn't have?")
-  console.log(" Example: Player doesn't have any card with Value 1, however the hint he/she recieves is Value=1 ... thus nothing shows up, and the player knows none of his cards are 1s.")
 
   return {
     ...G,
@@ -232,11 +224,6 @@ export function moveHintColor(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintColo
   } else if (IDHintColor < 0 || IDHintColor > 4) {
     return INVALID_MOVE
   }
-  console.log("TODO: How to force! / return Invalid Move if this is true.")
-  console.log("Note: This action cannot be performed if the lid of the box is empty of blue tokens.The player has to perform another action")
-
-  console.log("TODO: Clarify rules: Is it possible to give a Hint about a Value/Color that the player doesn't have?")
-  console.log(" Example: Player doesn't have any card with Value 1, however the hint he/she recieves is Value=1 ... thus nothing shows up, and the player knows none of his cards are 1s.")
 
   return {
     ...G,
