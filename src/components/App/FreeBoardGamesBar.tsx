@@ -2,7 +2,7 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import FbgLogo from './media/fbg_logo_white_48.png';
+import FbgLogo from 'components/App/media/fbg_logo_white_48.png';
 import Link from 'next/link';
 
 interface FBGBarProps {
@@ -11,18 +11,6 @@ interface FBGBarProps {
 
 class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
   render() {
-    const isProdChannel = process.env.NODE_ENV === 'production';
-    let appBarStyle;
-    let versionInfo;
-
-    if (!isProdChannel) {
-      versionInfo = (
-        <Typography data-test-id="gitrev" variant="h6" style={{ color: 'white', marginLeft: 'auto' }}>
-          {process.env.VERSION}
-        </Typography>
-      );
-    }
-
     const maxWidth = this.props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
 
     return (
@@ -33,7 +21,7 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
             marginRight: 'auto',
           }}
         >
-          <AppBar position="sticky" style={appBarStyle}>
+          <AppBar position="sticky">
             <Link href="/">
               <a style={{ textDecoration: 'none' }}>
                 <Toolbar>
@@ -41,7 +29,6 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
                   <Typography component="h1" variant="h6" style={{ color: 'white' }}>
                     FreeBoardGames.org
                   </Typography>
-                  {versionInfo}
                 </Toolbar>
               </a>
             </Link>
@@ -53,6 +40,7 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
             marginLeft: 'auto',
             marginRight: 'auto',
           }}
+          data-testid={'childrenDiv'}
         >
           {this.props.children}
         </div>
