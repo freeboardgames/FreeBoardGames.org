@@ -230,7 +230,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _renderPrepare() {
-    if (!isPlayersTurn(this.props.ctx.currentPlayer, this.props.ctx)) {
+    if (!isPlayersTurn(this.props.playerID, this.props.ctx)) {
       return (
         <Typography variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px' }}>
           Waiting for Your Opponent ...

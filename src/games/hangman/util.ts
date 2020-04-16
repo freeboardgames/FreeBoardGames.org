@@ -85,6 +85,11 @@ export function isValidWord(word: string) {
   return true;
 }
 
+/** Get Score for a given guess made by a player */
+function getScore(guesses: Guesses) {
+  return ( getCorrectLettersCount(guesses) / (getCorrectLettersCount(guesses) + getMistakeCount(guesses)) );
+}
+
 /** Called when users selects letter. */
 export function selectLetter(G: HangmanState, ctx: IGameCtx, letter: string) {
   const player = G.players[ctx.playerID];
@@ -95,21 +100,46 @@ export function selectLetter(G: HangmanState, ctx: IGameCtx, letter: string) {
   const opponent = G.players[getOpponent(ctx.playerID)];
   const result = getWordIndexes(opponent.secret, letter);
   player.guesses[letter] = result;
-  if (result.length == 0 && getMistakeCount(opponent.guesses) < MAX_MISTAKE_COUNT) {
-    ctx.events.endTurn();
-  } else if (getMistakeCount(player.guesses) >= MAX_MISTAKE_COUNT) {
-    ctx.events.endGame({ draw: true });
+
+  console.log('>>>', G.players, result);
+
+  if ( getCorrectLettersCount(player.guesses) === opponent.secretLength || getMistakeCount(opponent.guesses) >= MAX_MISTAKE_COUNT ) {
+    if ( ctx.playerID !== '1' ) {
+      ctx.events.endTurn();
+    }
   }
+
+ 
+  // if (result.length == 0 && getMistakeCount(opponent.guesses) < MAX_MISTAKE_COUNT) {
+  //   ctx.events.endTurn();
+  // } else if (getMistakeCount(player.guesses) >= MAX_MISTAKE_COUNT) {
+  //   ctx.events.endGame({ draw: true });
+  // }
   return G;
 }
 
 /** Returns the winner, if any. */
-export function getWinner(G: HangmanState) {
+export function getWinner(G: HangmanState, ctx: IGameCtx) {
   for (const playerID of ['0', '1']) {
     const player = G.players[playerID];
     const opponent = G.players[getOpponent(playerID)];
-    if (player && opponent && getCorrectLettersCount(player.guesses) === opponent.secretLength) {
-      return { winner: playerID };
+
+    // If both were not able to guess, draw 
+    if ( getMistakeCount(player.guesses) >= MAX_MISTAKE_COUNT && getMistakeCount(opponent.guesses) >= MAX_MISTAKE_COUNT ) {
+      return { draw: true };
     }
+
+    // compare scores of players 
+    if (getScore(player.guesses) > getScore(opponent.guesses)){
+      return { winner: playerID }
+    } else if (getScore(player.guesses) < getScore(opponent.guesses)) {
+      return { winner: getOpponent(playerID) }
+    } else if (getScore(player.guesses) === getScore(opponent.guesses) && ( getMistakeCount(player.guesses) > 0 || getCorrectLettersCount(player.guesses) > 0 )) {
+      return { draw: true };
+    }
+
+    // if (player && opponent && getCorrectLettersCount(player.guesses) === opponent.secretLength) {
+    //   return { winner: playerID };
+    // }
   }
 }
