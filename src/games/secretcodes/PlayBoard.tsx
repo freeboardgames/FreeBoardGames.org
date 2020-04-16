@@ -48,6 +48,10 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     return this.props.ctx.activePlayers[this.props.ctx.currentPlayer] as Stages;
   }
 
+  _playerStage(): Stages {
+    return this.props.ctx.activePlayers[this._playerID()] as Stages;
+  }
+
   _playerID(): string {
     if (isLocalGame(this.props.gameArgs)) {
       return this._currentPlayerID();
@@ -72,7 +76,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
   _chooseCard = (cardIndex: number) => {
     if (!this._isActive()) return;
-    if (this._currentPlayerStage() !== Stages.guess) return;
+    if (this._playerStage() !== Stages.guess) return;
     if (isOnlineGame(this.props.gameArgs) && isPlayerSpymaster(this.props.G, this._playerID())) return;
     if (this.props.G.cards[cardIndex].revealed) return;
 
@@ -151,7 +155,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   };
 
   _renderActionButtons = () => {
-    if (isPlayerSpymaster(this.props.G, this.props.playerID)) {
+    if (isPlayerSpymaster(this.props.G, this._currentPlayerID())) {
       return (
         <Button className={css.selectTeamBtn} variant="contained" onClick={this._toggleSpymasterView}>
           Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal'}
