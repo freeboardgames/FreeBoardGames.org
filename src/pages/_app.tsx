@@ -1,9 +1,12 @@
 /* eslint-disable react/react-in-jsx-scope */
 
 import App from 'next/app';
+import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from 'theme';
 import { SelfXSSWarning } from 'components/App/SelfXSSWarning';
+import { processUserAgent } from 'misc/UaHelper';
+import UaContext from 'misc/UaContext';
 import withError from 'next-with-error';
 import ErrorPage from './_error';
 import ReactGA from 'react-ga';
@@ -36,10 +39,13 @@ class defaultApp extends App {
   }
   render() {
     const { Component, pageProps, userAgent } = this.props as any;
+    const userAgentDetails = processUserAgent(userAgent);
     return (
       <ThemeProvider theme={theme}>
         <SelfXSSWarning />
-        <Component {...pageProps} {...{ userAgent }} />
+        <UaContext.Provider value={userAgentDetails}>
+          <Component {...pageProps} {...{ userAgent }} />
+        </UaContext.Provider>
       </ThemeProvider>
     );
   }

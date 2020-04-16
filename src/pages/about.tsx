@@ -80,6 +80,15 @@ function getContributorsCard() {
               GitHub
             </Button>
           </ListItem>
+          <ListItem>
+            <ListItemText primary="JvSomeren" />
+            <Button size="small" color="primary" href="https://joostvansomeren.nl">
+              Website
+            </Button>
+            <Button size="small" color="primary" href="https://github.com/JvSomeren">
+              GitHub
+            </Button>
+          </ListItem>
         </List>
       </CardContent>
     </Card>

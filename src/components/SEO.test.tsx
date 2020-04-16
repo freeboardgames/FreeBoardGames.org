@@ -34,7 +34,3 @@ it('should override title', () => {
   const props = mockedNextSeo.mock.calls[0][0];
   expect(props.title).toEqual('foo');
 });
-
-// console.log((NextSeo as any).mock.calls);
-// console.log(wrapper.props());
-// console.log(wrapper.find(SEO).at(0).debug());

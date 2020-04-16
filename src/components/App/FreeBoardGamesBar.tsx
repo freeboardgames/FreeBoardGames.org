@@ -70,6 +70,7 @@ class FreeBoardGamesBar extends React.Component<Props, State> {
             marginLeft: 'auto',
             marginRight: 'auto',
           }}
+          data-testid={'childrenDiv'}
         >
           {this.state.loginFormOpen && (
             <NicknamePrompt

@@ -60,7 +60,7 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
       </Typography>
     );
     return (
-      <div style={mainDivStyle} data-test-id={`gamecard-${this.props.game.code}`}>
+      <div style={mainDivStyle} data-testid={`gamecard-${this.props.game.code}`}>
         <div
           style={{
             ...baseBadgeStyle,

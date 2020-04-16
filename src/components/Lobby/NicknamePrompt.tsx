@@ -87,14 +87,14 @@ class NicknamePrompt extends React.Component<Props, State> {
   };
 
   _onClick = async () => {
-    const validationErrors = this._getValidationErrors();
-    if (!validationErrors) {
-      const nickname = this.state.nameTextField;
-      const result = LobbyService.checkin(nickname);
-      console.log('status', result);
-      // this.props.setNickname(this.state.nameTextField);
-      // this.props.closePrompt();
-    }
+    // const validationErrors = this._getValidationErrors();
+    // if (!validationErrors) {
+    //   const nickname = this.state.nameTextField;
+    //   const result = LobbyService.checkin(nickname);
+    // console.log('status', result);
+    // this.props.setNickname(this.state.nameTextField);
+    // this.props.closePrompt();
+    // }
   };
 
   _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
