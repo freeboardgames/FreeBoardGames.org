@@ -1,5 +1,5 @@
 import React from 'react';
-import FreeBoardGameBar from '.';
+import FreeBoardGameBar from './FreeBoardGamesBar';
 import { mount } from 'enzyme';
 
 describe('App', () => {

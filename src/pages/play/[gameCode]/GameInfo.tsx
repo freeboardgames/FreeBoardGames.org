@@ -1,5 +1,5 @@
 import React from 'react';
-import FreeBoardGamesBar from 'components/App/FBGBar';
+import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
 import { GameCard } from 'components/App/Game/GameCard';
 import { GameModePicker } from 'components/App/Game/GameModePicker';
 import { GameInstructionsVideo } from 'components/App/Game/GameInstructionsVideo';
