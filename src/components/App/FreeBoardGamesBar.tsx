@@ -2,7 +2,7 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import FbgLogo from './media/fbg_logo_black_256.png';
+import FbgLogo from './media/fbg_logo_white_48.png';
 import Link from 'next/link';
 
 interface FBGBarProps {
@@ -37,7 +37,7 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
             <Link href="/">
               <a style={{ textDecoration: 'none' }}>
                 <Toolbar>
-                  <img style={{ marginRight: '8px', height: '48px', width: "48px" }} src={FbgLogo} alt="FbG" />
+                  <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="Sahajanand Games" />
                   <Typography component="h1" variant="h6" style={{ color: 'white' }}>
                     Sahajanand Games
                   </Typography>

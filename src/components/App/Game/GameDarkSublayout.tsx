@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
-import FbgLogo from '../media/fbg_logo_black_256.png';
+import FbgLogo from '../media/fbg_logo_white_48.png';
 import Button from '@material-ui/core/Button';
 import MoreVert from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
@@ -104,7 +104,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
           >
             <Link href="/">
               <a style={{ float: 'left', textDecoration: 'none' }}>
-                <img src={FbgLogo} alt="FreeBoardGames.org" style={{ float: 'left', paddingRight: '16px', height: "48px", width: "48px" }} />
+                <img src={FbgLogo} alt="sahajanand-games.com" style={{ float: 'left', paddingRight: '16px' }} />
                 {fbgTopLeftText}
               </a>
             </Link>
