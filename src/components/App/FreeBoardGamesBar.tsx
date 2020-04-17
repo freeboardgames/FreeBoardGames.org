@@ -86,7 +86,7 @@ class FreeBoardGamesBar extends React.Component<Props, State> {
   }
 
   _setNickname = (nickname: string) => {
-    Cookies.set('nickname', nickname, { sameSite: 'strict' });
+    // Cookies.set('nickname', nickname, { sameSite: 'strict' });
     this.setState((oldState) => ({ ...oldState, nickname }));
   };
 

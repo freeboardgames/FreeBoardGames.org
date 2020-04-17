@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import AlertLayer from 'components/App/Game/AlertLayer';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { LobbyService } from 'components/Lobby/LobbyService';
+import { CheckinResponseStatus } from '../../dto/User';
 
 interface Props {
   setNickname: (nickname: string) => void;
@@ -80,21 +81,37 @@ class NicknamePrompt extends React.Component<Props, State> {
     const name = this.state.nameTextField;
     let errorText = '';
     if (!name || name.length < 1 || name.length > 12) {
-      errorText = 'Invalid name.';
+      errorText = 'Invalid nickname.';
     }
     this.setState({ errorText });
     return errorText;
   };
 
+  _handleServersideErrorResponse = (status: CheckinResponseStatus) => {
+    let errorText: string;
+    switch (status) {
+      case CheckinResponseStatus.badNickname:
+        errorText = 'Invalid nickname.';
+        break;
+      default:
+        errorText = 'Unknown error.';
+    }
+    return errorText;
+  };
+
   _onClick = async () => {
-    // const validationErrors = this._getValidationErrors();
-    // if (!validationErrors) {
-    //   const nickname = this.state.nameTextField;
-    //   const result = LobbyService.checkin(nickname);
-    // console.log('status', result);
-    // this.props.setNickname(this.state.nameTextField);
-    // this.props.closePrompt();
-    // }
+    const validationErrors = this._getValidationErrors();
+    if (!validationErrors) {
+      const nickname = this.state.nameTextField;
+      const response = await LobbyService.checkin(nickname);
+      if (response.result === CheckinResponseStatus.Success) {
+        this.props.setNickname(this.state.nameTextField);
+        this.props.closePrompt();
+      } else {
+        const errorText = this._handleServersideErrorResponse(response.result);
+        this.setState({ errorText });
+      }
+    }
   };
 
   _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {

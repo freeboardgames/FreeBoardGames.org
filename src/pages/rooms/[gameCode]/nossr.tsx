@@ -3,7 +3,7 @@ import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
 import Typography from '@material-ui/core/Typography';
 import GamesWithRooms from 'components/Lobby/GamesWithRooms';
 import { LobbyService } from 'components/Lobby/LobbyService';
-import { Room } from 'entities/Room';
+import { Room } from 'dto/Room';
 import { withRouter } from 'next/router';
 import MessagePage from 'components/App/MessagePageClass';
 import TryAgainReloadButton from 'components/App/TryAgainReloadButton';

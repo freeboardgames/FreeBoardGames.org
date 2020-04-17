@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src/",
+    "baseUrl": "./",
     "target": "es6",
     "lib": [
       "dom",
@@ -12,6 +12,7 @@
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -28,7 +29,8 @@
     "**/*.spec.ts",
     "**/*.spec.tsx",
     "**/*.test.ts",
-    "**/*.test.tsx"
+    "**/*.test.tsx",
+    "backend"
   ],
   "include": [
     // "next-env.d.ts",

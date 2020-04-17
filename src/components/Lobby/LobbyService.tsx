@@ -1,7 +1,7 @@
 import superagent from 'superagent';
 import AddressHelper from 'components/App/Helpers/AddressHelper';
-import { Room } from 'entities/Room';
-import { CheckinResponse } from 'services/UserService';
+import { Room } from '../../dto/Room';
+import { CheckinResponse } from '../../dto/User';
 
 export class LobbyService {
   public static async list(): Promise<Room[]> {

@@ -2,12 +2,9 @@
   "compilerOptions": {
     "baseUrl": "./src/",
     "paths": {
-      "entities/*": [
-        "../backend/src/entities/*"
+      "dto/*": [
+        "./dto/*"
       ],
-      "services/*": [
-        "../backend/src/services/*"
-      ]
     },
     "target": "es5",
     "lib": [
