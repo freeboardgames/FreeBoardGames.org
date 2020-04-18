@@ -7,6 +7,7 @@ export interface PlayerState {
   secretLength: number;
   hint?: string;
   guesses: Guesses;
+  declare?: string;
 }
 
 export interface Players {

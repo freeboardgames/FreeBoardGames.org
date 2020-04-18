@@ -5,11 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import { EnterWordPrompt } from './EnterWordPrompt';
 import { isOnlineGame } from '../common/gameMode';
 import { grey } from '@material-ui/core/colors';
-import { Modal } from '@material-ui/core';
+import { Modal, Button } from '@material-ui/core';
 import { isPlayersTurn } from 'games/common/GameUtil';
 import { IGameCtx } from 'boardgame.io/core';
 import { HangmanState, PlayerState } from './definitions';
-import { getOpponent, getMistakeCount, getMaskedWord } from './util';
+import { getOpponent, getMistakeCount, getMaskedWord, wasGuessCorrect, getScore, isDoneGuessing } from './util';
 import { ALPHABET, MAX_MISTAKE_COUNT, MAX_WORD_LENGTH } from './constants';
 
 interface IBoardState {
@@ -40,7 +40,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         return;
       }
     }
-
     this.props.moves.selectLetter(letter);
   };
 
@@ -230,31 +229,85 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _renderPrepare() {
-    if (!isPlayersTurn(this.props.playerID, this.props.ctx)) {
+    if (!isPlayersTurn(this.props.playerID, this.props.ctx) && isOnlineGame(this.props.gameArgs)) {
       return (
         <Typography variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px' }}>
           Waiting for Your Opponent ...
         </Typography>
       );
     }
-    const title = !isOnlineGame(this.props.gameArgs) ? `Player ${this._playerName()}: ` : '' + 'Enter secret word';
+    const title = !isOnlineGame(this.props.gameArgs) ? `Player ${this._playerName()}: Enter Word` : 'Enter secret word';
     return <EnterWordPrompt setSecret={this._setSecret} title={title} />;
+  }
+
+  _changeTurn = () => () => {
+    this.props.events.endTurn();
+  }
+
+  _showConclusion() {
+    const player = this.props.G.players[this.props.ctx.currentPlayer];
+    const guessOutcome = wasGuessCorrect(this.props.G, this.props.ctx.currentPlayer) ? 'CORRECT' : 'INCORRECT';
+    let guessMessage = `Your guess was ${guessOutcome}.`;
+    let extraMessage =
+      wasGuessCorrect(this.props.G, this.props.ctx.currentPlayer)
+        ? `Your score is ${getScore(player.guesses)} points.`
+        : `The word to be guessed was ${player.declare.toUpperCase()}.`;
+    let nextButton = (
+      <Button
+        key="key_hangman_next"
+        id="id_hangman_next"
+        variant="contained"
+        color="primary"
+        style={{ marginTop: '16px', marginLeft: 'auto', marginRight: 'auto', alignContent: 'center' }}
+        onClick={this._changeTurn()}
+        data-test-id="next-button"
+      >
+        Next
+      </Button>
+    );
+    if (isOnlineGame(this.props.gameArgs)) {
+      if (this.props.playerID !== this.props.ctx.currentPlayer) {
+        guessMessage = `Your opponent's guess was ${guessOutcome}.`;
+        extraMessage = `Your opponent has scored ${getScore(player.guesses)} points.`;
+        nextButton = null;
+      }
+    }
+    let textColor = 'white';
+    if (this.props.ctx.currentPlayer === '1') {
+      nextButton = null;
+      textColor = 'black';
+    }
+    return (
+      <div>
+        <Typography variant="h6" style={{ textAlign: 'center', color: textColor, margin: '16px', padding: '16px' }}>
+          {guessMessage}
+          <br />
+          {extraMessage}
+          <br />
+          {nextButton}
+        </Typography>
+      </div>
+    );
   }
 
   _renderPlay() {
     return (
-      <div>
-        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
-          {this._getStatus()}
-        </Typography>
-        <svg width="100%" height="100%" viewBox="0 0 10 10">
-          {this._getWord()}
-          {this._getGuessesRemaining()}
-          {this._getAlphabets()}
-          {this._getHintButton()}
-        </svg>
-        {this._getHintModal()}
-      </div>
+      ! isDoneGuessing(this.props.G, this.props.ctx.currentPlayer) ? (
+        <div>
+          <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+            { this._getStatus() }
+          </Typography>
+          <svg width="100%" height="100%" viewBox="0 0 10 10">
+            {this._getWord()}
+            {this._getGuessesRemaining()}
+            {this._getAlphabets()}
+            {this._getHintButton()}
+          </svg>
+          {this._getHintModal()}
+        </div>
+      ) : (
+        <div> {this._showConclusion()} </div>
+      )
     );
   }
 
@@ -273,9 +326,13 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
   }
 
+  _getScoreCard() {
+    return ( this._showConclusion() );
+  }
+
   render() {
     if (this.props.ctx.gameover) {
-      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+      return <GameLayout gameOver={this._getGameOver()} extraCardContent={this._getScoreCard()}  gameArgs={this.props.gameArgs} />;
     }
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
