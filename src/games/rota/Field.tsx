@@ -24,17 +24,17 @@ export class Field extends React.Component<IFieldProps, {}> {
     return (
       <svg width="100%" height="100%" viewBox="-250 -250 500 500" className={css.RotaField} pointerEvents="visible">
         <g strokeWidth="4" stroke="#cccccc">
-          {this.drawLinesAndCircel()}
+          {this._drawLinesAndCircle()}
         </g>
-        <g>{this.placePieces()}</g>
+        <g>{this._placePieces()}</g>
       </svg>
     );
   }
 
-  drawLinesAndCircel() {
+  _drawLinesAndCircle() {
     const cells = [];
 
-    // add outer circle,
+    // Add outer circle
     cells.push(
       <circle
         key={'rota_outer_circle'}
@@ -47,7 +47,7 @@ export class Field extends React.Component<IFieldProps, {}> {
       />,
     );
 
-    // add line
+    // Add lines
     this.props.points.forEach((point, idx) => {
       const radiusFactor = 1 / (Math.sqrt(point.x ** 2 + point.y ** 2) || 1);
       cells.push(
@@ -63,7 +63,7 @@ export class Field extends React.Component<IFieldProps, {}> {
       );
     });
 
-    // add circle at the intersection of line and outer-circle,
+    // Add circle at the intersection of line and outer-circle
     this.props.points.forEach((point, idx) => {
       const radiusFactor = 1 / (Math.sqrt(point.x ** 2 + point.y ** 2) || 1);
       cells.push(
@@ -83,7 +83,7 @@ export class Field extends React.Component<IFieldProps, {}> {
     return cells;
   }
 
-  placePieces() {
+  _placePieces() {
     const cells = [];
 
     // place pieces on their points

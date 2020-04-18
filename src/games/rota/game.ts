@@ -28,45 +28,46 @@ function findPoint(G: IG, pointX: number, pointY: number): Point {
   return { x: null, y: null, playerID: null, pieceID:null };
 }
 
+function isSimilarHorizontally(G: IG, p: Point) {
+  let testWin = true;
+  const axisVar: number[] = [-1, 0, 1];
+  for (const y of axisVar) {
+    testWin = testWin && p.playerID === findPoint(G, p.x, y).playerID;
+  }
+  return testWin;
+}
+
+function isSimilarVertically(G: IG, p: Point) {
+  let testWin = true;
+  const axisVar: number[] = [-1, 0, 1];
+  for (const x of axisVar) {
+    testWin = testWin && p.playerID === findPoint(G, x, p.y).playerID;
+  }
+  return testWin;
+}
+
+function isSimilarDiagonally(G: IG, p: Point) {
+  let testWin = p.playerID === findPoint(G, 0, 0).playerID && p.x !==0 && p.y !== 0;
+  testWin = testWin && p.playerID === findPoint(G, -p.x, -p.y).playerID;
+  return testWin;
+}
+
+function isSimilaOnEdge(G: IG, p: Point) {
+  let testWin = false;
+  if (p.x !== 0 && p.y !== 0) {
+    // test around the circumference
+    testWin = p.playerID === findPoint(G, 0, p.y).playerID;
+    testWin = testWin && p.playerID === findPoint(G, p.x, 0).playerID;
+  }
+  return testWin;
+}
+
 function isVictory(G: IG): boolean {
-  for (const p of G.points) {
-    if (p.playerID !== null) {
-      const axisVar: number[] = [-1, 0, 1];
-      // check along x-axis
-      let testWin = true;
-      for (const y of axisVar) {
-        testWin = testWin && p.playerID === findPoint(G, p.x, y).playerID;
-      }
-      if (testWin) {
+  const filtered = G.points.filter((p) => p.playerID !== null);
+  for (const p of filtered) {
+      if (isSimilarHorizontally(G,p) || isSimilarVertically(G,p) || isSimilarDiagonally(G,p) || isSimilaOnEdge(G,p)){
         return true;
       }
-
-      // check along x-axis
-      testWin = true;
-      for (const x of axisVar) {
-        testWin = testWin && p.playerID === findPoint(G, x, p.y).playerID;
-      }
-      if (testWin) {
-        return true;
-      }
-
-      // check Corners Points
-      if (p.x !== 0 && p.y !== 0) {
-        // test around the circumference
-        testWin = p.playerID === findPoint(G, 0, p.y).playerID;
-        testWin = testWin && p.playerID === findPoint(G, p.x, 0).playerID;
-        if (testWin) {
-          return true;
-        }
-
-        // test diagonal
-        testWin = p.playerID === findPoint(G, 0, 0).playerID;
-        testWin = testWin && p.playerID === findPoint(G, -p.x, -p.y).playerID;
-        if (testWin) {
-          return true;
-        }
-      }
-    }
   }
   return false;
 }
