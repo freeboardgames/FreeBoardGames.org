@@ -8,7 +8,7 @@
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx src/ tests/",
     "lint:fix": "eslint --fix --max-warnings=0 --ext .ts,.tsx src/ tests/",
     "autopre": "run-s format lint:fix build:server test ci:test:e2e",
-    "dev": "run-p dev:web bgio:dev",
+    "dev": "start-server-and-test dev:web http://localhost:3000 bgio:dev",
     "dev:web": "run-s build:server:dev dev:runserver",
     "dev:runserver": "node server/dist/server_web.js",
     "bgio:dev": "nodemon -e js,ts --exec yarn run bgio",
