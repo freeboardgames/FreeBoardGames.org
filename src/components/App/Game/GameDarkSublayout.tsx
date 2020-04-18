@@ -14,6 +14,7 @@ import { DesktopView } from 'components/DesktopMobileView';
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;
   optionsMenuItems?: () => IOptionsItems[];
+  allowWiderScreen?: boolean;
   gameArgs: IGameArgs;
 }
 
@@ -97,7 +98,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
         >
           <div
             style={{
-              maxWidth: '500px',
+              maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
               marginLeft: 'auto',
               marginRight: 'auto',
             }}
@@ -117,7 +118,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
           style={{
             position: 'fixed',
             width: '100%',
-            maxWidth: '500px',
+            maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
             color: 'white',
             top: '50%',
             left: '50%',
