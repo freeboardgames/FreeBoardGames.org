@@ -5,7 +5,7 @@ import { IGameDef } from 'games';
 
 export const ninemensmorrisGameDef: IGameDef = {
   code: 'ninemensmorris',
-  name: 'Shreeji Mills',
+  name: 'Tri-Murti',
   imageURL: Thumbnail,
   modes: [
     /*
