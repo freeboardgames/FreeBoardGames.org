@@ -28,7 +28,7 @@
 
   border-radius: 3px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);
-  
+
   text-align: center;
   hyphens: auto;
   font-size: 14px;
@@ -57,6 +57,7 @@
 .blueTitle {
   display: inline;
   padding: 8px;
+  border-radius: 3px;
   background-color: #247BA0;
 }
 

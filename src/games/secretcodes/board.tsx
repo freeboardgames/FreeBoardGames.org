@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IG, Phases } from './definitions';
+import { IG, Phases, TeamColor } from './definitions';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import css from './board.css';
@@ -58,18 +58,26 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       <div className={[css.winners].join(' ')}>
         <h3>Winners</h3>
 
-        {this.props.ctx.gameover.winner.players.map((p) => {
-          return <p key={p.playerID}>{this.props.gameArgs.players[p.playerID].name}</p>;
+        {this.props.ctx.gameover.winner.playersID.map((id) => {
+          return <p key={id}>{this.props.gameArgs.players[id].name}</p>;
         })}
       </div>
     );
+  };
+
+  _getGameOverText = (): string => {
+    if (this.props.ctx.gameover.winner.color === TeamColor.Blue) {
+      return 'Blue Team wins';
+    }
+
+    return 'Red Team wins';
   };
 
   render() {
     if (this.props.ctx.gameover)
       return (
         <GameLayout
-          gameOver={this.props.ctx.gameover.winner.teamId ? 'Red Team wins' : 'Blue Team wins'}
+          gameOver={this._getGameOverText()}
           extraCardContent={this._getScoreBoard()}
           gameArgs={this.props.gameArgs}
         />

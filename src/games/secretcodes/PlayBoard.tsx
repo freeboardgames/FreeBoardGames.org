@@ -1,4 +1,4 @@
-import { IG, Stages, CardColor, Team, TeamID, Player } from './definitions';
+import { IG, Stages, CardColor, Team, TeamColor } from './definitions';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import * as React from 'react';
@@ -6,6 +6,7 @@ import css from './board.css';
 import { isLocalGame, isOnlineGame } from '../common/gameMode';
 import Button from '@material-ui/core/Button';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
+import { getPlayerTeam, isPlayerSpymaster } from './util';
 
 interface IPlayBoardProps {
   G: IG;
@@ -36,34 +37,34 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   }
 
   _currentPlayerTeam(): Team {
-    return this.props.G.teams[this._currentPlayerID()];
+    return getPlayerTeam(this.props.G, this._currentPlayerID());
   }
 
-  _currentPlayerID(): number {
-    return parseInt(this.props.ctx.currentPlayer);
+  _currentPlayerID(): string {
+    return this.props.ctx.currentPlayer;
   }
 
   _currentPlayerStage(): Stages {
     return this.props.ctx.activePlayers[this.props.ctx.currentPlayer] as Stages;
   }
 
-  _playerID(): number {
+  _playerStage(): Stages {
+    return this.props.ctx.activePlayers[this._playerID()] as Stages;
+  }
+
+  _playerID(): string {
     if (isLocalGame(this.props.gameArgs)) {
       return this._currentPlayerID();
     } else {
-      return parseInt(this.props.playerID);
+      return this.props.playerID;
     }
-  }
-
-  _player(): Player {
-    return this.props.G.players[this._playerID()];
   }
 
   _playerTeam(): Team {
     return this.props.G.teams[this._playerID()];
   }
 
-  _showSpymasterView = (): boolean => this._player().isSpymaster && this.state.spymasterView;
+  _showSpymasterView = (): boolean => isPlayerSpymaster(this.props.G, this._playerID()) && this.state.spymasterView;
 
   _toggleSpymasterView = (): void => this.setState({ spymasterView: !this.state.spymasterView });
 
@@ -75,8 +76,8 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
   _chooseCard = (cardIndex: number) => {
     if (!this._isActive()) return;
-    if (this._currentPlayerStage() != Stages.guess) return;
-    if (isOnlineGame(this.props.gameArgs) && this._player().isSpymaster) return;
+    if (this._playerStage() !== Stages.guess) return;
+    if (isOnlineGame(this.props.gameArgs) && isPlayerSpymaster(this.props.G, this._playerID())) return;
     if (this.props.G.cards[cardIndex].revealed) return;
 
     this.props.moves.chooseCard(cardIndex);
@@ -111,7 +112,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       ) : null;
       instruction = (
         <p>
-          <strong>{this._currentPlayerTeam().teamID === TeamID.red ? 'Red' : 'Blue'} Team</strong> make your guess!
+          <strong>{this._currentPlayerTeam().color === TeamColor.Red ? 'Red' : 'Blue'} Team</strong> make your guess!
           {button}
         </p>
       );
@@ -119,8 +120,8 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
     return (
       <div className={css.header}>
-        <h3 className={this._currentPlayerTeam().teamID === TeamID.red ? css.redTitle : css.blueTitle}>
-          {this._currentPlayerTeam().teamID === TeamID.red ? 'Red' : 'Blue'} Team
+        <h3 className={this._currentPlayerTeam().color === TeamColor.Red ? css.redTitle : css.blueTitle}>
+          {this._currentPlayerTeam().color === TeamColor.Red ? 'Red' : 'Blue'} Team
         </h3>
         {instruction}
       </div>
@@ -154,7 +155,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   };
 
   _renderActionButtons = () => {
-    if (this._player().isSpymaster) {
+    if (isPlayerSpymaster(this.props.G, this._playerID())) {
       return (
         <Button className={css.selectTeamBtn} variant="contained" onClick={this._toggleSpymasterView}>
           Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal'}
