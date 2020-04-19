@@ -1,6 +1,6 @@
 import { UserDbEntity } from '../entities/User';
 import { v4 as uuidv4 } from 'uuid';
-import { User, CheckinResponseStatus, CheckinResponse as NewUserResponse } from 'dto/User';
+import { User, CheckinResponseStatus, CheckinResponse as NewUserResponse } from '../../../common/dto/User';
 import { UserDevice, UserDeviceDbEntity } from '../entities/UserDevice';
 
 export class UserService {

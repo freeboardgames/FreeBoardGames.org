@@ -1,11 +1,6 @@
 {
   "compilerOptions": {
     "baseUrl": "./src/",
-    "paths": {
-      "dto/*": [
-        "../../common/dto/*"
-      ],
-    },
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,

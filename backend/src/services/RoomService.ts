@@ -1,5 +1,5 @@
 import { RoomDbEntity } from '../entities/Room';
-import { Room } from 'dto/Room';
+import { Room } from '../../../common/dto/Room';
 import { UserDbEntity } from '../entities/User';
 
 export class RoomService {

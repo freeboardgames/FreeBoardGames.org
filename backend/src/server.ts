@@ -9,10 +9,10 @@ import { UserDbEntity } from './entities/User';
 import { RoomDbEntity } from './entities/Room';
 import { RoomService } from './services/RoomService';
 import { UserService } from './services/UserService';
-import { User } from 'dto/User';
+import { User } from '../../common/dto/User';
 import { UserDeviceService } from './services/UserDeviceService';
 import { UserDeviceDbEntity } from './entities/UserDevice';
-import { Room } from 'dto/Room';
+import { Room } from '../../common/dto/Room';
 
 const PORT = 8002;
 
@@ -93,6 +93,10 @@ async function serve() {
   app.get('/api/room/:id', async (req, res) => {
     const id = Number(req.params.id);
     const room = await RoomService.getRoom(id);
+    if (!room) {
+      res.status(404).send();
+      return;
+    }
     res.send(room);
   });
 
