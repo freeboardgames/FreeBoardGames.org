@@ -1,4 +1,5 @@
-import { IGameArgs, ActivePlayers, IGameCtx } from 'boardgame.io/core';
+import { ActivePlayers } from 'boardgame.io/core';
+import { Game, Ctx } from 'boardgame.io';
 import shortid from 'shortid';
 
 export interface IShip {
@@ -46,7 +47,7 @@ export const playerView = (G: ISeabattleState, ctx: ICtx, playerID: string): ISe
   };
 };
 
-function setShips(G: ISeabattleState, ctx: IGameCtx, ships: IShip[]) {
+function setShips(G: ISeabattleState, ctx: Ctx, ships: IShip[]) {
   const player = parseInt(ctx.playerID, 10);
   const validation = validateShips(ships, player);
   if (!validation.valid) {
@@ -82,7 +83,7 @@ function salvo(G: ISeabattleState, ctx: ICtx, x: number, y: number) {
   };
 }
 
-export const SeabattleGame: IGameArgs = {
+export const SeabattleGame: Game<ISeabattleState> = {
   name: 'seabattle',
 
   setup: (): ISeabattleState => ({

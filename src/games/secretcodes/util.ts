@@ -1,7 +1,8 @@
 import { IG, Stages, TeamColor, Team, CardColor, Card } from './definitions';
-import { Stage, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
+import { Stage, INVALID_MOVE } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 
-export function switchTeam(G: IG, ctx: IGameCtx, teamColor: TeamColor) {
+export function switchTeam(G: IG, ctx: Ctx, teamColor: TeamColor) {
   const oldTeam = getPlayerTeam(G, ctx.playerID);
   const newTeam = getTeamByColor(G, teamColor);
 
@@ -18,7 +19,7 @@ export function switchTeam(G: IG, ctx: IGameCtx, teamColor: TeamColor) {
   newTeam.playersID.push(ctx.playerID);
 }
 
-export function makeSpymaster(G: IG, ctx: IGameCtx, playerID: string) {
+export function makeSpymaster(G: IG, ctx: Ctx, playerID: string) {
   const team = getPlayerTeam(G, playerID);
   const pID = parseInt(playerID);
   if (ctx.playerID !== '0' || pID < 0 || pID >= ctx.numPlayers || !team) {
@@ -28,10 +29,10 @@ export function makeSpymaster(G: IG, ctx: IGameCtx, playerID: string) {
   team.spymasterID = playerID;
 }
 
-export function clueGiven(G: IG, ctx: IGameCtx) {
+export function clueGiven(G: IG, ctx: Ctx) {
   ctx.events.endStage();
   ctx.events.setActivePlayers(
-    (function (G: IG, ctx: IGameCtx) {
+    (function (G: IG, ctx: Ctx) {
       const team = getPlayerTeam(G, ctx.playerID);
       if (ctx.numPlayers === 2 || team.playersID.length === 1) {
         return {
@@ -52,7 +53,7 @@ export function clueGiven(G: IG, ctx: IGameCtx) {
   );
 }
 
-export function chooseCard(G: IG, ctx: IGameCtx, cardIndex: number) {
+export function chooseCard(G: IG, ctx: Ctx, cardIndex: number) {
   G.cards[cardIndex].revealed = true;
 
   const team = getPlayerTeam(G, ctx.currentPlayer);

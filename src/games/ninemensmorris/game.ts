@@ -1,4 +1,5 @@
-import { IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
+import { INVALID_MOVE } from 'boardgame.io/core';
+import { Game, Ctx } from 'boardgame.io';
 import Point from './point';
 import Player from './player';
 
@@ -46,7 +47,7 @@ function getMills(G: IG) {
   );
 }
 
-function isTherePieceOutsideMill(G: IG, ctx: IGameCtx) {
+function isTherePieceOutsideMill(G: IG, ctx: Ctx) {
   let points = G.points.map((point) => ({ data: point, safe: true }));
   G.mills
     .map((mill, index) => ({ owner: mill, index }))
@@ -59,7 +60,7 @@ function isTherePieceOutsideMill(G: IG, ctx: IGameCtx) {
   return points.some((point) => point.data.piece !== null && point.safe && point.data.piece.player !== ctx.playerID);
 }
 
-export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string {
+export function placePiece(G: IG, ctx: Ctx, position: number): IG | string {
   if (G.points[position].piece !== null || G.haveToRemovePiece) {
     return INVALID_MOVE;
   }
@@ -87,7 +88,7 @@ export function placePiece(G: IG, ctx: IGameCtx, position: number): IG | string 
   };
 }
 
-export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: number): IG | string {
+export function movePiece(G: IG, ctx: Ctx, position: number, newPosition: number): IG | string {
   if (
     G.points[position].piece === null ||
     G.points[position].piece.player !== ctx.playerID || // Check if player owns this piece // Check if piece exists
@@ -125,7 +126,7 @@ export function movePiece(G: IG, ctx: IGameCtx, position: number, newPosition: n
   };
 }
 
-export function removePiece(G: IG, ctx: IGameCtx, position: number) {
+export function removePiece(G: IG, ctx: Ctx, position: number) {
   if (
     !G.haveToRemovePiece || // Check if player is allowed
     G.points[position].piece === null || // Check if piece exists
@@ -171,7 +172,7 @@ export function removePiece(G: IG, ctx: IGameCtx, position: number) {
   };
 }
 
-const GameConfig: IGameArgs = {
+const GameConfig: Game<IG> = {
   name: 'ninemensmorris',
   phases: {
     Place: {

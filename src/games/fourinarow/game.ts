@@ -1,5 +1,5 @@
 import { numOfColumns, numOfRows, neededToWin } from './constants';
-import { IGameArgs } from 'boardgame.io/core';
+import { Game } from 'boardgame.io';
 
 function checkCellForVictory(grid: number[][], colId: any, rowId: any, player: any) {
   let fourCells = new Array(neededToWin);
@@ -99,7 +99,7 @@ export function generateGrid() {
   return grid;
 }
 
-export const ConnectFourGame: IGameArgs = {
+export const ConnectFourGame: Game = {
   name: 'fourinarow',
 
   setup: () => {

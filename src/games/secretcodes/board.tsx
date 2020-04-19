@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IG, Phases, TeamColor } from './definitions';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import css from './board.css';
 import { GameLayout } from '../../components/App/Game/GameLayout';
@@ -9,7 +9,7 @@ import { PlayBoard } from './PlayBoard';
 
 interface IBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   step?: any;
   events: any;

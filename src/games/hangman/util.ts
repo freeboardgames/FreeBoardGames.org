@@ -1,9 +1,10 @@
 import { HangmanState, Guesses } from './definitions';
-import { IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
+import { INVALID_MOVE } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { MAX_WORD_LENGTH, MAX_MISTAKE_COUNT, ALPHABET } from './constants';
 
 /** Called when users selects the initial word and (possibly) hint. */
-export function setSecret(G: HangmanState, ctx: IGameCtx, secret: string, hint?: string) {
+export function setSecret(G: HangmanState, ctx: Ctx, secret: string, hint?: string) {
   if (secret.length == 0 || secret.length > MAX_WORD_LENGTH) {
     return INVALID_MOVE;
   }
@@ -86,7 +87,7 @@ export function isValidWord(word: string) {
 }
 
 /** Called when users selects letter. */
-export function selectLetter(G: HangmanState, ctx: IGameCtx, letter: string) {
+export function selectLetter(G: HangmanState, ctx: Ctx, letter: string) {
   const player = G.players[ctx.playerID];
   if (letter.length != 1 || letter in player.guesses) {
     return INVALID_MOVE;

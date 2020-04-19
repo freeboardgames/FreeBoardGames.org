@@ -5,7 +5,7 @@ import { Grid } from 'ui';
 import { Token } from 'ui';
 import { IG, getScoreBoard } from './game';
 import { IScore } from '../common/Scoreboard';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { Scoreboard } from '../common/Scoreboard';
 import { GameMode } from 'components/App/Game/GameModePicker';
 import { ScoreBadges } from '../common/ScoreBadges';
@@ -31,7 +31,7 @@ export interface IColorMap {
 
 interface IBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   step?: any;
   playerID: string;

@@ -1,8 +1,9 @@
-import { IGameArgs } from 'boardgame.io/core';
+import { Game } from 'boardgame.io';
+import { HangmanState } from './definitions';
 import { HANGMAN_INITIAL_STATE } from './constants';
 import { setSecret, selectLetter, getWinner } from './util';
 
-export const HangmanGame: IGameArgs = {
+export const HangmanGame: Game<HangmanState> = {
   name: 'hangman',
 
   setup: () => HANGMAN_INITIAL_STATE,

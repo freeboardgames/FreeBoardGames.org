@@ -1,5 +1,5 @@
 import { IG, Stages, CardColor, Team, TeamColor } from './definitions';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import * as React from 'react';
 import css from './board.css';
@@ -10,7 +10,7 @@ import { getPlayerTeam, isPlayerSpymaster } from './util';
 
 interface IPlayBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   events: any;
   playerID: string;

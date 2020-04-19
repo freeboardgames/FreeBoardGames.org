@@ -1,4 +1,4 @@
-import { IGameArgs, IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { words } from './constants';
 import { Card, CardColor, IG, Phases, Stages, Team, TeamColor } from './definitions';
 import {
@@ -14,7 +14,7 @@ import {
 
 const onBegin = {
   phases: {
-    [Phases.lobby]: (G: IG, ctx: IGameCtx) => {
+    [Phases.lobby]: (G: IG, ctx: Ctx) => {
       if (ctx.numPlayers === 2) {
         G.teams[0].playersID = ['0'];
         G.teams[0].spymasterID = '0';
@@ -22,12 +22,12 @@ const onBegin = {
         G.teams[1].spymasterID = '1';
       }
     },
-    [Phases.play]: (G: IG, ctx: IGameCtx) => {
+    [Phases.play]: (G: IG, ctx: Ctx) => {
       const cards = ctx.random
         .Shuffle(words)
         .slice(0, 25)
         .map((word) => makeCard(word));
-      const startingTeamIndex = ctx.random.Die(2, 1) % 2;
+      const startingTeamIndex = ctx.random.Die(2) % 2;
       const startingTeam = G.teams[startingTeamIndex];
 
       startingTeam.start = true;
@@ -50,13 +50,13 @@ const onBegin = {
     },
   },
   turns: {
-    [Phases.play]: (G: IG, ctx: IGameCtx) => {
+    [Phases.play]: (G: IG, ctx: Ctx) => {
       ctx.events.setStage(Stages.giveClue);
     },
   },
 };
 
-const GameConfig: IGameArgs = {
+const GameConfig = {
   name: 'secretcodes',
 
   setup: (): IG => {
@@ -66,7 +66,7 @@ const GameConfig: IGameArgs = {
     };
   },
 
-  playerView: (G: IG, ctx: IGameCtx, playerID: string): any => {
+  playerView: (G: IG, ctx: Ctx, playerID: string): any => {
     if (playerID === null) return G;
     if (ctx.phase !== Phases.play) return G;
     if (ctx.playOrder.includes(playerID)) return G;
@@ -116,7 +116,7 @@ const GameConfig: IGameArgs = {
       turn: {
         order: {
           first: (G: IG): number => parseInt(G.teams.find((team) => team.start).spymasterID),
-          next: (_, ctx: IGameCtx) => (ctx.playOrderPos + 1) % 2,
+          next: (_, ctx: Ctx) => (ctx.playOrderPos + 1) % 2,
           playOrder: (G: IG): string[] => G.teams.map((team: Team) => team.spymasterID),
         },
         onBegin: onBegin.turns[Phases.play],
@@ -144,7 +144,7 @@ const GameConfig: IGameArgs = {
     },
   },
 
-  endIf: (G: IG, ctx: IGameCtx) => {
+  endIf: (G: IG, ctx: Ctx) => {
     // turn 1 is used to setup the game so we only check from turn 2 and up
     if (ctx.turn >= 2) {
       const assassin = G.cards.find((card) => card.color === CardColor.assassin);

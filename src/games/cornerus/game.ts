@@ -1,4 +1,5 @@
-import { IGameArgs, IGameCtx, INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
+import { INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
+import { Game, Ctx } from 'boardgame.io';
 import { IScore } from '../common/Scoreboard';
 import { pieces } from './pieces';
 
@@ -36,7 +37,7 @@ export function inBounds(x: number, y: number) {
 }
 
 // Map real playerID to 'fake' one
-export function getPlayer(ctx: IGameCtx, G: IG, playerID: string) {
+export function getPlayer(ctx: Ctx, G: IG, playerID: string) {
   if (ctx.numPlayers === 2) {
     if (playerID === '0') {
       return G.turn % 4 === 1 ? '0' : '1';
@@ -50,11 +51,11 @@ export function getPlayer(ctx: IGameCtx, G: IG, playerID: string) {
   }
 }
 
-export function isFirstTurn(ctx: IGameCtx) {
+export function isFirstTurn(ctx: Ctx) {
   return ctx.turn <= 4;
 }
 
-export function getScoreBoard(G: IG, ctx: IGameCtx) {
+export function getScoreBoard(G: IG, ctx: Ctx) {
   const scoreboard: IScore[] = G.players.map((player, i) => ({
     playerID: i.toString(),
     score: player.pieces.reduce((acc, piece) => acc - pieces[piece].filter((square) => square).length, 0),
@@ -101,7 +102,7 @@ export function flipPieceX(squares: boolean[]) {
   return flipped;
 }
 
-function playerEnded(G: IG, ctx: IGameCtx, playerID: string) {
+function playerEnded(G: IG, ctx: Ctx, playerID: string) {
   const player = G.players[getPlayer(ctx, G, playerID) as any];
   return player.end || player.pieces.length === 0;
 }
@@ -124,13 +125,7 @@ export function getAllPositions(piece: boolean[], transform: IPieceTransform) {
     .sort((a, b) => getPosition(b.x, b.y) - getPosition(a.x, a.y));
 }
 
-export function getValidPositions(
-  G: IG,
-  ctx: IGameCtx,
-  piece: boolean[],
-  transform: IPieceTransform,
-  playerID: string,
-) {
+export function getValidPositions(G: IG, ctx: Ctx, piece: boolean[], transform: IPieceTransform, playerID: string) {
   const positions = getAllPositions(piece, transform);
   if (
     positions.some((pos) => !inBounds(pos.x, pos.y)) || // Check if piece is on board
@@ -172,7 +167,7 @@ export function getValidPositions(
   return positions;
 }
 
-export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTransform) {
+export function placePiece(G: IG, ctx: Ctx, id: number, transform: IPieceTransform) {
   const playerID = getPlayer(ctx, G, ctx.playerID);
   let piece = pieces[G.players[parseInt(playerID)].pieces[id]];
 
@@ -215,7 +210,7 @@ export function placePiece(G: IG, ctx: IGameCtx, id: number, transform: IPieceTr
   };
 }
 
-export function endGame(G: IG, ctx: IGameCtx) {
+export function endGame(G: IG, ctx: Ctx) {
   return {
     ...G,
     players: Object.values({
@@ -228,7 +223,7 @@ export function endGame(G: IG, ctx: IGameCtx) {
   };
 }
 
-const GameConfig: IGameArgs = {
+const GameConfig: Game<IG> = {
   name: 'cornerus',
   endIf: (G: IG, ctx) => {
     if (!G.players.some((player) => !player.end && player.pieces.length > 0)) {

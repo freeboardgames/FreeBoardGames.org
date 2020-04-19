@@ -3,7 +3,7 @@ import { IScore } from './Scoreboard';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 import css from './ScoreBadges.css';
 import Typography from '@material-ui/core/Typography';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { isPlayersTurn } from './GameUtil';
 
 interface IScoreBadgesProps {
@@ -11,7 +11,7 @@ interface IScoreBadgesProps {
   players: IPlayerInRoom[];
   playerID: string;
   colors?: string[];
-  ctx: IGameCtx;
+  ctx: Ctx;
 }
 
 export class ScoreBadges extends React.Component<IScoreBadgesProps, {}> {

@@ -1,6 +1,6 @@
 import { Client } from 'boardgame.io/client';
 import { SecretcodesGame } from './game';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { TeamColor } from './definitions';
 
 describe('secret codes rules', () => {
@@ -31,7 +31,7 @@ describe('secret codes rules', () => {
     client.moves.chooseCard(17); // "gold", blue card, correct.
     client.moves.chooseCard(19); // "cloak", blue card, correct. Blue wins.
 
-    const ctx: IGameCtx = client.store.getState().ctx;
+    const ctx: Ctx = client.store.getState().ctx;
     expect(ctx.gameover.winner.color).toEqual(TeamColor.Blue);
   });
 
@@ -61,7 +61,7 @@ describe('secret codes rules', () => {
     client.moves.chooseCard(10); // "beijing", blue card, correct.
     client.moves.chooseCard(12); // "model", assassin card, loses the game.
 
-    const ctx: IGameCtx = client.store.getState().ctx;
+    const ctx: Ctx = client.store.getState().ctx;
     expect(ctx.gameover.winner.color).toEqual(TeamColor.Red);
   });
 });

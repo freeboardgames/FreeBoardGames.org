@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { GameLayout } from 'components/App/Game/GameLayout';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { IG, toCoord, IMove, getValidMoves, areCoordsEqual } from './game';
 import {
   Checkerboard,
@@ -21,7 +21,7 @@ import { isOnlineGame, isLocalGame, isAIGame } from '../common/gameMode';
 
 interface IBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   step?: any;
   playerID: string;
