@@ -126,7 +126,7 @@ export const ZooParadeGame = {
 
   endIf: (G, ctx) => {
     if (isLose(G)) {
-      return { winner: ctx.currentPlayer }; // TODO: RETURN THE SCORE
+      return { draw: true};
     }
     if (isWin(G)) {
       return { draw: true }; // TODO: RETURN THE SCORE
