@@ -26,13 +26,20 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                 const hint =  this.props.hand.hints[card_index]
 
                                 var newCard : ICard
+                                var empty : number = null
 
                                 if (this.props.me) {
                                     newCard = { id: -1, 
                                                 value: hint.value.indexOf(1) !== -1 ? hint.value.indexOf(1) : null,
                                                 color: hint.color.indexOf(1) !== -1 ? hint.color.indexOf(1) : -1}
                                 } else {
-                                    newCard = { id: card.id, value: card.value, color: card.color }
+                                    // TODO: Error here if pick up empty!
+                                    if (card === null) { // This can happen if you pick up the last card.
+                                        newCard = null
+                                        empty = -1
+                                    } else {
+                                        newCard = { id: card.id, value: card.value, color: card.color }
+                                    }
                                 }
 
                                 return (
@@ -44,7 +51,7 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                         </BHint>
                                         <BCard 
                                             card={ newCard }
-                                            empty = { null } 
+                                            empty = { empty } 
                                             >
                                         </BCard>
                                         { this.props.me 
