@@ -79,7 +79,8 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
       :
       G.countdown - 1,
     treats:
-      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value)) // Is the played card the next value?
+      ((G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value)) // did you play a good move?
+      && (G.hands[currentPl].cards[IDInHand].value === 4)) // Did you finish the color?  - if both, gain treat
       ?
       (G.treats === 8) ? 8 : G.treats + 1 // max 8 Treats
       :
@@ -148,7 +149,8 @@ export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
       }
     }),
     trash: [...G.trash, G.hands[currentPl].cards[IDInHand]],
-    deckindex: G.deckindex - 1
+    deckindex: G.deckindex - 1,
+    treats: (G.treats === 8) ? 8 : G.treats + 1 // max 8 Treats
   }
 }
 
