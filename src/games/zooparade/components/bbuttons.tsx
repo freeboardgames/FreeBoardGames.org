@@ -48,15 +48,6 @@ export class BButtons extends React.Component< InnerWrapper, {} > {
                                     </tr>
                                     )
                                 }
-                                return (<tr key={this.props.keyPropagation + "BButton2" + value.toString()}>
-                                    <th>
-                                        <div> { value  }</div>
-                                    </th>
-                                    <th>
-                                        <div> { value }</div>
-                                    </th>
-                                </tr>
-                                )
                             })
                         }
                     </tbody>
