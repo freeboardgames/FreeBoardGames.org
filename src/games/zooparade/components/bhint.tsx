@@ -1,47 +1,37 @@
 import React from 'react';
 import { IHint } from '../interfaces';
+import { BHintIcon } from './bhinticon';
 
 interface InnerWrapper {
-    hint: IHint
+    hint: IHint;
 
     keyPropagation: string;
 }
-
-const squares = [
-    require('./media/green_square.png'),
-    require('./media/gray_square.png'),
-    require('./media/brown_square.png'),
-    require('./media/yellow_square.png'),
-    require('./media/blue_square.png'),
-    require('./media/black_square.png')
-]
 
 export class BHint extends React.Component< InnerWrapper, {}> {
     render() {
         return (
             <div>
+              <div>
                 { this.props.hint.color.map((value: number , index: number ) =>
                         {
-                            return <img key={this.props.keyPropagation + "BHint" + index.toString()} src={(value !== -1) ? squares[index] : squares[5]} height="15" width="15"></img>
+                            return <BHintIcon
+                                     hintIcon={{color: (value !== -1 ? index : -1), value: -1}}
+                                     keyPropagation={this.props.keyPropagation + "BHint" + index.toString()}
+                                     ></BHintIcon>
                         })
                 }
+              </div><div>
                 { this.props.hint.value.map((value: number , index: number ) =>
                         {
-                            return(
-                                <div key={this.props.keyPropagation + "BHint2" + index.toString()}>
-                                    <img src={squares[5]} height="15" width="15"></img>
-                                    <div> {(value !== -1) ? index : " "} </div>
-                                </div>
-                            )
+                            return <BHintIcon
+                                     hintIcon={{color: -1, value: (value !== -1 ? index : -1)}}
+                                     keyPropagation={this.props.keyPropagation + "BHint" + index.toString()}
+                                     ></BHintIcon>
                         })
                 }
+              </div>
             </div>
         )
     }
 }
-
-// const colors = ['#80b28e',
-//                 '#beb7a3',
-//                 '#a38c49',
-//                 '#f2f47d',
-//                 '#9bcbee']
