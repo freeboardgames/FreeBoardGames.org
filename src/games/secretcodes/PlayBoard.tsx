@@ -155,7 +155,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   };
 
   _renderActionButtons = () => {
-    if (isPlayerSpymaster(this.props.G, this._currentPlayerID())) {
+    if (isPlayerSpymaster(this.props.G, this._playerID())) {
       return (
         <Button className={css.selectTeamBtn} variant="contained" onClick={this._toggleSpymasterView}>
           Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal'}
