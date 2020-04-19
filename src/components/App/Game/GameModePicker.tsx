@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Link from 'next/link';
 import { IGameDef } from 'games';
-import { LobbyService } from '../Lobby/LobbyService';
+import { LobbyService } from 'components/Lobby/LobbyService';
 import Router from 'next/router';
 
 interface IGameModePickerProps {
@@ -103,14 +103,13 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     }
     const extraInfo = this._getExtraInfo(info);
     let btnText = 'Play';
-    let color = 'primary'; // FIXME: couldn't find the type
+    let color = 'primary';
     if (this.state.playButtonError) {
       btnText = 'Error';
       color = 'secondary';
     } else if (this.state.playButtonDisabled) {
       btnText = 'Loading';
     }
-    // const color = this.state.playButtonError ? 'secondary' : 'primary';
     let button;
     if (info.mode === GameMode.OnlineFriend) {
       button = (
@@ -163,10 +162,11 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     const gameCode = this.props.gameDef.code;
     const numPlayers = this._getExtraInfoValue(info);
     // `/room/new/${this.props.gameDef.code}/${this._getExtraInfoValue(info)}`,
-    LobbyService.newRoom(gameCode, numPlayers).then(
-      (roomID) => {
+    LobbyService.newRoom(gameCode, numPlayers, false).then(
+      (resp) => {
         // we use .replace instead of .push so that the browser back button works correctly
-        Router.replace(`/room/${gameCode}/${roomID}`);
+        console.log(resp);
+        // Router.replace(`/room/${gameCode}/${roomID}`);
       },
       () => {
         // was _err => { ...

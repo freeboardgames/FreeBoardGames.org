@@ -24,7 +24,8 @@ class FreeBoardGamesBar extends React.Component<Props, State> {
     super(props);
     if (props.nicknameRequired) {
       const nickname = Cookies.get('nickname') || '';
-      this.state = { loginFormOpen: !nickname, nickname };
+      const token = Cookies.get('token') || '';
+      this.state = { loginFormOpen: !nickname || !token, nickname };
     } else {
       this.state = { loginFormOpen: false, nickname: '' };
     }
@@ -85,8 +86,9 @@ class FreeBoardGamesBar extends React.Component<Props, State> {
     );
   }
 
-  _setNickname = (nickname: string) => {
-    // Cookies.set('nickname', nickname, { sameSite: 'strict' });
+  _setNickname = (nickname: string, token: string) => {
+    Cookies.set('nickname', nickname, { sameSite: 'strict' });
+    Cookies.set('token', token, { sameSite: 'strict' });
     this.setState((oldState) => ({ ...oldState, nickname }));
   };
 

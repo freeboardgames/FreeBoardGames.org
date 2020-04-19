@@ -1,11 +1,3 @@
-import { Room } from './Room';
-
-export interface User {
-  nickname: string;
-  credential?: string;
-  rooms?: Room[];
-}
-
 export interface CheckinResponse {
   result: CheckinResponseStatus;
   credential?: string;

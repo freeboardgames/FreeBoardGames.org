@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src/",
+    "paths": {
+      "dto/*": [
+        "../../common/dto/*"
+      ],
+    },
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "build",
+    "types": [
+      "node",
+      "jest"
+    ],
+    "typeRoots": [
+      "src/@types",
+      "node_modules/@types"
+    ],
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "incremental": true
+  },
+  "include": [
+    "src"
+  ]
+}

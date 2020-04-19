@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { lightBlue } from '@material-ui/core/colors';
-import { Room } from '../../dto/Room';
+import { Room } from 'dto/Room';
 import { IGameDef } from 'games';
 import { GameCard } from 'components/App/Game/GameCard';
 import { ListRooms } from './ListRooms';

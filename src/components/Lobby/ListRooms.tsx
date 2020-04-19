@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, ListItem, ListItemText, ListSubheader } from '@material-ui/core';
-import { Room } from '../../dto/Room';
+import { Room } from 'dto/Room';
 
 interface Props {
   rooms: Room[];

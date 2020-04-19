@@ -1,6 +1,6 @@
 import React from 'react';
 import LobbyGameCard from 'components/Lobby/LobbyGameCard';
-import { Room } from '../../dto/Room';
+import { Room } from 'dto/Room';
 import { GAMES_MAP } from 'games';
 
 const CARD_STYLE = {

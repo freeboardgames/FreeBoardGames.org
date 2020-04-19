@@ -3,7 +3,7 @@
     "baseUrl": "./src/",
     "paths": {
       "dto/*": [
-        "./dto/*"
+        "../common/dto/*"
       ],
     },
     "target": "es5",
