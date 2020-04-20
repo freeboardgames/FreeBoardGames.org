@@ -11,7 +11,6 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
   }
 
   var currentPl : number = parseInt(ctx.currentPlayer)
-  // if (currentPl)
 
   // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
   // However, the game automatically ends, once all players couldn't pick up a card, thus
@@ -180,6 +179,10 @@ export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValu
     return INVALID_MOVE
   }
 
+  if (G.treats === 0) {
+    return INVALID_MOVE
+  }
+
   return {
     ...G,
     treats: G.treats - 1,
@@ -224,6 +227,10 @@ export function moveHintColor(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintColo
   if (isNaN(IDHintColor)) {
     return INVALID_MOVE
   } else if (IDHintColor < 0 || IDHintColor > 4) {
+    return INVALID_MOVE
+  }
+
+  if (G.treats === 0) {
     return INVALID_MOVE
   }
 
