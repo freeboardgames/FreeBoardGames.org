@@ -1,4 +1,9 @@
-.ScoreBadge {
+.PlayerBadgeContainer {
+  clear: 'left';
+  padding-top: '8px';
+}
+
+.PlayerBadge {
   margin-left: 4px;
   border-radius: 5px;
   padding: 4px;
@@ -6,11 +11,11 @@
   border: 2px solid;
 }
 
-.ScoreBadge .Nickname {
-  padding-right: 8px;
+.PlayerBadge .Score {
+  padding-left: 8px;
 }
 
-.ScoreBadge p {
+.PlayerBadge p {
   display: inline;
 }
 

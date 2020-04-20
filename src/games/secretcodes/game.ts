@@ -27,7 +27,7 @@ const onBegin = {
         .Shuffle(words)
         .slice(0, 25)
         .map((word) => makeCard(word));
-      const startingTeamIndex = ctx.random.Die(2, 1) % 2;
+      const startingTeamIndex = ctx.random.Die(2) % 2;
       const startingTeam = G.teams[startingTeamIndex];
 
       startingTeam.start = true;
@@ -43,9 +43,7 @@ const onBegin = {
       G.cards = cards;
 
       ctx.events.endTurn({
-        next: (function () {
-          return startingTeam.spymasterID;
-        })(),
+        next: startingTeam.spymasterID,
       });
     },
   },
@@ -115,7 +113,7 @@ const GameConfig: IGameArgs = {
 
       turn: {
         order: {
-          first: (G: IG): number => parseInt(G.teams.find((team) => team.start).spymasterID),
+          first: (G: IG): number => 0,
           next: (_, ctx: IGameCtx) => (ctx.playOrderPos + 1) % 2,
           playOrder: (G: IG): string[] => G.teams.map((team: Team) => team.spymasterID),
         },
