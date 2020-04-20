@@ -19,6 +19,10 @@ interface IBoardProps {
   gameArgs?: IGameArgs;
 }
 
+let handStyle = {
+  display: 'flex'
+}
+
 export class Board extends React.Component<IBoardProps,  {}> {
   render() {
 
@@ -29,44 +33,47 @@ export class Board extends React.Component<IBoardProps,  {}> {
       <GameLayout
           gameArgs={this.props.gameArgs}
           >
-          <table>
-          <tbody>
-            <tr>
-              <th>
-                <table>
-                  <tbody>
-                    { this.props.G.hands.map((hand, index) => {
-                        return (
-                          <tr key={"Board" + index.toString()}>
-                            <th>
-                              { index === me ? null : <BButtons onHintColor={(value: number) => {this.props.moves.moveHintColor(index, value)}}
-                                                                onHintValue={(value: number) => {this.props.moves.moveHintValue(index, value)}}
-                                                                myTurn={this.props.ctx.currentPlayer === playerID}
-                                                                keyPropagation={"Board" + index.toString()}
-                                                                > 
-                              </BButtons>}
-                            </th>
-                            <th>
-                              <table>
-                              <tbody>
-                              <BHand hand={ hand } 
-                                     me={me === index} 
-                                     onPlay={(id: number) => {this.props.moves.movePlay(id)}}
-                                     onTrash={(id: number) => {this.props.moves.moveDiscard(id)}}
-                                     myTurn={this.props.ctx.currentPlayer === playerID}
-                                     keyPropagation={"Board" + index.toString()}
-                                     >
-                              </BHand>
-                              </tbody>
-                              </table>
-                            </th>
-                          </tr>
-                          )
-                    })}
-                  </tbody>
-                </table>
-              </th>
-              <th>
+          <div /* wrapper - not sure if this is necessary */
+            style={{display: 'flex'}}>
+            <div>
+                { this.props.G.hands
+                    .filter(hand => hand.player !== me)
+                    .map(hand => {
+                      let index = hand.player;
+                      return (
+                        <div key={"Board" + index.toString()}
+                             style={handStyle}>
+                            <BButtons onHintColor={(value: number) => {this.props.moves.moveHintColor(index, value)}}
+                                      onHintValue={(value: number) => {this.props.moves.moveHintValue(index, value)}}
+                                      myTurn={this.props.ctx.currentPlayer === playerID}
+                                      keyPropagation={"Board" + index.toString()}
+                                      > 
+                            </BButtons>
+                            <BHand hand={ hand } 
+                                   me={ false } 
+                                   onPlay={(id: number) => {this.props.moves.movePlay(id)}}
+                                   onTrash={(id: number) => {this.props.moves.moveDiscard(id)}}
+                                   myTurn={this.props.ctx.currentPlayer === playerID}
+                                   keyPropagation={"Board" + index.toString()}
+                                   >
+                            </BHand>
+                        </div>
+                        )
+                })}
+                <div key={"Board" + me.toString()}
+                     style={handStyle}>
+                    <hr /><br />Your Hand:
+                    <BHand hand={ this.props.G.hands[me] } 
+                           me={ true } 
+                           onPlay={(id: number) => {this.props.moves.movePlay(id)}}
+                           onTrash={(id: number) => {this.props.moves.moveDiscard(id)}}
+                           myTurn={this.props.ctx.currentPlayer === playerID}
+                           keyPropagation={"Board" + me.toString()}
+                           >
+                    </BHand>
+                </div>
+            </div>
+            <div>
                 {
                   this.props.G.trash.length === 0
                   ?
@@ -77,17 +84,14 @@ export class Board extends React.Component<IBoardProps,  {}> {
                     </BTrash>
                 }
                 <BToken treats={this.props.G.treats} countdown={this.props.G.countdown}></BToken>
-                <BDeck cardsLeft={this.props.G.deckindex}>
-                  </BDeck>
-              </th>
-              <th>
-                <BPiles piles={this.props.G.piles}
-                            keyPropagation={"Board"}
-                            ></BPiles>
-              </th>
-            </tr>
-          </tbody>
-          </table>
+                <BDeck cardsLeft={this.props.G.deckindex}></BDeck>
+              </div>
+            <div>
+              <BPiles piles={this.props.G.piles}
+                          keyPropagation={"Board"}
+                          ></BPiles>
+            </div>
+          </div>
 
       </GameLayout>
     );
