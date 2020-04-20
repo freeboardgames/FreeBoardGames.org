@@ -326,13 +326,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
   }
 
-  _getScoreCard() {
-    return ( this._showConclusion() );
-  }
-
   render() {
     if (this.props.ctx.gameover) {
-      return <GameLayout gameOver={this._getGameOver()} extraCardContent={this._getScoreCard()}  gameArgs={this.props.gameArgs} />;
+      return <GameLayout gameOver={this._getGameOver()} extraCardContent={this._showConclusion()}  gameArgs={this.props.gameArgs} />;
     }
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
