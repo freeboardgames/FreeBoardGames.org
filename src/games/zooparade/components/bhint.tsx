@@ -8,11 +8,15 @@ interface InnerWrapper {
     keyPropagation: string;
 }
 
+let hintRowStyle = {
+  display: 'flex'
+}
+
 export class BHint extends React.Component< InnerWrapper, {}> {
     render() {
         return (
             <div>
-              <div>
+              <div style={hintRowStyle}>
                 { this.props.hint.color.map((value: number , index: number ) =>
                         {
                             return <BHintIcon
@@ -21,7 +25,8 @@ export class BHint extends React.Component< InnerWrapper, {}> {
                                      ></BHintIcon>
                         })
                 }
-              </div><div>
+              </div>
+              <div style={hintRowStyle}>
                 { this.props.hint.value.map((value: number , index: number ) =>
                         {
                             return <BHintIcon
