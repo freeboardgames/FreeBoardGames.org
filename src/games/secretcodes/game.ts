@@ -113,7 +113,7 @@ const GameConfig: IGameArgs = {
 
       turn: {
         order: {
-          first: (G: IG): number => 0,
+          first: (): number => 0,
           next: (_, ctx: IGameCtx) => (ctx.playOrderPos + 1) % 2,
           playOrder: (G: IG): string[] => G.teams.map((team: Team) => team.spymasterID),
         },
