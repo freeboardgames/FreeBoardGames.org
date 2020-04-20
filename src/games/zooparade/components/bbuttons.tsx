@@ -1,4 +1,5 @@
 import React from 'react';
+import { BHintIcon } from './bhinticon';
 
 interface InnerWrapper {
     onHintValue(nr: number): any
@@ -10,14 +11,11 @@ interface InnerWrapper {
 
 const Values = [0, 1,2,3,4]
 
-const squares = [
-    require('./media/green_square.png'),
-    require('./media/gray_square.png'),
-    require('./media/brown_square.png'),
-    require('./media/yellow_square.png'),
-    require('./media/blue_square.png'),
-    require('./media/black_square.png')
-]
+let buttonStyle = {
+  background: 'none',
+  border: '0',
+  padding: '0'
+}
 
 export class BButtons extends React.Component< InnerWrapper, {} > {
     render() {
@@ -31,19 +29,26 @@ export class BButtons extends React.Component< InnerWrapper, {} > {
                                 if (this.props.myTurn){
                                     return (<tr key={this.props.keyPropagation + "BButton" + value.toString()}>
                                         <th>
-                                            <div onClick={() => {this.props.onHintValue(value)}}> 
-                                                <div className="image">
-                                                    <img src={squares[5]} height="15" width="15"></img>
-                                                    <h2> {value} </h2>
-                                                </div>
-                                            </div>
+                                          <button
+                                            onClick={() => {this.props.onHintValue(value)}}
+                                            style={buttonStyle}
+                                            >
+                                            <BHintIcon
+                                              hintIcon={{color: -1, value}}
+                                              keyPropagation={this.props.keyPropagation + "BButton" + value.toString()}
+                                              ></BHintIcon>
+                                          </button>
                                         </th>
                                         <th>
-                                            <div onClick={() => {this.props.onHintColor(value)}}> 
-                                                <div className="image">
-                                                    <img src={squares[value]} height="15" width="15"></img>
-                                                </div>
-                                            </div>
+                                          <button
+                                            onClick={() => {this.props.onHintColor(value)}}
+                                            style={buttonStyle}
+                                            > 
+                                            <BHintIcon
+                                              hintIcon={{color: value, value: -1}}
+                                              keyPropagation={this.props.keyPropagation + "BButton" + value.toString()}
+                                              ></BHintIcon>
+                                          </button>
                                         </th>
                                     </tr>
                                     )

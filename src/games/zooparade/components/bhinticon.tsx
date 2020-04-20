@@ -27,7 +27,8 @@ export class BHintIcon extends React.Component< InnerWrapper, {}> {
                       borderRadius: '10%',
                       backgroundColor: this.props.hintIcon.color !== -1 ?
                         colors[this.props.hintIcon.color] : 'black',
-                      fontSize: '0.8em',
+                      color: 'white',
+                      fontSize: '75%',
                       lineHeight: '0.9'
                 }}
               key={this.props.keyPropagation}
