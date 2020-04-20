@@ -17,46 +17,46 @@ let buttonStyle = {
   padding: '0'
 }
 
+let gridStyle = {
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '5px'
+}
+
 export class BButtons extends React.Component< InnerWrapper, {} > {
     render() {
-
         return (
-            <div>
-                <table>
-                    <tbody>
-                        {
-                            Values.map( (value: number) => {
-                                if (this.props.myTurn){
-                                    return (<tr key={this.props.keyPropagation + "BButton" + value.toString()}>
-                                        <th>
-                                          <button
-                                            onClick={() => {this.props.onHintValue(value)}}
-                                            style={buttonStyle}
-                                            >
-                                            <BHintIcon
-                                              hintIcon={{color: -1, value}}
-                                              keyPropagation={this.props.keyPropagation + "BButton" + value.toString()}
-                                              ></BHintIcon>
-                                          </button>
-                                        </th>
-                                        <th>
-                                          <button
-                                            onClick={() => {this.props.onHintColor(value)}}
-                                            style={buttonStyle}
-                                            > 
-                                            <BHintIcon
-                                              hintIcon={{color: value, value: -1}}
-                                              keyPropagation={this.props.keyPropagation + "BButton" + value.toString()}
-                                              ></BHintIcon>
-                                          </button>
-                                        </th>
-                                    </tr>
-                                    )
-                                }
-                            })
+            <div
+              style={gridStyle}
+              >
+                {
+                    Values.map( (value: number) => {
+                        if (this.props.myTurn){
+                            return (
+                              <>
+                                <button
+                                  onClick={() => {this.props.onHintValue(value)}}
+                                  style={buttonStyle}
+                                  >
+                                  <BHintIcon
+                                    hintIcon={{color: -1, value}}
+                                    keyPropagation={this.props.keyPropagation + "BButtonValue" + value.toString()}
+                                    ></BHintIcon>
+                                </button>
+                                <button
+                                  onClick={() => {this.props.onHintColor(value)}}
+                                  style={buttonStyle}
+                                  > 
+                                  <BHintIcon
+                                    hintIcon={{color: value, value: -1}}
+                                    keyPropagation={this.props.keyPropagation + "BButtonColor" + value.toString()}
+                                    ></BHintIcon>
+                                </button>
+                              </>
+                            )
                         }
-                    </tbody>
-                </table>
+                    })
+                }
             </div>
         )
     }
