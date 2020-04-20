@@ -1,10 +1,10 @@
-import { RoomDbEntity } from '../entities/Room';
-import { Room, NewRoomResponse, NewRoomResponseStatus } from '../../../common/dto/Room';
-import { UserDbEntity } from '../entities/User';
+import { RoomDb } from '../../db/RoomDb';
+import { Room, NewRoomResponse, NewRoomResponseStatus } from '../../../../common/dto/Room';
+import { UserDb } from '../../db/UserDb';
 
 export class RoomService {
-  public static async newRoom(userDbEntity: UserDbEntity, room: Room) {
-    const roomDbEntity = new RoomDbEntity();
+  public static async newRoom(userDbEntity: UserDb, room: Room) {
+    const roomDbEntity = new RoomDb();
     roomDbEntity.capacity = room.capacity;
     roomDbEntity.gameCode = room.gameCode;
     roomDbEntity.unlisted = room.unlisted;
@@ -16,7 +16,7 @@ export class RoomService {
   }
 
   public static async listRooms() {
-    const roomsFromDb = await RoomDbEntity.find({
+    const roomsFromDb = await RoomDb.find({
       where: { unlisted: false },
       relations: ['users'],
     });
@@ -29,7 +29,7 @@ export class RoomService {
   }
 
   public static async getRoom(id: number) {
-    const room = await RoomDbEntity.findOne({
+    const room = await RoomDb.findOne({
       where: { id },
       relations: ['users'],
     });

@@ -1,8 +1,8 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
-import { UserDbEntity } from './User';
+import { UserDb } from './UserDb';
 
 @Entity()
-export class RoomDbEntity extends BaseEntity {
+export class RoomDb extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -15,6 +15,6 @@ export class RoomDbEntity extends BaseEntity {
   @Column()
   unlisted!: boolean;
 
-  @ManyToMany((type) => UserDbEntity, (userDbEntity) => userDbEntity.rooms)
-  users!: UserDbEntity[];
+  @ManyToMany((type) => UserDb, (userDb) => userDb.rooms)
+  users!: UserDb[];
 }
