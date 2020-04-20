@@ -15,11 +15,22 @@ interface InnerWrapper {
     keyPropagation: string;
 }
 
+let handStyle = {
+  display: "flex"
+}
+
+let cardColStyle = {
+  display: "inline-block"
+}
+
 export class BHand extends React.Component< InnerWrapper, {}> {
     render() {
         var hand = this.props.hand
         return (
-                    <tr>
+                    <div
+                      //class="hand"
+                      style={handStyle}
+                      >
                         { hand.cards.map((card, card_index) => 
                             {
                                 // If player, then 'overwrite' the card with the info from the hint
@@ -43,7 +54,11 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                 }
 
                                 return (
-                                    <th key={this.props.keyPropagation + "BHand" + card_index.toString()}>
+                                    <div 
+                                      key={this.props.keyPropagation + "BHand" + card_index.toString()}
+                                      //class="card_column"
+                                      style={cardColStyle}
+                                      >
                                         <BHint
                                             hint={ hint } 
                                             keyPropagation={this.props.keyPropagation + "BHand" + card_index.toString()}
@@ -64,11 +79,11 @@ export class BHand extends React.Component< InnerWrapper, {}> {
                                             : 
                                             null
                                         }
-                                    </th>
+                                    </div>
                                 )
                             })
                         }
-                    </tr>
+                    </div>
         )
     }
 }
