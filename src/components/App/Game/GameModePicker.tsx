@@ -18,7 +18,7 @@ import Link from 'next/link';
 import { IGameDef } from 'games';
 import { LobbyService } from 'components/Lobby/LobbyService';
 import Router from 'next/router';
-import { AuthHelper } from 'misc/AuthHelper';
+import { getAuthData } from 'misc/AuthHelper';
 import { Room, NewRoomResponseStatus } from 'dto/Room';
 import NicknameRequired from 'components/Lobby/NicknameRequired';
 
@@ -167,7 +167,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
   _playOnlineGame = (info: IGameModeInfo) => () => {
     // second param was e: any
     // check if the user has chosen a nickname:
-    const authData = AuthHelper();
+    const authData = getAuthData();
     if (!authData) {
       this.setState({
         showAuthPrompt: true,

@@ -1,7 +1,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 import NicknamePrompt from './NicknamePrompt';
-import { AuthHelper } from 'misc/AuthHelper';
+import { getAuthData, setAuthData } from 'misc/AuthHelper';
 
 interface Props {
   onSuccess?: (...args: any) => void;
@@ -15,7 +15,7 @@ interface State {
 class NicknameRequired extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    const authData = AuthHelper();
+    const authData = getAuthData();
     this.state = { loginFormOpen: !authData, nickname: authData?.nickname };
   }
 
@@ -37,9 +37,7 @@ class NicknameRequired extends React.Component<Props, State> {
   }
 
   _setNickname = (nickname: string, token: string) => {
-    Cookies.set('nickname', nickname, { sameSite: 'strict' });
-    Cookies.set('token', token, { sameSite: 'strict' });
-
+    setAuthData(nickname, token);
     this.setState((oldState) => ({ ...oldState, nickname }));
 
     // call callback if passed in props:

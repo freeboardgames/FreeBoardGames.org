@@ -18,6 +18,7 @@ import AlertLayer from './AlertLayer';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { QrCodePopup } from '../Lobby/QrCodePopup';
 import { lightGreen } from '@material-ui/core/colors';
+import { Room } from 'dto/Room';
 
 const theme = createMuiTheme({
   palette: {
@@ -28,7 +29,7 @@ const theme = createMuiTheme({
 interface IGameSharingProps {
   gameCode: string;
   roomID: string;
-  roomMetadata: IRoomMetadata;
+  roomMetadata: Room;
 }
 
 interface IGameSharingState {

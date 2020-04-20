@@ -1,6 +1,7 @@
 import React from 'react';
 import MessagePage from 'components/App/MessagePageClass';
-import { LobbyService, IRoomMetadata, IPlayerInRoom } from 'components/App/Lobby/LobbyService';
+// import { LobbyService, IRoomMetadata, IPlayerInRoom } from 'components/App/Lobby/LobbyService';
+import { LobbyService } from 'components/Lobby/LobbyService';
 import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
 import { GameSharing } from 'components/App/Game/GameSharing';
 // import Game from '../../../../components/App/Game/Game';
@@ -14,6 +15,8 @@ import { GAMES_MAP } from 'games';
 import { GameCard } from 'components/App/Game/GameCard';
 import { ListPlayers } from 'components/App/Lobby/ListPlayers';
 import NicknamePrompt from 'components/Lobby/NicknamePrompt';
+import { Room as RoomMetadata } from 'dto/Room';
+import { getAuthData } from 'misc/AuthHelper';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -24,7 +27,7 @@ interface IRoomProps {
 }
 
 interface IRoomState {
-  roomMetadata?: IRoomMetadata;
+  roomMetadata?: RoomMetadata;
   nameTextField?: string;
   loading: boolean;
   gameReady: boolean;
@@ -44,7 +47,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     numberOfTimesUpdatedMetadata: 0,
   };
   private timer: any; // fixme loads state of room
-  private promise: Promise<IRoomMetadata | void>;
+  private promise: Promise<RoomMetadata | void>;
 
   constructor(props) {
     super(props);
@@ -58,8 +61,8 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   render() {
-    const nickname = LobbyService.getNickname();
-    if (!nickname) {
+    const authData = getAuthData();
+    if (!authData) {
       return <FreeBoardGamesBar>{this._getNamePrompt()}</FreeBoardGamesBar>;
     }
     if (this.state.error) {
@@ -100,7 +103,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
         return;
       }
     }
-    if (!LobbyService.getNickname()) {
+    if (!getAuthData()) {
       return;
     }
     if (this.state.numberOfTimesUpdatedMetadata > MAX_TIMES_TO_UPDATE_METADATA) {
@@ -112,34 +115,34 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       ...oldState,
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
-    this.promise = LobbyService.getRoomMetadata(gameCode, roomID)
-      .then(async (metadata) => {
-        if (!metadata.currentUser) {
-          const player: IPlayerInRoom = {
-            playerID: metadata.players.length,
-            roomID,
-            name: LobbyService.getNickname(),
-          };
-          await LobbyService.joinRoom(gameCode, player);
-          return LobbyService.getRoomMetadata(gameCode, roomID);
-        }
-        return metadata;
-      })
-      .then(
-        (metadata) => {
-          if (metadata.numberOfPlayers === metadata.players.length) {
-            this.setState((oldState) => ({ ...oldState, gameReady: true }));
-            this._componentCleanup();
-          }
-          this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
-          return metadata;
-        },
-        () => {
-          const error = 'Failed to fetch room metadata.';
-          this._componentCleanup();
-          this.setState((oldState) => ({ ...oldState, error }));
-        },
-      );
+    // this.promise = LobbyService.getRoomMetadata(gameCode, roomID)
+    //   .then(async (metadata) => {
+    //     if (!metadata.currentUser) {
+    //       const player: IPlayerInRoom = {
+    //         playerID: metadata.players.length,
+    //         roomID,
+    //         name: LobbyService.getNickname(),
+    //       };
+    //       await LobbyService.joinRoom(gameCode, player);
+    //       return LobbyService.getRoomMetadata(gameCode, roomID);
+    //     }
+    //     return metadata;
+    //   })
+    //   .then(
+    //     (metadata) => {
+    //       if (metadata.numberOfPlayers === metadata.players.length) {
+    //         this.setState((oldState) => ({ ...oldState, gameReady: true }));
+    //         this._componentCleanup();
+    //       }
+    //       this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
+    //       return metadata;
+    //     },
+    //     () => {
+    //       const error = 'Failed to fetch room metadata.';
+    //       this._componentCleanup();
+    //       this.setState((oldState) => ({ ...oldState, error }));
+    //     },
+    //   );
   };
 
   _getNamePrompt = (name?: string) => {
@@ -153,13 +156,14 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   };
 
   _setNickname = (nickname: string) => {
-    LobbyService.setNickname(nickname);
-    if (this.state.editingName) {
-      const room = this.state.roomMetadata;
-      LobbyService.renameUser(room.gameCode, room.currentUser, nickname);
-      this._toggleEditingName();
-    }
-    this.updateMetadata();
+    // TODO
+    // LobbyService.setNickname(nickname);
+    // if (this.state.editingName) {
+    //   const room = this.state.roomMetadata;
+    //   LobbyService.renameUser(room.gameCode, room.currentUser, nickname);
+    //   this._toggleEditingName();
+    // }
+    // this.updateMetadata();
   };
 
   componentWillUnmount() {
