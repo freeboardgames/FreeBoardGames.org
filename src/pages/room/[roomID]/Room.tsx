@@ -96,7 +96,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   updateMetadata = (firstRun?: boolean) => {
-    const gameCode = this.props.router.query.gameCode as string;
     const roomID = this.props.router.query.roomID as string;
     if (!firstRun) {
       if (this.state.editingName) {
@@ -115,6 +114,11 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       ...oldState,
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
+
+    this.promise = LobbyService.getRoom(roomID).then((metadata) => {
+      this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
+      return metadata;
+    });
     // this.promise = LobbyService.getRoomMetadata(gameCode, roomID)
     //   .then(async (metadata) => {
     //     if (!metadata.currentUser) {

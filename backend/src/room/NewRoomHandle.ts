@@ -4,7 +4,7 @@ import { Room } from '../../../common/dto/Room';
 import { RoomService } from './services/RoomService';
 import express from 'express';
 
-export class NewRoomHandler extends Handle {
+export class NewRoomHandle extends Handle {
   install(app: express.Application) {
     app.post('/api/rooms', async (req, res) => {
       const { gameCode, capacity, unlisted, token } = req.body;

@@ -26,11 +26,8 @@ export class LobbyService {
     return result;
   }
 
-  public static async getRoom(roomID: string): Promise<NewRoomResponse> {
-    const token = Cookies.get('token') || '';
-    const response = await superagent
-      .post(`${AddressHelper.getMatchServerAddress()}/rooms`)
-      .send({ token, gameCode, capacity, unlisted });
+  public static async getRoom(roomID: string): Promise<Room> {
+    const response = await superagent.get(`${AddressHelper.getMatchServerAddress()}/room/${roomID}`);
     const result = response.body;
     return result;
   }

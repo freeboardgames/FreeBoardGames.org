@@ -14,10 +14,19 @@ import { Handle } from './Handle';
 import { UserDeviceDb } from './db/UserDeviceDb';
 import { Room } from '../../common/dto/Room';
 import { HealthzHandle } from './HealtzHandle';
+import { NewRoomHandle } from './room/NewRoomHandle';
+import { ListRoomsHandle } from './room/ListRoomsHandle';
+import { GetRoomHandle } from './room/GetRoomHandle';
 
 const csrfProtection = csrf({ cookie: true });
 
-const HANDLES: Handle[] = [new HealthzHandle(csrfProtection), new UserHandle(csrfProtection)];
+const HANDLES: Handle[] = [
+  new HealthzHandle(csrfProtection),
+  new UserHandle(csrfProtection),
+  new NewRoomHandle(csrfProtection),
+  new ListRoomsHandle(csrfProtection),
+  new GetRoomHandle(csrfProtection),
+];
 
 const ENTITIES = [UserDb, UserDeviceDb, RoomDb];
 
