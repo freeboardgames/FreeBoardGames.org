@@ -11,7 +11,7 @@ interface InnerWrapper {
 export class BPiles extends React.Component< InnerWrapper, {}> {
     render() {
         return (
-            <div>
+            <>
             { this.props.piles.map((pile, index) => 
                 {
                     if (pile.length === 0) {
@@ -28,7 +28,7 @@ export class BPiles extends React.Component< InnerWrapper, {}> {
                     ></BCard>
                 })
             }
-            </div>
+            </>
         )
     }
 }

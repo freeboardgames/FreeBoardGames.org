@@ -20,15 +20,15 @@ export class BToken extends React.Component< InnerWrapper, {}> {
         }
         
         return (
-            <div>
-                    <div className="image">
-                        <img src={ imagetreat } height="50" width="50"></img>
-                        <h2> { this.props.treats } </h2>
-                    </div>
-                    <div className="image">
-                        <img src={ imagecountdown } height="50" width="50"></img>
-                    </div>
-            </div>
+            <>
+                <div className="image">
+                    <img src={ imagetreat } height="50" width="50"></img>
+                    <h2> { this.props.treats } </h2>
+                </div>
+                <div className="image">
+                    <img src={ imagecountdown } height="50" width="50"></img>
+                </div>
+            </>
         )
     }
 }

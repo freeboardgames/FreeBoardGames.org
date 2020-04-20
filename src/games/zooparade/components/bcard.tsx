@@ -10,59 +10,80 @@ interface InnerWrapper {
 
 export class BCard extends React.Component< InnerWrapper, {}> {
     render() {
-        if (!(this.props.empty === null)) {
-            // No Real Card Face
-            var image: any
-            if (this.props.empty === 0) {
-                image = require('./media/green.png');
-            } else if (this.props.empty=== 1) {
-                image = require('./media/gray.png');
-            } else if (this.props.empty=== 2) {
-                image = require('./media/brown.png');
-            } else if (this.props.empty=== 3) {
-                image = require('./media/yellow.png');
-            } else if (this.props.empty=== 4) {
-                image = require('./media/blue.png');
-            } else if (this.props.empty=== -1) {
-                image = require('./media/empty.png');
-            } else if (this.props.empty=== -2) {
-                image = require('./media/deck.png');
-            }
-            return <div className="image">
-                        <img src={image} width="56" height="88.9"></img>
-                    </div>
-
-        }
-        // Card
+        var cardValue: string
         var image: any
-        var color: any
-        if (!this.props.card) { // Card is null, so its hidden
-            image = require('./media/white.png');
-            color = "" 
-        } else {
-            color = this.props.card.color
-            if (color === 0) {
-                image = require('./media/green_with.png');
-            } else if (color === 1) {
-                image = require('./media/gray_with.png');
-            } else if (color === 2) {
-                image = require('./media/brown_with.png');
-            } else if (color === 3) {
-                image = require('./media/yellow_with.png');
-            } else if (color === 4) {
-                image = require('./media/blue_with.png');
-            } else if (color === -1) {
+        if (this.props.empty !== null) {
+            // No Real Card Face
+            cardValue = "";
+            switch (this.props.empty) {
+              case 0:
+                image = require('./media/green.png');
+                break;
+              case 1:
+                image = require('./media/gray.png');
+                break;
+              case 2:
+                image = require('./media/brown.png');
+                break;
+              case 3:
+                image = require('./media/yellow.png');
+                break;
+              case 4:
+                image = require('./media/blue.png');
+                break;
+              case -1:
+                image = require('./media/empty.png');
+                break;
+              case -2:
                 image = require('./media/deck.png');
+                break;
+            }
+        } else if (!this.props.card) {
+            // Card is null, so its hidden
+            cardValue = ""
+            image = require('./media/white.png');
+        } else {
+            cardValue = String(this.props.card.value !== null ? this.props.card.value : "");
+            switch (this.props.card.color) {
+              case 0:
+                image = require('./media/green_with.png');
+                break;
+              case 1:
+                image = require('./media/gray_with.png');
+                break;
+              case 2:
+                image = require('./media/brown_with.png');
+                break;
+              case 3:
+                image = require('./media/yellow_with.png');
+                break;
+              case 4:
+                image = require('./media/blue_with.png');
+                break;
+              case -1:
+                image = require('./media/deck.png');
+                break;
             }
         }
-
-        //
-        var cardValue = this.props.card ? this.props.card.value : ""
 
         return (
-            <div className="image">
-                <img src={image} width="56" height="88.9"></img>
-                <h2> { cardValue } </h2>
+            <div 
+              className="image"
+              style = {{
+                        width: '56px',
+                        height: '88.9px',
+                        boxSizing: 'border-box',
+                        display: 'inline-block',
+                        overflow: 'hidden',
+                        background: `url(${image}) no-repeat center / contain`,
+                        padding: '5px 9px',
+                        fontSize: '1.8em',
+                        fontWeight: 'bold',
+                        color: '#572511',
+                        textAlign: 'right'
+              }}
+              >
+                { cardValue }
             </div>
         )
     }

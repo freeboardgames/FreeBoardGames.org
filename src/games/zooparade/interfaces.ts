@@ -11,6 +11,11 @@ export interface IHint {
   value: number[]; // same
 }
 
+export interface IHintIcon {
+  color: number; // colour to display where -1 = black
+  value: number; // number to display where -1 = ' '
+}
+
 export interface IHand {
   player: number;
   cards: ICard[];
