@@ -8,18 +8,18 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { UserDbEntity } from './User';
+import { UserDb } from './UserDb';
 
 @Entity()
-export class UserDeviceDbEntity extends BaseEntity {
+export class UserDeviceDb extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ unique: true })
   token!: string;
 
-  @ManyToOne((type) => UserDbEntity, (user) => user.devices)
-  user!: UserDbEntity;
+  @ManyToOne((type) => UserDb, (user) => user.devices)
+  user!: UserDb;
 }
 
 export interface UserDevice {
