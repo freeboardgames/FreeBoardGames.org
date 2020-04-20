@@ -107,13 +107,13 @@ class NicknamePrompt extends React.Component<Props, State> {
       try {
         response = await LobbyService.checkin(nickname);
       } catch {
-        response = { result: CheckinResponseStatus.Exception };
+        response = { status: CheckinResponseStatus.Exception };
       }
-      if (response.result === CheckinResponseStatus.Success) {
+      if (response.status === CheckinResponseStatus.Success) {
         this.props.setNickname(this.state.nameTextField, response.token);
         this.props.closePrompt();
       } else {
-        const errorText = this._handleErrorResponse(response.result);
+        const errorText = this._handleErrorResponse(response.status);
         this.setState({ errorText });
       }
     }

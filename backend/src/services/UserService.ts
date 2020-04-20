@@ -12,7 +12,7 @@ export class UserService {
     // }
     const nickname = user.nickname;
     if (nickname.length < 1 || nickname.length > 12) {
-      return { result: CheckinResponseStatus.BadNickname };
+      return { status: CheckinResponseStatus.BadNickname };
     }
 
     const userDbEntity = new UserDbEntity();
@@ -24,7 +24,7 @@ export class UserService {
       await userDeviceDbEntity.save();
     }
     return {
-      result: CheckinResponseStatus.Success,
+      status: CheckinResponseStatus.Success,
       token: userDeviceDbEntity.token,
     };
   }

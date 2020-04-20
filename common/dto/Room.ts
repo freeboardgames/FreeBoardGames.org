@@ -9,7 +9,8 @@ export interface Room {
 }
 
 export interface NewRoomResponse {
-  result: NewRoomResponseStatus;
+  status: NewRoomResponseStatus;
+  room?: Room;
 }
 
 export enum NewRoomResponseStatus {

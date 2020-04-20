@@ -1,5 +1,5 @@
 import { RoomDbEntity } from '../entities/Room';
-import { Room } from '../../../common/dto/Room';
+import { Room, NewRoomResponse, NewRoomResponseStatus } from '../../../common/dto/Room';
 import { UserDbEntity } from '../entities/User';
 
 export class RoomService {
@@ -11,7 +11,8 @@ export class RoomService {
     roomDbEntity.users = [userDbEntity];
 
     await roomDbEntity.save();
-    return roomDbEntity;
+    const response: NewRoomResponse = { status: NewRoomResponseStatus.Success, room: roomDbEntity };
+    return response;
   }
 
   public static async listRooms() {

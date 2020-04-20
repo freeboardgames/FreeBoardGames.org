@@ -7,7 +7,7 @@ export interface User {
 }
 
 export interface CheckinResponse {
-  result: CheckinResponseStatus;
+  status: CheckinResponseStatus;
   token?: string;
 }
 

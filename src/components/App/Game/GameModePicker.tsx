@@ -18,6 +18,9 @@ import Link from 'next/link';
 import { IGameDef } from 'games';
 import { LobbyService } from 'components/Lobby/LobbyService';
 import Router from 'next/router';
+import { AuthHelper } from 'misc/AuthHelper';
+import { Room, NewRoomResponseStatus } from 'dto/Room';
+import NicknameRequired from 'components/Lobby/NicknameRequired';
 
 interface IGameModePickerProps {
   gameDef: IGameDef;
@@ -27,6 +30,8 @@ interface IGameModePickerState {
   extraInfo: { [mode: string]: number };
   playButtonDisabled: boolean;
   playButtonError: boolean;
+  showAuthPrompt: boolean;
+  showAuthPromptOnSuccess?: (...args: any) => void;
 }
 
 export interface IGameModeInfo {
@@ -62,6 +67,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
       playButtonDisabled: false,
       playButtonError: false,
       extraInfo: { online: this.props.gameDef.minPlayers },
+      showAuthPrompt: false,
     };
   }
 
@@ -71,12 +77,14 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
       modes.push(this._getCard(mode));
     }
     return (
-      <div style={{ marginTop: '8px', maxWidth: '500px' }}>
-        <Typography variant="h6" component="h2" style={{ marginBottom: '16px' }}>
-          Choose game mode
-        </Typography>
-        <div>{modes}</div>
-      </div>
+      <this.ConditionallyShowNicknameRequired>
+        <div style={{ marginTop: '8px', maxWidth: '500px' }}>
+          <Typography variant="h6" component="h2" style={{ marginBottom: '16px' }}>
+            Choose game mode
+          </Typography>
+          <div>{modes}</div>
+        </div>
+      </this.ConditionallyShowNicknameRequired>
     );
   }
 
@@ -158,15 +166,29 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
 
   _playOnlineGame = (info: IGameModeInfo) => () => {
     // second param was e: any
+    // check if the user has chosen a nickname:
+    const authData = AuthHelper();
+    if (!authData) {
+      this.setState({
+        showAuthPrompt: true,
+        showAuthPromptOnSuccess: () => {
+          this.setState({ showAuthPrompt: false });
+          this._playOnlineGame(info)();
+        },
+      });
+      return;
+    }
     this.setState({ ...this.state, playButtonDisabled: true });
     const gameCode = this.props.gameDef.code;
     const numPlayers = this._getExtraInfoValue(info);
     // `/room/new/${this.props.gameDef.code}/${this._getExtraInfoValue(info)}`,
     LobbyService.newRoom(gameCode, numPlayers, false).then(
       (resp) => {
-        // we use .replace instead of .push so that the browser back button works correctly
         console.log(resp);
-        // Router.replace(`/room/${gameCode}/${roomID}`);
+        if (resp.status == NewRoomResponseStatus.Success) {
+          Router.replace(`/room/${resp.room.id}`);
+        }
+        // we use .replace instead of .push so that the browser back button works correctly
       },
       () => {
         // was _err => { ...
@@ -329,6 +351,14 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     }
     return hrefAndAs;
   }
+
+  ConditionallyShowNicknameRequired = (props: { children: any }) => {
+    if (this.state.showAuthPrompt) {
+      return <NicknameRequired onSuccess={this.state.showAuthPromptOnSuccess}>{props.children}</NicknameRequired>;
+    }
+    return props.children;
+  };
+
   static async getInitialProps(router) {
     const gameCode = router.query.gameCode as string;
     return { gameCode };
