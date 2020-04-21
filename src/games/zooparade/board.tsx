@@ -79,7 +79,7 @@ export class Board extends React.Component<IBoardProps,  {}> {
                 <BToken treats={this.props.G.treats} countdown={this.props.G.countdown}></BToken>
                 <BDeck cardsLeft={this.props.G.deckindex}></BDeck>
               </div>
-            <div>
+            <div style={{display: 'flex', flexDirection: 'column', maxWidth: '55px'}}>
               <BPiles piles={this.props.G.piles}
                           keyPropagation={"Board"}
                           ></BPiles>
