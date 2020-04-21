@@ -35,6 +35,4 @@ export class RoomService {
     });
     return room;
   }
-
-  // private static async convertDbToDto(RoomDbEn
 }

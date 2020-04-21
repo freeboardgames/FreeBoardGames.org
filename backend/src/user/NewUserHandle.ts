@@ -4,7 +4,7 @@ import { UserDeviceService } from './services/UserDeviceService';
 import { UserService } from './services/UserService';
 import express from 'express';
 
-export class UserHandle extends Handle {
+export class NewUserHandle extends Handle {
   install(app: express.Application) {
     app.post('/api/users', async (req, res) => {
       const { nickname } = req.body;

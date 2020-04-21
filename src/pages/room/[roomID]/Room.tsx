@@ -17,6 +17,7 @@ import { ListPlayers } from 'components/App/Lobby/ListPlayers';
 import NicknamePrompt from 'components/Lobby/NicknamePrompt';
 import { Room as RoomMetadata } from 'dto/Room';
 import { getAuthData } from 'misc/AuthHelper';
+import NicknameRequired from 'components/Lobby/NicknameRequired';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -35,6 +36,7 @@ interface IRoomState {
   editingName: boolean;
   interval: number | undefined;
   numberOfTimesUpdatedMetadata: number;
+  showNicknameRequired: boolean;
 }
 
 class Room extends React.Component<IRoomProps, IRoomState> {
@@ -45,6 +47,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     editingName: false,
     interval: undefined,
     numberOfTimesUpdatedMetadata: 0,
+    showNicknameRequired: !getAuthData(),
   };
   private timer: any; // fixme loads state of room
   private promise: Promise<RoomMetadata | void>;
@@ -61,10 +64,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   render() {
-    const authData = getAuthData();
-    if (!authData) {
-      return <FreeBoardGamesBar>{this._getNamePrompt()}</FreeBoardGamesBar>;
-    }
     if (this.state.error) {
       const TryAgain = (
         <Button variant="outlined" style={{ margin: '8px' }} onClick={this._tryAgain}>
@@ -86,12 +85,17 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     // ) : null;
     const nicknamePrompt = null;
     return (
-      <FreeBoardGamesBar>
-        {nicknamePrompt}
-        <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
-        {this._getGameSharing()}
-        <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
-      </FreeBoardGamesBar>
+      <NicknameRequired
+        showIf={this.state.showNicknameRequired}
+        onSuccess={() => this.setState({ showNicknameRequired: false })}
+      >
+        <FreeBoardGamesBar>
+          {nicknamePrompt}
+          <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
+          {this._getGameSharing()}
+          <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
+        </FreeBoardGamesBar>
+      </NicknameRequired>
     );
   }
 
@@ -101,9 +105,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       if (this.state.editingName) {
         return;
       }
-    }
-    if (!getAuthData()) {
-      return;
     }
     if (this.state.numberOfTimesUpdatedMetadata > MAX_TIMES_TO_UPDATE_METADATA) {
       const error = 'Session expired.  Please refresh the page.';
@@ -115,10 +116,16 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
 
-    this.promise = LobbyService.getRoom(roomID).then((metadata) => {
-      this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
-      return metadata;
-    });
+    this.promise = LobbyService.getRoom(roomID).then(
+      (metadata) => {
+        this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
+      },
+      (err) => {
+        if (err.status === 401) {
+          this.setState({ showNicknameRequired: true });
+        }
+      },
+    );
     // this.promise = LobbyService.getRoomMetadata(gameCode, roomID)
     //   .then(async (metadata) => {
     //     if (!metadata.currentUser) {

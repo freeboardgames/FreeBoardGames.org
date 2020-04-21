@@ -24,7 +24,7 @@ export class UserService {
   }
 
   public static async getUserDbEntityFromToken(token: string) {
-    const user = await UserDb.findOne({ where: { token } });
-    return user;
+    const userDevice = await UserDeviceDb.findOne({ where: { token }, relations: ['user'] });
+    return userDevice?.user;
   }
 }

@@ -9,7 +9,7 @@ import { UserDb } from './db/UserDb';
 import { RoomDb } from './db/RoomDb';
 import { RoomService } from './room/services/RoomService';
 import { UserService } from './user/services/UserService';
-import { UserHandle } from './user/UserHandle';
+import { NewUserHandle } from './user/NewUserHandle';
 import { Handle } from './Handle';
 import { UserDeviceDb } from './db/UserDeviceDb';
 import { Room } from '../../common/dto/Room';
@@ -22,7 +22,7 @@ const csrfProtection = csrf({ cookie: true });
 
 const HANDLES: Handle[] = [
   new HealthzHandle(csrfProtection),
-  new UserHandle(csrfProtection),
+  new NewUserHandle(csrfProtection),
   new NewRoomHandle(csrfProtection),
   new ListRoomsHandle(csrfProtection),
   new GetRoomHandle(csrfProtection),

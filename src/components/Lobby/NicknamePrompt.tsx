@@ -12,6 +12,7 @@ import { CheckinResponseStatus, CheckinResponse } from 'dto/User';
 interface Props {
   setNickname: (nickname: string, credential: string) => void;
   nickname?: string;
+  blockClickaway?: boolean;
   closePrompt?: () => void;
 }
 
@@ -66,7 +67,7 @@ class NicknamePrompt extends React.Component<Props, State> {
 
   /** Allow the user to exit the nickname prompt if they already have a nickname. */
   _handleClickaway = () => {
-    if (!!this.props.nickname) {
+    if (this.props.closePrompt && !!this.props.nickname && !this.props.blockClickaway) {
       this.props.closePrompt();
     }
   };
@@ -111,7 +112,7 @@ class NicknamePrompt extends React.Component<Props, State> {
       }
       if (response.status === CheckinResponseStatus.Success) {
         this.props.setNickname(this.state.nameTextField, response.token);
-        this.props.closePrompt();
+        if (this.props.closePrompt) this.props.closePrompt();
       } else {
         const errorText = this._handleErrorResponse(response.status);
         this.setState({ errorText });

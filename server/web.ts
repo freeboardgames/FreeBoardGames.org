@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import fs from 'fs';
 import { GAMES_LIST } from 'games';
-import SSROnlyUtil from './SSROnlyUtil';
 
 const dev = process.env.NODE_ENV !== 'production';
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
@@ -146,11 +145,6 @@ app
     });
 
     server.use('/api', createProxyMiddleware({ target: 'http://localhost:8002', changeOrigin: true }));
-
-    server.use((req, res, next) => {
-      req.SSROnlyUtil = SSROnlyUtil;
-      return next();
-    });
 
     server.get('*', csrfProtection, (req, res) => {
       res.cookie('XSRF-TOKEN', req.csrfToken());

@@ -77,14 +77,14 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
       modes.push(this._getCard(mode));
     }
     return (
-      <this.ConditionallyShowNicknameRequired>
+      <NicknameRequired showIf={this.state.showAuthPrompt} onSuccess={this.state.showAuthPromptOnSuccess}>
         <div style={{ marginTop: '8px', maxWidth: '500px' }}>
           <Typography variant="h6" component="h2" style={{ marginBottom: '16px' }}>
             Choose game mode
           </Typography>
           <div>{modes}</div>
         </div>
-      </this.ConditionallyShowNicknameRequired>
+      </NicknameRequired>
     );
   }
 
@@ -352,17 +352,6 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     }
     return hrefAndAs;
   }
-
-  ConditionallyShowNicknameRequired = (props: { children: any }) => {
-    if (this.state.showAuthPrompt) {
-      return (
-        <NicknameRequired alwaysShow={true} onSuccess={this.state.showAuthPromptOnSuccess}>
-          {props.children}
-        </NicknameRequired>
-      );
-    }
-    return props.children;
-  };
 
   static async getInitialProps(router) {
     const gameCode = router.query.gameCode as string;
