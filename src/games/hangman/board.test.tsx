@@ -14,21 +14,15 @@ const updateGameProps = () => {
   wrapper.setProps({ G: state.G, ctx: state.ctx, moves: client.moves });
 };
 
-const getPlayerStatus = (correctGuess: bool, declared: bool) => {
-  return correctGuess ? {
-    secret: 'banana',
-    secretLength: 6,
-    hint: 'fruit',
-    guesses: { a: [0], p: [1, 2], l: [3], e: [4], },
-    declare: declared ? 'apple' : undefined,
-  } : {
+const getPlayerStatus = (correctGuess: boolean, declared: boolean) => {
+  return {
     secret: 'apple',
     secretLength: 5,
-    hint: 'expensive',
-    guesses: { x: [], y: [], z: [], c: [], v: [], w: [], },    
-    declare: declared ? 'banana' : undefined,
+    hint: 'fruit',
+    guesses: correctGuess ? { a: [0], p: [1, 2], l: [3], e: [4] } : { x: [], y: [], z: [], c: [], v: [], w: [] },
+    declare: declared ? 'apple' : undefined,
   };
-}
+};
 
 describe('Hangman UI', () => {
   beforeEach(() => {
@@ -128,10 +122,40 @@ describe('Hangman UI', () => {
 
   it('should show gameover', () => {
     const ctx = { gameover: true, currentPlayer: '0' };
-    const G = { players: { '0': { declare: 'foo' }}};
+    const G = { players: { '0': { declare: 'foo' } } };
     wrapper.setProps({ G, ctx });
 
     expect(wrapper.text()).toContain('Game Over, Player A won!');
+  });
+
+  it('should show that the guess was CORRECT', () => {
+    instance._setSecret('bar', 'bar'); // Player A
+    instance._setSecret('abc', 'qux'); // Player B
+    updateGameProps();
+
+    ['a', 'z', 'b', 'c'].forEach((l) => {
+      let letter = wrapper.find(`[data-testid="letter-${l}-cir"]`).at(0);
+      letter.simulate('click');
+      updateGameProps();
+    });
+
+    expect(wrapper.text()).toContain('Your guess was CORRECT');
+    expect(wrapper.text()).toContain('Your score is 75 points');
+  });
+
+  it('should show that the guess was INCORRECT', () => {
+    instance._setSecret('bar', 'bar'); // Player A
+    instance._setSecret('abc', 'qux'); // Player B
+    updateGameProps();
+
+    ['x', 'y', 'z', 'l', 'm', 'n'].forEach((l) => {
+      let letter = wrapper.find(`[data-testid="letter-${l}-cir"]`).at(0);
+      letter.simulate('click');
+      updateGameProps();
+    });
+
+    expect(wrapper.text()).toContain('Your guess was INCORRECT');
+    expect(wrapper.text()).toContain('The word to be guessed was ABC');
   });
 
   describe('online-specific tests', () => {
@@ -143,57 +167,57 @@ describe('Hangman UI', () => {
       wrapper.setProps({ gameArgs });
     });
 
-    // it("clicks a letter when it's NOT our turn", () => {
-    //   client.moves.setSecret('foo', 'bar'); // Player A
-    //   client.moves.setSecret('baz', 'qux'); // Player B
-    //   updateGameProps();
-    //   // this.props.playerID is "0", but currentPlayer is "1"
+    it("clicks a letter when it's our turn", () => {
+      client.moves.setSecret('foo', 'bar'); // Player A
+      client.moves.setSecret('baz', 'qux'); // Player B
+      updateGameProps();
+      // this.props.playerID is "0", but currentPlayer is "0"
 
-    //   client.moves.selectLetter = jest.fn();
-    //   const letter = wrapper.find('[data-testid="letter-z-cir"]').at(0);
-    //   letter.simulate('click');
+      client.moves.selectLetter = jest.fn();
+      const letter = wrapper.find('[data-testid="letter-z-cir"]').at(0);
+      letter.simulate('click');
 
-    //   expect(client.moves.selectLetter).not.toHaveBeenCalled();
-    // });
+      expect(client.moves.selectLetter).toHaveBeenCalled();
+      expect(client.moves.selectLetter.mock.calls[0][0]).toEqual('z');
+    });
 
-    // it("clicks a letter when it's our turn", () => {
-    //   client.moves.setSecret('foo', 'bar'); // Player A
-    //   client.moves.setSecret('baz', 'qux'); // Player B
-    //   client.moves.selectLetter = jest.fn();
-    //   updateGameProps();
-    //   wrapper.setProps({ playerID: '1' });
+    it("clicks a letter when it's NOT our turn", () => {
+      client.moves.setSecret('foo', 'bar'); // Player A
+      client.moves.setSecret('baz', 'qux'); // Player B
+      client.moves.selectLetter = jest.fn();
+      updateGameProps();
+      wrapper.setProps({ playerID: '1' });
 
-    //   const letter = wrapper.find('[data-testid="letter-z-cir"]').at(0);
-    //   letter.simulate('click');
+      const letter = wrapper.find('[data-testid="letter-z-cir"]').at(0);
+      letter.simulate('click');
 
-    //   expect(client.moves.selectLetter).toHaveBeenCalled();
-    //   expect(client.moves.selectLetter.mock.calls[0][0]).toEqual('z');
-    // });
+      expect(client.moves.selectLetter).not.toHaveBeenCalled();
+    });
 
     it('should show gameover, draw', () => {
       const ctx = { gameover: { draw: true }, currentPlayer: '1' };
-      const G = { players: { '0': getPlayerStatus(true,true), '1': getPlayerStatus(true, true)}};
+      const G = { players: { '0': getPlayerStatus(true, true), '1': getPlayerStatus(true, true) } };
       wrapper.setProps({ G, ctx });
 
       expect(wrapper.text()).toContain('Game Over, draw!');
     });
 
-    // it('should show gameover, you won', () => {
-    //   // props.playerID is "0"
-    //   const ctx = { gameover: { winner: '0' } };
-    //   const G = { players: { '0': getPlayerStatus(true,true), '1': getPlayerStatus(true, true)}};
-    //   wrapper.setProps({ G, ctx });
+    it('should show gameover, you won', () => {
+      // props.playerID is "0"
+      const ctx = { gameover: { winner: '0' }, currentPlayer: '0' };
+      const G = { players: { '0': getPlayerStatus(true, true), '1': getPlayerStatus(true, true) } };
+      wrapper.setProps({ G, ctx });
 
-    //   expect(wrapper.text()).toContain('Game Over, you won!');
-    // });
+      expect(wrapper.text()).toContain('Game Over, you won!');
+    });
 
-    // it('should show gameover, you lost', () => {
-    //   // props.playerID is "0"
-    //   const ctx = { gameover: { winner: '1' } };
-    //   const G = { players: { '0': getPlayerStatus(true,true), '1': getPlayerStatus(true, true)}};
-    //   wrapper.setProps({ G, ctx });
+    it('should show gameover, you lost', () => {
+      // props.playerID is "0"
+      const ctx = { gameover: { winner: '1' }, currentPlayer: '0' };
+      const G = { players: { '0': getPlayerStatus(true, true), '1': getPlayerStatus(true, true) } };
+      wrapper.setProps({ G, ctx });
 
-    //   expect(wrapper.text()).toContain('Game Over, you lost!');
-    // });
+      expect(wrapper.text()).toContain('Game Over, you lost!');
+    });
   });
 });

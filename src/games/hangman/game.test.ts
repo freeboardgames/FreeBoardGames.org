@@ -24,7 +24,7 @@ describe('hangman rules', () => {
     client.moves.selectLetter('z');
     client.moves.selectLetter('k');
     client.moves.selectLetter('v');
-    client.moves.selectLetter('w');    
+    client.moves.selectLetter('w');
 
     const { ctx } = client.getState();
     expect(ctx.gameover).toEqual({ winner: '0' });
@@ -52,7 +52,7 @@ describe('hangman rules', () => {
     client.moves.selectLetter('z');
     client.moves.selectLetter('k');
     client.moves.selectLetter('v');
-    client.moves.selectLetter('w');    
+    client.moves.selectLetter('w');
 
     const { ctx } = client.getState();
     expect(ctx.gameover).toEqual({ draw: true });

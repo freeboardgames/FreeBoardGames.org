@@ -16,7 +16,9 @@ export const HangmanGame: IGameArgs = {
         moveLimit: 1,
       },
       next: 'play',
-      endIf: (G: HangmanState) => { return G.players['0'] && G.players['1'] }
+      endIf: (G: HangmanState) => {
+        return G.players['0'] && G.players['1'];
+      },
     },
     play: {
       //moves: { selectLetter: { move: selectLetter, client: false } },

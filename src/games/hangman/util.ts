@@ -74,11 +74,16 @@ export function getCorrectLettersCount(guesses: Guesses) {
   return count;
 }
 
-export function wasGuessCorrect(G: HangmanState, playerID: string){
+export function wasGuessCorrect(G: HangmanState, playerID: string) {
   const player = G.players[playerID];
   const opponent = G.players[getOpponent(playerID)];
-  if ( !player || !opponent ) { return false; }
-  if ( getCorrectLettersCount(player.guesses) === opponent.secretLength && getMistakeCount(player.guesses) < MAX_MISTAKE_COUNT ) { 
+  if (!player || !opponent) {
+    return false;
+  }
+  if (
+    getCorrectLettersCount(player.guesses) === opponent.secretLength &&
+    getMistakeCount(player.guesses) < MAX_MISTAKE_COUNT
+  ) {
     return true;
   } else {
     return false;
@@ -98,15 +103,23 @@ export function isValidWord(word: string) {
 
 /** Get Score for a given guess made by a player */
 export function getScore(guesses: Guesses) {
-  return getMistakeCount(guesses) >= MAX_MISTAKE_COUNT ? 0 : (Math.ceil((getCorrectLettersCount(guesses) / (getCorrectLettersCount(guesses) + getMistakeCount(guesses))) * 100));
+  return getMistakeCount(guesses) >= MAX_MISTAKE_COUNT
+    ? 0
+    : Math.ceil((getCorrectLettersCount(guesses) / (getCorrectLettersCount(guesses) + getMistakeCount(guesses))) * 100);
 }
 
-/** Check in user is done guessing */ 
+/** Check in user is done guessing */
+
 export function isDoneGuessing(G: HangmanState, playerID: string) {
   const player = G.players[playerID];
   const opponent = G.players[getOpponent(playerID)];
-  if ( !player || !opponent ) { return false; }
-  if ( getCorrectLettersCount(player.guesses) === opponent.secretLength || getMistakeCount(player.guesses) >= MAX_MISTAKE_COUNT ) { 
+  if (!player || !opponent) {
+    return false;
+  }
+  if (
+    getCorrectLettersCount(player.guesses) === opponent.secretLength ||
+    getMistakeCount(player.guesses) >= MAX_MISTAKE_COUNT
+  ) {
     return true;
   } else {
     return false;
@@ -138,19 +151,21 @@ export function getWinner(G: HangmanState) {
   const player = G.players[playerID];
   const opponent = G.players[getOpponent(playerID)];
 
-  if ( !player ) { return; }
+  if (!player) {
+    return;
+  }
 
   // Declare draw if both could not guess correctly
-  if ( getMistakeCount(player.guesses) >= MAX_MISTAKE_COUNT && getMistakeCount(opponent.guesses) >= MAX_MISTAKE_COUNT ) {
+  if (getMistakeCount(player.guesses) >= MAX_MISTAKE_COUNT && getMistakeCount(opponent.guesses) >= MAX_MISTAKE_COUNT) {
     return { draw: true };
   }
 
   // Compare scores of players if both are done guessing
   if (isDoneGuessing(G, '0') && isDoneGuessing(G, '1')) {
-    if (getScore(player.guesses) > getScore(opponent.guesses)){
-      return { winner: playerID }
+    if (getScore(player.guesses) > getScore(opponent.guesses)) {
+      return { winner: playerID };
     } else if (getScore(player.guesses) < getScore(opponent.guesses)) {
-      return { winner: getOpponent(playerID) }
+      return { winner: getOpponent(playerID) };
     } else if (getScore(player.guesses) === getScore(opponent.guesses)) {
       return { draw: true };
     }

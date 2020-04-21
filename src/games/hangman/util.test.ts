@@ -125,7 +125,7 @@ describe('hangman', () => {
               c: [],
               v: [],
               w: [],
-              n: [2, 4]
+              n: [2, 4],
             },
             declare: 'banana',
           },
@@ -133,7 +133,6 @@ describe('hangman', () => {
         },
       });
     });
-
   });
 
   describe('getWinner()', () => {
@@ -203,12 +202,9 @@ describe('hangman', () => {
           },
         },
       };
-      
+
       expect(wasGuessCorrect(fakeG, '0')).toEqual(true);
       expect(wasGuessCorrect(fakeG, '1')).toEqual(false);
-
     });
   });
-
-
 });
