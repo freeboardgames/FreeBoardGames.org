@@ -1,6 +1,22 @@
 import React from 'react';
 import { ICard } from '../interfaces';
 
+import green from './media/green.png';
+import green_with from './media/green_with.png';
+import gray from './media/gray.png';
+import gray_with from './media/gray_with.png';
+import brown from './media/brown.png';
+import brown_with from './media/brown_with.png';
+import yellow from './media/yellow.png';
+import yellow_with from './media/yellow_with.png';
+import blue from './media/blue.png';
+import blue_with from './media/blue_with.png';
+import empty from './media/empty.png';
+import white from './media/white.png';
+import deck from './media/deck.png';
+
+import style from './bcard.css';
+
 interface InnerWrapper {
     card : ICard, // if null, show back of card. 
     empty: number , // If -1, then 'empty', if 0-4 base color
@@ -17,87 +33,60 @@ export class BCard extends React.Component< InnerWrapper, {}> {
             cardValue = "";
             switch (this.props.empty) {
               case 0:
-                image = require('./media/green.png');
+                image = green;
                 break;
               case 1:
-                image = require('./media/gray.png');
+                image = gray;
                 break;
               case 2:
-                image = require('./media/brown.png');
+                image = brown;
                 break;
               case 3:
-                image = require('./media/yellow.png');
+                image = yellow;
                 break;
               case 4:
-                image = require('./media/blue.png');
+                image = blue;
                 break;
               case -1:
-                image = require('./media/empty.png');
+                image = empty;
                 break;
               case -2:
-                image = require('./media/deck.png');
+                image = deck;
                 break;
             }
         } else if (!this.props.card) {
             // Card is null, so its hidden
             cardValue = ""
-            image = require('./media/white.png');
+            image = white;
         } else {
             cardValue = String(this.props.card.value !== null ? this.props.card.value : "");
             switch (this.props.card.color) {
               case 0:
-                image = require('./media/green_with.png');
+                image = green_with;
                 break;
               case 1:
-                image = require('./media/gray_with.png');
+                image = gray_with;
                 break;
               case 2:
-                image = require('./media/brown_with.png');
+                image = brown_with;
                 break;
               case 3:
-                image = require('./media/yellow_with.png');
+                image = yellow_with;
                 break;
               case 4:
-                image = require('./media/blue_with.png');
+                image = blue_with;
                 break;
               case -1:
-                image = require('./media/deck.png');
+                image = deck;
                 break;
             }
         }
 
         return (
-            <div 
-              className="image"
-              style = {{
-                        width: '56px',
-                        height: '88.9px',
-                        boxSizing: 'border-box',
-                        display: 'inline-block',
-                        overflow: 'hidden',
-                        background: `url(${image}) no-repeat center / contain`,
-                        padding: '5px 9px',
-                        fontSize: '1.8em',
-                        fontWeight: 'bold',
-                        color: '#572511',
-                        textAlign: 'right'
-              }}
-              >
-                { cardValue }
+            <div className={style.card}>
+                <img src={image} />
+                <span>{ cardValue }</span>
             </div>
         )
     }
 }
-
-// const styles = {
-//     container: {
-//       position: 'absolute',
-//       top: 0,
-//       left: 0,   
-//       width: '100%',
-//       height: '100%',
-//     },
-//     image: {  
-//       flex: 1,  
-//     }
-//   };

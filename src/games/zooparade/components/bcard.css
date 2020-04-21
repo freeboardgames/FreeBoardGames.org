@@ -1,27 +1,77 @@
-.image {
-    position: absolute;
+.card {
+  width: 100%;
+  min-width: 40px;
+  max-width: 85px;
+  
+  box-sizing: border-box;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  
+  background: no-repeat center / contain;
+  
 }
 
-h2 {
-    position: absolute;
-    top: 37%;
-    left: 46%;
-    font-size: 60pt;
-    color: #000;
-}
-h3 {
-    position: absolute;
-    top: -10%;
-    left: 80%;
-    font-size: 60pt;
-    color: #000;
+.card > img {
+  width: 100%;
 }
 
-h4 {
-    position: absolute;
-    top: -15%;
-    left: 10%;
-    font-size: 60pt;
-    color: #000;
+.card > span {
+  position: absolute;
+  
+  top: 7%;
+  right: 17%;
+  font-size: 45px;
+  line-height: 1;
+  
+  font-weight: bold;
+  color: #572511;
 }
 
+/*
+.green {
+  background-image: url('./media/green.png');
+}
+.green_with {
+  background-image: url('./media/green_with.png');
+}
+
+.gray {
+  background-image: url('./media/gray.png');
+}
+.gray_with {
+  background-image: url('./media/gray_with.png');
+}
+
+.brown {
+  background-image: url('./media/brown.png');
+}
+.brown_with {
+  background-image: url('./media/brown_with.png');
+}
+
+.yellow {
+  background-image: url('./media/yellow.png');
+}
+.yellow_with {
+  background-image: url('./media/yellow_with.png');
+}
+
+.blue {
+  background-image: url('./media/blue.png');
+}
+.blue_with {
+  background-image: url('./media/blue_with.png');
+}
+
+.empty {
+  background-image: url('./media/empty.png');
+}
+
+.white {
+  background-image: url('./media/white.png');
+}
+
+.deck {
+  background-image: url('./media/deck.png');
+} */
