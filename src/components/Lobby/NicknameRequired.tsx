@@ -4,6 +4,7 @@ import NicknamePrompt from './NicknamePrompt';
 import { getAuthData, setAuthData } from 'misc/AuthHelper';
 
 interface Props {
+  alwaysShow?: boolean;
   onSuccess?: (...args: any) => void;
 }
 
@@ -16,7 +17,7 @@ class NicknameRequired extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     const authData = getAuthData();
-    this.state = { loginFormOpen: !authData, nickname: authData?.nickname };
+    this.state = { loginFormOpen: props.alwaysShow || !authData, nickname: authData?.nickname };
   }
 
   render() {

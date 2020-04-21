@@ -167,17 +167,6 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
   _playOnlineGame = (info: IGameModeInfo) => () => {
     // second param was e: any
     // check if the user has chosen a nickname:
-    const authData = getAuthData();
-    if (!authData) {
-      this.setState({
-        showAuthPrompt: true,
-        showAuthPromptOnSuccess: () => {
-          this.setState({ showAuthPrompt: false });
-          this._playOnlineGame(info)();
-        },
-      });
-      return;
-    }
     this.setState({ ...this.state, playButtonDisabled: true });
     const gameCode = this.props.gameDef.code;
     const numPlayers = this._getExtraInfoValue(info);
@@ -190,9 +179,21 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
         }
         // we use .replace instead of .push so that the browser back button works correctly
       },
-      () => {
-        // was _err => { ...
-        this.setState({ ...this.state, playButtonError: true, playButtonDisabled: false });
+      (err) => {
+        if (err.status === 401) {
+          this.setState({
+            showAuthPrompt: true,
+            playButtonDisabled: false,
+            showAuthPromptOnSuccess: () => {
+              this.setState({ showAuthPrompt: false });
+              this._playOnlineGame(info)();
+            },
+          });
+          console.log('401', this.state);
+          return;
+        } else {
+          this.setState({ ...this.state, playButtonError: true, playButtonDisabled: false });
+        }
       },
     );
   };
@@ -354,7 +355,11 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
 
   ConditionallyShowNicknameRequired = (props: { children: any }) => {
     if (this.state.showAuthPrompt) {
-      return <NicknameRequired onSuccess={this.state.showAuthPromptOnSuccess}>{props.children}</NicknameRequired>;
+      return (
+        <NicknameRequired alwaysShow={true} onSuccess={this.state.showAuthPromptOnSuccess}>
+          {props.children}
+        </NicknameRequired>
+      );
     }
     return props.children;
   };
