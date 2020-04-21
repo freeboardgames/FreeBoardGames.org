@@ -35,9 +35,9 @@ export class Board extends React.Component<IBoardProps,  {}> {
     return (
       <GameLayout
           gameArgs={this.props.gameArgs}
+          allowWiderScreen={true}
           >
-          <div /* wrapper - not sure if this is necessary */
-            style={{display: 'flex'}}>
+          <div style={{display: 'flex'}}>
             <div>
                 { rotatedHands.map(hand => {
                       let index = hand.player;
