@@ -16,6 +16,10 @@
   margin-left: 16px;
 }
 
+.selectTeamBtn {
+  float: right;
+}
+
 .card {
   display: flex;
   justify-content: center;
@@ -79,12 +83,6 @@
 .cardAssassin {
   background-color: #50514F;
   fill: #fff;
-}
-
-.buttons {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
 }
 
 .winners {
