@@ -18,6 +18,7 @@ import NicknamePrompt from 'components/Lobby/NicknamePrompt';
 import { Room as RoomMetadata } from 'dto/Room';
 import { getAuthData } from 'misc/AuthHelper';
 import NicknameRequired from 'components/Lobby/NicknameRequired';
+import AlertLayer from 'components/App/Game/AlertLayer';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -81,7 +82,8 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     //   return <Game room={room} />;
     // }
     // const nicknamePrompt = this.state.editingName ? (
-    //   <AlertLayer>{this._getNamePrompt(this.state.roomMetadata.currentUser.name)}</AlertLayer>
+    //   <AlertLayer><NicknamePrompt nickname={this.state.roomMetadata.></AlertLayer>
+    //   // <AlertLayer>{this._getNamePrompt(this.state.roomMetadata.currentUser.name)}</AlertLayer>
     // ) : null;
     const nicknamePrompt = null;
     return (
@@ -116,7 +118,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
 
-    this.promise = LobbyService.getRoom(roomID).then(
+    this.promise = LobbyService.updateRoomMetadata(roomID).then(
       (metadata) => {
         this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
       },
@@ -168,12 +170,12 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   _setNickname = (nickname: string) => {
     // TODO
-    // LobbyService.setNickname(nickname);
     // if (this.state.editingName) {
     //   const room = this.state.roomMetadata;
     //   LobbyService.renameUser(room.gameCode, room.currentUser, nickname);
     //   this._toggleEditingName();
     // }
+    // LobbyService.setNickname(nickname);
     // this.updateMetadata();
   };
 

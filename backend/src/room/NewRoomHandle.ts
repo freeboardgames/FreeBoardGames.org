@@ -8,12 +8,12 @@ export class NewRoomHandle extends Handle {
   install(app: express.Application) {
     app.post('/api/rooms', async (req, res) => {
       const { gameCode, capacity, unlisted, token } = req.body;
-      if (!gameCode || !capacity || !token || typeof unlisted === 'undefined') {
+      if (!gameCode || !capacity || typeof unlisted === 'undefined') {
         res.status(400).send();
         return;
       }
       const userDbEntity = await UserService.getUserDbEntityFromToken(token);
-      if (!userDbEntity) {
+      if (!token || !userDbEntity) {
         res.status(401).send();
         return;
       }
