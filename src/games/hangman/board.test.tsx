@@ -14,13 +14,12 @@ const updateGameProps = () => {
   wrapper.setProps({ G: state.G, ctx: state.ctx, moves: client.moves });
 };
 
-const getPlayerStatus = (correctGuess: boolean, declared: boolean) => {
+const getPlayerStatus = (correctGuess: boolean) => {
   return {
     secret: 'apple',
     secretLength: 5,
     hint: 'fruit',
     guesses: correctGuess ? { a: [0], p: [1, 2], l: [3], e: [4] } : { x: [], y: [], z: [], c: [], v: [], w: [] },
-    declare: declared ? 'apple' : undefined,
   };
 };
 
@@ -122,7 +121,7 @@ describe('Hangman UI', () => {
 
   it('should show gameover', () => {
     const ctx = { gameover: true, currentPlayer: '0' };
-    const G = { players: { '0': { declare: 'foo' } } };
+    const G = { players: { '1': { secret: 'foo' } } };
     wrapper.setProps({ G, ctx });
 
     expect(wrapper.text()).toContain('Game Over, Player A won!');
@@ -196,7 +195,7 @@ describe('Hangman UI', () => {
 
     it('should show gameover, draw', () => {
       const ctx = { gameover: { draw: true }, currentPlayer: '1' };
-      const G = { players: { '0': getPlayerStatus(true, true), '1': getPlayerStatus(true, true) } };
+      const G = { players: { '0': getPlayerStatus(true), '1': getPlayerStatus(true) } };
       wrapper.setProps({ G, ctx });
 
       expect(wrapper.text()).toContain('Game Over, draw!');
@@ -205,7 +204,7 @@ describe('Hangman UI', () => {
     it('should show gameover, you won', () => {
       // props.playerID is "0"
       const ctx = { gameover: { winner: '0' }, currentPlayer: '0' };
-      const G = { players: { '0': getPlayerStatus(true, true), '1': getPlayerStatus(true, true) } };
+      const G = { players: { '0': getPlayerStatus(true), '1': getPlayerStatus(true) } };
       wrapper.setProps({ G, ctx });
 
       expect(wrapper.text()).toContain('Game Over, you won!');
@@ -214,7 +213,7 @@ describe('Hangman UI', () => {
     it('should show gameover, you lost', () => {
       // props.playerID is "0"
       const ctx = { gameover: { winner: '1' }, currentPlayer: '0' };
-      const G = { players: { '0': getPlayerStatus(true, true), '1': getPlayerStatus(true, true) } };
+      const G = { players: { '0': getPlayerStatus(true), '1': getPlayerStatus(true) } };
       wrapper.setProps({ G, ctx });
 
       expect(wrapper.text()).toContain('Game Over, you lost!');

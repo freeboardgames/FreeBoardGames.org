@@ -126,6 +126,19 @@ export function isDoneGuessing(G: HangmanState, playerID: string) {
   }
 }
 
+// /** function to remove secrets */
+// export function StripSecrets(G: HangmanState, ctx: IGameCtx, playerID: string) {
+//   console.log('>>>', playerID);
+//   console.log('>>>', G.players);
+//   if(playerID && !isDoneGuessing(G, playerID)) {
+//     const opponent = getOpponent(playerID);
+//     if (G.players[opponent]){
+//        return { ...G, players: {...G.players, [opponent]: {...G.players[opponent], secret:undefined}}}; 
+//     }
+//   }
+//   return G;
+// }
+
 /** Called when users selects letter. */
 export function selectLetter(G: HangmanState, ctx: IGameCtx, letter: string) {
   const player = G.players[ctx.playerID];
@@ -138,9 +151,9 @@ export function selectLetter(G: HangmanState, ctx: IGameCtx, letter: string) {
   player.guesses[letter] = result;
 
   // in case we want to make secrets really secret
-  if (isDoneGuessing(G, ctx.playerID)) {
-    player.declare = opponent.secret;
-  }
+  // if (isDoneGuessing(G, ctx.playerID)) {
+  //   player.declare = opponent.secret;
+  // }
 
   return G;
 }

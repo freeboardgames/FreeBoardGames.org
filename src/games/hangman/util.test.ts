@@ -127,7 +127,6 @@ describe('hangman', () => {
               w: [],
               n: [2, 4],
             },
-            declare: 'banana',
           },
           '1': { secret: 'banana', secretLength: 6, hint: 'fruit', guesses: {} },
         },

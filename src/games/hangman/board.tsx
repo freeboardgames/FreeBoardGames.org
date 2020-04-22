@@ -246,11 +246,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _showConclusion() {
     const player = this.props.G.players[this.props.ctx.currentPlayer];
+    const opponent = this._opponentState();
     const guessOutcome = wasGuessCorrect(this.props.G, this.props.ctx.currentPlayer) ? 'CORRECT' : 'INCORRECT';
     let guessMessage = `Your guess was ${guessOutcome}.`;
     let extraMessage = wasGuessCorrect(this.props.G, this.props.ctx.currentPlayer)
       ? `Your score is ${getScore(player.guesses)} points.`
-      : `The word to be guessed was ${player.declare.toUpperCase()}.`;
+      : `The word to be guessed was ${opponent.secret.toUpperCase()}.`;
     let nextButton = (
       <Button
         key="key_hangman_next"
