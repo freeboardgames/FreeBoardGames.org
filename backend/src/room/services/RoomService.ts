@@ -29,10 +29,22 @@ export class RoomService {
   }
 
   public static async getRoom(id: number) {
+    // room is retrieved with users who joined most recently being first in the users array
     const room = await RoomDb.findOne({
       where: { id },
       relations: ['users'],
     });
     return room;
+  }
+
+  public static async isUserInRoom(room: RoomDb, user: UserDb) {
+    const usersInRoom = room.users.map((user) => user.id);
+    const userID = user.id;
+    return usersInRoom.includes(userID);
+  }
+
+  public static async joinRoom(room: RoomDb, user: UserDb) {
+    room.users.push(user);
+    await room.save();
   }
 }

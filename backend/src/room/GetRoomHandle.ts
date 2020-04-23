@@ -4,6 +4,7 @@ import express from 'express';
 import { UserService } from '../user/services/UserService';
 import { Room } from '../../../common/dto/Room';
 
+/** returns room information, and also serves as a check-in/keepalive for players */
 export class GetRoomHandle extends Handle {
   install(app: express.Application) {
     // TODO csrfProtection
@@ -20,7 +21,11 @@ export class GetRoomHandle extends Handle {
         res.status(404).send();
         return;
       }
-      const room: Room = { ...roomDbEntity, currentUser: userDbEntity };
+      const userInRoom = await RoomService.isUserInRoom(roomDbEntity, userDbEntity);
+      if (!userInRoom) {
+        await RoomService.joinRoom(roomDbEntity, userDbEntity);
+      }
+      const room: Room = { ...roomDbEntity, currentUserId: userDbEntity.id };
       res.send(room);
     });
   }

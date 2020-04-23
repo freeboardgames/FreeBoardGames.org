@@ -6,7 +6,7 @@ export interface Room {
   gameCode: string;
   unlisted: boolean;
   users?: User[];
-  currentUser?: User;
+  currentUserId?: number;
 }
 
 export interface NewRoomResponse {

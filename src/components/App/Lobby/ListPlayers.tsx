@@ -24,7 +24,10 @@ interface IListPlayersProps {
 export class ListPlayers extends React.Component<IListPlayersProps, {}> {
   render() {
     const metadata = this.props.roomMetadata;
-    const playersList = metadata.users.map((player: User, idx: number) => {
+    // room is retrieved with users who joined most recently being first, so we reverse it:
+    const users = metadata.users.slice().reverse();
+    console.log('users', users);
+    const playersList = users.map((player: User, idx: number) => {
       return (
         <ListItem key={`player-${idx}`}>
           <ListItemAvatar>
@@ -33,11 +36,13 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={player.nickname} />
-          <ListItemSecondaryAction>
-            <Button data-testid="editNickname" onClick={this.props.editNickname}>
-              <EditIcon />
-            </Button>
-          </ListItemSecondaryAction>
+          {metadata.currentUserId === player.id && (
+            <ListItemSecondaryAction>
+              <Button data-testid="editNickname" onClick={this.props.editNickname}>
+                <EditIcon />
+              </Button>
+            </ListItemSecondaryAction>
+          )}
         </ListItem>
       );
     });
