@@ -9,7 +9,7 @@ describe('secret codes rules', () => {
       game: { ...SecretcodesGame, seed: 1 },
     }) as any;
 
-    client.events.endPhase();
+    client.moves.startGame();
     client.moves.clueGiven();
     client.moves.chooseCard(0); // "sock", red card, mistake.
     client.moves.clueGiven();
@@ -40,7 +40,7 @@ describe('secret codes rules', () => {
       game: { ...SecretcodesGame, seed: 1 },
     }) as any;
 
-    client.events.endPhase();
+    client.moves.startGame();
     client.moves.clueGiven();
     client.moves.chooseCard(0); // "sock", red card, mistake.
     client.moves.clueGiven();

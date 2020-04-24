@@ -1,5 +1,5 @@
-import { IG, Stages, TeamColor, Team, CardColor, Card } from './definitions';
-import { Stage, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
+import { IG, TeamColor, Team, CardColor, Card } from './definitions';
+import { IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
 
 export function switchTeam(G: IG, ctx: IGameCtx, teamColor: TeamColor) {
   const oldTeam = getPlayerTeam(G, ctx.playerID);
@@ -29,27 +29,57 @@ export function makeSpymaster(G: IG, ctx: IGameCtx, playerID: string) {
 }
 
 export function clueGiven(G: IG, ctx: IGameCtx) {
-  ctx.events.endStage();
-  ctx.events.setActivePlayers(
-    (function (G: IG, ctx: IGameCtx) {
-      const team = getPlayerTeam(G, ctx.playerID);
-      if (ctx.numPlayers === 2 || team.playersID.length === 1) {
-        return {
-          currentPlayer: Stages.guess,
-        };
-      }
+  const team = getCurrentTeam(G);
+  ctx.events.endPhase();
+  if (ctx.numPlayers > 2) {
+    const activePlayers = { value: {} };
+    for (const player of getActivePlayers(team, ctx)) {
+      activePlayers.value[player] = null;
+    }
+    ctx.events.setActivePlayers(activePlayers);
+  }
+}
 
-      return {
-        currentPlayer: Stage.NULL,
-        value: team.playersID.reduce((acc, playerID) => {
-          if (playerID === team.spymasterID) return acc;
+export function getActivePlayers(team: Team, ctx: IGameCtx): string[] {
+  if (ctx.numPlayers > 2) {
+    return team.playersID.filter((p) => p !== team.spymasterID);
+  } else {
+    return [team.spymasterID];
+  }
+}
 
-          acc[playerID] = Stages.guess;
-          return acc;
-        }, {}),
-      };
-    })(G, ctx),
-  );
+export function getCurrentTeam(G: IG): Team {
+  return G.teams[G.currentTeamIndex];
+}
+
+export function gameCanStart(G: IG, ctx: IGameCtx) {
+  const { numPlayers } = ctx;
+  if (G.teams[0].spymasterID === null || G.teams[1].spymasterID === null) return false;
+  return G.teams.reduce((sum, t) => sum + t.playersID.length, 0) === numPlayers;
+}
+
+export function startGame(G: IG, ctx: IGameCtx) {
+  if (!gameCanStart(G, ctx)) {
+    return INVALID_MOVE;
+  }
+
+  G.teams = ctx.random.Shuffle(G.teams);
+  G.currentTeamIndex = 0;
+
+  const key = ctx.random.Shuffle(G.cards).slice(0, 18) as Card[];
+  key.map((card, index) => {
+    if (index === 0) card.color = CardColor.assassin;
+    else if (index <= 8) card.color = CardColor.blue;
+    else if (index <= 16) card.color = CardColor.red;
+    else card.color = getCardColorByTeamColor(getCurrentTeam(G).color);
+  });
+  ctx.events.endPhase();
+  return G;
+}
+
+export function pass(G: IG, ctx: IGameCtx) {
+  G.currentTeamIndex = (G.currentTeamIndex + 1) % 2;
+  ctx.events.endPhase();
 }
 
 export function chooseCard(G: IG, ctx: IGameCtx, cardIndex: number) {
@@ -59,7 +89,7 @@ export function chooseCard(G: IG, ctx: IGameCtx, cardIndex: number) {
   const color = getCardColorByTeamColor(team.color);
 
   if (G.cards[cardIndex].color !== color) {
-    ctx.events.endTurn();
+    pass(G, ctx);
   }
 }
 
@@ -80,7 +110,7 @@ export function makeCard(word: string): Card {
 }
 
 export function makeTeam(color: TeamColor): Team {
-  return { color, playersID: [], spymasterID: null, start: false };
+  return { color, playersID: [], spymasterID: null };
 }
 
 export function getCardColorByTeamColor(color: TeamColor): CardColor {
