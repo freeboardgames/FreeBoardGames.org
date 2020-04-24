@@ -21,9 +21,12 @@ export class GetRoomHandle extends Handle {
         res.status(404).send();
         return;
       }
-      const userInRoom = await RoomService.isUserInRoom(roomDbEntity, userDbEntity);
-      if (!userInRoom) {
-        await RoomService.joinRoom(roomDbEntity, userDbEntity);
+      // join the room if it is not full, and the user is not already in it
+      if (roomDbEntity.users.length < roomDbEntity.capacity) {
+        const userInRoom = await RoomService.isUserInRoom(roomDbEntity, userDbEntity);
+        if (!userInRoom) {
+          await RoomService.joinRoom(roomDbEntity, userDbEntity);
+        }
       }
       const room: Room = { ...roomDbEntity, currentUserId: userDbEntity.id };
       res.send(room);
