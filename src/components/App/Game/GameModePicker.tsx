@@ -189,7 +189,6 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
               this._playOnlineGame(info)();
             },
           });
-          console.log('401', this.state);
           return;
         } else {
           this.setState({ ...this.state, playButtonError: true, playButtonDisabled: false });

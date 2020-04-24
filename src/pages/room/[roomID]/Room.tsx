@@ -19,6 +19,7 @@ import { Room as RoomMetadata } from 'dto/Room';
 import { getAuthData } from 'misc/AuthHelper';
 import NicknameRequired from 'components/Lobby/NicknameRequired';
 import AlertLayer from 'components/App/Game/AlertLayer';
+import { RenameUserResponseStatus } from 'dto/User';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -81,11 +82,13 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     //   const room = this.state.roomMetadata;
     //   return <Game room={room} />;
     // }
-    // const nicknamePrompt = this.state.editingName ? (
-    //   <AlertLayer><NicknamePrompt nickname={this.state.roomMetadata.></AlertLayer>
-    //   // <AlertLayer>{this._getNamePrompt(this.state.roomMetadata.currentUser.name)}</AlertLayer>
-    // ) : null;
-    const nicknamePrompt = null;
+    const authData = getAuthData();
+    const nickname = authData.nickname;
+    const nicknamePrompt = this.state.editingName ? (
+      <AlertLayer>
+        <NicknamePrompt nickname={nickname} setNickname={this._renameUser} closePrompt={this._toggleEditingName} />
+      </AlertLayer>
+    ) : null;
     return (
       <NicknameRequired
         showIf={this.state.showNicknameRequired}
@@ -158,17 +161,12 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     //   );
   };
 
-  _getNamePrompt = (name?: string) => {
-    const togglePrompt = this.state.editingName ? this._toggleEditingName : null;
-    // return <NicknamePrompt setNickname={this._setNickname} nickname={name} togglePrompt={togglePrompt} />;
-    return <NicknamePrompt setNickname={this._setNickname} nickname={name} />;
-  };
-
   _toggleEditingName = () => {
     this.setState((oldState) => ({ ...oldState, editingName: !this.state.editingName }));
   };
 
-  _setNickname = (nickname: string) => {
+  _renameUser = async (newNickname: string) => {
+    LobbyService.renameUser(newNickname);
     // TODO
     // if (this.state.editingName) {
     //   const room = this.state.roomMetadata;

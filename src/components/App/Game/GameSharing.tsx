@@ -148,8 +148,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
 
   _getLink = () => {
     const origin = window.location.origin;
-    const gameCode = this.props.gameCode;
     const roomID = this.props.roomID;
-    return `${origin}/room/${gameCode}/${roomID}`;
+    return `${origin}/room/${roomID}`;
   };
 }

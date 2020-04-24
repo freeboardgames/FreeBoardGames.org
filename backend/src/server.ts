@@ -10,6 +10,7 @@ import { RoomDb } from './db/RoomDb';
 import { RoomService } from './room/services/RoomService';
 import { UserService } from './user/services/UserService';
 import { NewUserHandle } from './user/NewUserHandle';
+import { RenameUserHandle } from './user/RenameUserHandle';
 import { Handle } from './Handle';
 import { UserDeviceDb } from './db/UserDeviceDb';
 import { Room } from '../../common/dto/Room';
@@ -23,6 +24,7 @@ const csrfProtection = csrf({ cookie: true });
 const HANDLES: Handle[] = [
   new HealthzHandle(csrfProtection),
   new NewUserHandle(csrfProtection),
+  new RenameUserHandle(csrfProtection),
   new NewRoomHandle(csrfProtection),
   new ListRoomsHandle(csrfProtection),
   new GetRoomHandle(csrfProtection),

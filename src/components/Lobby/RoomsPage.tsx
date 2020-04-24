@@ -15,7 +15,7 @@ export class RoomsPage extends React.Component<Props, {}> {
   render() {
     const gameCode = this.props.gameCode;
     return (
-      <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView nicknameRequired>
+      <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <div style={{ marginBottom: '16px' }}>
           <Typography
             component="h2"

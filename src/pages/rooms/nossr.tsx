@@ -4,14 +4,16 @@ import { Room } from 'dto/Room';
 import MessagePage from 'components/App/MessagePageClass';
 import TryAgainReloadButton from 'components/App/TryAgainReloadButton';
 import { RoomsPage } from 'components/Lobby/RoomsPage';
+import NicknameRequired from 'components/Lobby/NicknameRequired';
 
 interface State {
   rooms: Room[];
   error: boolean;
+  needsAuth: boolean;
 }
 
 class Rooms extends React.Component<{}, State> {
-  state = { rooms: [], error: false };
+  state = { rooms: [], error: false, needsAuth: false };
   render() {
     if (this.state.error)
       return (
@@ -24,7 +26,7 @@ class Rooms extends React.Component<{}, State> {
     try {
       const rooms = await LobbyService.list();
       this.setState((oldState) => ({ ...oldState, rooms }));
-    } catch (e) {
+    } catch (err) {
       this.setState((oldState) => ({ ...oldState, error: true }));
     }
   }
