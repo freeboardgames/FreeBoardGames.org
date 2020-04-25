@@ -76,7 +76,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     this.props.moves.chooseCard(cardIndex);
   };
 
-  _endTurn = () => {
+  _pass = () => {
     if (!this._isActive()) return;
 
     this.props.moves.pass();
@@ -99,7 +99,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       );
     } else {
       const button = this._isActive() ? (
-        <Button className={css.playActionBtn} variant="contained" onClick={this._endTurn}>
+        <Button className={css.playActionBtn} variant="contained" onClick={this._pass}>
           Pass
         </Button>
       ) : null;

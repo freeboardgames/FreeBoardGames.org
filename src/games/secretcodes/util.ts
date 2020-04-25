@@ -33,14 +33,14 @@ export function clueGiven(G: IG, ctx: IGameCtx) {
   ctx.events.endPhase();
   if (ctx.numPlayers > 2) {
     const activePlayers = { value: {} };
-    for (const player of getActivePlayers(team, ctx)) {
+    for (const player of getActivePlayersWithoutSpymaster(team, ctx)) {
       activePlayers.value[player] = null;
     }
     ctx.events.setActivePlayers(activePlayers);
   }
 }
 
-export function getActivePlayers(team: Team, ctx: IGameCtx): string[] {
+export function getActivePlayersWithoutSpymaster(team: Team, ctx: IGameCtx): string[] {
   if (ctx.numPlayers > 2) {
     return team.playersID.filter((p) => p !== team.spymasterID);
   } else {

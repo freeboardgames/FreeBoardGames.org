@@ -1,19 +1,19 @@
-import { IGameArgs, IGameCtx, ActivePlayers } from 'boardgame.io/core';
-import { words } from './constants';
-import { Card, CardColor, IG, Phases, Team, TeamColor } from './definitions';
+import {ActivePlayers, IGameArgs, IGameCtx} from 'boardgame.io/core';
+import {words} from './constants';
+import {Card, CardColor, IG, Phases, TeamColor} from './definitions';
 import {
   chooseCard,
   clueGiven,
+  getActivePlayersWithoutSpymaster,
+  getCurrentTeam,
   getOtherTeam,
   getPlayerTeam,
   makeCard,
   makeSpymaster,
   makeTeam,
-  switchTeam,
-  startGame,
-  getCurrentTeam,
-  getActivePlayers,
   pass,
+  startGame,
+  switchTeam,
 } from './util';
 
 const GameConfig: IGameArgs = {
@@ -93,7 +93,7 @@ const GameConfig: IGameArgs = {
         order: {
           first: () => 0,
           next: () => 0,
-          playOrder: (G: IG, ctx: IGameCtx): string[] => getActivePlayers(getCurrentTeam(G), ctx),
+          playOrder: (G: IG, ctx: IGameCtx): string[] => getActivePlayersWithoutSpymaster(getCurrentTeam(G), ctx),
         },
       },
       moves: {
@@ -125,11 +125,11 @@ const GameConfig: IGameArgs = {
       }
       if (blue.length === 0)
         return {
-          winner: G.teams[0],
+          winner: G.teams.find(team => team.color === TeamColor.Blue),
         };
       if (red.length === 0)
         return {
-          winner: G.teams[1],
+          winner: G.teams.find(team => team.color === TeamColor.Red),
         };
     }
   },
