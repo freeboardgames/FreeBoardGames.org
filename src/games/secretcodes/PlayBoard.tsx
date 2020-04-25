@@ -7,6 +7,7 @@ import { isLocalGame, isOnlineGame } from '../common/gameMode';
 import Button from '@material-ui/core/Button';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 import { getPlayerTeam, isPlayerSpymaster } from './util';
+import { PlayerBadges } from 'games/common/PlayerBadges';
 
 interface IPlayBoardProps {
   G: IG;
@@ -154,6 +155,21 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     return <div className={css.board}>{board}</div>;
   };
 
+  _renderPlayerBadges = () => {
+    const colors = this.props.gameArgs.players
+      .map((player) => player.playerID.toString())
+      .map((playerID) => getPlayerTeam(this.props.G, playerID).color)
+      .map((color) => (color == TeamColor.Red ? '#F25F5C' : '#247BA0'));
+    return (
+      <PlayerBadges
+        playerID={this.props.playerID}
+        players={this.props.gameArgs.players}
+        colors={colors}
+        ctx={this.props.ctx}
+      />
+    );
+  };
+
   _renderActionButtons = () => {
     if (isPlayerSpymaster(this.props.G, this._playerID())) {
       return (
@@ -168,10 +184,9 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     return (
       <div>
         {this._renderHeader()}
-
         {this._renderCardGrid()}
-
-        <div className={css.buttons}>{this._renderActionButtons()}</div>
+        {this._renderActionButtons()}
+        {this._renderPlayerBadges()}
       </div>
     );
   }

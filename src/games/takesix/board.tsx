@@ -6,7 +6,7 @@ import { IG, getScoreBoard, isAllowedDeck } from './game';
 import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
 import { Scoreboard } from '../common/Scoreboard';
-import { ScoreBadges } from '../common/ScoreBadges';
+import { PlayerBadges } from '../common/PlayerBadges';
 import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
@@ -107,12 +107,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         </Typography>
         <Decks G={this.props.G} ctx={this.props.ctx} playerID={this.props.playerID} selectDeck={this._selectDeck} />
         <PlayerHand G={this.props.G} playerID={this.props.playerID} selectCard={this._selectCard} />
-        <ScoreBadges
-          scoreboard={getScoreBoard(this.props.G)}
-          playerID={this.props.playerID}
-          players={this.props.gameArgs.players}
-          ctx={this.props.ctx}
-        />
+        <div style={{ clear: 'left', paddingTop: '8px' }}>
+          <PlayerBadges
+            scores={getScoreBoard(this.props.G)}
+            playerID={this.props.playerID}
+            players={this.props.gameArgs.players}
+            ctx={this.props.ctx}
+          />
+        </div>
       </GameLayout>
     );
   }
