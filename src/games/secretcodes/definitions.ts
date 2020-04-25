@@ -7,7 +7,6 @@ export interface Team {
   color: TeamColor;
   playersID: string[];
   spymasterID: null | string;
-  start: boolean;
 }
 
 export enum CardColor {
@@ -26,15 +25,11 @@ export interface Card {
 export interface IG {
   teams: Team[];
   cards: Card[];
+  currentTeamIndex?: number;
 }
 
 export enum Phases {
   lobby = 'lobby',
-  play = 'play',
-}
-
-export enum Stages {
-  chooseTeam = 'chooseTeam',
   giveClue = 'giveClue',
   guess = 'guess',
 }

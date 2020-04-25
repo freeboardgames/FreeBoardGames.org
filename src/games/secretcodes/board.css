@@ -12,12 +12,13 @@
   margin-bottom: 1rem;
 }
 
-.playActionBtn {
-  margin-left: 16px;
+button.playActionBtn {
+  margin-left: 0.5rem;
 }
 
 .selectTeamBtn {
   float: right;
+  margin-right: 4px;
 }
 
 .card {
