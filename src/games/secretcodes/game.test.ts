@@ -10,8 +10,8 @@ describe('secret codes rules', () => {
     }) as any;
 
     client.moves.startGame();
-    client.moves.clueGiven();   // blue team starts
-    client.moves.pass();        // pass turn to red team
+    client.moves.clueGiven(); // blue team starts
+    client.moves.pass(); // pass turn to red team
     client.moves.clueGiven();
     client.moves.chooseCard(0); // "sock", red card, mistake.
     client.moves.clueGiven();
@@ -46,8 +46,8 @@ describe('secret codes rules', () => {
     }) as any;
 
     client.moves.startGame();
-    client.moves.clueGiven();   // blue team starts
-    client.moves.pass();        // pass turn to red team
+    client.moves.clueGiven(); // blue team starts
+    client.moves.pass(); // pass turn to red team
     client.moves.clueGiven();
     client.moves.chooseCard(0); // "sock", red card, mistake.
     client.moves.clueGiven();

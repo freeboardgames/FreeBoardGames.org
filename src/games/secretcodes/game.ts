@@ -1,6 +1,6 @@
-import {ActivePlayers, IGameArgs, IGameCtx} from 'boardgame.io/core';
-import {words} from './constants';
-import {Card, CardColor, IG, Phases, TeamColor} from './definitions';
+import { ActivePlayers, IGameArgs, IGameCtx } from 'boardgame.io/core';
+import { words } from './constants';
+import { Card, CardColor, IG, Phases, TeamColor } from './definitions';
 import {
   chooseCard,
   clueGiven,
@@ -125,11 +125,11 @@ const GameConfig: IGameArgs = {
       }
       if (blue.length === 0)
         return {
-          winner: G.teams.find(team => team.color === TeamColor.Blue),
+          winner: G.teams.find((team) => team.color === TeamColor.Blue),
         };
       if (red.length === 0)
         return {
-          winner: G.teams.find(team => team.color === TeamColor.Red),
+          winner: G.teams.find((team) => team.color === TeamColor.Red),
         };
     }
   },
