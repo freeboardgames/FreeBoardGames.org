@@ -2,21 +2,18 @@ import React from 'react';
 import { IHint } from '../interfaces';
 import { BHintIcon } from './bhinticon';
 
+import style from './bhand.css';
+
 interface InnerWrapper {
     hint: IHint;
 
     keyPropagation: string;
 }
 
-let hintRowStyle = {
-  display: 'flex'
-}
-
 export class BHint extends React.Component< InnerWrapper, {}> {
     render() {
         return (
-            <div>
-              <div style={hintRowStyle}>
+            <div className={style.hints}>
                 { this.props.hint.color.map((value: number , index: number ) =>
                         {
                             return <BHintIcon
@@ -25,8 +22,6 @@ export class BHint extends React.Component< InnerWrapper, {}> {
                                      ></BHintIcon>
                         })
                 }
-              </div>
-              <div style={hintRowStyle}>
                 { this.props.hint.value.map((value: number , index: number ) =>
                         {
                             return <BHintIcon
@@ -35,7 +30,6 @@ export class BHint extends React.Component< InnerWrapper, {}> {
                                      ></BHintIcon>
                         })
                 }
-              </div>
             </div>
         )
     }
