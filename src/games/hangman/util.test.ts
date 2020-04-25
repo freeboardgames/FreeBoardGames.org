@@ -1,5 +1,5 @@
 import { HangmanState, Guesses } from './definitions';
-import { setSecret, selectLetter, getWinner, getMaskedWord, isValidWord, wasGuessCorrect } from './util';
+import { setSecret, selectLetter, getWinner, getMaskedWord, isValidWord, isGuessCorrect } from './util';
 
 describe('hangman', () => {
   describe('setSecret()', () => {
@@ -171,7 +171,7 @@ describe('hangman', () => {
     });
   });
 
-  describe('wasGuessCorrect()', () => {
+  describe('isGuessCorrect()', () => {
     it('should find guess was correct', () => {
       const fakeG: HangmanState = {
         players: {
@@ -202,8 +202,8 @@ describe('hangman', () => {
         },
       };
 
-      expect(wasGuessCorrect(fakeG, '0')).toEqual(true);
-      expect(wasGuessCorrect(fakeG, '1')).toEqual(false);
+      expect(isGuessCorrect(fakeG, '0')).toEqual(true);
+      expect(isGuessCorrect(fakeG, '1')).toEqual(false);
     });
   });
 });

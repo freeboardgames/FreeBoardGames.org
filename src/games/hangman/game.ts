@@ -7,11 +7,6 @@ export const HangmanGame: IGameArgs = {
   name: 'hangman',
 
   setup: () => HANGMAN_INITIAL_STATE,
-
-  // playerView: (G, ctx, playerID) => {
-  //   return StripSecrets(G, ctx, playerID);
-  // },
-
   phases: {
     prepare: {
       moves: { setSecret },

@@ -9,7 +9,7 @@ import { Modal, Button } from '@material-ui/core';
 import { isPlayersTurn } from 'games/common/GameUtil';
 import { IGameCtx } from 'boardgame.io/core';
 import { HangmanState, PlayerState } from './definitions';
-import { getOpponent, getMistakeCount, getMaskedWord, wasGuessCorrect, getScore, isDoneGuessing } from './util';
+import { getOpponent, getMistakeCount, getMaskedWord, isGuessCorrect, getScore, isDoneGuessing } from './util';
 import { ALPHABET, MAX_MISTAKE_COUNT, MAX_WORD_LENGTH } from './constants';
 
 interface IBoardState {
@@ -247,9 +247,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _showConclusion() {
     const player = this.props.G.players[this.props.ctx.currentPlayer];
     const opponent = this._opponentState();
-    const guessOutcome = wasGuessCorrect(this.props.G, this.props.ctx.currentPlayer) ? 'CORRECT' : 'INCORRECT';
+    const guessOutcome = isGuessCorrect(this.props.G, this.props.ctx.currentPlayer) ? 'CORRECT' : 'INCORRECT';
     let guessMessage = `Your guess was ${guessOutcome}.`;
-    let extraMessage = wasGuessCorrect(this.props.G, this.props.ctx.currentPlayer)
+    let extraMessage = isGuessCorrect(this.props.G, this.props.ctx.currentPlayer)
       ? `Your score is ${getScore(player.guesses)} points.`
       : `The word to be guessed was ${opponent.secret.toUpperCase()}.`;
     let nextButton = (

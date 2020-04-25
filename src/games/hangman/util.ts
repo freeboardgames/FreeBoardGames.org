@@ -74,20 +74,16 @@ export function getCorrectLettersCount(guesses: Guesses) {
   return count;
 }
 
-export function wasGuessCorrect(G: HangmanState, playerID: string) {
+export function isGuessCorrect(G: HangmanState, playerID: string) {
   const player = G.players[playerID];
   const opponent = G.players[getOpponent(playerID)];
   if (!player || !opponent) {
     return false;
   }
-  if (
+  return (
     getCorrectLettersCount(player.guesses) === opponent.secretLength &&
     getMistakeCount(player.guesses) < MAX_MISTAKE_COUNT
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  );
 }
 
 /** Valides if all characters on this word is valid. */
@@ -116,28 +112,11 @@ export function isDoneGuessing(G: HangmanState, playerID: string) {
   if (!player || !opponent) {
     return false;
   }
-  if (
+  return (
     getCorrectLettersCount(player.guesses) === opponent.secretLength ||
     getMistakeCount(player.guesses) >= MAX_MISTAKE_COUNT
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  );
 }
-
-// /** function to remove secrets */
-// export function StripSecrets(G: HangmanState, ctx: IGameCtx, playerID: string) {
-//   console.log('>>>', playerID);
-//   console.log('>>>', G.players);
-//   if(playerID && !isDoneGuessing(G, playerID)) {
-//     const opponent = getOpponent(playerID);
-//     if (G.players[opponent]){
-//        return { ...G, players: {...G.players, [opponent]: {...G.players[opponent], secret:undefined}}}; 
-//     }
-//   }
-//   return G;
-// }
 
 /** Called when users selects letter. */
 export function selectLetter(G: HangmanState, ctx: IGameCtx, letter: string) {
@@ -149,11 +128,6 @@ export function selectLetter(G: HangmanState, ctx: IGameCtx, letter: string) {
   const opponent = G.players[getOpponent(ctx.playerID)];
   const result = getWordIndexes(opponent.secret, letter);
   player.guesses[letter] = result;
-
-  // in case we want to make secrets really secret
-  // if (isDoneGuessing(G, ctx.playerID)) {
-  //   player.declare = opponent.secret;
-  // }
 
   return G;
 }
