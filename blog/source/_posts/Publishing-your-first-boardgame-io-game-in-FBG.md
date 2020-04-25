@@ -15,7 +15,7 @@ First, fork the [FreeBoardGame repo](https://github.com/freeboardgames/FreeBoard
 
 ![fork button image](https://github-images.s3.amazonaws.com/help/bootcamp/Bootcamp-Fork.png)
 
-Then, `git clone` your new forked repo, and run `yarn install` to install all dependencies. After everything is downloaded, run `yarn run dev` to run FBG on your machine locally, it should be available at [http://localhost:8000](http://localhost:8000/).
+Then, `git clone` your new forked repo, and run `yarn install` to install all dependencies. After everything is downloaded, run `yarn run dev` to run FBG on your machine locally, it should be available at [http://localhost:8000](http://localhost:3000/).
 
 You are all set to start coding your new game!
 
@@ -26,8 +26,8 @@ We keep most of the game code in their own folder. The first thing we have to do
 Now, let's create its first configuration file, `src/games/foobar/index.ts`:
 
 ```typescript
-import Thumbnail from './media/thumbnail.png';
-import { GameMode } from '../../App/Game/GameModePicker';
+const Thumbnail = require('./media/thumbnail.png?lqip-colors');
+import { GameMode } from '../../components/App/Game/GameModePicker';
 import { IGameDef } from '../../games';
 import instructions from './instructions.md';
 
@@ -97,8 +97,8 @@ These two pieces are where the bulk of the game code will live. Let's use placeh
 
 ```typescript
 import * as React from 'react';
-import { IGameArgs } from '../../App/Game/GameBoardWrapper';
-import { GameLayout } from '../../App/Game/GameLayout';
+import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
+import { GameLayout } from '../../components/App/Game/GameLayout';
 import { IGameCtx } from 'boardgame.io/core';
 import { IG } from './game';
 
@@ -113,7 +113,8 @@ interface IBoardProps {
 export class Board extends React.Component<IBoardProps, {}> {
   render() {
     return (
-      <GameLayout>
+      <GameLayout
+        gameArgs={this.props.gameArgs}> 
         <h2>Hello world!</h2>
         <pre>{JSON.stringify(this.props.gameArgs, null, 2)}</pre>
       </GameLayout>
@@ -131,7 +132,7 @@ export interface IG {
   count: number;
 }
 
-export const FooBarGame = Game({
+export const FooBarGame = {
   name: 'foobar',
 
   setup: () => ({ count: 0 }),
@@ -145,7 +146,7 @@ export const FooBarGame = Game({
   flow: {
     movesPerTurn: 1,
   },
-});
+};
 ```
 
 ## Finishing everything
@@ -156,7 +157,7 @@ Now you have a skeleton of a game in your new folder, but you still need to add 
 import { fooBarGameDef } from './foobar';
 ```
 
-Then, in the same file, under `GAMES_MAP`, add `foobar: fooBarGameDef,` and under `GAMES_LIST`, add `GAMES_MAP.fooBar,`.
+Then, in the same file, under `GAMES_MAP`, add `foobar: fooBarGameDef,` and under `GAMES_LIST`, add `GAMES_MAP.foobar,`.
 
 Done! You can run now `yarn run dev` and you should be able to see your new game on the home page! It will have two game modes, one for playing with friends locally and another for playing with friends over the internet. Because we have `debug: true` in `config.ts`, you will be able to see the boardgame.io debug menu.
 

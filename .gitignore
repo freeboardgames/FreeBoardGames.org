@@ -123,6 +123,7 @@ static/sitemap.xml
 static/sw.js
 static/sw.js.map
 static/workbox-*
+backend/test.db
 
 # FBG Blog
 blog/dist

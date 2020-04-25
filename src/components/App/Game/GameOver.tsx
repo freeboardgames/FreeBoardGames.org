@@ -51,7 +51,13 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     });
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
-        <Typography variant="h6" gutterBottom={true} align="center" style={{ marginTop: '16px' }}>
+        <Typography
+          variant="h6"
+          gutterBottom={true}
+          align="center"
+          style={{ marginTop: '16px' }}
+          data-testid={'gameOverText'}
+        >
           Game Over, {this.props.result}!
         </Typography>
         {playAgain}

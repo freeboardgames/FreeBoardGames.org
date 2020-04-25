@@ -6,34 +6,11 @@ FOSS platform for publishing your [boardgame.io](https://boardgame.io) games. We
 
 Play now at [FreeBoardGames.org](https://FreeBoardGames.org/)
 
-## Games
-
-- :heavy_check_mark: Chess
-- :heavy_check_mark: TakeSix! (by [JosefKuchar](https://github.com/JosefKuchar), similar to 6 Nimt)
-- :heavy_check_mark: Nine Mens Morris (by [JosefKuchar](https://github.com/JosefKuchar))
-- :heavy_check_mark: Reversi (by [JosefKuchar](https://github.com/JosefKuchar), similar to Rollit and Othelo)
-- :heavy_check_mark: Seabattle (similar to Battleship).
-- :heavy_check_mark: Cornerus (by [JosefKuchar](https://github.com/JosefKuchar), similar to Blokus)
-- :heavy_check_mark: TicTacToe.
-- :heavy_check_mark: Checkers
-
-Check the [game development kanban](https://github.com/freeboardgames/FreeBoardGames.org/projects/11)
-
-## Features
-
-- :heavy_check_mark: Code splitting.
-- :heavy_check_mark: Server side rendering.
-- :heavy_check_mark: Installable.
-- :heavy_check_mark: Loads fast - small javascript sizes.
-- :heavy_check_mark: Works offline.
-- :construction: Party/lobby system.
-- :construction: i18n.
-
-Check out the [infrastructure kanban](https://github.com/freeboardgames/FreeBoardGames.org/projects/6).
+Check out our [reported issues and feature requests](https://github.com/freeboardgames/FreeBoardGames.org/issues).
 
 ## Contributing
 
-Contributions are always welcome, even if just reporting bugs (check the [known bugs kanban](https://github.com/freeboardgames/FreeBoardGames.org/projects/13)). Feel free to ask for any help!
+Contributions are always welcome, even if just reporting bugs (check our [issue tracker](https://github.com/freeboardgames/FreeBoardGames.org/issues)). Feel free to ask for any help!
 
 ## Community
 
@@ -45,14 +22,14 @@ Contributions are always welcome, even if just reporting bugs (check the [known 
 git clone https://github.com/freeboardgames/FreeBoardGames.org
 cd FreeBoardGames.org
 
-yarn install
+yarn install  # installs dependencies
 
-yarn run dev
+yarn run dev  # runs the webserver and backend (for online multiplayer games)
 ```
 
 ## Important Commands:
 
-`yarn run dev` builds and starts the **development** web server.
+`yarn run dev` builds and starts the **development** web server *and* the **boardgame.io** server (used for multiplayer games).  **Both servers will automatically load code changes.**
 
 `yarn run prod` builds and starts the **production** web server.
 

@@ -9,7 +9,7 @@ interface IGameInstructionsProps {
 export class GameInstructionsVideo extends React.Component<IGameInstructionsProps, {}> {
   render() {
     const instructions = this.props.gameDef.instructions;
-    if (!instructions.videoId) {
+    if (!instructions || !instructions.videoId) {
       return null;
     }
     return (

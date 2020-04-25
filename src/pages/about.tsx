@@ -57,6 +57,12 @@ function getContributorsCard() {
         </Typography>
         <List>
           <ListItem>
+            <ListItemText primary="flamecoals" />
+            <Button size="small" color="primary" href="https://github.com/flamecoals">
+              GitHub
+            </Button>
+          </ListItem>
+          <ListItem>
             <ListItemText primary="JasonHarrison" />
             <Button size="small" color="primary" href="https://www.jasonharrison.us/?from=freeboardgame.org">
               Website
@@ -66,17 +72,20 @@ function getContributorsCard() {
             </Button>
           </ListItem>
           <ListItem>
-            <ListItemText primary="flamecoals" />
-            <Button size="small" color="primary" href="https://github.com/flamecoals">
-              GitHub
-            </Button>
-          </ListItem>
-          <ListItem>
             <ListItemText primary="JosefKuchar" />
             <Button size="small" color="primary" href="http://josefkuchar.com">
               Website
             </Button>
             <Button size="small" color="primary" href="https://github.com/JosefKuchar">
+              GitHub
+            </Button>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="JvSomeren" />
+            <Button size="small" color="primary" href="https://joostvansomeren.nl">
+              Website
+            </Button>
+            <Button size="small" color="primary" href="https://github.com/JvSomeren">
               GitHub
             </Button>
           </ListItem>
