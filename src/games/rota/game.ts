@@ -16,7 +16,7 @@ export interface Point {
 export interface IG {
   points: Point[];
   piecesPlaced: number;
-  selectedPoint: Point;
+  // selectedPoint: Point;
 }
 
 function findPoint(G: IG, pointX: number, pointY: number): Point {
@@ -52,7 +52,7 @@ function isSimilarDiagonally(G: IG, p: Point) {
   return testWin;
 }
 
-function isSimilaOnEdge(G: IG, p: Point) {
+function isSimilarOnEdge(G: IG, p: Point) {
   let testWin = false;
   if (p.x !== 0 && p.y !== 0) {
     // test around the circumference
@@ -65,7 +65,7 @@ function isSimilaOnEdge(G: IG, p: Point) {
 function isVictory(G: IG): boolean {
   const filtered = G.points.filter((p) => p.playerID !== null);
   for (const p of filtered) {
-      if (isSimilarHorizontally(G,p) || isSimilarVertically(G,p) || isSimilarDiagonally(G,p) || isSimilaOnEdge(G,p)){
+      if (isSimilarHorizontally(G,p) || isSimilarVertically(G,p) || isSimilarDiagonally(G,p) || isSimilarOnEdge(G,p)){
         return true;
       }
   }
@@ -130,7 +130,7 @@ const GameConfig: IGameArgs = {
   name: 'rota',
   setup: () => {
     // available piece positions
-    /*|  -1,1----0,1----1,1  |
+    /**|  -1,1----0,1----1,1  |
      * |  |        |      |   |
      * |  -1,0----0,0----1,0  |
      * |  |        |      |   |

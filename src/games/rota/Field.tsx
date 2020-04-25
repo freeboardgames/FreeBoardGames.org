@@ -68,7 +68,7 @@ export class Field extends React.Component<IFieldProps, {}> {
       const radiusFactor = 1 / (Math.sqrt(point.x ** 2 + point.y ** 2) || 1);
       cells.push(
         <circle
-          key={`rota_piece_holder_circle_${idx}`}
+          key={`rota_piece_holder_key_${idx}`}
           cx={point.x * CIRCLE_RADIUS * radiusFactor}
           cy={point.y * CIRCLE_RADIUS * radiusFactor}
           r={PIECE_RADIUS}
@@ -76,7 +76,8 @@ export class Field extends React.Component<IFieldProps, {}> {
           stroke="white"
           strokeWidth={CIRCLE_RADIUS * 0.015}
           onClick={() => this.props.clickPoint(idx)}
-        />,
+          data-testid={`rota_piece_holder_test_id_${idx}`}
+          />,
       );
     });
 
