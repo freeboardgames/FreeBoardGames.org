@@ -77,7 +77,7 @@ export class Field extends React.Component<IFieldProps, {}> {
           strokeWidth={CIRCLE_RADIUS * 0.015}
           onClick={() => this.props.clickPoint(idx)}
           data-testid={`rota_piece_holder_test_id_${idx}`}
-          />,
+        />,
       );
     });
 

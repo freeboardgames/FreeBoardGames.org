@@ -3,6 +3,7 @@ import { GameLayout } from 'components/App/Game/GameLayout';
 import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { isOnlineGame, isAIGame, isLocalGame } from '../common/gameMode';
+import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 import Typography from '@material-ui/core/Typography';
 import { IG, Phase } from './game';
 import { Field } from './Field';
@@ -18,6 +19,8 @@ interface IBoardProps {
 interface IBoardState {
   idSelectedPoint: number;
 }
+
+export const localPlayerNames = { '0': 'red', '1': 'blue' };
 
 export class Board extends React.Component<IBoardProps, {}> {
   state: IBoardState = { idSelectedPoint: null };
@@ -38,6 +41,10 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
   };
 
+  _playerInRoom(): IPlayerInRoom {
+    return this.props.gameArgs.players[this.props.ctx.currentPlayer];
+  }
+
   _getStatus() {
     if (!this.props.gameArgs) {
       return;
@@ -45,11 +52,11 @@ export class Board extends React.Component<IBoardProps, {}> {
 
     let prefix = '';
     if (isLocalGame(this.props.gameArgs)) {
-      prefix = this.props.ctx.currentPlayer === '0' ? '[RED]' : '[BLUE]';
+      prefix = `[${localPlayerNames[this.props.ctx.currentPlayer].toUpperCase()}]`;
     }
 
     if (this.props.ctx.currentPlayer !== this.props.playerID && !isLocalGame(this.props.gameArgs)) {
-      return 'Waiting for opponent...';
+      return `Waiting for ${this._playerInRoom().name} ...`;
     }
 
     if (this.props.ctx.phase === Phase.Place) {
@@ -67,10 +74,8 @@ export class Board extends React.Component<IBoardProps, {}> {
         return 'you lost';
       }
     } else {
-      if (this.props.ctx.gameover.winner === '0') {
-        return 'red won';
-      } else {
-        return 'blue won';
+      if (this.props.ctx.gameover.winner) {
+        return `${localPlayerNames[this.props.ctx.gameover.winner]} won`;
       }
     }
   }

@@ -16,7 +16,6 @@ export interface Point {
 export interface IG {
   points: Point[];
   piecesPlaced: number;
-  // selectedPoint: Point;
 }
 
 function findPoint(G: IG, pointX: number, pointY: number): Point {
@@ -25,7 +24,7 @@ function findPoint(G: IG, pointX: number, pointY: number): Point {
       return p;
     }
   }
-  return { x: null, y: null, playerID: null, pieceID:null };
+  return { x: null, y: null, playerID: null, pieceID: null };
 }
 
 function isSimilarHorizontally(G: IG, p: Point) {
@@ -47,7 +46,7 @@ function isSimilarVertically(G: IG, p: Point) {
 }
 
 function isSimilarDiagonally(G: IG, p: Point) {
-  let testWin = p.playerID === findPoint(G, 0, 0).playerID && p.x !==0 && p.y !== 0;
+  let testWin = p.playerID === findPoint(G, 0, 0).playerID && p.x !== 0 && p.y !== 0;
   testWin = testWin && p.playerID === findPoint(G, -p.x, -p.y).playerID;
   return testWin;
 }
@@ -65,9 +64,14 @@ function isSimilarOnEdge(G: IG, p: Point) {
 function isVictory(G: IG): boolean {
   const filtered = G.points.filter((p) => p.playerID !== null);
   for (const p of filtered) {
-      if (isSimilarHorizontally(G,p) || isSimilarVertically(G,p) || isSimilarDiagonally(G,p) || isSimilarOnEdge(G,p)){
-        return true;
-      }
+    if (
+      isSimilarHorizontally(G, p) ||
+      isSimilarVertically(G, p) ||
+      isSimilarDiagonally(G, p) ||
+      isSimilarOnEdge(G, p)
+    ) {
+      return true;
+    }
   }
   return false;
 }
@@ -101,7 +105,7 @@ export function movePiece(G: IG, ctx: IGameCtx, currentID: number, newID: number
     return INVALID_MOVE;
   }
 
-  // check if the move is valid (by checking if distance is greater than 1.5)
+  // check if the move is valid (by checking if distance is not greater than 1.1)
   const n1 = 1 / (Math.sqrt(G.points[currentID].x ** 2 + G.points[currentID].y ** 2) || 1);
   const n2 = 1 / (Math.sqrt(G.points[newID].x ** 2 + G.points[newID].y ** 2) || 1);
   const distance = Math.sqrt(
@@ -140,7 +144,7 @@ const GameConfig: IGameArgs = {
     let points: Point[] = [];
     for (let x = -1; x < 2; x++) {
       for (let y = -1; y < 2; y++) {
-        points.push({ x, y, playerID: null, pieceID:null });
+        points.push({ x, y, playerID: null, pieceID: null });
       }
     }
     return { points, piecesPlaced: 0, selectedPoint: null };
