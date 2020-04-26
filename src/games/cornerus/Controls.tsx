@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 
 import { IG, rotatePiece, flipPieceY, flipPieceX, getPlayer } from './game';
 import { IPiece } from './board';
@@ -22,7 +22,7 @@ interface IControlsProps {
   validTransform: boolean;
   piece: IPiece;
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
 }
 
 export default class Controls extends React.Component<IControlsProps, {}> {

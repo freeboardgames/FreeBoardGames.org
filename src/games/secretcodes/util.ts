@@ -1,7 +1,8 @@
 import { IG, TeamColor, Team, CardColor, Card } from './definitions';
-import { IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
+import { INVALID_MOVE } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 
-export function switchTeam(G: IG, ctx: IGameCtx, teamColor: TeamColor) {
+export function switchTeam(G: IG, ctx: Ctx, teamColor: TeamColor) {
   const oldTeam = getPlayerTeam(G, ctx.playerID);
   const newTeam = getTeamByColor(G, teamColor);
 
@@ -18,7 +19,7 @@ export function switchTeam(G: IG, ctx: IGameCtx, teamColor: TeamColor) {
   newTeam.playersID.push(ctx.playerID);
 }
 
-export function makeSpymaster(G: IG, ctx: IGameCtx, playerID: string) {
+export function makeSpymaster(G: IG, ctx: Ctx, playerID: string) {
   const team = getPlayerTeam(G, playerID);
   const pID = parseInt(playerID);
   if (ctx.playerID !== '0' || pID < 0 || pID >= ctx.numPlayers || !team) {
@@ -28,7 +29,7 @@ export function makeSpymaster(G: IG, ctx: IGameCtx, playerID: string) {
   team.spymasterID = playerID;
 }
 
-export function clueGiven(G: IG, ctx: IGameCtx) {
+export function clueGiven(G: IG, ctx: Ctx) {
   const team = getCurrentTeam(G);
   ctx.events.endPhase();
   if (ctx.numPlayers > 2) {
@@ -40,7 +41,7 @@ export function clueGiven(G: IG, ctx: IGameCtx) {
   }
 }
 
-export function getActivePlayersWithoutSpymaster(team: Team, ctx: IGameCtx): string[] {
+export function getActivePlayersWithoutSpymaster(team: Team, ctx: Ctx): string[] {
   if (ctx.numPlayers > 2) {
     return team.playersID.filter((p) => p !== team.spymasterID);
   } else {
@@ -52,13 +53,13 @@ export function getCurrentTeam(G: IG): Team {
   return G.teams[G.currentTeamIndex];
 }
 
-export function gameCanStart(G: IG, ctx: IGameCtx) {
+export function gameCanStart(G: IG, ctx: Ctx) {
   const { numPlayers } = ctx;
   if (G.teams[0].spymasterID === null || G.teams[1].spymasterID === null) return false;
   return G.teams.reduce((sum, t) => sum + t.playersID.length, 0) === numPlayers;
 }
 
-export function startGame(G: IG, ctx: IGameCtx) {
+export function startGame(G: IG, ctx: Ctx) {
   if (!gameCanStart(G, ctx)) {
     return INVALID_MOVE;
   }
@@ -77,12 +78,12 @@ export function startGame(G: IG, ctx: IGameCtx) {
   return G;
 }
 
-export function pass(G: IG, ctx: IGameCtx) {
+export function pass(G: IG, ctx: Ctx) {
   G.currentTeamIndex = (G.currentTeamIndex + 1) % 2;
   ctx.events.endPhase();
 }
 
-export function chooseCard(G: IG, ctx: IGameCtx, cardIndex: number) {
+export function chooseCard(G: IG, ctx: Ctx, cardIndex: number) {
   G.cards[cardIndex].revealed = true;
 
   const team = getPlayerTeam(G, ctx.currentPlayer);

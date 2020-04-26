@@ -4,14 +4,14 @@ import css from './Lobby.css';
 import { LobbyTeam } from './LobbyTeam';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import { LobbyPlayer } from './LobbyPlayer';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { isLocalGame } from '../common/gameMode';
 import Button from '@material-ui/core/Button';
 import { getPlayerTeam, gameCanStart } from './util';
 
 interface ILobbyProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   events: any;
   playerID: string;

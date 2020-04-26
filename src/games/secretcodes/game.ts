@@ -1,4 +1,5 @@
-import { ActivePlayers, IGameArgs, IGameCtx } from 'boardgame.io/core';
+import { ActivePlayers } from 'boardgame.io/core';
+import { Ctx, Game } from 'boardgame.io';
 import { words } from './constants';
 import { Card, CardColor, IG, Phases, TeamColor } from './definitions';
 import {
@@ -16,7 +17,7 @@ import {
   switchTeam,
 } from './util';
 
-const GameConfig: IGameArgs = {
+const GameConfig: Game<IG> = {
   name: 'secretcodes',
 
   setup: (ctx): IG => {
@@ -37,7 +38,7 @@ const GameConfig: IGameArgs = {
     };
   },
 
-  playerView: (G: IG, ctx: IGameCtx, playerID: string): any => {
+  playerView: (G: IG, ctx: Ctx, playerID: string): any => {
     if (playerID === null) return G;
     if (ctx.phase !== Phases.giveClue && ctx.phase !== Phases.guess) return G;
     if (playerID == G.teams[0].spymasterID || playerID == G.teams[1].spymasterID) return G;
@@ -93,7 +94,7 @@ const GameConfig: IGameArgs = {
         order: {
           first: () => 0,
           next: () => 0,
-          playOrder: (G: IG, ctx: IGameCtx): string[] => getActivePlayersWithoutSpymaster(getCurrentTeam(G), ctx),
+          playOrder: (G: IG, ctx: Ctx): string[] => getActivePlayersWithoutSpymaster(getCurrentTeam(G), ctx),
         },
       },
       moves: {
@@ -111,7 +112,7 @@ const GameConfig: IGameArgs = {
     },
   },
 
-  endIf: (G: IG, ctx: IGameCtx) => {
+  endIf: (G: IG, ctx: Ctx) => {
     // turn 1 is used to setup the game so we only check from turn 2 and up
     if (ctx.turn >= 2) {
       const assassin = G.cards.find((card) => card.color === CardColor.assassin);
