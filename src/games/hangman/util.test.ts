@@ -1,5 +1,5 @@
 import { HangmanState, Guesses } from './definitions';
-import { setSecret, selectLetter, getWinner, getMaskedWord, isValidWord } from './util';
+import { setSecret, selectLetter, getWinner, getMaskedWord, isValidWord, isGuessCorrect } from './util';
 
 describe('hangman', () => {
   describe('setSecret()', () => {
@@ -39,7 +39,7 @@ describe('hangman', () => {
   });
 
   describe('selectLetter()', () => {
-    it('should set correct letter and NOT pass turn to next player', () => {
+    it('should set correct letter', () => {
       const fakeG: HangmanState = {
         players: {
           '0': { secret: 'banana', secretLength: 6, hint: 'fruit', guesses: {} },
@@ -63,7 +63,7 @@ describe('hangman', () => {
       expect(endTurn).not.toHaveBeenCalled();
     });
 
-    it('should set wrong letter and pass turn to next player', () => {
+    it('should set wrong letter but the user continues to play', () => {
       const fakeG: HangmanState = {
         players: {
           '0': { secret: 'banana', secretLength: 6, hint: 'fruit', guesses: {} },
@@ -84,73 +84,13 @@ describe('hangman', () => {
           '1': { secret: 'apple', secretLength: 5, hint: 'expensive', guesses: {} },
         },
       });
-      expect(endTurn).toHaveBeenCalled();
-    });
-
-    it('should not pass the turn if the opponent already maxed out their guesses', () => {
-      const fakeG: HangmanState = {
-        players: {
-          '0': { secret: 'banana', secretLength: 6, hint: 'fruit', guesses: {} },
-          '1': {
-            secret: 'apple',
-            secretLength: 5,
-            hint: 'expensive',
-            guesses: {
-              x: [],
-              y: [],
-              z: [],
-              c: [],
-              v: [],
-              w: [],
-            },
-          },
-        },
-      };
-      const endTurn = jest.fn();
-      const fakeCtx: any = {
-        playerID: '0',
-        events: { endTurn },
-      };
-
-      const result = selectLetter(fakeG, fakeCtx, 'n');
-
-      expect(result).toEqual({
-        players: {
-          '0': { secret: 'banana', secretLength: 6, hint: 'fruit', guesses: { n: [] } },
-          '1': {
-            secret: 'apple',
-            secretLength: 5,
-            hint: 'expensive',
-            guesses: {
-              x: [],
-              y: [],
-              z: [],
-              c: [],
-              v: [],
-              w: [],
-            },
-          },
-        },
-      });
       expect(endTurn).not.toHaveBeenCalled();
     });
 
-    it('should declare draw if both players maxed out their guesses', () => {
+    it('expect to get the secret declared if user maxed out on guesses', () => {
       const fakeG: HangmanState = {
         players: {
           '0': {
-            secret: 'banana',
-            secretLength: 6,
-            hint: 'fruit',
-            guesses: {
-              x: [],
-              y: [],
-              z: [],
-              c: [],
-              v: [],
-            },
-          },
-          '1': {
             secret: 'apple',
             secretLength: 5,
             hint: 'expensive',
@@ -163,13 +103,11 @@ describe('hangman', () => {
               w: [],
             },
           },
+          '1': { secret: 'banana', secretLength: 6, hint: 'fruit', guesses: {} },
         },
       };
-      const endTurn = jest.fn();
-      const endGame = jest.fn();
       const fakeCtx: any = {
         playerID: '0',
-        events: { endTurn, endGame },
       };
 
       const result = selectLetter(fakeG, fakeCtx, 'n');
@@ -177,19 +115,6 @@ describe('hangman', () => {
       expect(result).toEqual({
         players: {
           '0': {
-            secret: 'banana',
-            secretLength: 6,
-            hint: 'fruit',
-            guesses: {
-              n: [],
-              x: [],
-              y: [],
-              z: [],
-              c: [],
-              v: [],
-            },
-          },
-          '1': {
             secret: 'apple',
             secretLength: 5,
             hint: 'expensive',
@@ -200,12 +125,12 @@ describe('hangman', () => {
               c: [],
               v: [],
               w: [],
+              n: [2, 4],
             },
           },
+          '1': { secret: 'banana', secretLength: 6, hint: 'fruit', guesses: {} },
         },
       });
-      expect(endTurn).not.toHaveBeenCalled();
-      expect(endGame).toHaveBeenCalledWith({ draw: true });
     });
   });
 
@@ -230,6 +155,11 @@ describe('hangman', () => {
             hint: 'expensive',
             guesses: {
               x: [],
+              y: [],
+              z: [],
+              c: [],
+              v: [],
+              w: [],
             },
           },
         },
@@ -238,6 +168,42 @@ describe('hangman', () => {
       const result = getWinner(fakeG);
 
       expect(result).toEqual({ winner: '0' });
+    });
+  });
+
+  describe('isGuessCorrect()', () => {
+    it('should find guess was correct', () => {
+      const fakeG: HangmanState = {
+        players: {
+          '0': {
+            secret: 'banana',
+            secretLength: 6,
+            hint: 'fruit',
+            guesses: {
+              a: [0],
+              p: [1, 2],
+              l: [3],
+              e: [4],
+            },
+          },
+          '1': {
+            secret: 'apple',
+            secretLength: 5,
+            hint: 'expensive',
+            guesses: {
+              x: [],
+              y: [],
+              z: [],
+              c: [],
+              v: [],
+              w: [],
+            },
+          },
+        },
+      };
+
+      expect(isGuessCorrect(fakeG, '0')).toEqual(true);
+      expect(isGuessCorrect(fakeG, '1')).toEqual(false);
     });
   });
 });
