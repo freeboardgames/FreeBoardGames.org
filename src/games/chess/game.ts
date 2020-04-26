@@ -6,8 +6,13 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { IGameArgs, IGameCtx } from 'boardgame.io/core';
+import { Game, Ctx } from 'boardgame.io';
 import Chess from './chessjswrapper';
+
+export interface IG {
+  pgn: string;
+  fen: string;
+}
 
 export function getWinner(chess: any) {
   if (chess.game_over()) {
@@ -23,13 +28,13 @@ export function getWinner(chess: any) {
   }
 }
 
-export const ChessGame: IGameArgs = {
+export const ChessGame: Game<IG> = {
   name: 'chess',
 
   setup: () => ({ pgn: '', fen: '' }),
 
   moves: {
-    move(G: any, ctx: IGameCtx, san: string) {
+    move(G: IG, ctx: Ctx, san: string) {
       const chess = Chess();
       chess.load_pgn(G.pgn);
       chess.move(san, { sloppy: true });
@@ -39,7 +44,7 @@ export const ChessGame: IGameArgs = {
   turn: {
     moveLimit: 1,
   },
-  endIf: (G: any) => {
+  endIf: (G: IG) => {
     const chess = Chess();
     chess.load_pgn(G.pgn);
     return getWinner(chess);

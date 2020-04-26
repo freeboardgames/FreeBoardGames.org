@@ -1,4 +1,5 @@
-import { IGameArgs, IGameCtx, INVALID_MOVE, ActivePlayers } from 'boardgame.io/core';
+import { INVALID_MOVE, ActivePlayers } from 'boardgame.io/core';
+import { Game, Ctx } from 'boardgame.io';
 import { IScore } from '../common/Scoreboard';
 import Card from './card';
 import Player from './player';
@@ -42,7 +43,7 @@ export function getCards(G: IG, playerID: string): IGetCards {
   return { card, lastCards: lastCards };
 }
 
-function moveToHand(G: IG, ctx: IGameCtx, card: Card, deckId: number): any {
+function moveToHand(G: IG, ctx: Ctx, card: Card, deckId: number): any {
   return {
     ...G,
     players: Object.values({
@@ -59,7 +60,7 @@ function moveToHand(G: IG, ctx: IGameCtx, card: Card, deckId: number): any {
   };
 }
 
-export function selectCard(G: IG, ctx: IGameCtx, id: number): any {
+export function selectCard(G: IG, ctx: Ctx, id: number): any {
   if (id < 0 || id >= G.players[ctx.playerID as any].cards.length) {
     return INVALID_MOVE;
   }
@@ -85,7 +86,7 @@ export function getScoreBoard(G: IG): IScore[] {
     .sort((a, b) => a.score - b.score);
 }
 
-export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
+export function selectDeck(G: IG, ctx: Ctx, id: number): any {
   if (!isAllowedDeck(G, id, ctx.playerID)) {
     return INVALID_MOVE;
   }
@@ -107,7 +108,7 @@ export function selectDeck(G: IG, ctx: IGameCtx, id: number): any {
   };
 }
 
-const GameConfig: IGameArgs = {
+const GameConfig: Game<IG> = {
   name: 'takesix',
   phases: {
     // Everyone needs to select card

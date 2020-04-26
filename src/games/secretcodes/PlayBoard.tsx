@@ -1,5 +1,5 @@
 import { IG, CardColor, Team, TeamColor, Phases } from './definitions';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import * as React from 'react';
 import css from './board.css';
@@ -11,7 +11,7 @@ import { PlayerBadges } from 'games/common/PlayerBadges';
 
 interface IPlayBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   events: any;
   playerID: string;

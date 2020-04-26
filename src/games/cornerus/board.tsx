@@ -4,7 +4,7 @@ import { GameLayout } from 'components/App/Game/GameLayout';
 import { Grid } from 'ui';
 import { Token } from 'ui';
 import { IG, IPieceTransform, getPlayer, getValidPositions, inBounds, getAllPositions } from './game';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { Scoreboard, IScore } from '../common/Scoreboard';
 import { IOptionsItems } from 'components/App/Game/GameDarkSublayout';
 
@@ -38,7 +38,7 @@ export interface IPiece {
 
 interface IBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   playerID: string;
   gameArgs?: IGameArgs;

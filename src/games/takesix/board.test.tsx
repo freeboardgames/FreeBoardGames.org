@@ -7,7 +7,7 @@ import { TakeSixGame, TakeSixGameForTest } from './game';
 
 import { Board } from './board';
 import { GameMode } from 'components/App/Game/GameModePicker';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -83,7 +83,7 @@ test('win', () => {
     game: TakeSixGame,
   });
   const state0 = client.store.getState();
-  (state0.ctx as IGameCtx).gameover = { winner: '0' };
+  (state0.ctx as Ctx).gameover = { winner: '0' };
   const comp = Enzyme.mount(
     <Board
       G={state0.G}
@@ -106,7 +106,7 @@ test('loss', () => {
     game: TakeSixGame,
   });
   const state0 = client.store.getState();
-  (state0.ctx as IGameCtx).gameover = { winner: '1' };
+  (state0.ctx as Ctx).gameover = { winner: '1' };
   const comp = Enzyme.mount(
     <Board
       G={state0.G}
@@ -129,7 +129,7 @@ test('draw', () => {
     game: TakeSixGame,
   });
   const state0 = client.store.getState();
-  (state0.ctx as IGameCtx).gameover = { draw: true };
+  (state0.ctx as Ctx).gameover = { draw: true };
   const comp = Enzyme.mount(
     <Board
       G={state0.G}

@@ -1,10 +1,10 @@
 import { IAIConfig } from '../index';
 import { IG, getCards, isAllowedDeck } from './game';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 
 interface IPlayState {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
 }
 
 export class TakeSixBot {

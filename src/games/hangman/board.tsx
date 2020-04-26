@@ -7,7 +7,7 @@ import { isOnlineGame } from '../common/gameMode';
 import { grey } from '@material-ui/core/colors';
 import { Modal, Button } from '@material-ui/core';
 import { isPlayersTurn } from 'games/common/GameUtil';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { HangmanState, PlayerState } from './definitions';
 import { getOpponent, getMistakeCount, getMaskedWord, isGuessCorrect, getScore, isDoneGuessing } from './util';
 import { ALPHABET, MAX_MISTAKE_COUNT, MAX_WORD_LENGTH } from './constants';
@@ -18,7 +18,7 @@ interface IBoardState {
 
 interface IBoardProps {
   G: HangmanState;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   playerID: string;
   isActive: boolean;
