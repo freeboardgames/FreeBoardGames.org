@@ -25,14 +25,12 @@ describe('Rota UI', () => {
         ctx={state0.ctx}
         moves={client.moves}
         playerID={'0'}
-        isActive={true}
         gameArgs={{
           gameCode: 'rota',
           mode: GameMode.LocalFriend,
         }}
       />,
     );
-    instance = wrapper.instance();
   });
 
   it('Checks if Game starts with RED in the PLACE phase', () => {
