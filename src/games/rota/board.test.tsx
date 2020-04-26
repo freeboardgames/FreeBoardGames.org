@@ -3,10 +3,9 @@ import { Client } from 'boardgame.io/client';
 import { RotaGame } from './game';
 import { Board, localPlayerNames } from './board';
 import { GameMode } from 'components/App/Game/GameModePicker';
-import { WrapperBoard } from 'boardgame.io/react';
 
 let wrapper: Enzyme.ReactWrapper;
-let client: WrapperBoard;
+let client;
 
 const updateGameProps = () => {
   const state = client.store.getState();

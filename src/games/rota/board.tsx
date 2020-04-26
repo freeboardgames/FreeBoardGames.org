@@ -1,16 +1,16 @@
 import React from 'react';
 import { GameLayout } from 'components/App/Game/GameLayout';
-import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { isOnlineGame, isAIGame, isLocalGame } from '../common/gameMode';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 import Typography from '@material-ui/core/Typography';
 import { IG, Phase } from './game';
 import { Field } from './Field';
+import { Ctx } from 'boardgame.io';
 
 interface IBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   playerID: string;
   gameArgs?: IGameArgs;

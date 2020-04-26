@@ -1,4 +1,5 @@
-import { IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
+import { INVALID_MOVE } from 'boardgame.io/core';
+import { Game, Ctx } from 'boardgame.io';
 
 // players are either allowed to place or move pieces
 export enum Phase {
@@ -76,7 +77,7 @@ function isVictory(G: IG): boolean {
   return false;
 }
 
-function placePiece(G: IG, ctx: IGameCtx, pointID: number) {
+function placePiece(G: IG, ctx: Ctx, pointID: number) {
   // if more than 6 pieces are placed, do nothing
   let piecesPlaced = G.piecesPlaced;
   if (piecesPlaced >= 6) {
@@ -96,7 +97,7 @@ function placePiece(G: IG, ctx: IGameCtx, pointID: number) {
   return { ...G, points, piecesPlaced };
 }
 
-export function movePiece(G: IG, ctx: IGameCtx, currentID: number, newID: number): IG | string {
+export function movePiece(G: IG, ctx: Ctx, currentID: number, newID: number): IG | string {
   if (
     G.points[currentID].playerID === null ||
     G.points[newID].playerID !== null ||
@@ -130,7 +131,7 @@ export function movePiece(G: IG, ctx: IGameCtx, currentID: number, newID: number
   return { ...G, points };
 }
 
-const GameConfig: IGameArgs = {
+const GameConfig: Game = {
   name: 'rota',
   setup: () => {
     // available piece positions
