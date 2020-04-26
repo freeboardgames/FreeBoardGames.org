@@ -1,7 +1,6 @@
 import { Game } from 'boardgame.io';
 import { HangmanState } from './definitions';
 import { HANGMAN_INITIAL_STATE } from './constants';
-import { HangmanState } from './definitions';
 import { setSecret, selectLetter, getWinner } from './util';
 
 export const HangmanGame: Game<HangmanState> = {
@@ -17,7 +16,7 @@ export const HangmanGame: Game<HangmanState> = {
       },
       next: 'play',
       endIf: (G: HangmanState) => {
-        return G.players['0'] && G.players['1'];
+        return '0' in G.players && '1' in G.players;
       },
     },
     play: {

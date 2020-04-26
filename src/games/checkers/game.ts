@@ -1,5 +1,5 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
-import { Ctx } from 'boardgame.io';
+import { Ctx, Game } from 'boardgame.io';
 
 interface ICheckerPiece {
   id: number;

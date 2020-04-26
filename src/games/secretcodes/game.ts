@@ -1,5 +1,5 @@
-import { ActivePlayers, IGameArgs, IGameCtx } from 'boardgame.io/core';
-import { Ctx } from 'boardgame.io';
+import { ActivePlayers } from 'boardgame.io/core';
+import { Ctx, Game } from 'boardgame.io';
 import { words } from './constants';
 import { Card, CardColor, IG, Phases, TeamColor } from './definitions';
 import {
@@ -17,7 +17,7 @@ import {
   switchTeam,
 } from './util';
 
-const GameConfig: IGameArgs = {
+const GameConfig: Game<IG> = {
   name: 'secretcodes',
 
   setup: (ctx): IG => {
