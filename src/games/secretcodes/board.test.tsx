@@ -45,7 +45,7 @@ describe('Secretcodes UI', () => {
   });
 
   it('should render PlayBoard', () => {
-    wrapper.setProps({ ctx: { phase: Phases.play } });
+    wrapper.setProps({ ctx: { phase: Phases.giveClue } });
 
     expect(wrapper.find('GameLayout').exists()).toBeTruthy();
     expect(wrapper.find('PlayBoard').exists()).toBeTruthy();

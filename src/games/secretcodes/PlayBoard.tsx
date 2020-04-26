@@ -1,5 +1,6 @@
-import { IG, Stages, CardColor, Team, TeamColor } from './definitions';
 import { Ctx } from 'boardgame.io';
+import { IG, CardColor, Team, TeamColor, Phases } from './definitions';
+import { IGameCtx } from 'boardgame.io/core';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import * as React from 'react';
 import css from './board.css';
@@ -7,6 +8,7 @@ import { isLocalGame, isOnlineGame } from '../common/gameMode';
 import Button from '@material-ui/core/Button';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 import { getPlayerTeam, isPlayerSpymaster } from './util';
+import { PlayerBadges } from 'games/common/PlayerBadges';
 
 interface IPlayBoardProps {
   G: IG;
@@ -44,14 +46,6 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     return this.props.ctx.currentPlayer;
   }
 
-  _currentPlayerStage(): Stages {
-    return this.props.ctx.activePlayers[this.props.ctx.currentPlayer] as Stages;
-  }
-
-  _playerStage(): Stages {
-    return this.props.ctx.activePlayers[this._playerID()] as Stages;
-  }
-
   _playerID(): string {
     if (isLocalGame(this.props.gameArgs)) {
       return this._currentPlayerID();
@@ -76,23 +70,23 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
   _chooseCard = (cardIndex: number) => {
     if (!this._isActive()) return;
-    if (this._playerStage() !== Stages.guess) return;
+    if (this.props.ctx.phase !== Phases.guess) return;
     if (isOnlineGame(this.props.gameArgs) && isPlayerSpymaster(this.props.G, this._playerID())) return;
     if (this.props.G.cards[cardIndex].revealed) return;
 
     this.props.moves.chooseCard(cardIndex);
   };
 
-  _endTurn = () => {
+  _pass = () => {
     if (!this._isActive()) return;
 
-    this.props.events.endTurn();
+    this.props.moves.pass();
   };
 
   _renderHeader = () => {
     let instruction;
 
-    if (this._currentPlayerStage() === Stages.giveClue) {
+    if (this.props.ctx.phase === Phases.giveClue) {
       const button = this._isActive() ? (
         <Button className={css.playActionBtn} variant="contained" onClick={this._clueGiven} color="primary">
           Done
@@ -106,7 +100,7 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       );
     } else {
       const button = this._isActive() ? (
-        <Button className={css.playActionBtn} variant="contained" onClick={this._endTurn}>
+        <Button className={css.playActionBtn} variant="contained" onClick={this._pass}>
           Pass
         </Button>
       ) : null;
@@ -154,6 +148,21 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     return <div className={css.board}>{board}</div>;
   };
 
+  _renderPlayerBadges = () => {
+    const colors = this.props.gameArgs.players
+      .map((player) => player.playerID.toString())
+      .map((playerID) => getPlayerTeam(this.props.G, playerID).color)
+      .map((color) => (color == TeamColor.Red ? '#F25F5C' : '#247BA0'));
+    return (
+      <PlayerBadges
+        playerID={this.props.playerID}
+        players={this.props.gameArgs.players}
+        colors={colors}
+        ctx={this.props.ctx}
+      />
+    );
+  };
+
   _renderActionButtons = () => {
     if (isPlayerSpymaster(this.props.G, this._playerID())) {
       return (
@@ -168,10 +177,9 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     return (
       <div>
         {this._renderHeader()}
-
         {this._renderCardGrid()}
-
-        <div className={css.buttons}>{this._renderActionButtons()}</div>
+        {this._renderActionButtons()}
+        {this._renderPlayerBadges()}
       </div>
     );
   }

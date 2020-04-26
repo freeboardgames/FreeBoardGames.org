@@ -1,5 +1,5 @@
 # blog
-FROM node:13.12.0-buster as blog
+FROM node:14.0.0-buster as blog
 
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
 RUN rm /bin/su
@@ -19,7 +19,7 @@ COPY --chown=appuser blog /appdata/blog
 RUN yarn run hexo generate
 
 # web
-FROM node:13.12.0-buster as web
+FROM node:14.0.0-buster as web
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
 RUN rm /bin/su
 USER appuser
