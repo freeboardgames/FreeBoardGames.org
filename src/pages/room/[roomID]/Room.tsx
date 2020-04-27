@@ -83,22 +83,27 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     //   return <Game room={room} />;
     // }
     const authData = getAuthData();
-    const nickname = authData.nickname;
+    const nickname = authData?.nickname;
     const nicknamePrompt = this.state.editingName ? (
       <AlertLayer>
         <NicknamePrompt nickname={nickname} setNickname={this._renameUser} closePrompt={this._toggleEditingName} />
       </AlertLayer>
     ) : null;
+    const mainPage = this.state.roomMetadata ? (
+      <React.Fragment>
+        <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
+        {this._getGameSharing()}
+        <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
+      </React.Fragment>
+    ) : null;
     return (
       <NicknameRequired
         showIf={this.state.showNicknameRequired}
-        onSuccess={() => this.setState({ showNicknameRequired: false })}
+        onSuccess={() => this.setState({ showNicknameRequired: false, loading: true })}
       >
         <FreeBoardGamesBar>
           {nicknamePrompt}
-          <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
-          {this._getGameSharing()}
-          <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
+          {mainPage}
         </FreeBoardGamesBar>
       </NicknameRequired>
     );
@@ -107,7 +112,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   updateMetadata = (firstRun?: boolean) => {
     const roomID = this.props.router.query.roomID as string;
     if (!firstRun) {
-      if (this.state.editingName) {
+      if (this.state.editingName || this.state.showNicknameRequired) {
         return;
       }
     }
@@ -127,7 +132,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       },
       (err) => {
         if (err.status === 401) {
-          this.setState({ showNicknameRequired: true });
+          this.setState({ showNicknameRequired: true, loading: false });
         }
       },
     );
