@@ -2,7 +2,6 @@ import React from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import EditIcon from '@material-ui/icons/Edit';
-// import { IRoomMetadata, IPlayerInRoom } from './LobbyService';
 import {
   Button,
   List,
@@ -26,7 +25,6 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
     const metadata = this.props.roomMetadata;
     // room is retrieved with users who joined most recently being first, so we reverse it:
     const users = metadata.users.slice().reverse();
-    console.log('users', users);
     const playersList = users.map((player: User, idx: number) => {
       return (
         <ListItem key={`player-${idx}`}>

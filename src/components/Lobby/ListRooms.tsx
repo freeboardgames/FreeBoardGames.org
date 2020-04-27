@@ -1,5 +1,7 @@
 import React from 'react';
-import { List, ListItem, ListItemText, ListSubheader } from '@material-ui/core';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import { List, ListItem, ListItemText, ListSubheader, ListItemSecondaryAction, IconButton } from '@material-ui/core';
 import { Room } from 'dto/Room';
 
 interface Props {
@@ -10,6 +12,7 @@ export class ListRooms extends React.Component<Props, {}> {
   render() {
     const rooms = this.props.rooms;
     const roomsList = rooms.map((room: Room, idx: number) => {
+      const icon = room.users.length === room.capacity ? <VisibilityIcon /> : <NavigateNextIcon />;
       return (
         <ListItem button key={`room-${idx}`}>
           <ListItemText
@@ -17,6 +20,11 @@ export class ListRooms extends React.Component<Props, {}> {
             primary={`Room #${idx + 1}`}
             secondary={`${room.users.length}/${room.capacity}`}
           />
+          <ListItemSecondaryAction>
+            <IconButton edge="end" aria-label="delete">
+              {icon}
+            </IconButton>
+          </ListItemSecondaryAction>
         </ListItem>
       );
     });

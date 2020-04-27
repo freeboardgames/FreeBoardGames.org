@@ -4,7 +4,6 @@ import { Room } from 'dto/Room';
 import MessagePage from 'components/App/MessagePageClass';
 import TryAgainReloadButton from 'components/App/TryAgainReloadButton';
 import { RoomsPage } from 'components/Lobby/RoomsPage';
-import NicknameRequired from 'components/Lobby/NicknameRequired';
 
 interface State {
   rooms: Room[];

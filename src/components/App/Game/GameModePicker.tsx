@@ -18,8 +18,7 @@ import Link from 'next/link';
 import { IGameDef } from 'games';
 import { LobbyService } from 'components/Lobby/LobbyService';
 import Router from 'next/router';
-import { getAuthData } from 'misc/AuthHelper';
-import { Room, NewRoomResponseStatus } from 'dto/Room';
+import { NewRoomResponseStatus } from 'dto/Room';
 import NicknameRequired from 'components/Lobby/NicknameRequired';
 
 interface IGameModePickerProps {
@@ -171,9 +170,8 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     const gameCode = this.props.gameDef.code;
     const numPlayers = this._getExtraInfoValue(info);
     // `/room/new/${this.props.gameDef.code}/${this._getExtraInfoValue(info)}`,
-    LobbyService.newRoom(gameCode, numPlayers, false).then(
+    LobbyService.newRoom(gameCode, numPlayers, true).then(
       (resp) => {
-        console.log(resp);
         if (resp.status == NewRoomResponseStatus.Success) {
           Router.replace(`/room/${resp.room.id}`);
         }

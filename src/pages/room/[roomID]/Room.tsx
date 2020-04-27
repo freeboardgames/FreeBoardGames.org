@@ -1,13 +1,8 @@
 import React from 'react';
 import MessagePage from 'components/App/MessagePageClass';
-// import { LobbyService, IRoomMetadata, IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 import { LobbyService } from 'components/Lobby/LobbyService';
 import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
 import { GameSharing } from 'components/App/Game/GameSharing';
-// import Game from '../../../../components/App/Game/Game';
-// import { ListPlayers } from '../../../../components/App/Lobby/ListPlayers';
-// import { GameCard } from '../../../../components/App/Game/GameCard';
-// import { NicknamePrompt } from '../../../../components/App/Lobby/NicknamePrompt';
 import { useRouter, NextRouter } from 'next/router';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
@@ -19,7 +14,6 @@ import { Room as RoomMetadata } from 'dto/Room';
 import { getAuthData } from 'misc/AuthHelper';
 import NicknameRequired from 'components/Lobby/NicknameRequired';
 import AlertLayer from 'components/App/Game/AlertLayer';
-import { RenameUserResponseStatus } from 'dto/User';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -52,7 +46,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     showNicknameRequired: !getAuthData(),
   };
   private timer: any; // fixme loads state of room
-  private promise: Promise<RoomMetadata | void>;
 
   constructor(props) {
     super(props);
@@ -126,7 +119,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
 
-    this.promise = LobbyService.updateRoomMetadata(roomID).then(
+    LobbyService.updateRoomMetadata(roomID).then(
       (metadata) => {
         this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
       },
@@ -136,34 +129,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
         }
       },
     );
-    // this.promise = LobbyService.getRoomMetadata(gameCode, roomID)
-    //   .then(async (metadata) => {
-    //     if (!metadata.currentUser) {
-    //       const player: IPlayerInRoom = {
-    //         playerID: metadata.players.length,
-    //         roomID,
-    //         name: LobbyService.getNickname(),
-    //       };
-    //       await LobbyService.joinRoom(gameCode, player);
-    //       return LobbyService.getRoomMetadata(gameCode, roomID);
-    //     }
-    //     return metadata;
-    //   })
-    //   .then(
-    //     (metadata) => {
-    //       if (metadata.numberOfPlayers === metadata.players.length) {
-    //         this.setState((oldState) => ({ ...oldState, gameReady: true }));
-    //         this._componentCleanup();
-    //       }
-    //       this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
-    //       return metadata;
-    //     },
-    //     () => {
-    //       const error = 'Failed to fetch room metadata.';
-    //       this._componentCleanup();
-    //       this.setState((oldState) => ({ ...oldState, error }));
-    //     },
-    //   );
   };
 
   _toggleEditingName = () => {
@@ -172,14 +137,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   _renameUser = async (newNickname: string) => {
     LobbyService.renameUser(newNickname);
-    // TODO
-    // if (this.state.editingName) {
-    //   const room = this.state.roomMetadata;
-    //   LobbyService.renameUser(room.gameCode, room.currentUser, nickname);
-    //   this._toggleEditingName();
-    // }
-    // LobbyService.setNickname(nickname);
-    // this.updateMetadata();
   };
 
   componentWillUnmount() {

@@ -5,6 +5,7 @@ import GamesWithRooms from 'components/Lobby/GamesWithRooms';
 import { LobbyService } from 'components/Lobby/LobbyService';
 import { Room } from 'dto/Room';
 import Button from '@material-ui/core/Button';
+import css from './RoomsPage.css';
 
 interface Props {
   rooms: Room[];
@@ -17,16 +18,16 @@ export class RoomsPage extends React.Component<Props, {}> {
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <div style={{ marginBottom: '16px' }}>
+          <Button variant="contained" color="secondary" onClick={this._createRoom} className={css.newRoomButton}>
+            New Room
+          </Button>
           <Typography
             component="h2"
             variant="h6"
-            style={{ marginBottom: '24px', marginTop: '24px', marginLeft: '6px' }}
+            style={{ marginBottom: '12px', marginTop: '24px', marginLeft: '6px' }}
           >
             Rooms
           </Typography>
-          <Button variant="contained" color="primary" onClick={this._createRoom}>
-            Create
-          </Button>
           <GamesWithRooms wantGameCode={gameCode} rooms={this.props.rooms} />
         </div>
       </FreeBoardGamesBar>

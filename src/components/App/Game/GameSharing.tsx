@@ -13,7 +13,6 @@ import copy from 'copy-to-clipboard';
 import ReactGA from 'react-ga';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
-import { IRoomMetadata } from '../Lobby/LobbyService';
 import AlertLayer from './AlertLayer';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { QrCodePopup } from '../Lobby/QrCodePopup';
