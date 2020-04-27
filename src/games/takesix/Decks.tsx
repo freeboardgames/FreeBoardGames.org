@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { IG, isAllowedDeck } from './game';
 import { CardComponent } from './CardComponent';
 
 interface IDecksProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   playerID: string;
   selectDeck: (index: number) => void;
 }

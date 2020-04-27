@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { GameLayout } from 'components/App/Game/GameLayout';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { IG, getScoreBoard, isAllowedDeck } from './game';
 import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   step?: any;
   playerID: string;
@@ -107,12 +107,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         </Typography>
         <Decks G={this.props.G} ctx={this.props.ctx} playerID={this.props.playerID} selectDeck={this._selectDeck} />
         <PlayerHand G={this.props.G} playerID={this.props.playerID} selectCard={this._selectCard} />
-        <PlayerBadges
-          scores={getScoreBoard(this.props.G)}
-          playerID={this.props.playerID}
-          players={this.props.gameArgs.players}
-          ctx={this.props.ctx}
-        />
+        <div style={{ clear: 'left', paddingTop: '8px' }}>
+          <PlayerBadges
+            scores={getScoreBoard(this.props.G)}
+            playerID={this.props.playerID}
+            players={this.props.gameArgs.players}
+            ctx={this.props.ctx}
+          />
+        </div>
       </GameLayout>
     );
   }

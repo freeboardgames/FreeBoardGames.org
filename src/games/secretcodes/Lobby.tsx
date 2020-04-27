@@ -4,14 +4,14 @@ import css from './Lobby.css';
 import { LobbyTeam } from './LobbyTeam';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import { LobbyPlayer } from './LobbyPlayer';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { isLocalGame } from '../common/gameMode';
 import Button from '@material-ui/core/Button';
-import { getPlayerTeam } from './util';
+import { getPlayerTeam, gameCanStart } from './util';
 
 interface ILobbyProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   events: any;
   playerID: string;
@@ -23,19 +23,13 @@ interface ILobbyState {}
 
 export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
   componentDidMount() {
-    if (isLocalGame(this.props.gameArgs) && this.gameCanStart()) {
-      this.props.events.endPhase();
+    if (isLocalGame(this.props.gameArgs) && gameCanStart(this.props.G, this.props.ctx)) {
+      this._startGame();
     }
   }
 
-  gameCanStart = (): boolean => {
-    const { numPlayers } = this.props.ctx;
-    if (this.props.G.teams[0].spymasterID === null || this.props.G.teams[1].spymasterID === null) return false;
-    return this.props.G.teams.reduce((sum, t) => sum + t.playersID.length, 0) === numPlayers;
-  };
-
   _startGame = () => {
-    this.props.events.endPhase();
+    this.props.moves.startGame();
   };
 
   render() {
@@ -90,7 +84,7 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
           </div>
         </div>
 
-        {!this.gameCanStart() ? (
+        {!gameCanStart(this.props.G, this.props.ctx) ? (
           <p className={css.text}>
             In order to start the game all players need to join a team and each team must have a spymaster.
           </p>
@@ -102,7 +96,7 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
             variant="contained"
             onClick={this._startGame}
             color="primary"
-            disabled={!this.gameCanStart()}
+            disabled={!gameCanStart(this.props.G, this.props.ctx)}
           >
             Done, play!
           </Button>
