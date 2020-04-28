@@ -3,7 +3,11 @@ import { Point } from './game';
 import css from './Field.css';
 import { red, blue } from '@material-ui/core/colors';
 
-const PIECE_RADIUS = 25;
+import ShreejiImg from './media/ShjSqr.png';
+import SaintImg from './media/NarNSqr.png';
+
+const PIECE_RADIUS = 32;
+const IMAGE_WIDTH = 50;
 const BOARD_SIZE = 500;
 const CIRCLE_RADIUS = BOARD_SIZE * 0.4;
 const POINT_SELECTION_ZOOM = 1.2;
@@ -93,7 +97,7 @@ export class Field extends React.Component<IFieldProps, {}> {
         const radiusFactor = 1 / (Math.sqrt(point.x ** 2 + point.y ** 2) || 1);
         const scale = idx === this.props.idSelectedPoint ? POINT_SELECTION_ZOOM : 1;
         cells.push(
-          <circle
+            <circle
             key={`rota_piece_${point.pieceID}`}
             id={`id_rota_piece_${point.pieceID}`}
             className={`${css.RotaPiece}`}
@@ -108,6 +112,20 @@ export class Field extends React.Component<IFieldProps, {}> {
               }px) scale(${scale})`,
             }}
           />,
+        );
+        cells.push(
+          <image 
+            key={`rota_murti_${point.pieceID}`}
+            id={`id_rota_murti_${point.pieceID}`}
+            width={IMAGE_WIDTH} height={IMAGE_WIDTH}
+            href={ point.playerID === '0' ? ShreejiImg : SaintImg }
+            onClick={() => this.props.clickPoint(idx)}
+            className={`${css.RotaPiece} RotaPiece`}
+            style={{
+              transform: `translate(${point.x * CIRCLE_RADIUS * radiusFactor - IMAGE_WIDTH/2 }px, 
+                ${point.y * CIRCLE_RADIUS * radiusFactor - IMAGE_WIDTH/2 }px)`,
+            }}
+          /> 
         );
       }
     });

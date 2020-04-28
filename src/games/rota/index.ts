@@ -5,13 +5,13 @@ import instructions from './instructions.md';
 
 export const rotaGameDef: IGameDef = {
   code: 'rota',
-  name: 'Rota',
+  name: 'Rass',
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
-  description: 'A classic Roman Game',
-  descriptionTag: `Play Rota, a classic Roman game. You can play multi-player or with your friend locally!`,
+  description: 'જુઓ જુઓને સાહેલીઓ આજ, રસિયો રાસ રમે',
+  descriptionTag: `Play Rass, just like Shreeji Maharaj played in Panchala. You can play multi-player or with your friend locally!`,
   instructions: {
     videoId: '_XVs7CmSXTw',
     text: instructions,
