@@ -5,10 +5,10 @@ import { Grid } from 'ui';
 import { Token } from 'ui';
 import { IG, getScoreBoard } from './game';
 import { IScore } from '../common/Scoreboard';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { Scoreboard } from '../common/Scoreboard';
 import { GameMode } from 'components/App/Game/GameModePicker';
-import { ScoreBadges } from '../common/ScoreBadges';
+import { PlayerBadges } from '../common/PlayerBadges';
 import css from './Board.css';
 
 import red from '@material-ui/core/colors/red';
@@ -36,7 +36,7 @@ export interface IColorMap {
 
 interface IBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   step?: any;
   playerID: string;
@@ -169,8 +169,8 @@ export class Board extends React.Component<IBoardProps, {}> {
               </Token>
             ))}
         </Grid>
-        <ScoreBadges
-          scoreboard={getScoreBoard(this.props.G, this.props.ctx)}
+        <PlayerBadges
+          scores={getScoreBoard(this.props.G, this.props.ctx)}
           playerID={this.props.playerID}
           players={this.props.gameArgs.players}
           colors={colors}

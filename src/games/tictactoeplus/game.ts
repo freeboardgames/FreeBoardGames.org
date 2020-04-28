@@ -1,4 +1,4 @@
-import { IGameArgs } from 'boardgame.io/core';
+import { Game } from 'boardgame.io';
 
 /*
  * Copyright 2017 The boardgame.io Authors
@@ -49,7 +49,7 @@ export function isVictory(cells: string[]) {
   return false;
 }
 
-export const TictactoePlusGame: IGameArgs = {
+export const TictactoePlusGame: Game = {
   name: 'tictactoeplus',
 
   setup: () => ({

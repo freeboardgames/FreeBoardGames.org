@@ -1,11 +1,10 @@
 import { IGameConfig } from '../index';
-import { CornerusGame } from './game';
+import { RotaGame } from './game';
 import { Board } from './board';
 
 const config: IGameConfig = {
-  bgioGame: CornerusGame,
+  bgioGame: RotaGame,
   bgioBoard: Board,
-  debug: false,
 };
 
 export default config;

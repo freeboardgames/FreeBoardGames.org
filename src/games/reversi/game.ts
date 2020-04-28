@@ -1,4 +1,5 @@
-import { IGameArgs, IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
+import { INVALID_MOVE } from 'boardgame.io/core';
+import { Game, Ctx } from 'boardgame.io';
 
 export interface IG {
   points: string[];
@@ -77,7 +78,7 @@ export function getValidMoves(G: IG, playerID: string) {
   return validMoves;
 }
 
-export function placePiece(G: IG, ctx: IGameCtx, x: number, y: number) {
+export function placePiece(G: IG, ctx: Ctx, x: number, y: number) {
   if (G.points[toPosition(x, y)] !== null) {
     return INVALID_MOVE;
   }
@@ -138,7 +139,7 @@ export function placePiece(G: IG, ctx: IGameCtx, x: number, y: number) {
   }
 }
 
-export function getScoreBoard(G: IG, ctx: IGameCtx) {
+export function getScoreBoard(G: IG, ctx: Ctx) {
   let scoreBoard = new Array(ctx.numPlayers).fill(0);
   G.points
     .filter((point) => point !== null && parseInt(point) < ctx.numPlayers)
@@ -146,12 +147,12 @@ export function getScoreBoard(G: IG, ctx: IGameCtx) {
   return scoreBoard.map((score, i) => ({ playerID: i.toString(), score })).sort((a, b) => b.score - a.score);
 }
 
-const GameConfig: IGameArgs = {
+const GameConfig: Game<IG> = {
   name: 'reversi',
   turn: {
     moveLimit: 1,
   },
-  endIf: (G: IG, ctx) => {
+  endIf: (G: IG, ctx: Ctx) => {
     if (!G.points.includes(null)) {
       return { scoreboard: getScoreBoard(G, ctx) };
     }

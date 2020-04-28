@@ -1,4 +1,6 @@
-import { IGameCtx, INVALID_MOVE, IGameArgs } from 'boardgame.io/core';
+import { INVALID_MOVE } from 'boardgame.io/core';
+import { Ctx, Game } from 'boardgame.io';
+
 interface ICheckerPiece {
   id: number;
   playerID: string;
@@ -220,7 +222,7 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
   }
 }
 
-export function move(G: IG, ctx: IGameCtx, from: ICoord, to: ICoord): IG | string {
+export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
   const indexFrom = toIndex(from);
   const indexTo = toIndex(to);
   const piece = G.board[indexFrom];
@@ -283,7 +285,7 @@ export function move(G: IG, ctx: IGameCtx, from: ICoord, to: ICoord): IG | strin
   return newG;
 }
 
-export const CheckersGame: IGameArgs = {
+export const CheckersGame: Game<IG> = {
   name: 'checkers',
   setup: (): IG => ({ board: INITIAL_BOARD, jumping: null }),
   moves: {

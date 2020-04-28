@@ -9,6 +9,7 @@ import { reversiGameDef } from './reversi';
 import { cornerusGameDef } from './cornerus';
 import { tictactoeplusGameDef } from './tictactoeplus';
 import { fourinarowGameDef } from './fourinarow';
+import { rotaGameDef } from './rota';
 import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
 
@@ -24,6 +25,7 @@ export const GAMES_MAP: IGameDefMap = {
   reversi: reversiGameDef,
   tictactoeplus: tictactoeplusGameDef,
   fourinarow: fourinarowGameDef,
+  rota: rotaGameDef,
   secretcodes: secretcodesGameDef,
   hangman: hangmanGameDef,
 };
@@ -34,9 +36,10 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.tictactoeplus,
   GAMES_MAP.fourinarow,
   GAMES_MAP.reversi,
-  GAMES_MAP.checkers,
   GAMES_MAP.secretcodes,
-  // GAMES_MAP.hangman,
+  GAMES_MAP.hangman,
+  GAMES_MAP.rota,
+  GAMES_MAP.checkers,
   GAMES_MAP.ninemensmorris,
 
   // GAMES_MAP.chess,
