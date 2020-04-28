@@ -47,4 +47,10 @@ export class RoomService {
     room.users.push(user);
     await room.save();
   }
+
+  public static async leaveRoom(room: RoomDb, user: UserDb) {
+    const roomUsers = room.users.filter((userInRoom) => userInRoom.id !== user.id);
+    room.users = roomUsers;
+    await room.save();
+  }
 }
