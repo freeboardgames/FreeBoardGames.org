@@ -328,7 +328,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         return 'you lost';
       }
     } else {
-      return `Player ${this._playerName()} won!`;
+      return `Player ${this._playerName()} won`;
     }
   }
 
