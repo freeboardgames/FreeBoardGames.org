@@ -333,11 +333,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _handleKeyDown = (event: KeyboardEvent) => {
-    if (this.props.ctx.phase === 'play') {
-      const key = event.key;
-      if (ALPHABET.includes(key)) {
-        this.onClick(key)();
-      }
+    if (this.props.ctx.phase === 'play' && ALPHABET.includes(event.key)) {
+      this.onClick(event.key)();
     }
   };
 
