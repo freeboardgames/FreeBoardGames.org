@@ -34,6 +34,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     };
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', this._handleKeyDown, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this._handleKeyDown, false);
+  }
+
   onClick = (letter: string) => () => {
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.playerID !== this.props.ctx.currentPlayer) {
@@ -320,9 +328,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         return 'you lost';
       }
     } else {
-      return `Player ${this._playerName()} won!`;
+      return `Player ${this._playerName()} won`;
     }
   }
+
+  _handleKeyDown = (event: KeyboardEvent) => {
+    if (this.props.ctx.phase === 'play' && ALPHABET.includes(event.key)) {
+      this.onClick(event.key)();
+    }
+  };
 
   render() {
     if (this.props.ctx.gameover) {
