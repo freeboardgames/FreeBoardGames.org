@@ -5,6 +5,9 @@
       "dto/*": [
         "../common/dto/*"
       ],
+      "store": [
+        "store/index.ts"
+      ]
     },
     "target": "es5",
     "lib": [
