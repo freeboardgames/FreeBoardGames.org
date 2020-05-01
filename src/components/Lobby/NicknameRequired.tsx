@@ -59,7 +59,7 @@ class NicknameRequired extends React.Component<Props, {}> {
 const mapStateToProps = function (state) {
   console.log('state is', state);
   return {
-    auth: state.auth,
+    auth: { ...state.auth },
   };
 };
 
