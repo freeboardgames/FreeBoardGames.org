@@ -80,20 +80,33 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
   }
 
+  _getBoard(boardSize = 100) {
+    return (
+      <Field
+        boardSize={boardSize}
+        points={this.props.G.points}
+        clickPoint={this._pointClicked}
+        idSelectedPoint={this.state.idSelectedPoint}
+      />
+    );
+  }
+
   render() {
     if (this.props.ctx.gameover) {
-      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+      return (
+        <GameLayout
+          gameOver={this._getGameOver()}
+          extraCardContent={this._getBoard(50)}
+          gameArgs={this.props.gameArgs}
+        />
+      );
     }
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
         <Typography variant="h5" style={{ color: 'white', textAlign: 'center' }}>
           {this._getStatus()}
         </Typography>
-        <Field
-          points={this.props.G.points}
-          clickPoint={this._pointClicked}
-          idSelectedPoint={this.state.idSelectedPoint}
-        />
+        {this._getBoard()}
       </GameLayout>
     );
   }
