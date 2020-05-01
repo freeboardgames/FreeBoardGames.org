@@ -85,14 +85,19 @@ function placePiece(G: IG, ctx: Ctx, pointID: number) {
   }
 
   // add player-id of player who clicked the point
-  const points = G.points.map((point, idx) => {
-    if (point.playerID === null && pointID === idx) {
-      piecesPlaced = piecesPlaced + 1;
-      return { ...point, playerID: ctx.currentPlayer, pieceID: G.piecesPlaced };
-    } else {
-      return { ...point };
-    }
+  const points = G.points.map((point) => {
+    return { ...point };
   });
+  for (let idx = 0; idx < points.length; idx++) {
+    if (pointID === idx) {
+      if (points[idx].playerID !== null) {
+        return INVALID_MOVE;
+      }
+      piecesPlaced = piecesPlaced + 1;
+      points[idx].playerID = ctx.currentPlayer;
+      points[idx].pieceID = G.piecesPlaced;
+    }
+  }
 
   return { ...G, points, piecesPlaced };
 }

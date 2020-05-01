@@ -18,6 +18,7 @@ interface IEnterWordPromptState {
 }
 
 export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnterWordPromptState> {
+  wordInput: HTMLDivElement;
   state = {
     wordTextField: '',
     hintTextField: '',
@@ -43,6 +44,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
             <div>
               <TextField
                 autoFocus={true}
+                inputRef={(input) => (this.wordInput = input)}
                 type="text"
                 label={`Word (max ${MAX_WORD_LENGTH} chars)`}
                 fullWidth
@@ -57,10 +59,10 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
               <TextField
                 type="text"
                 label="Hint (max 120 chars)"
-                multiline
                 fullWidth
                 rowsMax={4}
                 onChange={this._onHintChange}
+                onKeyPress={this._setEnterWordOnEnterButton}
                 style={{ margin: '8px', width: '90%' }}
                 data-test-id="hintTextField"
                 value={this.state.hintTextField}
@@ -101,6 +103,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
         hintTextField: '',
       });
       this.props.setSecret(this.state.wordTextField, this.state.hintTextField);
+      this.wordInput.focus();
     }
   };
 
