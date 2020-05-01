@@ -1,29 +1,36 @@
 import React from 'react';
 import NicknamePrompt from './NicknamePrompt';
 import { getAuthData, setAuthData } from 'misc/AuthHelper';
+import { connect } from 'react-redux';
 
 interface Props {
   onSuccess: (...args: any) => void;
-  showIf: boolean;
+  requiredIf: boolean;
 }
 
-interface State {
-  nickname?: string;
-}
-
-class NicknameRequired extends React.Component<Props, State> {
+class NicknameRequired extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
+  }
+
+  componentDidMount() {
     const authData = getAuthData();
-    this.state = { nickname: authData?.nickname };
+    let payload;
+    if (authData) {
+      payload = { loggedIn: true, nickname: authData.nickname };
+    } else {
+      payload = { loggedIn: false };
+    }
+    (this.props as any).dispatch({ type: 'SYNC_AUTH', payload });
   }
 
   render() {
-    if (this.props.showIf) {
+    if (this.props.requiredIf) {
+      const nickname: string = (this.props as any).auth.nickname;
       return (
         <React.Fragment>
           <NicknamePrompt
-            nickname={this.state.nickname}
+            nickname={nickname}
             setNickname={this._setNickname}
             closePrompt={this._closeNicknamePrompt}
             blockClickaway={true}
@@ -49,4 +56,11 @@ class NicknameRequired extends React.Component<Props, State> {
   };
 }
 
-export default NicknameRequired;
+const mapStateToProps = function (state) {
+  console.log('state is', state);
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps)(NicknameRequired);

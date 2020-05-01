@@ -1,7 +1,12 @@
 import { Action, createStore } from 'redux';
 import { MakeStore } from 'next-redux-wrapper';
 
-const INITIAL_STATE = { foo: 'foo' };
+export interface AuthState {
+  loggedIn: boolean;
+  nickname: string;
+}
+
+const INITIAL_STATE = { auth: { loggedIn: false, nickname: undefined } };
 
 /**
  * @param initialState The store's initial state (on the client side, the state of the server-side store is passed here)
@@ -10,14 +15,14 @@ export const makeStore: MakeStore = (initialState: RootState) => {
   return createStore(reducer, initialState);
 };
 
-interface FooAction extends Action<'FOO'> {
-  payload: string;
+interface ReduxAction extends Action<'SYNC_AUTH'> {
+  payload: AuthState;
 }
 
-export const reducer = (state = INITIAL_STATE, action: FooAction) => {
+export const reducer = (state = INITIAL_STATE, action: ReduxAction) => {
   switch (action.type) {
-    case 'FOO':
-      return { ...state, foo: action.payload };
+    case 'SYNC_AUTH':
+      return { ...state, auth: { ...action.payload } };
     default:
       return state;
   }
