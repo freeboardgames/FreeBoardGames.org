@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { RoomDb } from './RoomDb';
 import { UserDeviceDb } from './UserDeviceDb';
+import { UserInRoomDb } from './UserInRoomDb';
 
 @Entity()
 export class UserDb extends BaseEntity {
@@ -22,9 +23,6 @@ export class UserDb extends BaseEntity {
   @Column()
   nickname!: string;
 
-  @ManyToMany((type) => RoomDb, (room) => room.users, {
-    cascade: true,
-  })
-  @JoinTable()
-  rooms!: RoomDb[];
+  @OneToMany((type) => UserInRoomDb, (userinRoomDb) => userinRoomDb.user)
+  public userInRooms!: UserInRoomDb[];
 }

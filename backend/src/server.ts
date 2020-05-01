@@ -14,10 +14,11 @@ import { RenameUserHandle } from './user/RenameUserHandle';
 import { Handle } from './Handle';
 import { UserDeviceDb } from './db/UserDeviceDb';
 import { Room } from '../../common/dto/Room';
-import { HealthzHandle } from './HealtzHandle';
+import { HealthzHandle } from './HealthzHandle';
 import { NewRoomHandle } from './room/NewRoomHandle';
 import { ListRoomsHandle } from './room/ListRoomsHandle';
 import { GetRoomHandle } from './room/GetRoomHandle';
+import { UserInRoomDb } from './db/UserInRoomDb';
 
 const csrfProtection = csrf({ cookie: true });
 
@@ -30,7 +31,7 @@ const HANDLES: Handle[] = [
   new GetRoomHandle(csrfProtection),
 ];
 
-const ENTITIES = [UserDb, UserDeviceDb, RoomDb];
+const ENTITIES = [UserDb, UserDeviceDb, RoomDb, UserInRoomDb];
 
 const PORT = 8002;
 

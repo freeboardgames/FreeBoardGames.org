@@ -1,5 +1,6 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany } from 'typeorm';
 import { UserDb } from './UserDb';
+import { UserInRoomDb } from './UserInRoomDb';
 
 @Entity()
 export class RoomDb extends BaseEntity {
@@ -15,6 +16,6 @@ export class RoomDb extends BaseEntity {
   @Column()
   unlisted!: boolean;
 
-  @ManyToMany((type) => UserDb, (userDb) => userDb.rooms)
-  users!: UserDb[];
+  @OneToMany((type) => UserInRoomDb, (userinRoomDb) => userinRoomDb.room)
+  public usersInRoom!: UserInRoomDb[];
 }

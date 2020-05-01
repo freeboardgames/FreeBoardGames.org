@@ -1,6 +1,7 @@
 import { RoomDb } from '../../db/RoomDb';
 import { Room, NewRoomResponse, NewRoomResponseStatus } from '../../../../common/dto/Room';
 import { UserDb } from '../../db/UserDb';
+import { UserInRoomDb } from '../../db/UserInRoomDb';
 
 export class RoomService {
   public static async newRoom(userDbEntity: UserDb, room: Room) {
@@ -8,9 +9,13 @@ export class RoomService {
     roomDbEntity.capacity = room.capacity;
     roomDbEntity.gameCode = room.gameCode;
     roomDbEntity.unlisted = room.unlisted;
-    roomDbEntity.users = [userDbEntity];
-
     await roomDbEntity.save();
+
+    const userInRoom = new UserInRoomDb();
+    userInRoom.room = roomDbEntity;
+    userInRoom.user = userDbEntity;
+    await userInRoom.save();
+
     const response: NewRoomResponse = { status: NewRoomResponseStatus.Success, room: roomDbEntity };
     return response;
   }
@@ -22,7 +27,7 @@ export class RoomService {
     });
     const rooms = roomsFromDb.map((room) => {
       const { capacity, gameCode } = room;
-      const users = room.users || [];
+      const usersInRoom = room.usersInRoom || []; // FIXME this is probably not right
       return { capacity, gameCode, users };
     });
     return rooms;
