@@ -171,7 +171,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _getHintButton() {
-    if (isOnlineGame(this.props.gameArgs) && this.props.playerID === this.props.ctx.currentPlayer) {
+    if (isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer) {
       return;
     }
     if (!this._opponentState().hint) {

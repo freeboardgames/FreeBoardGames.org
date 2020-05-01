@@ -9,6 +9,7 @@ const CIRCLE_RADIUS = BOARD_SIZE * 0.4;
 const POINT_SELECTION_ZOOM = 1.2;
 
 interface IFieldProps {
+  boardSize: number;
   points: Point[];
   clickPoint: (pointID: number) => void;
   idSelectedPoint: number;
@@ -22,17 +23,37 @@ const playerColors = {
 export class Field extends React.Component<IFieldProps, {}> {
   render() {
     return (
-      <svg width="100%" height="100%" viewBox="-250 -250 500 500" className={css.RotaField} pointerEvents="visible">
-        <g strokeWidth="4" stroke="#cccccc">
-          {this._drawLinesAndCircle()}
-        </g>
-        <g>{this._placePieces()}</g>
-      </svg>
+      <div style={{ textAlign: 'center' }}>
+        <svg
+          width={`${this.props.boardSize}%`}
+          height={`${this.props.boardSize}%`}
+          viewBox="-250 -250 500 500"
+          className={css.RotaField}
+          pointerEvents="visible"
+        >
+          <g strokeWidth="4" stroke="#cccccc">
+            {this._drawLinesAndCircle()}
+          </g>
+          <g>{this._placePieces()}</g>
+        </svg>
+      </div>
     );
   }
 
   _drawLinesAndCircle() {
     const cells = [];
+
+    // Add black background
+    cells.push(
+      <rect
+        key={`black_background_rota`}
+        x={-BOARD_SIZE / 2}
+        y={-BOARD_SIZE / 2}
+        width={BOARD_SIZE}
+        height={BOARD_SIZE}
+        strokeWidth="0"
+      />,
+    );
 
     // Add outer circle
     cells.push(
