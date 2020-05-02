@@ -22,10 +22,15 @@ interface State {
 }
 
 class NicknamePrompt extends React.Component<Props, State> {
+  input: HTMLDivElement;
   constructor(props: Props) {
     super(props);
     this.state = { nameTextField: props.nickname, errorText: '' };
   }
+  componentDidMount() {
+    this.input.focus();
+  }
+
   render() {
     return (
       <AlertLayer>
@@ -46,13 +51,17 @@ class NicknamePrompt extends React.Component<Props, State> {
             <CardContent>
               <div>
                 <TextField
-                  autoFocus={true}
+                  // the key prop in ensures input focus is not lost on updates
+                  key={'nicknameTextField'}
                   type="text"
                   defaultValue={this.props.nickname}
                   error={!!this.state.errorText}
                   helperText={this.state.errorText}
                   onChange={this._onChange}
                   onKeyPress={this._setNicknameOnEnterButton}
+                  inputRef={(input) => {
+                    this.input = input;
+                  }}
                 />
               </div>
               <Button variant="contained" color="primary" style={{ marginTop: '16px' }} onClick={this._onClick}>
