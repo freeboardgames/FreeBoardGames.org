@@ -20,7 +20,7 @@ interface IBoardState {
   idSelectedPoint: number;
 }
 
-export const localPlayerNames = { '0': 'red', '1': 'blue' };
+export const localPlayerNames = { '0': 'Shreeji', '1': 'Saint' };
 
 export class Board extends React.Component<IBoardProps, {}> {
   state: IBoardState = { idSelectedPoint: null };
@@ -50,19 +50,19 @@ export class Board extends React.Component<IBoardProps, {}> {
       return;
     }
 
-    let prefix = '';
-    if (isLocalGame(this.props.gameArgs)) {
-      prefix = `[${localPlayerNames[this.props.ctx.currentPlayer].toUpperCase()}]`;
-    }
+    // let prefix = 'MURTI';
+    // if (isLocalGame(this.props.gameArgs)) {
+    let prefix = `${localPlayerNames[this.props.ctx.currentPlayer].toUpperCase()}`;
+    // }
 
     if (this.props.ctx.currentPlayer !== this.props.playerID && !isLocalGame(this.props.gameArgs)) {
       return `Waiting for ${this._playerInRoom().name} ...`;
     }
 
     if (this.props.ctx.phase === Phase.Place) {
-      return `${prefix} PLACE PIECE`;
+      return `PLACE ${prefix}`;
     } else {
-      return `${prefix} MOVE PIECE`;
+      return `MOVE ${prefix}`;
     }
   }
 
