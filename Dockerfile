@@ -1,5 +1,5 @@
 # blog
-FROM node:14.0.0-buster as blog
+FROM node:13.13.0-buster as blog
 
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
 RUN rm /bin/su
