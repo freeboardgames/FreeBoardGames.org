@@ -12,7 +12,12 @@ import ErrorPage from './_error';
 import ReactGA from 'react-ga';
 import Router from 'next/router';
 
-class defaultApp extends App {
+import withRedux, { ReduxWrapperAppProps } from 'next-redux-wrapper';
+import { Provider } from 'react-redux';
+import { makeStore } from '../redux/store';
+import { RootState } from '../redux/reducer';
+
+class defaultApp extends App<ReduxWrapperAppProps<RootState>> {
   logPageView(path: string) {
     ReactGA.set({ page: path });
     ReactGA.pageview(path);
@@ -38,15 +43,17 @@ class defaultApp extends App {
     this.logPageView(window.location.pathname);
   }
   render() {
-    const { Component, pageProps, userAgent } = this.props as any;
+    const { Component, pageProps, userAgent, store } = this.props as any;
     const userAgentDetails = processUserAgent(userAgent);
     return (
-      <ThemeProvider theme={theme}>
-        <SelfXSSWarning />
-        <UaContext.Provider value={userAgentDetails}>
-          <Component {...pageProps} {...{ userAgent }} />
-        </UaContext.Provider>
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <SelfXSSWarning />
+          <UaContext.Provider value={userAgentDetails}>
+            <Component {...pageProps} {...{ userAgent }} />
+          </UaContext.Provider>
+        </ThemeProvider>
+      </Provider>
     );
   }
   static async getInitialProps({ Component, ctx }) {
@@ -65,4 +72,4 @@ class defaultApp extends App {
   }
 }
 
-export default withError(ErrorPage)(defaultApp);
+export default withRedux(makeStore)(withError(ErrorPage)(defaultApp));
