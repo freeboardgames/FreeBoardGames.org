@@ -14,7 +14,7 @@ describe('Nickname Prompt', () => {
   beforeEach(() => {
     setNicknamePromptMock = jest.fn();
     togglePromptMock = jest.fn();
-    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} togglePrompt={togglePromptMock} />);
+    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} closePrompt={togglePromptMock} />);
   });
 
   it('should prompt for nickname', () => {
