@@ -8,13 +8,13 @@ Enzyme.configure({ adapter: new Adapter() });
 
 describe('Nickname Prompt', () => {
   let setNicknamePromptMock: jest.Mock;
-  let togglePromptMock: jest.Mock;
+  let closePromptMock: jest.Mock;
   let wrapper: Enzyme.ReactWrapper;
 
   beforeEach(() => {
     setNicknamePromptMock = jest.fn();
-    togglePromptMock = jest.fn();
-    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} closePrompt={togglePromptMock} />);
+    closePromptMock = jest.fn();
+    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} closePrompt={closePromptMock} />);
   });
 
   it('should prompt for nickname', () => {
@@ -41,8 +41,9 @@ describe('Nickname Prompt', () => {
   });
 
   it('should call this.props.togglePrompt on click away', () => {
+    wrapper.setProps({ nickname: 'foo' }); // we can't click away without a nickname
     const instance = wrapper.instance() as any;
-    instance._togglePrompt();
-    expect(togglePromptMock).toHaveBeenCalled();
+    instance._handleClickaway();
+    expect(closePromptMock).toHaveBeenCalled();
   });
 });
