@@ -12,6 +12,7 @@ import { fourinarowGameDef } from './fourinarow';
 import { rotaGameDef } from './rota';
 import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
+import { soupOfLettersGameDef } from './soupofletters';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
@@ -28,6 +29,7 @@ export const GAMES_MAP: IGameDefMap = {
   rota: rotaGameDef,
   secretcodes: secretcodesGameDef,
   hangman: hangmanGameDef,
+  soupofletters: soupOfLettersGameDef,
 };
 
 // Order roughly by popularity.
@@ -38,6 +40,7 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.secretcodes,
   GAMES_MAP.seabattle,
   GAMES_MAP.tictactoe,
+  GAMES_MAP.soupofletters,
   GAMES_MAP.fourinarow,
   GAMES_MAP.rota,
   GAMES_MAP.checkers,
