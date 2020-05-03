@@ -3,6 +3,13 @@ import NicknamePrompt from './NicknamePrompt';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Button from '@material-ui/core/Button';
+import { LobbyService } from 'components/Lobby/LobbyService';
+import { mocked } from 'ts-jest/utils';
+import { NewUserResponse, NewUserResponseStatus } from 'dto/User';
+
+jest.mock('./LobbyService.tsx');
+
+const mockedLobbyService = mocked(LobbyService, true);
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -12,6 +19,9 @@ describe('Nickname Prompt', () => {
   let wrapper: Enzyme.ReactWrapper;
 
   beforeEach(() => {
+    const resp: NewUserResponse = { status: NewUserResponseStatus.Success, token: 'foo' };
+    mockedLobbyService.checkin.mockResolvedValue(resp);
+
     setNicknamePromptMock = jest.fn();
     closePromptMock = jest.fn();
     wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} closePrompt={closePromptMock} />);
@@ -26,8 +36,11 @@ describe('Nickname Prompt', () => {
     input.simulate('change', {
       target: { value: 'foobar' },
     });
+
     const setButton = wrapper.find(Button);
     setButton.simulate('click');
+
+    expect(mockedLobbyService.checkin).toHaveBeenCalledWith('foobar');
     expect(setNicknamePromptMock).toHaveBeenCalledWith('foobar');
   });
 
@@ -56,7 +69,7 @@ describe('Nickname Prompt', () => {
     expect(setNicknamePromptMock).not.toHaveBeenCalled();
 
     const errorText: string = wrapper.state('errorText');
-    expect(errorText).toEqual('Invalid name.');
+    expect(errorText).toEqual('Invalid nickname.');
   });
 
   it('requires user to choose a nickname', () => {

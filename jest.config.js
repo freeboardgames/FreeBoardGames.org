@@ -9,6 +9,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.(sass|scss|png|mp3|md).*$': '<rootDir>/../tests/__mocks__/emptyModule.js',
     '\\.(css|less)$': 'identity-obj-proxy',
+    'dto/(.*)': '<rootDir>/../common/dto/$1',
   },
   coverageReporters: ['json', 'lcov', 'text', 'text-summary'],
   globals: {
