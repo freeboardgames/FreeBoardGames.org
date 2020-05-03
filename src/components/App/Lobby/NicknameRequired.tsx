@@ -3,10 +3,10 @@ import { NicknamePrompt } from './NicknamePrompt';
 import { LobbyService } from './LobbyService';
 import { connect } from 'react-redux';
 import { ActionNames, AuthData } from '../../../redux/actions';
+import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
 
 interface Props {
   onSuccess?: (...args: any) => void;
-  requiredIf?: boolean;
   handleClickaway?: () => void;
 }
 
@@ -31,14 +31,12 @@ class NicknameRequired extends React.Component<Props, State> {
   }
 
   render() {
-    const requiredIf = this.props.requiredIf;
     const nickname: string = (this.props as any).user.nickname;
-    if (!nickname && (typeof requiredIf === 'undefined' || this.props.requiredIf)) {
+    if (!nickname) {
       return (
-        <React.Fragment>
+        <FreeBoardGamesBar>
           <NicknamePrompt nickname={nickname} setNickname={this._setNickname} closePrompt={this._closeNicknamePrompt} />
-          {this.props.children}
-        </React.Fragment>
+        </FreeBoardGamesBar>
       );
     } else {
       return this.props.children;

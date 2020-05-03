@@ -66,10 +66,13 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       );
       return <MessagePage type={'error'} message={this.state.error} actionComponent={TryAgain} />;
     }
-    // TODO fix loading animation
-    // if (this.state.loading) {
-    //   return <MessagePage type={'loading'} message={'Loading...'} />;
-    // }
+    if (this.state.loading) {
+      return (
+        <NicknameRequired>
+          <MessagePage type={'loading'} message={'Loading...'} />
+        </NicknameRequired>
+      );
+    }
     if (this.state.gameReady) {
       const room = this.state.roomMetadata;
       return <Game room={room} />;
@@ -77,20 +80,15 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     const nicknamePrompt = this.state.editingName ? (
       <AlertLayer>{this._getNamePrompt(this.state.roomMetadata.currentUser.name)}</AlertLayer>
     ) : null;
-    const mainPage = this.state.roomMetadata ? (
-      <React.Fragment>
-        <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
-        {this._getGameSharing()}
-        <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
-      </React.Fragment>
-    ) : null;
     return (
-      <FreeBoardGamesBar>
-        <NicknameRequired>
+      <NicknameRequired>
+        <FreeBoardGamesBar>
           {nicknamePrompt}
-          {mainPage}
-        </NicknameRequired>
-      </FreeBoardGamesBar>
+          <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
+          {this._getGameSharing()}
+          <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
+        </FreeBoardGamesBar>
+      </NicknameRequired>
     );
   }
 
@@ -130,7 +128,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       .then(
         (metadata) => {
           if (metadata.numberOfPlayers === metadata.players.length) {
-            this.setState((oldState) => ({ ...oldState, gameReady: true }));
+            this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false, gameReady: true }));
             this._componentCleanup();
           }
           this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
