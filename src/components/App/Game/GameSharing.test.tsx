@@ -4,7 +4,7 @@ import { IRoomMetadata } from '../Lobby/LobbyService';
 import { render, fireEvent, RenderResult, cleanup } from '@testing-library/react';
 require('@testing-library/jest-dom/extend-expect');
 
-const GAME_LINK = 'http://localhost/room/foogame/fooroom';
+const GAME_LINK = 'http://localhost/room/fooroom';
 
 afterEach(cleanup);
 describe('GameSharing', () => {
