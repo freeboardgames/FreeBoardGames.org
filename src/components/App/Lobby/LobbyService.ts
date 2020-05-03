@@ -1,16 +1,9 @@
 import AddressHelper from '../Helpers/AddressHelper';
 import request from 'superagent';
 import SSRHelper from '../Helpers/SSRHelper';
-import Cookies from 'js-cookie';
 
 const FBG_CREDENTIALS_KEY = 'fbgCredentials';
-
-export function getAuthData() {
-  const nickname = Cookies.get('nickname');
-  const token = Cookies.get('token');
-  if (!nickname || !token) return undefined;
-  return { nickname, token };
-}
+const FBG_NICKNAME_KEY = 'fbgNickname';
 
 export interface IPlayerInRoom {
   playerID: number;
@@ -91,15 +84,14 @@ export class LobbyService {
     return response.body.nextRoomID;
   }
 
-  public static getNickname(): string | undefined {
+  public static getNickname(): string {
     if (!SSRHelper.isSSR()) {
-      const nickname = Cookies.get('nickname');
-      return nickname;
+      return localStorage.getItem(FBG_NICKNAME_KEY);
     }
   }
 
-  public static setNickname(nickname: string): void {
-    Cookies.set('nickname', nickname, { sameSite: 'strict' });
+  public static setNickname(name: string): void {
+    localStorage.setItem(FBG_NICKNAME_KEY, name);
   }
 
   public static getCredential(roomID: string): IPlayerCredential | undefined {

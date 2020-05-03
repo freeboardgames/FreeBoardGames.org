@@ -1,8 +1,5 @@
 import { LobbyService, IPlayerInRoom, IStoredCredentials } from './LobbyService';
 import request from 'superagent';
-import Cookie from 'js-cookie';
-
-jest.mock('js-cookie', () => jest.fn());
 
 describe('New Room', () => {
   afterEach(() => {
@@ -32,17 +29,15 @@ describe('New Room', () => {
   });
 
   it('should set nickname', async () => {
-    const mockSet = jest.fn();
-    Cookie.set = mockSet;
+    const setItemMock = jest.fn();
+    Storage.prototype.setItem = setItemMock;
     LobbyService.setNickname('fooname');
-    expect(mockSet).toHaveBeenCalledWith('nickname', 'fooname', { sameSite: 'strict' });
+    expect(setItemMock.mock.calls[0][1]).toEqual('fooname');
   });
 
   it('should get nickname', async () => {
-    const mockGet = jest.fn().mockReturnValue('barname');
-    Cookie.get = mockGet;
-    Storage.prototype.getItem = jest.fn(() => 'barname');
-    expect(LobbyService.getNickname()).toEqual('barname');
+    Storage.prototype.getItem = jest.fn(() => 'foonickname');
+    expect(LobbyService.getNickname()).toEqual('foonickname');
   });
 
   it('should rename', async () => {
