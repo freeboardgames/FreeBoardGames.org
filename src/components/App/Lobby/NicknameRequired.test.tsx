@@ -1,8 +1,9 @@
 import React from 'react';
 import { NicknameRequired } from './NicknameRequired';
 import Enzyme from 'enzyme';
-import { LobbyService } from './LobbyService';
 import { AuthData } from '../../../redux/actions';
+import { LobbyService } from './LobbyService';
+jest.mock('./LobbyService');
 
 describe('Nickname Required', () => {
   let wrapper: Enzyme.ReactWrapper;
