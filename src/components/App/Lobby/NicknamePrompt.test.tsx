@@ -8,13 +8,13 @@ Enzyme.configure({ adapter: new Adapter() });
 
 describe('Nickname Prompt', () => {
   let setNicknamePromptMock: jest.Mock;
-  let togglePromptMock: jest.Mock;
+  let closePromptMock: jest.Mock;
   let wrapper: Enzyme.ReactWrapper;
 
   beforeEach(() => {
     setNicknamePromptMock = jest.fn();
-    togglePromptMock = jest.fn();
-    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} togglePrompt={togglePromptMock} />);
+    closePromptMock = jest.fn();
+    wrapper = Enzyme.mount(<NicknamePrompt setNickname={setNicknamePromptMock} closePrompt={closePromptMock} />);
   });
 
   it('should prompt for nickname', () => {
@@ -40,9 +40,35 @@ describe('Nickname Prompt', () => {
     expect(setNicknamePromptMock).toHaveBeenCalledWith('foobar');
   });
 
-  it('should call this.props.togglePrompt on click away', () => {
+  it('should not set nickname on other buttons', () => {
+    const input = wrapper.find('input');
+    input.simulate('change', {
+      target: { value: 'foobar' },
+    });
+    input.simulate('keypress', { key: 'Esc' });
+    expect(setNicknamePromptMock).not.toHaveBeenCalled();
+  });
+
+  it('should not set invalid nickname', () => {
+    const input = wrapper.find('input');
+    input.simulate('change', {
+      target: { value: '' },
+    });
+    input.simulate('keypress', { key: 'Enter' });
+    expect(setNicknamePromptMock).not.toHaveBeenCalled();
+  });
+
+  it('should not call this.props.togglePrompt on click away without nickname', () => {
+    wrapper.setProps({ nickname: '' }); // we can't click away without a nickname
     const instance = wrapper.instance() as any;
-    instance._togglePrompt();
-    expect(togglePromptMock).toHaveBeenCalled();
+    instance._handleClickaway();
+    expect(closePromptMock).not.toHaveBeenCalled();
+  });
+
+  it('should call this.props.togglePrompt on click away', () => {
+    wrapper.setProps({ nickname: 'foo' }); // we can't click away without a nickname
+    const instance = wrapper.instance() as any;
+    instance._handleClickaway();
+    expect(closePromptMock).toHaveBeenCalled();
   });
 });

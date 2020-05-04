@@ -12,6 +12,7 @@ import { NicknamePrompt } from '../../../../components/App/Lobby/NicknamePrompt'
 import { useRouter, NextRouter } from 'next/router';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
+import NicknameRequired from '../../../../components/App/Lobby/NicknameRequired';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -56,10 +57,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   render() {
-    const nickname = LobbyService.getNickname();
-    if (!nickname) {
-      return <FreeBoardGamesBar>{this._getNamePrompt()}</FreeBoardGamesBar>;
-    }
     if (this.state.error) {
       const TryAgain = (
         <Button variant="outlined" style={{ margin: '8px' }} onClick={this._tryAgain}>
@@ -70,7 +67,11 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       return <MessagePage type={'error'} message={this.state.error} actionComponent={TryAgain} />;
     }
     if (this.state.loading) {
-      return <MessagePage type={'loading'} message={'Loading...'} />;
+      return (
+        <NicknameRequired>
+          <MessagePage type={'loading'} message={'Loading...'} />
+        </NicknameRequired>
+      );
     }
     if (this.state.gameReady) {
       const room = this.state.roomMetadata;
@@ -80,12 +81,14 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       <AlertLayer>{this._getNamePrompt(this.state.roomMetadata.currentUser.name)}</AlertLayer>
     ) : null;
     return (
-      <FreeBoardGamesBar>
-        {nicknamePrompt}
-        <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
-        {this._getGameSharing()}
-        <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
-      </FreeBoardGamesBar>
+      <NicknameRequired>
+        <FreeBoardGamesBar>
+          {nicknamePrompt}
+          <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
+          {this._getGameSharing()}
+          <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
+        </FreeBoardGamesBar>
+      </NicknameRequired>
     );
   }
 
@@ -125,7 +128,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       .then(
         (metadata) => {
           if (metadata.numberOfPlayers === metadata.players.length) {
-            this.setState((oldState) => ({ ...oldState, gameReady: true }));
+            this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false, gameReady: true }));
             this._componentCleanup();
           }
           this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
@@ -141,11 +144,11 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   _getNamePrompt = (name?: string) => {
     const togglePrompt = this.state.editingName ? this._toggleEditingName : null;
-    return <NicknamePrompt setNickname={this._setNickname} nickname={name} togglePrompt={togglePrompt} />;
+    return <NicknamePrompt setNickname={this._setNickname} nickname={name} closePrompt={togglePrompt} />;
   };
 
   _toggleEditingName = () => {
-    this.setState((oldState) => ({ ...oldState, editingName: !this.state.editingName }));
+    this.setState({ editingName: !this.state.editingName });
   };
 
   _setNickname = (nickname: string) => {

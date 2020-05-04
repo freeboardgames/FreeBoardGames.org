@@ -66,7 +66,12 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
               <Typography style={{ paddingBottom: '16px' }} variant="h5" component="h2">
                 Invite Your Friends
               </Typography>
-              <TextField style={{ width: '100%' }} defaultValue={this._getLink()} label="Link" />
+              <TextField
+                style={{ width: '100%' }}
+                defaultValue={this._getLink()}
+                label="Link"
+                inputProps={{ readOnly: true }}
+              />
             </CardContent>
             <CardActions>
               <Tooltip title="Share on Facebook" aria-label="Facebook">

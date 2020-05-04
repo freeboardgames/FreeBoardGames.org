@@ -5,23 +5,25 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import AlertLayer from '../Game/AlertLayer';
 
-interface INicknamePromptProps {
-  setNickname: (nickname: string) => void;
-  togglePrompt?: () => void;
+interface Props {
+  blockClickaway?: boolean;
+  closePrompt?: () => void;
   nickname?: string;
+  setNickname: (nickname: string) => void;
 }
 
-interface INicknamePromptState {
+interface State {
   nameTextField: string;
 }
 
-export class NicknamePrompt extends React.Component<INicknamePromptProps, INicknamePromptState> {
+export class NicknamePrompt extends React.Component<Props, State> {
   state = { nameTextField: '' };
   render() {
     return (
-      <div>
-        <ClickAwayListener onClickAway={this._togglePrompt}>
+      <AlertLayer>
+        <ClickAwayListener onClickAway={this._handleClickaway}>
           <Card
             style={{
               marginTop: '16px',
@@ -57,12 +59,19 @@ export class NicknamePrompt extends React.Component<INicknamePromptProps, INickn
             </CardContent>
           </Card>
         </ClickAwayListener>
-      </div>
+      </AlertLayer>
     );
   }
 
+  /** Only close the prompt if permitted */
+  _handleClickaway = () => {
+    if (this.props.closePrompt && !!this.props.nickname && !this.props.blockClickaway) {
+      this.props.closePrompt();
+    }
+  };
+
   _setNicknameOnEnterButton = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key === 'Enter' && this._nicknameIsValid()) {
+    if (event.key === 'Enter') {
       this._onClick();
     }
   };
@@ -83,11 +92,5 @@ export class NicknamePrompt extends React.Component<INicknamePromptProps, INickn
     this.setState((oldState) => {
       return { ...oldState, nameTextField };
     });
-  };
-
-  _togglePrompt = () => {
-    if (this.props.togglePrompt) {
-      this.props.togglePrompt();
-    }
   };
 }
