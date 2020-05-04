@@ -14,7 +14,7 @@ interface State {
   open: boolean;
 }
 
-class NicknameRequired extends React.Component<Props, State> {
+export class NicknameRequired extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
   }
@@ -35,7 +35,7 @@ class NicknameRequired extends React.Component<Props, State> {
     if (!nickname) {
       return (
         <FreeBoardGamesBar>
-          <NicknamePrompt nickname={nickname} setNickname={this._setNickname} closePrompt={this._closeNicknamePrompt} />
+          <NicknamePrompt nickname={nickname} setNickname={this._setNickname} />
         </FreeBoardGamesBar>
       );
     } else {
@@ -50,12 +50,9 @@ class NicknameRequired extends React.Component<Props, State> {
     (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
     if (this.props.onSuccess) this.props.onSuccess();
   };
-
-  _closeNicknamePrompt = () => {
-    this.setState({ open: false });
-  };
 }
 
+/* istanbul ignore next */
 const mapStateToProps = function (state) {
   return {
     user: { ...state.user },
