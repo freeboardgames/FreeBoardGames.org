@@ -129,7 +129,10 @@ app
       return handle(req, res);
     });
 
-    server.listen(PORT, () => { 
+    server.listen(PORT, (err) => {
+      if (err) {
+        throw err;
+      }
       console.log(`Listening on http://0.0.0.0:${PORT}`);
     });
   })
