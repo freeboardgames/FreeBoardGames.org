@@ -69,8 +69,6 @@ app
     const server = express();
     server.disable('x-powered-by');
 
-    server.use('/blog', express.static(APP_DIR + '/blog/dist'));
-
     server.get('/.well-known/assetlinks.json', (req, res) => {
       if (isProdChannel && isOfficialSite(req.hostname)) {
         const filePath = `${STATIC_DIR}/.well-known/assetlinks.json`;
