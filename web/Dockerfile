@@ -1,25 +1,5 @@
-# blog
-FROM node:13.13.0-buster as blog
-
-RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
-RUN rm /bin/su
-USER appuser
-RUN mkdir -p /appdata/blog
-
-# add node_modules to PATH
-ENV PATH /appdata/node_modules/.bin:$PATH
-
-COPY --chown=appuser blog/yarn.lock /appdata/blog
-COPY --chown=appuser blog/package.json /appdata/blog
-WORKDIR /appdata/blog/
-RUN yarn install
-
-# build blog:
-COPY --chown=appuser blog /appdata/blog
-RUN yarn run hexo generate
-
 # web
-FROM node:14.0.0-buster as web
+FROM node:14.2.0-buster
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
 RUN rm /bin/su
 USER appuser
@@ -45,9 +25,6 @@ ARG GIT_REV
 COPY --chown=appuser .babelrc next.config.js /appdata/
 COPY --chown=appuser static /appdata/static
 RUN yarn run build
-
-# copy in our blog
-COPY --from=blog --chown=appuser /appdata/blog/dist /appdata/blog/dist
 
 COPY --chown=appuser docker_run.sh /appdata/
 CMD ./docker_run.sh
