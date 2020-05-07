@@ -9,7 +9,7 @@ var config = {
   externals: [nodeExternals()],
 
   entry: {
-    server_web: path.resolve(__dirname, 'server/web.ts'),
+    server_bgio: path.resolve(__dirname, 'src/bgio.ts'),
   },
 
   output: {
@@ -58,7 +58,7 @@ var config = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: 'tsconfig.server.json',
+              configFile: 'tsconfig.json',
             },
           },
         ],

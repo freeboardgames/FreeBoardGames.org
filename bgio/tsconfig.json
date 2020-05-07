@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src/",
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "paths": {
+      "games": ["../../web/src/games"]
+    },
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/@types",
+      "../common/typings.d.ts"
+    ],
+    "incremental": true,
+    "outDir": "dist/"
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ],
+  "include": [
+    // "next-env.d.ts",
+    // "next-env.d.ts",
+    // "**/*.ts",
+    // "**/*.tsx"
+    "../common/typings.d.ts",
+    // "**/*.ts",
+  ]
+}
