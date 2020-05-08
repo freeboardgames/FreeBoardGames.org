@@ -23,7 +23,7 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should create a new user correclty', async () => {
+  it('should create a new user correctly', async () => {
     const nickname = 'foo nick';
     const id = await service.newUser({ nickname });
     const user = await service.getById(id);
