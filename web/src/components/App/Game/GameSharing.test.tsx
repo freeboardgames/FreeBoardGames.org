@@ -36,9 +36,18 @@ describe('GameSharing', () => {
     expect(window.open as any).toHaveBeenCalled();
   });
 
+  it('should share on WhatsApp', () => {
+    const button = wrapper.getByLabelText('WhatsApp');
+    fireEvent.click(button);
+    expect(window.open as any).toHaveBeenCalled();
+  });
+
   it('should copy link', () => {
+    jest.useFakeTimers();
     const button = wrapper.getByLabelText('Copy');
     fireEvent.click(button);
+    expect(wrapper.getByText('Copied!')).toBeInTheDocument();
+    jest.runAllTimers();
     expect((window as any).copyClipboardMock).toHaveBeenCalledWith(GAME_LINK);
   });
 });
