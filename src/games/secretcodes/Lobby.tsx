@@ -86,7 +86,7 @@ export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
 
         {!gameCanStart(this.props.G, this.props.ctx) ? (
           <p className={css.text}>
-            In order to start the game all players need to join a team and each team must have a spymaster.
+            In order to start the game all players need to join a team and each team must have a Gyanmaster.
           </p>
         ) : null}
 
