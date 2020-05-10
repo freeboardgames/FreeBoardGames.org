@@ -42,6 +42,7 @@ describe('RoomsService', () => {
     console.log('=== SUCCESS ===');
     const roomId = await service.newRooom({ capacity: 2, gameCode: 'checkers', isPublic: false });
     const userId = await usersService.newUser({ nickname: 'foo' });
+    console.log('JOIN ROOM 1');
     await service.joinRoom(userId, roomId);
     const newRoom = await service.getRoom(roomId);
     expect(newRoom.users).toEqual([{ id: userId, nickname: 'foo' }]);
@@ -52,7 +53,9 @@ describe('RoomsService', () => {
     console.log('=== ROOM TWICE ===');
     const roomId = await service.newRooom({ capacity: 2, gameCode: 'checkers', isPublic: false });
     const userId = await usersService.newUser({ nickname: 'foo' });
+    console.log('JOIN ROOM 2');
     await service.joinRoom(userId, roomId);
+    console.log('JOIN ROOM 3');
     const secondJoin = service.joinRoom(userId, roomId);
     expect(secondJoin).rejects.toThrow();
     //});
@@ -65,8 +68,11 @@ describe('RoomsService', () => {
     const fooUserId = await usersService.newUser({ nickname: 'foo' });
     const barUserId = await usersService.newUser({ nickname: 'bar' });
     const bazUserId = await usersService.newUser({ nickname: 'baz' });
+    console.log('JOIN ROOM 4');
     await service.joinRoom(fooUserId, roomId);
+    console.log('JOIN ROOM 5');
     await service.joinRoom(barUserId, roomId);
+    console.log('JOIN ROOM 6');
     const bazJoins = service.joinRoom(bazUserId, roomId);
     expect(bazJoins).rejects.toThrow();
     //});
