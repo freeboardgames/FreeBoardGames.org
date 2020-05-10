@@ -35,7 +35,6 @@ export class RoomsService {
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    console.log("TRANSACTION STARTED");
     try {
       const roomEntity = await this.getRoomEntity(roomId);
       if (this.isFull(roomEntity)) {
@@ -48,14 +47,11 @@ export class RoomsService {
           `Room id "${roomId}" already has user id "${userId}"`, HttpStatus.BAD_REQUEST);
       }
       await queryRunner.manager.save(this.newMembership(userEntity, roomEntity));
-      console.log("COMMITED!");
       await queryRunner.commitTransaction();
     } catch (err) {
-      console.log("ROLLED BACK!");
       await queryRunner.rollbackTransaction();
       throw err;
     } finally {
-      console.log("RELEASED!");
       await queryRunner.release();
     }
   }
