@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { User } from '../dto/users/User';
 import { UserEntity } from '../users/db/User.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +10,7 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
-  ) {}
+  ) { }
 
   async newUser(user: User): Promise<string> {
     const userEntity = new UserEntity();
@@ -19,11 +19,17 @@ export class UsersService {
     return userEntity.id;
   }
 
-  async getById(id: string): Promise<User | undefined> {
+  async getById(id: string): Promise<User> {
+    const userEntity = await this.getUserEntity(id);
+    return userEntityToUser(userEntity);
+  }
+
+  async getUserEntity(id: string): Promise<UserEntity> {
     const userEntity = await this.usersRepository.findOne(id);
     if (!userEntity) {
-      return;
+      throw new HttpException(
+        `User id "${id}" does not exist.`, HttpStatus.BAD_REQUEST);
     }
-    return userEntityToUser(userEntity);
+    return userEntity;
   }
 }

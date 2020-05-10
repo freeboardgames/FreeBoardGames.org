@@ -14,7 +14,7 @@ import { Connection } from 'typeorm';
     }),
   ],
 })
-export class FakeDbModule {}
+export class FakeDbModule { }
 
 export function closeDbConnection(module: TestingModule) {
   const connection = module.get<Connection>(Connection);
