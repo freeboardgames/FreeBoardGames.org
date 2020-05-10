@@ -39,6 +39,7 @@ describe('RoomsService', () => {
   });
 
   it('should join room successfully', async () => {
+    console.log('=== SUCCESS ===');
     const roomId = await service.newRooom({ capacity: 2, gameCode: 'checkers', isPublic: false });
     const userId = await usersService.newUser({ nickname: 'foo' });
     await service.joinRoom(userId, roomId);
