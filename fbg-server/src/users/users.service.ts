@@ -10,7 +10,7 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
-  ) { }
+  ) {}
 
   async newUser(user: User): Promise<string> {
     const userEntity = new UserEntity();
@@ -28,7 +28,9 @@ export class UsersService {
     const userEntity = await this.usersRepository.findOne(id);
     if (!userEntity) {
       throw new HttpException(
-        `User id "${id}" does not exist.`, HttpStatus.BAD_REQUEST);
+        `User id "${id}" does not exist.`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return userEntity;
   }

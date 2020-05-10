@@ -39,7 +39,11 @@ describe('RoomsService', () => {
   });
 
   it('should join room successfully', async () => {
-    const roomId = await service.newRooom({ capacity: 2, gameCode: 'checkers', isPublic: false });
+    const roomId = await service.newRooom({
+      capacity: 2,
+      gameCode: 'checkers',
+      isPublic: false,
+    });
     const userId = await usersService.newUser({ nickname: 'foo' });
     await service.joinRoom(userId, roomId);
     const newRoom = await service.getRoom(roomId);
@@ -47,19 +51,29 @@ describe('RoomsService', () => {
   });
 
   it('should not allow joining the same room twice', async () => {
-    const roomId = await service.newRooom({ capacity: 2, gameCode: 'checkers', isPublic: false });
+    const roomId = await service.newRooom({
+      capacity: 2,
+      gameCode: 'checkers',
+      isPublic: false,
+    });
     const userId = await usersService.newUser({ nickname: 'foo' });
     await service.joinRoom(userId, roomId);
-    await service.joinRoom(userId, roomId); // This should throw
+    const secondJoin = service.joinRoom(userId, roomId);
+    await expect(secondJoin).rejects.toThrow();
   });
 
   it('should not allow room going above capacity', async () => {
-    const roomId = await service.newRooom({ capacity: 2, gameCode: 'checkers', isPublic: false });
+    const roomId = await service.newRooom({
+      capacity: 2,
+      gameCode: 'checkers',
+      isPublic: false,
+    });
     const fooUserId = await usersService.newUser({ nickname: 'foo' });
     const barUserId = await usersService.newUser({ nickname: 'bar' });
     const bazUserId = await usersService.newUser({ nickname: 'baz' });
     await service.joinRoom(fooUserId, roomId);
     await service.joinRoom(barUserId, roomId);
-    await service.joinRoom(bazUserId, roomId); // This should throw
+    const bazJoins = service.joinRoom(bazUserId, roomId);
+    await expect(bazJoins).rejects.toThrow();
   });
 });

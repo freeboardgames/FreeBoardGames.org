@@ -14,8 +14,8 @@ export class RoomsService {
     @InjectRepository(RoomEntity)
     private roomRepository: Repository<RoomEntity>,
     private usersService: UsersService,
-    private connection: Connection
-  ) { }
+    private connection: Connection,
+  ) {}
 
   async newRooom(room: Room): Promise<string> {
     const roomEntity = new RoomEntity();
@@ -39,14 +39,20 @@ export class RoomsService {
       const roomEntity = await this.getRoomEntity(roomId);
       if (this.isFull(roomEntity)) {
         throw new HttpException(
-          `Room id "${roomId}" is already full`, HttpStatus.BAD_REQUEST);
+          `Room id "${roomId}" is already full`,
+          HttpStatus.BAD_REQUEST,
+        );
       }
       const userEntity = await this.usersService.getUserEntity(userId);
       if (this.isAlreadyInRoom(userEntity, roomEntity)) {
         throw new HttpException(
-          `Room id "${roomId}" already has user id "${userId}"`, HttpStatus.BAD_REQUEST);
+          `Room id "${roomId}" already has user id "${userId}"`,
+          HttpStatus.BAD_REQUEST,
+        );
       }
-      await queryRunner.manager.save(this.newMembership(userEntity, roomEntity));
+      await queryRunner.manager.save(
+        this.newMembership(userEntity, roomEntity),
+      );
       await queryRunner.commitTransaction();
     } catch (err) {
       await queryRunner.rollbackTransaction();
@@ -63,7 +69,9 @@ export class RoomsService {
     });
     if (!roomEntity) {
       throw new HttpException(
-        `Room id "${roomId}" does not exist`, HttpStatus.BAD_REQUEST);
+        `Room id "${roomId}" does not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return roomEntity;
   }
@@ -81,7 +89,9 @@ export class RoomsService {
   }
 
   private isAlreadyInRoom(userEntity: UserEntity, roomEntity: RoomEntity) {
-    const userIds = roomEntity.userMemberships.map((membership) => membership.user.id);
+    const userIds = roomEntity.userMemberships.map(
+      membership => membership.user.id,
+    );
     return userIds.includes(userEntity.id);
   }
 }

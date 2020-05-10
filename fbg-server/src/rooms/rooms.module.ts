@@ -8,12 +8,12 @@ import { UsersModule } from '../users/users.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([RoomMembershipEntity, RoomEntity]),
-    UsersModule
+    UsersModule,
   ],
   providers: [RoomsService],
   exports: [
     RoomsService,
     TypeOrmModule.forFeature([RoomMembershipEntity, RoomEntity]),
-  ]
+  ],
 })
-export class RoomsModule { }
+export class RoomsModule {}
