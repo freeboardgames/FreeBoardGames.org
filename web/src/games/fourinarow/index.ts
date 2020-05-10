@@ -10,7 +10,7 @@ export const fourinarowGameDef: IGameDef = {
   maxPlayers: 2,
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
-  description: 'Also Known as Connect Four',
+  description: 'Similar to Connect Four',
   descriptionTag: `Play Four in a Row for free.  You can play\
  a multi-player game against a friend online, or share your device and play\
  locally against a friend.`,
