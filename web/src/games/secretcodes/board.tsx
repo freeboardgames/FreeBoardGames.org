@@ -38,7 +38,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   };
 
-  _renderPlayBoard = () => {
+  _renderPlayBoard = (isGameOver?: boolean) => {
     return (
       <PlayBoard
         G={this.props.G}
@@ -49,6 +49,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         gameArgs={this.props.gameArgs}
         isActive={this.props.isActive}
         isHost={this.isHost()}
+        isGameOver={isGameOver}
       />
     );
   };
@@ -57,10 +58,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return (
       <div className={[css.winners].join(' ')}>
         <h3>Winners</h3>
-
         {this.props.ctx.gameover.winner.playersID.map((id) => {
           return <p key={id}>{this.props.gameArgs.players[id].name}</p>;
         })}
+        <br />
+        {this._renderPlayBoard(true)}
       </div>
     );
   };
