@@ -30,4 +30,9 @@ describe('UsersService', () => {
     const user = await service.getById(id);
     expect(user).toEqual({ id, nickname });
   });
+
+  it('should return undefined if user does not exist', async () => {
+    const user = await service.getById('I dont exist');
+    expect(user).toEqual(undefined);
+  });
 });

@@ -5,9 +5,7 @@ import { RoomMembershipEntity } from './db/RoomMembership.entity';
 import { RoomEntity } from './db/Room.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([RoomMembershipEntity, RoomEntity]),
-  ],
-  providers: [RoomsService]
+  imports: [TypeOrmModule.forFeature([RoomMembershipEntity, RoomEntity])],
+  providers: [RoomsService],
 })
-export class RoomsModule { }
+export class RoomsModule {}

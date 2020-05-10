@@ -1,4 +1,11 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany } from 'typeorm';
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  OneToMany,
+} from 'typeorm';
 import { RoomMembershipEntity } from './RoomMembership.entity';
 
 @Entity()
@@ -15,6 +22,9 @@ export class RoomEntity extends BaseEntity {
   @Column()
   isPublic!: boolean;
 
-  @OneToMany((type) => RoomMembershipEntity, (membership) => membership.room)
+  @OneToMany(
+    type => RoomMembershipEntity,
+    membership => membership.room,
+  )
   public userMemberships!: RoomMembershipEntity[];
 }
