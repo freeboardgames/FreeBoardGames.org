@@ -13,6 +13,7 @@ import { useRouter, NextRouter } from 'next/router';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
 import NicknameRequired from '../../../../components/App/Lobby/NicknameRequired';
+import SEO from '../../../../components/SEO';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -80,11 +81,17 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     const nicknamePrompt = this.state.editingName ? (
       <AlertLayer>{this._getNamePrompt(this.state.roomMetadata.currentUser.name)}</AlertLayer>
     ) : null;
+    const gameDef = GAMES_MAP[this.state.roomMetadata.gameCode];
     return (
       <NicknameRequired>
+        <SEO
+          title={`Play ${gameDef.name}, ${gameDef.description}`}
+          description={gameDef.descriptionTag}
+          noindex={true}
+        />
         <FreeBoardGamesBar>
           {nicknamePrompt}
-          <GameCard game={GAMES_MAP[this.state.roomMetadata.gameCode]} />
+          <GameCard game={gameDef} />
           {this._getGameSharing()}
           <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
         </FreeBoardGamesBar>
