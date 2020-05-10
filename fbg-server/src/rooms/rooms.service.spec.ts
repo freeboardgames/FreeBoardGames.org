@@ -33,13 +33,13 @@ describe('RoomsService', () => {
 
   it('should create a room successfully', async () => {
     const room: Room = { capacity: 2, gameCode: 'checkers', isPublic: false };
-    const id = await service.newRooom(room);
+    const id = await service.newRoom(room);
     const newRoom = await service.getRoom(id);
     expect(newRoom).toEqual({ id, users: [], ...room });
   });
 
   it('should join room successfully', async () => {
-    const roomId = await service.newRooom({
+    const roomId = await service.newRoom({
       capacity: 2,
       gameCode: 'checkers',
       isPublic: false,
@@ -51,7 +51,7 @@ describe('RoomsService', () => {
   });
 
   it('should not allow joining the same room twice', async () => {
-    const roomId = await service.newRooom({
+    const roomId = await service.newRoom({
       capacity: 2,
       gameCode: 'checkers',
       isPublic: false,
@@ -63,7 +63,7 @@ describe('RoomsService', () => {
   });
 
   it('should not allow room going above capacity', async () => {
-    const roomId = await service.newRooom({
+    const roomId = await service.newRoom({
       capacity: 2,
       gameCode: 'checkers',
       isPublic: false,

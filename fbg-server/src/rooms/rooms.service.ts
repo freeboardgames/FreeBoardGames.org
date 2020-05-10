@@ -17,7 +17,7 @@ export class RoomsService {
     private connection: Connection,
   ) {}
 
-  async newRooom(room: Room): Promise<string> {
+  async newRoom(room: Room): Promise<string> {
     const roomEntity = new RoomEntity();
     roomEntity.capacity = room.capacity;
     roomEntity.gameCode = room.gameCode;
