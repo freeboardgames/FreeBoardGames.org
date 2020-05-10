@@ -9,16 +9,16 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
-  ) {}
+  ) { }
 
-  async newUser(user: User): Promise<number> {
+  async newUser(user: User): Promise<string> {
     const userEntity = new UserEntity();
     userEntity.nickname = user.nickname;
     await this.usersRepository.insert(userEntity);
     return userEntity.id;
   }
 
-  async getById(id: number): Promise<User | undefined> {
+  async getById(id: string): Promise<User | undefined> {
     const userEntity = await this.usersRepository.findOne(id);
     const user: User = { id: userEntity.id, nickname: userEntity.nickname };
     return user;

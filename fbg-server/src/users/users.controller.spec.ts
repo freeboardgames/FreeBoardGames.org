@@ -5,6 +5,7 @@ import { UsersModule } from './users.module';
 import { UsersController } from './users.controller';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './definitions';
+import { RoomsModule } from '../rooms/rooms.module';
 
 describe('UsersController', () => {
   let module: TestingModule;
@@ -14,7 +15,7 @@ describe('UsersController', () => {
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [FakeDbModule, UsersModule],
+      imports: [FakeDbModule, UsersModule, RoomsModule],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);

@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { FakeDbModule, closeDbConnection } from '../testing/dbUtil';
 import { UsersModule } from './users.module';
+import { RoomsModule } from '../rooms/rooms.module';
 
 describe('UsersService', () => {
   let module: TestingModule;
@@ -9,7 +10,7 @@ describe('UsersService', () => {
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [FakeDbModule, UsersModule],
+      imports: [FakeDbModule, UsersModule, RoomsModule],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
