@@ -33,6 +33,6 @@ describe('UsersService', () => {
 
   it('should return undefined if user does not exist', async () => {
     const user = service.getById('I dont exist');
-    expect(user).rejects.toThrow();
+    await expect(user).rejects.toThrow();
   });
 });
