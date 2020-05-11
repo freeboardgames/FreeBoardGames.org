@@ -56,7 +56,6 @@ export class RoomsService {
       await this.updateMembership(queryRunner, userId, roomId, now);
       room = await this.getRoomEntity(roomId, now);
       if (room.capacity === room.userMemberships.length) {
-        await queryRunner.commitTransaction();
         return await this.startMatch(queryRunner, room);
       }
       await queryRunner.commitTransaction();
@@ -149,6 +148,9 @@ export class RoomsService {
       ),
     );
     await queryRunner.manager.save(newMatch);
+    room.match = newMatch;
+    await queryRunner.manager.save(room);
+    await queryRunner.commitTransaction();
     return id;
   }
 
