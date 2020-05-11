@@ -44,12 +44,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   isInverted() {
-    if (isAIGame(this.props.gameArgs) || isOnlineGame(this.props.gameArgs)) {
-      if (this.props.playerID === '1') {
-        return true;
-      }
-    }
-    return false;
+    return isAIGame(this.props.gameArgs) || (isOnlineGame(this.props.gameArgs) && this.props.playerID === '1');
   }
 
   _isSelectable = (coords: ICartesianCoords) => {
@@ -133,7 +128,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       .filter((piece) => piece.data !== null)
       .map((piece) => {
         const { x, y } = toCoord(piece.index);
-        const fill = isAIGame(this.props.gameArgs) ? piece.data.playerID === '1' : piece.data.playerID === '0';
         return (
           <Token
             x={x}
@@ -146,7 +140,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             key={piece.data.id}
           >
             <g>
-              <circle r="0.4" fill={fill ? grey[50] : grey[900]} cx="0.5" cy="0.5" />
+              <circle r="0.4" fill={piece.data.playerID === '0' ? grey[50] : grey[900]} cx="0.5" cy="0.5" />
               {piece.data.isKing ? (
                 <circle r="0.2" cx="0.5" cy="0.5" fill={piece.data.playerID === '1' ? grey[800] : grey[400]} />
               ) : null}
