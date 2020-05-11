@@ -18,6 +18,7 @@ interface IPlayBoardProps {
   gameArgs?: IGameArgs;
   isActive: boolean;
   isHost: boolean;
+  isGameOver?: boolean;
 }
 
 interface IPlayBoardState {
@@ -57,7 +58,8 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     return this.props.G.teams[this._playerID()];
   }
 
-  _showSpymasterView = (): boolean => isPlayerSpymaster(this.props.G, this._playerID()) && this.state.spymasterView;
+  _showSpymasterView = (): boolean =>
+    this.props.isGameOver || (isPlayerSpymaster(this.props.G, this._playerID()) && this.state.spymasterView);
 
   _toggleSpymasterView = (): void => this.setState({ spymasterView: !this.state.spymasterView });
 
@@ -173,6 +175,9 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   };
 
   render() {
+    if (this.props.isGameOver) {
+      return this._renderCardGrid();
+    }
     return (
       <div>
         {this._renderHeader()}

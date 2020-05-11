@@ -39,6 +39,7 @@ const GameConfig: Game<IG> = {
   },
 
   playerView: (G: IG, ctx: Ctx, playerID: string): any => {
+    if (ctx.gameover) return G;
     if (playerID === null) return G;
     if (ctx.phase !== Phases.giveClue && ctx.phase !== Phases.guess) return G;
     if (playerID == G.teams[0].spymasterID || playerID == G.teams[1].spymasterID) return G;
