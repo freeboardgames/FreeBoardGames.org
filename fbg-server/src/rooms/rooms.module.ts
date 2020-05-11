@@ -11,9 +11,5 @@ import { UsersModule } from '../users/users.module';
     UsersModule,
   ],
   providers: [RoomsService],
-  exports: [
-    RoomsService,
-    TypeOrmModule.forFeature([RoomMembershipEntity, RoomEntity]),
-  ],
 })
 export class RoomsModule {}

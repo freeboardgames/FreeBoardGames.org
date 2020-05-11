@@ -3,10 +3,12 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { RoomMembershipEntity } from './RoomMembership.entity';
+import { MatchEntity } from '../../match/db/Match.entity';
 
 @Entity()
 export class RoomEntity extends BaseEntity {
@@ -27,4 +29,8 @@ export class RoomEntity extends BaseEntity {
     membership => membership.room,
   )
   public userMemberships!: RoomMembershipEntity[];
+
+  @OneToOne(type => MatchEntity)
+  @JoinColumn()
+  public match?: MatchEntity;
 }

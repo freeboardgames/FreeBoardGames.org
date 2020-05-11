@@ -6,6 +6,7 @@ import { RoomsModule } from '../rooms/rooms.module';
 import { UsersModule } from '../users/users.module';
 import { Room } from '../dto/rooms/Room';
 import { Connection } from 'typeorm';
+import { MatchModule } from '../match/match.module';
 
 describe('RoomsService', () => {
   let module: TestingModule;
@@ -15,7 +16,7 @@ describe('RoomsService', () => {
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [FakeDbModule, UsersModule, RoomsModule],
+      imports: [FakeDbModule, UsersModule, RoomsModule, MatchModule],
     }).compile();
 
     usersService = module.get<UsersService>(UsersService);
@@ -45,35 +46,8 @@ describe('RoomsService', () => {
       isPublic: false,
     });
     const userId = await usersService.newUser({ nickname: 'foo' });
-    await service.joinRoom(userId, roomId);
+    await service.checkin(userId, roomId);
     const newRoom = await service.getRoom(roomId);
     expect(newRoom.users).toEqual([{ id: userId, nickname: 'foo' }]);
-  });
-
-  it('should not allow joining the same room twice', async () => {
-    const roomId = await service.newRooom({
-      capacity: 2,
-      gameCode: 'checkers',
-      isPublic: false,
-    });
-    const userId = await usersService.newUser({ nickname: 'foo' });
-    await service.joinRoom(userId, roomId);
-    const secondJoin = service.joinRoom(userId, roomId);
-    await expect(secondJoin).rejects.toThrow();
-  });
-
-  it('should not allow room going above capacity', async () => {
-    const roomId = await service.newRooom({
-      capacity: 2,
-      gameCode: 'checkers',
-      isPublic: false,
-    });
-    const fooUserId = await usersService.newUser({ nickname: 'foo' });
-    const barUserId = await usersService.newUser({ nickname: 'bar' });
-    const bazUserId = await usersService.newUser({ nickname: 'baz' });
-    await service.joinRoom(fooUserId, roomId);
-    await service.joinRoom(barUserId, roomId);
-    const bazJoins = service.joinRoom(bazUserId, roomId);
-    await expect(bazJoins).rejects.toThrow();
   });
 });

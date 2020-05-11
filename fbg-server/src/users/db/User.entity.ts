@@ -3,8 +3,8 @@ import { RoomMembershipEntity } from '../../rooms/db/RoomMembership.entity';
 
 @Entity()
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   nickname: string;

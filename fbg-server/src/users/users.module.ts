@@ -18,6 +18,6 @@ import { UserEntity } from './db/User.entity';
   ],
   providers: [UsersService, JwtStrategy],
   controllers: [UsersController],
-  exports: [UsersService, TypeOrmModule.forFeature([UserEntity])],
+  exports: [UsersService],
 })
 export class UsersModule {}

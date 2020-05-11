@@ -3,16 +3,20 @@ import { CHECKIN_PERIOD, Room } from '../dto/rooms/Room';
 import { userEntityToUser } from '../users/UserUtil';
 
 export function roomEntityToRoom(roomEntity: RoomEntity): Room {
-  const users = roomEntity.userMemberships
-    .filter(
-      memberships => memberships.lastSeen >= Date.now() - CHECKIN_PERIOD * 3,
-    )
-    .map(membership => userEntityToUser(membership.user));
   return {
     id: roomEntity.id,
     capacity: roomEntity.capacity,
     gameCode: roomEntity.gameCode,
     isPublic: roomEntity.isPublic,
-    users,
+    users: roomEntity.userMemberships.map(membership =>
+      userEntityToUser(membership.user),
+    ),
   };
+}
+
+export function getBgioServerUrl(): string {
+  const config = process.env.BGIO_SERVERS || 'http://localhost:8001';
+  const possibleServers = config.split(',');
+  // https://stackoverflow.com/questions/5915096/get-random-item-from-javascript-array
+  return possibleServers[Math.floor(Math.random() * possibleServers.length)];
 }

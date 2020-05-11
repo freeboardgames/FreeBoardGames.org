@@ -12,19 +12,19 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async newUser(user: User): Promise<string> {
+  async newUser(user: User): Promise<number> {
     const userEntity = new UserEntity();
     userEntity.nickname = user.nickname;
     await this.usersRepository.insert(userEntity);
     return userEntity.id;
   }
 
-  async getById(id: string): Promise<User> {
+  async getById(id: number): Promise<User> {
     const userEntity = await this.getUserEntity(id);
     return userEntityToUser(userEntity);
   }
 
-  async getUserEntity(id: string): Promise<UserEntity> {
+  async getUserEntity(id: number): Promise<UserEntity> {
     const userEntity = await this.usersRepository.findOne(id);
     if (!userEntity) {
       throw new HttpException(
