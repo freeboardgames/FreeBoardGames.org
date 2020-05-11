@@ -20,10 +20,11 @@ export class RoomsService {
     private roomMembershipRepository: Repository<RoomMembershipEntity>,
     private usersService: UsersService,
     private connection: Connection,
-  ) {}
+  ) { }
+
 
   /** Creates a new room. */
-  async newRooom(room: Room): Promise<string> {
+  async newRoom(room: Room): Promise<string> {
     const roomEntity = new RoomEntity();
     roomEntity.id = shortid.generate();
     roomEntity.capacity = room.capacity;
