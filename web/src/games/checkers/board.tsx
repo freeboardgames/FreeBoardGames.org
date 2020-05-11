@@ -44,7 +44,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   isInverted() {
-    return isOnlineGame(this.props.gameArgs) && this.props.playerID === '1';
+    return (isAIGame(this.props.gameArgs) || isOnlineGame(this.props.gameArgs)) && this.props.playerID === '1';
   }
 
   _isSelectable = (coords: ICartesianCoords) => {
