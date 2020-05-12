@@ -1,10 +1,14 @@
-import { MakeStore } from 'next-redux-wrapper';
+import { MakeStore, createWrapper } from 'next-redux-wrapper';
 import { createStore } from 'redux';
-import { reducer, RootState } from './reducer';
+import { reducer } from './reducer';
+import { AuthData } from './actions';
 
-/**
- * @param initialState The store's initial state (on the client side, the state of the server-side store is passed here)
- */
-export const makeStore: MakeStore = (initialState: RootState) => {
-  return createStore(reducer, initialState);
+export interface State {
+  user: AuthData;
+}
+
+const makeStore: MakeStore<State> = () => {
+  return createStore(reducer);
 };
+
+export const wrapper = createWrapper<State>(makeStore, { debug: false });
