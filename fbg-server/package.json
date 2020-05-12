@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/typeorm": "^7.0.0",
     "@types/shortid": "^0.0.29",
+    "@types/superagent": "^4.1.7",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
@@ -35,6 +36,7 @@
     "rxjs": "^6.5.4",
     "shortid": "^2.2.15",
     "sqlite3": "^4.2.0",
+    "superagent": "^5.2.2",
     "typeorm": "^0.2.24"
   },
   "devDependencies": {
@@ -52,7 +54,7 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
     "jest": "^25.1.0",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.5",
     "supertest": "^4.0.2",
     "ts-jest": "25.2.1",
     "ts-loader": "^6.2.1",

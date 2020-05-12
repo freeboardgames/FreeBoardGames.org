@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { Room } from '../dto/rooms/Room';
 import { Connection } from 'typeorm';
 import { MatchModule } from '../match/match.module';
+import { query } from 'express';
 
 describe('RoomsService', () => {
   let module: TestingModule;
@@ -15,6 +16,7 @@ describe('RoomsService', () => {
   let connection: Connection;
 
   beforeAll(async () => {
+    jest.resetAllMocks();
     module = await Test.createTestingModule({
       imports: [FakeDbModule, UsersModule, RoomsModule, MatchModule],
     }).compile();
@@ -50,4 +52,44 @@ describe('RoomsService', () => {
     const newRoom = await service.getRoom(roomId);
     expect(newRoom.users).toEqual([{ id: userId, nickname: 'foo' }]);
   });
+
+  it('should start match', async() => {
+    const startMatchMock = jest.fn();
+    (service as any).startMatch = startMatchMock;
+
+    const {roomId, userId} = await getRoomAndUser();
+    await service.checkin(userId, roomId);
+
+    // second player joins; capacity is 2, so match starts
+    const user2Id = await usersService.newUser({ nickname: 'bar' });
+    await service.checkin(user2Id, roomId);
+
+    expect(startMatchMock).toHaveBeenCalled();
+  })
+
+  // TODO Fix this test
+  it.skip('should return match ID when a match has already started', async() => {
+    const createBgioMatchMock = jest.fn().mockResolvedValue('foomatchID');
+    (service as any).createBgioMatch = createBgioMatchMock;
+
+    const {roomId, userId} = await getRoomAndUser();
+    await service.checkin(userId, roomId);
+
+    const user2Id = await usersService.newUser({ nickname: 'bar' });
+    await service.checkin(user2Id, roomId);
+
+    const user3Id = await usersService.newUser({ nickname: 'bar' });
+    // FIXME UpdateValuesMissingError: Cannot perform update query because update values are not defined. Call "qb.set(...)" method to specify updated values.
+    await service.checkin(user3Id, roomId);
+  });
+
+  async function getRoomAndUser() {
+    const roomId = await service.newRoom({
+      capacity: 2,
+      gameCode: 'checkers',
+      isPublic: false,
+    });
+    const userId = await usersService.newUser({ nickname: 'foo' });
+    return {roomId, userId};
+  }
 });
