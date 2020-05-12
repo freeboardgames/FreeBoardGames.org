@@ -14,6 +14,8 @@ import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
 import NicknameRequired from '../../../../components/App/Lobby/NicknameRequired';
 import SEO from '../../../../components/SEO';
+import { ActionNames, AuthData } from '../../../../redux/actions';
+import { connect } from 'react-redux';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -163,6 +165,8 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     if (this.state.editingName) {
       const room = this.state.roomMetadata;
       LobbyService.renameUser(room.gameCode, room.currentUser, nickname);
+      const payload: AuthData = { ready: true, loggedIn: true, nickname };
+      (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
       this._toggleEditingName();
     }
     this.updateMetadata();
@@ -196,4 +200,11 @@ const roomWithRouter = (props) => {
   return <Room {...props} router={router} />;
 };
 
-export default roomWithRouter;
+/* istanbul ignore next */
+const mapStateToProps = function (state) {
+  return {
+    user: { ...state.user },
+  };
+};
+
+export default connect(mapStateToProps)(roomWithRouter);
