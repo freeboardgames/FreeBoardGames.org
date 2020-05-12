@@ -8,14 +8,12 @@ import { Room, CHECKIN_PERIOD } from '../dto/rooms/Room';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection, MoreThan, QueryRunner } from 'typeorm';
 import { RoomEntity } from './db/Room.entity';
-import { UserEntity } from '../users/db/User.entity';
 import { roomEntityToRoom, getBgioServerUrl } from './RoomUtil';
 import { RoomMembershipEntity } from './db/RoomMembership.entity';
 import { UsersService } from '../users/users.service';
 import shortid from 'shortid';
 import { MatchEntity } from '../match/db/Match.entity';
 import { MatchMembershipEntity } from '../match/db/MatchMembership.entity';
-import superagent from 'superagent';
 
 @Injectable()
 export class RoomsService {
@@ -148,19 +146,24 @@ export class RoomsService {
     newMatch.gameCode = room.gameCode;
     newMatch.bgioServerUrl = getBgioServerUrl();
     newMatch.bgioMatchId = bgioMatchId;
-    newMatch.playerMemberships = await Promise.all(
+    await queryRunner.manager.insert(MatchEntity, newMatch);
+    await Promise.all(
       room.userMemberships.map((membership, index) =>
-        this.roomToMatchMembership(membership, newMatch, index),
+        this.roomToMatchMembership(
+          membership,
+          newMatch,
+          index,
+        ).then((membership) =>
+          queryRunner.manager.insert(MatchMembershipEntity, membership),
+        ),
       ),
     );
-    await queryRunner.manager.insert(MatchEntity, newMatch);
     room.match = newMatch;
     await queryRunner.manager.save(room);
     await queryRunner.commitTransaction();
     return id;
   }
 
-  /** send post request to bgio server with game code and room capacity, return bgio match id. */
   private async createBgioMatch(room: RoomEntity): Promise<string> {
     const response = await this.httpService
       .post(`${getBgioServerUrl()}/games/${room.gameCode}/create`, {
@@ -182,6 +185,7 @@ export class RoomsService {
       playerID,
     );
     newMembership.user = roomMembership.user;
+    newMembership.match = match;
     return newMembership;
   }
 

@@ -5,15 +5,19 @@ import { FakeDbModule, closeDbConnection } from '../testing/dbUtil';
 import { RoomsModule } from '../rooms/rooms.module';
 import { UsersModule } from '../users/users.module';
 import { Room } from '../dto/rooms/Room';
-import { Connection } from 'typeorm';
+import { Connection, AdvancedConsoleLogger } from 'typeorm';
 import { MatchModule } from '../match/match.module';
 import { query } from 'express';
+import { HttpService } from '@nestjs/common';
+import { MatchService } from '../match/match.service';
 
 describe('RoomsService', () => {
   let module: TestingModule;
   let service: RoomsService;
   let usersService: UsersService;
+  let matchService: MatchService;
   let connection: Connection;
+  let httpService: HttpService;
 
   beforeAll(async () => {
     jest.resetAllMocks();
@@ -24,6 +28,8 @@ describe('RoomsService', () => {
     usersService = module.get<UsersService>(UsersService);
     service = module.get<RoomsService>(RoomsService);
     connection = module.get<Connection>(Connection);
+    httpService = module.get<HttpService>(HttpService);
+    matchService = module.get<MatchService>(MatchService);
   });
 
   afterAll(async () => {
@@ -54,42 +60,61 @@ describe('RoomsService', () => {
   });
 
   it('should start match', async () => {
-    const startMatchMock = jest.fn();
-    (service as any).startMatch = startMatchMock;
-
-    const { roomId, userId } = await getRoomAndUser();
-    await service.checkin(userId, roomId);
-
-    // second player joins; capacity is 2, so match starts
-    const user2Id = await usersService.newUser({ nickname: 'bar' });
-    await service.checkin(user2Id, roomId);
-
-    expect(startMatchMock).toHaveBeenCalled();
-  });
-
-  // TODO Fix this test
-  it.skip('should return match ID when a match has already started', async () => {
-    const createBgioMatchMock = jest.fn().mockResolvedValue('foomatchID');
-    (service as any).createBgioMatch = createBgioMatchMock;
-
-    const { roomId, userId } = await getRoomAndUser();
-    await service.checkin(userId, roomId);
-
-    const user2Id = await usersService.newUser({ nickname: 'bar' });
-    await service.checkin(user2Id, roomId);
-
-    const user3Id = await usersService.newUser({ nickname: 'bar' });
-    // FIXME UpdateValuesMissingError: Cannot perform update query because update values are not defined. Call "qb.set(...)" method to specify updated values.
-    await service.checkin(user3Id, roomId);
-  });
-
-  async function getRoomAndUser() {
+    const promiseMock = jest
+      .fn()
+      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
+      )
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '2ndSecret' } }),
+      );
+    jest
+      .spyOn(httpService, 'post')
+      .mockReturnValue({ toPromise: promiseMock } as any);
     const roomId = await service.newRoom({
       capacity: 2,
       gameCode: 'checkers',
       isPublic: false,
     });
-    const userId = await usersService.newUser({ nickname: 'foo' });
-    return { roomId, userId };
-  }
+    const user1 = await usersService.newUser({ nickname: 'foo' });
+    await service.checkin(user1, roomId);
+    // second player joins; capacity is 2, so match starts
+    const user2 = await usersService.newUser({ nickname: 'bar' });
+
+    const newMatchID = await service.checkin(user2, roomId);
+    const match = await matchService.getMatchEntity(newMatchID);
+
+    expect(match.bgioMatchId).toEqual('bgioGameId');
+    expect(match.playerMemberships[0].bgioSecret).toEqual('1stSecret');
+    expect(match.playerMemberships[1].bgioSecret).toEqual('2ndSecret');
+  });
+
+  it('should give the match id after creation', async () => {
+    const promiseMock = jest
+      .fn()
+      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
+      )
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '2ndSecret' } }),
+      );
+    jest
+      .spyOn(httpService, 'post')
+      .mockReturnValue({ toPromise: promiseMock } as any);
+    const roomId = await service.newRoom({
+      capacity: 2,
+      gameCode: 'checkers',
+      isPublic: false,
+    });
+    const user1 = await usersService.newUser({ nickname: 'foo' });
+    await service.checkin(user1, roomId);
+    // second player joins; capacity is 2, so match starts
+    const user2 = await usersService.newUser({ nickname: 'bar' });
+
+    const creationID = await service.checkin(user2, roomId);
+    const visitID = await service.checkin(user1, roomId);
+    expect(creationID).toEqual(visitID);
+  });
 });
