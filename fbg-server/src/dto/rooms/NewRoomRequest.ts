@@ -1,5 +1,5 @@
-import { Room } from "./Room";
+import { Room } from './Room';
 
 export interface NewRoomRequest {
-    room: Room
+  room: Room;
 }
