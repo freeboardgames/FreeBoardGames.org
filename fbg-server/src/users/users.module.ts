@@ -18,5 +18,6 @@ import { UserEntity } from './db/User.entity';
   ],
   providers: [UsersService, JwtStrategy],
   controllers: [UsersController],
+  exports: [UsersService],
 })
 export class UsersModule {}
