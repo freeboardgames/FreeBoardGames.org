@@ -10,6 +10,7 @@ import { UsersService } from '../users/users.service';
 import shortid from 'shortid';
 import { MatchEntity } from '../match/db/Match.entity';
 import { MatchMembershipEntity } from '../match/db/MatchMembership.entity';
+import superagent from 'superagent';
 
 @Injectable()
 export class RoomsService {
@@ -147,6 +148,7 @@ export class RoomsService {
         this.roomToMatchMembership(membership, newMatch, index),
       ),
     );
+    // FIXME UpdateValuesMissingError: Cannot perform update query because update values are not defined. Call "qb.set(...)" method to specify updated values.
     await queryRunner.manager.save(newMatch);
     room.match = newMatch;
     await queryRunner.manager.save(room);
@@ -154,9 +156,13 @@ export class RoomsService {
     return id;
   }
 
+  /** send post request to bgio server with game code and room capacity, return bgio match id. */
   private async createBgioMatch(room: RoomEntity): Promise<string> {
-    // TODO: send post request to bgio server with game code and room capacity, return bgio match id.
-    return 'newBgioMatch';
+    const response = await superagent
+      .post(`${getBgioServerUrl()}/games/${room.gameCode}/create`)
+      .send({ numPlayers: room.capacity });
+    const roomID = response.body.gameID;
+    return roomID;
   }
 
   private async roomToMatchMembership(
