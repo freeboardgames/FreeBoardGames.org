@@ -2,6 +2,11 @@ import AddressHelper from '../Helpers/AddressHelper';
 import request from 'superagent';
 import SSRHelper from '../Helpers/SSRHelper';
 
+import { NewUserReq } from 'proto/user_pb';
+import { UserServiceClient } from 'proto/UserServiceClientPb';
+
+const client = new UserServiceClient('localhost:3001');
+
 const FBG_CREDENTIALS_KEY = 'fbgCredentials';
 const FBG_NICKNAME_KEY = 'fbgNickname';
 
@@ -33,9 +38,7 @@ export class LobbyService {
     const response = await request
       .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/create`)
       .send({ numPlayers });
-    const roomID = response.body.gameID;
-    return roomID;
-    // return 'foo';
+    return response.body.gameID;
   }
 
   public static async joinRoom(gameCode: string, player: IPlayerInRoom): Promise<void> {
@@ -91,7 +94,17 @@ export class LobbyService {
   }
 
   public static setNickname(name: string): void {
-    localStorage.setItem(FBG_NICKNAME_KEY, name);
+    const req = new NewUserReq();
+    req.setName(name);
+    client.newUser(req, null, (err, res) => {
+      if (err) {
+        console.log(err.code);
+        console.log(err.message);
+      } else {
+        console.log(res.getJwt());
+        localStorage.setItem(FBG_NICKNAME_KEY, name);
+      }
+    });
   }
 
   public static getCredential(roomID: string): IPlayerCredential | undefined {

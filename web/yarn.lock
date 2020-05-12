@@ -7921,6 +7921,11 @@ globby@^8.0.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
+google-protobuf@^3.12.0-rc.1:
+  version "3.12.0-rc.1"
+  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.12.0-rc.1.tgz#8e99e8d89d67e47f949818457350719b51e3a8cd"
+  integrity sha512-EeofBulRUmUl1hX+NAcQVwAkTUI5hMd+5VmMcZRSRh4vWNCNCsNe+w2AvbbRh2sgS1JPx8RjJa0l7PIxTSR+bw==
+
 got@^7.0.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/got/-/got-7.1.0.tgz#05450fd84094e6bbea56f451a43a9c289166385a"
@@ -8000,6 +8005,11 @@ growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
+
+grpc-web@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/grpc-web/-/grpc-web-1.0.7.tgz#9e4fbcf63d3734515332ab59e42baa7d0d290015"
+  integrity sha512-Fkbz1nyvvt6GC6ODcxh9Fen6LLB3OTCgGHzHwM2Eni44SUhzqPz1UQgFp9sfBEfInOhx3yBdwo9ZLjZAmJ+TtA==
 
 har-schema@^2.0.0:
   version "2.0.0"
