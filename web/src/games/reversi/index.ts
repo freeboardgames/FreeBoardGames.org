@@ -1,4 +1,4 @@
-const Thumbnail = require('./media/thumbnail.png?lqip-colors');
+const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'components/App/Game/GameModePicker';
 import instructions from './instructions.md';
 import { IGameDef } from 'games';
