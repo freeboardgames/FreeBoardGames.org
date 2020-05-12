@@ -5,7 +5,6 @@ import UaContext from 'misc/UaContext';
 interface DesktopMobileViewProps {
   children: React.ReactNode;
   thresholdWidth?: number;
-  userAgent?: any;
 }
 
 const DEFAULT_THRESHOLD_WIDTH = 550;

@@ -34,18 +34,18 @@ export const GAMES_MAP: IGameDefMap = {
 // See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.takesix,
-  GAMES_MAP.chess,
-  GAMES_MAP.secretcodes,
-  GAMES_MAP.seabattle,
-  GAMES_MAP.tictactoe,
   GAMES_MAP.fourinarow,
-  GAMES_MAP.rota,
+  GAMES_MAP.seabattle,
+  GAMES_MAP.secretcodes,
+  GAMES_MAP.hangman,
+  GAMES_MAP.chess,
+  GAMES_MAP.tictactoe,
   GAMES_MAP.checkers,
   GAMES_MAP.cornerus,
   GAMES_MAP.tictactoeplus,
   GAMES_MAP.reversi,
   GAMES_MAP.ninemensmorris,
-  GAMES_MAP.hangman,
+  GAMES_MAP.rota,
 ];
 
 // No need to edit below
