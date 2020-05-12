@@ -1,4 +1,9 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Injectable,
+  HttpStatus,
+  HttpException,
+  HttpService,
+} from '@nestjs/common';
 import { Room, CHECKIN_PERIOD } from '../dto/rooms/Room';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection, MoreThan, QueryRunner } from 'typeorm';
@@ -21,8 +26,8 @@ export class RoomsService {
     private roomMembershipRepository: Repository<RoomMembershipEntity>,
     private usersService: UsersService,
     private connection: Connection,
-  ) { }
-
+    private httpService: HttpService,
+  ) {}
 
   /** Creates a new room. */
   async newRoom(room: Room): Promise<string> {
@@ -148,8 +153,7 @@ export class RoomsService {
         this.roomToMatchMembership(membership, newMatch, index),
       ),
     );
-    // FIXME UpdateValuesMissingError: Cannot perform update query because update values are not defined. Call "qb.set(...)" method to specify updated values.
-    await queryRunner.manager.save(newMatch);
+    await queryRunner.manager.insert(MatchEntity, newMatch);
     room.match = newMatch;
     await queryRunner.manager.save(room);
     await queryRunner.commitTransaction();
@@ -158,11 +162,12 @@ export class RoomsService {
 
   /** send post request to bgio server with game code and room capacity, return bgio match id. */
   private async createBgioMatch(room: RoomEntity): Promise<string> {
-    const response = await superagent
-      .post(`${getBgioServerUrl()}/games/${room.gameCode}/create`)
-      .send({ numPlayers: room.capacity });
-    const roomID = response.body.gameID;
-    return roomID;
+    const response = await this.httpService
+      .post(`${getBgioServerUrl()}/games/${room.gameCode}/create`, {
+        numPlayers: room.capacity,
+      })
+      .toPromise();
+    return response.data.gameID;
   }
 
   private async roomToMatchMembership(
@@ -171,20 +176,28 @@ export class RoomsService {
     playerID: number,
   ): Promise<MatchMembershipEntity> {
     const newMembership = new MatchMembershipEntity();
-    newMembership.bgioSecret = await this.joinBgioMatch(match, playerID);
+    newMembership.bgioSecret = await this.joinBgioMatch(
+      roomMembership,
+      match,
+      playerID,
+    );
     newMembership.user = roomMembership.user;
     return newMembership;
   }
 
   private async joinBgioMatch(
+    roomMembership: RoomMembershipEntity,
     match: MatchEntity,
     playerID: number,
   ): Promise<string> {
-    // TODO: send post request to bgio server to join match with:
-    // - game code (from match object)
-    // - match id (from match object)
-    // - playerID
-    // returns the bgio secret
-    return 'bgio secret';
+    const response = await this.httpService
+      .post(
+        `${getBgioServerUrl()}/games/${match.gameCode}/${
+          match.bgioMatchId
+        }/join`,
+        { playerID, playerName: roomMembership.user.nickname },
+      )
+      .toPromise();
+    return response.data.playerCredentials;
   }
 }

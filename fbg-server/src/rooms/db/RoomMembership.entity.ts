@@ -16,16 +16,10 @@ export class RoomMembershipEntity extends BaseEntity {
   @Column()
   public lastSeen!: number;
 
-  @ManyToOne(
-    type => UserEntity,
-    user => user.roomMemberships,
-  )
+  @ManyToOne((type) => UserEntity, (user) => user.roomMemberships)
   public user!: UserEntity;
 
-  @ManyToOne(
-    type => RoomEntity,
-    room => room.userMemberships,
-  )
+  @ManyToOne((type) => RoomEntity, (room) => room.userMemberships)
   public room!: RoomEntity;
 }
 

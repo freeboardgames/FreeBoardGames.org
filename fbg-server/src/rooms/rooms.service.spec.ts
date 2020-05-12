@@ -53,11 +53,11 @@ describe('RoomsService', () => {
     expect(newRoom.users).toEqual([{ id: userId, nickname: 'foo' }]);
   });
 
-  it('should start match', async() => {
+  it('should start match', async () => {
     const startMatchMock = jest.fn();
     (service as any).startMatch = startMatchMock;
 
-    const {roomId, userId} = await getRoomAndUser();
+    const { roomId, userId } = await getRoomAndUser();
     await service.checkin(userId, roomId);
 
     // second player joins; capacity is 2, so match starts
@@ -65,14 +65,14 @@ describe('RoomsService', () => {
     await service.checkin(user2Id, roomId);
 
     expect(startMatchMock).toHaveBeenCalled();
-  })
+  });
 
   // TODO Fix this test
-  it.skip('should return match ID when a match has already started', async() => {
+  it.skip('should return match ID when a match has already started', async () => {
     const createBgioMatchMock = jest.fn().mockResolvedValue('foomatchID');
     (service as any).createBgioMatch = createBgioMatchMock;
 
-    const {roomId, userId} = await getRoomAndUser();
+    const { roomId, userId } = await getRoomAndUser();
     await service.checkin(userId, roomId);
 
     const user2Id = await usersService.newUser({ nickname: 'bar' });
@@ -90,6 +90,6 @@ describe('RoomsService', () => {
       isPublic: false,
     });
     const userId = await usersService.newUser({ nickname: 'foo' });
-    return {roomId, userId};
+    return { roomId, userId };
   }
 });
