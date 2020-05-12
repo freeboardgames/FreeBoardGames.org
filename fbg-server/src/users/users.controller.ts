@@ -13,6 +13,7 @@ import { JwtAuthGuard } from './jwt-auth-guard';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './definitions';
 import { User } from '../dto/users/User';
+import {GrpcMethod} from '@nestjs/microservices';
 import { NewUserRequest } from '../dto/users/NewUserRequest';
 
 @Controller('users')
@@ -22,7 +23,7 @@ export class UsersController {
     private readonly jwtService: JwtService,
   ) {}
 
-  @Post('new')
+  @GrpcMethod()
   async newUser(@Body() req: NewUserRequest) {
     // curl -X POST http://localhost:3001/users/new -d '{"user": { "nickname": "foo"}}' -H "Content-Type: application/json"
     if (!req.user || !req.user.nickname || req.user.nickname.length < 3) {
