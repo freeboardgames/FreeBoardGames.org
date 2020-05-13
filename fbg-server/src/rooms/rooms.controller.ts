@@ -3,6 +3,7 @@ import { RoomsService } from './rooms.service';
 import { JwtAuthGuard } from '../users/jwt-auth-guard';
 import { NewRoomRequest } from '../dto/rooms/NewRoomRequest';
 import { CheckinRoomRequest } from '../dto/rooms/CheckinRoomRequest';
+import { CheckinRoomResponse } from '../dto/rooms/CheckinRoomResponse';
 
 @Controller('rooms')
 export class RoomsController {
@@ -18,12 +19,13 @@ export class RoomsController {
 
   @UseGuards(JwtAuthGuard)
   @Post('checkin')
-  async checkinRoom(@Request() req, @Body() body: CheckinRoomRequest) {
+  async checkinRoom(
+    @Request() req,
+    @Body() body: CheckinRoomRequest,
+  ): Promise<CheckinRoomResponse> {
     // curl -X POST http://localhost:3001/rooms/checkin -H "Authorization: Bearer <<JWT>>" -d '{"roomId": <<<ROOM ID>>>}' -H "Content-Type: application/json"
     const userId = req.user.id;
     const roomId = body.roomId;
-    const matchId = await this.roomsService.checkin(userId, roomId);
-    const room = await this.roomsService.getRoom(roomId);
-    return { matchId, room };
+    return this.roomsService.checkin(userId, roomId);
   }
 }

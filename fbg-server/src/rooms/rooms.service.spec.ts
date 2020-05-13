@@ -82,8 +82,8 @@ describe('RoomsService', () => {
     // second player joins; capacity is 2, so match starts
     const user2 = await usersService.newUser({ nickname: 'bar' });
 
-    const newMatchID = await service.checkin(user2, roomId);
-    const match = await matchService.getMatchEntity(newMatchID);
+    const checkinResponse = await service.checkin(user2, roomId);
+    const match = await matchService.getMatchEntity(checkinResponse.matchId);
 
     expect(match.bgioMatchId).toEqual('bgioGameId');
     expect(match.playerMemberships[0].bgioSecret).toEqual('1stSecret');
@@ -113,8 +113,8 @@ describe('RoomsService', () => {
     // second player joins; capacity is 2, so match starts
     const user2 = await usersService.newUser({ nickname: 'bar' });
 
-    const creationID = await service.checkin(user2, roomId);
-    const visitID = await service.checkin(user1, roomId);
-    expect(creationID).toEqual(visitID);
+    const creation = await service.checkin(user2, roomId);
+    const visit = await service.checkin(user1, roomId);
+    expect(creation.matchId).toEqual(visit.matchId);
   });
 });
