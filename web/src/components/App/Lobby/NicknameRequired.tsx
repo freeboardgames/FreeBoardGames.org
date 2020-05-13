@@ -2,7 +2,6 @@ import React from 'react';
 import { NicknamePrompt } from './NicknamePrompt';
 import { LobbyService } from './LobbyService';
 import { connect } from 'react-redux';
-import { ActionNames, AuthData } from '../../../redux/actions';
 import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
 
 interface Props {
@@ -11,23 +10,17 @@ interface Props {
 }
 
 interface State {
-  open: boolean;
+  errorText: string;
 }
 
 export class NicknameRequired extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = { errorText: undefined };
   }
 
   componentDidMount() {
-    const nickname = LobbyService.getNickname();
-    let payload: AuthData;
-    if (nickname) {
-      payload = { ready: true, loggedIn: true, nickname };
-    } else {
-      payload = { ready: true, loggedIn: false };
-    }
-    (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
+    LobbyService.sync((this.props as any).dispatch);
   }
 
   render() {
@@ -35,7 +28,12 @@ export class NicknameRequired extends React.Component<Props, State> {
     if (!nickname) {
       return (
         <FreeBoardGamesBar>
-          <NicknamePrompt nickname={nickname} setNickname={this._setNickname} />
+          <NicknamePrompt
+            nickname={nickname}
+            setNickname={this._setNickname}
+            errorText={this.state.errorText}
+            onChange={() => this.setState({ errorText: undefined })}
+          />
         </FreeBoardGamesBar>
       );
     } else {
@@ -43,11 +41,14 @@ export class NicknameRequired extends React.Component<Props, State> {
     }
   }
 
-  _setNickname = (nickname: string) => {
-    LobbyService.setNickname(nickname);
-    this.setState((oldState) => ({ ...oldState, nickname }));
-    const payload: AuthData = { ready: true, loggedIn: true, nickname };
-    (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
+  _setNickname = async (nickname: string) => {
+    try {
+      await LobbyService.newUser((this.props as any).dispatch, nickname);
+    } catch (e) {
+      const errorText = e.response?.body?.message || 'Unknown error';
+      this.setState({ errorText });
+    }
+    await LobbyService.profile();
     if (this.props.onSuccess) this.props.onSuccess();
   };
 }

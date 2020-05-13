@@ -58,7 +58,7 @@ describe('Room Lobby', () => {
       players: [metaPlayer],
       currentUser: metaPlayer,
     };
-    LobbyService.joinRoom = jest.fn().mockResolvedValue(mockMetadata);
+    LobbyService.checkinRoom = jest.fn().mockResolvedValue(mockMetadata);
     LobbyService.getRoomMetadata = jest.fn().mockRejectedValue(undefined);
     Storage.prototype.getItem = jest.fn(() => 'fooplayer');
     const { getByText } = render(
@@ -82,7 +82,7 @@ describe('Room Lobby', () => {
       gameCode: 'chess',
     };
     const joinRoomMock = jest.fn().mockResolvedValue(null);
-    LobbyService.joinRoom = joinRoomMock;
+    LobbyService.checkinRoom = joinRoomMock;
     LobbyService.getRoomMetadata = jest.fn().mockResolvedValue(mockMetadata);
     render(
       <Provider store={store}>

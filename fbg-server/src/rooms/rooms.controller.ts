@@ -23,6 +23,7 @@ export class RoomsController {
     const userId = req.user.id;
     const roomId = body.roomId;
     const matchId = await this.roomsService.checkin(userId, roomId);
-    return { matchId };
+    const room = await this.roomsService.getRoom(roomId);
+    return { matchId, room };
   }
 }

@@ -121,7 +121,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       ...oldState,
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
-    this.promise = LobbyService.getRoomMetadata(gameCode, roomID)
+    this.promise = LobbyService.getRoomMetadata(roomID)
       .then(async (metadata) => {
         if (!metadata.currentUser) {
           const player: IPlayerInRoom = {
@@ -129,8 +129,8 @@ class Room extends React.Component<IRoomProps, IRoomState> {
             roomID,
             name: LobbyService.getNickname(),
           };
-          await LobbyService.joinRoom(gameCode, player);
-          return LobbyService.getRoomMetadata(gameCode, roomID);
+          await LobbyService.checkinRoom(gameCode, player);
+          return LobbyService.getRoomMetadata(roomID);
         }
         return metadata;
       })
@@ -161,7 +161,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   };
 
   _setNickname = (nickname: string) => {
-    LobbyService.setNickname(nickname);
+    LobbyService.newUser(nickname);
     if (this.state.editingName) {
       const room = this.state.roomMetadata;
       LobbyService.renameUser(room.gameCode, room.currentUser, nickname);

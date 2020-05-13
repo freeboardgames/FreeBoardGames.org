@@ -1,9 +1,14 @@
 import AddressHelper from '../Helpers/AddressHelper';
 import request from 'superagent';
 import SSRHelper from '../Helpers/SSRHelper';
+import { Dispatch } from 'redux';
+import { AuthData, ActionNames } from '../../../redux/actions';
+import { Room } from 'dto/rooms/Room';
+import { CheckinRoomRequest } from 'dto/rooms/CheckinRoomRequest';
 
 const FBG_CREDENTIALS_KEY = 'fbgCredentials';
 const FBG_NICKNAME_KEY = 'fbgNickname';
+const FBG_USER_TOKEN_KEY = 'fbgUserToken';
 
 export interface IPlayerInRoom {
   playerID: number;
@@ -29,18 +34,21 @@ export interface IStoredCredentials {
 }
 
 export class LobbyService {
-  public static async newRoom(gameCode: string, numPlayers: number): Promise<string> {
+  public static async newRoom(gameCode: string, capacity: number) {
+    const room: Room = { gameCode, capacity, isPublic: false };
     const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/create`)
-      .send({ numPlayers });
-    const roomID = response.body.gameID;
-    return roomID;
-    // return 'foo';
+      .post(`${AddressHelper.getFbgServerAddress()}/rooms/new`)
+      .set('Authorization', this.getAuthHeader())
+      .send({
+        room,
+      });
+
+    return response.body.roomId;
   }
 
   public static async joinRoom(gameCode: string, player: IPlayerInRoom): Promise<void> {
     const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/join`)
+      .post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${player.roomID}/join`)
       .send({
         playerID: player.playerID,
         playerName: player.name,
@@ -51,37 +59,37 @@ export class LobbyService {
 
   public static async renameUser(gameCode: string, player: IPlayerInRoom, newName: string): Promise<void> {
     const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
-    await request.post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
+    await request.post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
       playerID: player.playerID,
       credentials: playerCredential.credential,
       newName,
     });
   }
 
-  public static async getRoomMetadata(gameCode: string, roomID: string): Promise<IRoomMetadata> {
-    const response = await request.get(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}`);
-    const body = response.body;
-    const players: IPlayerInRoom[] = body.players
-      .filter((player: any) => player.name)
-      .map((player: any) => ({
-        playerID: player.id,
-        name: player.name,
-        roomID,
-      }));
-    const playerCredential: IPlayerCredential = this.getCredential(roomID);
-    let currentUser;
-    if (playerCredential) {
-      currentUser = players.find((player: any) => player.playerID === playerCredential.playerID);
-    }
-    return { players, gameCode, roomID, currentUser, numberOfPlayers: body.players.length };
+  public static async getRoomMetadata(roomId: string): Promise<Room> {
+    const checkinRoomRequest: CheckinRoomRequest = { roomId };
+    const response = await request
+      .post(`${AddressHelper.getFbgServerAddress()}/rooms/checkin`)
+      .set('Authorization', this.getAuthHeader())
+      .send({
+        ...checkinRoomRequest,
+      });
+
+    return response.body;
   }
 
   public static async getPlayAgainNextRoom(gameCode: string, roomID: string, numPlayers: number): Promise<string> {
     const playerCredential: IPlayerCredential = this.getCredential(roomID);
     const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}/playAgain`)
+      .post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${roomID}/playAgain`)
       .send({ playerID: playerCredential.playerID, credentials: playerCredential.credential, numPlayers });
     return response.body.nextRoomID;
+  }
+
+  public static getUserToken() {
+    if (!SSRHelper.isSSR()) {
+      return localStorage.getItem(FBG_USER_TOKEN_KEY);
+    }
   }
 
   public static getNickname(): string {
@@ -90,8 +98,17 @@ export class LobbyService {
     }
   }
 
-  public static setNickname(name: string): void {
-    localStorage.setItem(FBG_NICKNAME_KEY, name);
+  /** sends user's nickname to backend.  backend returns the jwt token.  */
+  public static async newUser(dispatch: Dispatch, nickname: string): Promise<string> {
+    const response = await request.post(`${AddressHelper.getFbgServerAddress()}/users/new`).send({
+      user: { nickname },
+    });
+    const jwtToken = response.body.jwtPayload;
+    localStorage.setItem(FBG_NICKNAME_KEY, nickname);
+    localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
+    const payload: AuthData = { ready: true, loggedIn: true, nickname };
+    dispatch({ type: ActionNames.SyncUser, payload });
+    return response.body;
   }
 
   public static getCredential(roomID: string): IPlayerCredential | undefined {
@@ -107,5 +124,21 @@ export class LobbyService {
     const newCredentials = { ...existing };
     newCredentials[player.roomID] = { credential, playerID: player.playerID };
     localStorage.setItem(FBG_CREDENTIALS_KEY, JSON.stringify(newCredentials));
+  }
+
+  public static async sync(dispatch: Dispatch): Promise<void> {
+    const nickname = LobbyService.getNickname();
+    let payload: AuthData;
+    if (nickname) {
+      payload = { ready: true, loggedIn: true, nickname };
+    } else {
+      payload = { ready: true, loggedIn: false };
+    }
+    dispatch({ type: ActionNames.SyncUser, payload });
+  }
+
+  private static getAuthHeader() {
+    const jwtToken = this.getUserToken() || '';
+    return `Bearer ${jwtToken}`;
   }
 }

@@ -8,19 +8,27 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import AlertLayer from '../Game/AlertLayer';
 
 interface Props {
-  blockClickaway?: boolean;
   closePrompt?: () => void;
-  nickname?: string;
   setNickname: (nickname: string) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  blockClickaway?: boolean;
+  nickname?: string;
+  errorText?: string;
 }
 
 interface State {
+  hasChangedTextSinceError: boolean;
   nameTextField: string;
 }
 
 export class NicknamePrompt extends React.Component<Props, State> {
-  state = { nameTextField: '' };
+  constructor(props: Props) {
+    super(props);
+    this.state = { nameTextField: '', hasChangedTextSinceError: false };
+  }
+
   render() {
+    const errorText = this.state.hasChangedTextSinceError ? null : this.props.errorText;
     return (
       <AlertLayer>
         <ClickAwayListener onClickAway={this._handleClickaway}>
@@ -45,6 +53,8 @@ export class NicknamePrompt extends React.Component<Props, State> {
                   defaultValue={this.props.nickname}
                   onChange={this._onChange}
                   onKeyPress={this._setNicknameOnEnterButton}
+                  helperText={errorText}
+                  error={!!errorText}
                 />
               </div>
               <Button
@@ -89,8 +99,7 @@ export class NicknamePrompt extends React.Component<Props, State> {
 
   _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nameTextField = event.target.value!;
-    this.setState((oldState) => {
-      return { ...oldState, nameTextField };
-    });
+    this.setState({ nameTextField });
+    if (this.props.onChange) this.props.onChange(event);
   };
 }

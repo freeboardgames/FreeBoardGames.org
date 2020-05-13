@@ -24,14 +24,14 @@ describe('New Room', () => {
     Storage.prototype.getItem = () => JSON.stringify({}); // mock no crendetials
     Storage.prototype.setItem = setItemMock;
     const player: IPlayerInRoom = { playerID: 0, name: 'Jason', roomID: 'fooroom' };
-    await LobbyService.joinRoom('foogame', player);
+    await LobbyService.checkinRoom('foogame', player);
     expect(setItemMock.mock.calls[0][1]).toEqual(JSON.stringify({ fooroom: { credential: 'foosecret', playerID: 0 } }));
   });
 
   it('should set nickname', async () => {
     const setItemMock = jest.fn();
     Storage.prototype.setItem = setItemMock;
-    LobbyService.setNickname('fooname');
+    LobbyService.newUser('fooname');
     expect(setItemMock.mock.calls[0][1]).toEqual('fooname');
   });
 
