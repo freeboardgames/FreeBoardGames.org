@@ -1,21 +1,24 @@
 import React from 'react';
 import MessagePage from 'components/App/MessagePageClass';
-import { LobbyService, IRoomMetadata, IPlayerInRoom } from '../../../../components/App/Lobby/LobbyService';
-import { GAMES_MAP } from '../../../../games';
-import AlertLayer from '../../../../components/App/Game/AlertLayer';
+import { LobbyService } from 'components/App/Lobby/LobbyService';
+import { GAMES_MAP } from 'games';
+import AlertLayer from 'components/App/Game/AlertLayer';
 import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
-import { GameSharing } from '../../../../components/App/Game/GameSharing';
-import Game from '../../../../components/App/Game/Game';
-import { ListPlayers } from '../../../../components/App/Lobby/ListPlayers';
-import { GameCard } from '../../../../components/App/Game/GameCard';
-import { NicknamePrompt } from '../../../../components/App/Lobby/NicknamePrompt';
+import { GameSharing } from 'components/App/Game/GameSharing';
+import { ListPlayers } from 'components/App/Lobby/ListPlayers';
+import { GameCard } from 'components/App/Game/GameCard';
+import { NicknamePrompt } from 'components/App/Lobby/NicknamePrompt';
 import { useRouter, NextRouter } from 'next/router';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
-import NicknameRequired from '../../../../components/App/Lobby/NicknameRequired';
-import SEO from '../../../../components/SEO';
-import { ActionNames, AuthData } from '../../../../redux/actions';
+import NicknameRequired from 'components/App/Lobby/NicknameRequired';
+import SEO from 'components/SEO';
+import { ActionNames } from 'redux/actions';
+import { ReduxUserState } from 'redux/definitions';
 import { connect } from 'react-redux';
+import { Room as RoomDto } from 'dto/rooms/Room';
+import { Dispatch } from 'redux';
+import Router from 'next/router';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
@@ -23,13 +26,14 @@ interface IRoomProps {
   gameCode: string;
   roomID: string;
   router: NextRouter;
+  user: ReduxUserState;
+  dispatch: Dispatch;
 }
 
 interface IRoomState {
-  roomMetadata?: IRoomMetadata;
+  roomMetadata?: RoomDto;
   nameTextField?: string;
   loading: boolean;
-  gameReady: boolean;
   error: string;
   editingName: boolean;
   interval: number | undefined;
@@ -40,18 +44,11 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   state: IRoomState = {
     error: '',
     loading: true,
-    gameReady: false,
     editingName: false,
     interval: undefined,
     numberOfTimesUpdatedMetadata: 0,
   };
   private timer: any; // fixme loads state of room
-  private promise: Promise<IRoomMetadata | void>;
-
-  constructor(props) {
-    super(props);
-    this._componentCleanup = this._componentCleanup.bind(this);
-  }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this._componentCleanup);
@@ -76,13 +73,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
         </NicknameRequired>
       );
     }
-    if (this.state.gameReady) {
-      const room = this.state.roomMetadata;
-      return <Game room={room} />;
-    }
-    const nicknamePrompt = this.state.editingName ? (
-      <AlertLayer>{this._getNamePrompt(this.state.roomMetadata.currentUser.name)}</AlertLayer>
-    ) : null;
     const gameDef = GAMES_MAP[this.state.roomMetadata.gameCode];
     return (
       <NicknameRequired>
@@ -92,7 +82,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
           noindex={true}
         />
         <FreeBoardGamesBar>
-          {nicknamePrompt}
+          {this.getNicknamePrompt()}
           <GameCard game={gameDef} />
           {this._getGameSharing()}
           <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
@@ -102,14 +92,11 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   updateMetadata = (firstRun?: boolean) => {
-    const gameCode = this.props.router.query.gameCode as string;
     const roomID = this.props.router.query.roomID as string;
-    if (!firstRun) {
-      if (this.state.editingName) {
-        return;
-      }
+    if (!firstRun && this.state.editingName) {
+      return;
     }
-    if (!LobbyService.getNickname()) {
+    if (!this.props.user.loggedIn) {
       return;
     }
     if (this.state.numberOfTimesUpdatedMetadata > MAX_TIMES_TO_UPDATE_METADATA) {
@@ -121,55 +108,48 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       ...oldState,
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
-    this.promise = LobbyService.getRoomMetadata(roomID)
-      .then(async (metadata) => {
-        if (!metadata.currentUser) {
-          const player: IPlayerInRoom = {
-            playerID: metadata.players.length,
-            roomID,
-            name: LobbyService.getNickname(),
-          };
-          await LobbyService.checkinRoom(gameCode, player);
-          return LobbyService.getRoomMetadata(roomID);
-        }
-        return metadata;
-      })
-      .then(
-        (metadata) => {
-          if (metadata.numberOfPlayers === metadata.players.length) {
-            this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false, gameReady: true }));
-            this._componentCleanup();
-          }
-          this.setState((oldState) => ({ ...oldState, roomMetadata: metadata, loading: false }));
-          return metadata;
-        },
-        () => {
-          const error = 'Failed to fetch room metadata.';
+    LobbyService.checkin(roomID).then(
+      async (response) => {
+        if (response.matchId) {
           this._componentCleanup();
-          this.setState((oldState) => ({ ...oldState, error }));
-        },
-      );
+          Router.replace(`/match/${response.matchId}`);
+        } else {
+          this.setState({ loading: false, roomMetadata: response.room });
+        }
+      },
+      () => {
+        const error = 'Failed to fetch room metadata.';
+        this._componentCleanup();
+        this.setState((oldState) => ({ ...oldState, error }));
+      },
+    );
   };
 
-  _getNamePrompt = (name?: string) => {
-    const togglePrompt = this.state.editingName ? this._toggleEditingName : null;
-    return <NicknamePrompt setNickname={this._setNickname} nickname={name} closePrompt={togglePrompt} />;
-  };
+  getNicknamePrompt() {
+    if (!this.state.editingName) {
+      return;
+    }
+    return (
+      <AlertLayer>
+        <NicknamePrompt
+          setNickname={this._setNickname}
+          nickname={this.props.user.nickname}
+          closePrompt={this._toggleEditingName}
+        />
+      </AlertLayer>
+    );
+  }
 
   _toggleEditingName = () => {
     this.setState({ editingName: !this.state.editingName });
   };
 
   _setNickname = (nickname: string) => {
-    LobbyService.newUser(nickname);
-    if (this.state.editingName) {
-      const room = this.state.roomMetadata;
-      LobbyService.renameUser(room.gameCode, room.currentUser, nickname);
-      const payload: AuthData = { ready: true, loggedIn: true, nickname };
-      (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
-      this._toggleEditingName();
-    }
-    this.updateMetadata();
+    const room = this.state.roomMetadata;
+    LobbyService.renameUser(nickname);
+    const payload: ReduxUserState = { ready: true, loggedIn: true, nickname };
+    (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
+    this._toggleEditingName();
   };
 
   componentWillUnmount() {
@@ -178,8 +158,10 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   _componentCleanup = () => {
-    clearInterval(this.timer);
-    this.timer = undefined;
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = undefined;
+    }
   };
 
   _getGameSharing = () => {

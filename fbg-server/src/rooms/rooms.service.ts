@@ -65,7 +65,7 @@ export class RoomsService {
         return { room: roomEntityToRoom(room), matchId };
       }
       await queryRunner.commitTransaction();
-      return;
+      return { room: roomEntityToRoom(room) };
     } catch (err) {
       console.error(err);
       await queryRunner.rollbackTransaction();
@@ -189,6 +189,7 @@ export class RoomsService {
     );
     newMembership.user = roomMembership.user;
     newMembership.match = match;
+    newMembership.bgioPlayerId = playerID;
     return newMembership;
   }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Room from 'pages/room/[gameCode]/[roomID]/Room';
+import Room from 'pages/room/[roomID]/Room';
 import { IPlayerInRoom, LobbyService, IRoomMetadata } from 'components/App/Lobby/LobbyService';
 import { render, waitFor, cleanup, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';

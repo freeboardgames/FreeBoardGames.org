@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import AlertLayer from '../Game/AlertLayer';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface Props {
   closePrompt?: () => void;
@@ -14,6 +15,7 @@ interface Props {
   blockClickaway?: boolean;
   nickname?: string;
   errorText?: string;
+  loading?: boolean;
 }
 
 interface State {
@@ -29,6 +31,33 @@ export class NicknamePrompt extends React.Component<Props, State> {
 
   render() {
     const errorText = this.state.hasChangedTextSinceError ? null : this.props.errorText;
+    let content = (
+      <React.Fragment>
+        <div>
+          <TextField
+            autoFocus={true}
+            type="text"
+            defaultValue={this.props.nickname}
+            onChange={this._onChange}
+            onKeyPress={this._setNicknameOnEnterButton}
+            helperText={errorText}
+            error={!!errorText}
+          />
+        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: '16px' }}
+          onClick={this._onClick}
+          disabled={!this._nicknameIsValid()}
+        >
+          Set Nickname
+        </Button>
+      </React.Fragment>
+    );
+    if (this.props.loading) {
+      content = <CircularProgress />;
+    }
     return (
       <AlertLayer>
         <ClickAwayListener onClickAway={this._handleClickaway}>
@@ -45,28 +74,7 @@ export class NicknamePrompt extends React.Component<Props, State> {
             <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
               Enter Your Nickname
             </Typography>
-            <CardContent>
-              <div>
-                <TextField
-                  autoFocus={true}
-                  type="text"
-                  defaultValue={this.props.nickname}
-                  onChange={this._onChange}
-                  onKeyPress={this._setNicknameOnEnterButton}
-                  helperText={errorText}
-                  error={!!errorText}
-                />
-              </div>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ marginTop: '16px' }}
-                onClick={this._onClick}
-                disabled={!this._nicknameIsValid()}
-              >
-                Set Nickname
-              </Button>
-            </CardContent>
+            <CardContent>{content}</CardContent>
           </Card>
         </ClickAwayListener>
       </AlertLayer>
