@@ -1,10 +1,10 @@
-import { ActionNames, AuthData, SyncUserAction } from './actions';
-import { State } from './store';
+import { ActionNames, SyncUserAction } from './actions';
+import { ReduxState, ReduxUserState } from './definitions';
 
-const INITIAL_USER: AuthData = { loggedIn: false, ready: false };
-const INITIAL_STATE = { user: INITIAL_USER };
+const INITIAL_USER: ReduxUserState = { loggedIn: false, ready: false };
+const INITIAL_STATE: ReduxState = { user: INITIAL_USER };
 
-export const reducer = (state: State = INITIAL_STATE, action: SyncUserAction) => {
+export const reducer = (state = INITIAL_STATE, action: SyncUserAction): ReduxState => {
   switch (action.type) {
     case ActionNames.HYDRATE:
       return { ...state, ...action.payload };

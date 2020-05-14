@@ -16,6 +16,9 @@ export class MatchMembershipEntity extends BaseEntity {
   @Column()
   public bgioSecret!: string;
 
+  @Column()
+  public bgioPlayerId!: number;
+
   @ManyToOne((type) => UserEntity, (user) => user.roomMemberships)
   public user!: UserEntity;
 

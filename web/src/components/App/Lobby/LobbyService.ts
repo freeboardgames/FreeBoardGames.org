@@ -1,40 +1,29 @@
 import AddressHelper from '../Helpers/AddressHelper';
 import request from 'superagent';
 import SSRHelper from '../Helpers/SSRHelper';
-import { Dispatch } from 'redux';
-import { AuthData, ActionNames } from '../../../redux/actions';
+import { ActionNames, SyncUserAction } from '../../../redux/actions';
 import { Room } from 'dto/rooms/Room';
 import { CheckinRoomRequest } from 'dto/rooms/CheckinRoomRequest';
+import { ReduxUserState } from 'redux/definitions';
+import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
+import { Match } from 'dto/match/Match';
 
-const FBG_CREDENTIALS_KEY = 'fbgCredentials';
 const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
-
 export interface IPlayerInRoom {
   playerID: number;
-  name?: string;
-  roomID: string;
+  name: string;
 }
-
-export interface IRoomMetadata {
-  gameCode?: string;
-  roomID: string;
-  players?: IPlayerInRoom[]; // only active players
-  currentUser?: IPlayerInRoom;
-  numberOfPlayers: number;
-}
-
-export interface IPlayerCredential {
-  playerID: number;
-  credential: string;
-}
-
-export interface IStoredCredentials {
-  [key: string]: IPlayerCredential;
-}
-
 export class LobbyService {
-  public static async newRoom(gameCode: string, capacity: number) {
+  public static async getMatch(matchId: string): Promise<Match> {
+    const response = await request
+      .get(`${AddressHelper.getFbgServerAddress()}/match/${matchId}`)
+      .set('Authorization', this.getAuthHeader());
+
+    return response.body;
+  }
+
+  public static async newRoom(gameCode: string, capacity: number): Promise<string> {
     const room: Room = { gameCode, capacity, isPublic: false };
     const response = await request
       .post(`${AddressHelper.getFbgServerAddress()}/rooms/new`)
@@ -46,27 +35,17 @@ export class LobbyService {
     return response.body.roomId;
   }
 
-  public static async joinRoom(gameCode: string, player: IPlayerInRoom): Promise<void> {
-    const response = await request
-      .post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${player.roomID}/join`)
-      .send({
-        playerID: player.playerID,
-        playerName: player.name,
-      });
-    const credential = response.body.playerCredentials;
-    this.setCredential(player, credential);
-  }
-
-  public static async renameUser(gameCode: string, player: IPlayerInRoom, newName: string): Promise<void> {
-    const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
+  public static async renameUser(newName: string): Promise<void> {
+    alert(`under construction, ${newName}!`);
+    /*const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
     await request.post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
       playerID: player.playerID,
       credentials: playerCredential.credential,
       newName,
-    });
+    });*/
   }
 
-  public static async getRoomMetadata(roomId: string): Promise<Room> {
+  public static async checkin(roomId: string): Promise<CheckinRoomResponse> {
     const checkinRoomRequest: CheckinRoomRequest = { roomId };
     const response = await request
       .post(`${AddressHelper.getFbgServerAddress()}/rooms/checkin`)
@@ -78,12 +57,14 @@ export class LobbyService {
     return response.body;
   }
 
-  public static async getPlayAgainNextRoom(gameCode: string, roomID: string, numPlayers: number): Promise<string> {
+  public static async getPlayAgainNextRoom(gameCode: string, roomID: string, numPlayers: number): Promise<void> {
+    alert('under construction');
+    /*
     const playerCredential: IPlayerCredential = this.getCredential(roomID);
     const response = await request
       .post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${roomID}/playAgain`)
       .send({ playerID: playerCredential.playerID, credentials: playerCredential.credential, numPlayers });
-    return response.body.nextRoomID;
+    return response.body.nextRoomID;*/
   }
 
   public static getUserToken() {
@@ -99,46 +80,31 @@ export class LobbyService {
   }
 
   /** sends user's nickname to backend.  backend returns the jwt token.  */
-  public static async newUser(dispatch: Dispatch, nickname: string): Promise<string> {
+  public static async newUser(nickname: string): Promise<string> {
     const response = await request.post(`${AddressHelper.getFbgServerAddress()}/users/new`).send({
       user: { nickname },
     });
     const jwtToken = response.body.jwtPayload;
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
     localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
-    const payload: AuthData = { ready: true, loggedIn: true, nickname };
-    dispatch({ type: ActionNames.SyncUser, payload });
     return response.body;
   }
 
-  public static getCredential(roomID: string): IPlayerCredential | undefined {
-    // return an empty IPlayerInRoom object if the player's identity is for another room
-    const credentials: IStoredCredentials = JSON.parse(localStorage.getItem(FBG_CREDENTIALS_KEY));
-    if (credentials) {
-      return credentials[roomID];
-    }
-  }
-
-  public static setCredential(player: IPlayerInRoom, credential: string): void {
-    const existing: IStoredCredentials = JSON.parse(localStorage.getItem(FBG_CREDENTIALS_KEY));
-    const newCredentials = { ...existing };
-    newCredentials[player.roomID] = { credential, playerID: player.playerID };
-    localStorage.setItem(FBG_CREDENTIALS_KEY, JSON.stringify(newCredentials));
-  }
-
-  public static async sync(dispatch: Dispatch): Promise<void> {
-    const nickname = LobbyService.getNickname();
-    let payload: AuthData;
-    if (nickname) {
+  public static getSyncUserAction(): SyncUserAction {
+    let payload: ReduxUserState;
+    if (LobbyService.getNickname() && LobbyService.getUserToken()) {
+      const nickname = LobbyService.getNickname();
       payload = { ready: true, loggedIn: true, nickname };
     } else {
       payload = { ready: true, loggedIn: false };
     }
-    dispatch({ type: ActionNames.SyncUser, payload });
+    return { type: ActionNames.SyncUser, payload };
   }
 
   private static getAuthHeader() {
-    const jwtToken = this.getUserToken() || '';
-    return `Bearer ${jwtToken}`;
+    if (this.getUserToken()) {
+      const jwtToken = this.getUserToken() || '';
+      return `Bearer ${jwtToken}`;
+    }
   }
 }

@@ -25,7 +25,7 @@ export class UsersController {
   @Post('new')
   async newUser(@Body() req: NewUserRequest) {
     // curl -X POST http://localhost:3001/users/new -d '{"user": { "nickname": "foo"}}' -H "Content-Type: application/json"
-    if (!req.user || !req.user.nickname || req.user.nickname.length < 3) {
+    if (!req.user || !req.user.nickname || req.user.nickname.length < 1) {
       throw new HttpException('Invalid nickname', HttpStatus.BAD_REQUEST);
     }
     const userId = await this.usersService.newUser(req.user);
