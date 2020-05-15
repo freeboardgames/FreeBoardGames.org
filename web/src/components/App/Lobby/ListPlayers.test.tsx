@@ -2,8 +2,9 @@ import React from 'react';
 import { ListPlayers } from './ListPlayers';
 import { mount } from 'enzyme';
 import { IPlayerInRoom } from './LobbyService';
+import { User } from 'dto/users/User';
 
-const player1: IPlayerInRoom = { playerID: 0, name: 'foobar', roomID: 'barroom' };
+const user1: User = { nickname: 'foo' };
 
 describe('List of players', () => {
   it('should contain a link', () => {
@@ -12,13 +13,12 @@ describe('List of players', () => {
         editNickname={jest.fn()}
         roomMetadata={{
           gameCode: 'foomatch',
-          roomID: 'barroom',
-          players: [player1],
-          currentUser: player1,
-          numberOfPlayers: 2,
+          users: [user1],
+          isPublic: false,
+          capacity: 2,
         }}
       />,
     );
-    expect(wrapper.html()).toContain(player1.name);
+    expect(wrapper.html()).toContain(user1.nickname);
   });
 });
