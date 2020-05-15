@@ -22,6 +22,8 @@ Contributions are always welcome, even if just reporting bugs (check our [issue 
 git clone https://github.com/freeboardgames/FreeBoardGames.org
 cd FreeBoardGames.org
 
+cd web
+
 yarn install  # installs dependencies
 
 yarn run dev  # runs the webserver and backend (for online multiplayer games)
