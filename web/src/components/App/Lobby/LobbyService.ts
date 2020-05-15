@@ -8,6 +8,8 @@ import { ReduxUserState } from 'redux/definitions';
 import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
 import { Match } from 'dto/match/Match';
 
+import { Dispatch } from 'redux';
+
 const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
 export interface IPlayerInRoom {
@@ -23,14 +25,22 @@ export class LobbyService {
     return response.body;
   }
 
-  public static async newRoom(gameCode: string, capacity: number): Promise<string> {
+  public static async newRoom(dispatch: Dispatch<SyncUserAction>, gameCode: string, capacity: number): Promise<string> {
     const room: Room = { gameCode, capacity, isPublic: false };
-    const response = await request
-      .post(`${AddressHelper.getFbgServerAddress()}/rooms/new`)
-      .set('Authorization', this.getAuthHeader())
-      .send({
-        room,
-      });
+    let response: request.Response;
+    try {
+      response = await request
+        .post(`${AddressHelper.getFbgServerAddress()}/rooms/new`)
+        .set('Authorization', this.getAuthHeader())
+        .send({
+          room,
+        });
+    } catch (e) {
+      if (e.response.statusCode === 400) {
+        this.invalidateUserAuth();
+        dispatch(this.getSyncUserAction());
+      }
+    }
 
     return response.body.roomId;
   }
@@ -99,6 +109,11 @@ export class LobbyService {
       payload = { ready: true, loggedIn: false };
     }
     return { type: ActionNames.SyncUser, payload };
+  }
+
+  public static invalidateUserAuth() {
+    localStorage.removeItem(FBG_NICKNAME_KEY);
+    localStorage.removeItem(FBG_USER_TOKEN_KEY);
   }
 
   private static getAuthHeader() {

@@ -7,20 +7,20 @@ import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
 import { ReduxState, ReduxUserState } from 'redux/definitions';
 
 interface Props {
+  dispatch: Dispatch;
   onSuccess?: (...args: any) => void;
   handleClickaway?: () => void;
+  conditional: boolean;
   renderAsPopup?: boolean;
   user: ReduxUserState;
-  dispatch: Dispatch;
 }
 
 interface State {
-  loading: boolean;
   errorText: string;
 }
 
 class NicknameRequired extends React.Component<Props, State> {
-  state = { errorText: undefined, loading: false };
+  state = { errorText: undefined };
   constructor(props: Props) {
     super(props);
   }
@@ -56,13 +56,11 @@ class NicknameRequired extends React.Component<Props, State> {
 
   _setNickname = async (nickname: string) => {
     try {
-      this.setState({ loading: true });
       await LobbyService.newUser(nickname);
-      this.setState({ loading: false });
       this.props.dispatch(LobbyService.getSyncUserAction());
     } catch (e) {
       const errorText = e.response?.body?.message || 'Unknown error';
-      this.setState({ errorText, loading: false });
+      this.setState({ errorText });
     }
     if (this.props.onSuccess) this.props.onSuccess();
   };

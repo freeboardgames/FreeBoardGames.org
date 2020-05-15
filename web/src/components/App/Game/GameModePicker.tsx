@@ -76,7 +76,7 @@ class GameModePickerInternal extends React.Component<IGameModePickerProps, IGame
     for (const mode of this.props.gameDef.modes) {
       modes.push(this._getCard(mode));
     }
-    const result = (
+    const modePicker = (
       <div style={{ marginTop: '8px', maxWidth: '500px' }}>
         <Typography variant="h6" component="h2" style={{ marginBottom: '16px' }}>
           Choose game mode
@@ -88,11 +88,11 @@ class GameModePickerInternal extends React.Component<IGameModePickerProps, IGame
       const info = this.props.gameDef.modes.find((info) => info.mode === GameMode.OnlineFriend);
       return (
         <NicknameRequired renderAsPopup onSuccess={this._playOnlineGame(info)}>
-          {result}
+          {modePicker}
         </NicknameRequired>
       );
     } else {
-      return result;
+      return modePicker;
     }
   }
 
@@ -175,21 +175,20 @@ class GameModePickerInternal extends React.Component<IGameModePickerProps, IGame
 
   _playOnlineGame = (info: IGameModeInfo) => () => {
     if (!this.props.user.loggedIn) {
-      this.setState({ ...this.state, onlinePlayRequested: true });
+      this.setState({ onlinePlayRequested: true });
       return;
     }
-    // second param was e: any
-    this.setState({ ...this.state, playButtonDisabled: true });
+    this.setState({ playButtonDisabled: true });
     const gameCode = this.props.gameDef.code;
     const numPlayers = this._getExtraInfoValue(info);
-    LobbyService.newRoom(gameCode, numPlayers).then(
+    LobbyService.newRoom((this.props as any).dispatch, gameCode, numPlayers).then(
       (roomID) => {
         // we use .replace instead of .push so that the browser back button works correctly
         Router.replace(`/room/${roomID}`);
       },
       () => {
         // was _err => { ...
-        this.setState({ ...this.state, playButtonError: true, playButtonDisabled: false });
+        this.setState({ playButtonError: true, playButtonDisabled: false });
       },
     );
   };
