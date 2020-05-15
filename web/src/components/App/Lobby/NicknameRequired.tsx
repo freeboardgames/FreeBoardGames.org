@@ -19,7 +19,7 @@ interface State {
   errorText: string;
 }
 
-class NicknameRequired extends React.Component<Props, State> {
+export class NicknameRequired extends React.Component<Props, State> {
   state = { errorText: undefined };
   constructor(props: Props) {
     super(props);
