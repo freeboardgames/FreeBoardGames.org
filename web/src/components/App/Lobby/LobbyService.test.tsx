@@ -1,4 +1,4 @@
-import { LobbyService, IPlayerInRoom, IStoredCredentials } from './LobbyService';
+import { LobbyService, IPlayerInRoom } from './LobbyService';
 import request from 'superagent';
 
 describe('New Room', () => {
@@ -6,19 +6,20 @@ describe('New Room', () => {
     jest.clearAllMocks();
   });
 
-  it('should create new room', async () => {
-    const response = { body: { gameID: 'fooroom' } };
+  it.only('should create new room', async () => {
+    const response = { body: { roomId: 'fooroom' } };
     request.post = jest.fn().mockReturnValue({
-      send: jest.fn().mockResolvedValue(response),
+      set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue(response) }),
     });
-    const roomID = await LobbyService.newRoom('foogame', 2);
+    const dispatch = jest.fn();
+    const roomID = await LobbyService.newRoom(dispatch, 'foogame', 2);
     expect(roomID).toEqual('fooroom');
   });
 
   it('should join room', async () => {
     const response = { body: { playerCredentials: 'foosecret' } };
     request.post = jest.fn().mockReturnValue({
-      send: jest.fn().mockResolvedValue(response),
+      set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue(response) }),
     });
     const setItemMock = jest.fn();
     Storage.prototype.getItem = () => JSON.stringify({}); // mock no crendetials
