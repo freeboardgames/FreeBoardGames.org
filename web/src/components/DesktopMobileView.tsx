@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import useWindowDimensions from 'hooks/useWindowDimensions';
-import UaContext from 'misc/UaContext';
+import UaContext from 'misc/IsMobileContext';
 
 interface DesktopMobileViewProps {
   children: React.ReactNode;
@@ -15,11 +15,10 @@ function isMobile(props: DesktopMobileViewProps) {
 
   let isMobileResult: boolean;
   const isBrowser = typeof window !== 'undefined';
-  const userAgentDetails = useContext(UaContext);
-  const isMobile = userAgentDetails?.isMobile;
+  const isMobileFromUA = useContext(UaContext);
 
-  if ((!isBrowser || hasJssSSRStyles) && typeof isMobile !== 'undefined') {
-    isMobileResult = userAgentDetails.isMobile;
+  if (!isBrowser || hasJssSSRStyles) {
+    isMobileResult = isMobileFromUA;
   } else {
     const thresholdWidth = props.thresholdWidth || DEFAULT_THRESHOLD_WIDTH;
     isMobileResult = width <= thresholdWidth;

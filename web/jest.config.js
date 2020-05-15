@@ -1,6 +1,6 @@
 module.exports = {
   rootDir: 'src/',
-  roots: ['<rootDir>/../tests', '<rootDir>/components', '<rootDir>/games'],
+  roots: ['<rootDir>/../tests', '<rootDir>/components', '<rootDir>/games', '<rootDir>/misc'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
   setupFilesAfterEnv: ['../jest.setup.ts'],
   transform: {
