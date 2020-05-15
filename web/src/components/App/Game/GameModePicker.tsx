@@ -60,7 +60,7 @@ export enum GameMode {
   LocalFriend = 'local',
 }
 
-class GameModePickerInternal extends React.Component<IGameModePickerProps, IGameModePickerState> {
+export class GameModePickerInternal extends React.Component<IGameModePickerProps, IGameModePickerState> {
   constructor(props: IGameModePickerProps) {
     super(props);
     this.state = {
