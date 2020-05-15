@@ -1,9 +1,9 @@
 import MobileDetect from 'mobile-detect';
 
-export function processUserAgent(userAgent: string) {
+export function uaIsMobile(userAgent: string) {
   const md = new MobileDetect(userAgent);
   const isMobile = !!md.mobile() && !md.tablet();
-  return { userAgent, isMobile };
+  return isMobile;
 }
 
 export function isMobileFromReq(req: any) {
@@ -16,6 +16,6 @@ export function isMobileFromReq(req: any) {
   if (!userAgent) {
     return false;
   }
-  const userAgentDetails = processUserAgent(userAgent);
-  return userAgentDetails.isMobile;
+  const isMobile = uaIsMobile(userAgent);
+  return isMobile;
 }
