@@ -17,11 +17,11 @@ interface IMatchProps {
 
 interface IMatchState {
   loading: boolean;
-  match?: MatchDto;
+  match: MatchDto;
 }
 
 class Match extends React.Component<IMatchProps, IMatchState> {
-  state = { loading: true };
+  state = { loading: true, match: undefined };
 
   componentDidMount() {
     const matchId = this.props.router.query.matchId as string;

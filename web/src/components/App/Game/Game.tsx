@@ -102,8 +102,9 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   render() {
     let aiLevel, matchCode, playerID, credentials;
     if (this.props.match) {
-      playerID = this.props.match.bgioPlayerId;
+      credentials = this.props.match.bgioSecret;
       matchCode = this.props.match.bgioMatchId;
+      playerID = this.props.match.bgioPlayerId;
     } else {
       aiLevel = this.props.aiLevel;
       matchCode = this.props.matchCode;
