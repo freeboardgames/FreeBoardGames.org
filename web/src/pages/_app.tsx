@@ -5,8 +5,8 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from 'theme';
 import { SelfXSSWarning } from 'components/App/SelfXSSWarning';
-import { processUserAgent } from 'misc/UaHelper';
-import UaContext from 'misc/UaContext';
+import { isMobileFromReq } from 'misc/UaHelper';
+import UaContext from 'misc/IsMobileContext';
 import withError from 'next-with-error';
 import ErrorPage from './_error';
 import ReactGA from 'react-ga';
@@ -40,13 +40,12 @@ class defaultApp extends App {
     this.logPageView(window.location.pathname);
   }
   render() {
-    const { Component, pageProps, userAgent } = this.props as any;
-    const userAgentDetails = processUserAgent(userAgent);
+    const { Component, pageProps, isMobile } = this.props as any;
     return (
       <ThemeProvider theme={theme}>
         <SelfXSSWarning />
-        <UaContext.Provider value={userAgentDetails}>
-          <Component {...pageProps} {...{ userAgent }} />
+        <UaContext.Provider value={isMobile}>
+          <Component {...pageProps} />
         </UaContext.Provider>
       </ThemeProvider>
     );
@@ -57,13 +56,9 @@ class defaultApp extends App {
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
-    let userAgent;
-    if (ctx.req) {
-      userAgent = ctx.req.headers['user-agent'];
-    } else if (window) {
-      userAgent = window.navigator.userAgent;
-    }
-    return { pageProps, userAgent };
+
+    const isMobile = isMobileFromReq(ctx.req);
+    return { pageProps, isMobile };
   }
 }
 
