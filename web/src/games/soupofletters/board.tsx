@@ -58,6 +58,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       <Soup 
         boardSize={boardSize} 
         puzzel={this.props.G.puzzel}
+        solution={this.props.G.solution}
       />
     );
   }

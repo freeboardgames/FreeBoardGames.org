@@ -1,16 +1,20 @@
-/*
- * Copyright 2017 The boardgame.io Authors
- *
- * Use of this source code is governed by a MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
 
-import { wordList } from './constants';
-import { newPuzzle } from './puzzel'; 
+import { WORDS_IN_GAME, globalWordList } from './constants';
+import { newPuzzle, solvePuzzel, printPuzzle } from './puzzel'; 
+
+
+export interface ISolvedWord{
+    x:number;
+    y:number;
+    orientation: string;
+    word: string;
+    overlap: number;
+    solvedBy?: string;
+}
 
 export interface IG {
     puzzel: Array<Array<string>>;
+    solution: Array<ISolvedWord>;
 }
 
 export function isVictory() { 
@@ -18,15 +22,24 @@ export function isVictory() {
 }
 
 function initialSetup() {
-    return newPuzzle(wordList, {});
+    // select a fixed amount of random words from the list of words 
+    const randWords = [];
+    for (let i = 0; i < globalWordList.length; i++){
+        const rWord = globalWordList[Math.floor(Math.random()*globalWordList.length)].toUpperCase();
+        if (!randWords.includes(rWord)) { randWords.push(rWord); }
+        if (randWords.length >= WORDS_IN_GAME) { break; }
+    }
+    // create a puzzel and try to solve it
+    const puzzel = newPuzzle(randWords, {});
+    const solution = solvePuzzel(puzzel, randWords).found; 
+
+    return { puzzel, solution };
 }
   
 export const SoupOfLettersGame = {
     name: 'soupofletters',
 
-    setup: () => ({
-        puzzel: initialSetup()
-    }),
+    setup: () => (initialSetup()),
 
     moves: {
         wordFound(G: any, ctx: any, id: number) {

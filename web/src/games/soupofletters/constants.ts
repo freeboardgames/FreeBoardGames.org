@@ -1,6 +1,7 @@
 
+export const WORDS_IN_GAME = 20; 
 
-export const wordList = [
+export const globalWordList = [
     'hollywood', 
     'well',
     'foot',
@@ -15,5 +16,7 @@ export const wordList = [
     'france',
     'australia',
     'limousine',
-    'stream'
+    'stream',
+    'India',
+    'United',
 ];

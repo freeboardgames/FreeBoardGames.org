@@ -1,4 +1,4 @@
-const Thumbnail = require('./media/thumbnail.png?lqip-colors');
+const Thumbnail = require('./media/thumbnail.png');
 import { GameMode } from 'components/App/Game/GameModePicker';
 import { IGameDef } from 'games';
 import instructions from './instructions.md';
@@ -10,7 +10,7 @@ export const soupOfLettersGameDef: IGameDef = {
   modes: [{ mode: GameMode.LocalFriend }], // { mode: GameMode.OnlineFriend }, 
   minPlayers: 1,
   maxPlayers: 4,
-  description: 'A classic game.',
+  description: "Always more fun with friends.",
   descriptionTag: `Soup of letters, Alphabet soup. Find words in puzzel game.`,
   instructions: {
     // videoId: '_XVs7CmSXTw',

@@ -3,7 +3,7 @@
 
 
 // Letters used to fill blank spots in the puzzle
-const letters = 'abcdefghijklmnoprstuvwy';
+const letters = 'abcdefghijklmnoprstuvwy'.toUpperCase();
   
      
   
@@ -388,7 +388,7 @@ export const solvePuzzel= function (puzzle, words) {
 * @param {[[String]]} puzzle: The current state of the puzzle
 * @api public
 */
-const printPuzzle= function (puzzle) {
+export const printPuzzle= function (puzzle) {
     let puzzleString = '';
     for (let i = 0, height = puzzle.length; i < height; i++) {
     let row = puzzle[i];
@@ -397,8 +397,6 @@ const printPuzzle= function (puzzle) {
     }
     puzzleString += '\n';
     }
-
-    console.log(puzzleString);
     return puzzleString;
 }
 
