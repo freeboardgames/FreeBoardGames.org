@@ -145,7 +145,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   };
 
   _setNickname = (nickname: string) => {
-    const room = this.state.roomMetadata;
     LobbyService.renameUser(nickname);
     const payload: ReduxUserState = { ready: true, loggedIn: true, nickname };
     (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
@@ -167,7 +166,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   _getGameSharing = () => {
     const gameCode = this.props.router.query.gameCode as string;
     const roomID = this.props.router.query.roomID as string;
-    return <GameSharing gameCode={gameCode} roomID={roomID} roomMetadata={this.state.roomMetadata} />;
+    return <GameSharing gameCode={gameCode} roomID={roomID} />;
   };
 
   _tryAgain = () => {

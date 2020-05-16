@@ -1,7 +1,6 @@
 import React from 'react';
 import { ListPlayers } from './ListPlayers';
 import { mount } from 'enzyme';
-import { IPlayerInRoom } from './LobbyService';
 import { User } from 'dto/users/User';
 
 const user1: User = { nickname: 'foo' };

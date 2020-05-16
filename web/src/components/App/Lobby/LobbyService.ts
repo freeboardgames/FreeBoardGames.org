@@ -68,7 +68,7 @@ export class LobbyService {
   }
 
   public static async getPlayAgainNextRoom(gameCode: string, roomID: string, numPlayers: number): Promise<void> {
-    alert('under construction');
+    alert(`under construction, ${gameCode}, ${roomID}, ${numPlayers}!`);
     /*
     const playerCredential: IPlayerCredential = this.getCredential(roomID);
     const response = await request
