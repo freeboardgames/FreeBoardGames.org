@@ -25,7 +25,7 @@ class Match extends React.Component<IMatchProps, IMatchState> {
 
   componentDidMount() {
     const matchId = this.props.router.query.matchId as string;
-    LobbyService.getMatch(matchId).then((match) => {
+    LobbyService.getMatch(this.props.dispatch, matchId).then((match) => {
       this.setState({ match, loading: false });
     });
   }

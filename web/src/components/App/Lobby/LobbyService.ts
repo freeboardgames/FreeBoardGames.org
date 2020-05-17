@@ -7,7 +7,6 @@ import { CheckinRoomRequest } from 'dto/rooms/CheckinRoomRequest';
 import { ReduxUserState } from 'redux/definitions';
 import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
 import { Match } from 'dto/match/Match';
-
 import { Dispatch } from 'redux';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
@@ -17,31 +16,44 @@ export interface IPlayerInRoom {
   name: string;
 }
 export class LobbyService {
-  public static async getMatch(matchId: string): Promise<Match> {
+  private static catchUnauthorized = (dispatch: Dispatch<SyncUserAction>) => (e: request.ResponseError) => {
+    if (e.response.unauthorized) {
+      // Bad request.
+      LobbyService.invalidateUserAuth();
+      dispatch(LobbyService.getSyncUserAction());
+    }
+    throw e;
+  };
+
+  /** sends user's nickname to backend.  backend returns the jwt token.  */
+  public static async newUser(nickname: string): Promise<string> {
+    const response = await request.post(`${AddressHelper.getFbgServerAddress()}/users/new`).send({
+      user: { nickname },
+    });
+    const jwtToken = response.body.jwtPayload;
+    localStorage.setItem(FBG_NICKNAME_KEY, nickname);
+    localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
+    return response.body;
+  }
+
+  public static async getMatch(dispatch: Dispatch<SyncUserAction>, matchId: string): Promise<Match> {
     const response = await request
       .get(`${AddressHelper.getFbgServerAddress()}/match/${matchId}`)
-      .set('Authorization', this.getAuthHeader());
+      .set('Authorization', this.getAuthHeader())
+      .catch(this.catchUnauthorized(dispatch));
 
     return response.body;
   }
 
   public static async newRoom(dispatch: Dispatch<SyncUserAction>, gameCode: string, capacity: number): Promise<string> {
     const room: Room = { gameCode, capacity, isPublic: false };
-    let response: request.Response;
-    try {
-      response = await request
-        .post(`${AddressHelper.getFbgServerAddress()}/rooms/new`)
-        .set('Authorization', this.getAuthHeader())
-        .send({
-          room,
-        });
-    } catch (e) {
-      if (e.response.statusCode === 400) {
-        this.invalidateUserAuth();
-        dispatch(this.getSyncUserAction());
-      }
-    }
-
+    const response = await request
+      .post(`${AddressHelper.getFbgServerAddress()}/rooms/new`)
+      .set('Authorization', this.getAuthHeader())
+      .send({
+        room,
+      })
+      .catch(this.catchUnauthorized(dispatch));
     return response.body.roomId;
   }
 
@@ -55,14 +67,15 @@ export class LobbyService {
     });*/
   }
 
-  public static async checkin(roomId: string): Promise<CheckinRoomResponse> {
+  public static async checkin(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<CheckinRoomResponse> {
     const checkinRoomRequest: CheckinRoomRequest = { roomId };
     const response = await request
       .post(`${AddressHelper.getFbgServerAddress()}/rooms/checkin`)
       .set('Authorization', this.getAuthHeader())
       .send({
         ...checkinRoomRequest,
-      });
+      })
+      .catch(this.catchUnauthorized(dispatch));
 
     return response.body;
   }
@@ -87,17 +100,6 @@ export class LobbyService {
     if (!SSRHelper.isSSR()) {
       return localStorage.getItem(FBG_NICKNAME_KEY);
     }
-  }
-
-  /** sends user's nickname to backend.  backend returns the jwt token.  */
-  public static async newUser(nickname: string): Promise<string> {
-    const response = await request.post(`${AddressHelper.getFbgServerAddress()}/users/new`).send({
-      user: { nickname },
-    });
-    const jwtToken = response.body.jwtPayload;
-    localStorage.setItem(FBG_NICKNAME_KEY, nickname);
-    localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
-    return response.body;
   }
 
   public static getSyncUserAction(): SyncUserAction {
