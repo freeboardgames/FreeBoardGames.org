@@ -26,22 +26,6 @@ export class MatchService {
   async getMatchEntity(matchId: string): Promise<MatchEntity> {
     const matchEntity = await this.matchRepository.findOne({
       where: { id: matchId },
-      relations: ['playerMemberships', 'playerMemberships.user'],
-    });
-
-    if (!matchEntity) {
-      throw new HttpException(
-        `Match id "${matchId}" does not exist`,
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    return matchEntity;
-  }
-
-  /** Gets a MatchEntity with players populated. */
-  async getMatchEntityWithRooms(matchId: string): Promise<MatchEntity> {
-    const matchEntity = await this.matchRepository.findOne({
-      where: { id: matchId },
       relations: [
         'playerMemberships',
         'playerMemberships.user',
@@ -65,15 +49,12 @@ export class MatchService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      console.log('A');
-      const entity = await this.getMatchEntityWithRooms(matchId);
+      const entity = await this.getMatchEntity(matchId);
       if (entity.nextRoom) {
-        console.log('B');
         queryRunner.commitTransaction();
         return entity.nextRoom.id;
       }
-      console.log('C');
-      const id = this.roomsService.newRoom(
+      const id = await this.roomsService.newRoom(
         roomEntityToRoom(entity.room),
         queryRunner,
       );

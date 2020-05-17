@@ -89,13 +89,10 @@ describe('MatchService', () => {
     matchEntity.gameCode = gameCode;
     matchEntity.bgioServerUrl = 'fooUrl';
     matchEntity.bgioMatchId = 'fooMatchId';
-    console.log('AA');
     const roomId = await roomsService.newRoom({ capacity, gameCode, isPublic });
-    console.log('BB');
     matchEntity.room = await roomsService.getShallowRoomEntity(roomId);
-    console.log('CC');
-    await matchRepository.insert(matchEntity);
-    console.log('DD');
+    await matchRepository.save(matchEntity);
+
     const newRoomId = await service.getNextRoom('fooMock2');
 
     const newRoom = await roomsService.getRoom(newRoomId);

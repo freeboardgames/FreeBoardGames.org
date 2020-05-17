@@ -27,10 +27,10 @@ export class MatchEntity extends BaseEntity {
   @OneToMany((type) => MatchMembershipEntity, (membership) => membership.match)
   public playerMemberships!: MatchMembershipEntity[];
 
-  @OneToOne((type) => RoomEntity)
+  @OneToOne((type) => RoomEntity, (room) => room.match)
   public room?: RoomEntity;
 
-  @OneToOne((type) => RoomEntity, (room) => room.match)
+  @OneToOne((type) => RoomEntity)
   @JoinColumn()
   public nextRoom?: RoomEntity;
 }

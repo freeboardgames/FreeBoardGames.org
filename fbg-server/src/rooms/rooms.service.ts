@@ -38,7 +38,7 @@ export class RoomsService {
     if (!queryRunner) {
       await this.roomRepository.save(roomEntity);
     } else {
-      await queryRunner.manager.save(roomEntity.id, roomEntity);
+      await queryRunner.manager.save(RoomEntity, roomEntity);
     }
     return roomEntity.id;
   }
