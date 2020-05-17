@@ -3,7 +3,7 @@ import { MatchEntity } from '../match/db/Match.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Match } from '../dto/match/Match';
-import { userEntityToUser } from '../users/UserUtil';
+import { matchEntityToMatch } from './MatchUtil';
 
 @Injectable()
 export class MatchService {
@@ -12,26 +12,10 @@ export class MatchService {
     private matchRepository: Repository<MatchEntity>,
   ) {}
 
+  /** Gets match match information for a given user. */
   async getMatch(matchId: string, userId: number): Promise<Match> {
     const entity = await this.getMatchEntity(matchId);
-    const memberships = [...entity.playerMemberships];
-    memberships.sort((a, b) => a.bgioPlayerId - b.bgioPlayerId);
-    const match: Match = {
-      gameCode: entity.gameCode,
-      bgioServerUrl: entity.bgioServerUrl,
-      bgioMatchId: entity.bgioMatchId,
-      players: memberships.map((membership) =>
-        userEntityToUser(membership.user),
-      ),
-    };
-    const userMembership = entity.playerMemberships.find(
-      (membership) => membership.user.id === userId,
-    );
-    if (userMembership) {
-      match.bgioSecret = userMembership.bgioSecret;
-      match.bgioPlayerId = `${userMembership.bgioPlayerId}`;
-    }
-    return match;
+    return matchEntityToMatch(entity, userId);
   }
 
   /** Gets a MatchEntity with players populated. */

@@ -3,20 +3,77 @@ import { MatchService } from './match.service';
 import { MatchModule } from './match.module';
 import { RoomsModule } from '../rooms/rooms.module';
 import { UsersModule } from '../users/users.module';
-import { FakeDbModule } from '../testing/dbUtil';
+import { FakeDbModule, closeDbConnection } from '../testing/dbUtil';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { MatchEntity } from './db/Match.entity';
+import { Repository } from 'typeorm';
+import { MatchMembershipEntity } from './db/MatchMembership.entity';
+import { UsersService } from '../users/users.service';
 
 describe('MatchService', () => {
+  let module: TestingModule;
   let service: MatchService;
+  let usersService: UsersService;
+  let matchRepository: Repository<MatchEntity>;
+  let matchMembershipRepository: Repository<MatchMembershipEntity>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
       imports: [FakeDbModule, UsersModule, RoomsModule, MatchModule],
     }).compile();
 
     service = module.get<MatchService>(MatchService);
+    usersService = module.get<UsersService>(UsersService);
+    matchRepository = module.get(getRepositoryToken(MatchEntity));
+    matchMembershipRepository = module.get(
+      getRepositoryToken(MatchMembershipEntity),
+    );
+  });
+
+  afterAll(async () => {
+    closeDbConnection(module);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should get match succesfully', async () => {
+    const matchEntity = new MatchEntity();
+    matchEntity.id = 'fooMock';
+    matchEntity.gameCode = 'chess';
+    matchEntity.bgioServerUrl = 'fooUrl';
+    matchEntity.bgioMatchId = 'fooMatchId';
+    await matchRepository.save(matchEntity);
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    const alice = await usersService.getUserEntity(aliceId);
+    const aliceMatchMembership = new MatchMembershipEntity();
+    aliceMatchMembership.user = alice;
+    aliceMatchMembership.match = matchEntity;
+    aliceMatchMembership.bgioSecret = 'aliceSecret';
+    aliceMatchMembership.bgioPlayerId = 1;
+    await matchMembershipRepository.save(aliceMatchMembership);
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const bob = await usersService.getUserEntity(bobId);
+    const bobMatchMembership = new MatchMembershipEntity();
+    bobMatchMembership.user = bob;
+    bobMatchMembership.match = matchEntity;
+    bobMatchMembership.bgioSecret = 'bobSecret';
+    bobMatchMembership.bgioPlayerId = 0;
+    await matchMembershipRepository.save(bobMatchMembership);
+
+    const match = await service.getMatch('fooMock', aliceId);
+
+    expect(match).toEqual({
+      gameCode: 'chess',
+      bgioServerUrl: 'fooUrl',
+      bgioMatchId: 'fooMatchId',
+      bgioSecret: 'aliceSecret',
+      bgioPlayerId: '1',
+      players: [
+        { id: bobId, nickname: 'bob' },
+        { id: aliceId, nickname: 'alice' },
+      ],
+    });
   });
 });

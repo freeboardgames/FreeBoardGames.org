@@ -137,6 +137,7 @@ export class RoomsService {
     await queryRunner.manager.save(membership);
   }
 
+  /** Starts a new match given a room. */
   private async startMatch(
     queryRunner: QueryRunner,
     room: RoomEntity,

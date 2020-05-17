@@ -12,8 +12,8 @@ import { UsersService } from './users.service';
 import { JwtAuthGuard } from './jwt-auth-guard';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './definitions';
-import { User } from '../dto/users/User';
 import { NewUserRequest } from '../dto/users/NewUserRequest';
+import { NewUserResponse } from '../dto/users/NewUserResponse';
 
 @Controller('users')
 export class UsersController {
@@ -23,7 +23,7 @@ export class UsersController {
   ) {}
 
   @Post('new')
-  async newUser(@Body() req: NewUserRequest) {
+  async newUser(@Body() req: NewUserRequest): Promise<NewUserResponse> {
     // curl -X POST http://localhost:3001/users/new -d '{"user": { "nickname": "foo"}}' -H "Content-Type: application/json"
     if (!req.user || !req.user.nickname || req.user.nickname.length < 1) {
       throw new HttpException('Invalid nickname', HttpStatus.BAD_REQUEST);
