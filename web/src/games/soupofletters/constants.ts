@@ -4,7 +4,7 @@ export const WORDS_IN_GAME = 20;
 export const globalWordList = [
     'hollywood', 
     'well',
-    'foot',
+    'foooooooooot',
     'newyork',
     'spring',
     'court',

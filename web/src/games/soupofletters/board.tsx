@@ -4,7 +4,7 @@ import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { isOnlineGame, isAIGame, isLocalGame } from '../common/gameMode';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 import Typography from '@material-ui/core/Typography';
-import { IG } from './game';
+import { IG, ISolvedWord } from './game';
 import { Soup } from './soup'
 import { Ctx } from 'boardgame.io';
 
@@ -23,6 +23,10 @@ interface IBoardState {
 export const localPlayerNames = { '0': 'red', '1': 'blue' };
 
 export class Board extends React.Component<IBoardProps, {}> {
+
+  _wordFound = (solvedWord: ISolvedWord) => {
+    this.props.moves.wordFound(solvedWord);
+  }
   
   _playerInRoom(): IPlayerInRoom {
     return this.props.gameArgs.players[this.props.ctx.currentPlayer];
@@ -36,7 +40,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (!isLocalGame(this.props.gameArgs)) {
       return `Online Game`;
     }
-    return `Normal Game`;
+    return `Turn Player ${this.props.ctx.currentPlayer}`;
   }
 
   _getGameOver() {
@@ -62,6 +66,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         boardSize={boardSize} 
         puzzel={this.props.G.puzzel}
         solution={this.props.G.solution}
+        wordFound={this._wordFound}
       />
     );
   }

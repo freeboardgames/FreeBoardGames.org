@@ -42,8 +42,14 @@ export const SoupOfLettersGame = {
     setup: () => (initialSetup()),
 
     moves: {
-        wordFound(G: any, ctx: any, id: number) {
-            return { ...G };
+        wordFound(G: any, ctx: any, solvedWord: ISolvedWord) {
+            const solution = G.solution.map(s => {
+                if(s.x===solvedWord.x && s.y === solvedWord.y){
+                    return {...solvedWord, solvedBy:ctx.currentPlayer};
+                } 
+                return {...s};
+            });
+            return { ...G, solution };
         },
     },
 

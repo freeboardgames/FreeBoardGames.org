@@ -10,7 +10,7 @@ interface ISoupProps {
   boardSize: number;
   puzzel: Array<Array<string>>;
   solution: Array<ISolvedWord>;
-  clickPoint?: (pointID: number) => void;
+  wordFound?: (solvedWord: ISolvedWord) => void;
 };
 
 interface ISelectedLetter {
@@ -25,8 +25,8 @@ interface ISoupState {
 }
 
 const playerColors = {
-  '0': red[400],
-  '1': blue[400],
+  '0': red[500],
+  '1': blue[500],
 };
 
 export class Soup extends React.Component<ISoupProps, ISoupState> {
@@ -91,10 +91,13 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     if (nextSl.x != xId || nextSl.y != yId) { 
       // undo current selection
       this.setState({selectedLetters:[], probableWord:undefined})
+      return;
     }
 
     // if the complete word has been selected, then dont go further 
     if (selectedLetters.length >= probableWord.word.length){
+      // update game state 
+      this.props.wordFound(this.state.probableWord);
       return;
     }
 
@@ -118,6 +121,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
 
     if (selectedWord === this.state.probableWord.word){
       // update game state 
+      this.props.wordFound(this.state.probableWord);
     }
 
     // remove selections 
@@ -127,6 +131,11 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
 
   _getHighlightColor(x, y) {
     // if belongs to a user, give user specific color back 
+    for (const sl of this.props.solution){
+      if (sl.solvedBy){
+        return playerColors[sl.solvedBy];
+      }
+    }
 
     // if selected in state, give grey color 
     for (const sl of this.state.selectedLetters){
