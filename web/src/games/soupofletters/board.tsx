@@ -54,6 +54,9 @@ export class Board extends React.Component<IBoardProps, {}> {
   }  
 
   _getBoard(boardSize = 100) {
+
+    console.log(this.props.G.puzzel);
+    console.log(this.props.G.solution);
     return (
       <Soup 
         boardSize={boardSize} 

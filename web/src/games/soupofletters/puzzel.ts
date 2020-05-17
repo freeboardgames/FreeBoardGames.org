@@ -13,7 +13,7 @@ const letters = 'abcdefghijklmnoprstuvwy'.toUpperCase();
 
 const validOrientations = ['horizontal','diagonal','diagonalUp','vertical', 'verticalUp', 'diagonalBack', 'horizontalBack', 'diagonalUpBack'];
 
-const orientations = {
+export const orientations = {
 horizontal:     function(x,y,i) { return {x: x+i, y: y  }; },
 horizontalBack: function(x,y,i) { return {x: x-i, y: y  }; },
 vertical:       function(x,y,i) { return {x: x,   y: y+i}; },

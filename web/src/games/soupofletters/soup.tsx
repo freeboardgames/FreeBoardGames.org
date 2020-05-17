@@ -1,5 +1,7 @@
 import React from 'react';
-import { red, blue, grey } from '@material-ui/core/colors';
+import { red, blue, green, grey } from '@material-ui/core/colors';
+import soupCSS from './soup.css'
+import { orientations } from './puzzel';
 import { ISolvedWord } from './game'; 
 
 const BOARD_SIZE = 500;
@@ -9,6 +11,17 @@ interface ISoupProps {
   puzzel: Array<Array<string>>;
   solution: Array<ISolvedWord>;
   clickPoint?: (pointID: number) => void;
+};
+
+interface ISelectedLetter {
+  x: number;
+  y: number;
+  letter: string;
+}
+
+interface ISoupState {
+  selectedLetters: Array<ISelectedLetter>;
+  probableWord?: ISolvedWord; 
 }
 
 const playerColors = {
@@ -16,7 +29,15 @@ const playerColors = {
   '1': blue[400],
 };
 
-export class Soup extends React.Component<ISoupProps, {}> {
+export class Soup extends React.Component<ISoupProps, ISoupState> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedLetters: [], 
+    };
+  }
+
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
@@ -25,6 +46,7 @@ export class Soup extends React.Component<ISoupProps, {}> {
           height={`${this.props.boardSize}%`}
           viewBox={`0 0 ${BOARD_SIZE} ${BOARD_SIZE}`}
           pointerEvents="visible"
+          style={{marginTop:'10px', padding:'0 5px'}}
         >
           <g>{this._placeLetters()}</g>
         </svg>
@@ -32,10 +54,91 @@ export class Soup extends React.Component<ISoupProps, {}> {
     );
   }
 
-  _placeLetters() {
+  _selectWordStart = (xId:number, yId:number, letter:string ) => {
+    
+    let probableWord = this.state.probableWord;
+    // if a probable word already selected, then return
+    if (probableWord) {return;}
 
-    console.log(this.props.puzzel);
-    console.log(this.props.solution);
+    for (const s of this.props.solution){
+      if (s.x === xId && s.y === yId) {
+        probableWord = s;
+        break;
+      }
+    }
+    // is no probable word found, return 
+    if (!probableWord) { return; }
+
+    // create a new list of selectedLetters 
+    const selectedLetters = [];
+    if (selectedLetters.length === 0){
+      selectedLetters.push({x:xId, y:yId, letter})
+      this.setState({selectedLetters, probableWord})
+    }
+
+  }
+
+  _selectWordContent = (xId:number, yId:number, letter:string ) => {
+
+    // if first letter is not properly selected, return
+    const probableWord = this.state.probableWord
+    if(!probableWord) { return; }
+
+    // check if the letter selected currently is properly oriented or not
+    const selectedLetters = this.state.selectedLetters.slice();
+    const lastSl = selectedLetters[selectedLetters.length - 1]; 
+    const nextSl = orientations[probableWord.orientation](lastSl.x, lastSl.y, 1)
+    if (nextSl.x != xId || nextSl.y != yId) { 
+      // undo current selection
+      this.setState({selectedLetters:[], probableWord:undefined})
+    }
+
+    // if the complete word has been selected, then dont go further 
+    if (selectedLetters.length >= probableWord.word.length){
+      return;
+    }
+
+    // if orientation is proper, append letter to the list of selected words     
+    selectedLetters.push({x:xId, y:yId, letter})
+    this.setState({selectedLetters})
+
+  }
+
+  _endWordSelections = () => {
+
+    // if first letter is not properly selected, return
+    const probableWord = this.state.probableWord;
+    if(!probableWord) { return; }
+
+    // recreate selected word, 
+    let selectedWord = ''; 
+    for (const sl of this.state.selectedLetters){
+      selectedWord = selectedWord + sl.letter;
+    }
+
+    if (selectedWord === this.state.probableWord.word){
+      // update game state 
+    }
+
+    // remove selections 
+    this.setState({selectedLetters:[], probableWord:undefined});
+
+  }  
+
+  _getHighlightColor(x, y) {
+    // if belongs to a user, give user specific color back 
+
+    // if selected in state, give grey color 
+    for (const sl of this.state.selectedLetters){
+      if (sl.x === x && sl.y === y){
+        return green[500];
+      }
+    }
+
+    return 'black';
+  }
+
+  _placeLetters() {
 
     // calculate hight and width of each letter 
     const lHeight = Math.floor(BOARD_SIZE / this.props.puzzel.length); 
@@ -49,24 +152,37 @@ export class Soup extends React.Component<ISoupProps, {}> {
           // square around the letter 
           cells.push(
             <rect
-              key={'square'+xId+yId}
+              key={'color-square-'+xId+yId}
               x={(xId)*lWidth} y={(yId)*lHeight} 
               width={lWidth} height={lWidth}
-              fill='black'
+              fill={this._getHighlightColor(xId, yId)}
               stroke={grey[500]} strokeWidth={0.05*fontSize}
             />
           );
           // letter inside the square 
           cells.push(
             <text 
-              key={'letter'+xId+yId} 
+              key={'soup-letter-'+xId+yId} 
+              className={soupCSS.noselect}
               x={(xId+0.5)*lWidth} y={(yId+0.80)*lHeight} 
               fontSize={fontSize} fontFamily="sans-serif"
-              fill={grey[100]} 
+              fill={grey[200]} 
               textAnchor="middle"
             > 
-                {l} 
+              {l} 
             </text>
+          );
+          // square around the letter 
+          cells.push(
+            <rect
+              key={'callback-square-'+xId+yId}
+              x={(xId)*lWidth} y={(yId)*lHeight} 
+              width={lWidth} height={lWidth}
+              style={{opacity:0}}
+              onMouseDown={() => this._selectWordStart(xId, yId, l)}
+              onMouseEnter={() => this._selectWordContent(xId, yId, l)}
+              onMouseUp={()=>this._endWordSelections()}
+            />
           );
         }); 
     });
