@@ -27,7 +27,7 @@ export class RoomEntity extends BaseEntity {
   @OneToMany((type) => RoomMembershipEntity, (membership) => membership.room)
   public userMemberships!: RoomMembershipEntity[];
 
-  @OneToOne((type) => MatchEntity)
+  @OneToOne((type) => MatchEntity, (match) => match.room)
   @JoinColumn()
   public match?: MatchEntity;
 }

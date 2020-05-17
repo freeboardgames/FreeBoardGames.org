@@ -5,6 +5,7 @@ import {
   Column,
   OneToMany,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { MatchMembershipEntity } from './MatchMembership.entity';
 import { RoomEntity } from '../../rooms/db/Room.entity';
@@ -27,5 +28,9 @@ export class MatchEntity extends BaseEntity {
   public playerMemberships!: MatchMembershipEntity[];
 
   @OneToOne((type) => RoomEntity)
-  public room!: RoomEntity;
+  public room?: RoomEntity;
+
+  @OneToOne((type) => RoomEntity, (room) => room.match)
+  @JoinColumn()
+  public nextRoom?: RoomEntity;
 }

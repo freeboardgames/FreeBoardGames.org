@@ -29,13 +29,17 @@ export class RoomsService {
   ) {}
 
   /** Creates a new room. */
-  async newRoom(room: Room): Promise<string> {
+  async newRoom(room: Room, queryRunner?: QueryRunner): Promise<string> {
     const roomEntity = new RoomEntity();
     roomEntity.id = shortid.generate();
     roomEntity.capacity = room.capacity;
     roomEntity.gameCode = room.gameCode;
     roomEntity.isPublic = room.isPublic;
-    await this.roomRepository.save(roomEntity);
+    if (!queryRunner) {
+      await this.roomRepository.save(roomEntity);
+    } else {
+      await queryRunner.manager.save(roomEntity.id, roomEntity);
+    }
     return roomEntity.id;
   }
 

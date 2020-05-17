@@ -9,11 +9,13 @@ import { MatchEntity } from './db/Match.entity';
 import { Repository } from 'typeorm';
 import { MatchMembershipEntity } from './db/MatchMembership.entity';
 import { UsersService } from '../users/users.service';
+import { RoomsService } from '../rooms/rooms.service';
 
 describe('MatchService', () => {
   let module: TestingModule;
   let service: MatchService;
   let usersService: UsersService;
+  let roomsService: RoomsService;
   let matchRepository: Repository<MatchEntity>;
   let matchMembershipRepository: Repository<MatchMembershipEntity>;
 
@@ -24,6 +26,7 @@ describe('MatchService', () => {
 
     service = module.get<MatchService>(MatchService);
     usersService = module.get<UsersService>(UsersService);
+    roomsService = module.get<RoomsService>(RoomsService);
     matchRepository = module.get(getRepositoryToken(MatchEntity));
     matchMembershipRepository = module.get(
       getRepositoryToken(MatchMembershipEntity),
@@ -75,5 +78,27 @@ describe('MatchService', () => {
         { id: aliceId, nickname: 'alice' },
       ],
     });
+  });
+
+  it('should get next room succesfully', async () => {
+    const capacity = 2;
+    const gameCode = 'chess';
+    const isPublic = false;
+    let matchEntity = new MatchEntity();
+    matchEntity.id = 'fooMock2';
+    matchEntity.gameCode = gameCode;
+    matchEntity.bgioServerUrl = 'fooUrl';
+    matchEntity.bgioMatchId = 'fooMatchId';
+    console.log('AA');
+    const roomId = await roomsService.newRoom({ capacity, gameCode, isPublic });
+    console.log('BB');
+    matchEntity.room = await roomsService.getShallowRoomEntity(roomId);
+    console.log('CC');
+    await matchRepository.insert(matchEntity);
+    console.log('DD');
+    const newRoomId = await service.getNextRoom('fooMock2');
+
+    const newRoom = await roomsService.getRoom(newRoomId);
+    expect(newRoom).toMatchObject({ capacity, gameCode, isPublic });
   });
 });
