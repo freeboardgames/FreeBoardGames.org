@@ -51,21 +51,23 @@ export class MatchService {
     try {
       const entity = await this.getMatchEntity(matchId);
       if (entity.nextRoom) {
-        queryRunner.commitTransaction();
+        await queryRunner.commitTransaction();
         return entity.nextRoom.id;
       }
       const id = await this.roomsService.newRoom(
         roomEntityToRoom(entity.room),
         queryRunner,
       );
-      queryRunner.commitTransaction();
+      entity.nextRoom = await this.roomsService.getShallowRoomEntity(id);
+      await queryRunner.manager.save(MatchEntity, entity);
+      await queryRunner.commitTransaction();
       return id;
     } catch (err) {
       console.error(err);
       await queryRunner.rollbackTransaction();
       throw err;
     } finally {
-      queryRunner.release();
+      await queryRunner.release();
     }
   }
 }

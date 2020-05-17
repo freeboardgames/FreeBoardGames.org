@@ -94,8 +94,10 @@ describe('MatchService', () => {
     await matchRepository.save(matchEntity);
 
     const newRoomId = await service.getNextRoom('fooMock2');
+    const sameRoomId = await service.getNextRoom('fooMock2');
 
     const newRoom = await roomsService.getRoom(newRoomId);
     expect(newRoom).toMatchObject({ capacity, gameCode, isPublic });
+    expect(sameRoomId).toEqual(newRoomId);
   });
 });
