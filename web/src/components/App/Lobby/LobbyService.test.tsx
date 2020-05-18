@@ -13,7 +13,9 @@ describe('New Room', () => {
   it('should dispatch redux event when unauthenticated', async () => {
     const response: Partial<request.Response> = { unauthorized: true };
     request.post = jest.fn().mockReturnValue({
-      set: jest.fn().mockReturnValue({ send: jest.fn().mockRejectedValue({ response }) }),
+      set: jest
+        .fn()
+        .mockReturnValue({ set: jest.fn().mockReturnValue({ send: jest.fn().mockRejectedValue({ response }) }) }),
     });
     const dispatch = jest.fn();
     const roomID = LobbyService.newRoom(dispatch, 'foogame', 2);
@@ -24,7 +26,9 @@ describe('New Room', () => {
   it('should create new room', async () => {
     const response: NewRoomResponse = { roomId: 'fooroom' };
     request.post = jest.fn().mockReturnValue({
-      set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }),
+      set: jest
+        .fn()
+        .mockReturnValue({ set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }) }),
     });
     const dispatch = jest.fn();
     const roomID = await LobbyService.newRoom(dispatch, 'foogame', 2);
@@ -34,7 +38,9 @@ describe('New Room', () => {
   it('should check-in on room', async () => {
     const response: CheckinRoomResponse = { room: { capacity: 2, isPublic: false, gameCode: 'chess' } };
     request.post = jest.fn().mockReturnValue({
-      set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }),
+      set: jest
+        .fn()
+        .mockReturnValue({ set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }) }),
     });
     const dispatch = jest.fn();
     const actualResponse = await LobbyService.checkin(dispatch, 'foogame');
@@ -56,7 +62,7 @@ describe('New Room', () => {
     Storage.prototype.setItem = setItemMock;
     const response: NewUserResponse = { jwtPayload: 'fooJwt' };
     request.post = jest.fn().mockReturnValue({
-      send: jest.fn().mockResolvedValue({ body: response }),
+      set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }),
     });
     await LobbyService.newUser('fooname');
     expect(setItemMock.mock.calls[0][1]).toEqual('fooname');
