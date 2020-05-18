@@ -5,6 +5,6 @@ export default class AddressHelper {
   }
 
   public static getFbgServerAddress() {
-    return process.env.FBG_SERVER_URL || `http://${window.location.hostname}:3001`;
+    return process.env.FBG_SERVER_URL || `/api`;
   }
 }

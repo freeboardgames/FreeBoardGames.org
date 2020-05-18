@@ -8,6 +8,7 @@ import { ReduxUserState } from 'redux/definitions';
 import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
 import { Match } from 'dto/match/Match';
 import { Dispatch } from 'redux';
+import Cookies from 'js-cookie';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
@@ -27,9 +28,12 @@ export class LobbyService {
 
   /** sends user's nickname to backend.  backend returns the jwt token.  */
   public static async newUser(nickname: string): Promise<string> {
-    const response = await request.post(`${AddressHelper.getFbgServerAddress()}/users/new`).send({
-      user: { nickname },
-    });
+    const response = await request
+      .post(`${AddressHelper.getFbgServerAddress()}/users/new`)
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
+      .send({
+        user: { nickname },
+      });
     const jwtToken = response.body.jwtPayload;
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
     localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
@@ -50,6 +54,7 @@ export class LobbyService {
     const response = await request
       .post(`${AddressHelper.getFbgServerAddress()}/rooms/new`)
       .set('Authorization', this.getAuthHeader())
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
       .send({
         room,
       })
@@ -72,6 +77,7 @@ export class LobbyService {
     const response = await request
       .post(`${AddressHelper.getFbgServerAddress()}/rooms/checkin`)
       .set('Authorization', this.getAuthHeader())
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
       .send({
         ...checkinRoomRequest,
       })

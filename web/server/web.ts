@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
 import next from 'next';
 import express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import fs from 'fs';
+import csurf from 'csurf';
+import cookieParser from 'cookie-parser';
 import { GAMES_LIST } from 'games';
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -13,6 +16,8 @@ const PORT = process.env.SERVER_PORT || 3000;
 const isProdChannel = process.env.CHANNEL === 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+
+const csrfProtection = csurf({ cookie: true });
 
 const excludedPaths = ['/_error', '/_document', '/_app', '/play'];
 
@@ -68,6 +73,7 @@ app
   .then(() => {
     const server = express();
     server.disable('x-powered-by');
+    server.use(cookieParser());
 
     server.get('/.well-known/assetlinks.json', (req, res) => {
       if (isProdChannel && isOfficialSite(req.hostname)) {
@@ -123,7 +129,13 @@ app
       }
     });
 
-    server.get('*', (req, res) => {
+    server.use(
+      '/api',
+      createProxyMiddleware({ target: 'http://localhost:3001', changeOrigin: true, pathRewrite: { '^/api': '' } }),
+    );
+
+    server.get('*', csrfProtection, (req, res) => {
+      res.cookie('XSRF-TOKEN', req.csrfToken());
       return handle(req, res);
     });
 
