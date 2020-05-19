@@ -10,6 +10,7 @@ import { Match } from 'dto/match/Match';
 import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
 import { UpdateUserRequest } from 'dto/users/UpdateUserRequest';
+import { NextRoomRequest } from 'dto/match/NextRoomRequest';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
@@ -97,14 +98,16 @@ export class LobbyService {
     return response.body;
   }
 
-  public static async getPlayAgainNextRoom(gameCode: string, roomID: string, numPlayers: number): Promise<void> {
-    alert(`under construction, ${gameCode}, ${roomID}, ${numPlayers}!`);
-    /*
-    const playerCredential: IPlayerCredential = this.getCredential(roomID);
+  // TODO dispatch/catchUnauthorized
+  public static async getPlayAgainNextRoom(matchId: string): Promise<string> {
+    const playAgainRequest: NextRoomRequest = { matchId };
     const response = await request
-      .post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${roomID}/playAgain`)
-      .send({ playerID: playerCredential.playerID, credentials: playerCredential.credential, numPlayers });
-    return response.body.nextRoomID;*/
+      .post(`${AddressHelper.getFbgServerAddress()}/match`)
+      .set('Authorization', this.getAuthHeader())
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
+      .send(playAgainRequest);
+
+    return response.text;
   }
 
   public static getUserToken() {

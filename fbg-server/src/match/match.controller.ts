@@ -41,6 +41,6 @@ export class MatchController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.matchService.getNextRoom(matchId);
+    return await this.matchService.getNextRoom(matchId);
   }
 }
