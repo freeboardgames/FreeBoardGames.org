@@ -21,7 +21,7 @@ export interface IPlayerInRoom {
 export class LobbyService {
   private static catchUnauthorized = (dispatch: Dispatch<SyncUserAction>) => (e: request.ResponseError) => {
     if (e.response.unauthorized) {
-      // Bad request.
+      // invalidate the user's auth and adjust our store accordingly:
       LobbyService.invalidateUserAuth();
       dispatch(LobbyService.getSyncUserAction());
     }
