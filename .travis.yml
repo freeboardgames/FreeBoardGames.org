@@ -13,8 +13,6 @@ cache:
 
 install:
   - yarn install
-  - cd fbg-server/ && yarn install && cd ../
-  - cd web/ && yarn install && cd ../
 
 script:
   - yarn run ci

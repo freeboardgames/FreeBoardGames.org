@@ -15,6 +15,9 @@
     "ci:backend": "cd fbg-server/ && yarn run test",
     "format:backend": "cd fbg-server/ && yarn run format",
     "format:web": "cd web/ && yarn run format",
+    "install:backend": "cd fbg-server/ && yarn install",
+    "install:web": "cd web/ && yarn install",
+    "postinstall": "run-p install:*",
     "test:backend": "cd fbg-server/ && yarn run test",
     "test:web": "cd web/ && yarn run test",
     "web:dev": "cd web/ && yarn run dev"
