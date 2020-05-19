@@ -9,6 +9,7 @@ import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
 import { Match } from 'dto/match/Match';
 import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
+import { UpdateUserRequest } from 'dto/users/UpdateUserRequest';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
@@ -62,8 +63,18 @@ export class LobbyService {
     return response.body.roomId;
   }
 
-  public static async renameUser(newName: string): Promise<void> {
-    alert(`under construction, ${newName}!`);
+  // TODO test
+  // TODO are we checking auth?
+  public static async renameUser(dispatch: Dispatch<SyncUserAction>, newName: string): Promise<void> {
+    const updateUserRequest: UpdateUserRequest = { user: { nickname: newName } };
+    const response = await request
+      .post(`${AddressHelper.getFbgServerAddress()}/users/update`)
+      .set('Authorization', this.getAuthHeader())
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
+      .send(updateUserRequest)
+      .catch(this.catchUnauthorized(dispatch));
+
+    return response.body;
     /*const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
     await request.post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
       playerID: player.playerID,

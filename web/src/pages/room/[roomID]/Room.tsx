@@ -145,9 +145,10 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   };
 
   _setNickname = (nickname: string) => {
-    LobbyService.renameUser(nickname);
+    const dispatch = (this.props as any).dispatch;
+    LobbyService.renameUser(dispatch, nickname);
     const payload: ReduxUserState = { ready: true, loggedIn: true, nickname };
-    (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
+    dispatch({ type: ActionNames.SyncUser, payload });
     this._toggleEditingName();
   };
 
