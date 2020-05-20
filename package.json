@@ -10,7 +10,7 @@
     "ci": "run-s ci:*",
     "dev": "run-p web:dev backend:dev",
     "format": "run-p format:*",
-    "backend:dev": "cd fbg-server/ && yarn run start:dev",
+    "backend:dev": "cd fbg-server/ && yarn run start",
     "ci:web": "cd web/ && yarn run ci",
     "ci:backend": "cd fbg-server/ && yarn run test",
     "format:backend": "cd fbg-server/ && yarn run format",

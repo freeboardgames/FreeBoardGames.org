@@ -11,7 +11,7 @@ import { MatchModule } from './match/match.module';
       database: 'dev.db',
       autoLoadEntities: true,
       synchronize: true,
-      logging: true,
+      logging: false,
     }),
     UsersModule,
     RoomsModule,
