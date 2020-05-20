@@ -7,6 +7,7 @@ import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import { GAMES_LIST } from 'games';
 
+const INTERNAL_BACKEND_TARGET = process.env.FBG_BACKEND_TARGET || 'http://localhost:3001';
 const dev = process.env.NODE_ENV !== 'production';
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
 const APP_DIR = './';
@@ -131,11 +132,11 @@ app
 
     server.use(
       '/api',
-      createProxyMiddleware({ target: 'http://localhost:3001', changeOrigin: true, pathRewrite: { '^/api': '' } }),
+      createProxyMiddleware({ target: INTERNAL_BACKEND_TARGET, changeOrigin: true, pathRewrite: { '^/api': '' } }),
     );
 
     server.get('*', csrfProtection, (req, res) => {
-      res.cookie('XSRF-TOKEN', req.csrfToken());
+      res.cookie('XSRF-TOKEN', (req as any).csrfToken());
       return handle(req, res);
     });
 
