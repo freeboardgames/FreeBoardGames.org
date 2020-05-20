@@ -35,6 +35,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   mode: GameMode;
   loadAI: boolean;
   gameCode: string;
+  serverUrl: string;
   gameDef: IGameDef;
   promise: any; // for testing
 
@@ -46,6 +47,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     if (this.props.match) {
       this.mode = GameMode.OnlineFriend;
       this.gameCode = this.props.match.gameCode;
+      this.serverUrl = this.props.match.bgioServerUrl;
     } else {
       this.mode = this.props.mode as GameMode;
       this.loadAI = this.mode === GameMode.AI && typeof window !== 'undefined';
@@ -154,7 +156,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         clientConfig.game.ai = gameAI;
       }
       if (this.mode === GameMode.OnlineFriend) {
-        clientConfig.multiplayer = SocketIO({ server: AddressHelper.getBgioServerAddress() });
+        clientConfig.multiplayer = SocketIO({ server: this.serverUrl });
       }
       const App = Client(clientConfig) as any;
       ReactGA.event({
