@@ -22,7 +22,7 @@
     "cyp:run:tablet": "cypress run --config video=false --env userAgent=tablet",
     "cyp:open:mobile": "cypress open --env userAgent=mobile",
     "cyp:open:tablet": "cypress open --env userAgent=tablet",
-    "cyp:run": "run-s cyp:run:*",
+    "cyp:run": "run-s --silent cyp:run:*",
     "format": "prettier --write \"./**/*.*(js|jsx|ts|tsx)\"",
     "format:staged": "pretty-quick --staged",
     "format:check": "prettier --check \"./**/*.ts\" \"./**/*.tsx\" \"./**/*.js\"",
