@@ -42,7 +42,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
           ]}
         />
         <DesktopView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
-          <div style={{ padding: '18px 8px', display: 'flex' }}>
+          <div style={{ padding: '18px 8px', display: 'flex' }} data-testid={'TabletViewDiv'}>
             <div style={{ flex: '60%', paddingRight: '32px' }}>
               <Typography variant="h4" component="h1">
                 Play {gameDef.name}
@@ -64,7 +64,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
         </DesktopView>
         <MobileView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
           <GameCard game={gameDef} />
-          <div style={{ padding: '8px' }}>
+          <div style={{ padding: '8px' }} data-testid={'MobileViewDiv'}>
             <GameModePicker gameDef={gameDef} />
             <GameInstructionsVideo gameDef={gameDef} />
             <GameInstructionsText gameDef={gameDef} />
