@@ -10,7 +10,7 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
-  ) { }
+  ) {}
 
   /** Creates a new user, returns its id. */
   async newUser(user: User): Promise<number> {
