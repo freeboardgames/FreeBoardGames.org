@@ -7,6 +7,12 @@ const CONNECTION: any = process.env.POSTGRES_URL
   ? {
       type: 'postgres',
       url: process.env.POSTGRES_URL,
+      ssl: true,
+      extra: {
+      ssl: {
+          rejectUnauthorized: false,
+        },
+      },
     }
   : {
       type: 'sqlite',
