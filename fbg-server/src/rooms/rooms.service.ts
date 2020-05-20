@@ -29,7 +29,7 @@ export class RoomsService {
   ) {}
 
   /** Creates a new room. */
-  async newRoom(room: Room, queryRunner?: QueryRunner): Promise<string> {
+  async newRoom(room: Room, queryRunner?: QueryRunner): Promise<RoomEntity> {
     const roomEntity = new RoomEntity();
     roomEntity.id = shortid.generate();
     roomEntity.capacity = room.capacity;
@@ -40,7 +40,7 @@ export class RoomsService {
     } else {
       await queryRunner.manager.save(RoomEntity, roomEntity);
     }
-    return roomEntity.id;
+    return roomEntity;
   }
 
   /** Gets a room. */

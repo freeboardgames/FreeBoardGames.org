@@ -54,14 +54,14 @@ export class MatchService {
         await queryRunner.commitTransaction();
         return entity.nextRoom.id;
       }
-      const id = await this.roomsService.newRoom(
+      const room = await this.roomsService.newRoom(
         roomEntityToRoom(entity.room),
         queryRunner,
       );
-      entity.nextRoom = await this.roomsService.getShallowRoomEntity(id);
+      entity.nextRoom = room;
       await queryRunner.manager.save(MatchEntity, entity);
       await queryRunner.commitTransaction();
-      return id;
+      return room.id;
     } catch (err) {
       console.error(err);
       await queryRunner.rollbackTransaction();
