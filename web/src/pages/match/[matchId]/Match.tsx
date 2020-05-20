@@ -1,8 +1,7 @@
 import React from 'react';
 import Game from 'components/App/Game/Game';
 import { connect } from 'react-redux';
-import { useRouter, NextRouter } from 'next/router';
-import { ReduxUserState } from 'redux/definitions';
+import { NextRouter, withRouter } from 'next/router';
 import { Dispatch } from 'redux';
 import NicknameRequired from 'components/App/Lobby/NicknameRequired';
 import MessagePage from 'components/App/MessagePageClass';
@@ -11,7 +10,6 @@ import { LobbyService } from 'components/App/Lobby/LobbyService';
 
 interface IMatchProps {
   router: NextRouter;
-  user: ReduxUserState;
   dispatch: Dispatch;
 }
 
@@ -20,7 +18,7 @@ interface IMatchState {
   match: MatchDto;
 }
 
-class Match extends React.Component<IMatchProps, IMatchState> {
+export class Match extends React.Component<IMatchProps, IMatchState> {
   state = { loading: true, match: undefined };
 
   componentDidMount() {
@@ -42,11 +40,6 @@ class Match extends React.Component<IMatchProps, IMatchState> {
   }
 }
 
-const matchWithRouter = (props) => {
-  const router = useRouter();
-  return <Match {...props} router={router} />;
-};
-
 /* istanbul ignore next */
 const mapStateToProps = function (state) {
   return {
@@ -54,4 +47,4 @@ const mapStateToProps = function (state) {
   };
 };
 
-export default connect(mapStateToProps)(matchWithRouter);
+export default withRouter(connect(mapStateToProps)(Match));

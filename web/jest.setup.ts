@@ -45,6 +45,7 @@ jest.mock('next/router', () => ({
       asPath: '',
     };
   },
+  withRouter: jest.fn(),
 }));
 
 const useRouter = jest.spyOn(require('next/router'), 'useRouter');
