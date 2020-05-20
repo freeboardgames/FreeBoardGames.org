@@ -17,6 +17,5 @@ install:
 script:
   - yarn run ci
 
-# FIXME
-# after_success:
-#   - yarn run test:coveralls
+after_success:
+  - cd web/ && yarn run test:coveralls
