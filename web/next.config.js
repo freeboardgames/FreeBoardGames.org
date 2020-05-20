@@ -41,15 +41,13 @@ module.exports = withWorkers(
           ],
         },
         // next-optimized-images
-        optimizedImages: {
-          defaultImageLoader: 'responsive-loader',
-          inlineImageLimit: -1,
-          optipng: {
-            optimizationLevel: 7,
-          },
-          mozjpeg: {
-            quality: 80,
-          },
+        defaultImageLoader: 'responsive-loader',
+        inlineImageLimit: -1,
+        optipng: {
+          optimizationLevel: 7,
+        },
+        mozjpeg: {
+          quality: 80,
         },
         poweredByHeader: false,
         env: {

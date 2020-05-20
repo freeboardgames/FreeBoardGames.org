@@ -5,7 +5,7 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from 'theme';
 import { SelfXSSWarning } from 'components/App/SelfXSSWarning';
-import { uaIsMobile, isMobileFromReq } from 'misc/UaHelper';
+import { isMobileFromReq } from 'misc/UaHelper';
 import UaContext from 'misc/IsMobileContext';
 import withError from 'next-with-error';
 import ErrorPage from './_error';
@@ -40,8 +40,7 @@ class defaultApp extends App {
     this.logPageView(window.location.pathname);
   }
   render() {
-    const { Component, pageProps, userAgent } = this.props as any;
-    const isMobile = uaIsMobile(userAgent);
+    const { Component, pageProps, isMobile } = this.props as any;
     return (
       <ThemeProvider theme={theme}>
         <SelfXSSWarning />
