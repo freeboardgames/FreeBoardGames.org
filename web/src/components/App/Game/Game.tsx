@@ -7,7 +7,6 @@ import getMessagePage from '../MessagePage';
 import MessagePageClass from '../MessagePageClass';
 import { applyMiddleware } from 'redux';
 import DEFAULT_ENHANCERS from './Enhancers';
-import AddressHelper from '../Helpers/AddressHelper';
 import { IPlayerInRoom } from '../Lobby/LobbyService';
 import { IGameArgs } from './GameBoardWrapper';
 import ReactGA from 'react-ga';
