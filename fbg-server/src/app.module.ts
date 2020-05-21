@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { MatchModule } from './match/match.module';
+import { HealthzController } from './healthz.controller';
 const CONNECTION: any = process.env.POSTGRES_URL
   ? {
       type: 'postgres',
@@ -31,5 +32,6 @@ const CONNECTION: any = process.env.POSTGRES_URL
     RoomsModule,
     MatchModule,
   ],
+  controllers: [HealthzController],
 })
 export class AppModule {}
