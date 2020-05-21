@@ -147,7 +147,6 @@ export class RoomsService {
     room: RoomEntity,
   ): Promise<string> {
     const bgioServerUrl = getBgioServerUrl();
-    console.log('bgio server url', bgioServerUrl);
     const bgioMatchId = await this.createBgioMatch(
       bgioServerUrl.internal,
       room,

@@ -45,7 +45,8 @@ describe('MatchService', () => {
     const matchEntity = new MatchEntity();
     matchEntity.id = 'fooMock';
     matchEntity.gameCode = 'chess';
-    matchEntity.bgioServerUrl = 'fooUrl';
+    matchEntity.bgioServerInternalUrl = 'fooInternalUrl';
+    matchEntity.bgioServerExternalUrl = 'fooExternalUrl';
     matchEntity.bgioMatchId = 'fooMatchId';
     await matchRepository.save(matchEntity);
     const aliceId = await usersService.newUser({ nickname: 'alice' });
@@ -69,7 +70,7 @@ describe('MatchService', () => {
 
     expect(match).toEqual({
       gameCode: 'chess',
-      bgioServerUrl: 'fooUrl',
+      bgioServerUrl: 'fooExternalUrl',
       bgioMatchId: 'fooMatchId',
       bgioSecret: 'aliceSecret',
       bgioPlayerId: '1',
@@ -84,10 +85,11 @@ describe('MatchService', () => {
     const capacity = 2;
     const gameCode = 'chess';
     const isPublic = false;
-    let matchEntity = new MatchEntity();
+    const matchEntity = new MatchEntity();
     matchEntity.id = 'fooMock2';
     matchEntity.gameCode = gameCode;
-    matchEntity.bgioServerUrl = 'fooUrl';
+    matchEntity.bgioServerInternalUrl = 'fooInternalUrl';
+    matchEntity.bgioServerExternalUrl = 'fooExternalUrl';
     matchEntity.bgioMatchId = 'fooMatchId';
     const room = await roomsService.newRoom({ capacity, gameCode, isPublic });
     matchEntity.room = await roomsService.getShallowRoomEntity(room.id);
