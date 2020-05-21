@@ -3,6 +3,12 @@ import { WORDS_IN_GAME, globalWordList } from './constants';
 import { newPuzzle, solvePuzzel, printPuzzle } from './puzzel'; 
 
 
+export interface ISingleLetter {
+    x: number;
+    y: number;
+    letter: string;
+}
+
 export interface ISolvedWord{
     x:number;
     y:number;
@@ -10,6 +16,7 @@ export interface ISolvedWord{
     word: string;
     overlap: number;
     solvedBy?: string;
+    letters: Array<ISingleLetter>;
 }
 
 export interface IG {

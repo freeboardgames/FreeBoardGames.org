@@ -11,7 +11,7 @@ const letters = 'abcdefghijklmnoprstuvwy'.toUpperCase();
  * The list of all the possible orientations and corresponding util functions 
  */ 
 
-const validOrientations = ['horizontal','diagonal','diagonalUp','vertical', 'verticalUp', 'diagonalBack', 'horizontalBack', 'diagonalUpBack'];
+const validOrientations = ['horizontal'];//,'diagonal','diagonalUp','vertical', 'verticalUp', 'diagonalBack', 'horizontalBack', 'diagonalUpBack'];
 
 export const orientations = {
 horizontal:     function(x,y,i) { return {x: x+i, y: y  }; },
@@ -376,6 +376,15 @@ export const solvePuzzel= function (puzzle, words) {
     else {
         notFound.push(word);
     }
+    }
+
+    // identify position of all letters in found words
+    for (const fw of found){
+        fw.letters = [];
+        for (let i = 0; i < fw.word.length; i++){
+            const {x,y} = orientations[fw.orientation](fw.x,fw.y,i);
+            fw.letters.push({x,y,letter:fw.word[i]});          
+      }
     }
 
     return { found: found, notFound: notFound };
