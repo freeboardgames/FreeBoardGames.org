@@ -16,9 +16,13 @@ export function roomEntityToRoom(roomEntity: RoomEntity): Room {
   };
 }
 
-export function getBgioServerUrl(): string {
-  const config = process.env.BGIO_SERVERS || 'http://localhost:8001';
-  const possibleServers = config.split(',');
+export function getBgioServerUrl() {
+  const internalServers = process.env.BGIO_PRIVATE_SERVERS || 'http://localhost:8001';
+  const externalServers = process.env.BGIO_PUBLIC_SERVERS || 'http://localhost:8001';
+  const possibleInternalServers = internalServers.split(',');
+  const possibleExternalervers = externalServers.split(',');
+
   // https://stackoverflow.com/questions/5915096/get-random-item-from-javascript-array
-  return possibleServers[Math.floor(Math.random() * possibleServers.length)];
+  const pos = Math.floor(Math.random() * possibleInternalServers.length);
+  return {internal: possibleInternalServers[pos], external: possibleExternalervers[pos]};
 }

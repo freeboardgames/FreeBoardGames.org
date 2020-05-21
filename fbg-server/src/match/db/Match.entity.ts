@@ -19,7 +19,10 @@ export class MatchEntity extends BaseEntity {
   gameCode!: string;
 
   @Column()
-  bgioServerUrl!: string;
+  bgioServerInternalUrl!: string;
+
+  @Column()
+  bgioServerExternalUrl!: string;
 
   @Column()
   bgioMatchId: string;

@@ -146,13 +146,19 @@ export class RoomsService {
     queryRunner: QueryRunner,
     room: RoomEntity,
   ): Promise<string> {
-    const bgioMatchId = await this.createBgioMatch(room);
+    const bgioServerUrl = getBgioServerUrl();
+    console.log('bgio server url', bgioServerUrl);
+    const bgioMatchId = await this.createBgioMatch(
+      bgioServerUrl.internal,
+      room,
+    );
     const id = shortid.generate();
     const newMatch = new MatchEntity();
     newMatch.id = id;
     newMatch.room = room;
     newMatch.gameCode = room.gameCode;
-    newMatch.bgioServerUrl = getBgioServerUrl();
+    newMatch.bgioServerInternalUrl = bgioServerUrl.internal;
+    newMatch.bgioServerExternalUrl = bgioServerUrl.external;
     newMatch.bgioMatchId = bgioMatchId;
     await queryRunner.manager.insert(MatchEntity, newMatch);
     await Promise.all(
@@ -172,9 +178,12 @@ export class RoomsService {
     return id;
   }
 
-  private async createBgioMatch(room: RoomEntity): Promise<string> {
+  private async createBgioMatch(
+    bgioServerUrl: string,
+    room: RoomEntity,
+  ): Promise<string> {
     const response = await this.httpService
-      .post(`${getBgioServerUrl()}/games/${room.gameCode}/create`, {
+      .post(`${bgioServerUrl}/games/${room.gameCode}/create`, {
         numPlayers: room.capacity,
       })
       .toPromise();
@@ -205,9 +214,7 @@ export class RoomsService {
   ): Promise<string> {
     const response = await this.httpService
       .post(
-        `${getBgioServerUrl()}/games/${match.gameCode}/${
-          match.bgioMatchId
-        }/join`,
+        `${match.bgioServerInternalUrl}/games/${match.gameCode}/${match.bgioMatchId}/join`,
         { playerID, playerName: roomMembership.user.nickname },
       )
       .toPromise();
