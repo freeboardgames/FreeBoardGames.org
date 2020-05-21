@@ -8,6 +8,10 @@ Play now at [FreeBoardGames.org](https://FreeBoardGames.org/)
 
 Check out our [reported issues and feature requests](https://github.com/freeboardgames/FreeBoardGames.org/issues).
 
+## Infrastructure Features
+
+✅ Works offline  ✅ Service worker caching ✅ Server side rendering ✅ Code splitting
+
 ## Contributing
 
 Contributions are always welcome, even if just reporting bugs (check our [issue tracker](https://github.com/freeboardgames/FreeBoardGames.org/issues)). Feel free to ask for any help!
@@ -21,8 +25,6 @@ Contributions are always welcome, even if just reporting bugs (check our [issue 
 ```
 git clone https://github.com/freeboardgames/FreeBoardGames.org
 cd FreeBoardGames.org
-
-cd web
 
 yarn install  # installs dependencies
 
