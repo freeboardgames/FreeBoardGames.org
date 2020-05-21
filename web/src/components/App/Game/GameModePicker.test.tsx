@@ -1,5 +1,5 @@
 import React from 'react';
-import { GameModePicker, GameMode, IGameModeInfo } from './GameModePicker';
+import { GameModePickerInternal as GameModePicker, GameMode, IGameModeInfo } from './GameModePicker';
 import { IGameModeExtraInfoSlider, IGameModeExtraInfoDropdown } from './GameModePicker';
 
 import { IGameDef } from 'games';
@@ -9,7 +9,7 @@ require('@testing-library/jest-dom/extend-expect');
 const GAME_DEF_TEST: IGameDef = {
   code: 'foocode',
   name: 'foo name',
-  imageURL: 'foo.jpg',
+  imageURL: { src: 'foo.jpg' },
   description: 'foo desc',
   descriptionTag: 'foo tag',
   instructions: {

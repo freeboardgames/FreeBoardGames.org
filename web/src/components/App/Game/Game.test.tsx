@@ -3,7 +3,10 @@ import Game from './Game';
 import { mount } from 'enzyme';
 import { GAMES_MAP } from 'games';
 import { GameMode } from './GameModePicker';
-import { LobbyService } from '../Lobby/LobbyService';
+import { Match } from 'dto/match/Match';
+
+// so we don't actually use SocketIO and attempt a connection:
+jest.mock('boardgame.io/multiplayer');
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -11,28 +14,25 @@ beforeEach(() => {
 
 describe('Game', () => {
   it('should render properly for multiplayer', async () => {
-    LobbyService.getCredential = jest.fn().mockReturnValue('foo');
     const gameCode = 'tictactoe';
     const game = GAMES_MAP[gameCode];
     const modes = game.modes;
     for (const mode of modes) {
       if (mode.mode === GameMode.OnlineFriend) {
-        const app = (
-          <Game
-            match={{ params: { gameCode, mode: 'online' } }}
-            room={{
-              currentUser: { playerID: 0, roomID: 'foo' },
-              roomID: 'foo',
-              numberOfPlayers: 1,
-              players: [{ playerID: 0, roomID: 'foo' }],
-              gameCode,
-            }}
-          />
-        );
+        const match: Match = {
+          bgioMatchId: 'fooMatch',
+          bgioServerUrl: 'fooBGIOServer',
+          gameCode: 'chess',
+          players: [{ nickname: 'fooPlayer' }],
+          bgioPlayerId: '0',
+          bgioSecret: 'fooSecret',
+        };
+        const app = <Game match={match} />;
         const wrapper = mount(app);
         await (wrapper.find(Game).instance() as any).promise;
+        expect(wrapper.text()).toContain('Downloading Chess');
         wrapper.update();
-        expect(wrapper.html()).toContain('Connecting');
+        expect(wrapper.find('Board').length).toBeGreaterThan(0);
       }
     }
   });
@@ -57,27 +57,27 @@ describe('Game', () => {
 
   it('should render error correctly with rejected Promise', async () => {
     GAMES_MAP.chess.config = () => Promise.reject(new Error('fail'));
-    const app = <Game match={{ params: { gameCode: 'chess', mode: 'local' } }} />;
+    const app = <Game gameCode={'chess'} mode={'local'} />;
     const wrapper = mount(app);
     await (wrapper.find(Game).instance() as any).promise;
     wrapper.update();
-    expect(wrapper.html()).toContain('Game Not Found');
+    expect(wrapper.text()).toContain('Failed to download');
   });
 
   it('should render error correctly with unknown gameCode', async () => {
-    const app = <Game match={{ gameCode: 'notagame', mode: 'local' }} />;
+    const app = <Game gameCode={'notAGame'} mode={'local'} />;
     const wrapper = mount(app);
     await (wrapper.find(Game).instance() as any).promise;
     wrapper.update();
-    expect(wrapper.html()).toContain('Game Not Found');
+    expect(wrapper.text()).toContain('Game Not Found');
   });
 
   it('should render error correctly with invalid game mode', async () => {
-    const app = <Game match={{ gameCode: 'chess', mode: 'invalid' }} />;
+    const app = <Game gameCode={'chess'} mode={'invalid'} />;
     const wrapper = mount(app);
     await (wrapper.find(Game).instance() as any).promise;
     wrapper.update();
-    expect(wrapper.html()).toContain('Game Not Found');
+    expect(wrapper.text()).toContain('Invalid Game Mode');
   });
 
   it('should render loading correctly', () => {
@@ -89,7 +89,7 @@ describe('Game', () => {
   });
 
   it('should call componentWillUnmount() without error', () => {
-    const app = <Game match={{ gameCode: 'chess', mode: 'local' }} />;
+    const app = <Game gameCode={'chess'} mode={'local'} />;
     const wrapper = mount(app);
     (wrapper.find(Game).instance() as any).componentWillUnmount();
   });

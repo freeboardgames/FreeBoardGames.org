@@ -14,6 +14,7 @@ import { UsersService } from '../users/users.service';
 import shortid from 'shortid';
 import { MatchEntity } from '../match/db/Match.entity';
 import { MatchMembershipEntity } from '../match/db/MatchMembership.entity';
+import { CheckinRoomResponse } from 'src/dto/rooms/CheckinRoomResponse';
 
 @Injectable()
 export class RoomsService {
@@ -28,14 +29,18 @@ export class RoomsService {
   ) {}
 
   /** Creates a new room. */
-  async newRoom(room: Room): Promise<string> {
+  async newRoom(room: Room, queryRunner?: QueryRunner): Promise<RoomEntity> {
     const roomEntity = new RoomEntity();
     roomEntity.id = shortid.generate();
     roomEntity.capacity = room.capacity;
     roomEntity.gameCode = room.gameCode;
     roomEntity.isPublic = room.isPublic;
-    await this.roomRepository.save(roomEntity);
-    return roomEntity.id;
+    if (!queryRunner) {
+      await this.roomRepository.save(roomEntity);
+    } else {
+      await queryRunner.manager.save(RoomEntity, roomEntity);
+    }
+    return roomEntity;
   }
 
   /** Gets a room. */
@@ -45,7 +50,7 @@ export class RoomsService {
   }
 
   /** Checks-in user and if room gets full starts the match. Returns match id, if any. */
-  async checkin(userId: number, roomId: string): Promise<string | undefined> {
+  async checkin(userId: number, roomId: string): Promise<CheckinRoomResponse> {
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -55,16 +60,18 @@ export class RoomsService {
       if (room.match) {
         // Already started.
         await queryRunner.commitTransaction();
-        return room.match.id;
+        return { room: roomEntityToRoom(room), matchId: room.match.id };
       }
       await this.updateMembership(queryRunner, userId, roomId, now);
       room = await this.getRoomEntity(roomId, now);
       if (room.capacity === room.userMemberships.length) {
-        return await this.startMatch(queryRunner, room);
+        const matchId = await this.startMatch(queryRunner, room);
+        return { room: roomEntityToRoom(room), matchId };
       }
       await queryRunner.commitTransaction();
-      return;
+      return { room: roomEntityToRoom(room) };
     } catch (err) {
+      console.error(err);
       await queryRunner.rollbackTransaction();
       throw err;
     } finally {
@@ -134,17 +141,23 @@ export class RoomsService {
     await queryRunner.manager.save(membership);
   }
 
+  /** Starts a new match given a room. */
   private async startMatch(
     queryRunner: QueryRunner,
     room: RoomEntity,
   ): Promise<string> {
-    const bgioMatchId = await this.createBgioMatch(room);
+    const bgioServerUrl = getBgioServerUrl();
+    const bgioMatchId = await this.createBgioMatch(
+      bgioServerUrl.internal,
+      room,
+    );
     const id = shortid.generate();
     const newMatch = new MatchEntity();
     newMatch.id = id;
     newMatch.room = room;
     newMatch.gameCode = room.gameCode;
-    newMatch.bgioServerUrl = getBgioServerUrl();
+    newMatch.bgioServerInternalUrl = bgioServerUrl.internal;
+    newMatch.bgioServerExternalUrl = bgioServerUrl.external;
     newMatch.bgioMatchId = bgioMatchId;
     await queryRunner.manager.insert(MatchEntity, newMatch);
     await Promise.all(
@@ -164,9 +177,12 @@ export class RoomsService {
     return id;
   }
 
-  private async createBgioMatch(room: RoomEntity): Promise<string> {
+  private async createBgioMatch(
+    bgioServerUrl: string,
+    room: RoomEntity,
+  ): Promise<string> {
     const response = await this.httpService
-      .post(`${getBgioServerUrl()}/games/${room.gameCode}/create`, {
+      .post(`${bgioServerUrl}/games/${room.gameCode}/create`, {
         numPlayers: room.capacity,
       })
       .toPromise();
@@ -186,6 +202,7 @@ export class RoomsService {
     );
     newMembership.user = roomMembership.user;
     newMembership.match = match;
+    newMembership.bgioPlayerId = playerID;
     return newMembership;
   }
 
@@ -196,9 +213,7 @@ export class RoomsService {
   ): Promise<string> {
     const response = await this.httpService
       .post(
-        `${getBgioServerUrl()}/games/${match.gameCode}/${
-          match.bgioMatchId
-        }/join`,
+        `${match.bgioServerInternalUrl}/games/${match.gameCode}/${match.bgioMatchId}/join`,
         { playerID, playerName: roomMembership.user.nickname },
       )
       .toPromise();

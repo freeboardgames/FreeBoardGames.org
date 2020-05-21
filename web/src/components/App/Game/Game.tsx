@@ -7,17 +7,16 @@ import getMessagePage from '../MessagePage';
 import MessagePageClass from '../MessagePageClass';
 import { applyMiddleware } from 'redux';
 import DEFAULT_ENHANCERS from './Enhancers';
-import AddressHelper from '../Helpers/AddressHelper';
-import { IRoomMetadata, IPlayerInRoom, LobbyService } from '../Lobby/LobbyService';
+import { IPlayerInRoom } from '../Lobby/LobbyService';
 import { IGameArgs } from './GameBoardWrapper';
 import ReactGA from 'react-ga';
 import { SocketIO, Local } from 'boardgame.io/multiplayer';
+import { Match } from 'dto/match/Match';
 
 interface IGameProps {
   // FIXME: fix which props are req
-  match?: any;
   history?: { push: (url: string) => void };
-  room?: IRoomMetadata;
+  match?: Match;
   matchCode?: string;
   gameCode?: string;
   mode?: string;
@@ -35,8 +34,8 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   mode: GameMode;
   loadAI: boolean;
   gameCode: string;
+  serverUrl: string;
   gameDef: IGameDef;
-  currentUser: IPlayerInRoom;
   promise: any; // for testing
 
   constructor(props: IGameProps) {
@@ -44,10 +43,10 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     this.state = {
       loading: true,
     };
-    if (this.props.room) {
+    if (this.props.match) {
       this.mode = GameMode.OnlineFriend;
-      this.gameCode = this.props.room.gameCode;
-      this.currentUser = this.props.room.currentUser;
+      this.gameCode = this.props.match.gameCode;
+      this.serverUrl = this.props.match.bgioServerUrl;
     } else {
       this.mode = this.props.mode as GameMode;
       this.loadAI = this.mode === GameMode.AI && typeof window !== 'undefined';
@@ -103,10 +102,10 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
   render() {
     let aiLevel, matchCode, playerID, credentials;
-    if (this.props.room) {
-      credentials = LobbyService.getCredential(this.props.room.roomID).credential;
-      playerID = this.currentUser.playerID.toString();
-      matchCode = this.props.room.roomID;
+    if (this.props.match) {
+      credentials = this.props.match.bgioSecret;
+      matchCode = this.props.match.bgioMatchId;
+      playerID = this.props.match.bgioPlayerId;
     } else {
       aiLevel = this.props.aiLevel;
       matchCode = this.props.matchCode;
@@ -156,7 +155,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         clientConfig.game.ai = gameAI;
       }
       if (this.mode === GameMode.OnlineFriend) {
-        clientConfig.multiplayer = SocketIO({ server: AddressHelper.getServerAddress() });
+        clientConfig.multiplayer = SocketIO({ server: this.serverUrl });
       }
       const App = Client(clientConfig) as any;
       ReactGA.event({
@@ -178,19 +177,19 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     }
   }
 
-  _getPlayers() {
+  _getPlayers(): IPlayerInRoom[] {
     switch (this.mode) {
       case GameMode.OnlineFriend:
-        return this.props.room.players;
+        return this.props.match.players.map((user, index) => ({ playerID: index, name: user.nickname }));
       case GameMode.AI:
         return [
-          { playerID: 0, name: 'Computer', roomID: '' },
-          { playerID: 1, name: 'You', roomID: '' },
+          { playerID: 0, name: 'Computer' },
+          { playerID: 1, name: 'You' },
         ];
       case GameMode.LocalFriend:
         return [
-          { playerID: 0, name: 'Player 1', roomID: '' },
-          { playerID: 1, name: 'Player 2', roomID: '' },
+          { playerID: 0, name: 'Player 1' },
+          { playerID: 1, name: 'Player 2' },
         ];
     }
   }

@@ -34,8 +34,10 @@ describe('ReplayIcon', () => {
   });
 
   it('should redirect to room returned by play again endpoint', async () => {
-    const p = Promise.resolve('roomfoo');
+    Router.query = { matchId: 'roomFoo' };
+    const p = Promise.resolve('fooNextRoom');
     LobbyService.getPlayAgainNextRoom = jest.fn().mockReturnValue(p);
+
     const gameArgs: IGameArgs = {
       gameCode: 'FooGame',
       mode: GameMode.OnlineFriend,
@@ -47,7 +49,7 @@ describe('ReplayIcon', () => {
 
     wrapper.find(ReplayIcon).simulate('click');
     await p;
-    expect(Router.push).toHaveBeenCalledWith('/room/FooGame/roomfoo');
+    expect(Router.push).toHaveBeenCalledWith('/room/fooNextRoom');
   });
 
   it('should call window.location.reload', () => {

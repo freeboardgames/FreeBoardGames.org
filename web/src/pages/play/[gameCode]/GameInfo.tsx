@@ -3,7 +3,7 @@ import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
 import { GameCard } from 'components/App/Game/GameCard';
 import { GameModePicker } from 'components/App/Game/GameModePicker';
 import { GameInstructionsVideo } from 'components/App/Game/GameInstructionsVideo';
-import { IGameDef, GAMES_MAP } from 'games';
+import { GAMES_MAP } from 'games';
 import { withRouter } from 'next/router';
 import { generatePageError } from 'next-with-error';
 import SEO from 'components/SEO';
@@ -14,7 +14,7 @@ import { GameInstructionsText } from 'components/App/Game/GameInstructionsText';
 import Breadcrumbs from 'components/Breadcrumbs';
 
 interface gameInfoProps {
-  gameDef: IGameDef;
+  gameCode: string;
   asPath: string;
   userAgent?: string;
 }
@@ -23,7 +23,7 @@ const DESKTOP_MOBILE_THRESHOLD = 768;
 
 class GameInfo extends React.Component<gameInfoProps, {}> {
   render() {
-    const gameDef = this.props.gameDef;
+    const gameDef = GAMES_MAP[this.props.gameCode];
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <SEO title={`Play ${gameDef.name}, ${gameDef.description}`} description={gameDef.descriptionTag} />
@@ -42,7 +42,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
           ]}
         />
         <DesktopView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
-          <div style={{ padding: '18px 8px', display: 'flex' }}>
+          <div style={{ padding: '18px 8px', display: 'flex' }} data-testid={'TabletViewDiv'}>
             <div style={{ flex: '60%', paddingRight: '32px' }}>
               <Typography variant="h4" component="h1">
                 Play {gameDef.name}
@@ -64,7 +64,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
         </DesktopView>
         <MobileView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
           <GameCard game={gameDef} />
-          <div style={{ padding: '8px' }}>
+          <div style={{ padding: '8px' }} data-testid={'MobileViewDiv'}>
             <GameModePicker gameDef={gameDef} />
             <GameInstructionsVideo gameDef={gameDef} />
             <GameInstructionsText gameDef={gameDef} />
@@ -73,13 +73,13 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
       </FreeBoardGamesBar>
     );
   }
-  static async getInitialProps({ res, query, asPath }) {
-    const gameCode = query.gameCode as string;
-    const gameDef: IGameDef = GAMES_MAP[gameCode];
-    if (!gameDef && res) {
+
+  static async getInitialProps(ctx) {
+    const gameCode = ctx.query.gameCode as string;
+    if (!GAMES_MAP[gameCode] && ctx.res) {
       return generatePageError(404);
     }
-    return { gameDef, asPath };
+    return { gameCode };
   }
 }
 

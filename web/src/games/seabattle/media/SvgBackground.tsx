@@ -14,7 +14,7 @@ const squares = (props: any) =>
   });
 const SvgBackground = (props: any) => (
   <g>
-    // .svg starts here
+    {/* .svg starts here */}
     <defs>
       <linearGradient id="background_svg__a">
         <stop offset={0} stopColor="#203f5c" />
@@ -34,7 +34,7 @@ const SvgBackground = (props: any) => (
       />
     </defs>
     <path fill="url(#background_svg__b)" fillRule="evenodd" d="M0 0h10v10H0z" />
-    // .svg ends here
+    {/* .svg ends here */}
     {squares(props)}
   </g>
 );

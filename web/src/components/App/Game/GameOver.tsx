@@ -88,8 +88,9 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       Router.push(window.location.pathname);
     } else {
       this.setState({ loading: true });
-      const nextRoomId = await LobbyService.getPlayAgainNextRoom(args.gameCode, args.matchCode, args.players.length);
-      Router.push(`/room/${args.gameCode}/${nextRoomId}` as any);
+      const matchId = Router.query.matchId as string;
+      const nextRoomId = await LobbyService.getPlayAgainNextRoom(matchId);
+      Router.push(`/room/${nextRoomId}`);
     }
   };
 }

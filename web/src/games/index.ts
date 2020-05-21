@@ -65,7 +65,6 @@ export interface IGameDef {
   name: string;
   imageURL: {
     src: string;
-    0: string;
   };
   description: string;
   descriptionTag: string;

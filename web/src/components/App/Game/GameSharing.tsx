@@ -13,7 +13,6 @@ import copy from 'copy-to-clipboard';
 import ReactGA from 'react-ga';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
-import { IRoomMetadata } from '../Lobby/LobbyService';
 import AlertLayer from './AlertLayer';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { QrCodePopup } from '../Lobby/QrCodePopup';
@@ -28,7 +27,6 @@ const theme = createMuiTheme({
 interface IGameSharingProps {
   gameCode: string;
   roomID: string;
-  roomMetadata: IRoomMetadata;
 }
 
 interface IGameSharingState {
@@ -152,8 +150,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
 
   _getLink = () => {
     const origin = window.location.origin;
-    const gameCode = this.props.gameCode;
     const roomID = this.props.roomID;
-    return `${origin}/room/${gameCode}/${roomID}`;
+    return `${origin}/room/${roomID}`;
   };
 }
