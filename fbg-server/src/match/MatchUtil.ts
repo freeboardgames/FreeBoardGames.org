@@ -7,7 +7,7 @@ export function matchEntityToMatch(entity: MatchEntity, userId: number): Match {
   memberships.sort((a, b) => a.bgioPlayerId - b.bgioPlayerId);
   const match: Match = {
     gameCode: entity.gameCode,
-    bgioServerUrl: entity.bgioServerUrl,
+    bgioServerUrl: entity.bgioServerExternalUrl,
     bgioMatchId: entity.bgioMatchId,
     players: memberships.map((membership) => userEntityToUser(membership.user)),
   };
