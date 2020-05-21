@@ -18,13 +18,18 @@ import Link from 'next/link';
 import { IGameDef } from 'games';
 import { LobbyService } from '../Lobby/LobbyService';
 import Router from 'next/router';
+import { connect } from 'react-redux';
+import { ReduxState, ReduxUserState } from 'redux/definitions';
+import NicknameRequired from '../Lobby/NicknameRequired';
 
 interface IGameModePickerProps {
   gameDef: IGameDef;
+  user: ReduxUserState;
 }
 
 interface IGameModePickerState {
   extraInfo: { [mode: string]: number };
+  onlinePlayRequested: boolean;
   playButtonDisabled: boolean;
   playButtonError: boolean;
 }
@@ -55,10 +60,11 @@ export enum GameMode {
   LocalFriend = 'local',
 }
 
-export class GameModePicker extends React.Component<IGameModePickerProps, IGameModePickerState> {
+export class GameModePickerInternal extends React.Component<IGameModePickerProps, IGameModePickerState> {
   constructor(props: IGameModePickerProps) {
     super(props);
     this.state = {
+      onlinePlayRequested: false,
       playButtonDisabled: false,
       playButtonError: false,
       extraInfo: { online: this.props.gameDef.minPlayers },
@@ -70,7 +76,7 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     for (const mode of this.props.gameDef.modes) {
       modes.push(this._getCard(mode));
     }
-    return (
+    const modePicker = (
       <div style={{ marginTop: '8px', maxWidth: '500px' }}>
         <Typography variant="h6" component="h2" style={{ marginBottom: '16px' }}>
           Choose game mode
@@ -78,6 +84,16 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
         <div>{modes}</div>
       </div>
     );
+    if (this.state.onlinePlayRequested) {
+      const info = this.props.gameDef.modes.find((info) => info.mode === GameMode.OnlineFriend);
+      return (
+        <NicknameRequired renderAsPopup onSuccess={this._playOnlineGame(info)}>
+          {modePicker}
+        </NicknameRequired>
+      );
+    } else {
+      return modePicker;
+    }
   }
 
   _getCard(info: IGameModeInfo) {
@@ -158,19 +174,24 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
   }
 
   _playOnlineGame = (info: IGameModeInfo) => () => {
-    // second param was e: any
-    this.setState({ ...this.state, playButtonDisabled: true });
+    if (!this.props.user.loggedIn) {
+      this.setState({ onlinePlayRequested: true });
+      return;
+    }
+    this.setState({ playButtonDisabled: true });
     const gameCode = this.props.gameDef.code;
     const numPlayers = this._getExtraInfoValue(info);
-    // `/room/new/${this.props.gameDef.code}/${this._getExtraInfoValue(info)}`,
-    LobbyService.newRoom(gameCode, numPlayers).then(
+    LobbyService.newRoom((this.props as any).dispatch, gameCode, numPlayers).then(
       (roomID) => {
         // we use .replace instead of .push so that the browser back button works correctly
-        Router.replace(`/room/${gameCode}/${roomID}`);
+        Router.replace(`/room/${roomID}`);
       },
-      () => {
-        // was _err => { ...
-        this.setState({ ...this.state, playButtonError: true, playButtonDisabled: false });
+      (e) => {
+        if (e.response.unauthorized) {
+          this.setState({ onlinePlayRequested: true, playButtonDisabled: false });
+        } else {
+          this.setState({ playButtonError: true, playButtonDisabled: false });
+        }
       },
     );
   };
@@ -334,3 +355,10 @@ export class GameModePicker extends React.Component<IGameModePickerProps, IGameM
     return { gameCode };
   }
 }
+
+/* istanbul ignore next */
+const mapStateToProps = (state: ReduxState) => ({
+  user: { ...state.user },
+});
+
+export const GameModePicker = connect(mapStateToProps)(GameModePickerInternal);

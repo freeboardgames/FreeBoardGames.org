@@ -33,11 +33,11 @@ describe('UsersController', () => {
   });
 
   it('should give invalid nickname', async () => {
-    const nickname = 'x';
+    const nickname = '';
 
     const result = controller.newUser({ user: { nickname } });
 
-    expect(result).rejects.toThrow();
+    await expect(result).rejects.toThrow();
   });
 
   it('should create user succesfully', async () => {

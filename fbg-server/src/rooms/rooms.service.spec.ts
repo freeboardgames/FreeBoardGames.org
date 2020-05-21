@@ -42,20 +42,19 @@ describe('RoomsService', () => {
 
   it('should create a room successfully', async () => {
     const room: Room = { capacity: 2, gameCode: 'checkers', isPublic: false };
-    const id = await service.newRoom(room);
-    const newRoom = await service.getRoom(id);
-    expect(newRoom).toEqual({ id, users: [], ...room });
+    const newRoom = await service.newRoom(room);
+    expect(newRoom).toMatchObject({ ...room });
   });
 
   it('should join room successfully', async () => {
-    const roomId = await service.newRoom({
+    const room = await service.newRoom({
       capacity: 2,
       gameCode: 'checkers',
       isPublic: false,
     });
     const userId = await usersService.newUser({ nickname: 'foo' });
-    await service.checkin(userId, roomId);
-    const newRoom = await service.getRoom(roomId);
+    await service.checkin(userId, room.id);
+    const newRoom = await service.getRoom(room.id);
     expect(newRoom.users).toEqual([{ id: userId, nickname: 'foo' }]);
   });
 
@@ -72,18 +71,18 @@ describe('RoomsService', () => {
     jest
       .spyOn(httpService, 'post')
       .mockReturnValue({ toPromise: promiseMock } as any);
-    const roomId = await service.newRoom({
+    const room = await service.newRoom({
       capacity: 2,
       gameCode: 'checkers',
       isPublic: false,
     });
     const user1 = await usersService.newUser({ nickname: 'foo' });
-    await service.checkin(user1, roomId);
+    await service.checkin(user1, room.id);
     // second player joins; capacity is 2, so match starts
     const user2 = await usersService.newUser({ nickname: 'bar' });
 
-    const newMatchID = await service.checkin(user2, roomId);
-    const match = await matchService.getMatchEntity(newMatchID);
+    const checkinResponse = await service.checkin(user2, room.id);
+    const match = await matchService.getMatchEntity(checkinResponse.matchId);
 
     expect(match.bgioMatchId).toEqual('bgioGameId');
     expect(match.playerMemberships[0].bgioSecret).toEqual('1stSecret');
@@ -103,18 +102,18 @@ describe('RoomsService', () => {
     jest
       .spyOn(httpService, 'post')
       .mockReturnValue({ toPromise: promiseMock } as any);
-    const roomId = await service.newRoom({
+    const room = await service.newRoom({
       capacity: 2,
       gameCode: 'checkers',
       isPublic: false,
     });
     const user1 = await usersService.newUser({ nickname: 'foo' });
-    await service.checkin(user1, roomId);
+    await service.checkin(user1, room.id);
     // second player joins; capacity is 2, so match starts
     const user2 = await usersService.newUser({ nickname: 'bar' });
 
-    const creationID = await service.checkin(user2, roomId);
-    const visitID = await service.checkin(user1, roomId);
-    expect(creationID).toEqual(visitID);
+    const creation = await service.checkin(user2, room.id);
+    const visit = await service.checkin(user1, room.id);
+    expect(creation.matchId).toEqual(visit.matchId);
   });
 });

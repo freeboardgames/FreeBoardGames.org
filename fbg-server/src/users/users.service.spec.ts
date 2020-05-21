@@ -36,4 +36,13 @@ describe('UsersService', () => {
     const user = service.getById(-123);
     await expect(user).rejects.toThrow();
   });
+
+  it('should update nickname correctly', async () => {
+    const oldNickname = 'foo nick';
+    const id = await service.newUser({ nickname: oldNickname });
+    const nickname = 'bar nick';
+    await service.updateUser({ id, nickname });
+    const user = await service.getById(id);
+    expect(user).toEqual({ id, nickname });
+  });
 });

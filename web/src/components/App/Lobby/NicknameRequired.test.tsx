@@ -31,7 +31,7 @@ describe('Nickname Required', () => {
     });
 
     it('dispatches', () => {
-      expect(mockDispatch).toHaveBeenCalledWith({ payload: { loggedIn: false, ready: true }, type: 'SyncUser' });
+      expect(LobbyService.getSyncUserAction).toHaveBeenCalled();
     });
 
     it('should not render children', () => {
@@ -42,25 +42,19 @@ describe('Nickname Required', () => {
       expect(wrapper.text()).toContain('Enter Your Nickname');
     });
 
-    it('sets nickname', () => {
+    it('sets nickname', async () => {
       const instance: any = wrapper.instance();
-      instance._setNickname('foouser');
+      await instance._setNickname('foouser');
+      expect(LobbyService.newUser).toHaveBeenCalledWith('foouser');
       expect(onSuccessMock).toHaveBeenCalled();
-      expect(mockDispatch).toHaveBeenCalledWith({
-        payload: { loggedIn: true, nickname: 'foouser', ready: true },
-        type: 'SyncUser',
-      });
     });
 
-    it('sets nickname, no onSuccess() prop', () => {
+    it('sets nickname, no onSuccess() prop', async () => {
       wrapper.setProps({ onSuccess: undefined });
       const instance: any = wrapper.instance();
-      instance._setNickname('baruser');
+      await instance._setNickname('baruser');
+      expect(LobbyService.newUser).toHaveBeenCalledWith('baruser');
       expect(onSuccessMock).not.toHaveBeenCalled();
-      expect(mockDispatch).toHaveBeenCalledWith({
-        payload: { loggedIn: true, nickname: 'baruser', ready: true },
-        type: 'SyncUser',
-      });
     });
   });
 
@@ -86,10 +80,7 @@ describe('Nickname Required', () => {
     });
 
     it('dispatches', () => {
-      expect(mockDispatch).toHaveBeenCalledWith({
-        payload: { loggedIn: true, ready: true, nickname: 'bazuser' },
-        type: 'SyncUser',
-      });
+      expect(mockDispatch).toHaveBeenCalled();
     });
 
     it('should render children', () => {

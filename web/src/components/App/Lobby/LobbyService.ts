@@ -1,87 +1,119 @@
 import AddressHelper from '../Helpers/AddressHelper';
 import request from 'superagent';
 import SSRHelper from '../Helpers/SSRHelper';
+import { ActionNames, SyncUserAction } from '../../../redux/actions';
+import { Room } from 'dto/rooms/Room';
+import { CheckinRoomRequest } from 'dto/rooms/CheckinRoomRequest';
+import { ReduxUserState } from 'redux/definitions';
+import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
+import { Match } from 'dto/match/Match';
+import { Dispatch } from 'redux';
+import Cookies from 'js-cookie';
+import { UpdateUserRequest } from 'dto/users/UpdateUserRequest';
+import { NextRoomRequest } from 'dto/match/NextRoomRequest';
 
-const FBG_CREDENTIALS_KEY = 'fbgCredentials';
 const FBG_NICKNAME_KEY = 'fbgNickname';
-
+const FBG_USER_TOKEN_KEY = 'fbgUserToken';
 export interface IPlayerInRoom {
   playerID: number;
-  name?: string;
-  roomID: string;
+  name: string;
 }
-
-export interface IRoomMetadata {
-  gameCode?: string;
-  roomID: string;
-  players?: IPlayerInRoom[]; // only active players
-  currentUser?: IPlayerInRoom;
-  numberOfPlayers: number;
-}
-
-export interface IPlayerCredential {
-  playerID: number;
-  credential: string;
-}
-
-export interface IStoredCredentials {
-  [key: string]: IPlayerCredential;
-}
-
 export class LobbyService {
-  public static async newRoom(gameCode: string, numPlayers: number): Promise<string> {
-    const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/create`)
-      .send({ numPlayers });
-    const roomID = response.body.gameID;
-    return roomID;
-    // return 'foo';
-  }
+  private static catchUnauthorized = (dispatch: Dispatch<SyncUserAction>) => (e: request.ResponseError) => {
+    if (e.response.unauthorized) {
+      // invalidate the user's auth and adjust our store accordingly:
+      LobbyService.invalidateUserAuth();
+      dispatch(LobbyService.getSyncUserAction());
+    }
+    throw e;
+  };
 
-  public static async joinRoom(gameCode: string, player: IPlayerInRoom): Promise<void> {
+  /** sends user's nickname to backend.  backend returns the jwt token.  */
+  public static async newUser(nickname: string): Promise<string> {
     const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/join`)
+      .post(`${AddressHelper.getFbgServerAddress()}/users/new`)
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
       .send({
-        playerID: player.playerID,
-        playerName: player.name,
+        user: { nickname },
       });
-    const credential = response.body.playerCredentials;
-    this.setCredential(player, credential);
+    const jwtToken = response.body.jwtPayload;
+    localStorage.setItem(FBG_NICKNAME_KEY, nickname);
+    localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
+    return response.body;
   }
 
-  public static async renameUser(gameCode: string, player: IPlayerInRoom, newName: string): Promise<void> {
-    const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
-    await request.post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
+  public static async getMatch(dispatch: Dispatch<SyncUserAction>, matchId: string): Promise<Match> {
+    const response = await request
+      .get(`${AddressHelper.getFbgServerAddress()}/match/${matchId}`)
+      .set('Authorization', this.getAuthHeader())
+      .catch(this.catchUnauthorized(dispatch));
+
+    return response.body;
+  }
+
+  public static async newRoom(dispatch: Dispatch<SyncUserAction>, gameCode: string, capacity: number): Promise<string> {
+    const room: Room = { gameCode, capacity, isPublic: false };
+    const response = await request
+      .post(`${AddressHelper.getFbgServerAddress()}/rooms/new`)
+      .set('Authorization', this.getAuthHeader())
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
+      .send({
+        room,
+      })
+      .catch(this.catchUnauthorized(dispatch));
+    return response.body.roomId;
+  }
+
+  // TODO test
+  // TODO are we checking auth?
+  public static async renameUser(dispatch: Dispatch<SyncUserAction>, newName: string): Promise<void> {
+    const updateUserRequest: UpdateUserRequest = { user: { nickname: newName } };
+    const response = await request
+      .post(`${AddressHelper.getFbgServerAddress()}/users/update`)
+      .set('Authorization', this.getAuthHeader())
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
+      .send(updateUserRequest)
+      .catch(this.catchUnauthorized(dispatch));
+
+    return response.body;
+    /*const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
+    await request.post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
       playerID: player.playerID,
       credentials: playerCredential.credential,
       newName,
-    });
+    });*/
   }
 
-  public static async getRoomMetadata(gameCode: string, roomID: string): Promise<IRoomMetadata> {
-    const response = await request.get(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}`);
-    const body = response.body;
-    const players: IPlayerInRoom[] = body.players
-      .filter((player: any) => player.name)
-      .map((player: any) => ({
-        playerID: player.id,
-        name: player.name,
-        roomID,
-      }));
-    const playerCredential: IPlayerCredential = this.getCredential(roomID);
-    let currentUser;
-    if (playerCredential) {
-      currentUser = players.find((player: any) => player.playerID === playerCredential.playerID);
-    }
-    return { players, gameCode, roomID, currentUser, numberOfPlayers: body.players.length };
-  }
-
-  public static async getPlayAgainNextRoom(gameCode: string, roomID: string, numPlayers: number): Promise<string> {
-    const playerCredential: IPlayerCredential = this.getCredential(roomID);
+  public static async checkin(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<CheckinRoomResponse> {
+    const checkinRoomRequest: CheckinRoomRequest = { roomId };
     const response = await request
-      .post(`${AddressHelper.getServerAddress()}/games/${gameCode}/${roomID}/playAgain`)
-      .send({ playerID: playerCredential.playerID, credentials: playerCredential.credential, numPlayers });
-    return response.body.nextRoomID;
+      .post(`${AddressHelper.getFbgServerAddress()}/rooms/checkin`)
+      .set('Authorization', this.getAuthHeader())
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
+      .send({
+        ...checkinRoomRequest,
+      })
+      .catch(this.catchUnauthorized(dispatch));
+
+    return response.body;
+  }
+
+  // TODO dispatch/catchUnauthorized
+  public static async getPlayAgainNextRoom(matchId: string): Promise<string> {
+    const playAgainRequest: NextRoomRequest = { matchId };
+    const response = await request
+      .post(`${AddressHelper.getFbgServerAddress()}/match`)
+      .set('Authorization', this.getAuthHeader())
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
+      .send(playAgainRequest);
+
+    return response.text;
+  }
+
+  public static getUserToken() {
+    if (!SSRHelper.isSSR()) {
+      return localStorage.getItem(FBG_USER_TOKEN_KEY);
+    }
   }
 
   public static getNickname(): string {
@@ -90,22 +122,26 @@ export class LobbyService {
     }
   }
 
-  public static setNickname(name: string): void {
-    localStorage.setItem(FBG_NICKNAME_KEY, name);
-  }
-
-  public static getCredential(roomID: string): IPlayerCredential | undefined {
-    // return an empty IPlayerInRoom object if the player's identity is for another room
-    const credentials: IStoredCredentials = JSON.parse(localStorage.getItem(FBG_CREDENTIALS_KEY));
-    if (credentials) {
-      return credentials[roomID];
+  public static getSyncUserAction(): SyncUserAction {
+    let payload: ReduxUserState;
+    if (LobbyService.getNickname() && LobbyService.getUserToken()) {
+      const nickname = LobbyService.getNickname();
+      payload = { ready: true, loggedIn: true, nickname };
+    } else {
+      payload = { ready: true, loggedIn: false };
     }
+    return { type: ActionNames.SyncUser, payload };
   }
 
-  public static setCredential(player: IPlayerInRoom, credential: string): void {
-    const existing: IStoredCredentials = JSON.parse(localStorage.getItem(FBG_CREDENTIALS_KEY));
-    const newCredentials = { ...existing };
-    newCredentials[player.roomID] = { credential, playerID: player.playerID };
-    localStorage.setItem(FBG_CREDENTIALS_KEY, JSON.stringify(newCredentials));
+  public static invalidateUserAuth() {
+    localStorage.removeItem(FBG_NICKNAME_KEY);
+    localStorage.removeItem(FBG_USER_TOKEN_KEY);
+  }
+
+  private static getAuthHeader() {
+    if (this.getUserToken()) {
+      const jwtToken = this.getUserToken() || '';
+      return `Bearer ${jwtToken}`;
+    }
   }
 }

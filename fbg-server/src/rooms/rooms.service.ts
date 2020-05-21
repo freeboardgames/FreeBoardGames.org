@@ -14,6 +14,7 @@ import { UsersService } from '../users/users.service';
 import shortid from 'shortid';
 import { MatchEntity } from '../match/db/Match.entity';
 import { MatchMembershipEntity } from '../match/db/MatchMembership.entity';
+import { CheckinRoomResponse } from 'src/dto/rooms/CheckinRoomResponse';
 
 @Injectable()
 export class RoomsService {
@@ -28,14 +29,18 @@ export class RoomsService {
   ) {}
 
   /** Creates a new room. */
-  async newRoom(room: Room): Promise<string> {
+  async newRoom(room: Room, queryRunner?: QueryRunner): Promise<RoomEntity> {
     const roomEntity = new RoomEntity();
     roomEntity.id = shortid.generate();
     roomEntity.capacity = room.capacity;
     roomEntity.gameCode = room.gameCode;
     roomEntity.isPublic = room.isPublic;
-    await this.roomRepository.save(roomEntity);
-    return roomEntity.id;
+    if (!queryRunner) {
+      await this.roomRepository.save(roomEntity);
+    } else {
+      await queryRunner.manager.save(RoomEntity, roomEntity);
+    }
+    return roomEntity;
   }
 
   /** Gets a room. */
@@ -45,7 +50,7 @@ export class RoomsService {
   }
 
   /** Checks-in user and if room gets full starts the match. Returns match id, if any. */
-  async checkin(userId: number, roomId: string): Promise<string | undefined> {
+  async checkin(userId: number, roomId: string): Promise<CheckinRoomResponse> {
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -55,16 +60,18 @@ export class RoomsService {
       if (room.match) {
         // Already started.
         await queryRunner.commitTransaction();
-        return room.match.id;
+        return { room: roomEntityToRoom(room), matchId: room.match.id };
       }
       await this.updateMembership(queryRunner, userId, roomId, now);
       room = await this.getRoomEntity(roomId, now);
       if (room.capacity === room.userMemberships.length) {
-        return await this.startMatch(queryRunner, room);
+        const matchId = await this.startMatch(queryRunner, room);
+        return { room: roomEntityToRoom(room), matchId };
       }
       await queryRunner.commitTransaction();
-      return;
+      return { room: roomEntityToRoom(room) };
     } catch (err) {
+      console.error(err);
       await queryRunner.rollbackTransaction();
       throw err;
     } finally {
@@ -134,6 +141,7 @@ export class RoomsService {
     await queryRunner.manager.save(membership);
   }
 
+  /** Starts a new match given a room. */
   private async startMatch(
     queryRunner: QueryRunner,
     room: RoomEntity,
@@ -186,6 +194,7 @@ export class RoomsService {
     );
     newMembership.user = roomMembership.user;
     newMembership.match = match;
+    newMembership.bgioPlayerId = playerID;
     return newMembership;
   }
 

@@ -1,59 +1,73 @@
 import React from 'react';
 import { NicknamePrompt } from './NicknamePrompt';
 import { LobbyService } from './LobbyService';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { ActionNames, AuthData } from '../../../redux/actions';
 import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
+import { ReduxState, ReduxUserState } from 'redux/definitions';
 
 interface Props {
+  dispatch: Dispatch;
   onSuccess?: (...args: any) => void;
   handleClickaway?: () => void;
+  conditional: boolean;
+  renderAsPopup?: boolean;
+  user: ReduxUserState;
 }
 
 interface State {
-  open: boolean;
+  errorText: string;
 }
 
 export class NicknameRequired extends React.Component<Props, State> {
+  state = { errorText: undefined };
   constructor(props: Props) {
     super(props);
   }
 
-  componentDidMount() {
-    const nickname = LobbyService.getNickname();
-    let payload: AuthData;
-    if (nickname) {
-      payload = { ready: true, loggedIn: true, nickname };
-    } else {
-      payload = { ready: true, loggedIn: false };
-    }
-    (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
+  async componentDidMount() {
+    this.props.dispatch(LobbyService.getSyncUserAction());
   }
 
   render() {
-    const nickname: string = (this.props as any).user.nickname;
-    if (!nickname) {
+    const nickname: string = this.props.user.nickname;
+    if (nickname) {
+      return this.props.children;
+    }
+    const prompt = (
+      <NicknamePrompt
+        nickname={nickname}
+        setNickname={this._setNickname}
+        errorText={this.state.errorText}
+        onChange={() => this.setState({ errorText: undefined })}
+      />
+    );
+    if (this.props.renderAsPopup) {
       return (
-        <FreeBoardGamesBar>
-          <NicknamePrompt nickname={nickname} setNickname={this._setNickname} />
-        </FreeBoardGamesBar>
+        <React.Fragment>
+          {prompt}
+          {this.props.children}
+        </React.Fragment>
       );
     } else {
-      return this.props.children;
+      return <FreeBoardGamesBar>{prompt}</FreeBoardGamesBar>;
     }
   }
 
-  _setNickname = (nickname: string) => {
-    LobbyService.setNickname(nickname);
-    this.setState((oldState) => ({ ...oldState, nickname }));
-    const payload: AuthData = { ready: true, loggedIn: true, nickname };
-    (this.props as any).dispatch({ type: ActionNames.SyncUser, payload });
+  _setNickname = async (nickname: string) => {
+    try {
+      await LobbyService.newUser(nickname);
+      this.props.dispatch(LobbyService.getSyncUserAction());
+    } catch (e) {
+      const errorText = e.response?.body?.message || 'Unknown error';
+      this.setState({ errorText });
+    }
     if (this.props.onSuccess) this.props.onSuccess();
   };
 }
 
 /* istanbul ignore next */
-const mapStateToProps = function (state) {
+const mapStateToProps = function (state: ReduxState) {
   return {
     user: { ...state.user },
   };
