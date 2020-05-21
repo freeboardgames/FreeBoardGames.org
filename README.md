@@ -6,13 +6,13 @@ FOSS platform for publishing your [boardgame.io](https://boardgame.io) games. We
 
 Play now at [FreeBoardGames.org](https://FreeBoardGames.org/)
 
-Check out our [reported issues and feature requests](https://github.com/freeboardgames/FreeBoardGames.org/issues).
-
 ## Infrastructure Features
 
 ✅ Works offline  ✅ Service worker caching ✅ Server side rendering ✅ Code splitting
 
 ## Contributing
+
+Check out [**how to add your game**](https://www.freeboardgames.org/blog/2019/06/17/Publishing-your-first-boardgame-io-game-in-FBG/).
 
 Contributions are always welcome, even if just reporting bugs (check our [issue tracker](https://github.com/freeboardgames/FreeBoardGames.org/issues)). Feel free to ask for any help!
 
