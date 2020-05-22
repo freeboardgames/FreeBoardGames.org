@@ -8,8 +8,9 @@ async function bootstrap() {
     logger: ['log', 'error', 'warn', 'debug', 'verbose'],
   });
 
-  app.use(cookieParser());
-  app.use(csurf({ cookie: true }));
+  // FIXME do we need this or anything comparable for gql?
+  // app.use(cookieParser());
+  // app.use(csurf({ cookie: true }));
 
   await app.listen(3001);
 }
