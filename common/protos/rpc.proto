@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package rpc;
+
+import "user.proto";
+
+service Rpc {
+  rpc newUser (user.NewUserRequest) returns (user.NewUserResponse) {};
+}
+
+// message NewUserRequest {
+//   string name = 1;
+// }
+
+// message NewUserResponse {
+//   string jwtPayload = 1;
+// }

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package user;
+
+message NewUserRequest {
+  User user = 1;
+  // string nickname = 1;
+}
+
+message NewUserResponse {
+  string jwtPayload = 1;
+}
+
+message User {
+  string nickname = 1;
+}

@@ -5,8 +5,6 @@ import {
   UseGuards,
   Request,
   Body,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from './jwt-auth-guard';
@@ -15,6 +13,7 @@ import { JwtPayload } from './definitions';
 import { UpdateUserRequest } from '../dto/users/UpdateUserRequest';
 import { NewUserRequest } from '../dto/users/NewUserRequest';
 import { NewUserResponse } from '../dto/users/NewUserResponse';
+import { GrpcMethod } from '@nestjs/microservices';
 
 @Controller('users')
 export class UsersController {
@@ -23,9 +22,8 @@ export class UsersController {
     private readonly jwtService: JwtService,
   ) {}
 
-  @Post('new')
-  async newUser(@Body() req: NewUserRequest): Promise<NewUserResponse> {
-    // curl -X POST http://localhost:3001/users/new -d '{"user": { "nickname": "foo"}}' -H "Content-Type: application/json"
+  @GrpcMethod('Rpc', 'newUser')
+  async newUser(req: NewUserRequest): Promise<NewUserResponse> {
     const userId = await this.usersService.newUser(req.user);
     const payload: JwtPayload = { userId };
     return { jwtPayload: this.jwtService.sign(payload) };
