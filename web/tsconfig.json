@@ -25,7 +25,8 @@
     ],
     "typeRoots": [
       "node_modules/@types",
-      "src/@types"
+      "src/@types",
+      "src/protos"
     ]
   },
   "exclude": [

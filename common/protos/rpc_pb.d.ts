@@ -1,8 +1,3 @@
-// package: rpc
-// file: rpc.proto
+import * as jspb from 'google-protobuf';
 
-/* tslint:disable */
-/* eslint-disable */
-
-import * as jspb from "google-protobuf";
-import * as user_pb from "./user_pb";
+import * as user_pb from './user_pb';

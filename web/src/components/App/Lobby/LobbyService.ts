@@ -11,6 +11,10 @@ import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
 import { UpdateUserRequest } from 'dto/users/UpdateUserRequest';
 import { NextRoomRequest } from 'dto/match/NextRoomRequest';
+import { NewUserRequest } from 'protos/user_pb';
+import { RpcClient } from 'protos/rpc_grpc_web_pb';
+
+const rpcClient = new RpcClient('localhost:5000');
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
@@ -30,16 +34,24 @@ export class LobbyService {
 
   /** sends user's nickname to backend.  backend returns the jwt token.  */
   public static async newUser(nickname: string): Promise<string> {
-    const response = await request
-      .post(`${AddressHelper.getFbgServerAddress()}/users/new`)
-      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
-      .send({
-        user: { nickname },
-      });
-    const jwtToken = response.body.jwtPayload;
-    localStorage.setItem(FBG_NICKNAME_KEY, nickname);
-    localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
-    return response.body;
+    // const user: User = {
+    const request = new NewUserRequest();
+    request.setNickname(nickname);
+    rpcClient.newUser(request, {}, (err, resp) => {
+      console.log('err', err);
+      console.log('resp', resp);
+    });
+    return 'foo';
+    // const response = await request
+    //   .post(`${AddressHelper.getFbgServerAddress()}/users/new`)
+    //   .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
+    //   .send({
+    //     user: { nickname },
+    //   });
+    // const jwtToken = response.body.jwtPayload;
+    // localStorage.setItem(FBG_NICKNAME_KEY, nickname);
+    // localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
+    // return response.body;
   }
 
   public static async getMatch(dispatch: Dispatch<SyncUserAction>, matchId: string): Promise<Match> {
