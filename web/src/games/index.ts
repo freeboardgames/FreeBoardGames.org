@@ -10,6 +10,7 @@ import { cornerusGameDef } from './cornerus';
 import { tictactoeplusGameDef } from './tictactoeplus';
 import { fourinarowGameDef } from './fourinarow';
 import { zooParadeGameDef } from './zooparade';
+import { rotaGameDef } from './rota';
 import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
 
@@ -26,6 +27,7 @@ export const GAMES_MAP: IGameDefMap = {
   reversi: reversiGameDef,
   tictactoeplus: tictactoeplusGameDef,
   fourinarow: fourinarowGameDef,
+  rota: rotaGameDef,
   secretcodes: secretcodesGameDef,
   hangman: hangmanGameDef,
 };
@@ -35,17 +37,18 @@ export const GAMES_MAP: IGameDefMap = {
 export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.zooparade,
   GAMES_MAP.takesix,
-  GAMES_MAP.chess,
-  GAMES_MAP.secretcodes,
-  GAMES_MAP.seabattle,
-  GAMES_MAP.tictactoe,
   GAMES_MAP.fourinarow,
+  GAMES_MAP.seabattle,
+  GAMES_MAP.secretcodes,
+  GAMES_MAP.hangman,
+  GAMES_MAP.chess,
+  GAMES_MAP.tictactoe,
   GAMES_MAP.checkers,
   GAMES_MAP.cornerus,
   GAMES_MAP.tictactoeplus,
   GAMES_MAP.reversi,
   GAMES_MAP.ninemensmorris,
-  GAMES_MAP.hangman,
+  GAMES_MAP.rota,
 ];
 
 // No need to edit below
@@ -65,7 +68,6 @@ export interface IGameDef {
   name: string;
   imageURL: {
     src: string;
-    0: string;
   };
   description: string;
   descriptionTag: string;
