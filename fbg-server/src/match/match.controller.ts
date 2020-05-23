@@ -48,7 +48,7 @@ export class MatchController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post()
+  @Post('start')
   async startMatch(
     @Request() request,
     @Body() body: StartMatchRequest,

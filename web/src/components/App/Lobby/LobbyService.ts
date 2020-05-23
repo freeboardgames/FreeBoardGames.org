@@ -51,6 +51,17 @@ export class LobbyService {
     return response.body;
   }
 
+  public static async startMatch(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<void> {
+    const response = await request
+      .post(`${AddressHelper.getFbgServerAddress()}/match/start`)
+      .set('Authorization', this.getAuthHeader())
+      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
+      .send({
+        roomId,
+      })
+      .catch(this.catchUnauthorized(dispatch));
+    return response.body;
+  }
   public static async newRoom(dispatch: Dispatch<SyncUserAction>, gameCode: string, capacity: number): Promise<string> {
     const room: Room = { gameCode, capacity, isPublic: false };
     const response = await request

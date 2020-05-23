@@ -8,7 +8,8 @@ export function roomEntityToRoom(roomEntity: RoomEntity): Room {
     capacity: roomEntity.capacity,
     gameCode: roomEntity.gameCode,
     isPublic: roomEntity.isPublic,
-    users: (roomEntity.userMemberships || [])
+    creator: userEntityToUser(roomEntity.userMemberships.find((membership) => membership.isCreator).user),
+    users: roomEntity.userMemberships
       .map((membership) => userEntityToUser(membership.user))
       .sort((a, b) =>
         a.nickname.toLowerCase().localeCompare(b.nickname.toLowerCase()),

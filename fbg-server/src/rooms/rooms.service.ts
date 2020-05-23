@@ -65,7 +65,7 @@ export class RoomsService {
         return { room: roomEntityToRoom(room), matchId: room.match.id };
       }
       await this.updateMembership(queryRunner, userId, room);
-      return { room: roomEntityToRoom(room) };
+      return { room: roomEntityToRoom(room), userId };
     });
   }
 

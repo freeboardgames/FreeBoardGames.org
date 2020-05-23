@@ -36,7 +36,7 @@ describe('New Room', () => {
   });
 
   it('should check-in on room', async () => {
-    const response: CheckinRoomResponse = { room: { capacity: 2, isPublic: false, gameCode: 'chess' } };
+    const response: CheckinRoomResponse = { room: { capacity: 2, isPublic: false, gameCode: 'chess' }, userId: 1 };
     request.post = jest.fn().mockReturnValue({
       set: jest
         .fn()

@@ -6,5 +6,6 @@ export interface Room {
   gameCode: string;
   capacity: number;
   isPublic: boolean;
+  creator?: User;
   users?: User[];
 }
