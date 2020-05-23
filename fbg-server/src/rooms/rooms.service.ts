@@ -60,6 +60,7 @@ export class RoomsService {
       if (room.match) {
         // Already started.
         await queryRunner.commitTransaction();
+        await queryRunner.release();
         return { room: roomEntityToRoom(room), matchId: room.match.id };
       }
       await this.updateMembership(queryRunner, userId, roomId, now);
@@ -69,6 +70,7 @@ export class RoomsService {
         return { room: roomEntityToRoom(room), matchId };
       }
       await queryRunner.commitTransaction();
+      await queryRunner.release();
       return { room: roomEntityToRoom(room) };
     } catch (err) {
       console.error(err);
@@ -174,6 +176,7 @@ export class RoomsService {
     room.match = newMatch;
     await queryRunner.manager.save(room);
     await queryRunner.commitTransaction();
+    await queryRunner.release();
     return id;
   }
 
