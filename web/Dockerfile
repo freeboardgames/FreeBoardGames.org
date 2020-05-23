@@ -24,6 +24,7 @@ ARG GA_TRACKING_CODE
 ARG GTM_ID
 ARG BGIO_SERVER_URL
 ARG GIT_REV
+ARG SENTRY_DSN
 COPY --chown=appuser .babelrc next.config.js /appdata/
 COPY --chown=appuser static /appdata/static
 RUN yarn run build
