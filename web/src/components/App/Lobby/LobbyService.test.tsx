@@ -2,7 +2,6 @@ import { LobbyService } from './LobbyService';
 import request from 'superagent';
 import { NewRoomResponse } from 'dto/rooms/NewRoomResponse';
 import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
-import { NewUserResponse } from 'dto/users/NewUserResponse';
 import { Match } from 'dto/match/Match';
 
 describe('New Room', () => {
