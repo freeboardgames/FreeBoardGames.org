@@ -8,9 +8,8 @@ async function bootstrap() {
     logger: ['log', 'error', 'warn', 'debug', 'verbose'],
   });
 
-  // FIXME do we need this or anything comparable for gql?
-  // app.use(cookieParser());
-  // app.use(csurf({ cookie: true }));
+  app.use(cookieParser());
+  app.use(csurf({ cookie: true }));
   app.enableCors();
 
   await app.listen(3001);

@@ -30,7 +30,7 @@ const CONNECTION: any = process.env.POSTGRES_URL
       ...CONNECTION,
       autoLoadEntities: true,
       synchronize: true,
-      logging: true,
+      logging: false,
     }),
     GraphQLModule.forRoot({
       debug: true,

@@ -3,7 +3,7 @@ import { User } from '../models/User.model';
 import { UsersService } from './users.service';
 import { JwtPayload } from './definitions';
 import { JwtService } from '@nestjs/jwt';
-import { CurrentUser, JwtAuthGuard } from './jwt-auth-guard';
+import { CurrentUser, JwtAuthGuard } from './gql-auth-guard';
 import { UseGuards } from '@nestjs/common';
 
 @Resolver((of) => User)

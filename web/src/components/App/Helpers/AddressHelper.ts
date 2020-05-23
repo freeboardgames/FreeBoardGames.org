@@ -9,6 +9,6 @@ export default class AddressHelper {
   }
 
   public static getGraphQLServerAddress() {
-    return process.env.GQL_SERVER_URL || `http://localhost:3001/graphql`;
+    return process.env.GQL_SERVER_URL || `http://localhost:3000/graphql`;
   }
 }

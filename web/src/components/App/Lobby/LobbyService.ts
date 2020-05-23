@@ -166,6 +166,7 @@ export class LobbyService {
         headers: {
           ...headers,
           authorization: jwtToken ? `Bearer ${jwtToken}` : '',
+          'CSRF-Token': Cookies.get('XSRF-TOKEN'),
         },
       };
     });
