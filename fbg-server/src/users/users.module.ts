@@ -16,10 +16,8 @@ import { UsersResolver } from './users.resolver';
     JwtModule.register({
       secret: JWT_SECRET,
     }),
-    // UsersService
   ],
   providers: [UsersResolver, UsersService, JwtStrategy],
-  // controllers: [UsersController],
   exports: [UsersService],
 })
 export class UsersModule {}

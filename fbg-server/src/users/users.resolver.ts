@@ -3,6 +3,8 @@ import { User } from 'src/models/User.model';
 import { UsersService } from './users.service';
 import { JwtPayload } from './definitions';
 import { JwtService } from '@nestjs/jwt';
+import { CurrentUser, JwtAuthGuard } from './jwt-auth-guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -24,8 +26,8 @@ export class UsersResolver {
   }
 
   @Query((returns) => User)
-  async user(@Args('id', { type: () => Int }) id: number) {
-    const user = await this.usersService.getById(id);
-    return user;
+  @UseGuards(JwtAuthGuard)
+  async user(@CurrentUser() user: User) {
+    return this.usersService.getById(user.id);
   }
 }

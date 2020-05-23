@@ -11,25 +11,25 @@ import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
 import { UpdateUserRequest } from 'dto/users/UpdateUserRequest';
 import { NextRoomRequest } from 'dto/match/NextRoomRequest';
-import { Mutation } from '@apollo/react-components';
+import { ApolloClient } from 'apollo-client';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { NewUser, NewUserVariables } from 'queries/NewUser';
 import gql from 'graphql-tag';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
+
+const httpLink = createHttpLink({
+  uri: `${AddressHelper.getFbgServerAddress()}/graphql`,
+});
 
 export interface IPlayerInRoom {
   playerID: number;
   name: string;
 }
 export class LobbyService {
-  static NEW_USER = gql`
-    mutation NewUser($nickname: String!) {
-      newUser(nickname: $nickname) {
-        jwtToken
-      }
-    }
-  `;
-
   private static catchUnauthorized = (dispatch: Dispatch<SyncUserAction>) => (e: request.ResponseError) => {
     if (e.response.unauthorized) {
       // invalidate the user's auth and adjust our store accordingly:
@@ -38,6 +38,27 @@ export class LobbyService {
     }
     throw e;
   };
+
+  /** sends user's nickname to backend.  backend returns the jwt token.  */
+  public static async newUser(nickname: string): Promise<string> {
+    const client = this.getClient();
+    const result = await client.mutate<NewUser, NewUserVariables>({
+      mutation: gql`
+        mutation NewUser($nickname: String!) {
+          newUser(nickname: $nickname) {
+            jwtToken
+          }
+        }
+      `,
+      variables: { nickname },
+    });
+
+    const jwtToken = result.data.newUser.jwtToken;
+    localStorage.setItem(FBG_NICKNAME_KEY, nickname);
+    localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
+
+    return jwtToken;
+  }
 
   public static async setNickname(nickname: string) {
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
@@ -81,12 +102,6 @@ export class LobbyService {
       .catch(this.catchUnauthorized(dispatch));
 
     return response.body;
-    /*const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
-    await request.post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
-      playerID: player.playerID,
-      credentials: playerCredential.credential,
-      newName,
-    });*/
   }
 
   public static async checkin(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<CheckinRoomResponse> {
@@ -141,6 +156,24 @@ export class LobbyService {
   public static invalidateUserAuth() {
     localStorage.removeItem(FBG_NICKNAME_KEY);
     localStorage.removeItem(FBG_USER_TOKEN_KEY);
+  }
+
+  public static getClient() {
+    const authLink = setContext((_, { headers }) => {
+      const jwtToken = this.getUserToken() || '';
+      // return the headers to the context so httpLink can read them
+      return {
+        headers: {
+          ...headers,
+          authorization: jwtToken ? `Bearer ${jwtToken}` : '',
+        },
+      };
+    });
+    const client = new ApolloClient({
+      link: authLink.concat(httpLink),
+      cache: new InMemoryCache(),
+    });
+    return client;
   }
 
   private static getAuthHeader() {

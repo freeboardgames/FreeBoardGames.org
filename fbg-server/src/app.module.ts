@@ -36,6 +36,7 @@ const CONNECTION: any = process.env.POSTGRES_URL
       debug: true,
       playground: true,
       autoSchemaFile: join(process.cwd(), '../common/gql/schema.gql'),
+      context: ({ req }) => ({ req }),
     }),
     UsersModule,
     RoomsModule,
