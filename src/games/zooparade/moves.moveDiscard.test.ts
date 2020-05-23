@@ -9,8 +9,7 @@ it('Discard 1 - Full Hints.', () => {
   // set up a specific board scenario
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
-    setup: () => (
-      {
+    setup: () => ({
         movelog: [],
         deck: [{
             id: 0,

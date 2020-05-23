@@ -2004,439 +2004,217 @@ it('play movePlays 3 - play already played value/color', () => {
   // set up a specific board scenario
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
-    setup: () => (
-{
+    setup: () => ({
       movelog: [],
-  deck: [
-    {
-      id: 22,
-      color: 2,
-      value: 0
-    },
-    {
-      id: 43,
-      color: 4,
-      value: 1
-    },
-    {
-      id: 27,
-      color: 2,
-      value: 3
-    },
-    {
-      id: 8,
-      color: 0,
-      value: 3
-    },
-    {
-      id: 0,
-      color: 0,
-      value: 0
-    },
-    {
-      id: 40,
-      color: 4,
-      value: 0
-    },
-    {
-      id: 25,
-      color: 2,
-      value: 2
-    },
-    {
-      id: 11,
-      color: 1,
-      value: 0
-    },
-    {
-      id: 44,
-      color: 4,
-      value: 1
-    },
-    {
-      id: 17,
-      color: 1,
-      value: 3
-    },
-    {
-      id: 37,
-      color: 3,
-      value: 3
-    },
-    {
-      id: 42,
-      color: 4,
-      value: 0
-    },
-    {
-      id: 38,
-      color: 3,
-      value: 3
-    },
-    {
-      id: 30,
-      color: 3,
-      value: 0
-    },
-    {
-      id: 12,
-      color: 1,
-      value: 0
-    },
-    {
-      id: 2,
-      color: 0,
-      value: 0
-    },
-    {
-      id: 20,
-      color: 2,
-      value: 0
-    },
-    {
-      id: 31,
-      color: 3,
-      value: 0
-    },
-    {
-      id: 13,
-      color: 1,
-      value: 1
-    },
-    {
-      id: 33,
-      color: 3,
-      value: 1
-    },
-    {
-      id: 10,
-      color: 1,
-      value: 0
-    },
-    {
-      id: 15,
-      color: 1,
-      value: 2
-    },
-    {
-      id: 4,
-      color: 0,
-      value: 1
-    },
-    {
-      id: 39,
-      color: 3,
-      value: 4
-    },
-    {
-      id: 36,
-      color: 3,
-      value: 2
-    },
-    {
-      id: 34,
-      color: 3,
-      value: 1
-    },
-    {
-      id: 47,
-      color: 4,
-      value: 3
-    },
-    {
-      id: 48,
-      color: 4,
-      value: 3
-    },
-    {
-      id: 14,
-      color: 1,
-      value: 1
-    },
-    {
-      id: 7,
-      color: 0,
-      value: 3
-    },
-    {
-      id: 45,
-      color: 4,
-      value: 2
-    },
-    {
-      id: 1,
-      color: 0,
-      value: 0
-    },
-    {
-      id: 3,
-      color: 0,
-      value: 1
-    },
-    {
-      id: 5,
-      color: 0,
-      value: 2
-    },
-    {
-      id: 29,
-      color: 2,
-      value: 4
-    },
-    {
-      id: 26,
-      color: 2,
-      value: 2
-    },
-    {
-      id: 19,
-      color: 1,
-      value: 4
-    },
-    {
-      id: 21,
-      color: 2,
-      value: 0
-    },
-    {
-      id: 6,
-      color: 0,
-      value: 2
-    },
-    {
-      id: 32,
-      color: 3,
-      value: 0
-    },
-    {
-      id: 49,
-      color: 4,
-      value: 4
-    },
-    {
-      id: 18,
-      color: 1,
-      value: 3
-    },
-    {
-      id: 28,
-      color: 2,
-      value: 3
-    },
-    {
-      id: 41,
-      color: 4,
-      value: 0
-    },
-    {
-      id: 9,
-      color: 0,
-      value: 4
-    },
-    {
-      id: 16,
-      color: 1,
-      value: 2
-    },
-    {
-      id: 23,
-      color: 2,
-      value: 1
-    },
-    {
-      id: 35,
-      color: 3,
-      value: 2
-    },
-    {
-      id: 46,
-      color: 4,
-      value: 2
-    },
-    {
-      id: 24,
-      color: 2,
-      value: 1
-    }
-  ],
-  deckindex: 31,
-  trash: [
-    {
-      id: 35,
-      color: 3,
-      value: 2
-    },
-    {
-      id: 18,
-      color: 1,
-      value: 3
-    },
-    {
-      id: 6,
-      value: 2,
-      color: 0
-    },
-    {
-      id: 29,
-      value: 4,
-      color: 2
-    }
-  ],
-  piles: [
-    [],
-    [],
-    [
-      {
-        id: 21,
-        value: 0,
-        color: 2
-      },
-      {
-        id: 24,
-        color: 2,
-        value: 1
-      }
-    ],
-    [
-      {
-        id: 32,
-        value: 0,
-        color: 3
-      }
-    ],
-    [
-      {
-        id: 41,
-        color: 4,
-        value: 0
-      }
-    ]
-  ],
-  hands: [
-    {
-      player: 0,
-      cards: [
-        {
-          id: 5,
-          value: 2,
-          color: 0
+      deck: [{
+          id: 22,
+          color: 2,
+          value: 0
         },
         {
-          id: 46,
+          id: 43,
+          color: 4,
+          value: 1
+        },
+        {
+          id: 27,
+          color: 2,
+          value: 3
+        },
+        {
+          id: 8,
+          color: 0,
+          value: 3
+        },
+        {
+          id: 0,
+          color: 0,
+          value: 0
+        },
+        {
+          id: 40,
+          color: 4,
+          value: 0
+        },
+        {
+          id: 25,
+          color: 2,
+          value: 2
+        },
+        {
+          id: 11,
+          color: 1,
+          value: 0
+        },
+        {
+          id: 44,
+          color: 4,
+          value: 1
+        },
+        {
+          id: 17,
+          color: 1,
+          value: 3
+        },
+        {
+          id: 37,
+          color: 3,
+          value: 3
+        },
+        {
+          id: 42,
+          color: 4,
+          value: 0
+        },
+        {
+          id: 38,
+          color: 3,
+          value: 3
+        },
+        {
+          id: 30,
+          color: 3,
+          value: 0
+        },
+        {
+          id: 12,
+          color: 1,
+          value: 0
+        },
+        {
+          id: 2,
+          color: 0,
+          value: 0
+        },
+        {
+          id: 20,
+          color: 2,
+          value: 0
+        },
+        {
+          id: 31,
+          color: 3,
+          value: 0
+        },
+        {
+          id: 13,
+          color: 1,
+          value: 1
+        },
+        {
+          id: 33,
+          color: 3,
+          value: 1
+        },
+        {
+          id: 10,
+          color: 1,
+          value: 0
+        },
+        {
+          id: 15,
+          color: 1,
+          value: 2
+        },
+        {
+          id: 4,
+          color: 0,
+          value: 1
+        },
+        {
+          id: 39,
+          color: 3,
+          value: 4
+        },
+        {
+          id: 36,
+          color: 3,
+          value: 2
+        },
+        {
+          id: 34,
+          color: 3,
+          value: 1
+        },
+        {
+          id: 47,
+          color: 4,
+          value: 3
+        },
+        {
+          id: 48,
+          color: 4,
+          value: 3
+        },
+        {
+          id: 14,
+          color: 1,
+          value: 1
+        },
+        {
+          id: 7,
+          color: 0,
+          value: 3
+        },
+        {
+          id: 45,
           color: 4,
           value: 2
         },
         {
-          id: 26,
-          value: 2,
-          color: 2
-        },
-        {
-          id: 23,
-          color: 2,
-          value: 1
-        },
-        {
-          id: 16,
-          color: 1,
-          value: 2
-        }
-      ],
-      hints: [
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        }
-      ]
-    },
-    {
-      player: 1,
-      cards: [
-        {
-          id: 9,
+          id: 1,
           color: 0,
-          value: 4
+          value: 0
         },
         {
           id: 3,
-          value: 1,
-          color: 0
+          color: 0,
+          value: 1
+        },
+        {
+          id: 5,
+          color: 0,
+          value: 2
+        },
+        {
+          id: 29,
+          color: 2,
+          value: 4
+        },
+        {
+          id: 26,
+          color: 2,
+          value: 2
+        },
+        {
+          id: 19,
+          color: 1,
+          value: 4
+        },
+        {
+          id: 21,
+          color: 2,
+          value: 0
+        },
+        {
+          id: 6,
+          color: 0,
+          value: 2
+        },
+        {
+          id: 32,
+          color: 3,
+          value: 0
+        },
+        {
+          id: 49,
+          color: 4,
+          value: 4
+        },
+        {
+          id: 18,
+          color: 1,
+          value: 3
         },
         {
           id: 28,
@@ -2444,105 +2222,313 @@ it('play movePlays 3 - play already played value/color', () => {
           value: 3
         },
         {
-          id: 19,
-          value: 4,
-          color: 1
+          id: 41,
+          color: 4,
+          value: 0
         },
         {
-          id: 49,
-          color: 4,
+          id: 9,
+          color: 0,
           value: 4
+        },
+        {
+          id: 16,
+          color: 1,
+          value: 2
+        },
+        {
+          id: 23,
+          color: 2,
+          value: 1
+        },
+        {
+          id: 35,
+          color: 3,
+          value: 2
+        },
+        {
+          id: 46,
+          color: 4,
+          value: 2
+        },
+        {
+          id: 24,
+          color: 2,
+          value: 1
         }
       ],
-      hints: [
+      deckindex: 31,
+      trash: [{
+          id: 35,
+          color: 3,
+          value: 2
+        },
         {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
+          id: 18,
+          color: 1,
+          value: 3
+        },
+        {
+          id: 6,
+          value: 2,
+          color: 0
+        },
+        {
+          id: 29,
+          value: 4,
+          color: 2
+        }
+      ],
+      piles: [
+        [],
+        [],
+        [{
+            id: 21,
+            value: 0,
+            color: 2
+          },
+          {
+            id: 24,
+            color: 2,
+            value: 1
+          }
+        ],
+        [{
+          id: 32,
+          value: 0,
+          color: 3
+        }],
+        [{
+          id: 41,
+          color: 4,
+          value: 0
+        }]
+      ],
+      hands: [{
+          player: 0,
+          cards: [{
+              id: 5,
+              value: 2,
+              color: 0
+            },
+            {
+              id: 46,
+              color: 4,
+              value: 2
+            },
+            {
+              id: 26,
+              value: 2,
+              color: 2
+            },
+            {
+              id: 23,
+              color: 2,
+              value: 1
+            },
+            {
+              id: 16,
+              color: 1,
+              value: 2
+            }
           ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
+          hints: [{
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
           ]
         },
         {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
+          player: 1,
+          cards: [{
+              id: 9,
+              color: 0,
+              value: 4
+            },
+            {
+              id: 3,
+              value: 1,
+              color: 0
+            },
+            {
+              id: 28,
+              color: 2,
+              value: 3
+            },
+            {
+              id: 19,
+              value: 4,
+              color: 1
+            },
+            {
+              id: 49,
+              color: 4,
+              value: 4
+            }
           ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
+          hints: [{
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              color: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              value: [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
           ]
         }
-      ]
-    }
-  ],
-  countdown: 3,
-  treats: 8,
+      ],
+      countdown: 3,
+      treats: 8,
 
-}
-    ),
+    }),
   }
 
   const client = Client({
@@ -2559,295 +2545,251 @@ it('play movePlays 3 - play already played value/color', () => {
 
   // the board should look like this now
   delete G.movelog;
-  expect(G).toEqual( {
-  deck: [
-    {
-      id: 22,
-      color: 2,
-      value: 0
-    },
-    {
-      id: 43,
-      color: 4,
-      value: 1
-    },
-    {
-      id: 27,
-      color: 2,
-      value: 3
-    },
-    {
-      id: 8,
-      color: 0,
-      value: 3
-    },
-    {
-      id: 0,
-      color: 0,
-      value: 0
-    },
-    {
-      id: 40,
-      color: 4,
-      value: 0
-    },
-    {
-      id: 25,
-      color: 2,
-      value: 2
-    },
-    {
-      id: 11,
-      color: 1,
-      value: 0
-    },
-    {
-      id: 44,
-      color: 4,
-      value: 1
-    },
-    {
-      id: 17,
-      color: 1,
-      value: 3
-    },
-    {
-      id: 37,
-      color: 3,
-      value: 3
-    },
-    {
-      id: 42,
-      color: 4,
-      value: 0
-    },
-    {
-      id: 38,
-      color: 3,
-      value: 3
-    },
-    {
-      id: 30,
-      color: 3,
-      value: 0
-    },
-    {
-      id: 12,
-      color: 1,
-      value: 0
-    },
-    {
-      id: 2,
-      color: 0,
-      value: 0
-    },
-    {
-      id: 20,
-      color: 2,
-      value: 0
-    },
-    {
-      id: 31,
-      color: 3,
-      value: 0
-    },
-    {
-      id: 13,
-      color: 1,
-      value: 1
-    },
-    {
-      id: 33,
-      color: 3,
-      value: 1
-    },
-    {
-      id: 10,
-      color: 1,
-      value: 0
-    },
-    {
-      id: 15,
-      color: 1,
-      value: 2
-    },
-    {
-      id: 4,
-      color: 0,
-      value: 1
-    },
-    {
-      id: 39,
-      color: 3,
-      value: 4
-    },
-    {
-      id: 36,
-      color: 3,
-      value: 2
-    },
-    {
-      id: 34,
-      color: 3,
-      value: 1
-    },
-    {
-      id: 47,
-      color: 4,
-      value: 3
-    },
-    {
-      id: 48,
-      color: 4,
-      value: 3
-    },
-    {
-      id: 14,
-      color: 1,
-      value: 1
-    },
-    {
-      id: 7,
-      color: 0,
-      value: 3
-    },
-    {
-      id: 45,
-      color: 4,
-      value: 2
-    },
-    {
-      id: 1,
-      color: 0,
-      value: 0
-    },
-    {
-      id: 3,
-      color: 0,
-      value: 1
-    },
-    {
-      id: 5,
-      color: 0,
-      value: 2
-    },
-    {
-      id: 29,
-      color: 2,
-      value: 4
-    },
-    {
-      id: 26,
-      color: 2,
-      value: 2
-    },
-    {
-      id: 19,
-      color: 1,
-      value: 4
-    },
-    {
-      id: 21,
-      color: 2,
-      value: 0
-    },
-    {
-      id: 6,
-      color: 0,
-      value: 2
-    },
-    {
-      id: 32,
-      color: 3,
-      value: 0
-    },
-    {
-      id: 49,
-      color: 4,
-      value: 4
-    },
-    {
-      id: 18,
-      color: 1,
-      value: 3
-    },
-    {
-      id: 28,
-      color: 2,
-      value: 3
-    },
-    {
-      id: 41,
-      color: 4,
-      value: 0
-    },
-    {
-      id: 9,
-      color: 0,
-      value: 4
-    },
-    {
-      id: 16,
-      color: 1,
-      value: 2
-    },
-    {
-      id: 23,
-      color: 2,
-      value: 1
-    },
-    {
-      id: 35,
-      color: 3,
-      value: 2
-    },
-    {
-      id: 46,
-      color: 4,
-      value: 2
-    },
-    {
-      id: 24,
-      color: 2,
-      value: 1
-    }
-  ],
-  deckindex: 30,
-  trash: [
-    {
-      id: 35,
-      color: 3,
-      value: 2
-    },
-    {
-      id: 18,
-      color: 1,
-      value: 3
-    },
-    {
-      id: 6,
-      value: 2,
-      color: 0
-    },
-    {
-      id: 29,
-      value: 4,
-      color: 2
-    },
-    {
-      id: 23,
-      color: 2,
-      value: 1
-    }
-  ],
-  piles: [
-    [],
-    [],
-    [
+  expect(G).toEqual({
+    deck: [{
+        id: 22,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 43,
+        color: 4,
+        value: 1
+      },
+      {
+        id: 27,
+        color: 2,
+        value: 3
+      },
+      {
+        id: 8,
+        color: 0,
+        value: 3
+      },
+      {
+        id: 0,
+        color: 0,
+        value: 0
+      },
+      {
+        id: 40,
+        color: 4,
+        value: 0
+      },
+      {
+        id: 25,
+        color: 2,
+        value: 2
+      },
+      {
+        id: 11,
+        color: 1,
+        value: 0
+      },
+      {
+        id: 44,
+        color: 4,
+        value: 1
+      },
+      {
+        id: 17,
+        color: 1,
+        value: 3
+      },
+      {
+        id: 37,
+        color: 3,
+        value: 3
+      },
+      {
+        id: 42,
+        color: 4,
+        value: 0
+      },
+      {
+        id: 38,
+        color: 3,
+        value: 3
+      },
+      {
+        id: 30,
+        color: 3,
+        value: 0
+      },
+      {
+        id: 12,
+        color: 1,
+        value: 0
+      },
+      {
+        id: 2,
+        color: 0,
+        value: 0
+      },
+      {
+        id: 20,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 31,
+        color: 3,
+        value: 0
+      },
+      {
+        id: 13,
+        color: 1,
+        value: 1
+      },
+      {
+        id: 33,
+        color: 3,
+        value: 1
+      },
+      {
+        id: 10,
+        color: 1,
+        value: 0
+      },
+      {
+        id: 15,
+        color: 1,
+        value: 2
+      },
+      {
+        id: 4,
+        color: 0,
+        value: 1
+      },
+      {
+        id: 39,
+        color: 3,
+        value: 4
+      },
+      {
+        id: 36,
+        color: 3,
+        value: 2
+      },
+      {
+        id: 34,
+        color: 3,
+        value: 1
+      },
+      {
+        id: 47,
+        color: 4,
+        value: 3
+      },
+      {
+        id: 48,
+        color: 4,
+        value: 3
+      },
+      {
+        id: 14,
+        color: 1,
+        value: 1
+      },
+      {
+        id: 7,
+        color: 0,
+        value: 3
+      },
+      {
+        id: 45,
+        color: 4,
+        value: 2
+      },
+      {
+        id: 1,
+        color: 0,
+        value: 0
+      },
+      {
+        id: 3,
+        color: 0,
+        value: 1
+      },
+      {
+        id: 5,
+        color: 0,
+        value: 2
+      },
+      {
+        id: 29,
+        color: 2,
+        value: 4
+      },
+      {
+        id: 26,
+        color: 2,
+        value: 2
+      },
+      {
+        id: 19,
+        color: 1,
+        value: 4
+      },
       {
         id: 21,
-        value: 0,
-        color: 2
+        color: 2,
+        value: 0
+      },
+      {
+        id: 6,
+        color: 0,
+        value: 2
+      },
+      {
+        id: 32,
+        color: 3,
+        value: 0
+      },
+      {
+        id: 49,
+        color: 4,
+        value: 4
+      },
+      {
+        id: 18,
+        color: 1,
+        value: 3
+      },
+      {
+        id: 28,
+        color: 2,
+        value: 3
+      },
+      {
+        id: 41,
+        color: 4,
+        value: 0
+      },
+      {
+        id: 9,
+        color: 0,
+        value: 4
+      },
+      {
+        id: 16,
+        color: 1,
+        value: 2
+      },
+      {
+        id: 23,
+        color: 2,
+        value: 1
+      },
+      {
+        id: 35,
+        color: 3,
+        value: 2
+      },
+      {
+        id: 46,
+        color: 4,
+        value: 2
       },
       {
         id: 24,
@@ -2855,250 +2797,282 @@ it('play movePlays 3 - play already played value/color', () => {
         value: 1
       }
     ],
-    [
+    deckindex: 30,
+    trash: [{
+        id: 35,
+        color: 3,
+        value: 2
+      },
       {
-        id: 32,
-        value: 0,
-        color: 3
+        id: 18,
+        color: 1,
+        value: 3
+      },
+      {
+        id: 6,
+        value: 2,
+        color: 0
+      },
+      {
+        id: 29,
+        value: 4,
+        color: 2
+      },
+      {
+        id: 23,
+        color: 2,
+        value: 1
       }
     ],
-    [
-      {
-        id: 41,
-        color: 4,
-        value: 0
-      }
-    ]
-  ],
-  hands: [
-    {
-      player: 0,
-      cards: [
-        {
-          id: 5,
-          value: 2,
-          color: 0
-        },
-        {
-          id: 46,
-          color: 4,
-          value: 2
-        },
-        {
-          id: 26,
-          value: 2,
+    piles: [
+      [],
+      [],
+      [{
+          id: 21,
+          value: 0,
           color: 2
         },
         {
-          id: 1,
-          value: 0,
-          color: 0
-        },
-        {
-          id: 16,
-          color: 1,
-          value: 2
-        }
-      ],
-      hints: [
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        }
-      ]
-    },
-    {
-      player: 1,
-      cards: [
-        {
-          id: 9,
-          color: 0,
-          value: 4
-        },
-        {
-          id: 3,
-          value: 1,
-          color: 0
-        },
-        {
-          id: 28,
+          id: 24,
           color: 2,
-          value: 3
-        },
-        {
-          id: 19,
-          value: 4,
-          color: 1
-        },
-        {
-          id: 49,
-          color: 4,
-          value: 4
+          value: 1
         }
       ],
-      hints: [
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          color: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          value: [
-            0,
-            0,
-            0,
-            0,
-            0
-          ]
-        }
-      ]
-    }
-  ],
-  countdown: 2,
-  treats: 8,
-}  );
+      [{
+        id: 32,
+        value: 0,
+        color: 3
+      }],
+      [{
+        id: 41,
+        color: 4,
+        value: 0
+      }]
+    ],
+    hands: [{
+        player: 0,
+        cards: [{
+            id: 5,
+            value: 2,
+            color: 0
+          },
+          {
+            id: 46,
+            color: 4,
+            value: 2
+          },
+          {
+            id: 26,
+            value: 2,
+            color: 2
+          },
+          {
+            id: 1,
+            value: 0,
+            color: 0
+          },
+          {
+            id: 16,
+            color: 1,
+            value: 2
+          }
+        ],
+        hints: [{
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      {
+        player: 1,
+        cards: [{
+            id: 9,
+            color: 0,
+            value: 4
+          },
+          {
+            id: 3,
+            value: 1,
+            color: 0
+          },
+          {
+            id: 28,
+            color: 2,
+            value: 3
+          },
+          {
+            id: 19,
+            value: 4,
+            color: 1
+          },
+          {
+            id: 49,
+            color: 4,
+            value: 4
+          }
+        ],
+        hints: [{
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ],
+    countdown: 2,
+    treats: 8,
+  });
 })
 
 it('play movePlays 4 - finish a pile (gain treat)', () => {
@@ -3109,7 +3083,7 @@ it('play movePlays 4 - finish a pile (gain treat)', () => {
     setup: () => (
 
       {
-      movelog: [],
+        movelog: [],
         deck: [{
             id: 28,
             color: 2,
@@ -4212,585 +4186,8 @@ it('play movePlays 5 - finish a pile with full treats', () => {
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
 
-    setup: () => (
-      {
-        deck: [
-          {
-            id: 6,
-            color: 0,
-            value: 2
-          },
-          {
-            id: 5,
-            color: 0,
-            value: 2
-          },
-          {
-            id: 11,
-            color: 1,
-            value: 0
-          },
-          {
-            id: 14,
-            color: 1,
-            value: 1
-          },
-          {
-            id: 10,
-            color: 1,
-            value: 0
-          },
-          {
-            id: 13,
-            color: 1,
-            value: 1
-          },
-          {
-            id: 18,
-            color: 1,
-            value: 3
-          },
-          {
-            id: 35,
-            color: 3,
-            value: 2
-          },
-          {
-            id: 2,
-            color: 0,
-            value: 0
-          },
-          {
-            id: 17,
-            color: 1,
-            value: 3
-          },
-          {
-            id: 27,
-            color: 2,
-            value: 3
-          },
-          {
-            id: 33,
-            color: 3,
-            value: 1
-          },
-          {
-            id: 38,
-            color: 3,
-            value: 3
-          },
-          {
-            id: 7,
-            color: 0,
-            value: 3
-          },
-          {
-            id: 25,
-            color: 2,
-            value: 2
-          },
-          {
-            id: 37,
-            color: 3,
-            value: 3
-          },
-          {
-            id: 3,
-            color: 0,
-            value: 1
-          },
-          {
-            id: 39,
-            color: 3,
-            value: 4
-          },
-          {
-            id: 45,
-            color: 4,
-            value: 2
-          },
-          {
-            id: 24,
-            color: 2,
-            value: 1
-          },
-          {
-            id: 29,
-            color: 2,
-            value: 4
-          },
-          {
-            id: 30,
-            color: 3,
-            value: 0
-          },
-          {
-            id: 23,
-            color: 2,
-            value: 1
-          },
-          {
-            id: 15,
-            color: 1,
-            value: 2
-          },
-          {
-            id: 44,
-            color: 4,
-            value: 1
-          },
-          {
-            id: 31,
-            color: 3,
-            value: 0
-          },
-          {
-            id: 32,
-            color: 3,
-            value: 0
-          },
-          {
-            id: 28,
-            color: 2,
-            value: 3
-          },
-          {
-            id: 41,
-            color: 4,
-            value: 0
-          },
-          {
-            id: 49,
-            color: 4,
-            value: 4
-          },
-          {
-            id: 9,
-            color: 0,
-            value: 4
-          },
-          {
-            id: 47,
-            color: 4,
-            value: 3
-          },
-          {
-            id: 40,
-            color: 4,
-            value: 0
-          },
-          {
-            id: 34,
-            color: 3,
-            value: 1
-          },
-          {
-            id: 46,
-            color: 4,
-            value: 2
-          },
-          {
-            id: 48,
-            color: 4,
-            value: 3
-          },
-          {
-            id: 43,
-            color: 4,
-            value: 1
-          },
-          {
-            id: 16,
-            color: 1,
-            value: 2
-          },
-          {
-            id: 1,
-            color: 0,
-            value: 0
-          },
-          {
-            id: 26,
-            color: 2,
-            value: 2
-          },
-          {
-            id: 8,
-            color: 0,
-            value: 3
-          },
-          {
-            id: 42,
-            color: 4,
-            value: 0
-          },
-          {
-            id: 36,
-            color: 3,
-            value: 2
-          },
-          {
-            id: 12,
-            color: 1,
-            value: 0
-          },
-          {
-            id: 21,
-            color: 2,
-            value: 0
-          },
-          {
-            id: 22,
-            color: 2,
-            value: 0
-          },
-          {
-            id: 0,
-            color: 0,
-            value: 0
-          },
-          {
-            id: 20,
-            color: 2,
-            value: 0
-          },
-          {
-            id: 19,
-            color: 1,
-            value: 4
-          },
-          {
-            id: 4,
-            color: 0,
-            value: 1
-          }
-        ],
-        deckindex: 27,
-        trash: [
-          {
-            id: 20,
-            color: 2,
-            value: 0
-          },
-          {
-            id: 21,
-            color: 2,
-            value: 0
-          },
-          {
-            id: 34,
-            value: 1,
-            color: 3
-          },
-          {
-            id: 1,
-            value: 0,
-            color: 0
-          }
-        ],
-        piles: [
-          [
-            {
-              id: 0,
-              color: 0,
-              value: 0
-            },
-            {
-              id: 4,
-              color: 0,
-              value: 1
-            }
-          ],
-          [
-            {
-              id: 12,
-              color: 1,
-              value: 0
-            }
-          ],
-          [
-            {
-              id: 22,
-              color: 2,
-              value: 0
-            }
-          ],
-          [],
-          [
-            {
-              id: 42,
-              color: 4,
-              value: 0
-            },
-            {
-              id: 43,
-              value: 1,
-              color: 4
-            },
-            {
-              id: 46,
-              value: 2,
-              color: 4
-            },
-            {
-              id: 48,
-              value: 3,
-              color: 4
-            }
-          ]
-        ],
-        hands: [
-          {
-            player: 0,
-            cards: [
-              {
-                id: 49,
-                value: 4,
-                color: 4
-              },
-              {
-                id: 19,
-                color: 1,
-                value: 4
-              },
-              {
-                id: 47,
-                value: 3,
-                color: 4
-              },
-              {
-                id: 16,
-                value: 2,
-                color: 1
-              },
-              {
-                id: 26,
-                value: 2,
-                color: 2
-              }
-            ],
-            hints: [
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              }
-            ]
-          },
-          {
-            player: 1,
-            cards: [
-              {
-                id: 40,
-                value: 0,
-                color: 4
-              },
-              {
-                id: 9,
-                value: 4,
-                color: 0
-              },
-              {
-                id: 36,
-                color: 3,
-                value: 2
-              },
-              {
-                id: 41,
-                value: 0,
-                color: 4
-              },
-              {
-                id: 8,
-                color: 0,
-                value: 3
-              }
-            ],
-            hints: [
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              }
-            ]
-          }
-        ],
-        countdown: 3,
-        treats: 8,
-        movelog: []
-      }
-    ),
-  }
-
-  const client = Client({
-    game: ZooParadeCustomScenario,
-  });
-
-  client.moves.movePlay(0); // Player 1
-
-  // get the latest game state
-  const {
-    G,
-    ctx
-  } = client.store.getState();
-
-  // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual(
-    {
-      deck: [
-        {
+    setup: () => ({
+      deck: [{
           id: 6,
           color: 0,
           value: 2
@@ -5041,9 +4438,8 @@ it('play movePlays 5 - finish a pile with full treats', () => {
           value: 1
         }
       ],
-      deckindex: 26,
-      trash: [
-        {
+      deckindex: 27,
+      trash: [{
           id: 20,
           color: 2,
           value: 0
@@ -5065,8 +4461,7 @@ it('play movePlays 5 - finish a pile with full treats', () => {
         }
       ],
       piles: [
-        [
-          {
+        [{
             id: 0,
             color: 0,
             value: 0
@@ -5077,23 +4472,18 @@ it('play movePlays 5 - finish a pile with full treats', () => {
             value: 1
           }
         ],
-        [
-          {
-            id: 12,
-            color: 1,
-            value: 0
-          }
-        ],
-        [
-          {
-            id: 22,
-            color: 2,
-            value: 0
-          }
-        ],
+        [{
+          id: 12,
+          color: 1,
+          value: 0
+        }],
+        [{
+          id: 22,
+          color: 2,
+          value: 0
+        }],
         [],
-        [
-          {
+        [{
             id: 42,
             color: 4,
             value: 0
@@ -5112,22 +4502,15 @@ it('play movePlays 5 - finish a pile with full treats', () => {
             id: 48,
             value: 3,
             color: 4
-          },
-          {
-            id: 49,
-            value: 4,
-            color: 4
           }
         ]
       ],
-      hands: [
-        {
+      hands: [{
           player: 0,
-          cards: [
-            {
-              id: 28,
-              value: 3,
-              color: 2
+          cards: [{
+              id: 49,
+              value: 4,
+              color: 4
             },
             {
               id: 19,
@@ -5150,8 +4533,7 @@ it('play movePlays 5 - finish a pile with full treats', () => {
               color: 2
             }
           ],
-          hints: [
-            {
+          hints: [{
               color: [
                 0,
                 0,
@@ -5235,8 +4617,7 @@ it('play movePlays 5 - finish a pile with full treats', () => {
         },
         {
           player: 1,
-          cards: [
-            {
+          cards: [{
               id: 40,
               value: 0,
               color: 4
@@ -5262,8 +4643,7 @@ it('play movePlays 5 - finish a pile with full treats', () => {
               value: 3
             }
           ],
-          hints: [
-            {
+          hints: [{
               color: [
                 0,
                 0,
@@ -5348,723 +4728,15 @@ it('play movePlays 5 - finish a pile with full treats', () => {
       ],
       countdown: 3,
       treats: 8,
-    }
-  );
-})
-
-//TODO
-it('play movePlays 6 - play when no more cards on deck', () => {
-  // set up a specifc board scenario
-  const ZooParadeCustomScenario = {
-    ...ZooParadeGame,
-
-    setup: () => (
-      {
-        deck: [
-          {
-            id: 8,
-            color: 0,
-            value: 3
-          },
-          {
-            id: 28,
-            color: 2,
-            value: 3
-          },
-          {
-            id: 18,
-            color: 1,
-            value: 3
-          },
-          {
-            id: 23,
-            color: 2,
-            value: 1
-          },
-          {
-            id: 30,
-            color: 3,
-            value: 0
-          },
-          {
-            id: 22,
-            color: 2,
-            value: 0
-          },
-          {
-            id: 48,
-            color: 4,
-            value: 3
-          },
-          {
-            id: 44,
-            color: 4,
-            value: 1
-          },
-          {
-            id: 6,
-            color: 0,
-            value: 2
-          },
-          {
-            id: 36,
-            color: 3,
-            value: 2
-          },
-          {
-            id: 16,
-            color: 1,
-            value: 2
-          },
-          {
-            id: 32,
-            color: 3,
-            value: 0
-          },
-          {
-            id: 26,
-            color: 2,
-            value: 2
-          },
-          {
-            id: 39,
-            color: 3,
-            value: 4
-          },
-          {
-            id: 5,
-            color: 0,
-            value: 2
-          },
-          {
-            id: 14,
-            color: 1,
-            value: 1
-          },
-          {
-            id: 20,
-            color: 2,
-            value: 0
-          },
-          {
-            id: 47,
-            color: 4,
-            value: 3
-          },
-          {
-            id: 3,
-            color: 0,
-            value: 1
-          },
-          {
-            id: 15,
-            color: 1,
-            value: 2
-          },
-          {
-            id: 49,
-            color: 4,
-            value: 4
-          },
-          {
-            id: 4,
-            color: 0,
-            value: 1
-          },
-          {
-            id: 11,
-            color: 1,
-            value: 0
-          },
-          {
-            id: 21,
-            color: 2,
-            value: 0
-          },
-          {
-            id: 24,
-            color: 2,
-            value: 1
-          },
-          {
-            id: 19,
-            color: 1,
-            value: 4
-          },
-          {
-            id: 42,
-            color: 4,
-            value: 0
-          },
-          {
-            id: 29,
-            color: 2,
-            value: 4
-          },
-          {
-            id: 2,
-            color: 0,
-            value: 0
-          },
-          {
-            id: 31,
-            color: 3,
-            value: 0
-          },
-          {
-            id: 9,
-            color: 0,
-            value: 4
-          },
-          {
-            id: 25,
-            color: 2,
-            value: 2
-          },
-          {
-            id: 12,
-            color: 1,
-            value: 0
-          },
-          {
-            id: 41,
-            color: 4,
-            value: 0
-          },
-          {
-            id: 43,
-            color: 4,
-            value: 1
-          },
-          {
-            id: 27,
-            color: 2,
-            value: 3
-          },
-          {
-            id: 17,
-            color: 1,
-            value: 3
-          },
-          {
-            id: 34,
-            color: 3,
-            value: 1
-          },
-          {
-            id: 13,
-            color: 1,
-            value: 1
-          },
-          {
-            id: 0,
-            color: 0,
-            value: 0
-          },
-          {
-            id: 10,
-            color: 1,
-            value: 0
-          },
-          {
-            id: 40,
-            color: 4,
-            value: 0
-          },
-          {
-            id: 35,
-            color: 3,
-            value: 2
-          },
-          {
-            id: 33,
-            color: 3,
-            value: 1
-          },
-          {
-            id: 7,
-            color: 0,
-            value: 3
-          },
-          {
-            id: 37,
-            color: 3,
-            value: 3
-          },
-          {
-            id: 46,
-            color: 4,
-            value: 2
-          },
-          {
-            id: 1,
-            color: 0,
-            value: 0
-          },
-          {
-            id: 38,
-            color: 3,
-            value: 3
-          },
-          {
-            id: 45,
-            color: 4,
-            value: 2
-          }
-        ],
-        deckindex: -1,
-        trash: [
-          {
-            id: 0,
-            value: 0,
-            color: 0
-          },
-          {
-            id: 45,
-            color: 4,
-            value: 2
-          },
-          {
-            id: 38,
-            color: 3,
-            value: 3
-          },
-          {
-            id: 12,
-            value: 0,
-            color: 1
-          },
-          {
-            id: 41,
-            value: 0,
-            color: 4
-          },
-          {
-            id: 33,
-            color: 3,
-            value: 1
-          },
-          {
-            id: 2,
-            value: 0,
-            color: 0
-          },
-          {
-            id: 42,
-            value: 0,
-            color: 4
-          },
-          {
-            id: 19,
-            value: 4,
-            color: 1
-          },
-          {
-            id: 49,
-            value: 4,
-            color: 4
-          },
-          {
-            id: 15,
-            value: 2,
-            color: 1
-          },
-          {
-            id: 11,
-            value: 0,
-            color: 1
-          },
-          {
-            id: 47,
-            value: 3,
-            color: 4
-          },
-          {
-            id: 3,
-            value: 1,
-            color: 0
-          },
-          {
-            id: 4,
-            value: 1,
-            color: 0
-          },
-          {
-            id: 17,
-            value: 3,
-            color: 1
-          },
-          {
-            id: 39,
-            value: 4,
-            color: 3
-          },
-          {
-            id: 26,
-            value: 2,
-            color: 2
-          },
-          {
-            id: 32,
-            value: 0,
-            color: 3
-          },
-          {
-            id: 16,
-            value: 2,
-            color: 1
-          },
-          {
-            id: 36,
-            value: 2,
-            color: 3
-          },
-          {
-            id: 6,
-            value: 2,
-            color: 0
-          },
-          {
-            id: 44,
-            value: 1,
-            color: 4
-          },
-          {
-            id: 48,
-            value: 3,
-            color: 4
-          },
-          {
-            id: 22,
-            value: 0,
-            color: 2
-          },
-          {
-            id: 30,
-            value: 0,
-            color: 3
-          },
-          {
-            id: 23,
-            value: 1,
-            color: 2
-          },
-          {
-            id: 5,
-            value: 2,
-            color: 0
-          }
-        ],
-        piles: [
-          [
-            {
-              id: 1,
-              color: 0,
-              value: 0
-            }
-          ],
-          [
-            {
-              id: 10,
-              color: 1,
-              value: 0
-            },
-            {
-              id: 13,
-              value: 1,
-              color: 1
-            }
-          ],
-          [
-            {
-              id: 21,
-              value: 0,
-              color: 2
-            },
-            {
-              id: 24,
-              value: 1,
-              color: 2
-            }
-          ],
-          [
-            {
-              id: 31,
-              value: 0,
-              color: 3
-            },
-            {
-              id: 34,
-              value: 1,
-              color: 3
-            },
-            {
-              id: 35,
-              color: 3,
-              value: 2
-            },
-            {
-              id: 37,
-              color: 3,
-              value: 3
-            }
-          ],
-          [
-            {
-              id: 40,
-              color: 4,
-              value: 0
-            },
-            {
-              id: 43,
-              value: 1,
-              color: 4
-            },
-            {
-              id: 46,
-              color: 4,
-              value: 2
-            }
-          ]
-        ],
-        hands: [
-          {
-            player: 0,
-            cards: [
-              {
-                id: 27,
-                value: 3,
-                color: 2
-              },
-              {
-                id: 29,
-                value: 4,
-                color: 2
-              },
-              {
-                id: 14,
-                value: 1,
-                color: 1
-              },
-              {
-                id: 25,
-                value: 2,
-                color: 2
-              },
-              {
-                id: 28,
-                value: 3,
-                color: 2
-              }
-            ],
-            hints: [
-              {
-                value: [
-                  0,
-                  0,
-                  -1,
-                  0,
-                  0
-                ],
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                value: [
-                  0,
-                  0,
-                  -1,
-                  0,
-                  0
-                ],
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                value: [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              }
-            ]
-          },
-          {
-            player: 1,
-            cards: [
-              {
-                id: 7,
-                color: 0,
-                value: 3
-              },
-              {
-                id: 20,
-                value: 0,
-                color: 2
-              },
-              {
-                id: 8,
-                value: 3,
-                color: 0
-              },
-              {
-                id: 9,
-                value: 4,
-                color: 0
-              },
-              {
-                id: 18,
-                value: 3,
-                color: 1
-              }
-            ],
-            hints: [
-              {
-                value: [
-                  0,
-                  0,
-                  -1,
-                  0,
-                  0
-                ],
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                value: [
-                  0,
-                  0,
-                  -1,
-                  0,
-                  0
-                ],
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              },
-              {
-                color: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                value: [
-                  0,
-                  0,
-                  0,
-                  0,
-                  0
-                ]
-              }
-            ]
-          }
-        ],
-        countdown: 3,
-        treats: 8,
-        movelog: []
-      }
-    ),
+      movelog: []
+    }),
   }
 
   const client = Client({
     game: ZooParadeCustomScenario,
   });
 
-  client.moves.movePlay(4); // Player 1
+  client.moves.movePlay(0); // Player 1
 
   // get the latest game state
   const {
@@ -6074,10 +4746,564 @@ it('play movePlays 6 - play when no more cards on deck', () => {
 
   // the board should look like this now
   delete G.movelog;
-  expect(G).toEqual(
-    {
-      deck: [
+  expect(G).toEqual({
+    deck: [{
+        id: 6,
+        color: 0,
+        value: 2
+      },
+      {
+        id: 5,
+        color: 0,
+        value: 2
+      },
+      {
+        id: 11,
+        color: 1,
+        value: 0
+      },
+      {
+        id: 14,
+        color: 1,
+        value: 1
+      },
+      {
+        id: 10,
+        color: 1,
+        value: 0
+      },
+      {
+        id: 13,
+        color: 1,
+        value: 1
+      },
+      {
+        id: 18,
+        color: 1,
+        value: 3
+      },
+      {
+        id: 35,
+        color: 3,
+        value: 2
+      },
+      {
+        id: 2,
+        color: 0,
+        value: 0
+      },
+      {
+        id: 17,
+        color: 1,
+        value: 3
+      },
+      {
+        id: 27,
+        color: 2,
+        value: 3
+      },
+      {
+        id: 33,
+        color: 3,
+        value: 1
+      },
+      {
+        id: 38,
+        color: 3,
+        value: 3
+      },
+      {
+        id: 7,
+        color: 0,
+        value: 3
+      },
+      {
+        id: 25,
+        color: 2,
+        value: 2
+      },
+      {
+        id: 37,
+        color: 3,
+        value: 3
+      },
+      {
+        id: 3,
+        color: 0,
+        value: 1
+      },
+      {
+        id: 39,
+        color: 3,
+        value: 4
+      },
+      {
+        id: 45,
+        color: 4,
+        value: 2
+      },
+      {
+        id: 24,
+        color: 2,
+        value: 1
+      },
+      {
+        id: 29,
+        color: 2,
+        value: 4
+      },
+      {
+        id: 30,
+        color: 3,
+        value: 0
+      },
+      {
+        id: 23,
+        color: 2,
+        value: 1
+      },
+      {
+        id: 15,
+        color: 1,
+        value: 2
+      },
+      {
+        id: 44,
+        color: 4,
+        value: 1
+      },
+      {
+        id: 31,
+        color: 3,
+        value: 0
+      },
+      {
+        id: 32,
+        color: 3,
+        value: 0
+      },
+      {
+        id: 28,
+        color: 2,
+        value: 3
+      },
+      {
+        id: 41,
+        color: 4,
+        value: 0
+      },
+      {
+        id: 49,
+        color: 4,
+        value: 4
+      },
+      {
+        id: 9,
+        color: 0,
+        value: 4
+      },
+      {
+        id: 47,
+        color: 4,
+        value: 3
+      },
+      {
+        id: 40,
+        color: 4,
+        value: 0
+      },
+      {
+        id: 34,
+        color: 3,
+        value: 1
+      },
+      {
+        id: 46,
+        color: 4,
+        value: 2
+      },
+      {
+        id: 48,
+        color: 4,
+        value: 3
+      },
+      {
+        id: 43,
+        color: 4,
+        value: 1
+      },
+      {
+        id: 16,
+        color: 1,
+        value: 2
+      },
+      {
+        id: 1,
+        color: 0,
+        value: 0
+      },
+      {
+        id: 26,
+        color: 2,
+        value: 2
+      },
+      {
+        id: 8,
+        color: 0,
+        value: 3
+      },
+      {
+        id: 42,
+        color: 4,
+        value: 0
+      },
+      {
+        id: 36,
+        color: 3,
+        value: 2
+      },
+      {
+        id: 12,
+        color: 1,
+        value: 0
+      },
+      {
+        id: 21,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 22,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 0,
+        color: 0,
+        value: 0
+      },
+      {
+        id: 20,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 19,
+        color: 1,
+        value: 4
+      },
+      {
+        id: 4,
+        color: 0,
+        value: 1
+      }
+    ],
+    deckindex: 26,
+    trash: [{
+        id: 20,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 21,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 34,
+        value: 1,
+        color: 3
+      },
+      {
+        id: 1,
+        value: 0,
+        color: 0
+      }
+    ],
+    piles: [
+      [{
+          id: 0,
+          color: 0,
+          value: 0
+        },
         {
+          id: 4,
+          color: 0,
+          value: 1
+        }
+      ],
+      [{
+        id: 12,
+        color: 1,
+        value: 0
+      }],
+      [{
+        id: 22,
+        color: 2,
+        value: 0
+      }],
+      [],
+      [{
+          id: 42,
+          color: 4,
+          value: 0
+        },
+        {
+          id: 43,
+          value: 1,
+          color: 4
+        },
+        {
+          id: 46,
+          value: 2,
+          color: 4
+        },
+        {
+          id: 48,
+          value: 3,
+          color: 4
+        },
+        {
+          id: 49,
+          value: 4,
+          color: 4
+        }
+      ]
+    ],
+    hands: [{
+        player: 0,
+        cards: [{
+            id: 28,
+            value: 3,
+            color: 2
+          },
+          {
+            id: 19,
+            color: 1,
+            value: 4
+          },
+          {
+            id: 47,
+            value: 3,
+            color: 4
+          },
+          {
+            id: 16,
+            value: 2,
+            color: 1
+          },
+          {
+            id: 26,
+            value: 2,
+            color: 2
+          }
+        ],
+        hints: [{
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      {
+        player: 1,
+        cards: [{
+            id: 40,
+            value: 0,
+            color: 4
+          },
+          {
+            id: 9,
+            value: 4,
+            color: 0
+          },
+          {
+            id: 36,
+            color: 3,
+            value: 2
+          },
+          {
+            id: 41,
+            value: 0,
+            color: 4
+          },
+          {
+            id: 8,
+            color: 0,
+            value: 3
+          }
+        ],
+        hints: [{
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ],
+    countdown: 3,
+    treats: 8,
+  });
+})
+
+//TODO
+it('play movePlays 6 - play when no more cards on deck', () => {
+  // set up a specifc board scenario
+  const ZooParadeCustomScenario = {
+    ...ZooParadeGame,
+
+    setup: () => ({
+      deck: [{
           id: 8,
           color: 0,
           value: 3
@@ -6328,9 +5554,8 @@ it('play movePlays 6 - play when no more cards on deck', () => {
           value: 2
         }
       ],
-      deckindex: -2,
-      trash: [
-        {
+      deckindex: -1,
+      trash: [{
           id: 0,
           value: 0,
           color: 0
@@ -6469,23 +5694,15 @@ it('play movePlays 6 - play when no more cards on deck', () => {
           id: 5,
           value: 2,
           color: 0
-        },
-        {
-          id: 28,
-          value: 3,
-          color: 2
         }
       ],
       piles: [
-        [
-          {
-            id: 1,
-            color: 0,
-            value: 0
-          }
-        ],
-        [
-          {
+        [{
+          id: 1,
+          color: 0,
+          value: 0
+        }],
+        [{
             id: 10,
             color: 1,
             value: 0
@@ -6496,8 +5713,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
             color: 1
           }
         ],
-        [
-          {
+        [{
             id: 21,
             value: 0,
             color: 2
@@ -6508,8 +5724,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
             color: 2
           }
         ],
-        [
-          {
+        [{
             id: 31,
             value: 0,
             color: 3
@@ -6530,8 +5745,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
             value: 3
           }
         ],
-        [
-          {
+        [{
             id: 40,
             color: 4,
             value: 0
@@ -6548,11 +5762,9 @@ it('play movePlays 6 - play when no more cards on deck', () => {
           }
         ]
       ],
-      hands: [
-        {
+      hands: [{
           player: 0,
-          cards: [
-            {
+          cards: [{
               id: 27,
               value: 3,
               color: 2
@@ -6572,10 +5784,13 @@ it('play movePlays 6 - play when no more cards on deck', () => {
               value: 2,
               color: 2
             },
-            null
-          ],
-          hints: [
             {
+              id: 28,
+              value: 3,
+              color: 2
+            }
+          ],
+          hints: [{
               value: [
                 0,
                 0,
@@ -6659,8 +5874,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
         },
         {
           player: 1,
-          cards: [
-            {
+          cards: [{
               id: 7,
               color: 0,
               value: 3
@@ -6686,8 +5900,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
               color: 1
             }
           ],
-          hints: [
-            {
+          hints: [{
               value: [
                 0,
                 0,
@@ -6770,12 +5983,709 @@ it('play movePlays 6 - play when no more cards on deck', () => {
           ]
         }
       ],
-      countdown: 2,
+      countdown: 3,
       treats: 8,
-    }
-  );
+      movelog: []
+    }),
+  }
+
+  const client = Client({
+    game: ZooParadeCustomScenario,
+  });
+
+  client.moves.movePlay(4); // Player 1
+
+  // get the latest game state
+  const {
+    G,
+    ctx
+  } = client.store.getState();
+
+  // the board should look like this now
+  delete G.movelog;
+  expect(G).toEqual({
+    deck: [{
+        id: 8,
+        color: 0,
+        value: 3
+      },
+      {
+        id: 28,
+        color: 2,
+        value: 3
+      },
+      {
+        id: 18,
+        color: 1,
+        value: 3
+      },
+      {
+        id: 23,
+        color: 2,
+        value: 1
+      },
+      {
+        id: 30,
+        color: 3,
+        value: 0
+      },
+      {
+        id: 22,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 48,
+        color: 4,
+        value: 3
+      },
+      {
+        id: 44,
+        color: 4,
+        value: 1
+      },
+      {
+        id: 6,
+        color: 0,
+        value: 2
+      },
+      {
+        id: 36,
+        color: 3,
+        value: 2
+      },
+      {
+        id: 16,
+        color: 1,
+        value: 2
+      },
+      {
+        id: 32,
+        color: 3,
+        value: 0
+      },
+      {
+        id: 26,
+        color: 2,
+        value: 2
+      },
+      {
+        id: 39,
+        color: 3,
+        value: 4
+      },
+      {
+        id: 5,
+        color: 0,
+        value: 2
+      },
+      {
+        id: 14,
+        color: 1,
+        value: 1
+      },
+      {
+        id: 20,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 47,
+        color: 4,
+        value: 3
+      },
+      {
+        id: 3,
+        color: 0,
+        value: 1
+      },
+      {
+        id: 15,
+        color: 1,
+        value: 2
+      },
+      {
+        id: 49,
+        color: 4,
+        value: 4
+      },
+      {
+        id: 4,
+        color: 0,
+        value: 1
+      },
+      {
+        id: 11,
+        color: 1,
+        value: 0
+      },
+      {
+        id: 21,
+        color: 2,
+        value: 0
+      },
+      {
+        id: 24,
+        color: 2,
+        value: 1
+      },
+      {
+        id: 19,
+        color: 1,
+        value: 4
+      },
+      {
+        id: 42,
+        color: 4,
+        value: 0
+      },
+      {
+        id: 29,
+        color: 2,
+        value: 4
+      },
+      {
+        id: 2,
+        color: 0,
+        value: 0
+      },
+      {
+        id: 31,
+        color: 3,
+        value: 0
+      },
+      {
+        id: 9,
+        color: 0,
+        value: 4
+      },
+      {
+        id: 25,
+        color: 2,
+        value: 2
+      },
+      {
+        id: 12,
+        color: 1,
+        value: 0
+      },
+      {
+        id: 41,
+        color: 4,
+        value: 0
+      },
+      {
+        id: 43,
+        color: 4,
+        value: 1
+      },
+      {
+        id: 27,
+        color: 2,
+        value: 3
+      },
+      {
+        id: 17,
+        color: 1,
+        value: 3
+      },
+      {
+        id: 34,
+        color: 3,
+        value: 1
+      },
+      {
+        id: 13,
+        color: 1,
+        value: 1
+      },
+      {
+        id: 0,
+        color: 0,
+        value: 0
+      },
+      {
+        id: 10,
+        color: 1,
+        value: 0
+      },
+      {
+        id: 40,
+        color: 4,
+        value: 0
+      },
+      {
+        id: 35,
+        color: 3,
+        value: 2
+      },
+      {
+        id: 33,
+        color: 3,
+        value: 1
+      },
+      {
+        id: 7,
+        color: 0,
+        value: 3
+      },
+      {
+        id: 37,
+        color: 3,
+        value: 3
+      },
+      {
+        id: 46,
+        color: 4,
+        value: 2
+      },
+      {
+        id: 1,
+        color: 0,
+        value: 0
+      },
+      {
+        id: 38,
+        color: 3,
+        value: 3
+      },
+      {
+        id: 45,
+        color: 4,
+        value: 2
+      }
+    ],
+    deckindex: -2,
+    trash: [{
+        id: 0,
+        value: 0,
+        color: 0
+      },
+      {
+        id: 45,
+        color: 4,
+        value: 2
+      },
+      {
+        id: 38,
+        color: 3,
+        value: 3
+      },
+      {
+        id: 12,
+        value: 0,
+        color: 1
+      },
+      {
+        id: 41,
+        value: 0,
+        color: 4
+      },
+      {
+        id: 33,
+        color: 3,
+        value: 1
+      },
+      {
+        id: 2,
+        value: 0,
+        color: 0
+      },
+      {
+        id: 42,
+        value: 0,
+        color: 4
+      },
+      {
+        id: 19,
+        value: 4,
+        color: 1
+      },
+      {
+        id: 49,
+        value: 4,
+        color: 4
+      },
+      {
+        id: 15,
+        value: 2,
+        color: 1
+      },
+      {
+        id: 11,
+        value: 0,
+        color: 1
+      },
+      {
+        id: 47,
+        value: 3,
+        color: 4
+      },
+      {
+        id: 3,
+        value: 1,
+        color: 0
+      },
+      {
+        id: 4,
+        value: 1,
+        color: 0
+      },
+      {
+        id: 17,
+        value: 3,
+        color: 1
+      },
+      {
+        id: 39,
+        value: 4,
+        color: 3
+      },
+      {
+        id: 26,
+        value: 2,
+        color: 2
+      },
+      {
+        id: 32,
+        value: 0,
+        color: 3
+      },
+      {
+        id: 16,
+        value: 2,
+        color: 1
+      },
+      {
+        id: 36,
+        value: 2,
+        color: 3
+      },
+      {
+        id: 6,
+        value: 2,
+        color: 0
+      },
+      {
+        id: 44,
+        value: 1,
+        color: 4
+      },
+      {
+        id: 48,
+        value: 3,
+        color: 4
+      },
+      {
+        id: 22,
+        value: 0,
+        color: 2
+      },
+      {
+        id: 30,
+        value: 0,
+        color: 3
+      },
+      {
+        id: 23,
+        value: 1,
+        color: 2
+      },
+      {
+        id: 5,
+        value: 2,
+        color: 0
+      },
+      {
+        id: 28,
+        value: 3,
+        color: 2
+      }
+    ],
+    piles: [
+      [{
+        id: 1,
+        color: 0,
+        value: 0
+      }],
+      [{
+          id: 10,
+          color: 1,
+          value: 0
+        },
+        {
+          id: 13,
+          value: 1,
+          color: 1
+        }
+      ],
+      [{
+          id: 21,
+          value: 0,
+          color: 2
+        },
+        {
+          id: 24,
+          value: 1,
+          color: 2
+        }
+      ],
+      [{
+          id: 31,
+          value: 0,
+          color: 3
+        },
+        {
+          id: 34,
+          value: 1,
+          color: 3
+        },
+        {
+          id: 35,
+          color: 3,
+          value: 2
+        },
+        {
+          id: 37,
+          color: 3,
+          value: 3
+        }
+      ],
+      [{
+          id: 40,
+          color: 4,
+          value: 0
+        },
+        {
+          id: 43,
+          value: 1,
+          color: 4
+        },
+        {
+          id: 46,
+          color: 4,
+          value: 2
+        }
+      ]
+    ],
+    hands: [{
+        player: 0,
+        cards: [{
+            id: 27,
+            value: 3,
+            color: 2
+          },
+          {
+            id: 29,
+            value: 4,
+            color: 2
+          },
+          {
+            id: 14,
+            value: 1,
+            color: 1
+          },
+          {
+            id: 25,
+            value: 2,
+            color: 2
+          },
+          null
+        ],
+        hints: [{
+            value: [
+              0,
+              0,
+              -1,
+              0,
+              0
+            ],
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            value: [
+              0,
+              0,
+              -1,
+              0,
+              0
+            ],
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            value: [
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      {
+        player: 1,
+        cards: [{
+            id: 7,
+            color: 0,
+            value: 3
+          },
+          {
+            id: 20,
+            value: 0,
+            color: 2
+          },
+          {
+            id: 8,
+            value: 3,
+            color: 0
+          },
+          {
+            id: 9,
+            value: 4,
+            color: 0
+          },
+          {
+            id: 18,
+            value: 3,
+            color: 1
+          }
+        ],
+        hints: [{
+            value: [
+              0,
+              0,
+              -1,
+              0,
+              0
+            ],
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            value: [
+              0,
+              0,
+              -1,
+              0,
+              0
+            ],
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            color: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            value: [
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ],
+    countdown: 2,
+    treats: 8,
+  });
 })
-
-
-
-
