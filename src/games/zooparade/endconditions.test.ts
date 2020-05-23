@@ -13,6 +13,7 @@ it('End condition - Win 25 points', () => {
         setup: () => (
 
             {
+                movelog: [],
                 deck: [{
                         id: 24,
                         color: 2,
@@ -675,6 +676,8 @@ it('End condition - Win 25 points', () => {
         ctx
     } = client.store.getState();
     // the board should look like this now
+    delete G.movelog;
+
     expect(G).toEqual({
         deck: [{
                 id: 24,
@@ -1352,6 +1355,7 @@ it('EndCondition - Countdown = 0', () => {
         ...ZooParadeGame,
 
         setup: () => ({
+            movelog: [],
             deck: [{
                     id: 17,
                     color: 1,
@@ -1852,6 +1856,7 @@ it('EndCondition - Countdown = 0', () => {
         ctx
     } = client.store.getState();
 
+    delete G.movelog;
     // the board should look like this now
     expect(G).toEqual({
         deck: [{
@@ -2370,6 +2375,7 @@ it('EndCondition - No more cards + N moves', () => {
         setup: () => (
 
             {
+                movelog: [],
                 deck: [{
                         id: 47,
                         color: 4,
@@ -3063,6 +3069,7 @@ it('EndCondition - No more cards + N moves', () => {
         ctx
     } = client.store.getState();
 
+    delete G.movelog;
     // the board should look like this now
     expect(G).toEqual(
 

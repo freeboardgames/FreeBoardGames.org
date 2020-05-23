@@ -5,12 +5,12 @@ import {
     ZooParadeGame
 } from './game';
 
-
 it('End to End - 1', () => {
     // set up a specific board scenario
     const ZooParadeCustomScenario = {
         ...ZooParadeGame,
         setup: () => ({
+            movelog: [],
             deck: [{
                     id: 33,
                     color: 3,
@@ -518,6 +518,8 @@ it('End to End - 1', () => {
         ctx
     } = client.store.getState();
     // the board should look like this now
+    delete G.movelog;
+
     expect(G).toEqual({
         deck: [{
                 id: 33,
@@ -1049,14 +1051,12 @@ it('End to End - 1', () => {
 
 })
 
-
-
-
 it('End to End - 2', () => {
     // set up a specific board scenario
     const ZooParadeCustomScenario = {
         ...ZooParadeGame,
         setup: () => ({
+                movelog: [],
                 deck: [{
                         id: 45,
                         color: 4,
@@ -1603,6 +1603,8 @@ it('End to End - 2', () => {
         ctx
     } = client.store.getState();
     // the board should look like this now
+    delete G.movelog;
+
     expect(G).toEqual(
 
         {

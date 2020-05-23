@@ -11,6 +11,7 @@ it('Hint Color 1 - Good hint.', () => {
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
     setup: () => ({
+      movelog: [],
       deck: [{
           id: 48,
           color: 4,
@@ -506,6 +507,7 @@ it('Hint Color 1 - Good hint.', () => {
     ctx
   } = client.store.getState();
   // the board should look like this now
+  delete G.movelog;
   expect(G).toEqual({
     deck: [{
         id: 48,
@@ -1001,6 +1003,7 @@ it('Hint Value 2 - Hint Value nothing.', () => {
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
     setup: () => ({
+      movelog: [],
       deck: [{
           id: 48,
           color: 4,
@@ -1500,6 +1503,7 @@ it('Hint Value 2 - Hint Value nothing.', () => {
     ctx
   } = client.store.getState();
   // the board should look like this now
+  delete G.movelog;
   expect(G).toEqual({
     deck: [{
         id: 48,

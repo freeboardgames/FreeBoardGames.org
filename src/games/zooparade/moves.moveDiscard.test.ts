@@ -10,8 +10,8 @@ it('Discard 1 - Full Hints.', () => {
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
     setup: () => (
-
       {
+        movelog: [],
         deck: [{
             id: 0,
             color: 0,
@@ -509,6 +509,8 @@ it('Discard 1 - Full Hints.', () => {
     ctx
   } = client.store.getState();
   // the board should look like this now
+  delete G.movelog;
+
   expect(G).toEqual(
 
     {
@@ -1010,6 +1012,7 @@ it('Discard 2 - Not Full Hints.', () => {
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
     setup: () => ({
+      movelog: [],
       deck: [{
           id: 0,
           color: 0,
@@ -1530,6 +1533,7 @@ it('Discard 2 - Not Full Hints.', () => {
     ctx
   } = client.store.getState();
   // the board should look like this now
+  delete G.movelog;
   expect(G).toEqual(
 
     {

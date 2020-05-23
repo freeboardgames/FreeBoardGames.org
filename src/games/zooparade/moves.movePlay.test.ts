@@ -11,6 +11,7 @@ it('play movePlays 1 - good', () => {
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
     setup: () => ({
+      movelog: [],
       deck: [{
           id: 4,
           color: 0,
@@ -494,7 +495,6 @@ it('play movePlays 1 - good', () => {
       ],
       countdown: 3,
       treats: 8,
-      movelog: []
     }),
   }
 
@@ -511,6 +511,7 @@ it('play movePlays 1 - good', () => {
   } = client.store.getState();
 
   // the board should look like this now
+  delete G.movelog;
   expect(G).toEqual({
     deck: [{
         id: 4,
@@ -1007,6 +1008,7 @@ it('play movePlays 2 - bad', () => {
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
     setup: () => ({
+      movelog: [],
       deck: [{
           id: 8,
           color: 0,
@@ -1506,6 +1508,7 @@ it('play movePlays 2 - bad', () => {
   } = client.store.getState();
 
   // the board should look like this now
+  delete G.movelog;
   expect(G).toEqual({
     deck: [{
         id: 8,
@@ -2003,6 +2006,7 @@ it('play movePlays 3 - play already played value/color', () => {
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
     setup: () => ({
+      movelog: [],
         deck: [{
             id: 28,
             color: 2,
@@ -2518,6 +2522,7 @@ it('play movePlays 3 - play already played value/color', () => {
   } = client.store.getState();
 
   // the board should look like this now
+  delete G.movelog;
   expect(G).toEqual(
 
     {
@@ -3038,6 +3043,7 @@ it('play movePlays 4 - finish a pile (gain treat)', () => {
     setup: () => (
 
       {
+      movelog: [],
         deck: [{
             id: 28,
             color: 2,
@@ -3588,6 +3594,7 @@ it('play movePlays 4 - finish a pile (gain treat)', () => {
   } = client.store.getState();
 
   // the board should look like this now
+  delete G.movelog;
   expect(G).toEqual(
 
     {
@@ -4144,6 +4151,7 @@ it('play movePlays 5 - finish a pile with full treats', () => {
     setup: () => (
 
       {
+      movelog: [],
         deck: [{
             id: 28,
             color: 2,
@@ -4753,6 +4761,7 @@ it('play movePlays 5 - finish a pile with full treats', () => {
   } = client.store.getState();
 
   // the board should look like this now
+  delete G.movelog;
   expect(G).toEqual(
 
     {
@@ -5370,6 +5379,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
     setup: () => (
 
       {
+      movelog: [],
         deck: [{
             id: 0,
             color: 0,
@@ -6070,6 +6080,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
   } = client.store.getState();
 
   // the board should look like this now
+  delete G.movelog;
   expect(G).toEqual(
 
     {
@@ -6794,6 +6805,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
 //   } = client.store.getState();
 
 //   // the board should look like this now
+//   delete G.movelog;
 //   expect(G).toEqual(
 
 
