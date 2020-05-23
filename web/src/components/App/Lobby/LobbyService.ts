@@ -22,7 +22,7 @@ const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
 
 const httpLink = createHttpLink({
-  uri: `${AddressHelper.getFbgServerAddress()}/graphql`,
+  uri: AddressHelper.getGraphQLServerAddress(),
 });
 
 export interface IPlayerInRoom {
