@@ -5,7 +5,7 @@ import instructions from './instructions.md';
 
 export const zooParadeGameDef: IGameDef = {
   code: 'zooparade',
-  name: 'zooparade',
+  name: 'Zoo Parade',
   imageURL: Thumbnail,
   modes: [
     { mode: GameMode.OnlineFriend },
@@ -16,7 +16,7 @@ export const zooParadeGameDef: IGameDef = {
   description: 'A cooperative game where the Team wins!',
   descriptionTag: `Tag for Zoo Parade TODO`,
   instructions: {
-    videoId: 'yFrAN-LFZRU',
+    videoId: 'LQ8iwNjBW_s',
     text: instructions,
   },
   config: () => import('./config'),

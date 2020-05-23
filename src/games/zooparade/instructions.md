@@ -1,8 +1,4 @@
-Issues:
+Zoo Parade is a coopoerative game for two to five players. This game combines perfectly the concepts of cooperation and partial information. The unique point: You know all cards, buy your own!
 
-Currently, when giving a Player a Hint that he/she doens't have a Color/Value, it is not visualized in any way.
+The game gets more difficult, the more players you are - but at the same time this is when its most fun!
 
-The player should not be able to give hints, when there are no Hint tokens. How can I force this in the game logic?
-My issue is, that I don't have access to G in the moveFunction. But I need to know to return INVALID_MOVE or not.
-
-I would like the final score to be shown on the scoreboard, when the game ends.
