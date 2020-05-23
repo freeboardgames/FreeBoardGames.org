@@ -85,28 +85,39 @@ describe('MatchService', () => {
   });
 
   it('should get next room succesfully', async () => {
-    const capacity = 2;
-    const gameCode = 'chess';
-    const isPublic = false;
-    const matchEntity = new MatchEntity();
-    matchEntity.id = 'fooMock2';
-    matchEntity.gameCode = gameCode;
-    matchEntity.bgioServerInternalUrl = 'fooInternalUrl';
-    matchEntity.bgioServerExternalUrl = 'fooExternalUrl';
-    matchEntity.bgioMatchId = 'fooMatchId';
+    const promiseMock = jest
+      .fn()
+      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
+      )
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '2ndSecret' } }),
+      );
+    jest
+      .spyOn(httpService, 'post')
+      .mockReturnValue({ toPromise: promiseMock } as any);
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const room = await roomsService.newRoom(
-      { capacity, gameCode, isPublic },
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
       bobId,
     );
-    matchEntity.room = await roomsService.getRoomEntity(room.id);
-    await matchRepository.save(matchEntity);
-
-    const newRoomId = await service.getNextRoom('fooMock2', bobId);
-    const sameRoomId = await service.getNextRoom('fooMock2', bobId);
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await roomsService.checkin(aliceId, room.id);
+    const matchId = await service.startMatch(room.id, bobId);
+    const newRoomId = await service.getNextRoom(matchId, bobId);
+    const sameRoomId = await service.getNextRoom(matchId, bobId);
 
     const newRoom = await roomsService.getRoom(newRoomId);
-    expect(newRoom).toMatchObject({ capacity, gameCode, isPublic });
+    expect(newRoom).toMatchObject({
+      capacity: 2,
+      gameCode: 'checkers',
+      isPublic: false,
+    });
     expect(sameRoomId).toEqual(newRoomId);
   });
 

@@ -41,6 +41,8 @@ export class MatchService {
         'playerMemberships',
         'playerMemberships.user',
         'room',
+        'room.userMemberships',
+        'room.userMemberships.user',
         'nextRoom',
       ],
     });
