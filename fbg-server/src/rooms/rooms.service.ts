@@ -19,7 +19,7 @@ export class RoomsService {
     private roomMembershipRepository: Repository<RoomMembershipEntity>,
     private usersService: UsersService,
     private connection: Connection,
-  ) { }
+  ) {}
 
   /** Creates a new room. */
   async newRoom(

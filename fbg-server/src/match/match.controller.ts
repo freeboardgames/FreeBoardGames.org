@@ -15,11 +15,9 @@ import { MatchService } from './match.service';
 import { NextRoomRequest } from '../dto/match/NextRoomRequest';
 import { StartMatchRequest } from '../dto/match/StartMatchRequest';
 
-
-
 @Controller('match')
 export class MatchController {
-  constructor(private readonly matchService: MatchService) { }
+  constructor(private readonly matchService: MatchService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
