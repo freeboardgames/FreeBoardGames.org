@@ -11,8 +11,13 @@ import withError from 'next-with-error';
 import ErrorPage from './_error';
 import ReactGA from 'react-ga';
 import Router from 'next/router';
-
 import { wrapper } from 'redux/store';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:3001/graphql',
+});
 
 class defaultApp extends App {
   logPageView(path: string) {
@@ -45,7 +50,9 @@ class defaultApp extends App {
       <ThemeProvider theme={theme}>
         <SelfXSSWarning />
         <UaContext.Provider value={isMobile}>
-          <Component {...pageProps} />
+          <ApolloProvider client={client}>
+            <Component {...pageProps} />
+          </ApolloProvider>
         </UaContext.Provider>
       </ThemeProvider>
     );

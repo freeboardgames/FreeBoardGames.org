@@ -11,14 +11,25 @@ import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
 import { UpdateUserRequest } from 'dto/users/UpdateUserRequest';
 import { NextRoomRequest } from 'dto/match/NextRoomRequest';
+import { Mutation } from '@apollo/react-components';
+import gql from 'graphql-tag';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
+
 export interface IPlayerInRoom {
   playerID: number;
   name: string;
 }
 export class LobbyService {
+  static NEW_USER = gql`
+    mutation NewUser($nickname: String!) {
+      newUser(nickname: $nickname) {
+        jwtToken
+      }
+    }
+  `;
+
   private static catchUnauthorized = (dispatch: Dispatch<SyncUserAction>) => (e: request.ResponseError) => {
     if (e.response.unauthorized) {
       // invalidate the user's auth and adjust our store accordingly:
@@ -28,18 +39,12 @@ export class LobbyService {
     throw e;
   };
 
-  /** sends user's nickname to backend.  backend returns the jwt token.  */
-  public static async newUser(nickname: string): Promise<string> {
-    const response = await request
-      .post(`${AddressHelper.getFbgServerAddress()}/users/new`)
-      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
-      .send({
-        user: { nickname },
-      });
-    const jwtToken = response.body.jwtPayload;
+  public static async setNickname(nickname: string) {
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
+  }
+
+  public static async setJwt(jwtToken: string) {
     localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
-    return response.body;
   }
 
   public static async getMatch(dispatch: Dispatch<SyncUserAction>, matchId: string): Promise<Match> {

@@ -30,6 +30,7 @@
     "@nestjs/typeorm": "^7.0.0",
     "@types/shortid": "^0.0.29",
     "@types/superagent": "^4.1.7",
+    "apollo": "^2.28.0",
     "apollo-server-express": "^2.13.1",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",

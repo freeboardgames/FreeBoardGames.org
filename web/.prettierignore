@@ -14,3 +14,4 @@ server/dist/
 .cache/
 static/
 public/
+src/queries/
