@@ -160,6 +160,3 @@ android/local.properties
 
 # puppeteer
 __diff_output__
-
-# auto generated
-src/queries

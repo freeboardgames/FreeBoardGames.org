@@ -60,10 +60,9 @@ describe('New Room', () => {
   it('should create new user', async () => {
     const setItemMock = jest.fn();
     Storage.prototype.setItem = setItemMock;
-    const response: NewUserResponse = { jwtPayload: 'fooJwt' };
-    request.post = jest.fn().mockReturnValue({
-      set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }),
-    });
+    const mockMutate = jest.fn().mockResolvedValue({ data: { newUser: { jwtToken: 'fooJwt' } } });
+    const mockClient = jest.fn().mockReturnValue({ mutate: mockMutate });
+    LobbyService.getClient = mockClient;
     await LobbyService.newUser('fooname');
     expect(setItemMock.mock.calls[0][1]).toEqual('fooname');
   });

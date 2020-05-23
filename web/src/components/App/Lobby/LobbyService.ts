@@ -15,7 +15,7 @@ import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { NewUser, NewUserVariables } from 'queries/NewUser';
+import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
 import gql from 'graphql-tag';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
