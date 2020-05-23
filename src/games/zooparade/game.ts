@@ -50,6 +50,8 @@ function setup(ctx: IGameCtx): IG {
   var countdown = 3
   var treats = 8
 
+  //log
+  var movelog: string[] = Array(0)
 
   var finalG = <IG> {
     deck: deck,
@@ -59,6 +61,7 @@ function setup(ctx: IGameCtx): IG {
     hands: hands, 
     countdown: countdown ,
     treats: treats,
+    movelog: movelog,
   }
 
 

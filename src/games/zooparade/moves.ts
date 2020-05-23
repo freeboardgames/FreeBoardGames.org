@@ -15,7 +15,10 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
   // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
   // However, the game automatically ends, once all players couldn't pick up a card, thus
   // you always have max_cards in hand, and can never play a 'null'.
-
+  var movelogString = "Player: " + ctx.currentPlayer + "\tMove: Play"
+  movelogString +=  "\t CardColor: " + G.hands[currentPl].cards[IDInHand].color.toString()
+  movelogString +=  "\t CardValue: " + G.hands[currentPl].cards[IDInHand].value.toString()
+  movelogString +=  "\t CardIdInHand: " + IDInHand.toString()
   return {
     ...G,
     hands: G.hands.map((hand: IHand) => {
@@ -74,16 +77,22 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
     countdown:
       (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value)) // Is the played card the next value?
       ?
-      G.countdown
+      G.countdown // Success
       :
-      G.countdown - 1,
+      G.countdown - 1, // Failed Play
     treats:
       ((G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value)) // did you play a good move?
       && (G.hands[currentPl].cards[IDInHand].value === 4)) // Did you finish the color?  - if both, gain treat
       ?
       (G.treats === 8) ? 8 : G.treats + 1 // max 8 Treats
       :
-      G.treats
+      G.treats,
+    movelog: 
+      (G.piles[G.hands[currentPl].cards[IDInHand].color].length === (G.hands[currentPl].cards[IDInHand].value)) // Is the played card the next value?
+      ?
+        [... G.movelog, movelogString + "Success"]
+      :
+        [... G.movelog, movelogString + "Failed"],
   }
 }
 
@@ -117,6 +126,10 @@ export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
   // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
   // However, the game automatically ends, once all players couldn't pick up a card, thus
   // you always have max_cards in hand, and can never play a 'null'.
+  var movelogString = "Player: " + ctx.currentPlayer + "\tMove: Discard"
+  movelogString +=  "\t CardColor: " + G.hands[currentPl].cards[IDInHand].color.toString()
+  movelogString +=  "\t CardValue: " + G.hands[currentPl].cards[IDInHand].value.toString()
+  movelogString +=  "\t CardIdInHand: " + IDInHand.toString()
 
   return {
     ...G,
@@ -149,7 +162,9 @@ export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
     }),
     trash: [...G.trash, G.hands[currentPl].cards[IDInHand]],
     deckindex: G.deckindex - 1,
-    treats: (G.treats === 8) ? 8 : G.treats + 1 // max 8 Treats
+    treats: (G.treats === 8) ? 8 : G.treats + 1, // max 8 Treats
+    movelog: 
+      [... G.movelog, movelogString],
   }
 }
 
@@ -183,6 +198,10 @@ export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValu
     return INVALID_MOVE
   }
 
+  var movelogString = "Player: " + ctx.currentPlayer + "\tMove: Hint Value"
+  movelogString += "Hint Reciver: " + IDPlayer.toString()
+  movelogString += "HintValue: " + IDHintValue.toString()
+
   return {
     ...G,
     treats: G.treats - 1,
@@ -204,7 +223,9 @@ export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValu
             }
           )
       }
-    })
+    }),
+    movelog: 
+      [... G.movelog, movelogString],
   }
 }
 
@@ -234,6 +255,10 @@ export function moveHintColor(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintColo
     return INVALID_MOVE
   }
 
+  var movelogString = "Player: " + ctx.currentPlayer + "\tMove: Hint Color"
+  movelogString += "Hint Reciver: " + IDPlayer.toString()
+  movelogString += "HintValue: " + IDHintColor.toString()
+
   return {
     ...G,
     treats: G.treats - 1,
@@ -255,7 +280,8 @@ export function moveHintColor(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintColo
             }
           )
       }
-
-    })
+    }),
+    movelog: 
+      [... G.movelog, movelogString],
   }
 }

@@ -32,4 +32,5 @@ export interface IG {
 
   countdown: number;
   treats: number;
+  movelog: string[];
 }

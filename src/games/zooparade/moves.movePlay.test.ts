@@ -493,7 +493,8 @@ it('play movePlays 1 - good', () => {
         }
       ],
       countdown: 3,
-      treats: 8
+      treats: 8,
+      movelog: []
     }),
   }
 
