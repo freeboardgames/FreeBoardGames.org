@@ -10,6 +10,7 @@ const CONNECTION: any = process.env.POSTGRES_URL
       url: process.env.POSTGRES_URL,
       ssl: true,
       extra: {
+        max: 22,
         ssl: {
           rejectUnauthorized: false,
         },

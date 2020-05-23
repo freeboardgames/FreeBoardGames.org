@@ -26,7 +26,7 @@ export class RoomsService {
     private usersService: UsersService,
     private connection: Connection,
     private httpService: HttpService,
-  ) {}
+  ) { }
 
   /** Creates a new room. */
   async newRoom(room: Room, queryRunner?: QueryRunner): Promise<RoomEntity> {
