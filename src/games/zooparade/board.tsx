@@ -11,8 +11,8 @@ import { BToken } from './components/btoken';
 import { BDeck } from './components/bdeck';
 import { BButtons } from './components/bbuttons';
 import { BNameBadge } from './components/bnamebadge';
+import { BLog } from './components/blog';
 
-import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 
 interface IBoardProps {
   G: IG;
@@ -90,85 +90,11 @@ export class Board extends React.Component<IBoardProps,  {}> {
                           keyPropagation={"Board"}
                           ></BPiles>
             </div>
+            <div>
+              <BLog lines={ this.props.G.movelog } ></BLog>
+            </div>
           </div>
       </GameLayout>
     );
   }
 }
-        // <pre>{JSON.stringify(this.props.gameArgs, null, 2)}</pre>
-        // <pre>{JSON.stringify(this.props.G, null, 2)}</pre>
-        // <pre>{JSON.stringify(this.props.ctx, null, 2)}</pre>
-        // <pre>{JSON.stringify(this.props.moves, null, 2)}</pre>
-        // <pre>{JSON.stringify(this.props.playerID, null, 2)}</pre>
-
-
-//        <table>
-//          <thead>
-//          <tr>
-//            <th> Treats </th>
-//            <th> Countdown </th>
-//          </tr>
-//          </thead>
-//          <tbody>
-//          <tr>
-//            <th>{JSON.stringify(this.props.G.treats)}</th>
-//            <th>{JSON.stringify(this.props.G.countdown)}</th>
-//          </tr>
-//          </tbody>
-//        </table>
-//        <table>
-//          <thead>
-//          <tr>
-//            <th> Color 0 </th>
-//            <th> Color 1 </th>
-//            <th> Color 2 </th>
-//            <th> Color 3 </th>
-//            <th> Color 4 </th>
-//          </tr>
-//          </thead>
-//          <tbody>
-//          <tr>
-//            <th> {JSON.stringify(this.props.G.piles[0])}</th>
-//            <th> {JSON.stringify(this.props.G.piles[1])}</th>
-//            <th> {JSON.stringify(this.props.G.piles[2])}</th>
-//            <th> {JSON.stringify(this.props.G.piles[3])}</th>
-//            <th> {JSON.stringify(this.props.G.piles[4])}</th>
-//          </tr> 
-//          </tbody>
-//        </table>
-//        <table>
-//          <thead>
-//          <tr>
-//            <th> Player ID</th>
-//            <th> Cards </th>
-//            <th> Hints </th>
-//          </tr>
-//          </thead>
-//          <tbody>
-//          <tr>
-//            <th> 0 </th>
-//            <th> {JSON.stringify(this.props.G.hands[0].cards)}</th>
-//            <th> {JSON.stringify(this.props.G.hands[0].hints)}</th>
-//          </tr> 
-//          <tr>
-//            <th> 1 </th>
-//            <th> {JSON.stringify(this.props.G.hands[1].cards)}</th>
-//            <th> {JSON.stringify(this.props.G.hands[1].hints)}</th>
-//          </tr> 
-//          </tbody>
-//        </table>
-//        <table>
-//          <thead>
-//          <tr>
-//            <th> Trash </th>
-//          </tr>
-//          </thead>
-//          <tbody>
-//          <tr>
-//            <th> {JSON.stringify(this.props.G.trash)}</th>
-//          </tr> 
-//          </tbody>
-//        </table>
-//
-//        <pre>{JSON.stringify(this.props.ctx, null, 2)}</pre>
- 
