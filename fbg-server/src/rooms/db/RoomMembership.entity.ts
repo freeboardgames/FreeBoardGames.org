@@ -16,6 +16,9 @@ export class RoomMembershipEntity extends BaseEntity {
   @Column({ type: 'double precision' })
   public lastSeen!: number;
 
+  @Column()
+  public isCreator!: boolean;
+
   @ManyToOne((type) => UserEntity, (user) => user.roomMemberships)
   public user!: UserEntity;
 

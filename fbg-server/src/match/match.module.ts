@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MatchEntity } from './db/Match.entity';
 import { MatchMembershipEntity } from './db/MatchMembership.entity';
@@ -10,6 +10,7 @@ import { RoomsModule } from '../rooms/rooms.module';
   imports: [
     TypeOrmModule.forFeature([MatchEntity, MatchMembershipEntity]),
     RoomsModule,
+    HttpModule,
   ],
   providers: [MatchService],
   controllers: [MatchController],

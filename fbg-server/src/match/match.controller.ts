@@ -13,10 +13,13 @@ import { JwtAuthGuard } from '../users/jwt-auth-guard';
 import { Match } from '../dto/match/Match';
 import { MatchService } from './match.service';
 import { NextRoomRequest } from '../dto/match/NextRoomRequest';
+import { StartMatchRequest } from '../dto/match/StartMatchRequest';
+
+
 
 @Controller('match')
 export class MatchController {
-  constructor(private readonly matchService: MatchService) {}
+  constructor(private readonly matchService: MatchService) { }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
@@ -41,6 +44,17 @@ export class MatchController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return await this.matchService.getNextRoom(matchId);
+    return await this.matchService.getNextRoom(matchId, userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  async startMatch(
+    @Request() request,
+    @Body() body: StartMatchRequest,
+  ): Promise<string> {
+    const roomId = body.roomId;
+    const userId = request.user.id;
+    return await this.matchService.startMatch(roomId, userId);
   }
 }
