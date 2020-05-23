@@ -10,6 +10,9 @@ import { BPiles } from './components/bpiles';
 import { BToken } from './components/btoken';
 import { BDeck } from './components/bdeck';
 import { BButtons } from './components/bbuttons';
+import { BNameBadge } from './components/bnamebadge';
+
+import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 
 interface IBoardProps {
   G: IG;
@@ -44,6 +47,9 @@ export class Board extends React.Component<IBoardProps,  {}> {
                       return (
                         <div key={"Board" + index.toString()}
                              style={handStyle}>
+                               <BNameBadge name={ this.props.gameArgs.players[index].name }
+                                          turn={  index.toString() == this.props.ctx.currentPlayer }
+                              ></BNameBadge>
                             {index === me ?
                               <><hr />Your Hand:</>
                             :
@@ -85,7 +91,6 @@ export class Board extends React.Component<IBoardProps,  {}> {
                           ></BPiles>
             </div>
           </div>
-
       </GameLayout>
     );
   }
