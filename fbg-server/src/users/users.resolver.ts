@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Args, Query, Int } from '@nestjs/graphql';
-import { User } from 'src/models/User.model';
+import { User } from '../models/User.model';
 import { UsersService } from './users.service';
 import { JwtPayload } from './definitions';
 import { JwtService } from '@nestjs/jwt';
