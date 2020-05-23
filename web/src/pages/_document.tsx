@@ -47,7 +47,6 @@ export default class MyDocument extends Document {
         <body style={{ margin: 0 }}>
           <Main />
           <NextScript />
-          <script src="/deregistersw.js"></script>
         </body>
       </html>
     );

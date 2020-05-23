@@ -103,9 +103,9 @@ app
       }
     });
 
-    server.get('/deregistersw.js', (req, res) => {
+    server.get('/sw.js', (req, res) => {
       if (BABEL_ENV_IS_PROD) {
-        const filePath = `${APP_DIR}/static/deregistersw.js`;
+        const filePath = `${APP_DIR}/static/sw.js`;
         app.serveStatic(req, res, filePath);
       } else {
         res.sendStatus(404);
@@ -113,12 +113,8 @@ app
     });
 
     server.get('/manifest.json', (req, res) => {
-      if (isProdChannel && isOfficialSite(req.hostname)) {
-        const filePath = `${APP_DIR}/static/manifest.json`;
-        app.serveStatic(req, res, filePath);
-      } else {
-        res.sendStatus(404);
-      }
+      const filePath = `${APP_DIR}/static/manifest.json`;
+      app.serveStatic(req, res, filePath);
     });
 
     server.use(
