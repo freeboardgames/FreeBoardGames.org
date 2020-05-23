@@ -113,21 +113,8 @@ app
     });
 
     server.get('/manifest.json', (req, res) => {
-      if (isProdChannel && isOfficialSite(req.hostname)) {
-        const filePath = `${APP_DIR}/static/manifest.json`;
-        app.serveStatic(req, res, filePath);
-      } else {
-        res.sendStatus(404);
-      }
-    });
-
-    server.get('/workbox*', (req, res) => {
-      if (BABEL_ENV_IS_PROD) {
-        const filePath = `${APP_DIR}/static/${req.path}`;
-        app.serveStatic(req, res, filePath);
-      } else {
-        res.sendStatus(404);
-      }
+      const filePath = `${APP_DIR}/static/manifest.json`;
+      app.serveStatic(req, res, filePath);
     });
 
     server.use(

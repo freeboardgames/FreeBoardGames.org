@@ -11,6 +11,8 @@ import withError from 'next-with-error';
 import ErrorPage from './_error';
 import ReactGA from 'react-ga';
 import Router from 'next/router';
+import * as Sentry from '@sentry/browser';
+
 import { wrapper } from 'redux/store';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -37,6 +39,13 @@ class defaultApp extends App {
       const GA_TRACKING_CODE = process.env.GA_TRACKING_CODE;
       ReactGA.initialize(GA_TRACKING_CODE);
       (window as any).GA_INITIALIZED = true;
+      if (process.env.SENTRY_DSN) {
+        const version = process.env.VERSION;
+        const channel = process.env.CHANNEL;
+        let release;
+        if (version && channel) release = `${version}-${channel}`;
+        Sentry.init({ dsn: process.env.SENTRY_DSN, release });
+      }
     }
     // https://github.com/sergiodxa/next-ga/blob/32899e9635efe1491a5f47469b0bd2250e496f99/src/index.js#L32
     (Router as any).onRouteChangeComplete = (path: string) => {
