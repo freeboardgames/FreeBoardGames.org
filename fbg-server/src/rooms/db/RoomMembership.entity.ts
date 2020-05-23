@@ -17,7 +17,7 @@ export class RoomMembershipEntity extends BaseEntity {
   public lastSeen!: number;
 
   @Column()
-  public isCreator!: boolean;
+  public isCreator?: boolean;
 
   @ManyToOne((type) => UserEntity, (user) => user.roomMemberships)
   public user!: UserEntity;
