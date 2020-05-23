@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "apollo:codegen": "rimraf src/queries && apollo client:codegen -c apollo.config.js --target typescript --outputFlat src/queries",
+    "apollo:codegen": "rimraf src/queries && apollo client:codegen -c apollo.config.js --target typescript --outputFlat src/queries && rimraf src/queries/globalTypes.ts",
     "pre": "run-s lint format:check build:server test ci:test:e2e",
     "ci": "run-s lint format:check build:server ci:test:unit ci:test:e2e report:combined",
     "lint": "eslint --max-warnings=0 --ext .ts,.tsx src/ tests/",
@@ -80,6 +80,7 @@
     "next-redux-wrapper": "^6.0.0",
     "next-seo": "^4.5.0",
     "next-with-error": "^1.2.0",
+    "node-fetch": "^2.6.0",
     "npm-run-all": "^4.1.5",
     "qrcode.react": "^1.0.0",
     "raw-loader": "^4.0.1",
