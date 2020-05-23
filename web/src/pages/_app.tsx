@@ -11,6 +11,11 @@ import withError from 'next-with-error';
 import ErrorPage from './_error';
 import ReactGA from 'react-ga';
 import Router from 'next/router';
+import * as Sentry from '@sentry/browser';
+
+if (process.env.SENTRY_DSN) {
+  Sentry.init({ dsn: process.env.SENTRY_DSN });
+}
 
 import { wrapper } from 'redux/store';
 
