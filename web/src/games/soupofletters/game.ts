@@ -22,6 +22,7 @@ export interface ISolvedWord{
 export interface IG {
     puzzel: Array<Array<string>>;
     solution: Array<ISolvedWord>;
+    timeRef: number;
 }
 
 export function isVictory() { 
@@ -40,7 +41,7 @@ function initialSetup() {
     const puzzel = newPuzzle(randWords, {});
     const solution = solvePuzzel(puzzel, randWords).found; 
 
-    return { puzzel, solution };
+    return { puzzel, solution, timeRef: Date.now() };
 }
   
 export const SoupOfLettersGame = {
@@ -49,14 +50,18 @@ export const SoupOfLettersGame = {
     setup: () => (initialSetup()),
 
     moves: {
-        wordFound(G: any, ctx: any, solvedWord: ISolvedWord) {
+        changeTurn: (G: any, ctx: any) => {
+            ctx.events.endTurn(); 
+            return { ...G, timeRef: Date.now() };
+        },
+        wordFound: (G: any, ctx: any, solvedWord: ISolvedWord) => {
             const solution = G.solution.map(s => {
                 if(s.x===solvedWord.x && s.y === solvedWord.y){
                     return {...solvedWord, solvedBy:ctx.currentPlayer};
                 } 
                 return {...s};
             });
-            return { ...G, solution };
+            return { ...G, solution, timeRef: Date.now() };
         },
     },
 

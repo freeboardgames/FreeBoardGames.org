@@ -1,12 +1,14 @@
 import React from 'react';
+import Timer from 'react-compound-timer';
 import { GameLayout } from 'components/App/Game/GameLayout';
 import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { isOnlineGame, isAIGame, isLocalGame } from '../common/gameMode';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
-import Typography from '@material-ui/core/Typography';
+import { Ctx } from 'boardgame.io';
+import { Modal, Button, Typography, Box, List, ListItem, ListItemText } from '@material-ui/core';
+import { TIME_OUT, TIME_BUFF } from './constants';
 import { IG, ISolvedWord } from './game';
 import { Soup } from './soup'
-import { Ctx } from 'boardgame.io';
 
 interface IBoardProps {
   G: IG;
@@ -17,12 +19,20 @@ interface IBoardProps {
 }
 
 interface IBoardState {
-  idSelectedPoint: number;
+  showWords: boolean;
 }
 
 export const localPlayerNames = { '0': 'red', '1': 'blue' };
 
-export class Board extends React.Component<IBoardProps, {}> {
+export class Board extends React.Component<IBoardProps, IBoardState> {
+
+  constructor(props) {
+    super(props);
+    // initialize state
+    this.state = {
+      showWords: false,
+    };
+  }
 
   _wordFound = (solvedWord: ISolvedWord) => {
     this.props.moves.wordFound(solvedWord);
@@ -41,6 +51,94 @@ export class Board extends React.Component<IBoardProps, {}> {
       return `Online Game`;
     }
     return `Turn Player ${this.props.ctx.currentPlayer}`;
+  }
+
+  _checkTimeOut = (secondsLeft: number) => {
+    if ((secondsLeft === 0) || (this.props.G.timeRef - Date.now() > TIME_OUT) ) {
+      this.props.moves.changeTurn();
+    }
+  }
+
+  _getTimeRemaining() {
+    // check time every second
+    const secondlyCallback = []; 
+    for (let i=0; i<TIME_OUT; i++){
+      secondlyCallback.push({
+        time: i * 1000,
+        callback: () => {this._checkTimeOut(i)}
+      });
+    }
+    // render timer 
+    return(
+      <Timer
+        key={'timer-' + this.props.G.timeRef}
+        initialTime={(TIME_OUT + TIME_BUFF)*1000 }
+        direction="backward"
+        checkpoints={secondlyCallback}
+      >
+        You have <Timer.Seconds formatValue={value => `${value>TIME_OUT?TIME_OUT:value}`} /> seconds.
+      </Timer>
+
+    );
+  }
+
+  _getWordModal() {
+    return (
+      <div>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          BackdropProps={{ invisible: true }}
+          open={this.state.showWords}
+          onClose={() => this.setState({ showWords: false })}
+          style={{
+            marginTop: '20px',
+            width: '250px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            backgroundColor: 'white',
+          }}
+        >
+          <div>  
+            <Typography style={{ padding: '16px' }} variant="h5" component="h3">
+              Words
+            </Typography>
+            <List>
+              {
+                this.props.G.solution.map(s => (
+                    <ListItem
+                      key={'list-item-'+s.word}
+                      // add a strike style is word is found
+                      style={{ textDecoration : s.solvedBy ? 'line-through' : 'none' }} 
+                    >
+                      <ListItemText primary={s.word} />                    
+                    </ListItem>
+                  ))
+                }
+            </List>
+          </div>
+        </Modal>
+      </div>
+    );
+  }
+
+  _showModalButton() {
+    return (
+      <Box 
+        display="flex" 
+        width={500} height={40} 
+        bgcolor="black"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Button 
+          variant="contained"
+          onClick={() => {this.setState({showWords:true})}}
+        >
+          Words
+        </Button>
+      </Box>
+    );
   }
 
   _getGameOver() {
@@ -86,7 +184,12 @@ export class Board extends React.Component<IBoardProps, {}> {
         <Typography variant="h5" style={{ color: 'white', textAlign: 'center' }}>
           {this._getStatus()}
         </Typography>
+        <Typography variant='h6' style={{ color: 'white', textAlign: 'center' }}>
+        {this._getTimeRemaining()}
+        </Typography>
         {this._getBoard()}
+        {this._showModalButton()}        
+        {this._getWordModal()}
       </GameLayout>
     );
   }
