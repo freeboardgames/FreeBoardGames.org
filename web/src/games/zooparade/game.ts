@@ -1,13 +1,12 @@
-import { IGameCtx } from 'boardgame.io/core';
-
 import { ICard, IHand, IHint, IG} from './interfaces';
 import { isWin, isEnd, isLose } from './endconditions';
 import { idToColor, idToValue } from './util';
 
 import { moveDiscard, moveHintColor, moveHintValue, movePlay } from './moves';
+import { Ctx } from 'boardgame.io';
 
 // Setup
-function setup(ctx: IGameCtx): IG {
+function setup(ctx: Ctx): IG {
   // Create Deck
   var deckindex = 49
   var deck = Array(50).fill(null)

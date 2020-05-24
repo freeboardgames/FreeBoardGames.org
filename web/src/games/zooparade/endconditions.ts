@@ -1,5 +1,5 @@
 import { IG } from './interfaces';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 
 // End Conditions
 export function isWin(G: IG){
@@ -22,7 +22,7 @@ export function isLose(G: IG) {
   }
 }
 
-export function isEnd(G: IG, ctx: IGameCtx) {
+export function isEnd(G: IG, ctx: Ctx) {
   if ( G.deckindex === ( - 1 - ctx.numPlayers)) {
     return true 
     // Every player has made a move after the deck turned empty

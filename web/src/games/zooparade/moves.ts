@@ -1,9 +1,9 @@
-import { IGameCtx, INVALID_MOVE } from 'boardgame.io/core';
-
+import { INVALID_MOVE } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { ICard, IHand, IHint, IG} from './interfaces';
 
 // Moves
-export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
+export function movePlay(G: IG, ctx: Ctx, IDInHand: number) : any {
   if (isNaN(IDInHand)) {
     return INVALID_MOVE
   } else if (IDInHand < 0 || IDInHand >= (ctx.numPlayers > 3 ? 4 : 5) ) {
@@ -114,7 +114,7 @@ export function movePlay(G: IG, ctx: IGameCtx, IDInHand: number) : any {
 
 
 
-export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
+export function moveDiscard(G: IG, ctx: Ctx, IDInHand: number) : any {
   if (isNaN(IDInHand)) {
     return INVALID_MOVE
   } else if (IDInHand < 0 || IDInHand > (ctx.numPlayers > 3 ? 4 : 5) ) {
@@ -179,7 +179,7 @@ export function moveDiscard(G: IG, ctx: IGameCtx, IDInHand: number) : any {
 
 
 
-export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValue: number) : any {
+export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: number) : any {
   var currentPl : number = parseInt(ctx.currentPlayer)
   if (isNaN(IDPlayer)) {
     return INVALID_MOVE
@@ -236,7 +236,7 @@ export function moveHintValue(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintValu
 
 
 
-export function moveHintColor(G: IG, ctx: IGameCtx, IDPlayer: number, IDHintColor: number) : any {
+export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: number) : any {
   var currentPl : number = parseInt(ctx.currentPlayer)
   if (isNaN(IDPlayer)) {
     return INVALID_MOVE

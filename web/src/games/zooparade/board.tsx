@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import { GameLayout } from '../../components/App/Game/GameLayout';
-import { IGameCtx } from 'boardgame.io/core';
 import { IG } from './interfaces';
 
 import { BHand } from './components/bhand'; 
@@ -12,11 +11,11 @@ import { BDeck } from './components/bdeck';
 import { BButtons } from './components/bbuttons';
 import { BNameBadge } from './components/bnamebadge';
 import { BLog } from './components/blog';
-
+import { Ctx } from 'boardgame.io';
 
 interface IBoardProps {
   G: IG;
-  ctx: IGameCtx;
+  ctx: Ctx;
   moves: any;
   playerID: string;
   gameArgs?: IGameArgs;
