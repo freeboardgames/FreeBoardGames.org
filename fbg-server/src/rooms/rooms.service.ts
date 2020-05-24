@@ -101,6 +101,9 @@ export class RoomsService {
     if (membership) {
       membership.lastSeen = Date.now();
     } else {
+      if ((room.userMemberships || []).length >= room.capacity) {
+        throw new HttpException('Room is full!', HttpStatus.BAD_REQUEST);
+      }
       membership = new RoomMembershipEntity();
       membership.user = await this.usersService.getUserEntity(userId);
       membership.room = room;
