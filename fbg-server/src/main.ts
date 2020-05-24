@@ -9,8 +9,12 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
-  app.use(csurf({ cookie: true }));
-  app.enableCors();
+  const isProd = process.env.NODE_ENV === 'production';
+  if (isProd) {
+    app.use(csurf({ cookie: true }));
+  } else {
+    app.enableCors();
+  }
 
   await app.listen(3001);
 }
