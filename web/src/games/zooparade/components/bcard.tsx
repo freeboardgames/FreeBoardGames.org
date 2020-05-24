@@ -18,75 +18,75 @@ import deck from './media/deck.png';
 import style from './bcard.css';
 
 interface InnerWrapper {
-    card : ICard, // if null, show back of card. 
-    empty: number , // If -1, then 'empty', if 0-4 base color
-                    // 'empty' should take precidence, if not null
-                    // if -2 then 'backside'
+  card: ICard; // if null, show back of card.
+  empty: number; // If -1, then 'empty', if 0-4 base color
+  // 'empty' should take precidence, if not null
+  // if -2 then 'backside'
 }
 
-export class BCard extends React.Component< InnerWrapper, {}> {
-    render() {
-        var cardValue: string
-        var image: any
-        if (this.props.empty !== null) {
-            // No Real Card Face
-            cardValue = "";
-            switch (this.props.empty) {
-              case 0:
-                image = green;
-                break;
-              case 1:
-                image = gray;
-                break;
-              case 2:
-                image = brown;
-                break;
-              case 3:
-                image = yellow;
-                break;
-              case 4:
-                image = blue;
-                break;
-              case -1:
-                image = empty;
-                break;
-              case -2:
-                image = deck;
-                break;
-            }
-        } else if (!this.props.card) {
-            // Card is null, so its hidden
-            cardValue = ""
-            image = white;
-        } else {
-            cardValue = String(this.props.card.value !== null ? this.props.card.value : "");
-            switch (this.props.card.color) {
-              case 0:
-                image = green_with;
-                break;
-              case 1:
-                image = gray_with;
-                break;
-              case 2:
-                image = brown_with;
-                break;
-              case 3:
-                image = yellow_with;
-                break;
-              case 4:
-                image = blue_with;
-                break;
-              case -1:
-                image = deck;
-                break;
-            }
-        }
-
-        return (
-            <div className={style.card}>
-                <img src={image} />
-                <span>{ cardValue }</span>
-            </div>
-        )
+export class BCard extends React.Component<InnerWrapper, {}> {
+  render() {
+    var cardValue: string;
+    var image: any;
+    if (this.props.empty !== null) {
+      // No Real Card Face
+      cardValue = '';
+      switch (this.props.empty) {
+        case 0:
+          image = green;
+          break;
+        case 1:
+          image = gray;
+          break;
+        case 2:
+          image = brown;
+          break;
+        case 3:
+          image = yellow;
+          break;
+        case 4:
+          image = blue;
+          break;
+        case -1:
+          image = empty;
+          break;
+        case -2:
+          image = deck;
+          break;
+      }
+    } else if (!this.props.card) {
+      // Card is null, so its hidden
+      cardValue = '';
+      image = white;
+    } else {
+      cardValue = String(this.props.card.value !== null ? this.props.card.value : '');
+      switch (this.props.card.color) {
+        case 0:
+          image = green_with;
+          break;
+        case 1:
+          image = gray_with;
+          break;
+        case 2:
+          image = brown_with;
+          break;
+        case 3:
+          image = yellow_with;
+          break;
+        case 4:
+          image = blue_with;
+          break;
+        case -1:
+          image = deck;
+          break;
+      }
     }
+
+    return (
+      <div className={style.card}>
+        <img src={image} />
+        <span>{cardValue}</span>
+      </div>
+    );
+  }
 }

@@ -1,19 +1,19 @@
 import React from 'react';
 
 interface InnerWrapper {
-    lines: string[];
+  lines: string[];
 
-    keyPropagation: string;
+  keyPropagation: string;
 }
 
-export class BLog extends React.Component< InnerWrapper, {}> {
-    render() {
-        return (
-            <div >
-                { this.props.lines.map((value: string ) => {
-                   return <p key={ this.props.keyPropagation }> { value } </p>
-                })}
-            </div>
-        )
-    }
+export class BLog extends React.Component<InnerWrapper, {}> {
+  render() {
+    return (
+      <div>
+        {this.props.lines.map((value: string) => {
+          return <p key={this.props.keyPropagation}> {value} </p>;
+        })}
+      </div>
+    );
+  }
 }

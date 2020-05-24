@@ -1143,9 +1143,7 @@ it('play movePlays 2 - bad', () => {
   client.moves.movePlay(3); // Player 1
 
   // get the latest game state
-  const {
-    G,
-  } = client.store.getState();
+  const { G } = client.store.getState();
 
   // the board should look like this now
   delete G.movelog;
@@ -1951,9 +1949,7 @@ it('play movePlays 3 - play already played value/color', () => {
   client.moves.movePlay(3); // Player 0
 
   // get the latest game state
-  const {
-    G,
-  } = client.store.getState();
+  const { G } = client.store.getState();
 
   // the board should look like this now
   delete G.movelog;
@@ -3706,9 +3702,7 @@ it('play movePlays 5 - finish a pile with full treats', () => {
   client.moves.movePlay(0); // Player 1
 
   // get the latest game state
-  const {
-    G,
-  } = client.store.getState();
+  const { G } = client.store.getState();
 
   // the board should look like this now
   delete G.movelog;
@@ -4748,9 +4742,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
   client.moves.movePlay(4); // Player 1
 
   // get the latest game state
-  const {
-    G,
-  } = client.store.getState();
+  const { G } = client.store.getState();
 
   // the board should look like this now
   delete G.movelog;
