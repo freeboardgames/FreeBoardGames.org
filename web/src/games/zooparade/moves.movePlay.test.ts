@@ -381,13 +381,7 @@ it('play movePlays 1 - good', () => {
   client.moves.movePlay(0); // Player 0
 
   // get the latest game state
-<<<<<<< HEAD:web/src/games/zooparade/moves.movePlay.test.ts
-  const {
-    G,
-  } = client.store.getState();
-=======
   const { G } = client.store.getState();
->>>>>>> 15560685c7bb7c302d20197ae0db44edf96ec6b4:src/games/zooparade/moves.movePlay.test.ts
 
   // the board should look like this now
   delete G.movelog;
@@ -1149,13 +1143,9 @@ it('play movePlays 2 - bad', () => {
   client.moves.movePlay(3); // Player 1
 
   // get the latest game state
-<<<<<<< HEAD:web/src/games/zooparade/moves.movePlay.test.ts
   const {
     G,
   } = client.store.getState();
-=======
-  const { G } = client.store.getState();
->>>>>>> 15560685c7bb7c302d20197ae0db44edf96ec6b4:src/games/zooparade/moves.movePlay.test.ts
 
   // the board should look like this now
   delete G.movelog;
@@ -1961,13 +1951,9 @@ it('play movePlays 3 - play already played value/color', () => {
   client.moves.movePlay(3); // Player 0
 
   // get the latest game state
-<<<<<<< HEAD:web/src/games/zooparade/moves.movePlay.test.ts
   const {
     G,
   } = client.store.getState();
-=======
-  const { G } = client.store.getState();
->>>>>>> 15560685c7bb7c302d20197ae0db44edf96ec6b4:src/games/zooparade/moves.movePlay.test.ts
 
   // the board should look like this now
   delete G.movelog;
@@ -2393,23 +2379,10 @@ it('play movePlays 3 - play already played value/color', () => {
   });
 });
 
-<<<<<<< HEAD:web/src/games/zooparade/moves.movePlay.test.ts
-  client.moves.movePlay(4); // Player 0
-
-  // get the latest game state
-  const {
-    G,
-  } = client.store.getState();
-
-  // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual(
-=======
 it('play movePlays 4 - finish a pile (gain treat)', () => {
   // set up a specific board scenario
   const ZooParadeCustomScenario = {
     ...ZooParadeGame,
->>>>>>> 15560685c7bb7c302d20197ae0db44edf96ec6b4:src/games/zooparade/moves.movePlay.test.ts
 
     setup: () => ({
       movelog: [],
@@ -3733,13 +3706,9 @@ it('play movePlays 5 - finish a pile with full treats', () => {
   client.moves.movePlay(0); // Player 1
 
   // get the latest game state
-<<<<<<< HEAD:web/src/games/zooparade/moves.movePlay.test.ts
   const {
     G,
   } = client.store.getState();
-=======
-  const { G } = client.store.getState();
->>>>>>> 15560685c7bb7c302d20197ae0db44edf96ec6b4:src/games/zooparade/moves.movePlay.test.ts
 
   // the board should look like this now
   delete G.movelog;
@@ -4779,13 +4748,9 @@ it('play movePlays 6 - play when no more cards on deck', () => {
   client.moves.movePlay(4); // Player 1
 
   // get the latest game state
-<<<<<<< HEAD:web/src/games/zooparade/moves.movePlay.test.ts
   const {
     G,
   } = client.store.getState();
-=======
-  const { G } = client.store.getState();
->>>>>>> 15560685c7bb7c302d20197ae0db44edf96ec6b4:src/games/zooparade/moves.movePlay.test.ts
 
   // the board should look like this now
   delete G.movelog;
