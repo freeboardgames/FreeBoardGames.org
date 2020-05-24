@@ -4,6 +4,9 @@ import { UsersModule } from './users/users.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { MatchModule } from './match/match.module';
 import { HealthzController } from './healthz.controller';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
+
 const CONNECTION: any = process.env.POSTGRES_URL
   ? {
       type: 'postgres',
@@ -28,6 +31,12 @@ const CONNECTION: any = process.env.POSTGRES_URL
       autoLoadEntities: true,
       synchronize: true,
       logging: false,
+    }),
+    GraphQLModule.forRoot({
+      debug: true,
+      playground: true,
+      autoSchemaFile: join(process.cwd(), '../common/gql/schema.gql'),
+      context: ({ req }) => ({ req }),
     }),
     UsersModule,
     RoomsModule,

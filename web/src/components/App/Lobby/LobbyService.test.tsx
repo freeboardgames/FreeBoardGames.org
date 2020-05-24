@@ -2,7 +2,6 @@ import { LobbyService } from './LobbyService';
 import request from 'superagent';
 import { NewRoomResponse } from 'dto/rooms/NewRoomResponse';
 import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
-import { NewUserResponse } from 'dto/users/NewUserResponse';
 import { Match } from 'dto/match/Match';
 
 describe('New Room', () => {
@@ -60,10 +59,9 @@ describe('New Room', () => {
   it('should create new user', async () => {
     const setItemMock = jest.fn();
     Storage.prototype.setItem = setItemMock;
-    const response: NewUserResponse = { jwtPayload: 'fooJwt' };
-    request.post = jest.fn().mockReturnValue({
-      set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }),
-    });
+    const mockMutate = jest.fn().mockResolvedValue({ data: { newUser: { jwtToken: 'fooJwt' } } });
+    const mockClient = jest.fn().mockReturnValue({ mutate: mockMutate });
+    LobbyService.getClient = mockClient;
     await LobbyService.newUser('fooname');
     expect(setItemMock.mock.calls[0][1]).toEqual('fooname');
   });
@@ -73,17 +71,20 @@ describe('New Room', () => {
     expect(LobbyService.getNickname()).toEqual('foonickname');
   });
 
-  /*it('should rename', async () => {
-    request.post = jest.fn().mockReturnValue({
-      send: jest.fn(),
-    });
+  it('should rename', async () => {
+    const mockMutate = jest.fn().mockResolvedValue({ data: { updateUserNickname: { nickname: 'fooJwt' } } });
+    const mockClient = jest.fn().mockReturnValue({ mutate: mockMutate });
+    LobbyService.getClient = mockClient;
+
     Storage.prototype.getItem = () => JSON.stringify({ fooroom: { playerID: 0, credential: 'foocredential' } });
-    const player: IPlayerInRoom = { playerID: 0, name: 'Jason', roomID: 'fooroom' };
-    await LobbyService.renameUser('foogame', player, 'fooNewName');
-    expect((request.post as any).mock.calls.length).toEqual(1);
+    const mockSetItem = jest.fn();
+    Storage.prototype.setItem = mockSetItem;
+    const dispatch = jest.fn();
+    await LobbyService.renameUser(dispatch, 'fooNewName');
+    expect(mockSetItem).toHaveBeenCalled();
   });
 
-  it('should get next room', async () => {
+  /*it('should get next room', async () => {
     const mockResponse = { body: { nextRoomID: 'barroom' } };
     request.post = jest.fn().mockReturnValue({
       send: jest.fn().mockResolvedValue(mockResponse),

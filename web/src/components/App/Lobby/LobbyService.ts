@@ -9,11 +9,22 @@ import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
 import { Match } from 'dto/match/Match';
 import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
-import { UpdateUserRequest } from 'dto/users/UpdateUserRequest';
 import { NextRoomRequest } from 'dto/match/NextRoomRequest';
+import { ApolloClient } from 'apollo-client';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
+import { RenameUser, RenameUserVariables } from 'gqlTypes/RenameUser';
+import gql from 'graphql-tag';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken';
+
+const httpLink = createHttpLink({
+  uri: AddressHelper.getGraphQLServerAddress(),
+});
+
 export interface IPlayerInRoom {
   playerID: number;
   name: string;
@@ -30,16 +41,31 @@ export class LobbyService {
 
   /** sends user's nickname to backend.  backend returns the jwt token.  */
   public static async newUser(nickname: string): Promise<string> {
-    const response = await request
-      .post(`${AddressHelper.getFbgServerAddress()}/users/new`)
-      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
-      .send({
-        user: { nickname },
-      });
-    const jwtToken = response.body.jwtPayload;
+    const client = this.getClient();
+    const result = await client.mutate<NewUser, NewUserVariables>({
+      mutation: gql`
+        mutation NewUser($nickname: String!) {
+          newUser(nickname: $nickname) {
+            jwtToken
+          }
+        }
+      `,
+      variables: { nickname },
+    });
+
+    const jwtToken = result.data.newUser.jwtToken;
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
     localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
-    return response.body;
+
+    return jwtToken;
+  }
+
+  public static async setNickname(nickname: string) {
+    localStorage.setItem(FBG_NICKNAME_KEY, nickname);
+  }
+
+  public static async setJwt(jwtToken: string) {
+    localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
   }
 
   public static async getMatch(dispatch: Dispatch<SyncUserAction>, matchId: string): Promise<Match> {
@@ -77,22 +103,21 @@ export class LobbyService {
 
   // TODO test
   // TODO are we checking auth?
-  public static async renameUser(dispatch: Dispatch<SyncUserAction>, newName: string): Promise<void> {
-    const updateUserRequest: UpdateUserRequest = { user: { nickname: newName } };
-    const response = await request
-      .post(`${AddressHelper.getFbgServerAddress()}/users/update`)
-      .set('Authorization', this.getAuthHeader())
-      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
-      .send(updateUserRequest)
-      .catch(this.catchUnauthorized(dispatch));
+  public static async renameUser(dispatch: Dispatch<SyncUserAction>, nickname: string): Promise<void> {
+    const client = this.getClient();
+    const result = await client.mutate<RenameUser, RenameUserVariables>({
+      mutation: gql`
+        mutation RenameUser($nickname: String!) {
+          updateUserNickname(nickname: $nickname) {
+            nickname
+          }
+        }
+      `,
+      variables: { nickname },
+    });
 
-    return response.body;
-    /*const playerCredential: IPlayerCredential = this.getCredential(player.roomID);
-    await request.post(`${AddressHelper.getBgioServerAddress()}/games/${gameCode}/${player.roomID}/rename`).send({
-      playerID: player.playerID,
-      credentials: playerCredential.credential,
-      newName,
-    });*/
+    const newNickname = result.data.updateUserNickname.nickname;
+    localStorage.setItem(FBG_NICKNAME_KEY, newNickname);
   }
 
   public static async checkin(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<CheckinRoomResponse> {
@@ -147,6 +172,25 @@ export class LobbyService {
   public static invalidateUserAuth() {
     localStorage.removeItem(FBG_NICKNAME_KEY);
     localStorage.removeItem(FBG_USER_TOKEN_KEY);
+  }
+
+  public static getClient() {
+    const authLink = setContext((_, { headers }) => {
+      const jwtToken = this.getUserToken() || '';
+      // return the headers to the context so httpLink can read them
+      return {
+        headers: {
+          ...headers,
+          authorization: jwtToken ? `Bearer ${jwtToken}` : '',
+          'CSRF-Token': Cookies.get('XSRF-TOKEN'),
+        },
+      };
+    });
+    const client = new ApolloClient({
+      link: authLink.concat(httpLink),
+      cache: new InMemoryCache(),
+    });
+    return client;
   }
 
   private static getAuthHeader() {

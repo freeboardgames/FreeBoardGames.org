@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { FakeDbModule, closeDbConnection } from '../testing/dbUtil';
 import { UsersModule } from './users.module';
-import { UsersController } from './users.controller';
+import { UsersResolver } from './users.resolver';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './definitions';
 import { RoomsModule } from '../rooms/rooms.module';
@@ -10,7 +10,7 @@ import { MatchModule } from '../match/match.module';
 
 describe('UsersController', () => {
   let module: TestingModule;
-  let controller: UsersController;
+  let controller: UsersResolver;
   let service: UsersService;
   let jwtService: JwtService;
 
@@ -19,7 +19,7 @@ describe('UsersController', () => {
       imports: [FakeDbModule, UsersModule, RoomsModule, MatchModule],
     }).compile();
 
-    controller = module.get<UsersController>(UsersController);
+    controller = module.get<UsersResolver>(UsersResolver);
     service = module.get<UsersService>(UsersService);
     jwtService = module.get<JwtService>(JwtService);
   });
@@ -35,16 +35,16 @@ describe('UsersController', () => {
   it('should give invalid nickname', async () => {
     const nickname = '';
 
-    const result = controller.newUser({ user: { nickname } });
+    const result = controller.newUser(nickname);
 
     await expect(result).rejects.toThrow();
   });
 
   it('should create user succesfully', async () => {
     const nickname = 'foo user';
-    const result = await controller.newUser({ user: { nickname } });
-    const jwtPayload: JwtPayload = jwtService.decode(result.jwtPayload) as any;
-    const id = jwtPayload.userId;
+    const result = await controller.newUser(nickname);
+    const jwtToken: JwtPayload = jwtService.decode(result.jwtToken) as any;
+    const id = jwtToken.userId;
     const user = await service.getById(id);
     expect(user).toEqual({ id, nickname });
   });

@@ -4,3 +4,5 @@ node_modules
 **/.stignore
 yarn-error.log
 **/.vscode
+# auto generated
+common/gql
