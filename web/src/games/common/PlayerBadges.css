@@ -1,0 +1,25 @@
+.PlayerBadgeContainer {
+  clear: 'left';
+  padding-top: '8px';
+}
+
+.PlayerBadge {
+  margin-left: 4px;
+  margin-bottom: 4px;
+  border-radius: 5px;
+  padding: 4px;
+  float: left;
+  border: 2px solid;
+}
+
+.PlayerBadge .Score {
+  padding-left: 8px;
+}
+
+.PlayerBadge p {
+  display: inline;
+}
+
+.Self {
+  font-weight: bold;
+}

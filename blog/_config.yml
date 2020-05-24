@@ -4,7 +4,7 @@
 
 # Site
 title: FreeBoardGames.org Blog
-subtitle: Free, open-source board games on your phone.
+subtitle: Free, open-source board games games on any device that can access the web.
 description: FreeBoardGames.org blog
 keywords: chess board game online play tutorial guide create develop
 author: FreeBoardGames.org
@@ -61,7 +61,7 @@ tag_map:
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
-date_format: YYYY-MM-DD
+date_format: MMM DD, YYYY
 time_format: HH:mm:ss
 
 # Pagination
