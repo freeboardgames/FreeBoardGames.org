@@ -17,6 +17,7 @@ import {
 
 interface IListPlayersProps {
   roomMetadata: Room;
+  userId?: number;
   editNickname: () => void;
 }
 
@@ -24,6 +25,16 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
   render() {
     const metadata = this.props.roomMetadata;
     const playersList = metadata.users.map((user, idx: number) => {
+      let secondaryAction;
+      if (user.id == this.props.userId) {
+        secondaryAction = (
+          <ListItemSecondaryAction>
+            <Button data-testid="editNickname" onClick={this.props.editNickname}>
+              <EditIcon />
+            </Button>
+          </ListItemSecondaryAction>
+        );
+      }
       return (
         <ListItem key={`player-${idx}`}>
           <ListItemAvatar>
@@ -32,11 +43,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={user.nickname} />
-          <ListItemSecondaryAction>
-            <Button data-testid="editNickname" onClick={this.props.editNickname}>
-              <EditIcon />
-            </Button>
-          </ListItemSecondaryAction>
+          {secondaryAction}
         </ListItem>
       );
     });

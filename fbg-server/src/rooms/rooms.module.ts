@@ -10,7 +10,6 @@ import { RoomsController } from './rooms.controller';
   imports: [
     TypeOrmModule.forFeature([RoomMembershipEntity, RoomEntity]),
     UsersModule,
-    HttpModule,
   ],
   providers: [RoomsService],
   controllers: [RoomsController],

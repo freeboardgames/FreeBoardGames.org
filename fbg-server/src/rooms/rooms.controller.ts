@@ -12,9 +12,12 @@ export class RoomsController {
 
   @UseGuards(JwtAuthGuard)
   @Post('new')
-  async newRoom(@Body() req: NewRoomRequest): Promise<NewRoomResponse> {
+  async newRoom(
+    @Request() req,
+    @Body() body: NewRoomRequest,
+  ): Promise<NewRoomResponse> {
     // curl -X POST http://localhost:3001/rooms/new -H "Authorization: Bearer <<JWT>>" -d '{"room": {"capacity": 2, "gameCode": "chess", "isPublic": false}}' -H "Content-Type: application/json"
-    const room = await this.roomsService.newRoom(req.room);
+    const room = await this.roomsService.newRoom(body.room, req.user.id);
     return { roomId: room.id };
   }
 
