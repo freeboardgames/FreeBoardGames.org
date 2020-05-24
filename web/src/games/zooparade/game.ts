@@ -9,51 +9,51 @@ import { moveDiscard, moveHintColor, moveHintValue, movePlay } from './moves';
 // Setup
 function setup(ctx: Ctx): IG {
   // Create Deck
-  var deckindex = 49
-  var deck = Array(50).fill(null)
+  var deckindex = 49;
+  var deck = Array(50).fill(null);
   for (var i = 0; i < 50; i++) {
     deck[i] = <ICard>{
       id: i,
       color: idToColor(i),
       value: idToValue(i),
-    }
+    };
   }
-  var deck = ctx.random.Shuffle(deck)
-  var piles: ICard[][] = Array(5).fill(null)
+  var deck = ctx.random.Shuffle(deck);
+  var piles: ICard[][] = Array(5).fill(null);
   for (var i = 0; i < 5; i++) {
-    piles[i] = Array(0)
+    piles[i] = Array(0);
   }
-  var trash: ICard[] = Array(0)
+  var trash: ICard[] = Array(0);
 
   // Create Player Hands
-  var nrCards: number
-  if ((ctx.numPlayers === 2) || (ctx.numPlayers === 3)) {
-    nrCards = 5
-  } else { // 4 or 5 players
-    nrCards = 4
+  var nrCards: number;
+  if (ctx.numPlayers === 2 || ctx.numPlayers === 3) {
+    nrCards = 5;
+  } else {
+    // 4 or 5 players
+    nrCards = 4;
   }
-  var hands = Array(ctx.numPlayers).fill(null)
+  var hands = Array(ctx.numPlayers).fill(null);
 
   for (var j = 0; j < ctx.numPlayers; j++) {
     hands[j] = <IHand>{
       player: j,
       cards: Array(nrCards).fill(null),
-      hints: Array(nrCards).fill(null)
-    }
+      hints: Array(nrCards).fill(null),
+    };
     for (var i = 0; i < nrCards; i++) {
-      hands[j].cards[i] = deck[deckindex]
-      deckindex -= 1
-      hands[j].hints[i] = <IHint>{ color: [0, 0, 0, 0, 0], value: [0, 0, 0, 0, 0] }
+      hands[j].cards[i] = deck[deckindex];
+      deckindex -= 1;
+      hands[j].hints[i] = <IHint>{ color: [0, 0, 0, 0, 0], value: [0, 0, 0, 0, 0] };
     }
   }
 
-
   // Rest
-  var countdown = 3
-  var treats = 8
+  var countdown = 3;
+  var treats = 8;
 
   //log
-  var movelog: string[] = Array(0)
+  var movelog: string[] = Array(0);
 
   var finalG = <IG>{
     deck: deck,
@@ -64,12 +64,10 @@ function setup(ctx: Ctx): IG {
     countdown: countdown,
     treats: treats,
     movelog: movelog,
-  }
+  };
 
-
-  return finalG
+  return finalG;
 }
-
 
 // Game
 export const ZooParadeGame = {
@@ -79,30 +77,34 @@ export const ZooParadeGame = {
 
   playerView: (G, ctx, playerID) => {
     // Hide your own cards
-    var id = parseInt(playerID)
+    var id = parseInt(playerID);
 
-    if (isNaN(id)) { // However, if this is not a multiplayer then this is NaN. 
+    if (isNaN(id)) {
+      // However, if this is not a multiplayer then this is NaN.
       //     // For testing only, as this game can only be played Multiplayer.
 
-      return G
+      return G;
     }
 
     return {
       ...G,
-      deck: G.deck.map(() => { return null }),
+      deck: G.deck.map(() => {
+        return null;
+      }),
       hands: G.hands.map((hand: IHand, index: number) => {
         if (index !== id) {
-          return hand
+          return hand;
         }
         return <IHand>{
-          cards: hand.cards.map(() => { return null }),
+          cards: hand.cards.map(() => {
+            return null;
+          }),
           hints: hand.hints,
-          player: hand.player
-        }
-      })
-    }
+          player: hand.player,
+        };
+      }),
+    };
   },
-
 
   moves: {
     //  movePlay,
@@ -111,19 +113,19 @@ export const ZooParadeGame = {
     //  moveHintValue,
     movePlay: {
       move: movePlay,
-      client: false
+      client: false,
     },
     moveDiscard: {
       move: moveDiscard,
-      client: false
+      client: false,
     },
     moveHintColor: {
       move: moveHintColor,
-      client: false
+      client: false,
     },
     moveHintValue: {
       move: moveHintValue,
-      client: false
+      client: false,
     },
   },
 
@@ -141,4 +143,3 @@ export const ZooParadeGame = {
     }
   },
 };
-

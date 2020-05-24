@@ -1,17 +1,17 @@
 import React from 'react';
 
 interface InnerWrapper {
-    lines: string[];
+  lines: string[];
 }
 
-export class BLog extends React.Component< InnerWrapper, {}> {
-    render() {
-        return (
-            <div>
-                { this.props.lines.map((value: string, _: number) => {
-                   return <p> { value } </p>
-                })}
-            </div>
-        )
-    }
+export class BLog extends React.Component<InnerWrapper, {}> {
+  render() {
+    return (
+      <div>
+        {this.props.lines.map((value: string, index: number) => {
+          return <p key={index}> {value} </p>;
+        })}
+      </div>
+    );
+  }
 }
