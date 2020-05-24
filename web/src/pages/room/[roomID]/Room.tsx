@@ -10,6 +10,7 @@ import { GameCard } from 'components/App/Game/GameCard';
 import { NicknamePrompt } from 'components/App/Lobby/NicknamePrompt';
 import { useRouter, NextRouter } from 'next/router';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import ReplayIcon from '@material-ui/icons/Replay';
 import NicknameRequired from 'components/App/Lobby/NicknameRequired';
 import SEO from 'components/SEO';
@@ -24,7 +25,6 @@ const MAX_TIMES_TO_UPDATE_METADATA = 2000;
 
 interface IRoomProps {
   gameCode: string;
-  roomID: string;
   router: NextRouter;
   user: ReduxUserState;
   dispatch: Dispatch;
@@ -33,6 +33,7 @@ interface IRoomProps {
 interface IRoomState {
   roomMetadata?: RoomDto;
   nameTextField?: string;
+  userId?: number;
   loading: boolean;
   error: string;
   editingName: boolean;
@@ -85,14 +86,18 @@ class Room extends React.Component<IRoomProps, IRoomState> {
           {this.getNicknamePrompt()}
           <GameCard game={gameDef} />
           {this._getGameSharing()}
-          <ListPlayers roomMetadata={this.state.roomMetadata} editNickname={this._toggleEditingName} />
+          <ListPlayers
+            roomMetadata={this.state.roomMetadata}
+            editNickname={this._toggleEditingName}
+            userId={this.state.userId}
+          />
+          {this._getStartMatchButton()}
         </FreeBoardGamesBar>
       </NicknameRequired>
     );
   }
 
   updateMetadata = (firstRun?: boolean) => {
-    const roomID = this.props.router.query.roomID as string;
     if (!firstRun && this.state.editingName) {
       return;
     }
@@ -108,13 +113,13 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       ...oldState,
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
-    LobbyService.checkin(this.props.dispatch, roomID).then(
+    LobbyService.checkin(this.props.dispatch, this._roomId()).then(
       async (response) => {
         if (response.matchId) {
           this._componentCleanup();
           Router.replace(`/match/${response.matchId}`);
         } else {
-          this.setState({ loading: false, roomMetadata: response.room });
+          this.setState({ loading: false, roomMetadata: response.room, userId: response.userId });
         }
       },
       () => {
@@ -166,9 +171,50 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   _getGameSharing = () => {
     const gameCode = this.props.router.query.gameCode as string;
-    const roomID = this.props.router.query.roomID as string;
-    return <GameSharing gameCode={gameCode} roomID={roomID} />;
+    return <GameSharing gameCode={gameCode} roomID={this._roomId()} />;
   };
+
+  _roomId() {
+    return this.props.router.query.roomID as string;
+  }
+
+  _startMatch = () => {
+    this.setState({ loading: true });
+    LobbyService.startMatch(this.props.dispatch, this._roomId()).catch(() => {
+      this._componentCleanup();
+      this.setState({ loading: false, error: 'Failed to start match' });
+    });
+  };
+
+  _getStartMatchButton() {
+    const creator = this.state.roomMetadata.creator;
+    let disabled = false;
+    let explanation;
+    if (this.state.roomMetadata.capacity > this.state.roomMetadata.users.length) {
+      disabled = true;
+      explanation = 'Not enough players.';
+    } else if (creator.id !== this.state.userId) {
+      disabled = true;
+      explanation = `Only ${creator.nickname} can start.`;
+    }
+    const button = (
+      <div style={{ float: 'right' }}>
+        <Button
+          variant="outlined"
+          color="primary"
+          disabled={disabled}
+          onClick={this._startMatch}
+          data-testid="startButton"
+        >
+          Start match
+        </Button>
+      </div>
+    );
+    if (disabled) {
+      return <Tooltip title={explanation}>{button}</Tooltip>;
+    }
+    return button;
+  }
 
   _tryAgain = () => {
     this.setState((oldState) => ({ ...oldState, error: '' }));

@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { MatchMembershipEntity } from './db/MatchMembership.entity';
 import { UsersService } from '../users/users.service';
 import { RoomsService } from '../rooms/rooms.service';
+import { HttpService } from '@nestjs/common';
 
 describe('MatchService', () => {
   let module: TestingModule;
@@ -18,6 +19,7 @@ describe('MatchService', () => {
   let roomsService: RoomsService;
   let matchRepository: Repository<MatchEntity>;
   let matchMembershipRepository: Repository<MatchMembershipEntity>;
+  let httpService: HttpService;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
@@ -28,6 +30,7 @@ describe('MatchService', () => {
     usersService = module.get<UsersService>(UsersService);
     roomsService = module.get<RoomsService>(RoomsService);
     matchRepository = module.get(getRepositoryToken(MatchEntity));
+    httpService = module.get<HttpService>(HttpService);
     matchMembershipRepository = module.get(
       getRepositoryToken(MatchMembershipEntity),
     );
@@ -82,24 +85,105 @@ describe('MatchService', () => {
   });
 
   it('should get next room succesfully', async () => {
-    const capacity = 2;
-    const gameCode = 'chess';
-    const isPublic = false;
-    const matchEntity = new MatchEntity();
-    matchEntity.id = 'fooMock2';
-    matchEntity.gameCode = gameCode;
-    matchEntity.bgioServerInternalUrl = 'fooInternalUrl';
-    matchEntity.bgioServerExternalUrl = 'fooExternalUrl';
-    matchEntity.bgioMatchId = 'fooMatchId';
-    const room = await roomsService.newRoom({ capacity, gameCode, isPublic });
-    matchEntity.room = await roomsService.getShallowRoomEntity(room.id);
-    await matchRepository.save(matchEntity);
-
-    const newRoomId = await service.getNextRoom('fooMock2');
-    const sameRoomId = await service.getNextRoom('fooMock2');
+    const promiseMock = jest
+      .fn()
+      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
+      )
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '2ndSecret' } }),
+      );
+    jest
+      .spyOn(httpService, 'post')
+      .mockReturnValue({ toPromise: promiseMock } as any);
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await roomsService.newRoom(
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await roomsService.checkin(aliceId, room.id);
+    const matchId = await service.startMatch(room.id, bobId);
+    const newRoomId = await service.getNextRoom(matchId, bobId);
+    const sameRoomId = await service.getNextRoom(matchId, bobId);
 
     const newRoom = await roomsService.getRoom(newRoomId);
-    expect(newRoom).toMatchObject({ capacity, gameCode, isPublic });
+    expect(newRoom).toMatchObject({
+      capacity: 2,
+      gameCode: 'checkers',
+      isPublic: false,
+    });
     expect(sameRoomId).toEqual(newRoomId);
+  });
+
+  it('should fail to start match if room is not full', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await roomsService.newRoom(
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+
+    const result = service.startMatch(room.id, bobId);
+    await expect(result).rejects.toThrow();
+  });
+
+  it('should fail to start match if not the creator', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await roomsService.newRoom(
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'bob' });
+    await roomsService.checkin(aliceId, room.id);
+
+    const result = service.startMatch(room.id, aliceId);
+    await expect(result).rejects.toThrow();
+  });
+
+  it('should start match', async () => {
+    const promiseMock = jest
+      .fn()
+      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
+      )
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '2ndSecret' } }),
+      );
+    jest
+      .spyOn(httpService, 'post')
+      .mockReturnValue({ toPromise: promiseMock } as any);
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await roomsService.newRoom(
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await roomsService.checkin(aliceId, room.id);
+
+    const matchId = await service.startMatch(room.id, bobId);
+    const match = await service.getMatchEntity(matchId);
+
+    expect(match.bgioMatchId).toEqual('bgioGameId');
+    expect(match.playerMemberships[0].bgioSecret).toEqual('1stSecret');
+    expect(match.playerMemberships[1].bgioSecret).toEqual('2ndSecret');
   });
 });
