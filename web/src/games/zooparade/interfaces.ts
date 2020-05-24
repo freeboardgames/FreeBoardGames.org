@@ -1,5 +1,4 @@
-
-// Interfaces 
+// Interfaces
 export interface ICard {
   id: number;
   color: number;

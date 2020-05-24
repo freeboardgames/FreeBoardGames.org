@@ -55,7 +55,7 @@ Explaining what is going on here:
 - _imageURL_: Thumbnail used across the app on the home page, game page and lobby. Generally a screenshot of the game, should be 500x250 pixels.
 - _modes_: Each game mode will represent a card in the game page ([check chess here](https://www.freeboardgames.org/play/chess)).
   - `GameMode.AI`: Makes the game available offline, allowing users to play single player matches against the computer (more configuration is needed).
-  - `GameMode.OnlineFriend`: Allows users to invite friends to play the game online. Users are going to need internet to connecGameArgst to the server.
+  - `GameMode.OnlineFriend`: Allows users to invite friends to play the game online. Users are going to need internet to connect to the server.
   - `GameMode.LocalFriend`: Makes the game available offline, and players can alternate using the same device to play the game.
 - _minPlayers_ and _maxPlayers_: Count of min and max players allowed for the game.
 - _description_: Short description of the game that will show on the home page card.
