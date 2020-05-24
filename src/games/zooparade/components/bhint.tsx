@@ -17,6 +17,7 @@ export class BHint extends React.Component< InnerWrapper, {}> {
                 { this.props.hint.color.map((value: number , index: number ) =>
                         {
                             return <BHintIcon
+                                     key={this.props.keyPropagation + "BHint" + index.toString()}
                                      hintIcon={{color: (value !== -1 ? index : -1), value: -1}}
                                      keyPropagation={this.props.keyPropagation + "BHint" + index.toString()}
                                      ></BHintIcon>
@@ -25,6 +26,7 @@ export class BHint extends React.Component< InnerWrapper, {}> {
                 { this.props.hint.value.map((value: number , index: number ) =>
                         {
                             return <BHintIcon
+                                     key={this.props.keyPropagation + "BHint" + index.toString()}
                                      hintIcon={{color: -1, value: (value !== -1 ? index : -1)}}
                                      keyPropagation={this.props.keyPropagation + "BHint" + index.toString()}
                                      ></BHintIcon>

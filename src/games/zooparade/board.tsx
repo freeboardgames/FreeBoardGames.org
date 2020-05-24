@@ -91,7 +91,10 @@ export class Board extends React.Component<IBoardProps,  {}> {
                           ></BPiles>
             </div>
             <div>
-              <BLog lines={ this.props.G.movelog } ></BLog>
+              <BLog lines={ this.props.G.movelog }
+                    keyPropagation={"Board"}
+                    >
+              </BLog>
             </div>
           </div>
       </GameLayout>

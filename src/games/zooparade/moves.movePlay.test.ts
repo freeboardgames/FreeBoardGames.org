@@ -507,7 +507,6 @@ it('play movePlays 1 - good', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
 
   // the board should look like this now
@@ -1504,7 +1503,6 @@ it('play movePlays 2 - bad', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
 
   // the board should look like this now
@@ -2540,7 +2538,6 @@ it('play movePlays 3 - play already played value/color', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
 
   // the board should look like this now
@@ -3630,7 +3627,6 @@ it('play movePlays 4 - finish a pile (gain treat)', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
 
   // the board should look like this now
@@ -4741,7 +4737,6 @@ it('play movePlays 5 - finish a pile with full treats', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
 
   // the board should look like this now
@@ -5998,7 +5993,6 @@ it('play movePlays 6 - play when no more cards on deck', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
 
   // the board should look like this now

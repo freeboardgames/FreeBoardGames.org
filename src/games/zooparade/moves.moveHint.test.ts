@@ -504,7 +504,6 @@ it('Hint Color 1 - Good hint.', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
   // the board should look like this now
   delete G.movelog;
@@ -1500,7 +1499,6 @@ it('Hint Value 2 - Hint Value nothing.', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
   // the board should look like this now
   delete G.movelog;
@@ -2504,7 +2502,6 @@ it('Hint 3 - No Hint token.', () => {
   // get the latest game state
   const {
   G,
-  ctx
   } = client.store.getState();
   // the board should look like this now
   delete G.movelog;

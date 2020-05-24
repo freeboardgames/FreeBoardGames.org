@@ -505,7 +505,6 @@ it('Discard 1 - Full Hints.', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
   // the board should look like this now
   delete G.movelog;
@@ -1529,7 +1528,6 @@ it('Discard 2 - Not Full Hints.', () => {
   // get the latest game state
   const {
     G,
-    ctx
   } = client.store.getState();
   // the board should look like this now
   delete G.movelog;

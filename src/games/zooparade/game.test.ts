@@ -1600,7 +1600,6 @@ it('End to End - 2', () => {
     client.moves.movePlay(0);
     const {
         G,
-        ctx
     } = client.store.getState();
     // the board should look like this now
     delete G.movelog;
