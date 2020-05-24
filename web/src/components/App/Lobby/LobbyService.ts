@@ -16,6 +16,7 @@ import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
+import { RenameUser, RenameUserVariables } from 'gqlTypes/RenameUser';
 import gql from 'graphql-tag';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
@@ -92,16 +93,21 @@ export class LobbyService {
 
   // TODO test
   // TODO are we checking auth?
-  public static async renameUser(dispatch: Dispatch<SyncUserAction>, newName: string): Promise<void> {
-    const updateUserRequest: UpdateUserRequest = { user: { nickname: newName } };
-    const response = await request
-      .post(`${AddressHelper.getFbgServerAddress()}/users/update`)
-      .set('Authorization', this.getAuthHeader())
-      .set('CSRF-Token', Cookies.get('XSRF-TOKEN'))
-      .send(updateUserRequest)
-      .catch(this.catchUnauthorized(dispatch));
+  public static async renameUser(dispatch: Dispatch<SyncUserAction>, nickname: string): Promise<void> {
+    const client = this.getClient();
+    const result = await client.mutate<RenameUser, RenameUserVariables>({
+      mutation: gql`
+        mutation RenameUser($nickname: String!) {
+          updateUserNickname(nickname: $nickname) {
+            nickname
+          }
+        }
+      `,
+      variables: { nickname },
+    });
 
-    return response.body;
+    const newNickname = result.data.updateUserNickname.nickname;
+    localStorage.setItem(FBG_NICKNAME_KEY, newNickname);
   }
 
   public static async checkin(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<CheckinRoomResponse> {
