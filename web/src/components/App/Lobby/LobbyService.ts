@@ -9,7 +9,6 @@ import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
 import { Match } from 'dto/match/Match';
 import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
-import { UpdateUserRequest } from 'dto/users/UpdateUserRequest';
 import { NextRoomRequest } from 'dto/match/NextRoomRequest';
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';

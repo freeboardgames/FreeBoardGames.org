@@ -1,4 +1,4 @@
-import { IPlayerInRoom, LobbyService } from './LobbyService';
+import { LobbyService } from './LobbyService';
 import request from 'superagent';
 import { NewRoomResponse } from 'dto/rooms/NewRoomResponse';
 import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
