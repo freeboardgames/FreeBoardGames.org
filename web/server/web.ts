@@ -122,6 +122,8 @@ app
       createProxyMiddleware({ target: INTERNAL_BACKEND_TARGET, changeOrigin: true, pathRewrite: { '^/api': '' } }),
     );
 
+    server.use('/graphql', createProxyMiddleware({ target: INTERNAL_BACKEND_TARGET, changeOrigin: true }));
+
     server.get('*', csrfProtection, (req, res) => {
       res.cookie('XSRF-TOKEN', (req as any).csrfToken());
       return handle(req, res);

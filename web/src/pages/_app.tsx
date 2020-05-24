@@ -14,6 +14,12 @@ import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
 
 import { wrapper } from 'redux/store';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:3001/graphql',
+});
 
 class defaultApp extends App {
   logPageView(path: string) {
@@ -53,7 +59,9 @@ class defaultApp extends App {
       <ThemeProvider theme={theme}>
         <SelfXSSWarning />
         <UaContext.Provider value={isMobile}>
-          <Component {...pageProps} />
+          <ApolloProvider client={client}>
+            <Component {...pageProps} />
+          </ApolloProvider>
         </UaContext.Provider>
       </ThemeProvider>
     );
