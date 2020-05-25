@@ -4,7 +4,9 @@ import expressWinston from 'express-winston';
 
 export function setupLogging(app, name) {
   if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-    console.info('GOOGLE_APPLICATION_CREDENTIALS env not found, skipping stackdriver logging.');
+    console.info(
+      'GOOGLE_APPLICATION_CREDENTIALS env not found, skipping stackdriver logging.',
+    );
     return;
   }
   const loggingWinston = new LoggingWinston({
@@ -12,18 +14,18 @@ export function setupLogging(app, name) {
     logName: name,
     serviceContext: {
       service: name,
-      version: 'latest'
+      version: 'latest',
     },
-    labels: { name }
+    labels: { name },
   });
   const logger = winston.createLogger({
     level: 'info',
-    transports: [
-      loggingWinston,
-    ],
+    transports: [loggingWinston],
   });
-  app.use(expressWinston.logger({
-    winstonInstance: logger,
-    meta: true,
-  }));
-};
+  app.use(
+    expressWinston.logger({
+      winstonInstance: logger,
+      meta: true,
+    }),
+  );
+}
