@@ -11,6 +11,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true, // Allows for the parsing of JSX
     },
+    warnOnUnsupportedTypeScriptVersion: false,
   },
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
