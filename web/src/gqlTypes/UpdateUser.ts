@@ -6,18 +6,13 @@
 import { UserInput } from "./globalTypes";
 
 // ====================================================
-// GraphQL mutation operation: RenameUser
+// GraphQL mutation operation: UpdateUser
 // ====================================================
 
-export interface RenameUser_updateUser {
-  __typename: "User";
-  nickname: string;
+export interface UpdateUser {
+  updateUser: boolean;
 }
 
-export interface RenameUser {
-  updateUser: RenameUser_updateUser;
-}
-
-export interface RenameUserVariables {
+export interface UpdateUserVariables {
   user: UserInput;
 }

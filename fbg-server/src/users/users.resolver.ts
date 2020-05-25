@@ -1,6 +1,7 @@
 import { Resolver, Mutation, Args, Query, Int } from '@nestjs/graphql';
 import { User } from './gql/User.gql';
 import { UserInput } from './gql/UserInput.gql';
+import { NewUser } from './gql/NewUser.gql';
 import { UsersService } from './users.service';
 import { JwtPayload } from './definitions';
 import { JwtService } from '@nestjs/jwt';
@@ -14,27 +15,25 @@ export class UsersResolver {
     private readonly jwtService: JwtService,
   ) {}
 
-  @Mutation((returns) => User)
+  @Mutation((returns) => NewUser)
   async newUser(
     @Args({ name: 'user', type: () => UserInput }) userInput: UserInput,
   ) {
-    const user: User = { nickname: userInput.nickname };
-    const userId = await this.usersService.newUser(user);
+    const userId = await this.usersService.newUser(userInput);
     const payload: JwtPayload = { userId };
     const jwtToken = this.jwtService.sign(payload);
-    const createdUser: User = { ...user, id: userId, jwtToken };
-    return createdUser;
+    const newUser: NewUser = { jwtToken };
+    return newUser;
   }
 
-  @Mutation((returns) => User)
+  @Mutation((returns) => Boolean)
   @UseGuards(JwtAuthGuard)
   async updateUser(
-    @CurrentUser() user: User,
+    @CurrentUser() currentUser,
     @Args({ name: 'user', type: () => UserInput }) userInput: UserInput,
   ) {
-    const newUser: User = { id: user.id, nickname: userInput.nickname };
-    await this.usersService.updateUser(newUser);
-    return newUser;
+    await this.usersService.updateUser(currentUser.id, userInput);
+    return true;
   }
 
   @Query((returns) => User)

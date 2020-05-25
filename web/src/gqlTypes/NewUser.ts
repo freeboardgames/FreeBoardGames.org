@@ -10,7 +10,7 @@ import { UserInput } from "./globalTypes";
 // ====================================================
 
 export interface NewUser_newUser {
-  __typename: "User";
+  __typename: "NewUser";
   jwtToken: string | null;
 }
 
