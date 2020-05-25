@@ -28,10 +28,6 @@ describe('GameOver', () => {
     it('should render play again button when gameArgs are present.', () => {
       expect(wrapper.getByText(/Play Again/)).toBeTruthy();
     });
-
-    it('should render extra content.', () => {
-      expect(wrapper.getByText(/fake-game-code/)).toBeTruthy();
-    });
   });
 
   describe('without gameArgs', () => {
