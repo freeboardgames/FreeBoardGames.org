@@ -18,6 +18,9 @@ COPY --chown=appuser src /appdata/src
 COPY --chown=appuser --from=common /dto /appdata/src/dto
 RUN yarn run build
 
+# internal configs for FreeBoardGames.org
+COPY --chown=appuser --from=common /internal /internal
+
 # run
 CMD yarn run start:prod
 
