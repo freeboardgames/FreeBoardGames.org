@@ -16,6 +16,7 @@ import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
 import { RenameUser, RenameUserVariables } from 'gqlTypes/RenameUser';
+import { UserInput } from 'gqlTypes/globalTypes';
 import gql from 'graphql-tag';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
@@ -44,13 +45,13 @@ export class LobbyService {
     const client = this.getClient();
     const result = await client.mutate<NewUser, NewUserVariables>({
       mutation: gql`
-        mutation NewUser($nickname: String!) {
-          newUser(nickname: $nickname) {
+        mutation NewUser($user: UserInput!) {
+          newUser(user: $user) {
             jwtToken
           }
         }
       `,
-      variables: { nickname },
+      variables: { user: { nickname } },
     });
 
     const jwtToken = result.data.newUser.jwtToken;
@@ -107,16 +108,16 @@ export class LobbyService {
     const client = this.getClient();
     const result = await client.mutate<RenameUser, RenameUserVariables>({
       mutation: gql`
-        mutation RenameUser($nickname: String!) {
-          updateUserNickname(nickname: $nickname) {
+        mutation RenameUser($user: UserInput!) {
+          updateUser(user: $user) {
             nickname
           }
         }
       `,
-      variables: { nickname },
+      variables: { user: { nickname } },
     });
 
-    const newNickname = result.data.updateUserNickname.nickname;
+    const newNickname = result.data.updateUser.nickname;
     localStorage.setItem(FBG_NICKNAME_KEY, newNickname);
   }
 

@@ -1,5 +1,6 @@
 import { Resolver, Mutation, Args, Query, Int } from '@nestjs/graphql';
 import { User } from '../models/User.model';
+import { UserInput } from '../models/UserInput.model';
 import { UsersService } from './users.service';
 import { JwtPayload } from './definitions';
 import { JwtService } from '@nestjs/jwt';
@@ -15,9 +16,9 @@ export class UsersResolver {
 
   @Mutation((returns) => User)
   async newUser(
-    @Args({ name: 'nickname', type: () => String }) nickname: string,
+    @Args({ name: 'user', type: () => UserInput }) userInput: UserInput,
   ) {
-    const user: User = { nickname };
+    const user: User = { nickname: userInput.nickname };
     const userId = await this.usersService.newUser(user);
     const payload: JwtPayload = { userId };
     const jwtToken = this.jwtService.sign(payload);
@@ -27,11 +28,11 @@ export class UsersResolver {
 
   @Mutation((returns) => User)
   @UseGuards(JwtAuthGuard)
-  async updateUserNickname(
+  async updateUser(
     @CurrentUser() user: User,
-    @Args({ name: 'nickname', type: () => String }) nickname: string,
+    @Args({ name: 'user', type: () => UserInput }) userInput: UserInput,
   ) {
-    const newUser: User = { ...user, nickname };
+    const newUser: User = { id: user.id, nickname: userInput.nickname };
     await this.usersService.updateUser(newUser);
     return newUser;
   }

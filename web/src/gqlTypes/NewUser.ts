@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { UserInput } from "./globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: NewUser
 // ====================================================
@@ -17,5 +19,5 @@ export interface NewUser {
 }
 
 export interface NewUserVariables {
-  nickname: string;
+  user: UserInput;
 }
