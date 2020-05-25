@@ -30,4 +30,9 @@ COPY --chown=appuser static /appdata/static
 RUN yarn run build
 
 COPY --chown=appuser docker_run.sh /appdata/
+
+# internal configs for FreeBoardGames.org
+COPY --chown=appuser --from=common /internal /internal
+
+# run
 CMD ./docker_run.sh
