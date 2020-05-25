@@ -21,7 +21,8 @@ import { Room as RoomDto } from 'dto/rooms/Room';
 import { Dispatch } from 'redux';
 import Router from 'next/router';
 
-const MAX_TIMES_TO_UPDATE_METADATA = 2000;
+const MAX_TIMES_TO_UPDATE_METADATA = 1000;
+const CHECKIN_PERIOD = 5;
 
 interface IRoomProps {
   gameCode: string;
@@ -53,7 +54,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   componentDidMount() {
     window.addEventListener('beforeunload', this._componentCleanup);
-    this.timer = setInterval(() => this.updateMetadata(), 2000);
+    this.timer = setInterval(() => this.updateMetadata(), CHECKIN_PERIOD * 1e3);
     this.updateMetadata(true);
   }
 
@@ -111,7 +112,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     }
     this.setState((oldState) => ({
       ...oldState,
-      numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
     LobbyService.checkin(this.props.dispatch, this._roomId()).then(
       async (response) => {
@@ -198,7 +198,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       explanation = `Only ${creator.nickname} can start.`;
     }
     const button = (
-      <div style={{ float: 'right' }}>
+      <div style={{ float: 'right', paddingBottom: '32px' }}>
         <Button
           variant="outlined"
           color="primary"
@@ -219,7 +219,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   _tryAgain = () => {
     this.setState((oldState) => ({ ...oldState, error: '' }));
     this.updateMetadata();
-    this.timer = setInterval(() => this.updateMetadata(), 2000);
+    this.timer = setInterval(() => this.updateMetadata(), CHECKIN_PERIOD * 1e3);
   };
 }
 
