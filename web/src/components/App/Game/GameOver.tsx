@@ -29,8 +29,10 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       return <Page />;
     }
     let playAgain;
+    let gameCode = null;
     const extraCardContent = this._getExtraCardContent();
     if (this.props.gameArgs) {
+      gameCode = this.props.gameArgs.gameCode;
       playAgain = (
         <div style={{ textAlign: 'center' }}>
           <Button
@@ -46,7 +48,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
     }
     ReactGA.event({
       category: 'Game',
-      label: this.props.gameArgs.gameCode,
+      label: gameCode,
       action: 'Game over',
     });
     return (
