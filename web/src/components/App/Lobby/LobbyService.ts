@@ -16,7 +16,6 @@ import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
 import { RenameUser, RenameUserVariables } from 'gqlTypes/RenameUser';
-import { UserInput } from 'gqlTypes/globalTypes';
 import gql from 'graphql-tag';
 
 const FBG_NICKNAME_KEY = 'fbgNickname';
