@@ -27,8 +27,11 @@ export class UsersResolver {
 
   @Mutation((returns) => User)
   @UseGuards(JwtAuthGuard)
-  async updateUserNickname(@CurrentUser() user: User, @Args({name: 'nickname', type: () => String}) nickname: string) {
-    const newUser: User = {...user, nickname};
+  async updateUserNickname(
+    @CurrentUser() user: User,
+    @Args({ name: 'nickname', type: () => String }) nickname: string,
+  ) {
+    const newUser: User = { ...user, nickname };
     await this.usersService.updateUser(newUser);
     return newUser;
   }

@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@google-cloud/logging-winston": "^3.0.6",
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/graphql": "^7.3.9",
@@ -35,6 +36,7 @@
     "cookie-parser": "^1.4.5",
     "cross-env": "^7.0.2",
     "csurf": "^1.11.0",
+    "express-winston": "^4.0.3",
     "graphql": "^15.0.0",
     "graphql-tools": "^6.0.0",
     "passport": "^0.4.1",
@@ -46,7 +48,8 @@
     "shortid": "^2.2.15",
     "sqlite3": "^4.2.0",
     "superagent": "^5.2.2",
-    "typeorm": "^0.2.24"
+    "typeorm": "^0.2.24",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",

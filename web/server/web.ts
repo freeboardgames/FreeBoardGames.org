@@ -6,6 +6,7 @@ import fs from 'fs';
 import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import { GAMES_LIST } from 'games';
+import { setupLogging } from './logging';
 
 const INTERNAL_BACKEND_TARGET = process.env.FBG_BACKEND_TARGET || 'http://localhost:3001';
 const dev = process.env.NODE_ENV !== 'production';
@@ -75,6 +76,7 @@ app
     const server = express();
     server.disable('x-powered-by');
     server.use(cookieParser());
+    setupLogging(server, 'fbg-web');
 
     server.get('/.well-known/assetlinks.json', (req, res) => {
       if (isProdChannel && isOfficialSite(req.hostname)) {
