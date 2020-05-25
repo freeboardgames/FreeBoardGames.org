@@ -112,6 +112,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     }
     this.setState((oldState) => ({
       ...oldState,
+      numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
     LobbyService.checkin(this.props.dispatch, this._roomId()).then(
       async (response) => {
