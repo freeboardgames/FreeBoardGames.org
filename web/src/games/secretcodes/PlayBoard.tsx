@@ -136,6 +136,8 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
         else if (card.color === CardColor.civilian) classes.push(css.cardCivilian);
         else if (card.color === CardColor.assassin) classes.push(css.cardAssassin);
 
+        if (i === this.props.G.lastSelectedCardIndex) classes.push(css.cardLastSelected);
+
         classes.push(css.cardRevealed);
       }
 
@@ -188,3 +190,4 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     );
   }
 }
+export default PlayBoard;

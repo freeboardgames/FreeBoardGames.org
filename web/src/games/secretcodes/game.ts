@@ -32,9 +32,11 @@ const GameConfig: Game<IG> = {
       .Shuffle(words)
       .slice(0, 25)
       .map((word) => makeCard(word));
+    const lastSelectedCardIndex = null;
     return {
       teams,
       cards,
+      lastSelectedCardIndex,
     };
   },
 

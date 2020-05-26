@@ -33,6 +33,7 @@ button.playActionBtn {
 
   border-radius: 3px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);
+  box-sizing: border-box;
 
   text-align: center;
   hyphens: auto;
@@ -84,6 +85,11 @@ button.playActionBtn {
 .cardAssassin {
   background-color: #50514F;
   fill: #fff;
+}
+
+.cardLastSelected {
+  border: dashed 3px palegreen;
+  border-style: ridge;
 }
 
 .winners {
