@@ -6,4 +6,4 @@ export default {
   // parameters: { notes: componentNotes },
 };
 
-export const small = () => <QrCodeIcon/>;
+export const small = () => <QrCodeIcon />;
