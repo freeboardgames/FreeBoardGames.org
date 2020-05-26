@@ -26,6 +26,10 @@ export interface IG {
   teams: Team[];
   cards: Card[];
   currentTeamIndex?: number;
+  /**
+   * The index of the last card selected by any team. Null at the beggining of
+   * the round.
+   */
   lastSelectedCardIndex: null | number;
 }
 
