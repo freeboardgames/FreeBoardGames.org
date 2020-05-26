@@ -70,11 +70,13 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   };
 
   _chooseCard = (cardIndex: number) => {
+    console.log('CHOOOOSE CARD');
+    console.log(`${this._isActive()} | ${this.props.ctx.phase} | ${isOnlineGame(this.props.gameArgs)} | ${isPlayerSpymaster(this.props.G, this._playerID())} | ${this.props.G.cards[cardIndex].revealed}`);
     if (!this._isActive()) return;
     if (this.props.ctx.phase !== Phases.guess) return;
     if (isOnlineGame(this.props.gameArgs) && isPlayerSpymaster(this.props.G, this._playerID())) return;
     if (this.props.G.cards[cardIndex].revealed) return;
-
+    console.log('CHOOOSE CARD2');
     this.props.moves.chooseCard(cardIndex);
   };
 
@@ -136,6 +138,8 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
         else if (card.color === CardColor.civilian) classes.push(css.cardCivilian);
         else if (card.color === CardColor.assassin) classes.push(css.cardAssassin);
 
+        if (i === this.props.G.lastSelectedCardIndex) classes.push(css.cardLastSelected);
+
         classes.push(css.cardRevealed);
       }
 
@@ -188,3 +192,4 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     );
   }
 }
+export default PlayBoard;

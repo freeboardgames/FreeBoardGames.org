@@ -26,6 +26,7 @@ export interface IG {
   teams: Team[];
   cards: Card[];
   currentTeamIndex?: number;
+  lastSelectedCardIndex: null | number;
 }
 
 export enum Phases {
