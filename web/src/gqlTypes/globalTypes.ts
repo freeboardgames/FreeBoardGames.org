@@ -7,7 +7,13 @@
 // START Enums and Input Objects
 //==============================================================
 
-export interface UserInput {
+export interface NewRoomInput {
+  gameCode: string;
+  capacity: number;
+  isPublic: boolean;
+}
+
+export interface NewUserInput {
   nickname: string;
 }
 

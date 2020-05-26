@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class RoomInput {
+export class NewRoomInput {
   @Field((type) => String)
   gameCode: string;
 

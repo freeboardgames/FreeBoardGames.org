@@ -182,11 +182,12 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     const gameCode = this.props.gameDef.code;
     const numPlayers = this._getExtraInfoValue(info);
     LobbyService.newRoom((this.props as any).dispatch, gameCode, numPlayers).then(
-      (roomID) => {
+      (response) => {
         // we use .replace instead of .push so that the browser back button works correctly
-        Router.replace(`/room/${roomID}`);
+        Router.replace(`/room/${response.newRoom.roomId}`);
       },
       (e) => {
+        debugger;
         if (e.response.unauthorized) {
           this.setState({ onlinePlayRequested: true, playButtonDisabled: false });
         } else {

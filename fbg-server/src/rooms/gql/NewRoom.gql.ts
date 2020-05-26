@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class NewUser {
+export class NewRoom {
   @Field((type) => String)
-  jwtToken: string;
+  roomId: string;
 }

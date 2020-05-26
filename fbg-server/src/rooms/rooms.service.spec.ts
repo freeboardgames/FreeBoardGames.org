@@ -4,11 +4,11 @@ import { UsersService } from '../users/users.service';
 import { FakeDbModule, closeDbConnection } from '../testing/dbUtil';
 import { RoomsModule } from '../rooms/rooms.module';
 import { UsersModule } from '../users/users.module';
-import { Room } from '../dto/rooms/Room';
 import { Connection } from 'typeorm';
 import { MatchModule } from '../match/match.module';
 import { HttpService } from '@nestjs/common';
 import { MatchService } from '../match/match.service';
+import { NewRoomInput } from './gql/NewRoomInput.gql';
 
 describe('RoomsService', () => {
   let module: TestingModule;
@@ -40,7 +40,11 @@ describe('RoomsService', () => {
   });
 
   it('should create a room successfully', async () => {
-    const room: Room = { capacity: 2, gameCode: 'checkers', isPublic: false };
+    const room: NewRoomInput = {
+      capacity: 2,
+      gameCode: 'checkers',
+      isPublic: false,
+    };
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const newRoom = await service.newRoom(room, bobId);
     expect(newRoom).toMatchObject({ ...room });
@@ -57,7 +61,9 @@ describe('RoomsService', () => {
       bobId,
     );
     const newRoom = await service.getRoom(room.id);
-    expect(newRoom.users).toEqual([{ id: bobId, nickname: 'bob' }]);
+    expect(newRoom.userMemberships).toEqual([
+      { isCreator: true, user: { id: bobId, nickname: 'bob' } },
+    ]);
   });
 
   it('should have user after checkin', async () => {
@@ -72,7 +78,7 @@ describe('RoomsService', () => {
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
     const result = await service.checkin(aliceId, room.id);
-    expect(result.room.users.length).toEqual(2);
+    expect(result.userMemberships.length).toEqual(2);
   });
 
   it('should not allow room to go over capacity', async () => {
@@ -106,7 +112,7 @@ describe('RoomsService', () => {
     const aliceId = await usersService.newUser({ nickname: 'alice' });
     await service.checkin(aliceId, room.id);
     const newRoom = await service.getRoom(room.id);
-    expect(newRoom.users.length).toEqual(2);
+    expect(newRoom.userMemberships.length).toEqual(2);
   });
 
   it('should give the match id after creation', async () => {
