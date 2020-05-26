@@ -43,11 +43,14 @@
     "precombine:reports": "yarn run copy:reports && mkdirp .nyc_output",
     "combine:reports": "nyc merge reports && move-cli coverage.json .nyc_output/out.json",
     "prereport:combined": "yarn run combine:reports",
-    "report:combined": "nyc report --reporter lcov --report-dir coverage"
+    "report:combined": "nyc report --reporter lcov --report-dir coverage",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@apollo/react-components": "^3.1.5",
     "@apollo/react-hooks": "^3.1.5",
+    "@babel/plugin-transform-parameters": "^7.9.5",
     "@babel/runtime-corejs2": "^7.9.6",
     "@google-cloud/logging-winston": "^3.0.6",
     "@material-ui/core": "^4.10.0",
@@ -62,6 +65,7 @@
     "apollo": "^2.28.0",
     "apollo-boost": "^0.4.9",
     "babel-plugin-jsx-remove-data-test-id": "^2.1.3",
+    "babel-preset-react-app": "^9.1.2",
     "boardgame.io": "0.39.9",
     "chess.js": "^0.10.3",
     "cookie-parser": "^1.4.5",
@@ -103,8 +107,13 @@
     "worker-loader": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.6",
     "@cypress/code-coverage": "^3.7.5",
     "@cypress/webpack-preprocessor": "^5.4.1",
+    "@storybook/addon-actions": "^5.3.19",
+    "@storybook/addon-links": "^5.3.19",
+    "@storybook/addons": "^5.3.19",
+    "@storybook/react": "^5.3.19",
     "@testing-library/jest-dom": "^5.8.0",
     "@testing-library/react": "^10.0.4",
     "@types/enzyme": "^3.10.5",
@@ -152,6 +161,7 @@
     "nyc": "^15.0.1",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
+    "react-docgen-typescript-loader": "^3.7.2",
     "redux-mock-store": "^1.5.4",
     "rimraf": "^3.0.2",
     "sharp": "^0.25.3",
