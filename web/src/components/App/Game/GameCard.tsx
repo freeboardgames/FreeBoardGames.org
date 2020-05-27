@@ -13,7 +13,6 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
   render() {
     let navigateButton = null;
     const image = this.props.game.imageURL;
-    // console.log(this.props.game.imageURL);
     const mainDivStyle: React.CSSProperties = {
       position: 'relative',
       height: '250px',
