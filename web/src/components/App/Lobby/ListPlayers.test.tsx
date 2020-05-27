@@ -1,9 +1,12 @@
 import React from 'react';
 import { ListPlayers } from './ListPlayers';
 import { mount } from 'enzyme';
-import { User } from 'dto/users/User';
 
-const user1: User = { nickname: 'foo' };
+const user1membership = {
+  user: { nickname: 'foo', id: 123, __typename: 'User' as const },
+  isCreator: true,
+  __typename: 'RoomMembership' as const,
+};
 
 describe('List of players', () => {
   it('should contain a link', () => {
@@ -12,12 +15,15 @@ describe('List of players', () => {
         editNickname={jest.fn()}
         roomMetadata={{
           gameCode: 'foomatch',
-          users: [user1],
+          userMemberships: [user1membership],
           isPublic: false,
           capacity: 2,
+          userId: 123,
+          matchId: null,
+          __typename: 'Room' as const,
         }}
       />,
     );
-    expect(wrapper.html()).toContain(user1.nickname);
+    expect(wrapper.html()).toContain(user1membership.user.nickname);
   });
 });

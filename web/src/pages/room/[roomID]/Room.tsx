@@ -17,7 +17,7 @@ import SEO from 'components/SEO';
 import { ActionNames } from 'redux/actions';
 import { ReduxUserState } from 'redux/definitions';
 import { connect } from 'react-redux';
-import { CheckinRoom } from 'gqlTypes/CheckinRoom';
+import { CheckinRoom_checkinRoom } from 'gqlTypes/CheckinRoom';
 import { Dispatch } from 'redux';
 import Router from 'next/router';
 
@@ -32,7 +32,7 @@ interface IRoomProps {
 }
 
 interface IRoomState {
-  roomMetadata?: CheckinRoom;
+  roomMetadata?: CheckinRoom_checkinRoom;
   nameTextField?: string;
   userId?: number;
   loading: boolean;
@@ -75,7 +75,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
         </NicknameRequired>
       );
     }
-    const gameDef = GAMES_MAP[this.state.roomMetadata.checkinRoom.gameCode];
+    const gameDef = GAMES_MAP[this.state.roomMetadata.gameCode];
     return (
       <NicknameRequired>
         <SEO
@@ -120,7 +120,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
           this._componentCleanup();
           Router.replace(`/match/${response.checkinRoom.matchId}`);
         } else {
-          this.setState({ loading: false, roomMetadata: response, userId: response.checkinRoom.userId });
+          this.setState({ loading: false, roomMetadata: response.checkinRoom, userId: response.checkinRoom.userId });
         }
       },
       () => {
@@ -188,10 +188,10 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   };
 
   _getStartMatchButton() {
-    const creator = this.state.roomMetadata.checkinRoom.userMemberships.find((membership) => membership.isCreator);
+    const creator = this.state.roomMetadata.userMemberships.find((membership) => membership.isCreator);
     let disabled = false;
     let explanation;
-    if (this.state.roomMetadata.checkinRoom.capacity > this.state.roomMetadata.checkinRoom.userMemberships.length) {
+    if (this.state.roomMetadata.capacity > this.state.roomMetadata.userMemberships.length) {
       disabled = true;
       explanation = 'Not enough players.';
     } else if (creator.user.id !== this.state.userId) {

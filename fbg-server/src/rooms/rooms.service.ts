@@ -64,7 +64,7 @@ export class RoomsService {
     return await inTransaction(this.connection, async (queryRunner) => {
       let room = await this.getRoomEntity(roomId);
       if (room.match) {
-        return { room: roomEntityToRoom(room), matchId: room.match.id };
+        return { ...roomEntityToRoom(room), matchId: room.match.id };
       }
       await this.updateMembership(queryRunner, userId, room);
       return { ...roomEntityToRoom(room), userId };

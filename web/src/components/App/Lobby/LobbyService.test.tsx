@@ -1,7 +1,5 @@
 import { LobbyService } from './LobbyService';
 import request from 'superagent';
-import { NewRoomResponse } from 'dto/rooms/NewRoomResponse';
-import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
 import { Match } from 'dto/match/Match';
 
 describe('New Room', () => {
@@ -23,15 +21,12 @@ describe('New Room', () => {
   });
 
   it('should create new room', async () => {
-    const response: NewRoomResponse = { roomId: 'fooroom' };
-    request.post = jest.fn().mockReturnValue({
-      set: jest
-        .fn()
-        .mockReturnValue({ set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }) }),
-    });
+    const mockMutate = jest.fn().mockResolvedValue({ data: 'foo' });
+    const mockClient = jest.fn().mockReturnValue({ mutate: mockMutate });
+    LobbyService.getClient = mockClient;
     const dispatch = jest.fn();
     const roomID = await LobbyService.newRoom(dispatch, 'foogame', 2);
-    expect(roomID).toEqual('fooroom');
+    expect(roomID).toEqual('foo');
   });
 
   it('should check-in on room', async () => {

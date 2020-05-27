@@ -11,6 +11,7 @@ export class RoomsResolver {
   constructor(private roomsService: RoomsService) {}
 
   @Mutation((returns) => NewRoom)
+  @UseGuards(GqlAuthGuard)
   async newRoom(
     @CurrentUser() currentUser,
     @Args({ name: 'room', type: () => NewRoomInput }) room: NewRoomInput,
