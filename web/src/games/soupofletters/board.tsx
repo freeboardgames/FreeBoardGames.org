@@ -9,6 +9,7 @@ import { Modal, Button, Typography, Box, List, ListItem, ListItemText } from '@m
 import { TIME_OUT, TIME_BUFF } from './constants';
 import { IG, ISolvedWord } from './game';
 import { Soup } from './soup'
+import soupCSS from './soup.css'
 
 interface IBoardProps {
   G: IG;
@@ -47,14 +48,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return;
     }
 
-    if (!isLocalGame(this.props.gameArgs)) {
+    if (isOnlineGame(this.props.gameArgs)) {
       return `Online Game`;
     }
     return `Turn Player ${this.props.ctx.currentPlayer}`;
   }
 
   _checkTimeOut = (secondsLeft: number) => {
-    if ((secondsLeft === 0) || (this.props.G.timeRef - Date.now() > TIME_OUT) ) {
+    if (isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer) { return; }
+    if ((secondsLeft === 0) || ((Date.now() - this.props.G.timeRef) > ((TIME_OUT + TIME_BUFF)*1000)) ) {
       this.props.moves.changeTurn();
     }
   }
@@ -72,11 +74,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return(
       <Timer
         key={'timer-' + this.props.G.timeRef}
-        initialTime={(TIME_OUT + TIME_BUFF)*1000 }
+        initialTime={(TIME_OUT + TIME_BUFF)*1000 - (Date.now() - this.props.G.timeRef)}
         direction="backward"
         checkpoints={secondlyCallback}
       >
-        You have <Timer.Seconds formatValue={value => `${value>TIME_OUT?TIME_OUT:value}`} /> seconds.
+        {
+          isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer?
+          <Timer.Seconds formatValue={value => this._playerInRoom().name + ` has ${value>TIME_OUT?TIME_OUT:(value<0?0:value)} seconds.`} /> :
+          <Timer.Seconds formatValue={value => `You have ${value>TIME_OUT?TIME_OUT:value} seconds.`} />
+        }
       </Timer>
 
     );
@@ -157,14 +163,13 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getBoard(boardSize = 100) {
 
-    console.log(this.props.G.puzzel);
-    console.log(this.props.G.solution);
     return (
       <Soup 
         boardSize={boardSize} 
         puzzel={this.props.G.puzzel}
         solution={this.props.G.solution}
-        wordFound={this._wordFound}
+        currentPlayer={this.props.ctx.currentPlayer}
+        wordFoundCallback={this._wordFound}
       />
     );
   }
@@ -181,10 +186,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
-        <Typography variant="h5" style={{ color: 'white', textAlign: 'center' }}>
+        <Typography 
+          className={soupCSS.noselect} variant="h5" 
+          style={{ color: 'white', textAlign: 'center' }}
+        >
           {this._getStatus()}
         </Typography>
-        <Typography variant='h6' style={{ color: 'white', textAlign: 'center' }}>
+        <Typography 
+            className={soupCSS.noselect} variant='h6' 
+            style={{ color: 'white', textAlign: 'center' }}
+        >
         {this._getTimeRemaining()}
         </Typography>
         {this._getBoard()}
