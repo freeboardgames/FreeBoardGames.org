@@ -72,7 +72,8 @@ describe('RoomsService', () => {
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
     const result = await service.checkin(aliceId, room.id);
-    expect(result.room.users.length).toEqual(2);
+    expect(result.room.users[0].nickname).toEqual('bob');
+    expect(result.room.users[1].nickname).toEqual('alice');
   });
 
   it('should not allow room to go over capacity', async () => {
@@ -106,7 +107,8 @@ describe('RoomsService', () => {
     const aliceId = await usersService.newUser({ nickname: 'alice' });
     await service.checkin(aliceId, room.id);
     const newRoom = await service.getRoom(room.id);
-    expect(newRoom.users.length).toEqual(2);
+    expect(newRoom.users[0].nickname).toEqual('bob');
+    expect(newRoom.users[1].nickname).toEqual('alice');
   });
 
   it('should give the match id after creation', async () => {
