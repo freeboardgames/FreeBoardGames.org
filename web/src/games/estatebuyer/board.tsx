@@ -32,7 +32,11 @@ export class Board extends React.Component<IBoardProps> {
     console.log(this.props.G);
 
     if (this.props.ctx.gameover) {
-      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+      return <GameLayout
+        gameOver={this._getGameOver()}
+        extraCardContent={this._getScoreBoard()}
+        gameArgs={this.props.gameArgs}
+        />;
     }
 
     return (
@@ -43,9 +47,9 @@ export class Board extends React.Component<IBoardProps> {
           players={this.props.gameArgs.players}
           ctx={this.props.ctx}
         />
-        {this.getStartGameButton()}
         <div className={css.tableau}>
           {this.getDeck()}
+          {this.getStartGameButton()}
           <div className={css.cards}>
             {this.getCardsOnTable()}
           </div>
@@ -99,7 +103,6 @@ export class Board extends React.Component<IBoardProps> {
 
   getCardsOnTable() {
     return [...this.props.G.cardsontable]
-      .sort((a: ICard, b: ICard) => (a.value - b.value))
       .map((card: any, index:number) => {
         const ComponentTag:any = (card.building) ? BuildingCardComponent : MoneyCardComponent;
         
@@ -150,17 +153,22 @@ export class Board extends React.Component<IBoardProps> {
         scoreboard={getScoreBoard(this.props.G)}
         playerID={this.props.playerID}
         players={this.props.gameArgs.players}
-        scoreName="Penalty points"
       />
     );
   }
 
   _getGameOver() {
     const winner = this.props.ctx.gameover.winner;
-    if (winner) {
-      if (isLocalGame(this.props.gameArgs)) {
-        return "Someone won TODO"  ;
+    if (this.props.ctx.gameover.winner !== undefined) {
+      if (this.props.playerID){
+        if (this.props.ctx.gameover.winner === this.props.playerID) {
+          return 'you won';
+        } else {
+          return 'you lost';
+        }
       }
+      return "Player "+(parseInt(this.props.ctx.gameover.winner)+1)+' won';
     }
+    return "it is a tie"
   }
 }
