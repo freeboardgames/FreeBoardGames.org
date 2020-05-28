@@ -157,6 +157,3 @@ android/local.properties
 
 # puppeteer
 __diff_output__
-
-# storybook auto-generated
-stories/
