@@ -1,0 +1,49 @@
+.PlayerBadgeContainer {
+  clear: both;
+  text-align: center;
+}
+
+.PlayerBadgeContainer:after { 
+  content: "."; 
+  visibility: hidden; 
+  display: block; 
+  height: 0; 
+  clear: both;
+}
+
+.PlayerBadge {
+  margin-left: 4px;
+  margin-bottom: 4px;
+  border-radius: 5px;
+  padding: 4px;
+  float: left;
+  border: 2px solid;
+}
+
+.Active {
+  background-color: rgb(145, 53, 0);
+}
+
+.PlayerBadge P {
+  padding: 0.1em;
+}
+
+.PlayerBadge .Bid {
+  margin-left: 8px;
+  border-radius: 0.2em;
+  background-color: rgb(0, 95, 24);
+}
+
+.PlayerBadge .Score {
+  margin-left: 8px;
+  border-radius: 0.2em;
+  background-color: rgb(0, 95, 24);
+}
+
+.PlayerBadge p {
+  display: inline;
+}
+
+.Self {
+  font-weight: bold;
+}

@@ -1,0 +1,15 @@
+.deck  {
+    left: 0%;
+    text-align: center;
+    width: 100px;
+    overflow: hidden;
+}
+
+.deck .cardContainer {
+    position: absolute;
+    width: 100px;
+    text-align: center;
+    transform-origin: 0 0;
+    transform: scale(0.2);
+    padding: 0;
+}

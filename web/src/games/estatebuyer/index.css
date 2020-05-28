@@ -1,0 +1,186 @@
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.Card {
+  color: black;
+  border: 20px #049 solid;
+  box-sizing: border-box;
+  background-origin: border-box;
+  background-color: white;
+  cursor: pointer;
+  height: 583px;
+  width: 406px;
+  background-size: 4096px;
+  background-position: 0px 0px;
+  border-radius: 34px;
+  margin: 0 auto;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.Card:hover {
+  animation: pulse 1s;
+  animation-iteration-count: infinite;
+}
+
+.MoneyCard {
+  background-image: url(./media/card_front_money.jpg);
+}
+
+.PropertyCard {
+  border: 20px #EEE solid;
+  background-image: url(./media/card_front_property.jpg);
+}
+
+.CardFront_1 {
+  background-position: 0px 0px;
+}
+
+.CardFront_2 {
+  background-position: 3686px 0px;
+}
+
+.CardFront_3 {
+  background-position: 3280px 0px;
+}
+
+.CardFront_4 {
+  background-position: 2870px 0px;
+}
+
+.CardFront_5 {
+  background-position: 2456px 0px;
+}
+
+.CardFront_6 {
+  background-position: 2048px 0px;
+}
+
+.CardFront_7 {
+  background-position: 1640px 0px;
+}
+
+.CardFront_8 {
+  background-position: 1230px 0px;
+}
+
+.CardFront_9 {
+  background-position: 820px 0px;
+}
+
+.CardFront_10 {
+  background-position: 407px 0px;
+}
+
+.CardFront_11 {
+  background-position: 0px -583px;
+}
+
+.CardFront_12 {
+  background-position: 3686px -583px;
+}
+
+.CardFront_13 {
+  background-position: 3280px -583px;
+}
+
+.CardFront_14 {
+  background-position: 2872px -583px;
+}
+
+.CardFront_15 {
+  background-position: 2456px -583px;
+}
+
+.CardFront_16 {
+  background-position: 2048px -583px;
+}
+
+.CardFront_17 {
+  background-position: 1640px -583px;
+}
+
+.CardFront_18 {
+  background-position: 1230px -583px;
+}
+
+.CardFront_19 {
+  background-position: 820px -583px;
+}
+
+.CardFront_20 {
+  background-position: 407px -583px;
+}
+
+.CardFront_21 {
+  background-position: 0px -1166px;
+}
+
+.CardFront_22 {
+  background-position: 3686px -1166px;
+}
+
+.CardFront_23 {
+  background-position: 3280px -1166px;
+}
+
+.CardFront_24 {
+  background-position: 2870px -1166px;
+}
+
+.CardFront_25 {
+  background-position: 2456px -1166px;
+}
+
+.CardFront_26 {
+  background-position: 2048px -1166px;
+}
+
+.CardFront_27 {
+  background-position: 1640px -1166px;
+}
+
+.CardFront_28 {
+  background-position: 1230px -1166px;
+}
+
+.CardFront_29 {
+  background-position: 820px -1166px;
+}
+
+.CardFront_30 {
+  background-position: 407px -1166px;
+}
+
+.MoneyCardHidden {
+  border: 20px rgb(98, 138, 72) solid;
+  background-image: url(./media/card_back_money.jpg);
+  background-size: 100%;
+}
+
+.PropertyCardHidden {
+  border: 20px rgb(44, 120, 192) solid;
+  background-image: url(./media/card_back_property.jpg);
+  background-size: 100%;
+}

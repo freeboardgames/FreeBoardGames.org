@@ -1,0 +1,43 @@
+.BidPanel {
+    border: 10px solid rgb(37, 68, 58);
+    background-color: rgb(164, 211, 196);
+    padding: 1em;
+    border-radius: 1em;
+    max-width: 520px;
+    margin: 0 auto;
+    max-height: 8em;
+    text-align: center;
+    overflow: hidden;
+}
+
+.BidPanel:after { 
+    content: "."; 
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+ }
+
+.ButtonGroup {
+    background-color:  rgb(52, 116, 95);
+    border-radius: 0.5em;
+    width: calc(50% - 1.4em);
+    padding: 0.5em;
+    margin: 0.2em;
+    float: left;
+}
+
+.BidPanel input {
+    margin-left: 0.7em;
+    text-align: center;
+    width: 2.0em;
+    font-size: 1.4em;
+    line-height: 1.4em;
+    border-radius: 0.5em;
+}
+
+.BidPanel span {
+    font-size: 1.4em;
+    line-height: 1.4em;
+    text-align: center;
+}
