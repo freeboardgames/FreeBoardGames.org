@@ -25,7 +25,7 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps> {
-  _gs = () => { this.props.moves.GameStart(); }
+  _gs = () => { this.props.moves.GameStart(this.props.playerID == null); }
 
   render() {
     console.log(this.props.ctx);

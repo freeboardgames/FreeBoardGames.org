@@ -9,6 +9,7 @@ import { Ctx, Game } from 'boardgame.io';
 export enum Phases {
   auction = 'auction',
   property_selection = 'property_selection',
+  property_selection_hotseat = 'property_selection_hotseat',
 }
 
 export enum Stages {
@@ -20,6 +21,7 @@ export interface IG {
   cardsontable: ICard[];
   buildings: IPropertyCard[];
   checks: IMoneyCard[];
+  hotseat: boolean;
 }
 
 export function getScoreBoard(G: IG): IScore[] {
@@ -130,7 +132,8 @@ function AwardMoneyCards(G: IG): void {
 export const EstateBuyerGame: Game<IG> = {
   name: 'estatebuyer',
   moves: {
-    GameStart: (G: IG, ctx: Ctx) => {
+    GameStart: (G: IG, ctx: Ctx, hotseat:boolean) => {
+      G.hotseat = hotseat;
       DealBuildingCards(G, ctx);
       ctx.events.setPhase(Phases.auction);
     }
@@ -152,17 +155,13 @@ export const EstateBuyerGame: Game<IG> = {
       moves: { 
         MovePlaceBid: (G, ctx, bid) => {
           if (bid <= 0) {
-            console.log("Zero Bid", bid);
             return INVALID_MOVE;
           }
           const highest_bid: number = HighestBid(G.players);
-          console.log("Bid", bid, highest_bid);
           if (bid <= highest_bid) {
-            console.log("Not High Enough Bid", bid, highest_bid);
             return INVALID_MOVE;
           }
           if (G.players[ctx.currentPlayer].money - bid < 0) {
-            console.log("Not Enough Money", bid, G.players[ctx.currentPlayer].money);
             return INVALID_MOVE;
           }
           G.players[ctx.currentPlayer].bid = bid;
@@ -170,7 +169,6 @@ export const EstateBuyerGame: Game<IG> = {
         },
         MovePassBid: (G, ctx) => {
           if (G.players[ctx.currentPlayer].passed) {
-            console.log("Player already passed");
             return INVALID_MOVE;
           }
           PassPutBuildingInPlayerHand(G, ctx.currentPlayer);
@@ -192,23 +190,26 @@ export const EstateBuyerGame: Game<IG> = {
     },
 
     property_selection: {
-      //Hotseat version
-      moves:{
-        MoveSelectBuilding: (G, ctx, cardValue) => SelectBuilding(G, ctx, cardValue)
+      next: Phases.property_selection_hotseat,
+      endIf: (G, ctx) => { 
+        return G.hotseat;
       },
-      //Online Version
       turn: {
-        moveLimit: 1,
-        /*activePlayers: { all: Stages.select_card, moveLimit: 1, },
+        activePlayers: { all: Stages.select_card },
         stages: {
           select_card: {
             moves: { 
               MoveSelectBuilding: (G, ctx, cardValue) => SelectBuilding(G, ctx, cardValue)
             }
           }
-        }*/
+        }
       },
-      
+    },
+
+    property_selection_hotseat: {
+      moves:{
+        MoveSelectBuilding: (G, ctx, cardValue) => SelectBuilding(G, ctx, cardValue)
+      },
     },
   },
   endIf: (G: IG, ctx: Ctx) => {
@@ -223,7 +224,7 @@ export const EstateBuyerGame: Game<IG> = {
   setup: (ctx: Ctx): IG => {
     const cardsInDeck = 30;
     const gameSetupAmounts = {
-      2: { cards: 16, money: 24 },
+      2: { cards: 10, money: 24 },
       3: { cards: 24, money: 18 },
       4: { cards: 28, money: 18 },
       5: { cards: 30, money: 15 },
@@ -249,6 +250,7 @@ export const EstateBuyerGame: Game<IG> = {
 
     // Set initial state
     return {
+      hotseat: false,
       cardsontable: [],
       checks: new Array(usedCardsInDeck)
         .fill(0)
