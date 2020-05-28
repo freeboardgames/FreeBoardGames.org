@@ -21,10 +21,12 @@ import Router from 'next/router';
 import { connect } from 'react-redux';
 import { ReduxState, ReduxUserState } from 'redux/definitions';
 import NicknameRequired from '../Lobby/NicknameRequired';
+import { Dispatch } from 'redux';
 
 interface IGameModePickerProps {
   gameDef: IGameDef;
   user: ReduxUserState;
+  dispatch: Dispatch;
 }
 
 interface IGameModePickerState {
@@ -188,7 +190,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
       },
       (e) => {
         debugger;
-        if (e.response.unauthorized) {
+        if (e.graphQLErrors.find((error) => error.extensions.exception.status === 401)) {
           this.setState({ onlinePlayRequested: true, playButtonDisabled: false });
         } else {
           this.setState({ playButtonError: true, playButtonDisabled: false });

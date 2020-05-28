@@ -1,7 +1,7 @@
 import { LobbyService } from './LobbyService';
 import request from 'superagent';
 import { Match } from 'dto/match/Match';
-import { ApolloClient, ApolloError } from 'apollo-client';
+import { ApolloClient } from 'apollo-client';
 import { CheckinRoom } from 'gqlTypes/CheckinRoom';
 jest.mock('apollo-client');
 
