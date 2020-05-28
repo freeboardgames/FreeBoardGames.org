@@ -7,15 +7,17 @@ import TableCell from '@material-ui/core/TableCell';
 import grey from '@material-ui/core/colors/grey';
 import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
 
+import css from './Scoreboard.css';
+
 export interface IScore {
   playerID: string;
   score: number;
-  bid: number;
-  money: number;
-  passed: boolean;
+  bid?: number;
+  money?: number;
+  passed?: boolean;
 }
 
-interface IScoreboardProps {
+export interface IScoreboardProps {
   scoreboard: IScore[];
   players: IPlayerInRoom[];
   playerID: string;
