@@ -6,13 +6,8 @@ export class Room {
   @Field((type) => Int, { nullable: true })
   id?: number;
 
-  @Field((type) => String)
   gameCode: string;
-
-  @Field((type) => Int)
   capacity: number;
-
-  @Field((type) => Boolean)
   isPublic: boolean;
 
   @Field((type) => String, { nullable: true })

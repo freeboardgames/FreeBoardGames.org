@@ -98,6 +98,11 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     );
   }
 
+  redirectToMatch(matchId: string) {
+    this._componentCleanup();
+    Router.replace(`/match/${matchId}`);
+  }
+
   updateMetadata = (firstRun?: boolean) => {
     if (!firstRun && this.state.editingName) {
       return;
@@ -117,8 +122,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     LobbyService.checkin(this.props.dispatch, this._roomId()).then(
       async (response) => {
         if (response.checkinRoom.matchId) {
-          this._componentCleanup();
-          Router.replace(`/match/${response.checkinRoom.matchId}`);
+          this.redirectToMatch(response.checkinRoom.matchId);
         } else {
           this.setState({ loading: false, roomMetadata: response.checkinRoom, userId: response.checkinRoom.userId });
         }

@@ -188,13 +188,8 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
         // we use .replace instead of .push so that the browser back button works correctly
         Router.replace(`/room/${response.newRoom.roomId}`);
       },
-      (e) => {
-        debugger;
-        if (e.graphQLErrors.find((error) => error.extensions.exception.status === 401)) {
-          this.setState({ onlinePlayRequested: true, playButtonDisabled: false });
-        } else {
-          this.setState({ playButtonError: true, playButtonDisabled: false });
-        }
+      () => {
+        this.setState({ playButtonError: true, playButtonDisabled: false });
       },
     );
   };

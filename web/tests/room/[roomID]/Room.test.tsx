@@ -7,8 +7,6 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { ReduxUserState } from 'redux/definitions';
 import { CheckinRoom } from 'gqlTypes/CheckinRoom';
-import { ApolloClient } from 'apollo-client';
-jest.mock('apollo-client');
 jest.mock('js-cookie');
 
 const mockStore = configureMockStore();
