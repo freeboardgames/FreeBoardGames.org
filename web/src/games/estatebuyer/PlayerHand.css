@@ -14,10 +14,11 @@
 
 .playerHand .title {
     color: white;
-    background-color: #888;
-    margin: 1em auto;
+    background-color: rgba(255, 0, 0, 0.5);
+    margin: 0 auto;
     text-align: center;
     border-radius: 0.5em;
+    padding: 6px;
 }
 
 .playerHand .cards:after { 

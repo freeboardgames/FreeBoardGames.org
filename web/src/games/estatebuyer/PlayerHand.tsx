@@ -30,7 +30,7 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
   renderHand() {
     if (this.props.player.buildings.length == 0){
       return (
-        <div className="css.title">No Cards Yet...</div>
+        <div className={css.title}>No Cards Yet...</div>
       );
     }
     
