@@ -7,7 +7,7 @@ import { Match } from 'dto/match/Match';
 import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
 import { NextRoomRequest } from 'dto/match/NextRoomRequest';
-import { ApolloClient } from 'apollo-client';
+import { ApolloClient, ApolloError } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -28,6 +28,15 @@ export interface IPlayerInRoom {
   name: string;
 }
 export class LobbyService {
+  private static catchUnauthorizedGql = (dispatch: Dispatch<SyncUserAction>) => (e: ApolloError) => {
+    if (e.graphQLErrors.find((error) => error.extensions.exception.status === 401)) {
+      // invalidate the user's auth and adjust our store accordingly:
+      LobbyService.invalidateUserAuth();
+      dispatch(LobbyService.getSyncUserAction());
+    }
+    throw e;
+  };
+
   private static catchUnauthorized = (dispatch: Dispatch<SyncUserAction>) => (e: request.ResponseError) => {
     if (e.response.unauthorized) {
       // invalidate the user's auth and adjust our store accordingly:
@@ -93,58 +102,62 @@ export class LobbyService {
     capacity: number,
   ): Promise<NewRoom> {
     const client = this.getClient();
-    const result = await client.mutate<NewRoom, NewRoomVariables>({
-      mutation: gql`
-        mutation NewRoom($room: NewRoomInput!) {
-          newRoom(room: $room) {
-            roomId
+    const result = await client
+      .mutate<NewRoom, NewRoomVariables>({
+        mutation: gql`
+          mutation NewRoom($room: NewRoomInput!) {
+            newRoom(room: $room) {
+              roomId
+            }
           }
-        }
-      `,
-      variables: { room: { gameCode, capacity, isPublic: false } },
-    });
+        `,
+        variables: { room: { gameCode, capacity, isPublic: false } },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
     return result.data;
   }
 
-  // TODO test
-  // TODO are we checking auth?
   public static async renameUser(dispatch: Dispatch<SyncUserAction>, nickname: string): Promise<void> {
     const client = this.getClient();
-    await client.mutate({
-      mutation: gql`
-        mutation UpdateUser($user: NewUserInput!) {
-          updateUser(user: $user)
-        }
-      `,
-      variables: { user: { nickname } },
-    });
+    await client
+      .mutate({
+        mutation: gql`
+          mutation UpdateUser($user: NewUserInput!) {
+            updateUser(user: $user)
+          }
+        `,
+        variables: { user: { nickname } },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
 
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
   }
 
   public static async checkin(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<CheckinRoom> {
     const client = this.getClient();
-    const result = await client.mutate<CheckinRoom, CheckinRoomVariables>({
-      mutation: gql`
-        mutation CheckinRoom($roomId: String!) {
-          checkinRoom(roomId: $roomId) {
-            gameCode
-            capacity
-            isPublic
-            matchId
-            userId
-            userMemberships {
-              isCreator
-              user {
-                id
-                nickname
+    const result = await client
+      .mutate<CheckinRoom, CheckinRoomVariables>({
+        mutation: gql`
+          mutation CheckinRoom($roomId: String!) {
+            checkinRoom(roomId: $roomId) {
+              gameCode
+              capacity
+              isPublic
+              matchId
+              userId
+              userMemberships {
+                isCreator
+                user {
+                  id
+                  nickname
+                }
               }
             }
           }
-        }
-      `,
-      variables: { roomId },
-    });
+        `,
+        variables: { roomId },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
     return result.data;
   }
 
