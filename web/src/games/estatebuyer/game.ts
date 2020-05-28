@@ -74,13 +74,13 @@ function HighestBid(players): number {
   return highest_bid;
 }
 
-function AwardBuildingToHighestBidder(G: IG){
-  let highestBiddingPlayer = G.players
+function AwardBuildingToRemainingPlayer(G: IG){
+  let remainingPlayer = G.players
     .reduce(
-      ((highest, player, currentIndex) => (highest.bid > player.bid ? highest : {playerIndex: currentIndex, bid: player.bid})),
-      {playerIndex:-1,bid:-1});
+      ((remaining, player, currentIndex) => (player.passed ? remaining : {playerIndex: currentIndex})),
+      {playerIndex:-1});
 
-  WinPutBuildingInPlayerHand(G, highestBiddingPlayer.playerIndex)
+  WinPutBuildingInPlayerHand(G, remainingPlayer.playerIndex);
 }
 
 function DealCheckCards(G: IG, ctx: Ctx){
@@ -175,7 +175,7 @@ export const EstateBuyerGame: Game<IG> = {
           }
           PassPutBuildingInPlayerHand(G, ctx.currentPlayer);
           if (AllButOnePlayerHasPassed(G)){
-            AwardBuildingToHighestBidder(G);
+            AwardBuildingToRemainingPlayer(G);
             ResetPlayerBids(G);
             DealBuildingCards(G, ctx);
           }
@@ -223,7 +223,7 @@ export const EstateBuyerGame: Game<IG> = {
   setup: (ctx: Ctx): IG => {
     const cardsInDeck = 30;
     const gameSetupAmounts = {
-      2: { cards: 4, money: 24 },
+      2: { cards: 16, money: 24 },
       3: { cards: 24, money: 18 },
       4: { cards: 28, money: 18 },
       5: { cards: 30, money: 15 },

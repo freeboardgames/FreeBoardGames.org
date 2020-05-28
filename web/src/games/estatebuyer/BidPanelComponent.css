@@ -1,9 +1,6 @@
 .BidPanel {
-    border: 10px solid rgb(37, 68, 58);
     background-color: rgb(164, 211, 196);
     padding: 1em;
-    border-radius: 1em;
-    max-width: 520px;
     margin: 0 auto;
     max-height: 8em;
     text-align: center;

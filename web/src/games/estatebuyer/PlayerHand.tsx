@@ -31,17 +31,34 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
         >
           {[...this.props.G.players[playerToShow].buildings]
             .sort((a, b) => (a.value - b.value))
-            .map((card: any, index: number) => (
-            <div className={css.cardContainer} key={index} >
-              <BuildingCardComponent
-                click={() => this._selectCard(card.number)}
-                selectable={this.props.selectCard ? true : false}
-                card={card} />
-            </div>
-                
-          ))}
+            .map((card: any, index: number) => 
+              this.renderCard(card, index, this.props.G.players[playerToShow].buildings.length)
+            )}
         </div>
       </div>
     );
+  }
+
+  renderCard(card: any, index: number, count: number) {
+    const rot = -(count * 3 / 2) + (index * (count * 3) / (count-1));
+    const y = Math.abs(index - count/2) * (count * 3);
+    console.log("Rotate: ", rot);
+    const styles = { 
+        transform: `rotate(${rot}deg) translateY(${y}px)`,
+        transformOrigin: `50% 50%`
+    };
+    return (
+      <div
+        className={css.cardContainer}
+        key={index}
+        >
+          <div style={styles}>
+            <BuildingCardComponent
+              click={() => this._selectCard(card.number)}
+              selectable={this.props.selectCard ? true : false}
+              card={card} />
+          </div>
+      </div>
+    )
   }
 }

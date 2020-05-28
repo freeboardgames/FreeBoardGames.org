@@ -31,9 +31,10 @@
     height: 120px;
     max-width: 520px;
     background-color: rgb(165, 122, 65);
-    border-radius: 4em;
+    border-radius: 30px;
     padding: 2em;
     overflow: hidden;
+    background-image: url(./media/wood.jpg);
 }
 
 .tableau:after { 

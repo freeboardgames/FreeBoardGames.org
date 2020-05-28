@@ -22,7 +22,11 @@ export class DeckComponent extends React.Component<IDeckProps, {}> {
         const ComponentTag:any = (card.building) ? BuildingCardComponent : MoneyCardComponent;
         
         return (
-          <div className={css.cardContainer} key={card.number}>
+          <div
+            className={css.cardContainer}
+            key={card.number}
+            style={{ margin: -index }}
+            >
             <ComponentTag
               card={card}
             />

@@ -4,7 +4,7 @@ import { ButtonComponent } from './ButtonComponent';
 
 import css from './BidPanelComponent.css';
 
-interface IPlayerBidPanelProps {
+export interface IPlayerBidPanelProps {
   players: any;
   currentPlayer: any;
   moves: any;
