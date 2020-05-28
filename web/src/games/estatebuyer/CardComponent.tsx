@@ -5,6 +5,7 @@ import css from './CardComponent.css';
 export interface ICardProps {
   card: ICard;
   selectable?: boolean;
+  selected?: boolean;
   click?: () => void;
 }
 
@@ -20,6 +21,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
             css.Card,
             this.front,
             this.props.selectable ? css.Selectable : '',
+            this.props.selected ? css.Selected : '',
             (this.props.card.showing ? css[("CardFront_"+this.props.card.value)] :  this.back)
           ].join(' ')
         }
@@ -28,6 +30,11 @@ export class CardComponent extends React.Component<ICardProps, {}> {
       </div>
     );
   }
+}
+
+export class EmptyCardComponent extends CardComponent {
+  front:string = css.EmptyCard;
+  back:string = css.EmptyCard;
 }
 
 export class MoneyCardComponent extends CardComponent {

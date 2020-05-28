@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ICard from './card';
-import { BuildingCardComponent, MoneyCardComponent } from './CardComponent';
+import { EmptyCardComponent, BuildingCardComponent, MoneyCardComponent } from './CardComponent';
 import css from './DeckComponent.css';
 
 export interface IDeckProps {
@@ -9,9 +9,18 @@ export interface IDeckProps {
 
 export class DeckComponent extends React.Component<IDeckProps, {}> {
   render() {
+    const emptycard = {
+      number: 0,
+      value: 0,
+      showing: false,
+    }
+
     return (
         <div className={css.deck}>
-            {this.renderCards()}
+          <div className={css.cardContainer} >
+            <EmptyCardComponent card={emptycard} />
+          </div>
+          {this.renderCards()}
         </div>
     )
   }
