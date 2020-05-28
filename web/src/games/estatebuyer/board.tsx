@@ -53,7 +53,7 @@ export class Board extends React.Component<IBoardProps> {
         { this.getBidPanel() }
         <PlayerHand
           player={this.props.G.players[this.props.playerID ?? this.props.ctx.currentPlayer]}
-          selectCard={(this.props.ctx.phase == Phases.property_selection) ? this._selectCard.bind(this) : null}
+          selectCard={((this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection))) ? this._selectCard.bind(this) : null}
           />
         <div className={css.statusBar}>
           {this._getStatus()}
@@ -90,7 +90,7 @@ export class Board extends React.Component<IBoardProps> {
       return (
         <DeckComponent cards={this.props.G.buildings} />
       )
-    } else if (this.props.ctx.phase == Phases.property_selection){
+    } else if (this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection)){
       return (
         <DeckComponent cards={this.props.G.checks} />
       )
@@ -123,7 +123,7 @@ export class Board extends React.Component<IBoardProps> {
       if (!this._canPlay()) {
         return 'Waiting for opponents...';
       }
-      if (this.props.ctx.phase === Phases.property_selection) {
+      if (this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection)) {
         return 'Select Building';
       }
       return 'Bid or Pass';
@@ -134,7 +134,7 @@ export class Board extends React.Component<IBoardProps> {
   }
 
   _canPlay() {
-    if (this.props.ctx.phase === Phases.property_selection) {
+    if (this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection)) {
       return (
         this.props.ctx.activePlayers !== null &&
         Object.keys(this.props.ctx.activePlayers)?.includes(this.props.playerID)
