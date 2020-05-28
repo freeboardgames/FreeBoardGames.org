@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { IG } from './game';
+import IPlayer from './player';
 import { BuildingCardComponent } from './CardComponent';
 
 import css from './PlayerHand.css';
 
 export interface IPlayerHandProps {
-  G: IG;
-  playerID: string;
+  player: IPlayer;
   selectCard?: (index: number) => void;
 }
 
@@ -14,39 +13,44 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
   _selectCard = (i: number) => this.props.selectCard(i);
 
   render() {
-    const playerToShow:any = this.props.playerID;
-    if (playerToShow === null){
-      return null;
-    }
-
-    if (this.props.G.players[playerToShow].buildings.length == 0){
-      return null;
-    }
+    const w:number = this.props.player.buildings.length * 40 + 80;
 
     return (
       <div className={css.playerHand}>
-        <div className={css.title}>Your Properties</div>
         <div
           className={css.cards}
+          style={{width:w}}
         >
-          {[...this.props.G.players[playerToShow].buildings]
-            .sort((a, b) => (a.value - b.value))
-            .map((card: any, index: number) => 
-              this.renderCard(card, index, this.props.G.players[playerToShow].buildings.length)
-            )}
+          {this.renderHand()}
         </div>
       </div>
     );
   }
 
+  renderHand() {
+    if (this.props.player.buildings.length == 0){
+      return (
+        <div className="css.title">No Cards Yet...</div>
+      );
+    }
+    
+    return [...this.props.player.buildings]
+      .sort((a, b) => (a.value - b.value))
+      .map((card: any, index: number) => 
+        this.renderCard(card, index, this.props.player.buildings.length)
+      )
+  }
+
   renderCard(card: any, index: number, count: number) {
     const rot = -(count * 3 / 2) + (index * (count * 3) / (count-1));
     const y = Math.abs(index - count/2) * (count * 3);
-    console.log("Rotate: ", rot);
     const styles = { 
         transform: `rotate(${rot}deg) translateY(${y}px)`,
         transformOrigin: `50% 50%`
     };
+
+    const isSelected:boolean = this.props.player.selectedCard ? (this.props.player.selectedCard.number == card.number) : false;
+    
     return (
       <div
         className={css.cardContainer}
@@ -56,6 +60,7 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
             <BuildingCardComponent
               click={() => this._selectCard(card.number)}
               selectable={this.props.selectCard ? true : false}
+              selected={isSelected}
               card={card} />
           </div>
       </div>

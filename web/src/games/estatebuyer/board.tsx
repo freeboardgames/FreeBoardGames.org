@@ -52,8 +52,7 @@ export class Board extends React.Component<IBoardProps> {
         </div>
         { this.getBidPanel() }
         <PlayerHand
-          G={this.props.G}
-          playerID={this.props.playerID ?? this.props.ctx.currentPlayer}
+          player={this.props.G.players[this.props.playerID ?? this.props.ctx.currentPlayer]}
           selectCard={(this.props.ctx.phase == Phases.property_selection) ? this._selectCard.bind(this) : null}
           />
         <div className={css.statusBar}>
