@@ -112,21 +112,30 @@ function AllPlayersHaveSelected(G): boolean {
       == G.players.length;
 }
 
-function AwardMoneyCards(G: IG): void {
-  G.players = G.players
-  //Get players ordered by building values 
-  .sort((a, b) => (a.selectedCard.value - b.selectedCard.value))
-  .map((player: IPlayer, index:any) => ({
+function RemoveSpentBuildingCard(buildings:ICard[], selectedCard:ICard){
+  buildings.splice(
+    buildings.findIndex((card) => (card.value === selectedCard.value)), 1
+  )
+  return buildings;
+}
+
+function AwardMoneyCard(player:IPlayer, cardToAward:ICard){
+  return {
     ...player,
     //Give lowest money to lowest buidling
-    checks: [...player.checks, G.cardsontable.shift()],
+    checks: [...player.checks, cardToAward],
     //Remove buildings from players
-    buildings: player.buildings.splice(
-      player.buildings.findIndex((card) => (card.value == player.selectedCard.value)), 1
-    ),
+    buildings: RemoveSpentBuildingCard(player.buildings, player.selectedCard),
     //Unset selected
     selectedCard: null
-  }));
+  }
+}
+
+function AwardMoneyCards(G: IG): void {
+  G.players = G.players
+  //Get players ordered by buildings
+  .sort((a, b) => (a.selectedCard.value - b.selectedCard.value))
+  .map((player: IPlayer) => AwardMoneyCard(player, G.cardsontable.shift()));
 }
 
 export const EstateBuyerGame: Game<IG> = {
@@ -224,7 +233,7 @@ export const EstateBuyerGame: Game<IG> = {
   setup: (ctx: Ctx): IG => {
     const cardsInDeck = 30;
     const gameSetupAmounts = {
-      2: { cards: 10, money: 24 },
+      2: { cards: 6, money: 24 },
       3: { cards: 24, money: 18 },
       4: { cards: 28, money: 18 },
       5: { cards: 30, money: 15 },

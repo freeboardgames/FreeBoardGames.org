@@ -114,7 +114,7 @@ export class Board extends React.Component<IBoardProps> {
   };
 
   _selectCard(i:number) {
-    console.log("Player selected building: ", i);
+    console.log("Player "+(parseInt(this.props.ctx.currentPlayer)+1)+" selected building: ", i);
     this.props.moves.MoveSelectBuilding(i);
   }
 
