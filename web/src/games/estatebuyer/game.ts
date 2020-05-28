@@ -34,7 +34,7 @@ export function getScoreBoard(G: IG): IScore[] {
       money: player.money,
       passed: player.passed,
     }))
-    .sort((a, b) => (a.score - b.score));
+    .sort((a, b) => (b.score - a.score));
 }
 
 function CountPassedPlayers(G): number {
@@ -58,12 +58,12 @@ function PutBuildingInPlayerHand(G: IG, playerIndex, cost){
   G.players[playerIndex].passed = true;
   G.players[playerIndex].money = G.players[playerIndex].money - cost;
   G.players[playerIndex].bid = 0;
-  G.players[playerIndex].buildings.push(G.cardsontable.pop());
+  G.players[playerIndex].buildings.push(G.cardsontable.shift());
 }
 
 function DealBuildingCards(G: IG, ctx: Ctx){
   let dealtCards = G.buildings.splice(0, ctx.numPlayers);
-  G.cardsontable = dealtCards.map(c => ({...c, showing: true}));
+  G.cardsontable = dealtCards.map(c => ({...c, showing: true})).sort((a, b) => (a.value - b.value));
 }
 
 function ResetPlayerBids(G: IG){
@@ -87,7 +87,7 @@ function AwardBuildingToRemainingPlayer(G: IG){
 
 function DealCheckCards(G: IG, ctx: Ctx){
   let dealtCards = G.checks.splice(0, ctx.numPlayers);
-  G.cardsontable = dealtCards.map(c => ({...c, showing: true}));
+  G.cardsontable = dealtCards.map(c => ({...c, showing: true})).sort((a, b) => (a.value - b.value));
 }
 
 function SelectBuilding(G: IG, ctx: Ctx, cardValue:number){
@@ -149,12 +149,16 @@ export const EstateBuyerGame: Game<IG> = {
   },
   turn: {
     moveLimit: 1,
-    order: TurnOrder.CONTINUE,
+    order: {
+      first: (G, ctx) => 0,
+      next: (G, ctx) => ctx.random.Die(ctx.numPlayers)-1,
+    }
   },
   phases: {
     auction: {
       turn: {
         moveLimit: 1,
+        order: TurnOrder.CONTINUE,
         onBegin: (G, ctx) => {
           if (G.players[ctx.currentPlayer].passed == true){
             ctx.events.endTurn();
