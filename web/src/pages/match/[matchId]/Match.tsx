@@ -7,25 +7,36 @@ import NicknameRequired from 'components/App/Lobby/NicknameRequired';
 import MessagePage from 'components/App/MessagePageClass';
 import { Match as MatchDto } from 'dto/match/Match';
 import { LobbyService } from 'components/App/Lobby/LobbyService';
+import * as Sentry from '@sentry/browser';
 
-interface IMatchProps {
+interface MatchProps {
   router: NextRouter;
   dispatch: Dispatch;
 }
 
-interface IMatchState {
+interface MatchState {
   loading: boolean;
   match: MatchDto;
+  error: boolean;
 }
 
-export class Match extends React.Component<IMatchProps, IMatchState> {
-  state = { loading: true, match: undefined };
+export class Match extends React.Component<MatchProps, MatchState> {
+  state = { loading: true, error: false, match: undefined };
 
   componentDidMount() {
     const matchId = this.props.router.query.matchId as string;
-    LobbyService.getMatch(this.props.dispatch, matchId).then((match) => {
-      this.setState({ match, loading: false });
-    });
+    LobbyService.getMatch(this.props.dispatch, matchId)
+      .then((match) => {
+        this.setState({ match, loading: false });
+      })
+      .catch((e) => {
+        if (e.response?.notFound) {
+          this.setState({ loading: false, match: null });
+        } else {
+          this.setState({ loading: false, error: true });
+          Sentry.captureException(e);
+        }
+      });
   }
 
   render() {
@@ -35,6 +46,10 @@ export class Match extends React.Component<IMatchProps, IMatchState> {
           <MessagePage type={'loading'} message={'Loading...'} />
         </NicknameRequired>
       );
+    } else if (this.state.error) {
+      return <MessagePage type={'error'} message={'Could not load match.'} />;
+    } else if (!this.state.match) {
+      return <MessagePage type={'error'} message={'Match not found.'} />;
     }
     return <Game match={this.state.match} />;
   }

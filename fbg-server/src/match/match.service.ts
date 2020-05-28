@@ -50,7 +50,7 @@ export class MatchService {
     if (!matchEntity) {
       throw new HttpException(
         `Match id "${matchId}" does not exist`,
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.NOT_FOUND,
       );
     }
     return matchEntity;
