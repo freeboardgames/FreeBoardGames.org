@@ -1,8 +1,7 @@
 .BidPanel {
     background-color: rgb(164, 211, 196);
-    padding: 1em;
+    padding: 5px;
     margin: 0 auto;
-    max-height: 8em;
     text-align: center;
     overflow: hidden;
 }
@@ -16,7 +15,7 @@
  }
 
 .ButtonGroup {
-    background-color:  rgb(52, 116, 95);
+    background-color:  rgba(0, 0, 0, 0.466);
     border-radius: 0.5em;
     width: calc(50% - 1.4em);
     padding: 0.5em;
@@ -28,13 +27,13 @@
     margin-left: 0.7em;
     text-align: center;
     width: 2.0em;
-    font-size: 1.4em;
-    line-height: 1.4em;
+    font-size: 20px;
+    line-height: 20px;
     border-radius: 0.5em;
 }
 
 .BidPanel span {
-    font-size: 1.4em;
-    line-height: 1.4em;
+    font-size: 20px;
+    line-height: 20px;
     text-align: center;
 }

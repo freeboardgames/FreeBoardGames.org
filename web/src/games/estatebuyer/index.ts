@@ -7,8 +7,8 @@ export const estateBuyerGameDef: IGameDef = {
   code: 'estatebuyer',
   name: 'Estate Buyer',
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
-  minPlayers: 3,
+  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
+  minPlayers: 2,
   maxPlayers: 6,
   description: 'Similar to For Sale',
   descriptionTag: `Play Estate Buyer, similar to For Sale, locally

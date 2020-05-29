@@ -3,9 +3,9 @@ button {
     background-color: rgb(157, 255, 0);
     border-radius: 0.5em;
     padding: 0.2em;
-    line-height: 1.4em;
+    line-height: 20px;
     color: black;
-    font-size: 1.4em;
+    font-size: 20px;
 }
 
 @keyframes flash {

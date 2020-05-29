@@ -25,7 +25,7 @@ export interface IG {
 }
 
 export function getScoreBoard(G: IG): IScore[] {
-  return G.players
+  return [...G.players]
     .map((player, i) => ({
       playerID: i.toString(),
       score: (player.checks.reduce((total, card) => total+card.value, 0)
@@ -90,12 +90,16 @@ function DealCheckCards(G: IG, ctx: Ctx){
   G.cardsontable = dealtCards.map(c => ({...c, showing: true})).sort((a, b) => (a.value - b.value));
 }
 
-function SelectBuilding(G: IG, ctx: Ctx, cardValue:number){
-  const card:any = G.players[ctx.currentPlayer].buildings.find((card) => (card.value == cardValue));
+function SelectBuilding(G: IG, ctx: Ctx, playerIndex:number, cardValue:number){
+  if (!(playerIndex in G.players)) {
+    return INVALID_MOVE;
+  }
+
+  const card:any = G.players[playerIndex].buildings.find((card) => (card.value == cardValue));
   if (card === "undefined") {
     return INVALID_MOVE;
   }
-  G.players[ctx.currentPlayer].selectedCard = card;
+  G.players[playerIndex].selectedCard = card;
   if (AllPlayersHaveSelected(G)){
     AwardMoneyCards(G);
     if (G.checks.length > 0){
@@ -158,12 +162,19 @@ export const EstateBuyerGame: Game<IG> = {
     auction: {
       turn: {
         moveLimit: 1,
-        order: TurnOrder.CONTINUE,
-        onBegin: (G, ctx) => {
-          if (G.players[ctx.currentPlayer].passed == true){
-            ctx.events.endTurn();
-          }
-        }
+        order: {
+          first: (G, ctx) => ctx.playOrderPos,
+          next: (G, ctx) => {
+            let i:number = 0;
+            let pos:number = 0;
+            do {
+              i++;
+              pos = (ctx.playOrderPos + i) % ctx.numPlayers;
+            } while(G.players[pos].passed == true)
+            
+            return pos;
+          },
+        },
       },
       moves: { 
         MovePlaceBid: (G, ctx, bid) => {
@@ -212,7 +223,7 @@ export const EstateBuyerGame: Game<IG> = {
         stages: {
           select_card: {
             moves: { 
-              MoveSelectBuilding: (G, ctx, cardValue) => SelectBuilding(G, ctx, cardValue)
+              MoveSelectBuilding: (G, ctx, playerIndex, cardValue) => SelectBuilding(G, ctx, playerIndex, cardValue)
             }
           }
         }
@@ -220,8 +231,12 @@ export const EstateBuyerGame: Game<IG> = {
     },
 
     property_selection_hotseat: {
+      turn: {
+        moveLimit: 1,
+        order: TurnOrder.CONTINUE,
+      },
       moves:{
-        MoveSelectBuilding: (G, ctx, cardValue) => SelectBuilding(G, ctx, cardValue)
+        MoveSelectBuilding: (G, ctx, playerIndex, cardValue) => SelectBuilding(G, ctx, playerIndex, cardValue)
       },
     },
   },

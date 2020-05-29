@@ -5,12 +5,13 @@ import { BuildingCardComponent } from './CardComponent';
 import css from './PlayerHand.css';
 
 export interface IPlayerHandProps {
+  playerIndex: number;
   player: IPlayer;
-  selectCard?: (index: number) => void;
+  selectCard?: (playerIndex:number, cardNumber: number) => void;
 }
 
 export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
-  _selectCard = (i: number) => this.props.selectCard(i);
+  _selectCard = (cardNumber: number) => this.props.selectCard(this.props.playerIndex, cardNumber);
 
   render() {
     const w:number = this.props.player.buildings.length * 40 + 80;
@@ -43,13 +44,16 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
 
   renderCard(card: any, index: number, count: number) {
     const rot = -(count * 3 / 2) + (index * (count * 3) / (count-1));
-    const y = Math.abs(index - count/2) * (count * 3);
+    const y = Math.abs(index - (count-1)/2) * (count * 3);
     const styles = { 
         transform: `rotate(${rot}deg) translateY(${y}px)`,
-        transformOrigin: `50% 50%`
+        transformOrigin: `bottom center`,
+        width: '407px'
     };
 
     const isSelected:boolean = this.props.player.selectedCard ? (this.props.player.selectedCard.number == card.number) : false;
+
+
     
     return (
       <div

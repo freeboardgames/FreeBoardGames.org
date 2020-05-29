@@ -56,6 +56,7 @@ export class Board extends React.Component<IBoardProps> {
         </div>
         { this.getBidPanel() }
         <PlayerHand
+          playerIndex={parseInt(this.props.playerID ?? this.props.ctx.currentPlayer)}
           player={this.props.G.players[this.props.playerID ?? this.props.ctx.currentPlayer]}
           selectCard={((this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection))) ? this._selectCard.bind(this) : null}
           />
@@ -68,6 +69,7 @@ export class Board extends React.Component<IBoardProps> {
 
   getStartGameButton(){
     if (this.props.ctx.phase == null){
+      if (this.props.playerID == this.props.ctx.currentPlayer || this.props.playerID == null)    
       return (
         <div className={css.startButtonContainer}>
           <ButtonComponent click={this._gs}>START GAME</ButtonComponent>
@@ -116,9 +118,9 @@ export class Board extends React.Component<IBoardProps> {
       });
   };
 
-  _selectCard(i:number) {
-    console.log("Player "+(parseInt(this.props.ctx.currentPlayer)+1)+" selected building: ", i);
-    this.props.moves.MoveSelectBuilding(i);
+  _selectCard(playerIndex:number, i:number) {
+    console.log("Player "+(playerIndex+1)+" selected building: ", i);
+    this.props.moves.MoveSelectBuilding(playerIndex, i);
   }
 
   _getStatus() {
