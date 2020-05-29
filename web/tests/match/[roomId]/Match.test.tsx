@@ -26,7 +26,7 @@ it('renders loading page', async () => {
 it('renders game', async () => {
   let mockRouter: any = { query: { matchId: 'fooMatch' } };
   let mockDispatch: any = jest.fn();
-  (LobbyService.getMatch as jest.Mock).mockResolvedValue('fooMatch');
+  (LobbyService.getMatch as jest.Mock).mockResolvedValue({ match: 'fooMatch' });
 
   const wrapper = Enzyme.shallow(<Match router={mockRouter} dispatch={mockDispatch} />);
 
