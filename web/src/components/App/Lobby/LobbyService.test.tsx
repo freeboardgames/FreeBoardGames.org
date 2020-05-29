@@ -1,5 +1,4 @@
 import { LobbyService } from './LobbyService';
-import request from 'superagent';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { ApolloClient } from 'apollo-client';
 import { CheckinRoom } from 'gqlTypes/CheckinRoom';
@@ -11,12 +10,6 @@ describe('New Room', () => {
   });
 
   it('should dispatch redux event when unauthenticated', async () => {
-    const response: Partial<request.Response> = { unauthorized: true };
-    request.post = jest.fn().mockReturnValue({
-      set: jest
-        .fn()
-        .mockReturnValue({ set: jest.fn().mockReturnValue({ send: jest.fn().mockRejectedValue({ response }) }) }),
-    });
     const error = { graphQLErrors: [{ extensions: { exception: { status: 401 } } }] };
     const mockMutate = jest.fn().mockRejectedValue(error);
     (ApolloClient as any).mockImplementation(() => ({ mutate: mockMutate }));
