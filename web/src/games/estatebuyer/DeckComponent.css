@@ -16,19 +16,29 @@
 
 .deck .cardCountContainer {
     position: absolute;
-    transform: translate(5px, -30px);
+    transform: translate(5px, 116px);
     padding: 5px;
     background-color: rgba(0, 0, 0, 0.349);
-    border-radius: 5px 5px 0px 0px;
-    height: 20px;
+    border-radius: 0px 0px 5px 5px;
+    height: 22px;
 }
 
 .deck .cardCountContainer .title {
+    text-align: left;
+    float: left;
+    width: 40px;
     color: white;
     font-size: 8px;
+    line-height: 10px;
 }
 
 .deck .cardCountContainer .roundsRemaining {
+    float: right;
+    text-align: center;
     color: white;
-    font-size: 12px;
+    padding: 2px;
+    font-size: 14px;
+    border-radius: 10px;
+    width:16px;
+    background-color: rgba(0, 0, 0, 0.445);
 }
