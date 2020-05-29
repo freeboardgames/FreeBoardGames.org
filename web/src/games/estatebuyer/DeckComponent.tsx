@@ -5,6 +5,7 @@ import css from './DeckComponent.css';
 
 export interface IDeckProps {
   cards: ICard[];
+  numCardsPerRound?: number;
 }
 
 export class DeckComponent extends React.Component<IDeckProps, {}> {
@@ -21,6 +22,7 @@ export class DeckComponent extends React.Component<IDeckProps, {}> {
             <EmptyCardComponent card={emptycard} />
           </div>
           {this.renderCards()}
+          {this.renderCount()}
         </div>
     )
   }
@@ -42,5 +44,19 @@ export class DeckComponent extends React.Component<IDeckProps, {}> {
           </div>
         );
       });
+  }
+
+  renderCount() {
+    if (this.props.numCardsPerRound <= 0) return;
+    const roundsRemaining = this.props.cards.length / this.props.numCardsPerRound;
+
+    if (roundsRemaining) return;
+
+    return (
+      <div className={css.cardCountContainer}>
+        <div className={css.title}>Rounds Remaining</div>
+        <div className={css.roundsRemaining}>{roundsRemaining}</div>
+      </div>
+    );
   }
 }

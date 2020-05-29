@@ -13,3 +13,22 @@
     transform: scale(0.2);
     padding: 0;
 }
+
+.deck .cardCountContainer {
+    position: absolute;
+    transform: translate(5px, -30px);
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.349);
+    border-radius: 5px 5px 0px 0px;
+    height: 20px;
+}
+
+.deck .cardCountContainer .title {
+    color: white;
+    font-size: 8px;
+}
+
+.deck .cardCountContainer .roundsRemaining {
+    color: white;
+    font-size: 12px;
+}

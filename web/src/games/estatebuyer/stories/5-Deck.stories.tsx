@@ -24,5 +24,6 @@ const moneyCard = {
 export const Empty = () => <DeckComponent cards={[]} />;
 export const OneBuildingCard = () => <DeckComponent cards={[buildingCard]} />;
 export const SixBuildingCard = () => <DeckComponent cards={[buildingCard, buildingCard, buildingCard, buildingCard, buildingCard, buildingCard]} />;
+export const SixBuildingCardWithCount = () => <DeckComponent cards={[buildingCard, buildingCard, buildingCard, buildingCard, buildingCard, buildingCard]} numCardsPerRound={2} />;
 export const OneMoneyCard = () => <DeckComponent cards={[moneyCard]} />;
 export const TenMoneyCard = () => <DeckComponent cards={[moneyCard, moneyCard, moneyCard, moneyCard, moneyCard,moneyCard, moneyCard, moneyCard, moneyCard, moneyCard]} />;

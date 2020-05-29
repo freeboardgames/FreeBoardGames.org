@@ -94,11 +94,11 @@ export class Board extends React.Component<IBoardProps> {
   getDeck(){
     if (this.props.ctx.phase == Phases.auction){
       return (
-        <DeckComponent cards={this.props.G.buildings} />
+        <DeckComponent cards={this.props.G.buildings} numCardsPerRound={this.props.ctx.numPlayers} />
       )
     } else if (this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection)){
       return (
-        <DeckComponent cards={this.props.G.checks} />
+        <DeckComponent cards={this.props.G.checks} numCardsPerRound={this.props.ctx.numPlayers} />
       )
     }
   }
