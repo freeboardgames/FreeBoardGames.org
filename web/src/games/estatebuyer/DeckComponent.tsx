@@ -50,7 +50,7 @@ export class DeckComponent extends React.Component<IDeckProps, {}> {
     if (this.props.numCardsPerRound <= 0) return;
     const roundsRemaining = this.props.cards.length / this.props.numCardsPerRound;
 
-    if (roundsRemaining) return;
+    if (roundsRemaining <= 0) return;
 
     return (
       <div className={css.cardCountContainer}>
