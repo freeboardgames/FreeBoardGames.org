@@ -21,8 +21,8 @@ export class DeckComponent extends React.Component<IDeckProps, {}> {
           <div className={css.cardContainer} >
             <EmptyCardComponent card={emptycard} />
           </div>
-          {this.renderCards()}
           {this.renderCount()}
+          {this.renderCards()}
         </div>
     )
   }
