@@ -1,5 +1,4 @@
 import AddressHelper from '../Helpers/AddressHelper';
-import request from 'superagent';
 import SSRHelper from '../Helpers/SSRHelper';
 import { ActionNames, SyncUserAction } from '../../../redux/actions';
 import { ReduxUserState } from 'redux/definitions';
