@@ -1,22 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RoomsController } from './rooms.controller';
+import { RoomsResolver } from './rooms.resolver';
 import { RoomsModule } from './rooms.module';
 import { MatchModule } from '../match/match.module';
 import { UsersModule } from '../users/users.module';
 import { FakeDbModule } from '../testing/dbUtil';
 
-describe('Rooms Controller', () => {
-  let controller: RoomsController;
+describe('Rooms Resolver', () => {
+  let resolver: RoomsResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [FakeDbModule, RoomsModule, MatchModule, UsersModule],
     }).compile();
 
-    controller = module.get<RoomsController>(RoomsController);
+    resolver = module.get<RoomsResolver>(RoomsResolver);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(resolver).toBeDefined();
   });
 });

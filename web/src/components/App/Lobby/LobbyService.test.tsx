@@ -1,8 +1,9 @@
 import { LobbyService } from './LobbyService';
 import request from 'superagent';
-import { NewRoomResponse } from 'dto/rooms/NewRoomResponse';
-import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
 import { Match } from 'dto/match/Match';
+import { ApolloClient } from 'apollo-client';
+import { CheckinRoom } from 'gqlTypes/CheckinRoom';
+jest.mock('apollo-client');
 
 describe('New Room', () => {
   afterEach(() => {
@@ -16,31 +17,37 @@ describe('New Room', () => {
         .fn()
         .mockReturnValue({ set: jest.fn().mockReturnValue({ send: jest.fn().mockRejectedValue({ response }) }) }),
     });
+    const error = { graphQLErrors: [{ extensions: { exception: { status: 401 } } }] };
+    const mockMutate = jest.fn().mockRejectedValue(error);
+    (ApolloClient as any).mockImplementation(() => ({ mutate: mockMutate }));
     const dispatch = jest.fn();
     const roomID = LobbyService.newRoom(dispatch, 'foogame', 2);
-    await expect(roomID).rejects.toEqual({ response });
+    await expect(roomID).rejects.toEqual(error);
     expect(dispatch).toHaveBeenCalledWith({ type: 'SyncUser', payload: { ready: true, loggedIn: false } });
   });
 
   it('should create new room', async () => {
-    const response: NewRoomResponse = { roomId: 'fooroom' };
-    request.post = jest.fn().mockReturnValue({
-      set: jest
-        .fn()
-        .mockReturnValue({ set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }) }),
-    });
+    const mockMutate = jest.fn().mockResolvedValue({ data: 'foo' });
+    (ApolloClient as any).mockImplementation(() => ({ mutate: mockMutate }));
     const dispatch = jest.fn();
     const roomID = await LobbyService.newRoom(dispatch, 'foogame', 2);
-    expect(roomID).toEqual('fooroom');
+    expect(roomID).toEqual('foo');
   });
 
   it('should check-in on room', async () => {
-    const response: CheckinRoomResponse = { room: { capacity: 2, isPublic: false, gameCode: 'chess' }, userId: 1 };
-    request.post = jest.fn().mockReturnValue({
-      set: jest
-        .fn()
-        .mockReturnValue({ set: jest.fn().mockReturnValue({ send: jest.fn().mockResolvedValue({ body: response }) }) }),
-    });
+    const response: CheckinRoom = {
+      checkinRoom: {
+        __typename: 'Room' as const,
+        capacity: 2,
+        isPublic: false,
+        gameCode: 'chess',
+        userId: 1,
+        matchId: null,
+        userMemberships: [],
+      },
+    };
+    const mockMutate = jest.fn().mockResolvedValue({ data: response });
+    (ApolloClient as any).mockImplementation(() => ({ mutate: mockMutate }));
     const dispatch = jest.fn();
     const actualResponse = await LobbyService.checkin(dispatch, 'foogame');
     expect(actualResponse).toEqual(response);
@@ -60,8 +67,7 @@ describe('New Room', () => {
     const setItemMock = jest.fn();
     Storage.prototype.setItem = setItemMock;
     const mockMutate = jest.fn().mockResolvedValue({ data: { newUser: { jwtToken: 'fooJwt' } } });
-    const mockClient = jest.fn().mockReturnValue({ mutate: mockMutate });
-    LobbyService.getClient = mockClient;
+    (ApolloClient as any).mockImplementation(() => ({ mutate: mockMutate }));
     await LobbyService.newUser('fooname');
     expect(setItemMock.mock.calls[0][1]).toEqual('fooname');
   });
@@ -73,8 +79,7 @@ describe('New Room', () => {
 
   it('should rename', async () => {
     const mockMutate = jest.fn().mockResolvedValue({ data: { updateUserNickname: { nickname: 'fooJwt' } } });
-    const mockClient = jest.fn().mockReturnValue({ mutate: mockMutate });
-    LobbyService.getClient = mockClient;
+    (ApolloClient as any).mockImplementation(() => ({ mutate: mockMutate }));
 
     Storage.prototype.getItem = () => JSON.stringify({ fooroom: { playerID: 0, credential: 'foocredential' } });
     const mockSetItem = jest.fn();

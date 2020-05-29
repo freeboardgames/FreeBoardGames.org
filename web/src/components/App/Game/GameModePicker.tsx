@@ -21,10 +21,12 @@ import Router from 'next/router';
 import { connect } from 'react-redux';
 import { ReduxState, ReduxUserState } from 'redux/definitions';
 import NicknameRequired from '../Lobby/NicknameRequired';
+import { Dispatch } from 'redux';
 
 interface IGameModePickerProps {
   gameDef: IGameDef;
   user: ReduxUserState;
+  dispatch: Dispatch;
 }
 
 interface IGameModePickerState {
@@ -182,16 +184,12 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     const gameCode = this.props.gameDef.code;
     const numPlayers = this._getExtraInfoValue(info);
     LobbyService.newRoom((this.props as any).dispatch, gameCode, numPlayers).then(
-      (roomID) => {
+      (response) => {
         // we use .replace instead of .push so that the browser back button works correctly
-        Router.replace(`/room/${roomID}`);
+        Router.replace(`/room/${response.newRoom.roomId}`);
       },
-      (e) => {
-        if (e.response.unauthorized) {
-          this.setState({ onlinePlayRequested: true, playButtonDisabled: false });
-        } else {
-          this.setState({ playButtonError: true, playButtonDisabled: false });
-        }
+      () => {
+        this.setState({ playButtonError: true, playButtonDisabled: false });
       },
     );
   };

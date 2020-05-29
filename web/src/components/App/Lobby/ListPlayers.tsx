@@ -2,7 +2,7 @@ import React from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import EditIcon from '@material-ui/icons/Edit';
-import { Room } from 'dto/rooms/Room';
+import { CheckinRoom_checkinRoom } from 'gqlTypes/CheckinRoom';
 
 import {
   Button,
@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 
 interface IListPlayersProps {
-  roomMetadata: Room;
+  roomMetadata: CheckinRoom_checkinRoom;
   userId?: number;
   editNickname: () => void;
 }
@@ -24,9 +24,9 @@ interface IListPlayersProps {
 export class ListPlayers extends React.Component<IListPlayersProps, {}> {
   render() {
     const metadata = this.props.roomMetadata;
-    const playersList = metadata.users.map((user, idx: number) => {
+    const playersList = metadata.userMemberships.map((membership, idx: number) => {
       let secondaryAction;
-      if (user.id == this.props.userId) {
+      if (membership.user.id == this.props.userId) {
         secondaryAction = (
           <ListItemSecondaryAction>
             <Button data-testid="editNickname" onClick={this.props.editNickname}>
@@ -42,13 +42,13 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
               <PersonIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary={user.nickname} />
+          <ListItemText primary={membership.user.nickname} />
           {secondaryAction}
         </ListItem>
       );
     });
     const waitingList = [];
-    for (let i = 0; i < metadata.capacity - metadata.users.length; i++) {
+    for (let i = 0; i < metadata.capacity - metadata.userMemberships.length; i++) {
       waitingList.push(
         <ListItem key={`waiting-${i}`}>
           <ListItemAvatar>

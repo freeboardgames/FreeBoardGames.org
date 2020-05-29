@@ -1,9 +1,11 @@
 import { Resolver, Mutation, Args, Query, Int } from '@nestjs/graphql';
-import { User } from '../models/User.model';
+import { User } from './gql/User.gql';
+import { NewUserInput } from './gql/NewUserInput.gql';
+import { NewUser } from './gql/NewUser.gql';
 import { UsersService } from './users.service';
 import { JwtPayload } from './definitions';
 import { JwtService } from '@nestjs/jwt';
-import { CurrentUser, JwtAuthGuard } from './gql-auth-guard';
+import { CurrentUser, GqlAuthGuard } from './gql-auth-guard';
 import { UseGuards } from '@nestjs/common';
 
 @Resolver((of) => User)
@@ -13,31 +15,29 @@ export class UsersResolver {
     private readonly jwtService: JwtService,
   ) {}
 
-  @Mutation((returns) => User)
+  @Mutation((returns) => NewUser)
   async newUser(
-    @Args({ name: 'nickname', type: () => String }) nickname: string,
+    @Args({ name: 'user', type: () => NewUserInput }) userInput: NewUserInput,
   ) {
-    const user: User = { nickname };
-    const userId = await this.usersService.newUser(user);
+    const userId = await this.usersService.newUser(userInput);
     const payload: JwtPayload = { userId };
     const jwtToken = this.jwtService.sign(payload);
-    const createdUser: User = { ...user, id: userId, jwtToken };
-    return createdUser;
-  }
-
-  @Mutation((returns) => User)
-  @UseGuards(JwtAuthGuard)
-  async updateUserNickname(
-    @CurrentUser() user: User,
-    @Args({ name: 'nickname', type: () => String }) nickname: string,
-  ) {
-    const newUser: User = { ...user, nickname };
-    await this.usersService.updateUser(newUser);
+    const newUser: NewUser = { jwtToken };
     return newUser;
   }
 
+  @Mutation((returns) => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async updateUser(
+    @CurrentUser() currentUser,
+    @Args({ name: 'user', type: () => NewUserInput }) userInput: NewUserInput,
+  ) {
+    await this.usersService.updateUser(currentUser.id, userInput);
+    return true;
+  }
+
   @Query((returns) => User)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(GqlAuthGuard)
   async user(@CurrentUser() user: User) {
     return this.usersService.getById(user.id);
   }

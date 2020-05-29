@@ -17,7 +17,7 @@ import SEO from 'components/SEO';
 import { ActionNames } from 'redux/actions';
 import { ReduxUserState } from 'redux/definitions';
 import { connect } from 'react-redux';
-import { Room as RoomDto } from 'dto/rooms/Room';
+import { CheckinRoom_checkinRoom } from 'gqlTypes/CheckinRoom';
 import { Dispatch } from 'redux';
 import Router from 'next/router';
 
@@ -32,7 +32,7 @@ interface IRoomProps {
 }
 
 interface IRoomState {
-  roomMetadata?: RoomDto;
+  roomMetadata?: CheckinRoom_checkinRoom;
   nameTextField?: string;
   userId?: number;
   loading: boolean;
@@ -98,6 +98,11 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     );
   }
 
+  redirectToMatch(matchId: string) {
+    this._componentCleanup();
+    Router.replace(`/match/${matchId}`);
+  }
+
   updateMetadata = (firstRun?: boolean) => {
     if (!firstRun && this.state.editingName) {
       return;
@@ -116,11 +121,10 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     }));
     LobbyService.checkin(this.props.dispatch, this._roomId()).then(
       async (response) => {
-        if (response.matchId) {
-          this._componentCleanup();
-          Router.replace(`/match/${response.matchId}`);
+        if (response.checkinRoom.matchId) {
+          this.redirectToMatch(response.checkinRoom.matchId);
         } else {
-          this.setState({ loading: false, roomMetadata: response.room, userId: response.userId });
+          this.setState({ loading: false, roomMetadata: response.checkinRoom, userId: response.checkinRoom.userId });
         }
       },
       () => {
@@ -188,15 +192,15 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   };
 
   _getStartMatchButton() {
-    const creator = this.state.roomMetadata.creator;
+    const creator = this.state.roomMetadata.userMemberships.find((membership) => membership.isCreator);
     let disabled = false;
     let explanation;
-    if (this.state.roomMetadata.capacity > this.state.roomMetadata.users.length) {
+    if (this.state.roomMetadata.capacity > this.state.roomMetadata.userMemberships.length) {
       disabled = true;
       explanation = 'Not enough players.';
-    } else if (creator.id !== this.state.userId) {
+    } else if (creator.user.id !== this.state.userId) {
       disabled = true;
-      explanation = `Only ${creator.nickname} can start.`;
+      explanation = `Only ${creator.user.nickname} can start.`;
     }
     const button = (
       <div style={{ float: 'right', paddingBottom: '32px' }}>

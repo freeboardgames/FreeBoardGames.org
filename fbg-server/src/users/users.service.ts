@@ -1,5 +1,6 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
-import { User } from 'src/models/User.model';
+import { NewUserInput } from './gql/NewUserInput.gql';
+import { User } from './gql/User.gql';
 import { UserEntity } from '../users/db/User.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,7 +14,7 @@ export class UsersService {
   ) {}
 
   /** Creates a new user, returns its id. */
-  async newUser(user: User): Promise<number> {
+  async newUser(user: NewUserInput): Promise<number> {
     this.checkValidUser(user);
     const userEntity = new UserEntity();
     userEntity.nickname = user.nickname;
@@ -40,15 +41,15 @@ export class UsersService {
   }
 
   /** Updates user information. */
-  async updateUser(user: User): Promise<void> {
+  async updateUser(userId: number, user: NewUserInput): Promise<void> {
     this.checkValidUser(user);
     const partialEntity = new UserEntity();
     partialEntity.nickname = user.nickname;
-    await this.usersRepository.update(user.id, partialEntity);
+    await this.usersRepository.update(userId, partialEntity);
   }
 
   /** Update user's information. */
-  private checkValidUser(user: User) {
+  private checkValidUser(user: NewUserInput) {
     if (!user) {
       throw new HttpException('User is required', HttpStatus.BAD_REQUEST);
     }

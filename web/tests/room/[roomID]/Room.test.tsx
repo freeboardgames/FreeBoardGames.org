@@ -6,9 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { ReduxUserState } from 'redux/definitions';
-import { Room as RoomDto } from 'dto/rooms/Room';
-import { CheckinRoomResponse } from 'dto/rooms/CheckinRoomResponse';
-
+import { CheckinRoom } from 'gqlTypes/CheckinRoom';
 jest.mock('js-cookie');
 
 const mockStore = configureMockStore();
@@ -72,16 +70,22 @@ describe('Room Lobby', () => {
     jest.useFakeTimers();
     const storeData: ReduxUserState = { ready: true, loggedIn: true, nickname: 'foo' };
     store = mockStore({ user: { ...storeData } });
-    const room: RoomDto = {
-      gameCode: 'chess',
-      capacity: 2,
-      isPublic: false,
-      creator: { nickname: 'Bob', id: 1 },
-      users: [{ nickname: 'Bob', id: 1 }],
-    };
-    const response: CheckinRoomResponse = {
-      userId: 1,
-      room,
+    const response: CheckinRoom = {
+      checkinRoom: {
+        __typename: 'Room' as const,
+        gameCode: 'chess',
+        capacity: 2,
+        isPublic: false,
+        userId: 1,
+        matchId: null,
+        userMemberships: [
+          {
+            __typename: 'RoomMembership' as const,
+            isCreator: true,
+            user: { nickname: 'Bob', id: 1, __typename: 'User' as const },
+          },
+        ],
+      },
     };
     LobbyService.checkin = jest.fn().mockResolvedValue(response);
     Storage.prototype.getItem = jest.fn(() => 'fooplayer');
@@ -101,19 +105,27 @@ describe('Room Lobby', () => {
     jest.useFakeTimers();
     const storeData: ReduxUserState = { ready: true, loggedIn: true, nickname: 'foo' };
     store = mockStore({ user: { ...storeData } });
-    const room: RoomDto = {
-      gameCode: 'chess',
-      capacity: 2,
-      isPublic: false,
-      creator: { nickname: 'Bob', id: 1 },
-      users: [
-        { nickname: 'Bob', id: 1 },
-        { nickname: 'Alice', id: 2 },
-      ],
-    };
-    const response: CheckinRoomResponse = {
-      userId: 2,
-      room,
+    const response: CheckinRoom = {
+      checkinRoom: {
+        __typename: 'Room' as const,
+        gameCode: 'chess',
+        capacity: 2,
+        isPublic: false,
+        userId: 2,
+        matchId: null,
+        userMemberships: [
+          {
+            __typename: 'RoomMembership' as const,
+            isCreator: true,
+            user: { nickname: 'foo', id: 1, __typename: 'User' as const },
+          },
+          {
+            __typename: 'RoomMembership' as const,
+            isCreator: false,
+            user: { nickname: 'foo', id: 2, __typename: 'User' as const },
+          },
+        ],
+      },
     };
     LobbyService.checkin = jest.fn().mockResolvedValue(response);
     Storage.prototype.getItem = jest.fn(() => 'fooplayer');
@@ -129,23 +141,31 @@ describe('Room Lobby', () => {
     await waitFor(() => expect(getByTestId('startButton')).toBeDisabled());
   });
 
-  it('should show disabled button if creator and full', async () => {
+  it('should show enabled button if creator and full', async () => {
     jest.useFakeTimers();
     const storeData: ReduxUserState = { ready: true, loggedIn: true, nickname: 'foo' };
     store = mockStore({ user: { ...storeData } });
-    const room: RoomDto = {
-      gameCode: 'chess',
-      capacity: 2,
-      isPublic: false,
-      creator: { nickname: 'Bob', id: 1 },
-      users: [
-        { nickname: 'Bob', id: 1 },
-        { nickname: 'Alice', id: 2 },
-      ],
-    };
-    const response: CheckinRoomResponse = {
-      userId: 1,
-      room,
+    const response: CheckinRoom = {
+      checkinRoom: {
+        __typename: 'Room' as const,
+        gameCode: 'chess',
+        capacity: 2,
+        isPublic: false,
+        userId: 1,
+        matchId: null,
+        userMemberships: [
+          {
+            __typename: 'RoomMembership' as const,
+            isCreator: true,
+            user: { nickname: 'foo', id: 1, __typename: 'User' as const },
+          },
+          {
+            __typename: 'RoomMembership' as const,
+            isCreator: false,
+            user: { nickname: 'foo', id: 2, __typename: 'User' as const },
+          },
+        ],
+      },
     };
     LobbyService.checkin = jest.fn().mockResolvedValue(response);
     Storage.prototype.getItem = jest.fn(() => 'fooplayer');

@@ -35,14 +35,14 @@ describe('UsersController', () => {
   it('should give invalid nickname', async () => {
     const nickname = '';
 
-    const result = controller.newUser(nickname);
+    const result = controller.newUser({ nickname });
 
     await expect(result).rejects.toThrow();
   });
 
   it('should create user succesfully', async () => {
     const nickname = 'foo user';
-    const result = await controller.newUser(nickname);
+    const result = await controller.newUser({ nickname });
     const jwtToken: JwtPayload = jwtService.decode(result.jwtToken) as any;
     const id = jwtToken.userId;
     const user = await service.getById(id);
