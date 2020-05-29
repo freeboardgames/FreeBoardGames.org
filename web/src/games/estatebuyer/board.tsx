@@ -5,7 +5,7 @@ import { Ctx } from 'boardgame.io';
 import { IG } from './game';
 import { Scoreboard } from './Scoreboard';
 import { PlayerHand } from './PlayerHand';
-import { Phases, getScoreBoard } from './game';
+import { Phases, getScoreBoard, HighestBid } from './game';
 import { ButtonComponent } from './ButtonComponent';
 import { BidPanelComponent } from './BidPanelComponent';
 import ICard from './card';
@@ -86,6 +86,7 @@ export class Board extends React.Component<IBoardProps> {
           currentPlayer={this.props.ctx.currentPlayer}
           moves={this.props.moves}
           playerID={this.props.playerID}
+          currentHighBid={HighestBid(this.props.G.players)}
           />
       );
     }

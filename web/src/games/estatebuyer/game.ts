@@ -70,7 +70,7 @@ function ResetPlayerBids(G: IG){
   G.players = G.players.map(p => ({...p, passed: false, bid: 0}));
 }
 
-function HighestBid(players): number {
+export function HighestBid(players): number {
   const highest_bid = players
     .reduce((highest, player) => (highest > player.bid ? highest : player.bid), 0);
   return highest_bid;
