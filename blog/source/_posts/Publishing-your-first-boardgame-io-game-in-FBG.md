@@ -99,7 +99,7 @@ These two pieces are where the bulk of the game code will live. Let's use placeh
 import * as React from 'react';
 import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
 import { GameLayout } from '../../components/App/Game/GameLayout';
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 import { IG } from './game';
 
 interface IBoardProps {

@@ -73,15 +73,16 @@ export class RoomsService {
 
   /** Gets a raw RoomEntity, with user information populated. */
   async getRoomEntity(roomId: string): Promise<RoomEntity> {
-    const roomEntity = await this.roomRepository.findOne({
-      where: {
-        id: roomId,
-        userMemberships: {
-          lastSeen: MoreThan(Date.now() - CHECKIN_PERIOD * 3),
-        },
-      },
-      relations: ['match', 'userMemberships', 'userMemberships.user'],
-    });
+    const roomEntity = await this.roomRepository
+      .createQueryBuilder('room')
+      .leftJoinAndSelect('room.match', 'match')
+      .leftJoinAndSelect('room.userMemberships', 'userMemberships')
+      .leftJoinAndSelect('userMemberships.user', 'user')
+      .where('room.id = :roomId', { roomId })
+      .orderBy({
+        'userMemberships.id': 'ASC',
+      })
+      .getOne();
     if (!roomEntity) {
       throw new HttpException(
         `Room id "${roomId}" does not exist`,
