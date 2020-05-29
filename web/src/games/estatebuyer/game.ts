@@ -136,10 +136,10 @@ function AwardMoneyCard(player:IPlayer, cardToAward:ICard){
 }
 
 function AwardMoneyCards(G: IG): void {
-  G.players = G.players
-  //Get players ordered by buildings
-  .sort((a, b) => (a.selectedCard.value - b.selectedCard.value))
-  .map((player: IPlayer) => AwardMoneyCard(player, G.cardsontable.shift()));
+  [...G.players]
+  .map((player: IPlayer, index: number) => ({ value: player.selectedCard.value, playerIndex: index }))
+  .sort((a, b) => (a.value - b.value))
+  .forEach((item) => (G.players[item.playerIndex] = AwardMoneyCard(G.players[item.playerIndex], G.cardsontable.shift())));
 }
 
 export const EstateBuyerGame: Game<IG> = {
