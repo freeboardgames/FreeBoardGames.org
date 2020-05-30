@@ -97,6 +97,7 @@
   fill:rgb(255,206,0);
   stroke:rgb(133,108,0);
   stroke-width:1.46px;
+  text-anchor: end;
 }
 
 .nameBackground {
@@ -107,10 +108,72 @@
   fill:rgb(242, 255, 64);
 }
 
+.cardAwardText {
+  font-family:'Impact', sans-serif;
+  font-stretch:condensed;
+  font-size:100px;
+  fill:white;
+  stroke:black;
+  stroke-width:2.5px;
+  stroke-linecap:butt;
+  stroke-miterlimit:2;
+  text-anchor:middle;
+}
+
+.cardAwardBackground {
+  fill:rgb(189,254,255);stroke:black;stroke-width:3.75px;
+}
+
+.cardAwardHighlight {
+  fill:rgb(226,255,255);
+}
+
 .something2 {
   fill:none;stroke:black;stroke-width:3.49px;stroke-linecap:round;stroke-miterlimit:1.5;
 }
 
 .something3 {
   fill:none;stroke:black;stroke-width:3.18px;stroke-linecap:round;stroke-miterlimit:1.5;
+}
+
+@keyframes awardCard {
+  0% {
+    opacity: 100;
+    transform: scale(0.8);
+    top: 50%;
+    left: 50%;
+  }
+  20% {
+    top: 50%;
+    left: 50%;
+    transform: scale(0.82);
+  }
+  40% {
+    top: 50%;
+    left: 50%;
+    transform: scale(0.82);
+  }
+  90% {
+    top: 10px;
+    left: 10px;
+    transform: scale(0.1);
+  }
+
+  99% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.newCard {
+  position: absolute;
+  z-index: 1000;
+  transform-origin: 0 0;
+  transform: scale(0);
+  opacity: 0;
+  animation: awardCard 1s;
+  animation-iteration-count: 1;
 }

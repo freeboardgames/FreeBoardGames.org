@@ -18,6 +18,7 @@ const playerBadgeData:IPlayerBadgeProps = {
       passed: false,
   },
   color: "blue",
+  incomingCards: [],
 }
 
 export const Default = () => <PlayerBadge {...playerBadgeData} />;
@@ -34,4 +35,4 @@ export const Bid12 = () => <PlayerBadge {...{...playerBadgeData, score: {...play
 
 export const MrLongName = () => <PlayerBadge {...{...playerBadgeData, name: "Thisisareallylongnameandwewanttocheckoverflow"}} />;
 
-export const HighScore = () => <PlayerBadge {...{...playerBadgeData, score: {...playerBadgeData.score, score: 84000}}} />;
+export const HighScore = () => <PlayerBadge {...{...playerBadgeData, score: {...playerBadgeData.score, score: 124000}}} />;
