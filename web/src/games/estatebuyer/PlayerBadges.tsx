@@ -35,16 +35,15 @@ export class PlayerBadges extends React.Component<IPlayerBadgesProps, {}> {
   }
 
   _isPlayersTurn(playerIndex: any): boolean {
-    if (playerIndex == this.props.playerID){
-      return true;
+    const isActive = this.props.ctx.activePlayers !== null && playerIndex in this.props.ctx.activePlayers;
+    const isCurrentPlayer = this.props.ctx.activePlayers === null && this.props.ctx.currentPlayer === playerIndex;
+    const myturn = isActive || isCurrentPlayer;
+
+    if (this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection) && myturn){
+      return (this.props.players[playerIndex].selectedCard != null);
     }
 
-    if (this.props.ctx.activePlayers != null
-      && (this.props.ctx.activePlayers as any).find((currentValue) => (playerIndex == currentValue)) !== "undefined"){
-      return true;
-    }
-
-    return false;
+    return myturn;
   }
 
   render() {

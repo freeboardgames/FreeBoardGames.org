@@ -48,8 +48,6 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newcard?:IC
                 this.newcardrendered++;
             }
         }
-
-        console.log(this);
     }
 
     render() {
