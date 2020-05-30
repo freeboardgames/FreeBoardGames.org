@@ -41,6 +41,7 @@ export class Board extends React.Component<IBoardProps> {
 
     return (
       <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
+        <div className={css.board}>
         <PlayerBadges
           scores={getScoreBoard(this.props.G)}
           playerID={this.props.playerID}
@@ -60,8 +61,6 @@ export class Board extends React.Component<IBoardProps> {
           player={this.props.G.players[this.props.playerID ?? this.props.ctx.currentPlayer]}
           selectCard={((this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection))) ? this._selectCard.bind(this) : null}
           />
-        <div className={css.statusBar}>
-          {this._getStatus()}
         </div>
       </GameLayout>
     );
