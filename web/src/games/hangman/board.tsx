@@ -287,20 +287,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       const hangmanPlayer = this.props.G.players[i];
       return { playerID: `${player.playerID}`, score: getScore(hangmanPlayer.guesses) };
     });
-    const cssClasses = [css.scoreLayout];
     let scoreBoard = null;
     if (this.props.ctx.currentPlayer === '1') {
       nextButton = null;
-      cssClasses.push(css.endOfGameScore);
       scoreBoard = (
         <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
       );
-    } else {
-      cssClasses.push(css.midGameScore);
     }
 
     return (
-      <Typography variant="h6" className={cssClasses.join(' ')}>
+      <Typography variant="h6" className={css.scoreLayout}>
         {guessMessage}
         <br />
         {extraMessage}

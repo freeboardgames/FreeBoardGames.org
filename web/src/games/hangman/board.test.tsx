@@ -3,10 +3,9 @@ import { Client } from 'boardgame.io/client';
 import { HangmanGame } from './game';
 import Board from './board';
 import { GameMode } from 'components/App/Game/GameModePicker';
-import { WrapperBoard } from 'boardgame.io/react';
 
 let wrapper: Enzyme.ReactWrapper;
-let client: WrapperBoard;
+let client;
 let instance: any;
 
 const updateGameProps = () => {
@@ -40,8 +39,8 @@ describe('Hangman UI', () => {
           gameCode: 'hangman',
           mode: GameMode.LocalFriend,
           players: [
-            { playerID: 0, name: 'Player A', roomID: 'fooroom' },
-            { playerID: 1, name: 'Player B', roomID: 'fooroom' },
+            { playerID: 0, name: 'Player A' },
+            { playerID: 1, name: 'Player B' },
           ],
         }}
       />,
