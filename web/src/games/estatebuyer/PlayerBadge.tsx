@@ -17,7 +17,11 @@ export interface IPlayerBadgeProps {
 export class PlayerBadge extends React.Component<IPlayerBadgeProps, {}> {
     render() {
         const borderColor = this.props.color ?? 'white';
-        const cname = [css.playerBadge, this.props.active ? css.active : ''].join(' ');
+        const cname = [
+            css.playerBadge,
+            this.props.active ? css.active : '',
+            this.props.self ? css.self : ''
+        ].join(' ');
         return (
             <div
                 className={cname}
@@ -25,47 +29,57 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {}> {
                 style={{ borderColor }}
                 data-testid={`badge-${this.props.playerID}`}
             >
-              <svg height="60" width="128"  className={this.props.self ? css.self : ''}>
-                <g id="Layer1" transform="matrix(0.2,0,0,0.2,0,0)">
-                  {this._maybeRenderBid()}
-                  <g transform="matrix(1.09985,0,0,1.27967,-50.5889,-3.61942)">
-                      <path d="M625.681,60.693C625.681,46.136 611.931,34.318 594.994,34.318L132.667,34.318C115.73,34.318 101.98,46.136 101.98,60.693L101.98,113.442C101.98,127.999 115.73,139.817 132.667,139.817L594.994,139.817C611.931,139.817 625.681,127.999 625.681,113.442L625.681,60.693Z" className={css.moneyBackground} />
-                      <clipPath id="_clip4">
-                          <path d="M625.681,60.693C625.681,46.136 611.931,34.318 594.994,34.318L132.667,34.318C115.73,34.318 101.98,46.136 101.98,60.693L101.98,113.442C101.98,127.999 115.73,139.817 132.667,139.817L594.994,139.817C611.931,139.817 625.681,127.999 625.681,113.442L625.681,60.693Z"/>
-                      </clipPath>
-                      <g clip-path="url(#_clip4)">
-                          <g transform="matrix(0.936962,0,0,0.78145,19.7587,2.82839)">
-                              <rect x="150.568" y="18.868" width="496.12" height="88.93" className={css.nameBackground} />
-                          </g>
-                      </g>
-                      <path d="M625.681,60.693C625.681,46.136 611.931,34.318 594.994,34.318L132.667,34.318C115.73,34.318 101.98,46.136 101.98,60.693L101.98,113.442C101.98,127.999 115.73,139.817 132.667,139.817L594.994,139.817C611.931,139.817 625.681,127.999 625.681,113.442L625.681,60.693Z" className={css.something2} />
-                  </g>
-                  <g transform="matrix(1,0,0,1,32.6451,-33.0834)">
-                      <text x="201.345px" y="130.464px" className={css.nameText}>{this.props.name}</text>
-                  </g>
-                  <g transform="matrix(1,0,0,1,125.045,29.4027)">
-                      <text x="201.345px" y="130.464px" className={css.score}>{"$"+this.props.score.score}</text>
-                  </g>
-                  <g transform="matrix(1.18074,0,0,1.18074,32.0371,30.4905)">
-                      <circle cx="66.974" cy="65.959" r="84.041" className={css.playerCircle} />
-                      <text x="36px" y="90px" className={css.nameText}>{this.props.active ? ' 🕒' : ''}</text>
-                      <clipPath id="_clip5">
-                          <circle cx="66.974" cy="65.959" r="84.041"/>
-                      </clipPath>
-                      <g clip-path="url(#_clip5)">
-                          <g transform="matrix(0.598866,-0.598866,0.598866,0.598866,-177.171,13.7215)">
-                              <clipPath id="_clip6">
-                                  <rect x="30.493" y="247.565" width="266.854" height="142.179"/>
-                              </clipPath>
-                              <g clip-path="url(#_clip6)">
-                                  <g transform="matrix(0.707107,0.707107,-0.707107,0.707107,160.249,102.852)">
-                                      
-                                  </g>
-                              </g>
-                          </g>
-                      </g>
-                      <circle cx="66.974" cy="65.959" r="84.041" className={css.something3} />
-                  </g>
+              <svg height="64" width="140" >
+                <defs>
+                    <filter id="f3" x="0" y="0" width="200%" height="200%">
+                    <feOffset result="offOut" in="SourceAlpha" dx="10" dy="10" />
+                    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="5" />
+                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                    </filter>
+                </defs>
+                <g id="Layer1" transform="matrix(0.2,0,0,0.2,0,0)" >
+                  <g filter="url(#f3)">
+                    {this._maybeRenderBid()}
+                  
+                    <g transform="matrix(1.09985,0,0,1.27967,-50.5889,-3.61942)" >
+                        <path d="M625.681,60.693C625.681,46.136 611.931,34.318 594.994,34.318L132.667,34.318C115.73,34.318 101.98,46.136 101.98,60.693L101.98,113.442C101.98,127.999 115.73,139.817 132.667,139.817L594.994,139.817C611.931,139.817 625.681,127.999 625.681,113.442L625.681,60.693Z" className={css.moneyBackground} />
+                        <clipPath id="_clip4">
+                            <path d="M625.681,60.693C625.681,46.136 611.931,34.318 594.994,34.318L132.667,34.318C115.73,34.318 101.98,46.136 101.98,60.693L101.98,113.442C101.98,127.999 115.73,139.817 132.667,139.817L594.994,139.817C611.931,139.817 625.681,127.999 625.681,113.442L625.681,60.693Z"/>
+                        </clipPath>
+                        <g clip-path="url(#_clip4)">
+                            <g transform="matrix(0.936962,0,0,0.78145,19.7587,2.82839)">
+                                <rect x="150.568" y="18.868" width="496.12" height="88.93" className={css.nameBackground} />
+                            </g>
+                        </g>
+                        <path d="M625.681,60.693C625.681,46.136 611.931,34.318 594.994,34.318L132.667,34.318C115.73,34.318 101.98,46.136 101.98,60.693L101.98,113.442C101.98,127.999 115.73,139.817 132.667,139.817L594.994,139.817C611.931,139.817 625.681,127.999 625.681,113.442L625.681,60.693Z" className={css.something2} />
+                    </g>
+                    <g transform="matrix(1,0,0,1,32.6451,-33.0834)">
+                        <text x="201.345px" y="130.464px" className={css.nameText}>{this.props.name}</text>
+                    </g>
+                    <g transform="matrix(1,0,0,1,125.045,29.4027)">
+                        <text x="201.345px" y="130.464px" className={css.score}>{"$"+this.props.score.score}</text>
+                    </g>
+                    <g transform="matrix(1.18074,0,0,1.18074,32.0371,30.4905)">
+                        <circle cx="66.974" cy="65.959" r="84.041" className={css.playerCircle} />
+                        <text x="36px" y="90px" className={css.nameText}>{this.props.active ? ' 🕒' : ''}</text>
+                        <clipPath id="_clip5">
+                            <circle cx="66.974" cy="65.959" r="84.041"/>
+                        </clipPath>
+                        <g clip-path="url(#_clip5)">
+                            <g transform="matrix(0.598866,-0.598866,0.598866,0.598866,-177.171,13.7215)">
+                                <clipPath id="_clip6">
+                                    <rect x="30.493" y="247.565" width="266.854" height="142.179"/>
+                                </clipPath>
+                                <g clip-path="url(#_clip6)">
+                                    <g transform="matrix(0.707107,0.707107,-0.707107,0.707107,160.249,102.852)">
+                                        
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                        <circle cx="66.974" cy="65.959" r="84.041" className={css.something3} />
+                    </g>
+                </g>
                 </g>
               </svg>
             </div>
