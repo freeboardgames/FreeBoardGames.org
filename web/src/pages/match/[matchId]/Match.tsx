@@ -5,7 +5,7 @@ import { NextRouter, withRouter } from 'next/router';
 import { Dispatch } from 'redux';
 import NicknameRequired from 'components/App/Lobby/NicknameRequired';
 import MessagePage from 'components/App/MessagePageClass';
-import { Match as MatchDto } from 'dto/match/Match';
+import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { LobbyService } from 'components/App/Lobby/LobbyService';
 import * as Sentry from '@sentry/browser';
 
@@ -16,7 +16,7 @@ interface MatchProps {
 
 interface MatchState {
   loading: boolean;
-  match: MatchDto;
+  match: GetMatch_match;
   error: boolean;
 }
 
@@ -26,8 +26,8 @@ export class Match extends React.Component<MatchProps, MatchState> {
   componentDidMount() {
     const matchId = this.props.router.query.matchId as string;
     LobbyService.getMatch(this.props.dispatch, matchId)
-      .then((match) => {
-        this.setState({ match, loading: false });
+      .then((getMatch) => {
+        this.setState({ match: getMatch.match, loading: false });
       })
       .catch((e) => {
         if (e.response?.notFound) {

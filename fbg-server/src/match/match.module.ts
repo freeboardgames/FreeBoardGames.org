@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MatchEntity } from './db/Match.entity';
 import { MatchMembershipEntity } from './db/MatchMembership.entity';
 import { MatchService } from './match.service';
-import { MatchController } from './match.controller';
+import { MatchResolver } from './match.resolver';
 import { RoomsModule } from '../rooms/rooms.module';
 
 @Module({
@@ -12,7 +12,6 @@ import { RoomsModule } from '../rooms/rooms.module';
     RoomsModule,
     HttpModule,
   ],
-  providers: [MatchService],
-  controllers: [MatchController],
+  providers: [MatchService, MatchResolver],
 })
 export class MatchModule {}

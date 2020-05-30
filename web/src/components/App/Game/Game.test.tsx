@@ -3,7 +3,7 @@ import Game from './Game';
 import { mount } from 'enzyme';
 import { GAMES_MAP } from 'games';
 import { GameMode } from './GameModePicker';
-import { Match } from 'dto/match/Match';
+import { GetMatch_match } from 'gqlTypes/GetMatch';
 
 // so we don't actually use SocketIO and attempt a connection:
 jest.mock('boardgame.io/multiplayer');
@@ -19,11 +19,17 @@ describe('Game', () => {
     const modes = game.modes;
     for (const mode of modes) {
       if (mode.mode === GameMode.OnlineFriend) {
-        const match: Match = {
+        const match: GetMatch_match = {
+          __typename: 'Match' as const,
           bgioMatchId: 'fooMatch',
           bgioServerUrl: 'fooBGIOServer',
           gameCode: 'chess',
-          players: [{ nickname: 'fooPlayer' }],
+          playerMemberships: [
+            {
+              __typename: 'MatchMembership' as const,
+              user: { nickname: 'fooPlayer', id: 0, __typename: 'User' as const },
+            },
+          ],
           bgioPlayerId: '0',
           bgioSecret: 'fooSecret',
         };

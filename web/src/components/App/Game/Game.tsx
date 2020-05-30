@@ -11,12 +11,12 @@ import { IPlayerInRoom } from '../Lobby/LobbyService';
 import { IGameArgs } from './GameBoardWrapper';
 import ReactGA from 'react-ga';
 import { SocketIO, Local } from 'boardgame.io/multiplayer';
-import { Match } from 'dto/match/Match';
+import { GetMatch_match } from 'gqlTypes/GetMatch';
 
 interface IGameProps {
   // FIXME: fix which props are req
   history?: { push: (url: string) => void };
-  match?: Match;
+  match?: GetMatch_match;
   matchCode?: string;
   gameCode?: string;
   mode?: string;
@@ -180,7 +180,10 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   _getPlayers(): IPlayerInRoom[] {
     switch (this.mode) {
       case GameMode.OnlineFriend:
-        return this.props.match.players.map((user, index) => ({ playerID: index, name: user.nickname }));
+        return this.props.match.playerMemberships.map((membership, index) => ({
+          playerID: index,
+          name: membership.user.nickname,
+        }));
       case GameMode.AI:
         return [
           { playerID: 0, name: 'Computer' },

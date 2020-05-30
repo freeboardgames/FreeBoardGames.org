@@ -1,6 +1,7 @@
 import React from 'react';
 import { GameOver } from './GameOver';
 import { render, RenderResult, cleanup } from '@testing-library/react';
+import { GameMode } from './GameModePicker';
 require('@testing-library/jest-dom/extend-expect');
 
 afterEach(cleanup);
@@ -15,7 +16,7 @@ describe('GameOver', () => {
       wrapper = render(
         <GameOver
           result={'fake-result'}
-          gameArgs={{ gameCode: 'fake-game-code' }}
+          gameArgs={{ gameCode: 'fake-game-code', mode: GameMode.OnlineFriend }}
           extraCardContent={<div>fake extra content</div>}
         />,
       );
@@ -40,7 +41,9 @@ describe('GameOver', () => {
 
   describe('without gameArgs', () => {
     it('should not render play again button when gameArgs are present.', () => {
-      wrapper = render(<GameOver result={'fake-result'} gameArgs={{ gameCode: 'fake-game-code' }} />);
+      wrapper = render(
+        <GameOver result={'fake-result'} gameArgs={{ gameCode: 'fake-game-code', mode: GameMode.OnlineFriend }} />,
+      );
 
       expect(wrapper.queryByText(/fake extra content/)).toBeFalsy();
     });

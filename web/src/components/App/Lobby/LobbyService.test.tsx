@@ -1,6 +1,5 @@
 import { LobbyService } from './LobbyService';
-import request from 'superagent';
-import { Match } from 'dto/match/Match';
+import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { ApolloClient } from 'apollo-client';
 import { CheckinRoom } from 'gqlTypes/CheckinRoom';
 jest.mock('apollo-client');
@@ -11,12 +10,6 @@ describe('New Room', () => {
   });
 
   it('should dispatch redux event when unauthenticated', async () => {
-    const response: Partial<request.Response> = { unauthorized: true };
-    request.post = jest.fn().mockReturnValue({
-      set: jest
-        .fn()
-        .mockReturnValue({ set: jest.fn().mockReturnValue({ send: jest.fn().mockRejectedValue({ response }) }) }),
-    });
     const error = { graphQLErrors: [{ extensions: { exception: { status: 401 } } }] };
     const mockMutate = jest.fn().mockRejectedValue(error);
     (ApolloClient as any).mockImplementation(() => ({ mutate: mockMutate }));
@@ -54,13 +47,20 @@ describe('New Room', () => {
   });
 
   it('should get match', async () => {
-    const response: Match = { gameCode: 'chess', bgioMatchId: 'foo', bgioServerUrl: 'bar', players: [] };
-    request.get = jest.fn().mockReturnValue({
-      set: jest.fn().mockResolvedValue({ body: response }),
-    });
+    const match: GetMatch_match = {
+      __typename: 'Match' as const,
+      bgioSecret: 'secret',
+      bgioPlayerId: '0',
+      gameCode: 'chess',
+      bgioMatchId: 'foo',
+      bgioServerUrl: 'bar',
+      playerMemberships: [],
+    };
+    const mockQuery = jest.fn().mockResolvedValue({ data: { match } });
+    (ApolloClient as any).mockImplementation(() => ({ query: mockQuery }));
     const dispatch = jest.fn();
     const actualResponse = await LobbyService.getMatch(dispatch, 'matchId');
-    expect(actualResponse).toEqual(response);
+    expect(actualResponse).toEqual({ match });
   });
 
   it('should create new user', async () => {
