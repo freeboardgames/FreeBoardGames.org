@@ -12,14 +12,23 @@ export interface IPlayerBidPanelProps {
   currentHighBid?: number;
 }
 
-export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { bid: number }> {
+export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { bid: number, reset: boolean }> {
   constructor(props: any) {
     super(props);
-    this.state = { bid: this.props.currentHighBid+1 };
+    this.state = {
+      bid: this.props.currentHighBid+1,
+      reset: true,
+    };
   }
 
-  _bid = () => { this.props.moves.MovePlaceBid(this.state.bid); }
-  _pass = () => { this.props.moves.MovePassBid(); }
+  _bid = () => {
+    this.props.moves.MovePlaceBid(this.state.bid);
+    this.setState({ reset: false });
+  }
+
+  _pass = () => {
+    this.props.moves.MovePassBid();
+  }
   
   setBidValue = (event: any) => {
     this.setState({bid: parseInt(event.target.value) });
@@ -30,12 +39,12 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
   }
 
   isOutOfMoney = () => {
-    return ((this.getCurrentPlayer().bid ?? 0) >= this.getCurrentPlayer().money);
+    return (this.state.bid > this.getCurrentPlayer().money);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.currentHighBid == 0 && this.state.bid != 1){
-      this.setState({bid: 1});
+    if (this.props.currentHighBid == 0 && this.state.bid != 1 && this.state.reset == false){
+      this.setState({bid: 1, reset: true});
     } else if (this.props.currentHighBid >= this.state.bid){
       this.setState({bid: this.props.currentHighBid+1});
     }

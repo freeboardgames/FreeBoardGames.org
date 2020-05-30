@@ -1,9 +1,9 @@
 .BidPanel {
-    background-color: rgb(164, 211, 196);
     padding: 5px;
     margin: 0 auto;
     text-align: center;
     overflow: hidden;
+    max-width: 580px;
 }
 
 .BidPanel:after { 
