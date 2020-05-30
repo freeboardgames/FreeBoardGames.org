@@ -3,10 +3,9 @@ import { Client } from 'boardgame.io/client';
 import { HangmanGame } from './game';
 import Board from './board';
 import { GameMode } from 'components/App/Game/GameModePicker';
-import { WrapperBoard } from 'boardgame.io/react';
 
 let wrapper: Enzyme.ReactWrapper;
-let client: WrapperBoard;
+let client;
 let instance: any;
 
 const updateGameProps = () => {
@@ -39,6 +38,10 @@ describe('Hangman UI', () => {
         gameArgs={{
           gameCode: 'hangman',
           mode: GameMode.LocalFriend,
+          players: [
+            { playerID: 0, name: 'Player A' },
+            { playerID: 1, name: 'Player B' },
+          ],
         }}
       />,
     );
@@ -120,11 +123,16 @@ describe('Hangman UI', () => {
   });
 
   it('should show gameover', () => {
-    const ctx = { gameover: true, currentPlayer: '0' };
-    const G = { players: { '1': { secret: 'foo' } } };
+    const ctx = { gameover: true, currentPlayer: '1' };
+    const G = { players: { '1': { secret: 'foo', guesses: { a: [1] } }, '0': { secret: 'bar', guesses: {} } } };
     wrapper.setProps({ G, ctx });
 
-    expect(wrapper.text()).toContain('Game Over, Player A won!');
+    expect(wrapper.text()).toContain('Game Over, Player B won!');
+    const scoreRows = wrapper.find('.scoreboard tbody tr');
+    expect(scoreRows.at(0).text()).toContain('Player A');
+    expect(scoreRows.at(0).text()).toContain('0');
+    expect(scoreRows.at(1).text()).toContain('Player B');
+    expect(scoreRows.at(1).text()).toContain('0');
   });
 
   it('should show that the guess was CORRECT', () => {
@@ -162,6 +170,10 @@ describe('Hangman UI', () => {
       const gameArgs = {
         gameCode: 'hangman',
         mode: GameMode.OnlineFriend,
+        players: [
+          { playerID: 0, name: 'Player A', roomID: 'fooroom' },
+          { playerID: 1, name: 'Player B', roomID: 'fooroom' },
+        ],
       };
       wrapper.setProps({ gameArgs });
     });

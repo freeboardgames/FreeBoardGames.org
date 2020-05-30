@@ -3,7 +3,9 @@ import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { GameLayout } from 'components/App/Game/GameLayout';
 import Typography from '@material-ui/core/Typography';
 import { EnterWordPrompt } from './EnterWordPrompt';
+import css from './board.css';
 import { isOnlineGame } from '../common/gameMode';
+import { IScore, Scoreboard } from '../common/Scoreboard';
 import { grey } from '@material-ui/core/colors';
 import { Modal, Button } from '@material-ui/core';
 import { isPlayersTurn } from 'games/common/GameUtil';
@@ -280,21 +282,28 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         nextButton = null;
       }
     }
-    let textColor = 'white';
+
+    const scores: IScore[] = this.props.gameArgs.players.map((player, i) => {
+      const hangmanPlayer = this.props.G.players[i];
+      return { playerID: `${player.playerID}`, score: getScore(hangmanPlayer.guesses) };
+    });
+    let scoreBoard = null;
     if (this.props.ctx.currentPlayer === '1') {
       nextButton = null;
-      textColor = 'black';
+      scoreBoard = (
+        <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
+      );
     }
+
     return (
-      <div>
-        <Typography variant="h6" style={{ textAlign: 'center', color: textColor, margin: '16px', padding: '16px' }}>
-          {guessMessage}
-          <br />
-          {extraMessage}
-          <br />
-          {nextButton}
-        </Typography>
-      </div>
+      <Typography variant="h6" className={css.scoreLayout}>
+        {guessMessage}
+        <br />
+        {extraMessage}
+        {scoreBoard}
+        <br />
+        {nextButton}
+      </Typography>
     );
   }
 

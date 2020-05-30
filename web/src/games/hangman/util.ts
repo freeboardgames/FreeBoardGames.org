@@ -100,9 +100,15 @@ export function isValidWord(word: string) {
 
 /** Get Score for a given guess made by a player */
 export function getScore(guesses: Guesses) {
-  return getMistakeCount(guesses) >= MAX_MISTAKE_COUNT
-    ? 0
-    : Math.ceil((getCorrectLettersCount(guesses) / (getCorrectLettersCount(guesses) + getMistakeCount(guesses))) * 100);
+  const mistakeCount = getMistakeCount(guesses);
+  if (mistakeCount >= MAX_MISTAKE_COUNT) {
+    return 0;
+  }
+  const correctLettersCount = getCorrectLettersCount(guesses);
+  if (correctLettersCount + mistakeCount == 0) {
+    return 0;
+  }
+  return Math.ceil((getCorrectLettersCount(guesses) / (correctLettersCount + mistakeCount)) * 100);
 }
 
 /** Check in user is done guessing */
