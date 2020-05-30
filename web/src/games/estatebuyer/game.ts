@@ -175,6 +175,14 @@ export const EstateBuyerGame: Game<IG> = {
             return pos;
           },
         },
+        onBegin: (G, ctx) => {
+          if (AllButOnePlayerHasPassed(G)){
+            AwardBuildingToRemainingPlayer(G);
+            ResetPlayerBids(G);
+            DealBuildingCards(G, ctx);
+          }
+          return G;
+        },
       },
       moves: { 
         MovePlaceBid: (G, ctx, bid) => {
@@ -195,12 +203,7 @@ export const EstateBuyerGame: Game<IG> = {
           if (G.players[ctx.currentPlayer].passed) {
             return INVALID_MOVE;
           }
-          PassPutBuildingInPlayerHand(G, ctx.currentPlayer);
-          if (AllButOnePlayerHasPassed(G)){
-            AwardBuildingToRemainingPlayer(G);
-            ResetPlayerBids(G);
-            DealBuildingCards(G, ctx);
-          }
+          PassPutBuildingInPlayerHand(G, ctx.currentPlayer);        
           return G;
         }
       },
@@ -252,7 +255,7 @@ export const EstateBuyerGame: Game<IG> = {
   setup: (ctx: Ctx): IG => {
     const cardsInDeck = 30;
     const gameSetupAmounts = {
-      2: { cards: 6, money: 24 },
+      2: { cards: 16, money: 24 },
       3: { cards: 24, money: 18 },
       4: { cards: 28, money: 18 },
       5: { cards: 30, money: 15 },
