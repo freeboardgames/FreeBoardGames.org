@@ -1,9 +1,10 @@
-.PlayerBadgeContainer {
+.playerBadgeContainer {
   clear: both;
-  text-align: center;
+  text-align: left;
+  margin: 0 auto;
 }
 
-.PlayerBadgeContainer:after { 
+.playerBadgeContainer:after { 
   content: "."; 
   visibility: hidden; 
   display: block; 
@@ -11,39 +12,105 @@
   clear: both;
 }
 
-.PlayerBadge {
-  margin-left: 4px;
-  margin-bottom: 4px;
-  border-radius: 5px;
-  padding: 4px;
-  float: left;
-  border: 2px solid;
+.playerBadge {
+  float:left;
+  margin:0px 10px;
+  position: relative;
 }
 
-.Active {
-  background-color: rgb(145, 53, 0);
+.name {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 160px;
+  padding: 2px 0px 2px 40px;
+  height: 20px;
+  border-radius: 0px 10px 0px 0px;
+  background-color: blanchedalmond;
 }
 
-.PlayerBadge P {
-  padding: 0.1em;
+.nameText { 
+  font-family:'Franchise-Bold', 'Franchise', monospace;
+  font-weight:700;
+  font-size:66.667px;
 }
 
-.PlayerBadge .Bid {
-  margin-left: 8px;
-  border-radius: 0.2em;
-  background-color: rgb(0, 95, 24);
+.playerCircle {
+  fill:rgb(255,0,0);
 }
 
-.PlayerBadge .Score {
-  margin-left: 8px;
-  border-radius: 0.2em;
-  background-color: rgb(0, 95, 24);
+.active {
+  
 }
 
-.PlayerBadge p {
-  display: inline;
+.bid {
+  font-family:'Impact', sans-serif;
+  font-stretch:condensed;
+  font-size:100px;
+  fill:rgb(255,172,0);
+  stroke:black;
+  stroke-width:2.5px;
+  text-align: center;
+  text-anchor:middle;
 }
 
-.Self {
-  font-weight: bold;
+.bidNumber {
+  fill:none;
+  stroke:black;
+  stroke-width:4.68px;
+  stroke-linecap:round;
+  stroke-miterlimit:1.5;
+}
+
+.bidCircle {
+  fill:rgb(255,249,213);
+}
+
+.passed .bidCircle {
+  fill:rgb(187,30,30);
+}
+
+.bidBackground {
+  fill:rgb(255,241,155);
+}
+
+.passed .bidBackground {
+  fill:rgb(255, 111, 111);
+}
+
+.moneyBackground {
+  fill:rgb(208,255,213);
+}
+
+.score {
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  width: 188px;
+  height: 20px;
+  border-radius: 0px 0px 10px 0px;
+  background-color: rgb(205, 255, 255);
+  text-align: right;
+  padding: 2px 6px;
+  font-family:'Copperplate';
+  font-size:66.667px;
+  fill:rgb(255,206,0);
+  stroke:rgb(133,108,0);
+  stroke-width:1.46px;
+}
+
+.nameBackground {
+  fill:white;stroke:black;stroke-width:4.1px;stroke-linecap:round;stroke-miterlimit:1.5;
+}
+
+.self .nameBackground {
+  fill:rgb(242, 255, 64);
+}
+
+.something2 {
+  fill:none;stroke:black;stroke-width:3.49px;stroke-linecap:round;stroke-miterlimit:1.5;
+}
+
+.something3 {
+  fill:none;stroke:black;stroke-width:3.18px;stroke-linecap:round;stroke-miterlimit:1.5;
 }
