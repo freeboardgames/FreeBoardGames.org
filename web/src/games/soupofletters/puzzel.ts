@@ -11,8 +11,6 @@ const letters = 'abcdefghijklmnoprstuvwy'.toUpperCase();
  * The list of all the possible orientations and corresponding util functions 
  */ 
 
-const validOrientations = ['horizontal'];//,'diagonal','diagonalUp','vertical', 'verticalUp', 'diagonalBack', 'horizontalBack', 'diagonalUpBack'];
-
 export const orientations = {
 horizontal:     function(x,y,i) { return {x: x+i, y: y  }; },
 horizontalBack: function(x,y,i) { return {x: x-i, y: y  }; },
@@ -276,9 +274,9 @@ const placeWord = function (puzzle, word, x, y, fnGetSquare) {
 */
 
 export interface IPuzzelSettings {
-    height?: number; 
-    width?: number; 
-    orientations?: string[];
+    height: number; 
+    width: number; 
+    orientations: string[];
     fillBlanks?: boolean;
     maxAttempts?: number; 
     preferOverlap?: boolean;
@@ -308,9 +306,9 @@ export const newPuzzle= function(words: string[], settings: IPuzzelSettings) {
     
     // initialize the options
     let options: IPuzzelSettings = {
-    height:       opts.height || wordList[0].length,
-    width:        opts.width || wordList[0].length,
-    orientations: opts.orientations || validOrientations,
+    height:       opts.height,  //|| wordList[0].length
+    width:        opts.width,   // || wordList[0].length
+    orientations: opts.orientations,
     fillBlanks:   opts.fillBlanks !== undefined ? opts.fillBlanks : true,
     maxAttempts:  opts.maxAttempts || 3,
     preferOverlap: opts.preferOverlap !== undefined ? opts.preferOverlap : true
@@ -355,7 +353,7 @@ export const newPuzzle= function(words: string[], settings: IPuzzelSettings) {
 * @param {[String]} words: The list of words to find
 * @api public
 */
-export const solvePuzzel= function (puzzle, words) {
+export const solvePuzzel= function (puzzle, words, validOrientations) {
     let options = {
                     height:       puzzle.length,
                     width:        puzzle[0].length,

@@ -1,17 +1,18 @@
 import React from 'react';
-import { red, blue, green, grey } from '@material-ui/core/colors';
+import { red, blue, green, grey, yellow } from '@material-ui/core/colors';
 import soupCSS from './soup.css'
 import { orientations } from './puzzel';
 import { ISingleLetter, ISolvedWord } from './game'; 
 
 const BOARD_SIZE = 500;
+const SOLUTION_COLOR = yellow[800];
 
 interface ISoupProps {
-  boardSize: number;
   puzzel: Array<Array<string>>;
   solution: Array<ISolvedWord>;
   currentPlayer: string;
   wordFoundCallback?: (solvedWord: ISolvedWord) => void;
+  isGameOver: boolean;
 };
 
 interface ISoupState {
@@ -39,8 +40,8 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     return (
       <div style={{ textAlign: 'center' }}>
         <svg
-          width={`${this.props.boardSize}%`}
-          height={`${this.props.boardSize}%`}
+          width={`${this.props.isGameOver ? 50:100}%`}
+          height={`${this.props.isGameOver ? 50:100}%`}
           viewBox={`0 0 ${BOARD_SIZE} ${BOARD_SIZE}`}
           pointerEvents="visible"
           style={{marginTop:'10px', padding:'0 5px'}}
@@ -51,7 +52,9 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     );
   }
 
-  _selectWordStart = (xId:number, yId:number, letter:string ) => {
+  _selectWordStart = (xId:number, yId:number, letter:string, event ) => {
+
+    // console.log('event: ', event)
     
     let probableWord = this.state.probableWord;
     // if a probable word already selected, then return
@@ -62,7 +65,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
         if(s.solvedBy){
           return; // the word is already found by another player
         }
-        probableWord = s;
+        probableWord = {...s};
         break;
       }
     }
@@ -70,19 +73,25 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     if (!probableWord) { return; }
 
     // create a new list of selectedLetters 
-    const selectedLetters = [];
-    if (selectedLetters.length === 0){
-      selectedLetters.push({x:xId, y:yId, letter})
-      this.setState({selectedLetters, probableWord})
-    }
+    const selectedLetters = [{x:xId, y:yId, letter}];
+    probableWord.solvedBy = this.props.currentPlayer;
+    this.setState({selectedLetters, probableWord})
 
   }
 
-  _selectWordContent = (xId:number, yId:number, letter:string) => {
+  _selectWordContent = (xId:number, yId:number, letter:string, event) => {
+
+    // console.log('event: ', event, letter);
 
     // if first letter is not properly selected, return
     const probableWord = this.state.probableWord
     if(!probableWord) { return; }
+
+    // check if the same players is still playing, else remove selections 
+    if (probableWord.solvedBy != this.props.currentPlayer){
+      this.setState({selectedLetters:[], probableWord:undefined});
+      return;
+    }
 
     // check if the letter selected currently is properly oriented or not
     const selectedLetters = this.state.selectedLetters.slice();
@@ -115,6 +124,12 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     const probableWord = this.state.probableWord;
     if(!probableWord) { return; }
 
+    // check if the same players is still playing, else remove selections 
+    if (probableWord.solvedBy != this.props.currentPlayer){
+      this.setState({selectedLetters:[], probableWord:undefined});
+      return;
+    }
+
     // recreate selected word, 
     let selectedWord = ''; 
     for (const sl of this.state.selectedLetters){
@@ -134,19 +149,21 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
   _getHighlightColor(x, y, letter) {
     // if belongs to a user, give user specific color back 
     for (const sl of this.props.solution){
-      if (sl.solvedBy){
-        for (const l of sl.letters){
-          if (l.x === x && l.y === y && l.letter == letter){
+      for (const l of sl.letters){
+        if (l.x === x && l.y === y && l.letter == letter){
+          if (sl.solvedBy){
             return playerColors[sl.solvedBy];
-          } 
+          } else if (this.props.isGameOver && sl.solvedBy === undefined) {
+            return SOLUTION_COLOR;
+          }
         }
-      }
+      } 
     }
 
-    // if selected in state, give grey color 
+    // if selected in state, give color of player who selected the first letter 
     for (const sl of this.state.selectedLetters){
       if (sl.x === x && sl.y === y){
-        return playerColors[this.props.currentPlayer];
+        return playerColors[this.state.probableWord.solvedBy];
       }
     }
 
@@ -195,12 +212,18 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
               x={(xId)*lWidth} y={(yId)*lHeight} 
               width={lWidth} height={lWidth}
               style={{opacity:0}}
-              // onMouseDown={() => this._selectWordStart(xId, yId, l)}
-              // onMouseEnter={() => this._selectWordContent(xId, yId, l)}
-              // onMouseUp={()=>this._endWordSelections()}
-              onPointerDown={() => this._selectWordStart(xId, yId, l)}
-              onPointerOver={() => this._selectWordContent(xId, yId, l)}
-              onPointerUp={()=>this._endWordSelections()}
+              // works on desktop
+              onMouseDown={() => this._selectWordStart(xId, yId, l, 'onMouseDown')}
+              onMouseEnter={() => this._selectWordContent(xId, yId, l, 'onMouseEnter')}
+              onMouseUp={()=>this._endWordSelections()}  
+              // // should works on phone
+              // onTouchStart={() => this._selectWordStart(xId, yId, l, 'onTouchStart')}
+              // onTouchMove={() => this._selectWordContent(xId, yId, l, 'onPointerMove')}
+              // onTouchEnd={()=>this._endWordSelections()}         
+              // // pointer events should work with both mouse and touch, but they dont :(
+              // onPointerDown={() => {console.log('down')}}
+              // onPointerMove={() => {console.log('enter/move')}}
+              // onPointerUp={()=> {console.log('up')}}
             />
           );
         }); 

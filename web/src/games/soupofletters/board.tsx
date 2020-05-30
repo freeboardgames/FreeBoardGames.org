@@ -100,16 +100,17 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           style={{
             marginTop: '20px',
             width: '250px',
+            height: '400px',
             marginLeft: 'auto',
             marginRight: 'auto',
             backgroundColor: 'white',
           }}
         >
           <div>  
-            <Typography style={{ padding: '16px' }} variant="h5" component="h3">
+            <Typography style={{ padding: '10px' }} variant="h5">
               Words
             </Typography>
-            <List>
+            <List style={{maxHeight: '332px', overflow: 'auto'}} >
               {
                 this.props.G.solution.map(s => (
                     <ListItem
@@ -148,7 +149,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _getGameOver() {
-    if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
+    if (this.props.ctx.gameover.draw) {
+      return 'draw';
+    }
+    if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
@@ -161,15 +165,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
   }  
 
-  _getBoard(boardSize = 100) {
-
+  _getBoard() {
     return (
       <Soup 
-        boardSize={boardSize} 
         puzzel={this.props.G.puzzel}
         solution={this.props.G.solution}
         currentPlayer={this.props.ctx.currentPlayer}
         wordFoundCallback={this._wordFound}
+        isGameOver={this.props.ctx.gameover}
       />
     );
   }
@@ -179,7 +182,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return (
         <GameLayout
           gameOver={this._getGameOver()}
-          extraCardContent={this._getBoard(50)}
+          extraCardContent={this._getBoard()}
           gameArgs={this.props.gameArgs}
         />
       );
