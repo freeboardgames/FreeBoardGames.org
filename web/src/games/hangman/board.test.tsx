@@ -39,6 +39,10 @@ describe('Hangman UI', () => {
         gameArgs={{
           gameCode: 'hangman',
           mode: GameMode.LocalFriend,
+          players: [
+            { playerID: 0, name: 'Player A', roomID: 'fooroom' },
+            { playerID: 1, name: 'Player B', roomID: 'fooroom' },
+          ],
         }}
       />,
     );
@@ -121,10 +125,15 @@ describe('Hangman UI', () => {
 
   it('should show gameover', () => {
     const ctx = { gameover: true, currentPlayer: '0' };
-    const G = { players: { '1': { secret: 'foo' } } };
+    const G = { players: { '1': { secret: 'foo', guesses: {} }, '0': { secret: 'bar', guesses: {} } } };
     wrapper.setProps({ G, ctx });
 
     expect(wrapper.text()).toContain('Game Over, Player A won!');
+    const scoreRows = wrapper.find('.scoreTable tbody tr');
+    expect(scoreRows.at(0).text()).toContain('Player A');
+    expect(scoreRows.at(0).text()).toContain('0');
+    expect(scoreRows.at(1).text()).toContain('Player B');
+    expect(scoreRows.at(1).text()).toContain('0');
   });
 
   it('should show that the guess was CORRECT', () => {
@@ -140,6 +149,11 @@ describe('Hangman UI', () => {
 
     expect(wrapper.text()).toContain('Your guess was CORRECT');
     expect(wrapper.text()).toContain('Your score is 75 points');
+    const scoreRows = wrapper.find('.scoreTable tbody tr');
+    expect(scoreRows.at(0).text()).toContain('Player A');
+    expect(scoreRows.at(0).text()).toContain('75');
+    expect(scoreRows.at(1).text()).toContain('Player B');
+    expect(scoreRows.at(1).text()).toContain('0');
   });
 
   it('should show that the guess was INCORRECT', () => {
@@ -162,6 +176,10 @@ describe('Hangman UI', () => {
       const gameArgs = {
         gameCode: 'hangman',
         mode: GameMode.OnlineFriend,
+        players: [
+          { playerID: 0, name: 'Player A', roomID: 'fooroom' },
+          { playerID: 1, name: 'Player B', roomID: 'fooroom' },
+        ],
       };
       wrapper.setProps({ gameArgs });
     });

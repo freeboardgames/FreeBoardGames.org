@@ -3,6 +3,7 @@ import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
 import { GameLayout } from 'components/App/Game/GameLayout';
 import Typography from '@material-ui/core/Typography';
 import { EnterWordPrompt } from './EnterWordPrompt';
+import css from './board.css';
 import { isOnlineGame } from '../common/gameMode';
 import { grey } from '@material-ui/core/colors';
 import { Modal, Button } from '@material-ui/core';
@@ -280,21 +281,48 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         nextButton = null;
       }
     }
-    let textColor = 'white';
+
+    const cssClasses = [css.scoreLayout];
     if (this.props.ctx.currentPlayer === '1') {
       nextButton = null;
-      textColor = 'black';
+      cssClasses.push(css.endOfGameScore);
+    } else {
+      cssClasses.push(css.midGameScore);
     }
+
+    const tableRows = [];
+    for (let i = 0; i < this.props.gameArgs.players.length; i++) {
+      const hangmanPlayer = this.props.G.players[i];
+      const playerInRoom = this.props.gameArgs.players[i];
+      tableRows.push(
+        <tr key={playerInRoom.name}>
+          <td>
+            <b>{playerInRoom.name}</b>
+          </td>
+          <td>
+            <b>{getScore(hangmanPlayer.guesses)}</b>
+          </td>
+        </tr>,
+      );
+    }
+
     return (
-      <div>
-        <Typography variant="h6" style={{ textAlign: 'center', color: textColor, margin: '16px', padding: '16px' }}>
-          {guessMessage}
-          <br />
-          {extraMessage}
-          <br />
-          {nextButton}
-        </Typography>
-      </div>
+      <Typography variant="h6" className={cssClasses.join(' ')}>
+        {guessMessage}
+        <br />
+        {extraMessage}
+        <table className={css.scoreTable}>
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>{tableRows}</tbody>
+        </table>
+        <br />
+        {nextButton}
+      </Typography>
     );
   }
 
