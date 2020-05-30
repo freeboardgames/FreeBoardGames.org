@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { EnterWordPrompt } from './EnterWordPrompt';
 import css from './board.css';
 import { isOnlineGame } from '../common/gameMode';
+import { IScore, Scoreboard } from '../common/Scoreboard';
 import { grey } from '@material-ui/core/colors';
 import { Modal, Button } from '@material-ui/core';
 import { isPlayersTurn } from 'games/common/GameUtil';
@@ -282,28 +283,20 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       }
     }
 
+    const scores: IScore[] = this.props.gameArgs.players.map((player, i) => {
+      const hangmanPlayer = this.props.G.players[i];
+      return { playerID: `${player.playerID}`, score: getScore(hangmanPlayer.guesses) };
+    });
     const cssClasses = [css.scoreLayout];
+    let scoreBoard = null;
     if (this.props.ctx.currentPlayer === '1') {
       nextButton = null;
       cssClasses.push(css.endOfGameScore);
+      scoreBoard = (
+        <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
+      );
     } else {
       cssClasses.push(css.midGameScore);
-    }
-
-    const tableRows = [];
-    for (let i = 0; i < this.props.gameArgs.players.length; i++) {
-      const hangmanPlayer = this.props.G.players[i];
-      const playerInRoom = this.props.gameArgs.players[i];
-      tableRows.push(
-        <tr key={playerInRoom.name}>
-          <td>
-            <b>{playerInRoom.name}</b>
-          </td>
-          <td>
-            <b>{getScore(hangmanPlayer.guesses)}</b>
-          </td>
-        </tr>,
-      );
     }
 
     return (
@@ -311,15 +304,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         {guessMessage}
         <br />
         {extraMessage}
-        <table className={css.scoreTable}>
-          <thead>
-            <tr>
-              <th>Player</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>{tableRows}</tbody>
-        </table>
+        {scoreBoard}
         <br />
         {nextButton}
       </Typography>
