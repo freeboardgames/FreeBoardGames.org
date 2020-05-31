@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
-import { GameLayout } from '../../components/App/Game/GameLayout';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { IG } from './interfaces';
 
 import { BHand } from './components/bhand';
