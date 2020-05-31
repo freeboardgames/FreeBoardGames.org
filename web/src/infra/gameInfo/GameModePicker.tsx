@@ -16,7 +16,12 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Link from 'next/link';
 import { IGameDef } from 'gamesShared/definitions/game';
-import { GameMode, IGameModeInfo, IGameModeExtraInfoDropdown, IGameModeExtraInfoSlider } from 'gamesShared/definitions/mode';
+import {
+  GameMode,
+  IGameModeInfo,
+  IGameModeExtraInfoDropdown,
+  IGameModeExtraInfoSlider,
+} from 'gamesShared/definitions/mode';
 import { LobbyService } from '../common/services/LobbyService';
 import Router from 'next/router';
 import { connect } from 'react-redux';

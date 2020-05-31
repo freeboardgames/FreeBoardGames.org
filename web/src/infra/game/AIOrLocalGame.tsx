@@ -1,7 +1,8 @@
 import React from 'react';
-import { GameMode } from 'infra/gameInfo/GameModePicker';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { IGameDef } from 'gamesShared/definitions/game';
 import dynamic from 'next/dynamic';
-import { IGameDef, GAMES_MAP } from 'games';
+import { GAMES_MAP } from 'games';
 import Error from 'pages/_error';
 import SEO from 'infra/common/helpers/SEO';
 

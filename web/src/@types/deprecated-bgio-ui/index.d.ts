@@ -21,7 +21,7 @@ declare module 'deprecated-bgio-ui' {
     animationDuration?: number;
     square?: string;
   }
-  export class Token extends React.Component<ITokenProps, any> { }
+  export class Token extends React.Component<ITokenProps, any> {}
   interface IGridColorMap {
     [key: string]: string;
   }
@@ -35,5 +35,5 @@ declare module 'deprecated-bgio-ui' {
     onClick: (coords: any) => void;
     children?: any;
   }
-  export class Grid extends React.Component<IGridProps, any> { }
+  export class Grid extends React.Component<IGridProps, any> {}
 }

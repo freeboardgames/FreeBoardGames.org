@@ -54,10 +54,10 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
         Play {this.props.game.name}
       </Typography>
     ) : (
-        <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
-          {this.props.game.name}
-        </Typography>
-      );
+      <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
+        {this.props.game.name}
+      </Typography>
+    );
     return (
       <div style={mainDivStyle} data-testid={`gamecard-${this.props.game.code}`}>
         <div

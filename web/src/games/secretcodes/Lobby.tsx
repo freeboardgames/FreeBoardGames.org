@@ -19,7 +19,7 @@ interface ILobbyProps {
   isHost: boolean;
 }
 
-interface ILobbyState { }
+interface ILobbyState {}
 
 export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
   componentDidMount() {

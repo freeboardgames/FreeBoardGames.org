@@ -19,7 +19,7 @@ interface IBoardProps {
   isMultiplayer: boolean;
 }
 
-interface IBoardState { }
+interface IBoardState {}
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
   isHost = () => this.props.playerID === '0';

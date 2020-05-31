@@ -193,7 +193,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       const transform = { ...this.state.piece.transform, flipX: false, flipY: false, rotation: 0, x: 10, y: 10 };
       const data =
         pieces[
-        this.props.G.players[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any].pieces[0]
+          this.props.G.players[getPlayer(this.props.ctx, this.props.G, this.props.ctx.currentPlayer) as any].pieces[0]
         ];
       this.setState({
         ...this.state,
@@ -259,8 +259,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                 </g>
               </Token>
             ) : (
-                <div></div>
-              )}
+              <div></div>
+            )}
           </Grid>
           <Controls
             placePiece={this._placePiece}

@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
-import { IGameDef } from 'games';
+import { IGameDef } from 'gamesShared/definitions/game';
 
 interface IGameInstructionsProps {
   gameDef: IGameDef;

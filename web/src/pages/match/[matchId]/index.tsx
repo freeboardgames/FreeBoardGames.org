@@ -1,6 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import getMessagePage from '../../../infra/common/components/alert/MessagePage';
+import getMessagePage from 'infra/common/components/alert/MessagePage';
 
 const LoadingPage = getMessagePage('loading', 'Loading...');
 

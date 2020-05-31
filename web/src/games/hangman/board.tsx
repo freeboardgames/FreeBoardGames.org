@@ -322,8 +322,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         {this._getHintModal()}
       </div>
     ) : (
-        <div> {this._showConclusion()} </div>
-      );
+      <div> {this._showConclusion()} </div>
+    );
   }
 
   _getGameOver() {

@@ -1,6 +1,11 @@
 import React from 'react';
 import { GameModePickerInternal as GameModePicker } from './GameModePicker';
-import { IGameModeExtraInfoSlider, IGameModeExtraInfoDropdown, GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
+import {
+  IGameModeExtraInfoSlider,
+  IGameModeExtraInfoDropdown,
+  GameMode,
+  IGameModeInfo,
+} from 'gamesShared/definitions/mode';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { render, fireEvent, RenderResult, cleanup } from '@testing-library/react';
 require('@testing-library/jest-dom/extend-expect');
