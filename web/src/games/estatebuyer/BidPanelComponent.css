@@ -15,7 +15,7 @@
  }
 
 .ButtonGroup {
-    background-color:  rgba(0, 0, 0, 0.466);
+    background-color:  rgba(0, 0, 0, 0.3);
     border-radius: 0.5em;
     width: calc(50% - 1.4em);
     padding: 0.5em;
@@ -33,7 +33,13 @@
 }
 
 .BidPanel span {
+    display: block;
+    font-family:'Franchise-Bold', 'Franchise', monospace;
     font-size: 20px;
     line-height: 20px;
     text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 10px;
+    margin: 0px 40px;
 }
