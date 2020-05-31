@@ -1,9 +1,9 @@
 import React from 'react';
 import Timer from 'react-compound-timer';
-import { GameLayout } from 'components/App/Game/GameLayout';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
-import { isOnlineGame, isAIGame, isLocalGame } from '../common/gameMode';
-import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { isOnlineGame, isAIGame, isLocalGame } from 'gamesShared/helpers/gameMode';
+import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import { Ctx } from 'boardgame.io';
 import { Modal, Button, Typography, Box, List, ListItem, ListItemText } from '@material-ui/core';
 import { TIME_OUT, TIME_BUFF } from './constants';
@@ -38,7 +38,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _wordFound = (solvedWord: ISolvedWord) => {
     this.props.moves.wordFound(solvedWord);
   }
-  
+
   _playerInRoom(): IPlayerInRoom {
     return this.props.gameArgs.players[this.props.ctx.currentPlayer];
   }
@@ -56,32 +56,32 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _checkTimeOut = (secondsLeft: number) => {
     if (isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer) { return; }
-    if ((secondsLeft === 0) || ((Date.now() - this.props.G.timeRef) > ((TIME_OUT + TIME_BUFF)*1000)) ) {
+    if ((secondsLeft === 0) || ((Date.now() - this.props.G.timeRef) > ((TIME_OUT + TIME_BUFF) * 1000))) {
       this.props.moves.changeTurn();
     }
   }
 
   _getTimeRemaining() {
     // check time every second
-    const secondlyCallback = []; 
-    for (let i=0; i<TIME_OUT; i++){
+    const secondlyCallback = [];
+    for (let i = 0; i < TIME_OUT; i++) {
       secondlyCallback.push({
         time: i * 1000,
-        callback: () => {this._checkTimeOut(i)}
+        callback: () => { this._checkTimeOut(i) }
       });
     }
     // render timer 
-    return(
+    return (
       <Timer
         key={'timer-' + this.props.G.timeRef}
-        initialTime={(TIME_OUT + TIME_BUFF)*1000 - (Date.now() - this.props.G.timeRef)}
+        initialTime={(TIME_OUT + TIME_BUFF) * 1000 - (Date.now() - this.props.G.timeRef)}
         direction="backward"
         checkpoints={secondlyCallback}
       >
         {
-          isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer?
-          <Timer.Seconds formatValue={value => this._playerInRoom().name + ` has ${value>TIME_OUT?TIME_OUT:(value<0?0:value)} seconds.`} /> :
-          <Timer.Seconds formatValue={value => `You have ${value>TIME_OUT?TIME_OUT:value} seconds.`} />
+          isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer ?
+            <Timer.Seconds formatValue={value => this._playerInRoom().name + ` has ${value > TIME_OUT ? TIME_OUT : (value < 0 ? 0 : value)} seconds.`} /> :
+            <Timer.Seconds formatValue={value => `You have ${value > TIME_OUT ? TIME_OUT : value} seconds.`} />
         }
       </Timer>
 
@@ -106,22 +106,22 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             backgroundColor: 'white',
           }}
         >
-          <div>  
+          <div>
             <Typography style={{ padding: '10px' }} variant="h5">
               Words
             </Typography>
-            <List style={{maxHeight: '332px', overflow: 'auto'}} >
+            <List style={{ maxHeight: '332px', overflow: 'auto' }} >
               {
                 this.props.G.solution.map(s => (
-                    <ListItem
-                      key={'list-item-'+s.word}
-                      // add a strike style is word is found
-                      style={{ textDecoration : s.solvedBy ? 'line-through' : 'none' }} 
-                    >
-                      <ListItemText primary={s.word} />                    
-                    </ListItem>
-                  ))
-                }
+                  <ListItem
+                    key={'list-item-' + s.word}
+                    // add a strike style is word is found
+                    style={{ textDecoration: s.solvedBy ? 'line-through' : 'none' }}
+                  >
+                    <ListItemText primary={s.word} />
+                  </ListItem>
+                ))
+              }
             </List>
           </div>
         </Modal>
@@ -131,16 +131,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _showModalButton() {
     return (
-      <Box 
-        display="flex" 
-        width={500} height={40} 
+      <Box
+        display="flex"
+        width={500} height={40}
         bgcolor="black"
         alignItems="center"
         justifyContent="center"
       >
-        <Button 
+        <Button
           variant="contained"
-          onClick={() => {this.setState({showWords:true})}}
+          onClick={() => { this.setState({ showWords: true }) }}
         >
           Words
         </Button>
@@ -163,11 +163,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         return `${localPlayerNames[this.props.ctx.gameover.winner]} won`;
       }
     }
-  }  
+  }
 
   _getBoard() {
     return (
-      <Soup 
+      <Soup
         puzzel={this.props.G.puzzel}
         solution={this.props.G.solution}
         currentPlayer={this.props.ctx.currentPlayer}
@@ -189,20 +189,20 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
-        <Typography 
-          className={soupCSS.noselect} variant="h5" 
+        <Typography
+          className={soupCSS.noselect} variant="h5"
           style={{ color: 'white', textAlign: 'center' }}
         >
           {this._getStatus()}
         </Typography>
-        <Typography 
-            className={soupCSS.noselect} variant='h6' 
-            style={{ color: 'white', textAlign: 'center' }}
+        <Typography
+          className={soupCSS.noselect} variant='h6'
+          style={{ color: 'white', textAlign: 'center' }}
         >
-        {this._getTimeRemaining()}
+          {this._getTimeRemaining()}
         </Typography>
         {this._getBoard()}
-        {this._showModalButton()}        
+        {this._showModalButton()}
         {this._getWordModal()}
       </GameLayout>
     );

@@ -1,13 +1,13 @@
 const Thumbnail = require('./media/thumbnail.png');
-import { GameMode } from 'components/App/Game/GameModePicker';
-import { IGameDef } from 'games';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { IGameDef } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const soupOfLettersGameDef: IGameDef = {
   code: 'soupofletters',
   name: 'Soup of Letters',
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }], 
+  modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],
   minPlayers: 2,
   maxPlayers: 4,
   description: "Always more fun with friends.",
