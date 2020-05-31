@@ -1,4 +1,4 @@
-import { IAIConfig } from '../index';
+import { IAIConfig } from 'gamesShared/definitions/game';
 import { MCTSBot } from 'boardgame.io/ai';
 
 interface IPlayState {

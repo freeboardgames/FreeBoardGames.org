@@ -1,7 +1,7 @@
 const Thumbnail = require('./media/thumbnail.jpg');
-import { GameMode } from 'components/App/Game/GameModePicker';
+import { GameMode } from 'gamesShared/definitions/mode';
 import instructions from './instructions.md';
-import { IGameDef } from 'games';
+import { IGameDef } from 'gamesShared/definitions/game';
 
 export const ninemensmorrisGameDef: IGameDef = {
   code: 'ninemensmorris',

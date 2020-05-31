@@ -6,7 +6,7 @@ import { Client as ReactClient } from 'boardgame.io/react';
 import { ReversiGame } from './game';
 
 import { Board } from './board';
-import { GameMode } from 'components/App/Game/GameModePicker';
+import { GameMode } from 'gamesShared/definitions/mode';
 
 Enzyme.configure({ adapter: new Adapter() });
 

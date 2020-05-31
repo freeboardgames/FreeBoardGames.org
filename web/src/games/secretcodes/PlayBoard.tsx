@@ -1,13 +1,13 @@
 import { IG, CardColor, Team, TeamColor, Phases } from './definitions';
 import { Ctx } from 'boardgame.io';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
+import { IGameArgs } from 'gamesShared/definitions/game';
 import * as React from 'react';
 import css from './board.css';
-import { isLocalGame, isOnlineGame } from '../common/gameMode';
+import { isLocalGame, isOnlineGame } from 'gamesShared/helpers/gameMode';
 import Button from '@material-ui/core/Button';
-import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
+import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import { getPlayerTeam, isPlayerSpymaster } from './util';
-import { PlayerBadges } from 'games/common/PlayerBadges';
+import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 
 interface IPlayBoardProps {
   G: IG;

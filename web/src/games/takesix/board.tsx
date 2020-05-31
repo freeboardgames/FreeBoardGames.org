@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
-import { GameLayout } from 'components/App/Game/GameLayout';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
 import { IG, getScoreBoard, isAllowedDeck } from './game';
 import { Decks } from './Decks';
 import { PlayerHand } from './PlayerHand';
-import { Scoreboard } from '../common/Scoreboard';
-import { PlayerBadges } from '../common/PlayerBadges';
+import { Scoreboard } from 'gamesShared/components/scores/Scoreboard';
+import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {

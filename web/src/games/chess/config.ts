@@ -1,4 +1,4 @@
-import { IGameConfig } from '../index';
+import { IGameConfig } from 'gamesShared/definitions/game';
 import { ChessGame } from './game';
 import { Board as ChessBoard } from './board';
 

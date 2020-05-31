@@ -1,13 +1,13 @@
 import React from 'react';
-import { GameLayout } from 'components/App/Game/GameLayout';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
+import { IGameArgs } from 'gamesShared/definitions/game';
 import { IG } from './game';
 import { Field } from './Field';
 import { Phase } from './game';
 import Typography from '@material-ui/core/Typography';
 import css from './Board.css';
-import { isOnlineGame, isAIGame, isLocalGame } from '../common/gameMode';
+import { isOnlineGame, isAIGame, isLocalGame } from '../../gamesShared/helpers/gameMode';
 
 interface IBoardProps {
   G: IG;

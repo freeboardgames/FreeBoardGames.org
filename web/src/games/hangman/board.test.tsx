@@ -2,7 +2,7 @@ import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
 import { HangmanGame } from './game';
 import Board from './board';
-import { GameMode } from 'components/App/Game/GameModePicker';
+import { GameMode } from 'gamesShared/definitions/mode';
 
 let wrapper: Enzyme.ReactWrapper;
 let client;

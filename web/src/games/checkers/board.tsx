@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
-import { GameLayout } from 'components/App/Game/GameLayout';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
 import { IG, toCoord, IMove, getValidMoves, areCoordsEqual } from './game';
 import {
@@ -12,12 +12,12 @@ import {
   algebraicToCartesian,
   IColorMap,
   cartesianToAlgebraic,
-} from '../common/Checkerboard';
-import { Token } from 'ui';
+} from 'gamesShared/components/boards/Checkerboard';
+import { Token } from 'deprecated-bgio-ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
-import { isOnlineGame, isLocalGame, isAIGame } from '../common/gameMode';
+import { isOnlineGame, isLocalGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 
 interface IBoardProps {
   G: IG;

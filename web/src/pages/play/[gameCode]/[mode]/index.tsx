@@ -1,3 +1,3 @@
-import AIOrLocalGame from './AIOrLocalGame';
+import AIOrLocalGame from '../../../../infra/game/AIOrLocalGame';
 
 export default AIOrLocalGame;

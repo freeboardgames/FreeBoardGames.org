@@ -1,6 +1,6 @@
 import { INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
 import { Game, Ctx } from 'boardgame.io';
-import { IScore } from '../common/Scoreboard';
+import { IScore } from 'gamesShared/components/scores/Scoreboard';
 import { pieces } from './pieces';
 
 export interface IPieceTransform {

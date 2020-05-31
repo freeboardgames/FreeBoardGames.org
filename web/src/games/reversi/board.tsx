@@ -1,14 +1,13 @@
 import React from 'react';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
-import { GameLayout } from 'components/App/Game/GameLayout';
-import { Grid } from 'ui';
-import { Token } from 'ui';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
+import { Grid } from 'deprecated-bgio-ui';
+import { Token } from 'deprecated-bgio-ui';
 import { IG, getScoreBoard } from './game';
-import { IScore } from '../common/Scoreboard';
+import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 import { Ctx } from 'boardgame.io';
-import { Scoreboard } from '../common/Scoreboard';
-import { GameMode } from 'components/App/Game/GameModePicker';
-import { PlayerBadges } from '../common/PlayerBadges';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import css from './Board.css';
 
 import red from '@material-ui/core/colors/red';
@@ -18,7 +17,7 @@ import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
 
 import Typography from '@material-ui/core/Typography';
-import { isAIGame, isOnlineGame } from '../common/gameMode';
+import { isAIGame, isOnlineGame } from '../../gamesShared/helpers/gameMode';
 
 export interface ICoords {
   x: number;

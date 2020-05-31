@@ -2,7 +2,7 @@ import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
 import { SecretcodesGame } from './game';
 import PlayBoard from './PlayBoard';
-import { GameMode } from 'components/App/Game/GameModePicker';
+import { GameMode } from 'gamesShared/definitions/mode';
 
 function render(client: Client) {
   const state = client.store.getState();
