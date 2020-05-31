@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.jpg');
-import { GameMode } from 'components/App/Game/GameModePicker';
-import { IGameDef } from 'games';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { IGameDef } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const cornerusGameDef: IGameDef = {

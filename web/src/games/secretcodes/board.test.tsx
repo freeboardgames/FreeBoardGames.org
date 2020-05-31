@@ -2,15 +2,14 @@ import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
 import { SecretcodesGame } from './game';
 import Board from './board';
-import { GameMode } from 'components/App/Game/GameModePicker';
-import { WrapperBoard } from 'boardgame.io/react';
+import { GameMode } from 'gamesShared/definitions/mode';
 import { Phases, TeamColor } from './definitions';
 
 jest.mock('./LobbyPlayer');
 jest.mock('./Lobby');
 
 let wrapper: Enzyme.ShallowWrapper;
-let client: WrapperBoard;
+let client;
 
 describe('Secretcodes UI', () => {
   beforeEach(() => {
@@ -31,8 +30,8 @@ describe('Secretcodes UI', () => {
           gameCode: 'secretcodes',
           mode: GameMode.LocalFriend,
           players: [
-            { playerID: 0, name: 'foo', roomID: 'fooroom' },
-            { playerID: 1, name: 'bar', roomID: 'fooroom' },
+            { playerID: 0, name: 'foo' },
+            { playerID: 1, name: 'bar' },
           ],
         }}
       />,
@@ -53,8 +52,8 @@ describe('Secretcodes UI', () => {
 
   it('should show gameover, red team wins', () => {
     const players = [
-      { playerID: 0, name: 'foo', roomID: 'fooroom' },
-      { playerID: 1, name: 'bar', roomID: 'fooroom' },
+      { playerID: 0, name: 'foo' },
+      { playerID: 1, name: 'bar' },
     ];
     const winner = { color: TeamColor.Red, playersID: ['1'] };
     wrapper.setProps({ ctx: { gameover: { players, winner } } });
@@ -65,8 +64,8 @@ describe('Secretcodes UI', () => {
 
   it('should show gameover, blue team wins', () => {
     const players = [
-      { playerID: 0, name: 'foo', roomID: 'fooroom' },
-      { playerID: 1, name: 'bar', roomID: 'fooroom' },
+      { playerID: 0, name: 'foo' },
+      { playerID: 1, name: 'bar' },
     ];
     const winner = { color: TeamColor.Blue, playersID: ['0'] };
     wrapper.setProps({ ctx: { gameover: { players, winner } } });

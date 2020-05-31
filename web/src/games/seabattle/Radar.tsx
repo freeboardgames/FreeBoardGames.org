@@ -1,7 +1,7 @@
 import React from 'react';
 import { IShip, ICell, ISalvo, getCellVector } from './game';
-import { Grid } from 'ui';
-import { Token } from 'ui';
+import { Grid } from 'deprecated-bgio-ui';
+import { Token } from 'deprecated-bgio-ui';
 import SvgShip2 from './media/SvgShip2';
 import SvgShip3 from './media/SvgShip3';
 import SvgShip4 from './media/SvgShip4';
@@ -9,7 +9,7 @@ import SvgShip5 from './media/SvgShip5';
 import SvgBackground from './media/SvgBackground';
 import SvgHit from './media/SvgHit';
 import SvgMiss from './media/SvgMiss';
-import { Blink } from 'components/App/Blink';
+import { Blink } from 'gamesShared/components/animation/Blink';
 
 export interface IColorMap {
   [key: string]: string;

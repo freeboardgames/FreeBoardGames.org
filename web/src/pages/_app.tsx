@@ -3,17 +3,17 @@
 import App from 'next/app';
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
-import theme from 'theme';
-import { SelfXSSWarning } from 'components/App/SelfXSSWarning';
-import { isMobileFromReq } from 'misc/UaHelper';
-import UaContext from 'misc/IsMobileContext';
+import theme from 'infra/common/components/base/theme';
+import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
+import { isMobileFromReq } from 'infra/common/device/UaHelper';
+import UaContext from 'infra/common/device/IsMobileContext';
 import withError from 'next-with-error';
 import ErrorPage from './_error';
 import ReactGA from 'react-ga';
 import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
 
-import { wrapper } from 'redux/store';
+import { wrapper } from 'infra/common/redux/store';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 

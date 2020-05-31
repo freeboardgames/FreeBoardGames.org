@@ -1,6 +1,7 @@
 import React from 'react';
 import Router from 'next/router';
-import { IGameDef, GAMES_MAP } from 'games';
+import { IGameDef } from 'gamesShared/definitions/game';
+import { GAMES_MAP } from 'games';
 import { generatePageError } from 'next-with-error';
 
 export default class extends React.Component {

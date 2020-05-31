@@ -1,4 +1,4 @@
-import { IGameConfig } from '../index';
+import { IGameConfig } from 'gamesShared/definitions/game';
 import { SeabattleGame } from './game';
 import { Board as SeabattleBoard } from './board';
 

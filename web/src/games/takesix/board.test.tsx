@@ -6,7 +6,7 @@ import { Client as ReactClient } from 'boardgame.io/react';
 import { TakeSixGame, TakeSixGameForTest } from './game';
 
 import { Board } from './board';
-import { GameMode } from 'components/App/Game/GameModePicker';
+import { GameMode } from 'gamesShared/definitions/mode';
 import { Ctx } from 'boardgame.io';
 
 Enzyme.configure({ adapter: new Adapter() });

@@ -1,4 +1,4 @@
-import { IGameConfig } from '../index';
+import { IGameConfig } from 'gamesShared/definitions/game';
 import { CheckersGame } from './game';
 import { Board } from './board';
 
