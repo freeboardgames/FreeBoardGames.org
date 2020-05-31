@@ -10,15 +10,15 @@ const scoreboardData:IScoreboardProps = {
     scoreboard: [
         {
             playerID: "0",
-            score: 40000,
+            score: 40,
         },
         {
             playerID: "1",
-            score: 32000,
+            score: 30,
         },
         {
             playerID: "2",
-            score: 12000,
+            score: 12,
         },
     ],
     players: [
@@ -38,4 +38,4 @@ const scoreboardData:IScoreboardProps = {
     playerID: "0"
 }
 
-export const TwoPlayer = () => <Scoreboard {...scoreboardData} />;
+export const ThreePlayer = () => <Scoreboard {...scoreboardData} />;
