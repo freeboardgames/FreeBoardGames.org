@@ -47,6 +47,7 @@ export class DeckComponent extends React.Component<IDeckProps, {}> {
   }
 
   renderCount() {
+    if (!('numCardsPerRound' in this.props)) return;
     if (this.props.numCardsPerRound <= 0) return;
     const roundsRemaining = this.props.cards.length / this.props.numCardsPerRound;
 
