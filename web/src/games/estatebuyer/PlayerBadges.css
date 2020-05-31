@@ -94,8 +94,8 @@
   padding: 2px 6px;
   font-family:'Copperplate';
   font-size:66.667px;
-  fill:rgb(255,206,0);
-  stroke:rgb(133,108,0);
+  fill:rgb(0, 0, 0);
+  stroke:rgb(0, 0, 0);
   stroke-width:1.46px;
   text-anchor: end;
 }
@@ -121,11 +121,19 @@
 }
 
 .cardAwardBackground {
-  fill:rgb(189,254,255);stroke:black;stroke-width:3.75px;
+  fill:rgb(58,137,184);stroke:black;stroke-width:3.75px;
 }
 
 .cardAwardHighlight {
-  fill:rgb(226,255,255);
+  fill:rgb(38,117,164);
+}
+
+.moneyColor .cardAwardBackground {
+  fill:rgb(120,143,50);stroke:black;stroke-width:3.75px;
+}
+
+.moneyColor .cardAwardHighlight {
+  fill:rgb(100,123,30);
 }
 
 .something2 {
@@ -139,19 +147,19 @@
 @keyframes awardCard {
   0% {
     opacity: 100;
-    transform: scale(0.8);
     top: 50%;
-    left: 50%;
+    left: 30vw;
+    transform: scale(0.4) translateX(-50%);
   }
-  20% {
+  10% {
     top: 50%;
-    left: 50%;
-    transform: scale(0.82);
+    left: 30vw;
+    transform: scale(0.62) translateX(-50%);
   }
   40% {
     top: 50%;
-    left: 50%;
-    transform: scale(0.82);
+    left: 30vw;
+    transform: scale(0.62) translateX(-50%);
   }
   90% {
     top: 10px;
@@ -174,6 +182,6 @@
   transform-origin: 0 0;
   transform: scale(0);
   opacity: 0;
-  animation: awardCard 1s;
+  animation: awardCard 1.6s;
   animation-iteration-count: 1;
 }

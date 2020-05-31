@@ -93,7 +93,7 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newcard?:IC
                         <text x="201.345px" y="130.464px" className={css.nameText}>{this.props.name}</text>
                     </g>
                     <g transform="matrix(1,0,0,1,125.045,29.4027)">
-                        <text x="480px" y="130.464px" className={css.score}>{"$"+this.props.score.score}</text>
+                        <text x="480px" y="130.464px" className={css.score}>{"$"+this.props.score.score+"k"}</text>
                     </g>
                     <g transform="matrix(1.18074,0,0,1.18074,32.0371,30.4905)">
                         <circle cx="66.974" cy="65.959" r="84.041" className={css.playerCircle} />
@@ -143,7 +143,7 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newcard?:IC
     }
 
       return (
-        <g id="Card-Award" transform="matrix(1,0,0,1,-95.5506,56.8804)">
+        <g id="Card-Award" transform="matrix(1,0,0,1,-95.5506,56.8804)" className={(this.state.newcard as any).building ? css.buildingColor : css.moneyColor}>
             <g transform="matrix(1,0,0,1,104.435,-50.7744)">
                 <path d="M453.699,127.474L453.699,229.749L453.694,229.749C453.268,264.607 421.79,292.789 383.078,292.789C380.755,292.789 378.459,292.687 376.195,292.489L376.195,292.789L329.015,292.789C290.303,292.789 258.825,264.607 258.399,229.749L258.374,229.749C258.374,194.56 226.73,165.991 187.753,165.991C183.38,165.991 179.93,164.825 175.775,165.513L174.944,127.474L453.699,127.474Z" className={css.cardAwardBackground} />
             </g>
