@@ -1,0 +1,28 @@
+{
+  "name": "fbg-runner",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "test": "run-s test:*",
+    "ci": "run-s ci:*",
+    "dev": "run-p web:dev backend:dev",
+    "format": "run-p format:*",
+    "backend:dev": "cd fbg-server/ && yarn run start",
+    "ci:web": "cd web/ && yarn run ci",
+    "ci:backend": "cd fbg-server/ && yarn run test",
+    "format:backend": "cd fbg-server/ && yarn run format",
+    "format:web": "cd web/ && yarn run format",
+    "install:backend": "cd fbg-server/ && yarn install",
+    "install:web": "cd web/ && yarn install",
+    "postinstall": "run-s install:*",
+    "test:backend": "cd fbg-server/ && yarn run test",
+    "test:web": "cd web/ && yarn run test",
+    "web:dev": "cd web/ && yarn run dev"
+  },
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

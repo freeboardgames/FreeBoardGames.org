@@ -2,3 +2,9 @@ node_modules
 .idea/
 **/.syn
 **/.stignore
+yarn-error.log
+**/.vscode
+# auto generated
+common/gql
+common/internal/*
+!common/internal/empty-file-so-git-commits-directory

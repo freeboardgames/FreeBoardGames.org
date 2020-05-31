@@ -13,8 +13,11 @@ export class RoomMembershipEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id!: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   public lastSeen!: number;
+
+  @Column({ default: false })
+  public isCreator!: boolean;
 
   @ManyToOne((type) => UserEntity, (user) => user.roomMemberships)
   public user!: UserEntity;

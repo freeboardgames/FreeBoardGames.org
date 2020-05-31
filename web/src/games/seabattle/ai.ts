@@ -1,4 +1,4 @@
-import { IAIConfig } from '../index';
+import { IAIConfig } from 'gamesShared/definitions/game';
 import { ICell, IShip, ISalvo, generateRandomShips } from './game';
 import shuffle from 'shuffle-array';
 

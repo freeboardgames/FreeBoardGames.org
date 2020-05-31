@@ -1,18 +1,18 @@
 import {
   Entity,
   BaseEntity,
-  PrimaryGeneratedColumn,
   Column,
   OneToMany,
   OneToOne,
   JoinColumn,
+  PrimaryColumn,
 } from 'typeorm';
 import { RoomMembershipEntity } from './RoomMembership.entity';
 import { MatchEntity } from '../../match/db/Match.entity';
 
 @Entity()
 export class RoomEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn()
   id!: string;
 
   @Column()
@@ -27,7 +27,7 @@ export class RoomEntity extends BaseEntity {
   @OneToMany((type) => RoomMembershipEntity, (membership) => membership.room)
   public userMemberships!: RoomMembershipEntity[];
 
-  @OneToOne((type) => MatchEntity)
+  @OneToOne((type) => MatchEntity, (match) => match.room)
   @JoinColumn()
   public match?: MatchEntity;
 }

@@ -4,12 +4,11 @@ import { UsersService } from '../users/users.service';
 import { FakeDbModule, closeDbConnection } from '../testing/dbUtil';
 import { RoomsModule } from '../rooms/rooms.module';
 import { UsersModule } from '../users/users.module';
-import { Room } from '../dto/rooms/Room';
-import { Connection, AdvancedConsoleLogger } from 'typeorm';
+import { Connection } from 'typeorm';
 import { MatchModule } from '../match/match.module';
-import { query } from 'express';
 import { HttpService } from '@nestjs/common';
 import { MatchService } from '../match/match.service';
+import { NewRoomInput } from './gql/NewRoomInput.gql';
 
 describe('RoomsService', () => {
   let module: TestingModule;
@@ -41,53 +40,79 @@ describe('RoomsService', () => {
   });
 
   it('should create a room successfully', async () => {
-    const room: Room = { capacity: 2, gameCode: 'checkers', isPublic: false };
-    const id = await service.newRoom(room);
-    const newRoom = await service.getRoom(id);
-    expect(newRoom).toEqual({ id, users: [], ...room });
-  });
-
-  it('should join room successfully', async () => {
-    const roomId = await service.newRoom({
+    const room: NewRoomInput = {
       capacity: 2,
       gameCode: 'checkers',
       isPublic: false,
-    });
-    const userId = await usersService.newUser({ nickname: 'foo' });
-    await service.checkin(userId, roomId);
-    const newRoom = await service.getRoom(roomId);
-    expect(newRoom.users).toEqual([{ id: userId, nickname: 'foo' }]);
+    };
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const newRoom = await service.newRoom(room, bobId);
+    expect(newRoom).toMatchObject({ ...room });
   });
 
-  it('should start match', async () => {
-    const promiseMock = jest
-      .fn()
-      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
-      .mockReturnValueOnce(
-        Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
-      )
-      .mockReturnValueOnce(
-        Promise.resolve({ data: { playerCredentials: '2ndSecret' } }),
-      );
-    jest
-      .spyOn(httpService, 'post')
-      .mockReturnValue({ toPromise: promiseMock } as any);
-    const roomId = await service.newRoom({
-      capacity: 2,
-      gameCode: 'checkers',
-      isPublic: false,
-    });
-    const user1 = await usersService.newUser({ nickname: 'foo' });
-    await service.checkin(user1, roomId);
-    // second player joins; capacity is 2, so match starts
-    const user2 = await usersService.newUser({ nickname: 'bar' });
+  it('should join room for creator successfully', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const newRoom = await service.getRoom(room.id);
+    expect(newRoom.userMemberships).toEqual([
+      { isCreator: true, user: { id: bobId, nickname: 'bob' } },
+    ]);
+  });
 
-    const newMatchID = await service.checkin(user2, roomId);
-    const match = await matchService.getMatchEntity(newMatchID);
+  it('should have user after checkin', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    const result = await service.checkin(aliceId, room.id);
+    expect(result.userMemberships.length).toEqual(2);
+  });
 
-    expect(match.bgioMatchId).toEqual('bgioGameId');
-    expect(match.playerMemberships[0].bgioSecret).toEqual('1stSecret');
-    expect(match.playerMemberships[1].bgioSecret).toEqual('2ndSecret');
+  it('should not allow room to go over capacity', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.checkin(aliceId, room.id);
+
+    const joeId = await usersService.newUser({ nickname: 'joe' });
+    const result = service.checkin(joeId, room.id);
+    await expect(result).rejects.toThrow();
+  });
+
+  it('should checkin successfully', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.checkin(aliceId, room.id);
+    const newRoom = await service.getRoom(room.id);
+    expect(newRoom.userMemberships.length).toEqual(2);
   });
 
   it('should give the match id after creation', async () => {
@@ -103,18 +128,19 @@ describe('RoomsService', () => {
     jest
       .spyOn(httpService, 'post')
       .mockReturnValue({ toPromise: promiseMock } as any);
-    const roomId = await service.newRoom({
-      capacity: 2,
-      gameCode: 'checkers',
-      isPublic: false,
-    });
-    const user1 = await usersService.newUser({ nickname: 'foo' });
-    await service.checkin(user1, roomId);
-    // second player joins; capacity is 2, so match starts
-    const user2 = await usersService.newUser({ nickname: 'bar' });
-
-    const creationID = await service.checkin(user2, roomId);
-    const visitID = await service.checkin(user1, roomId);
-    expect(creationID).toEqual(visitID);
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.checkin(aliceId, room.id);
+    const roomId = await matchService.startMatch(room.id, bobId);
+    const visit = await service.checkin(aliceId, room.id);
+    expect(roomId).toEqual(visit.matchId);
   });
 });

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
-import { GameLayout } from 'components/App/Game/GameLayout';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { EmptyDisk, CircleBlue, CircleRed } from './Shapes';
 import Typography from '@material-ui/core/Typography';
-import { isOnlineGame, isAIGame } from '../common/gameMode';
+import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { numOfColumns, numOfRows, localPlayerNames } from './constants';
 
 interface IBoardProps {

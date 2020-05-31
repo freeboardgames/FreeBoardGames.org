@@ -27,8 +27,8 @@ Now, let's create its first configuration file, `src/games/foobar/index.ts`:
 
 ```typescript
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
-import { GameMode } from '../../components/App/Game/GameModePicker';
-import { IGameDef } from '../../games';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { IGameDef } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const fooBarGameDef: IGameDef = {
@@ -97,9 +97,9 @@ These two pieces are where the bulk of the game code will live. Let's use placeh
 
 ```typescript
 import * as React from 'react';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
-import { GameLayout } from '../../components/App/Game/GameLayout';
-import { IGameCtx } from 'boardgame.io/core';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
+import { Ctx } from 'boardgame.io';
 import { IG } from './game';
 
 interface IBoardProps {
@@ -126,7 +126,7 @@ export class Board extends React.Component<IBoardProps, {}> {
 The file above will be responsible to translate the game state to what the user sees. Now we only need to create a file for your game rules, which boardgame.io calls `Game`. In `src/games/foobar/game.ts`:
 
 ```typescript
-import { IGameCtx } from 'boardgame.io/core';
+import { Ctx } from 'boardgame.io';
 
 export interface IG {
   count: number;

@@ -2,7 +2,7 @@ import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
 import { RotaGame } from './game';
 import { Board, localPlayerNames } from './board';
-import { GameMode } from 'components/App/Game/GameModePicker';
+import { GameMode } from 'gamesShared/definitions/mode';
 
 let wrapper: Enzyme.ReactWrapper;
 let client;

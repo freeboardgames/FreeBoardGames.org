@@ -4,9 +4,10 @@ import { JwtStrategy } from './jwt.strategy';
 import { JWT_SECRET } from './constants';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { UsersController } from './users.controller';
+// import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './db/User.entity';
+import { UsersResolver } from './users.resolver';
 
 @Module({
   imports: [
@@ -16,8 +17,7 @@ import { UserEntity } from './db/User.entity';
       secret: JWT_SECRET,
     }),
   ],
-  providers: [UsersService, JwtStrategy],
-  controllers: [UsersController],
+  providers: [UsersResolver, UsersService, JwtStrategy],
   exports: [UsersService],
 })
 export class UsersModule {}

@@ -1,22 +1,29 @@
 import { RoomEntity } from './db/Room.entity';
-import { CHECKIN_PERIOD, Room } from '../dto/rooms/Room';
+import { Room } from './gql/Room.gql';
 import { userEntityToUser } from '../users/UserUtil';
+import { RoomMembershipEntity } from './db/RoomMembership.entity';
+import { RoomMembership } from './gql/RoomMembership.gql';
 
 export function roomEntityToRoom(roomEntity: RoomEntity): Room {
   return {
-    id: roomEntity.id,
     capacity: roomEntity.capacity,
     gameCode: roomEntity.gameCode,
     isPublic: roomEntity.isPublic,
-    users: roomEntity.userMemberships.map((membership) =>
-      userEntityToUser(membership.user),
-    ),
+    userMemberships: roomEntity.userMemberships
+      .map((membership) => roomMembershipEntityToRoomMembership(membership))
+      .sort((a, b) =>
+        a.user.nickname
+          .toLowerCase()
+          .localeCompare(b.user.nickname.toLowerCase()),
+      ),
   };
 }
 
-export function getBgioServerUrl(): string {
-  const config = process.env.BGIO_SERVERS || 'http://localhost:8001';
-  const possibleServers = config.split(',');
-  // https://stackoverflow.com/questions/5915096/get-random-item-from-javascript-array
-  return possibleServers[Math.floor(Math.random() * possibleServers.length)];
+export function roomMembershipEntityToRoomMembership(
+  roomMembershipEntity: RoomMembershipEntity,
+): RoomMembership {
+  return {
+    isCreator: roomMembershipEntity.isCreator,
+    user: userEntityToUser(roomMembershipEntity.user),
+  };
 }

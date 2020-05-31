@@ -2,7 +2,7 @@ import React from 'react';
 import { Board } from './board';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { GameMode } from 'components/App/Game/GameModePicker';
+import { GameMode } from 'gamesShared/definitions/mode';
 import { ConnectFourGame } from './game';
 import { Client } from 'boardgame.io/client';
 import { localPlayerNames } from './constants';

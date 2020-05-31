@@ -120,9 +120,6 @@ reports/
 .config/
 .dockerignore
 static/sitemap.xml
-static/sw.js
-static/sw.js.map
-static/workbox-*
 backend/test.db
 
 # FBG Blog
@@ -160,3 +157,6 @@ android/local.properties
 
 # puppeteer
 __diff_output__
+
+# storybook auto-generated
+stories/

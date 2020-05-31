@@ -6,9 +6,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import FreeBoardGamesBar from 'components/App/FreeBoardGamesBar';
-import SEO from 'components/SEO';
-import Breadcrumbs from 'components/Breadcrumbs';
+import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
+import SEO from 'infra/common/helpers/SEO';
+import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
 import { useRouter } from 'next/router';
 
 export default () => {

@@ -5,6 +5,7 @@ import {
   Column,
   OneToMany,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { MatchMembershipEntity } from './MatchMembership.entity';
 import { RoomEntity } from '../../rooms/db/Room.entity';
@@ -18,7 +19,10 @@ export class MatchEntity extends BaseEntity {
   gameCode!: string;
 
   @Column()
-  bgioServerUrl!: string;
+  bgioServerInternalUrl!: string;
+
+  @Column()
+  bgioServerExternalUrl!: string;
 
   @Column()
   bgioMatchId: string;
@@ -26,6 +30,10 @@ export class MatchEntity extends BaseEntity {
   @OneToMany((type) => MatchMembershipEntity, (membership) => membership.match)
   public playerMemberships!: MatchMembershipEntity[];
 
+  @OneToOne((type) => RoomEntity, (room) => room.match)
+  public room?: RoomEntity;
+
   @OneToOne((type) => RoomEntity)
-  public room!: RoomEntity;
+  @JoinColumn()
+  public nextRoom?: RoomEntity;
 }

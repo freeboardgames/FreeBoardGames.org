@@ -1,3 +1,3 @@
-import LocalGame from './LocalGame';
+import LocalGame from '../../../../../infra/game/LocalGame';
 
 export default LocalGame;

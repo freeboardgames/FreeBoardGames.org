@@ -9,10 +9,10 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "start": "rimraf dist && nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "cross-env NODE_ENV=production node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -21,23 +21,35 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@google-cloud/logging-winston": "^3.0.6",
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
+    "@nestjs/graphql": "^7.3.9",
     "@nestjs/jwt": "^7.0.0",
     "@nestjs/passport": "^7.0.0",
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/typeorm": "^7.0.0",
     "@types/shortid": "^0.0.29",
     "@types/superagent": "^4.1.7",
+    "apollo": "^2.28.0",
+    "apollo-server-express": "^2.13.1",
+    "cookie-parser": "^1.4.5",
+    "cross-env": "^7.0.2",
+    "csurf": "^1.11.0",
+    "express-winston": "^4.0.3",
+    "graphql": "^15.0.0",
+    "graphql-tools": "^6.0.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "pg": "^8.2.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
     "shortid": "^2.2.15",
     "sqlite3": "^4.2.0",
     "superagent": "^5.2.2",
-    "typeorm": "^0.2.24"
+    "typeorm": "^0.2.24",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
@@ -60,7 +72,7 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.9.3"
   },
   "jest": {
     "moduleFileExtensions": [

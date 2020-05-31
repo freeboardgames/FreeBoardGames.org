@@ -13,6 +13,7 @@ describe('JWT Strategy', () => {
   const jwtStrategy = new JwtStrategy(mockUsersService);
 
   it('will not validate', async () => {
+    mockGetById.mockRejectedValue({ error: 'error' });
     const res = await jwtStrategy.validate(fakePayload);
     expect(res).toBeNull();
   });
