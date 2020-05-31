@@ -1,4 +1,4 @@
-import { IAIConfig } from '../index';
+import { IAIConfig } from 'gamesShared/definitions/game';
 import { IG, getValidMoves, IMove } from './game';
 import { Ctx } from 'boardgame.io';
 

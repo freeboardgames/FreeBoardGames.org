@@ -4,7 +4,7 @@ import { Board } from './board';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import { GameMode } from 'components/App/Game/GameModePicker';
+import { GameMode } from 'gamesShared/definitions/mode';
 
 Enzyme.configure({ adapter: new Adapter() });
 jest.mock('react-ga');

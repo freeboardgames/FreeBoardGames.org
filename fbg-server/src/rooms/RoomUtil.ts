@@ -1,21 +1,29 @@
 import { RoomEntity } from './db/Room.entity';
-import { CHECKIN_PERIOD, Room } from '../dto/rooms/Room';
+import { Room } from './gql/Room.gql';
 import { userEntityToUser } from '../users/UserUtil';
+import { RoomMembershipEntity } from './db/RoomMembership.entity';
+import { RoomMembership } from './gql/RoomMembership.gql';
 
 export function roomEntityToRoom(roomEntity: RoomEntity): Room {
   return {
-    id: roomEntity.id,
     capacity: roomEntity.capacity,
     gameCode: roomEntity.gameCode,
     isPublic: roomEntity.isPublic,
-    creator: userEntityToUser(
-      roomEntity.userMemberships.find((membership) => membership.isCreator)
-        .user,
-    ),
-    users: roomEntity.userMemberships
-      .map((membership) => userEntityToUser(membership.user))
+    userMemberships: roomEntity.userMemberships
+      .map((membership) => roomMembershipEntityToRoomMembership(membership))
       .sort((a, b) =>
-        a.nickname.toLowerCase().localeCompare(b.nickname.toLowerCase()),
+        a.user.nickname
+          .toLowerCase()
+          .localeCompare(b.user.nickname.toLowerCase()),
       ),
+  };
+}
+
+export function roomMembershipEntityToRoomMembership(
+  roomMembershipEntity: RoomMembershipEntity,
+): RoomMembership {
+  return {
+    isCreator: roomMembershipEntity.isCreator,
+    user: userEntityToUser(roomMembershipEntity.user),
   };
 }

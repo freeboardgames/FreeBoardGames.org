@@ -2,10 +2,10 @@ import * as React from 'react';
 import { IG, TeamColor } from './definitions';
 import css from './Lobby.css';
 import { LobbyTeam } from './LobbyTeam';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
+import { IGameArgs } from 'gamesShared/definitions/game';
 import { LobbyPlayer } from './LobbyPlayer';
 import { Ctx } from 'boardgame.io';
-import { isLocalGame } from '../common/gameMode';
+import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 import Button from '@material-ui/core/Button';
 import { getPlayerTeam, gameCanStart } from './util';
 

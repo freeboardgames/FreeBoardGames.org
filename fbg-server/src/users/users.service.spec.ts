@@ -41,7 +41,7 @@ describe('UsersService', () => {
     const oldNickname = 'foo nick';
     const id = await service.newUser({ nickname: oldNickname });
     const nickname = 'bar nick';
-    await service.updateUser({ id, nickname });
+    await service.updateUser(id, { nickname });
     const user = await service.getById(id);
     expect(user).toEqual({ id, nickname });
   });

@@ -1,4 +1,4 @@
-import { IGameConfig } from '../index';
+import { IGameConfig } from 'gamesShared/definitions/game';
 import { SecretcodesGame } from './game';
 import { Board } from './board';
 

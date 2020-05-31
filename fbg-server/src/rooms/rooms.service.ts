@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
-import { Room, CHECKIN_PERIOD } from '../dto/rooms/Room';
+import { Room } from './gql/Room.gql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection, MoreThan, QueryRunner } from 'typeorm';
 import { RoomEntity } from './db/Room.entity';
@@ -7,8 +7,10 @@ import { roomEntityToRoom } from './RoomUtil';
 import { RoomMembershipEntity } from './db/RoomMembership.entity';
 import { UsersService } from '../users/users.service';
 import shortid from 'shortid';
-import { CheckinRoomResponse } from '../dto/rooms/CheckinRoomResponse';
 import { inTransaction } from '../util/TypeOrmUtil';
+import { NewRoomInput } from './gql/NewRoomInput.gql';
+
+const CHECKIN_PERIOD = 5; // 5 seconds, see web/src/pages/room/[roomId]/Room.tsx
 
 @Injectable()
 export class RoomsService {
@@ -23,7 +25,7 @@ export class RoomsService {
 
   /** Creates a new room. */
   async newRoom(
-    room: Room,
+    room: NewRoomInput,
     userId: number,
     queryRunner?: QueryRunner,
   ): Promise<RoomEntity> {
@@ -58,28 +60,29 @@ export class RoomsService {
   }
 
   /** Checks-in user and if room gets full starts the match. Returns match id, if any. */
-  async checkin(userId: number, roomId: string): Promise<CheckinRoomResponse> {
+  async checkin(userId: number, roomId: string): Promise<Room> {
     return await inTransaction(this.connection, async (queryRunner) => {
       let room = await this.getRoomEntity(roomId);
       if (room.match) {
-        return { room: roomEntityToRoom(room), matchId: room.match.id };
+        return { ...roomEntityToRoom(room), matchId: room.match.id };
       }
       await this.updateMembership(queryRunner, userId, room);
-      return { room: roomEntityToRoom(room), userId };
+      return { ...roomEntityToRoom(room), userId };
     });
   }
 
   /** Gets a raw RoomEntity, with user information populated. */
   async getRoomEntity(roomId: string): Promise<RoomEntity> {
-    const roomEntity = await this.roomRepository.findOne({
-      where: {
-        id: roomId,
-        userMemberships: {
-          lastSeen: MoreThan(Date.now() - CHECKIN_PERIOD * 3),
-        },
-      },
-      relations: ['match', 'userMemberships', 'userMemberships.user'],
-    });
+    const roomEntity = await this.roomRepository
+      .createQueryBuilder('room')
+      .leftJoinAndSelect('room.match', 'match')
+      .leftJoinAndSelect('room.userMemberships', 'userMemberships')
+      .leftJoinAndSelect('userMemberships.user', 'user')
+      .where('room.id = :roomId', { roomId })
+      .orderBy({
+        'userMemberships.id': 'ASC',
+      })
+      .getOne();
     if (!roomEntity) {
       throw new HttpException(
         `Room id "${roomId}" does not exist`,

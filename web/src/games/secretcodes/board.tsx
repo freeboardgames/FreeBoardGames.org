@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { IG, Phases, TeamColor } from './definitions';
 import { Ctx } from 'boardgame.io';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
+import { IGameArgs } from 'gamesShared/definitions/game';
 import css from './board.css';
-import { GameLayout } from '../../components/App/Game/GameLayout';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Lobby } from './Lobby';
 import { PlayBoard } from './PlayBoard';
 

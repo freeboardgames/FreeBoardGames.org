@@ -16,11 +16,11 @@ import {
   IColorMap,
   cartesianToAlgebraic,
   IOnDragData,
-} from '../common/Checkerboard';
-import { Token } from 'ui';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
-import { GameLayout } from 'components/App/Game/GameLayout';
-import { GameMode } from 'components/App/Game/GameModePicker';
+} from 'gamesShared/components/boards/Checkerboard';
+import { Token } from 'deprecated-bgio-ui';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
+import { GameMode } from 'gamesShared/definitions/mode';
 import Bishop from './pieces/bishop';
 import King from './pieces/king';
 import Knight from './pieces/knight';
@@ -28,7 +28,7 @@ import Pawn from './pieces/pawn';
 import Queen from './pieces/queen';
 import Rook from './pieces/rook';
 import { playSound } from './sound';
-import { IOptionsItems } from 'components/App/Game/GameDarkSublayout';
+import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
 import Typography from '@material-ui/core/Typography';
 
 const COL_NAMES = 'abcdefgh';

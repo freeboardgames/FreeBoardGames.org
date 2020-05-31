@@ -1,8 +1,8 @@
 import React from 'react';
-import { GameLayout } from 'components/App/Game/GameLayout';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
-import { isOnlineGame, isAIGame, isLocalGame } from '../common/gameMode';
-import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { isOnlineGame, isAIGame, isLocalGame } from '../../gamesShared/helpers/gameMode';
+import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import Typography from '@material-ui/core/Typography';
 import { IG, Phase } from './game';
 import { Field } from './Field';

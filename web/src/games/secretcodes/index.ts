@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.jpg');
-import { IGameDef } from '../index';
-import { GameMode } from '../../components/App/Game/GameModePicker';
+import { IGameDef } from 'gamesShared/definitions/game';
+import { GameMode } from 'gamesShared/definitions/mode';
 import instructions from './instructions.md';
 
 export const secretcodesGameDef: IGameDef = {

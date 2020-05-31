@@ -1,4 +1,4 @@
-import { IAIConfig } from '../index';
+import { IAIConfig } from 'gamesShared/definitions/game';
 import StockfishWorker from './stockfish8.worker';
 
 interface IPlayState {

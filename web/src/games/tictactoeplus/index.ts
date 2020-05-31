@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.jpg');
-import { GameMode, IGameModeExtraInfoDropdown } from 'components/App/Game/GameModePicker';
-import { IGameDef } from 'games';
+import { GameMode, IGameModeExtraInfoDropdown } from 'gamesShared/definitions/mode';
+import { IGameDef } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const tictactoeplusGameDef: IGameDef = {

@@ -8,7 +8,7 @@ import { MatchEntity } from '../match/db/Match.entity';
 import { MatchMembershipEntity } from '../match/db/MatchMembership.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection, QueryRunner } from 'typeorm';
-import { Match } from '../dto/match/Match';
+import { Match } from './gql/Match.gql';
 import { matchEntityToMatch, getBgioServerUrl } from './MatchUtil';
 import { roomEntityToRoom } from '../rooms/RoomUtil';
 import { RoomsService } from '../rooms/rooms.service';
@@ -50,7 +50,7 @@ export class MatchService {
     if (!matchEntity) {
       throw new HttpException(
         `Match id "${matchId}" does not exist`,
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.NOT_FOUND,
       );
     }
     return matchEntity;
@@ -58,13 +58,18 @@ export class MatchService {
 
   /** Gets next room players should go if they want to play again. */
   async getNextRoom(matchId: string, userId: number): Promise<string> {
-    const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
+    return inTransaction(this.connection, async (queryRunner) => {
       const entity = await this.getMatchEntity(matchId);
+      const membership = entity.playerMemberships.find(
+        (m) => m.user.id === userId,
+      );
+      if (!membership) {
+        throw new HttpException(
+          'You need to be a player in order to play again',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
       if (entity.nextRoom) {
-        await queryRunner.commitTransaction();
         return entity.nextRoom.id;
       }
       const room = await this.roomsService.newRoom(
@@ -74,15 +79,8 @@ export class MatchService {
       );
       entity.nextRoom = room;
       await queryRunner.manager.save(MatchEntity, entity);
-      await queryRunner.commitTransaction();
       return room.id;
-    } catch (err) {
-      console.error(err);
-      await queryRunner.rollbackTransaction();
-      throw err;
-    } finally {
-      await queryRunner.release();
-    }
+    });
   }
 
   /** Starts a new match given a room. */
