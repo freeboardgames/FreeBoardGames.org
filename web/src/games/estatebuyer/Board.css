@@ -16,3 +16,29 @@
     height: 0; 
     clear: both;
 }
+
+.startButtonContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.startButtonContainer Button {
+    text-align: center;
+    padding: 1em;
+    font-weight: bold;
+    width: 200px;
+}
+
+.startButtonContainer>span {
+    display: block;
+    font-family:'Franchise-Bold', 'Franchise', monospace;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 10px;
+    margin: 0px 40px;
+}

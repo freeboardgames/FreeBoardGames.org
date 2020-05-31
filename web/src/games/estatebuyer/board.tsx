@@ -9,6 +9,7 @@ import { Phases, getScoreBoard, HighestBid } from './game';
 import { BidPanelComponent } from './BidPanelComponent';
 import { PlayerBadges } from './PlayerBadges';
 import { Tableau } from './Tableau';
+import { ButtonComponent } from './ButtonComponent';
 import { isOnlineGame, isLocalGame, isAIGame } from '../common/gameMode';
 
 import css from './Board.css';
@@ -22,6 +23,8 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps> {
+  _gs = () => { this.props.moves.GameStart(this.props.playerID == null); }
+
   render() {
     console.log(this.props.ctx);
     console.log(this.props.G);
@@ -44,12 +47,8 @@ export class Board extends React.Component<IBoardProps> {
           playerID={this.props.playerID}
           ctx={this.props.ctx}
         />
-        <Tableau
-          G={this.props.G}
-          ctx={this.props.ctx}
-          playerID={this.props.playerID}
-          moves={this.props.moves}
-        />
+        {this.getStartGameButton()}
+        {this.getTableau()}
         { this.getBidPanel() }
         <PlayerHand
           playerIndex={parseInt(this.props.playerID ?? this.props.ctx.currentPlayer)}
@@ -59,6 +58,34 @@ export class Board extends React.Component<IBoardProps> {
         </div>
       </GameLayout>
     );
+  }
+
+  getStartGameButton(){
+    if (this.props.ctx.phase == null){
+      if (this.props.playerID == this.props.ctx.currentPlayer || this.props.playerID == null){
+        return (
+          <div className={css.startButtonContainer}>
+            <ButtonComponent click={this._gs}>START GAME</ButtonComponent>
+          </div>
+        );
+      } else {
+        <div className={css.startButtonContainer}>
+          <span className={css.startWaiting}>Waiting for the Lobby Owner to Start...</span>
+        </div>
+      }
+    }
+  }
+
+  getTableau(){
+    if (this.props.ctx.phase != null){
+      return (
+        <Tableau
+          G={this.props.G}
+          ctx={this.props.ctx}
+          playerID={this.props.playerID}
+        />
+      );
+    }
   }
 
   getBidPanel(){
