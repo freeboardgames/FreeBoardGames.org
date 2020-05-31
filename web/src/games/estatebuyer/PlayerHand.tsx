@@ -11,7 +11,9 @@ export interface IPlayerHandProps {
 }
 
 export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
-  _selectCard = (cardNumber: number) => this.props.selectCard(this.props.playerIndex, cardNumber);
+  _selectCard = (cardNumber: number) => {
+    this.props.selectCard ? this.props.selectCard(this.props.playerIndex, cardNumber) : null;
+  }
 
   render() {
     const w:number = this.props.player.buildings.length * 40 + 80;
@@ -52,8 +54,6 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
     };
 
     const isSelected:boolean = this.props.player.selectedCard ? (this.props.player.selectedCard.number == card.number) : false;
-
-
     
     return (
       <div
