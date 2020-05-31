@@ -22,19 +22,26 @@ interface IBoardProps {
   gameArgs?: IGameArgs;
 }
 
-export class Board extends React.Component<IBoardProps> {
-  _gs = () => { this.props.moves.GameStart(this.props.playerID == null); }
+export class Board extends React.Component<IBoardProps, { gameOverPrepared:number }> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      gameOverPrepared: 0,
+    };
+  }
 
+  _gs = () => { this.props.moves.GameStart(this.props.playerID == null); }
+  
   render() {
     console.log(this.props.ctx);
     console.log(this.props.G);
 
     if (this.props.ctx.gameover) {
-      return <GameLayout
-        gameOver={this._getGameOver()}
-        extraCardContent={this._getScoreBoard()}
-        gameArgs={this.props.gameArgs}
-        />;
+      if (this.state.gameOverPrepared == 0){
+        this.prepareGameOver();
+      } else if (this.state.gameOverPrepared == 2){
+        return this.renderGameOver();
+      }
     }
 
     return (
@@ -61,7 +68,7 @@ export class Board extends React.Component<IBoardProps> {
   }
 
   getStartGameButton(){
-    if (this.props.ctx.phase == null){
+    if (this.props.ctx.phase == null && !this.props.ctx.gameover){
       if (this.props.playerID == this.props.ctx.currentPlayer || this.props.playerID == null){
         return (
           <div className={css.startButtonContainer}>
@@ -108,6 +115,21 @@ export class Board extends React.Component<IBoardProps> {
           />
       );
     }
+  }
+
+  prepareGameOver(){
+    this.setState({ gameOverPrepared: 1 });
+    setTimeout(() => { this.setState({ gameOverPrepared: 2 }) }, 4000);
+  }
+
+  renderGameOver(){
+    return (
+      <GameLayout
+        gameOver={this._getGameOver()}
+        extraCardContent={this._getScoreBoard()}
+        gameArgs={this.props.gameArgs}
+        />
+    )
   }
 
   _selectCard(playerIndex:number, i:number) {

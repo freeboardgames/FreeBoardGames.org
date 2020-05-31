@@ -71,8 +71,6 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCard?:IC
                 this.spentCardRendered++;
             }
         }
-
-        console.log(this);
     }
 
     render() {
