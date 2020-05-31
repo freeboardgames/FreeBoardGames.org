@@ -29,7 +29,7 @@ export function getScoreBoard(G: IG): IScore[] {
     .map((player, i) => ({
       playerID: i.toString(),
       score: (player.checks.reduce((total, card) => total+card.value, 0)
-        + player.money)*1000,
+        + player.money),
       bid: player.bid,
       money: player.money,
       passed: player.passed,
