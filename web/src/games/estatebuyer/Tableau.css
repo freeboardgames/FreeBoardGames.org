@@ -48,32 +48,4 @@
         width: 15%;
     }
   }
-
-  @keyframes deal {
-    0% {
-      background-position: 0px 0px;
-      background-size: 100%;
-      background-image: url(./media/card_back_property.jpg);
-      transform: scaleX(1);
-    }
-    49% {
-      background-position: 0px 0px;
-      background-size: 100%;
-      background-image: url(./media/card_back_property.jpg);
-      transform: scaleX(0);
-    }
-    50% {
-      background-image: url(./media/card_front_property.jpg);
-      transform: scaleX(0);
-    }
-    100% {
-      background-image: url(./media/card_front_property.jpg);
-      transform: scaleX(1);
-    }
-  }
-  
-  .tableau .Card {
-    animation: deal 0.5s;
-    animation-iteration-count: 1;
-  }
   
