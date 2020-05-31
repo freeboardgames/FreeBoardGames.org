@@ -78,10 +78,18 @@ export class Board extends React.Component<IBoardProps> {
 
   getTableau(){
     if (this.props.ctx.phase != null){
+      let drawFrom = [];
+      if (this.props.ctx.phase == Phases.auction){
+        drawFrom = this.props.G.buildings;
+      } else if (this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection)){
+        drawFrom = this.props.G.checks;
+      }
+
       return (
         <Tableau
-          G={this.props.G}
-          ctx={this.props.ctx}
+          drawFrom={drawFrom}
+          cardsontable={this.props.G.cardsontable}
+          numPlayers={this.props.ctx.numPlayers}
           playerID={this.props.playerID}
         />
       );

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Ctx } from 'boardgame.io';
-import { IG, Phases } from './game';
+import ICard from './card';
 import { MoneyCardComponent, BuildingCardComponent } from './CardComponent';
 import { DeckComponent } from './DeckComponent';
 
-import css from './tableau.css';
+import css from './Tableau.css';
 
 export interface ITableauProps {
-    G: IG;
-    ctx: Ctx;
+    drawFrom: ICard[],
+    cardsontable: ICard[],
+    numPlayers: number;
     playerID: string;
 }
 
@@ -25,19 +25,13 @@ export class Tableau extends React.Component<ITableauProps, {}> {
     }
 
   getDeck(){
-    if (this.props.ctx.phase == Phases.auction){
-      return (
-        <DeckComponent cards={this.props.G.buildings} numCardsPerRound={this.props.ctx.numPlayers} />
-      )
-    } else if (this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection)){
-      return (
-        <DeckComponent cards={this.props.G.checks} numCardsPerRound={this.props.ctx.numPlayers} />
-      )
-    }
+    return (
+        <DeckComponent cards={this.props.drawFrom} numCardsPerRound={this.props.numPlayers} />
+    )
   }
 
   getCardsOnTable() {
-    return [...this.props.G.cardsontable]
+    return [...this.props.cardsontable]
       .map((card: any, index:number) => {
         const ComponentTag:any = (card.building) ? BuildingCardComponent : MoneyCardComponent;
         
