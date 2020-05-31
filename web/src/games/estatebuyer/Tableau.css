@@ -13,12 +13,11 @@
 
 .tableau {
     margin: 10px auto;
-    width: 100%;
     height: 120px;
     max-width: 520px;
     background-color: rgba(255, 204, 64, 0.616);
     box-shadow: 0px 0px 8px #66431b;
-    border-radius: 30px;
+    border-radius: 20px;
     padding: 2em;
     overflow: hidden;
 }
@@ -43,3 +42,38 @@
     transform: scale(0.2);
     padding: 0;
 }
+
+@media only screen and (max-width: 500px) {
+    .tableau .cardContainer {
+        width: 15%;
+    }
+  }
+
+  @keyframes deal {
+    0% {
+      background-position: 0px 0px;
+      background-size: 100%;
+      background-image: url(./media/card_back_property.jpg);
+      transform: scaleX(1);
+    }
+    49% {
+      background-position: 0px 0px;
+      background-size: 100%;
+      background-image: url(./media/card_back_property.jpg);
+      transform: scaleX(0);
+    }
+    50% {
+      background-image: url(./media/card_front_property.jpg);
+      transform: scaleX(0);
+    }
+    100% {
+      background-image: url(./media/card_front_property.jpg);
+      transform: scaleX(1);
+    }
+  }
+  
+  .tableau .Card {
+    animation: deal 0.5s;
+    animation-iteration-count: 1;
+  }
+  
