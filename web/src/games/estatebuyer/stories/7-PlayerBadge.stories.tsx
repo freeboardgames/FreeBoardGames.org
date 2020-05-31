@@ -1,4 +1,5 @@
 import React from 'react';
+import IBuildingCard from '../card'
 import { PlayerBadge, IPlayerBadgeProps } from '../PlayerBadge';
 
 export default {
@@ -19,6 +20,14 @@ const playerBadgeData:IPlayerBadgeProps = {
   },
   color: "blue",
   incomingCards: [],
+  spentCards: [],
+}
+
+const buildingCard:IBuildingCard = {
+  building: true,
+  number: 23,
+  value: 23,
+  showing: true,
 }
 
 export const Default = () => <PlayerBadge {...playerBadgeData} />;
@@ -36,3 +45,4 @@ export const Bid12 = () => <PlayerBadge {...{...playerBadgeData, score: {...play
 export const MrLongName = () => <PlayerBadge {...{...playerBadgeData, name: "Thisisareallylongnameandwewanttocheckoverflow"}} />;
 
 export const HighScore = () => <PlayerBadge {...{...playerBadgeData, score: {...playerBadgeData.score, score: 124000}}} />;
+

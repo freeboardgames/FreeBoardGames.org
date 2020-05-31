@@ -7,6 +7,7 @@ export default {
 };
 
 const handData:IPlayerHandProps = {
+  playerIndex: 1,
   player: {
     money: 15,
     checks: [],

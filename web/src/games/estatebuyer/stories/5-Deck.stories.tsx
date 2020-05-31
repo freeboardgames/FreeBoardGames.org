@@ -5,6 +5,7 @@ import { DeckComponent } from '../DeckComponent';
 export default {
   title: 'Games/EstateBuyer/Decks',
   component: DeckComponent,
+  decorators: [story => <div style={{ padding: '20px' }}>{story()}</div>],
 };
 
 const buildingCard = {

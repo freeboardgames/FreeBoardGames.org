@@ -146,29 +146,34 @@
 
 @keyframes awardCard {
   0% {
-    opacity: 100;
-    top: 50%;
+    opacity: 0;
+    top: 180px;
     left: 30vw;
-    transform: scale(0.4) translateX(-50%);
+    transform: scale(0.2) translate(-50%, -50%);
   }
   10% {
-    top: 50%;
+    opacity: 1;
+    top: 220px;
     left: 30vw;
-    transform: scale(0.62) translateX(-50%);
+    transform: scale(0.4) translate(-50%, -50%);
   }
   40% {
-    top: 50%;
+    top: 220px;
     left: 30vw;
-    transform: scale(0.62) translateX(-50%);
-  }
-  90% {
-    top: 10px;
-    left: 10px;
-    transform: scale(0.1);
+    transform: scale(0.4) translate(-50%, -50%);
   }
 
-  99% {
-    opacity: 0;
+  80% {
+    opacity: 1;
+    top: 180px;
+    left: 10px;
+    transform: scale(0.05) translate(0%, -50%);
+  }
+
+  95% {
+    top: 10px;
+    left: 10px;
+    transform: scale(0.05);
   }
 
   100% {
@@ -182,6 +187,44 @@
   transform-origin: 0 0;
   transform: scale(0);
   opacity: 0;
-  animation: awardCard 1.6s;
+  animation: awardCard 2s;
+  animation-iteration-count: 1;
+}
+
+
+@keyframes spendCard {
+  0% {
+    opacity: 0;
+    top: 10px;
+    left: 10px;
+    transform: scale(0.05);
+  }
+  20% {
+    opacity: 1;
+    top: 40px;
+    left: 40px;
+    transform: scale(0.2);
+  }
+  90% {
+    opacity: 1;
+    top: 40px;
+    left: 40px;
+    transform: scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    top: 40px;
+    left: 40px;
+    transform: scale(0.5);
+  }
+}
+
+.spentCard {
+  position: absolute;
+  z-index: 900;
+  transform-origin: 0 0;
+  transform: scale(0);
+  opacity: 0;
+  animation: spendCard 3s;
   animation-iteration-count: 1;
 }

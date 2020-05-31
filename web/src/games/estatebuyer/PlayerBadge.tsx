@@ -13,20 +13,23 @@ export interface IPlayerBadgeProps {
   score: IScore;
   color: string;
   incomingCards: ICard[];
+  spentCards: ICard[];
 }
 
-export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newcard?:ICard}> {
-    newcardrendered:number = 0;
+export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCard?:ICard, spentCard?:ICard}> {
+    newCardRendered:number = 0;
+    spentCardRendered:number = 0;
 
     constructor(props: any) {
         super(props);
         this.state = {
-            newcard: null,
+            newCard: null,
+            spentCard: null,
         };
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const changedHands = [...this.props.incomingCards].filter(
+        const newCards = [...this.props.incomingCards].filter(
             (newcard) => (prevProps.incomingCards.find(
                     (oldcard) => (oldcard.number == newcard.number)
                 ) == undefined
@@ -34,20 +37,42 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newcard?:IC
         );
 
         if(this.props.score.bid != prevProps.score.bid){
-            this.setState({newcard: null});
+            this.setState({newCard: null});
         }
         
-        if(changedHands.length > 0){
-          const newcard = changedHands.shift();
-          this.newcardrendered = 0;
-          this.setState({newcard: newcard});
-        } else if (this.state.newcard != null){
-            if (this.newcardrendered > 1){
-                this.setState({newcard: null});
+        if(newCards.length > 0){
+          const newCard = newCards.shift();
+          this.newCardRendered = 0;
+          this.setState({newCard: newCard});
+        } else if (this.state.newCard != null){
+            if (this.newCardRendered > 1){
+                this.setState({newCard: null});
             } else {
-                this.newcardrendered++;
+                this.newCardRendered++;
             }
         }
+
+        
+        const spentCards = [...prevProps.spentCards].filter(
+            (newcard) => (this.props.spentCards.find(
+                    (oldcard) => (oldcard.number == newcard.number)
+                ) == undefined
+            )
+        );
+
+        if(spentCards.length > 0){
+            const spentCard = spentCards.shift();
+            this.spentCardRendered = 0;
+            this.setState({spentCard: spentCard});
+        } else if (this.state.spentCard != null){
+            if (this.spentCardRendered > 1){
+                this.setState({spentCard: null});
+            } else {
+                this.spentCardRendered++;
+            }
+        }
+
+        console.log(this);
     }
 
     render() {
@@ -74,6 +99,7 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newcard?:IC
                 </defs>
                 <g transform="matrix(0.2,0,0,0.2,0,0)" >
                   <g filter="url(#f3)">
+                    {this._maybeRenderSpent()}
                     {this._maybeRenderAward()}
                     {this._maybeRenderBid()}
                   
@@ -118,32 +144,66 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newcard?:IC
                 </g>
                 </g>
               </svg>
+              {this._maybeRenderSpentCard()}
               {this._maybeRenderNewCard()}
             </div>
         );
   }
 
+  _maybeRenderSpentCard(){
+    if (this.state.spentCard == null){
+        return;
+    }
+
+    const ComponentTag:any = ((this.state.spentCard as any).building) ? BuildingCardComponent : MoneyCardComponent;
+
+    return (
+        <div className={css.spentCard} key={this.state.spentCard.number}>
+            <ComponentTag card={this.state.spentCard} />
+        </div>
+    );
+}
+_maybeRenderSpent(){
+    if (this.state.spentCard == null){
+      return;
+  }
+
+    return (
+      <g id="Card-Spent" transform="matrix(1,0,0,1,60,56.8804)" className={(this.state.spentCard as any).building ? css.buildingColor : css.moneyColor}>
+          <g transform="matrix(1,0,0,1,104.435,-50.7744)">
+              <path d="M453.699,127.474L453.699,229.749L453.694,229.749C453.268,264.607 421.79,292.789 383.078,292.789C380.755,292.789 378.459,292.687 376.195,292.489L376.195,292.789L329.015,292.789C290.303,292.789 258.825,264.607 258.399,229.749L258.374,229.749C258.374,194.56 226.73,165.991 187.753,165.991C183.38,165.991 179.93,164.825 175.775,165.513L174.944,127.474L453.699,127.474Z" className={css.cardAwardBackground} />
+          </g>
+          <g transform="matrix(0.630179,0,0,0.947429,218.216,-35.9068)">
+              <path d="M524.062,219.912C524.062,185.198 481.69,157.014 429.499,157.014L339.957,157.014C287.766,157.014 245.394,185.198 245.394,219.912C245.394,254.627 287.766,282.811 339.957,282.811L429.499,282.811C481.69,282.811 524.062,254.627 524.062,219.912Z" className={css.cardAwardHighlight} />
+          </g>
+          <g transform="matrix(1,0,0,1,219.702,-17.1011)">
+              <text x="242px" y="233.458px" className={css.cardAwardText}>{this.state.spentCard.value}</text>
+          </g>
+      </g>
+    )
+}
+
   _maybeRenderNewCard(){
-        if (this.state.newcard == null){
+        if (this.state.newCard == null){
             return;
         }
 
-        const ComponentTag:any = ((this.state.newcard as any).building) ? BuildingCardComponent : MoneyCardComponent;
+        const ComponentTag:any = ((this.state.newCard as any).building) ? BuildingCardComponent : MoneyCardComponent;
 
         return (
-            <div className={css.newCard} key={this.state.newcard.number}>
-                <ComponentTag card={this.state.newcard} />
+            <div className={css.newCard} key={this.state.newCard.number}>
+                <ComponentTag card={this.state.newCard} />
             </div>
         );
     }
 
   _maybeRenderAward(){
-      if (this.state.newcard == null){
+      if (this.state.newCard == null){
         return;
     }
 
       return (
-        <g id="Card-Award" transform="matrix(1,0,0,1,-95.5506,56.8804)" className={(this.state.newcard as any).building ? css.buildingColor : css.moneyColor}>
+        <g id="Card-Award" transform="matrix(1,0,0,1,-95.5506,56.8804)" className={(this.state.newCard as any).building ? css.buildingColor : css.moneyColor}>
             <g transform="matrix(1,0,0,1,104.435,-50.7744)">
                 <path d="M453.699,127.474L453.699,229.749L453.694,229.749C453.268,264.607 421.79,292.789 383.078,292.789C380.755,292.789 378.459,292.687 376.195,292.489L376.195,292.789L329.015,292.789C290.303,292.789 258.825,264.607 258.399,229.749L258.374,229.749C258.374,194.56 226.73,165.991 187.753,165.991C183.38,165.991 179.93,164.825 175.775,165.513L174.944,127.474L453.699,127.474Z" className={css.cardAwardBackground} />
             </g>
@@ -151,7 +211,7 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newcard?:IC
                 <path d="M524.062,219.912C524.062,185.198 481.69,157.014 429.499,157.014L339.957,157.014C287.766,157.014 245.394,185.198 245.394,219.912C245.394,254.627 287.766,282.811 339.957,282.811L429.499,282.811C481.69,282.811 524.062,254.627 524.062,219.912Z" className={css.cardAwardHighlight} />
             </g>
             <g transform="matrix(1,0,0,1,219.702,-17.1011)">
-                <text x="242px" y="233.458px" className={css.cardAwardText}>{this.state.newcard.value}</text>
+                <text x="242px" y="233.458px" className={css.cardAwardText}>{this.state.newCard.value}</text>
             </g>
         </g>
       )
