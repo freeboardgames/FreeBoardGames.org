@@ -11,7 +11,6 @@ export interface ICardProps {
 
 export class CardComponent extends React.Component<ICardProps, {}> {
   front:string = css.MoneyCard;
-  back:string = css.MoneyCardHidden;
 
   render() {
     return (
@@ -22,7 +21,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
             this.front,
             this.props.selectable ? css.Selectable : '',
             this.props.selected ? css.Selected : '',
-            (this.props.card.showing ? css[("CardFront_"+this.props.card.value)] :  this.back)
+            (this.props.card.showing ? css[("CardFront_"+this.props.card.value)] : css.hidden)
           ].join(' ')
         }
         onClick={this.props.click}
@@ -34,15 +33,12 @@ export class CardComponent extends React.Component<ICardProps, {}> {
 
 export class EmptyCardComponent extends CardComponent {
   front:string = css.EmptyCard;
-  back:string = css.EmptyCard;
 }
 
 export class MoneyCardComponent extends CardComponent {
   front:string = css.MoneyCard;
-  back:string = css.MoneyCardHidden;
 }
 
 export class BuildingCardComponent extends CardComponent {
   front:string = css.PropertyCard;
-  back:string = css.PropertyCardHidden;
 }
