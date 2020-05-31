@@ -49,7 +49,7 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
                 <TableRow key={score.playerID} style={style}>
                   <TableCell>#{i + 1}</TableCell>
                   <TableCell>{name}</TableCell>
-                  <TableCell>{score.score}</TableCell>
+                  <TableCell>${score.score}k</TableCell>
                 </TableRow>
               );
             })}
