@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import SubjectIcon from '@material-ui/icons/Subject';
 import CodeIcon from '@material-ui/icons/Code';
 import Typography from '@material-ui/core/Typography';
 
