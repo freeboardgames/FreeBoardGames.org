@@ -119,6 +119,12 @@ app
       app.serveStatic(req, res, filePath);
     });
 
+    server.get('/blog*', (req, res) => {
+      res.redirect(301, '/docs');
+    });
+
+    server.use('/docs', express.static(`${APP_DIR}/static/docs`));
+
     server.use(
       '/api',
       createProxyMiddleware({ target: INTERNAL_BACKEND_TARGET, changeOrigin: true, pathRewrite: { '^/api': '' } }),
