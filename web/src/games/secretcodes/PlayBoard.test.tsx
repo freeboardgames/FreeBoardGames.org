@@ -3,7 +3,7 @@ import { Client } from 'boardgame.io/client';
 import { SecretcodesGame } from './game';
 import PlayBoard from './PlayBoard';
 import { GameMode } from 'gamesShared/definitions/mode';
-import { Phases, TeamColor } from './definitions';
+import { TeamColor } from './definitions';
 import { chooseCard } from './util';
 
 function render(client: Client, state: Any, gameOver = false) {
