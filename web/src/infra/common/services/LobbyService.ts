@@ -16,8 +16,8 @@ import { NextRoom, NextRoomVariables } from 'gqlTypes/NextRoom';
 import gql from 'graphql-tag';
 import { CheckinRoom, CheckinRoomVariables } from 'gqlTypes/CheckinRoom';
 
-const FBG_NICKNAME_KEY = 'fbgNickname';
-const FBG_USER_TOKEN_KEY = 'fbgUserToken';
+const FBG_NICKNAME_KEY = 'fbgNickname2';
+const FBG_USER_TOKEN_KEY = 'fbgUserToken2';
 
 const httpLink = createHttpLink({
   uri: AddressHelper.getGraphQLServerAddress(),
