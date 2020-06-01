@@ -19,6 +19,7 @@ RUN yarn run build
 
 # internal configs for FreeBoardGames.org
 COPY --chown=appuser --from=common /internal /internal
+COPY --chown=appuser --from=common /common /common
 
 # run
 CMD yarn run start:prod
