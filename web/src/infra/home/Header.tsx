@@ -39,10 +39,11 @@ class Header extends React.Component<{}, {}> {
           <CodeIcon style={{ marginRight: '4px' }} />
           Code
         </Button>
-        <Button href="/docs/" target="_blank" variant="outlined" style={{ margin: '4px' }}>
+        {/* temp. disabled due to issue with docs */}
+        {/* <Button href="/docs/" target="_blank" variant="outlined" style={{ margin: '4px' }}>
           <SubjectIcon style={{ marginRight: '4px' }} />
           Docs
-        </Button>
+        </Button> */}
         <Button
           href="https://discord.gg/AaE6n3n"
           target="_blank"
