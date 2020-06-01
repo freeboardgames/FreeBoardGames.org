@@ -4,5 +4,5 @@ export default create({
   base: 'light',
 
   brandTitle: 'FreeBoardGames.org',
-  brandUrl: 'https://freeboardgames.org',
+  brandUrl: 'https://www.freeboardgames.org',
 });
