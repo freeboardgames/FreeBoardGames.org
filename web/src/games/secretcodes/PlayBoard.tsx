@@ -130,6 +130,10 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       const card = this.props.G.cards[i];
 
       const classes = [css.card];
+      if (card.revealed && this._showSpymasterView() && !this.props.isGameOver) {
+        classes.push(css.cardRevealedSpymasterView);
+      }
+
       if (card.revealed || this._showSpymasterView()) {
         if (card.color === CardColor.blue) classes.push(css.cardBlue);
         else if (card.color === CardColor.red) classes.push(css.cardRed);
