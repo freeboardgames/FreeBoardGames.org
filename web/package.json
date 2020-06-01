@@ -17,7 +17,8 @@
     "build:server": "webpack --mode production --color --progress --config webpack.server.config.js",
     "build:server:dev": "webpack --mode development --color --progress --config webpack.server.config.js",
     "bgio": "run-s build:server start:bgio",
-    "build": "cross-env BABEL_ENV=production NODE_ENV=production CHANNEL=production next build",
+    "build": "cross-env BABEL_ENV=production NODE_ENV=production CHANNEL=production next build && yarn run build:storybook",
+    "build:storybook": "cross-env BABEL_ENV=production NODE_ENV=production NODE_PATH=src/ build-storybook -o static/docs",
     "build:staging": "cross-env NODE_ENV=production CHANNEL=staging next build",
     "cyp:run:mobile": "cypress run --config video=false --env userAgent=mobile",
     "cyp:run:tablet": "cypress run --config video=false --env userAgent=tablet",
@@ -44,8 +45,7 @@
     "combine:reports": "nyc merge reports && move-cli coverage.json .nyc_output/out.json",
     "prereport:combined": "yarn run combine:reports",
     "report:combined": "nyc report --reporter lcov --report-dir coverage",
-    "storybook": "cross-env NODE_PATH=src/ start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook": "cross-env NODE_PATH=src/ start-storybook -p 6006"
   },
   "dependencies": {
     "@apollo/react-components": "^3.1.5",

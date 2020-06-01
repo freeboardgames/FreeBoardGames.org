@@ -160,4 +160,4 @@ __diff_output__
 
 # storybook auto-generated
 stories/
-storybook-static/
+static/docs
