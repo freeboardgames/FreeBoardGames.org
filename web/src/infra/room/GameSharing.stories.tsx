@@ -5,4 +5,3 @@ export default {
 };
 
 export const chess = () => <GameSharing gameCode="chess" roomID="foo" />;
-
