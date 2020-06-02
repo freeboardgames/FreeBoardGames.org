@@ -8,7 +8,7 @@ Play now at [FreeBoardGames.org](https://FreeBoardGames.org/)
 
 ## Contributing
 
-Check out [**how to add your game**](https://www.freeboardgames.org/blog/2019/06/17/Publishing-your-first-boardgame-io-game-in-FBG/).
+Check out [**our documentation**](https://www.freeboardgames.org/docs/) and [**how to add your game**](https://www.freeboardgames.org/docs/?path=/docs/documentation-adding-a-new-game--page).
 
 Contributions are always welcome, even if just reporting bugs (check our [issue tracker](https://github.com/freeboardgames/FreeBoardGames.org/issues)). Feel free to ask for any help!
 
