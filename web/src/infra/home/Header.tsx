@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import SubjectIcon from '@material-ui/icons/Subject';
 import CodeIcon from '@material-ui/icons/Code';
 import Typography from '@material-ui/core/Typography';
 
@@ -38,11 +39,10 @@ class Header extends React.Component<{}, {}> {
           <CodeIcon style={{ marginRight: '4px' }} />
           Code
         </Button>
-        {/* temp. disabled due to issue with docs */}
-        {/* <Button href="/docs/" target="_blank" variant="outlined" style={{ margin: '4px' }}>
+        <Button href="/docs/" target="_blank" variant="outlined" style={{ margin: '4px' }}>
           <SubjectIcon style={{ marginRight: '4px' }} />
           Docs
-        </Button> */}
+        </Button>
         <Button
           href="https://discord.gg/AaE6n3n"
           target="_blank"
