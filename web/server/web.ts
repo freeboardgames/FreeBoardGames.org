@@ -97,12 +97,13 @@ app
     });
 
     server.get('/robots.txt', (req, res) => {
+      let filePath: string;
       if (isProdChannel && isOfficialSite(req.hostname)) {
-        res.sendStatus(404);
+        filePath = `${STATIC_DIR}/prodRobots.txt`;
       } else {
-        const filePath = `${STATIC_DIR}/restrictiveRobots.txt`;
-        app.serveStatic(req, res, filePath);
+        filePath = `${STATIC_DIR}/restrictiveRobots.txt`;
       }
+      app.serveStatic(req, res, filePath);
     });
 
     server.get('/sw.js', (req, res) => {
