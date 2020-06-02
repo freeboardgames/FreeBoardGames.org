@@ -26,6 +26,7 @@ ARG GIT_REV
 ARG SENTRY_DSN
 COPY --chown=appuser .babelrc next.config.js /appdata/
 COPY --chown=appuser static /appdata/static
+COPY --chown=appuser .storybook /appdata/.storybook
 RUN yarn run build
 
 COPY --chown=appuser docker_run.sh /appdata/
