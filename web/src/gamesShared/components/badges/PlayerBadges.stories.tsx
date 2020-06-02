@@ -4,6 +4,7 @@ export default {
   title: 'Games (shared)/Components/Badges/PlayerBadges',
   parameters: {
     backgrounds: [{ name: 'dark background', value: '#000', default: true }],
+    docs: { page: () => <h1>Check canvas tab</h1> }, // Disable docs as it doesnt respect the background color
   },
 };
 
