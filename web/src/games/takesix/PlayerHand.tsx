@@ -1,4 +1,5 @@
 import * as React from 'react';
+import css from './PlayerHand.css';
 import { IG } from './game';
 import { CardComponent } from './CardComponent';
 import Typography from '@material-ui/core/Typography';
@@ -21,12 +22,9 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
           </Typography>
         </div>
         <div
+          className={css.PlayerHand}
           style={{
-            alignItems: 'flex-start',
-            display: 'flex',
-            flexWrap: 'wrap',
             opacity: this.props.disabled ? 0.75 : 1,
-            width: '100%',
           }}
         >
           {this.props.G.players[this.props.playerID as any].cards.map((card, index: number) => (

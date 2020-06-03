@@ -25,7 +25,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
         onClick={this.props.click}
         className={css.Card}
       >
-        <img src={cardAsset} height={105} style={{ objectFit: 'fill' }} />
+        <img src={cardAsset} height={100} />
       </div>
     );
   }
