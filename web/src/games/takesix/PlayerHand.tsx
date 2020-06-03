@@ -22,6 +22,10 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
         </div>
         <div
           style={{
+            alignItems: 'flex-start',
+            display: 'flex',
+            flexWrap: 'wrap',
+            opacity: this.props.disabled ? 0.75 : 1,
             width: '100%',
           }}
         >

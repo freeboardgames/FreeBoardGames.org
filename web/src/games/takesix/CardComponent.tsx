@@ -10,6 +10,7 @@ export interface ICardProps {
 
 export class CardComponent extends React.Component<ICardProps, {}> {
   render() {
+    const { card } = this.props;
     const values: any = {
       1: '#ffffff',
       2: '#3498db',
@@ -17,36 +18,14 @@ export class CardComponent extends React.Component<ICardProps, {}> {
       5: '#e74c3c',
       7: '#8e44ad',
     };
+    const cardAsset = require(`./media/cards/${card.number}.png`);
 
     return (
       <div
         onClick={this.props.click}
         className={css.Card}
-        style={{
-          background: values[this.props.card.value],
-        }}
       >
-        <Typography
-          className="CardValue"
-          style={{
-            textAlign: 'center',
-            lineHeight: '20px',
-          }}
-          variant="body2"
-        >
-          {this.props.card.value}
-        </Typography>
-        <Typography
-          className="CardNumber"
-          style={{
-            textAlign: 'center',
-            lineHeight: '45px',
-            verticalAlign: 'middle',
-          }}
-          variant="h4"
-        >
-          {this.props.card.number}
-        </Typography>
+        <img src={cardAsset} height={105} style={{ objectFit: 'fill' }} />
       </div>
     );
   }

@@ -15,7 +15,9 @@ export class Decks extends React.Component<IDecksProps, {}> {
 
   render() {
     return (
-      <div>
+      <div style={{
+        opacity: this.props.disabled ? 0.75 : 1,
+      }}>
         {this.props.G.decks.map((deck, i) => (
           <div
             className="DeckRow"

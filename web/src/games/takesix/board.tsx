@@ -89,6 +89,22 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   }
 
+  componentDidUpdate(prevProps) {
+    const { ctx: { phase }, G:game, playerID } = this.props;
+    if(phase === 'DECK_SELECT' && prevProps.ctx.phase !== 'DECK_SELECT') {
+      const allowedDecks = game.decks.reduce((allowedDeckIds, deck, id) => {
+        return isAllowedDeck(game, id, playerID)
+          ? allowedDeckIds.concat(id)
+          : allowedDeckIds;
+      }, []);
+      if(allowedDecks.length === 1) {
+        setTimeout(() => {
+          this._selectDeck(allowedDecks[0]);
+        }, 750);
+      }
+    }
+  }
+
   render() {
     if (this.props.ctx.gameover) {
       return (
@@ -105,8 +121,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
           {this._getStatus()}
         </Typography>
-        <Decks G={this.props.G} ctx={this.props.ctx} playerID={this.props.playerID} selectDeck={this._selectDeck} />
-        <PlayerHand G={this.props.G} playerID={this.props.playerID} selectCard={this._selectCard} />
+        <Decks G={this.props.G} ctx={this.props.ctx} playerID={this.props.playerID} selectDeck={this._selectDeck} disabled={this.props.ctx.phase === 'CARD_SELECT'} />
+        <PlayerHand G={this.props.G} playerID={this.props.playerID} selectCard={this._selectCard} disabled={this.props.ctx.phase === 'DECK_SELECT'} />
         <div style={{ clear: 'left', paddingTop: '8px' }}>
           <PlayerBadges
             scores={getScoreBoard(this.props.G)}
