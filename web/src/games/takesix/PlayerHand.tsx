@@ -8,6 +8,7 @@ interface IPlayerHandProps {
   G: IG;
   playerID: string;
   selectCard: (index: number) => void;
+  disabled?: boolean;
 }
 
 export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
