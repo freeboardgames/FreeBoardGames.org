@@ -4,39 +4,29 @@ import CardProps from './card';
 import css from './CardComponent.css';
 import { CardBackgroundAsset, CardValueAsset } from './CardAssets';
 
-const CARD_NUMBER_STYLES = {
-  1: {
-    color: '#777',
-  },
-  2: {
-    color: '#0C7489',
-  },
-  3: {
-    color: '#2A9D8F',
-  },
-  5: {
-    color: '#E08E45',
-  },
-  7: {
-    color: '#5B1865',
-  },
+const BANANA_COLOR = {
+  1: 'yellow',
+  2: 'yellow',
+  3: 'black',
+  5: 'yellow',
+  7: 'yellow',
 };
 
 const CARD_BG_STYLES = {
   1: {
-    backgroundColor: '#fff',
+    backgroundColor: '#484a47',
   },
   2: {
-    backgroundColor: '#DCFFFD',
+    backgroundColor: '#3d348b',
   },
   3: {
-    backgroundColor: '#B4D2BA',
+    backgroundColor: '#f7b801',
   },
   5: {
-    backgroundColor: '#F8F4A6',
+    backgroundColor: '#f18701',
   },
   7: {
-    backgroundColor: '#ED3C44',
+    backgroundColor: '#f35b04',
   },
 };
 
@@ -59,11 +49,10 @@ export class CardComponent extends React.Component<ICardProps, {}> {
 
 export class Card extends React.Component<ICardProps, {}> {
   render() {
-    const { card, cardNumberStyle: overrideCardNumberStyle } = this.props;
+    const { card, cardNumberStyle } = this.props;
     const { number, value } = card;
 
     const cardBgStyle = CARD_BG_STYLES[value];
-    const cardNumberStyle = Object.assign({}, CARD_NUMBER_STYLES[value], overrideCardNumberStyle);
 
     return (
       <div className={css.Card}>
@@ -74,7 +63,7 @@ export class Card extends React.Component<ICardProps, {}> {
         </span>
         <div className={css.cardVal}>
           {Array.apply(null, Array(value)).map((elem, idx) => (
-            <CardValueAsset key={idx} />
+            <CardValueAsset key={idx} bananaColor={BANANA_COLOR[value]} />
           ))}
         </div>
       </div>

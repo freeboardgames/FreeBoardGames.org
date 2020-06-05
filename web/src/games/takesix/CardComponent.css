@@ -31,12 +31,12 @@
   height: 100%;
   width: 100%;
   position: relative;
+  background-color: white;
 }
 
 .cardBg {
   height: 90%;
   width: 90%;
-
   position: absolute;
   left: 50%;
   top: 50%;
@@ -53,7 +53,7 @@
 }
 
 .cardNumber {
-  color: #777;
+  color: white;
   font-family: 'Courgette', cursive;
   font-size: 36px;
   font-weight: 900;

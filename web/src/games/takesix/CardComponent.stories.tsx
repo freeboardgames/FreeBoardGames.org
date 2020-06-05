@@ -1,7 +1,10 @@
 import { Card, CardComponent } from './CardComponent';
 
 export default {
-  title: 'Games/takesix/Components',
+  title: 'Games/Take 6/Components',
+  parameters: {
+    backgrounds: [{ name: 'dark background', value: '#000', default: true }],
+  },
 };
 
 /* eslint-disable react/prop-types */
