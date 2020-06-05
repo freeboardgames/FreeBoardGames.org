@@ -42,6 +42,7 @@ const CARD_BG_STYLES = {
 
 export interface ICardProps {
   card: CardProps;
+  cardNumberStyle?: React.CSSProperties;
   click?: () => void;
 }
 
