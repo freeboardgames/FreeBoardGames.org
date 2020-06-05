@@ -119,7 +119,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     return (
-      <GameLayout gameArgs={this.props.gameArgs}>
+      <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
           {this._getStatus()}
         </Typography>
