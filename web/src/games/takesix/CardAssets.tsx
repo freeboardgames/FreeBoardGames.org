@@ -4,13 +4,14 @@ import css from './CardComponent.css';
 
 export const CardBackgroundAsset = () => {
   return (
-    <svg className={css.cardBgImg} version="1.0" xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 236.000000 236.000000"
-     preserveAspectRatio="xMidYMid meet">
-      <g
-        fill="grey"
-        transform="translate(0.000000,236.000000) scale(0.100000,-0.100000)"
-      >
+    <svg
+      className={css.cardBgImg}
+      version="1.0"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 236.000000 236.000000"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <g fill="grey" transform="translate(0.000000,236.000000) scale(0.100000,-0.100000)">
         <path
           d="M802 2314 c-59 -29 -95 -71 -118 -137 -14 -43 -17 -45 -40 -37 -77
           30 -140 -85 -79 -145 13 -14 31 -25 40 -25 13 0 14 -5 8 -22 -14 -41 -9 -121
@@ -75,11 +76,14 @@ export const CardBackgroundAsset = () => {
 
 export const CardValueAsset = () => {
   return (
-    <svg className={css.cardValImg} version="1.0" xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 200.000000 200.000000"
-     preserveAspectRatio="xMidYMid meet">
-      <g transform="translate(0.000000,200.000000) scale(0.100000,-0.100000)"
-      fill="#000000" stroke="none">
+    <svg
+      className={css.cardValImg}
+      version="1.0"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 200.000000 200.000000"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <g transform="translate(0.000000,200.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
         <path
           d="M1006 1879 l-28 -22 7 -116 7 -116 -42 -80 c-26 -50 -54 -123 -72
           -195 -26 -100 -30 -142 -38 -325 -4 -116 -12 -223 -18 -240 -20 -63 -82 -173

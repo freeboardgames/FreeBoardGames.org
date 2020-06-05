@@ -6,9 +6,7 @@ export default {
 
 /* eslint-disable react/prop-types */
 const Container = (props) => (
-  <div style={props.style || { height: 500, width: 400, display: 'inline-block' }}>
-    {props.children}
-  </div>
+  <div style={props.style || { height: 500, width: 400, display: 'inline-block' }}>{props.children}</div>
 );
 /* eslint-enable react/prop-types */
 
@@ -18,7 +16,7 @@ const largeCardNumberStyle = {
 };
 
 const card_1 = { number: 1, value: 1, owner: 0 };
-export const Card_1= () => {
+export const Card_1 = () => {
   return (
     <Container>
       <Card card={card_1} cardNumberStyle={largeCardNumberStyle} />
