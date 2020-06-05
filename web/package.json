@@ -28,6 +28,7 @@
     "format": "prettier --write \"./**/*.*(js|jsx|ts|tsx)\"",
     "format:staged": "pretty-quick --staged",
     "format:check": "prettier --check \"./**/*.ts\" \"./**/*.tsx\" \"./**/*.js\"",
+    "husky": "run-s lint format:staged test",
     "start:bgio": "node server/dist/server_bgio.js",
     "start": "run-s build:server start:server",
     "start:server": "cross-env CHANNEL=production NODE_ENV=production node server/dist/server_web.js",
@@ -144,6 +145,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "express": "^4.17.1",
+    "husky": "^4.2.5",
     "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
     "image-trace-loader": "^1.0.2",
@@ -185,5 +187,10 @@
   },
   "nyc": {
     "report-dir": "coverage-e2e"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run husky"
+    }
   }
 }
