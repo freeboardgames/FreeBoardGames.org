@@ -1,8 +1,10 @@
 import * as React from 'react';
 
-export const CardBackgroundAsset = (props) => {
+import css from './CardComponent.css';
+
+export const CardBackgroundAsset = () => {
   return (
-    <svg className={props.className} version="1.0" xmlns="http://www.w3.org/2000/svg"
+    <svg className={css.cardBgImg} version="1.0" xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 236.000000 236.000000"
      preserveAspectRatio="xMidYMid meet">
       <g
@@ -71,9 +73,9 @@ export const CardBackgroundAsset = (props) => {
   );
 };
 
-export const CardValueAsset = (props) => {
+export const CardValueAsset = () => {
   return (
-    <svg className={props.className} version="1.0" xmlns="http://www.w3.org/2000/svg"
+    <svg className={css.cardValImg} version="1.0" xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 200.000000 200.000000"
      preserveAspectRatio="xMidYMid meet">
       <g transform="translate(0.000000,200.000000) scale(0.100000,-0.100000)"

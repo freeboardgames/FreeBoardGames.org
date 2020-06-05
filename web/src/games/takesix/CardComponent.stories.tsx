@@ -1,15 +1,16 @@
 import { Card, CardComponent } from './CardComponent';
-import { Decks } from './Decks';
 
 export default {
   title: 'Games/takesix/Components',
 };
 
+/* eslint-disable react/prop-types */
 const Container = (props) => (
   <div style={props.style || { height: 500, width: 400, display: 'inline-block' }}>
     {props.children}
   </div>
 );
+/* eslint-enable react/prop-types */
 
 const largeCardNumberStyle = {
   fontSize: 200,

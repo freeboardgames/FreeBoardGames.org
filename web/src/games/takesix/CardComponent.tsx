@@ -61,18 +61,18 @@ export class Card extends React.Component<ICardProps, {}> {
     const { card, cardNumberStyle:overrideCardNumberStyle } = this.props;
     const { number, value } = card;
 
-    const cardBgStyle = CARD_BG_STYLES[card.value];
-    const cardNumberStyle = Object.assign({}, CARD_NUMBER_STYLES[card.value], overrideCardNumberStyle);
+    const cardBgStyle = CARD_BG_STYLES[value];
+    const cardNumberStyle = Object.assign({}, CARD_NUMBER_STYLES[value], overrideCardNumberStyle);
 
     return (
       <div className={css.Card}>
         <div className={css.cardBg} style={cardBgStyle} />
-        <CardBackgroundAsset className={css.cardBgImg} />
+        <CardBackgroundAsset />
         <span className={css.cardNumber} style={cardNumberStyle}>{number}</span>
         <div className={css.cardVal}>
           {
-            Array.apply(null, Array(card.value)).map(() => (
-              <CardValueAsset className={css.cardValImg} />
+            Array.apply(null, Array(value)).map((elem, idx) => (
+              <CardValueAsset key={idx} />
             ))
           }
         </div>
