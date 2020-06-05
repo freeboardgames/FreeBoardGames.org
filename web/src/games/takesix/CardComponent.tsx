@@ -1,52 +1,82 @@
 import * as React from 'react';
-import Card from './card';
+
+import CardProps from './card';
 import css from './CardComponent.css';
-import Typography from '@material-ui/core/Typography';
+import { CardBackgroundAsset, CardValueAsset } from './CardAssets';
+
+const CARD_NUMBER_STYLES = {
+  1: {
+    color: '#777',
+  },
+  2: {
+    color: '#0C7489',
+  },
+  3: {
+    color: '#2A9D8F',
+  },
+  5: {
+    color: '#E08E45',
+  },
+  7: {
+    color: '#5B1865',
+  },
+};
+
+const CARD_BG_STYLES = {
+  1: {
+    backgroundColor: '#fff',
+  },
+  2: {
+    backgroundColor: '#DCFFFD',
+  },
+  3: {
+    backgroundColor: '#B4D2BA',
+  },
+  5: {
+    backgroundColor: '#F8F4A6',
+  },
+  7: {
+    backgroundColor: '#ED3C44',
+  },
+};
 
 export interface ICardProps {
-  card: Card;
+  card: CardProps;
+  cardNumberStyle?: React.CSSProperties;
   click?: () => void;
 }
 
 export class CardComponent extends React.Component<ICardProps, {}> {
   render() {
-    const values: any = {
-      1: '#ffffff',
-      2: '#3498db',
-      3: '#f1c40f',
-      5: '#e74c3c',
-      7: '#8e44ad',
-    };
+    const { card } = this.props;
+    return (
+      <div onClick={this.props.click} className={css.CardContainer}>
+        <Card card={card} />
+      </div>
+    );
+  }
+}
+
+export class Card extends React.Component<ICardProps, {}> {
+  render() {
+    const { card, cardNumberStyle: overrideCardNumberStyle } = this.props;
+    const { number, value } = card;
+
+    const cardBgStyle = CARD_BG_STYLES[value];
+    const cardNumberStyle = Object.assign({}, CARD_NUMBER_STYLES[value], overrideCardNumberStyle);
 
     return (
-      <div
-        onClick={this.props.click}
-        className={css.Card}
-        style={{
-          background: values[this.props.card.value],
-        }}
-      >
-        <Typography
-          className="CardValue"
-          style={{
-            textAlign: 'center',
-            lineHeight: '20px',
-          }}
-          variant="body2"
-        >
-          {this.props.card.value}
-        </Typography>
-        <Typography
-          className="CardNumber"
-          style={{
-            textAlign: 'center',
-            lineHeight: '45px',
-            verticalAlign: 'middle',
-          }}
-          variant="h4"
-        >
-          {this.props.card.number}
-        </Typography>
+      <div className={css.Card}>
+        <div className={css.cardBg} style={cardBgStyle} />
+        <CardBackgroundAsset />
+        <span className={css.cardNumber} style={cardNumberStyle}>
+          {number}
+        </span>
+        <div className={css.cardVal}>
+          {Array.apply(null, Array(value)).map((elem, idx) => (
+            <CardValueAsset key={idx} />
+          ))}
+        </div>
       </div>
     );
   }
