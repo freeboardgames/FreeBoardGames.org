@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { ShipsPlacement } from './ShipsPlacement';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
-import { GameLayout } from 'components/App/Game/GameLayout';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { ISalvo, IShip } from './game';
 import { Battle } from './Battle';
 import { Radar } from './Radar';
 import Typography from '@material-ui/core/Typography';
-import { IOptionsItems } from 'components/App/Game/GameDarkSublayout';
-import { isAIGame } from 'games/common/gameMode';
+import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
+import { isAIGame } from 'gamesShared/helpers/gameMode';
 
 interface IBoardProps {
   G: any;

@@ -1,3 +1,5 @@
+.internal
+
 # Logs
 logs
 *.log
@@ -157,3 +159,7 @@ android/local.properties
 
 # puppeteer
 __diff_output__
+
+# storybook auto-generated
+stories/
+static/docs

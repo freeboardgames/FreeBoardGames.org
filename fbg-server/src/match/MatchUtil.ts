@@ -1,6 +1,14 @@
 import { MatchEntity } from './db/Match.entity';
-import { Match } from '../dto/match/Match';
+import { Match } from './gql/Match.gql';
 import { userEntityToUser } from '../users/UserUtil';
+import { MatchMembershipEntity } from './db/MatchMembership.entity';
+import { MatchMembership } from './gql/MatchMembership.gql';
+
+export function matchMembershipEntityToMatchMembership(
+  membershipEntity: MatchMembershipEntity,
+): MatchMembership {
+  return { user: userEntityToUser(membershipEntity.user) };
+}
 
 export function matchEntityToMatch(entity: MatchEntity, userId: number): Match {
   const memberships = [...entity.playerMemberships];
@@ -9,7 +17,9 @@ export function matchEntityToMatch(entity: MatchEntity, userId: number): Match {
     gameCode: entity.gameCode,
     bgioServerUrl: entity.bgioServerExternalUrl,
     bgioMatchId: entity.bgioMatchId,
-    players: memberships.map((membership) => userEntityToUser(membership.user)),
+    playerMemberships: memberships.map((m) =>
+      matchMembershipEntityToMatchMembership(m),
+    ),
   };
   const userMembership = entity.playerMemberships.find(
     (membership) => membership.user.id === userId,

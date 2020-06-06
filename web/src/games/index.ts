@@ -1,6 +1,3 @@
-import { IGameModeInfo } from 'components/App/Game/GameModePicker';
-import { estateBuyerGameDef } from './estatebuyer';
-/*
 import { chessGameDef } from './chess';
 import { seabattleGameDef } from './seabattle';
 import { tictactoeGameDef } from './tictactoe';
@@ -14,12 +11,10 @@ import { fourinarowGameDef } from './fourinarow';
 import { rotaGameDef } from './rota';
 import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
-*/
+import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
-  estatebuyer: estateBuyerGameDef,
-  /*
   chess: chessGameDef,
   seabattle: seabattleGameDef,
   tictactoe: tictactoeGameDef,
@@ -33,14 +28,11 @@ export const GAMES_MAP: IGameDefMap = {
   rota: rotaGameDef,
   secretcodes: secretcodesGameDef,
   hangman: hangmanGameDef,
-  */
 };
 
 // Order roughly by popularity.
 // See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
-  GAMES_MAP.estatebuyer,
-  /*
   GAMES_MAP.takesix,
   GAMES_MAP.fourinarow,
   GAMES_MAP.seabattle,
@@ -54,40 +46,4 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.reversi,
   GAMES_MAP.ninemensmorris,
   GAMES_MAP.rota,
-  */
 ];
-
-// No need to edit below
-export interface IGameConfig {
-  bgioGame: any;
-  bgioBoard: any;
-  enhancers?: any;
-  debug?: boolean;
-}
-
-export interface IAIConfig {
-  bgioAI: (level: string) => any;
-}
-
-export interface IGameDef {
-  code: string;
-  name: string;
-  imageURL: {
-    src: string;
-  };
-  description: string;
-  descriptionTag: string;
-  minPlayers: number;
-  maxPlayers: number;
-  modes: IGameModeInfo[];
-  instructions?: {
-    videoId?: string;
-    text?: string;
-  };
-  config: () => Promise<any>;
-  aiConfig?: () => Promise<any>;
-}
-
-export interface IGameDefMap {
-  [code: string]: IGameDef;
-}

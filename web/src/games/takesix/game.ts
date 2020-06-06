@@ -1,6 +1,6 @@
 import { INVALID_MOVE, ActivePlayers } from 'boardgame.io/core';
 import { Game, Ctx } from 'boardgame.io';
-import { IScore } from '../common/Scoreboard';
+import { IScore } from 'gamesShared/components/scores/Scoreboard';
 import Card from './card';
 import Player from './player';
 

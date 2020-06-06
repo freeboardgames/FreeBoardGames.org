@@ -1,3 +1,3 @@
 FROM scratch
-COPY dto /dto
+COPY gql /common
 COPY internal /internal

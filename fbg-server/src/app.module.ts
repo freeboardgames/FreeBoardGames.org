@@ -24,6 +24,8 @@ const CONNECTION: any = process.env.POSTGRES_URL
       database: 'dev.db',
     };
 
+const isProd = process.env.NODE_ENV === 'production';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -33,8 +35,8 @@ const CONNECTION: any = process.env.POSTGRES_URL
       logging: false,
     }),
     GraphQLModule.forRoot({
-      debug: true,
-      playground: true,
+      debug: !isProd,
+      playground: !isProd,
       autoSchemaFile: join(process.cwd(), '../common/gql/schema.gql'),
       context: ({ req }) => ({ req }),
     }),

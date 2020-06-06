@@ -1,13 +1,13 @@
 import { IG, CardColor, Team, TeamColor, Phases } from './definitions';
 import { Ctx } from 'boardgame.io';
-import { IGameArgs } from '../../components/App/Game/GameBoardWrapper';
+import { IGameArgs } from 'gamesShared/definitions/game';
 import * as React from 'react';
 import css from './board.css';
-import { isLocalGame, isOnlineGame } from '../common/gameMode';
+import { isLocalGame, isOnlineGame } from 'gamesShared/helpers/gameMode';
 import Button from '@material-ui/core/Button';
-import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
+import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import { getPlayerTeam, isPlayerSpymaster } from './util';
-import { PlayerBadges } from 'games/common/PlayerBadges';
+import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 
 interface IPlayBoardProps {
   G: IG;
@@ -130,6 +130,10 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       const card = this.props.G.cards[i];
 
       const classes = [css.card];
+      if (card.revealed && this._showSpymasterView() && !this.props.isGameOver) {
+        classes.push(css.cardRevealedSpymasterView);
+      }
+
       if (card.revealed || this._showSpymasterView()) {
         if (card.color === CardColor.blue) classes.push(css.cardBlue);
         else if (card.color === CardColor.red) classes.push(css.cardRed);

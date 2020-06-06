@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+
 @keyframes bounceIn {
   0% {
     transform: scale(0.1);
     opacity: 0;
   }
   60% {
-    transform: scale(1.2);
+    transform: scale(1.1);
     opacity: 1;
   }
   100% {
@@ -12,11 +14,70 @@
   }
 }
 
-.Card {
+.CardContainer {
+  animation: bounceIn 1.5s;
   float: left;
   color: black;
   cursor: pointer;
-  max-width: 65px;
-  width: 20%;
-	animation: bounceIn 1.5s;
+  height: 100px;
+  min-width: 70px;
+  max-width: 70px;
+  margin-right: 5px;
+}
+
+.Card {
+  border: 1px solid #000;
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: white;
+}
+
+.cardBg {
+  height: 90%;
+  width: 90%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cardBgImg {
+  height: 70%;
+
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+}
+
+.cardNumber {
+  color: white;
+  font-family: 'Courgette', cursive;
+  font-size: 36px;
+  font-weight: 900;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+}
+
+.cardVal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 60%;
+
+  position: relative;
+  left: 50%;
+  top: 12%;
+  transform: translate(-50%, -50%);
+}
+
+.cardValImg {
+  width: 25%;
 }

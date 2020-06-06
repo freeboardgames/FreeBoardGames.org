@@ -15,7 +15,6 @@ COPY --chown=appuser tsconfig.server.json webpack.server.config.js /appdata/
 
 # build server
 COPY --chown=appuser src /appdata/src
-COPY --chown=appuser --from=common /dto /appdata/src/dto
 COPY --chown=appuser server /appdata/server
 RUN yarn run build:server
 
@@ -27,6 +26,8 @@ ARG GIT_REV
 ARG SENTRY_DSN
 COPY --chown=appuser .babelrc next.config.js /appdata/
 COPY --chown=appuser static /appdata/static
+COPY --chown=appuser .storybook /appdata/.storybook
+COPY --chown=appuser docs /appdata/docs
 RUN yarn run build
 
 COPY --chown=appuser docker_run.sh /appdata/
