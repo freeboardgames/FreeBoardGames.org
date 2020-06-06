@@ -11,6 +11,7 @@ import { fourinarowGameDef } from './fourinarow';
 import { rotaGameDef } from './rota';
 import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
+import { estateBuyerGameDef } from './estatebuyer';
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
 
 // Add new games here
@@ -28,6 +29,7 @@ export const GAMES_MAP: IGameDefMap = {
   rota: rotaGameDef,
   secretcodes: secretcodesGameDef,
   hangman: hangmanGameDef,
+  estateBuyer: estateBuyerGameDef,
 };
 
 // Order roughly by popularity.
@@ -46,4 +48,5 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.reversi,
   GAMES_MAP.ninemensmorris,
   GAMES_MAP.rota,
+  GAMES_MAP.estateBuyer,
 ];

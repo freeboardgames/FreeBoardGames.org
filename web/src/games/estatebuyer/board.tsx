@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IGameArgs } from 'components/App/Game/GameBoardWrapper';
-import { GameLayout } from 'components/App/Game/GameLayout';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
 import { IG } from './game';
 import { Scoreboard } from './Scoreboard';
@@ -11,7 +11,7 @@ import { PlayerBadges } from './PlayerBadges';
 import { Tableau } from './Tableau';
 import { ButtonComponent } from './ButtonComponent';
 import { playSound } from './Sound';
-import { isOnlineGame, isLocalGame, isAIGame } from '../common/gameMode';
+import { isOnlineGame, isLocalGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 
 import css from './Board.css';
 

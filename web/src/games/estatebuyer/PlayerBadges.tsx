@@ -4,9 +4,10 @@ import IPlayer from './player';
 import { Phases } from './game';
 import { Ctx } from 'boardgame.io';
 import { PlayerBadge } from './PlayerBadge';
+import { IPlayerInRoom } from 'gamesShared/definitions/player';
 
 import css from './PlayerBadges.css';
-import { IPlayerInRoom } from 'components/App/Lobby/LobbyService';
+
 
 export interface IPlayerBadgesProps {
   players: IPlayer[];
