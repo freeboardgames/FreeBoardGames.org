@@ -1,12 +1,13 @@
 import React from 'react';
-import Room from './Room';
+import Room, { ROOM_SUBSCRIPTION } from './Room';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { render, waitFor, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { ReduxUserState } from 'infra/common/redux/definitions';
-import { CheckinRoom } from 'gqlTypes/CheckinRoom';
+import { JoinRoom } from 'gqlTypes/JoinRoom';
+import { MockedProvider, MockedResponse } from '@apollo/react-testing';
 jest.mock('js-cookie');
 
 const mockStore = configureMockStore();
@@ -52,7 +53,7 @@ describe('Room Lobby', () => {
     jest.useFakeTimers();
     const storeData: ReduxUserState = { ready: true, loggedIn: true, nickname: 'foo' };
     store = mockStore({ user: { ...storeData } });
-    LobbyService.checkin = jest.fn().mockRejectedValue(undefined);
+    LobbyService.joinRoom = jest.fn().mockRejectedValue(undefined);
     Storage.prototype.getItem = jest.fn(() => 'fooplayer');
     const { getByText } = render(
       <Provider store={store}>
@@ -66,12 +67,12 @@ describe('Room Lobby', () => {
     await waitFor(() => expect(getByText(/Failed to fetch room metadata/)).toBeTruthy());
   });
 
-  it('should show disabled button if not enough people joined', async () => {
+  it.only('should show disabled button if not enough people joined', async () => {
     jest.useFakeTimers();
     const storeData: ReduxUserState = { ready: true, loggedIn: true, nickname: 'foo' };
     store = mockStore({ user: { ...storeData } });
-    const response: CheckinRoom = {
-      checkinRoom: {
+    const response: JoinRoom = {
+      joinRoom: {
         __typename: 'Room' as const,
         gameCode: 'chess',
         capacity: 2,
@@ -87,15 +88,25 @@ describe('Room Lobby', () => {
         ],
       },
     };
-    LobbyService.checkin = jest.fn().mockResolvedValue(response);
+    LobbyService.joinRoom = jest.fn().mockResolvedValue(response);
     Storage.prototype.getItem = jest.fn(() => 'fooplayer');
+    // FIXME
+    const mocks: MockedResponse[] = [
+      {
+        request: {
+          query: ROOM_SUBSCRIPTION,
+        },
+      },
+    ];
     const { getByTestId } = render(
       <Provider store={store}>
-        <Room
-          match={{
-            params: { gameCode: 'chess', roomID: 'fooroom' },
-          }}
-        />
+        <MockedProvider mocks={mocks}>
+          <Room
+            match={{
+              params: { gameCode: 'chess', roomID: 'fooroom' },
+            }}
+          />
+        </MockedProvider>
       </Provider>,
     );
     await waitFor(() => expect(getByTestId('startButton')).toBeDisabled());
@@ -105,8 +116,8 @@ describe('Room Lobby', () => {
     jest.useFakeTimers();
     const storeData: ReduxUserState = { ready: true, loggedIn: true, nickname: 'foo' };
     store = mockStore({ user: { ...storeData } });
-    const response: CheckinRoom = {
-      checkinRoom: {
+    const response: JoinRoom = {
+      joinRoom: {
         __typename: 'Room' as const,
         gameCode: 'chess',
         capacity: 2,
@@ -127,7 +138,7 @@ describe('Room Lobby', () => {
         ],
       },
     };
-    LobbyService.checkin = jest.fn().mockResolvedValue(response);
+    LobbyService.joinRoom = jest.fn().mockResolvedValue(response);
     Storage.prototype.getItem = jest.fn(() => 'fooplayer');
     const { getByTestId } = render(
       <Provider store={store}>
@@ -145,8 +156,8 @@ describe('Room Lobby', () => {
     jest.useFakeTimers();
     const storeData: ReduxUserState = { ready: true, loggedIn: true, nickname: 'foo' };
     store = mockStore({ user: { ...storeData } });
-    const response: CheckinRoom = {
-      checkinRoom: {
+    const response: JoinRoom = {
+      joinRoom: {
         __typename: 'Room' as const,
         gameCode: 'chess',
         capacity: 2,
@@ -167,7 +178,7 @@ describe('Room Lobby', () => {
         ],
       },
     };
-    LobbyService.checkin = jest.fn().mockResolvedValue(response);
+    LobbyService.joinRoom = jest.fn().mockResolvedValue(response);
     Storage.prototype.getItem = jest.fn(() => 'fooplayer');
     const { getByTestId } = render(
       <Provider store={store}>

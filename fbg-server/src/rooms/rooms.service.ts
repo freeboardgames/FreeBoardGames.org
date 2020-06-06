@@ -60,9 +60,9 @@ export class RoomsService {
   }
 
   /** Checks-in user and if room gets full starts the match. Returns match id, if any. */
-  async checkin(userId: number, roomId: string): Promise<Room> {
+  async joinRoom(userId: number, roomId: string): Promise<Room> {
     return await inTransaction(this.connection, async (queryRunner) => {
-      let room = await this.getRoomEntity(roomId);
+      const room = await this.getRoomEntity(roomId);
       if (room.match) {
         return { ...roomEntityToRoom(room), matchId: room.match.id };
       }

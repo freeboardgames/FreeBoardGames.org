@@ -77,7 +77,7 @@ describe('RoomsService', () => {
       bobId,
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
-    const result = await service.checkin(aliceId, room.id);
+    const result = await service.joinRoom(aliceId, room.id);
     expect(result.userMemberships.length).toEqual(2);
   });
 
@@ -92,10 +92,10 @@ describe('RoomsService', () => {
       bobId,
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
-    await service.checkin(aliceId, room.id);
+    await service.joinRoom(aliceId, room.id);
 
     const joeId = await usersService.newUser({ nickname: 'joe' });
-    const result = service.checkin(joeId, room.id);
+    const result = service.joinRoom(joeId, room.id);
     await expect(result).rejects.toThrow();
   });
 
@@ -110,7 +110,7 @@ describe('RoomsService', () => {
       bobId,
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
-    await service.checkin(aliceId, room.id);
+    await service.joinRoom(aliceId, room.id);
     const newRoom = await service.getRoom(room.id);
     expect(newRoom.userMemberships.length).toEqual(2);
   });
@@ -138,9 +138,9 @@ describe('RoomsService', () => {
       bobId,
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
-    await service.checkin(aliceId, room.id);
+    await service.joinRoom(aliceId, room.id);
     const roomId = await matchService.startMatch(room.id, bobId);
-    const visit = await service.checkin(aliceId, room.id);
+    const visit = await service.joinRoom(aliceId, room.id);
     expect(roomId).toEqual(visit.matchId);
   });
 });

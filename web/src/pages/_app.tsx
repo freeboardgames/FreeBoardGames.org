@@ -14,11 +14,42 @@ import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
 
 import { wrapper } from 'infra/common/redux/store';
-import ApolloClient from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
+import { split, InMemoryCache } from 'apollo-boost';
+import { getMainDefinition } from 'apollo-utilities';
+import { createHttpLink } from 'apollo-link-http';
+import { WebSocketLink } from 'apollo-link-ws';
 import { ApolloProvider } from '@apollo/react-hooks';
+import AddressHelper from 'infra/common/helpers/AddressHelper';
+
+const httpLink = createHttpLink({
+  uri: AddressHelper.getGraphQLServerAddress(),
+});
+
+// SSR makes this error
+const wsLink = process.browser
+  ? new WebSocketLink({
+      uri: AddressHelper.getWSServerAddress(),
+      options: {
+        reconnect: true,
+      },
+    })
+  : undefined;
+
+const link = wsLink
+  ? split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+      },
+      wsLink,
+      httpLink,
+    )
+  : httpLink;
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3001/graphql',
+  link,
+  cache: new InMemoryCache(),
 });
 
 class defaultApp extends App {

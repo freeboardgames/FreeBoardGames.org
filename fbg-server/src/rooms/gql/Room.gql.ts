@@ -18,4 +18,6 @@ export class Room {
 
   @Field((type) => [RoomMembership])
   userMemberships: RoomMembership[];
+
+  roomId: string;
 }

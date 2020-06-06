@@ -17,12 +17,32 @@ import SEO from 'infra/common/helpers/SEO';
 import { ActionNames } from 'infra/common/redux/actions';
 import { ReduxUserState } from 'infra/common/redux/definitions';
 import { connect } from 'react-redux';
-import { CheckinRoom_checkinRoom } from 'gqlTypes/CheckinRoom';
+import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 import { Dispatch } from 'redux';
 import Router from 'next/router';
+import { Subscription } from '@apollo/react-components';
+import { gql } from 'apollo-boost';
 
 const MAX_TIMES_TO_UPDATE_METADATA = 1000;
-const CHECKIN_PERIOD = 5;
+
+export const ROOM_SUBSCRIPTION = gql`
+  subscription RoomMutated($roomId: String!) {
+    roomMutated(roomId: $roomId) {
+      gameCode
+      capacity
+      isPublic
+      matchId
+      userId
+      userMemberships {
+        isCreator
+        user {
+          id
+          nickname
+        }
+      }
+    }
+  }
+`;
 
 interface IRoomProps {
   gameCode: string;
@@ -32,7 +52,7 @@ interface IRoomProps {
 }
 
 interface IRoomState {
-  roomMetadata?: CheckinRoom_checkinRoom;
+  roomMetadata?: JoinRoom_joinRoom;
   nameTextField?: string;
   userId?: number;
   loading: boolean;
@@ -50,12 +70,9 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     interval: undefined,
     numberOfTimesUpdatedMetadata: 0,
   };
-  private timer: any; // fixme loads state of room
 
   componentDidMount() {
-    window.addEventListener('beforeunload', this._componentCleanup);
-    this.timer = setInterval(() => this.updateMetadata(), CHECKIN_PERIOD * 1e3);
-    this.updateMetadata(true);
+    this.joinRoom();
   }
 
   render() {
@@ -87,11 +104,18 @@ class Room extends React.Component<IRoomProps, IRoomState> {
           {this.getNicknamePrompt()}
           <GameCard game={gameDef} />
           {this._getGameSharing()}
-          <ListPlayers
-            roomMetadata={this.state.roomMetadata}
-            editNickname={this._toggleEditingName}
-            userId={this.state.userId}
-          />
+          <Subscription subscription={ROOM_SUBSCRIPTION} variables={{ roomId: this._roomId() }}>
+            {(resp) => {
+              const roomMutated = resp.data.roomMutated;
+              return (
+                <ListPlayers
+                  roomMetadata={roomMutated || this.state.roomMetadata}
+                  editNickname={this._toggleEditingName}
+                  userId={this.state.userId}
+                />
+              );
+            }}
+          </Subscription>
           {this._getStartMatchButton()}
         </FreeBoardGamesBar>
       </NicknameRequired>
@@ -99,11 +123,10 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   redirectToMatch(matchId: string) {
-    this._componentCleanup();
     Router.replace(`/match/${matchId}`);
   }
 
-  updateMetadata = (firstRun?: boolean) => {
+  joinRoom = (firstRun?: boolean) => {
     if (!firstRun && this.state.editingName) {
       return;
     }
@@ -119,17 +142,17 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       ...oldState,
       numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
     }));
-    LobbyService.checkin(this.props.dispatch, this._roomId()).then(
+    LobbyService.joinRoom(this.props.dispatch, this._roomId()).then(
       async (response) => {
-        if (response.checkinRoom.matchId) {
-          this.redirectToMatch(response.checkinRoom.matchId);
+        const roomMetadata = response.joinRoom;
+        if (roomMetadata.matchId) {
+          this.redirectToMatch(response.joinRoom.matchId);
         } else {
-          this.setState({ loading: false, roomMetadata: response.checkinRoom, userId: response.checkinRoom.userId });
+          this.setState({ loading: false, roomMetadata: roomMetadata, userId: roomMetadata.userId });
         }
       },
       () => {
         const error = 'Failed to fetch room metadata.';
-        this._componentCleanup();
         this.setState((oldState) => ({ ...oldState, error }));
       },
     );
@@ -162,18 +185,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     this._toggleEditingName();
   };
 
-  componentWillUnmount() {
-    this._componentCleanup();
-    window.removeEventListener('beforeunload', this._componentCleanup);
-  }
-
-  _componentCleanup = () => {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = undefined;
-    }
-  };
-
   _getGameSharing = () => {
     const gameCode = this.props.router.query.gameCode as string;
     return <GameSharing gameCode={gameCode} roomID={this._roomId()} />;
@@ -186,7 +197,6 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   _startMatch = () => {
     this.setState({ loading: true });
     LobbyService.startMatch(this.props.dispatch, this._roomId()).catch(() => {
-      this._componentCleanup();
       this.setState({ loading: false, error: 'Failed to start match' });
     });
   };
@@ -223,8 +233,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   _tryAgain = () => {
     this.setState((oldState) => ({ ...oldState, error: '' }));
-    this.updateMetadata();
-    this.timer = setInterval(() => this.updateMetadata(), CHECKIN_PERIOD * 1e3);
+    this.joinRoom();
   };
 }
 
