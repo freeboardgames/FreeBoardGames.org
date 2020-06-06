@@ -1,6 +1,7 @@
 import * as React from 'react';
 import IPlayer from './player';
 import { BuildingCardComponent } from './CardComponent';
+import { playSound } from './Sound';
 
 import css from './PlayerHand.css';
 
@@ -12,7 +13,12 @@ export interface IPlayerHandProps {
 
 export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
   _selectCard = (cardNumber: number) => {
-    this.props.selectCard ? this.props.selectCard(this.props.playerIndex, cardNumber) : null;
+    if (!this.props.selectCard){
+      return;
+    }
+    
+    playSound("CardSelect");
+    this.props.selectCard(this.props.playerIndex, cardNumber);
   }
 
   render() {

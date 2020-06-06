@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { ButtonComponent } from './ButtonComponent';
+import { playSound } from './Sound';
 
 import css from './BidPanelComponent.css';
 
@@ -23,11 +24,13 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
 
   _bid = () => {
     this.props.moves.MovePlaceBid(this.state.bid);
+    playSound("Bid");
     this.setState({ reset: false });
   }
 
   _pass = () => {
     this.props.moves.MovePassBid();
+    playSound("Pass");
     this.setState({ reset: false });
   }
   

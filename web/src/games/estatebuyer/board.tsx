@@ -10,6 +10,7 @@ import { BidPanelComponent } from './BidPanelComponent';
 import { PlayerBadges } from './PlayerBadges';
 import { Tableau } from './Tableau';
 import { ButtonComponent } from './ButtonComponent';
+import { playSound } from './Sound';
 import { isOnlineGame, isLocalGame, isAIGame } from '../common/gameMode';
 
 import css from './Board.css';
@@ -30,7 +31,10 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
     };
   }
 
-  _gs = () => { this.props.moves.GameStart(this.props.playerID == null); }
+  _gs = () => {
+    playSound("Start");
+    this.props.moves.GameStart(this.props.playerID == null);
+  }
   
   render() {
     console.log(this.props.ctx);
