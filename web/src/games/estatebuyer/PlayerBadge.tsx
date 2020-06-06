@@ -220,7 +220,7 @@ _maybeRenderSpent(){
       return;
     }
 
-    if (this.props.score.bid <= 0){
+    if (this.props.score.bid < 0){
       return;
     }
     
