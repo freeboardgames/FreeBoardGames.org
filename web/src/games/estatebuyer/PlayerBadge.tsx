@@ -205,11 +205,6 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCardRoun
 
         return (
             <div className={css.newCard} key={newCard.number}>
-                <script>
-                let src = 'https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3';
-                let audio = new Audio(src);
-                audio.play();
-                </script>
                 <ComponentTag card={newCard} />
             </div>
         );
