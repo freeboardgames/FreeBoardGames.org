@@ -16,27 +16,33 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
   }
 
   render() {
-    const w:number = this.props.player.buildings.length * 40 + 80;
-
     return (
       <div className={css.playerHand}>
-        <div
-          className={css.cards}
-          style={{width:w}}
-        >
-          {this.renderHand()}
-        </div>
+        {this.renderCards()}
       </div>
     );
   }
 
-  renderHand() {
+  renderCards(){
     if (this.props.player.buildings.length == 0){
       return (
         <div className={css.title}>No Cards Yet...</div>
       );
     }
-    
+
+    const w:number = this.props.player.buildings.length * 40 + 80;
+
+    return (
+        <div
+          className={css.cards}
+          style={{width:w}}
+        >
+          {this.renderHand()}
+      </div>
+    );
+  }
+
+  renderHand() {
     return [...this.props.player.buildings]
       .sort((a, b) => (a.value - b.value))
       .map((card: any, index: number) => 
