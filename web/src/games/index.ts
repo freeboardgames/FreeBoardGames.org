@@ -29,7 +29,7 @@ export const GAMES_MAP: IGameDefMap = {
   rota: rotaGameDef,
   secretcodes: secretcodesGameDef,
   hangman: hangmanGameDef,
-  estateBuyer: estateBuyerGameDef,
+  estatebuyer: estateBuyerGameDef,
 };
 
 // Order roughly by popularity.
@@ -48,5 +48,5 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.reversi,
   GAMES_MAP.ninemensmorris,
   GAMES_MAP.rota,
-  GAMES_MAP.estateBuyer,
+  GAMES_MAP.estatebuyer,
 ];
