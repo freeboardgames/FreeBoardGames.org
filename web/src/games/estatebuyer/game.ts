@@ -22,6 +22,7 @@ export interface IG {
   buildings: IPropertyCard[];
   checks: IMoneyCard[];
   hotseat: boolean;
+  round: number;
 }
 
 export function getScoreBoard(G: IG): IScore[] {
@@ -57,7 +58,6 @@ function WinPutBuildingInPlayerHand(G, playerIndex){
 function PutBuildingInPlayerHand(G: IG, playerIndex, cost){
   G.players[playerIndex].passed = true;
   G.players[playerIndex].money = G.players[playerIndex].money - cost;
-  G.players[playerIndex].bid = 0;
   G.players[playerIndex].buildings.push(G.cardsontable.shift());
 }
 
@@ -104,6 +104,7 @@ function SelectBuilding(G: IG, ctx: Ctx, playerIndex:number, cardValue:number){
     AwardMoneyCards(G);
     if (G.checks.length > 0){
       DealCheckCards(G, ctx);
+      NextRound(G);
     }
   }
   return G;
@@ -142,12 +143,18 @@ function AwardMoneyCards(G: IG): void {
   .forEach((item) => (G.players[item.playerIndex] = AwardMoneyCard(G.players[item.playerIndex], G.cardsontable.shift())));
 }
 
+function NextRound(G){
+  G.round++;
+  return G;
+}
+
 export const EstateBuyerGame: Game<IG> = {
   name: 'estatebuyer',
   moves: {
     GameStart: (G: IG, ctx: Ctx, hotseat:boolean) => {
       G.hotseat = hotseat;
       DealBuildingCards(G, ctx);
+      NextRound(G);
       ctx.events.setPhase(Phases.auction);
     }
   },
@@ -180,6 +187,7 @@ export const EstateBuyerGame: Game<IG> = {
             AwardBuildingToRemainingPlayer(G);
             ResetPlayerBids(G);
             DealBuildingCards(G, ctx);
+            NextRound(G);
           }
           return G;
         },
@@ -213,6 +221,7 @@ export const EstateBuyerGame: Game<IG> = {
       },
       onEnd: (G, ctx) => { 
         DealCheckCards(G, ctx);
+        NextRound(G);
       },
     },
 
@@ -282,6 +291,7 @@ export const EstateBuyerGame: Game<IG> = {
     // Set initial state
     return {
       hotseat: false,
+      round: 0,
       cardsontable: [],
       checks: new Array(usedCardsInDeck)
         .fill(0)

@@ -52,6 +52,7 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
           playersMeta={this.props.gameArgs.players}
           scores={getScoreBoard(this.props.G)}
           playerID={this.props.playerID}
+          round={this.props.G.round}
           ctx={this.props.ctx}
         />
         {this.getStartGameButton()}

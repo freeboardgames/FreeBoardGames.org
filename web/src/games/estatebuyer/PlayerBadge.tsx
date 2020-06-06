@@ -12,19 +12,18 @@ export interface IPlayerBadgeProps {
   self: boolean;
   score: IScore;
   color: string;
+  round: number;
+  showBid: boolean;
   incomingCards: ICard[];
   spentCards: ICard[];
 }
 
-export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCard?:ICard, spentCard?:ICard}> {
-    newCardRendered:number = 0;
-    spentCardRendered:number = 0;
-
+export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCardRound?:ICard[], spentCardRound?:ICard[]}> {
     constructor(props: any) {
         super(props);
         this.state = {
-            newCard: null,
-            spentCard: null,
+            newCardRound: [],
+            spentCardRound: [],
         };
     }
 
@@ -36,22 +35,15 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCard?:IC
             )
         );
 
-        if(this.props.score.bid != prevProps.score.bid){
-            this.setState({newCard: null});
-        }
+        //this is weird, but if one acquires a card at the end of the last round, the round may advance before the UI registers
+        const roundModifier = (this.props.score.bid == 0 && this.props.score.passed == false) ? -1 : 0;
         
         if(newCards.length > 0){
-          const newCard = newCards.shift();
-          this.newCardRendered = 0;
-          this.setState({newCard: newCard});
-        } else if (this.state.newCard != null){
-            if (this.newCardRendered > 1){
-                this.setState({newCard: null});
-            } else {
-                this.newCardRendered++;
-            }
+            const newCard = newCards.shift();
+            let newCardState = this.state.newCardRound;
+            newCardState[this.props.round+roundModifier] = newCard;
+            this.setState({newCardRound: newCardState});
         }
-
         
         const spentCards = [...prevProps.spentCards].filter(
             (newcard) => (this.props.spentCards.find(
@@ -62,15 +54,12 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCard?:IC
 
         if(spentCards.length > 0){
             const spentCard = spentCards.shift();
-            this.spentCardRendered = 0;
-            this.setState({spentCard: spentCard});
-        } else if (this.state.spentCard != null){
-            if (this.spentCardRendered > 1){
-                this.setState({spentCard: null});
-            } else {
-                this.spentCardRendered++;
-            }
+            let spentCardState = this.state.spentCardRound;
+            spentCardState[this.props.round+roundModifier] = spentCard;
+            this.setState({spentCardRound: spentCardState});
         }
+
+        console.log(this.state);
     }
 
     render() {
@@ -121,7 +110,7 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCard?:IC
                     </g>
                     <g transform="matrix(1.18074,0,0,1.18074,32.0371,30.4905)">
                         <circle cx="66.974" cy="65.959" r="84.041" className={css.playerCircle} />
-                        <text x="36px" y="90px" className={css.nameText}>{this.props.active ? ' 🕒' : ''}</text>
+                        <text x="0px" y="126px" className={css.activeText}>{this.props.active ? ' 🕒' : ''}</text>
                         <clipPath id="_clip5">
                             <circle cx="66.974" cy="65.959" r="84.041"/>
                         </clipPath>
@@ -147,61 +136,47 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCard?:IC
             </div>
         );
   }
+    _getLastCard(round:number, hand:any[]){
+        if (round <= 0){
+            return null;
+        }
 
-  _maybeRenderSpentCard(){
-    if (this.state.spentCard == null){
-        return;
+        if (hand[round] === undefined){
+            return this._getLastCard(round - 1, hand);
+        }
+
+        return hand[round];
     }
 
-    const ComponentTag:any = ((this.state.spentCard as any).building) ? BuildingCardComponent : MoneyCardComponent;
+    _getLastSpentCard(round:number){
+        return this._getLastCard(round, this.state.spentCardRound);
+    }
 
-    return (
-        <div className={css.spentCard} key={this.state.spentCard.number}>
-            <ComponentTag card={this.state.spentCard} />
-        </div>
-    );
-}
-_maybeRenderSpent(){
-    if (this.state.spentCard == null){
-      return;
-  }
+  _maybeRenderSpentCard(){
+        const spentCard:any = this._getLastSpentCard(this.props.round);
 
-    return (
-      <g id="Card-Spent" transform="matrix(1,0,0,1,60,56.8804)" className={(this.state.spentCard as any).building ? css.buildingColor : css.moneyColor}>
-          <g transform="matrix(1,0,0,1,104.435,-50.7744)">
-              <path d="M453.699,127.474L453.699,229.749L453.694,229.749C453.268,264.607 421.79,292.789 383.078,292.789C380.755,292.789 378.459,292.687 376.195,292.489L376.195,292.789L329.015,292.789C290.303,292.789 258.825,264.607 258.399,229.749L258.374,229.749C258.374,194.56 226.73,165.991 187.753,165.991C183.38,165.991 179.93,164.825 175.775,165.513L174.944,127.474L453.699,127.474Z" className={css.cardAwardBackground} />
-          </g>
-          <g transform="matrix(0.630179,0,0,0.947429,218.216,-35.9068)">
-              <path d="M524.062,219.912C524.062,185.198 481.69,157.014 429.499,157.014L339.957,157.014C287.766,157.014 245.394,185.198 245.394,219.912C245.394,254.627 287.766,282.811 339.957,282.811L429.499,282.811C481.69,282.811 524.062,254.627 524.062,219.912Z" className={css.cardAwardHighlight} />
-          </g>
-          <g transform="matrix(1,0,0,1,219.702,-17.1011)">
-              <text x="242px" y="233.458px" className={css.cardAwardText}>{this.state.spentCard.value}</text>
-          </g>
-      </g>
-    )
-}
-
-  _maybeRenderNewCard(){
-        if (this.state.newCard == null){
+        if (spentCard == null){
             return;
         }
 
-        const ComponentTag:any = ((this.state.newCard as any).building) ? BuildingCardComponent : MoneyCardComponent;
+        const ComponentTag:any = spentCard.building ? BuildingCardComponent : MoneyCardComponent;
 
         return (
-            <div className={css.newCard} key={this.state.newCard.number}>
-                <ComponentTag card={this.state.newCard} />
+            <div className={css.spentCard} key={spentCard.number}>
+                <ComponentTag card={spentCard} />
             </div>
         );
     }
 
-  _maybeRenderAward(){
-      if (this.state.newCard == null){
-        return;
-    }
+    _maybeRenderSpent(){
+        const spentCard:any = this._getLastSpentCard(this.props.round);
 
-      return (
-        <g id="Card-Award" transform="matrix(1,0,0,1,-95.5506,56.8804)" className={(this.state.newCard as any).building ? css.buildingColor : css.moneyColor}>
+        if (spentCard == null){
+            return;
+        }
+
+        return (
+        <g id="Card-Spent" transform="matrix(1,0,0,1,60,56.8804)" className={spentCard.building ? css.buildingColor : css.moneyColor}>
             <g transform="matrix(1,0,0,1,104.435,-50.7744)">
                 <path d="M453.699,127.474L453.699,229.749L453.694,229.749C453.268,264.607 421.79,292.789 383.078,292.789C380.755,292.789 378.459,292.687 376.195,292.489L376.195,292.789L329.015,292.789C290.303,292.789 258.825,264.607 258.399,229.749L258.374,229.749C258.374,194.56 226.73,165.991 187.753,165.991C183.38,165.991 179.93,164.825 175.775,165.513L174.944,127.474L453.699,127.474Z" className={css.cardAwardBackground} />
             </g>
@@ -209,13 +184,64 @@ _maybeRenderSpent(){
                 <path d="M524.062,219.912C524.062,185.198 481.69,157.014 429.499,157.014L339.957,157.014C287.766,157.014 245.394,185.198 245.394,219.912C245.394,254.627 287.766,282.811 339.957,282.811L429.499,282.811C481.69,282.811 524.062,254.627 524.062,219.912Z" className={css.cardAwardHighlight} />
             </g>
             <g transform="matrix(1,0,0,1,219.702,-17.1011)">
-                <text x="242px" y="233.458px" className={css.cardAwardText}>{this.state.newCard.value}</text>
+                <text x="242px" y="233.458px" className={css.cardAwardText}>{spentCard.value}</text>
+            </g>
+        </g>
+        )
+    }
+
+    _getLastNewCard(round:number){
+        return this._getLastCard(round, this.state.newCardRound);
+    }
+
+  _maybeRenderNewCard(){
+        const newCard:any = this._getLastNewCard(this.props.round);
+
+        if (newCard == null){
+            return;
+        }
+
+        const ComponentTag:any = newCard.building ? BuildingCardComponent : MoneyCardComponent;
+
+        return (
+            <div className={css.newCard} key={newCard.number}>
+                <script>
+                let src = 'https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3';
+                let audio = new Audio(src);
+                audio.play();
+                </script>
+                <ComponentTag card={newCard} />
+            </div>
+        );
+    }
+
+  _maybeRenderAward(){
+    const newCard:any = this._getLastNewCard(this.props.round);
+
+    if (newCard == null){
+        return;
+    }
+    
+      return (
+        <g id="Card-Award" transform="matrix(1,0,0,1,-95.5506,56.8804)" className={newCard.building ? css.buildingColor : css.moneyColor}>
+            <g transform="matrix(1,0,0,1,104.435,-50.7744)">
+                <path d="M453.699,127.474L453.699,229.749L453.694,229.749C453.268,264.607 421.79,292.789 383.078,292.789C380.755,292.789 378.459,292.687 376.195,292.489L376.195,292.789L329.015,292.789C290.303,292.789 258.825,264.607 258.399,229.749L258.374,229.749C258.374,194.56 226.73,165.991 187.753,165.991C183.38,165.991 179.93,164.825 175.775,165.513L174.944,127.474L453.699,127.474Z" className={css.cardAwardBackground} />
+            </g>
+            <g transform="matrix(0.630179,0,0,0.947429,218.216,-35.9068)">
+                <path d="M524.062,219.912C524.062,185.198 481.69,157.014 429.499,157.014L339.957,157.014C287.766,157.014 245.394,185.198 245.394,219.912C245.394,254.627 287.766,282.811 339.957,282.811L429.499,282.811C481.69,282.811 524.062,254.627 524.062,219.912Z" className={css.cardAwardHighlight} />
+            </g>
+            <g transform="matrix(1,0,0,1,219.702,-17.1011)">
+                <text x="242px" y="233.458px" className={css.cardAwardText}>{newCard.value}</text>
             </g>
         </g>
       )
   }
 
   _maybeRenderBid() {
+    if (!this.props.showBid){
+        return;
+      }
+
     if (!('bid' in this.props.score)){
       return;
     }

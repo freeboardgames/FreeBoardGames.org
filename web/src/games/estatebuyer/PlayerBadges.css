@@ -35,6 +35,10 @@
   font-size:66.667px;
 }
 
+.activeText { 
+  font-size:140px;
+}
+
 .playerCircle {
   fill:rgb(255,0,0);
 }
