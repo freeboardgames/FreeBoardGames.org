@@ -28,6 +28,7 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
 
   _pass = () => {
     this.props.moves.MovePassBid();
+    this.setState({ reset: false });
   }
   
   setBidValue = (event: any) => {
