@@ -106,7 +106,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
           {this._getGameSharing()}
           <Subscription subscription={ROOM_SUBSCRIPTION} variables={{ roomId: this._roomId() }}>
             {(resp) => {
-              const roomMutated = resp.data.roomMutated;
+              const roomMutated = resp.data?.roomMutated;
               return (
                 <ListPlayers
                   roomMetadata={roomMutated || this.state.roomMetadata}
