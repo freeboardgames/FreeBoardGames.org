@@ -76,9 +76,11 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
           </div>
         );
       } else {
+        return (
         <div className={css.startButtonContainer}>
           <span className={css.startWaiting}>Waiting for the Lobby Owner to Start...</span>
         </div>
+        )
       }
     }
   }
