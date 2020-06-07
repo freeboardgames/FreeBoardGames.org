@@ -1,12 +1,7 @@
 import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
-import { ReduxUserState } from 'infra/common/redux/definitions';
-import configureMockStore from 'redux-mock-store';
 import { StartMatchButton } from './StartMatchButton';
 import { mount } from 'enzyme';
 import Button from '@material-ui/core/Button';
-
-const mockStore = configureMockStore();
-let store: any;
 
 describe('Room Start Match Button', () => {
   it('should show disabled button if not enough people joined', async () => {

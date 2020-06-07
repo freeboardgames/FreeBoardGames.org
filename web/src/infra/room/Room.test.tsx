@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { ReduxUserState } from 'infra/common/redux/definitions';
-import { JoinRoom, JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
+import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 import { MockedProvider } from '@apollo/react-testing';
 
 jest.mock('js-cookie');
