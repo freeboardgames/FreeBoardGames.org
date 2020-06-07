@@ -1,3 +1,4 @@
+
 .playerBadgeContainer {
   clear: both;
   text-align: left;
@@ -18,19 +19,9 @@
   position: relative;
 }
 
-.name {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 160px;
-  padding: 2px 0px 2px 40px;
-  height: 20px;
-  border-radius: 0px 10px 0px 0px;
-  background-color: blanchedalmond;
-}
-
 .nameText { 
-  font-family:'Franchise-Bold', 'Franchise', monospace;
+  fill:rgb(0, 0, 0);
+  font-family:'FreeFranchise', 'Impact', monospace;
   font-weight:700;
   font-size:66.667px;
 }
@@ -45,6 +36,20 @@
 
 .active {
   
+}
+
+@keyframes newTab {
+  0% {
+    transform: matrix(0.840306,0,0,0.758643,224.58,-40);
+  }
+  100% {
+    transform:matrix(0.840306,0,0,0.758643,224.58,51.3651));
+  }
+}
+
+.bidContainer {
+  animation: newTab 0.5s;
+  animation-iteration-count: 1;
 }
 
 .bid {
@@ -141,6 +146,8 @@
 }
 
 .something2 {
+
+  fill:rgb(255, 255, 255);
   fill:none;stroke:black;stroke-width:3.49px;stroke-linecap:round;stroke-miterlimit:1.5;
 }
 

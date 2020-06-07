@@ -58,8 +58,6 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCardRoun
             spentCardState[this.props.round+roundModifier] = spentCard;
             this.setState({spentCardRound: spentCardState});
         }
-
-        console.log(this.state);
     }
 
     render() {
@@ -244,9 +242,11 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCardRoun
     if (this.props.score.bid < 0){
       return;
     }
+
+    const cname = [css.bidContainer, (this.props.score.passed?css.passed:"")].join(" ");
     
     return (
-      <g transform="matrix(0.840306,0,0,0.758643,224.58,51.3651)" className={(this.props.score.passed?css.passed:"")}>
+      <g transform="matrix(0.840306,0,0,0.758643,224.58,51.3651)" className={cname}>
         <path d="M184.902,158.512L183.913,108.371L451.306,108.371L451.306,243.184L451.3,243.184C450.793,289.132 413.333,326.279 367.264,326.279C321.196,326.279 283.736,289.132 283.229,243.184L283.199,243.184C283.199,196.8 245.541,159.142 199.157,159.142C193.953,159.142 189.847,157.604 184.902,158.512Z" className={css.bidBackground} />
         <clipPath id="_clip1">
             <path d="M184.902,158.512L183.913,108.371L451.306,108.371L451.306,243.184L451.3,243.184C450.793,289.132 413.333,326.279 367.264,326.279C321.196,326.279 283.736,289.132 283.229,243.184L283.199,243.184C283.199,196.8 245.541,159.142 199.157,159.142C193.953,159.142 189.847,157.604 184.902,158.512Z"/>
