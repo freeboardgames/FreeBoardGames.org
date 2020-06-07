@@ -31,16 +31,12 @@ export class RoomsResolver {
   ) {
     const userId = currentUser.id;
     const room = await this.roomsService.joinRoom(userId, roomId);
-    pubSub.publish('roomMutated', { roomMutated: room });
+    pubSub.publish(`room/${roomId}`, { roomMutated: room });
     return room;
   }
 
-  @Subscription((returns) => Room, {
-    filter: (payload, variables) => {
-      return payload.roomMutated.roomId === variables.roomId;
-    },
-  })
+  @Subscription((returns) => Room)
   roomMutated(@Args({ name: 'roomId', type: () => String }) roomId: string) {
-    return pubSub.asyncIterator('roomMutated');
+    return pubSub.asyncIterator(`room/${roomId}`);
   }
 }
