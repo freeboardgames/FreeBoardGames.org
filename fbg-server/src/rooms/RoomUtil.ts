@@ -11,8 +11,9 @@ export function roomEntityToRoom(roomEntity: RoomEntity): Room {
     matchId: roomEntity.match?.id,
     gameCode: roomEntity.gameCode,
     isPublic: roomEntity.isPublic,
-    userMemberships: roomEntity.userMemberships
-      .map((membership) => roomMembershipEntityToRoomMembership(membership))
+    userMemberships: roomEntity.userMemberships.map((membership) =>
+      roomMembershipEntityToRoomMembership(membership),
+    ),
   };
 }
 
