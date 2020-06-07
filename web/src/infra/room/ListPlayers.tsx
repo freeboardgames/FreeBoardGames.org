@@ -2,7 +2,7 @@ import React from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import EditIcon from '@material-ui/icons/Edit';
-import { CheckinRoom_checkinRoom } from 'gqlTypes/CheckinRoom';
+import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 
 import {
   Button,
@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 
 interface IListPlayersProps {
-  roomMetadata: CheckinRoom_checkinRoom;
+  roomMetadata: JoinRoom_joinRoom;
   userId?: number;
   editNickname: () => void;
 }

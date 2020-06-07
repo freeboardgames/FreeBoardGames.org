@@ -10,19 +10,35 @@ import { GameCard } from 'infra/common/components/game/GameCard';
 import { NicknamePrompt } from 'infra/common/components/auth/NicknamePrompt';
 import { useRouter, NextRouter } from 'next/router';
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
 import ReplayIcon from '@material-ui/icons/Replay';
 import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
-import SEO from 'infra/common/helpers/SEO';
-import { ActionNames } from 'infra/common/redux/actions';
+import { StartMatchButton } from './StartMatchButton';
 import { ReduxUserState } from 'infra/common/redux/definitions';
 import { connect } from 'react-redux';
-import { CheckinRoom_checkinRoom } from 'gqlTypes/CheckinRoom';
+import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 import { Dispatch } from 'redux';
 import Router from 'next/router';
+import { Subscription } from '@apollo/react-components';
+import { gql } from 'apollo-boost';
 
-const MAX_TIMES_TO_UPDATE_METADATA = 1000;
-const CHECKIN_PERIOD = 5;
+export const ROOM_SUBSCRIPTION = gql`
+  subscription RoomMutated($roomId: String!) {
+    roomMutated(roomId: $roomId) {
+      gameCode
+      capacity
+      isPublic
+      matchId
+      userId
+      userMemberships {
+        isCreator
+        user {
+          id
+          nickname
+        }
+      }
+    }
+  }
+`;
 
 interface IRoomProps {
   gameCode: string;
@@ -32,14 +48,12 @@ interface IRoomProps {
 }
 
 interface IRoomState {
-  roomMetadata?: CheckinRoom_checkinRoom;
+  roomMetadata?: JoinRoom_joinRoom;
   nameTextField?: string;
   userId?: number;
   loading: boolean;
   error: string;
   editingName: boolean;
-  interval: number | undefined;
-  numberOfTimesUpdatedMetadata: number;
 }
 
 class Room extends React.Component<IRoomProps, IRoomState> {
@@ -47,15 +61,10 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     error: '',
     loading: true,
     editingName: false,
-    interval: undefined,
-    numberOfTimesUpdatedMetadata: 0,
   };
-  private timer: any; // fixme loads state of room
 
   componentDidMount() {
-    window.addEventListener('beforeunload', this._componentCleanup);
-    this.timer = setInterval(() => this.updateMetadata(), CHECKIN_PERIOD * 1e3);
-    this.updateMetadata(true);
+    this.joinRoom();
   }
 
   render() {
@@ -69,68 +78,48 @@ class Room extends React.Component<IRoomProps, IRoomState> {
       return <MessagePage type={'error'} message={this.state.error} actionComponent={TryAgain} />;
     }
     if (this.state.loading) {
-      return (
-        <NicknameRequired>
-          <MessagePage type={'loading'} message={'Loading...'} />
-        </NicknameRequired>
-      );
+      return <MessagePage type={'loading'} message={'Loading...'} />;
     }
     const gameDef = GAMES_MAP[this.state.roomMetadata.gameCode];
     return (
-      <NicknameRequired>
-        <SEO
-          title={`Play ${gameDef.name}, ${gameDef.description}`}
-          description={gameDef.descriptionTag}
-          noindex={true}
-        />
-        <FreeBoardGamesBar>
-          {this.getNicknamePrompt()}
-          <GameCard game={gameDef} />
-          {this._getGameSharing()}
-          <ListPlayers
-            roomMetadata={this.state.roomMetadata}
-            editNickname={this._toggleEditingName}
-            userId={this.state.userId}
-          />
-          {this._getStartMatchButton()}
-        </FreeBoardGamesBar>
-      </NicknameRequired>
+      <FreeBoardGamesBar>
+        {this.getNicknamePrompt()}
+        <GameCard game={gameDef} />
+        {this._getGameSharing()}
+        <Subscription subscription={ROOM_SUBSCRIPTION} variables={{ roomId: this._roomId() }}>
+          {(resp) => {
+            const room = resp.data?.roomMutated || this.state.roomMetadata;
+            if (room.matchId) {
+              this.redirectToMatch(room.matchId);
+            }
+            return (
+              <React.Fragment>
+                <ListPlayers roomMetadata={room} editNickname={this._toggleEditingName} userId={this.state.userId} />
+                <StartMatchButton roomMetadata={room} userId={this.state.userId} startMatch={this._startMatch} />
+              </React.Fragment>
+            );
+          }}
+        </Subscription>
+      </FreeBoardGamesBar>
     );
   }
 
   redirectToMatch(matchId: string) {
-    this._componentCleanup();
     Router.replace(`/match/${matchId}`);
   }
 
-  updateMetadata = (firstRun?: boolean) => {
-    if (!firstRun && this.state.editingName) {
-      return;
-    }
-    if (!this.props.user.loggedIn) {
-      return;
-    }
-    if (this.state.numberOfTimesUpdatedMetadata > MAX_TIMES_TO_UPDATE_METADATA) {
-      const error = 'Session expired.  Please refresh the page.';
-      this.setState((oldState) => ({ ...oldState, error }));
-      return;
-    }
-    this.setState((oldState) => ({
-      ...oldState,
-      numberOfTimesUpdatedMetadata: this.state.numberOfTimesUpdatedMetadata + 1,
-    }));
-    LobbyService.checkin(this.props.dispatch, this._roomId()).then(
+  joinRoom = () => {
+    LobbyService.joinRoom(this.props.dispatch, this._roomId()).then(
       async (response) => {
-        if (response.checkinRoom.matchId) {
-          this.redirectToMatch(response.checkinRoom.matchId);
+        const roomMetadata = response.joinRoom;
+        if (roomMetadata.matchId) {
+          this.redirectToMatch(response.joinRoom.matchId);
         } else {
-          this.setState({ loading: false, roomMetadata: response.checkinRoom, userId: response.checkinRoom.userId });
+          this.setState({ loading: false, roomMetadata: roomMetadata, userId: roomMetadata.userId });
         }
       },
       () => {
-        const error = 'Failed to fetch room metadata.';
-        this._componentCleanup();
-        this.setState((oldState) => ({ ...oldState, error }));
+        this.setState({ error: 'Failed to fetch room metadata.' });
       },
     );
   };
@@ -155,23 +144,17 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   };
 
   _setNickname = (nickname: string) => {
+    this.setState({ loading: true });
     const dispatch = (this.props as any).dispatch;
-    LobbyService.renameUser(dispatch, nickname);
-    const payload: ReduxUserState = { ready: true, loggedIn: true, nickname };
-    dispatch({ type: ActionNames.SyncUser, payload });
+    LobbyService.renameUser(dispatch, nickname).then(
+      () => {
+        this.joinRoom();
+      },
+      () => {
+        this.setState({ error: 'Failed to set nickname.' });
+      },
+    );
     this._toggleEditingName();
-  };
-
-  componentWillUnmount() {
-    this._componentCleanup();
-    window.removeEventListener('beforeunload', this._componentCleanup);
-  }
-
-  _componentCleanup = () => {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = undefined;
-    }
   };
 
   _getGameSharing = () => {
@@ -185,52 +168,29 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   _startMatch = () => {
     this.setState({ loading: true });
-    LobbyService.startMatch(this.props.dispatch, this._roomId()).catch(() => {
-      this._componentCleanup();
-      this.setState({ loading: false, error: 'Failed to start match' });
-    });
-  };
-
-  _getStartMatchButton() {
-    const creator = this.state.roomMetadata.userMemberships.find((membership) => membership.isCreator);
-    let disabled = false;
-    let explanation;
-    if (this.state.roomMetadata.capacity > this.state.roomMetadata.userMemberships.length) {
-      disabled = true;
-      explanation = 'Not enough players.';
-    } else if (creator.user.id !== this.state.userId) {
-      disabled = true;
-      explanation = `Only ${creator.user.nickname} can start.`;
-    }
-    const button = (
-      <div style={{ float: 'right', paddingBottom: '32px' }}>
-        <Button
-          variant="outlined"
-          color="primary"
-          disabled={disabled}
-          onClick={this._startMatch}
-          data-testid="startButton"
-        >
-          Start match
-        </Button>
-      </div>
+    LobbyService.startMatch(this.props.dispatch, this._roomId()).then(
+      (matchId) => {
+        this.redirectToMatch(matchId);
+      },
+      () => {
+        this.setState({ loading: false, error: 'Failed to start match' });
+      },
     );
-    if (disabled) {
-      return <Tooltip title={explanation}>{button}</Tooltip>;
-    }
-    return button;
-  }
+  };
 
   _tryAgain = () => {
     this.setState((oldState) => ({ ...oldState, error: '' }));
-    this.updateMetadata();
-    this.timer = setInterval(() => this.updateMetadata(), CHECKIN_PERIOD * 1e3);
+    this.joinRoom();
   };
 }
 
 const roomWithRouter = (props) => {
   const router = useRouter();
-  return <Room {...props} router={router} />;
+  return (
+    <NicknameRequired>
+      <Room {...props} router={router} />
+    </NicknameRequired>
+  );
 };
 
 /* istanbul ignore next */

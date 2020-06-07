@@ -37,6 +37,7 @@ const isProd = process.env.NODE_ENV === 'production';
     GraphQLModule.forRoot({
       debug: !isProd,
       playground: !isProd,
+      installSubscriptionHandlers: true,
       autoSchemaFile: join(process.cwd(), '../common/gql/schema.gql'),
       context: ({ req }) => ({ req }),
     }),
