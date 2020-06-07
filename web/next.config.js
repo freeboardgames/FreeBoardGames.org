@@ -15,7 +15,7 @@ function getGitHash() {
   let hash = 'unknown';
   try {
     hash = childProcess.execSync('git rev-parse --short HEAD').toString().trim();
-  } catch (e) {}
+  } catch (e) { }
   return hash;
 }
 
@@ -36,7 +36,7 @@ module.exports = withWorkers(
       env: {
         CHANNEL,
         VERSION,
-        BGIO_SERVER_URL,
+        GQL_WS_URL,
         BABEL_ENV_IS_PROD,
         GA_TRACKING_CODE: process.env.GA_TRACKING_CODE,
         SENTRY_DSN,
