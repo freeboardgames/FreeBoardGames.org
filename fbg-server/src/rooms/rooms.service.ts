@@ -50,7 +50,7 @@ export class RoomsService {
     roomEntity: RoomEntity,
   ) {
     await queryRunner.manager.save(RoomEntity, roomEntity);
-    await this.updateMembership(queryRunner, userId, roomEntity, true);
+    await this.addMembership(queryRunner, userId, roomEntity, true);
   }
 
   /** Gets a room. */
@@ -66,7 +66,7 @@ export class RoomsService {
       if (room.match) {
         return { ...roomEntityToRoom(room), matchId: room.match.id };
       }
-      await this.updateMembership(queryRunner, userId, room);
+      await this.addMembership(queryRunner, userId, room);
       return { ...roomEntityToRoom(room), userId };
     });
   }
@@ -92,28 +92,31 @@ export class RoomsService {
     return roomEntity;
   }
 
-  private async updateMembership(
+  private async addMembership(
     queryRunner: QueryRunner,
     userId: number,
     room: RoomEntity,
     isCreator: boolean = false,
   ) {
-    let membership = (room.userMemberships || []).find(
-      (membership) => membership.user.id === userId,
-    );
-    if (membership) {
-      membership.lastSeen = Date.now();
-    } else {
-      if ((room.userMemberships || []).length >= room.capacity) {
-        throw new HttpException('Room is full!', HttpStatus.BAD_REQUEST);
-      }
-      membership = new RoomMembershipEntity();
-      membership.user = await this.usersService.getUserEntity(userId);
-      membership.room = room;
-      membership.lastSeen = Date.now();
-      membership.isCreator = isCreator;
-      room.userMemberships = [...(room.userMemberships || []), membership];
+    const memberships = room.userMemberships || [];
+    if (memberships.find((m) => m.user.id === userId)) {
+      throw new HttpException(
+        `You are already in "${room.id}".`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
+    if (memberships.length >= room.capacity) {
+      throw new HttpException(
+        `Room "${room.id}" is full.`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const membership = new RoomMembershipEntity();
+    membership.user = await this.usersService.getUserEntity(userId);
+    membership.room = room;
+    membership.lastSeen = Date.now();
+    membership.isCreator = isCreator;
+    room.userMemberships = [...memberships, membership];
     await queryRunner.manager.save(membership);
   }
 }

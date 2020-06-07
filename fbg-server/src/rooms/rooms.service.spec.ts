@@ -99,6 +99,24 @@ describe('RoomsService', () => {
     await expect(result).rejects.toThrow();
   });
 
+  it('should not allow joining twice', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.joinRoom(aliceId, room.id);
+
+    const joeId = await usersService.newUser({ nickname: 'joe' });
+    const result = service.joinRoom(joeId, room.id);
+    await expect(result).rejects.toThrow();
+  });
+
   it('should checkin successfully', async () => {
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const room = await service.newRoom(
