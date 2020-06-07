@@ -31,7 +31,9 @@ const wsLink = process.browser
   ? new WebSocketLink({
       uri: AddressHelper.getWSServerAddress(),
       options: {
+        timeout: 3000,
         reconnect: true,
+        lazy: true,
       },
     })
   : undefined;
