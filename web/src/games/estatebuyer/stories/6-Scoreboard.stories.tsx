@@ -24,15 +24,15 @@ const scoreboardData:IScoreboardProps = {
     players: [
         {
             playerID: 0,
-            name: "Player 1",
+            name: "Jimmy",
         },
         {
             playerID: 1,
-            name: "Player 2",
+            name: "Karen",
         },
         {
             playerID: 2,
-            name: "Player 3",
+            name: "Lloyd",
         }
     ],
     playerID: "0"
