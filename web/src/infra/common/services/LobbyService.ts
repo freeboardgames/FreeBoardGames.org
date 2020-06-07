@@ -138,6 +138,8 @@ export class LobbyService {
       })
       .catch(this.catchUnauthorizedGql(dispatch));
 
+    const payload: ReduxUserState = { ready: true, loggedIn: true, nickname };
+    dispatch({ type: ActionNames.SyncUser, payload });
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
   }
 

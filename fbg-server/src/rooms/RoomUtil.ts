@@ -7,7 +7,8 @@ import { RoomMembership } from './gql/RoomMembership.gql';
 export function roomEntityToRoom(roomEntity: RoomEntity): Room {
   return {
     capacity: roomEntity.capacity,
-    roomId: roomEntity.id,
+    id: roomEntity.id,
+    matchId: roomEntity.match?.id,
     gameCode: roomEntity.gameCode,
     isPublic: roomEntity.isPublic,
     userMemberships: roomEntity.userMemberships

@@ -134,6 +134,7 @@ export class MatchService {
     );
     room.match = newMatch;
     await queryRunner.manager.save(room);
+    await this.roomsService.notifyRoomUpdate(room);
     return id;
   }
 

@@ -112,7 +112,7 @@ describe('MatchService', () => {
     const newRoomId = await service.getNextRoom(matchId, bobId);
     const sameRoomId = await service.getNextRoom(matchId, bobId);
 
-    const newRoom = await roomsService.getRoom(newRoomId);
+    const newRoom = await roomsService.getRoomEntity(newRoomId);
     expect(newRoom).toMatchObject({
       capacity: 2,
       gameCode: 'checkers',

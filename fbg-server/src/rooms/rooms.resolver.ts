@@ -5,13 +5,12 @@ import { NewRoom } from './gql/NewRoom.gql';
 import { RoomsService } from './rooms.service';
 import { CurrentUser, GqlAuthGuard } from '../users/gql-auth-guard';
 import { UseGuards } from '@nestjs/common';
+import { roomEntityToRoom } from './RoomUtil';
 import { PubSub } from 'graphql-subscriptions';
-
-const pubSub = new PubSub();
 
 @Resolver((of) => Room)
 export class RoomsResolver {
-  constructor(private roomsService: RoomsService) {}
+  constructor(private roomsService: RoomsService, private pubSub: PubSub) {}
 
   @Mutation((returns) => NewRoom)
   @UseGuards(GqlAuthGuard)
@@ -30,13 +29,13 @@ export class RoomsResolver {
     @Args({ name: 'roomId', type: () => String }) roomId: string,
   ) {
     const userId = currentUser.id;
-    const room = await this.roomsService.joinRoom(userId, roomId);
-    pubSub.publish(`room/${roomId}`, { roomMutated: room });
-    return room;
+    const roomEntity = await this.roomsService.joinRoom(userId, roomId);
+    const room = roomEntityToRoom(roomEntity);
+    return { ...room, userId };
   }
 
   @Subscription((returns) => Room)
   roomMutated(@Args({ name: 'roomId', type: () => String }) roomId: string) {
-    return pubSub.asyncIterator(`room/${roomId}`);
+    return this.pubSub.asyncIterator(`room/${roomId}`);
   }
 }

@@ -60,13 +60,13 @@ describe('RoomsService', () => {
       },
       bobId,
     );
-    const newRoom = await service.getRoom(room.id);
-    expect(newRoom.userMemberships).toEqual([
+    const newRoom = await service.getRoomEntity(room.id);
+    expect(newRoom.userMemberships).toMatchObject([
       { isCreator: true, user: { id: bobId, nickname: 'bob' } },
     ]);
   });
 
-  it('should have user after checkin', async () => {
+  it('should have user after joining', async () => {
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const room = await service.newRoom(
       {
@@ -81,7 +81,7 @@ describe('RoomsService', () => {
     expect(result.userMemberships.length).toEqual(2);
   });
 
-  it('should not allow room to go over capacity', async () => {
+  it('should ignore join if over capacity', async () => {
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const room = await service.newRoom(
       {
@@ -95,11 +95,11 @@ describe('RoomsService', () => {
     await service.joinRoom(aliceId, room.id);
 
     const joeId = await usersService.newUser({ nickname: 'joe' });
-    const result = service.joinRoom(joeId, room.id);
-    await expect(result).rejects.toThrow();
+    const result = await service.joinRoom(joeId, room.id);
+    expect(result.id).toEqual(room.id);
   });
 
-  it('should not allow joining twice', async () => {
+  it('should ignore joining twice', async () => {
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const room = await service.newRoom(
       {
@@ -112,12 +112,11 @@ describe('RoomsService', () => {
     const aliceId = await usersService.newUser({ nickname: 'alice' });
     await service.joinRoom(aliceId, room.id);
 
-    const joeId = await usersService.newUser({ nickname: 'joe' });
-    const result = service.joinRoom(joeId, room.id);
-    await expect(result).rejects.toThrow();
+    const result = await service.joinRoom(aliceId, room.id);
+    expect(result.id).toEqual(room.id);
   });
 
-  it('should checkin successfully', async () => {
+  it('should joinRoom successfully', async () => {
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const room = await service.newRoom(
       {
@@ -129,7 +128,7 @@ describe('RoomsService', () => {
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
     await service.joinRoom(aliceId, room.id);
-    const newRoom = await service.getRoom(room.id);
+    const newRoom = await service.getRoomEntity(room.id);
     expect(newRoom.userMemberships.length).toEqual(2);
   });
 
@@ -159,6 +158,6 @@ describe('RoomsService', () => {
     await service.joinRoom(aliceId, room.id);
     const roomId = await matchService.startMatch(room.id, bobId);
     const visit = await service.joinRoom(aliceId, room.id);
-    expect(roomId).toEqual(visit.matchId);
+    expect(roomId).toEqual(visit.match.id);
   });
 });
