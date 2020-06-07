@@ -27,7 +27,7 @@ export interface IScoreboardProps {
 export class Scoreboard extends React.Component<IScoreboardProps, {}> {
   render() {
     return (
-      <div className="scoreboard">
+      <div className={css.scoreboard}>
         <Table>
           <TableHead>
             <TableRow>
@@ -38,18 +38,14 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
           </TableHead>
           <TableBody>
             {this.props.scoreboard.map((score, i) => {
-              let style = {};
-              if (score.playerID.toString() === this.props.playerID) {
-                style = {
-                  background: grey[200],
-                };
-              }
+              const style = (score.playerID.toString() === this.props.playerID) ? css.me : null;
               const name = this.props.players.find((player) => player.playerID.toString() === score.playerID).name;
+              const firstCellClassName = css["cell"+i];
               return (
-                <TableRow key={score.playerID} style={style}>
-                  <TableCell>#{i + 1}</TableCell>
-                  <TableCell>{name}</TableCell>
-                  <TableCell>${score.score}k</TableCell>
+                <TableRow key={score.playerID} className={[style, css["row"+i]].join(' ')}>
+                  <TableCell className={css.rank}>#{i + 1}</TableCell>
+                  <TableCell className={css.name}>{name}</TableCell>
+                  <TableCell className={css.score}>${score.score}k</TableCell>
                 </TableRow>
               );
             })}
