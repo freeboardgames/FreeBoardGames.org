@@ -13,11 +13,6 @@ export function roomEntityToRoom(roomEntity: RoomEntity): Room {
     isPublic: roomEntity.isPublic,
     userMemberships: roomEntity.userMemberships
       .map((membership) => roomMembershipEntityToRoomMembership(membership))
-      .sort((a, b) =>
-        a.user.nickname
-          .toLowerCase()
-          .localeCompare(b.user.nickname.toLowerCase()),
-      ),
   };
 }
 
