@@ -24,13 +24,11 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
 
   _bid = () => {
     this.props.moves.MovePlaceBid(this.state.bid);
-    playSound("Bid");
     this.setState({ reset: false });
   }
 
   _pass = () => {
     this.props.moves.MovePassBid();
-    playSound("Pass");
     this.setState({ reset: false });
   }
   
@@ -51,6 +49,14 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
       this.setState({bid: 1, reset: true});
     } else if (this.props.currentHighBid >= this.state.bid){
       this.setState({bid: this.props.currentHighBid+1});
+    }
+  
+    if(this.props.currentPlayer != prevProps.currentPlayer){
+      if(this.props.players[prevProps.currentPlayer].passed){
+        playSound("Pass");
+      } else if(this.props.players[prevProps.currentPlayer].bid > 0) {
+        playSound("Bid");
+      }
     }
   }
 
