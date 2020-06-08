@@ -32,13 +32,19 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
   }
 
   _gs = () => {
-    playSound("Start");
     this.props.moves.GameStart(this.props.playerID == null);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    //This makes it play at the beginning of every round, not just game start
+    if(this.props.G.round != prevProps.G.round){
+      playSound("Start");
+    }
   }
   
   render() {
-    console.log(this.props.ctx);
-    console.log(this.props.G);
+    //console.log(this.props.ctx);
+    //console.log(this.props.G);
 
     if (this.props.ctx.gameover) {
       if (this.state.gameOverPrepared == 0){
