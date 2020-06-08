@@ -50,11 +50,10 @@ const GameConfig: Game<IG> = {
     return {
       ...G,
       cards: cards.map((card: Card) => {
-        let c = {
+        let c: Card = {
           word: card.word,
           revealed: card.revealed,
         };
-        // @ts-ignore
         if (c.revealed) c.color = card.color;
         return c;
       }),
@@ -102,12 +101,10 @@ const GameConfig: Game<IG> = {
       },
       moves: {
         chooseCard: {
-          // @ts-ignore
           move: chooseCard,
           client: false,
         },
         pass: {
-          // @ts-ignore
           move: pass,
           client: false,
         },
