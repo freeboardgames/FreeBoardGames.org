@@ -33,7 +33,6 @@
 
 .startButtonContainer>span, .startButtonContainer .startWaiting {
     display: block;
-    font-family:'Franchise-Bold', 'Franchise', monospace;
     font-size: 20px;
     line-height: 20px;
     text-align: center;
@@ -41,4 +40,17 @@
     border-radius: 20px;
     padding: 10px;
     margin: 0px 40px;
+}
+
+.spectator {
+    display: block;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    background-color: rgba(255, 0, 0, 0.5);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 10px;
+    margin: 20px auto;
+    width: 300px;
 }

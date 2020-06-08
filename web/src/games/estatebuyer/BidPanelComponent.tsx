@@ -68,7 +68,11 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
   }
 
   render() {
-    if (this.props.playerID !== this.props.currentPlayer && this.props.playerID !== null){
+    if (this.props.playerID === null){
+      return;
+    }
+
+    if (this.props.playerID !== this.props.currentPlayer){
       return (
         <div className={css.BidPanel}>
           <span>Waiting for the other players to bid...</span>

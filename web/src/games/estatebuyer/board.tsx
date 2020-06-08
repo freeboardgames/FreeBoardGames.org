@@ -64,12 +64,8 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
         />
         {this.getStartGameButton()}
         {this.getTableau()}
-        { this.getBidPanel() }
-        <PlayerHand
-          playerIndex={parseInt(this.props.playerID ?? this.props.ctx.currentPlayer)}
-          player={this.props.G.players[this.props.playerID ?? this.props.ctx.currentPlayer]}
-          selectCard={((this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection))) ? this._selectCard.bind(this) : null}
-          />
+        {this.getBidPanel()}
+        {this.getPlayerHand()}
         </div>
       </GameLayout>
     );
@@ -113,18 +109,54 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
     }
   }
 
+  getBrowserPlayer(){
+    let playerID = this.props.playerID;
+    if (isLocalGame(this.props.gameArgs)){
+      playerID = this.props.ctx.currentPlayer;
+    }
+
+    return playerID;
+  }
+
   getBidPanel(){
+    const playerID = this.getBrowserPlayer();
+
+    if (playerID === null){
+      return;
+    }
+
     if (this.props.ctx.phase == Phases.auction){
       return (
         <BidPanelComponent
           players={this.props.G.players}
           currentPlayer={this.props.ctx.currentPlayer}
           moves={this.props.moves}
-          playerID={this.props.playerID}
+          playerID={playerID}
           currentHighBid={HighestBid(this.props.G.players)}
           />
       );
     }
+  }
+
+  getPlayerHand(){
+    const playerID = this.getBrowserPlayer();
+
+    if (this.props.playerID === null){
+      return (
+        <div className={css.spectator}>
+          <span>You are in spectator mode.</span>
+        </div>
+      );
+    }
+
+
+    return (
+      <PlayerHand
+          playerIndex={parseInt(playerID)}
+          player={this.props.G.players[playerID]}
+          selectCard={((this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection))) ? this._selectCard.bind(this) : null}
+          />
+    )
   }
 
   prepareGameOver(){
@@ -144,32 +176,6 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
 
   _selectCard(playerIndex:number, i:number) {
     this.props.moves.MoveSelectBuilding(playerIndex, i);
-  }
-
-  _getStatus() {
-    if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
-      if (!this._canPlay()) {
-        return 'Waiting for opponents...';
-      }
-      if (this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection)) {
-        return 'Select Building';
-      }
-      return 'Bid or Pass';
-    }
-    const player:number = parseInt(this.props.ctx.currentPlayer);
-
-    return "Player "+(player+1)+"'s Turn";
-  }
-
-  _canPlay() {
-    if (this.props.ctx.phase && this.props.ctx.phase.includes(Phases.property_selection)) {
-      return (
-        this.props.ctx.activePlayers !== null &&
-        Object.keys(this.props.ctx.activePlayers)?.includes(this.props.playerID)
-      );
-    } else {
-      return this.props.playerID === this.props.ctx.currentPlayer;
-    }
   }
 
   _getScoreBoard() {
