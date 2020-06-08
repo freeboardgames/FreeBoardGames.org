@@ -59,8 +59,8 @@ export class PlayerBadges extends React.Component<IPlayerBadgesProps, {}> {
           active={this._isPlayersTurn(playerIndex)}
           self={this._isSelf(playerIndex)}
           score={this._getPlayerScore(playerIndex)}
-          incomingCards={(this.props.ctx.phase == Phases.auction) ? player.buildings : player.checks}
-          spentCards={(this.props.ctx.phase == Phases.auction) ? [] : player.buildings }
+          newCard={player.newCard}
+          spentCard={player.spentCard}
           round={this.props.round}
           color={borderColor}
           showBid={this.props.ctx.phase == Phases.auction}

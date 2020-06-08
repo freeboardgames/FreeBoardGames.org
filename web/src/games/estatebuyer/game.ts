@@ -58,7 +58,12 @@ function WinPutBuildingInPlayerHand(G, playerIndex){
 function PutBuildingInPlayerHand(G: IG, playerIndex, cost){
   G.players[playerIndex].passed = true;
   G.players[playerIndex].money = G.players[playerIndex].money - cost;
-  G.players[playerIndex].buildings.push(G.cardsontable.shift());
+  G.players[playerIndex].spentMoney = cost;
+
+  const newCard = G.cardsontable.shift();
+
+  G.players[playerIndex].newCard = newCard;
+  G.players[playerIndex].buildings.push(newCard);
 }
 
 function DealBuildingCards(G: IG, ctx: Ctx){
@@ -117,20 +122,18 @@ function AllPlayersHaveSelected(G): boolean {
       == G.players.length;
 }
 
-function RemoveSpentBuildingCard(buildings:ICard[], selectedCard:ICard){
-  buildings.splice(
-    buildings.findIndex((card) => (card.value === selectedCard.value)), 1
-  )
-  return buildings;
-}
-
 function AwardMoneyCard(player:IPlayer, cardToAward:ICard){
+  const cardIndex = player.buildings.findIndex((card) => (card.value === player.selectedCard.value));
+  const spentCard = player.buildings.splice(cardIndex, 1);
+
   return {
     ...player,
     //Give lowest money to lowest buidling
+    newCard: cardToAward,
     checks: [...player.checks, cardToAward],
     //Remove buildings from players
-    buildings: RemoveSpentBuildingCard(player.buildings, player.selectedCard),
+    spentCard: spentCard.shift(),
+    buidlings: player.buildings,
     //Unset selected
     selectedCard: null
   }

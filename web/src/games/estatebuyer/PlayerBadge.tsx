@@ -14,52 +14,11 @@ export interface IPlayerBadgeProps {
   color: string;
   round: number;
   showBid: boolean;
-  incomingCards: ICard[];
-  spentCards: ICard[];
+  newCard?: ICard;
+  spentCard?: ICard;
 }
 
-export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCardRound?:ICard[], spentCardRound?:ICard[]}> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            newCardRound: [],
-            spentCardRound: [],
-        };
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const newCards = [...this.props.incomingCards].filter(
-            (newcard) => (prevProps.incomingCards.find(
-                    (oldcard) => (oldcard.number == newcard.number)
-                ) == undefined
-            )
-        );
-
-        //this is weird, but if one acquires a card at the end of the last round, the round may advance before the UI registers
-        const roundModifier = (this.props.score.bid == 0 && this.props.score.passed == false) ? -1 : 0;
-        
-        if(newCards.length > 0){
-            const newCard = newCards.shift();
-            let newCardState = this.state.newCardRound;
-            newCardState[this.props.round+roundModifier] = newCard;
-            this.setState({newCardRound: newCardState});
-        }
-        
-        const spentCards = [...prevProps.spentCards].filter(
-            (newcard) => (this.props.spentCards.find(
-                    (oldcard) => (oldcard.number == newcard.number)
-                ) == undefined
-            )
-        );
-
-        if(spentCards.length > 0){
-            const spentCard = spentCards.shift();
-            let spentCardState = this.state.spentCardRound;
-            spentCardState[this.props.round+roundModifier] = spentCard;
-            this.setState({spentCardRound: spentCardState});
-        }
-    }
-
+export class PlayerBadge extends React.Component<IPlayerBadgeProps, {}> {
     render() {
         const borderColor = this.props.color ?? 'white';
         const cname = [
@@ -133,29 +92,21 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCardRoun
               {this._maybeRenderNewCard()}
             </div>
         );
-  }
-    _getLastCard(round:number, hand:any[]){
-        if (round <= 0){
-            return null;
-        }
-
-        if (hand[round] === undefined){
-            return this._getLastCard(round - 1, hand);
-        }
-
-        return hand[round];
     }
 
-    _getLastSpentCard(round:number){
-        return this._getLastCard(round, this.state.spentCardRound);
-    }
+    _maybeRenderSpentCard(){
+        if (!('spentCard' in this.props)){
+            return;
+        }
 
-  _maybeRenderSpentCard(){
-        const spentCard:any = this._getLastSpentCard(this.props.round);
+        const spentCard:any = this.props.spentCard;
 
         if (spentCard == null){
             return;
         }
+
+        console.log("Spent:", this.props.spentCard);
+        
 
         const ComponentTag:any = spentCard.building ? BuildingCardComponent : MoneyCardComponent;
 
@@ -167,7 +118,11 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCardRoun
     }
 
     _maybeRenderSpent(){
-        const spentCard:any = this._getLastSpentCard(this.props.round);
+        if (!('spentCard' in this.props)){
+            return;
+        }
+
+        const spentCard:any = this.props.spentCard;
 
         if (spentCard == null){
             return;
@@ -188,12 +143,12 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCardRoun
         )
     }
 
-    _getLastNewCard(round:number){
-        return this._getLastCard(round, this.state.newCardRound);
-    }
+    _maybeRenderNewCard(){
+        if (!('newCard' in this.props)){
+            return;
+        }
 
-  _maybeRenderNewCard(){
-        const newCard:any = this._getLastNewCard(this.props.round);
+        const newCard:any = this.props.newCard;
 
         if (newCard == null){
             return;
@@ -209,7 +164,11 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {newCardRoun
     }
 
   _maybeRenderAward(){
-    const newCard:any = this._getLastNewCard(this.props.round);
+    if (!('newCard' in this.props)){
+        return;
+    }
+
+    const newCard:any = this.props.newCard;
 
     if (newCard == null){
         return;

@@ -7,4 +7,7 @@ export default interface IPlayer {
   money: number;
   buildings: ICard[];
   checks: ICard[];
+  newCard?: ICard;
+  spentCard?: ICard;
+  spentMoney?: number;
 }
