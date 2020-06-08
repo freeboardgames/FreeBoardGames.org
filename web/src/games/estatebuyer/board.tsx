@@ -43,9 +43,6 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
   }
   
   render() {
-    //console.log(this.props.ctx);
-    //console.log(this.props.G);
-
     if (this.props.ctx.gameover) {
       if (this.state.gameOverPrepared == 0){
         this.prepareGameOver();
@@ -146,7 +143,6 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
   }
 
   _selectCard(playerIndex:number, i:number) {
-    console.log("Player "+(playerIndex+1)+" selected building: ", i);
     this.props.moves.MoveSelectBuilding(playerIndex, i);
   }
 
