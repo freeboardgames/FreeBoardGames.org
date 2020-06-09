@@ -6,7 +6,7 @@ import { GameMode } from 'gamesShared/definitions/mode';
 import { TeamColor } from './definitions';
 import { chooseCard } from './util';
 
-function render(client: Client, state: Any, gameOver = false) {
+function render(client: Client, state: any, gameOver = false) {
   return Enzyme.shallow(
     <PlayBoard
       G={state.G}
@@ -15,6 +15,7 @@ function render(client: Client, state: Any, gameOver = false) {
       moves={client.moves}
       playerID={'0'}
       isActive={true}
+      isHost={false}
       gameArgs={{
         gameCode: 'secretcodes',
         mode: GameMode.LocalFriend,
