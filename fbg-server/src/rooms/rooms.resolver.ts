@@ -36,6 +36,12 @@ export class RoomsResolver {
 
   @Subscription((returns) => Room)
   roomMutated(@Args({ name: 'roomId', type: () => String }) roomId: string) {
-    return this.pubSub.asyncIterator(`room/${roomId}`);
+    const iterator = this.pubSub.asyncIterator(`room/${roomId}`);
+    // https://github.com/apollographql/graphql-subscriptions/blob/master/src/pubsub-async-iterator.ts#L59
+    iterator.return = (whatIsThis?: unknown) => {
+      console.log('onDisconnect', whatIsThis);
+      return Promise.resolve({ value: undefined, done: true });
+    };
+    return iterator;
   }
 }
