@@ -39,6 +39,5 @@ export interface IG {
 
 export enum Phases {
   lobby = 'lobby',
-  giveClue = 'giveClue',
   guess = 'guess',
 }

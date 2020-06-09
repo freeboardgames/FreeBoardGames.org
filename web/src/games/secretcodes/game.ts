@@ -4,7 +4,6 @@ import { words } from './constants';
 import { Card, CardColor, IG, Phases, TeamColor } from './definitions';
 import {
   chooseCard,
-  clueGiven,
   getActivePlayersWithoutSpymaster,
   getCurrentTeam,
   getOtherTeam,
@@ -43,7 +42,7 @@ const GameConfig: Game<IG> = {
   playerView: (G: IG, ctx: Ctx, playerID: string): any => {
     if (ctx.gameover) return G;
     if (playerID === null) return G;
-    if (ctx.phase !== Phases.giveClue && ctx.phase !== Phases.guess) return G;
+    if (ctx.phase !== Phases.guess) return G;
     if (playerID == G.teams[0].spymasterID || playerID == G.teams[1].spymasterID) return G;
 
     const { cards } = G;
@@ -69,29 +68,15 @@ const GameConfig: Game<IG> = {
         startGame,
       },
 
-      next: Phases.giveClue,
+      next: Phases.guess,
 
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
     },
 
-    [Phases.giveClue]: {
-      next: Phases.guess,
-      turn: {
-        order: {
-          first: () => 0,
-          next: () => 0,
-          playOrder: (G: IG): string[] => [getCurrentTeam(G).spymasterID],
-        },
-      },
-      moves: {
-        clueGiven,
-      },
-    },
-
     [Phases.guess]: {
-      next: Phases.giveClue,
+      next: Phases.guess,
       turn: {
         order: {
           first: () => 0,
