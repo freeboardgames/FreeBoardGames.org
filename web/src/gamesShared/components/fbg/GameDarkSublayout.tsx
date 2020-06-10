@@ -90,7 +90,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
       <div>
         <div
           style={{
-            position: 'fixed',
+            display: 'inline-block',
             top: '0',
             width: '100%',
             zIndex: 1,
@@ -116,13 +116,11 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
         </div>
         <div
           style={{
-            position: 'fixed',
+            position: 'relative',
             width: '100%',
             maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
             color: 'white',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            margin: 'auto',
           }}
         >
           {this.props.children}
