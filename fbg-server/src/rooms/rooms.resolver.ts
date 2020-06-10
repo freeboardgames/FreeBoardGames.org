@@ -7,10 +7,17 @@ import { CurrentUser, GqlAuthGuard } from '../users/gql-auth-guard';
 import { UseGuards } from '@nestjs/common';
 import { roomEntityToRoom } from './RoomUtil';
 import { PubSub } from 'graphql-subscriptions';
+import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from '../users/definitions';
+import { withCancel } from '../util/GqlUtil';
 
 @Resolver((of) => Room)
 export class RoomsResolver {
-  constructor(private roomsService: RoomsService, private pubSub: PubSub) {}
+  constructor(
+    private roomsService: RoomsService,
+    private pubSub: PubSub,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Mutation((returns) => NewRoom)
   @UseGuards(GqlAuthGuard)
@@ -35,13 +42,17 @@ export class RoomsResolver {
   }
 
   @Subscription((returns) => Room)
-  roomMutated(@Args({ name: 'roomId', type: () => String }) roomId: string) {
-    const iterator = this.pubSub.asyncIterator(`room/${roomId}`);
-    // https://github.com/apollographql/graphql-subscriptions/blob/master/src/pubsub-async-iterator.ts#L59
-    iterator.return = (whatIsThis?: unknown) => {
-      console.log('onDisconnect', whatIsThis);
-      return Promise.resolve({ value: undefined, done: true });
-    };
-    return iterator;
+  roomMutated(
+    @Args({ name: 'roomId', type: () => String }) roomId: string,
+    @Args({ name: 'jwt', type: () => String, nullable: true }) jwt?: string,
+  ) {
+    let userId;
+    if (jwt) {
+      const jwtPayload: JwtPayload = this.jwtService.decode(jwt) as any;
+      userId = jwtPayload.userId;
+    }
+    return withCancel(this.pubSub.asyncIterator(`room/${roomId}`), () => {
+      console.log(`onDisconnect, userId: ${userId}`);
+    });
   }
 }
