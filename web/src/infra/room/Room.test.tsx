@@ -88,7 +88,7 @@ describe('Room Lobby', () => {
     const subscriptionMock = {
       request: {
         query: ROOM_SUBSCRIPTION,
-        variables: {},
+        variables: {"jwt": "Bob"},
       },
       result: {
         data: { roomMutated: result },

@@ -3,20 +3,18 @@ import { Room } from './gql/Room.gql';
 import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { NewRoom } from './gql/NewRoom.gql';
 import { RoomsService } from './rooms.service';
-import { CurrentUser, GqlAuthGuard } from '../users/gql-auth-guard';
+import { CurrentUser, GqlAuthGuard } from '../internal/auth/GqlAuthGuard';
 import { UseGuards } from '@nestjs/common';
 import { roomEntityToRoom } from './RoomUtil';
 import { PubSub } from 'graphql-subscriptions';
-import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from '../users/definitions';
-import { withCancel } from '../util/GqlUtil';
+import { SubscriptionAuth } from '../internal/auth/SubscriptionAuth';
 
 @Resolver((of) => Room)
 export class RoomsResolver {
   constructor(
     private roomsService: RoomsService,
     private pubSub: PubSub,
-    private readonly jwtService: JwtService,
+    private subscriptionAuth: SubscriptionAuth,
   ) {}
 
   @Mutation((returns) => NewRoom)
@@ -46,13 +44,9 @@ export class RoomsResolver {
     @Args({ name: 'roomId', type: () => String }) roomId: string,
     @Args({ name: 'jwt', type: () => String, nullable: true }) jwt?: string,
   ) {
-    let userId;
-    if (jwt) {
-      const jwtPayload: JwtPayload = this.jwtService.decode(jwt) as any;
-      userId = jwtPayload.userId;
-    }
-    return withCancel(this.pubSub.asyncIterator(`room/${roomId}`), () => {
-      console.log(`onDisconnect, userId: ${userId}`);
+    const iterator = this.pubSub.asyncIterator(`room/${roomId}`);
+    return this.subscriptionAuth.onUserDisconnect(iterator, jwt, (userId) => {
+      console.log(`onUserDisconnect, userId: ${userId}`);
     });
   }
 }
