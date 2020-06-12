@@ -47,7 +47,7 @@ export class RoomsService {
     roomEntity: RoomEntity,
   ) {
     await queryRunner.manager.save(RoomEntity, roomEntity);
-    await this.addMembership(queryRunner, userId, roomEntity, true);
+    await this.addMembership(queryRunner, userId, roomEntity);
   }
 
   /** Checks-in user and if room gets full starts the match. Returns match id, if any. */
@@ -102,7 +102,6 @@ export class RoomsService {
     queryRunner: QueryRunner,
     userId: number,
     room: RoomEntity,
-    isCreator?: boolean,
   ) {
     const memberships = room.userMemberships || [];
     if (memberships.find((m) => m.user.id === userId)) {
@@ -117,7 +116,7 @@ export class RoomsService {
     membership.user = await this.usersService.getUserEntity(userId);
     membership.room = room;
     membership.lastSeen = Date.now();
-    membership.isCreator = isCreator;
+    membership.isCreator = memberships.length === 0;
     await queryRunner.manager.save(membership);
     room.userMemberships = [...memberships, membership];
     await this.notifyRoomUpdate(room);
@@ -129,16 +128,23 @@ export class RoomsService {
     room: RoomEntity,
   ) {
     const memberships = room.userMemberships || [];
-    if (!memberships.find((m) => m.user.id === userId)) {
+    const userMembership = memberships.find((m) => m.user.id === userId);
+    if (!userMembership) {
       // user not in room
       return;
     }
-    // TODO: what do we do if this is the last user to leave the room?
     const newMemberships = room.userMemberships.filter(
       (membership) => membership.user.id !== userId,
     );
+    if (userMembership.isCreator && newMemberships.length > 0) {
+      newMemberships[0].isCreator = true;
+      await queryRunner.manager.save(newMemberships[0]);
+    }
     room.userMemberships = [...newMemberships];
-    await queryRunner.manager.save(room);
+    await queryRunner.manager.delete(RoomMembershipEntity, {
+      user: { id: userId },
+      room: { id: room.id },
+    });
     await this.notifyRoomUpdate(room);
   }
 }

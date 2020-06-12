@@ -132,6 +132,61 @@ describe('RoomsService', () => {
     expect(newRoom.userMemberships.length).toEqual(2);
   });
 
+  it('should leaveRoom successfully', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.joinRoom(aliceId, room.id);
+    await service.leaveRoom(aliceId, room.id);
+    const newRoom = await service.getRoomEntity(room.id);
+    expect(newRoom.userMemberships.length).toEqual(1);
+  });
+
+  it('should give ownership to next person on the room after leaving', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.joinRoom(aliceId, room.id);
+    await service.leaveRoom(bobId, room.id);
+    const newRoom = await service.getRoomEntity(room.id);
+    expect(newRoom.userMemberships.length).toEqual(1);
+    expect(newRoom.userMemberships[0].user.nickname).toEqual('alice');
+    expect(newRoom.userMemberships[0].isCreator).toEqual(true);
+  });
+
+  it('should give ownership to joining person if empty', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.leaveRoom(bobId, room.id);
+    await service.joinRoom(aliceId, room.id);
+    const newRoom = await service.getRoomEntity(room.id);
+    expect(newRoom.userMemberships.length).toEqual(1);
+    expect(newRoom.userMemberships[0].user.nickname).toEqual('alice');
+    expect(newRoom.userMemberships[0].isCreator).toEqual(true);
+  });
+
   it('should give the match id after creation', async () => {
     const promiseMock = jest
       .fn()

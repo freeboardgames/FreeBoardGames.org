@@ -44,6 +44,7 @@ export class RoomsResolver {
     @Args({ name: 'roomId', type: () => String }) roomId: string,
     @Args({ name: 'jwt', type: () => String, nullable: true }) jwt?: string,
   ) {
+    console.log('Start subscription!');
     const iterator = this.pubSub.asyncIterator(`room/${roomId}`);
     return this.subscriptionAuth.onUserDisconnect(iterator, jwt, (userId) => {
       this.roomsService.leaveRoom(userId, roomId);
