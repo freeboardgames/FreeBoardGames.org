@@ -46,7 +46,7 @@ export class RoomsResolver {
   ) {
     const iterator = this.pubSub.asyncIterator(`room/${roomId}`);
     return this.subscriptionAuth.onUserDisconnect(iterator, jwt, (userId) => {
-      console.log(`onUserDisconnect, userId: ${userId}`);
+      this.roomsService.leaveRoom(userId, roomId);
     });
   }
 }

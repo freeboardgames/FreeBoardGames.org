@@ -62,6 +62,15 @@ export class RoomsService {
     });
   }
 
+  /** Removes user from room. */
+  async leaveRoom(userId: number, roomId: string): Promise<RoomEntity> {
+    return await inTransaction(this.connection, async (queryRunner) => {
+      const room = await this.getRoomEntity(roomId);
+      await this.removeMembership(queryRunner, userId, room);
+      return room;
+    });
+  }
+
   /** Gets a raw RoomEntity, with user information populated. */
   async getRoomEntity(roomId: string): Promise<RoomEntity> {
     const roomEntity = await this.roomRepository
@@ -93,13 +102,15 @@ export class RoomsService {
     queryRunner: QueryRunner,
     userId: number,
     room: RoomEntity,
-    isCreator: boolean = false,
+    isCreator?: boolean,
   ) {
     const memberships = room.userMemberships || [];
     if (memberships.find((m) => m.user.id === userId)) {
+      // user already in room
       return;
     }
     if (memberships.length >= room.capacity) {
+      // room at capacity
       return;
     }
     const membership = new RoomMembershipEntity();
@@ -109,6 +120,25 @@ export class RoomsService {
     membership.isCreator = isCreator;
     await queryRunner.manager.save(membership);
     room.userMemberships = [...memberships, membership];
+    await this.notifyRoomUpdate(room);
+  }
+
+  private async removeMembership(
+    queryRunner: QueryRunner,
+    userId: number,
+    room: RoomEntity,
+  ) {
+    const memberships = room.userMemberships || [];
+    if (!memberships.find((m) => m.user.id === userId)) {
+      // user not in room
+      return;
+    }
+    // TODO: what do we do if this is the last user to leave the room?
+    const newMemberships = room.userMemberships.filter(
+      (membership) => membership.user.id !== userId,
+    );
+    room.userMemberships = [...newMemberships];
+    await queryRunner.manager.save(room);
     await this.notifyRoomUpdate(room);
   }
 }
