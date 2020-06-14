@@ -3,14 +3,19 @@ import { Room } from './gql/Room.gql';
 import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { NewRoom } from './gql/NewRoom.gql';
 import { RoomsService } from './rooms.service';
-import { CurrentUser, GqlAuthGuard } from '../users/gql-auth-guard';
+import { CurrentUser, GqlAuthGuard } from '../internal/auth/GqlAuthGuard';
 import { UseGuards } from '@nestjs/common';
 import { roomEntityToRoom } from './RoomUtil';
 import { PubSub } from 'graphql-subscriptions';
+import { SubscriptionAuth } from '../internal/auth/SubscriptionAuth';
 
 @Resolver((of) => Room)
 export class RoomsResolver {
-  constructor(private roomsService: RoomsService, private pubSub: PubSub) {}
+  constructor(
+    private roomsService: RoomsService,
+    private pubSub: PubSub,
+    private subscriptionAuth: SubscriptionAuth,
+  ) {}
 
   @Mutation((returns) => NewRoom)
   @UseGuards(GqlAuthGuard)
@@ -35,7 +40,14 @@ export class RoomsResolver {
   }
 
   @Subscription((returns) => Room)
-  roomMutated(@Args({ name: 'roomId', type: () => String }) roomId: string) {
-    return this.pubSub.asyncIterator(`room/${roomId}`);
+  roomMutated(
+    @Args({ name: 'roomId', type: () => String }) roomId: string,
+    @Args({ name: 'jwt', type: () => String, nullable: true }) jwt?: string,
+  ) {
+    console.log('Start subscription!');
+    const iterator = this.pubSub.asyncIterator(`room/${roomId}`);
+    return this.subscriptionAuth.onUserDisconnect(iterator, jwt, (userId) => {
+      this.roomsService.leaveRoom(userId, roomId);
+    });
   }
 }

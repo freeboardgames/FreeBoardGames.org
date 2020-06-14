@@ -3,16 +3,16 @@ import { User } from './gql/User.gql';
 import { NewUserInput } from './gql/NewUserInput.gql';
 import { NewUser } from './gql/NewUser.gql';
 import { UsersService } from './users.service';
-import { JwtPayload } from './definitions';
-import { JwtService } from '@nestjs/jwt';
-import { CurrentUser, GqlAuthGuard } from './gql-auth-guard';
+import { JwtPayload } from '../internal/auth/definitions';
+import { CurrentUser, GqlAuthGuard } from '../internal/auth/GqlAuthGuard';
 import { UseGuards } from '@nestjs/common';
+import { FbgJwtService } from '../internal/auth/FbgJwtService';
 
 @Resolver((of) => User)
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
-    private readonly jwtService: JwtService,
+    private readonly fbgJwtService: FbgJwtService,
   ) {}
 
   @Mutation((returns) => NewUser)
@@ -20,8 +20,7 @@ export class UsersResolver {
     @Args({ name: 'user', type: () => NewUserInput }) userInput: NewUserInput,
   ) {
     const userId = await this.usersService.newUser(userInput);
-    const payload: JwtPayload = { userId };
-    const jwtToken = this.jwtService.sign(payload);
+    const jwtToken = this.fbgJwtService.getToken({ userId });
     const newUser: NewUser = { jwtToken };
     return newUser;
   }

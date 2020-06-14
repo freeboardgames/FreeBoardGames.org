@@ -47,7 +47,7 @@ export class RoomsService {
     roomEntity: RoomEntity,
   ) {
     await queryRunner.manager.save(RoomEntity, roomEntity);
-    await this.addMembership(queryRunner, userId, roomEntity, true);
+    await this.addMembership(queryRunner, userId, roomEntity);
   }
 
   /** Checks-in user and if room gets full starts the match. Returns match id, if any. */
@@ -58,6 +58,15 @@ export class RoomsService {
         return room;
       }
       await this.addMembership(queryRunner, userId, room);
+      return room;
+    });
+  }
+
+  /** Removes user from room. */
+  async leaveRoom(userId: number, roomId: string): Promise<RoomEntity> {
+    return await inTransaction(this.connection, async (queryRunner) => {
+      const room = await this.getRoomEntity(roomId);
+      await this.removeMembership(queryRunner, userId, room);
       return room;
     });
   }
@@ -93,22 +102,49 @@ export class RoomsService {
     queryRunner: QueryRunner,
     userId: number,
     room: RoomEntity,
-    isCreator: boolean = false,
   ) {
     const memberships = room.userMemberships || [];
     if (memberships.find((m) => m.user.id === userId)) {
+      // user already in room
       return;
     }
     if (memberships.length >= room.capacity) {
+      // room at capacity
       return;
     }
     const membership = new RoomMembershipEntity();
     membership.user = await this.usersService.getUserEntity(userId);
     membership.room = room;
     membership.lastSeen = Date.now();
-    membership.isCreator = isCreator;
+    membership.isCreator = memberships.length === 0;
     await queryRunner.manager.save(membership);
     room.userMemberships = [...memberships, membership];
+    await this.notifyRoomUpdate(room);
+  }
+
+  private async removeMembership(
+    queryRunner: QueryRunner,
+    userId: number,
+    room: RoomEntity,
+  ) {
+    const memberships = room.userMemberships || [];
+    const userMembership = memberships.find((m) => m.user.id === userId);
+    if (!userMembership) {
+      // user not in room
+      return;
+    }
+    const newMemberships = room.userMemberships.filter(
+      (membership) => membership.user.id !== userId,
+    );
+    if (userMembership.isCreator && newMemberships.length > 0) {
+      newMemberships[0].isCreator = true;
+      await queryRunner.manager.save(newMemberships[0]);
+    }
+    room.userMemberships = [...newMemberships];
+    await queryRunner.manager.delete(RoomMembershipEntity, {
+      user: { id: userId },
+      room: { id: room.id },
+    });
     await this.notifyRoomUpdate(room);
   }
 }

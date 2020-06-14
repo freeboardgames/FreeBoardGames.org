@@ -22,8 +22,8 @@ import { Subscription } from '@apollo/react-components';
 import { gql } from 'apollo-boost';
 
 export const ROOM_SUBSCRIPTION = gql`
-  subscription RoomMutated($roomId: String!) {
-    roomMutated(roomId: $roomId) {
+  subscription RoomMutated($roomId: String!, $jwt: String) {
+    roomMutated(roomId: $roomId, jwt: $jwt) {
       gameCode
       capacity
       isPublic
@@ -86,7 +86,10 @@ class Room extends React.Component<IRoomProps, IRoomState> {
         {this.getNicknamePrompt()}
         <GameCard game={gameDef} />
         {this._getGameSharing()}
-        <Subscription subscription={ROOM_SUBSCRIPTION} variables={{ roomId: this._roomId() }}>
+        <Subscription
+          subscription={ROOM_SUBSCRIPTION}
+          variables={{ roomId: this._roomId(), jwt: LobbyService.getUserToken() }}
+        >
           {(resp) => {
             const room = resp.data?.roomMutated || this.state.roomMetadata;
             if (room.matchId) {

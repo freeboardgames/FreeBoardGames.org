@@ -6,11 +6,13 @@ import { RoomEntity } from './db/Room.entity';
 import { UsersModule } from '../users/users.module';
 import { RoomsResolver } from './rooms.resolver';
 import { PubSub } from 'graphql-subscriptions';
+import { AuthModule } from '../internal/auth/auth.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([RoomMembershipEntity, RoomEntity]),
     UsersModule,
+    AuthModule,
   ],
   providers: [RoomsResolver, RoomsService, PubSub],
   exports: [RoomsService],
