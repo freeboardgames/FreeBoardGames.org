@@ -9,6 +9,7 @@ import { inTransaction } from '../util/TypeOrmUtil';
 import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { PubSub } from 'graphql-subscriptions';
 import { roomEntityToRoom } from './RoomUtil';
+import { LobbyService } from './lobby.service';
 
 @Injectable()
 export class RoomsService {
@@ -16,6 +17,7 @@ export class RoomsService {
     @InjectRepository(RoomEntity)
     private roomRepository: Repository<RoomEntity>,
     private usersService: UsersService,
+    private lobbyService: LobbyService,
     private connection: Connection,
     private pubSub: PubSub,
   ) {}
@@ -120,6 +122,9 @@ export class RoomsService {
     await queryRunner.manager.save(membership);
     room.userMemberships = [...memberships, membership];
     await this.notifyRoomUpdate(room);
+    if (room.isPublic) {
+      await this.lobbyService.notifyLobbyUpdate();
+    }
   }
 
   private async removeMembership(
@@ -146,5 +151,8 @@ export class RoomsService {
       room: { id: room.id },
     });
     await this.notifyRoomUpdate(room);
+    if (room.isPublic) {
+      await this.lobbyService.notifyLobbyUpdate();
+    }
   }
 }

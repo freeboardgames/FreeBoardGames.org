@@ -4,6 +4,10 @@ import { userEntityToUser } from '../users/UserUtil';
 import { RoomMembershipEntity } from './db/RoomMembership.entity';
 import { RoomMembership } from './gql/RoomMembership.gql';
 
+export function lobbyToGql(lobby: RoomEntity[]): Room[] {
+  return lobby.map(roomEntityToRoom);
+}
+
 export function roomEntityToRoom(roomEntity: RoomEntity): Room {
   return {
     capacity: roomEntity.capacity,
@@ -22,6 +26,8 @@ export function roomMembershipEntityToRoomMembership(
 ): RoomMembership {
   return {
     isCreator: roomMembershipEntity.isCreator,
-    user: userEntityToUser(roomMembershipEntity.user),
+    user: roomMembershipEntity.user
+      ? userEntityToUser(roomMembershipEntity.user)
+      : undefined,
   };
 }
