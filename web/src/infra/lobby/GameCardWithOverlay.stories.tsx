@@ -2,7 +2,7 @@ import { GameCardWithOverlay } from './GameCardWithOverlay';
 import { IGameDef } from 'gamesShared/definitions/game';
 
 export default {
-  title: 'Infrastructure/Infra/Lobby/GameCardWithOverlay',
+  title: 'Infrastructure/Lobby/GameCardWithOverlay',
 };
 
 const GAME_DEF_TEST: IGameDef = {

@@ -2,6 +2,7 @@ import React from 'react';
 import { IGameDef } from 'gamesShared/definitions/game';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 interface IGameCardProps {
   game: IGameDef;
@@ -105,7 +106,9 @@ export class GameCardWithOverlay extends React.Component<IGameCardProps, {}> {
             left: '8px',
           }}
         >
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>{this._getRows(rooms)}</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+            {this._getRows(rooms)}
+          </div>
         </div>
         {navigateButton}
       </div>
@@ -120,10 +123,13 @@ export class GameCardWithOverlay extends React.Component<IGameCardProps, {}> {
         <WhiteTextTypography gutterBottom={false} variant="h6" style={{ flex: '30' }}>
           {row.fullness}
         </WhiteTextTypography>
-        <WhiteTextTypography gutterBottom={false} variant="h6" style={{ flex: '20' }} onClick={row.onJoin(row.roomID)}>
-          <a>
-            <b>Join</b>
-          </a>
+        <WhiteTextTypography
+          gutterBottom={false}
+          variant="h6"
+          style={{ flex: '20', cursor: 'pointer' }}
+          onClick={row.onJoin(row.roomID)}
+        >
+          <b>Join</b>
         </WhiteTextTypography>
         <div style={{ flexBasis: '100%', height: '0' }}></div> {/*line break*/}
       </React.Fragment>
