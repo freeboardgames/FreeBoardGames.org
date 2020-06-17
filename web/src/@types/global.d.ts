@@ -15,4 +15,4 @@ declare global {
   const setTabletViewport: () => Promise<void>;
 }
 
-export = PuppeteerEnvironment;
+export default PuppeteerEnvironment;
