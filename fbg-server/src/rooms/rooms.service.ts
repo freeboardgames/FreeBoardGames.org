@@ -68,6 +68,9 @@ export class RoomsService {
   async leaveRoom(userId: number, roomId: string): Promise<RoomEntity> {
     return await inTransaction(this.connection, async (queryRunner) => {
       const room = await this.getRoomEntity(roomId);
+      if (room.match) {
+        return room;
+      }
       await this.removeMembership(queryRunner, userId, room);
       return room;
     });
