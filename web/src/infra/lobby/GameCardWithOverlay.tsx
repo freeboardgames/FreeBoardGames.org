@@ -2,9 +2,8 @@ import React from 'react';
 import { IGameDef } from 'gamesShared/definitions/game';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 
-interface IGameCardProps {
+interface Props {
   game: IGameDef;
   isLink?: boolean;
 }
@@ -13,7 +12,6 @@ interface Row {
   roomName: string; // fooRoom
   fullness: string; // 1/2
   roomID: string;
-  onJoin: (roomID: string) => () => void;
 }
 
 const WhiteTextTypography = withStyles({
@@ -22,7 +20,7 @@ const WhiteTextTypography = withStyles({
   },
 })(Typography);
 
-export class GameCardWithOverlay extends React.Component<IGameCardProps, {}> {
+export class GameCardWithOverlay extends React.Component<Props, {}> {
   render() {
     let navigateButton = null;
     const image = this.props.game.imageURL;
@@ -55,19 +53,16 @@ export class GameCardWithOverlay extends React.Component<IGameCardProps, {}> {
         roomName: 'Monkey',
         fullness: '1/2',
         roomID: 'foo1',
-        onJoin: (roomID: string) => () => console.log('join', roomID),
       },
       {
         roomName: 'Ferret',
         fullness: '2/3',
         roomID: 'foo2',
-        onJoin: (roomID: string) => () => console.log('join', roomID),
       },
       {
         roomName: 'Elephant',
         fullness: '2/3',
         roomID: 'foo3',
-        onJoin: (roomID: string) => () => console.log('join', roomID),
       },
     ];
     return (
@@ -85,9 +80,7 @@ export class GameCardWithOverlay extends React.Component<IGameCardProps, {}> {
         </div>
         <div
           style={{
-            // ...baseBadgeStyle,
             position: 'absolute',
-            // height: '250px',
             backgroundColor: 'black',
             width: '100%',
             opacity: '75%',
@@ -97,9 +90,7 @@ export class GameCardWithOverlay extends React.Component<IGameCardProps, {}> {
         ></div>
         <div
           style={{
-            // ...baseBadgeStyle,
             position: 'absolute',
-            // height: '250px',
             width: '100%',
             height: '40%',
             bottom: '0px',
@@ -127,7 +118,7 @@ export class GameCardWithOverlay extends React.Component<IGameCardProps, {}> {
           gutterBottom={false}
           variant="h6"
           style={{ flex: '20', cursor: 'pointer' }}
-          onClick={row.onJoin(row.roomID)}
+          onClick={() => console.log(row.roomID)}
         >
           <b>Join</b>
         </WhiteTextTypography>
