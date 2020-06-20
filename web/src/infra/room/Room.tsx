@@ -20,6 +20,7 @@ import { Dispatch } from 'redux';
 import Router from 'next/router';
 import { Subscription } from '@apollo/react-components';
 import { gql } from 'apollo-boost';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!, $jwt: String) {
@@ -52,6 +53,7 @@ interface IRoomState {
   nameTextField?: string;
   userId?: number;
   loading: boolean;
+  partialLoading: boolean;
   error: string;
   editingName: boolean;
 }
@@ -60,6 +62,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   state: IRoomState = {
     error: '',
     loading: true,
+    partialLoading: false,
     editingName: false,
   };
 
@@ -91,6 +94,9 @@ class Room extends React.Component<IRoomProps, IRoomState> {
           variables={{ roomId: this._roomId(), jwt: LobbyService.getUserToken() }}
         >
           {(resp) => {
+            if (this.state.partialLoading) {
+              return <CircularProgress style={{ paddingTop: '16px' }} />;
+            }
             const room = resp.data?.roomMutated || this.state.roomMetadata;
             if (room.matchId) {
               this.redirectToMatch(room.matchId);
@@ -170,13 +176,13 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   }
 
   _startMatch = () => {
-    this.setState({ loading: true });
+    this.setState({ partialLoading: true });
     LobbyService.startMatch(this.props.dispatch, this._roomId()).then(
       (matchId) => {
         this.redirectToMatch(matchId);
       },
       () => {
-        this.setState({ loading: false, error: 'Failed to start match' });
+        this.setState({ partialLoading: false, error: 'Failed to start match' });
       },
     );
   };

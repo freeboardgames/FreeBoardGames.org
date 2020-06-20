@@ -149,6 +149,35 @@ describe('RoomsService', () => {
     expect(newRoom.userMemberships.length).toEqual(1);
   });
 
+  it('should not leaveRoom after match started', async () => {
+    const promiseMock = jest
+      .fn()
+      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
+      )
+      .mockReturnValueOnce(
+        Promise.resolve({ data: { playerCredentials: '2ndSecret' } }),
+      );
+    jest
+      .spyOn(httpService, 'post')
+      .mockReturnValue({ toPromise: promiseMock } as any);
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 2,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.joinRoom(aliceId, room.id);
+    await matchService.startMatch(room.id, bobId);
+    const leave = await service.leaveRoom(aliceId, room.id);
+    expect(leave.userMemberships.length).toEqual(2);
+  });
+
   it('should give ownership to next person on the room after leaving', async () => {
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const room = await service.newRoom(
