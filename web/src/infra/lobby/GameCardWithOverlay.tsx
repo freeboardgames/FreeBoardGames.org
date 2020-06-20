@@ -26,13 +26,13 @@ export class GameCardWithOverlay extends React.Component<Props, {}> {
     const image = this.props.game.imageURL;
     const mainDivStyle: React.CSSProperties = {
       position: 'relative',
-      height: '250px',
+      height: '242px',
       width: '100%',
       backgroundPosition: 'left center',
       backgroundImage: `url(${image})`,
       backgroundSize: 'cover',
       boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-      borderRadius: '8px',
+      borderRadius: '16px',
     };
     const baseBadgeStyle: React.CSSProperties = {
       position: 'absolute',
@@ -80,6 +80,7 @@ export class GameCardWithOverlay extends React.Component<Props, {}> {
         </div>
         <div
           style={{
+            borderRadius: '8px',
             position: 'absolute',
             backgroundColor: 'black',
             width: '100%',
@@ -90,6 +91,7 @@ export class GameCardWithOverlay extends React.Component<Props, {}> {
         ></div>
         <div
           style={{
+            borderRadius: '8px',
             position: 'absolute',
             width: '100%',
             height: '40%',

@@ -1,5 +1,6 @@
 import { GameCardWithOverlay } from './GameCardWithOverlay';
 import { IGameDef } from 'gamesShared/definitions/game';
+import { MobileCarousel } from 'infra/common/components/carousel/MobileCarousel';
 
 export default {
   title: 'Infrastructure/Lobby/GameCardWithOverlay',
@@ -26,4 +27,24 @@ export const Example = () => (
   <div style={{ textDecoration: 'none', flex: 1, width: '250px', margin: '8px' }}>
     <GameCardWithOverlay game={GAME_DEF_TEST} />
   </div>
+);
+
+export const InCarousel = () => (
+  <MobileCarousel>
+    <div style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
+      <GameCardWithOverlay game={GAME_DEF_TEST} />
+    </div>
+    <div style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
+      <GameCardWithOverlay game={GAME_DEF_TEST} />
+    </div>
+    <div style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
+      <GameCardWithOverlay game={GAME_DEF_TEST} />
+    </div>
+    <div style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
+      <GameCardWithOverlay game={GAME_DEF_TEST} />
+    </div>
+    <div style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
+      <GameCardWithOverlay game={GAME_DEF_TEST} />
+    </div>
+  </MobileCarousel>
 );
