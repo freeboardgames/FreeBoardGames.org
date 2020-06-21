@@ -78,7 +78,7 @@ export class GameCardWithOverlay extends React.Component<Props, {}> {
 
   _getRows = (rows: Row[]) => {
     const rowsComp = rows.map((row, index) => (
-      <tr className={css.row} key={index}>
+      <tr key={index}>
         <td>
           <WhiteTextTypography gutterBottom={false} variant="h6">
             {row.roomName}
