@@ -7,39 +7,43 @@ export default {
 
 const commonStyle = { minWidth: '250px', height: '250px' };
 export const Mobile = () => (
-  <MobileCarousel>
-    <>
-      <div style={{ backgroundColor: 'red', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'yellow', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'green', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'blue', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'gray', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'purple', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'red', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'yellow', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'green', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'blue', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'gray', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'purple', ...commonStyle }}></div>
-    </>
-  </MobileCarousel>
+  <div>
+    <MobileCarousel>
+      <>
+        <div style={{ backgroundColor: 'red', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'yellow', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'green', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'blue', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'gray', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'purple', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'red', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'yellow', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'green', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'blue', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'gray', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'purple', ...commonStyle }}></div>
+      </>
+    </MobileCarousel>
+  </div>
 );
 
 export const Desktop = () => (
-  <DesktopCarousel>
-    <>
-      <div style={{ backgroundColor: 'red', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'yellow', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'green', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'blue', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'gray', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'purple', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'red', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'yellow', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'green', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'blue', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'gray', ...commonStyle }}></div>
-      <div style={{ backgroundColor: 'purple', ...commonStyle }}></div>
-    </>
-  </DesktopCarousel>
+  <div>
+    <DesktopCarousel>
+      <>
+        <div style={{ backgroundColor: 'red', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'yellow', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'green', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'blue', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'gray', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'purple', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'red', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'yellow', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'green', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'blue', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'gray', ...commonStyle }}></div>
+        <div style={{ backgroundColor: 'purple', ...commonStyle }}></div>
+      </>
+    </DesktopCarousel>
+  </div>
 );
