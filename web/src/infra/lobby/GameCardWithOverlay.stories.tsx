@@ -1,4 +1,4 @@
-import { GameCardWithOverlay } from './GameCardWithOverlay';
+import { GameCardWithOverlay, RoomDisplay } from './GameCardWithOverlay';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { MobileCarousel } from 'infra/common/components/carousel/MobileCarousel';
 import { DesktopCarousel } from 'infra/common/components/carousel/DesktopCarousel';
@@ -24,9 +24,54 @@ const GAME_DEF_TEST: IGameDef = {
   maxPlayers: 3,
 };
 
+const ROOMS_EXAMPLE: RoomDisplay[] = [
+  {
+    id: 'foo1',
+    name: 'Monkey',
+    occupancy: 1,
+    capacity: 2,
+  },
+  {
+    id: 'foo2',
+    name: 'Ferret',
+    occupancy: 1,
+    capacity: 2,
+  },
+  {
+    id: 'foo3',
+    name: 'Elephant',
+    occupancy: 2,
+    capacity: 3,
+  },
+  {
+    id: 'foo4',
+    name: 'Horse',
+    occupancy: 1,
+    capacity: 2,
+  },
+  {
+    id: 'foo5',
+    name: 'Dog',
+    occupancy: 1,
+    capacity: 2,
+  },
+  {
+    id: 'foo5',
+    name: 'Cat',
+    occupancy: 2,
+    capacity: 3,
+  },
+];
+
 const example = (
   <div style={{ textDecoration: 'none', flex: 1, minWidth: '250px', width: '250px', margin: '8px' }}>
-    <GameCardWithOverlay game={GAME_DEF_TEST} />
+    <GameCardWithOverlay
+      game={GAME_DEF_TEST}
+      rooms={ROOMS_EXAMPLE}
+      onClick={(roomId) => {
+        alert(`clicked on room ${roomId}`);
+      }}
+    />
   </div>
 );
 

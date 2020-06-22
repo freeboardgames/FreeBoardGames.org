@@ -4,15 +4,18 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import css from './GameCardWithOverlay.css';
 
-interface Props {
+interface GameCardWithOverlayProps {
   game: IGameDef;
+  rooms: RoomDisplay[];
+  onClick: (roomId: string) => void;
   isLink?: boolean;
 }
 
-interface Row {
-  roomName: string; // fooRoom
-  fullness: string; // 1/2
-  roomID: string;
+export interface RoomDisplay {
+  id: string;
+  name: string;
+  occupancy: number;
+  capacity: number;
 }
 
 const WhiteTextTypography = withStyles({
@@ -21,40 +24,8 @@ const WhiteTextTypography = withStyles({
   },
 })(Typography);
 
-export class GameCardWithOverlay extends React.Component<Props, {}> {
+export class GameCardWithOverlay extends React.Component<GameCardWithOverlayProps, {}> {
   render() {
-    const rooms: Row[] = [
-      {
-        roomName: 'Monkey',
-        fullness: '1/2',
-        roomID: 'foo1',
-      },
-      {
-        roomName: 'Ferret',
-        fullness: '2/3',
-        roomID: 'foo2',
-      },
-      {
-        roomName: 'Elephant',
-        fullness: '2/3',
-        roomID: 'foo3',
-      },
-      {
-        roomName: 'Horse',
-        fullness: '1/2',
-        roomID: 'foo4',
-      },
-      {
-        roomName: 'Dog',
-        fullness: '2/3',
-        roomID: 'foo5',
-      },
-      {
-        roomName: 'Cat',
-        fullness: '2/3',
-        roomID: 'foo6',
-      },
-    ];
     return (
       <div
         className={css.wrapper}
@@ -70,23 +41,23 @@ export class GameCardWithOverlay extends React.Component<Props, {}> {
         </div>
         <div className={css.overlay}></div>
         <div className={css.tableWrapper}>
-          <table className={css.table}>{this._getRows(rooms)}</table>
+          <table className={css.table}>{this._getRows(this.props.rooms)}</table>
         </div>
       </div>
     );
   }
 
-  _getRows = (rows: Row[]) => {
-    const rowsComp = rows.map((row, index) => (
+  _getRows(rooms: RoomDisplay[]) {
+    const rowsComp = rooms.map((room, index) => (
       <tr key={index}>
         <td>
           <WhiteTextTypography gutterBottom={false} variant="h6">
-            {row.roomName}
+            {room.name}
           </WhiteTextTypography>
         </td>
         <td>
           <WhiteTextTypography gutterBottom={false} variant="h6">
-            {row.fullness}
+            {room.occupancy}/{room.capacity}
           </WhiteTextTypography>
         </td>
         <td>
@@ -94,7 +65,9 @@ export class GameCardWithOverlay extends React.Component<Props, {}> {
             gutterBottom={false}
             variant="h6"
             style={{ flex: '20', cursor: 'pointer' }}
-            onClick={() => console.log(row.roomID)}
+            onClick={() => {
+              this.props.onClick(room.id);
+            }}
           >
             <b>Join</b>
           </WhiteTextTypography>
@@ -102,5 +75,5 @@ export class GameCardWithOverlay extends React.Component<Props, {}> {
       </tr>
     ));
     return rowsComp;
-  };
+  }
 }
