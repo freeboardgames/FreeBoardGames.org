@@ -8,7 +8,6 @@ interface GameCardWithOverlayProps {
   game: IGameDef;
   rooms: RoomDisplay[];
   onClick: (roomId: string) => void;
-  isLink?: boolean;
 }
 
 export interface RoomDisplay {

@@ -4,7 +4,7 @@ import Header from 'infra/home/Header';
 import { GamesList } from 'infra/common/components/game/GamesList';
 import SEO from 'infra/common/helpers/SEO';
 import Link from 'next/link';
-import { LobbyCarousel } from 'infra/lobby/LobbyCarousel';
+import LobbyCarousel from 'infra/lobby/LobbyCarousel';
 
 export class Home extends React.Component<{}, {}> {
   render() {
