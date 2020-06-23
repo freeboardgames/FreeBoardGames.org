@@ -22,14 +22,34 @@ const LOBBIES_QUERY = gql`
   }
 `;
 
+const LOBBIES_SUBSCRIPTION = gql`
+  subscription SubscribeToLobby {
+    lobbyMutated {
+      rooms {
+        id
+        gameCode
+        capacity
+        userMemberships {
+          isCreator
+        }
+      }
+    }
+  }
+`;
+
 interface Props {
   data: GetLobby;
-  loading: boolean;
+  // loading: boolean;
+  subscribeToRoomMutations: any;
 }
 
-export function LobbyCarousel(props: Props) {
-  if (!props.loading) {
-    const rooms = props.data.lobby.rooms;
+export class LobbyCarousel extends React.Component<Props, {}> {
+  componentDidMount() {
+    this.props.subscribeToRoomMutations();
+  }
+
+  render() {
+    const rooms = this.props.data.lobby.rooms;
     const gameCards = rooms.map((room, index) => {
       const roomDataForDisplay: RoomDisplay = {
         capacity: room.capacity,
@@ -57,10 +77,29 @@ export function LobbyCarousel(props: Props) {
       </>
     );
   }
-  return null;
 }
 
 export default function LobbyCarouselWithData() {
-  const result = useQuery<GetLobby>(LOBBIES_QUERY);
-  return <LobbyCarousel {...result} />;
+  const { subscribeToMore, ...result } = useQuery<GetLobby>(LOBBIES_QUERY);
+  if (!result.loading) {
+    return (
+      <LobbyCarousel
+        subscribeToRoomMutations={() => {
+          subscribeToMore({
+            document: LOBBIES_SUBSCRIPTION,
+            updateQuery: (prev, { subscriptionData }) => {
+              if (!subscriptionData.data) return prev;
+              console.log('subdata', subscriptionData);
+              return Object.assign({}, prev, {
+                // FIXME
+                lobby: { rooms: (subscriptionData.data as any).lobbyMutated.rooms },
+              });
+            },
+          });
+        }}
+        data={result.data}
+      />
+    );
+  }
+  return null;
 }
