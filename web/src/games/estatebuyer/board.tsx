@@ -141,7 +141,7 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
   getPlayerHand(){
     const playerID = this.getBrowserPlayer();
 
-    if (this.props.playerID === null){
+    if (playerID === null){
       return (
         <div className={css.spectator}>
           <span>You are in spectator mode.</span>
