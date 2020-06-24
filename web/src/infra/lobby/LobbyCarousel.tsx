@@ -1,11 +1,12 @@
 import React from 'react';
 import { Carousel } from 'infra/common/components/carousel/Carousel';
-import { GameCardWithOverlay, RoomDisplay } from './GameCardWithOverlay';
+import { GameCardWithOverlay } from './GameCardWithOverlay';
 import { gql } from 'apollo-boost';
 import { GetLobby } from 'gqlTypes/GetLobby';
 import { useQuery } from '@apollo/react-hooks';
 import { GAMES_MAP } from 'games';
 import { Typography } from '@material-ui/core';
+import { getGroupedRoomsDisplay } from './LobbyUtil';
 
 const LOBBIES_QUERY = gql`
   query GetLobby {
@@ -49,21 +50,18 @@ export class LobbyCarousel extends React.Component<Props, {}> {
   }
 
   render() {
-    const rooms = this.props.data.lobby.rooms;
-    const gameCards = rooms.map((room, index) => {
-      const roomDataForDisplay: RoomDisplay = {
-        capacity: room.capacity,
-        id: room.id,
-        name: 'name', // TODO
-        occupancy: room.userMemberships.length,
-      };
+    const grouped = getGroupedRoomsDisplay(this.props.data.lobby);
+    console.log(JSON.stringify(grouped));
+    const gameCards = grouped.map((rooms, index) => {
       return (
-        <GameCardWithOverlay
-          rooms={[roomDataForDisplay]}
-          game={GAMES_MAP[room.gameCode]}
-          onClick={() => console.log('todo: would join')}
-          key={index}
-        />
+        <div style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
+          <GameCardWithOverlay
+            rooms={rooms}
+            game={GAMES_MAP[rooms[0].gameCode]}
+            onClick={() => console.log('todo: would join')}
+            key={index}
+          />
+        </div>
       );
     });
     return (
@@ -71,9 +69,7 @@ export class LobbyCarousel extends React.Component<Props, {}> {
         <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
           Play now
         </Typography>
-        <Carousel>
-          <div style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>{gameCards}</div>
-        </Carousel>
+        <Carousel>{gameCards}</Carousel>
       </>
     );
   }

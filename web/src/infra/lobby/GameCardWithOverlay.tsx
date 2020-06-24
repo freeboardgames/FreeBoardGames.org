@@ -15,6 +15,7 @@ export interface RoomDisplay {
   name: string;
   occupancy: number;
   capacity: number;
+  gameCode: string;
 }
 
 const WhiteTextTypography = withStyles({
@@ -40,7 +41,9 @@ export class GameCardWithOverlay extends React.Component<GameCardWithOverlayProp
         </div>
         <div className={css.overlay}></div>
         <div className={css.tableWrapper}>
-          <table className={css.table}>{this._getRows(this.props.rooms)}</table>
+          <table className={css.table}>
+            <tbody>{this._getRows(this.props.rooms)}</tbody>
+          </table>
         </div>
       </div>
     );

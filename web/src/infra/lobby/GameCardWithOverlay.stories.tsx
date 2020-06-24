@@ -30,36 +30,42 @@ const ROOMS_EXAMPLE: RoomDisplay[] = [
     name: 'Monkey',
     occupancy: 1,
     capacity: 2,
+    gameCode: 'foocode',
   },
   {
     id: 'foo2',
     name: 'Ferret',
     occupancy: 1,
     capacity: 2,
+    gameCode: 'foocode',
   },
   {
     id: 'foo3',
     name: 'Elephant',
     occupancy: 2,
     capacity: 3,
+    gameCode: 'foocode',
   },
   {
     id: 'foo4',
     name: 'Horse',
     occupancy: 1,
     capacity: 2,
+    gameCode: 'foocode',
   },
   {
     id: 'foo5',
     name: 'Dog',
     occupancy: 1,
     capacity: 2,
+    gameCode: 'foocode',
   },
   {
     id: 'foo5',
     name: 'Cat',
     occupancy: 2,
     capacity: 3,
+    gameCode: 'foocode',
   },
 ];
 
