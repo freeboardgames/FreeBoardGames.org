@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import { getPlayerTeam, isPlayerSpymaster } from './util';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
+import { GameMode } from 'gamesShared/definitions/mode';
 
 interface IPlayBoardProps {
   G: IG;
@@ -87,31 +88,28 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   _renderHeader = () => {
     let instruction;
 
-    if (this.props.ctx.phase === Phases.giveClue) {
-      const button = this._isActive() ? (
-        <Button className={css.playActionBtn} variant="contained" onClick={this._clueGiven} color="primary">
-          Done
-        </Button>
-      ) : null;
-      instruction = (
-        <p>
-          <strong>{this._currentPlayerInRoom().name}</strong> give your teammates a clue!
-          {button}
-        </p>
-      );
-    } else {
-      const button = this._isActive() ? (
-        <Button className={css.playActionBtn} variant="contained" onClick={this._pass}>
-          Pass
-        </Button>
-      ) : null;
-      instruction = (
-        <p>
-          <strong>{this._currentPlayerTeam().color === TeamColor.Red ? 'Red' : 'Blue'} Team</strong> make your guess!
-          {button}
-        </p>
+    const button = this._isActive() ? (
+      <Button className={css.playActionBtn} variant="contained" onClick={this._pass}>
+        Pass
+      </Button>
+    ) : null;
+    let spymasterInstructions;
+    if (this.props.gameArgs.mode === GameMode.OnlineFriend) {
+      const spymasterName = this.props.gameArgs.players[this._currentPlayerTeam().spymasterID].name;
+      spymasterInstructions = (
+        <>
+          <strong>{spymasterName}</strong> give clue,&nbsp;
+        </>
       );
     }
+
+    instruction = (
+      <p>
+        {spymasterInstructions}
+        <strong>{this._currentPlayerTeam().color === TeamColor.Red ? 'Red' : 'Blue'} Team</strong> select cards!
+        {button}
+      </p>
+    );
 
     return (
       <div className={css.header}>

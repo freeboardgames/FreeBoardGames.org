@@ -42,7 +42,7 @@ describe('New Room', () => {
     const mockMutate = jest.fn().mockResolvedValue({ data: response });
     (ApolloClient as any).mockImplementation(() => ({ mutate: mockMutate }));
     const dispatch = jest.fn();
-    const actualResponse = await LobbyService.checkin(dispatch, 'foogame');
+    const actualResponse = await LobbyService.joinRoom(dispatch, 'foogame');
     expect(actualResponse).toEqual(response);
   });
 
