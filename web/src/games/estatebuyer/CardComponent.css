@@ -43,144 +43,91 @@
 }
 
 .MoneyCard {
-  background-image: url(./media/card_front_money.jpg);
+  border: 20px rgb(98, 138, 72) solid;
+  background-color: rgb(98, 138, 72);
 }
 
 .PropertyCard {
   border: 20px #EEE solid;
-  background-image: url(./media/card_front_property.jpg);
-}
-
-.CardFront_1 {
-  background-position: 0px 0px;
-}
-
-.CardFront_2 {
-  background-position: 3686px 0px;
-}
-
-.CardFront_3 {
-  background-position: 3280px 0px;
-}
-
-.CardFront_4 {
-  background-position: 2870px 0px;
-}
-
-.CardFront_5 {
-  background-position: 2456px 0px;
-}
-
-.CardFront_6 {
-  background-position: 2048px 0px;
-}
-
-.CardFront_7 {
-  background-position: 1640px 0px;
-}
-
-.CardFront_8 {
-  background-position: 1230px 0px;
-}
-
-.CardFront_9 {
-  background-position: 820px 0px;
-}
-
-.CardFront_10 {
-  background-position: 407px 0px;
-}
-
-.CardFront_11 {
-  background-position: 0px -583px;
-}
-
-.CardFront_12 {
-  background-position: 3686px -583px;
-}
-
-.CardFront_13 {
-  background-position: 3280px -583px;
-}
-
-.CardFront_14 {
-  background-position: 2872px -583px;
-}
-
-.CardFront_15 {
-  background-position: 2456px -583px;
-}
-
-.CardFront_16 {
-  background-position: 2048px -583px;
-}
-
-.CardFront_17 {
-  background-position: 1640px -583px;
-}
-
-.CardFront_18 {
-  background-position: 1230px -583px;
-}
-
-.CardFront_19 {
-  background-position: 820px -583px;
-}
-
-.CardFront_20 {
-  background-position: 407px -583px;
-}
-
-.CardFront_21 {
-  background-position: 0px -1166px;
-}
-
-.CardFront_22 {
-  background-position: 3686px -1166px;
-}
-
-.CardFront_23 {
-  background-position: 3280px -1166px;
-}
-
-.CardFront_24 {
-  background-position: 2870px -1166px;
-}
-
-.CardFront_25 {
-  background-position: 2456px -1166px;
-}
-
-.CardFront_26 {
-  background-position: 2048px -1166px;
-}
-
-.CardFront_27 {
-  background-position: 1640px -1166px;
-}
-
-.CardFront_28 {
-  background-position: 1230px -1166px;
-}
-
-.CardFront_29 {
-  background-position: 820px -1166px;
-}
-
-.CardFront_30 {
-  background-position: 407px -1166px;
 }
 
 .MoneyCard.hidden {
   animation: none;
-  border: 20px rgb(98, 138, 72) solid;
-  background-image: url(./media/card_back_money.jpg);
-  background-size: 100%;
 }
 
 .PropertyCard.hidden {
   animation: none;
   border: 20px rgb(44, 120, 192) solid;
-  background-image: url(./media/card_back_property.jpg);
-  background-size: 100%;
+}
+
+.CardSVG {
+  fill-rule:evenodd;
+  clip-rule:evenodd;
+  stroke-linejoin:round;
+  stroke-miterlimit:2;
+}
+
+.MoneyCardSVGOutline {
+  fill:rgb(255,232,111);
+}
+
+.MoneyCardSVGBackground {
+  fill:rgb(255,232,111);
+}
+
+.MoneyCardSVGDollar {
+  font-family:'DIN-Black';
+  font-size:600px;
+  fill:rgb(233,195,0);
+  stroke:black;
+  stroke-width:4.17px;
+  text-anchor: middle;
+}
+
+.MoneyCardSVGTitle {
+  font-family:'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
+  font-size:125px;
+  fill:rgb(0,161,233);
+  stroke:black;
+  stroke-width:3.75px;
+}
+
+.MoneyCardSVGText {
+  font-family:'DIN-Black';
+  font-size:150px;
+  fill:rgb(233,195,0);
+  stroke:black;
+  stroke-width:4.17px;
+}
+
+.MoneyCardSVGText.Small {
+  font-size:58.333px;
+}
+
+.PropertyCardSVGOutline {
+  fill:rgb(133,133,133);
+}
+
+.PropertyCardSVGBackground {
+  fill:rgb(44, 120, 192)
+}
+
+.PropertyCardSVGWindows{
+  fill:rgb(233,233,233);
+}
+
+.PropertyCardSVGTitle {
+  font-family:'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
+  font-size:125px;
+  fill:rgb(233,37,0);
+  stroke:black;
+  stroke-width:3.75px;
+}
+
+.PropertyCardSVGText {
+  font-family:'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
+  font-size:150px;
+  fill:rgb(233,37,0);
+  stroke:black;
+  stroke-width:6.25px;
 }
