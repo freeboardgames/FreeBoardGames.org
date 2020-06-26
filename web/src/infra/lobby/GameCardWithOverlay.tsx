@@ -3,11 +3,11 @@ import { IGameDef } from 'gamesShared/definitions/game';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import css from './GameCardWithOverlay.css';
+import Router from 'next/router';
 
 interface GameCardWithOverlayProps {
   game: IGameDef;
   rooms: RoomDisplay[];
-  onClick: (roomId: string) => void;
 }
 
 export interface RoomDisplay {
@@ -68,7 +68,7 @@ export class GameCardWithOverlay extends React.Component<GameCardWithOverlayProp
             variant="h6"
             style={{ flex: '20', cursor: 'pointer' }}
             onClick={() => {
-              this.props.onClick(room.id);
+              Router.push(`/room/${room.id}`);
             }}
           >
             <b>Join</b>

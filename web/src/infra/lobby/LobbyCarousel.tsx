@@ -55,12 +55,7 @@ export class LobbyCarousel extends React.Component<Props, {}> {
     const gameCards = grouped.map((rooms, index) => {
       return (
         <div key={index} style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
-          <GameCardWithOverlay
-            rooms={rooms}
-            game={GAMES_MAP[rooms[0].gameCode]}
-            onClick={() => console.log('todo: would join')}
-            key={index}
-          />
+          <GameCardWithOverlay rooms={rooms} game={GAMES_MAP[rooms[0].gameCode]} />
         </div>
       );
     });
