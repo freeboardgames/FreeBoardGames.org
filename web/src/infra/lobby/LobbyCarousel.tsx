@@ -5,8 +5,10 @@ import { gql } from 'apollo-boost';
 import { GetLobby } from 'gqlTypes/GetLobby';
 import { useQuery } from '@apollo/react-hooks';
 import { GAMES_MAP } from 'games';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import { getGroupedRoomsDisplay } from './LobbyUtil';
+import { NewRoomModal } from './NewRoomModal';
 
 const LOBBIES_QUERY = gql`
   query GetLobby {
@@ -40,11 +42,19 @@ const LOBBIES_SUBSCRIPTION = gql`
 
 interface Props {
   data: GetLobby;
-  // loading: boolean;
   subscribeToRoomMutations: any;
 }
 
-export class LobbyCarousel extends React.Component<Props, {}> {
+interface State {
+  showNewRoomModal: boolean;
+}
+
+export class LobbyCarousel extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { showNewRoomModal: false };
+  }
+
   componentDidMount() {
     this.props.subscribeToRoomMutations();
   }
@@ -61,13 +71,27 @@ export class LobbyCarousel extends React.Component<Props, {}> {
     });
     return (
       <>
-        <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
+        {this.state.showNewRoomModal && <NewRoomModal handleClickaway={this._toggleNewRoomModal} />}
+        <Typography display="inline" component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
           Play now
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ float: 'right' }}
+          startIcon={<AddIcon />}
+          onClick={this._toggleNewRoomModal}
+        >
+          New Room
+        </Button>
         <Carousel>{gameCards}</Carousel>
       </>
     );
   }
+
+  _toggleNewRoomModal = () => {
+    this.setState((prevState) => ({ ...prevState, showNewRoomModal: !prevState.showNewRoomModal }));
+  };
 }
 
 export default function LobbyCarouselWithData() {
