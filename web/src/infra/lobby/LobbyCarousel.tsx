@@ -77,7 +77,8 @@ export class LobbyCarousel extends React.Component<Props, {}> {
 
 export default function LobbyCarouselWithData() {
   const { subscribeToMore, ...result } = useQuery<GetLobby>(LOBBIES_QUERY);
-  if (!result.loading) {
+  // if we are connected, render the carousel:
+  if (result.data) {
     return (
       <LobbyCarousel
         subscribeToRoomMutations={() => {
