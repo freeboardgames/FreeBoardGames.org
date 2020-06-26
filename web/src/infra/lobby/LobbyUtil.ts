@@ -32,7 +32,7 @@ const ANIMALS = [
 
 export function getGroupedRoomsDisplay(lobby: GetLobby_lobby): RoomDisplay[][] {
   const result = [];
-  let lastGameCode;
+  let lastGameCode: string;
   for (const room of lobby.rooms) {
     if (room.gameCode !== lastGameCode) {
       result.push([]);
@@ -53,8 +53,7 @@ function shortIdToNumber(id: string) {
   let result = 0;
   for (let i = id.length - 1; i >= 0; i--) {
     const digit = SHORT_ID_CHARS.indexOf(id[i]);
-    // !digit will be truthy if digit is 0, so check if digit is falsy and not equal to 0
-    if (!digit && digit !== 0) {
+    if (digit === -1) {
       throw new Error(`Invalid char: ${id[i]}`);
     }
     result += digit * Math.pow(SHORT_ID_CHARS.length, i);
