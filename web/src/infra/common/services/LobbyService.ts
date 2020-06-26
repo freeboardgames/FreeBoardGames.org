@@ -107,6 +107,7 @@ export class LobbyService {
     dispatch: Dispatch<SyncUserAction>,
     gameCode: string,
     capacity: number,
+    isPublic: boolean = false,
   ): Promise<NewRoom> {
     const client = this.getClient();
     const result = await client
@@ -118,7 +119,7 @@ export class LobbyService {
             }
           }
         `,
-        variables: { room: { gameCode, capacity, isPublic: false } },
+        variables: { room: { gameCode, capacity, isPublic } },
       })
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data;

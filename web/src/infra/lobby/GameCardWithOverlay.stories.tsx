@@ -71,13 +71,7 @@ const ROOMS_EXAMPLE: RoomDisplay[] = [
 
 const example = (
   <div style={{ textDecoration: 'none', flex: 1, minWidth: '250px', width: '250px', margin: '8px' }}>
-    <GameCardWithOverlay
-      game={GAME_DEF_TEST}
-      rooms={ROOMS_EXAMPLE}
-      onClick={(roomId) => {
-        alert(`clicked on room ${roomId}`);
-      }}
-    />
+    <GameCardWithOverlay game={GAME_DEF_TEST} rooms={ROOMS_EXAMPLE} />
   </div>
 );
 

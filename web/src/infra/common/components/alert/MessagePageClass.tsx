@@ -15,17 +15,18 @@ interface IMessageState {
 interface IMessageProps {
   type: string;
   message: string;
+  skipFbgBar: boolean;
   actionComponent?: JSX.Element;
 }
 
 export class MessagePage extends React.Component<IMessageProps, IMessageState> {
   requestID: number = null;
+  state = {
+    linkHidden: this.props.type !== 'error',
+    startTime: Date.now(),
+  };
   constructor(props: IMessageProps) {
     super(props);
-    this.state = {
-      linkHidden: props.type !== 'error',
-      startTime: Date.now(),
-    };
     if (typeof window !== 'undefined' && props.type !== 'error') {
       this.requestID = window.requestAnimationFrame(this._animate(Date.now()));
     }
@@ -73,20 +74,23 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
         </Link>
       );
     }
-    return (
-      <FreeBoardGamesBar>
-        <div style={{ paddingTop: '16px', textAlign: 'center' }}>
-          {icon}
-          <Typography variant="h6" gutterBottom={true} style={{ paddingTop: '16px' }}>
-            {this.props.message}
-            <br />
-            <br />
-            {linkHome}
-            {this.props.actionComponent}
-          </Typography>
-        </div>
-      </FreeBoardGamesBar>
+    const content = (
+      <div style={{ paddingTop: '16px', textAlign: 'center' }}>
+        {icon}
+        <Typography variant="h6" gutterBottom={true} style={{ paddingTop: '16px' }}>
+          {this.props.message}
+          <br />
+          <br />
+          {linkHome}
+          {this.props.actionComponent}
+        </Typography>
+      </div>
     );
+    if (this.props.skipFbgBar) {
+      return content;
+    } else {
+      return <FreeBoardGamesBar>{content}</FreeBoardGamesBar>;
+    }
   }
 }
 

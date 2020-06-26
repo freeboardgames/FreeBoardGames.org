@@ -12,6 +12,7 @@ interface Props {
   handleClickaway?: () => void;
   conditional: boolean;
   renderAsPopup?: boolean;
+  skipFbgBar?: boolean;
   user: ReduxUserState;
 }
 
@@ -49,6 +50,8 @@ export class NicknameRequired extends React.Component<Props, State> {
           {this.props.children}
         </React.Fragment>
       );
+    } else if (this.props.skipFbgBar) {
+      return prompt;
     } else {
       return <FreeBoardGamesBar>{prompt}</FreeBoardGamesBar>;
     }
