@@ -54,7 +54,7 @@ export class LobbyCarousel extends React.Component<Props, {}> {
     console.log(JSON.stringify(grouped));
     const gameCards = grouped.map((rooms, index) => {
       return (
-        <div style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
+        <div key={index} style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
           <GameCardWithOverlay
             rooms={rooms}
             game={GAMES_MAP[rooms[0].gameCode]}
