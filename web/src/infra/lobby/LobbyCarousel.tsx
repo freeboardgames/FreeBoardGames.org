@@ -61,7 +61,6 @@ export class LobbyCarousel extends React.Component<Props, State> {
 
   render() {
     const grouped = getGroupedRoomsDisplay(this.props.data.lobby);
-    console.log(JSON.stringify(grouped));
     const gameCards = grouped.map((rooms, index) => {
       return (
         <div key={index} style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
@@ -105,7 +104,6 @@ export default function LobbyCarouselWithData() {
             document: LOBBIES_SUBSCRIPTION,
             updateQuery: (prev, { subscriptionData }) => {
               if (!subscriptionData.data) return prev;
-              console.log('subdata', subscriptionData);
               return Object.assign({}, prev, {
                 // FIXME
                 lobby: { rooms: (subscriptionData.data as any).lobbyMutated.rooms },
