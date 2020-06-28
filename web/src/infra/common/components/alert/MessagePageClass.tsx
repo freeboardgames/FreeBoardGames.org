@@ -15,7 +15,7 @@ interface IMessageState {
 interface IMessageProps {
   type: string;
   message: string;
-  skipFbgBar: boolean;
+  skipFbgBar?: boolean;
   actionComponent?: JSX.Element;
 }
 

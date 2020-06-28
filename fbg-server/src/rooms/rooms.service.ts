@@ -37,6 +37,10 @@ export class RoomsService {
       await inTransaction(this.connection, async (queryRunner) => {
         await this.saveNewRoom(queryRunner, userId, roomEntity);
       });
+      if (room.isPublic) {
+        // Cant do this inside a transaction as we need the new room in the notification.
+        await this.lobbyService.notifyLobbyUpdate();
+      }
     } else {
       await this.saveNewRoom(queryRunner, userId, roomEntity);
     }
@@ -54,7 +58,7 @@ export class RoomsService {
 
   /** Checks-in user and if room gets full starts the match. Returns match id, if any. */
   async joinRoom(userId: number, roomId: string): Promise<RoomEntity> {
-    return await inTransaction(this.connection, async (queryRunner) => {
+    const room = await inTransaction(this.connection, async (queryRunner) => {
       const room = await this.getRoomEntity(roomId);
       if (room.match) {
         return room;
@@ -62,6 +66,10 @@ export class RoomsService {
       await this.addMembership(queryRunner, userId, room);
       return room;
     });
+    if (room.isPublic) {
+      await this.lobbyService.notifyLobbyUpdate();
+    }
+    return room;
   }
 
   /** Removes user from room. */
@@ -72,6 +80,9 @@ export class RoomsService {
         return room;
       }
       await this.removeMembership(queryRunner, userId, room);
+      if (room.isPublic) {
+        await this.lobbyService.notifyLobbyUpdate();
+      }
       return room;
     });
   }
@@ -125,9 +136,6 @@ export class RoomsService {
     await queryRunner.manager.save(membership);
     room.userMemberships = [...memberships, membership];
     await this.notifyRoomUpdate(room);
-    if (room.isPublic) {
-      await this.lobbyService.notifyLobbyUpdate();
-    }
   }
 
   private async removeMembership(
@@ -154,8 +162,5 @@ export class RoomsService {
       room: { id: room.id },
     });
     await this.notifyRoomUpdate(room);
-    if (room.isPublic) {
-      await this.lobbyService.notifyLobbyUpdate();
-    }
   }
 }

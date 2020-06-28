@@ -11,6 +11,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
 import { NewRoom, NewRoomVariables } from 'gqlTypes/NewRoom';
 import { GetMatch, GetMatchVariables } from 'gqlTypes/GetMatch';
+import { GetLobby } from 'gqlTypes/GetLobby';
 import { StartMatch, StartMatchVariables } from 'gqlTypes/StartMatch';
 import { NextRoom, NextRoomVariables } from 'gqlTypes/NextRoom';
 import gql from 'graphql-tag';
@@ -183,6 +184,27 @@ export class LobbyService {
       variables: { matchId },
     });
     return result.data.nextRoom;
+  }
+
+  public static async getLobby() {
+    const client = this.getClient();
+    const result = await client.query<GetLobby, {}>({
+      query: gql`
+        query GetLobby {
+          lobby {
+            rooms {
+              id
+              gameCode
+              capacity
+              userMemberships {
+                isCreator
+              }
+            }
+          }
+        }
+      `,
+    });
+    return result.data;
   }
 
   public static getUserToken() {
