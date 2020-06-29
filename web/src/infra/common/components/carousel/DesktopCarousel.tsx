@@ -47,6 +47,7 @@ export class DesktopCarousel extends React.Component<DesktopCarouselProps, Deskt
     this.carouselRef.current.addEventListener('mousemove', this._mouseMove);
     this.carouselRef.current.addEventListener('mouseleave', this._mouseLeave);
     this.carouselRef.current.addEventListener('mouseup', this._mouseLeave);
+    this.forceUpdate();
   }
 
   componentWillUnmount() {
@@ -83,7 +84,7 @@ export class DesktopCarousel extends React.Component<DesktopCarouselProps, Deskt
   maxScroll() {
     const el = this.carouselRef.current;
     if (!el) {
-      return 100;
+      return 0;
     }
     return el.scrollWidth - el.offsetWidth;
   }
