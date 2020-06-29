@@ -30,15 +30,17 @@ const ANIMALS = [
   'Jellyfish',
 ];
 
-export function getGroupedRoomsDisplay(lobby: GetLobby_lobby): RoomDisplay[][] {
-  const result = [];
-  let lastGameCode: string;
+export interface GroupedRoomDisplay {
+  [gameCode: string]: RoomDisplay[];
+}
+
+export function getGroupedRoomsDisplay(lobby: GetLobby_lobby): GroupedRoomDisplay {
+  const result: GroupedRoomDisplay = {};
   for (const room of lobby.rooms) {
-    if (room.gameCode !== lastGameCode) {
-      result.push([]);
-      lastGameCode = room.gameCode;
+    if (!(room.gameCode in result)) {
+      result[room.gameCode] = [];
     }
-    result[result.length - 1].push({
+    result[room.gameCode].push({
       name: shortIdToAnimal(room.id),
       id: room.id,
       capacity: room.capacity,

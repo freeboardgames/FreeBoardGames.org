@@ -98,14 +98,15 @@ export default class LobbyCarousel extends React.Component<Props, State> {
 
   renderCards(lobby: GetLobby_lobby) {
     const grouped = getGroupedRoomsDisplay(lobby);
-    const gameCards = grouped.map((rooms, index) => {
-      return (
-        <div key={index} style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
-          <GameCardWithOverlay rooms={rooms} game={GAMES_MAP[rooms[0].gameCode]} />
-        </div>
+    const result = [];
+    for (const [gameCode, rooms] of Object.entries(grouped)) {
+      result.push(
+        <div key={gameCode} style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
+          <GameCardWithOverlay rooms={rooms} game={GAMES_MAP[gameCode]} />
+        </div>,
       );
-    });
-    return gameCards;
+    }
+    return result;
   }
 
   _toggleNewRoomModal = () => {
