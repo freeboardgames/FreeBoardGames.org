@@ -17,6 +17,7 @@ import AlertLayer from '../common/components/alert/AlertLayer';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { QrCodePopup } from './QrCodePopup';
 import { lightGreen } from '@material-ui/core/colors';
+import { shortIdToAnimal } from '../lobby/LobbyUtil';
 
 const theme = createMuiTheme({
   palette: {
@@ -27,6 +28,7 @@ const theme = createMuiTheme({
 interface IGameSharingProps {
   gameCode: string;
   roomID: string;
+  isPublic: boolean;
 }
 
 interface IGameSharingState {
@@ -61,6 +63,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
           ) : null}
           <Card>
             <CardContent>
+              {this.renderGameName()}
               <Typography style={{ paddingBottom: '16px' }} variant="h5" component="h2">
                 Invite Your Friends
               </Typography>
@@ -101,6 +104,17 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
         </div>
       </MuiThemeProvider>
     );
+  }
+
+  renderGameName() {
+    if (this.props.isPublic) {
+      return (
+        <Typography style={{ paddingBottom: '16px' }} variant="h6" component="h3" style={{ float: 'right' }}>
+          Room: {shortIdToAnimal(this.props.roomID)}
+        </Typography>
+      );
+    }
+    return null;
   }
 
   _shareFacebook = () => {

@@ -168,7 +168,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   _getGameSharing = () => {
     const gameCode = this.props.router.query.gameCode as string;
-    return <GameSharing gameCode={gameCode} roomID={this._roomId()} />;
+    return <GameSharing gameCode={gameCode} roomID={this._roomId()} isPublic={this.state.roomMetadata.isPublic} />;
   };
 
   _roomId() {
