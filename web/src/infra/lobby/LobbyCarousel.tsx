@@ -87,7 +87,9 @@ export default class LobbyCarousel extends React.Component<Props, State> {
           const lobby = resp.data?.lobbyMutated || this.state.lobby;
           if (lobby.rooms.length === 0) {
             return (
-              <div className={css.errorMessage}>No public room available, click on "New Room" and create one!</div>
+              <div className={css.errorMessage}>
+                No public room available, click on &quot;New Room&quot; and create one!
+              </div>
             );
           }
           return <Carousel>{this.renderCards(lobby)}</Carousel>;
