@@ -95,26 +95,6 @@ function DealCheckCards(G: IG, ctx: Ctx){
   G.cardsontable = dealtCards.map(c => ({...c, showing: true})).sort((a, b) => (a.value - b.value));
 }
 
-function SelectBuilding(G: IG, ctx: Ctx, playerIndex:number, cardValue:number){
-  if (!(playerIndex in G.players)) {
-    return INVALID_MOVE;
-  }
-
-  const card:any = G.players[playerIndex].buildings.find((card) => (card.value == cardValue));
-  if (card === "undefined") {
-    return INVALID_MOVE;
-  }
-  G.players[playerIndex].selectedCard = card;
-  if (AllPlayersHaveSelected(G)){
-    AwardMoneyCards(G);
-    if (G.checks.length > 0){
-      DealCheckCards(G, ctx);
-      NextRound(G);
-    }
-  }
-  return G;
-}
-
 function AllPlayersHaveSelected(G): boolean {
   return G.players
     .reduce(
@@ -151,15 +131,59 @@ function NextRound(G){
   return G;
 }
 
+export const Moves = {
+  GameStart: (G: IG, ctx: Ctx, hotseat:boolean) => {
+    G.hotseat = hotseat;
+    DealBuildingCards(G, ctx);
+    NextRound(G);
+    ctx.events.setPhase(Phases.auction);
+  },
+  PlaceBid: (G, ctx, bid) => {
+    if (bid <= 0) {
+      return INVALID_MOVE;
+    }
+    const highest_bid: number = HighestBid(G.players);
+    if (bid <= highest_bid) {
+      return INVALID_MOVE;
+    }
+    if (G.players[ctx.currentPlayer].money - bid < 0) {
+      return INVALID_MOVE;
+    }
+    G.players[ctx.currentPlayer].bid = bid;
+    return G;
+  },
+  PassBid: (G, ctx) => {
+    if (G.players[ctx.currentPlayer].passed) {
+      return INVALID_MOVE;
+    }
+    PassPutBuildingInPlayerHand(G, ctx.currentPlayer);        
+    return G;
+  },
+  SelectBuilding: (G: IG, ctx: Ctx, playerIndex:number, cardValue:number) => {
+    if (!(playerIndex in G.players)) {
+      return INVALID_MOVE;
+    }
+  
+    const card:any = G.players[playerIndex].buildings.find((card) => (card.value == cardValue));
+    if (card === "undefined") {
+      return INVALID_MOVE;
+    }
+    G.players[playerIndex].selectedCard = card;
+    if (AllPlayersHaveSelected(G)){
+      AwardMoneyCards(G);
+      if (G.checks.length > 0){
+        DealCheckCards(G, ctx);
+        NextRound(G);
+      }
+    }
+    return G;
+  }
+}
+
 export const EstateBuyerGame: Game<IG> = {
   name: 'estatebuyer',
   moves: {
-    GameStart: (G: IG, ctx: Ctx, hotseat:boolean) => {
-      G.hotseat = hotseat;
-      DealBuildingCards(G, ctx);
-      NextRound(G);
-      ctx.events.setPhase(Phases.auction);
-    }
+    GameStart: Moves.GameStart
   },
   turn: {
     moveLimit: 1,
@@ -196,27 +220,8 @@ export const EstateBuyerGame: Game<IG> = {
         },
       },
       moves: { 
-        MovePlaceBid: (G, ctx, bid) => {
-          if (bid <= 0) {
-            return INVALID_MOVE;
-          }
-          const highest_bid: number = HighestBid(G.players);
-          if (bid <= highest_bid) {
-            return INVALID_MOVE;
-          }
-          if (G.players[ctx.currentPlayer].money - bid < 0) {
-            return INVALID_MOVE;
-          }
-          G.players[ctx.currentPlayer].bid = bid;
-          return G;
-        },
-        MovePassBid: (G, ctx) => {
-          if (G.players[ctx.currentPlayer].passed) {
-            return INVALID_MOVE;
-          }
-          PassPutBuildingInPlayerHand(G, ctx.currentPlayer);        
-          return G;
-        }
+        MovePlaceBid: Moves.PlaceBid,
+        MovePassBid: Moves.PassBid,
       },
       next: Phases.property_selection,
       endIf: (G) => {
@@ -238,7 +243,7 @@ export const EstateBuyerGame: Game<IG> = {
         stages: {
           select_card: {
             moves: { 
-              MoveSelectBuilding: (G, ctx, playerIndex, cardValue) => SelectBuilding(G, ctx, playerIndex, cardValue)
+              MoveSelectBuilding: Moves.SelectBuilding
             }
           }
         }
@@ -251,7 +256,7 @@ export const EstateBuyerGame: Game<IG> = {
         order: TurnOrder.CONTINUE,
       },
       moves:{
-        MoveSelectBuilding: (G, ctx, playerIndex, cardValue) => SelectBuilding(G, ctx, playerIndex, cardValue)
+        MoveSelectBuilding: (G, ctx, playerIndex, cardValue) => Moves.SelectBuilding(G, ctx, playerIndex, cardValue)
       },
     },
   },

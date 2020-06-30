@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
-import { EstateBuyerGame, IG, getScoreBoard, HighestBid, Phases } from './game';
+import { EstateBuyerGame, IG, getScoreBoard, HighestBid, Phases, Moves } from './game';
 import { Local } from 'boardgame.io/multiplayer';
 import IPlayer from './player';
 
@@ -120,25 +120,76 @@ it('should be valid moves', () => {
     clients[0].start();
     clients[1].start();
 
-    clients[0].moves.GameStart();
-
+    clients[0].moves.GameStart(true);
     let state = clients[0].getState();
-    let ctx = state.ctx;
 
-    expect(ctx.phase).toEqual(Phases.auction);
+    //Move to auction phase
+    expect(state.G.cardsontable.length).toEqual(2);
+    expect(state.G.round).toEqual(1);
+    expect(state.ctx.phase).toEqual(Phases.auction);
 
+    //Can't even bid 0
+    expect(Moves.PlaceBid(state.G, state.ctx, 0)).toEqual(INVALID_MOVE);
+    //Can't bid negative
+    expect(Moves.PlaceBid(state.G, state.ctx, -1)).toEqual(INVALID_MOVE);
+    //Can't bid more money than you have
+    expect(Moves.PlaceBid(state.G, state.ctx, 100)).toEqual(INVALID_MOVE);
+
+    //Perform actual valid move
+    const bidPlayer = state.ctx.currentPlayer;
+    clients[state.ctx.currentPlayer].moves.MovePlaceBid(2);
     state = clients[0].getState();
-    ctx = state.ctx;
     
-    clients[ctx.currentPlayer].moves.MovePlaceBid(1);
+    //Verify bidding player value is correct
+    expect(state.G.players[bidPlayer].bid).toEqual(2);
+
+    //Can't bid the same as a previous bid
+    expect(Moves.PlaceBid(state.G, state.ctx, 2)).toEqual(INVALID_MOVE);
+
+    //Perform actual valid move
+    let winningPlayer = state.ctx.currentPlayer;
+    clients[winningPlayer].moves.MovePlaceBid(4);
+    state = clients[0].getState();
+    const round = state.G.round;
+
+    //Perform actual valid move
+    let passingPlayer = state.ctx.currentPlayer;
+    clients[passingPlayer].moves.MovePassBid();
+    state = clients[0].getState();
+
+    //Confirm player who is starting was not the passing player
+    expect(parseInt(state.ctx.currentPlayer)).toEqual(+!parseInt(passingPlayer));
+
+    //Round increased
+    expect(state.G.round).toEqual(round+1);
+
+    //Player money spent correctly
+    expect(state.G.players[passingPlayer].spentMoney).toEqual(1);
+    expect(state.G.players[winningPlayer].spentMoney).toEqual(4);
+    expect(state.G.players[passingPlayer].money).toEqual(23);
+    expect(state.G.players[winningPlayer].money).toEqual(20);
     
+    //Player Values Reset
+    expect(state.G.players[0].bid).toEqual(0);
+    expect(state.G.players[1].bid).toEqual(0);
+    expect(state.G.players[0].passed).toBeFalse();
+    expect(state.G.players[1].passed).toBeFalse();
+    
+    //Cards added to buildings array
+    expect(state.G.players[0].buildings.length).toEqual(1);
+    expect(state.G.players[1].buildings.length).toEqual(1);
+
+    //Move on to confirming half bid math on odds
+    passingPlayer = state.ctx.currentPlayer;
+    clients[passingPlayer].moves.MovePlaceBid(3);
     state = clients[0].getState();
-    ctx = state.ctx;
 
-    clients[ctx.currentPlayer].moves.MovePlaceBid(2);
-
+    winningPlayer = state.ctx.currentPlayer;
+    clients[winningPlayer].moves.MovePlaceBid(5);
+    clients[passingPlayer].moves.MovePassBid();
     state = clients[0].getState();
-    ctx = state.ctx;
 
-    clients[ctx.currentPlayer].moves.MovePassBid();
+    //Verify losing bid of 3 pays half rounded up
+    expect(state.G.players[passingPlayer].spentMoney).toEqual(2);
+    expect(state.G.players[winningPlayer].spentMoney).toEqual(5);
 });
