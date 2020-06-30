@@ -164,7 +164,7 @@ export const EstateBuyerGame: Game<IG> = {
   turn: {
     moveLimit: 1,
     order: {
-      first: (G, ctx) => 0,
+      first: () => 0,
       next: (G, ctx) => ctx.random.Die(ctx.numPlayers)-1,
     }
   },
@@ -230,7 +230,7 @@ export const EstateBuyerGame: Game<IG> = {
 
     property_selection: {
       next: Phases.property_selection_hotseat,
-      endIf: (G, ctx) => { 
+      endIf: (G) => { 
         return G.hotseat;
       },
       turn: {
@@ -255,7 +255,7 @@ export const EstateBuyerGame: Game<IG> = {
       },
     },
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG) => {
     if (G.cardsontable.length <= 0 && G.checks.length <= 0) {
       const scoreboard = getScoreBoard(G);
       if (scoreboard[0].score === scoreboard[1].score) {
@@ -302,7 +302,7 @@ export const EstateBuyerGame: Game<IG> = {
       buildings: new Array(usedCardsInDeck)
         .fill(0)
         .map(() => { return building_deck.pop() }),
-      players: new Array(ctx.numPlayers).fill(0).map((_, i) => ({
+      players: new Array(ctx.numPlayers).fill(0).map(() => ({
         passed: false,
         bid: 0,
         money: gameSetupAmounts[ctx.numPlayers].money,

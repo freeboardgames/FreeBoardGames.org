@@ -51,7 +51,7 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
     return (this.state.bid > this.getCurrentPlayer().money);
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps) {
     if (this.props.currentHighBid == 0 && this.state.bid != 1 && this.state.reset == false){
       this.setState({bid: 1, reset: true});
     } else if (this.props.currentHighBid >= this.state.bid){

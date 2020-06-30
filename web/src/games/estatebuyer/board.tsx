@@ -11,7 +11,7 @@ import { PlayerBadges } from './PlayerBadges';
 import { Tableau } from './Tableau';
 import { ButtonComponent } from './ButtonComponent';
 import { playSound } from './Sound';
-import { isOnlineGame, isLocalGame, isAIGame } from '../../gamesShared/helpers/gameMode';
+import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 
 import css from './Board.css';
 
@@ -35,7 +35,7 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
     this.props.moves.GameStart(this.props.playerID == null);
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps) {
     //This makes it play at the beginning of every round, not just game start
     if(this.props.G.round != prevProps.G.round){
       playSound("Start");
@@ -190,15 +190,15 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared:numbe
 
   _getGameOver() {
     const winner = this.props.ctx.gameover.winner;
-    if (this.props.ctx.gameover.winner !== undefined) {
+    if (winner !== undefined) {
       if (this.props.playerID){
-        if (this.props.ctx.gameover.winner === this.props.playerID) {
+        if (winner === this.props.playerID) {
           return 'you won';
         } else {
           return 'you lost';
         }
       }
-      return "Player "+(parseInt(this.props.ctx.gameover.winner)+1)+' won';
+      return "Player "+(parseInt(winner)+1)+' won';
     }
     return "it is a tie"
   }

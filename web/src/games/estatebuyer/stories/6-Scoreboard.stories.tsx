@@ -1,5 +1,5 @@
 import React from 'react';
-import { IScore, IScoreboardProps, Scoreboard } from '../Scoreboard';
+import { IScoreboardProps, Scoreboard } from '../Scoreboard';
 
 export default {
   title: 'Games/EstateBuyer/Scoreboard',

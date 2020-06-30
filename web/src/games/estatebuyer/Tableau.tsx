@@ -32,7 +32,7 @@ export class Tableau extends React.Component<ITableauProps, {}> {
 
   getCardsOnTable() {
     return [...this.props.cardsontable]
-      .map((card: any, index:number) => {
+      .map((card: any) => {
         const ComponentTag:any = (card.building) ? BuildingCardComponent : MoneyCardComponent;
         
         return (

@@ -1,6 +1,5 @@
 import React from 'react';
 import { IPlayerBidPanelProps, BidPanelComponent } from '../BidPanelComponent';
-import { Phases } from '../game';
 
 export default {
   title: 'Games/EstateBuyer/BidPanel',

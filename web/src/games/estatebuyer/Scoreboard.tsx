@@ -4,7 +4,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import grey from '@material-ui/core/colors/grey';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 
 import css from './Scoreboard.css';
@@ -40,7 +39,6 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
             {this.props.scoreboard.map((score, i) => {
               const style = (score.playerID.toString() === this.props.playerID) ? css.me : null;
               const name = this.props.players.find((player) => player.playerID.toString() === score.playerID).name;
-              const firstCellClassName = css["cell"+i];
               return (
                 <TableRow key={score.playerID} className={[style, css["row"+i]].join(' ')}>
                   <TableCell className={css.rank}>#{i + 1}</TableCell>

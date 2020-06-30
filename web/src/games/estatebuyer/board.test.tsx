@@ -2,25 +2,12 @@ import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Client } from 'boardgame.io/client';
-import { Client as ReactClient } from 'boardgame.io/react';
 import { EstateBuyerGame } from './game';
 
 import { Board } from './board';
 import { GameMode } from 'gamesShared/definitions/mode';
 
 Enzyme.configure({ adapter: new Adapter() });
-
-const BoardTest = (props: any) => (
-  <Board
-    {...{
-      ...props,
-      gameArgs: {
-        gameCode: 'estatebuyer',
-        mode: GameMode.LocalFriend,
-      },
-    }}
-  />
-);
 
 test('game start', async () => {
     const client = Client({

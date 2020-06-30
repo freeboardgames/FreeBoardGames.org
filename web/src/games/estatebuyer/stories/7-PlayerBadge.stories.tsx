@@ -19,17 +19,10 @@ const playerBadgeData:IPlayerBadgeProps = {
       passed: false,
   },
   color: "blue",
-  incomingCards: [],
-  spentCards: [],
+  newCard: null,
+  spentCard: null,
   round: 1,
   showBid: true,
-}
-
-const buildingCard:IBuildingCard = {
-  building: true,
-  number: 23,
-  value: 23,
-  showing: true,
 }
 
 export const Default = () => <PlayerBadge {...playerBadgeData} />;

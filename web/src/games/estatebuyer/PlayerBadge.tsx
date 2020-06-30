@@ -105,9 +105,6 @@ export class PlayerBadge extends React.Component<IPlayerBadgeProps, {}> {
             return;
         }
 
-        console.log("Spent:", this.props.spentCard);
-        
-
         const ComponentTag:any = spentCard.building ? BuildingCardComponent : MoneyCardComponent;
 
         return (
