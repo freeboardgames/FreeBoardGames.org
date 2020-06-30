@@ -2,7 +2,6 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
 import { EstateBuyerGame, IG, getScoreBoard, HighestBid, Phases } from './game';
 import { Local } from 'boardgame.io/multiplayer';
-import { Ctx } from 'boardgame.io';
 import IPlayer from './player';
 
 const defaultPlayer:IPlayer = {
@@ -29,21 +28,12 @@ const defaultG:IG = {
     cardsontable: [],
 }
 
-const defaultCtx:Ctx = { 
-    activePlayers: null,
-    currentPlayer: "0",
-    numMoves: 0,
-    numPlayers: 2,
-    phase: null,
-    playOrder: ["0", "1"],
-    playOrderPos: 0,
-    turn: 1
-}
-
 test('getting scoreboard', () => {
     let G: IG = {
+        ...defaultG,
         players: [
             {
+                ...defaultPlayer,
                 checks: [
                     {
                         number: 0,
@@ -56,12 +46,11 @@ test('getting scoreboard', () => {
                         showing: false
                     }
                 ],
-                buildings: [],
-                bid: 1,
                 money: 15,
-                passed: false,
+                bid: 1,
             },
             {
+                ...defaultPlayer,
                 checks: [
                     {
                         number: 4,
@@ -74,17 +63,10 @@ test('getting scoreboard', () => {
                         showing: false
                     }
                 ],
-                buildings: [],
-                bid: 0,
                 money: 0,
                 passed: true,
             }
         ],
-        cardsontable: [],
-        buildings: [],
-        checks: [],
-        hotseat: false,
-        round: 0,
     };
   
     expect(getScoreBoard(G)).toEqual([
@@ -108,45 +90,55 @@ test('getting scoreboard', () => {
 test('highest bid', () => {
     let players:any = [
         {
-            checks: [],
-            buildings: [],
+            ...defaultPlayer,
             bid: 1,
-            money: 15,
-            passed: false,
         },
         {
-            checks: [],
-            buildings: [],
+            ...defaultPlayer,
             bid: 0,
-            money: 0,
-            passed: true,
         },
         {
-            checks: [],
-            buildings: [],
+            ...defaultPlayer,
             bid: 6,
-            money: 6,
-            passed: false,
         },
     ];
 
     expect(HighestBid(players)).toEqual(6);
 });
 
-it('should start game', () => {
+it('should be valid moves', () => {
     const spec = {
         game: EstateBuyerGame,
         multiplayer: Local(),
     };
 
-    const p0 = Client({ ...spec, playerID: '0' } as any) as any;
-    const p1 = Client({ ...spec, playerID: '1' } as any) as any;
+    const clients = [
+        Client({ ...spec, playerID: '0' } as any) as any,
+        Client({ ...spec, playerID: '1' } as any) as any
+    ];
 
-    p0.start();
-    p1.start();
+    clients[0].start();
+    clients[1].start();
 
-    p0.moves.GameStart();
+    clients[0].moves.GameStart();
 
-    const { ctx } = p0.getState();
+    let state = clients[0].getState();
+    let ctx = state.ctx;
+
     expect(ctx.phase).toEqual(Phases.auction);
+
+    state = clients[0].getState();
+    ctx = state.ctx;
+    
+    clients[ctx.currentPlayer].moves.MovePlaceBid(1);
+    
+    state = clients[0].getState();
+    ctx = state.ctx;
+
+    clients[ctx.currentPlayer].moves.MovePlaceBid(2);
+
+    state = clients[0].getState();
+    ctx = state.ctx;
+
+    clients[ctx.currentPlayer].moves.MovePassBid();
 });
