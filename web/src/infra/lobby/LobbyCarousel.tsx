@@ -12,7 +12,7 @@ import { LobbyService } from 'infra/common/services/LobbyService';
 import { Subscription } from '@apollo/react-components';
 import css from './LobbyCarousel.css';
 
-const LOBBIES_SUBSCRIPTION = gql`
+export const LOBBIES_SUBSCRIPTION = gql`
   subscription SubscribeToLobby {
     lobbyMutated {
       rooms {
