@@ -10,6 +10,7 @@ import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { PubSub } from 'graphql-subscriptions';
 import { roomEntityToRoom } from './RoomUtil';
 import { LobbyService } from './lobby.service';
+import { EXPIRE_MEMBERSHIP_AFTER_MS } from './constants';
 
 @Injectable()
 export class RoomsService {
@@ -20,7 +21,7 @@ export class RoomsService {
     private lobbyService: LobbyService,
     private connection: Connection,
     private pubSub: PubSub,
-  ) {}
+  ) { }
 
   /** Creates a new room. */
   async newRoom(
@@ -120,8 +121,11 @@ export class RoomsService {
     room: RoomEntity,
   ) {
     const memberships = room.userMemberships || [];
-    if (memberships.find((m) => m.user.id === userId)) {
+    const userMembership = memberships.find((m) => m.user.id === userId);
+    if (userMembership) {
       // user already in room
+      userMembership.lastSeen = Date.now();
+      await queryRunner.manager.save(userMembership);
       return;
     }
     if (memberships.length >= room.capacity) {

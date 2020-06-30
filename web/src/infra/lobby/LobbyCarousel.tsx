@@ -27,7 +27,7 @@ const LOBBIES_SUBSCRIPTION = gql`
   }
 `;
 
-interface Props {}
+interface Props { }
 
 interface State {
   showNewRoomModal: boolean;
@@ -79,7 +79,9 @@ export default class LobbyCarousel extends React.Component<Props, State> {
         </Carousel>
       );
     } else if (this.state.error) {
-      return <div className={css.errorMessage}>An error happened loading the lobby, try reloading.</div>;
+      return <Typography component="h2" variant="body2" className={css.errorMessage} >
+        An error happened loading the lobby, try reloading.
+      </Typography>;
     }
     return (
       <Subscription subscription={LOBBIES_SUBSCRIPTION}>
@@ -87,9 +89,9 @@ export default class LobbyCarousel extends React.Component<Props, State> {
           const lobby = resp.data?.lobbyMutated || this.state.lobby;
           if (lobby.rooms.length === 0) {
             return (
-              <div className={css.errorMessage}>
+              <Typography component="h2" variant="body2" className={css.errorMessage}>
                 No public room available, click on &quot;New Room&quot; and create one!
-              </div>
+              </Typography>
             );
           }
           return <Carousel>{this.renderCards(lobby)}</Carousel>;
