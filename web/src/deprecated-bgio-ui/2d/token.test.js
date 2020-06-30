@@ -14,6 +14,9 @@ import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+// avoid error: The tag <g> is unrecognized in this browser.
+jest.spyOn(console, 'error').mockImplementation(() => {});
+
 test('animation', () => {
   const token = Enzyme.shallow(
     <Token x={1} y={2} animate={true}>

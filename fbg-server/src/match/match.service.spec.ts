@@ -107,12 +107,12 @@ describe('MatchService', () => {
       bobId,
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
-    await roomsService.checkin(aliceId, room.id);
+    await roomsService.joinRoom(aliceId, room.id);
     const matchId = await service.startMatch(room.id, bobId);
     const newRoomId = await service.getNextRoom(matchId, bobId);
     const sameRoomId = await service.getNextRoom(matchId, bobId);
 
-    const newRoom = await roomsService.getRoom(newRoomId);
+    const newRoom = await roomsService.getRoomEntity(newRoomId);
     expect(newRoom).toMatchObject({
       capacity: 2,
       gameCode: 'checkers',
@@ -144,7 +144,7 @@ describe('MatchService', () => {
       bobId,
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
-    await roomsService.checkin(aliceId, room.id);
+    await roomsService.joinRoom(aliceId, room.id);
     const matchId = await service.startMatch(room.id, bobId);
 
     const joeId = await usersService.newUser({ nickname: 'joe' });
@@ -179,7 +179,7 @@ describe('MatchService', () => {
       bobId,
     );
     const aliceId = await usersService.newUser({ nickname: 'bob' });
-    await roomsService.checkin(aliceId, room.id);
+    await roomsService.joinRoom(aliceId, room.id);
 
     const result = service.startMatch(room.id, aliceId);
     await expect(result).rejects.toThrow();
@@ -209,7 +209,7 @@ describe('MatchService', () => {
     );
 
     const aliceId = await usersService.newUser({ nickname: 'alice' });
-    await roomsService.checkin(aliceId, room.id);
+    await roomsService.joinRoom(aliceId, room.id);
 
     const matchId = await service.startMatch(room.id, bobId);
     const match = await service.getMatchEntity(matchId);

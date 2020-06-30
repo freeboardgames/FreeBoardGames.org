@@ -1,11 +1,11 @@
 import { ListPlayers } from './ListPlayers';
-import { CheckinRoom_checkinRoom } from 'gqlTypes/CheckinRoom';
+import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 
 export default {
   title: 'Infrastructure/Room/ListPlayers',
 };
 
-const roomMetadata: CheckinRoom_checkinRoom = {
+const roomMetadata: JoinRoom_joinRoom = {
   __typename: 'Room' as const,
   gameCode: 'secretcodes',
   capacity: 4,

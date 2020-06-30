@@ -21,7 +21,7 @@ RUN yarn run build:server
 # build website
 ARG GA_TRACKING_CODE
 ARG GTM_ID
-ARG BGIO_SERVER_URL
+ARG GQL_WS_URL
 ARG GIT_REV
 ARG SENTRY_DSN
 COPY --chown=appuser .babelrc next.config.js /appdata/

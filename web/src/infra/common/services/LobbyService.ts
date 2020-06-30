@@ -14,7 +14,7 @@ import { GetMatch, GetMatchVariables } from 'gqlTypes/GetMatch';
 import { StartMatch, StartMatchVariables } from 'gqlTypes/StartMatch';
 import { NextRoom, NextRoomVariables } from 'gqlTypes/NextRoom';
 import gql from 'graphql-tag';
-import { CheckinRoom, CheckinRoomVariables } from 'gqlTypes/CheckinRoom';
+import { JoinRoom, JoinRoomVariables } from 'gqlTypes/JoinRoom';
 
 const FBG_NICKNAME_KEY = 'fbgNickname2';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken2';
@@ -138,16 +138,18 @@ export class LobbyService {
       })
       .catch(this.catchUnauthorizedGql(dispatch));
 
+    const payload: ReduxUserState = { ready: true, loggedIn: true, nickname };
+    dispatch({ type: ActionNames.SyncUser, payload });
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
   }
 
-  public static async checkin(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<CheckinRoom> {
+  public static async joinRoom(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<JoinRoom> {
     const client = this.getClient();
     const result = await client
-      .mutate<CheckinRoom, CheckinRoomVariables>({
+      .mutate<JoinRoom, JoinRoomVariables>({
         mutation: gql`
-          mutation CheckinRoom($roomId: String!) {
-            checkinRoom(roomId: $roomId) {
+          mutation JoinRoom($roomId: String!) {
+            joinRoom(roomId: $roomId) {
               gameCode
               capacity
               isPublic
