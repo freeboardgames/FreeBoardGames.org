@@ -206,19 +206,13 @@ it('should be a whole game', () => {
   expect(Moves.SelectBuilding(state.G, state.ctx, 3, 1)).toEqual(INVALID_MOVE);
   expect(Moves.SelectBuilding(state.G, state.ctx, firstPlayer, 100)).toEqual(INVALID_MOVE);
 
-  clients[firstPlayer].moves.MoveSelectBuilding(
-    firstPlayer,
-    state.G.players[firstPlayer].buildings[0].value,
-  );
+  clients[firstPlayer].moves.MoveSelectBuilding(firstPlayer, state.G.players[firstPlayer].buildings[0].value);
 
   state = clients[0].getState();
   const secondPlayer = state.ctx.currentPlayer;
   expect(state.G.players[firstPlayer].selectedCard).toBeObject();
 
-  clients[secondPlayer].moves.MoveSelectBuilding(
-    secondPlayer,
-    state.G.players[secondPlayer].buildings[0].value,
-  );
+  clients[secondPlayer].moves.MoveSelectBuilding(secondPlayer, state.G.players[secondPlayer].buildings[0].value);
 
   state = clients[0].getState();
   expect(state.G.players[firstPlayer].newCard).toBeObject();
@@ -229,4 +223,15 @@ it('should be a whole game', () => {
   expect(state.G.players[secondPlayer].checks.length).toEqual(1);
   expect(state.G.players[secondPlayer].buildings.length).toEqual(7);
   expect(state.G.players[secondPlayer].selectedCard).toBeNull();
+
+  //7 more plays will end the game
+  for (let i = 0; i < 7; i++) {
+    state = clients[0].getState();
+    clients[firstPlayer].moves.MoveSelectBuilding(firstPlayer, state.G.players[firstPlayer].buildings[0].value);
+    state = clients[0].getState();
+    clients[secondPlayer].moves.MoveSelectBuilding(secondPlayer, state.G.players[secondPlayer].buildings[0].value);
+  }
+
+  state = clients[0].getState();
+  expect(state.ctx.gameover).toBeObject();
 });

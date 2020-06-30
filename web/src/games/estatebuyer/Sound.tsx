@@ -7,14 +7,14 @@ let sounds: HTMLAudioElement[];
 sounds = [];
 
 const SoundMapping = {
-  "Bid": BidSound,
-  "Pass": PassSound,
-  "CardSelect": CardSelectSound,
-  "Start": GameStartSound,
-}
+  Bid: BidSound,
+  Pass: PassSound,
+  CardSelect: CardSelectSound,
+  Start: GameStartSound,
+};
 
 export const playSound = (soundType) => {
-  if (!(soundType in SoundMapping)){
+  if (!(soundType in SoundMapping)) {
     return;
   }
 

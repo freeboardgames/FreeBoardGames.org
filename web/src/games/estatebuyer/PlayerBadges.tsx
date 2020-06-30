@@ -8,7 +8,6 @@ import { IPlayerInRoom } from 'gamesShared/definitions/player';
 
 import css from './PlayerBadges.css';
 
-
 export interface IPlayerBadgesProps {
   players: IPlayer[];
   playersMeta: IPlayerInRoom[];
@@ -29,7 +28,7 @@ export class PlayerBadges extends React.Component<IPlayerBadgesProps, {}> {
 
   _isSelf(playerIndex: number): boolean {
     // Local Game
-    if (this.props.playerID === null){
+    if (this.props.playerID === null) {
       return playerIndex.toString() === this.props.ctx.currentPlayer;
     }
 
@@ -38,11 +37,15 @@ export class PlayerBadges extends React.Component<IPlayerBadgesProps, {}> {
 
   _isPlayersTurn(playerIndex: any): boolean {
     const isActive = this.props.ctx.activePlayers !== null && playerIndex in this.props.ctx.activePlayers;
-    const isCurrentPlayer = this.props.ctx.activePlayers === null && parseInt(this.props.ctx.currentPlayer) === parseInt(playerIndex);
+    const isCurrentPlayer =
+      this.props.ctx.activePlayers === null && parseInt(this.props.ctx.currentPlayer) === parseInt(playerIndex);
     const myTurn = isActive || isCurrentPlayer;
-    
-    if (this.props.ctx.phase !== null && this.props.ctx.phase.includes(Phases.property_selection) && myTurn){
-      return (this.props.players[playerIndex].selectedCard == undefined || this.props.players[playerIndex].selectedCard == null);
+
+    if (this.props.ctx.phase !== null && this.props.ctx.phase.includes(Phases.property_selection) && myTurn) {
+      return (
+        this.props.players[playerIndex].selectedCard == undefined ||
+        this.props.players[playerIndex].selectedCard == null
+      );
     }
 
     return myTurn;
@@ -64,7 +67,7 @@ export class PlayerBadges extends React.Component<IPlayerBadgesProps, {}> {
           round={this.props.round}
           color={borderColor}
           showBid={this.props.ctx.phase == Phases.auction}
-          />
+        />
       );
     });
     return <div className={css.playerBadgeContainer}>{badges}</div>;

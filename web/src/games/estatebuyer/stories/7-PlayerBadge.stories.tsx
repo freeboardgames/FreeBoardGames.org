@@ -6,37 +6,42 @@ export default {
   component: PlayerBadge,
 };
 
-const playerBadgeData:IPlayerBadgeProps = {
+const playerBadgeData: IPlayerBadgeProps = {
   playerID: 1,
-  name: "Ryan",
+  name: 'Ryan',
   active: false,
   self: false,
   score: {
-      playerID: "1",
-      score: 10,
-      bid: 0,
-      passed: false,
+    playerID: '1',
+    score: 10,
+    bid: 0,
+    passed: false,
   },
-  color: "blue",
+  color: 'blue',
   newCard: null,
   spentCard: null,
   round: 1,
   showBid: true,
-}
+};
 
 export const Default = () => <PlayerBadge {...playerBadgeData} />;
 
-export const Self = () => <PlayerBadge {...{...playerBadgeData, self: true}} />;
+export const Self = () => <PlayerBadge {...{ ...playerBadgeData, self: true }} />;
 
-export const Active = () => <PlayerBadge {...{...playerBadgeData, active: true}} />;
+export const Active = () => <PlayerBadge {...{ ...playerBadgeData, active: true }} />;
 
-export const Passed = () => <PlayerBadge {...{...playerBadgeData, score: {...playerBadgeData.score, passed: true, bid: 6}}} />;
+export const Passed = () => (
+  <PlayerBadge {...{ ...playerBadgeData, score: { ...playerBadgeData.score, passed: true, bid: 6 } }} />
+);
 
-export const Bid6 = () => <PlayerBadge {...{...playerBadgeData, score: {...playerBadgeData.score, bid: 6}}} />;
+export const Bid6 = () => <PlayerBadge {...{ ...playerBadgeData, score: { ...playerBadgeData.score, bid: 6 } }} />;
 
-export const Bid12 = () => <PlayerBadge {...{...playerBadgeData, score: {...playerBadgeData.score, bid: 12}}} />;
+export const Bid12 = () => <PlayerBadge {...{ ...playerBadgeData, score: { ...playerBadgeData.score, bid: 12 } }} />;
 
-export const MrLongName = () => <PlayerBadge {...{...playerBadgeData, name: "Thisisareallylongnameandwewanttocheckoverflow"}} />;
+export const MrLongName = () => (
+  <PlayerBadge {...{ ...playerBadgeData, name: 'Thisisareallylongnameandwewanttocheckoverflow' }} />
+);
 
-export const HighScore = () => <PlayerBadge {...{...playerBadgeData, score: {...playerBadgeData.score, score: 124}}} />;
-
+export const HighScore = () => (
+  <PlayerBadge {...{ ...playerBadgeData, score: { ...playerBadgeData.score, score: 124 } }} />
+);

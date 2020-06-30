@@ -14,36 +14,29 @@ export class DeckComponent extends React.Component<IDeckProps, {}> {
       number: 0,
       value: 0,
       showing: false,
-    }
+    };
 
     return (
-        <div className={css.deck}>
-          <div className={css.cardContainer} >
-            <EmptyCardComponent card={emptycard} />
-          </div>
-          {this.renderCount()}
-          {this.renderCards()}
+      <div className={css.deck}>
+        <div className={css.cardContainer}>
+          <EmptyCardComponent card={emptycard} />
         </div>
-    )
+        {this.renderCount()}
+        {this.renderCards()}
+      </div>
+    );
   }
 
   renderCards() {
-    return [...this.props.cards]
-      .map((card: any, index:number) => {
-        const ComponentTag:any = (card.building) ? BuildingCardComponent : MoneyCardComponent;
-        
-        return (
-          <div
-            className={css.cardContainer}
-            key={card.number}
-            style={{ margin: -index }}
-            >
-            <ComponentTag
-              card={card}
-            />
-          </div>
-        );
-      });
+    return [...this.props.cards].map((card: any, index: number) => {
+      const ComponentTag: any = card.building ? BuildingCardComponent : MoneyCardComponent;
+
+      return (
+        <div className={css.cardContainer} key={card.number} style={{ margin: -index }}>
+          <ComponentTag card={card} />
+        </div>
+      );
+    });
   }
 
   renderCount() {

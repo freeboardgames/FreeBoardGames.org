@@ -37,10 +37,10 @@ export class Scoreboard extends React.Component<IScoreboardProps, {}> {
           </TableHead>
           <TableBody>
             {this.props.scoreboard.map((score, i) => {
-              const style = (score.playerID.toString() === this.props.playerID) ? css.me : null;
+              const style = score.playerID.toString() === this.props.playerID ? css.me : null;
               const name = this.props.players.find((player) => player.playerID.toString() === score.playerID).name;
               return (
-                <TableRow key={score.playerID} className={[style, css["row"+i]].join(' ')}>
+                <TableRow key={score.playerID} className={[style, css['row' + i]].join(' ')}>
                   <TableCell className={css.rank}>#{i + 1}</TableCell>
                   <TableCell className={css.name}>{name}</TableCell>
                   <TableCell className={css.score}>${score.score}k</TableCell>
