@@ -60,7 +60,7 @@ export default class LobbyCarousel extends React.Component<Props, State> {
         <Button
           variant="contained"
           color="primary"
-          style={{ float: 'right' }}
+          style={{ float: 'right', paddingRight: '12px' }}
           startIcon={<AddIcon />}
           onClick={this._toggleNewRoomModal}
         >
@@ -92,7 +92,7 @@ export default class LobbyCarousel extends React.Component<Props, State> {
           if (lobby.rooms.length === 0) {
             return (
               <Typography component="h2" variant="body2" className={css.errorMessage}>
-                No public room available, click on &quot;New Room&quot; and create one!
+                No public room available. Click on &quot;<b>New Room</b>&quot; and create one!
               </Typography>
             );
           }
