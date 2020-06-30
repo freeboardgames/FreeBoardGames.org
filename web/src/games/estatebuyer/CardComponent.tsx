@@ -88,12 +88,12 @@ export class MoneyCardComponent extends CardComponent {
       <g>
         <g>
             <g transform="matrix(1,0,0,1,0.349972,-16.682)">
-                <text x="63.599px" y="189.726px" className={css.MoneyCardSVGText}>${this.props.card.value}</text>
+                <text x="63.599px" y="189.726px" className={css.MoneyCardSVGText}>${this.props.card.value}k</text>
             </g>
         </g>
         <g transform="matrix(-1,-1.22465e-16,1.22465e-16,-1,753.766,1042.56)">
             <g transform="matrix(1,0,0,1,0.349972,-16.682)">
-                <text x="63.599px" y="189.726px" className={css.MoneyCardSVGText}>${this.props.card.value}</text>
+                <text x="63.599px" y="189.726px" className={css.MoneyCardSVGText}>${this.props.card.value}k</text>
             </g>
         </g>
         <g transform="matrix(1,0,0,1,160,-30.2725)">
