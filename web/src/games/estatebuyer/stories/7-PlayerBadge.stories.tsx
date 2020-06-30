@@ -1,5 +1,4 @@
 import React from 'react';
-import IBuildingCard from '../card'
 import { PlayerBadge, IPlayerBadgeProps } from '../PlayerBadge';
 
 export default {
