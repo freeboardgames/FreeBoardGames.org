@@ -21,7 +21,7 @@ export class RoomsService {
     private lobbyService: LobbyService,
     private connection: Connection,
     private pubSub: PubSub,
-  ) { }
+  ) {}
 
   /** Creates a new room. */
   async newRoom(

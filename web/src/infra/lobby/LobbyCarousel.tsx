@@ -27,7 +27,7 @@ const LOBBIES_SUBSCRIPTION = gql`
   }
 `;
 
-interface Props { }
+interface Props {}
 
 interface State {
   showNewRoomModal: boolean;
@@ -79,9 +79,11 @@ export default class LobbyCarousel extends React.Component<Props, State> {
         </Carousel>
       );
     } else if (this.state.error) {
-      return <Typography component="h2" variant="body2" className={css.errorMessage} >
-        An error happened loading the lobby, try reloading.
-      </Typography>;
+      return (
+        <Typography component="h2" variant="body2" className={css.errorMessage}>
+          An error happened loading the lobby, try reloading.
+        </Typography>
+      );
     }
     return (
       <Subscription subscription={LOBBIES_SUBSCRIPTION}>

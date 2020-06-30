@@ -109,7 +109,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
   renderGameName() {
     if (this.props.isPublic) {
       return (
-        <Typography style={{ paddingBottom: '16px' }} variant="h6" component="h3" style={{ float: 'right' }}>
+        <Typography style={{ paddingBottom: '16px', float: 'right' }} variant="h6" component="h3">
           Room: {shortIdToAnimal(this.props.roomID)}
         </Typography>
       );

@@ -4,4 +4,4 @@ export default {
   title: 'Infrastructure/Room/GameSharing',
 };
 
-export const chess = () => <GameSharing gameCode="chess" roomID="foo" />;
+export const chess = () => <GameSharing gameCode="chess" roomID="foo" isPublic={false} />;

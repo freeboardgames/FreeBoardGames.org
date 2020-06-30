@@ -12,7 +12,7 @@ export class LobbyService {
     @InjectRepository(RoomEntity)
     private roomRepository: Repository<RoomEntity>,
     private pubSub: PubSub,
-  ) { }
+  ) {}
 
   /** Gets list of open public rooms. */
   async getLobby(): Promise<RoomEntity[]> {
@@ -21,7 +21,9 @@ export class LobbyService {
         .createQueryBuilder('room')
         .innerJoinAndSelect('room.userMemberships', 'userMemberships')
         .where('room.isPublic')
-        .andWhere('userMemberships.lastSeen >= :timeout', { timeout: Date.now() - EXPIRE_MEMBERSHIP_AFTER_MS })
+        .andWhere('userMemberships.lastSeen >= :timeout', {
+          timeout: Date.now() - EXPIRE_MEMBERSHIP_AFTER_MS,
+        })
         .andWhere('room.match IS NULL')
         .orderBy({
           'room.id': 'DESC',
