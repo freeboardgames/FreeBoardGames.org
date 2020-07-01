@@ -38,13 +38,29 @@ const editNickname = () => {
   alert('editNickname called');
 };
 
+const leaveRoom = () => {
+  alert('leaveRoom called');
+};
+
 const removeUser = () => () => {
   alert('removeUser called');
 };
 
 export const example = () => (
-  <ListPlayers roomMetadata={roomMetadata} editNickname={editNickname} removeUser={removeUser} userId={1} />
+  <ListPlayers
+    roomMetadata={roomMetadata}
+    editNickname={editNickname}
+    leaveRoom={leaveRoom}
+    removeUser={removeUser}
+    userId={1}
+  />
 );
 export const isCreator = () => (
-  <ListPlayers roomMetadata={roomMetadata} editNickname={editNickname} removeUser={removeUser} userId={0} />
+  <ListPlayers
+    roomMetadata={roomMetadata}
+    editNickname={editNickname}
+    leaveRoom={leaveRoom}
+    removeUser={removeUser}
+    userId={0}
+  />
 );

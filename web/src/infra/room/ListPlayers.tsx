@@ -88,6 +88,4 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
       </div>
     );
   }
-
-
 }
