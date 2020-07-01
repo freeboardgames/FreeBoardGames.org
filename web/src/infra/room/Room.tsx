@@ -103,7 +103,13 @@ class Room extends React.Component<IRoomProps, IRoomState> {
             }
             return (
               <React.Fragment>
-                <ListPlayers roomMetadata={room} editNickname={this._toggleEditingName} userId={this.state.userId} />
+                <ListPlayers
+                  roomMetadata={room}
+                  editNickname={this._toggleEditingName}
+                  leaveRoom={this._leaveRoom}
+                  removeUser={this._removeUser}
+                  userId={this.state.userId}
+                />
                 <StartMatchButton roomMetadata={room} userId={this.state.userId} startMatch={this._startMatch} />
               </React.Fragment>
             );
@@ -150,6 +156,16 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   _toggleEditingName = () => {
     this.setState({ editingName: !this.state.editingName });
+  };
+
+  _leaveRoom = () => {
+    const dispatch = (this.props as any).dispatch;
+    LobbyService.leaveRoom(dispatch, this._roomId());
+  };
+
+  _removeUser = (userIdToBeRemoved: number) => () => {
+    const dispatch = (this.props as any).dispatch;
+    LobbyService.removeUser(dispatch, userIdToBeRemoved, this._roomId());
   };
 
   _setNickname = (nickname: string) => {

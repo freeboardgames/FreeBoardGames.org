@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Subscription } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Subscription, Int } from '@nestjs/graphql';
 import { Room } from './gql/Room.gql';
 import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { NewRoom } from './gql/NewRoom.gql';
@@ -32,6 +32,33 @@ export class RoomsResolver {
     const roomEntity = await this.roomsService.joinRoom(userId, roomId);
     const room = roomEntityToRoom(roomEntity);
     return { ...room, userId };
+  }
+
+  @Mutation(returns => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async leaveRoom(
+    @CurrentUser() currentUser,
+    @Args({ name: 'roomId', type: () => String }) roomId: string,
+  ) {
+    await this.roomsService.leaveRoom(currentUser.id,
+      roomId,
+    );
+    return true;
+  }
+
+  @Mutation(returns => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async removeFromRoom(
+    @CurrentUser() currentUser,
+    @Args({ name: 'roomId', type: () => String }) roomId: string,
+    @Args({ name: 'userIdToBeRemoved', type: () => Int })
+    userIdToBeRemoved: number,
+  ) {
+    await this.roomsService.removeFromRoom(currentUser.id,
+      userIdToBeRemoved,
+      roomId,
+    );
+    return true;
   }
 
   @Subscription((returns) => Room)

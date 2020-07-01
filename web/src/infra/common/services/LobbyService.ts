@@ -16,6 +16,7 @@ import { StartMatch, StartMatchVariables } from 'gqlTypes/StartMatch';
 import { NextRoom, NextRoomVariables } from 'gqlTypes/NextRoom';
 import gql from 'graphql-tag';
 import { JoinRoom, JoinRoomVariables } from 'gqlTypes/JoinRoom';
+import { RemoveUserFromRoom, RemoveUserFromRoomVariables } from 'gqlTypes/RemoveUserFromRoom';
 
 const FBG_NICKNAME_KEY = 'fbgNickname2';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken2';
@@ -170,6 +171,38 @@ export class LobbyService {
       })
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data;
+  }
+
+  public static async leaveRoom(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<void> {
+    const client = this.getClient();
+    await client
+      .mutate({
+        mutation: gql`
+          mutation LeaveRoom($roomId: String!) {
+            leaveRoom(roomId: $roomId)
+          }
+        `,
+        variables: { roomId },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
+  }
+
+  public static async removeUser(
+    dispatch: Dispatch<SyncUserAction>,
+    userIdToBeRemoved: number,
+    roomId: string,
+  ): Promise<void> {
+    const client = this.getClient();
+    await client
+      .mutate<RemoveUserFromRoom, RemoveUserFromRoomVariables>({
+        mutation: gql`
+          mutation RemoveUserFromRoom($roomId: String!, $userIdToBeRemoved: Int!) {
+            removeFromRoom(userIdToBeRemoved: $userIdToBeRemoved, roomId: $roomId)
+          }
+        `,
+        variables: { roomId, userIdToBeRemoved },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
   }
 
   // TODO dispatch/catchUnauthorized
