@@ -10,6 +10,7 @@ import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { PubSub } from 'graphql-subscriptions';
 import { roomEntityToRoom } from './RoomUtil';
 import { LobbyService } from './lobby.service';
+import { EXPIRE_MEMBERSHIP_AFTER_MS } from './constants';
 
 @Injectable()
 export class RoomsService {
@@ -37,6 +38,10 @@ export class RoomsService {
       await inTransaction(this.connection, async (queryRunner) => {
         await this.saveNewRoom(queryRunner, userId, roomEntity);
       });
+      if (room.isPublic) {
+        // Cant do this inside a transaction as we need the new room in the notification.
+        await this.lobbyService.notifyLobbyUpdate();
+      }
     } else {
       await this.saveNewRoom(queryRunner, userId, roomEntity);
     }
@@ -54,7 +59,7 @@ export class RoomsService {
 
   /** Checks-in user and if room gets full starts the match. Returns match id, if any. */
   async joinRoom(userId: number, roomId: string): Promise<RoomEntity> {
-    return await inTransaction(this.connection, async (queryRunner) => {
+    const room = await inTransaction(this.connection, async (queryRunner) => {
       const room = await this.getRoomEntity(roomId);
       if (room.match) {
         return room;
@@ -62,6 +67,10 @@ export class RoomsService {
       await this.addMembership(queryRunner, userId, room);
       return room;
     });
+    if (room.isPublic) {
+      await this.lobbyService.notifyLobbyUpdate();
+    }
+    return room;
   }
 
   /** Removes user from room. */
@@ -72,6 +81,9 @@ export class RoomsService {
         return room;
       }
       await this.removeMembership(queryRunner, userId, room);
+      if (room.isPublic) {
+        await this.lobbyService.notifyLobbyUpdate();
+      }
       return room;
     });
   }
@@ -109,8 +121,11 @@ export class RoomsService {
     room: RoomEntity,
   ) {
     const memberships = room.userMemberships || [];
-    if (memberships.find((m) => m.user.id === userId)) {
+    const userMembership = memberships.find((m) => m.user.id === userId);
+    if (userMembership) {
       // user already in room
+      userMembership.lastSeen = Date.now();
+      await queryRunner.manager.save(userMembership);
       return;
     }
     if (memberships.length >= room.capacity) {
@@ -125,9 +140,6 @@ export class RoomsService {
     await queryRunner.manager.save(membership);
     room.userMemberships = [...memberships, membership];
     await this.notifyRoomUpdate(room);
-    if (room.isPublic) {
-      await this.lobbyService.notifyLobbyUpdate();
-    }
   }
 
   private async removeMembership(
@@ -154,8 +166,5 @@ export class RoomsService {
       room: { id: room.id },
     });
     await this.notifyRoomUpdate(room);
-    if (room.isPublic) {
-      await this.lobbyService.notifyLobbyUpdate();
-    }
   }
 }

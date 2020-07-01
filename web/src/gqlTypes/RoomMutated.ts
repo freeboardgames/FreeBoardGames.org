@@ -8,19 +8,19 @@
 // ====================================================
 
 export interface RoomMutated_roomMutated_userMemberships_user {
-  __typename: 'User';
+  __typename: "User";
   id: number | null;
   nickname: string;
 }
 
 export interface RoomMutated_roomMutated_userMemberships {
-  __typename: 'RoomMembership';
+  __typename: "RoomMembership";
   isCreator: boolean;
   user: RoomMutated_roomMutated_userMemberships_user;
 }
 
 export interface RoomMutated_roomMutated {
-  __typename: 'Room';
+  __typename: "Room";
   gameCode: string;
   capacity: number;
   isPublic: boolean;
@@ -35,4 +35,5 @@ export interface RoomMutated {
 
 export interface RoomMutatedVariables {
   roomId: string;
+  jwt?: string | null;
 }
