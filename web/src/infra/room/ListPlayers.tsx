@@ -15,6 +15,7 @@ import {
   ListItemText,
   ListSubheader,
   ListItemSecondaryAction,
+  Tooltip,
 } from '@material-ui/core';
 
 interface IListPlayersProps {
@@ -35,20 +36,26 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
       if (membership.user.id == this.props.userId) {
         secondaryAction = (
           <ListItemSecondaryAction>
-            <Button data-testid="editNickname" onClick={this.props.editNickname}>
-              <EditIcon />
-            </Button>
-            <Button data-testid="leaveRoom" onClick={this.props.leaveRoom}>
-              <ExitToAppIcon />
-            </Button>
+            <Tooltip title="Edit nickname" placement="top">
+              <Button data-testid="editNickname" onClick={this.props.editNickname}>
+                <EditIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Leave room" placement="top">
+              <Button data-testid="leaveRoom" onClick={this.props.leaveRoom}>
+                <ExitToAppIcon />
+              </Button>
+            </Tooltip>
           </ListItemSecondaryAction>
         );
       } else if (isCreator) {
         secondaryAction = (
           <ListItemSecondaryAction>
-            <Button data-testid="removeUser" onClick={this.props.removeUser(membership.user.id)}>
-              <RemoveCircleIcon />
-            </Button>
+            <Tooltip title="Remove user" placement="top">
+              <Button data-testid="removeUser" onClick={this.props.removeUser(membership.user.id)}>
+                <RemoveCircleIcon />
+              </Button>
+            </Tooltip>
           </ListItemSecondaryAction>
         );
       }

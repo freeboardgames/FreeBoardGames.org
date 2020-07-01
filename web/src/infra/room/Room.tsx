@@ -15,7 +15,7 @@ import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
 import { StartMatchButton } from './StartMatchButton';
 import { ReduxUserState } from 'infra/common/redux/definitions';
 import { connect } from 'react-redux';
-import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
+import { JoinRoom_joinRoom, JoinRoom_joinRoom_userMemberships } from 'gqlTypes/JoinRoom';
 import { Dispatch } from 'redux';
 import Router from 'next/router';
 import { Subscription } from '@apollo/react-components';
@@ -41,14 +41,14 @@ export const ROOM_SUBSCRIPTION = gql`
   }
 `;
 
-interface IRoomProps {
+interface Props {
   gameCode: string;
   router: NextRouter;
   user: ReduxUserState;
   dispatch: Dispatch;
 }
 
-interface IRoomState {
+interface State {
   roomMetadata?: JoinRoom_joinRoom;
   nameTextField?: string;
   userId?: number;
@@ -56,14 +56,16 @@ interface IRoomState {
   partialLoading: boolean;
   error: string;
   editingName: boolean;
+  removedFromRoom: boolean;
 }
 
-class Room extends React.Component<IRoomProps, IRoomState> {
-  state: IRoomState = {
+class Room extends React.Component<Props, State> {
+  state: State = {
     error: '',
     loading: true,
     partialLoading: false,
     editingName: false,
+    removedFromRoom: false,
   };
 
   componentDidMount() {
@@ -79,6 +81,9 @@ class Room extends React.Component<IRoomProps, IRoomState> {
         </Button>
       );
       return <MessagePage type={'error'} message={this.state.error} actionComponent={TryAgain} />;
+    }
+    if (this.state.removedFromRoom) {
+      return <MessagePage type={'error'} message={'You were removed from the room.'} />;
     }
     if (this.state.loading) {
       return <MessagePage type={'loading'} message={'Loading...'} />;
@@ -100,6 +105,12 @@ class Room extends React.Component<IRoomProps, IRoomState> {
             const room = resp.data?.roomMutated || this.state.roomMetadata;
             if (room.matchId) {
               this.redirectToMatch(room.matchId);
+            }
+            const currentUserInMetadata = room.userMemberships.find(
+              (membership: JoinRoom_joinRoom_userMemberships) => membership.user.id === this.state.userId,
+            );
+            if (!currentUserInMetadata) {
+              this.setState({ removedFromRoom: true });
             }
             return (
               <React.Fragment>
@@ -161,7 +172,9 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   _leaveRoom = () => {
     const dispatch = (this.props as any).dispatch;
     LobbyService.leaveRoom(dispatch, this._roomId());
-    Router.push('/'); // FIXME this works for other routes such as '/about', but not '/' ... why?
+    // FIXME: on dev only, this does not work for a redirect to '/'.
+    // However, it works for other routes such as '/about' ... why?
+    Router.push('/');
   };
 
   _removeUser = (userIdToBeRemoved: number) => () => {
