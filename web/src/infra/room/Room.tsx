@@ -21,8 +21,6 @@ import Router from 'next/router';
 import { Subscription } from '@apollo/react-components';
 import { gql } from 'apollo-boost';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Tooltip } from '@material-ui/core';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!, $jwt: String) {
