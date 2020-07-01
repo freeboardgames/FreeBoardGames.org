@@ -38,7 +38,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
             <Button data-testid="editNickname" onClick={this.props.editNickname}>
               <EditIcon />
             </Button>
-            <Button data-testid="leaveRoom" onClick={this.props.removeUser(membership.user.id)}>
+            <Button data-testid="leaveRoom" onClick={this.props.leaveRoom}>
               <ExitToAppIcon />
             </Button>
           </ListItemSecondaryAction>
@@ -88,4 +88,6 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
       </div>
     );
   }
+
+
 }

@@ -161,6 +161,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
   _leaveRoom = () => {
     const dispatch = (this.props as any).dispatch;
     LobbyService.leaveRoom(dispatch, this._roomId());
+    Router.push('/'); // FIXME this works for other routes such as '/about', but not '/' ... why?
   };
 
   _removeUser = (userIdToBeRemoved: number) => () => {
