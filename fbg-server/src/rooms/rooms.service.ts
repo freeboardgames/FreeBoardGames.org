@@ -99,24 +99,19 @@ export class RoomsService {
       if (room.match) {
         return room;
       }
-
       const userMembership = room.userMemberships.find(
         (membership) => membership.user.id === userIdOfCaller,
       );
-
       if (!userMembership || !userMembership.isCreator) {
         throw new HttpException(
           'You must be the creator of the room',
           HttpStatus.BAD_REQUEST,
         );
       }
-
       await this.removeMembership(queryRunner, userIdToBeRemoved, room);
-
       if (room.isPublic) {
         await this.lobbyService.notifyLobbyUpdate();
       }
-
       return room;
     });
   }

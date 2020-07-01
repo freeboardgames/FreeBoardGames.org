@@ -149,6 +149,39 @@ describe('RoomsService', () => {
     expect(newRoom.userMemberships.length).toEqual(1);
   });
 
+  it('should remove from room successfully', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.joinRoom(aliceId, room.id);
+    await service.removeFromRoom(bobId, aliceId, room.id);
+    const newRoom = await service.getRoomEntity(room.id);
+    expect(newRoom.userMemberships.length).toEqual(1);
+  });
+
+  it('should not allow non-owner to remove from room', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.joinRoom(aliceId, room.id);
+    const result = service.removeFromRoom(aliceId, bobId, room.id);
+    await expect(result).rejects.toThrow();
+  });
+
   it('should not leaveRoom after match started', async () => {
     const promiseMock = jest
       .fn()
