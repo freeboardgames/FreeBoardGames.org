@@ -21,6 +21,8 @@ import Router from 'next/router';
 import { Subscription } from '@apollo/react-components';
 import { gql } from 'apollo-boost';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Tooltip } from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!, $jwt: String) {
@@ -121,6 +123,7 @@ class Room extends React.Component<Props, State> {
                   removeUser={this._removeUser}
                   userId={this.state.userId}
                 />
+                {this.renderLeaveRoomButton()}
                 <StartMatchButton roomMetadata={room} userId={this.state.userId} startMatch={this._startMatch} />
               </React.Fragment>
             );
@@ -150,6 +153,13 @@ class Room extends React.Component<Props, State> {
     );
   };
 
+  renderLeaveRoomButton() {
+    return (
+      <Button variant="outlined" onClick={this._leaveRoom}>
+        Leave room
+      </Button>
+    );
+  }
   getNicknamePrompt() {
     if (!this.state.editingName) {
       return;

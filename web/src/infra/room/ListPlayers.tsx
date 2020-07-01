@@ -3,7 +3,6 @@ import PersonIcon from '@material-ui/icons/Person';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import EditIcon from '@material-ui/icons/Edit';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 
 import {
@@ -39,11 +38,6 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
             <Tooltip title="Edit nickname" placement="top">
               <Button data-testid="editNickname" onClick={this.props.editNickname}>
                 <EditIcon />
-              </Button>
-            </Tooltip>
-            <Tooltip title="Leave room" placement="top">
-              <Button data-testid="leaveRoom" onClick={this.props.leaveRoom}>
-                <ExitToAppIcon />
               </Button>
             </Tooltip>
           </ListItemSecondaryAction>

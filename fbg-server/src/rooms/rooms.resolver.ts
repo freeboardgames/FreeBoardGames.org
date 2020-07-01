@@ -34,19 +34,17 @@ export class RoomsResolver {
     return { ...room, userId };
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation((returns) => Boolean)
   @UseGuards(GqlAuthGuard)
   async leaveRoom(
     @CurrentUser() currentUser,
     @Args({ name: 'roomId', type: () => String }) roomId: string,
   ) {
-    await this.roomsService.leaveRoom(currentUser.id,
-      roomId,
-    );
+    await this.roomsService.leaveRoom(currentUser.id, roomId);
     return true;
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation((returns) => Boolean)
   @UseGuards(GqlAuthGuard)
   async removeFromRoom(
     @CurrentUser() currentUser,
@@ -54,7 +52,8 @@ export class RoomsResolver {
     @Args({ name: 'userIdToBeRemoved', type: () => Int })
     userIdToBeRemoved: number,
   ) {
-    await this.roomsService.removeFromRoom(currentUser.id,
+    await this.roomsService.removeFromRoom(
+      currentUser.id,
       userIdToBeRemoved,
       roomId,
     );

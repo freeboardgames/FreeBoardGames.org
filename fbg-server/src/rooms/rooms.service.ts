@@ -89,7 +89,11 @@ export class RoomsService {
   }
 
   /** Forcefully removes user from room. */
-  async removeFromRoom(userIdOfCaller: number, userIdToBeRemoved: number, roomId: string): Promise<RoomEntity> {
+  async removeFromRoom(
+    userIdOfCaller: number,
+    userIdToBeRemoved: number,
+    roomId: string,
+  ): Promise<RoomEntity> {
     return await inTransaction(this.connection, async (queryRunner) => {
       const room = await this.getRoomEntity(roomId);
       if (room.match) {
@@ -116,7 +120,6 @@ export class RoomsService {
       return room;
     });
   }
-
 
   /** Gets a raw RoomEntity, with user information populated. */
   async getRoomEntity(roomId: string): Promise<RoomEntity> {
