@@ -117,7 +117,6 @@ class Room extends React.Component<Props, State> {
                 <ListPlayers
                   roomMetadata={room}
                   editNickname={this._toggleEditingName}
-                  leaveRoom={this._leaveRoom}
                   removeUser={this._removeUser}
                   userId={this.state.userId}
                 />

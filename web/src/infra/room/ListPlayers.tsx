@@ -21,7 +21,6 @@ interface IListPlayersProps {
   roomMetadata: JoinRoom_joinRoom;
   userId?: number;
   editNickname: () => void;
-  leaveRoom: () => void;
   removeUser: (userId: number) => () => void;
 }
 
