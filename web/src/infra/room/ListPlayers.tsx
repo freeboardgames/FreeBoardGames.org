@@ -1,8 +1,9 @@
 import React from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import EditIcon from '@material-ui/icons/Edit';
-import { CheckinRoom_checkinRoom } from 'gqlTypes/CheckinRoom';
+import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 
 import {
   Button,
@@ -13,25 +14,41 @@ import {
   ListItemText,
   ListSubheader,
   ListItemSecondaryAction,
+  Tooltip,
 } from '@material-ui/core';
 
 interface IListPlayersProps {
-  roomMetadata: CheckinRoom_checkinRoom;
+  roomMetadata: JoinRoom_joinRoom;
   userId?: number;
   editNickname: () => void;
+  removeUser: (userId: number) => () => void;
 }
 
 export class ListPlayers extends React.Component<IListPlayersProps, {}> {
   render() {
     const metadata = this.props.roomMetadata;
+    const creator = metadata.userMemberships.find((membership) => membership.isCreator);
+    const isCreator = creator?.user.id === this.props.userId;
     const playersList = metadata.userMemberships.map((membership, idx: number) => {
       let secondaryAction;
       if (membership.user.id == this.props.userId) {
         secondaryAction = (
           <ListItemSecondaryAction>
-            <Button data-testid="editNickname" onClick={this.props.editNickname}>
-              <EditIcon />
-            </Button>
+            <Tooltip title="Edit nickname" placement="top">
+              <Button data-testid="editNickname" onClick={this.props.editNickname}>
+                <EditIcon />
+              </Button>
+            </Tooltip>
+          </ListItemSecondaryAction>
+        );
+      } else if (isCreator) {
+        secondaryAction = (
+          <ListItemSecondaryAction>
+            <Tooltip title="Remove user" placement="top">
+              <Button data-testid="removeUser" onClick={this.props.removeUser(membership.user.id)}>
+                <RemoveCircleIcon />
+              </Button>
+            </Tooltip>
           </ListItemSecondaryAction>
         );
       }

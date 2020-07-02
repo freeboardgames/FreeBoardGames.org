@@ -18,7 +18,11 @@ export enum CardColor {
 
 export interface Card {
   word: string;
-  color: CardColor;
+  /**
+   * Indicates which team the card belongs to, if any. Absent if the player
+   * has not revealed this card yet.
+   */
+  color?: CardColor;
   revealed: boolean;
 }
 
@@ -35,6 +39,5 @@ export interface IG {
 
 export enum Phases {
   lobby = 'lobby',
-  giveClue = 'giveClue',
   guess = 'guess',
 }

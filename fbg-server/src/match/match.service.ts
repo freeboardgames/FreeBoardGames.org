@@ -73,7 +73,7 @@ export class MatchService {
         return entity.nextRoom.id;
       }
       const room = await this.roomsService.newRoom(
-        roomEntityToRoom(entity.room),
+        { ...roomEntityToRoom(entity.room), isPublic: false },
         userId,
         queryRunner,
       );
@@ -134,6 +134,7 @@ export class MatchService {
     );
     room.match = newMatch;
     await queryRunner.manager.save(room);
+    await this.roomsService.notifyRoomUpdate(room);
     return id;
   }
 

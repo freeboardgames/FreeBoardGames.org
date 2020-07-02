@@ -1,0 +1,48 @@
+.wrapper {
+  position: relative;
+  height: 242px;
+  width: 100%;
+  background-position: left center;
+  background-size: cover;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 16px;
+}
+
+.heading {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  padding: 0px 8px;
+  border-radius: 8px;
+  background-color: white;
+  color: black;
+  text-decoration: none;
+  position: relative;
+  top: 12px;
+  left: 8px;
+  padding-top: 4px;
+  width: fit-content;
+  max-width: 200px;
+}
+
+.overlay {
+  border-radius: 8px;
+  position: absolute;
+  background-color: black;
+  width: 100%;
+  opacity: 75%;
+  height: 40%;
+  bottom: 0px;
+}
+
+.tableWrapper {
+  border-radius: 8px;
+  position: absolute;
+  width: 100%;
+  height: 97px;
+  overflow-y: auto;
+  bottom: 0px;
+  padding-left: 8px;
+}
+
+.table {
+  width: 100%;
+}

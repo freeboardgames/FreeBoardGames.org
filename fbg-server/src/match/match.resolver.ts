@@ -1,6 +1,6 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { MatchService } from './match.service';
-import { CurrentUser, GqlAuthGuard } from '../users/gql-auth-guard';
+import { CurrentUser, GqlAuthGuard } from '../internal/auth/GqlAuthGuard';
 import { UseGuards } from '@nestjs/common';
 import { Match } from './gql/Match.gql';
 

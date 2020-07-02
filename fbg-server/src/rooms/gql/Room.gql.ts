@@ -3,8 +3,8 @@ import { RoomMembership } from './RoomMembership.gql';
 
 @ObjectType()
 export class Room {
-  @Field((type) => Int, { nullable: true })
-  id?: number;
+  @Field((type) => String, { nullable: true })
+  id?: string;
 
   gameCode: string;
   capacity: number;

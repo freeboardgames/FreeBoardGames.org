@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import IconButton from '@material-ui/core/IconButton';
-import FacebookIcon from './FacebookIcon';
-import WhatsAppIcon from './WhatsAppIcon';
-import QrCodeIcon from './QrCodeIcon';
+import FacebookIcon from './icons/FacebookIcon';
+import WhatsAppIcon from './icons/WhatsAppIcon';
+import QrCodeIcon from './icons/QrCodeIcon';
 import copy from 'copy-to-clipboard';
 import ReactGA from 'react-ga';
 import TextField from '@material-ui/core/TextField';
@@ -17,6 +17,7 @@ import AlertLayer from '../common/components/alert/AlertLayer';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { QrCodePopup } from './QrCodePopup';
 import { lightGreen } from '@material-ui/core/colors';
+import { shortIdToAnimal } from '../lobby/LobbyUtil';
 
 const theme = createMuiTheme({
   palette: {
@@ -27,6 +28,7 @@ const theme = createMuiTheme({
 interface IGameSharingProps {
   gameCode: string;
   roomID: string;
+  isPublic: boolean;
 }
 
 interface IGameSharingState {
@@ -61,6 +63,7 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
           ) : null}
           <Card>
             <CardContent>
+              {this.renderGameName()}
               <Typography style={{ paddingBottom: '16px' }} variant="h5" component="h2">
                 Invite Your Friends
               </Typography>
@@ -101,6 +104,17 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
         </div>
       </MuiThemeProvider>
     );
+  }
+
+  renderGameName() {
+    if (this.props.isPublic) {
+      return (
+        <Typography style={{ paddingBottom: '16px', float: 'right' }} variant="h6" component="h3">
+          Room: {shortIdToAnimal(this.props.roomID)}
+        </Typography>
+      );
+    }
+    return null;
   }
 
   _shareFacebook = () => {

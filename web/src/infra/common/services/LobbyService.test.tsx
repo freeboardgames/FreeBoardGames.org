@@ -1,7 +1,7 @@
 import { LobbyService } from './LobbyService';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { ApolloClient } from 'apollo-client';
-import { CheckinRoom } from 'gqlTypes/CheckinRoom';
+import { JoinRoom } from 'gqlTypes/JoinRoom';
 jest.mock('apollo-client');
 
 describe('New Room', () => {
@@ -28,8 +28,8 @@ describe('New Room', () => {
   });
 
   it('should check-in on room', async () => {
-    const response: CheckinRoom = {
-      checkinRoom: {
+    const response: JoinRoom = {
+      joinRoom: {
         __typename: 'Room' as const,
         capacity: 2,
         isPublic: false,
@@ -42,7 +42,7 @@ describe('New Room', () => {
     const mockMutate = jest.fn().mockResolvedValue({ data: response });
     (ApolloClient as any).mockImplementation(() => ({ mutate: mockMutate }));
     const dispatch = jest.fn();
-    const actualResponse = await LobbyService.checkin(dispatch, 'foogame');
+    const actualResponse = await LobbyService.joinRoom(dispatch, 'foogame');
     expect(actualResponse).toEqual(response);
   });
 

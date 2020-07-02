@@ -24,6 +24,12 @@ const DESKTOP_MOBILE_THRESHOLD = 768;
 class GameInfo extends React.Component<gameInfoProps, {}> {
   render() {
     const gameDef = GAMES_MAP[this.props.gameCode];
+    const videoInstructions = gameDef.instructions.videoId ? (
+      <GameInstructionsVideo videoId={gameDef.instructions.videoId} />
+    ) : null;
+    const textInstructions = gameDef.instructions.text ? (
+      <GameInstructionsText text={gameDef.instructions.text} />
+    ) : null;
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <SEO title={`Play ${gameDef.name}, ${gameDef.description}`} description={gameDef.descriptionTag} />
@@ -56,9 +62,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
                   <ReactMarkdown linkTarget="_blank" source={gameDef.instructions.text} />
                 </Typography>
               </div>
-              <div style={{ marginTop: '32px' }}>
-                <GameInstructionsVideo gameDef={gameDef} />
-              </div>
+              <div style={{ marginTop: '32px' }}>{videoInstructions}</div>
             </div>
           </div>
         </DesktopView>
@@ -66,8 +70,8 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
           <GameCard game={gameDef} />
           <div style={{ padding: '8px' }} data-testid={'MobileViewDiv'}>
             <GameModePicker gameDef={gameDef} />
-            <GameInstructionsVideo gameDef={gameDef} />
-            <GameInstructionsText gameDef={gameDef} />
+            {videoInstructions}
+            {textInstructions}
           </div>
         </MobileView>
       </FreeBoardGamesBar>

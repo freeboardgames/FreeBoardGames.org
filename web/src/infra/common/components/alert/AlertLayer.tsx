@@ -9,7 +9,7 @@ class AlertLayer extends React.Component<{}, {}> {
       background: 'rgba(255,255,255,.85)',
       right: 0,
       height: '100%',
-      zIndex: 9001,
+      zIndex: 1000,
       display: 'block',
       textAlign: 'center',
     };
