@@ -13,6 +13,8 @@ import { BNameBadge } from './components/bnamebadge';
 import { BLog } from './components/blog';
 import { Ctx } from 'boardgame.io';
 
+import css from './board.css';
+
 interface IBoardProps {
   G: IG;
   ctx: Ctx;
@@ -21,11 +23,21 @@ interface IBoardProps {
   gameArgs?: IGameArgs;
 }
 
-let handStyle = {
-  display: 'flex',
-};
+interface IBoardState {
+  detailedDiscard: boolean;
+}
 
-export class Board extends React.Component<IBoardProps, {}> {
+export class Board extends React.Component<IBoardProps, IBoardState> {
+  state: IBoardState = {
+    detailedDiscard: false,
+  };
+
+  toggleDetailedDiscard = () => {
+    this.setState((s) => {
+      return { detailedDiscard: !s.detailedDiscard };
+    });
+  };
+
   render() {
     var me = this.props.playerID ? parseInt(this.props.playerID) : 1; // TODO : Local Fix - defaults to player 1
     var playerID = this.props.playerID ? this.props.playerID : '1'; // TODO : Local Fix
@@ -35,22 +47,18 @@ export class Board extends React.Component<IBoardProps, {}> {
 
     return (
       <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
-        <div style={{ display: 'flex' }}>
-          <div>
+        <div className={css.wrapper}>
+          <div className={css.info}></div>
+          <div className={css.hands}>
             {rotatedHands.map((hand) => {
               let index = hand.player;
               return (
-                <div key={'Board' + index.toString()} style={handStyle}>
+                <div className={css.hand} key={'Board' + index.toString()}>
                   <BNameBadge
                     name={this.props.gameArgs.players[index].name}
                     turn={index.toString() == this.props.ctx.currentPlayer}
                   ></BNameBadge>
-                  {index === me ? (
-                    <>
-                      <hr />
-                      Your Hand:
-                    </>
-                  ) : (
+                  {index === me ? null : (
                     <BButtons
                       onHintColor={(value: number) => {
                         this.props.moves.moveHintColor(index, value);
@@ -78,17 +86,20 @@ export class Board extends React.Component<IBoardProps, {}> {
               );
             })}
           </div>
-          <div>
-            {this.props.G.trash.length === 0 ? (
-              <BTrash card={null}></BTrash>
-            ) : (
-              <BTrash card={this.props.G.trash[this.props.G.trash.length - 1]}></BTrash>
-            )}
-            <BToken treats={this.props.G.treats} countdown={this.props.G.countdown}></BToken>
+          <div className={css.controls}>
+            <div className={css.piles}>
+              <BPiles piles={this.props.G.piles} keyPropagation={'Board'}></BPiles>
+            </div>
             <BDeck cardsLeft={this.props.G.deckindex}></BDeck>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '55px' }}>
-            <BPiles piles={this.props.G.piles} keyPropagation={'Board'}></BPiles>
+            <BToken treats={this.props.G.treats} countdown={this.props.G.countdown}></BToken>
+            <BTrash
+              onClick={this.toggleDetailedDiscard}
+              card={this.props.G.trash.length !== 0 ? this.props.G.trash[this.props.G.trash.length - 1] : null}
+            />
+
+            <div className={this.state.detailedDiscard ? [css.discard, css.show].join(' ') : css.discard}>
+              Full details of cards discarded will go here.
+            </div>
           </div>
           <div>
             <BLog lines={this.props.G.movelog} keyPropagation={'Board'}></BLog>

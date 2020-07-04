@@ -1,0 +1,76 @@
+@media (min-width: 1000px) {
+  /* stuff for desktop */
+  
+  .wrapper {
+    display: grid;
+    grid-template:
+      "info  info"
+      "hands controls"
+      "hands ."
+      / 50% 50%;
+  }
+  
+  .info {
+    grid-area: info;
+  }
+  
+  .hands {
+    grid-area: hands;
+  }
+  
+  .controls {
+    grid-area: controls;
+    top: var(--info-height);
+  }
+}
+
+.wrapper {
+  max-height: 100vh;
+  overflow-y: auto;
+  --info-height: 0;
+  box-sizing: border-box;
+}
+
+.wrapper * {
+  box-sizing: inherit;
+}
+
+.info {
+  position: sticky;
+  top: 0;
+  height: var(--info-height);
+}
+
+.hands {
+  margin: 0 auto;
+}
+
+.hand {
+  display: flex;
+}
+
+.controls {
+  position: sticky;
+  bottom: 0;
+  
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  
+  background: rgba(0,0,0,0.6);
+}
+
+.piles {
+  grid-column-end: span 4;
+}
+
+.discard {
+  display: none;
+  height: 150px;
+  background: red;
+  grid-column-end: span 4;
+}
+
+.discard.show {
+  display: block;
+}
