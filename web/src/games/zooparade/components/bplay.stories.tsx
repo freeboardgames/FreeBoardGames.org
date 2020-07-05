@@ -1,4 +1,3 @@
-import { BPiles } from './bpiles';
 import { BPlay } from './bplay';
 
 export default {
@@ -12,6 +11,10 @@ const onTrash = () => {
   alert('Trash');
 };
 
-export const YourTurn = () => <BPlay myTurn={true} onPlay={onPlay} onTrash={onTrash} />;
+export const YourTurn = () => (
+  <div style={{ maxWidth: '100px' }}>
+    <BPlay myTurn={true} onPlay={onPlay} onTrash={onTrash} />
+  </div>
+);
 
 export const NotYourTurn = () => <BPlay myTurn={false} onPlay={onPlay} onTrash={onTrash} />;
