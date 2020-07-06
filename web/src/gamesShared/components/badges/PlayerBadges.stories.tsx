@@ -46,7 +46,7 @@ const startAdornments = { 1: '🕵️' };
 export const WithStartAdornments = () => (
   <PlayerBadges
     players={players}
-    startAdornments={startAdornments}
+    prefixes={startAdornments}
     playerID={'1'}
     ctx={{ currentPlayer: '1', activePlayers: null } as any}
   />

@@ -9,7 +9,7 @@ import { isPlayersTurn } from 'gamesShared/helpers/GameUtil';
 interface IPlayerBadgesProps {
   scores?: IScore[];
   players: IPlayerInRoom[];
-  startAdornments?: { [key: number]: string };
+  prefixes?: string[];
   playerID: string;
   colors?: string[];
   ctx: Ctx;
@@ -28,8 +28,10 @@ export class PlayerBadges extends React.Component<IPlayerBadgesProps, {}> {
   }
 
   _getStartAdornment(player: IPlayerInRoom) {
-    const { startAdornments } = this.props;
-    if (startAdornments) return this.props.startAdornments[player.playerID];
+    const { prefixes } = this.props;
+    if (prefixes) {
+      return prefixes[player.playerID];
+    }
   }
 
   _renderName(player: IPlayerInRoom) {
