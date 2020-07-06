@@ -1,4 +1,5 @@
 import { BHint } from './bhint';
+import { IHintMask } from '../interfaces';
 
 export default {
   title: 'Games/Hanabi/Components/Hint',
@@ -8,5 +9,11 @@ export default {
 };
 
 export const Example = () => (
-  <BHint hint={{ color: [0, 1, 0, -1, 0], value: [0, -1, 0, 1, 0] }} keyPropagation={'foo'} />
+  <BHint
+    hint={{
+      color: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.YES],
+      value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN],
+    }}
+    keyPropagation={'foo'}
+  />
 );

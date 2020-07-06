@@ -4,6 +4,7 @@ import { idToColor, idToValue } from './util';
 
 import { moveDiscard, moveHintColor, moveHintValue, movePlay } from './moves';
 import { Ctx } from 'boardgame.io';
+import { UNKNOWN_MASK } from './constants';
 
 // Setup
 function setup(ctx: Ctx): IG {
@@ -39,7 +40,7 @@ function setup(ctx: Ctx): IG {
     for (var i = 0; i < nrCards; i++) {
       hands[j].cards[i] = deck[deckindex];
       deckindex -= 1;
-      hands[j].hints[i] = <IHint>{ color: [0, 0, 0, 0, 0], value: [0, 0, 0, 0, 0] };
+      hands[j].hints[i] = <IHint>{ color: [...UNKNOWN_MASK], value: [...UNKNOWN_MASK] };
     }
   }
 

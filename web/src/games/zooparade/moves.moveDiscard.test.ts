@@ -1,5 +1,7 @@
 import { Client } from 'boardgame.io/client';
 import { ZooParadeGame } from './game';
+import { UNKNOWN_MASK } from './constants';
+import { IHintMask } from './interfaces';
 
 it('Discard 1 - Full Hints.', () => {
   // set up a specific board scenario
@@ -294,24 +296,24 @@ it('Discard 1 - Full Hints.', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -346,24 +348,24 @@ it('Discard 1 - Full Hints.', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -675,24 +677,24 @@ it('Discard 1 - Full Hints.', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -727,24 +729,24 @@ it('Discard 1 - Full Hints.', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -1073,24 +1075,24 @@ it('Discard 2 - Not Full Hints.', () => {
           ],
           hints: [
             {
-              color: [0, -1, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -1125,24 +1127,24 @@ it('Discard 2 - Not Full Hints.', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -1478,24 +1480,24 @@ it('Discard 2 - Not Full Hints.', () => {
         ],
         hints: [
           {
-            color: [0, -1, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -1530,24 +1532,24 @@ it('Discard 2 - Not Full Hints.', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },

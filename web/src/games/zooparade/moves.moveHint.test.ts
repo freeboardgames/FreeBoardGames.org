@@ -1,5 +1,7 @@
 import { Client } from 'boardgame.io/client';
 import { ZooParadeGame } from './game';
+import { UNKNOWN_MASK } from './constants';
+import { IHintMask } from './interfaces';
 
 it('Hint Color 1 - Good hint.', () => {
   // set up a specific board scenario
@@ -294,24 +296,24 @@ it('Hint Color 1 - Good hint.', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -346,24 +348,24 @@ it('Hint Color 1 - Good hint.', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -668,24 +670,24 @@ it('Hint Color 1 - Good hint.', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -720,24 +722,24 @@ it('Hint Color 1 - Good hint.', () => {
         ],
         hints: [
           {
-            color: [0, -1, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 1, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -1052,24 +1054,24 @@ it('Hint Value 2 - Hint Value nothing.', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -1104,24 +1106,24 @@ it('Hint Value 2 - Hint Value nothing.', () => {
           ],
           hints: [
             {
-              color: [0, -1, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 1, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -1438,24 +1440,24 @@ it('Hint Value 2 - Hint Value nothing.', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -1490,24 +1492,24 @@ it('Hint Value 2 - Hint Value nothing.', () => {
         ],
         hints: [
           {
-            value: [0, 0, -1, 0, 0],
-            color: [0, -1, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
           },
           {
-            value: [0, 0, -1, 0, 0],
-            color: [0, -1, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
           },
           {
-            value: [0, 0, -1, 0, 0],
-            color: [0, -1, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
           },
           {
-            value: [0, 0, -1, 0, 0],
-            color: [0, 1, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
           },
           {
-            value: [0, 0, -1, 0, 0],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -1809,24 +1811,24 @@ it('Hint 3 - No Hint token.', () => {
           ],
           hints: [
             {
-              value: [0, 1, -1, -1, -1],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.NO, IHintMask.NO, IHintMask.NO],
+              color: [...UNKNOWN_MASK],
             },
             {
-              value: [0, -1, -1, -1, -1],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.NO, IHintMask.NO],
+              color: [...UNKNOWN_MASK],
             },
             {
-              value: [0, -1, 1, -1, -1],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.YES, IHintMask.NO, IHintMask.NO],
+              color: [...UNKNOWN_MASK],
             },
             {
-              value: [0, -1, -1, -1, -1],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.NO, IHintMask.NO],
+              color: [...UNKNOWN_MASK],
             },
             {
-              value: [0, -1, -1, -1, -1],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.NO, IHintMask.NO],
+              color: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -1862,23 +1864,23 @@ it('Hint 3 - No Hint token.', () => {
           hints: [
             {
               value: [0, -1, 1, -1, -1],
-              color: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
             },
             {
               value: [0, -1, 1, -1, -1],
-              color: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
             },
             {
               value: [0, -1, -1, 1, -1],
-              color: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
             },
             {
               value: [0, 1, -1, -1, -1],
-              color: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
             },
             {
               value: [0, -1, -1, -1, 1],
-              color: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -2185,24 +2187,24 @@ it('Hint 3 - No Hint token.', () => {
         ],
         hints: [
           {
-            value: [0, 1, -1, -1, -1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.NO, IHintMask.NO, IHintMask.NO],
+            color: [...UNKNOWN_MASK],
           },
           {
-            value: [0, -1, -1, -1, -1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.NO, IHintMask.NO],
+            color: [...UNKNOWN_MASK],
           },
           {
-            value: [0, -1, 1, -1, -1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.YES, IHintMask.NO, IHintMask.NO],
+            color: [...UNKNOWN_MASK],
           },
           {
-            value: [0, -1, -1, -1, -1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.NO, IHintMask.NO],
+            color: [...UNKNOWN_MASK],
           },
           {
-            value: [0, -1, -1, -1, -1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.NO, IHintMask.NO],
+            color: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -2237,24 +2239,24 @@ it('Hint 3 - No Hint token.', () => {
         ],
         hints: [
           {
-            value: [0, -1, 1, -1, -1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.YES, IHintMask.NO, IHintMask.NO],
+            color: [...UNKNOWN_MASK],
           },
           {
-            value: [0, -1, 1, -1, -1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.YES, IHintMask.NO, IHintMask.NO],
+            color: [...UNKNOWN_MASK],
           },
           {
-            value: [0, -1, -1, 1, -1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.YES, IHintMask.NO],
+            color: [...UNKNOWN_MASK],
           },
           {
-            value: [0, 1, -1, -1, -1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.NO, IHintMask.NO, IHintMask.NO],
+            color: [...UNKNOWN_MASK],
           },
           {
-            value: [0, -1, -1, -1, 1],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.NO, IHintMask.YES],
+            color: [...UNKNOWN_MASK],
           },
         ],
       },

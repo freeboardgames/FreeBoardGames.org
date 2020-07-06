@@ -28,14 +28,3 @@ export function isEnd(G: IG, ctx: Ctx) {
     // Every player has made a move after the deck turned empty
   }
 }
-
-// function getScore(G: IG): number {
-//   var score = 0
-//   for (var i = 0; i < 5 ; i++) {
-//     var cardsOnPile = G.piles[i].length
-//     score += G.piles[i][cardsOnPile - 1].value
-//   }
-//
-//   return score
-// }
-//

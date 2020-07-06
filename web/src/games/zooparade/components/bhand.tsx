@@ -1,5 +1,5 @@
 import React from 'react';
-import { IHand, ICard } from '../interfaces';
+import { IHand, ICard, IHintMask } from '../interfaces';
 import { BCard } from './bcard';
 import { BHint } from './bhint';
 import { BPlay } from './bplay';
@@ -30,10 +30,12 @@ export class BHand extends React.Component<InnerWrapper, {}> {
           var empty: number = null;
 
           if (this.props.me) {
+            const valueIndex = hint.value.indexOf(IHintMask.YES);
+            const colorIndex = hint.color.indexOf(IHintMask.YES);
             newCard = {
               id: -1,
-              value: hint.value.indexOf(1) !== -1 ? hint.value.indexOf(1) : null,
-              color: hint.color.indexOf(1) !== -1 ? hint.color.indexOf(1) : -1,
+              value: valueIndex !== -1 ? valueIndex : null,
+              color: colorIndex !== -1 ? colorIndex : -1,
             };
           } else {
             // TODO: Error here if pick up empty!

@@ -5,9 +5,15 @@ export interface ICard {
   value: number;
 }
 
+export enum IHintMask {
+  UNKNOWN = 0,
+  NO = -1,
+  YES = 1,
+}
+
 export interface IHint {
-  color: number[]; // Array of size 5 [ , , , , ] where a -1 = not this color/value, 0 = unknonw , 1 = this color
-  value: number[]; // same
+  color: IHintMask[]; // Array of size 5, one for each color.
+  value: IHintMask[]; // Array of size 5, one for each value.
 }
 
 export interface IHintIcon {

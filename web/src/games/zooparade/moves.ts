@@ -1,9 +1,10 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
-import { ICard, IHand, IHint, IG } from './interfaces';
+import { ICard, IHand, IHint, IG, IHintMask } from './interfaces';
+import { UNKNOWN_MASK } from './constants';
 
 // Moves
-export function movePlay(G: IG, ctx: Ctx, IDInHand: number): any {
+export function movePlay(G: IG, ctx: Ctx, IDInHand: number): IG | 'INVALID_MOVE' {
   if (isNaN(IDInHand)) {
     return INVALID_MOVE;
   } else if (IDInHand < 0 || IDInHand >= (ctx.numPlayers > 3 ? 4 : 5)) {
@@ -44,7 +45,10 @@ export function movePlay(G: IG, ctx: Ctx, IDInHand: number): any {
           if (!(indexHint === IDInHand)) {
             return hint;
           }
-          return <IHint>{ color: [0, 0, 0, 0, 0], value: [0, 0, 0, 0, 0] };
+          return <IHint>{
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
+          };
         }),
       };
     }),
@@ -91,7 +95,7 @@ export function movePlay(G: IG, ctx: Ctx, IDInHand: number): any {
   };
 }
 
-export function moveDiscard(G: IG, ctx: Ctx, IDInHand: number): any {
+export function moveDiscard(G: IG, ctx: Ctx, IDInHand: number): IG | 'INVALID_MOVE' {
   if (isNaN(IDInHand)) {
     return INVALID_MOVE;
   } else if (IDInHand < 0 || IDInHand > (ctx.numPlayers > 3 ? 4 : 5)) {
@@ -133,7 +137,7 @@ export function moveDiscard(G: IG, ctx: Ctx, IDInHand: number): any {
           if (!(indexHint === IDInHand)) {
             return hint;
           }
-          return <IHint>{ color: [0, 0, 0, 0, 0], value: [0, 0, 0, 0, 0] };
+          return <IHint>{ color: [...UNKNOWN_MASK], value: [...UNKNOWN_MASK] };
         }),
       };
     }),
@@ -144,7 +148,7 @@ export function moveDiscard(G: IG, ctx: Ctx, IDInHand: number): any {
   };
 }
 
-export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: number): any {
+export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: number): IG | 'INVALID_MOVE' {
   var currentPl: number = parseInt(ctx.currentPlayer);
   if (isNaN(IDPlayer)) {
     return INVALID_MOVE;
@@ -179,7 +183,8 @@ export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: nu
         cards: G.hands[IDPlayer].cards,
         hints: G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
           var newHintValue = Object.assign([], hint.value);
-          newHintValue[IDHintValue] = G.hands[IDPlayer].cards[indexHint].value === IDHintValue ? 1 : -1;
+          newHintValue[IDHintValue] =
+            G.hands[IDPlayer].cards[indexHint].value === IDHintValue ? IHintMask.YES : IHintMask.NO;
           return <IHint>{
             value: newHintValue,
             color: hint.color,
@@ -191,7 +196,7 @@ export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: nu
   };
 }
 
-export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: number): any {
+export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: number): IG | 'INVALID_MOVE' {
   var currentPl: number = parseInt(ctx.currentPlayer);
   if (isNaN(IDPlayer)) {
     return INVALID_MOVE;
@@ -226,7 +231,8 @@ export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: nu
         cards: G.hands[IDPlayer].cards,
         hints: G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
           var newHintColor = Object.assign([], hint.color);
-          newHintColor[IDHintColor] = G.hands[IDPlayer].cards[indexHint].color === IDHintColor ? 1 : -1;
+          newHintColor[IDHintColor] =
+            G.hands[IDPlayer].cards[indexHint].color === IDHintColor ? IHintMask.YES : IHintMask.NO;
           return <IHint>{
             color: newHintColor,
             value: hint.value,

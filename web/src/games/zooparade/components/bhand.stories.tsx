@@ -1,4 +1,5 @@
 import { BHand } from './bhand';
+import { IHintMask } from '../interfaces';
 
 export default {
   title: 'Games/Hanabi/Components/Hand',
@@ -21,9 +22,18 @@ const hand = {
     { id: 2, color: 4, value: 3 },
   ],
   hints: [
-    { color: [1, 0, -1, -1, 0], value: [1, 0, 0, 0, 0] },
-    { color: [0, 0, 0, 1, 0], value: [0, 0, -1, -1, 1] },
-    { color: [0, 1, 0, 0, 0], value: [0, 0, 0, 1, 0] },
+    {
+      color: [IHintMask.YES, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.UNKNOWN],
+      value: [IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+    },
+    {
+      color: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN],
+      value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.YES, IHintMask.YES],
+    },
+    {
+      color: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+      value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN],
+    },
   ],
 };
 

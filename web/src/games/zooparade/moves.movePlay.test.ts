@@ -1,5 +1,7 @@
 import { Client } from 'boardgame.io/client';
 import { ZooParadeGame } from './game';
+import { UNKNOWN_MASK } from './constants';
+import { IHintMask } from './interfaces';
 
 // https://github.com/nicolodavis/boardgame.io/blob/master/docs/testing.md
 it('play movePlays 1 - good', () => {
@@ -295,24 +297,24 @@ it('play movePlays 1 - good', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -347,24 +349,24 @@ it('play movePlays 1 - good', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -685,24 +687,24 @@ it('play movePlays 1 - good', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -737,24 +739,24 @@ it('play movePlays 1 - good', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -1057,24 +1059,24 @@ it('play movePlays 2 - bad', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -1109,24 +1111,24 @@ it('play movePlays 2 - bad', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -1441,24 +1443,24 @@ it('play movePlays 2 - bad', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -1493,24 +1495,24 @@ it('play movePlays 2 - bad', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -1863,24 +1865,24 @@ it('play movePlays 3 - play already played value/color', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -1915,24 +1917,24 @@ it('play movePlays 3 - play already played value/color', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -2296,24 +2298,24 @@ it('play movePlays 3 - play already played value/color', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -2348,24 +2350,24 @@ it('play movePlays 3 - play already played value/color', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -2729,24 +2731,24 @@ it('play movePlays 4 - finish a pile (gain treat)', () => {
           ],
           hints: [
             {
-              color: [0, -1, 0, -1, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, -1, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, -1, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, -1, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, 0, 1, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -2781,24 +2783,24 @@ it('play movePlays 4 - finish a pile (gain treat)', () => {
           ],
           hints: [
             {
-              color: [0, -1, -1, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, -1, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 1, -1, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, -1, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, -1, -1, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -3172,24 +3174,24 @@ it('play movePlays 4 - finish a pile (gain treat)', () => {
         ],
         hints: [
           {
-            color: [0, -1, 0, -1, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, 0, -1, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, 0, -1, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, 0, -1, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -3224,24 +3226,24 @@ it('play movePlays 4 - finish a pile (gain treat)', () => {
         ],
         hints: [
           {
-            color: [0, -1, -1, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, -1, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 1, -1, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, -1, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, -1, -1, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -3615,24 +3617,24 @@ it('play movePlays 5 - finish a pile with full treats', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -3667,24 +3669,24 @@ it('play movePlays 5 - finish a pile with full treats', () => {
           ],
           hints: [
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -4070,24 +4072,24 @@ it('play movePlays 5 - finish a pile with full treats', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -4122,24 +4124,24 @@ it('play movePlays 5 - finish a pile with full treats', () => {
         ],
         hints: [
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -4655,24 +4657,24 @@ it('play movePlays 6 - play when no more cards on deck', () => {
           ],
           hints: [
             {
-              value: [0, 0, -1, 0, 0],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              color: [...UNKNOWN_MASK],
             },
             {
-              value: [0, 0, -1, 0, 0],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              color: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              value: [0, 0, 1, 0, 0],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              color: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -4707,24 +4709,24 @@ it('play movePlays 6 - play when no more cards on deck', () => {
           ],
           hints: [
             {
-              value: [0, 0, -1, 0, 0],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              color: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
             {
-              value: [0, 0, -1, 0, 0],
-              color: [0, 0, 0, 0, 0],
+              value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+              color: [...UNKNOWN_MASK],
             },
             {
-              color: [0, 0, 0, 0, 0],
-              value: [0, 0, 0, 0, 0],
+              color: [...UNKNOWN_MASK],
+              value: [...UNKNOWN_MASK],
             },
           ],
         },
@@ -5247,24 +5249,24 @@ it('play movePlays 6 - play when no more cards on deck', () => {
         ],
         hints: [
           {
-            value: [0, 0, -1, 0, 0],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [...UNKNOWN_MASK],
           },
           {
-            value: [0, 0, -1, 0, 0],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            value: [0, 0, 1, 0, 0],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
@@ -5299,24 +5301,24 @@ it('play movePlays 6 - play when no more cards on deck', () => {
         ],
         hints: [
           {
-            value: [0, 0, -1, 0, 0],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
           {
-            value: [0, 0, -1, 0, 0],
-            color: [0, 0, 0, 0, 0],
+            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [...UNKNOWN_MASK],
           },
           {
-            color: [0, 0, 0, 0, 0],
-            value: [0, 0, 0, 0, 0],
+            color: [...UNKNOWN_MASK],
+            value: [...UNKNOWN_MASK],
           },
         ],
       },
