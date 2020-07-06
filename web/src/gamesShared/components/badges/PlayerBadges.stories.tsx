@@ -41,7 +41,7 @@ export const WaitingForMany = () => (
   />
 );
 
-const startAdornments = { 1: '🕵️' };
+const startAdornments = [undefined, '🕵️'];
 
 export const WithStartAdornments = () => (
   <PlayerBadges
