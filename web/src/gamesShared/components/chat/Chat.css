@@ -1,0 +1,14 @@
+.window {
+  max-width: 40em;
+  margin: 1rem auto;
+}
+
+.button {
+  background-color: #00d8ff;
+  border: none;
+  color: #336699;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: bold;
+  font-size: 0.8em;
+}
