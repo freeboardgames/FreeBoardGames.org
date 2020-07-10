@@ -1,9 +1,9 @@
-import { ICard } from "./interfaces";
+import { ICard } from './interfaces';
 
 export function card(id: number, color: number, value: number): ICard {
-    return {
-        id,
-        color,
-        value,
-    };
+  return {
+    id,
+    color,
+    value,
+  };
 }
