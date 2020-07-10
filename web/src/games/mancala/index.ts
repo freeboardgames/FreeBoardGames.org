@@ -1,0 +1,20 @@
+const Thumbnail = require('./media/thumbnail.png?lqip-colors');
+import { GameMode } from 'gamesShared/definitions/mode';
+import { IGameDef } from 'gamesShared/definitions/game';
+import instructions from './instructions.md';
+
+export const mancalaGameDef: IGameDef = {
+  code: 'mancala',
+  name: 'Mancala Game',
+  imageURL: Thumbnail,
+  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
+  minPlayers: 2,
+  maxPlayers: 2,
+  description: 'Classic game of Mancala',
+  descriptionTag: `Play Mancala`,
+  instructions: {
+    videoId: 'dQw4w9WgXcQ',
+    text: instructions,
+  },
+  config: () => import('./config'),
+};
