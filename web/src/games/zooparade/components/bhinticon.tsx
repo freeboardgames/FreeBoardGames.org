@@ -14,12 +14,12 @@ export class BHintIcon extends React.Component<InnerWrapper, {}> {
     return (
       <div
         style={{
-          height: '15px',
-          width: '15px',
+          height: '8px',
+          width: '8px',
           display: 'inline-block',
           boxSizing: 'border-box',
           overflow: 'hidden',
-          border: '2.5px solid #572511',
+          border: '1px solid #572511',
           borderRadius: '10%',
           backgroundColor: this.props.hintIcon.color !== -1 ? colors[this.props.hintIcon.color] : 'black',
           color: 'white',

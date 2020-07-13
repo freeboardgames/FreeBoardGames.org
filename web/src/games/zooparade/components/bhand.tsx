@@ -1,8 +1,7 @@
 import React from 'react';
 import { IHand, ICard, IHintMask } from '../interfaces';
-import { BCard } from './bcard';
-import { BHint } from './bhint';
 import { BPlay } from './bplay';
+import { CardWithHint } from './CardWithHint';
 
 import style from './bhand.css';
 
@@ -50,8 +49,12 @@ export class BHand extends React.Component<InnerWrapper, {}> {
 
           return (
             <div className={style.card_column} key={this.props.keyPropagation + 'BHand' + card_index.toString()}>
-              <BHint hint={hint} keyPropagation={this.props.keyPropagation + 'BHand' + card_index.toString()}></BHint>
-              <BCard card={newCard} empty={empty}></BCard>
+              <CardWithHint
+                card={newCard}
+                empty={empty}
+                hint={hint}
+                keyPropagation={this.props.keyPropagation + 'BHand' + card_index.toString()}
+              ></CardWithHint>
               {this.props.me ? (
                 <BPlay
                   onPlay={() => {

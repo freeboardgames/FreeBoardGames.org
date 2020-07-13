@@ -1,0 +1,15 @@
+
+.wrapper {
+  position: relative;
+  width: 85px;
+  height: 135px;
+}
+
+.hints {
+  display: grid;
+  position: absolute;
+  grid-template-columns: repeat(auto-fill, 12px);
+  justify-content: center;
+  gap: 1px;
+  margin-bottom: 1px;
+}
