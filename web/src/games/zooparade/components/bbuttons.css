@@ -1,0 +1,9 @@
+.button {
+  background: none;
+  border: 0;
+  padding: 1px 8px;
+}
+
+.wrapper {
+  float: right;
+}

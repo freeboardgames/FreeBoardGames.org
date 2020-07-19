@@ -1,4 +1,4 @@
-import { IHint, IHintMask } from '../interfaces';
+import { IHintMask } from '../interfaces';
 import { CardWithHint } from './CardWithHint';
 
 export default {

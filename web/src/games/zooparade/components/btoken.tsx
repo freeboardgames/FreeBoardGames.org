@@ -1,4 +1,8 @@
 import React from 'react';
+import countdown1 from './media/countdown1.png';
+import countdown2 from './media/countdown2.png';
+import countdown3 from './media/countdown3.png';
+import css from './btoken.css';
 
 interface InnerWrapper {
   countdown: number;
@@ -11,18 +15,18 @@ export class BToken extends React.Component<InnerWrapper, {}> {
     var imagecountdown: any;
 
     if (this.props.countdown === 3) {
-      imagecountdown = require('./media/countdown3.png');
+      imagecountdown = countdown3;
     } else if (this.props.countdown === 2) {
-      imagecountdown = require('./media/countdown2.png');
+      imagecountdown = countdown2;
     } else if (this.props.countdown === 1) {
-      imagecountdown = require('./media/countdown1.png');
+      imagecountdown = countdown1;
     }
 
     return (
       <>
-        <div className="image">
+        <div className={css.treatWrapper}>
           <img src={imagetreat} height="50" width="50"></img>
-          <h2> {this.props.treats} </h2>
+          <h2 className={css.treatCount}>x{this.props.treats}</h2>
         </div>
         <div className="image">
           <img src={imagecountdown} height="50" width="50"></img>

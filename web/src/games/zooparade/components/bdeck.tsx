@@ -1,5 +1,6 @@
 import React from 'react';
 import { BCard } from './bcard';
+import css from './bdeck.css';
 
 interface InnerWrapper {
   cardsLeft: number;
@@ -8,9 +9,9 @@ interface InnerWrapper {
 export class BDeck extends React.Component<InnerWrapper, {}> {
   render() {
     return (
-      <div>
+      <div className={css.wrapper}>
         <BCard card={null} empty={-2}></BCard>
-        <div> {this.props.cardsLeft + 1} </div>
+        <h2 className={css.counter}>x{this.props.cardsLeft + 1}</h2>
       </div>
     );
   }

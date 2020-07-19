@@ -46,7 +46,10 @@
 }
 
 .hand {
-  display: flex;
+  width: 100%;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .controls {

@@ -7,7 +7,7 @@ export const zooParadeGameDef: IGameDef = {
   code: 'zooparade',
   name: 'Zoo Parade',
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
+  modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 2,
   maxPlayers: 5,
   description: 'A cooperative game where the Team wins!',
