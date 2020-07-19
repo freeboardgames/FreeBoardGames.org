@@ -40,7 +40,7 @@ const URL = 'https://' + DOMAIN;
 
 function generateSiteMapXML(pagesManifest) {
   let pathsFromManifest = Object.keys(pagesManifest).reverse();
-  const paths = ['/blog/'];
+  const paths = [];
   for (const path of pathsFromManifest) {
     if (!isExcludedPath(path)) {
       paths.push(path);
