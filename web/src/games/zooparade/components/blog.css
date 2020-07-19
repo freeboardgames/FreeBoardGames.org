@@ -1,6 +1,8 @@
 .wrapper {
   max-width: 450px;
   margin: 0 auto;
+  max-height: 150px;
+  overflow-y: scroll;
 }
 
 .logEntry {
