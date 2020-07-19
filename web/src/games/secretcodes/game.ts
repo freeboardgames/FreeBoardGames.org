@@ -78,7 +78,7 @@ const GameConfig: Game<IG> = {
     [Phases.guess]: {
       next: Phases.guess,
       turn: {
-        activePlayers: ActivePlayers.ALL, 
+        activePlayers: ActivePlayers.ALL,
         order: {
           first: () => 0,
           next: () => 0,
