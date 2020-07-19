@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
-import { ICard, IHand, IHint, IG, IHintMask } from './interfaces';
+import { ICard, IHand, IHint, IG, IHintMask, Log, Moves } from './interfaces';
 import { UNKNOWN_MASK } from './constants';
 
 // Moves
@@ -11,15 +11,19 @@ export function movePlay(G: IG, ctx: Ctx, IDInHand: number): IG | 'INVALID_MOVE'
     return INVALID_MOVE;
   }
 
-  var currentPl: number = parseInt(ctx.currentPlayer);
+  let currentPl: number = parseInt(ctx.currentPlayer);
 
   // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
   // However, the game automatically ends, once all players couldn't pick up a card, thus
   // you always have max_cards in hand, and can never play a 'null'.
-  var movelogString = 'Player: ' + ctx.currentPlayer + '\tMove: Play';
-  movelogString += '\t CardColor: ' + G.hands[currentPl].cards[IDInHand].color.toString();
-  movelogString += '\t CardValue: ' + G.hands[currentPl].cards[IDInHand].value.toString();
-  movelogString += '\t CardIdInHand: ' + IDInHand.toString();
+  let card = G.hands[currentPl].cards[IDInHand];
+  let moveLog: Log = {
+    player: ctx.currentPlayer,
+    move: Moves.movePlay,
+    cardColor: card.color,
+    cardValue: card.value,
+    cardIdInHand: IDInHand,
+  };
   return {
     ...G,
     hands: G.hands.map((hand: IHand) => {
@@ -90,8 +94,8 @@ export function movePlay(G: IG, ctx: Ctx, IDInHand: number): IG | 'INVALID_MOVE'
         : G.treats,
     movelog:
       G.piles[G.hands[currentPl].cards[IDInHand].color].length === G.hands[currentPl].cards[IDInHand].value // Is the played card the next value?
-        ? [...G.movelog, movelogString + 'Success']
-        : [...G.movelog, movelogString + 'Failed'],
+        ? [...G.movelog, { ...moveLog, success: true }]
+        : [...G.movelog, { ...moveLog, success: false }],
   };
 }
 
@@ -102,15 +106,19 @@ export function moveDiscard(G: IG, ctx: Ctx, IDInHand: number): IG | 'INVALID_MO
     return INVALID_MOVE;
   }
 
-  var currentPl: number = parseInt(ctx.currentPlayer);
+  let currentPl: number = parseInt(ctx.currentPlayer);
 
   // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
   // However, the game automatically ends, once all players couldn't pick up a card, thus
   // you always have max_cards in hand, and can never play a 'null'.
-  var movelogString = 'Player: ' + ctx.currentPlayer + '\tMove: Discard';
-  movelogString += '\t CardColor: ' + G.hands[currentPl].cards[IDInHand].color.toString();
-  movelogString += '\t CardValue: ' + G.hands[currentPl].cards[IDInHand].value.toString();
-  movelogString += '\t CardIdInHand: ' + IDInHand.toString();
+  let card = G.hands[currentPl].cards[IDInHand];
+  let moveLog: Log = {
+    player: ctx.currentPlayer,
+    move: Moves.moveDiscard,
+    cardColor: card.color,
+    cardValue: card.value,
+    cardIdInHand: IDInHand,
+  };
 
   return {
     ...G,
@@ -144,12 +152,12 @@ export function moveDiscard(G: IG, ctx: Ctx, IDInHand: number): IG | 'INVALID_MO
     trash: [...G.trash, G.hands[currentPl].cards[IDInHand]],
     deckindex: G.deckindex - 1,
     treats: G.treats === 8 ? 8 : G.treats + 1, // max 8 Treats
-    movelog: [...G.movelog, movelogString],
+    movelog: [...G.movelog, moveLog],
   };
 }
 
 export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: number): IG | 'INVALID_MOVE' {
-  var currentPl: number = parseInt(ctx.currentPlayer);
+  let currentPl: number = parseInt(ctx.currentPlayer);
   if (isNaN(IDPlayer)) {
     return INVALID_MOVE;
   } else if (IDPlayer < 0 || IDPlayer >= ctx.numPlayers) {
@@ -167,10 +175,12 @@ export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: nu
     return INVALID_MOVE;
   }
 
-  var movelogString = 'Player: ' + ctx.currentPlayer + '\tMove: Hint Value';
-  movelogString += 'Hint Reciver: ' + IDPlayer.toString();
-  movelogString += 'HintValue: ' + IDHintValue.toString();
-
+  let moveLog: Log = {
+    player: ctx.currentPlayer,
+    move: Moves.moveHintValue,
+    hintReceiver: IDPlayer,
+    hintValue: IDHintValue,
+  };
   return {
     ...G,
     treats: G.treats - 1,
@@ -182,7 +192,7 @@ export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: nu
         player: G.hands[IDPlayer].player,
         cards: G.hands[IDPlayer].cards,
         hints: G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
-          var newHintValue = Object.assign([], hint.value);
+          let newHintValue = Object.assign([], hint.value);
           newHintValue[IDHintValue] =
             G.hands[IDPlayer].cards[indexHint].value === IDHintValue ? IHintMask.YES : IHintMask.NO;
           return <IHint>{
@@ -192,12 +202,12 @@ export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: nu
         }),
       };
     }),
-    movelog: [...G.movelog, movelogString],
+    movelog: [...G.movelog, moveLog],
   };
 }
 
 export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: number): IG | 'INVALID_MOVE' {
-  var currentPl: number = parseInt(ctx.currentPlayer);
+  let currentPl: number = parseInt(ctx.currentPlayer);
   if (isNaN(IDPlayer)) {
     return INVALID_MOVE;
   } else if (IDPlayer < 0 || IDPlayer >= ctx.numPlayers) {
@@ -215,9 +225,12 @@ export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: nu
     return INVALID_MOVE;
   }
 
-  var movelogString = 'Player: ' + ctx.currentPlayer + '\tMove: Hint Color';
-  movelogString += 'Hint Reciver: ' + IDPlayer.toString();
-  movelogString += 'HintValue: ' + IDHintColor.toString();
+  let moveLog: Log = {
+    player: ctx.currentPlayer,
+    move: Moves.moveHintColor,
+    hintReceiver: IDPlayer,
+    hintColor: IDHintColor,
+  };
 
   return {
     ...G,
@@ -230,7 +243,7 @@ export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: nu
         player: G.hands[IDPlayer].player,
         cards: G.hands[IDPlayer].cards,
         hints: G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
-          var newHintColor = Object.assign([], hint.color);
+          let newHintColor = Object.assign([], hint.color);
           newHintColor[IDHintColor] =
             G.hands[IDPlayer].cards[indexHint].color === IDHintColor ? IHintMask.YES : IHintMask.NO;
           return <IHint>{
@@ -240,6 +253,6 @@ export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: nu
         }),
       };
     }),
-    movelog: [...G.movelog, movelogString],
+    movelog: [...G.movelog, moveLog],
   };
 }

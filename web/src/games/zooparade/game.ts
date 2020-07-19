@@ -1,4 +1,4 @@
-import { ICard, IHand, IHint, IG } from './interfaces';
+import { ICard, IHand, IHint, IG, Moves } from './interfaces';
 import { isWin, isEnd, isLose } from './endconditions';
 import { idToColor, idToValue } from './util';
 
@@ -48,9 +48,6 @@ function setup(ctx: Ctx): IG {
   var countdown = 3;
   var treats = 8;
 
-  //log
-  var movelog: string[] = Array(0);
-
   var finalG = <IG>{
     deck: deck,
     deckindex: deckindex,
@@ -59,7 +56,7 @@ function setup(ctx: Ctx): IG {
     hands: hands,
     countdown: countdown,
     treats: treats,
-    movelog: movelog,
+    movelog: [],
   };
 
   return finalG;
@@ -103,23 +100,19 @@ export const ZooParadeGame = {
   },
 
   moves: {
-    //  movePlay,
-    //  moveDiscard,
-    //  moveHintColor,
-    //  moveHintValue,
-    movePlay: {
+    [Moves.movePlay]: {
       move: movePlay,
       client: false,
     },
-    moveDiscard: {
+    [Moves.moveDiscard]: {
       move: moveDiscard,
       client: false,
     },
-    moveHintColor: {
+    [Moves.moveHintColor]: {
       move: moveHintColor,
       client: false,
     },
-    moveHintValue: {
+    [Moves.moveHintValue]: {
       move: moveHintValue,
       client: false,
     },

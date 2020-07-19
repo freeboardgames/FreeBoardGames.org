@@ -113,7 +113,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (this.state.showLogs) {
       return (
         <div>
-          <BLog lines={this.props.G.movelog} keyPropagation={'Board'}></BLog>
+          <BLog log={this.props.G.movelog} players={this.props.gameArgs.players} keyPropagation={'Board'}></BLog>
         </div>
       );
     }

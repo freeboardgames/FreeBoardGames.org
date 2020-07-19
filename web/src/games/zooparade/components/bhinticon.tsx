@@ -1,5 +1,6 @@
 import React from 'react';
 import { IHintIcon } from '../interfaces';
+import css from './bhinticon.css';
 
 interface InnerWrapper {
   hintIcon: IHintIcon;
@@ -13,18 +14,9 @@ export class BHintIcon extends React.Component<InnerWrapper, {}> {
   render() {
     return (
       <div
+        className={css.hint}
         style={{
-          height: '8px',
-          width: '8px',
-          display: 'inline-block',
-          boxSizing: 'border-box',
-          overflow: 'hidden',
-          border: '1px solid #572511',
-          borderRadius: '10%',
           backgroundColor: this.props.hintIcon.color !== -1 ? colors[this.props.hintIcon.color] : 'black',
-          color: 'white',
-          fontSize: '75%',
-          lineHeight: '0.9',
         }}
         key={this.props.keyPropagation}
       >

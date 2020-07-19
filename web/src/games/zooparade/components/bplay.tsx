@@ -1,14 +1,12 @@
 import React from 'react';
+import play from './media/play_temp.png';
+import trash from './media/trash_temp.png';
 
 interface InnerWrapper {
   onPlay(): any;
   onTrash(): any;
   myTurn: boolean;
 }
-
-var play = require('./media/play_temp.png');
-var trash = require('./media/trash_temp.png');
-var wait = require('./media/countdown2.png');
 
 let buttonStyle = {
   background: 'none',
@@ -38,12 +36,6 @@ export class BPlay extends React.Component<InnerWrapper, {}> {
         </div>
       );
     }
-    return (
-      <div>
-        <div>
-          <img src={wait} height="50" width="50"></img>
-        </div>
-      </div>
-    );
+    return null;
   }
 }

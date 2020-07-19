@@ -37,5 +37,24 @@ export interface IG {
 
   countdown: number;
   treats: number;
-  movelog: string[];
+  movelog: Log[];
+}
+
+export enum Moves {
+  movePlay = 'movePlay',
+  moveDiscard = 'moveDiscard',
+  moveHintColor = 'moveHintColor',
+  moveHintValue = 'moveHintValue',
+}
+
+export interface Log {
+  player: string;
+  move: Moves;
+  cardColor?: number;
+  cardValue?: number;
+  cardIdInHand?: number;
+  hintReceiver?: number;
+  hintValue?: number;
+  hintColor?: number;
+  success?: boolean;
 }
