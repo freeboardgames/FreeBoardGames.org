@@ -77,3 +77,13 @@
 .discard.show {
   display: block;
 }
+
+.notification {
+  background-color: white;
+  font-size: 26px;
+  width: 350px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

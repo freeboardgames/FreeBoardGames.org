@@ -14,20 +14,27 @@ export class AutoHide extends React.Component<IAutoHideProps, IAutoHideState> {
   static defaultProps = {
     totalDurationMillis: 2000,
   };
+
   constructor(props: IAutoHideProps) {
     super(props);
-    this.state = {
+    this.show();
+  }
+
+  show() {
+    this.setState({
       hidden: false,
       startTime: Date.now(),
-    };
+    });
     this.requestID = requestAnimationFrame(this._animate(Date.now()));
   }
+
   componentWillUnmount() {
     if (this.requestID) {
       window.cancelAnimationFrame(this.requestID);
       this.requestID = null;
     }
   }
+
   _animate = (now: number) => () => {
     const elapsed = now - this.state.startTime;
     const hidden = elapsed > this.props.totalDurationMillis;

@@ -15,6 +15,8 @@ import { Ctx } from 'boardgame.io';
 import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
 
 import css from './board.css';
+import { AutoHide } from 'gamesShared/components/animation/AutoHide';
+import AlertLayer from 'infra/common/components/alert/AlertLayer';
 
 interface IBoardProps {
   G: IG;
@@ -35,13 +37,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   render() {
     return (
-      <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true} optionsMenuItems={this._getOptionsMenuItems}>
-        <div className={css.wrapper}>
-          {this.renderHeader()}
-          {this.renderHands()}
-          {this.renderLog()}
-        </div>
-      </GameLayout>
+      <>
+        {this.renderNotification()}
+        <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true} optionsMenuItems={this._getOptionsMenuItems}>
+          <div className={css.wrapper}>
+            {this.renderHeader()}
+            {this.renderHands()}
+            {this.renderLog()}
+          </div>
+        </GameLayout>
+      </>
     );
   }
 
@@ -118,6 +123,26 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       );
     }
     return null;
+  }
+
+  renderNotification() {
+    if (this.props.G.movelog.length === 0) {
+      return null;
+    }
+    return (
+      <AutoHide>
+        <AlertLayer>
+          <div className={css.notification}>
+            <BLog
+              log={this.props.G.movelog}
+              players={this.props.gameArgs.players}
+              keyPropagation={'Board'}
+              lastOnly={true}
+            ></BLog>
+          </div>
+        </AlertLayer>
+      </AutoHide>
+    );
   }
 
   _getOptionsMenuItems: () => IOptionsItems[] = () => {

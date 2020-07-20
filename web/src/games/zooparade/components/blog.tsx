@@ -3,15 +3,20 @@ import { Log, Moves } from '../interfaces';
 import { BHintIcon } from './bhinticon';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import css from './blog.css';
+import { BCard } from './bcard';
 
 interface InnerWrapper {
   log: Log[];
   players: IPlayerInRoom[];
   keyPropagation: string;
+  lastOnly?: boolean;
 }
 
 export class BLog extends React.Component<InnerWrapper, {}> {
   render() {
+    if (this.props.lastOnly && this.props.log.length > 0) {
+      return <div className={css.logEntry}>{this.renderLog(this.props.log[this.props.log.length - 1])}</div>;
+    }
     return (
       <div className={css.wrapper}>
         {this.props.log.map((log, index) => (
@@ -26,21 +31,43 @@ export class BLog extends React.Component<InnerWrapper, {}> {
   renderLog(log: Log) {
     switch (log.move) {
       case Moves.movePlay:
-        return (
-          <>
-            <b>
-              {log.success ? '✅ SUCCESS' : '❌ FAIL'}: {this.player(parseInt(log.player, 10))}
-            </b>{' '}
-            played {this.color(log.cardColor)} {this.value(log.cardValue)} card.{' '}
-          </>
-        );
+        const status = log.success ? '✅ SUCCESS' : '❌ FAIL';
+        if (this.props.lastOnly) {
+          return (
+            <>
+              <b>
+                {status}: {this.player(parseInt(log.player, 10))}
+              </b>{' '}
+              played
+              <br /> {this.card(log.cardColor, log.cardValue)}
+            </>
+          );
+        } else {
+          return (
+            <>
+              <b>
+                {status}: {this.player(parseInt(log.player, 10))}
+              </b>{' '}
+              played
+              <br /> {this.color(log.cardColor)} {this.value(log.cardValue)} card.{' '}
+            </>
+          );
+        }
       case Moves.moveDiscard:
-        return (
-          <>
-            <b>{this.player(parseInt(log.player, 10))}</b> discarded {this.color(log.cardColor)}{' '}
-            {this.value(log.cardValue)} card.
-          </>
-        );
+        if (this.props.lastOnly) {
+          return (
+            <>
+              <b>{this.player(parseInt(log.player, 10))}</b> discarded {this.card(log.cardColor, log.cardValue)}
+            </>
+          );
+        } else {
+          return (
+            <>
+              <b>{this.player(parseInt(log.player, 10))}</b> discarded {this.color(log.cardColor)}{' '}
+              {this.value(log.cardValue)} card.
+            </>
+          );
+        }
       case Moves.moveHintColor:
         return (
           <>
@@ -68,5 +95,9 @@ export class BLog extends React.Component<InnerWrapper, {}> {
 
   value(value: number) {
     return <BHintIcon hintIcon={{ color: null, value }} keyPropagation={`value${value}`}></BHintIcon>;
+  }
+
+  card(color: number, value: number) {
+    return <BCard card={{ color, value, id: 0 }} empty={null}></BCard>;
   }
 }
