@@ -1,29 +1,35 @@
 import React from 'react';
 
-interface IAutoHideState {
+interface State {
   hidden: boolean;
   startTime: number;
 }
 
-interface IAutoHideProps {
+interface Props {
+  children: React.ReactNode;
   totalDurationMillis?: number;
 }
 
-export class AutoHide extends React.Component<IAutoHideProps, IAutoHideState> {
+export class AutoHide extends React.Component<Props, State> {
   requestID: number = null;
-  state = { hidden: false, startTime: Date.now() };
 
   static defaultProps = {
     totalDurationMillis: 2000,
   };
 
-  constructor(props: IAutoHideProps) {
+  constructor(props: Props) {
     super(props);
+    this.state = { hidden: false, startTime: Date.now() };
+  }
+
+  componentDidMount() {
     this.show();
   }
 
-  UNSAFE_componentWillReceiveProps() {
-    this.show();
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.children !== this.props.children && this.state.hidden) {
+      this.show();
+    }
   }
 
   show() {
