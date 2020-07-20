@@ -14,3 +14,5 @@ const log: Log[] = [
 const players: IPlayerInRoom[] = [{ name: 'Foo', playerID: 0 }];
 
 export const Example = () => <BLog log={log} players={players} keyPropagation={'foo'} />;
+
+export const LastOnly = () => <BLog log={log} players={players} keyPropagation={'foo'} />;

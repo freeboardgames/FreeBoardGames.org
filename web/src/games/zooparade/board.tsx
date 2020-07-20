@@ -17,6 +17,7 @@ import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
 import css from './board.css';
 import { AutoHide } from 'gamesShared/components/animation/AutoHide';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';
+import { isWin } from './endconditions';
 
 interface IBoardProps {
   G: IG;
@@ -36,17 +37,36 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   render() {
+    if (this.props.ctx.gameover) {
+      return this.renderGameover();
+    }
     return (
       <>
         {this.renderNotification()}
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true} optionsMenuItems={this._getOptionsMenuItems}>
-          <div className={css.wrapper}>
-            {this.renderHeader()}
-            {this.renderHands()}
-            {this.renderLog()}
-          </div>
+          {this.renderBoard()}
         </GameLayout>
       </>
+    );
+  }
+
+  renderGameover() {
+    let gameOver;
+    if (isWin(this.props.G)) {
+      gameOver = 'you won';
+    } else {
+      gameOver = 'you lost';
+    }
+    return <GameLayout gameOver={gameOver} extraCardContent={this.renderHeader()} gameArgs={this.props.gameArgs} />;
+  }
+
+  renderBoard() {
+    return (
+      <div className={css.wrapper}>
+        {this.renderHeader()}
+        {this.renderHands()}
+        {this.renderLog()}
+      </div>
     );
   }
 

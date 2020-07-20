@@ -57,7 +57,8 @@ export class BLog extends React.Component<InnerWrapper, {}> {
         if (this.props.lastOnly) {
           return (
             <>
-              <b>{this.player(parseInt(log.player, 10))}</b> discarded {this.card(log.cardColor, log.cardValue)}
+              <b>{this.player(parseInt(log.player, 10))}</b> discarded
+              <br /> {this.card(log.cardColor, log.cardValue)}
             </>
           );
         } else {

@@ -11,12 +11,18 @@ interface IAutoHideProps {
 
 export class AutoHide extends React.Component<IAutoHideProps, IAutoHideState> {
   requestID: number = null;
+  state = { hidden: false, startTime: Date.now() };
+
   static defaultProps = {
     totalDurationMillis: 2000,
   };
 
   constructor(props: IAutoHideProps) {
     super(props);
+    this.show();
+  }
+
+  UNSAFE_componentWillReceiveProps() {
     this.show();
   }
 
