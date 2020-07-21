@@ -83,13 +83,13 @@ export const MancalaGame = {
   flow: {
     movesPerTurn: 1,
   },
-  endIf: (G, ctx) => {
-    let boardEmpty = !G.playerHoles['0'].reduce((a, b) => a + b) || !G.playerHoles['1'].reduce((a, b) => a + b)
+  endIf: (G) => {
+    let boardEmpty = !G.playerHoles['0'].reduce((a, b) => a + b) || !G.playerHoles['1'].reduce((a, b) => a + b);
     if (boardEmpty) {
       if (G.playerStoreCount['0'] === G.playerStoreCount['1']) return { draw: true };
       return {
-        winner: (G.playerStoreCount['0'] > G.playerStoreCount['1'] ? '0' : '1')
-      }
+        winner: G.playerStoreCount['0'] > G.playerStoreCount['1'] ? '0' : '1',
+      };
     }
-  }
+  },
 };
