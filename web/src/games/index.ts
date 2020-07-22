@@ -8,6 +8,7 @@ import { reversiGameDef } from './reversi';
 import { cornerusGameDef } from './cornerus';
 import { tictactoeplusGameDef } from './tictactoeplus';
 import { fourinarowGameDef } from './fourinarow';
+import { zooParadeGameDef } from './zooparade';
 import { rotaGameDef } from './rota';
 import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
@@ -15,6 +16,7 @@ import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
+  zooparade: zooParadeGameDef,
   chess: chessGameDef,
   seabattle: seabattleGameDef,
   tictactoe: tictactoeGameDef,
@@ -33,6 +35,7 @@ export const GAMES_MAP: IGameDefMap = {
 // Order roughly by popularity.
 // See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
+  GAMES_MAP.zooparade,
   GAMES_MAP.takesix,
   GAMES_MAP.fourinarow,
   GAMES_MAP.seabattle,

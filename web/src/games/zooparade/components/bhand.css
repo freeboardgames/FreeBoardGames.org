@@ -1,0 +1,23 @@
+.hand {
+  display: grid;
+  /* grid-template-columns: repeat(auto-fill, minmax(55px, 85px));
+  min-width: 300px; */
+  width: 100%;
+  max-width: 450px;
+  grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));
+  justify-content: center;
+  gap: 5px;
+  margin: 0 auto;
+}
+
+.card-column {
+  max-width: 85px;
+}
+
+.hints {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 15px);
+  justify-content: center;
+  gap: 2.5px;
+  margin-bottom: 2.5px;
+}

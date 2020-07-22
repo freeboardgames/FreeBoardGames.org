@@ -1,0 +1,28 @@
+.card {
+  width: 100%;
+  min-width: 40px;
+  max-width: 85px;
+
+  box-sizing: border-box;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+
+  background: no-repeat center / contain;
+}
+
+.card > img {
+  width: 100%;
+}
+
+.card > span {
+  position: absolute;
+
+  top: 7%;
+  right: 17%;
+  font-size: 45px;
+  line-height: 1;
+
+  font-weight: bold;
+  color: #572511;
+}
