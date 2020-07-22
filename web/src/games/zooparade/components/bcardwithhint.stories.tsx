@@ -1,8 +1,8 @@
 import { IHintMask } from '../interfaces';
-import { CardWithHint } from './CardWithHint';
+import { BCardWithHint } from './bcardwithhint';
 
 export default {
-  title: 'Games/Hanabi/Components/Hand With Hint',
+  title: 'Games/Zoo Parade/Components/Hand With Hint',
   parameters: {
     backgrounds: [{ name: 'dark background', value: '#000', default: true }],
   },
@@ -15,4 +15,4 @@ const hint = {
   value: [IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
 };
 
-export const example = () => <CardWithHint card={card} empty={null} hint={hint} keyPropagation={'foo'} />;
+export const example = () => <BCardWithHint card={card} empty={null} hint={hint} keyPropagation={'foo'} />;

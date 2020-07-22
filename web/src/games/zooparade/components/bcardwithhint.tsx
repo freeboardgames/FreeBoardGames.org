@@ -3,9 +3,9 @@ import { ICard, IHint, IHintMask } from '../interfaces';
 import { BCard } from './bcard';
 import { BHintIcon } from './bhinticon';
 
-import css from './CardWithHint.css';
+import css from './bcardwithhint.css';
 
-interface CardWithHintProps {
+interface BCardWithHintProps {
   card: ICard; // if null, show back of card.
   empty: number; // If -1, then 'empty', if 0-4 base color
   // 'empty' should take precidence, if not null
@@ -14,7 +14,7 @@ interface CardWithHintProps {
   keyPropagation: string;
 }
 
-export class CardWithHint extends React.Component<CardWithHintProps, {}> {
+export class BCardWithHint extends React.Component<BCardWithHintProps, {}> {
   render() {
     const colors = this.props.hint.color.map((value: number, index: number) => {
       const key = this.props.keyPropagation + 'BHint' + index.toString();

@@ -2,7 +2,7 @@ import { BHand } from './bhand';
 import { IHintMask } from '../interfaces';
 
 export default {
-  title: 'Games/Hanabi/Components/Hand',
+  title: 'Games/Zoo Parade/Components/Hand',
   parameters: {
     backgrounds: [{ name: 'dark background', value: '#000', default: true }],
   },

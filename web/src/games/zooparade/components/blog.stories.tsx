@@ -3,7 +3,7 @@ import { Log, Moves } from '../interfaces';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 
 export default {
-  title: 'Games/Hanabi/Components/BLog',
+  title: 'Games/Zoo Parade/Components/BLog',
 };
 
 const log: Log[] = [

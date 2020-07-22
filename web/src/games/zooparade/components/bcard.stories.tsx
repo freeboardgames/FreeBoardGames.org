@@ -1,7 +1,7 @@
 import { BCard } from './bcard';
 
 export default {
-  title: 'Games/Hanabi/Components/Card',
+  title: 'Games/Zoo Parade/Components/Card',
   parameters: {
     backgrounds: [{ name: 'dark background', value: '#000', default: true }],
   },

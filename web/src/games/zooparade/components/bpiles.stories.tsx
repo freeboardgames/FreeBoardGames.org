@@ -1,7 +1,7 @@
 import { BPiles } from './bpiles';
 
 export default {
-  title: 'Games/Hanabi/Components/Piles',
+  title: 'Games/Zoo Parade/Components/Piles',
 };
 
 export const Example = () => (

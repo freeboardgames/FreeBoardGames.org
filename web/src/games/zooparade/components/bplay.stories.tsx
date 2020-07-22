@@ -1,7 +1,7 @@
 import { BPlay } from './bplay';
 
 export default {
-  title: 'Games/Hanabi/Components/Play',
+  title: 'Games/Zoo Parade/Components/Play',
 };
 
 const onPlay = () => {

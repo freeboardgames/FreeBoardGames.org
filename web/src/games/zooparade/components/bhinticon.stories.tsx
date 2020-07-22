@@ -1,7 +1,7 @@
 import { BHintIcon } from './bhinticon';
 
 export default {
-  title: 'Games/Hanabi/Components/Hint Icon',
+  title: 'Games/Zoo Parade/Components/Hint Icon',
   parameters: {
     backgrounds: [{ name: 'dark background', value: '#000', default: true }],
   },

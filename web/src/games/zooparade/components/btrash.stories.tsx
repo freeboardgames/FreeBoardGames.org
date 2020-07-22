@@ -1,7 +1,7 @@
 import { BTrash } from './btrash';
 
 export default {
-  title: 'Games/Hanabi/Components/Trash',
+  title: 'Games/Zoo Parade/Components/Trash',
 };
 
 const card = { id: 0, color: 4, value: 3 };

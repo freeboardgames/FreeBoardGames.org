@@ -1,7 +1,7 @@
 import { BButtons } from './bbuttons';
 
 export default {
-  title: 'Games/Hanabi/Components/Buttons',
+  title: 'Games/Zoo Parade/Components/Buttons',
   parameters: {
     backgrounds: [{ name: 'dark background', value: '#000', default: true }],
   },
