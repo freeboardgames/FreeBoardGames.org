@@ -40,3 +40,14 @@ export const WaitingForMany = () => (
     ctx={{ currentPlayer: '0', activePlayers: { '0': null, '2': null } } as any}
   />
 );
+
+const startAdornments = [undefined, '🕵️'];
+
+export const WithStartAdornments = () => (
+  <PlayerBadges
+    players={players}
+    prefixes={startAdornments}
+    playerID={'1'}
+    ctx={{ currentPlayer: '1', activePlayers: null } as any}
+  />
+);

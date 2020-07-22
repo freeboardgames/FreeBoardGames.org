@@ -1,6 +1,6 @@
 # web
 FROM fbg-common:latest AS common
-FROM node:14.2.0-buster
+FROM node:14.5.0-buster
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
 RUN rm /bin/su
 USER appuser

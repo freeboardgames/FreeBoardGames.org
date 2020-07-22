@@ -158,10 +158,17 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       .map((player) => player.playerID.toString())
       .map((playerID) => getPlayerTeam(this.props.G, playerID).color)
       .map((color) => (color == TeamColor.Red ? '#F25F5C' : '#247BA0'));
+
+    const prefixes = this.props.gameArgs.players
+      .map((player) => player.playerID.toString())
+      .map((playerID) => isPlayerSpymaster(this.props.G, playerID.toString()))
+      .map((isSpyMaster) => (isSpyMaster ? '🕵' : undefined));
+
     return (
       <PlayerBadges
         playerID={this.props.playerID}
         players={this.props.gameArgs.players}
+        prefixes={prefixes}
         colors={colors}
         ctx={this.props.ctx}
       />

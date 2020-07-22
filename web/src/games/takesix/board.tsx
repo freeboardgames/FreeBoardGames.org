@@ -89,24 +89,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   }
 
-  componentDidUpdate(prevProps) {
-    const {
-      ctx: { phase },
-      G: game,
-      playerID,
-    } = this.props;
-    if (phase === 'DECK_SELECT' && prevProps.ctx.phase !== 'DECK_SELECT') {
-      const allowedDecks = game.decks.reduce((allowedDeckIds: number[], deck, id) => {
-        return isAllowedDeck(game, id, playerID) ? allowedDeckIds.concat(id) : allowedDeckIds;
-      }, []);
-      if (allowedDecks.length === 1) {
-        setTimeout(() => {
-          this._selectDeck(allowedDecks[0]);
-        }, 750);
-      }
-    }
-  }
-
   render() {
     if (this.props.ctx.gameover) {
       return (
