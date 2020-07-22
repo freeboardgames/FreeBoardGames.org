@@ -630,7 +630,6 @@ it('Hint 3 - No Hint token.', () => {
   const client = Client({
     game: ZooParadeCustomScenario,
   });
-  client.moves.moveHintValue(1, 3); // Player 0
   // get the latest game state
   const { G } = client.store.getState();
   // the board should look like this now
