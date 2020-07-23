@@ -43,7 +43,7 @@ export class BCardWithHint extends React.Component<BCardWithHintProps, {}> {
         <div className={css.hints} style={{ top: '8px', left: '8px' }}>
           {colors}
         </div>
-        <div className={css.hints} style={{ right: '5px', bottom: '8px' }}>
+        <div className={css.hints} style={{ right: '5px', bottom: '23px' }}>
           {values}
         </div>
       </div>
