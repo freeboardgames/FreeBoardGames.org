@@ -28,7 +28,7 @@ export class BCardWithHint extends React.Component<BCardWithHintProps, {}> {
     });
     const values = this.props.hint.value.map((value: number, index: number) => {
       const key = this.props.keyPropagation + 'BHint' + index.toString();
-      const cardValue = index + 1;
+      const cardValue = index;
       return (
         <BHintIcon
           key={key}

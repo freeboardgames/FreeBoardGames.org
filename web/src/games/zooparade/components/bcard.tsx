@@ -26,11 +26,11 @@ interface InnerWrapper {
 
 export class BCard extends React.Component<InnerWrapper, {}> {
   render() {
-    var cardValue: string;
+    var cardDisplayValue: string;
     var image: any;
     if (this.props.empty !== null) {
       // No Real Card Face
-      cardValue = '';
+      cardDisplayValue = '';
       switch (this.props.empty) {
         case 0:
           image = green;
@@ -56,10 +56,11 @@ export class BCard extends React.Component<InnerWrapper, {}> {
       }
     } else if (!this.props.card) {
       // Card is null, so its hidden
-      cardValue = '';
+      cardDisplayValue = '';
       image = white;
     } else {
-      cardValue = String(this.props.card.value !== null ? this.props.card.value : '');
+      let cardValue = this.props.card.value;
+      cardDisplayValue = String(cardValue !== null ? cardValue + 1 : '');
       switch (this.props.card.color) {
         case 0:
           image = green_with;
@@ -85,7 +86,7 @@ export class BCard extends React.Component<InnerWrapper, {}> {
     return (
       <div className={style.card}>
         <img src={image} />
-        <span>{cardValue}</span>
+        <span>{cardDisplayValue}</span>
       </div>
     );
   }
