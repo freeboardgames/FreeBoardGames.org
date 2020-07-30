@@ -1,0 +1,2 @@
+# Always checkout with LF, even on Windows (otherwise linter, CI break)
+* text eol=lf
