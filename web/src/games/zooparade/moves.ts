@@ -187,20 +187,17 @@ export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: nu
     hands: G.hands.map((hand: IHand, index: number) => {
       if (!(index === IDPlayer)) {
         return hand;
+      } else {
+        return <IHand>{
+          ...hand,
+          hints: hand.hints.map((hint: IHint, indexHint: number) => {
+            return <IHint>{
+              value: hintify(hand.cards[indexHint].value, IDHintValue, hint.value),
+              color: hint.color,
+            };
+          }),
+        };
       }
-      return <IHand>{
-        player: G.hands[IDPlayer].player,
-        cards: G.hands[IDPlayer].cards,
-        hints: G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
-          let newHintValue = Object.assign([], hint.value);
-          newHintValue[IDHintValue] =
-            G.hands[IDPlayer].cards[indexHint].value === IDHintValue ? IHintMask.YES : IHintMask.NO;
-          return <IHint>{
-            value: newHintValue,
-            color: hint.color,
-          };
-        }),
-      };
     }),
     movelog: [...G.movelog, moveLog],
   };
@@ -238,21 +235,36 @@ export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: nu
     hands: G.hands.map((hand: IHand, index: number) => {
       if (!(index === IDPlayer)) {
         return hand;
+      } else {
+        return <IHand>{
+          ...hand,
+          hints: hand.hints.map((hint: IHint, indexHint: number) => {
+            return <IHint>{
+              color: hintify(hand.cards[indexHint].color, IDHintValue, hint.color),
+              value: hint.value,
+            };
+          }),
+        };
       }
-      return <IHand>{
-        player: G.hands[IDPlayer].player,
-        cards: G.hands[IDPlayer].cards,
-        hints: G.hands[IDPlayer].hints.map((hint: IHint, indexHint: number) => {
-          let newHintColor = Object.assign([], hint.color);
-          newHintColor[IDHintColor] =
-            G.hands[IDPlayer].cards[indexHint].color === IDHintColor ? IHintMask.YES : IHintMask.NO;
-          return <IHint>{
-            color: newHintColor,
-            value: hint.value,
-          };
-        }),
-      };
     }),
     movelog: [...G.movelog, moveLog],
   };
+}
+
+function hintify(real: number, hinted: number, hints: IHintMask[]) : IHintMask[] {
+  if (real === hinted) {
+    return hints.map((_, index: number) => {
+      return index === hinted ? IHintMask.YES : IHintMask.NO;
+    });
+  } else {
+    let result = [...hints];
+    result[hinted] = IHintMask.NO;
+    if (result.reduce((sum, current) => sum + current) === 1 - result.length) {
+      return result.map((trueness: number) => {
+        return trueness === IHintMask.UNKNOWN ? IHintMask.YES : IHintMask.NO;
+      });
+    } else {
+      return result;
+    }
+  }
 }
