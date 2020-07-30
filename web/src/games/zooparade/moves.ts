@@ -240,7 +240,7 @@ export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: nu
           ...hand,
           hints: hand.hints.map((hint: IHint, indexHint: number) => {
             return <IHint>{
-              color: hintify(hand.cards[indexHint].color, IDHintValue, hint.color),
+              color: hintify(hand.cards[indexHint].color, IDHintColor, hint.color),
               value: hint.value,
             };
           }),
