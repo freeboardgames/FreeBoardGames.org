@@ -10,7 +10,7 @@ interface InnerWrapper {
   keyPropagation: string;
 }
 
-const Values = [1, 2, 3, 4, 5];
+const Values = [0, 1, 2, 3, 4];
 
 export class BButtons extends React.Component<InnerWrapper, {}> {
   render() {
