@@ -16,8 +16,7 @@ export class BHintIcon extends React.Component<InnerWrapper, {}> {
       <div
         className={css.hint}
         style={{
-          backgroundColor: this.props.hintIcon.color !== -1 ? 
-                           colors[this.props.hintIcon.color] : 'black',
+          backgroundColor: this.props.hintIcon.color !== -1 ? colors[this.props.hintIcon.color] : 'black',
         }}
         key={this.props.keyPropagation}
       >
