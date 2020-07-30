@@ -26,8 +26,8 @@ interface InnerWrapper {
 
 export class BCard extends React.Component<InnerWrapper, {}> {
   render() {
-    var cardDisplayValue: string;
-    var image: any;
+    let cardDisplayValue: string;
+    let image: any;
     if (this.props.empty !== null) {
       // No Real Card Face
       cardDisplayValue = '';
