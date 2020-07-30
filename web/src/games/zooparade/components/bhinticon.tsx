@@ -20,7 +20,7 @@ export class BHintIcon extends React.Component<InnerWrapper, {}> {
         }}
         key={this.props.keyPropagation}
       >
-        {this.props.hintIcon.value !== -1 ? this.props.hintIcon.value + 1 : ' '}
+        {this.props.hintIcon.value !== -1 && this.props.hintIcon.value !== null ? this.props.hintIcon.value + 1 : ' '}
       </div>
     );
   }
