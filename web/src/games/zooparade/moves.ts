@@ -251,7 +251,7 @@ export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: nu
   };
 }
 
-function hintify(real: number, hinted: number, hints: IHintMask[]) : IHintMask[] {
+function hintify(real: number, hinted: number, hints: IHintMask[]): IHintMask[] {
   if (real === hinted) {
     return hints.map((_, index: number) => {
       return index === hinted ? IHintMask.YES : IHintMask.NO;
