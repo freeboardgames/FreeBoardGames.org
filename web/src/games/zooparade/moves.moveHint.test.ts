@@ -358,7 +358,7 @@ it('Hint Value 2 - Hint Value nothing.', () => {
             },
             {
               color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
-              value: [...UNKNOWN_MASK],
+              value: [IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.NO],
             },
             {
               color: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
@@ -489,7 +489,7 @@ it('Hint Value 2 - Hint Value nothing.', () => {
             color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
           },
           {
-            value: [IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            value: [IHintMask.NO, IHintMask.YES, IHintMask.NO, IHintMask.NO, IHintMask.NO],
             color: [IHintMask.UNKNOWN, IHintMask.NO, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
           },
           {
