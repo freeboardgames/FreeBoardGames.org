@@ -231,7 +231,7 @@ it('Hint Color 1 - Good hint.', () => {
             value: [...UNKNOWN_MASK],
           },
           {
-            color: [IHintMask.UNKNOWN, IHintMask.YES, IHintMask.UNKNOWN, IHintMask.UNKNOWN, IHintMask.UNKNOWN],
+            color: [IHintMask.NO, IHintMask.YES, IHintMask.NO, IHintMask.NO, IHintMask.NO],
             value: [...UNKNOWN_MASK],
           },
           {
