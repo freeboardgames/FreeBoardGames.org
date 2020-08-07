@@ -42,14 +42,14 @@ export const MancalaGame = {
       for (var seedsInHandCount = seedCount; seedsInHandCount > 0; --seedsInHandCount) {
         lastHoleId = sowToHoleId;
         lastPlayerId = sowToPlayerId;
-        if (sowToPlayerId === ctx.currentPlayer && sowToHoleId === 6) {
+        if (sowToPlayerId === ctx.currentPlayer && sowToHoleId === numOfHoles) {
           // placing 1 in own stash
           G.playerStoreCount[ctx.currentPlayer] += 1;
           sowToPlayerId = sowToPlayerId === '0' ? '1' : '0';
           sowToHoleId = 0;
         } else {
           G.playerHoles[sowToPlayerId][sowToHoleId] += 1;
-          if (sowToPlayerId !== ctx.currentPlayer && sowToHoleId === 5) {
+          if (sowToPlayerId !== ctx.currentPlayer && sowToHoleId === numOfHoles - 1) {
             // last hole on oponent side
             sowToPlayerId = sowToPlayerId === '0' ? '1' : '0';
             sowToHoleId = 0;
@@ -63,19 +63,34 @@ export const MancalaGame = {
       if (
         allowCapture &&
         lastPlayerId === ctx.currentPlayer &&
-        lastHoleId < 6 &&
+        lastHoleId < numOfHoles &&
         G.playerHoles[lastPlayerId][lastHoleId] === 1
       ) {
         let otherPlayerId = lastPlayerId === '0' ? '1' : '0';
-        let stolenSeedsCount = G.playerHoles[otherPlayerId][5 - lastHoleId];
+        let stolenSeedsCount = G.playerHoles[otherPlayerId][numOfHoles - 1 - lastHoleId];
         if (stolenSeedsCount > 0) {
-          G.playerHoles[lastPlayerId === '0' ? '1' : '0'][5 - lastHoleId] = 0;
+          G.playerHoles[lastPlayerId === '0' ? '1' : '0'][numOfHoles - 1 - lastHoleId] = 0;
           G.playerHoles[lastPlayerId][lastHoleId] = 0;
           G.playerStoreCount[ctx.currentPlayer] += stolenSeedsCount + 1;
         }
       }
+
+      // if a player has run out of stones then move all stones off the board
+      let totalStonesInPlayPlayer0 = G.playerHoles['0'].reduce((a, b) => a + b);
+      let totalStonesInPlayPlayer1 = G.playerHoles['1'].reduce((a, b) => a + b);
+      if (totalStonesInPlayPlayer0 < 1 || totalStonesInPlayPlayer1 < 1) {
+        if (totalStonesInPlayPlayer0) {
+          G.playerHoles['0'].fill(0);
+          G.playerStoreCount['0'] += totalStonesInPlayPlayer0;
+        }
+        if (totalStonesInPlayPlayer1) {
+          G.playerHoles['1'].fill(0);
+          G.playerStoreCount['1'] += totalStonesInPlayPlayer1;
+        }
+      }
+
+      // end the turn if our last seed was not in own stash
       if (sowToPlayerId === ctx.currentPlayer || sowToHoleId !== 0) {
-        // if our last seed was not in own stash
         ctx.events.endTurn();
       }
     },
@@ -84,8 +99,9 @@ export const MancalaGame = {
     movesPerTurn: 1,
   },
   endIf: (G) => {
-    let boardEmpty = !G.playerHoles['0'].reduce((a, b) => a + b) || !G.playerHoles['1'].reduce((a, b) => a + b);
-    if (boardEmpty) {
+    let totalStonesInPlayPlayer0 = G.playerHoles['0'].reduce((a, b) => a + b);
+    let totalStonesInPlayPlayer1 = G.playerHoles['1'].reduce((a, b) => a + b);
+    if (totalStonesInPlayPlayer0 < 1 || totalStonesInPlayPlayer1 < 1) {
       if (G.playerStoreCount['0'] === G.playerStoreCount['1']) return { draw: true };
       return {
         winner: G.playerStoreCount['0'] > G.playerStoreCount['1'] ? '0' : '1',

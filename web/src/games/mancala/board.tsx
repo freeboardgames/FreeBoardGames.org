@@ -5,7 +5,7 @@ import { Ctx } from 'boardgame.io';
 import { IG } from './game';
 import { Hole, Store } from './Shapes';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
-import { localPlayerNames } from './constants';
+import { localPlayerNames, numOfHoles } from './constants';
 
 /**
  * todo:
@@ -32,7 +32,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     for (let i = 0; i < this.props.G.playerHoles[playerId].length; i++) {
       let x = i;
       if (!y) {
-        x = 5 - i;
+        x = numOfHoles - 1 - i;
       }
       holes.push(
         <Hole
@@ -49,13 +49,27 @@ export class Board extends React.Component<IBoardProps, {}> {
   _renderStore(playerId: string) {
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.playerID === playerId) {
-        return <Store x={7} y={0.5} key={`store_${playerId}`} seedCount={this.props.G.playerStoreCount[playerId]} />;
+        return (
+          <Store
+            x={numOfHoles + 1}
+            y={0.5}
+            key={`store_${playerId}`}
+            seedCount={this.props.G.playerStoreCount[playerId]}
+          />
+        );
       } else {
         return <Store x={0} y={0.5} key={`store_${playerId}`} seedCount={this.props.G.playerStoreCount[playerId]} />;
       }
     } else {
       if (playerId === '0') {
-        return <Store x={7} y={0.5} key={`store_${playerId}`} seedCount={this.props.G.playerStoreCount[playerId]} />;
+        return (
+          <Store
+            x={numOfHoles + 1}
+            y={0.5}
+            key={`store_${playerId}`}
+            seedCount={this.props.G.playerStoreCount[playerId]}
+          />
+        );
       } else {
         return <Store x={0} y={0.5} key={`store_${playerId}`} seedCount={this.props.G.playerStoreCount[playerId]} />;
       }
