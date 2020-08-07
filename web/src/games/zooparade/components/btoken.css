@@ -1,0 +1,11 @@
+.treatWrapper {
+  position: relative;
+}
+
+.treatCount {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  background-color: white;
+  color: black;
+}

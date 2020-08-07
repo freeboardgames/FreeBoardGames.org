@@ -1,0 +1,13 @@
+.hint {
+  height: 11px;
+  width: 11px;
+  display: inline-block;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid #572511;
+  border-radius: 10%;
+  color: white;
+  background-color: black;
+  font-size: 12px;
+  line-height: 0.9;
+}
