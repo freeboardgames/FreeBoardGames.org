@@ -21,14 +21,14 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
-  onClick = (playerId: number, id: number) => {
-    this.props.moves.sowSeeds(playerId, id);
+  onClick = (playerId: string, id: number) => {
+    if (playerId === this.props.ctx.currentPlayer) this.props.moves.sowSeeds(playerId, id);
   };
-  _renderHoles(playerId: number) {
+  _renderHoles(playerId: string) {
     const holes = [];
     const startX = 1;
     const invert = isOnlineGame(this.props.gameArgs) && this.props.playerID !== '0';
-    const y = playerId ? (invert ? 1 : 0) : invert ? 0 : 1;
+    const y = playerId === '1' ? (invert ? 1 : 0) : invert ? 0 : 1;
     for (let i = 0; i < this.props.G.playerHoles[playerId].length; i++) {
       let x = i;
       if (!y) {
@@ -111,14 +111,10 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   board() {
-    let a = [];
-    a.push(this._renderStore('0'));
-    a.push(this._renderStore('1'));
-    a.push(this._renderHoles(0));
-    a.push(this._renderHoles(1));
+    const viewBox = '-100 -100 ' + (numOfHoles + 3) * 100 + ' ' + (numOfHoles + 3) * 100;
     return (
-      <svg width="100%" height="100%" viewBox="-100 -100 1000 1000">
-        {a}
+      <svg width="100%" height="100%" viewBox={viewBox}>
+        {[this._renderStore('0'), this._renderStore('1'), this._renderHoles('0'), this._renderHoles('1')]}
       </svg>
     );
   }

@@ -24,16 +24,16 @@ export const MancalaGame = {
     };
   },
   moves: {
-    sowSeeds(G, ctx, playerId, id) {
+    sowSeeds(G, ctx, playerId, holeId) {
       if (playerId != ctx.currentPlayer) return INVALID_MOVE;
 
-      let seedCount = G.playerHoles[ctx.currentPlayer][id];
+      let seedCount = G.playerHoles[ctx.currentPlayer][holeId];
 
       if (!seedCount) return INVALID_MOVE;
 
-      G.playerHoles[ctx.currentPlayer][id] = 0; // remove all seeds from the chosen hole
+      G.playerHoles[ctx.currentPlayer][holeId] = 0; // remove all seeds from the chosen hole
 
-      let sowToHoleId = id + 1;
+      let sowToHoleId = holeId + 1;
       let sowToPlayerId = ctx.currentPlayer;
 
       let lastHoleId;
