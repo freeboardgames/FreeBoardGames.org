@@ -1,23 +1,23 @@
 @media (min-width: 1000px) {
   /* stuff for desktop */
-  
+
   .wrapper {
     display: grid;
     grid-template:
-      "info  info"
-      "hands controls"
-      "hands ."
+      'info  info'
+      'hands controls'
+      'hands .'
       / 50% 50%;
   }
-  
+
   .info {
     grid-area: info;
   }
-  
+
   .hands {
     grid-area: hands;
   }
-  
+
   .controls {
     grid-area: controls;
     top: var(--info-height);
@@ -55,12 +55,12 @@
 .controls {
   position: sticky;
   bottom: 0;
-  
+
   display: grid;
   justify-content: center;
   justify-items: center;
-  
-  background: rgba(0,0,0,0.6);
+
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .piles {
