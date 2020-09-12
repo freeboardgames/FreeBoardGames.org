@@ -1,1 +1,3 @@
-mancala
+Your objective in Mancala is to score more points than your opponent. The number of points each player makes is determined by how many stones are in the player's large bowl when the game ends.
+When it is your turn, you can select one of your small bowls on your side of the table. All stones on that bowl are going to be distributed one at a time into each next bowl. If the last stone was placed in the large bowl, you get to play again. Otherwise, the turn is passed to the next player.
+The game ends when there are no more stones in small bowls, and the player with the largest number of stones in the large bowl wins.

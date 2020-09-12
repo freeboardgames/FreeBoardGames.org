@@ -5,7 +5,7 @@ import instructions from './instructions.md';
 
 export const mancalaGameDef: IGameDef = {
   code: 'mancala',
-  name: 'Mancala Game',
+  name: 'Mancala',
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
@@ -13,7 +13,7 @@ export const mancalaGameDef: IGameDef = {
   description: 'Classic game of Mancala',
   descriptionTag: `Play Mancala`,
   instructions: {
-    videoId: 'dQw4w9WgXcQ',
+    videoId: '-A-djjimCcM',
     text: instructions,
   },
   config: () => import('./config'),
