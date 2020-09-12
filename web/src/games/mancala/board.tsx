@@ -6,6 +6,7 @@ import { IG } from './game';
 import { Hole, Store, BoardBackground } from './Shapes';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { localPlayerNames, numOfHoles } from './constants';
+import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 
 /**
  * todo:
@@ -98,42 +99,32 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   board() {
-    const viewBox = '-100 -100 ' + (numOfHoles + 3) * 100 + ' ' + (numOfHoles + 3) * 100;
+    const viewBox = '-100 -10 ' + (numOfHoles + 3) * 100 + ' 120';
     return (
-      <svg width="100%" height="100%" viewBox={viewBox}>
-        {<BoardBackground />}
-        {[this._renderStore('0'), this._renderStore('1'), this._renderHoles('0'), this._renderHoles('1')]}
-      </svg>
+      <div>
+        <PlayerBadges players={[this.props.gameArgs.players[1]]} playerID={this.props.playerID} ctx={this.props.ctx} />
+        <svg width="100%" height="120px" viewBox={viewBox}>
+          {<BoardBackground />}
+          {[this._renderStore('0'), this._renderStore('1'), this._renderHoles('0'), this._renderHoles('1')]}
+        </svg>
+        <div style={{ float: 'right' }}>
+          <PlayerBadges
+            players={[this.props.gameArgs.players[0]]}
+            playerID={this.props.playerID}
+            ctx={this.props.ctx}
+          />
+        </div>
+      </div>
     );
   }
 
   render() {
-    function GameStateMessage(props) {
-      if (props.gameOver) {
-        if (props.gameOver.draw) {
-          return <h2>It&apos;s a draw!</h2>;
-        }
-        return <h2>Player {parseInt(props.gameOver.winner) + 1} wins!</h2>;
-      }
-      return <h2>Player {parseInt(props.currentPlayer) + 1}&apos;s turn</h2>;
-    }
-
     if (this.props.ctx.gameover) {
       return (
         <GameLayout gameOver={this._getGameOver()} extraCardContent={this.board()} gameArgs={this.props.gameArgs} />
       );
     }
 
-    return (
-      <GameLayout gameArgs={this.props.gameArgs}>
-        <GameStateMessage
-          currentPlayer={this.props.ctx.currentPlayer}
-          playerID={this.props.playerID}
-          gameOver={this.props.ctx.gameover}
-        ></GameStateMessage>
-
-        {this.board()}
-      </GameLayout>
-    );
+    return <GameLayout gameArgs={this.props.gameArgs}>{this.board()}</GameLayout>;
   }
 }
