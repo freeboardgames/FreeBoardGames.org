@@ -1,6 +1,6 @@
 import { numOfHoles, numOfSeedsPerHole, allowCapture } from './constants';
 import { INVALID_MOVE } from 'boardgame.io/core';
-// import { Ctx } from 'boardgame.io';
+import { Ctx } from 'boardgame.io';
 
 function generatePlayerHoles() {
   const holes = [];
@@ -24,7 +24,7 @@ export const MancalaGame = {
     };
   },
   moves: {
-    sowSeeds(G, ctx, playerId, holeId) {
+    sowSeeds(G: IG, ctx: Ctx, playerId: string, holeId: number) {
       if (playerId != ctx.currentPlayer) return INVALID_MOVE;
 
       let seedCount = G.playerHoles[ctx.currentPlayer][holeId];
@@ -36,8 +36,8 @@ export const MancalaGame = {
       let sowToHoleId = holeId + 1;
       let sowToPlayerId = ctx.currentPlayer;
 
-      let lastHoleId;
-      let lastPlayerId;
+      let lastHoleId: number;
+      let lastPlayerId: string;
 
       for (var seedsInHandCount = seedCount; seedsInHandCount > 0; --seedsInHandCount) {
         lastHoleId = sowToHoleId;
