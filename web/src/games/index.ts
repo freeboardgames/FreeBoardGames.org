@@ -13,6 +13,7 @@ import { zooParadeGameDef } from './zooparade';
 import { rotaGameDef } from './rota';
 import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
+import { estateBuyerGameDef } from './estatebuyer';
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
 
 // Add new games here
@@ -32,11 +33,13 @@ export const GAMES_MAP: IGameDefMap = {
   rota: rotaGameDef,
   secretcodes: secretcodesGameDef,
   hangman: hangmanGameDef,
+  estatebuyer: estateBuyerGameDef,
 };
 
 // Order roughly by popularity.
 // See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
+  GAMES_MAP.estatebuyer,
   GAMES_MAP.mancala,
   GAMES_MAP.secretcodes,
   GAMES_MAP.takesix,
