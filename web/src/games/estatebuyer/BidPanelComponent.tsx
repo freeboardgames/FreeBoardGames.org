@@ -13,23 +13,20 @@ export interface IPlayerBidPanelProps {
   currentHighBid?: number;
 }
 
-export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { bid: number; reset: boolean }> {
+export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { bid: number }> {
   constructor(props: any) {
     super(props);
     this.state = {
       bid: this.props.currentHighBid + 1,
-      reset: true,
     };
   }
 
   _bid = () => {
     this.props.moves.MovePlaceBid(this.state.bid);
-    this.setState({ reset: false });
   };
 
   _pass = () => {
     this.props.moves.MovePassBid();
-    this.setState({ reset: false });
   };
 
   setBidValue = (event: any) => {
@@ -42,17 +39,12 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
   };
 
   isValidMoney = () => {
-    return this.state.bid > 0 && this.state.bid <= this.getCurrentPlayer().money;
+    return this.state.bid > (this.props.currentHighBid || 0) && this.state.bid <= this.getCurrentPlayer().money;
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.currentHighBid == 0 && this.state.bid != 1 && this.state.reset == false) {
-      this.setState({ bid: 1, reset: true });
-    } else if (this.props.currentHighBid >= this.state.bid) {
-      this.setState({ bid: this.props.currentHighBid + 1 });
-    }
-
     if (this.props.currentPlayer != prevProps.currentPlayer) {
+      this.setState({ bid: this.props.currentHighBid + 1 });
       if (this.props.players[prevProps.currentPlayer].passed) {
         playSound('Pass');
       } else if (this.props.players[prevProps.currentPlayer].bid > 0) {
