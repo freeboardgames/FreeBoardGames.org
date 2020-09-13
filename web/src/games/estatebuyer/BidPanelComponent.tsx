@@ -36,7 +36,7 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
     const val = parseInt(event.target.value);
     const money = this.getCurrentPlayer().money;
 
-    if (val <= money) {
+    if (val <= money || !val) {
       this.setState({ bid: val });
     } else {
       this.setState({ bid: money });
@@ -47,8 +47,8 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
     return this.props.players[this.props.currentPlayer];
   };
 
-  isOutOfMoney = () => {
-    return this.state.bid > this.getCurrentPlayer().money;
+  isValidMoney = () => {
+    return this.state.bid > 0 && this.state.bid <= this.getCurrentPlayer().money;
   };
 
   componentDidUpdate(prevProps) {
@@ -83,7 +83,7 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
     return (
       <div className={css.BidPanel}>
         <div className={css.ButtonGroup}>
-          <ButtonComponent click={this._bid} disabled={this.isOutOfMoney()}>
+          <ButtonComponent click={this._bid} disabled={!this.isValidMoney()}>
             Bid
           </ButtonComponent>
           <input type="number" value={this.state.bid} onChange={this.setBidValue} />

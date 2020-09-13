@@ -101,7 +101,7 @@
   background-color: rgb(205, 255, 255);
   text-align: right;
   padding: 2px 6px;
-  font-family:'Copperplate';
+  font-family:'Copperplate', monospace;
   font-size:66.667px;
   fill:rgb(0, 0, 0);
   stroke:rgb(0, 0, 0);
