@@ -34,13 +34,7 @@ export class BidPanelComponent extends React.Component<IPlayerBidPanelProps, { b
 
   setBidValue = (event: any) => {
     const val = parseInt(event.target.value);
-    const money = this.getCurrentPlayer().money;
-
-    if (val <= money || !val) {
-      this.setState({ bid: val });
-    } else {
-      this.setState({ bid: money });
-    }
+    this.setState({ bid: val });
   };
 
   getCurrentPlayer = () => {
