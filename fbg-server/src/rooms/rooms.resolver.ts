@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Subscription } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Subscription, Int } from '@nestjs/graphql';
 import { Room } from './gql/Room.gql';
 import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { NewRoom } from './gql/NewRoom.gql';
@@ -7,15 +7,10 @@ import { CurrentUser, GqlAuthGuard } from '../internal/auth/GqlAuthGuard';
 import { UseGuards } from '@nestjs/common';
 import { roomEntityToRoom } from './RoomUtil';
 import { PubSub } from 'graphql-subscriptions';
-import { SubscriptionAuth } from '../internal/auth/SubscriptionAuth';
 
 @Resolver((of) => Room)
 export class RoomsResolver {
-  constructor(
-    private roomsService: RoomsService,
-    private pubSub: PubSub,
-    private subscriptionAuth: SubscriptionAuth,
-  ) {}
+  constructor(private roomsService: RoomsService, private pubSub: PubSub) {}
 
   @Mutation((returns) => NewRoom)
   @UseGuards(GqlAuthGuard)
@@ -39,14 +34,37 @@ export class RoomsResolver {
     return { ...room, userId };
   }
 
+  @Mutation((returns) => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async leaveRoom(
+    @CurrentUser() currentUser,
+    @Args({ name: 'roomId', type: () => String }) roomId: string,
+  ) {
+    await this.roomsService.leaveRoom(currentUser.id, roomId);
+    return true;
+  }
+
+  @Mutation((returns) => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async removeFromRoom(
+    @CurrentUser() currentUser,
+    @Args({ name: 'roomId', type: () => String }) roomId: string,
+    @Args({ name: 'userIdToBeRemoved', type: () => Int })
+    userIdToBeRemoved: number,
+  ) {
+    await this.roomsService.removeFromRoom(
+      currentUser.id,
+      userIdToBeRemoved,
+      roomId,
+    );
+    return true;
+  }
+
   @Subscription((returns) => Room)
   roomMutated(
     @Args({ name: 'roomId', type: () => String }) roomId: string,
     @Args({ name: 'jwt', type: () => String, nullable: true }) jwt?: string,
   ) {
-    const iterator = this.pubSub.asyncIterator(`room/${roomId}`);
-    return this.subscriptionAuth.onUserDisconnect(iterator, jwt, (userId) => {
-      this.roomsService.leaveRoom(userId, roomId);
-    });
+    return this.pubSub.asyncIterator(`room/${roomId}`);
   }
 }

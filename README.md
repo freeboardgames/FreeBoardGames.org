@@ -27,9 +27,12 @@ yarn install  # installs dependencies
 yarn run dev  # runs the webserver and backend (for online multiplayer games)
 ```
 
-## Acknowledgements
+##  Thanks to
 
 - [JosefKuchar](https://github.com/JosefKuchar) for **Take 6**, **Cornerus**, **Reversi**, **Nine men's Morris** and **Checkers AI**
 - [gk-patel](https://github.com/gk-patel) for **Four in a row**, **Hangman**, **Rota**, **Tic-tac-toe plus**
 - [JvSomeren](https://GitHub.com/JvSomeren) for **Secret Codes**
 - [eemp](https://github.com/eemp) for **Take 6 redesign**
+- [mateusazis](https://github.com/mateusazis) for improving **Secret Codes**
+- [Spooky-0](https://github.com/Spooky-0) and [DanielSherlock](https://github.com/DanielSherlock) for **Zoo Parade**
+- [pestopancake](https://github.com/pestopancake) for **Mancala**

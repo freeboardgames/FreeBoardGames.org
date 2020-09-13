@@ -8,19 +8,19 @@
 // ====================================================
 
 export interface JoinRoom_joinRoom_userMemberships_user {
-  __typename: 'User';
+  __typename: "User";
   id: number | null;
   nickname: string;
 }
 
 export interface JoinRoom_joinRoom_userMemberships {
-  __typename: 'RoomMembership';
+  __typename: "RoomMembership";
   isCreator: boolean;
   user: JoinRoom_joinRoom_userMemberships_user;
 }
 
 export interface JoinRoom_joinRoom {
-  __typename: 'Room';
+  __typename: "Room";
   gameCode: string;
   capacity: number;
   isPublic: boolean;

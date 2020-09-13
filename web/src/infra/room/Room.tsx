@@ -15,7 +15,7 @@ import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
 import { StartMatchButton } from './StartMatchButton';
 import { ReduxUserState } from 'infra/common/redux/definitions';
 import { connect } from 'react-redux';
-import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
+import { JoinRoom_joinRoom, JoinRoom_joinRoom_userMemberships } from 'gqlTypes/JoinRoom';
 import { Dispatch } from 'redux';
 import Router from 'next/router';
 import { Subscription } from '@apollo/react-components';
@@ -41,14 +41,14 @@ export const ROOM_SUBSCRIPTION = gql`
   }
 `;
 
-interface IRoomProps {
+interface Props {
   gameCode: string;
   router: NextRouter;
   user: ReduxUserState;
   dispatch: Dispatch;
 }
 
-interface IRoomState {
+interface State {
   roomMetadata?: JoinRoom_joinRoom;
   nameTextField?: string;
   userId?: number;
@@ -56,14 +56,16 @@ interface IRoomState {
   partialLoading: boolean;
   error: string;
   editingName: boolean;
+  removedFromRoom: boolean;
 }
 
-class Room extends React.Component<IRoomProps, IRoomState> {
-  state: IRoomState = {
+class Room extends React.Component<Props, State> {
+  state: State = {
     error: '',
     loading: true,
     partialLoading: false,
     editingName: false,
+    removedFromRoom: false,
   };
 
   componentDidMount() {
@@ -79,6 +81,9 @@ class Room extends React.Component<IRoomProps, IRoomState> {
         </Button>
       );
       return <MessagePage type={'error'} message={this.state.error} actionComponent={TryAgain} />;
+    }
+    if (this.state.removedFromRoom) {
+      return <MessagePage type={'error'} message={'You were removed from the room.'} />;
     }
     if (this.state.loading) {
       return <MessagePage type={'loading'} message={'Loading...'} />;
@@ -101,9 +106,21 @@ class Room extends React.Component<IRoomProps, IRoomState> {
             if (room.matchId) {
               this.redirectToMatch(room.matchId);
             }
+            const currentUserInMetadata = room.userMemberships.find(
+              (membership: JoinRoom_joinRoom_userMemberships) => membership.user.id === this.state.userId,
+            );
+            if (!currentUserInMetadata) {
+              this.setState({ removedFromRoom: true });
+            }
             return (
               <React.Fragment>
-                <ListPlayers roomMetadata={room} editNickname={this._toggleEditingName} userId={this.state.userId} />
+                <ListPlayers
+                  roomMetadata={room}
+                  editNickname={this._toggleEditingName}
+                  removeUser={this._removeUser}
+                  userId={this.state.userId}
+                />
+                {this.renderLeaveRoomButton()}
                 <StartMatchButton roomMetadata={room} userId={this.state.userId} startMatch={this._startMatch} />
               </React.Fragment>
             );
@@ -133,6 +150,13 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     );
   };
 
+  renderLeaveRoomButton() {
+    return (
+      <Button variant="outlined" onClick={this._leaveRoom}>
+        Leave room
+      </Button>
+    );
+  }
   getNicknamePrompt() {
     if (!this.state.editingName) {
       return;
@@ -152,6 +176,19 @@ class Room extends React.Component<IRoomProps, IRoomState> {
     this.setState({ editingName: !this.state.editingName });
   };
 
+  _leaveRoom = () => {
+    const dispatch = (this.props as any).dispatch;
+    LobbyService.leaveRoom(dispatch, this._roomId());
+    // FIXME: on dev only, this does not work for a redirect to '/'.
+    // However, it works for other routes such as '/about' ... why?
+    Router.push('/');
+  };
+
+  _removeUser = (userIdToBeRemoved: number) => () => {
+    const dispatch = (this.props as any).dispatch;
+    LobbyService.removeUser(dispatch, userIdToBeRemoved, this._roomId());
+  };
+
   _setNickname = (nickname: string) => {
     this.setState({ loading: true });
     const dispatch = (this.props as any).dispatch;
@@ -168,7 +205,7 @@ class Room extends React.Component<IRoomProps, IRoomState> {
 
   _getGameSharing = () => {
     const gameCode = this.props.router.query.gameCode as string;
-    return <GameSharing gameCode={gameCode} roomID={this._roomId()} />;
+    return <GameSharing gameCode={gameCode} roomID={this._roomId()} isPublic={this.state.roomMetadata.isPublic} />;
   };
 
   _roomId() {

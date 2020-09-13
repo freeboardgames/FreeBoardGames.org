@@ -38,4 +38,13 @@ const editNickname = () => {
   alert('editNickname called');
 };
 
-export const example = () => <ListPlayers roomMetadata={roomMetadata} editNickname={editNickname} userId={1} />;
+const removeUser = () => () => {
+  alert('removeUser called');
+};
+
+export const example = () => (
+  <ListPlayers roomMetadata={roomMetadata} editNickname={editNickname} removeUser={removeUser} userId={1} />
+);
+export const isCreator = () => (
+  <ListPlayers roomMetadata={roomMetadata} editNickname={editNickname} removeUser={removeUser} userId={0} />
+);

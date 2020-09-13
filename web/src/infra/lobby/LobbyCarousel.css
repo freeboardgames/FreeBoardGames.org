@@ -1,0 +1,12 @@
+.wrapper {
+  padding-bottom: 16px;
+}
+
+.carouselCenter {
+  margin: auto auto;
+}
+
+.errorMessage {
+  padding-top: 16px;
+  margin-left: 6px;
+}

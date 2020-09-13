@@ -73,7 +73,7 @@ export class MatchService {
         return entity.nextRoom.id;
       }
       const room = await this.roomsService.newRoom(
-        roomEntityToRoom(entity.room),
+        { ...roomEntityToRoom(entity.room), isPublic: false },
         userId,
         queryRunner,
       );
