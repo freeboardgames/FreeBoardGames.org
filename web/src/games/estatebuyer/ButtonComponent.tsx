@@ -10,9 +10,9 @@ interface IButtonProps {
 export class ButtonComponent extends React.Component<IButtonProps> {
   render() {
     if (this.props.disabled) {
-      return <button className={css.disabled}>{this.props.children}</button>;
+      return <button className={`${css.btn} ${css.disabled}`}>{this.props.children}</button>;
     }
 
-    return <button onClick={this.props.click}>{this.props.children}</button>;
+    return <button onClick={this.props.click} className={css.btn}>{this.props.children}</button>;
   }
 }

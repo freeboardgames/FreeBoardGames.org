@@ -1,4 +1,4 @@
-button {
+.btn {
     width: 3em;
     background-color: rgb(157, 255, 0);
     border-radius: 0.5em;
@@ -20,15 +20,15 @@ button {
     }
   }
 
-button:hover {
+.btn:hover {
     animation: flash 1s infinite;
 }
 
-button.disabled {
+.btn.disabled {
     background-color: #999;
     color: #CCC;
 }
 
-button.disabled:hover {
+.btn.disabled:hover {
     animation: none;
 }
