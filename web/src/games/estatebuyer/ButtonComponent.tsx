@@ -13,6 +13,10 @@ export class ButtonComponent extends React.Component<IButtonProps> {
       return <button className={`${css.btn} ${css.disabled}`}>{this.props.children}</button>;
     }
 
-    return <button onClick={this.props.click} className={css.btn}>{this.props.children}</button>;
+    return (
+      <button onClick={this.props.click} className={css.btn}>
+        {this.props.children}
+      </button>
+    );
   }
 }

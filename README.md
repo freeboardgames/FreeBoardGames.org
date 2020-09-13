@@ -36,3 +36,4 @@ yarn run dev  # runs the webserver and backend (for online multiplayer games)
 - [mateusazis](https://github.com/mateusazis) for improving **Secret Codes**
 - [Spooky-0](https://github.com/Spooky-0) and [DanielSherlock](https://github.com/DanielSherlock) for **Zoo Parade**
 - [pestopancake](https://github.com/pestopancake) for **Mancala**
+- [ryandriskel](https://github.com/ryandriskel) for **Estate buyer**
