@@ -6,7 +6,6 @@ export interface IGameArgs {
   gameCode: string;
   mode: GameMode;
   matchCode?: string;
-  playerID?: string;
   players?: IPlayerInRoom[];
 }
 

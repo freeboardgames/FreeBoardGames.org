@@ -125,7 +125,6 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         credentials,
         matchCode,
         players: this._getPlayers(),
-        playerID,
       } as IGameArgs;
       const clientConfig: any = {
         game: this.state.config.bgioGame,
