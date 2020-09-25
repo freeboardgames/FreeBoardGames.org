@@ -9,7 +9,7 @@ import { Token } from './Token';
 export interface IPlayerHandProps {
   playerIndex: number;
   player: IPlayer;
-  selectCard?: (playerIndex: number, handIndex: number) => void;
+  selectCard?: (handIndex: number) => void;
 }
 
 export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
@@ -18,7 +18,7 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
       return;
     }
 
-    this.props.selectCard(this.props.playerIndex, handIndex);
+    this.props.selectCard(handIndex);
   };
 
   render() {

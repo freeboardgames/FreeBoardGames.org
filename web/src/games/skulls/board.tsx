@@ -3,8 +3,9 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
-import { IG } from './game';
+import { IG, PlacementPhases } from './game';
 import { PlayerHand } from './PlayerHand';
+import { PlayerBettingOptions } from './PlayerBettingOptions';
 
 import { ButtonComponent } from './ButtonComponent';
 
@@ -28,6 +29,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
         <div className={css.board}>
           {this.getStartGameButton()}
+          {this.getPlayerBettingOptions()}
           {this.getPlayerHand()}
         </div>
       </GameLayout>
@@ -67,7 +69,25 @@ export class Board extends React.Component<IBoardProps, {}> {
       <PlayerHand
         playerIndex={parseInt(playerID)}
         player={this.props.G.players[playerID]}
-        selectCard={this._selectCard.bind(this)}
+        selectCard={
+          this.props.ctx.phase && PlacementPhases.map((p) => p.toString()).includes(this.props.ctx.phase)
+            ? this._selectCard.bind(this)
+            : null
+        }
+      />
+    );
+  }
+
+  getPlayerBettingOptions() {
+    const playerID = this.getBrowserPlayer();
+
+    return (
+      <PlayerBettingOptions
+        bet={this._bet.bind(this)}
+        skip={this._skipBet.bind(this)}
+        minBet={this.props.G.minBet}
+        maxBet={this.props.G.maxBet}
+        playerIndex={parseInt(playerID)}
       />
     );
   }
@@ -81,7 +101,15 @@ export class Board extends React.Component<IBoardProps, {}> {
     return playerID;
   }
 
-  _selectCard(playerIndex: number, i: number) {
-    this.props.moves.MovePlaceToken(playerIndex, i);
+  _selectCard(handIndex: number) {
+    this.props.moves.MovePlaceToken(handIndex);
+  }
+
+  _bet(bet: number) {
+    this.props.moves.MoveBet(bet);
+  }
+
+  _skipBet() {
+    this.props.moves.MoveSkipBet();
   }
 }

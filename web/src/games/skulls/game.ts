@@ -13,6 +13,8 @@ export enum Phases {
   result = 'result',
 }
 
+export const PlacementPhases = [Phases.initial_placement, Phases.place_or_bet];
+
 export enum Stages {
   select_card = 'select_card',
 }
@@ -20,6 +22,8 @@ export enum Stages {
 export interface IG {
   winningPlayerID: null | string;
   players: IPlayer[];
+  minBet: number;
+  maxBet: number;
 }
 
 function getCurrentPlayerIndex(ctx: Ctx) {
@@ -31,10 +35,9 @@ function getMaxPossibleBet(G: IG) {
 }
 
 function getMaxPlayerBet(G: IG) {
-  return G.players
-    .map((p) => p.bet)
-    .filter((b) => b !== null)
-    .reduce((a, b) => (a >= b ? a : b));
+  var playerBets = G.players.map((p) => p.bet).filter((b) => b !== null);
+
+  return [...playerBets, 0].reduce((a, b) => (a >= b ? a : b));
 }
 
 function hasEveryOtherPlayerSkippedBet(G: IG) {
@@ -56,6 +59,8 @@ export const Moves = {
     var chosenToken = player.hand.splice(handIndex, 1)[0];
     player.stack.push(chosenToken);
 
+    G.maxBet += 1;
+
     return G;
   },
 
@@ -65,8 +70,13 @@ export const Moves = {
       return INVALID_MOVE;
     }
 
+    if (bet < G.minBet || bet > G.maxBet) {
+      return INVALID_MOVE;
+    }
+
     var player = G.players[playerIndex];
     player.bet = bet;
+    G.minBet = bet + 1;
 
     return G;
   },
@@ -79,6 +89,37 @@ export const Moves = {
 
     var player = G.players[playerIndex];
     player.betSkipped = true;
+
+    return G;
+  },
+
+  Reveal: (G: IG, ctx: Ctx, targetPlayerIndex: number) => {
+    var playerIndex = getCurrentPlayerIndex(ctx);
+    if (!(playerIndex in G.players)) {
+      return INVALID_MOVE;
+    }
+
+    var player = G.players[playerIndex];
+    if (targetPlayerIndex !== playerIndex && player.stack.length > 0) {
+      return INVALID_MOVE;
+    }
+
+    var targetPlayer = G.players[targetPlayerIndex];
+
+    var revealedCard = targetPlayer.stack.splice(targetPlayer.stack.length - 1, 1)[0];
+    targetPlayer.revealedStack.push(revealedCard);
+
+    return G;
+  },
+
+  Discard: (G: IG, ctx: Ctx, targetPlayerIndex: number, handIndex: number) => {
+    var playerIndex = getCurrentPlayerIndex(ctx);
+    if (!(playerIndex in G.players)) {
+      return INVALID_MOVE;
+    }
+
+    var targetPlayer = G.players[targetPlayerIndex];
+    targetPlayer.hand.splice(handIndex, 1);
 
     return G;
   },
@@ -114,6 +155,7 @@ export const FooBarGame: Game<IG> = {
     place_or_bet: {
       turn: {
         moveLimit: 1,
+        order: TurnOrder.DEFAULT,
       },
 
       moves: {
@@ -155,6 +197,41 @@ export const FooBarGame: Game<IG> = {
         return maxPlayerBet === maxBet || oneBetRemaining;
       },
     },
+
+    reveal: {
+      turn: {
+        order: TurnOrder.CONTINUE,
+      },
+
+      moves: {
+        MoveReveal: Moves.Reveal,
+      },
+
+      endIf: (G: IG) => {
+        var targetBet = G.minBet;
+        var revealed = G.players.map((p) => p.revealedStack).reduce((a, b) => a.concat(b));
+
+        if (revealed.some((x) => x === Token.Skull)) {
+          return { next: Phases.penalty };
+        }
+
+        if (revealed.length === targetBet) {
+          return { next: Phases.initial_placement };
+        }
+      },
+    },
+
+    penalty: {
+      turn: {
+        order: TurnOrder.CONTINUE,
+      },
+
+      moves: {
+        MoveDiscard: Moves.Discard,
+      },
+
+      endIf: () => true, // only allow one move
+    },
   },
 
   endIf: (G: IG) => {
@@ -175,6 +252,8 @@ export const FooBarGame: Game<IG> = {
         revealedStack: [],
         wins: 0,
       })),
+      minBet: 1,
+      maxBet: 0,
     };
   },
 };

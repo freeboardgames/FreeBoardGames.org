@@ -42,20 +42,20 @@
   box-shadow: 0px 0px 15px rgb(0, 0, 0);
 }
 
-.MoneyCard {
+.FlowerCard {
   border: 20px rgb(98, 138, 72) solid;
   background-color: rgb(98, 138, 72);
 }
 
-.PropertyCard {
+.SkullCard {
   border: 20px #eee solid;
 }
 
-.MoneyCard.hidden {
+.FlowerCard.hidden {
   animation: none;
 }
 
-.PropertyCard.hidden {
+.SkullCard.hidden {
   animation: none;
   border: 20px rgb(44, 120, 192) solid;
 }
@@ -67,15 +67,15 @@
   stroke-miterlimit: 2;
 }
 
-.MoneyCardSVGOutline {
+.FlowerCardSVGOutline {
   fill: rgb(255, 232, 111);
 }
 
-.MoneyCardSVGBackground {
+.FlowerCardSVGBackground {
   fill: rgb(255, 232, 111);
 }
 
-.MoneyCardSVGDollar {
+.FlowerCardSVGDollar {
   font-family: 'DIN-Black';
   font-size: 600px;
   fill: rgb(233, 195, 0);
@@ -84,7 +84,7 @@
   text-anchor: middle;
 }
 
-.MoneyCardSVGTitle {
+.FlowerCardSVGTitle {
   font-family: 'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
   font-size: 125px;
   fill: rgb(0, 161, 233);
@@ -92,7 +92,7 @@
   stroke-width: 3.75px;
 }
 
-.MoneyCardSVGText {
+.FlowerCardSVGText {
   font-family: 'DIN-Black';
   font-size: 150px;
   fill: rgb(233, 195, 0);
@@ -100,23 +100,23 @@
   stroke-width: 4.17px;
 }
 
-.MoneyCardSVGText.Small {
+.FlowerCardSVGText.Small {
   font-size: 58.333px;
 }
 
-.PropertyCardSVGOutline {
+.SkullCardSVGOutline {
   fill: rgb(133, 133, 133);
 }
 
-.PropertyCardSVGBackground {
+.SkullCardSVGBackground {
   fill: rgb(44, 120, 192);
 }
 
-.PropertyCardSVGWindows {
+.SkullCardSVGWindows {
   fill: rgb(233, 233, 233);
 }
 
-.PropertyCardSVGTitle {
+.SkullCardSVGTitle {
   font-family: 'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
   font-size: 125px;
   fill: rgb(255, 255, 255);
@@ -124,7 +124,7 @@
   stroke-width: 3.75px;
 }
 
-.PropertyCardSVGText {
+.SkullCardSVGText {
   font-family: 'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
   font-size: 150px;
   fill: rgb(255, 255, 255);
