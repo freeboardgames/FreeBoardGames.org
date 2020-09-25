@@ -1,0 +1,133 @@
+.Card {
+  color: black;
+  border: 20px #049 solid;
+  box-sizing: border-box;
+  background-origin: border-box;
+  background-color: white;
+  cursor: pointer;
+  height: 583px;
+  width: 406px;
+  background-size: 4096px;
+  background-position: 0px 0px;
+  border-radius: 34px;
+  margin: 0 auto;
+  box-shadow: 3px 3px 8px #000000;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.Card.Selected {
+  margin-top: -160px;
+  box-shadow: 0px 0px 50px rgb(251, 255, 0);
+}
+
+.Card.Selectable:hover {
+  animation: pulse 1s;
+  animation-iteration-count: infinite;
+}
+
+.EmptyCard {
+  border: 0px none;
+  background-color: rgba(0, 0, 0, 0.171);
+  box-shadow: 0px 0px 15px rgb(0, 0, 0);
+}
+
+.MoneyCard {
+  border: 20px rgb(98, 138, 72) solid;
+  background-color: rgb(98, 138, 72);
+}
+
+.PropertyCard {
+  border: 20px #eee solid;
+}
+
+.MoneyCard.hidden {
+  animation: none;
+}
+
+.PropertyCard.hidden {
+  animation: none;
+  border: 20px rgb(44, 120, 192) solid;
+}
+
+.CardSVG {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  stroke-linejoin: round;
+  stroke-miterlimit: 2;
+}
+
+.MoneyCardSVGOutline {
+  fill: rgb(255, 232, 111);
+}
+
+.MoneyCardSVGBackground {
+  fill: rgb(255, 232, 111);
+}
+
+.MoneyCardSVGDollar {
+  font-family: 'DIN-Black';
+  font-size: 600px;
+  fill: rgb(233, 195, 0);
+  stroke: black;
+  stroke-width: 4.17px;
+  text-anchor: middle;
+}
+
+.MoneyCardSVGTitle {
+  font-family: 'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
+  font-size: 125px;
+  fill: rgb(0, 161, 233);
+  stroke: black;
+  stroke-width: 3.75px;
+}
+
+.MoneyCardSVGText {
+  font-family: 'DIN-Black';
+  font-size: 150px;
+  fill: rgb(233, 195, 0);
+  stroke: black;
+  stroke-width: 4.17px;
+}
+
+.MoneyCardSVGText.Small {
+  font-size: 58.333px;
+}
+
+.PropertyCardSVGOutline {
+  fill: rgb(133, 133, 133);
+}
+
+.PropertyCardSVGBackground {
+  fill: rgb(44, 120, 192);
+}
+
+.PropertyCardSVGWindows {
+  fill: rgb(233, 233, 233);
+}
+
+.PropertyCardSVGTitle {
+  font-family: 'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
+  font-size: 125px;
+  fill: rgb(255, 255, 255);
+  stroke: black;
+  stroke-width: 3.75px;
+}
+
+.PropertyCardSVGText {
+  font-family: 'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
+  font-size: 150px;
+  fill: rgb(255, 255, 255);
+  stroke: black;
+  stroke-width: 6.25px;
+}
