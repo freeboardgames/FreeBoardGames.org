@@ -45,7 +45,7 @@ export class PlayerBettingOptions extends React.Component<IPlayerBettingOptionsP
   renderBetOption(bet: number, index: number) {
     return (
       <div key={index}>
-        <BetButtonComponent click={() => this._bet(bet)} />
+        <BetButtonComponent click={() => this._bet(bet)} bet={bet} />
       </div>
     );
   }

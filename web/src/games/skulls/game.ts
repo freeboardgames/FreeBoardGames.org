@@ -20,10 +20,10 @@ export enum Stages {
 }
 
 export interface IG {
-  winningPlayerID: null | string;
   players: IPlayer[];
   minBet: number;
   maxBet: number;
+  currentBet: number;
 }
 
 function getCurrentPlayerIndex(ctx: Ctx) {
@@ -42,6 +42,32 @@ function getMaxPlayerBet(G: IG) {
 
 function hasEveryOtherPlayerSkippedBet(G: IG) {
   return G.players.filter((p) => p.betSkipped).length === G.players.length - 1;
+}
+
+function pickUpHand(G: IG) {
+  for (var i = 0; i < G.players.length; i++) {
+    var player = G.players[i];
+    player.hand = player.hand.concat(player.stack).concat(player.revealedStack);
+    player.hand.sort();
+    player.stack = [];
+    player.revealedStack = [];
+  }
+}
+
+function resetBets(G: IG) {
+  G.minBet = 1;
+  G.maxBet = 0;
+  G.currentBet = 0;
+
+  for (var i = 0; i < G.players.length; i++) {
+    var player = G.players[i];
+    player.betSkipped = false;
+    player.bet = null;
+  }
+}
+
+function getAllRevealedCards(G: IG) {
+  return G.players.map((p) => p.revealedStack).reduce((a, b) => a.concat(b));
 }
 
 export const Moves = {
@@ -77,6 +103,7 @@ export const Moves = {
     var player = G.players[playerIndex];
     player.bet = bet;
     G.minBet = bet + 1;
+    G.currentBet = bet;
 
     return G;
   },
@@ -169,7 +196,7 @@ export const FooBarGame: Game<IG> = {
         var endPhase = currentPlayerBet !== null;
         if (endPhase) {
           var isMaxBet = currentPlayerBet === getMaxPossibleBet(G);
-
+          //console.log("place ir bet end", isMaxBet);
           return {
             next: isMaxBet ? Phases.reveal : Phases.bet,
           };
@@ -208,8 +235,8 @@ export const FooBarGame: Game<IG> = {
       },
 
       endIf: (G: IG) => {
-        var targetBet = G.minBet;
-        var revealed = G.players.map((p) => p.revealedStack).reduce((a, b) => a.concat(b));
+        var targetBet = G.currentBet;
+        var revealed = getAllRevealedCards(G);
 
         if (revealed.some((x) => x === Token.Skull)) {
           return { next: Phases.penalty };
@@ -218,6 +245,16 @@ export const FooBarGame: Game<IG> = {
         if (revealed.length === targetBet) {
           return { next: Phases.initial_placement };
         }
+      },
+
+      onEnd: (G: IG, ctx: Ctx) => {
+        //console.log("reveal - onEnd", G, ctx);
+        var revealed = getAllRevealedCards(G);
+        if (revealed.length === G.currentBet && !revealed.some((x) => x === Token.Skull)) {
+          G.players[getCurrentPlayerIndex(ctx)].wins++;
+        }
+        pickUpHand(G);
+        resetBets(G);
       },
     },
 
@@ -235,16 +272,16 @@ export const FooBarGame: Game<IG> = {
   },
 
   endIf: (G: IG) => {
-    var winner = G.winningPlayerID;
-    if (winner !== null) {
-      return { winner: winner };
+    var winner = G.players.find((p) => p.wins === 2);
+    if (winner !== undefined) {
+      return { winner: winner.id };
     }
   },
 
   setup: (ctx: Ctx): IG => {
     return {
-      winningPlayerID: null,
-      players: new Array(ctx.numPlayers).fill(0).map(() => ({
+      players: new Array(ctx.numPlayers).fill(0).map((_, i) => ({
+        id: i.toString(),
         bet: null,
         betSkipped: false,
         hand: [Token.Flower, Token.Flower, Token.Flower, Token.Skull],
@@ -254,6 +291,7 @@ export const FooBarGame: Game<IG> = {
       })),
       minBet: 1,
       maxBet: 0,
+      currentBet: 0,
     };
   },
 };

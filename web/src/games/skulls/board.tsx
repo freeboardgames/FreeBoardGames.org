@@ -10,6 +10,7 @@ import { PlayerBettingOptions } from './PlayerBettingOptions';
 import { ButtonComponent } from './ButtonComponent';
 
 import css from './Board.css';
+import { PlayerStack } from './PlayerStack';
 
 interface IBoardProps {
   G: IG;
@@ -30,6 +31,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         <div className={css.board}>
           {this.getStartGameButton()}
           {this.getPlayerBettingOptions()}
+          {this.getPlayerStacks()}
           {this.getPlayerHand()}
         </div>
       </GameLayout>
@@ -92,6 +94,19 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
+  getPlayerStacks() {
+    return this.props.G.players.map((p, i) => {
+      return (
+        <PlayerStack
+          key={i}
+          player={p}
+          playerIndex={i}
+          revealCard={p.stack.length > 0 ? this._revealCard.bind(this) : null}
+        />
+      );
+    });
+  }
+
   getBrowserPlayer() {
     let playerID = this.props.playerID;
     if (isLocalGame(this.props.gameArgs)) {
@@ -111,5 +126,9 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _skipBet() {
     this.props.moves.MoveSkipBet();
+  }
+
+  _revealCard(targetPlayerIndex: number) {
+    this.props.moves.MoveReveal(targetPlayerIndex);
   }
 }
