@@ -43,12 +43,13 @@
 }
 
 .BunnyCard {
-  border: 20px rgb(98, 138, 72) solid;
+  border: 20px #eee solid;
   background-color: rgb(98, 138, 72);
 }
 
 .BombCard {
   border: 20px #eee solid;
+  background-color: rgb(192, 44, 44);
 }
 
 .BunnyCard.hidden {
@@ -75,35 +76,6 @@
   fill: rgb(255, 232, 111);
 }
 
-.BunnyCardSVGDollar {
-  font-family: 'DIN-Black';
-  font-size: 600px;
-  fill: rgb(233, 195, 0);
-  stroke: black;
-  stroke-width: 4.17px;
-  text-anchor: middle;
-}
-
-.BunnyCardSVGTitle {
-  font-family: 'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
-  font-size: 125px;
-  fill: rgb(0, 161, 233);
-  stroke: black;
-  stroke-width: 3.75px;
-}
-
-.BunnyCardSVGText {
-  font-family: 'DIN-Black';
-  font-size: 150px;
-  fill: rgb(233, 195, 0);
-  stroke: black;
-  stroke-width: 4.17px;
-}
-
-.BunnyCardSVGText.Small {
-  font-size: 58.333px;
-}
-
 .BombCardSVGOutline {
   fill: rgb(133, 133, 133);
 }
@@ -112,22 +84,17 @@
   fill: rgb(44, 120, 192);
 }
 
-.BombCardSVGWindows {
-  fill: rgb(233, 233, 233);
+.main {
+  fill: rgb(195, 195, 195);
 }
-
-.BombCardSVGTitle {
-  font-family: 'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
-  font-size: 125px;
-  fill: rgb(255, 255, 255);
-  stroke: black;
-  stroke-width: 3.75px;
+.ears {
+  fill: rgb(246, 224, 233);
 }
-
-.BombCardSVGText {
-  font-family: 'ErasITC-Bold', 'Eras Bold ITC', sans-serif;
-  font-size: 150px;
-  fill: rgb(255, 255, 255);
-  stroke: black;
-  stroke-width: 6.25px;
+.eyes {
+  fill: rgb(50, 50, 50);
+}
+.nose {
+  stroke: rgb(170, 95, 126);
+  fill: transparent;
+  stroke-width: 1;
 }

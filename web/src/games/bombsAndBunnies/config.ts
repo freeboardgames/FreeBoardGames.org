@@ -1,9 +1,9 @@
 import { IGameConfig } from 'gamesShared/definitions/game';
-import { FooBarGame } from './game';
+import { BombsAndBunniesGame } from './game';
 import { Board } from './board';
 
 const config: IGameConfig = {
-  bgioGame: FooBarGame,
+  bgioGame: BombsAndBunniesGame,
   bgioBoard: Board,
   debug: true,
 };
