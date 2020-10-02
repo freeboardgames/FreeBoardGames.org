@@ -25,7 +25,7 @@ export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
       <div className={css.playerStack}>
         Player {this.props.playerIndex} stack ({this.props.player.stack.length})
         <ButtonComponent click={() => this._revealCard(this.props.playerIndex)} disabled={!this.props.revealCard}>
-          Bet
+          Reveal
         </ButtonComponent>
       </div>
     );

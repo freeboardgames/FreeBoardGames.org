@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IGameArgs } from '../../gamesShared/definitions/game';
-import { GameLayout } from '../../gamesShared/components/fbg/GameLayout';
-import { isLocalGame } from '../../gamesShared/helpers/gameMode';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
+import { isLocalGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
 import { IG, PlacementPhases } from './game';
 import { PlayerHand } from './PlayerHand';
@@ -10,7 +10,7 @@ import { PlayerBettingOptions } from './PlayerBettingOptions';
 import { ButtonComponent } from './ButtonComponent';
 
 import css from './Board.css';
-import { PlayerStack } from './PlayerStack';
+import { PlayerStacks } from './PlayerStacks';
 
 interface IBoardProps {
   G: IG;
@@ -25,34 +25,51 @@ export class Board extends React.Component<IBoardProps, {}> {
     this.props.moves.GameStart();
   };
 
+  _selectCard(handIndex: number) {
+    this.props.moves.MovePlaceCard(handIndex);
+  }
+
+  _bet(bet: number) {
+    this.props.moves.MoveBet(bet);
+  }
+
+  _skipBet() {
+    this.props.moves.MoveSkipBet();
+  }
+
+  _revealCard(targetPlayerIndex: number) {
+    this.props.moves.MoveReveal(targetPlayerIndex);
+  }
+
   render() {
     return (
       <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
-        <div className={css.board}>
-          {this.getStartGameButton()}
-          {this.getPlayerBettingOptions()}
-          {this.getPlayerStacks()}
-          {this.getPlayerHand()}
-        </div>
+        <div className={css.board}>{this.getGameComponents()}</div>
       </GameLayout>
     );
   }
 
+  getGameComponents() {
+    if (this.isNewGame()) {
+      return this.getStartGameButton();
+    }
+
+    return [this.getPlayerBettingOptions(), this.getPlayerStacks(), this.getPlayerHand()];
+  }
+
   getStartGameButton() {
-    if (this.props.ctx.phase == null && !this.props.ctx.gameover) {
-      if (this.props.playerID == this.props.ctx.currentPlayer || this.props.playerID == null) {
-        return (
-          <div className={css.startButtonContainer}>
-            <ButtonComponent click={this._gs}>START GAME</ButtonComponent>
-          </div>
-        );
-      } else {
-        return (
-          <div className={css.startButtonContainer}>
-            <span className={css.startWaiting}>Waiting for the Lobby Owner to Start...</span>
-          </div>
-        );
-      }
+    if (this.props.playerID == this.props.ctx.currentPlayer || this.props.playerID == null) {
+      return (
+        <div className={css.startButtonContainer}>
+          <ButtonComponent click={this._gs}>START GAME</ButtonComponent>
+        </div>
+      );
+    } else {
+      return (
+        <div className={css.startButtonContainer}>
+          <span className={css.startWaiting}>Waiting for the Lobby Owner to Start...</span>
+        </div>
+      );
     }
   }
 
@@ -95,16 +112,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   getPlayerStacks() {
-    return this.props.G.players.map((p, i) => {
-      return (
-        <PlayerStack
-          key={i}
-          player={p}
-          playerIndex={i}
-          revealCard={p.stack.length > 0 ? this._revealCard.bind(this) : null}
-        />
-      );
-    });
+    return <PlayerStacks players={this.props.G.players} revealCard={this._revealCard.bind(this)}></PlayerStacks>;
   }
 
   getBrowserPlayer() {
@@ -116,19 +124,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     return playerID;
   }
 
-  _selectCard(handIndex: number) {
-    this.props.moves.MovePlaceToken(handIndex);
-  }
-
-  _bet(bet: number) {
-    this.props.moves.MoveBet(bet);
-  }
-
-  _skipBet() {
-    this.props.moves.MoveSkipBet();
-  }
-
-  _revealCard(targetPlayerIndex: number) {
-    this.props.moves.MoveReveal(targetPlayerIndex);
+  isNewGame() {
+    return this.props.ctx.phase == null && !this.props.ctx.gameover;
   }
 }
