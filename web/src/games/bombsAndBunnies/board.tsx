@@ -5,7 +5,7 @@ import { isLocalGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
 import { IG, PlacementPhases } from './game';
 import { PlayerHand } from './PlayerHand';
-import { PlayerBettingOptions } from './PlayerBettingOptions';
+import { BetPanel } from './BetPanel';
 
 import { ButtonComponent } from './ButtonComponent';
 
@@ -101,7 +101,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     const playerID = this.getBrowserPlayer();
 
     return (
-      <PlayerBettingOptions
+      <BetPanel
         bet={this._bet.bind(this)}
         skip={this._skipBet.bind(this)}
         minBet={this.props.G.minBet}

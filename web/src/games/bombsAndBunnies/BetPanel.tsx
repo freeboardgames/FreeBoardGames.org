@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { BetButtonComponent } from './BetButtonComponent';
 
-import css from './PlayerBettingOptions.css';
+import css from './BetPanel.css';
 
-export interface IPlayerBettingOptionsProps {
+export interface IBetPanelProps {
   playerIndex: number;
   minBet: number;
   maxBet: number;
@@ -11,13 +11,13 @@ export interface IPlayerBettingOptionsProps {
   skip?: () => void;
 }
 
-export class PlayerBettingOptions extends React.Component<IPlayerBettingOptionsProps, {}> {
+export class BetPanel extends React.Component<IBetPanelProps, {}> {
   _bet = (bet: number) => {
     this.props.bet(bet);
   };
 
   render() {
-    return <div className={css.playerBettingOptions}>{this.renderBettingOptionsContainer()}</div>;
+    return <div className={css.bidPanel}>{this.renderBettingOptionsContainer()}</div>;
   }
 
   renderBettingOptionsContainer() {
