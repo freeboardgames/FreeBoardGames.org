@@ -5,13 +5,12 @@ import css from './ButtonComponent.css';
 interface IButtonProps {
   disabled?: boolean;
   click?: () => void;
-  text: string;
 }
 
 export class ButtonComponent extends React.Component<IButtonProps> {
   render() {
     if (this.props.disabled) {
-      return <button className={`${css.btn} ${css.disabled}`}>{this.props.text}</button>;
+      return <button className={`${css.btn} ${css.disabled}`}>{this.props.children}</button>;
     }
 
     return (

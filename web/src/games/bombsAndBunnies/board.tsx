@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IGameArgs } from 'gamesShared/definitions/game';
-import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
+import { IGameArgs } from '../../gamesShared/definitions/game';
+import { GameLayout } from '../../gamesShared/components/fbg/GameLayout';
 import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
 import { IG, PlacementPhases } from './game';

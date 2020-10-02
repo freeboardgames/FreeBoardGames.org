@@ -1,9 +1,9 @@
 import * as React from 'react';
 import css from './CardComponent.css';
-import { Token } from './Token';
+import { CardType } from './cardType';
 
 export interface ICardProps {
-  card: Token;
+  card: CardType;
   selectable?: boolean;
   selected?: boolean;
   click?: () => void;
@@ -37,16 +37,16 @@ export class FaceDownCardComponent extends CardComponent {
   front: string = css.EmptyCard;
 }
 
-export class FlowerCardComponent extends CardComponent {
-  front: string = css.FlowerCard;
+export class BunnyCardComponent extends CardComponent {
+  front: string = css.BunnyCard;
 
   renderSVG() {
     return (
       <svg width="100%" height="100%" viewBox="0 0 750 1050" className={css.CardSVG}>
         <g id="Layer1">
-          <rect x="0" y="0" width="750" height="1050" className={css.FlowerCardSVGOutline} />
+          <rect x="0" y="0" width="750" height="1050" className={css.BunnyCardSVGOutline} />
           <g transform="matrix(0.884531,0,0,0.928794,43.301,37.3833)">
-            <rect x="0" y="0" width="750" height="1050" className={css.FlowerCardSVGBackground} />
+            <rect x="0" y="0" width="750" height="1050" className={css.BunnyCardSVGBackground} />
           </g>
         </g>
       </svg>
@@ -54,15 +54,15 @@ export class FlowerCardComponent extends CardComponent {
   }
 }
 
-export class SkullCardComponent extends CardComponent {
-  front: string = css.SkullCard;
+export class BombCardComponent extends CardComponent {
+  front: string = css.BombCard;
 
   renderSVG() {
     return (
       <svg width="100%" height="100%" viewBox="0 0 750 1110" className={css.CardSVG}>
-        <rect x="0" y="798.191" width="750" height="311.809" className={css.SkullCardSVGOutline} />
-        <rect x="0" y="0" width="750" height="798.191" className={css.SkullCardSVGBackground} />
-        <g transform="matrix(1,0,0,1,2.09793,0)" className={css.SkullCardSVGWindows}>
+        <rect x="0" y="798.191" width="750" height="311.809" className={css.BombCardSVGOutline} />
+        <rect x="0" y="0" width="750" height="798.191" className={css.BombCardSVGBackground} />
+        <g transform="matrix(1,0,0,1,2.09793,0)" className={css.BombCardSVGWindows}>
           <path d="M336.695,576.485L336.695,510.853L409.109,510.853L409.109,576.485L553.338,576.485L553.338,798.191L192.467,798.191L192.467,576.485L336.695,576.485Z" />
         </g>
         <g transform="matrix(1,0,0,1,3.57983,-97.5097)">

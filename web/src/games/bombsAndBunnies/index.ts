@@ -3,15 +3,15 @@ import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
-export const fooBarGameDef: IGameDef = {
-  code: 'skulls',
-  name: 'Skull',
+export const bombsAndBunniesDef: IGameDef = {
+  code: 'bombsAndBunnies',
+  name: 'Bombs & Bunnies',
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 6,
   description: 'Similar to Skull',
-  descriptionTag: `Play Skull and have lots of fun!`,
+  descriptionTag: `Play Bombs & Bunnies and have lots of fun!`,
   instructions: {
     videoId: 'Cv1_6AfbwlQ',
     text: instructions,

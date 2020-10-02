@@ -1,10 +1,10 @@
 import * as React from 'react';
 import IPlayer from './player';
 
-import { FlowerCardComponent, SkullCardComponent } from './CardComponent';
+import { BunnyCardComponent, BombCardComponent } from './CardComponent';
 
 import css from './PlayerHand.css';
-import { Token } from './Token';
+import { CardType } from './cardType';
 
 export interface IPlayerHandProps {
   playerIndex: number;
@@ -27,7 +27,7 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
 
   renderCards() {
     if (this.props.player.hand.length == 0) {
-      return <div className={css.title}>No Tokens left...</div>;
+      return <div className={css.title}>No Cards left...</div>;
     }
 
     const w: number = this.props.player.hand.length * 40 + 80;
@@ -42,10 +42,10 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
   renderHand() {
     return [...this.props.player.hand]
       .sort((a, b) => a - b)
-      .map((card: Token, index: number) => this.renderCard(card, index, this.props.player.hand.length));
+      .map((card: CardType, index: number) => this.renderCard(card, index, this.props.player.hand.length));
   }
 
-  renderCard(card: Token, index: number, count: number) {
+  renderCard(card: CardType, index: number, count: number) {
     const rot = -((count * 3) / 2) + (index * (count * 3)) / (count - 1);
     const y = Math.abs(index - (count - 1) / 2) * (count * 3);
     const styles = {
@@ -54,11 +54,11 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
       width: '407px',
     };
 
-    if (card === Token.Flower) {
+    if (card === CardType.Bunny) {
       return (
         <div className={css.cardContainer} key={index}>
           <div style={styles}>
-            <FlowerCardComponent
+            <BunnyCardComponent
               click={() => this._selectCard(index)}
               selectable={this.props.selectCard ? true : false}
               //selected={isSelected}
@@ -72,7 +72,7 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
     return (
       <div className={css.cardContainer} key={index}>
         <div style={styles}>
-          <SkullCardComponent
+          <BombCardComponent
             click={() => this._selectCard(index)}
             selectable={this.props.selectCard ? true : false}
             //selected={isSelected}

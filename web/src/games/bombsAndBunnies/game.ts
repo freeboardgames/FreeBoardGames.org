@@ -2,7 +2,7 @@ import { Ctx, Game } from 'boardgame.io';
 import { INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
 
 import IPlayer from './player';
-import { Token } from './Token';
+import { CardType } from './cardType';
 
 export enum Phases {
   initial_placement = 'initial_placement',
@@ -75,15 +75,15 @@ export const Moves = {
     ctx.events.setPhase(Phases.initial_placement);
   },
 
-  PlaceToken: (G: IG, ctx: Ctx, handIndex: number) => {
+  PlaceCard: (G: IG, ctx: Ctx, handIndex: number) => {
     var playerIndex = getCurrentPlayerIndex(ctx);
     if (!(playerIndex in G.players)) {
       return INVALID_MOVE;
     }
 
     var player = G.players[playerIndex];
-    var chosenToken = player.hand.splice(handIndex, 1)[0];
-    player.stack.push(chosenToken);
+    var chosenCard = player.hand.splice(handIndex, 1)[0];
+    player.stack.push(chosenCard);
 
     G.maxBet += 1;
 
@@ -174,7 +174,7 @@ export const FooBarGame: Game<IG> = {
         order: TurnOrder.ONCE,
       },
       moves: {
-        MovePlaceToken: Moves.PlaceToken,
+        MovePlaceCard: Moves.PlaceCard,
       },
       next: Phases.place_or_bet,
     },
@@ -186,7 +186,7 @@ export const FooBarGame: Game<IG> = {
       },
 
       moves: {
-        MovePlaceToken: Moves.PlaceToken,
+        MovePlaceCard: Moves.PlaceCard,
         MoveBet: Moves.Bet,
       },
 
@@ -238,7 +238,7 @@ export const FooBarGame: Game<IG> = {
         var targetBet = G.currentBet;
         var revealed = getAllRevealedCards(G);
 
-        if (revealed.some((x) => x === Token.Skull)) {
+        if (revealed.some((x) => x === CardType.Bomb)) {
           return { next: Phases.penalty };
         }
 
@@ -250,7 +250,7 @@ export const FooBarGame: Game<IG> = {
       onEnd: (G: IG, ctx: Ctx) => {
         //console.log("reveal - onEnd", G, ctx);
         var revealed = getAllRevealedCards(G);
-        if (revealed.length === G.currentBet && !revealed.some((x) => x === Token.Skull)) {
+        if (revealed.length === G.currentBet && !revealed.some((x) => x === CardType.Bomb)) {
           G.players[getCurrentPlayerIndex(ctx)].wins++;
         }
         pickUpHand(G);
@@ -284,7 +284,7 @@ export const FooBarGame: Game<IG> = {
         id: i.toString(),
         bet: null,
         betSkipped: false,
-        hand: [Token.Flower, Token.Flower, Token.Flower, Token.Skull],
+        hand: [CardType.Bunny, CardType.Bunny, CardType.Bunny, CardType.Bomb],
         stack: [],
         revealedStack: [],
         wins: 0,

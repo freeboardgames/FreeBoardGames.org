@@ -15,7 +15,7 @@ import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
 import { estateBuyerGameDef } from './estatebuyer';
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
-import { fooBarGameDef } from './skulls';
+import { bombsAndBunniesDef } from './bombsAndBunnies';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
@@ -35,7 +35,7 @@ export const GAMES_MAP: IGameDefMap = {
   secretcodes: secretcodesGameDef,
   hangman: hangmanGameDef,
   estatebuyer: estateBuyerGameDef,
-  skulls: fooBarGameDef,
+  bombsAndBunnies: bombsAndBunniesDef,
 };
 
 // Order roughly by popularity.
@@ -57,5 +57,5 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.tictactoeplus,
   GAMES_MAP.rota,
   GAMES_MAP.ninemensmorris,
-  GAMES_MAP.skulls,
+  GAMES_MAP.bombsAndBunnies,
 ];
