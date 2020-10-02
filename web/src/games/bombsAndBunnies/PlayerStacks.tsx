@@ -21,9 +21,9 @@ export class PlayerStacks extends React.Component<IPlayerStacksProps, {}> {
   renderStack(player: IPlayer, playerIndex: number) {
     return (
       <PlayerStack
-        player={player}
-        playerIndex={playerIndex}
         key={playerIndex}
+        playerIndex={playerIndex}
+        stackSize={player.stack.length}
         revealCard={player.stack.length > 0 ? this.props.revealCard : null}
       ></PlayerStack>
     );

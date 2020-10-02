@@ -34,6 +34,10 @@ export class CardComponent extends React.Component<ICardProps, {}> {
   }
 }
 export class FaceDownCardComponent extends CardComponent {
+  front: string = css.FaceDown;
+}
+
+export class EmptyCardComponent extends CardComponent {
   front: string = css.EmptyCard;
 }
 

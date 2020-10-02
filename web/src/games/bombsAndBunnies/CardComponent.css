@@ -36,19 +36,28 @@
   animation-iteration-count: infinite;
 }
 
+.CardBase {
+  border: 20px #eee solid;
+}
+
 .EmptyCard {
-  border: 0px none;
-  background-color: rgba(0, 0, 0, 0.171);
-  box-shadow: 0px 0px 15px rgb(0, 0, 0);
+  border-image-source: url('http://i.stack.imgur.com/wLdVc.png');
+  border-image-width: 1;
+  border-image-slice: 2;
+  border-image-repeat: round;
+  box-shadow: none;
+}
+
+.FaceDownCard {
+  border: none;
+  background-color: #888;
 }
 
 .BunnyCard {
-  border: 20px #eee solid;
   background-color: rgb(98, 138, 72);
 }
 
 .BombCard {
-  border: 20px #eee solid;
   background-color: rgb(192, 44, 44);
 }
 
