@@ -30,11 +30,11 @@ function getCurrentPlayerIndex(ctx: Ctx) {
   return ctx.playOrderPos;
 }
 
-function getMaxPossibleBet(G: IG) {
+export function getMaxPossibleBet(G: IG) {
   return G.players.map((p) => p.stack.length).reduce((a, b) => a + b);
 }
 
-function getMaxPlayerBet(G: IG) {
+export function getMaxPlayerBet(G: IG) {
   var playerBets = G.players.map((p) => p.bet).filter((b) => b !== null);
 
   return [...playerBets, 0].reduce((a, b) => (a >= b ? a : b));
@@ -152,8 +152,8 @@ export const Moves = {
   },
 };
 
-export const FooBarGame: Game<IG> = {
-  name: 'skulls',
+export const BombsAndBunniesGame: Game<IG> = {
+  name: 'bombsAndBunnies',
 
   moves: {
     GameStart: Moves.GameStart,
