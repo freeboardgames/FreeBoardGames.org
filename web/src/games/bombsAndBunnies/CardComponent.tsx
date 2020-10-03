@@ -10,7 +10,7 @@ export interface ICardProps {
 }
 
 export class CardComponent extends React.Component<ICardProps, {}> {
-  front: string = css.EmptyCard;
+  front: string = '';
 
   render() {
     return (

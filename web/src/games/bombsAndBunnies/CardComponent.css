@@ -1,6 +1,6 @@
 .Card {
   color: black;
-  border: 20px #049 solid;
+  border: 20px #eee solid;
   box-sizing: border-box;
   background-origin: border-box;
   background-color: white;
@@ -36,16 +36,13 @@
   animation-iteration-count: infinite;
 }
 
-.CardBase {
-  border: 20px #eee solid;
-}
-
 .EmptyCard {
   border-image-source: url('http://i.stack.imgur.com/wLdVc.png');
   border-image-width: 1;
   border-image-slice: 2;
   border-image-repeat: round;
   box-shadow: none;
+  background: none;
 }
 
 .FaceDownCard {
