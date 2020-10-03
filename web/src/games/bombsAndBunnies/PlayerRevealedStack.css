@@ -1,0 +1,11 @@
+.playerRevealedStack {
+  display: inline-block;
+  margin: 10px;
+}
+
+.cardContainer {
+  position: absolute;
+  width: 100px;
+  transform-origin: 0 0;
+  transform: scale(0.2);
+}
