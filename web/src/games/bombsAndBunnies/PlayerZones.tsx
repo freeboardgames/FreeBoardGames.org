@@ -6,8 +6,9 @@ import IPlayer from './player';
 
 export interface IPlayerZonesProps {
   currentPlayerIndex: number;
-  perspectivePlayerIndex: number;
+  perspectivePlayer: string;
   players: IPlayer[];
+  revealCard?: (playerIndex: number) => void;
 }
 
 export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
@@ -25,6 +26,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
         playerIndex: i,
         stackSize: p.stack.length,
         revealedStack: p.revealedStack,
+        revealCard: this.props.revealCard,
       };
 
       return result;

@@ -10,7 +10,7 @@ import { BetPanel } from './BetPanel';
 import { ButtonComponent } from './ButtonComponent';
 
 import css from './Board.css';
-import { PlayerStacks } from './PlayerStacks';
+import { PlayerZones } from './PlayerZones';
 
 interface IBoardProps {
   G: IG;
@@ -54,7 +54,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       return this.getStartGameButton();
     }
 
-    return [this.getPlayerBettingOptions(), this.getPlayerStacks(), this.getPlayerHand()];
+    return [this.getPlayerBettingOptions(), this.getPlayerZones(), this.getPlayerHand()];
   }
 
   getStartGameButton() {
@@ -111,8 +111,15 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
-  getPlayerStacks() {
-    return <PlayerStacks players={this.props.G.players} revealCard={this._revealCard.bind(this)}></PlayerStacks>;
+  getPlayerZones() {
+    return (
+      <PlayerZones
+        currentPlayerIndex={this.props.ctx.playOrderPos}
+        perspectivePlayer={this.getBrowserPlayer()}
+        players={this.props.G.players}
+        revealCard={this._revealCard.bind(this)}
+      ></PlayerZones>
+    );
   }
 
   getBrowserPlayer() {
