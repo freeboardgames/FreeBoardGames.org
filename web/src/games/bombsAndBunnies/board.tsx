@@ -87,7 +87,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     return (
       <PlayerHand
         playerIndex={parseInt(playerID)}
-        player={this.props.G.players[playerID]}
+        hand={this.props.G.players[playerID].hand}
         selectCard={
           this.props.ctx.phase && PlacementPhases.map((p) => p.toString()).includes(this.props.ctx.phase)
             ? this._selectCard.bind(this)
