@@ -91,11 +91,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     var playerID = this.props.playerID ? this.props.playerID : '1'; // TODO : Local Fix
 
     let hands = this.props.G.hands;
-    let rotatedHands = hands.slice(me + 1, hands.length).concat(hands.slice(0, me + 1));
+    // let rotatedHands = hands.slice(me + 1, hands.length).concat(hands.slice(0, me + 1));
 
     return (
       <div className={css.hands}>
-        {rotatedHands.map((hand) => {
+        {hands.map((hand) => {
           let index = hand.player;
           return (
             <div className={css.hand} key={'Board' + index.toString()}>
