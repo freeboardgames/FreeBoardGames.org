@@ -8,7 +8,7 @@ interface InnerWrapper {
 
 export class BDeck extends React.Component<InnerWrapper, {}> {
   render() {
-    if (this.props.cardsLeft + 1 <= 0){
+    if (this.props.cardsLeft + 1 <= 0) {
       return (
         <div className={css.wrapper}>
           <BCard card={null} empty={-1}></BCard>

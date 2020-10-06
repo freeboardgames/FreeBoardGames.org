@@ -19,7 +19,7 @@ export class BButtons extends React.Component<InnerWrapper, {}> {
     if (!this.props.myTurn) {
       return null;
     }
-    if (!this.props.gotHints){
+    if (!this.props.gotHints) {
       return null;
     }
 
