@@ -109,6 +109,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
                   }}
                   myTurn={this.props.ctx.currentPlayer === playerID}
                   keyPropagation={'Board' + index.toString()}
+                  gotHints={this.props.G.treats > 0}
                 ></BButtons>
               )}
               <BNameBadge

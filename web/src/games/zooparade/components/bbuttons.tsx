@@ -8,6 +8,8 @@ interface InnerWrapper {
 
   myTurn: boolean;
   keyPropagation: string;
+
+  gotHints: boolean; // Used to show/blend out the hint buttons, if there are no available hints.
 }
 
 const Values = [0, 1, 2, 3, 4];
@@ -17,6 +19,10 @@ export class BButtons extends React.Component<InnerWrapper, {}> {
     if (!this.props.myTurn) {
       return null;
     }
+    if (!this.props.gotHints){
+      return null;
+    }
+
     return (
       <div className={css.wrapper}>
         {this.renderValues()}
