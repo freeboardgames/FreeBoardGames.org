@@ -1,7 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { IG } from '../../interfaces';
 import { Ctx } from 'boardgame.io';
-import { createTextChangeRange } from 'typescript';
 
 export function moveChosePriest(G: IG, ctx: Ctx, chosenGameID: number): IG | 'INVALID_MOVE' {
     if (G.mayorID == chosenGameID) {

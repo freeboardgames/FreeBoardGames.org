@@ -1,10 +1,25 @@
 import { IG, IPolicy } from './interfaces';
 
-import { Ctx, ActivePlayers, } from 'boardgame.io';
+import { Ctx } from 'boardgame.io';
+import { ActivePlayers } from 'boardgame.io/core';
 import { isLose, isWin } from './endconditions';
 
-import {validateOnEntry, validateEndIf, validateOnExit} from './phases/choseMayor/validateState';
-import {moveChosePriest, moveValidTest} from './phases/choseMayor/moves';
+import {validateOnEntry, validateEndIf, validateOnExit} from './phases/chosePriest/validateState';
+import {moveChosePriest, moveValidTest} from './phases/chosePriest/moves';
+
+import {moveVoteYes, moveVoteNo } from './phases/phaseVote/moves';
+
+import {moveDiscardMayor} from './phases/phaseDrawMayor/moves';
+import {moveDiscardPriest} from './phases/phaseDrawPriest/moves';
+
+import {moveWantVetoPriest} from './phases/veto/moves';
+import {moveWantVetoMayor} from './phases/veto/moves';
+
+import {movePickMayor} from './phases/phaseSpecial/moves';
+import {moveOK} from './phases/phaseSpecial/moves';
+import {moveExecute} from './phases/phaseSpecial/moves';
+import {moveInvestigateStart} from './phases/phaseSpecial/moves';
+import {moveInvestigateEnd} from './phases/phaseSpecial/moves';
 
 function setup(ctx: Ctx): IG {
     // SETUP BOARD
@@ -12,7 +27,6 @@ function setup(ctx: Ctx): IG {
     for (var i=6; i < 17; i++){
         policyDeck[i] = <IPolicy>{garlic: false, chalice: true}
     } // 6 + 11
-
     var speicalPolicies =  Array(6).fill(null)
 
     // SETUP PLAYERS
@@ -38,16 +52,19 @@ function setup(ctx: Ctx): IG {
     
 
     var finalG = <IG>{
+        policyHand: <IPolicy[]>Array(0).fill(null),
         policyDraw: policyDeck,
-        policyDrawCount: 17,
-        policyDiscard: <IPolicy[]>Array(17).fill(null),
-        policyDiscardCount: 0,
-        policyBoardHuman: <IPolicy[]>Array(5).fill(null),
-        policyBoardVampire: <IPolicy[]>Array(6).fill(null),
+        policyDiscard: <IPolicy[]>Array(0).fill(null),
+        policyBoardHuman: <IPolicy[]>Array(0).fill(null),
+        policyBoardVampire: <IPolicy[]>Array(0).fill(null),
 
         specialPolicies: speicalPolicies,
+        justPlayedVampirePolicy: -1,
 
         voting: false,
+        votesYes: <boolean[]>Array(ctx.numPlayers).fill(null),
+        votesNo: <boolean[]>Array(ctx.numPlayers).fill(null),
+
         mayorID: 0,
         priestID: <number>-1,
         lastMayorID: <number>-1,
@@ -59,6 +76,12 @@ function setup(ctx: Ctx): IG {
         draculaID: draculaID,
         vampireIDs: vampireIDs,
         humanIDs: humanIDs,
+
+        specialElection: -1,
+        policyPeek: <IPolicy[]>Array(0).fill(null),
+        investigate: 0,
+        vetoPower: false,
+        wantVeto: false,
     }
 
     return  finalG
@@ -70,6 +93,7 @@ export const SecretDraculaGame = {
     setup: setup,
 
     playerView: (G: IG, ctx: Ctx, playerID) => {
+        return G
         var playerIDInt = parseInt(playerID);
 
 
@@ -87,6 +111,8 @@ export const SecretDraculaGame = {
             policyDiscard: G.policyDiscard.map(() => {
                 return null
             }), // NOBODY
+            votesYes: G.votesYes.map(() => { return null}),
+            votesNo: G.votesNo.map(() => { return null}),
             draculaID: G.draculaID == playerIDInt ? G.draculaID : -1, // ONLY DRACULA
             // ONLY VAMPIRES:
             vampireIDs: G.vampireIDs.includes(playerIDInt) ?
@@ -108,42 +134,408 @@ export const SecretDraculaGame = {
         phaseChosePriest: {
             start: true,
             onBegin: (G, ctx) => {
+
                 if (!validateOnEntry(G, ctx)){
                     console.log("Error 1 !")
                 }
-                if (G.lastMayorID == -1){ //First Round
-                    var gameID = '0'
-                    console.log(gameID)
-                    ctx.events.setActivePlayers({
-                         value: {
-                             '0': 'phaseChosePriest',
-                        },
-                    })
-                } else {
-                    
-                } 
 
+                var p = G.mayorID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phaseChosePriest';
+                ctx.events.setActivePlayers(activePlayers)
+
+                return G
             },
             moves: {
                 moveValidTest,
                 moveChosePriest,
             },
             endIf: (G, ctx) => {
-                return validateEndIf(G, ctx)
+                if (validateEndIf(G, ctx)){
+                    return {next: 'phaseVotePriest'}
+                }
             },
-            next: 'phaseVotePriest',
             onEnd: (G,ctx) => {
                 if (!validateOnExit(G, ctx)){
                     console.log("Error 2 !")
                 }
-
+            return G
             }
         },
-        phaseVotePriest: {
-            endIf: (G,ctx) => {
 
+        phaseVotePriest: {
+            onBegin: (G, ctx) => {
+                return G
+
+            },
+            moves: {
+                moveVoteYes,
+                moveVoteNo,
+            },
+            endIf: (G: IG,ctx: Ctx) => {
+                var yesVotes = G.votesYes.reduce((a, b) => {return b == true ? a+1 : a}, 0)
+                var noVotes = G.votesNo.reduce((a, b) => {return b == true ? a+1 : a}, 0)
+                if (yesVotes +noVotes == ctx.numPlayers ){
+                    if (yesVotes > noVotes){ // Successful Vote
+                        return { next: 'phaseDrawMayor'}
+                    } else { 
+                        return {next: 'phaseCheckElectionCounter'}
+                    }
+                }
+                return false
+            },
+            onEnd: (G,ctx) => {
+                G.voting = false
+                G.votesYes = <boolean[]>Array(ctx.numPlayers).fill(null)
+                G.votesNo = <boolean[]>Array(ctx.numPlayers).fill(null)
+                return G
+            },
+            turn: {
+              activePlayers: { all: 'phaseVotePriest', moveLimit: 1}
+            },
+        },
+
+        phaseCheckElectionCounter: {
+            onEnd: (G: IG, ctx: Ctx) => {
+                if (G.electionTracker == 2){
+                    G.electionTracker = 0
+
+                    if (G.policyDraw.length < 3){
+                        G.policyDraw.push(...G.policyDiscard)
+                        G.policyDiscard = <IPolicy[]>Array(0)
+                    }
+                    var topCard = G.policyDraw.pop()
+
+                    if (topCard.chalice) {
+                        var n = G.policyBoardVampire.push(topCard)
+                        G.justPlayedVampirePolicy = n
+                    } else {
+                        var n = G.policyBoardHuman.push(topCard)
+                    }
+                } else {
+                    G.electionTracker += 1
+                }
+
+                G.lastMayorID = -1
+                G.lastPriestID = -1
+                G.mayorID = (G.mayorID + 1) % ctx.numPlayers
+                G.priestID = -1
+
+                return G
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                return {next: 'phaseChosePriest'}
             }
-        }
+        },
+        phaseDrawMayor:{
+            onBegin: (G: IG, ctx: Ctx) => {
+                var p = G.mayorID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phaseDrawMayor';
+                ctx.events.setActivePlayers(activePlayers)
+                if (G.policyDraw.length < 3){
+                    G.policyDraw.push(...G.policyDiscard)
+                    G.policyDiscard = <IPolicy[]>Array(0)
+                }
+                G.policyHand.push(G.policyDraw.pop())
+                G.policyHand.push(G.policyDraw.pop())
+                G.policyHand.push(G.policyDraw.pop())
+
+                return G
+            },
+            moves:{
+                moveDiscardMayor
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if (G.policyHand.length == 2 && !G.vetoPower) {
+                    return {next: 'phaseDrawPriest'}
+                } else if (G.policyHand.length == 2 && G.vetoPower) {
+                    return {next: 'phaseDrawPriestVeto'}
+                }
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+                G.lastMayorID = G.mayorID
+                G.lastPriestID = G.priestID
+                G.justPlayedVampirePolicy = -1
+                return G
+            },
+        },
+        phaseDrawPriest: {
+            onBegin: (G: IG, ctx: Ctx) => {
+                var p = G.priestID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phaseDrawPriest';
+                ctx.events.setActivePlayers(activePlayers)
+
+                return G
+            },
+            moves:{
+                moveDiscardPriest
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if (G.policyHand.length == 1) {
+                    return {next: 'phaseSpecial'}
+                }
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+                var card = G.policyHand.pop()
+                if (card.chalice){
+                    var n = G.policyBoardVampire.push(card)
+                    G.justPlayedVampirePolicy = n
+                } else {
+                    G.policyBoardHuman.push(card)
+                }
+                return G
+            },
+        },
+        phaseDrawPriestVeto: {
+            onBegin: (G: IG, ctx: Ctx) => {
+                var p = G.priestID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phaseDrawPriestVeto';
+                ctx.events.setActivePlayers(activePlayers)
+
+                return G
+            },
+            moves:{
+                moveDiscardPriest,
+                moveWantVetoPriest,
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if (G.policyHand.length == 1) {
+                    return {next: 'phaseSpecial'} // didn't use veto power
+                } else if (G.wantVeto) {
+                    return {next: 'phaseVetoMayor'} // didn't use veto power
+                }
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+                if (G.policyHand.length == 1) {
+                    var card = G.policyHand.pop()
+                    if (card.chalice){
+                        var n = G.policyBoardVampire.push(card)
+                        G.justPlayedVampirePolicy = n
+                    } else {
+                        G.policyBoardHuman.push(card)
+                    }
+                }
+                return G
+            },
+        },
+        phaseVetoMayor: {
+            onBegin: (G: IG, ctx: Ctx) => {
+                var p = G.mayorID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phaseDrawPriestVeto';
+                ctx.events.setActivePlayers(activePlayers)
+
+                return G
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if(ctx.activePlayers == null) {
+                    if (G.wantVeto){
+                        return {next: 'phaseDrawPriest'}
+                    } else {
+                        return {next: 'phaseNoSpecial'}
+                    }
+                }
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+                if (G.wantVeto){
+                    G.policyDiscard.push(G.policyHand.pop())
+                    G.policyDiscard.push(G.policyHand.pop())
+                    G.wantVeto = false
+                }
+
+                return G
+            },
+            moves:{
+                moveWantVetoMayor
+            }
+        },
+
+        phaseSpecial: {
+            onBegin: (G: IG, ctx: Ctx) => {
+                if (G.specialElection != -1){  // We were just in special. Go back to normal
+                    G.mayorID = G.specialElection
+                    G.specialElection = -1
+                }
+
+                return G
+
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if (G.justPlayedVampirePolicy == -1){
+                    return {next: 'phaseNoSpecial'}
+                }
+                if (ctx.numPlayers < 7){
+                    if (G.justPlayedVampirePolicy == 2){
+                        return {next: 'phasePeekPolicy'}
+                    } else if (G.justPlayedVampirePolicy == 3){
+                        return {next: 'phaseExecution'}
+                    } else if (G.justPlayedVampirePolicy == 4){
+                        return {next: 'phaseExecution'}
+                    }
+                    return {next: 'phaseNoSpecial'} // Game over anyways
+                } else if (ctx.numPlayers < 9){
+                    if (G.justPlayedVampirePolicy == 1){
+                        return {next: 'phaseInvestigate1'}
+                    } else if (G.justPlayedVampirePolicy == 2){
+                        return {next: 'phaseSpecialElection'}
+                    } else if (G.justPlayedVampirePolicy == 3){
+                        return {next: 'phaseExecution'}
+                    } else if (G.justPlayedVampirePolicy == 4){
+                        return {next: 'phaseExecution'}
+                    }
+                    return {next: 'phaseNoSpecial'} // Game over anyways
+                } else {
+                    if (G.justPlayedVampirePolicy == 0){
+                        return {next: 'phaseInvestigate1'}
+                    } else if (G.justPlayedVampirePolicy == 1){
+                        return {next: 'phaseInvestigate1'}
+                    } else if (G.justPlayedVampirePolicy == 2){
+                        return {next: 'phaseSpecialElection'}
+                    } else if (G.justPlayedVampirePolicy == 3){
+                        return {next: 'phaseExecution'}
+                    } else if (G.justPlayedVampirePolicy == 4){
+                        return {next: 'phaseExecution'}
+                    }
+                    return {next: 'phaseNoSpecial'} // Game over anyways
+
+                }
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+                if (G.justPlayedVampirePolicy == 4){
+                    G.vetoPower = true
+                }
+                G.justPlayedVampirePolicy = -1
+                return G
+            }
+        },
+
+        phaseNoSpecial:{
+            endIf: (G: IG, ctx: Ctx) => {
+                return {next: 'phaseChosePriest'}
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+                G.electionTracker = 0
+                G.priestID = -1
+                G.mayorID = (G.mayorID + 1) % ctx.numPlayers
+                while (!G.deadIDs.includes(G.mayorID)){
+                    G.mayorID = (G.mayorID + 1) % ctx.numPlayers
+                }
+
+                return G
+            }
+        },
+
+        phasePeekPolicy:{
+            onBegin: (G: IG, ctx: Ctx) => {
+                var p = G.mayorID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phasePeekPolicy';
+                ctx.events.setActivePlayers(activePlayers)
+
+                if (G.policyDraw.length < 3){
+                    G.policyDraw.push(...G.policyDiscard)
+                    G.policyDiscard = <IPolicy[]>Array(0)
+                }
+                G.policyPeek.push(G.policyDraw.pop())
+                G.policyPeek.push(G.policyDraw.pop())
+                G.policyPeek.push(G.policyDraw.pop())
+
+                return G
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if (G.policyPeek.length == 0) {
+                    return {next: 'phaseNoSpecial'}
+                }
+
+            },
+            moves: {
+                moveOK
+            },
+        },
+        phaseInvestigate1:{
+            onBegin: (G: IG, ctx: Ctx) => {
+                var p = G.mayorID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phaseInvestigate1';
+                ctx.events.setActivePlayers(activePlayers)
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if(G.investigate != 0) {
+                    return {next: 'phaseInvestigate2'}
+                }
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+                return G
+
+            },
+            moves: {
+                moveInvestigateStart
+            },
+        },
+        phaseInvestigate2:{
+            onBegin: (G: IG, ctx: Ctx) => {
+                var p = G.mayorID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phaseInvestigate2';
+                ctx.events.setActivePlayers(activePlayers)
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if(G.investigate == 0) {
+                    return {next: 'phaseNoSpecial'}
+                }
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+            },
+            moves: {
+                moveInvestigateEnd
+            },
+        },
+        phaseSpecialElection:{
+            onBegin: (G: IG, ctx: Ctx) => {
+                var p = G.mayorID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phaseSpecialElection';
+                ctx.events.setActivePlayers(activePlayers)
+                G.specialElection = -1
+                return G
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if (G.specialElection != -1){
+                    return {next: "phaseChosePriest"}
+                }
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+                G.electionTracker = 0
+                G.priestID = -1
+                return G
+            },
+            moves: {
+                movePickMayor
+            },
+
+        },
+        phaseExecution:{
+            onBegin: (G: IG, ctx: Ctx) => {
+                var p = G.mayorID
+                var activePlayers = { value: {} };
+                activePlayers.value[p] = 'phaseExecution';
+                ctx.events.setActivePlayers(activePlayers)
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                if(ctx.activePlayers == null) {
+                    return {next: 'phaseNoSpecial'}
+                }
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+
+            },
+            moves: {
+                moveExecute
+            },
+        },
 
     },
 

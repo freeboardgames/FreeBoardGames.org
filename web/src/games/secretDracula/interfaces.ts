@@ -5,22 +5,20 @@ export interface IPolicy {
     chalice: boolean;
 }
 
-export interface IVoteCard {
-    yes: boolean;
-    no: boolean;
-}
-
 export interface IG{
+    policyHand: IPolicy[];
     policyDiscard: IPolicy[];
     policyDraw: IPolicy[];
-    policyDiscardCount: number;
-    policyDrawCount: number;
     policyBoardHuman: IPolicy[];
     policyBoardVampire: IPolicy[];
+
+    justPlayedVampirePolicy: number;
 
     specialPolicies: any[]; // TODO
 
     voting: boolean;
+    votesYes: boolean[];
+    votesNo: boolean[];
 
     mayorID: number;
     priestID: number;
@@ -37,5 +35,9 @@ export interface IG{
 
     playerIDToGameID: number[];
 
-    votes: IVoteCard[];
+    specialElection: number;
+    policyPeek: IPolicy[];
+    investigate: number; // -1 = human, 0 nothing, 1=vampire
+    vetoPower: boolean;
+    wantVeto: boolean;
 }

@@ -32,10 +32,6 @@ export class Board extends React.Component<IBoardProps> {
         }
       }
 
-      console.log(deads)
-      console.log(vampires)
-      console.log(playerorder)
-
       return (
         <>
           <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
