@@ -15,9 +15,11 @@ import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
 import { estateBuyerGameDef } from './estatebuyer';
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
+import { secretDraculaGameDef } from './secretDracula';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
+  secretdracula: secretDraculaGameDef,
   mancala: mancalaGameDef,
   zooparade: zooParadeGameDef,
   chess: chessGameDef,
@@ -39,6 +41,7 @@ export const GAMES_MAP: IGameDefMap = {
 // Order roughly by popularity.
 // See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
+  GAMES_MAP.secretdracula,
   GAMES_MAP.estatebuyer,
   GAMES_MAP.mancala,
   GAMES_MAP.secretcodes,
