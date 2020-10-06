@@ -3,6 +3,7 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { IG } from './interfaces';
 
+import { BScore } from './components/bscore';
 import { BHand } from './components/bhand';
 import { BTrash } from './components/btrash';
 import { BPiles } from './components/bpiles';
@@ -80,6 +81,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           </div>
           <BDeck cardsLeft={this.props.G.deckindex}></BDeck>
           <BToken treats={this.props.G.treats} countdown={this.props.G.countdown}></BToken>
+          <BScore piles={this.props.G.piles}></BScore>
           <BTrash card={this.props.G.trash.length !== 0 ? this.props.G.trash[this.props.G.trash.length - 1] : null} />
         </div>
       </>

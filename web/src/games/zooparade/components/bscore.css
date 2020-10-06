@@ -1,0 +1,9 @@
+.wrapper {
+    position: relative;
+}
+
+.text {
+    color: green;
+    position: absolute;
+    bottom: 0;
+}
