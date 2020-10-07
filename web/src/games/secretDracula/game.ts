@@ -20,6 +20,7 @@ import {moveOK} from './phases/phaseSpecial/moves';
 import {moveExecute} from './phases/phaseSpecial/moves';
 import {moveInvestigateStart} from './phases/phaseSpecial/moves';
 import {moveInvestigateEnd} from './phases/phaseSpecial/moves';
+import { json } from 'express';
 
 function setup(ctx: Ctx): IG {
     // SETUP BOARD
@@ -57,6 +58,7 @@ function setup(ctx: Ctx): IG {
         policyDiscard: <IPolicy[]>Array(0).fill(null),
         policyBoardHuman: <IPolicy[]>Array(0).fill(null),
         policyBoardVampire: <IPolicy[]>Array(0).fill(null),
+        policyPriestNr: <number> -1,
 
         specialPolicies: speicalPolicies,
         justPlayedVampirePolicy: -1,
@@ -167,10 +169,9 @@ export const SecretDraculaGame = {
                 if (!validateOnExit(G, ctx)){
                     console.log("Error 2 !")
                 }
-            return G
+                return G
             }
         },
-
         phaseVotePriest: {
             onBegin: (G, ctx) => {
                 return G
@@ -264,6 +265,7 @@ export const SecretDraculaGame = {
             },
             endIf: (G: IG, ctx: Ctx) => {
                 if (G.policyHand.length == 2 && !G.vetoPower) {
+                    console.log("Moving to phaseDrawPriest")
                     return {next: 'phaseDrawPriest'}
                 } else if (G.policyHand.length == 2 && G.vetoPower) {
                     return {next: 'phaseDrawPriestVeto'}
@@ -286,22 +288,40 @@ export const SecretDraculaGame = {
                 return G
             },
             moves:{
-                moveDiscardPriest
+                moveDiscardPriest:{
+                    move: moveDiscardPriest,
+                    client: true,
+                },
             },
             endIf: (G: IG, ctx: Ctx) => {
-                if (G.policyHand.length == 1) {
-                    return {next: 'phaseSpecial'}
+                if (G.policyHand.length == 3) { 
+                    console.log("A0")
+                    console.log(JSON.stringify(G))
+                    return {next: 'phaseAfterDrawPriest'}
                 }
+                return false
             },
             onEnd: (G: IG, ctx: Ctx) => {
-                var card = G.policyHand.pop()
-                if (card.chalice){
-                    var n = G.policyBoardVampire.push(card)
-                    G.justPlayedVampirePolicy = n
-                } else {
-                    G.policyBoardHuman.push(card)
-                }
+                console.log("B0")
+                console.log(JSON.stringify(G))
                 return G
+            },
+        },
+        phaseAfterDrawPriest: {
+            onBegin: (G: IG, ctx: Ctx) => {
+                console.log("C0")
+                console.log(JSON.stringify(G))
+
+                return {
+                    ...G,
+                    policyHand: [],
+                    policyBoardHuman: G.policyHand[2].garlic    ? [...G.policyBoardHuman, G.policyHand[2]] : [...G.policyBoardHuman],
+                    policyBoardVampire: G.policyHand[2].chalice ? [...G.policyBoardVampire, G.policyHand[2]] : [...G.policyBoardVampire],
+                    justPlayedVampirePolicy: G.policyHand[2].chalice ? G.policyBoardVampire.length + 1 :  -1,
+                }
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                return {next: 'phaseSpecial'}
             },
         },
         phaseDrawPriestVeto: {
@@ -324,21 +344,29 @@ export const SecretDraculaGame = {
                 },
             },
             endIf: (G: IG, ctx: Ctx) => {
-                if (G.policyHand.length == 1) {
+                if (G.policyPriestNr != -1){
                     return {next: 'phaseSpecial'} // didn't use veto power
                 } else if (G.wantVeto) {
                     return {next: 'phaseVetoMayor'} // didn't use veto power
                 }
             },
             onEnd: (G: IG, ctx: Ctx) => {
-                if (G.policyHand.length == 1) {
-                    var card = G.policyHand.pop()
+                if (G.policyPriestNr != -1){
+                    if (G.policyPriestNr == 1) { 
+                        var card = G.policyHand.pop()
+                        G.policyHand.pop()
+                    } else { //drop first
+                        G.policyHand.pop()
+                        var card = G.policyHand.pop()
+                    }
+
                     if (card.chalice){
                         var n = G.policyBoardVampire.push(card)
                         G.justPlayedVampirePolicy = n
                     } else {
                         G.policyBoardHuman.push(card)
                     }
+                    G.policyPriestNr = -1
                 }
                 return G
             },
@@ -377,7 +405,6 @@ export const SecretDraculaGame = {
                 },
             }
         },
-
         phaseSpecial: {
             onBegin: (G: IG, ctx: Ctx) => {
                 if (G.specialElection != -1){  // We were just in special. Go back to normal
@@ -436,7 +463,6 @@ export const SecretDraculaGame = {
                 return G
             }
         },
-
         phaseNoSpecial:{
             endIf: (G: IG, ctx: Ctx) => {
                 return {next: 'phaseChosePriest'}
@@ -452,7 +478,6 @@ export const SecretDraculaGame = {
                 return G
             }
         },
-
         phasePeekPolicy:{
             onBegin: (G: IG, ctx: Ctx) => {
                 var p = G.mayorID
@@ -576,7 +601,6 @@ export const SecretDraculaGame = {
                 },
             },
         },
-
     },
 
     endif: (G, ctx) => {

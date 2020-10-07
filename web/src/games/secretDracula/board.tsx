@@ -39,7 +39,6 @@ export class Board extends React.Component<IBoardProps> {
                 return (<div>
                   <BPlayer 
                     me={Number(this.props.playerID) == a}
-
                     playerName={'name'}
                     playerActive={true}
                     dead={deads[a]}
@@ -53,6 +52,13 @@ export class Board extends React.Component<IBoardProps> {
                 </div>)
               })}
             
+            <div>
+              { this.props.G.log.map((a) => {
+                return(<div>
+                    { a }
+                  </div>)
+              }) }
+            </div>
           </GameLayout>
         </>
       );

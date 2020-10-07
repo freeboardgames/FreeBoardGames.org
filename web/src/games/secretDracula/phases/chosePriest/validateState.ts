@@ -44,4 +44,6 @@ export function validateOnExit(G: IG, ctx: Ctx): boolean {
             return false
     }
 
+    return true
+
 }

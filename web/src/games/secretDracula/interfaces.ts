@@ -11,6 +11,7 @@ export interface IG{
     policyDraw: IPolicy[];
     policyBoardHuman: IPolicy[];
     policyBoardVampire: IPolicy[];
+    policyPriestNr: number;
 
     justPlayedVampirePolicy: number;
 
