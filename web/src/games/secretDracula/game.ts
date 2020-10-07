@@ -82,6 +82,8 @@ function setup(ctx: Ctx): IG {
         investigate: 0,
         vetoPower: false,
         wantVeto: false,
+
+        log: <string[]>Array(1).fill("Starting"),
     }
 
     return  finalG
@@ -147,8 +149,14 @@ export const SecretDraculaGame = {
                 return G
             },
             moves: {
-                moveValidTest,
-                moveChosePriest,
+                moveValidTest: { 
+                    move: moveValidTest,
+                    client: false,
+                    },
+                moveChosePriest: {
+                    move: moveChosePriest,
+                    client: false,
+                    },
             },
             endIf: (G, ctx) => {
                 if (validateEndIf(G, ctx)){
@@ -169,8 +177,14 @@ export const SecretDraculaGame = {
 
             },
             moves: {
-                moveVoteYes,
-                moveVoteNo,
+                moveVoteYes: {
+                    move: moveVoteYes,
+                    client: false,
+                },
+                moveVoteNo:{
+                    move: moveVoteNo,
+                    client: false,
+                },
             },
             endIf: (G: IG,ctx: Ctx) => {
                 var yesVotes = G.votesYes.reduce((a, b) => {return b == true ? a+1 : a}, 0)
@@ -244,7 +258,10 @@ export const SecretDraculaGame = {
                 return G
             },
             moves:{
-                moveDiscardMayor
+                moveDiscardMayor:{
+                    move: moveDiscardMayor,
+                    client: false,
+                },
             },
             endIf: (G: IG, ctx: Ctx) => {
                 if (G.policyHand.length == 2 && !G.vetoPower) {
@@ -298,8 +315,14 @@ export const SecretDraculaGame = {
                 return G
             },
             moves:{
-                moveDiscardPriest,
-                moveWantVetoPriest,
+                moveDiscardPriest:{
+                    move: moveDiscardPriest,
+                    client: false,
+                },
+                moveWantVetoPriest:{
+                    move: moveWantVetoPriest,
+                    client: false,
+                },
             },
             endIf: (G: IG, ctx: Ctx) => {
                 if (G.policyHand.length == 1) {
@@ -349,7 +372,10 @@ export const SecretDraculaGame = {
                 return G
             },
             moves:{
-                moveWantVetoMayor
+                moveWantVetoMayor:{
+                    move:moveWantVetoMayor,
+                    client: false,
+                },
             }
         },
 
@@ -452,7 +478,10 @@ export const SecretDraculaGame = {
 
             },
             moves: {
-                moveOK
+                moveOK:{
+                    move:moveOK,
+                    client: false,
+                },
             },
         },
         phaseInvestigate1:{
@@ -472,7 +501,10 @@ export const SecretDraculaGame = {
 
             },
             moves: {
-                moveInvestigateStart
+                moveInvestigateStart:{
+                    move:moveInvestigateStart,
+                    client: false,
+                },
             },
         },
         phaseInvestigate2:{
@@ -490,7 +522,10 @@ export const SecretDraculaGame = {
             onEnd: (G: IG, ctx: Ctx) => {
             },
             moves: {
-                moveInvestigateEnd
+                moveInvestigateEnd:{
+                    move:moveInvestigateEnd,
+                    client: false,
+                },
             },
         },
         phaseSpecialElection:{
@@ -513,7 +548,10 @@ export const SecretDraculaGame = {
                 return G
             },
             moves: {
-                movePickMayor
+                movePickMayor:{
+                    move:movePickMayor,
+                    client: false,
+                },
             },
 
         },
@@ -533,7 +571,10 @@ export const SecretDraculaGame = {
 
             },
             moves: {
-                moveExecute
+                moveExecute:{
+                    move:moveExecute,
+                    client: false,
+                },
             },
         },
 

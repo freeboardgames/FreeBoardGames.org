@@ -40,4 +40,6 @@ export interface IG{
     investigate: number; // -1 = human, 0 nothing, 1=vampire
     vetoPower: boolean;
     wantVeto: boolean;
+
+    log: string[];
 }
