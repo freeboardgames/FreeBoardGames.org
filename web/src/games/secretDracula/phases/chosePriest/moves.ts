@@ -3,7 +3,7 @@ import { IG } from '../../interfaces';
 import { Ctx } from 'boardgame.io';
 import { stringify } from 'querystring';
 
-export function moveChosePriest(G: IG, ctx: Ctx, chosenGameID: number): IG | 'INVALID_MOVE' {
+export function moveChosePriest(G: IG, ctx: Ctx, chosenGameID: number, me: number): IG | 'INVALID_MOVE' {
     if (G.mayorID == chosenGameID) {
         return INVALID_MOVE
     }
@@ -23,13 +23,13 @@ export function moveChosePriest(G: IG, ctx: Ctx, chosenGameID: number): IG | 'IN
         ...G,
         voting: true,
         priestID: chosenGameID,
-        log: [...G.log, "Player " + ctx.activePlayers + " moveChosePriest " + chosenGameID.toString()]
+        log: [...G.log, "Player " + me.toString() + " moveChosePriest " + chosenGameID.toString()]
     }
 }
 
-export function moveValidTest(G: IG, ctx: Ctx): IG | 'INVALID_MOVE' {
+export function moveValidTest(G: IG, ctx: Ctx, me: number): IG | 'INVALID_MOVE' {
     return {
         ...G,
-        log: [...G.log, "Player " + ctx.activePlayers + " moveValidTest "]
+        log: [...G.log, "Player " + me.toString() + " moveValidTest "]
     }
 }

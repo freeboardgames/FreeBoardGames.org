@@ -208,7 +208,6 @@ export const SecretDraculaGame = {
               activePlayers: { all: 'phaseVotePriest', moveLimit: 1}
             },
         },
-
         phaseCheckElectionCounter: {
             onEnd: (G: IG, ctx: Ctx) => {
                 if (G.electionTracker == 2){
