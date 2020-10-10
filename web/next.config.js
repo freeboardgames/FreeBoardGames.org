@@ -89,6 +89,9 @@ module.exports = withWorkers(
 
         return config;
       },
+      responsive: {
+        adapter: require('responsive-loader/sharp'),
+      },
     }),
   ),
 );

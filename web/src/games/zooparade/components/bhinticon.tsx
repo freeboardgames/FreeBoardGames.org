@@ -8,7 +8,8 @@ interface InnerWrapper {
   keyPropagation: string;
 }
 
-const colors = ['#80b28e', '#beb7a3', '#a38c49', '#f2f47d', '#9bcbee'];
+// https://dribbble.com/shots/2012608-Material-Design-Colors
+const colors = ['#8bc34a', '#9e9e9e', '#795548', '#ffeb3b', '#5677fc', '#607d8b'];
 
 export class BHintIcon extends React.Component<InnerWrapper, {}> {
   render() {
