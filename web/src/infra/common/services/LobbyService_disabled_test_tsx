@@ -1,8 +1,8 @@
 import { LobbyService } from './LobbyService';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
-import { ApolloClient } from 'apollo-client';
+import { ApolloClient } from '@apollo/client';
 import { JoinRoom } from 'gqlTypes/JoinRoom';
-jest.mock('apollo-client');
+jest.mock('@apollo/client');
 
 describe('New Room', () => {
   afterEach(() => {

@@ -15,11 +15,10 @@ import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
 
 import { wrapper } from 'infra/common/redux/store';
-import { ApolloClient } from 'apollo-client';
-import { split, InMemoryCache } from 'apollo-boost';
-import { getMainDefinition } from 'apollo-utilities';
-import { createHttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
+import { ApolloClient, split, InMemoryCache } from '@apollo/client';
+import { createHttpLink } from '@apollo/client/link/http';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { WebSocketLink } from '@apollo/client/link/ws';
 import { ApolloProvider } from '@apollo/react-hooks';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
 
