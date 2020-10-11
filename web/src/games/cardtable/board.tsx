@@ -1,4 +1,6 @@
 import * as React from 'react';
+import CardContainer from './CardContainer';
+import CardTable from './CardTable';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
@@ -14,18 +16,27 @@ interface IBoardProps {
 
 export class Board extends React.Component<IBoardProps, {}> {
     render() {
-        let playerName = `Player ${this.props.gameArgs.playerID}`;
+        let currIdx = parseInt(this.props.ctx.currentPlayer);
+        let playerName = this.props.gameArgs.players[currIdx].name;
         const ctxObj = this.props.ctx;
-        const propsPID = this.props.playerID;
+        let dl = this.props.G.deck.length;
+        let sl = this.props.G.hands.south.held.length;
+        let nl = this.props.G.hands.north.held.length;
+        let turn = this.props.G.deck.length === 1 ? { turn: 'turn' } : { private: 'private' };
+
+
         return (
-            <GameLayout
-                gameArgs={this.props.gameArgs}>
-                <h2>Hello {playerName}!</h2>
-                <h2>PropsPlayerID {propsPID}</h2>
-                <pre>{JSON.stringify(this.props.gameArgs, null, 2)}</pre>
-                <pre>{JSON.stringify(ctxObj, null, 2)}</pre>
-            </GameLayout>
-        );
+            <GameLayout gameArgs={this.props.gameArgs} >
+
+                <CardContainer name="South" cards={this.props.G.hands.south.held} />
+                <CardTable G={this.props.G} />
+                <CardContainer name="Deck" cards={this.props.G.deck} {...turn} deck />
+                <CardContainer name="North" cards={this.props.G.hands.north.held} />
+
+                <h2>{playerName}</h2>
+            </GameLayout >)
+
+
     }
 }
 

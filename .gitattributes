@@ -5,3 +5,8 @@
 *.png binary
 *.jpg binary
 *.xcf binary
+*.jar binary
+*.mp3 binary
+*.gif binary
+web/src/games/ninemensmorris/Field.css binary
+
