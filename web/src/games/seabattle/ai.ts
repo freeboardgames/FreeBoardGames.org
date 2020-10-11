@@ -2,6 +2,13 @@ import { IAIConfig } from 'gamesShared/definitions/game';
 import { ICell, IShip, ISalvo, generateRandomShips } from './game';
 import shuffle from 'shuffle-array';
 
+interface IAISalvo extends ISalvo {
+  up: boolean;
+  down: boolean;
+  left: boolean;
+  right: boolean;
+}
+
 interface IPlayState {
   G: any;
   ctx: any;
