@@ -13,7 +13,7 @@ export const mancalaGameDef: IGameDef = {
   description: 'Classic game of Mancala',
   descriptionTag: `Play Mancala`,
   instructions: {
-    videoId: '-A-djjimCcM',
+    videoId: 'aLQX1TQjUbw',
     text: instructions,
   },
   config: () => import('./config'),
