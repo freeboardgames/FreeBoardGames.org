@@ -9,4 +9,5 @@
 *.mp3 binary
 *.gif binary
 web/src/games/ninemensmorris/Field.css binary
+android/gradlew.bat binary
 
