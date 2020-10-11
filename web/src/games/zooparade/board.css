@@ -29,6 +29,7 @@
   overflow-y: auto;
   --info-height: 0;
   box-sizing: border-box;
+  padding: 50px 0;
 }
 
 .wrapper * {
