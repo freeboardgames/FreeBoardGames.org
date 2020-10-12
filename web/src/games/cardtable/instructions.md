@@ -1,4 +1,4 @@
-####Instructions (WIP)
+#### Instructions (WIP)
 
 Create or join a game from the lobby. Local play is currently supported.
 
@@ -8,7 +8,7 @@ The turns, stages, and phases, are governed by game state. In WIP version the ac
 
 
 
-#####Cribbage on Card Table
+##### Cribbage on Card Table
 Card table is intended to simulate play for card enthusiasts. It provides abstractions for cards, table, and scoring, in a remote gaming experience.  The rules are enforced by the players.  There is no AI governing play.  In the current Version the debug console is used to navigate game activities. Only 'Local' play mode has been tested. Players alternate plays in a set flows. Score is kept on a board with pegs. Game is 121 points.
 
 A cribbage game on 'Card Table' is played using the following flow:
@@ -26,7 +26,7 @@ A cribbage game on 'Card Table' is played using the following flow:
 
 6. The Win - A player "goes out" by reaching the score of 121. During any phase a game may end without resolving the remaining phases.  The point difference is doubled (skunk) when beaten by 31 points, quadrupled (double-skunk) when beaten by 61 points.
 
-#####Notes
+##### Notes
 
 There are no hands which generate a count of 19 in cribbage -- when a player has no points to score they announce '19' as their score meaning 0. 
 
@@ -42,7 +42,7 @@ The highest counting hand in Cribbage is 29 points -- '29' is frequently include
 
 This hand is rare because you must be dealt 6 cards with 4 matching 5-5-5-Jt, and then your opponent cuts you a turn of 5t (roughly one in 200K). Scholars vary widely on the impact of external factors skewing this number (e.g. defensive play at end-play and crib choices).
 
-#####General Cribbage Play
+##### General Cribbage Play
 
 (1) The Deal from 52 standard playing cards dealer is chosen by drawing low card in turns from deck. In the two player version each player is dealt 6 cards clockwise with the 'eldest' hand belonging to first opponent on the left (clockwise). 
 
