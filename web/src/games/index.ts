@@ -16,7 +16,6 @@ import { hangmanGameDef } from './hangman';
 import { estateBuyerGameDef } from './estatebuyer';
 import { cardtableGameDef } from './cardtable';
 
-
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
 
 // Add new games here
