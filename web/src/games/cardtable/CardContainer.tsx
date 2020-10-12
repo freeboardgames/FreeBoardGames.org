@@ -1,11 +1,20 @@
-import React from 'react';
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
+import React, { FunctionComponent } from 'react';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import { Deck } from 'games/zooparade/components/bcard.stories';
+import { ICard } from './game';
 
+interface ICardContainerProps {
 
-const useStyles = makeStyles((theme: Theme) =>
+    cards: ICard[],
+    deck: ICard[],
+    private?: boolean,
+    flipped?: boolean,
+    turn?: boolean,
+    name: string,
+}
+
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             width: '400px',
@@ -53,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
  *   },
  * ];
  */
-export default function CardContainer(props) {
+const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardContainerProps) => {
     const classes = useStyles();
     let tileData = props.cards;
     let privacy = props.private && !props.turn
@@ -84,3 +93,5 @@ export default function CardContainer(props) {
         </div>
     );
 }
+
+export default CardContainer;

@@ -151,7 +151,7 @@ describe('deal() consistent state changes to G', () => {
 
   test('deal() should create a hand --seed 327 passed into client creation scenario', () => {
     client.moves.deal();
-    const { G, ctx } = client.store.getState();
+    const { G } = client.store.getState();
     expect(G.deck.length).toEqual(40)
     expect(G.hands.north.held.length).toEqual(6);
     expect(G.hands.south.held.length).toEqual(6);
@@ -174,7 +174,7 @@ describe('play() state changes to played storage', () => {
   test('play(0) from the north context --seed 327 passed into client creation scenario', () => {
     client.moves.deal();
     client.moves.play(0); //moves client's current 0th card to play tail
-    const { G, ctx } = client.store.getState();
+    const { G } = client.store.getState();
     expect(G.deck.length).toEqual(40)
     expect(G.hands.north.played.length).toEqual(1);
     expect(G.hands.south.held.length).toEqual(6);
@@ -197,7 +197,7 @@ describe('putToCrib(idx) state changes to crib storage', () => {
   test('putToCrib(0) from the north context --seed 327 passed into client creation scenario', () => {
     client.moves.deal();
     client.moves.putToCrib(0); //moves client's current 0th card to crib tail
-    const { G, ctx } = client.store.getState();
+    const { G, } = client.store.getState();
     expect(G.deck.length).toEqual(40)
     expect(G.hands.east.private.length).toEqual(1);
     expect(G.hands.south.held.length).toEqual(6);
@@ -220,7 +220,7 @@ describe('cutForTurn(idx) changes game state', () => {
   test('putToCrib(0) from the north context --seed 327 passed into client creation scenario', () => {
     client.moves.deal();
     client.moves.cutShowTurn(10); //moves client's current 0th card to crib tail
-    const { G, ctx } = client.store.getState();
+    const { G, } = client.store.getState();
     expect(G.deck.length).toEqual(1);
     expect(G.deck[0].id).toEqual('6D');
   })
@@ -237,7 +237,7 @@ describe('flipCrib() changes game state', () => {
 
   test('default value of cribFlipped s/b undefined', () => {
     client.moves.deal();
-    const { G, ctx } = client.store.getState();
+    const { G, } = client.store.getState();
     expect(G.hands.east.cribFlipped).toEqual(undefined);
 
   });
@@ -245,7 +245,7 @@ describe('flipCrib() changes game state', () => {
   test('after initial flipCrib call, cribFlipped s/b true', () => {
     client.moves.deal();
     client.moves.flipCrib(); //should set hands.east.cribFlipped which undef by default
-    const { G, ctx } = client.store.getState();
+    const { G, } = client.store.getState();
     expect(G.hands.east.cribFlipped).toEqual(true);
 
   });

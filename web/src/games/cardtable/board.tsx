@@ -18,10 +18,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     render() {
         let currIdx = parseInt(this.props.ctx.currentPlayer);
         let playerName = this.props.gameArgs.players[currIdx].name;
-        const ctxObj = this.props.ctx;
-        let dl = this.props.G.deck.length;
-        let sl = this.props.G.hands.south.held.length;
-        let nl = this.props.G.hands.north.held.length;
         let turn = this.props.G.deck.length === 1 ? { turn: 'turn' } : { private: 'private' };
 
 

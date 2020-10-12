@@ -19,7 +19,8 @@ export interface ITable {
 export interface ICard {
     id: string,
     rank: number,
-    faced: boolean
+    faced: boolean,
+    img: string,
 }
 
 export interface IHand {
@@ -131,7 +132,7 @@ export const moves = {
         return;
     },
 
-    flipCrib(G: IG, ctx: Ctx) {
+    flipCrib(G: IG,) {
         G.hands.east.cribFlipped = !G.hands.east.cribFlipped;
     }
 }
@@ -168,7 +169,7 @@ const findPlayedForPlayer = (G: IG, ctx: Ctx, who: String) => {
 
 }
 
-const findCribForPlayer = (G: IG, ctx: Ctx, who: String) => {
+const findCribForPlayer = () => {
 
     let path = 'hands.east.private';
     let myPlayedLocation: ILocation = { container: path, ordinal: 53 } //any number larger than container size will append
