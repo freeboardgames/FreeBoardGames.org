@@ -121,7 +121,7 @@ dockerbuild
 reports/
 .config/
 .dockerignore
-static/sitemap.xml
+public/static/sitemap.xml
 backend/test.db
 
 # FBG Blog
