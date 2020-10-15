@@ -5,10 +5,17 @@ import { Ctx } from 'boardgame.io';
 
 import { IG } from './interfaces';
 
+import { BVampirePolicies} from './components/bvampirepolicy';
 import { BPlayer } from './components/bplayer';
+import { BHumanPolicies} from './components/bhumanpolicy';
+
+import { BVote } from './components/bvote';
+import { BDiscard } from './components/bdiscard';
+
 import { Type } from 'boardgame.io/dist/types/src/server/db/base';
 import { createTextChangeRange } from 'typescript';
-interface IBoardProps { G: IG;
+interface IBoardProps { 
+  G: IG;
   ctx: Ctx;
   moves: any;
   playerID: string;
@@ -32,26 +39,41 @@ export class Board extends React.Component<IBoardProps> {
         }
       }
 
+
       return (
         <>
           <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
-              {playerorder.map( (a) => {
-                return (<div>
-                  <BPlayer 
-                    me={Number(this.props.playerID) == a}
-                    playerName={'name'}
-                    playerActive={true}
-                    dead={deads[a]}
-                    vampire={vampires[a]}
-                    dracula={this.props.G.draculaID == a}
+            <BVampirePolicies
+              playedPolicies={this.props.G.policyBoardVampire.length}
+              playerCount={this.props.ctx.numPlayers}
+            ></BVampirePolicies>
+            {playerorder.map( (a) => {
+              return (<div>
+                <BPlayer 
+                  me={Number(this.props.playerID) == a}
+                  playerName={this.props.playerID}
+                  playerActive={true}
+                  dead={deads[a]}
+                  vampire={vampires[a]}
+                  dracula={this.props.G.draculaID == a}
 
-                    onYes={() => {console.log("YES")}}
-                    onNo={() => {console.log("NO")}}
-                  >
-                  </BPlayer>
-                </div>)
-              })}
-            
+                  mayor={this.props.G.mayorID == a}
+                  priest={this.props.G.priestID == a}
+                >
+                </BPlayer>
+              </div>)
+            })}
+            <BHumanPolicies
+              playedPolicies={this.props.G.policyBoardHuman.length}
+              playerCount={this.props.ctx.numPlayers}
+            ></BHumanPolicies>
+                          
+            <BDiscard policies={this.props.G.policyHand}
+                      vetoEnabled={this.props.G.vetoPower}
+                      mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
+                      
+                      discard={this.discardWrapper}
+            ></BDiscard>
             <div>
               { this.props.G.log.map((a) => {
                 return(<div>
@@ -68,6 +90,14 @@ export class Board extends React.Component<IBoardProps> {
           </GameLayout>
         </>
       );
+    }
+
+    _discardWrapper(index: number, playerIndex: number) {
+      if (this.props.ctx.phase == '')....
+
+
+
+
     }
   }
 

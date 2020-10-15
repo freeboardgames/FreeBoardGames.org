@@ -10,8 +10,8 @@ interface InnerWrapper {
     vampire: boolean;
     dracula: boolean;
 
-    onYes(): any;
-    onNo(): any;
+    mayor: boolean;
+    priest: boolean;
 }
 
 export class BPlayer extends React.Component<InnerWrapper, {}> {
@@ -25,14 +25,6 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
                 <div> Dead: { this.props.dead ? 'Yes' : 'No'} </div>
                 <div> Vampire: { this.props.vampire ? 'Yes' : 'No'} </div>
                 <div> Dracula: { this.props.dracula? 'Yes' : 'No'} </div>
-                <div> Yes: 
-                    <button onClick={()=> this.props.onYes() }>YES</button>
-                </div>
-                <div> No: 
-                    <button onClick={()=> this.props.onNo() }>NO</button>
-                </div>
-
-
             </div>
         )
     }
