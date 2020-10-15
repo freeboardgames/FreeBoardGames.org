@@ -312,15 +312,15 @@ export const SecretDraculaGame = {
             },
             onEnd: (G: IG, ctx: Ctx) => {
                console.log("ending phaseDiscardPriest")
-            // //     console.log("B0")
-            // //     return G
-            //     return {
-            //         ...G,
-            //         policyHand: [],
-            //         policyBoardHuman: G.policyHand[0].garlic    ? [...G.policyBoardHuman, G.policyHand[0]] : [...G.policyBoardHuman],
-            //         policyBoardVampire: G.policyHand[0].chalice ? [...G.policyBoardVampire, G.policyHand[0]] : [...G.policyBoardVampire],
-            //         justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length + 1 :  -1,
-            //     }
+            //     console.log("B0")
+            //     return G
+                return {
+                    ...G,
+                    policyHand: [],
+                    policyBoardHuman: G.policyHand[0].garlic    ? [...G.policyBoardHuman, G.policyHand[0]] : [...G.policyBoardHuman],
+                    policyBoardVampire: G.policyHand[0].chalice ? [...G.policyBoardVampire, G.policyHand[0]] : [...G.policyBoardVampire],
+                    justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length + 1 :  -1,
+                }
             },
         },
         // phaseAfterDiscardPriest: {
