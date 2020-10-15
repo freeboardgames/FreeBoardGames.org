@@ -184,7 +184,7 @@
     "react-docgen-typescript-loader": "^3.7.2",
     "redux-mock-store": "^1.5.4",
     "rimraf": "^3.0.2",
-    "sharp": "^0.26.1",
+    "sharp": "^0.25.4",
     "start-server-and-test": "^1.11.5",
     "trash-cli": "^3.1.0",
     "ts-jest": "^26.4.1",
