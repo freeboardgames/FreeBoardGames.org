@@ -52,6 +52,7 @@
     "@apollo/react-components": "^4.0.0",
     "@apollo/react-hooks": "^4.0.0",
     "@babel/plugin-transform-parameters": "^7.10.5",
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@babel/preset-env": "^7.0.0",
     "@babel/runtime-corejs2": "^7.11.2",
     "@google-cloud/logging-winston": "^4.0.0",
@@ -120,7 +121,6 @@
   "devDependencies": {
     "@apollo/react-testing": "^4.0.0",
     "@babel/core": "^7.11.6",
-    "@babel/plugin-transform-react-jsx-development": "^7.11.5",
     "@cypress/code-coverage": "^3.8.1",
     "@cypress/webpack-preprocessor": "^5.4.6",
     "@storybook/addon-actions": "^6.0.26",
