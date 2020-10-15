@@ -290,40 +290,45 @@ export const SecretDraculaGame = {
             moves:{
                 moveDiscardPriest:{
                     move: moveDiscardPriest,
-                    client: true,
+                    client: false,
                 },
             },
             endIf: (G: IG, ctx: Ctx) => {
-                if (G.policyHand.length == 3) { 
+                if (G.policyHand.length == 1) { 
                     console.log("A0")
-                    console.log(JSON.stringify(G))
-                    return {next: 'phaseAfterDrawPriest'}
+                    return {next: 'phaseSpecial'}
                 }
                 return false
             },
-            onEnd: (G: IG, ctx: Ctx) => {
-                console.log("B0")
-                console.log(JSON.stringify(G))
-                return G
-            },
+            // onEnd: (G: IG, ctx: Ctx) => {
+            // //     console.log("B0")
+            // //     return G
+            //     return {
+            //         ...G,
+            //         policyHand: [],
+            //         policyBoardHuman: G.policyHand[0].garlic    ? [...G.policyBoardHuman, G.policyHand[0]] : [...G.policyBoardHuman],
+            //         policyBoardVampire: G.policyHand[0].chalice ? [...G.policyBoardVampire, G.policyHand[0]] : [...G.policyBoardVampire],
+            //         justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length + 1 :  -1,
+            //     }
+            // },
         },
-        phaseAfterDrawPriest: {
-            onBegin: (G: IG, ctx: Ctx) => {
-                console.log("C0")
-                console.log(JSON.stringify(G))
+        // phaseAfterDrawPriest: {
+        //     onBegin: (G: IG, ctx: Ctx) => {
+        //         console.log("C0")
+        //         console.log(JSON.stringify(G))
 
-                return {
-                    ...G,
-                    policyHand: [],
-                    policyBoardHuman: G.policyHand[2].garlic    ? [...G.policyBoardHuman, G.policyHand[2]] : [...G.policyBoardHuman],
-                    policyBoardVampire: G.policyHand[2].chalice ? [...G.policyBoardVampire, G.policyHand[2]] : [...G.policyBoardVampire],
-                    justPlayedVampirePolicy: G.policyHand[2].chalice ? G.policyBoardVampire.length + 1 :  -1,
-                }
-            },
-            endIf: (G: IG, ctx: Ctx) => {
-                return {next: 'phaseSpecial'}
-            },
-        },
+        //         return {
+        //             ...G,
+        //             policyHand: [],
+        //             policyBoardHuman: G.policyHand[0].garlic    ? [...G.policyBoardHuman, G.policyHand[0]] : [...G.policyBoardHuman],
+        //             policyBoardVampire: G.policyHand[0].chalice ? [...G.policyBoardVampire, G.policyHand[0]] : [...G.policyBoardVampire],
+        //             justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length + 1 :  -1,
+        //         }
+        //     },
+        //     endIf: (G: IG, ctx: Ctx) => {
+        //         return {next: 'phaseSpecial'}
+        //     },
+        // },
         phaseDrawPriestVeto: {
             onBegin: (G: IG, ctx: Ctx) => {
                 var p = G.priestID
@@ -405,7 +410,7 @@ export const SecretDraculaGame = {
                 },
             }
         },
-        phaseSpecial: {
+        phaseSpecial: { // Used to see if we need to start a special phase or go back to start
             onBegin: (G: IG, ctx: Ctx) => {
                 if (G.specialElection != -1){  // We were just in special. Go back to normal
                     G.mayorID = G.specialElection

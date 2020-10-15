@@ -59,6 +59,12 @@ export class Board extends React.Component<IBoardProps> {
                   </div>)
               }) }
             </div>
+
+            <div>
+                  <pre id="json">
+                   { JSON.stringify(this.props.ctx, null, '\t') }
+                  </pre>
+            </div>
           </GameLayout>
         </>
       );

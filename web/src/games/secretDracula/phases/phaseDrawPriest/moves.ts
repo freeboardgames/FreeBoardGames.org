@@ -16,9 +16,11 @@ export function moveDiscardPriest(G: IG, ctx: Ctx, id: number, me: number): IG |
 
     return {
         ...G,
-        policyHand: id == 1 ? [...G.policyHand, G.policyHand[0]]:[...G.policyHand, G.policyHand[1]],
-        // policyHand: id == 1 ? [G.policyHand[0]]:[G.policyHand[1]],
         policyDiscard: [...G.policyDiscard, G.policyHand[id]],
+        policyHand: 
+                 id == 1 ? [G.policyHand[0]]
+                 :
+                 [G.policyHand[1]],
         log: [...G.log, "Player " + me.toString() + " moveDiscardPriest " + id.toString()],
     }
 }
