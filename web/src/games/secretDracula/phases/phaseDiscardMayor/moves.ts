@@ -13,15 +13,11 @@ export function moveDiscardMayor(G: IG, ctx: Ctx, id: number, me: number): IG | 
     
     return {
         ...G,
-        policyHand: 
-                 id == 1 ? [G.policyHand[0]]
-                 :
-                 [G.policyHand[1]],
-        // policyHand: id == 2 ? [G.policyHand[0],G.policyHand[1]]
-        //             :
-        //                 id == 1 ? [G.policyHand[0],G.policyHand[1]]
-        //                 :
-        //                 [G.policyHand[1],G.policyHand[2]],
+        policyHand: id == 2 ? [G.policyHand[0],G.policyHand[1]]
+                    :
+                        id == 1 ? [G.policyHand[0],G.policyHand[1]]
+                        :
+                        [G.policyHand[1],G.policyHand[2]],
         policyDiscard: [...G.policyDiscard, G.policyHand[id]],
         log: [...G.log, "Player " + me.toString() + " moveDiscardMayor " + id.toString()]
     }
