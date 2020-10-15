@@ -9,8 +9,8 @@ import {moveChosePriest, moveValidTest} from './phases/chosePriest/moves';
 
 import {moveVoteYes, moveVoteNo } from './phases/phaseVote/moves';
 
-import {moveDiscardMayor} from './phases/phaseDrawMayor/moves';
-import {moveDiscardPriest} from './phases/phaseDrawPriest/moves';
+import {moveDiscardMayor} from './phases/phaseDiscardMayor/moves';
+import {moveDiscardPriest} from './phases/phaseDiscardPriest/moves';
 
 import {moveWantVetoPriest} from './phases/veto/moves';
 import {moveWantVetoMayor} from './phases/veto/moves';
@@ -192,7 +192,7 @@ export const SecretDraculaGame = {
                 var noVotes = G.votesNo.reduce((a, b) => {return b == true ? a+1 : a}, 0)
                 if (yesVotes +noVotes == ctx.numPlayers ){
                     if (yesVotes > noVotes){ // Successful Vote
-                        return { next: 'phaseDrawMayor'}
+                        return { next: 'phaseDiscardMayor'}
                     } else { 
                         return {next: 'phaseCheckElectionCounter'}
                     }
@@ -241,11 +241,11 @@ export const SecretDraculaGame = {
                 return {next: 'phaseChosePriest'}
             }
         },
-        phaseDrawMayor:{
+        phaseDiscardMayor:{
             onBegin: (G: IG, ctx: Ctx) => {
                 var p = G.mayorID
                 var activePlayers = { value: {} };
-                activePlayers.value[p] = 'phaseDrawMayor';
+                activePlayers.value[p] = 'phaseDiscardMayor';
                 ctx.events.setActivePlayers(activePlayers)
                 if (G.policyDraw.length < 3){
                     G.policyDraw.push(...G.policyDiscard)
@@ -264,11 +264,13 @@ export const SecretDraculaGame = {
                 },
             },
             endIf: (G: IG, ctx: Ctx) => {
-                if (G.policyHand.length == 2 && !G.vetoPower) {
-                    console.log("Moving to phaseDrawPriest")
-                    return {next: 'phaseDrawPriest'}
-                } else if (G.policyHand.length == 2 && G.vetoPower) {
-                    return {next: 'phaseDrawPriestVeto'}
+                if (G.policyHand.length == 2) {
+                    if (!G.vetoPower) {
+                        console.log("Moving to phaseDiscardPriest")
+                        return {next: 'phaseDiscardPriest'}
+                    } else if (G.vetoPower) {
+                        return {next: 'phaseDiscardPriestVeto'}
+                    }
                 }
             },
             onEnd: (G: IG, ctx: Ctx) => {
@@ -278,13 +280,12 @@ export const SecretDraculaGame = {
                 return G
             },
         },
-        phaseDrawPriest: {
+        phaseDiscardPriest: {
             onBegin: (G: IG, ctx: Ctx) => {
                 var p = G.priestID
                 var activePlayers = { value: {} };
-                activePlayers.value[p] = 'phaseDrawPriest';
+                activePlayers.value[p] = 'phaseDiscardPriest';
                 ctx.events.setActivePlayers(activePlayers)
-
                 return G
             },
             moves:{
@@ -312,7 +313,7 @@ export const SecretDraculaGame = {
             //     }
             // },
         },
-        // phaseAfterDrawPriest: {
+        // phaseAfterDiscardPriest: {
         //     onBegin: (G: IG, ctx: Ctx) => {
         //         console.log("C0")
         //         console.log(JSON.stringify(G))
@@ -329,11 +330,11 @@ export const SecretDraculaGame = {
         //         return {next: 'phaseSpecial'}
         //     },
         // },
-        phaseDrawPriestVeto: {
+        phaseDiscardPriestVeto: {
             onBegin: (G: IG, ctx: Ctx) => {
                 var p = G.priestID
                 var activePlayers = { value: {} };
-                activePlayers.value[p] = 'phaseDrawPriestVeto';
+                activePlayers.value[p] = 'phaseDiscardPriestVeto';
                 ctx.events.setActivePlayers(activePlayers)
 
                 return G
@@ -380,7 +381,7 @@ export const SecretDraculaGame = {
             onBegin: (G: IG, ctx: Ctx) => {
                 var p = G.mayorID
                 var activePlayers = { value: {} };
-                activePlayers.value[p] = 'phaseDrawPriestVeto';
+                activePlayers.value[p] = 'phaseDiscardPriestVeto';
                 ctx.events.setActivePlayers(activePlayers)
 
                 return G
@@ -388,7 +389,7 @@ export const SecretDraculaGame = {
             endIf: (G: IG, ctx: Ctx) => {
                 if(ctx.activePlayers == null) {
                     if (G.wantVeto){
-                        return {next: 'phaseDrawPriest'}
+                        return {next: 'phaseDiscardPriest'}
                     } else {
                         return {next: 'phaseNoSpecial'}
                     }
