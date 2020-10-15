@@ -53,6 +53,8 @@
     "@apollo/react-hooks": "^4.0.0",
     "@babel/plugin-transform-parameters": "^7.10.5",
     "@babel/plugin-transform-react-jsx": "^7.10.4",
+    "@babel/plugin-transform-react-jsx-development": "^7.11.5",
+    "@babel/plugin-transform-react-jsx-source": "^7.10.5",
     "@babel/preset-env": "^7.0.0",
     "@babel/runtime-corejs2": "^7.11.2",
     "@google-cloud/logging-winston": "^4.0.0",
