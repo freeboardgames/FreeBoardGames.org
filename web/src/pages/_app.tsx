@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 
+import Head from 'next/head';
 import App from 'next/app';
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -14,11 +15,10 @@ import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
 
 import { wrapper } from 'infra/common/redux/store';
-import { ApolloClient } from 'apollo-client';
-import { split, InMemoryCache } from 'apollo-boost';
-import { getMainDefinition } from 'apollo-utilities';
-import { createHttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
+import { ApolloClient, split, InMemoryCache } from '@apollo/client';
+import { createHttpLink } from '@apollo/client/link/http';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { WebSocketLink } from '@apollo/client/link/ws';
 import { ApolloProvider } from '@apollo/react-hooks';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
 
@@ -89,14 +89,28 @@ class defaultApp extends App {
   render() {
     const { Component, pageProps, isMobile } = this.props as any;
     return (
-      <ThemeProvider theme={theme}>
-        <SelfXSSWarning />
-        <UaContext.Provider value={isMobile}>
-          <ApolloProvider client={client}>
-            <Component {...pageProps} />
-          </ApolloProvider>
-        </UaContext.Provider>
-      </ThemeProvider>
+      <>
+        <Head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="application-name" content="FreeBoardGames.org" />
+          <meta name="apple-mobile-web-app-title" content="FreeBoardGames.org" />
+          <meta name="theme-color" content="#3f51b5" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <meta name="msapplication-TileColor" content="#ffc40d" />
+          <meta name="msapplication-config" content="/static/icons/browserconfig.xml" />
+        </Head>
+        <ThemeProvider theme={theme}>
+          <SelfXSSWarning />
+          <UaContext.Provider value={isMobile}>
+            <ApolloProvider client={client}>
+              <Component {...pageProps} />
+            </ApolloProvider>
+          </UaContext.Provider>
+        </ThemeProvider>
+      </>
     );
   }
   static async getInitialProps({ Component, ctx }) {
