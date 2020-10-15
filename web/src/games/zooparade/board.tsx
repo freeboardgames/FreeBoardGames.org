@@ -81,8 +81,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           </div>
           <BDeck cardsLeft={this.props.G.deckindex}></BDeck>
           <BToken treats={this.props.G.treats} countdown={this.props.G.countdown}></BToken>
-          <BScore piles={this.props.G.piles}></BScore>
           <BTrash card={this.props.G.trash.length !== 0 ? this.props.G.trash[this.props.G.trash.length - 1] : null} />
+          <BScore piles={this.props.G.piles}></BScore>
         </div>
       </>
     );
@@ -93,11 +93,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     var playerID = this.props.playerID ? this.props.playerID : '1'; // TODO : Local Fix
 
     let hands = this.props.G.hands;
-    // let rotatedHands = hands.slice(me + 1, hands.length).concat(hands.slice(0, me + 1));
+    let rotatedHands = hands.slice(me + 1, hands.length).concat(hands.slice(0, me + 1));
 
     return (
       <div className={css.hands}>
-        {hands.map((hand) => {
+        {rotatedHands.map((hand) => {
           let index = hand.player;
           return (
             <div className={css.hand} key={'Board' + index.toString()}>

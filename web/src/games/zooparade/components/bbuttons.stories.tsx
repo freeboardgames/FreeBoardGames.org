@@ -16,9 +16,21 @@ const onHintColor = (value) => {
 };
 
 export const NotInYourTurn = () => (
-  <BButtons myTurn={false} keyPropagation={'dontcare'} onHintColor={onHintColor} onHintValue={onHintValue} />
+  <BButtons
+    myTurn={false}
+    keyPropagation={'dontcare'}
+    onHintColor={onHintColor}
+    onHintValue={onHintValue}
+    gotHints={false}
+  />
 );
 
 export const InYourTurn = () => (
-  <BButtons myTurn={true} keyPropagation={'dontcare'} onHintColor={onHintColor} onHintValue={onHintValue} />
+  <BButtons
+    myTurn={true}
+    keyPropagation={'dontcare'}
+    onHintColor={onHintColor}
+    onHintValue={onHintValue}
+    gotHints={false}
+  />
 );
