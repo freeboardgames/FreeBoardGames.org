@@ -15,17 +15,58 @@ interface InnerWrapper {
 }
 
 export class BPlayer extends React.Component<InnerWrapper, {}> {
+    hashCode = function(s){
+        return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+    }
+
     render() {
+        var my_rand_id = this.hashCode(this.props.playerName)
+
         return (
             <div>
-                <br></br>
-                <div> Me: {this.props.me ? 'Yes' : 'No' } </div>
-                <div> Player: { this.props.playerName } </div>
-                <div> Active: { this.props.playerActive ? 'Yes' : 'No' } </div>
-                <div> Dead: { this.props.dead ? 'Yes' : 'No'} </div>
-                <div> Vampire: { this.props.vampire ? 'Yes' : 'No'} </div>
-                <div> Dracula: { this.props.dracula? 'Yes' : 'No'} </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p> 
+                                    { this.props.playerActive ? '🕒 ' : ' ' }
+                                </p>
+                            </td>
+                            <td>
+                                <p> 
+                                    {this.props.dead ?
+                                         this.deads[my_rand_id % this.deads.length]
+                                      :
+                                        this.props.vampire ?
+                                         this.vampires[my_rand_id % this.vampires.length]
+                                        :
+                                         this.humans[my_rand_id % this.humans.length]
+                                    }
+                                </p>
+                            </td>
+                            <td>
+                                <p> 
+                                    {this.props.playerName}
+                                </p>
+                            </td>
+                            <td>
+                                <p> 
+                                    {this.props.priest ? '✝️' : ' '}
+                                </p>
+                            </td>
+                            <td>
+                                <p> 
+                                    {this.props.mayor?  '🏅': ' '}
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         )
     }
+
+    vampires =['🧛','🧛🏽‍♂️','🧛🏽‍♀️','🧛🏽','🧛🏿','🧛🏻‍♂️','🧛🏻','🧛🏼','🧛🏼‍♀️','🧛🏼‍♂️','🧛🏾‍♀️']
+    humans = ['👩‍🎓','👨‍🏫','🧑‍🌾','👩‍⚖️','🧑‍🔧','👩‍🍳','🧑‍🏭','🧑‍💼','👩‍🔬','🧑‍🎤','👨‍✈️','👩‍🚀','👩‍🚒','👮','👷','👳‍♀️']
+    deads = ['⚰️', '💀', '☠', '👻', '⚱', '🪦']
 }
