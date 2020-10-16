@@ -16,7 +16,11 @@ interface InnerWrapper {
 
 export class BPlayer extends React.Component<InnerWrapper, {}> {
     hashCode = function(s){
-        return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+        var a = s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+        if (a < 0) {
+            return -a
+        }
+        return a
     }
 
     render() {
