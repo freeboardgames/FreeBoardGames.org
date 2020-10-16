@@ -12,24 +12,28 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
         return (
             <div>
                 <table>
-                    <tr>
-                        { this.props.playedPolicies > 0? this._played() : this._first(this.props.playedPolicies)}
-                    </tr>
-                    <tr>
-                        { this.props.playedPolicies > 1? this._played() : this._second(this.props.playedPolicies)}
-                    </tr>
-                    <tr>
-                        { this.props.playedPolicies > 2? this._played() : this._third(this.props.playedPolicies)}
-                    </tr>
-                    <tr>
-                        { this.props.playedPolicies > 3? this._played() : this._fourth(this.props.playedPolicies)}
-                    </tr>
-                    <tr>
-                        { this.props.playedPolicies > 4? this._played() : this._fifth(this.props.playedPolicies)}
-                    </tr>
-                    <tr>
-                        { this.props.playedPolicies > 5? this._played() : this._sixth(this.props.playedPolicies)}
-                    </tr>
+                    <tbody>
+                        <tr>
+                        <td>
+                            { this.props.playedPolicies > 0? this._played() : this._first(this.props.playedPolicies)}
+                        </td>
+                        <td>
+                            { this.props.playedPolicies > 1? this._played() : this._second(this.props.playedPolicies)}
+                        </td>
+                        <td>
+                            { this.props.playedPolicies > 2? this._played() : this._third(this.props.playedPolicies)}
+                        </td>
+                        <td>
+                            { this.props.playedPolicies > 3? this._played() : this._fourth(this.props.playedPolicies)}
+                        </td>
+                        <td>
+                            { this.props.playedPolicies > 4? this._played() : this._fifth(this.props.playedPolicies)}
+                        </td>
+                        <td>
+                            { this.props.playedPolicies > 5? this._played() : this._sixth(this.props.playedPolicies)}
+                        </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         )
@@ -38,57 +42,57 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
 
   _played = () => {
       return (
-      <div> 
-          Played 
-      </div>
+          <p>
+          🩸
+          </p>
       )
   };
 
   _empty = () => {
       return (
-      <div> 
-          Empty
-      </div>
+          <p>
+          🚃        
+          </p>
       )
   }
 
   _investigate = () => {
       return (
-      <div> 
-         Investigate 
-      </div>
+          <p>
+              🧄
+          </p>
       )
   }
 
   _special = () => {
       return (
-      <div> 
-         Speical 
-      </div>
+          <p>
+            🗳️  
+          </p>
       )
   }
 
   _peek = () => {
       return (
-      <div> 
-        Peek 
-      </div>
+          <p>
+              🧪
+          </p>
       )
   }
 
   _kill= () => {
       return (
-      <div> 
-        Kill 
-      </div>
+          <p>
+              🗡️
+          </p>
       )
   };
   
   _death= () => {
       return (
-      <div> 
-          Death
-      </div>
+          <p>
+              ⚰️
+          </p>
       )
   }
 

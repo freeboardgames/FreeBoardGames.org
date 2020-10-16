@@ -12,21 +12,25 @@ export class BHumanPolicies extends React.Component<InnerWrapper, {}> {
         return (
             <div>
                 <table>
-                    <tr>
-                        { this.props.playedPolicies > 0? this._played() : this._empty() }
-                    </tr>
-                    <tr>
-                        { this.props.playedPolicies > 1? this._played() : this._empty() }
-                    </tr>
-                    <tr>
-                        { this.props.playedPolicies > 2? this._played() : this._empty() }
-                    </tr>
-                    <tr>
-                        { this.props.playedPolicies > 3? this._played() : this._empty() }
-                    </tr>
-                    <tr>
-                        { this.props.playedPolicies > 4? this._played() : this._empty() }
-                    </tr>
+                    <tbody>
+                        <tr>
+                        <td>
+                            { this.props.playedPolicies > 0? this._played() : this._empty() }
+                        </td>
+                        <td>
+                            { this.props.playedPolicies > 1? this._played() : this._empty() }
+                        </td>
+                        <td>
+                            { this.props.playedPolicies > 2? this._played() : this._empty() }
+                        </td>
+                        <td>
+                            { this.props.playedPolicies > 3? this._played() : this._empty() }
+                        </td>
+                        <td>
+                            { this.props.playedPolicies > 4? this._played() : this._empty() }
+                        </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         )
@@ -35,17 +39,21 @@ export class BHumanPolicies extends React.Component<InnerWrapper, {}> {
 
   _played = () => {
       return (
-      <div> 
-          Played 
-      </div>
+      <> 
+      <p> 
+          💧
+      </p>
+      </>
       )
   };
 
   _empty = () => {
       return (
-      <div> 
-          Empty
-      </div>
+      <> 
+      <p>
+          🚃        
+      </p>
+      </>
       )
   }
 
