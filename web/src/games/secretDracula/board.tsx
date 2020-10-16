@@ -9,6 +9,7 @@ import { BVampirePolicies} from './components/bvampirepolicy';
 import { BPlayer } from './components/bplayer';
 import { BHumanPolicies} from './components/bhumanpolicy';
 
+import { BChosePriest} from './components/bchosepriest';
 import { BVote } from './components/bvote';
 import { BDiscard } from './components/bdiscard';
 
@@ -64,18 +65,38 @@ export class Board extends React.Component<IBoardProps> {
                 </BPlayer>
               </div>)
             })}
+
             <BHumanPolicies
               playedPolicies={this.props.G.policyBoardHuman.length}
               playerCount={this.props.ctx.numPlayers}
             ></BHumanPolicies>
-                          
+            <br></br>
+            <BChosePriest names={this.props.gameArgs.players.map((player) => {return player.name})}
+                          chose={(id: number) => {this.props.moves.moveChosePriest(id, parseInt(this.props.playerID))}}>
+
+            </BChosePriest>
+            <br></br>
+            <BVote yes={() => {this.props.moves.moveVoteYes(parseInt(this.props.playerID))}}
+                   no={() => {this.props.moves.moveVoteNo(parseInt(this.props.playerID))}}
+                   ></BVote>
+            <br></br>
             <BDiscard policies={this.props.G.policyHand}
                       vetoEnabled={this.props.G.vetoPower}
                       mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
-                      
                       discard={this._discardWrapper(parseInt(this.props.playerID))}
                       veto={this._vetoWrapper(parseInt(this.props.playerID))}
             ></BDiscard>
+            <br></br>
+
+
+
+
+
+
+            <br></br>
+            <br></br>
+            <br></br>
+
             <div>
               { this.props.G.log.map((a) => {
                 return(<div>
