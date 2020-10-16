@@ -10,8 +10,7 @@ interface InnerWrapper {
     mayor: boolean;
     
     discard(index: number): any;
-    veto(): any;
-    force(): any;
+    veto(want: boolean): any;
 }
 
 export class BDiscard extends React.Component<InnerWrapper, {}> {
@@ -43,17 +42,17 @@ export class BDiscard extends React.Component<InnerWrapper, {}> {
 
     _forceButton = () => {
         return(
-            <button onClick={()=> this.props.force() }>Force Play</button>
+            <button onClick={()=> this.props.veto(false) }>Force Play</button>
         )
     }
     _agreeVeto = () => {
         return(
-            <button onClick={()=> this.props.force() }>Force Play</button>
+            <button onClick={()=> this.props.veto(true) }>Agree Veto</button>
         )
     }
     _proposeVeto= () => {
         return(
-            <button onClick={()=> this.props.force() }>Force Play</button>
+            <button onClick={()=> this.props.veto(true) }>Propose Veto</button>
         )
     }
 }
