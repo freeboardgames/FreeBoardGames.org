@@ -51,12 +51,13 @@ export class Board extends React.Component<IBoardProps> {
               return (<div>
                 <BPlayer 
                   me={Number(this.props.playerID) == a}
-                  playerName={this.props.playerID}
-                  playerActive={true}
+                  playerName={this.props.gameArgs.players[a].name}
+                  playerActive={a in this.props.ctx.activePlayers}
                   dead={deads[a]}
-                  vampire={vampires[a]}
-                  dracula={this.props.G.draculaID == a}
 
+                  vampire={vampires[a]}
+
+                  dracula={this.props.G.draculaID == a}
                   mayor={this.props.G.mayorID == a}
                   priest={this.props.G.priestID == a}
                 >
@@ -72,7 +73,8 @@ export class Board extends React.Component<IBoardProps> {
                       vetoEnabled={this.props.G.vetoPower}
                       mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
                       
-                      discard={this.discardWrapper}
+                      discard={this._discardWrapper(parseInt(this.props.playerID))}
+                      veto={this._vetoWrapper(parseInt(this.props.playerID))}
             ></BDiscard>
             <div>
               { this.props.G.log.map((a) => {
@@ -92,12 +94,29 @@ export class Board extends React.Component<IBoardProps> {
       );
     }
 
-    _discardWrapper(index: number, playerIndex: number) {
-      if (this.props.ctx.phase == '')....
+    _discardWrapper(playerIndex: number) {
+      if (this.props.ctx.phase == 'phaseDiscardMayor'){
+        return (index: number) => {return this.props.moves.moveDiscardMayor(index, playerIndex)}
+      }
+      if (this.props.ctx.phase == 'phaseDiscardPriest'){
+        return (index: number) => {return this.props.moves.moveDiscardPriest(index, playerIndex)}
+      }
+      if (this.props.ctx.phase == 'phaseDiscardPriestVeto'){
+        return (index: number) => {return this.props.moves.moveDiscardPriest(index, playerIndex)}
+      }
 
-
-
-
+      return (index: number) => {return}
     }
+
+    _vetoWrapper(playerIndex: number) {
+      if (this.props.ctx.phase == 'phaseDiscardPriestVeto'){
+        return () => {return this.props.moves.moveWantVetoPriest(playerIndex)}
+      }
+      if (this.props.ctx.phase == 'phaseDiscardMayor'){
+        return (want: boolean) => {return this.props.moves.moveWantVetoPriest(want, playerIndex)}
+      }
+      return () => {return}
+    }
+
   }
 
