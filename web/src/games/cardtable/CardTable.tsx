@@ -70,6 +70,8 @@ const CardTable: FunctionComponent<ICardTableProps> = (props: ICardTableProps) =
             <CardContainer className={classes.playedTop} cards={southPlays} name="south play" />
           </Grid>
           <Grid className={classes.crib} item xs={12} spacing={2}>
+            <h4>North: {`${JSON.stringify(props.G.score.north)}`}</h4>
+            <h4>South: {`${JSON.stringify(props.G.score.south)}`}</h4>
             <CardContainer className={classes.crib} cards={crib} private name="crib" {...cribFlipped} />
           </Grid>
           <Grid className={classes.playedDown} item xs={12} spacing={2}>

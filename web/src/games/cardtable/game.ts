@@ -4,6 +4,7 @@ import { dealCribbage } from './deals';
 
 export interface IG {
   count: number;
+  score: IScoreKeeper;
   deck: ICard[];
   hands: ITable;
   stock: ICard[];
@@ -36,6 +37,19 @@ export interface ILocation {
   container: string;
   ordinal: number;
   cardcount?: number;
+}
+
+export interface IScore {
+  back: number;
+  front: number;
+  games?: number;
+}
+
+export interface IScoreKeeper {
+  north: IScore;
+  south: IScore;
+  east: IScore;
+  west: IScore;
 }
 
 export interface ICardMove {
@@ -132,6 +146,18 @@ export const moves = {
   flipCrib(G: IG) {
     G.hands.east.cribFlipped = !G.hands.east.cribFlipped;
   },
+  pegPoints(G: IG, ctx: Ctx, score: number) {
+    //pegs are as a back, and fwd peg
+    //as score ensues, back2front+score,
+    //is the general behavior
+    let playerScore: IScore = findPegLaneForPlayer(G, ctx);
+    let { front, back } = playerScore;
+    let temp = front;
+    front = front + score;
+    back = temp;
+    playerScore.front = front;
+    playerScore.back = back;
+  },
 };
 
 const getNamedContainer = (G: IG, name: String) => {
@@ -154,6 +180,13 @@ const findFromForPlayer = (G: IG, ctx: Ctx, idx: number, who: String) => {
   return myCardsLocation;
 };
 
+const findPegLaneForPlayer = (G: IG, ctx: Ctx) => {
+  let who: string = ctx.playerID;
+  let path = who === '0' ? 'north' : 'south';
+  let myPegLane: IScore = G.score[path];
+  return myPegLane;
+};
+
 const findPlayedForPlayer = (G: IG, ctx: Ctx, who: String) => {
   let path = who === '0' ? 'hands.north.played' : 'hands.south.played';
   let myPlayedLocation: ILocation = { container: path, ordinal: 53 }; //any number larger than container size will append
@@ -170,6 +203,12 @@ export const CardTableGame = {
   name: 'cardtable',
 
   setup: () => ({
+    score: {
+      north: { front: 0, back: 0, game: 0 },
+      south: { front: 0, back: 0, game: 0 },
+      east: { front: 0, back: 0, game: 0 },
+      west: { front: 0, back: 0, game: 0 },
+    },
     count: 0,
     deck: [
       { id: 'AS', rank: 13, faced: false, img: './media/png/AS.png' },

@@ -155,6 +155,7 @@ describe('play() state changes to played storage', () => {
   const customGameSetup = {
     ...CardTableGame,
     seed: 327,
+    playerID: '0',
   };
 
   let client: Client = Client({ game: customGameSetup });
@@ -227,5 +228,39 @@ describe('flipCrib() changes game state', () => {
     client.moves.flipCrib(); //should set hands.east.cribFlipped which undef by default
     const { G } = client.store.getState();
     expect(G.hands.east.cribFlipped).toEqual(true);
+  });
+});
+
+describe('pegScore game state changes', () => {
+  const customGameSetup = {
+    ...CardTableGame,
+    seed: 327,
+  };
+
+  test('testing pegging state changes', () => {
+    let client: Client = Client({ game: customGameSetup, playerID: '0' });
+    client.events.set;
+    let playerPath: string = client.playerID === '0' ? 'north' : 'south';
+    client.moves.pegPoints(4);
+    const { G } = client.store.getState();
+    const { score } = G;
+    const playerScoreLane = score[playerPath];
+    expect(playerScoreLane.front).toEqual(4);
+    expect(playerScoreLane.back).toEqual(0);
+    expect(playerScoreLane.game).toEqual(0);
+  });
+
+  test('pegging ensues, after player passes turn', () => {
+    let client: Client = Client({ game: customGameSetup, playerID: '0' });
+    let playerPath: string = client.playerID === '0' ? 'north' : 'south';
+    client.moves.pegPoints(5);
+    client.moves.pegPoints(3);
+    const { G } = client.store.getState();
+    const { score } = G;
+    const playerScoreLane = score[playerPath];
+    expect(playerScoreLane.front).toEqual(8);
+    expect(playerScoreLane.back).toEqual(5);
+    expect(playerScoreLane.game).toEqual(0);
+    expect(client.playerID).toEqual('0');
   });
 });
