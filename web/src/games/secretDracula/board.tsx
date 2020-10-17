@@ -196,6 +196,11 @@ export class Board extends React.Component<IBoardProps> {
             <></>
             }
 
+          </GameLayout>
+        </>
+      );
+    }
+/*
             { this.props.G.log.map((a) => {
                 return(<div>
                        { a }
@@ -205,11 +210,7 @@ export class Board extends React.Component<IBoardProps> {
                    { JSON.stringify(this.props.ctx, null, '\t') }
                   </pre>
             </div>
-          </GameLayout>
-        </>
-      );
-    }
-
+*/
     _discardWrapper(playerIndex: number) {
       if (this.props.ctx.phase == 'phaseDiscardMayor'){
         return (index: number) => {return this.props.moves.moveDiscardMayor(index, playerIndex)}

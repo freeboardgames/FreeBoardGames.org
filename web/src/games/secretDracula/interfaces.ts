@@ -11,7 +11,6 @@ export interface IG{
     policyDraw: IPolicy[];
     policyBoardHuman: IPolicy[];
     policyBoardVampire: IPolicy[];
-    policyPriestNr: number;
 
     justPlayedVampirePolicy: number; // -1 = last was human. otherwise Zero-indexed.
 
