@@ -185,7 +185,7 @@ describe('RoomsService', () => {
   it('should not leaveRoom after match started', async () => {
     const promiseMock = jest
       .fn()
-      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(Promise.resolve({ data: { matchID: 'bgioGameId' } }))
       .mockReturnValueOnce(
         Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
       )
@@ -252,7 +252,7 @@ describe('RoomsService', () => {
   it('should give the match id after creation', async () => {
     const promiseMock = jest
       .fn()
-      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(Promise.resolve({ data: { matchID: 'bgioGameId' } }))
       .mockReturnValueOnce(
         Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
       )
