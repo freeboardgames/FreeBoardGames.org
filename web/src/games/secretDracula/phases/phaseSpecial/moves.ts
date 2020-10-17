@@ -19,7 +19,7 @@ export function movePickMayor(G: IG, ctx: Ctx, id: number, me: number): IG | 'IN
     return {
         ...G,
         mayorID: id,
-        specialElection: G.mayorID,
+        specialElection: G.mayorID, // to reset the oldMayor back to this.
         log: [...G.log, "Player " + me.toString() + " movePickMayor" + id.toString()]
     }
 }
@@ -65,10 +65,14 @@ export function moveInvestigateStart(G: IG, ctx: Ctx, id: number, me: number): I
     if (id == parseInt(ctx.currentPlayer)){
         return INVALID_MOVE
     }
-
+    if (id == me){
+        return INVALID_MOVE // TODO: This is a fronted fix. It could be exploited.
+        // One needs to compare id to ctx.... or G....
+    }
     return {
         ...G,
         investigate: G.vampireIDs.includes(id) ? 1 : -1,
+        investigateID: id,
         log: [...G.log, "Player " + me.toString() + " moveInvestigateStart " + id.toString()]
     }
 }
@@ -77,6 +81,7 @@ export function moveInvestigateEnd(G: IG, ctx: Ctx, me: number): IG | 'INVALID_M
     return {
         ...G,
         investigate: 0,
+        investigateID: -1,
         log: [...G.log, "Player " + me.toString() + " moveInvestigateEnd "]
     }
 }

@@ -82,6 +82,7 @@ function setup(ctx: Ctx): IG {
         specialElection: -1,
         policyPeek: <IPolicy[]>Array(0).fill(null),
         investigate: 0,
+        investigateID: -1,
         vetoPower: false,
         wantVeto: false,
 
@@ -214,8 +215,21 @@ export const SecretDraculaGame = {
             },
         },
         phaseCheckElectionCounter: {
-            onEnd: (G: IG, ctx: Ctx) => {
+            onBegin: (G, ctx) => {
                 console.log("starting phaseCheckElectionCounter")
+                return G
+            },
+            endIf: (G: IG, ctx: Ctx) => {
+                console.log("endIf phaseCheckElectionCounter")
+                if (G.electionTracker < 2){
+                    console.log("going to phaseChosePriest")
+                    return {next: 'phaseChosePriest'}
+                } 
+                console.log("going to phaseSpecial")
+                return {next: 'phaseSpecial'}
+            },
+            onEnd: (G: IG, ctx: Ctx) => {
+                console.log("ending phaseCheckElectionCounter")
                 if (G.electionTracker == 2){
                     G.electionTracker = 0
 
@@ -227,24 +241,21 @@ export const SecretDraculaGame = {
 
                     if (topCard.chalice) {
                         var n = G.policyBoardVampire.push(topCard)
-                        G.justPlayedVampirePolicy = n
+                        G.justPlayedVampirePolicy = n - 1 
                     } else {
                         var n = G.policyBoardHuman.push(topCard)
+                        G.justPlayedVampirePolicy = -1 
                     }
                 } else {
                     G.electionTracker += 1
                 }
 
-                G.lastMayorID = -1
+                G.lastMayorID = -1 // any mayor priest combi allowed again.
                 G.lastPriestID = -1
-                G.mayorID = (G.mayorID + 1) % ctx.numPlayers
-                G.priestID = -1
+                G.mayorID = (G.mayorID + 1) % ctx.numPlayers // chose next mayor
+                G.priestID = -1    // no active priest
 
                 return G
-            },
-            endIf: (G: IG, ctx: Ctx) => {
-                console.log("ending phaseCheckElectionCounter")
-                return {next: 'phaseChosePriest'}
             }
         },
         phaseDiscardMayor:{
@@ -319,7 +330,7 @@ export const SecretDraculaGame = {
                     policyHand: [],
                     policyBoardHuman: G.policyHand[0].garlic    ? [...G.policyBoardHuman, G.policyHand[0]] : [...G.policyBoardHuman],
                     policyBoardVampire: G.policyHand[0].chalice ? [...G.policyBoardVampire, G.policyHand[0]] : [...G.policyBoardVampire],
-                    justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length + 1 :  -1,
+                    justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length -1  :  -1,
                 }
             },
         },
@@ -378,7 +389,7 @@ export const SecretDraculaGame = {
 
                     if (card.chalice){
                         var n = G.policyBoardVampire.push(card)
-                        G.justPlayedVampirePolicy = n
+                        G.justPlayedVampirePolicy = n - 1
                     } else {
                         G.policyBoardHuman.push(card)
                     }
@@ -443,8 +454,9 @@ export const SecretDraculaGame = {
                         console.log(" 2 ")
                         return {next: 'phasePeekPolicy'}
                     } else if (G.justPlayedVampirePolicy == 3){
-                        console.log(" 3 ")
+                        console.log(" 3 this one")
                         return {next: 'phaseExecution'}
+                        console.log(" 3 ")
                     } else if (G.justPlayedVampirePolicy == 4){
                         console.log(" 4 ")
                         return {next: 'phaseExecution'}
@@ -501,6 +513,7 @@ export const SecretDraculaGame = {
         phaseNoSpecial:{
             onBegin: (G: IG, cx: Ctx) => {
                 console.log("starting phaseNoSpecial")
+                return G
             },
             endIf: (G: IG, ctx: Ctx) => {
                 return {next: 'phaseChosePriest'}

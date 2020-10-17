@@ -13,7 +13,7 @@ export interface IG{
     policyBoardVampire: IPolicy[];
     policyPriestNr: number;
 
-    justPlayedVampirePolicy: number;
+    justPlayedVampirePolicy: number; // -1 = last was human. otherwise Zero-indexed.
 
     specialPolicies: any[]; // TODO
 
@@ -36,9 +36,10 @@ export interface IG{
 
     playerIDToGameID: number[];
 
-    specialElection: number;
+    specialElection: number; // -1 = No Special active. otherwise x= Player ID.
     policyPeek: IPolicy[];
     investigate: number; // -1 = human, 0 nothing, 1=vampire
+    investigateID: number; // -1 for empty.
     vetoPower: boolean;
     wantVeto: boolean;
 

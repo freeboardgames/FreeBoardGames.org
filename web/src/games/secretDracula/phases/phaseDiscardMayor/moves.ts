@@ -15,7 +15,7 @@ export function moveDiscardMayor(G: IG, ctx: Ctx, id: number, me: number): IG | 
         ...G,
         policyHand: id == 2 ? [G.policyHand[0],G.policyHand[1]]
                     :
-                        id == 1 ? [G.policyHand[0],G.policyHand[1]]
+                        id == 1 ? [G.policyHand[0],G.policyHand[2]]
                         :
                         [G.policyHand[1],G.policyHand[2]],
         policyDiscard: [...G.policyDiscard, G.policyHand[id]],
