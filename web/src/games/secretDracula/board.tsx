@@ -140,7 +140,8 @@ export class Board extends React.Component<IBoardProps> {
             { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
               (this.props.ctx.phase == 'phasePeekPolicy') ? 
             <div>
-            <BPeek policies={this.props.G.policyHand}
+              phase Peek Policy
+            <BPeek policies={this.props.G.policyPeek}
                    ok={() => {this.props.moves.moveOK(parseInt(this.props.playerID))}}
             ></BPeek>
                    </div>

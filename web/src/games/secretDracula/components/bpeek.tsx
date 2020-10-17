@@ -17,10 +17,8 @@ export class BPeek extends React.Component<InnerWrapper, {}> {
                             { this.props.policies.map( (a, index) => 
                             {return( <td> <BPolicy policy={a} discard={() => {}}></BPolicy> </td>)}
                             )}
-                        </tr>
-                        <tr>
                           <td onClick={ () =>{this.props.ok()} }>
-                              {name}
+                              👍
                           </td>
                         </tr>
                     </tbody>
