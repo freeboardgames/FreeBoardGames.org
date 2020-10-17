@@ -1,3 +1,4 @@
+import { red, blue, green, orange, yellow } from '@material-ui/core/colors';
 
 export const MAX_WORDS_IN_GAME = 20; 
 export const MAX_WORD_LEN = 12;
@@ -5,15 +6,25 @@ export const DRAW_AFTER_N_TIMERS = 2;
 export const TIME_OUT = 20; 
 export const TIME_BUFF = 1; 
 
+export const BOARD_SIZE = 500;
+export const SOLUTION_COLOR = yellow[800];
+
+export const playerColors = {
+    '0': red[500],
+    '1': blue[500],
+    '2': green[700], 
+    '3': orange[700]
+  };
+
 export const validOrientations = [
     'horizontal',
-    'diagonal',
-    'diagonalUp',
-    'vertical', 
-    'verticalUp', 
-    'diagonalBack', 
-    'horizontalBack', 
-    'diagonalUpBack'
+    // 'diagonal',
+    // 'diagonalUp',
+    // 'vertical', 
+    // 'verticalUp', 
+    // 'diagonalBack', 
+    // 'horizontalBack', 
+    // 'diagonalUpBack'
 ];
 
 

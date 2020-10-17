@@ -1,12 +1,16 @@
 import React from 'react';
-import Timer from 'react-compound-timer';
+// game shared import 
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { isOnlineGame, isAIGame, isLocalGame } from 'gamesShared/helpers/gameMode';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
+import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import { Ctx } from 'boardgame.io';
+// node module import
 import { Modal, Button, Typography, Box, List, ListItem, ListItemText } from '@material-ui/core';
-import { TIME_OUT, TIME_BUFF } from './constants';
+import Timer from 'react-compound-timer';
+// with-in game folder input
+import { TIME_OUT, TIME_BUFF, playerColors } from './constants';
 import { IG, ISolvedWord } from './game';
 import { Soup } from './soup'
 import soupCSS from './soup.css'
@@ -100,7 +104,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           style={{
             marginTop: '20px',
             width: '250px',
-            height: '400px',
+            height: '450px',
             marginLeft: 'auto',
             marginRight: 'auto',
             backgroundColor: 'white',
@@ -110,7 +114,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             <Typography style={{ padding: '10px' }} variant="h5">
               Words
             </Typography>
-            <List style={{ maxHeight: '332px', overflow: 'auto' }} >
+            <List style={{ maxHeight: '382px', overflow: 'auto' }} >
               {
                 this.props.G.solution.map(s => (
                   <ListItem
@@ -129,22 +133,36 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   }
 
-  _showModalButton() {
+  _renderPlayerBadges = () => {
+    const colors = Object.values(playerColors);
     return (
-      <Box
-        display="flex"
-        width={500} height={40}
-        bgcolor="black"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Button
-          variant="contained"
-          onClick={() => { this.setState({ showWords: true }) }}
-        >
-          Words
-        </Button>
-      </Box>
+      <PlayerBadges
+        playerID={this.props.playerID}
+        players={this.props.gameArgs.players}
+        colors={colors}
+        ctx={this.props.ctx}
+      />
+    );
+  };
+
+  _renderFooter() {
+    return (
+      <div>
+        {/* <Box
+          display="flex"
+          width='100%' height={40}
+          bgcolor="black"
+        > */}
+          {this._renderPlayerBadges()}
+          <Button
+            variant="contained"
+            onClick={() => { this.setState({ showWords: true }) }}
+            style={{'float': 'right', 'marginRight': '4px'}}
+          >
+            Words
+          </Button>
+        {/* </Box> */}
+      </div>
     );
   }
 
@@ -202,7 +220,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           {this._getTimeRemaining()}
         </Typography>
         {this._getBoard()}
-        {this._showModalButton()}
+        {this._renderFooter()}
         {this._getWordModal()}
       </GameLayout>
     );

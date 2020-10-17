@@ -1,11 +1,9 @@
 import React from 'react';
-import { red, blue, green, grey, yellow } from '@material-ui/core/colors';
+import { grey } from '@material-ui/core/colors';
 import soupCSS from './soup.css'
 import { orientations } from './puzzel';
 import { ISingleLetter, ISolvedWord } from './game'; 
-
-const BOARD_SIZE = 500;
-const SOLUTION_COLOR = yellow[800];
+import { playerColors, BOARD_SIZE, SOLUTION_COLOR } from './constants'
 
 interface ISoupProps {
   puzzel: Array<Array<string>>;
@@ -19,11 +17,6 @@ interface ISoupState {
   selectedLetters: Array<ISingleLetter>;
   probableWord?: ISolvedWord; 
 }
-
-const playerColors = {
-  '0': red[500],
-  '1': blue[500],
-};
 
 export class Soup extends React.Component<ISoupProps, ISoupState> {
 
