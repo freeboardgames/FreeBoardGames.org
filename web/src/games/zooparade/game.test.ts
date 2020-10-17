@@ -140,9 +140,8 @@ it('End to End - 1', () => {
   // get the latest game state
   const { G, ctx } = client.store.getState();
   // the board should look like this now
-  delete G.movelog;
 
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(33, 3, 1),
       card(19, 1, 4),
@@ -434,9 +433,8 @@ it('End to End - 2', () => {
   client.moves.movePlay(0);
   const { G } = client.store.getState();
   // the board should look like this now
-  delete G.movelog;
 
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(45, 4, 2),
       card(18, 1, 3),

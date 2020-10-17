@@ -84,7 +84,9 @@ export function pass(G: IG, ctx: Ctx) {
 }
 
 export function chooseCard(G: IG, ctx: Ctx, cardIndex: number) {
-  G.cards[cardIndex].revealed = true;
+  const newCards = [...G.cards];
+  newCards[cardIndex] = { ...newCards[cardIndex], revealed: true };
+  G.cards = newCards;
   G.lastSelectedCardIndex = cardIndex;
 
   const team = getPlayerTeam(G, ctx.currentPlayer);
