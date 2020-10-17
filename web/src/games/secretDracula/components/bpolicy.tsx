@@ -10,11 +10,9 @@ interface InnerWrapper {
 export class BPolicy extends React.Component<InnerWrapper, {}> {
     render() {
         return (
-            <div>
-                <button onClick={()=> this.props.discard()}>
+                <div onClick={()=> this.props.discard()}>
                     { this.props.policy.chalice ? this._chalice() : this._garlic()}
-                </button>
-            </div>
+                </div>
         )
     }
 
@@ -22,7 +20,7 @@ export class BPolicy extends React.Component<InnerWrapper, {}> {
   _chalice = () => {
       return (
       <div> 
-          Chalice
+          🩸
       </div>
       )
   };
@@ -30,7 +28,7 @@ export class BPolicy extends React.Component<InnerWrapper, {}> {
   _garlic = () => {
       return (
       <div> 
-         Garlic 
+        💧
       </div>
       )
   }

@@ -51,7 +51,7 @@ export class BHumanPolicies extends React.Component<InnerWrapper, {}> {
       return (
       <> 
       <p>
-          🚃        
+          ⬜        
       </p>
       </>
       )

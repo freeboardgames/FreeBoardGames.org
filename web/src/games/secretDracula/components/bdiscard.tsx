@@ -16,43 +16,52 @@ interface InnerWrapper {
 export class BDiscard extends React.Component<InnerWrapper, {}> {
     render() {
         return (
-            <div>
-              <div>
-                  { (this.props.vetoEnabled && this.props.mayor) ? 
-                  <div> {this._forceButton()} </div> : <></>
-                  }
-              </div>
-
-              <div>
-                  { this.props.policies.map( (a, index) => 
-                  {return( <div> <BPolicy policy={a} discard={() => this.props.discard(index)}></BPolicy> </div>)}
-                  )}
-              </div>
-
-              <div>
-                  { (this.props.vetoEnabled && this.props.mayor) ? 
-                  <div> {this._agreeVeto()} </div> 
-                    :
-                  <div> {this._proposeVeto()} </div> 
-                  }
-              </div>
-            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        { (this.props.vetoEnabled && this.props.mayor) ? 
+                        <td> {this._forceButton()} </td> : <></>
+                        }
+                        { this.props.policies.map( (a, index) => { return (
+                                 <td>
+                                     <div> <BPolicy policy={a} discard={() => this.props.discard(index)}></BPolicy> </div>
+                                 </td>
+                        )})}
+                        <td>
+                            { (this.props.vetoEnabled ) ? 
+                              (this.props.mayor) ? 
+                                <div> {this._agreeVeto()} </div> 
+                              :
+                                <div> {this._proposeVeto()} </div> 
+                            :
+                            <> </>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         )
     }
 
     _forceButton = () => {
         return(
-            <button onClick={()=> this.props.veto(false) }>Force Play</button>
+            <div onClick={()=> this.props.veto(false) }>
+                👎
+            </div>
         )
     }
     _agreeVeto = () => {
         return(
-            <button onClick={()=> this.props.veto(true) }>Agree Veto</button>
+            <div onClick={()=> this.props.veto(true) }>                    
+                👍
+            </div>
         )
     }
     _proposeVeto= () => {
         return(
-            <button onClick={()=> this.props.veto(true) }>Propose Veto</button>
+            <div  onClick={()=> this.props.veto(true) }>
+              ✋  
+            </div>
         )
     }
 }

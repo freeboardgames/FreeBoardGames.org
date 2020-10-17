@@ -51,7 +51,7 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
   _empty = () => {
       return (
           <p>
-          🚃        
+          ⬜        
           </p>
       )
   }

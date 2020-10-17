@@ -9,9 +9,11 @@ import { BVampirePolicies} from './components/bvampirepolicy';
 import { BPlayer } from './components/bplayer';
 import { BHumanPolicies} from './components/bhumanpolicy';
 
-import { BChosePriest} from './components/bchosepriest';
+import { BChosePlayer} from './components/bchoseplayer';
 import { BVote } from './components/bvote';
 import { BDiscard } from './components/bdiscard';
+import { BPeek } from './components/bpeek';
+import { BShowPlayer } from './components/bshowplayer';
 
 import { Type } from 'boardgame.io/dist/types/src/server/db/base';
 import { createTextChangeRange } from 'typescript';
@@ -44,10 +46,6 @@ export class Board extends React.Component<IBoardProps> {
       return (
         <>
           <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
-            <BVampirePolicies
-              playedPolicies={this.props.G.policyBoardVampire.length}
-              playerCount={this.props.ctx.numPlayers}
-            ></BVampirePolicies>
             {playerorder.map( (a) => {
               return (<div>
                 <BPlayer 
@@ -66,45 +64,142 @@ export class Board extends React.Component<IBoardProps> {
               </div>)
             })}
 
+            <BVampirePolicies
+              playedPolicies={this.props.G.policyBoardVampire.length}
+              playerCount={this.props.ctx.numPlayers}
+            ></BVampirePolicies>
+
             <BHumanPolicies
               playedPolicies={this.props.G.policyBoardHuman.length}
               playerCount={this.props.ctx.numPlayers}
             ></BHumanPolicies>
-            <br></br>
-            <BChosePriest names={this.props.gameArgs.players.map((player) => {return player.name})}
-                          chose={(id: number) => {this.props.moves.moveChosePriest(id, parseInt(this.props.playerID))}}>
 
-            </BChosePriest>
-            <br></br>
+
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+            (this.props.ctx.phase == 'phaseChosePriest') ? 
+            <div>
+                <p> Chose Priest</p>
+                <BChosePlayer names={this.props.gameArgs.players.map((player) => {return player.name})}
+                              chose={(id: number) => {this.props.moves.moveChosePriest(id, parseInt(this.props.playerID))}}>
+
+                </BChosePlayer>
+              </div>
+            :
+            <></>
+            }
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+             (this.props.ctx.phase == 'phaseVotePriest') ? 
+            <div>
             <BVote yes={() => {this.props.moves.moveVoteYes(parseInt(this.props.playerID))}}
                    no={() => {this.props.moves.moveVoteNo(parseInt(this.props.playerID))}}
                    ></BVote>
-            <br></br>
+                   </div>
+            :
+            <></>
+            }
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+             (this.props.ctx.phase == 'phaseDiscardMayor' ) ?
+            <div>
+            <BDiscard policies={this.props.G.policyHand}
+                      vetoEnabled={false}
+                      mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
+                      discard={this._discardWrapper(parseInt(this.props.playerID))}
+                      veto={this._vetoWrapper(parseInt(this.props.playerID))}
+            ></BDiscard>
+                   </div>
+            :
+            <></>
+            }
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+              ((this.props.ctx.phase == 'phaseDiscardPriest' )
+            || (this.props.ctx.phase == 'phaseDiscardPriestVeto' )) ?
+            <div>
             <BDiscard policies={this.props.G.policyHand}
                       vetoEnabled={this.props.G.vetoPower}
                       mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
                       discard={this._discardWrapper(parseInt(this.props.playerID))}
                       veto={this._vetoWrapper(parseInt(this.props.playerID))}
             ></BDiscard>
-            <br></br>
-
-
-
-
-
-
-            <br></br>
-            <br></br>
-            <br></br>
-
+                   </div>
+            :
+            <></>
+            }
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+             (this.props.ctx.phase == 'phaseVetoMayor' )? 
             <div>
-              { this.props.G.log.map((a) => {
-                return(<div>
-                    { a }
-                  </div>)
-              }) }
-            </div>
+            <BDiscard policies={this.props.G.policyHand}
+                      vetoEnabled={this.props.G.vetoPower}
+                      mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
+                      discard={this._discardWrapper(parseInt(this.props.playerID))}
+                      veto={this._vetoWrapper(parseInt(this.props.playerID))}
+            ></BDiscard>
+                   </div>
+            :
+            <></>
+            }
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+              (this.props.ctx.phase == 'phasePeekPolicy') ? 
+            <div>
+            <BPeek policies={this.props.G.policyHand}
+                   ok={() => {this.props.moves.moveOK(parseInt(this.props.playerID))}}
+            ></BPeek>
+                   </div>
+            :
+            <></>
+            }
 
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+             (this.props.ctx.phase == 'phaseInvestigate1') ?
+            <div>
+            <p>Chose Investigate</p>
+            <BChosePlayer names={this.props.gameArgs.players.map((player) => {return player.name})}
+                          chose={(id: number) => {this.props.moves.moveInvestigateStart(id, parseInt(this.props.playerID))}}>
+            </BChosePlayer>
+                   </div>
+            :
+            <></>
+            }
+
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+             (this.props.ctx.phase == 'phaseInvestigate2') ? 
+            <div>
+            <p>Finish Investigate</p>
+            <BShowPlayer  name={this.props.gameArgs.players.map((player) => {return player.name})[this.props.G.investigateID,this.props.G.investigateID]}
+                          vampire={this.props.G.investigate == 1}
+                          finish={() => {this.props.moves.moveInvestigateEnd(parseInt(this.props.playerID))}}>
+            </BShowPlayer>
+                   </div>
+            :
+            <></>
+            }
+
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+             (this.props.ctx.phase == 'phaseSpeicalElection') ? 
+            <div>
+            <p>Chose Special Mayor</p>
+            <BChosePlayer names={this.props.gameArgs.players.map((player) => {return player.name})}
+                          chose={(id: number) => {this.props.moves.movePickMayor(id, parseInt(this.props.playerID))}}>
+            </BChosePlayer>
+                   </div>
+            :
+            <></>
+            }
+            { (parseInt(this.props.playerID) in this.props.ctx.activePlayers) && 
+             (this.props.ctx.phase == 'phaseExecution') ? 
+            <div>
+            <p>Execute</p>
+            <BChosePlayer names={this.props.gameArgs.players.map((player) => {return player.name})}
+                          chose={(id: number) => {this.props.moves.moveExecute(id, parseInt(this.props.playerID))}}>
+            </BChosePlayer>
+                   </div>
+            :
+            <></>
+            }
+
+            { this.props.G.log.map((a) => {
+                return(<div>
+                       { a }
+                  </div>)})}
             <div>
                   <pre id="json">
                    { JSON.stringify(this.props.ctx, null, '\t') }

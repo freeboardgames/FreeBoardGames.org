@@ -8,15 +8,18 @@ interface InnerWrapper {
 export class BVote extends React.Component<InnerWrapper, {}> {
     render() {
         return (
-            <div>
-                <div> Yes: 
-                    <button onClick={()=> this.props.yes() }>YES</button>
-                </div>
-                <div> No: 
-                    <button onClick={()=> this.props.no() }>NO</button>
-                </div>
-
-            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td onClick={()=> this.props.yes() }>
+                                    👍
+                        </td>
+                        <td onClick={()=> this.props.no() }>
+                                   👎
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         )
     }
 }
