@@ -145,9 +145,8 @@ it('End condition - Win 25 points', () => {
   // get the latest game state
   const { G, ctx } = client.store.getState();
   // the board should look like this now
-  delete G.movelog;
 
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(24, 2, 1),
       card(48, 4, 3),
@@ -415,9 +414,8 @@ it('EndCondition - Countdown = 0', () => {
   // get the latest game state
   const { G, ctx } = client.store.getState();
 
-  delete G.movelog;
   // the board should look like this now
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(17, 1, 3),
       card(48, 4, 3),
@@ -708,9 +706,8 @@ it('EndCondition - No more cards + N moves', () => {
   // get the latest game state
   const { G, ctx } = client.store.getState();
 
-  delete G.movelog;
   // the board should look like this now
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(47, 4, 3),
       card(19, 1, 4),
