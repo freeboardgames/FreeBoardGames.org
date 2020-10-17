@@ -85,6 +85,8 @@ function setup(ctx: Ctx): IG {
         vetoPower: false,
         wantVeto: false,
 
+        ok: false,
+
         log: <string[]>Array(1).fill("Starting"),
     }
 
@@ -322,6 +324,7 @@ export const SecretDraculaGame = {
             },
             onEnd: (G: IG, ctx: Ctx) => {
                console.log("ending phaseDiscardPriest")
+               console.log("and setting to ", G.policyHand[0].chalice ? G.policyBoardVampire.length :  -1)
             //     console.log("B0")
             //     return G
                 return {
@@ -329,7 +332,7 @@ export const SecretDraculaGame = {
                     policyHand: [],
                     policyBoardHuman: G.policyHand[0].garlic    ? [...G.policyBoardHuman, G.policyHand[0]] : [...G.policyBoardHuman],
                     policyBoardVampire: G.policyHand[0].chalice ? [...G.policyBoardVampire, G.policyHand[0]] : [...G.policyBoardVampire],
-                    justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length -1  :  -1,
+                    justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length :  -1,
                 }
             },
         },
@@ -367,7 +370,7 @@ export const SecretDraculaGame = {
                         policyHand: [],
                         policyBoardHuman: G.policyHand[0].garlic    ? [...G.policyBoardHuman, G.policyHand[0]] : [...G.policyBoardHuman],
                         policyBoardVampire: G.policyHand[0].chalice ? [...G.policyBoardVampire, G.policyHand[0]] : [...G.policyBoardVampire],
-                        justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length -1  :  -1,
+                        justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length :  -1,
                     }
                 }
                 return G
@@ -509,6 +512,7 @@ export const SecretDraculaGame = {
         },
         phasePeekPolicy:{
             onBegin: (G: IG, ctx: Ctx) => {
+                console.log("starting phasePeekPolicy")
                 var p = G.mayorID
                 var activePlayers = { value: {} };
                 activePlayers.value[p] = 'phasePeekPolicy';
@@ -525,10 +529,10 @@ export const SecretDraculaGame = {
                 return G
             },
             endIf: (G: IG, ctx: Ctx) => {
-                if (G.policyPeek.length == 0) {
+                console.log("endIf phasePeekPolicy")
+                if (G.ok) {
                     return {next: 'phaseNoSpecial'}
                 }
-
             },
             moves: {
                 moveOK:{
@@ -536,22 +540,32 @@ export const SecretDraculaGame = {
                     client: false,
                 },
             },
+            onEnd: (G: IG, ctx: Ctx) => {
+                console.log("ending phasePeekPolicy")
+                return {...G,
+                    ok: false
+                }
+            }
         },
         phaseInvestigate1:{
             onBegin: (G: IG, ctx: Ctx) => {
+                console.log("starting phaseInvestigate1")
                 var p = G.mayorID
                 var activePlayers = { value: {} };
                 activePlayers.value[p] = 'phaseInvestigate1';
                 ctx.events.setActivePlayers(activePlayers)
             },
             endIf: (G: IG, ctx: Ctx) => {
-                if(G.investigate != 0) {
+                console.log("endIf phaseInvestigate1")
+                if(G.ok) {
                     return {next: 'phaseInvestigate2'}
                 }
             },
             onEnd: (G: IG, ctx: Ctx) => {
-                return G
-
+                console.log("ending phaseInvestigate1")
+                return {...G,
+                    ok: false
+                }
             },
             moves: {
                 moveInvestigateStart:{
@@ -562,17 +576,23 @@ export const SecretDraculaGame = {
         },
         phaseInvestigate2:{
             onBegin: (G: IG, ctx: Ctx) => {
+                console.log("starting phaseInvestigate2")
                 var p = G.mayorID
                 var activePlayers = { value: {} };
                 activePlayers.value[p] = 'phaseInvestigate2';
                 ctx.events.setActivePlayers(activePlayers)
             },
             endIf: (G: IG, ctx: Ctx) => {
-                if(G.investigate == 0) {
+                console.log("endIf phaseInvestigate2")
+                if(G.ok) {
                     return {next: 'phaseNoSpecial'}
                 }
             },
             onEnd: (G: IG, ctx: Ctx) => {
+                console.log("ending phaseInvestigate2")
+                return {...G,
+                    ok: false
+                }
             },
             moves: {
                 moveInvestigateEnd:{
@@ -583,6 +603,7 @@ export const SecretDraculaGame = {
         },
         phaseSpecialElection:{
             onBegin: (G: IG, ctx: Ctx) => {
+                console.log("starting phaseSpecialElection")
                 var p = G.mayorID
                 var activePlayers = { value: {} };
                 activePlayers.value[p] = 'phaseSpecialElection';
@@ -591,13 +612,16 @@ export const SecretDraculaGame = {
                 return G
             },
             endIf: (G: IG, ctx: Ctx) => {
-                if (G.specialElection != -1){
+                console.log("endIf phaseSpecialElection")
+                if (G.ok){
                     return {next: "phaseChosePriest"}
                 }
             },
             onEnd: (G: IG, ctx: Ctx) => {
+                console.log("ending phaseSpecialElection")
                 G.electionTracker = 0
                 G.priestID = -1
+                G.ok = false
                 return G
             },
             moves: {
@@ -610,18 +634,23 @@ export const SecretDraculaGame = {
         },
         phaseExecution:{
             onBegin: (G: IG, ctx: Ctx) => {
+                console.log("starting phaseExecution")
                 var p = G.mayorID
                 var activePlayers = { value: {} };
                 activePlayers.value[p] = 'phaseExecution';
                 ctx.events.setActivePlayers(activePlayers)
             },
             endIf: (G: IG, ctx: Ctx) => {
-                if(ctx.activePlayers == null) {
+                console.log("endIf phaseExecution")
+                if(G.ok) {
                     return {next: 'phaseNoSpecial'}
                 }
             },
             onEnd: (G: IG, ctx: Ctx) => {
-
+                console.log("ending phaseExecution")
+                return {...G,
+                    ok: false
+                }
             },
             moves: {
                 moveExecute:{

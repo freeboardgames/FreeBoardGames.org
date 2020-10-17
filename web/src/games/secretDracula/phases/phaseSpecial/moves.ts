@@ -18,6 +18,7 @@ export function movePickMayor(G: IG, ctx: Ctx, id: number, me: number): IG | 'IN
 
     return {
         ...G,
+        ok: true,
         mayorID: id,
         specialElection: G.mayorID, // to reset the oldMayor back to this.
         log: [...G.log, "Player " + me.toString() + " movePickMayor" + id.toString()]
@@ -28,6 +29,7 @@ export function moveOK(G: IG, ctx: Ctx, me: number): IG {
     
     return {
         ...G,
+        ok: true,
         policyDraw: [...G.policyDraw, G.policyPeek[2], G.policyPeek[1], G.policyPeek[0]],
         policyPeek: <IPolicy[]>Array(0),
         log: [...G.log, "Player " + me.toString() + " moveOK "]
@@ -49,6 +51,7 @@ export function moveExecute(G: IG, ctx: Ctx, id: number, me: number): IG | 'INVA
 
     return {
         ...G,
+        ok: true,
         deadIDs: [...G.deadIDs, id],
         log: [...G.log, "Player " + me.toString() + " moveOK " + id.toString()]
     }
@@ -71,6 +74,7 @@ export function moveInvestigateStart(G: IG, ctx: Ctx, id: number, me: number): I
     }
     return {
         ...G,
+        ok: true,
         investigate: G.vampireIDs.includes(id) ? 1 : -1,
         investigateID: id,
         log: [...G.log, "Player " + me.toString() + " moveInvestigateStart " + id.toString()]
@@ -80,6 +84,7 @@ export function moveInvestigateStart(G: IG, ctx: Ctx, id: number, me: number): I
 export function moveInvestigateEnd(G: IG, ctx: Ctx, me: number): IG | 'INVALID_MOVE' {
     return {
         ...G,
+        ok: true,
         investigate: 0,
         investigateID: -1,
         log: [...G.log, "Player " + me.toString() + " moveInvestigateEnd "]

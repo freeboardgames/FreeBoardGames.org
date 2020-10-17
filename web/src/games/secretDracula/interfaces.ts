@@ -42,5 +42,8 @@ export interface IG{
     vetoPower: boolean;
     wantVeto: boolean;
 
+    ok: boolean;
+
     log: string[];
+
 }
