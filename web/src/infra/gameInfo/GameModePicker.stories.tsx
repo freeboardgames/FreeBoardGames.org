@@ -1,5 +1,5 @@
 import { GameModePicker } from './GameModePicker';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -14,6 +14,7 @@ const GAME_DEF_TEST: IGameDef = {
   imageURL: 'foo.jpg',
   description: 'foo desc',
   descriptionTag: 'foo tag',
+  status: IGameStatus.PUBLISHED,
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   instructions: {
     videoId: 'dQw4w9WgXcQ',

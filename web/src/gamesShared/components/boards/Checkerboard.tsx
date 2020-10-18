@@ -51,7 +51,7 @@ export interface IColorMap {
   [key: string]: string;
 }
 interface ICheckerboardProps {
-  onClick: (coords: ICartesianCoords) => void;
+  onClick: (coords: IAlgebraicCoords) => void;
   invert: boolean;
   primaryColor: string;
   secondaryColor: string;
@@ -59,7 +59,7 @@ interface ICheckerboardProps {
   style: React.CSSProperties;
   children?: any;
 }
-export class Checkerboard extends React.Component<any, any> {
+export class Checkerboard extends React.Component<ICheckerboardProps, any> {
   static defaultProps = {
     invert: false,
     primaryColor: '#ffce9e',

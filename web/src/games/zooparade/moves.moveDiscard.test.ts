@@ -129,10 +129,8 @@ it('Discard 1 - Full Hints.', () => {
   client.moves.moveDiscard(3); // Player 0
   // get the latest game state
   const { G } = client.store.getState();
-  // the board should look like this now
-  delete G.movelog;
 
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(0, 0, 0),
       card(1, 0, 0),
@@ -373,8 +371,7 @@ it('Discard 2 - Not Full Hints.', () => {
   // get the latest game state
   const { G } = client.store.getState();
   // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(0, 0, 0),
       card(1, 0, 0),

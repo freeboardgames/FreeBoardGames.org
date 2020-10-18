@@ -87,7 +87,7 @@ describe('MatchService', () => {
   it('should get next room succesfully', async () => {
     const promiseMock = jest
       .fn()
-      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(Promise.resolve({ data: { matchID: 'bgioGameId' } }))
       .mockReturnValueOnce(
         Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
       )
@@ -124,7 +124,7 @@ describe('MatchService', () => {
   it('should fail to get next room if user is not in the match', async () => {
     const promiseMock = jest
       .fn()
-      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(Promise.resolve({ data: { matchID: 'bgioGameId' } }))
       .mockReturnValueOnce(
         Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
       )
@@ -188,7 +188,7 @@ describe('MatchService', () => {
   it('should start match', async () => {
     const promiseMock = jest
       .fn()
-      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(Promise.resolve({ data: { matchID: 'bgioGameId' } }))
       .mockReturnValueOnce(
         Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
       )
