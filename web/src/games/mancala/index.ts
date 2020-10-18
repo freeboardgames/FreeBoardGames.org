@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const mancalaGameDef: IGameDef = {
@@ -16,5 +16,6 @@ export const mancalaGameDef: IGameDef = {
     videoId: 'aLQX1TQjUbw',
     text: instructions,
   },
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
