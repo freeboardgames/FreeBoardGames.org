@@ -20,6 +20,11 @@ export interface IAIConfig {
   bgioAI: (level: string) => any;
 }
 
+export enum IGameStatus {
+  IN_DEVELOPMENT,
+  PUBLISHED
+}
+
 export interface IGameDef {
   code: string;
   name: string;
@@ -33,6 +38,7 @@ export interface IGameDef {
     videoId?: string;
     text?: string;
   };
+  status: IGameStatus;
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
 }

@@ -27,7 +27,7 @@ Now, let's create its first configuration file, `src/games/foobar/index.ts`:
 ```typescript
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const fooBarGameDef: IGameDef = {
@@ -43,6 +43,7 @@ export const fooBarGameDef: IGameDef = {
     videoId: 'yFrAN-LFZRU',
     text: instructions,
   },
+  status: IGameStatus.IN_DEVELOPMENT,
   config: () => import('./config'),
 };
 ```
@@ -163,4 +164,4 @@ Done! You can run now `yarn run dev` and you should be able to see your new game
 
 There are great boardgame.io [tutorials and documentation](https://boardgame.io/#/tutorial); you can follow any of them to get started on how to create your first game. Also, feel free to look into other FBG games and see how they are implemented. Finally, if you get stuck with some issue, send a message to our comunity! We will do our best to help you out :).
 
-When you have your game somewhat working, feel free to open a PR to our GitHub repo. If it is still a work-in-progress, just add "WIP" to the title. We can help you out and review your implementation when you have it working.
+Now, it is time to send us your game for review ! Please send PRs even if the game is still in development, we prefer small PRs over large ones. For more information, check the "Contributing" documentation.
