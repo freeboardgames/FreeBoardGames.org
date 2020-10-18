@@ -135,8 +135,7 @@ it('play movePlays 1 - good', () => {
   const { G } = client.store.getState();
 
   // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(4, 0, 1),
       card(26, 2, 2),
@@ -381,8 +380,7 @@ it('play movePlays 2 - bad', () => {
   const { G } = client.store.getState();
 
   // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(8, 0, 3),
       card(33, 3, 1),
@@ -627,8 +625,7 @@ it('play movePlays 3 - play already played value/color', () => {
   const { G } = client.store.getState();
 
   // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(22, 2, 0),
       card(43, 4, 1),
@@ -880,8 +877,7 @@ it('play movePlays 4 - finish a pile (gain treat)', () => {
   const { G } = client.store.getState();
 
   // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(28, 2, 3),
       card(23, 2, 1),
@@ -1139,8 +1135,7 @@ it('play movePlays 5 - finish a pile with full treats', () => {
   const { G } = client.store.getState();
 
   // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(6, 0, 2),
       card(5, 0, 2),
@@ -1428,8 +1423,7 @@ it('play movePlays 6 - play when no more cards on deck', () => {
   const { G } = client.store.getState();
 
   // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(8, 0, 3),
       card(28, 2, 3),
