@@ -13,19 +13,36 @@ interface ISoupProps {
   isGameOver: boolean;
 };
 
+interface IBoardConfig {
+  height: number, 
+  width: number, 
+  letterHeight: number, 
+  letterWidth: number
+}
+
 interface ISoupState {
   selectedLetters: Array<ISingleLetter>;
+  boardConfig: IBoardConfig;
   probableWord?: ISolvedWord; 
-}
+};
 
 export class Soup extends React.Component<ISoupProps, ISoupState> {
 
   constructor(props) {
     super(props);
+
+    const { puzzel } = this.props; 
+    const letterHeight = Math.floor(BOARD_SIZE / puzzel.length);
+    const letterWidth = Math.floor( BOARD_SIZE / puzzel[0].length);
     
     // initialize state
     this.state = {
       selectedLetters: [],
+      boardConfig: {
+        letterHeight, letterWidth, 
+        height: letterHeight * puzzel.length, 
+        width: letterWidth * puzzel[0].length
+      }
     };
   }
 
@@ -39,15 +56,16 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
           pointerEvents="visible"
           style={{marginTop:'10px', padding:'0 5px'}}
         >
-          <g>{this._placeLetters()}</g>
+          <g>
+            {this._placeLetters()}
+            {this._placeRectOverLetters()}
+          </g>
         </svg>
       </div>
     );
   }
 
-  _selectWordStart = (xId:number, yId:number, letter:string, event ) => {
-
-    // console.log('event: ', event)
+  _selectWordStart = (xId:number, yId:number, letter:string ) => {
     
     let probableWord = this.state.probableWord;
     // if a probable word already selected, then return
@@ -72,7 +90,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
 
   }
 
-  _selectWordContent = (xId:number, yId:number, letter:string, event) => {
+  _selectWordContent = (xId:number, yId:number, letter:string) => {
 
     // console.log('event: ', event, letter);
 
@@ -167,8 +185,8 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
 
     // calculate hight and width of each letter 
     const puzzel = this.props.puzzel;
-    const lHeight = Math.floor(BOARD_SIZE / puzzel.length); 
-    const lWidth = Math.floor( BOARD_SIZE / puzzel[0].length);
+    const lHeight = this.state.boardConfig.letterHeight; 
+    const lWidth = this.state.boardConfig.letterWidth;
     const fontSize = 0.75 * Math.min(lHeight, lWidth);
 
     // place letters from puttel in cell
@@ -198,30 +216,53 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
               {l} 
             </text>
           );
-          // square around the letter 
-          cells.push(
-            <rect
-              key={'callback-square-'+xId+'-'+yId}
-              x={(xId)*lWidth} y={(yId)*lHeight} 
-              width={lWidth} height={lWidth}
-              style={{opacity:0}}
-              // works on desktop
-              onMouseDown={() => this._selectWordStart(xId, yId, l, 'onMouseDown')}
-              onMouseEnter={() => this._selectWordContent(xId, yId, l, 'onMouseEnter')}
-              onMouseUp={()=>this._endWordSelections()}  
-              // // should works on phone
-              // onTouchStart={() => this._selectWordStart(xId, yId, l, 'onTouchStart')}
-              // onTouchMove={() => this._selectWordContent(xId, yId, l, 'onPointerMove')}
-              // onTouchEnd={()=>this._endWordSelections()}         
-              // // pointer events should work with both mouse and touch, but they dont :(
-              // onPointerDown={() => {console.log('down')}}
-              // onPointerMove={() => {console.log('enter/move')}}
-              // onPointerUp={()=> {console.log('up')}}
-            />
-          );
+          // // square around the letter 
+          // cells.push(
+          //   <rect
+          //     key={'callback-square-'+xId+'-'+yId}
+          //     x={(xId)*lWidth} y={(yId)*lHeight} 
+          //     width={lWidth} height={lWidth}
+          //     style={{opacity:0}}
+          //     // works on desktop
+          //     onMouseDown={() => this._selectWordStart(xId, yId, l, 'onMouseDown')}
+          //     onMouseEnter={() => this._selectWordContent(xId, yId, l, 'onMouseEnter')}
+          //     onMouseUp={()=>this._endWordSelections()}  
+          //   />
+          // );
         }); 
     });
     return cells;
+  }
+
+  _resolveLetterAndCoordinates = (event, callback) => {
+    const { puzzel } = this.props; 
+    const bounds = event.target.getBoundingClientRect();
+    const coordinates = event.touches ? event.touches[0] : event;
+    const xId = Math.floor(((coordinates.clientX - bounds.left)/bounds.width) * puzzel.length);
+    const yId = Math.floor(((coordinates.clientY - bounds.top)/bounds.height) * puzzel[0].length);
+    if (yId >= 0 && xId >= 0){
+      const letter = puzzel[yId][xId]; 
+      callback(xId, yId, letter)
+    }
+    
+  }
+
+  _placeRectOverLetters() {
+    
+    const {width, height} = this.state.boardConfig;   
+
+    return (
+      <rect
+        key='sol_interaction_rect'
+        x={0} y={0}
+        width={width} height={height} 
+        style={{opacity: 0}}
+        onMouseDown={(event) => this._resolveLetterAndCoordinates(event, this._selectWordStart)}
+        onMouseMove={(event) => this._resolveLetterAndCoordinates(event, this._selectWordContent)}
+        onTouchStart={(event) => this._resolveLetterAndCoordinates(event, this._selectWordStart)}
+        onTouchMove={(event) => this._resolveLetterAndCoordinates(event, this._selectWordContent)}
+      > </rect>
+    );
   }
 
 }
