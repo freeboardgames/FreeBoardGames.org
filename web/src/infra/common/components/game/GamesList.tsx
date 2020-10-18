@@ -1,6 +1,6 @@
 import React from 'react';
 import { GAMES_LIST } from 'games';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { GameCard } from './GameCard';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
@@ -11,7 +11,11 @@ interface State {
   searchQuery?: string;
 }
 
-export class GamesList extends React.Component<{}, State> {
+interface Props {
+  showDevOnly?: boolean;
+}
+
+export class GamesList extends React.Component<Props, State> {
   state = { searchQuery: '' };
 
   render() {
@@ -19,9 +23,11 @@ export class GamesList extends React.Component<{}, State> {
     let gamesList: JSX.Element[];
     let filteredGamesList: IGameDef[];
 
+    filteredGamesList = this.getFilteredGamesList();
+
     if (searchQuery) {
       const searchQueryL = searchQuery.toLowerCase();
-      filteredGamesList = GAMES_LIST.filter((game) => {
+      filteredGamesList = filteredGamesList.filter((game) => {
         const nameL = game.name.toLowerCase();
         const descL = game.description.toLowerCase();
         const descTagL = game.descriptionTag.toLowerCase();
@@ -29,8 +35,6 @@ export class GamesList extends React.Component<{}, State> {
         if (descL.includes(searchQueryL)) return true;
         if (descTagL.includes(searchQueryL)) return true;
       });
-    } else {
-      filteredGamesList = GAMES_LIST;
     }
 
     gamesList = filteredGamesList.map((game) => (
@@ -46,14 +50,14 @@ export class GamesList extends React.Component<{}, State> {
           <div style={{ display: 'inline' }}>
             <SearchBox handleSearchOnChange={this._handleSearchOnChange} style={{ float: 'right', width: '235px' }} />
             <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
-              Games
+              {this.getTitle()}
             </Typography>
           </div>
         </DesktopView>
 
         <MobileView>
           <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
-            Games
+            {this.getTitle()}
           </Typography>
           <SearchBox handleSearchOnChange={this._handleSearchOnChange} />
         </MobileView>
@@ -65,4 +69,13 @@ export class GamesList extends React.Component<{}, State> {
     const searchQuery = event.target.value;
     this.setState({ searchQuery });
   };
+
+  getTitle() {
+    return this.props.showDevOnly ? 'Games In Development' : 'Games';
+  }
+
+  getFilteredGamesList() {
+    const status = this.props.showDevOnly ? IGameStatus.IN_DEVELOPMENT : IGameStatus.PUBLISHED;
+    return GAMES_LIST.filter((gameDef) => gameDef.status === status);
+  }
 }

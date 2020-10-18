@@ -7,6 +7,7 @@ import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import { GAMES_LIST } from 'games';
 import { setupLogging } from './logging';
+import { IGameStatus } from 'gamesShared/definitions/game';
 
 const INTERNAL_BACKEND_TARGET = process.env.FBG_BACKEND_TARGET || 'http://localhost:3001';
 const dev = process.env.NODE_ENV !== 'production';
@@ -49,6 +50,9 @@ function generateSiteMapXML(pagesManifest) {
 
   // games
   for (const game of GAMES_LIST) {
+    if (game.status === IGameStatus.IN_DEVELOPMENT) {
+      continue;
+    }
     paths.push(`/play/${game.code}`);
   }
 
