@@ -22,7 +22,7 @@ export interface IAIConfig {
 
 export enum IGameStatus {
   IN_DEVELOPMENT,
-  PUBLISHED
+  PUBLISHED,
 }
 
 export interface IGameDef {

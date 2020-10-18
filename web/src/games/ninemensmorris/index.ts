@@ -7,10 +7,7 @@ export const ninemensmorrisGameDef: IGameDef = {
   code: 'ninemensmorris',
   name: 'Nine Mens Morris',
   imageURL: Thumbnail,
-  modes: [
-    { mode: GameMode.OnlineFriend },
-    { mode: GameMode.LocalFriend },
-  ],
+  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
   description: 'Also Known as Mills',
