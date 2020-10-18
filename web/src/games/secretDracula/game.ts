@@ -1,7 +1,6 @@
 import { IG, IPolicy } from './interfaces';
 
 import { Ctx } from 'boardgame.io';
-import { ActivePlayers } from 'boardgame.io/core';
 import { isLose, isWin } from './endconditions';
 
 import {validateOnEntry, validateEndIf, validateOnExit} from './phases/chosePriest/validateState';
@@ -20,7 +19,6 @@ import {moveOK} from './phases/phaseSpecial/moves';
 import {moveExecute} from './phases/phaseSpecial/moves';
 import {moveInvestigateStart} from './phases/phaseSpecial/moves';
 import {moveInvestigateEnd} from './phases/phaseSpecial/moves';
-import { json } from 'express';
 
 function setup(ctx: Ctx): IG {
     // SETUP BOARD

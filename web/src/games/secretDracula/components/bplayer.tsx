@@ -1,4 +1,5 @@
 import React from 'react';
+import css from './bplayer.css'
 
 interface InnerWrapper {
     me: boolean;
@@ -49,9 +50,11 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
                                 </p>
                             </td>
                             <td>
-                                <p> 
-                                    {this.props.playerName}
-                                </p>
+                                { this.props.vampire ? 
+                                    <div className={css.vampire}> {this.props.playerName} </div>
+                                    :
+                                    <div> {this.props.playerName} </div>
+                                }
                             </td>
                             <td>
                                 <p> 
