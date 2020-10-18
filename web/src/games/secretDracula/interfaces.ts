@@ -14,8 +14,6 @@ export interface IG{
 
     justPlayedVampirePolicy: number; // -1 = last was human. otherwise Zero-indexed.
 
-    specialPolicies: any[]; // TODO
-
     voting: boolean;
     votesYes: boolean[];
     votesNo: boolean[];

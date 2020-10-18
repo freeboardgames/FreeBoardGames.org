@@ -26,7 +26,6 @@ function setup(ctx: Ctx): IG {
     for (var i=6; i < 17; i++){
         policyDeck[i] = <IPolicy>{garlic: false, chalice: true}
     } // 6 + 11
-    var speicalPolicies =  Array(6).fill(null)
 
     // SETUP PLAYERS
     // shuffle players
@@ -57,7 +56,6 @@ function setup(ctx: Ctx): IG {
         policyBoardHuman: <IPolicy[]>Array(0).fill(null),
         policyBoardVampire: <IPolicy[]>Array(0).fill(null),
 
-        specialPolicies: speicalPolicies,
         justPlayedVampirePolicy: -1,
 
         voting: false,
@@ -97,9 +95,7 @@ export const SecretDraculaGame = {
     setup: setup,
 
     playerView: (G: IG, ctx: Ctx, playerID) => {
-        return G
         var playerIDInt = parseInt(playerID);
-
 
         if (isNaN(playerIDInt)) {
           // However, if this is not a multiplayer then this is NaN.
@@ -131,6 +127,31 @@ export const SecretDraculaGame = {
                 G.humanIDs.map(() => {
                     return -1 
                 }),
+            policyHand: (playerIDInt == G.mayorID) && (G.policyHand.length == 3) // I'm Mayor and 3 cards, so my draw
+                ?
+                G.policyHand
+                :   (((playerIDInt == G.priestID) || (playerIDInt == G.mayorID)) && (G.policyHand.length == 2)) // I'm Priest and 2 cards, so my draw
+                                // or im Mayor and it comes back to me due to Veto
+                    ?
+                    G.policyHand
+                    :
+                    [], //No other players should see the hand ever
+            specialElection: null,
+            policyPeek: (playerIDInt == G.mayorID ) && (G.policyPeek.length == 3) ?
+                G.policyPeek
+                :
+                [],
+            investigate: (playerIDInt == G.mayorID ) ?
+                G.investigate
+                :
+                0,
+            // everyone gets investigateID
+            
+
+            
+
+             
+            
         }
     },
 
