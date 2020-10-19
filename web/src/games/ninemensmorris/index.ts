@@ -1,21 +1,13 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
 import instructions from './instructions.md';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 
 export const ninemensmorrisGameDef: IGameDef = {
   code: 'ninemensmorris',
   name: 'Nine Mens Morris',
   imageURL: Thumbnail,
-  modes: [
-    /*
-        {
-            mode: GameMode.AI,
-            extraInfo: { type: 'slider', min: 1, max: 8 } as IGameModeExtraInfoSlider,
-        },*/
-    { mode: GameMode.OnlineFriend },
-    { mode: GameMode.LocalFriend },
-  ],
+  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
   description: 'Also Known as Mills',
@@ -26,6 +18,7 @@ export const ninemensmorrisGameDef: IGameDef = {
     videoId: 'zvbIKOHIkRE',
     text: instructions,
   },
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
 };
