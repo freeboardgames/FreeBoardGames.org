@@ -8,7 +8,7 @@ interface IPlayState {
   ctx: Ctx;
 }
 
-class DraculaRandomBot{
+class DraculaRandomBot {
   async play(state: IPlayState, playerID: string) {
     // wtf is this!
     return { action: { type: 'MAKE_MOVE', payload: { type: 'move', args: [1, 2], playerID } } };

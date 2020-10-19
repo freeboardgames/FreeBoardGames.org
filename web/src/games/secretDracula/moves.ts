@@ -1,3 +1,3 @@
 export function getValidMoves() {
-    return null
+  return null;
 }
