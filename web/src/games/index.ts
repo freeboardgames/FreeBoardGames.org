@@ -15,7 +15,6 @@ import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
 import { estateBuyerGameDef } from './estatebuyer';
 import { cardtableGameDef } from './cardtable';
-
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
 import { bombsAndBunniesDef } from './bombsAndBunnies';
 
@@ -37,11 +36,8 @@ export const GAMES_MAP: IGameDefMap = {
   secretcodes: secretcodesGameDef,
   hangman: hangmanGameDef,
   estatebuyer: estateBuyerGameDef,
-<<<<<<< HEAD
-  cardtable: cardtableGameDef,
-=======
   bombsAndBunnies: bombsAndBunniesDef,
->>>>>>> master
+  cardtable: cardtableGameDef,
 };
 
 // Order roughly by popularity.

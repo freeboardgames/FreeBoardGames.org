@@ -227,7 +227,5 @@ export const CardTableGame = {
 
   moves: moves,
 
-  flow: {
-    movesPerTurn: 1,
-  },
+  movesPerTurn: 1,
 };

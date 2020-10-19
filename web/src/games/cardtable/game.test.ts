@@ -82,7 +82,7 @@ describe('moveCard(ICardMove) consistent state changes to G', () => {
       },
     ];
 
-    let client: Client = Client({ game: CardTableGame });
+    let client = Client({ game: CardTableGame });
 
     client.moves.moveCards({
       from: { container: 'deck', ordinal: 0 },
@@ -93,7 +93,7 @@ describe('moveCard(ICardMove) consistent state changes to G', () => {
   });
 
   test('move from deck[0-2] to hands.north.held[0]', () => {
-    let client: Client = Client({ game: CardTableGame });
+    let client = Client({ game: CardTableGame });
 
     client.moves.moveCards({
       from: { container: 'deck', ordinal: 0, cardcount: 3 },
@@ -138,7 +138,7 @@ describe('deal() consistent state changes to G', () => {
     seed: 327,
   };
 
-  let client: Client = Client({ game: customGameSetup });
+  let client = Client({ game: customGameSetup });
 
   test('deal() should create a hand --seed 327 passed into client creation scenario', () => {
     client.moves.deal();
@@ -158,7 +158,7 @@ describe('play() state changes to played storage', () => {
     playerID: '0',
   };
 
-  let client: Client = Client({ game: customGameSetup });
+  let client = Client({ game: customGameSetup });
 
   test('play(0) from the north context --seed 327 passed into client creation scenario', () => {
     client.moves.deal();
@@ -178,7 +178,7 @@ describe('putToCrib(idx) state changes to crib storage', () => {
     seed: 327,
   };
 
-  let client: Client = Client({ game: customGameSetup });
+  let client = Client({ game: customGameSetup });
 
   test('putToCrib(0) from the north context --seed 327 passed into client creation scenario', () => {
     client.moves.deal();
@@ -198,7 +198,7 @@ describe('cutForTurn(idx) changes game state', () => {
     seed: 327,
   };
 
-  let client: Client = Client({ game: customGameSetup });
+  let client = Client({ game: customGameSetup });
 
   test('putToCrib(0) from the north context --seed 327 passed into client creation scenario', () => {
     client.moves.deal();
@@ -215,7 +215,7 @@ describe('flipCrib() changes game state', () => {
     seed: 327,
   };
 
-  let client: Client = Client({ game: customGameSetup });
+  let client = Client({ game: customGameSetup });
 
   test('default value of cribFlipped s/b undefined', () => {
     client.moves.deal();
@@ -238,8 +238,7 @@ describe('pegScore game state changes', () => {
   };
 
   test('testing pegging state changes', () => {
-    let client: Client = Client({ game: customGameSetup, playerID: '0' });
-    client.events.set;
+    let client = Client({ game: customGameSetup, playerID: '0' });
     let playerPath: string = client.playerID === '0' ? 'north' : 'south';
     client.moves.pegPoints(4);
     const { G } = client.store.getState();
@@ -251,7 +250,7 @@ describe('pegScore game state changes', () => {
   });
 
   test('pegging ensues, after player passes turn', () => {
-    let client: Client = Client({ game: customGameSetup, playerID: '0' });
+    let client = Client({ game: customGameSetup, playerID: '0' });
     let playerPath: string = client.playerID === '0' ? 'north' : 'south';
     client.moves.pegPoints(5);
     client.moves.pegPoints(3);
