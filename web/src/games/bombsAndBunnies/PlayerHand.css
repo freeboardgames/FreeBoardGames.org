@@ -1,0 +1,67 @@
+.playerHand {
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  padding: 60px 0px 0px 0px;
+  height: 80px;
+  overflow: hidden;
+}
+
+.playerHand .cards {
+  margin: 0 auto;
+  height: 100%;
+}
+
+.playerHand .title {
+  color: white;
+  background-color: rgba(255, 0, 0, 0.5);
+  margin: 40px auto 0;
+  text-align: center;
+  border-radius: 0.5em;
+  padding: 10px;
+  height: 100px;
+  width: 120px;
+}
+
+.playerHand .cards:after {
+  content: '.';
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+.playerHand .cardContainer {
+  float: left;
+  width: 50px;
+  text-align: center;
+  transform-origin: 0 0;
+  transform: scale(0.25);
+  padding: 0;
+}
+
+@media only screen and (max-width: 500px) {
+  .playerHand .cards {
+    padding-left: 5%;
+    margin: 0 auto;
+    height: 100%;
+  }
+
+  .playerHand .cardContainer {
+    width: 40px;
+    transform: scale(0.22);
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .playerHand .cards {
+    padding-left: 6%;
+    margin: 0 auto;
+    height: 100%;
+  }
+
+  .playerHand .cardContainer {
+    width: 35px;
+    transform: scale(0.18);
+  }
+}
