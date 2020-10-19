@@ -163,9 +163,9 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         action: `Started ${this.mode} game`,
       });
       if (this.mode === GameMode.OnlineFriend) {
-        return <App gameID={matchCode} playerID={playerID} credentials={credentials} />;
+        return <App matchID={matchCode} playerID={playerID} credentials={credentials} />;
       } else {
-        return <App gameID={matchCode} playerID={playerID} />;
+        return <App matchID={matchCode} playerID={playerID} />;
       }
     } else if (this.state.loading) {
       const LoadingPage = getMessagePage('loading', `Downloading ${this.gameDef.name}...`);
