@@ -1,10 +1,21 @@
 #### Instructions (WIP)
 
-Create or join a game from the lobby. Local play is currently supported.
+Create or join a game from the lobby. Local and network play is currently supported.
 
-Private cards appear as card backs to other players. In local play WIP the containers for North and South are dealt 'faced' cards.  The deal leaves a standard cribbage hand with 'held' cards exposed.  The deck is left on the table awaiting 'Cut for Turn'. There are six visible containers (top to bottom): south.held, south.played, crib, north.played, deck/turn, north.held,
+Use the cardtable to play card games with remote players. This release will be updated as the community discovers issues.  This is a WIP effort and users may experience unexpected features.  
 
-The turns, stages, and phases, are governed by game state. In WIP version the active player is rotated using the debug console.
+The turns, stages, and phases, will be by game state. In WIP version the active player is rotated using the debug console. The followin commands allow you to play an entire game of cribbage.
+
+* deal - deals a hand for two player cribbage.
+* putCardToCrib(index) - lays away the indexed card to dealer\'s crib.
+* cutForTurnCard(index) - cuts to reveal the "Start" or "Turn" card. accepts any integer
+* play(index) - plays the zero based index from the active players hand
+* peg(amount) - moves the back peg for the player forward by amount.
+* flipCrib - reveals the crib for the dealers counting.
+
+I am planning better state management next release. Then tackle a more responsive app mobile experiences.
+
+Thanks to all who helped and the continued support of FreeBoardGames.org
 
 
 
