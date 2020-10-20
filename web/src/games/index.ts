@@ -60,4 +60,5 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.rota,
   GAMES_MAP.ninemensmorris,
   GAMES_MAP.bombsAndBunnies,
+  GAMES_MAP.cardtable,
 ];
