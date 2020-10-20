@@ -14,6 +14,7 @@ import { rotaGameDef } from './rota';
 import { secretcodesGameDef } from './secretcodes';
 import { hangmanGameDef } from './hangman';
 import { estateBuyerGameDef } from './estatebuyer';
+import { cardtableGameDef } from './cardtable';
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
 import { bombsAndBunniesDef } from './bombsAndBunnies';
 
@@ -36,6 +37,7 @@ export const GAMES_MAP: IGameDefMap = {
   hangman: hangmanGameDef,
   estatebuyer: estateBuyerGameDef,
   bombsAndBunnies: bombsAndBunniesDef,
+  cardtable: cardtableGameDef,
 };
 
 // Order roughly by popularity.
@@ -58,4 +60,5 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.rota,
   GAMES_MAP.ninemensmorris,
   GAMES_MAP.bombsAndBunnies,
+  GAMES_MAP.cardtable,
 ];
