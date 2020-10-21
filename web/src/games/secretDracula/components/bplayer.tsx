@@ -13,6 +13,8 @@ interface InnerWrapper {
 
   mayor: boolean;
   priest: boolean;
+
+  chose(): any;
 }
 
 export class BPlayer extends React.Component<InnerWrapper, {}> {
@@ -31,10 +33,12 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
     var my_rand_id = this.hashCode(this.props.playerName);
 
     return (
-      <div>
-        <table>
-          <tbody>
-            <tr>
+      <>
+        <div
+                    onClick={() => {
+                      this.props.chose();
+                    }}
+        >
               <td>
                 <p>{this.props.playerActive ? '🕒 ' : ' '}</p>
               </td>
@@ -60,10 +64,8 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
               <td>
                 <p>{this.props.mayor ? '🏅' : ' '}</p>
               </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        </div>
+      </>
     );
   }
 

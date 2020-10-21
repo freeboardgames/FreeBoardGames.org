@@ -49,16 +49,23 @@ export class Board extends React.Component<IBoardProps> {
           {playerorder.map((a) => {
             return (
               <div>
-                <BPlayer
-                  me={Number(this.props.playerID) == a}
-                  playerName={this.props.gameArgs.players[a].name}
-                  playerActive={a in this.props.ctx.activePlayers}
-                  dead={deads[a]}
-                  vampire={vampires[a]}
-                  dracula={this.props.G.draculaID == a}
-                  mayor={this.props.G.mayorID == a}
-                  priest={this.props.G.priestID == a}
-                ></BPlayer>
+                <table>
+                  <tbody>
+                    <tr>
+                      <BPlayer
+                        me={Number(this.props.playerID) == a}
+                        playerName={this.props.gameArgs.players[a].name}
+                        playerActive={a in this.props.ctx.activePlayers}
+                        dead={deads[a]}
+                        vampire={vampires[a]}
+                        dracula={this.props.G.draculaID == a}
+                        mayor={this.props.G.mayorID == a}
+                        priest={this.props.G.priestID == a}
+                        chose={() => { return }}
+                      ></BPlayer>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             );
           })}
@@ -73,23 +80,29 @@ export class Board extends React.Component<IBoardProps> {
             playerCount={this.props.ctx.numPlayers}
           ></BHumanPolicies>
 
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseChosePriest' ? (
             <div>
               <p> Chose Priest </p>
-              <BChosePlayer
-                names={this.props.gameArgs.players.map((player) => {
-                  return player.name;
-                })}
-                chose={(id: number) => {
-                  this.props.moves.moveChosePriest(id, parseInt(this.props.playerID));
-                }}
-              ></BChosePlayer>
+              <table>
+                <tbody>
+                  <tr>
+                    <BChosePlayer
+                      names={this.props.gameArgs.players.map((player) => {
+                        return player.name;
+                      })}
+                      chose={(id: number) => {
+                        this.props.moves.moveChosePriest(id, parseInt(this.props.playerID));
+                      }}
+                    ></BChosePlayer>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           ) : (
             <></>
           )}
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseVotePriest' ? (
             <div>
               <p> Vote on Mayor and Priest </p>
@@ -105,7 +118,7 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseDiscardMayor' ? (
             <div>
               <p> Mayor: Discard Card </p>
@@ -120,12 +133,12 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           (this.props.ctx.phase == 'phaseDiscardPriest' || this.props.ctx.phase == 'phaseDiscardPriestVeto') ? (
             <div>
               <p> Priest: Discard Card </p>
               <BDiscard
-                policies={this.props.G.policyHand}
+                policies={this.props.G.policyHand.map((a) => { return parseInt(this.props.playerID) in this.props.ctx.activePlayers ? a : null})}
                 vetoEnabled={this.props.G.vetoPower}
                 mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
                 discard={this._discardWrapper(parseInt(this.props.playerID))}
@@ -135,7 +148,8 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers && this.props.ctx.phase == 'phaseVetoMayor' ? (
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+            this.props.ctx.phase == 'phaseVetoMayor' ? (
             <div>
               <p> Mayor: Agree Veto? </p>
               <BDiscard
@@ -149,7 +163,7 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phasePeekPolicy' ? (
             <div>
               <p> Next Three Samples </p>
@@ -164,7 +178,7 @@ export class Board extends React.Component<IBoardProps> {
             <></>
           )}
 
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseInvestigate1' ? (
             <div>
               <p> Mayor: Who to Investigate? </p>
@@ -181,7 +195,7 @@ export class Board extends React.Component<IBoardProps> {
             <></>
           )}
 
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseInvestigate2' ? (
             <div>
               <p>Finish Investigation</p>
@@ -196,12 +210,12 @@ export class Board extends React.Component<IBoardProps> {
                   this.props.moves.moveInvestigateEnd(parseInt(this.props.playerID));
                 }}
               ></BShowPlayer>
-            </div>
+          </div>
           ) : (
-            <></>
+          <></>
           )}
 
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseSpeicalElection' ? (
             <div>
               <p>Mayor: Chose next Mayor</p>
@@ -217,7 +231,8 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
-          {parseInt(this.props.playerID) in this.props.ctx.activePlayers && this.props.ctx.phase == 'phaseExecution' ? (
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers && 
+          this.props.ctx.phase == 'phaseExecution' ? (
             <div>
               <p>Mayor: Execute player </p>
               <BChosePlayer
@@ -228,6 +243,24 @@ export class Board extends React.Component<IBoardProps> {
                   this.props.moves.moveExecute(id, parseInt(this.props.playerID));
                 }}
               ></BChosePlayer>
+
+
+              {playerorder.map((a) => {
+                      <BPlayer
+                        me={Number(this.props.playerID) == a}
+                        playerName={this.props.gameArgs.players[a].name}
+                        playerActive={a in this.props.ctx.activePlayers}
+                        dead={deads[a]}
+                        vampire={vampires[a]}
+                        dracula={this.props.G.draculaID == a}
+                        mayor={this.props.G.mayorID == a}
+                        priest={this.props.G.priestID == a}
+                        chose={() => {
+                          this.props.moves.moveExecute(a, parseInt(this.props.playerID));
+                        }}
+                      ></BPlayer>
+              })}
+
             </div>
           ) : (
             <></>
