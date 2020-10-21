@@ -34,7 +34,7 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
 
     return (
       <>
-        <div
+        <span
                     onClick={() => {
                       this.props.chose();
                     }}
@@ -64,7 +64,7 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
               <td>
                 <p>{this.props.mayor ? '🏅' : ' '}</p>
               </td>
-        </div>
+        </span>
       </>
     );
   }
