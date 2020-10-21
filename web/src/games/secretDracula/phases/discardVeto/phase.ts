@@ -6,11 +6,11 @@ import { moveDiscardPriest } from './moves';
 import { moveWantVetoPriest } from './moves';
 import { moveWantVetoMayor } from './moves';
 
-export var phaseDiscardMayor = {
+export let phaseDiscardMayor = {
     onBegin: (G: IG, ctx: Ctx) => {
       console.log('starting phaseDiscardMayor');
-      var p = G.mayorID;
-      var activePlayers = { value: {} };
+      let p = G.mayorID;
+      let activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseDiscardMayor';
       ctx.events.setActivePlayers(activePlayers);
       if (G.policyDraw.length < 3) {
@@ -47,11 +47,11 @@ export var phaseDiscardMayor = {
       return G;
     },
   }
-export var phaseDiscardPriest = {
+export let phaseDiscardPriest = {
     onBegin: (G: IG, ctx: Ctx) => {
       console.log('starting phaseDiscardPriest');
-      var p = G.priestID;
-      var activePlayers = { value: {} };
+      let p = G.priestID;
+      let activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseDiscardPriest';
       ctx.events.setActivePlayers(activePlayers);
       return G;
@@ -86,10 +86,10 @@ export var phaseDiscardPriest = {
     },
   }
 
-export var  phaseDiscardPriestVeto =  {
+export let  phaseDiscardPriestVeto =  {
     onBegin: (G: IG, ctx: Ctx) => {
-      var p = G.priestID;
-      var activePlayers = { value: {} };
+      let p = G.priestID;
+      let activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseDiscardPriestVeto';
       ctx.events.setActivePlayers(activePlayers);
 
@@ -130,10 +130,10 @@ export var  phaseDiscardPriestVeto =  {
     },
   }
 
- export var phaseVetoMayor = {
+ export let phaseVetoMayor = {
     onBegin: (G: IG, ctx: Ctx) => {
-      var p = G.mayorID;
-      var activePlayers = { value: {} };
+      let p = G.mayorID;
+      let activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseDiscardPriestVeto';
       ctx.events.setActivePlayers(activePlayers);
 

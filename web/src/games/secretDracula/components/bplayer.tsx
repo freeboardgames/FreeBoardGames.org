@@ -19,7 +19,7 @@ interface InnerWrapper {
 
 export class BPlayer extends React.Component<InnerWrapper, {}> {
   hashCode = function (s) {
-    var a = s.split('').reduce(function (a, b) {
+    let a = s.split('').reduce(function (a, b) {
       a = (a << 5) - a + b.charCodeAt(0);
       return a & a;
     }, 0);
@@ -30,7 +30,7 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
   };
 
   render() {
-    var my_rand_id = this.hashCode(this.props.playerName);
+    let my_rand_id = this.hashCode(this.props.playerName);
 
     return (
       <>

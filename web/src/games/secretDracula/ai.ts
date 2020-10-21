@@ -10,7 +10,6 @@ interface IPlayState {
 
 class DraculaRandomBot {
   async play(state: IPlayState, playerID: string) {
-    // wtf is this!
     return { action: { type: 'MAKE_MOVE', payload: { type: 'move', args: [1, 2], playerID } } };
   }
 }

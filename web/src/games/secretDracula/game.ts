@@ -21,36 +21,37 @@ import {phaseDiscardMayor,
 
 function setup(ctx: Ctx): IG {
   // SETUP BOARD
-  var policyDeck = <IPolicy[]>Array(17).fill(<IPolicy>{ garlic: true, chalice: false });
-  for (var i = 6; i < 17; i++) {
+  let policyDeck = <IPolicy[]>Array(17).fill(<IPolicy>{ garlic: true, chalice: false });
+  for (let i = 6; i < 17; i++) {
     policyDeck[i] = <IPolicy>{ garlic: false, chalice: true };
   } // 6 + 11
 
   // SETUP PLAYERS
   // shuffle players
-  var playerIDToGameID = <number[]>Array(ctx.numPlayers).fill(0);
-  for (var i = 0; i < ctx.numPlayers; i++) {
+  let playerIDToGameID = <number[]>Array(ctx.numPlayers).fill(0);
+  for (let i = 0; i < ctx.numPlayers; i++) {
     playerIDToGameID[i] = i;
   }
   playerIDToGameID = ctx.random.Shuffle(playerIDToGameID);
   // chose dracula
-  var draculaID = playerIDToGameID[0];
+  let draculaID = playerIDToGameID[0];
+  let vampireCount;
   if (ctx.numPlayers <= 2) {
     // This is never the case in a real game, just in '1v1 with bot' for debug
-    var vampireCount = 1;
+    vampireCount = 1;
   } else if (ctx.numPlayers <= 6) {
     // 2 vampires (1+1 Drac)
-    var vampireCount = 2;
+    vampireCount = 2;
   } else if (ctx.numPlayers <= 8) {
     // 3 vampires (2+1 Drac)
-    var vampireCount = 3;
+    vampireCount = 3;
   } else {
-    var vampireCount = 4;
+    vampireCount = 4;
   }
-  var vampireIDs = [...(<number[]>playerIDToGameID.slice(0, vampireCount))];
-  var humanIDs = playerIDToGameID.slice(vampireCount, ctx.numPlayers);
+  let vampireIDs = [...(<number[]>playerIDToGameID.slice(0, vampireCount))];
+  let humanIDs = playerIDToGameID.slice(vampireCount, ctx.numPlayers);
 
-  var finalG = <IG>{
+  let finalG = <IG>{
     policyHand: <IPolicy[]>Array(0).fill(null),
     policyDraw: policyDeck,
     policyDiscard: <IPolicy[]>Array(0).fill(null),
@@ -96,7 +97,7 @@ export const SecretDraculaGame = {
   setup: setup,
 
   playerView: (G: IG, ctx: Ctx, playerID) => {
-    var playerIDInt = parseInt(playerID);
+    let playerIDInt = parseInt(playerID);
 
     if (isNaN(playerIDInt)) {
       // However, if this is not a multiplayer then this is NaN.
@@ -180,13 +181,13 @@ export const SecretDraculaGame = {
             G.policyDraw.push(...G.policyDiscard);
             G.policyDiscard = <IPolicy[]>Array(0);
           }
-          var topCard = G.policyDraw.pop();
+          let topCard = G.policyDraw.pop();
 
           if (topCard.chalice) {
-            var n = G.policyBoardVampire.push(topCard);
+            let n = G.policyBoardVampire.push(topCard);
             G.justPlayedVampirePolicy = n - 1;
           } else {
-            var n = G.policyBoardHuman.push(topCard);
+            let n = G.policyBoardHuman.push(topCard);
             G.justPlayedVampirePolicy = -1;
           }
         } else {

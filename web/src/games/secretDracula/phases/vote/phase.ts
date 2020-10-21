@@ -2,7 +2,7 @@ import { moveVoteYes, moveVoteNo } from './moves';
 import { IG } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
 
-export var phaseVotePriest = {
+export let phaseVotePriest = {
     onBegin: (G, ctx) => {
       console.log('starting phaseVotePriest');
       return G;
@@ -18,10 +18,10 @@ export var phaseVotePriest = {
       },
     },
     endIf: (G: IG, ctx: Ctx) => {
-      var yesVotes = G.votesYes.reduce((a, b) => {
+      let yesVotes = G.votesYes.reduce((a, b) => {
         return b == true ? a + 1 : a;
       }, 0);
-      var noVotes = G.votesNo.reduce((a, b) => {
+      let noVotes = G.votesNo.reduce((a, b) => {
         return b == true ? a + 1 : a;
       }, 0);
       if (yesVotes + noVotes == ctx.numPlayers) {

@@ -30,10 +30,10 @@ interface IBoardProps {
 
 export class Board extends React.Component<IBoardProps> {
   render() {
-    var playerorder = Array(this.props.ctx.numPlayers).fill(0);
-    var deads = Array(this.props.ctx.numPlayers).fill(false);
-    var vampires = Array(this.props.ctx.numPlayers).fill(false);
-    for (var i = 0; i < this.props.ctx.numPlayers; i++) {
+    let playerorder = Array(this.props.ctx.numPlayers).fill(0);
+    let deads = Array(this.props.ctx.numPlayers).fill(false);
+    let vampires = Array(this.props.ctx.numPlayers).fill(false);
+    for (let i = 0; i < this.props.ctx.numPlayers; i++) {
       playerorder[i] = i;
       if (this.props.G.deadIDs.includes(i)) {
         deads[i] = true;

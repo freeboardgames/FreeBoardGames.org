@@ -7,11 +7,11 @@ import { moveInvestigateEnd } from './moves';
 import { IG, IPolicy} from './../../interfaces';
 import { Ctx } from 'boardgame.io';
 
-export var phasePeekPolicy = {
+export let phasePeekPolicy = {
     onBegin: (G: IG, ctx: Ctx) => {
       console.log('starting phasePeekPolicy');
-      var p = G.mayorID;
-      var activePlayers = { value: {} };
+      let p = G.mayorID;
+      let activePlayers = { value: {} };
       activePlayers.value[p] = 'phasePeekPolicy';
       ctx.events.setActivePlayers(activePlayers);
 
@@ -43,11 +43,11 @@ export var phasePeekPolicy = {
     },
   }
 
- export var phaseInvestigate1  ={
+ export let phaseInvestigate1  ={
     onBegin: (G: IG, ctx: Ctx) => {
       console.log('starting phaseInvestigate1');
-      var p = G.mayorID;
-      var activePlayers = { value: {} };
+      let p = G.mayorID;
+      let activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseInvestigate1';
       ctx.events.setActivePlayers(activePlayers);
     },
@@ -69,11 +69,11 @@ export var phasePeekPolicy = {
     },
   }
 
-export var  phaseInvestigate2 = {
+export let  phaseInvestigate2 = {
     onBegin: (G: IG, ctx: Ctx) => {
       console.log('starting phaseInvestigate2');
-      var p = G.mayorID;
-      var activePlayers = { value: {} };
+      let p = G.mayorID;
+      let activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseInvestigate2';
       ctx.events.setActivePlayers(activePlayers);
     },
@@ -95,11 +95,11 @@ export var  phaseInvestigate2 = {
     },
   }
 
-export var phaseSpecialElection = {
+export let phaseSpecialElection = {
     onBegin: (G: IG, ctx: Ctx) => {
       console.log('starting phaseSpecialElection');
-      var p = G.mayorID;
-      var activePlayers = { value: {} };
+      let p = G.mayorID;
+      let activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseSpecialElection';
       ctx.events.setActivePlayers(activePlayers);
       G.specialElection = -1;
@@ -126,11 +126,11 @@ export var phaseSpecialElection = {
     },
   }
 
-export var phaseExecution = {
+export let phaseExecution = {
     onBegin: (G: IG, ctx: Ctx) => {
       console.log('starting phaseExecution');
-      var p = G.mayorID;
-      var activePlayers = { value: {} };
+      let p = G.mayorID;
+      let activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseExecution';
       ctx.events.setActivePlayers(activePlayers);
     },
