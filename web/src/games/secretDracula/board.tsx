@@ -10,9 +10,9 @@ import { BPlayer } from './components/bplayer';
 import { BHumanPolicies } from './components/bhumanpolicy';
 
 import { BChosePlayer } from './components/bchoseplayer';
-import { BVote } from './components/bvote';
-import { BDiscard } from './components/bdiscard';
-import { BPeek } from './components/bpeek';
+import { BVote } from './phases/vote/bvote';
+import { BDiscard } from './phases/discardVeto/bdiscard';
+import { BPeek } from './phases/special/bpeek';
 import { BShowPlayer } from './components/bshowplayer';
 
 import { Type } from 'boardgame.io/dist/types/src/server/db/base';

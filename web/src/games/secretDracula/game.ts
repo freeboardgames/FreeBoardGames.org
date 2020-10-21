@@ -6,19 +6,19 @@ import { isLose, isWin } from './endconditions';
 import { validateOnEntry, validateEndIf, validateOnExit } from './phases/chosePriest/validateState';
 import { moveChosePriest, moveValidTest } from './phases/chosePriest/moves';
 
-import { moveVoteYes, moveVoteNo } from './phases/phaseVote/moves';
+import { moveVoteYes, moveVoteNo } from './phases/vote/moves';
 
-import { moveDiscardMayor } from './phases/phaseDiscardMayor/moves';
-import { moveDiscardPriest } from './phases/phaseDiscardPriest/moves';
+import { moveDiscardMayor } from './phases/discardVeto/moves';
+import { moveDiscardPriest } from './phases/discardVeto/moves';
 
-import { moveWantVetoPriest } from './phases/veto/moves';
-import { moveWantVetoMayor } from './phases/veto/moves';
+import { moveWantVetoPriest } from './phases/discardVeto/moves';
+import { moveWantVetoMayor } from './phases/discardVeto/moves';
 
-import { movePickMayor } from './phases/phaseSpecial/moves';
-import { moveOK } from './phases/phaseSpecial/moves';
-import { moveExecute } from './phases/phaseSpecial/moves';
-import { moveInvestigateStart } from './phases/phaseSpecial/moves';
-import { moveInvestigateEnd } from './phases/phaseSpecial/moves';
+import { movePickMayor } from './phases/special/moves';
+import { moveOK } from './phases/special/moves';
+import { moveExecute } from './phases/special/moves';
+import { moveInvestigateStart } from './phases/special/moves';
+import { moveInvestigateEnd } from './phases/special/moves';
 
 function setup(ctx: Ctx): IG {
   // SETUP BOARD

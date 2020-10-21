@@ -1,6 +1,6 @@
 import React from 'react';
-import { IPolicy } from '../interfaces';
-import { BPolicy } from './bpolicy';
+import { IPolicy } from '../../interfaces';
+import { BPolicy } from '../../components/bpolicy';
 
 interface InnerWrapper {
   policies: IPolicy[];
