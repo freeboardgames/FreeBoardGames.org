@@ -36,15 +36,20 @@ export function moveOK(G: IG, ctx: Ctx, me: number): IG {
 }
 
 export function moveExecute(G: IG, ctx: Ctx, id: number, me: number): IG | 'INVALID_MOVE' {
-  console.log(id);
+  console.log("Execuing")
+  console.log(id, me)
+
   if (id == undefined) {
+    console.log("this is weird 1")
     return INVALID_MOVE;
   }
 
   if (G.deadIDs.includes(id)) {
+    console.log("this is weird 2")
     return INVALID_MOVE;
   }
-  if (id == parseInt(ctx.currentPlayer)) {
+  if (id in ctx.activePlayers) {
+    console.log("this is weird 3")
     return INVALID_MOVE;
   }
 
@@ -57,7 +62,6 @@ export function moveExecute(G: IG, ctx: Ctx, id: number, me: number): IG | 'INVA
 }
 
 export function moveInvestigateStart(G: IG, ctx: Ctx, id: number, me: number): IG | 'INVALID_MOVE' {
-  console.log(id);
   if (id == undefined) {
     return INVALID_MOVE;
   }

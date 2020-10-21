@@ -179,16 +179,18 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// 
           this.props.ctx.phase == 'phasePeekPolicy' ? (
             <div>
               <p> Next Three Samples </p>
+              { parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
               <BPeek
                 policies={this.props.G.policyPeek}
                 ok={() => {
                   this.props.moves.moveOK(parseInt(this.props.playerID));
                 }}
               ></BPeek>
+              : <></> }
             </div>
           ) : (
             <></>
@@ -258,22 +260,32 @@ export class Board extends React.Component<IBoardProps> {
           this.props.ctx.phase == 'phaseExecution' ? (
             <div>
               <p>Mayor: Execute player </p>
-
-              {playerorder.map((a) => {
+              {
+                parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
+              <table>
+                <tbody>
+                  <tr>
+                  {playerorder.map((a) => { return (
+                    <>
                       <BPlayer
                         me={Number(this.props.playerID) == a}
                         playerName={this.props.gameArgs.players[a].name}
-                        playerActive={a in this.props.ctx.activePlayers}
+                        playerActive={false}
                         dead={deads[a]}
                         vampire={vampires[a]}
                         dracula={this.props.G.draculaID == a}
-                        mayor={this.props.G.mayorID == a}
-                        priest={this.props.G.priestID == a}
+                        mayor={false}
+                        priest={false}
                         chose={() => {
                           this.props.moves.moveExecute(a, parseInt(this.props.playerID));
                         }}
                       ></BPlayer>
-              })}
+                      </>)
+                      })}
+                  </tr>
+                </tbody>
+              </table>
+            : ( <></> ) }
 
             </div>
           ) : (
