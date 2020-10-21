@@ -12,7 +12,7 @@ export function movePickMayor(G: IG, ctx: Ctx, id: number, me: number): IG | 'IN
   if (G.deadIDs.includes(id)) {
     return INVALID_MOVE;
   }
-  if (id == parseInt(ctx.currentPlayer)) {
+  if (id in ctx.activePlayers) { // can't chose self
     return INVALID_MOVE;
   }
 
@@ -36,20 +36,14 @@ export function moveOK(G: IG, ctx: Ctx, me: number): IG {
 }
 
 export function moveExecute(G: IG, ctx: Ctx, id: number, me: number): IG | 'INVALID_MOVE' {
-  console.log("Execuing")
-  console.log(id, me)
-
   if (id == undefined) {
-    console.log("this is weird 1")
     return INVALID_MOVE;
   }
 
   if (G.deadIDs.includes(id)) {
-    console.log("this is weird 2")
     return INVALID_MOVE;
   }
   if (id in ctx.activePlayers) {
-    console.log("this is weird 3")
     return INVALID_MOVE;
   }
 
@@ -68,13 +62,10 @@ export function moveInvestigateStart(G: IG, ctx: Ctx, id: number, me: number): I
   if (G.deadIDs.includes(id)) {
     return INVALID_MOVE;
   }
-  if (id == parseInt(ctx.currentPlayer)) {
+  if (id in ctx.activePlayers) { // can't chose self
     return INVALID_MOVE;
   }
-  if (id == me) {
-    return INVALID_MOVE; // TODO: This is a fronted fix. It could be exploited.
-    // One needs to compare id to ctx.... or G....
-  }
+
   return {
     ...G,
     ok: true,
