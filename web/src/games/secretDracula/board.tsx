@@ -114,10 +114,11 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          {// 
           this.props.ctx.phase == 'phaseVotePriest' ? (
             <div>
               <p> Vote on Mayor and Priest </p>
+              { parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
               <BVote
                 yes={() => {
                   this.props.moves.moveVoteYes(parseInt(this.props.playerID));
@@ -126,6 +127,9 @@ export class Board extends React.Component<IBoardProps> {
                   this.props.moves.moveVoteNo(parseInt(this.props.playerID));
                 }}
               ></BVote>
+              :
+              <></>
+            }
             </div>
           ) : (
             <></>
