@@ -200,14 +200,32 @@ export class Board extends React.Component<IBoardProps> {
           this.props.ctx.phase == 'phaseInvestigate1' ? (
             <div>
               <p> Mayor: Who to Investigate? </p>
-              <BChosePlayer
-                names={this.props.gameArgs.players.map((player) => {
-                  return player.name;
-                })}
-                chose={(id: number) => {
-                  this.props.moves.moveInvestigateStart(id, parseInt(this.props.playerID));
-                }}
-              ></BChosePlayer>
+                            {
+                parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
+              <table>
+                <tbody>
+                  <tr>
+                  {playerorder.map((a) => { return (
+                    <>
+                      <BPlayer
+                        me={Number(this.props.playerID) == a}
+                        playerName={this.props.gameArgs.players[a].name}
+                        playerActive={false}
+                        dead={deads[a]}
+                        vampire={vampires[a]}
+                        dracula={this.props.G.draculaID == a}
+                        mayor={false}
+                        priest={false}
+                        chose={() => {
+                          this.props.moves.moveInvestigateStart(a, parseInt(this.props.playerID));
+                        }}
+                      ></BPlayer>
+                      </>)
+                      })}
+                  </tr>
+                </tbody>
+              </table>
+            : ( <></> ) }
             </div>
           ) : (
             <></>
@@ -237,21 +255,32 @@ export class Board extends React.Component<IBoardProps> {
           this.props.ctx.phase == 'phaseSpeicalElection' ? (
             <div>
               <p>Mayor: Chose next Mayor</p>
-              {playerorder.map((a) => {
+              {
+                parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
+              <table>
+                <tbody>
+                  <tr>
+                  {playerorder.map((a) => { return (
+                    <>
                       <BPlayer
                         me={Number(this.props.playerID) == a}
                         playerName={this.props.gameArgs.players[a].name}
-                        playerActive={a in this.props.ctx.activePlayers}
+                        playerActive={false}
                         dead={deads[a]}
                         vampire={vampires[a]}
                         dracula={this.props.G.draculaID == a}
-                        mayor={this.props.G.mayorID == a}
-                        priest={this.props.G.priestID == a}
+                        mayor={false}
+                        priest={false}
                         chose={() => {
-                          this.props.moves.moveExecute(a, parseInt(this.props.playerID));
+                          this.props.moves.movePickMayor(a, parseInt(this.props.playerID));
                         }}
                       ></BPlayer>
-              })}
+                      </>)
+                      })}
+                  </tr>
+                </tbody>
+              </table>
+            : ( <></> ) }
             </div>
           ) : (
             <></>
