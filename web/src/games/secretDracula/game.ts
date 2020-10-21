@@ -3,22 +3,21 @@ import { IG, IPolicy } from './interfaces';
 import { Ctx } from 'boardgame.io';
 import { isLose, isWin } from './endconditions';
 
-import { validateOnEntry, validateEndIf, validateOnExit } from './phases/chosePriest/validateState';
-import { moveChosePriest, moveValidTest } from './phases/chosePriest/moves';
+import { phaseChosePriest} from './phases/chosePriest/phase';
 
-import { moveVoteYes, moveVoteNo } from './phases/vote/moves';
+import { phaseVotePriest } from './phases/vote/phase';
 
-import { moveDiscardMayor } from './phases/discardVeto/moves';
-import { moveDiscardPriest } from './phases/discardVeto/moves';
+import {phaseExecution,   
+        phaseSpecialElection, 
+        phaseInvestigate2, 
+        phaseInvestigate1, 
+        phasePeekPolicy } from './phases/special/phase'
 
-import { moveWantVetoPriest } from './phases/discardVeto/moves';
-import { moveWantVetoMayor } from './phases/discardVeto/moves';
 
-import { movePickMayor } from './phases/special/moves';
-import { moveOK } from './phases/special/moves';
-import { moveExecute } from './phases/special/moves';
-import { moveInvestigateStart } from './phases/special/moves';
-import { moveInvestigateEnd } from './phases/special/moves';
+import {phaseDiscardMayor,
+     phaseDiscardPriest,
+     phaseDiscardPriestVeto,
+     phaseVetoMayor } from './phases/discardVeto/phase'
 
 function setup(ctx: Ctx): IG {
   // SETUP BOARD
@@ -149,88 +148,15 @@ export const SecretDraculaGame = {
   },
 
   phases: {
-    phaseChosePriest: {
-      start: true,
-      onBegin: (G, ctx) => {
-        console.log('staring phaseChosePriest');
+    phaseChosePriest: phaseChosePriest,
 
-        if (!validateOnEntry(G, ctx)) {
-          console.log('Error 1 !');
-        }
+    phaseVotePriest: phaseVotePriest,
 
-        var p = G.mayorID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phaseChosePriest';
-        ctx.events.setActivePlayers(activePlayers);
+    phaseDiscardMayor: phaseDiscardMayor,
+    phaseDiscardPriest: phaseDiscardPriest,
+    phaseDiscardPriestVeto: phaseDiscardPriestVeto,
+    phaseVetoMayor: phaseVetoMayor,
 
-        return G;
-      },
-      moves: {
-        moveValidTest: {
-          move: moveValidTest,
-          client: false,
-        },
-        moveChosePriest: {
-          move: moveChosePriest,
-          client: false,
-        },
-      },
-      endIf: (G, ctx) => {
-        if (validateEndIf(G, ctx)) {
-          return { next: 'phaseVotePriest' };
-        }
-      },
-      onEnd: (G, ctx) => {
-        console.log('ending phaseChosePriest');
-        if (!validateOnExit(G, ctx)) {
-          console.log('Error 2 !');
-        }
-        return G;
-      },
-    },
-    phaseVotePriest: {
-      onBegin: (G, ctx) => {
-        console.log('starting phaseVotePriest');
-        return G;
-      },
-      moves: {
-        moveVoteYes: {
-          move: moveVoteYes,
-          client: false,
-        },
-        moveVoteNo: {
-          move: moveVoteNo,
-          client: false,
-        },
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        var yesVotes = G.votesYes.reduce((a, b) => {
-          return b == true ? a + 1 : a;
-        }, 0);
-        var noVotes = G.votesNo.reduce((a, b) => {
-          return b == true ? a + 1 : a;
-        }, 0);
-        if (yesVotes + noVotes == ctx.numPlayers) {
-          if (yesVotes > noVotes) {
-            // Successful Vote
-            return { next: 'phaseDiscardMayor' };
-          } else {
-            return { next: 'phaseCheckElectionCounter' };
-          }
-        }
-        return false;
-      },
-      onEnd: (G, ctx) => {
-        console.log('ending phaseVotePriest');
-        G.voting = false;
-        G.votesYes = <boolean[]>Array(ctx.numPlayers).fill(null);
-        G.votesNo = <boolean[]>Array(ctx.numPlayers).fill(null);
-        return G;
-      },
-      turn: {
-        activePlayers: { all: 'phaseVotePriest', moveLimit: 1 },
-      },
-    },
     phaseCheckElectionCounter: {
       onBegin: (G, ctx) => {
         console.log('starting phaseCheckElectionCounter');
@@ -275,163 +201,7 @@ export const SecretDraculaGame = {
         return G;
       },
     },
-    phaseDiscardMayor: {
-      onBegin: (G: IG, ctx: Ctx) => {
-        console.log('starting phaseDiscardMayor');
-        var p = G.mayorID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phaseDiscardMayor';
-        ctx.events.setActivePlayers(activePlayers);
-        if (G.policyDraw.length < 3) {
-          G.policyDraw.push(...G.policyDiscard);
-          G.policyDiscard = <IPolicy[]>Array(0);
-        }
-        G.policyHand.push(G.policyDraw.pop());
-        G.policyHand.push(G.policyDraw.pop());
-        G.policyHand.push(G.policyDraw.pop());
-
-        return G;
-      },
-      moves: {
-        moveDiscardMayor: {
-          move: moveDiscardMayor,
-          client: false,
-        },
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        if (G.policyHand.length == 2) {
-          if (!G.vetoPower) {
-            console.log('Moving to phaseDiscardPriest');
-            return { next: 'phaseDiscardPriest' };
-          } else if (G.vetoPower) {
-            return { next: 'phaseDiscardPriestVeto' };
-          }
-        }
-      },
-      onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phaseDiscardMayor');
-        G.lastMayorID = G.mayorID;
-        G.lastPriestID = G.priestID;
-        G.justPlayedVampirePolicy = -1;
-        return G;
-      },
-    },
-    phaseDiscardPriest: {
-      onBegin: (G: IG, ctx: Ctx) => {
-        console.log('starting phaseDiscardPriest');
-        var p = G.priestID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phaseDiscardPriest';
-        ctx.events.setActivePlayers(activePlayers);
-        return G;
-      },
-      moves: {
-        moveDiscardPriest: {
-          move: moveDiscardPriest,
-          client: false,
-        },
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        if (G.policyHand.length == 1) {
-          console.log('A0');
-          return { next: 'phaseSpecial' };
-        }
-        return false;
-      },
-      onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phaseDiscardPriest');
-        console.log('and setting to ', G.policyHand[0].chalice ? G.policyBoardVampire.length : -1);
-        //     console.log("B0")
-        //     return G
-        return {
-          ...G,
-          policyHand: [],
-          policyBoardHuman: G.policyHand[0].garlic ? [...G.policyBoardHuman, G.policyHand[0]] : [...G.policyBoardHuman],
-          policyBoardVampire: G.policyHand[0].chalice
-            ? [...G.policyBoardVampire, G.policyHand[0]]
-            : [...G.policyBoardVampire],
-          justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length : -1,
-        };
-      },
-    },
-
-    phaseDiscardPriestVeto: {
-      onBegin: (G: IG, ctx: Ctx) => {
-        var p = G.priestID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phaseDiscardPriestVeto';
-        ctx.events.setActivePlayers(activePlayers);
-
-        return G;
-      },
-      moves: {
-        moveDiscardPriest: {
-          move: moveDiscardPriest,
-          client: false,
-        },
-        moveWantVetoPriest: {
-          move: moveWantVetoPriest,
-          client: false,
-        },
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        if (!G.wantVeto) {
-          return { next: 'phaseSpecial' }; // didn't use veto power
-        } else if (G.wantVeto) {
-          return { next: 'phaseVetoMayor' }; // didn't use veto power
-        }
-      },
-      onEnd: (G: IG, ctx: Ctx) => {
-        if (!G.wantVeto) {
-          return {
-            ...G,
-            policyHand: [],
-            policyBoardHuman: G.policyHand[0].garlic
-              ? [...G.policyBoardHuman, G.policyHand[0]]
-              : [...G.policyBoardHuman],
-            policyBoardVampire: G.policyHand[0].chalice
-              ? [...G.policyBoardVampire, G.policyHand[0]]
-              : [...G.policyBoardVampire],
-            justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length : -1,
-          };
-        }
-        return G;
-      },
-    },
-    phaseVetoMayor: {
-      onBegin: (G: IG, ctx: Ctx) => {
-        var p = G.mayorID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phaseDiscardPriestVeto';
-        ctx.events.setActivePlayers(activePlayers);
-
-        return G;
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        if (ctx.activePlayers == null) {
-          if (G.wantVeto) {
-            return { next: 'phaseDiscardPriest' };
-          } else {
-            return { next: 'phaseNoSpecial' };
-          }
-        }
-      },
-      onEnd: (G: IG, ctx: Ctx) => {
-        if (G.wantVeto) {
-          G.policyDiscard.push(G.policyHand.pop());
-          G.policyDiscard.push(G.policyHand.pop());
-          G.wantVeto = false;
-        }
-
-        return G;
-      },
-      moves: {
-        moveWantVetoMayor: {
-          move: moveWantVetoMayor,
-          client: false,
-        },
-      },
-    },
+ 
     phaseSpecial: {
       // Used to see if we need to start a special phase or go back to start
       onBegin: (G: IG, ctx: Ctx) => {
@@ -532,146 +302,11 @@ export const SecretDraculaGame = {
         return G;
       },
     },
-    phasePeekPolicy: {
-      onBegin: (G: IG, ctx: Ctx) => {
-        console.log('starting phasePeekPolicy');
-        var p = G.mayorID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phasePeekPolicy';
-        ctx.events.setActivePlayers(activePlayers);
-
-        if (G.policyDraw.length < 3) {
-          G.policyDraw.push(...G.policyDiscard);
-          G.policyDiscard = <IPolicy[]>Array(0);
-        }
-        G.policyPeek.push(G.policyDraw.pop());
-        G.policyPeek.push(G.policyDraw.pop());
-        G.policyPeek.push(G.policyDraw.pop());
-
-        return G;
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        console.log('endIf phasePeekPolicy');
-        if (G.ok) {
-          return { next: 'phaseNoSpecial' };
-        }
-      },
-      moves: {
-        moveOK: {
-          move: moveOK,
-          client: false,
-        },
-      },
-      onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phasePeekPolicy');
-        return { ...G, ok: false };
-      },
-    },
-    phaseInvestigate1: {
-      onBegin: (G: IG, ctx: Ctx) => {
-        console.log('starting phaseInvestigate1');
-        var p = G.mayorID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phaseInvestigate1';
-        ctx.events.setActivePlayers(activePlayers);
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        console.log('endIf phaseInvestigate1');
-        if (G.ok) {
-          return { next: 'phaseInvestigate2' };
-        }
-      },
-      onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phaseInvestigate1');
-        return { ...G, ok: false };
-      },
-      moves: {
-        moveInvestigateStart: {
-          move: moveInvestigateStart,
-          client: false,
-        },
-      },
-    },
-    phaseInvestigate2: {
-      onBegin: (G: IG, ctx: Ctx) => {
-        console.log('starting phaseInvestigate2');
-        var p = G.mayorID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phaseInvestigate2';
-        ctx.events.setActivePlayers(activePlayers);
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        console.log('endIf phaseInvestigate2');
-        if (G.ok) {
-          return { next: 'phaseNoSpecial' };
-        }
-      },
-      onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phaseInvestigate2');
-        return { ...G, ok: false };
-      },
-      moves: {
-        moveInvestigateEnd: {
-          move: moveInvestigateEnd,
-          client: false,
-        },
-      },
-    },
-    phaseSpecialElection: {
-      onBegin: (G: IG, ctx: Ctx) => {
-        console.log('starting phaseSpecialElection');
-        var p = G.mayorID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phaseSpecialElection';
-        ctx.events.setActivePlayers(activePlayers);
-        G.specialElection = -1;
-        return G;
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        console.log('endIf phaseSpecialElection');
-        if (G.ok) {
-          return { next: 'phaseChosePriest' };
-        }
-      },
-      onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phaseSpecialElection');
-        G.electionTracker = 0;
-        G.priestID = -1;
-        G.ok = false;
-        return G;
-      },
-      moves: {
-        movePickMayor: {
-          move: movePickMayor,
-          client: false,
-        },
-      },
-    },
-    phaseExecution: {
-      onBegin: (G: IG, ctx: Ctx) => {
-        console.log('starting phaseExecution');
-        var p = G.mayorID;
-        var activePlayers = { value: {} };
-        activePlayers.value[p] = 'phaseExecution';
-        ctx.events.setActivePlayers(activePlayers);
-      },
-      endIf: (G: IG, ctx: Ctx) => {
-        console.log('endIf phaseExecution');
-        if (G.ok) {
-          return { next: 'phaseNoSpecial' };
-        }
-      },
-      onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phaseExecution');
-        return { ...G, ok: false };
-      },
-      moves: {
-        moveExecute: {
-          move: moveExecute,
-          client: false,
-        },
-      },
-    },
+    phaseExecution: phaseExecution,
+    phaseSpecialElection: phaseSpecialElection,
+    phaseInvestigate2: phaseInvestigate2,
+    phaseInvestigate1: phaseInvestigate1,
+    phasePeekPolicy: phasePeekPolicy,
   },
 
   endif: (G, ctx) => {

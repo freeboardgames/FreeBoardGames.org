@@ -1,7 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { IG } from '../../interfaces';
 import { Ctx } from 'boardgame.io';
-import { stringify } from 'querystring';
 
 export function moveChosePriest(G: IG, ctx: Ctx, chosenGameID: number, me: number): IG | 'INVALID_MOVE' {
   if (G.mayorID == chosenGameID) {
@@ -24,12 +23,5 @@ export function moveChosePriest(G: IG, ctx: Ctx, chosenGameID: number, me: numbe
     voting: true,
     priestID: chosenGameID,
     log: [...G.log, 'Player ' + me.toString() + ' moveChosePriest ' + chosenGameID.toString()],
-  };
-}
-
-export function moveValidTest(G: IG, ctx: Ctx, me: number): IG | 'INVALID_MOVE' {
-  return {
-    ...G,
-    log: [...G.log, 'Player ' + me.toString() + ' moveValidTest '],
   };
 }
