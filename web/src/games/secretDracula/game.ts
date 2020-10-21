@@ -139,7 +139,8 @@ export const SecretDraculaGame = {
           : (playerIDInt == G.priestID || playerIDInt == G.mayorID) && G.policyHand.length == 2 // I'm Priest and 2 cards, so my draw
           ? // or im Mayor and it comes back to me due to Veto
             G.policyHand
-          : [], //No other players should see the hand ever
+          :  //No other players should see the hand ever
+            G.policyHand.map(() => { return null }),
       specialElection: null,
       policyPeek: playerIDInt == G.mayorID && G.policyPeek.length == 3 ? G.policyPeek : [],
       investigate: playerIDInt == G.mayorID ? G.investigate : 0,

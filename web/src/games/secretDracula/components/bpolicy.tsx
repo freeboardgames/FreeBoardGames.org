@@ -10,7 +10,13 @@ interface InnerWrapper {
 export class BPolicy extends React.Component<InnerWrapper, {}> {
   render() {
     return (
-      <div onClick={() => this.props.discard()}>{this.props.policy.chalice ? this._chalice() : this._garlic()}</div>
+      <div>
+      {this.props.policy == null ?
+          <div> 🃏 </div>
+          :
+          <div onClick={() => this.props.discard()}>{this.props.policy.chalice ? this._chalice() : this._garlic()}</div>
+      }
+     </div>
     );
   }
 
