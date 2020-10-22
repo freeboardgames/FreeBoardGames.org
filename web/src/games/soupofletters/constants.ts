@@ -18,13 +18,13 @@ export const playerColors = {
 
 export const validOrientations = [
     'horizontal',
-    // 'diagonal',
-    // 'diagonalUp',
-    // 'vertical', 
-    // 'verticalUp', 
-    // 'diagonalBack', 
-    // 'horizontalBack', 
-    // 'diagonalUpBack'
+    'diagonal',
+    'diagonalUp',
+    'vertical', 
+    'verticalUp', 
+    'diagonalBack', 
+    'horizontalBack', 
+    'diagonalUpBack'
 ];
 
 
