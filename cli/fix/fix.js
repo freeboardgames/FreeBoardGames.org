@@ -1,17 +1,18 @@
 const shell = require("shelljs");
 const { print, printErr, checkEnvironment } = require("../util");
-const { testGame } = require("./test_game");
-const { testAll } = require("./test_all");
+const { fixGame } = require("./fix_game");
+const { fixAll } = require("./fix_all");
+const chalk = require("chalk");
 
-const USAGE = "Usage: yarn run test [GAME CODE]";
+const USAGE = "Usage: yarn run fix [GAME CODE]";
 
 function start() {
   const argv = process.argv;
   checkEnvironment();
   if (argv.length === 2) {
-    testAll();
+    fixAll();
   } else if (argv.length === 3) {
-    testGame(argv[2]);
+    fixGame(argv[2]);
   } else {
     printErr(USAGE);
     shell.exit(1);
