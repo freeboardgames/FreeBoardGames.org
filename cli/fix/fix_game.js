@@ -11,7 +11,7 @@ function fixGame(game) {
   let cmd = `FORCE_COLOR=true yarn run eslint --fix --max-warnings=0 --ext .ts,.tsx src/games/${game}`;
   fbgRun(cmd, fixFailed("eslint", game));
   const dir = `./src/games/${game}/**/*`;
-  cmd = `FORCE_COLOR=true yarn run prettier --write \"${dir}.ts\" \"${dir}.tsx\" \"${dir}.js\"`;
+  cmd = `FORCE_COLOR=true yarn run prettier --write \"${dir}.{ts,tsx,js}\"`;
   fbgRun(cmd, fixFailed("prettier", game));
 }
 

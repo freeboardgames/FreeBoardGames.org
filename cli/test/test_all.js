@@ -1,5 +1,6 @@
 const { print, cd, fbgRun } = require("../util.js");
 const chalk = require("chalk");
+const { lintAll } = require("../lint/lint_all.js");
 
 function testAll() {
   print(

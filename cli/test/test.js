@@ -2,6 +2,7 @@ const shell = require("shelljs");
 const { print, printErr, checkEnvironment } = require("../util");
 const { testGame } = require("./test_game");
 const { testAll } = require("./test_all");
+const chalk = require("chalk");
 
 const USAGE = "Usage: yarn run test [GAME CODE]";
 

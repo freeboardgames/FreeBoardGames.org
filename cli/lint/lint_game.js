@@ -13,7 +13,7 @@ function lintGame(game) {
   let cmd = `FORCE_COLOR=true yarn run eslint --max-warnings=0 --ext .ts,.tsx src/games/${game}`;
   fbgRun(cmd, lintFailed("eslint", game));
   const dir = `./src/games/${game}/**/*`;
-  cmd = `FORCE_COLOR=true yarn run prettier --check \"${dir}.ts\" \"${dir}.tsx\" \"${dir}.js\"`;
+  cmd = `FORCE_COLOR=true yarn run prettier --check \"${dir}.{ts,js,tsx}\"`;
   fbgRun(cmd, lintFailed("prettier", game));
 }
 

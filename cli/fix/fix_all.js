@@ -17,10 +17,10 @@ function fixAll() {
   let cmd = `FORCE_COLOR=true yarn run eslint --fix --max-warnings=0 --ext .ts,.tsx src/`;
   fbgRun(cmd, fixFailed("eslint, web"));
   const dir = `./**/*`;
-  cmd = `FORCE_COLOR=true yarn run prettier --write \"${dir}.ts\" \"${dir}.tsx\" \"${dir}.js\" \"../cli/**/*.js\"`;
+  cmd = `FORCE_COLOR=true yarn run prettier --write \"${dir}.{ts,tsx,js}\" \"../cli/**/*.js\"`;
   fbgRun(cmd, fixFailed("prettier, web"));
   cd("fbg-server");
-  cmd = `FORCE_COLOR=true yarn run eslint --fix \"{src,apps,libs,test}/**/*.ts\"`;
+  cmd = `FORCE_COLOR=true yarn run eslint --fix --max-warnings=0 \"{src,apps,libs,test}/**/*.ts\"`;
   fbgRun(cmd, fixFailed("eslint, fbg-server"));
 }
 
