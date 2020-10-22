@@ -18,7 +18,7 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
   }
 
   renderCard(card: CardType, index: number) {
-    const offsetSize = 40;
+    const offsetSize = 20;
     var rotateStyle = this._getCardRotationStyle(index);
 
     if (card === CardType.Bunny) {

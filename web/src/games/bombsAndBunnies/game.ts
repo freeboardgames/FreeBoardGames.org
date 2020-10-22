@@ -14,6 +14,7 @@ export enum Phases {
 }
 
 export const PlacementPhases = [Phases.initial_placement, Phases.place_or_bet];
+export const MaxPlayers = 6;
 
 export enum Stages {
   select_card = 'select_card',

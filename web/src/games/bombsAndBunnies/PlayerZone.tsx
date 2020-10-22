@@ -4,18 +4,30 @@ import css from './PlayerZone.css';
 import { PlayerStack } from './PlayerStack';
 import { PlayerRevealedStack } from './PlayerRevealedStack';
 import { CardType } from './cardType';
+import { MaxPlayers } from './game';
 
 export interface IPlayerZoneProps {
   stackSize: number;
   revealedStack: CardType[];
   playerIndex: number;
   revealCard?: (playerIndex: number) => void;
+  totalPlayers: number;
+  positionIndex: number;
 }
 
 export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   render() {
+    var radius = this.getRadiusForPlayers(this.props.totalPlayers);
+
+    var angle = (2 * Math.PI * this.props.positionIndex) / this.props.totalPlayers;
+    var top = Math.cos(angle) * radius;
+    var left = -Math.sin(angle) * radius;
+
     return (
-      <div className={css.playerZone}>
+      <div
+        className={css.playerZone}
+        style={{ position: 'absolute', top: top, left: left, transform: `rotate(${angle}rad)` }}
+      >
         <div className={css.stack}>{this.renderStack()}</div>
         <div className={css.revealedStack}>{this.renderRevealedStack()}</div>
       </div>
@@ -34,5 +46,12 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
 
   renderRevealedStack() {
     return <PlayerRevealedStack stack={this.props.revealedStack}></PlayerRevealedStack>;
+  }
+
+  getRadiusForPlayers(totalPlayers: number): number {
+    var minRadius = 100;
+    var maxRadius = 150;
+
+    return minRadius + ((maxRadius - minRadius) * totalPlayers) / MaxPlayers;
   }
 }
