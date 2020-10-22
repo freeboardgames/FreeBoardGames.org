@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const estateBuyerGameDef: IGameDef = {
@@ -17,5 +17,6 @@ export const estateBuyerGameDef: IGameDef = {
     videoId: 'OZ0RLgnBp6o',
     text: instructions,
   },
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };

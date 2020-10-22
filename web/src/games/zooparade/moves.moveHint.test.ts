@@ -130,8 +130,7 @@ it('Hint Color 1 - Good hint.', () => {
   // get the latest game state
   const { G } = client.store.getState();
   // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(48, 4, 3),
       card(29, 2, 4),
@@ -382,8 +381,7 @@ it('Hint Value 2 - Hint Value nothing.', () => {
   // get the latest game state
   const { G } = client.store.getState();
   // the board should look like this now
-  delete G.movelog;
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(48, 4, 3),
       card(29, 2, 4),
@@ -633,9 +631,8 @@ it('Hint 3 - No Hint token.', () => {
   // get the latest game state
   const { G } = client.store.getState();
   // the board should look like this now
-  delete G.movelog;
 
-  expect(G).toEqual({
+  expect({ ...G, movelog: undefined }).toEqual({
     deck: [
       card(2, 0, 0),
       card(46, 4, 2),

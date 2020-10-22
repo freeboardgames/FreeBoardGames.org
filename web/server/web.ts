@@ -7,12 +7,13 @@ import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import { GAMES_LIST } from 'games';
 import { setupLogging } from './logging';
+import { IGameStatus } from 'gamesShared/definitions/game';
 
 const INTERNAL_BACKEND_TARGET = process.env.FBG_BACKEND_TARGET || 'http://localhost:3001';
 const dev = process.env.NODE_ENV !== 'production';
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
 const APP_DIR = './';
-const STATIC_DIR = APP_DIR + 'static/';
+const STATIC_DIR = APP_DIR + 'public/static/';
 
 const PORT = process.env.SERVER_PORT || 3000;
 const isProdChannel = process.env.CHANNEL === 'production';
@@ -49,6 +50,9 @@ function generateSiteMapXML(pagesManifest) {
 
   // games
   for (const game of GAMES_LIST) {
+    if (game.status === IGameStatus.IN_DEVELOPMENT) {
+      continue;
+    }
     paths.push(`/play/${game.code}`);
   }
 
@@ -108,7 +112,7 @@ app
 
     server.get('/sw.js', (req, res) => {
       if (BABEL_ENV_IS_PROD) {
-        const filePath = `${APP_DIR}/static/sw.js`;
+        const filePath = `${STATIC_DIR}/sw.js`;
         app.serveStatic(req, res, filePath);
       } else {
         res.sendStatus(404);
@@ -116,7 +120,7 @@ app
     });
 
     server.get('/manifest.json', (req, res) => {
-      const filePath = `${APP_DIR}/static/manifest.json`;
+      const filePath = `${STATIC_DIR}/manifest.json`;
       app.serveStatic(req, res, filePath);
     });
 
@@ -124,7 +128,7 @@ app
       res.redirect(301, '/docs');
     });
 
-    server.use('/docs', express.static(`${APP_DIR}/static/docs`));
+    server.use('/docs', express.static(`${STATIC_DIR}/docs`));
 
     server.use(
       '/api',
