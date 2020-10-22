@@ -3,9 +3,11 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { isLocalGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
-import { IG, PlacementPhases } from './game';
+import { IG, PlacementPhases, canBet, canSkipBet, getPlayerById, canDiscard, canReveal } from './game';
+import { OtherPlayerHandPenalty } from './OtherPlayerHandPenalty';
 import { PlayerHand } from './PlayerHand';
 import { BetPanel } from './BetPanel';
+import { BetButton, SkipButton } from './BetButton';
 
 import { ButtonComponent } from './ButtonComponent';
 
@@ -21,6 +23,13 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
+  betPanelToggle: boolean = false;
+
+  _toggleBetPanel = () => {
+    this.betPanelToggle = !this.betPanelToggle;
+    this.forceUpdate();
+  };
+
   _gs = () => {
     this.props.moves.GameStart();
   };
@@ -29,11 +38,17 @@ export class Board extends React.Component<IBoardProps, {}> {
     this.props.moves.MovePlaceCard(handIndex);
   }
 
+  _selectPenaltyCard(handIndex: number) {
+    this.props.moves.MoveDiscard(handIndex);
+  }
+
   _bet(bet: number) {
+    this.betPanelToggle = false;
     this.props.moves.MoveBet(bet);
   }
 
   _skipBet() {
+    this.betPanelToggle = false;
     this.props.moves.MoveSkipBet();
   }
 
@@ -54,7 +69,13 @@ export class Board extends React.Component<IBoardProps, {}> {
       return this.getStartGameButton();
     }
 
-    return [this.getPlayerBettingOptions(), this.getPlayerZones(), this.getPlayerHand()];
+    return [
+      this.getPlayerZones(),
+      this.getBetButtons(),
+      this.getPlayerHand(),
+      this.getPlayerBettingOptions(),
+      this.getOtherPlayerHandPenalty(),
+    ];
   }
 
   getStartGameButton() {
@@ -73,6 +94,20 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
   }
 
+  getBetButtons() {
+    return (
+      <div>
+        <span style={{ marginRight: '20px' }}>
+          <BetButton
+            click={canBet(this.props.G, this.props.ctx) ? this._toggleBetPanel.bind(this) : null}
+            active={this.betPanelToggle}
+          ></BetButton>
+        </span>
+        <SkipButton click={canSkipBet(this.props.G, this.props.ctx) ? this._skipBet.bind(this) : null}></SkipButton>
+      </div>
+    );
+  }
+
   getPlayerHand() {
     const playerID = this.getBrowserPlayer();
 
@@ -83,6 +118,8 @@ export class Board extends React.Component<IBoardProps, {}> {
         </div>
       );
     }
+
+    if (this.betPanelToggle) return null;
 
     return (
       <PlayerHand
@@ -100,14 +137,31 @@ export class Board extends React.Component<IBoardProps, {}> {
   getPlayerBettingOptions() {
     const playerID = this.getBrowserPlayer();
 
+    if (!this.betPanelToggle) return null;
+
     return (
       <BetPanel
         bet={this._bet.bind(this)}
-        skip={this._skipBet.bind(this)}
         minBet={this.props.G.minBet}
         maxBet={this.props.G.maxBet}
         playerIndex={parseInt(playerID)}
       />
+    );
+  }
+
+  getOtherPlayerHandPenalty() {
+    var penaltyPlayerId = this.props.G.penaltyPlayerId;
+    if (!penaltyPlayerId) return null;
+
+    var penaltyPlayer = getPlayerById(this.props.G, penaltyPlayerId);
+    if (!canDiscard(this.props.G)) return null;
+
+    return (
+      <OtherPlayerHandPenalty
+        handSize={penaltyPlayer.hand.length}
+        playerId={penaltyPlayerId}
+        selectCard={this._selectPenaltyCard.bind(this)}
+      ></OtherPlayerHandPenalty>
     );
   }
 
@@ -117,7 +171,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         currentPlayerIndex={this.props.ctx.playOrderPos}
         perspectivePlayer={this.getBrowserPlayer()}
         players={this.props.G.players}
-        revealCard={this._revealCard.bind(this)}
+        revealCard={canReveal(this.props.ctx) ? this._revealCard.bind(this) : null}
       ></PlayerZones>
     );
   }

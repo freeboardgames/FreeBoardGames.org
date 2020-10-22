@@ -1,9 +1,7 @@
 import * as React from 'react';
 import css from './CardComponent.css';
-import { CardType } from './cardType';
 
 export interface ICardProps {
-  card: CardType;
   selectable?: boolean;
   selected?: boolean;
   click?: () => void;
@@ -20,7 +18,6 @@ export class CardComponent extends React.Component<ICardProps, {}> {
           this.front,
           this.props.selectable ? css.Selectable : '',
           this.props.selected ? css.Selected : '',
-          //this.props.card.showing ? css['CardFront_' + this.props.card.value] : css.hidden,
         ].join(' ')}
         onClick={this.props.click}
       >

@@ -60,8 +60,6 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
             <BunnyCardComponent
               click={() => this._selectCard(index)}
               selectable={this.props.selectCard ? true : false}
-              //selected={isSelected}
-              card={card}
             />
           </div>
         </div>
@@ -71,12 +69,7 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
     return (
       <div className={css.cardContainer} key={index}>
         <div style={styles}>
-          <BombCardComponent
-            click={() => this._selectCard(index)}
-            selectable={this.props.selectCard ? true : false}
-            //selected={isSelected}
-            card={card}
-          />
+          <BombCardComponent click={() => this._selectCard(index)} selectable={this.props.selectCard ? true : false} />
         </div>
       </div>
     );

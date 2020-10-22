@@ -5,3 +5,7 @@
   height: 175px;
   padding: 0 5px;
 }
+
+.button {
+  position: relative;
+}

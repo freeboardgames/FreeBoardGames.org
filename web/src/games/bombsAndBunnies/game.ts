@@ -13,6 +13,7 @@ export enum Phases {
   result = 'result',
 }
 
+const BetPhases = [Phases.place_or_bet, Phases.bet];
 export const PlacementPhases = [Phases.initial_placement, Phases.place_or_bet];
 export const MaxPlayers = 6;
 
@@ -25,10 +26,27 @@ export interface IG {
   minBet: number;
   maxBet: number;
   currentBet: number;
+  penaltyPlayerId: string | null;
 }
 
-function getCurrentPlayerIndex(ctx: Ctx) {
-  return ctx.playOrderPos;
+export function canBet(G: IG, ctx: Ctx): boolean {
+  return BetPhases.map((x) => x.toString()).includes(ctx.phase) && G.maxBet >= G.minBet && G.minBet > 0;
+}
+
+export function canSkipBet(G: IG, ctx: Ctx): boolean {
+  return G.currentBet > 0 && canBet(G, ctx);
+}
+
+export function canReveal(ctx: Ctx): boolean {
+  return ctx.phase === Phases.reveal.toString();
+}
+
+export function canDiscard(G: IG): boolean {
+  return G.penaltyPlayerId !== null;
+}
+
+export function getPlayerById(G: IG, playerId: string): IPlayer {
+  return G.players.find((p) => p.id === playerId);
 }
 
 export function getMaxPossibleBet(G: IG) {
@@ -39,6 +57,10 @@ export function getMaxPlayerBet(G: IG) {
   var playerBets = G.players.map((p) => p.bet).filter((b) => b !== null);
 
   return [...playerBets, 0].reduce((a, b) => (a >= b ? a : b));
+}
+
+function getCurrentPlayerIndex(ctx: Ctx) {
+  return ctx.playOrderPos;
 }
 
 function hasEveryOtherPlayerSkippedBet(G: IG) {
@@ -137,17 +159,29 @@ export const Moves = {
     var revealedCard = targetPlayer.stack.splice(targetPlayer.stack.length - 1, 1)[0];
     targetPlayer.revealedStack.push(revealedCard);
 
+    if (revealedCard === CardType.Bomb) {
+      G.penaltyPlayerId = targetPlayer.id;
+    }
+
     return G;
   },
 
-  Discard: (G: IG, ctx: Ctx, targetPlayerIndex: number, handIndex: number) => {
+  Discard: (G: IG, ctx: Ctx, handIndex: number) => {
     var playerIndex = getCurrentPlayerIndex(ctx);
     if (!(playerIndex in G.players)) {
       return INVALID_MOVE;
     }
 
-    var targetPlayer = G.players[targetPlayerIndex];
+    if (!G.penaltyPlayerId) {
+      return INVALID_MOVE;
+    }
+
+    var targetPlayer = getPlayerById(G, G.penaltyPlayerId);
     targetPlayer.hand.splice(handIndex, 1);
+
+    G.penaltyPlayerId = null;
+
+    ctx.events.endPhase();
 
     return G;
   },
@@ -197,7 +231,6 @@ export const BombsAndBunniesGame: Game<IG> = {
         var endPhase = currentPlayerBet !== null;
         if (endPhase) {
           var isMaxBet = currentPlayerBet === getMaxPossibleBet(G);
-          //console.log("place ir bet end", isMaxBet);
           return {
             next: isMaxBet ? Phases.reveal : Phases.bet,
           };
@@ -239,7 +272,7 @@ export const BombsAndBunniesGame: Game<IG> = {
         var targetBet = G.currentBet;
         var revealed = getAllRevealedCards(G);
 
-        if (revealed.some((x) => x === CardType.Bomb)) {
+        if (G.penaltyPlayerId !== null) {
           return { next: Phases.penalty };
         }
 
@@ -249,7 +282,6 @@ export const BombsAndBunniesGame: Game<IG> = {
       },
 
       onEnd: (G: IG, ctx: Ctx) => {
-        //console.log("reveal - onEnd", G, ctx);
         var revealed = getAllRevealedCards(G);
         if (revealed.length === G.currentBet && !revealed.some((x) => x === CardType.Bomb)) {
           G.players[getCurrentPlayerIndex(ctx)].wins++;
@@ -268,7 +300,7 @@ export const BombsAndBunniesGame: Game<IG> = {
         MoveDiscard: Moves.Discard,
       },
 
-      endIf: () => true, // only allow one move
+      next: Phases.initial_placement,
     },
   },
 
@@ -293,6 +325,7 @@ export const BombsAndBunniesGame: Game<IG> = {
       minBet: 1,
       maxBet: 0,
       currentBet: 0,
+      penaltyPlayerId: null,
     };
   },
 };

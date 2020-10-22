@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import css from './PlayerStack.css';
 import { FaceDownCardComponent, EmptyCardComponent } from './CardComponent';
-import { CardType } from './cardType';
 
 export interface IPlayerStackProps {
   playerIndex: number;
@@ -20,8 +19,10 @@ export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
   };
 
   render() {
+    var className = `${css.playerStack} ${this.props.revealCard ? css.active : ''}`;
+
     return (
-      <div className={css.playerStack} onClick={() => this._revealCard()}>
+      <div className={className} onClick={() => this._revealCard()}>
         {this.renderCount()}
         {this.renderCards()}
       </div>
@@ -32,7 +33,7 @@ export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
     if (this.props.stackSize === 0) {
       return (
         <div className={css.cardContainer}>
-          <EmptyCardComponent card={CardType.Bunny}></EmptyCardComponent>
+          <EmptyCardComponent></EmptyCardComponent>
         </div>
       );
     }
@@ -40,7 +41,7 @@ export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
     return new Array(this.props.stackSize).fill(0).map((_, i) => {
       return (
         <div className={css.cardContainer} key={i} style={{ margin: -i }}>
-          <FaceDownCardComponent card={CardType.Bunny}></FaceDownCardComponent>
+          <FaceDownCardComponent></FaceDownCardComponent>
         </div>
       );
     });

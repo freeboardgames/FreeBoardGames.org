@@ -2,7 +2,6 @@
   margin: 0 auto;
   text-align: center;
   width: 100%;
-  padding: 60px 0px 0px 0px;
   height: 80px;
   overflow: hidden;
 }
@@ -10,17 +9,6 @@
 .playerHand .cards {
   margin: 0 auto;
   height: 100%;
-}
-
-.playerHand .title {
-  color: white;
-  background-color: rgba(255, 0, 0, 0.5);
-  margin: 40px auto 0;
-  text-align: center;
-  border-radius: 0.5em;
-  padding: 10px;
-  height: 100px;
-  width: 120px;
 }
 
 .playerHand .cards:after {

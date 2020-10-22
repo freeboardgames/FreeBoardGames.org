@@ -28,14 +28,14 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
           key={index}
           style={{ marginLeft: index * offsetSize, transform: rotateStyle }}
         >
-          <BunnyCardComponent card={card}></BunnyCardComponent>
+          <BunnyCardComponent></BunnyCardComponent>
         </div>
       );
     }
 
     return (
       <div className={css.cardContainer} key={index} style={{ marginLeft: index * offsetSize, transform: rotateStyle }}>
-        <BombCardComponent key={index} card={card}></BombCardComponent>
+        <BombCardComponent key={index}></BombCardComponent>
       </div>
     );
   }

@@ -1,7 +1,10 @@
 .playerStack {
-  cursor: pointer;
   display: inline-block;
   margin: 10px;
+}
+
+.playerStack.active {
+  cursor: pointer;
 }
 
 .cardContainer {
