@@ -5,7 +5,7 @@ import { isLose, isWin } from './endconditions';
 
 import { phaseChosePriest} from './phases/chosePriest/phase';
 
-import { phaseVotePriest } from './phases/vote/phase';
+import { phaseVotePriest, phaseEndVotePriest } from './phases/vote/phase';
 
 import {phaseExecution,   
         phaseSpecialElection, 
@@ -63,6 +63,9 @@ function setup(ctx: Ctx): IG {
     voting: false,
     votesYes: <boolean[]>Array(ctx.numPlayers).fill(null),
     votesNo: <boolean[]>Array(ctx.numPlayers).fill(null),
+    voteCountYes: -1,
+    voteCountNo: -1,
+    voteOks: <boolean[]>Array(ctx.numPlayers).fill(false),
 
     mayorID: 0,
     priestID: <number>-1,
@@ -152,6 +155,7 @@ export const SecretDraculaGame = {
     phaseChosePriest: phaseChosePriest,
 
     phaseVotePriest: phaseVotePriest,
+    phaseEndVotePriest: phaseEndVotePriest,
 
     phaseDiscardMayor: phaseDiscardMayor,
     phaseDiscardPriest: phaseDiscardPriest,

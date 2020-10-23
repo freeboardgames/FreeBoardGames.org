@@ -17,6 +17,9 @@ export interface IG {
   voting: boolean;
   votesYes: boolean[];
   votesNo: boolean[];
+  voteCountYes: number;
+  voteCountNo: number;
+  voteOks: boolean[];
 
   mayorID: number;
   priestID: number;

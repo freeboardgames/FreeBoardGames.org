@@ -11,6 +11,7 @@ import { BHumanPolicies } from './components/bhumanpolicy';
 
 import { BChosePlayer } from './components/bchoseplayer';
 import { BVote } from './phases/vote/bvote';
+import { BEndVote } from './phases/vote/bvoteresults';
 import { BDiscard } from './phases/discardVeto/bdiscard';
 import { BPeek } from './phases/special/bpeek';
 import { BShowPlayer } from './components/bshowplayer';
@@ -70,6 +71,8 @@ export class Board extends React.Component<IBoardProps> {
           { this.render_chosePriest(playerorder, deads, vampires) }
 
           { this.render_votePriest() }
+
+          { this.render_endVotePriest() }
 
           { this.render_discardMayor() }
 
@@ -199,6 +202,40 @@ export class Board extends React.Component<IBoardProps> {
     )
             
   }
+
+  render_endVotePriest(){
+    return( <>
+            {// 
+            this.props.ctx.phase == 'phaseEndVotePriest' ? (
+              <div>
+                <p> Results of Election </p>
+                { parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
+                <BEndVote
+                  yes={this.props.G.voteCountYes}
+                  no={this.props.G.voteCountNo}
+                  done ={true}
+                  ok={() => {
+                    this.props.moves.moveOKVote(parseInt(this.props.playerID));
+                  }}
+                ></BEndVote>
+                :
+                <BEndVote
+                  yes={this.props.G.voteCountYes}
+                  no={this.props.G.voteCountNo}
+                  done ={false}
+                  ok={() => {
+                    this.props.moves.moveOKVote(parseInt(this.props.playerID));
+                  }}
+                ></BEndVote>
+              }
+              </div>
+            ) : (
+              <></>
+            )}
+            </>
+    )
+  }
+
   render_discardMayor(){
     return( <>
           {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
