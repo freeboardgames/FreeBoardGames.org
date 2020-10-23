@@ -12,7 +12,8 @@ export function movePickMayor(G: IG, ctx: Ctx, id: number, me: number): IG | 'IN
   if (G.deadIDs.includes(id)) {
     return INVALID_MOVE;
   }
-  if (id in ctx.activePlayers) { // can't chose self
+  if (id in ctx.activePlayers) {
+    // can't chose self
     return INVALID_MOVE;
   }
 
@@ -62,7 +63,8 @@ export function moveInvestigateStart(G: IG, ctx: Ctx, id: number, me: number): I
   if (G.deadIDs.includes(id)) {
     return INVALID_MOVE;
   }
-  if (id in ctx.activePlayers) { // can't chose self
+  if (id in ctx.activePlayers) {
+    // can't chose self
     return INVALID_MOVE;
   }
 

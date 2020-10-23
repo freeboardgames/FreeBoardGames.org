@@ -3,21 +3,24 @@ import { IG, IPolicy } from './interfaces';
 import { Ctx } from 'boardgame.io';
 import { isLose, isWin } from './endconditions';
 
-import { phaseChosePriest} from './phases/chosePriest/phase';
+import { phaseChosePriest } from './phases/chosePriest/phase';
 
 import { phaseVotePriest, phaseEndVotePriest } from './phases/vote/phase';
 
-import {phaseExecution,   
-        phaseSpecialElection, 
-        phaseInvestigate2, 
-        phaseInvestigate1, 
-        phasePeekPolicy } from './phases/special/phase'
+import {
+  phaseExecution,
+  phaseSpecialElection,
+  phaseInvestigate2,
+  phaseInvestigate1,
+  phasePeekPolicy,
+} from './phases/special/phase';
 
-
-import {phaseDiscardMayor,
-     phaseDiscardPriest,
-     phaseDiscardPriestVeto,
-     phaseVetoMayor } from './phases/discardVeto/phase'
+import {
+  phaseDiscardMayor,
+  phaseDiscardPriest,
+  phaseDiscardPriestVeto,
+  phaseVetoMayor,
+} from './phases/discardVeto/phase';
 
 function setup(ctx: Ctx): IG {
   // SETUP BOARD
@@ -142,8 +145,10 @@ export const SecretDraculaGame = {
           : (playerIDInt == G.priestID || playerIDInt == G.mayorID) && G.policyHand.length == 2 // I'm Priest and 2 cards, so my draw
           ? // or im Mayor and it comes back to me due to Veto
             G.policyHand
-          :  //No other players should see the hand ever
-            G.policyHand.map(() => { return null }),
+          : //No other players should see the hand ever
+            G.policyHand.map(() => {
+              return null;
+            }),
       specialElection: null,
       policyPeek: playerIDInt == G.mayorID && G.policyPeek.length == 3 ? G.policyPeek : [],
       investigate: playerIDInt == G.mayorID ? G.investigate : 0,
@@ -300,9 +305,9 @@ export const SecretDraculaGame = {
         G.electionTracker = 0;
         G.priestID = -1;
         if (G.specialElection != -1) {
-          console.log("reseting Mayor back to prior to special")
-          G.mayorID = G.specialElection
-          G.specialElection = -1
+          console.log('reseting Mayor back to prior to special');
+          G.mayorID = G.specialElection;
+          G.specialElection = -1;
         }
         G.mayorID = (G.mayorID + 1) % ctx.numPlayers;
         while (G.deadIDs.includes(G.mayorID)) {

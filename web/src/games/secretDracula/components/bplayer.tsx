@@ -35,35 +35,35 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
     return (
       <>
         <span
-                    onClick={() => {
-                      this.props.chose();
-                    }}
+          onClick={() => {
+            this.props.chose();
+          }}
         >
-              <td>
-                <p>{this.props.playerActive ? '🕒 ' : ' '}</p>
-              </td>
-              <td>
-                <p>
-                  {this.props.dead
-                    ? this.deads[my_rand_id % this.deads.length]
-                    : this.props.vampire
-                    ? this.vampires[my_rand_id % this.vampires.length]
-                    : this.humans[my_rand_id % this.humans.length]}
-                </p>
-              </td>
-              <td>
-                {this.props.vampire ? (
-                  <div className={css.vampire}> {this.props.playerName} </div>
-                ) : (
-                  <div> {this.props.playerName} </div>
-                )}
-              </td>
-              <td>
-                <p>{this.props.priest ? '✝️' : ' '}</p>
-              </td>
-              <td>
-                <p>{this.props.mayor ? '🏅' : ' '}</p>
-              </td>
+          <td>
+            <p>{this.props.playerActive ? '🕒 ' : ' '}</p>
+          </td>
+          <td>
+            <p>
+              {this.props.dead
+                ? this.deads[my_rand_id % this.deads.length]
+                : this.props.vampire
+                ? this.vampires[my_rand_id % this.vampires.length]
+                : this.humans[my_rand_id % this.humans.length]}
+            </p>
+          </td>
+          <td>
+            {this.props.vampire ? (
+              <div className={css.vampire}> {this.props.playerName} </div>
+            ) : (
+              <div> {this.props.playerName} </div>
+            )}
+          </td>
+          <td>
+            <p>{this.props.priest ? '✝️' : ' '}</p>
+          </td>
+          <td>
+            <p>{this.props.mayor ? '🏅' : ' '}</p>
+          </td>
         </span>
       </>
     );

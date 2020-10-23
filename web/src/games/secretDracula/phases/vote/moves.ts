@@ -26,11 +26,11 @@ export function moveVoteNo(G: IG, ctx: Ctx, me: number): IG {
 }
 
 export function moveOKVote(G: IG, ctx: Ctx, me: number): IG {
-  let myId = parseInt(ctx.playerID)
+  let myId = parseInt(ctx.playerID);
 
   return {
     ...G,
-    voteOks: [...G.voteOks.slice(0,myId), true, ...G.voteOks.slice(myId+1, ctx.numPlayers)],
+    voteOks: [...G.voteOks.slice(0, myId), true, ...G.voteOks.slice(myId + 1, ctx.numPlayers)],
     log: [...G.log, 'Player ' + me.toString() + ' moveOKVote '],
   };
 }

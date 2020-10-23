@@ -46,17 +46,11 @@ export class Board extends React.Component<IBoardProps> {
 
     return (
       <div className={css.div}>
-        TODO: [] Allow only 5-10 players
-              [x] Fix being able to renominate (for debug i allowed it)
-              [x] Split up main render function 
-              [] Add tests suite
-              [x] Show other players what player was investigated
-              [x] Show players the vote outcome (eg: 3yes, 4no)
-              [] check end conditions
-              [] remove a lot of console.logs
-             
+        TODO: [] Allow only 5-10 players [x] Fix being able to renominate (for debug i allowed it) [x] Split up main
+        render function [] Add tests suite [x] Show other players what player was investigated [x] Show players the vote
+        outcome (eg: 3yes, 4no) [] check end conditions [] remove a lot of console.logs
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
-          { this.render_players(playerorder, deads,vampires)}
+          {this.render_players(playerorder, deads, vampires)}
 
           <BVampirePolicies
             playedPolicies={this.props.G.policyBoardVampire.length}
@@ -68,29 +62,27 @@ export class Board extends React.Component<IBoardProps> {
             playerCount={this.props.ctx.numPlayers}
           ></BHumanPolicies>
 
-          { this.render_chosePriest(playerorder, deads, vampires) }
+          {this.render_chosePriest(playerorder, deads, vampires)}
 
-          { this.render_votePriest() }
+          {this.render_votePriest()}
 
-          { this.render_endVotePriest() }
+          {this.render_endVotePriest()}
 
-          { this.render_discardMayor() }
+          {this.render_discardMayor()}
 
-          { this.render_discardPriest() }
+          {this.render_discardPriest()}
 
-          { this.render_vetoMayor() }
+          {this.render_vetoMayor()}
 
-          { this.render_peekPolicy() }
+          {this.render_peekPolicy()}
 
-          { this.render_investigate1(playerorder, deads, vampires) }
+          {this.render_investigate1(playerorder, deads, vampires)}
 
-          { this.render_investigate2() }
+          {this.render_investigate2()}
 
-          { this.render_specialElection(playerorder, deads, vampires) }
+          {this.render_specialElection(playerorder, deads, vampires)}
 
-          { this.render_execution(playerorder, deads, vampires) }
-
-
+          {this.render_execution(playerorder, deads, vampires)}
         </GameLayout>
       </div>
     );
@@ -107,82 +99,93 @@ export class Board extends React.Component<IBoardProps> {
             </div>
 */
 
-  render_players(playerorder, deads,vampires){
-    return( <>
-          {playerorder.map((a) => {
-            return (
-              <div>
-                <table>
-                  <tbody>
-                    <tr>
-                      <BPlayer
-                        me={Number(this.props.playerID) == a}
-                        playerName={this.props.gameArgs.players[a].name}
-                        playerActive={a in this.props.ctx.activePlayers}
-                        dead={deads[a]}
-                        vampire={vampires[a]}
-                        dracula={this.props.G.draculaID == a}
-                        mayor={this.props.G.mayorID == a}
-                        priest={this.props.G.priestID == a}
-                        chose={() => { return }}
-                      ></BPlayer>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            );
-          })}
-    </>)
-
-  }
-
-  render_chosePriest(playerorder, deads, vampires){
-    return( <>
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseChosePriest' ? (
+  render_players(playerorder, deads, vampires) {
+    return (
+      <>
+        {playerorder.map((a) => {
+          return (
             <div>
-              <p> Chose Priest </p>
-              {
-                parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
               <table>
                 <tbody>
                   <tr>
-                  {playerorder.map((a) => { return (
-                    <>
-                      <BPlayer
-                        me={Number(this.props.playerID) == a}
-                        playerName={this.props.gameArgs.players[a].name}
-                        playerActive={false}
-                        dead={deads[a]}
-                        vampire={vampires[a]}
-                        dracula={this.props.G.draculaID == a}
-                        mayor={false}
-                        priest={false}
-                        chose={() => {
-                          this.props.moves.moveChosePriest(a, parseInt(this.props.playerID));
-                        }}
-                      ></BPlayer>
-                      </>)
-                      })}
+                    <BPlayer
+                      me={Number(this.props.playerID) == a}
+                      playerName={this.props.gameArgs.players[a].name}
+                      playerActive={a in this.props.ctx.activePlayers}
+                      dead={deads[a]}
+                      vampire={vampires[a]}
+                      dracula={this.props.G.draculaID == a}
+                      mayor={this.props.G.mayorID == a}
+                      priest={this.props.G.priestID == a}
+                      chose={() => {
+                        return;
+                      }}
+                    ></BPlayer>
                   </tr>
                 </tbody>
               </table>
-            : ( <></> ) }
+            </div>
+          );
+        })}
+      </>
+    );
+  }
+
+  render_chosePriest(playerorder, deads, vampires) {
+    return (
+      <>
+        {
+          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          this.props.ctx.phase == 'phaseChosePriest' ? (
+            <div>
+              <p> Chose Priest </p>
+              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
+                <table>
+                  <tbody>
+                    <tr>
+                      {playerorder.map((a) => {
+                        return (
+                          <>
+                            <BPlayer
+                              me={Number(this.props.playerID) == a}
+                              playerName={this.props.gameArgs.players[a].name}
+                              playerActive={false}
+                              dead={deads[a]}
+                              vampire={vampires[a]}
+                              dracula={this.props.G.draculaID == a}
+                              mayor={false}
+                              priest={false}
+                              chose={() => {
+                                this.props.moves.moveChosePriest(a, parseInt(this.props.playerID));
+                              }}
+                            ></BPlayer>
+                          </>
+                        );
+                      })}
+                    </tr>
+                  </tbody>
+                </table>
+              ) : (
+                <></>
+              )}
             </div>
           ) : (
             <></>
-          )}
-
-    </>)
+          )
+        }
+      </>
+    );
   }
 
-  render_votePriest(){
-    return( <>
-            {// 
-            this.props.ctx.phase == 'phaseVotePriest' ? (
-              <div>
-                <p> Vote on Mayor and Priest </p>
-                { parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
+  render_votePriest() {
+    return (
+      <>
+        {
+          //
+          this.props.ctx.phase == 'phaseVotePriest' ? (
+            <div>
+              <p> Vote on Mayor and Priest </p>
+              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
                 <BVote
                   yes={() => {
                     this.props.moves.moveVoteYes(parseInt(this.props.playerID));
@@ -191,54 +194,59 @@ export class Board extends React.Component<IBoardProps> {
                     this.props.moves.moveVoteNo(parseInt(this.props.playerID));
                   }}
                 ></BVote>
-                :
+              ) : (
                 <></>
-              }
-              </div>
-            ) : (
-              <></>
-            )}
-            </>
-    )
-            
+              )}
+            </div>
+          ) : (
+            <></>
+          )
+        }
+      </>
+    );
   }
 
-  render_endVotePriest(){
-    return( <>
-            {// 
-            this.props.ctx.phase == 'phaseEndVotePriest' ? (
-              <div>
-                <p> Results of Election </p>
-                { parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
+  render_endVotePriest() {
+    return (
+      <>
+        {
+          //
+          this.props.ctx.phase == 'phaseEndVotePriest' ? (
+            <div>
+              <p> Results of Election </p>
+              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
                 <BEndVote
                   yes={this.props.G.voteCountYes}
                   no={this.props.G.voteCountNo}
-                  done ={true}
+                  done={true}
                   ok={() => {
                     this.props.moves.moveOKVote(parseInt(this.props.playerID));
                   }}
                 ></BEndVote>
-                :
+              ) : (
                 <BEndVote
                   yes={this.props.G.voteCountYes}
                   no={this.props.G.voteCountNo}
-                  done ={false}
+                  done={false}
                   ok={() => {
                     this.props.moves.moveOKVote(parseInt(this.props.playerID));
                   }}
                 ></BEndVote>
-              }
-              </div>
-            ) : (
-              <></>
-            )}
-            </>
-    )
+              )}
+            </div>
+          ) : (
+            <></>
+          )
+        }
+      </>
+    );
   }
 
-  render_discardMayor(){
-    return( <>
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+  render_discardMayor() {
+    return (
+      <>
+        {
+          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseDiscardMayor' ? (
             <div>
               <p> Mayor: Discard Card </p>
@@ -252,18 +260,23 @@ export class Board extends React.Component<IBoardProps> {
             </div>
           ) : (
             <></>
-          )}
-
-    </>)
+          )
+        }
+      </>
+    );
   }
-  render_discardPriest(){
-    return( <>
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          (this.props.ctx.phase == 'phaseDiscardPriest' || this.props.ctx.phase == 'phaseDiscardPriestVeto') ? (
+  render_discardPriest() {
+    return (
+      <>
+        {
+          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          this.props.ctx.phase == 'phaseDiscardPriest' || this.props.ctx.phase == 'phaseDiscardPriestVeto' ? (
             <div>
               <p> Priest: Discard Card </p>
               <BDiscard
-                policies={this.props.G.policyHand.map((a) => { return parseInt(this.props.playerID) in this.props.ctx.activePlayers ? a : null})}
+                policies={this.props.G.policyHand.map((a) => {
+                  return parseInt(this.props.playerID) in this.props.ctx.activePlayers ? a : null;
+                })}
                 vetoEnabled={this.props.G.vetoPower}
                 mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
                 discard={this._discardWrapper(parseInt(this.props.playerID))}
@@ -272,14 +285,17 @@ export class Board extends React.Component<IBoardProps> {
             </div>
           ) : (
             <></>
-          )}
-
-    </>)
+          )
+        }
+      </>
+    );
   }
-  render_vetoMayor(){
-    return( <>
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-            this.props.ctx.phase == 'phaseVetoMayor' ? (
+  render_vetoMayor() {
+    return (
+      <>
+        {
+          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+          this.props.ctx.phase == 'phaseVetoMayor' ? (
             <div>
               <p> Mayor: Agree Veto? </p>
               <BDiscard
@@ -292,188 +308,214 @@ export class Board extends React.Component<IBoardProps> {
             </div>
           ) : (
             <></>
-          )}
-    </>)
+          )
+        }
+      </>
+    );
   }
-  render_peekPolicy(){
-    return( <>
-          {// 
+  render_peekPolicy() {
+    return (
+      <>
+        {
+          //
           this.props.ctx.phase == 'phasePeekPolicy' ? (
             <div>
               <p> Next Three Samples </p>
-              { parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
-              <BPeek
-                policies={this.props.G.policyPeek}
-                ok={() => {
-                  this.props.moves.moveOK(parseInt(this.props.playerID));
-                }}
-              ></BPeek>
-              : <></> }
+              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
+                <BPeek
+                  policies={this.props.G.policyPeek}
+                  ok={() => {
+                    this.props.moves.moveOK(parseInt(this.props.playerID));
+                  }}
+                ></BPeek>
+              ) : (
+                <></>
+              )}
             </div>
           ) : (
             <></>
-          )}
-
-    </>)
+          )
+        }
+      </>
+    );
   }
-  render_investigate1(playerorder, deads, vampires){
-    return( <>
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers && this.props.ctx.phase == 'phaseInvestigate1' ? (
-            this.props.ctx.phase == 'phaseInvestigate1' ? (
+  render_investigate1(playerorder, deads, vampires) {
+    return (
+      <>
+        {
+          // parseInt(this.props.playerID) in this.props.ctx.activePlayers && this.props.ctx.phase == 'phaseInvestigate1' ? (
+          this.props.ctx.phase == 'phaseInvestigate1' ? (
             <div>
               <p> Mayor: Who to Investigate? </p>
-              {
-                parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
-              <table>
-                <tbody>
-                  <tr>
-                  {playerorder.map((a) => { return (
-                    <>
-                      <BPlayer
-                        me={Number(this.props.playerID) == a}
-                        playerName={this.props.gameArgs.players[a].name}
-                        playerActive={false}
-                        dead={deads[a]}
-                        vampire={vampires[a]}
-                        dracula={this.props.G.draculaID == a}
-                        mayor={false}
-                        priest={false}
-                        chose={() => {
-                          this.props.moves.moveInvestigateStart(a, parseInt(this.props.playerID));
-                        }}
-                      ></BPlayer>
-                      </>)
+              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
+                <table>
+                  <tbody>
+                    <tr>
+                      {playerorder.map((a) => {
+                        return (
+                          <>
+                            <BPlayer
+                              me={Number(this.props.playerID) == a}
+                              playerName={this.props.gameArgs.players[a].name}
+                              playerActive={false}
+                              dead={deads[a]}
+                              vampire={vampires[a]}
+                              dracula={this.props.G.draculaID == a}
+                              mayor={false}
+                              priest={false}
+                              chose={() => {
+                                this.props.moves.moveInvestigateStart(a, parseInt(this.props.playerID));
+                              }}
+                            ></BPlayer>
+                          </>
+                        );
                       })}
-                  </tr>
-                </tbody>
-              </table>
-            : ( <></> ) }
+                    </tr>
+                  </tbody>
+                </table>
+              ) : (
+                <></>
+              )}
             </div>
           ) : (
             <></>
-          )}
-
-    </>)
+          )
+        }
+      </>
+    );
   }
-  render_investigate2(){
-    return( <>
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+  render_investigate2() {
+    return (
+      <>
+        {
+          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseInvestigate2' ? (
             <div>
               <p>Finish Investigation</p>
-              {
-                parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
-              <BShowPlayer
-                name={
-                  this.props.gameArgs.players.map((player) => {
-                    return player.name;
-                  })[(this.props.G.investigateID, this.props.G.investigateID)]
-                }
-                vampire={this.props.G.investigate == 1}
-                finish={() => {
-                  this.props.moves.moveInvestigateEnd(parseInt(this.props.playerID));
-                }}
-                iInvestigate={true}
-              ></BShowPlayer>
-              :
-              <BShowPlayer
-                name={
-                  this.props.gameArgs.players.map((player) => {
-                    return player.name;
-                  })[(this.props.G.investigateID, this.props.G.investigateID)]
-                }
-                vampire={null}
-                finish={() => {
-                  return;
-                }}
-                iInvestigate={false}
-              ></BShowPlayer>
-              }
-          </div>
+              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
+                <BShowPlayer
+                  name={
+                    this.props.gameArgs.players.map((player) => {
+                      return player.name;
+                    })[(this.props.G.investigateID, this.props.G.investigateID)]
+                  }
+                  vampire={this.props.G.investigate == 1}
+                  finish={() => {
+                    this.props.moves.moveInvestigateEnd(parseInt(this.props.playerID));
+                  }}
+                  iInvestigate={true}
+                ></BShowPlayer>
+              ) : (
+                <BShowPlayer
+                  name={
+                    this.props.gameArgs.players.map((player) => {
+                      return player.name;
+                    })[(this.props.G.investigateID, this.props.G.investigateID)]
+                  }
+                  vampire={null}
+                  finish={() => {
+                    return;
+                  }}
+                  iInvestigate={false}
+                ></BShowPlayer>
+              )}
+            </div>
           ) : (
-          <></>
-          )}
-
-    </>)
+            <></>
+          )
+        }
+      </>
+    );
   }
-  render_specialElection(playerorder, deads, vampires){
-    return( <>
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
+  render_specialElection(playerorder, deads, vampires) {
+    return (
+      <>
+        {
+          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseSpecialElection' ? (
             <div>
               <p>Special Election: Chose next Mayor</p>
-              {
-                parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
-              <table>
-                <tbody>
-                  <tr>
-                  {playerorder.map((a) => { return (
-                    <>
-                      <BPlayer
-                        me={Number(this.props.playerID) == a}
-                        playerName={this.props.gameArgs.players[a].name}
-                        playerActive={false}
-                        dead={deads[a]}
-                        vampire={vampires[a]}
-                        dracula={this.props.G.draculaID == a}
-                        mayor={false}
-                        priest={false}
-                        chose={() => {
-                          this.props.moves.movePickMayor(a, parseInt(this.props.playerID));
-                        }}
-                      ></BPlayer>
-                      </>)
+              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
+                <table>
+                  <tbody>
+                    <tr>
+                      {playerorder.map((a) => {
+                        return (
+                          <>
+                            <BPlayer
+                              me={Number(this.props.playerID) == a}
+                              playerName={this.props.gameArgs.players[a].name}
+                              playerActive={false}
+                              dead={deads[a]}
+                              vampire={vampires[a]}
+                              dracula={this.props.G.draculaID == a}
+                              mayor={false}
+                              priest={false}
+                              chose={() => {
+                                this.props.moves.movePickMayor(a, parseInt(this.props.playerID));
+                              }}
+                            ></BPlayer>
+                          </>
+                        );
                       })}
-                  </tr>
-                </tbody>
-              </table>
-            : ( <></> ) }
+                    </tr>
+                  </tbody>
+                </table>
+              ) : (
+                <></>
+              )}
             </div>
           ) : (
             <></>
-          )}
-
-    </>)
+          )
+        }
+      </>
+    );
   }
-  render_execution(playerorder, deads, vampires){
-    return( <>
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers && 
+  render_execution(playerorder, deads, vampires) {
+    return (
+      <>
+        {
+          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseExecution' ? (
             <div>
               <p>Mayor: Execute player </p>
-              {
-                parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
-              <table>
-                <tbody>
-                  <tr>
-                  {playerorder.map((a) => { return (
-                    <>
-                      <BPlayer
-                        me={Number(this.props.playerID) == a}
-                        playerName={this.props.gameArgs.players[a].name}
-                        playerActive={false}
-                        dead={deads[a]}
-                        vampire={vampires[a]}
-                        dracula={this.props.G.draculaID == a}
-                        mayor={false}
-                        priest={false}
-                        chose={() => {
-                          this.props.moves.moveExecute(a, parseInt(this.props.playerID));
-                        }}
-                      ></BPlayer>
-                      </>)
+              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
+                <table>
+                  <tbody>
+                    <tr>
+                      {playerorder.map((a) => {
+                        return (
+                          <>
+                            <BPlayer
+                              me={Number(this.props.playerID) == a}
+                              playerName={this.props.gameArgs.players[a].name}
+                              playerActive={false}
+                              dead={deads[a]}
+                              vampire={vampires[a]}
+                              dracula={this.props.G.draculaID == a}
+                              mayor={false}
+                              priest={false}
+                              chose={() => {
+                                this.props.moves.moveExecute(a, parseInt(this.props.playerID));
+                              }}
+                            ></BPlayer>
+                          </>
+                        );
                       })}
-                  </tr>
-                </tbody>
-              </table>
-            : ( <></> ) }
-
+                    </tr>
+                  </tbody>
+                </table>
+              ) : (
+                <></>
+              )}
             </div>
           ) : (
             <></>
-          )}
-
-    </>)
+          )
+        }
+      </>
+    );
   }
   _discardWrapper(playerIndex: number) {
     if (this.props.ctx.phase == 'phaseDiscardMayor') {

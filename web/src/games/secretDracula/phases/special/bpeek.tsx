@@ -27,7 +27,7 @@ export class BPeek extends React.Component<InnerWrapper, {}> {
                   this.props.ok();
                 }}
               >
-               🆗 
+                🆗
               </td>
             </tr>
           </tbody>

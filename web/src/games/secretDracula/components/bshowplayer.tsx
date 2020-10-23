@@ -15,19 +15,23 @@ export class BShowPlayer extends React.Component<InnerWrapper, {}> {
         <table>
           <tbody>
             <tr>
-              {this.props.iInvestigate ?
-              <td>
-                <p> {this.props.vampire ? '🩸' : '💧'} </p>
-              </td>
-              : <></> }
+              {this.props.iInvestigate ? (
+                <td>
+                  <p> {this.props.vampire ? '🩸' : '💧'} </p>
+                </td>
+              ) : (
+                <></>
+              )}
               <td>
                 <p> {this.props.name} </p>
               </td>
-              {this.props.iInvestigate ?
-              <td>
-                <p onClick={() => this.props.finish()}> 👍 </p>
-              </td>
-              : <></> }
+              {this.props.iInvestigate ? (
+                <td>
+                  <p onClick={() => this.props.finish()}> 👍 </p>
+                </td>
+              ) : (
+                <></>
+              )}
             </tr>
           </tbody>
         </table>

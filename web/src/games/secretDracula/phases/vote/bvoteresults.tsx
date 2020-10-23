@@ -2,7 +2,7 @@ import React from 'react';
 
 interface InnerWrapper {
   yes: number;
-  no: number
+  no: number;
   ok(): any;
   done: boolean;
 }
@@ -18,12 +18,13 @@ export class BEndVote extends React.Component<InnerWrapper, {}> {
           <tr>
             <td>{this.props.no} 👎</td>
           </tr>
-          { this.props.done ? 
-          <tr>
-            <td onClick={() => this.props.ok()}> 🆗 </td>
-          </tr>
-          : 
-          <></>}
+          {this.props.done ? (
+            <tr>
+              <td onClick={() => this.props.ok()}> 🆗 </td>
+            </tr>
+          ) : (
+            <></>
+          )}
         </tbody>
       </table>
     );
