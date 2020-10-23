@@ -6,20 +6,12 @@ import css from './PlayerHand.css';
 import { CardType } from './cardType';
 
 export interface IPlayerHandProps {
-  playerIndex: number;
+  playerId: string;
   hand: CardType[];
   selectCard?: (handIndex: number) => void;
 }
 
 export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
-  _selectCard = (handIndex: number) => {
-    if (!this.props.selectCard) {
-      return;
-    }
-
-    this.props.selectCard(handIndex);
-  };
-
   render() {
     return <div className={css.playerHand}>{this.renderCards()}</div>;
   }
@@ -57,10 +49,7 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
       return (
         <div className={css.cardContainer} key={index}>
           <div style={styles}>
-            <BunnyCardComponent
-              click={() => this._selectCard(index)}
-              selectable={this.props.selectCard ? true : false}
-            />
+            <BunnyCardComponent click={this.props.selectCard ? () => this.props.selectCard(index) : null} />
           </div>
         </div>
       );
@@ -69,7 +58,7 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
     return (
       <div className={css.cardContainer} key={index}>
         <div style={styles}>
-          <BombCardComponent click={() => this._selectCard(index)} selectable={this.props.selectCard ? true : false} />
+          <BombCardComponent click={this.props.selectCard ? () => this.props.selectCard(index) : null} />
         </div>
       </div>
     );

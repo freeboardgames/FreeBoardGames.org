@@ -13,6 +13,8 @@ const defaultPlayer: IPlayer = {
 };
 
 const defaultG: IG = {
+  bombPlayerId: null,
+  failedRevealPlayerId: null,
   currentBet: 0,
   minBet: 1,
   maxBet: 0,
@@ -34,5 +36,5 @@ test('max player bet is 2', () => {
     ],
   };
 
-  expect(getMaxPlayerBet(G)).toEqual(2);
+  expect(getMaxPlayerBet(G.players)).toEqual(2);
 });

@@ -32,6 +32,7 @@
 
 .Card.Selectable {
   cursor: pointer;
+  box-shadow: 0px 0px 50px #ffc505;
 }
 
 .Card.Selectable:hover {

@@ -6,11 +6,22 @@ import { PlayerRevealedStack } from './PlayerRevealedStack';
 import { CardType } from './cardType';
 import { MaxPlayers } from './game';
 
+export enum PlayerStatus {
+  CurrentPlayer,
+  HasWin,
+  Skipped,
+  HasBet,
+  HasMaxBet,
+}
+
 export interface IPlayerZoneProps {
+  playerStatuses: PlayerStatus[];
+  bet: number | null;
+  totalPlayerCards: number;
   stackSize: number;
   revealedStack: CardType[];
-  playerIndex: number;
-  revealCard?: (playerIndex: number) => void;
+  playerId: string;
+  revealCard?: (playerId: string) => void;
   totalPlayers: number;
   positionIndex: number;
 }
@@ -28,17 +39,43 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
         className={css.playerZone}
         style={{ position: 'absolute', top: top, left: left, transform: `rotate(${angle}rad) translateX(-50%)` }}
       >
+        <div className={css.statuses}>{this.renderStatuses()}</div>
         <div className={css.stack}>{this.renderStack()}</div>
         <div className={css.revealedStack}>{this.renderRevealedStack()}</div>
       </div>
     );
   }
 
+  renderStatuses() {
+    return this.props.playerStatuses.map((s, i) => this.renderStatus(s, i));
+  }
+
+  renderStatus(status: PlayerStatus, index: number) {
+    switch (status) {
+      case PlayerStatus.CurrentPlayer:
+        return <span key={index}>🕒</span>;
+
+      case PlayerStatus.HasWin:
+        return <span key={index}>🔥</span>;
+
+      case PlayerStatus.Skipped:
+        return <span key={index}>❌</span>;
+
+      case PlayerStatus.HasBet:
+        return <span key={index}>✋</span>;
+
+      case PlayerStatus.HasMaxBet:
+        return <span key={index}>😰</span>;
+    }
+
+    return null;
+  }
+
   renderStack() {
     return (
       <PlayerStack
         revealCard={this.props.revealCard}
-        playerIndex={this.props.playerIndex}
+        playerId={this.props.playerId}
         stackSize={this.props.stackSize}
       ></PlayerStack>
     );

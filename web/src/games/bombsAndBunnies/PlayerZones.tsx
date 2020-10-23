@@ -1,14 +1,16 @@
 import * as React from 'react';
 
 import css from './PlayerZones.css';
-import { IPlayerZoneProps, PlayerZone } from './PlayerZone';
+import { IPlayerZoneProps, PlayerZone, PlayerStatus } from './PlayerZone';
 import IPlayer from './player';
+import { getMaxPlayerBet } from './game';
 
 export interface IPlayerZonesProps {
-  currentPlayerIndex: number;
-  perspectivePlayer: string;
+  currentPlayerId: string;
+  perspectivePlayerId: string;
   players: IPlayer[];
-  revealCard?: (playerIndex: number) => void;
+  canRevealTargetStack: (playerId: string) => boolean;
+  revealCard?: (playerId: string) => void;
 }
 
 export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
@@ -22,15 +24,18 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
 
   renderZones() {
     var players = this.props.players;
-    var perspectiveIndex = players.findIndex((p) => p.id === this.props.perspectivePlayer);
-    var zones = this.props.players.map((p, i) => {
+    var perspectiveIndex = players.findIndex((p) => p.id === this.props.perspectivePlayerId);
+    var zones = this.props.players.map((p: IPlayer, i) => {
       var result: IPlayerZoneProps = {
-        playerIndex: i,
+        playerStatuses: this.getPlayerStatuses(p),
+        bet: p.bet,
+        totalPlayerCards: p.hand.length + p.stack.length + p.revealedStack.length,
+        playerId: p.id,
         totalPlayers: this.props.players.length,
         positionIndex: i >= perspectiveIndex ? i - perspectiveIndex : perspectiveIndex + i,
         stackSize: p.stack.length,
         revealedStack: p.revealedStack,
-        revealCard: this.props.revealCard,
+        revealCard: this.props.canRevealTargetStack(p.id) ? this.props.revealCard : null,
       };
 
       return result;
@@ -45,5 +50,20 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
         <PlayerZone {...zoneProps}></PlayerZone>
       </div>
     );
+  }
+
+  getPlayerStatuses(player: IPlayer): PlayerStatus[] {
+    var statuses: PlayerStatus[] = [];
+    if (player.id === this.props.currentPlayerId) statuses.push(PlayerStatus.CurrentPlayer);
+
+    if (player.wins > 0) statuses.push(PlayerStatus.HasWin);
+
+    if (player.betSkipped) statuses.push(PlayerStatus.Skipped);
+
+    if (player.bet > 0) statuses.push(PlayerStatus.HasBet);
+
+    if (getMaxPlayerBet(this.props.players) === player.bet) statuses.push(PlayerStatus.HasMaxBet);
+
+    return statuses;
   }
 }

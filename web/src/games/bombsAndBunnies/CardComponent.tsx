@@ -2,7 +2,6 @@ import * as React from 'react';
 import css from './CardComponent.css';
 
 export interface ICardProps {
-  selectable?: boolean;
   selected?: boolean;
   click?: () => void;
 }
@@ -16,7 +15,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
         className={[
           css.Card,
           this.front,
-          this.props.selectable ? css.Selectable : '',
+          this.props.click ? css.Selectable : '',
           this.props.selected ? css.Selected : '',
         ].join(' ')}
         onClick={this.props.click}

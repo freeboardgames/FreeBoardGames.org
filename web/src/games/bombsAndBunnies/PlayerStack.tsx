@@ -4,9 +4,9 @@ import css from './PlayerStack.css';
 import { FaceDownCardComponent, EmptyCardComponent } from './CardComponent';
 
 export interface IPlayerStackProps {
-  playerIndex: number;
+  playerId: string;
   stackSize: number;
-  revealCard?: (playerIndex: number) => void;
+  revealCard?: (playerId: string) => void;
 }
 
 export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
@@ -15,7 +15,7 @@ export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
       return;
     }
 
-    this.props.revealCard(this.props.playerIndex);
+    this.props.revealCard(this.props.playerId);
   };
 
   render() {

@@ -3,8 +3,17 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { isLocalGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
-import { IG, PlacementPhases, canBet, canSkipBet, getPlayerById, canDiscard, canReveal } from './game';
-import { OtherPlayerHandPenalty } from './OtherPlayerHandPenalty';
+import {
+  IG,
+  canBet,
+  canSkipBet,
+  getPlayerById,
+  canDiscard,
+  canReveal,
+  canRevealTargetStack,
+  canPlaceCard,
+} from './game';
+import { PlayerHandPenalty } from './PlayerHandPenalty';
 import { PlayerHand } from './PlayerHand';
 import { BetPanel } from './BetPanel';
 import { BetButton, SkipButton } from './BetButton';
@@ -38,8 +47,8 @@ export class Board extends React.Component<IBoardProps, {}> {
     this.props.moves.MovePlaceCard(handIndex);
   }
 
-  _selectPenaltyCard(handIndex: number) {
-    this.props.moves.MoveDiscard(handIndex);
+  _selectPenaltyCard(targetPlayerIndex: string, handIndex: number) {
+    this.props.moves.MoveDiscard(targetPlayerIndex, handIndex);
   }
 
   _bet(bet: number) {
@@ -52,8 +61,8 @@ export class Board extends React.Component<IBoardProps, {}> {
     this.props.moves.MoveSkipBet();
   }
 
-  _revealCard(targetPlayerIndex: number) {
-    this.props.moves.MoveReveal(targetPlayerIndex);
+  _revealCard(targetPlayerId: string) {
+    this.props.moves.MoveReveal(targetPlayerId);
   }
 
   render() {
@@ -95,15 +104,19 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   getBetButtons() {
+    const playerID = this.getBrowserPlayer();
+
     return (
-      <div>
+      <div style={{ marginBottom: '-10px' }}>
         <span style={{ marginRight: '20px' }}>
           <BetButton
-            click={canBet(this.props.G, this.props.ctx) ? this._toggleBetPanel.bind(this) : null}
+            click={canBet(this.props.G, this.props.ctx, playerID) ? this._toggleBetPanel.bind(this) : null}
             active={this.betPanelToggle}
           ></BetButton>
         </span>
-        <SkipButton click={canSkipBet(this.props.G, this.props.ctx) ? this._skipBet.bind(this) : null}></SkipButton>
+        <SkipButton
+          click={canSkipBet(this.props.G, this.props.ctx, playerID) ? this._skipBet.bind(this) : null}
+        ></SkipButton>
       </div>
     );
   }
@@ -123,13 +136,9 @@ export class Board extends React.Component<IBoardProps, {}> {
 
     return (
       <PlayerHand
-        playerIndex={parseInt(playerID)}
-        hand={this.props.G.players[playerID].hand}
-        selectCard={
-          this.props.ctx.phase && PlacementPhases.map((p) => p.toString()).includes(this.props.ctx.phase)
-            ? this._selectCard.bind(this)
-            : null
-        }
+        playerId={playerID}
+        hand={getPlayerById(this.props.G, playerID).hand}
+        selectCard={canPlaceCard(this.props.ctx, playerID) ? this._selectCard.bind(this) : null}
       />
     );
   }
@@ -150,28 +159,34 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   getOtherPlayerHandPenalty() {
-    var penaltyPlayerId = this.props.G.penaltyPlayerId;
+    var playerId = this.getBrowserPlayer();
+    var penaltyPlayerId = this.props.G.failedRevealPlayerId;
     if (!penaltyPlayerId) return null;
 
     var penaltyPlayer = getPlayerById(this.props.G, penaltyPlayerId);
-    if (!canDiscard(this.props.G)) return null;
+    if (!canDiscard(this.props.G, playerId)) return null;
 
     return (
-      <OtherPlayerHandPenalty
-        handSize={penaltyPlayer.hand.length}
-        playerId={penaltyPlayerId}
+      <PlayerHandPenalty
+        hand={penaltyPlayer.hand}
+        playerId={playerId}
+        targetPlayerId={penaltyPlayerId}
         selectCard={this._selectPenaltyCard.bind(this)}
-      ></OtherPlayerHandPenalty>
+      ></PlayerHandPenalty>
     );
   }
 
   getPlayerZones() {
+    var currentPlayerId = this.props.ctx.currentPlayer;
     return (
       <PlayerZones
-        currentPlayerIndex={this.props.ctx.playOrderPos}
-        perspectivePlayer={this.getBrowserPlayer()}
+        currentPlayerId={currentPlayerId}
+        perspectivePlayerId={this.getBrowserPlayer()}
         players={this.props.G.players}
         revealCard={canReveal(this.props.ctx) ? this._revealCard.bind(this) : null}
+        canRevealTargetStack={(targetPlayerId: string) =>
+          canRevealTargetStack(this.props.G, this.props.ctx, targetPlayerId)
+        }
       ></PlayerZones>
     );
   }
