@@ -324,6 +324,8 @@ export class Board extends React.Component<IBoardProps> {
           this.props.ctx.phase == 'phaseInvestigate2' ? (
             <div>
               <p>Finish Investigation</p>
+              {
+                parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
               <BShowPlayer
                 name={
                   this.props.gameArgs.players.map((player) => {
@@ -334,7 +336,22 @@ export class Board extends React.Component<IBoardProps> {
                 finish={() => {
                   this.props.moves.moveInvestigateEnd(parseInt(this.props.playerID));
                 }}
+                iInvestigate={true}
               ></BShowPlayer>
+              :
+              <BShowPlayer
+                name={
+                  this.props.gameArgs.players.map((player) => {
+                    return player.name;
+                  })[(this.props.G.investigateID, this.props.G.investigateID)]
+                }
+                vampire={null}
+                finish={() => {
+                  return;
+                }}
+                iInvestigate={false}
+              ></BShowPlayer>
+              }
           </div>
           ) : (
           <></>
