@@ -51,7 +51,7 @@ export class Board extends React.Component<IBoardProps> {
               [x] Split up main render function 
               [] Add tests suite
               [x] Show other players what player was investigated
-              [] Show players the vote outcome (eg: 3yes, 4no)
+              [x] Show players the vote outcome (eg: 3yes, 4no)
               [] check end conditions
               [] remove a lot of console.logs
              
@@ -399,9 +399,9 @@ export class Board extends React.Component<IBoardProps> {
   render_specialElection(playerorder, deads, vampires){
     return( <>
           {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseSpeicalElection' ? (
+          this.props.ctx.phase == 'phaseSpecialElection' ? (
             <div>
-              <p>Mayor: Chose next Mayor</p>
+              <p>Special Election: Chose next Mayor</p>
               {
                 parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
               <table>
