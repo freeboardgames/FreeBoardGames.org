@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { FaceDownCardComponent, BunnyCardComponent, BombCardComponent } from './CardComponent';
+import { FaceDownCardComponent, BunnyCardComponent, BombCardComponent, CardStyle } from './CardComponent';
 import { CardType } from './cardType';
 
 import css from './PlayerHandPenalty.css';
@@ -10,6 +10,7 @@ export interface IPlayerHandPenaltyProps {
   targetPlayerId: string;
   hand: CardType[];
   selectCard?: (targetPlayerId: string, handIndex: number) => void;
+  cardStyle: CardStyle;
 }
 
 export class PlayerHandPenalty extends React.Component<IPlayerHandPenaltyProps, {}> {
@@ -41,6 +42,7 @@ export class PlayerHandPenalty extends React.Component<IPlayerHandPenaltyProps, 
         <div className={css.cardContainer} key={index}>
           <div>
             <BunnyCardComponent
+              style={this.props.cardStyle}
               click={this.props.selectCard ? () => this.props.selectCard(this.props.targetPlayerId, index) : null}
             />
           </div>
@@ -53,6 +55,7 @@ export class PlayerHandPenalty extends React.Component<IPlayerHandPenaltyProps, 
         <div className={css.cardContainer} key={index}>
           <div>
             <BombCardComponent
+              style={this.props.cardStyle}
               click={this.props.selectCard ? () => this.props.selectCard(this.props.targetPlayerId, index) : null}
             />
           </div>
@@ -66,6 +69,7 @@ export class PlayerHandPenalty extends React.Component<IPlayerHandPenaltyProps, 
       <div className={css.cardContainer} key={index}>
         <div>
           <FaceDownCardComponent
+            style={this.props.cardStyle}
             click={this.props.selectCard ? () => this.props.selectCard(this.props.targetPlayerId, index) : null}
           />
         </div>

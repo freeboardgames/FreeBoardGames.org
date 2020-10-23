@@ -3,6 +3,7 @@ import { INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
 
 import IPlayer from './player';
 import { CardType } from './cardType';
+import { CardStyle } from './CardComponent';
 
 export enum Phases {
   initial_placement = 'initial_placement',
@@ -336,8 +337,9 @@ export const BombsAndBunniesGame: Game<IG> = {
   },
 
   setup: (ctx: Ctx): IG => {
-    let players = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
+    let players: IPlayer[] = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
       id: i.toString(),
+      cardStyle: <CardStyle>i,
       bet: null,
       betSkipped: false,
       hand: [CardType.Bunny, CardType.Bunny, CardType.Bunny, CardType.Bomb],

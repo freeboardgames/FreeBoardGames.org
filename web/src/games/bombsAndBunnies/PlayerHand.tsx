@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { BunnyCardComponent, BombCardComponent } from './CardComponent';
+import { BunnyCardComponent, BombCardComponent, CardStyle } from './CardComponent';
 
 import css from './PlayerHand.css';
 import { CardType } from './cardType';
@@ -8,6 +8,7 @@ import { CardType } from './cardType';
 export interface IPlayerHandProps {
   playerId: string;
   hand: CardType[];
+  cardStyle: CardStyle;
   selectCard?: (handIndex: number) => void;
 }
 
@@ -49,7 +50,10 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
       return (
         <div className={css.cardContainer} key={index}>
           <div style={styles}>
-            <BunnyCardComponent click={this.props.selectCard ? () => this.props.selectCard(index) : null} />
+            <BunnyCardComponent
+              style={this.props.cardStyle}
+              click={this.props.selectCard ? () => this.props.selectCard(index) : null}
+            />
           </div>
         </div>
       );
@@ -58,7 +62,10 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
     return (
       <div className={css.cardContainer} key={index}>
         <div style={styles}>
-          <BombCardComponent click={this.props.selectCard ? () => this.props.selectCard(index) : null} />
+          <BombCardComponent
+            style={this.props.cardStyle}
+            click={this.props.selectCard ? () => this.props.selectCard(index) : null}
+          />
         </div>
       </div>
     );

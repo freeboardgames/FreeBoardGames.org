@@ -5,6 +5,7 @@ import { PlayerStack } from './PlayerStack';
 import { PlayerRevealedStack } from './PlayerRevealedStack';
 import { CardType } from './cardType';
 import { MaxPlayers } from './game';
+import { CardStyle } from './CardComponent';
 
 export enum PlayerStatus {
   CurrentPlayer,
@@ -21,6 +22,7 @@ export interface IPlayerZoneProps {
   stackSize: number;
   revealedStack: CardType[];
   playerId: string;
+  playerCardStyle: CardStyle;
   revealCard?: (playerId: string) => void;
   totalPlayers: number;
   positionIndex: number;
@@ -77,6 +79,7 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
         revealCard={this.props.revealCard}
         playerId={this.props.playerId}
         stackSize={this.props.stackSize}
+        cardStyle={this.props.playerCardStyle}
       ></PlayerStack>
     );
   }

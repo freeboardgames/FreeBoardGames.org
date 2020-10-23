@@ -1,7 +1,43 @@
 import * as React from 'react';
 import css from './CardComponent.css';
 
+export enum CardStyle {
+  Style1,
+  Style2,
+  Style3,
+  Style4,
+  Style5,
+  Style6,
+}
+
+function getStyleClassName(style?: CardStyle) {
+  if (style === undefined) return '';
+
+  switch (style) {
+    case CardStyle.Style1:
+      return css.CardStyle1;
+
+    case CardStyle.Style2:
+      return css.CardStyle2;
+
+    case CardStyle.Style3:
+      return css.CardStyle3;
+
+    case CardStyle.Style4:
+      return css.CardStyle4;
+
+    case CardStyle.Style5:
+      return css.CardStyle5;
+
+    case CardStyle.Style6:
+      return css.CardStyle6;
+  }
+
+  return '';
+}
+
 export interface ICardProps {
+  style?: CardStyle;
   selected?: boolean;
   click?: () => void;
 }
@@ -17,6 +53,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
           this.front,
           this.props.click ? css.Selectable : '',
           this.props.selected ? css.Selected : '',
+          getStyleClassName(this.props.style),
         ].join(' ')}
         onClick={this.props.click}
       >
@@ -30,7 +67,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
   }
 }
 export class FaceDownCardComponent extends CardComponent {
-  front: string = css.FaceDown;
+  front: string = css.FaceDownCard;
 }
 
 export class EmptyCardComponent extends CardComponent {
@@ -43,7 +80,7 @@ export class BunnyCardComponent extends CardComponent {
   renderSVG() {
     return (
       <svg width="100%" height="100%" viewBox="0 0 750 1050" className={css.CardSVG}>
-        <g transform="translate(-50,850) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+        <g transform="translate(-50,850) scale(0.100000,-0.100000)" stroke="none">
           <path
             d="M2979 6807 c-337 -172 -203 -904 280 -1527 80 -104 286 -311 364
           -365 53 -38 69 -59 48 -67 -26 -9 -153 -225 -192 -325 -20 -52 -58 -214 -69
@@ -77,7 +114,7 @@ export class BombCardComponent extends CardComponent {
   renderSVG() {
     return (
       <svg width="100%" height="100%" viewBox="0 0 750 1050" className={css.CardSVG}>
-        <g transform="translate(-30,750) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+        <g transform="translate(-30,750) scale(0.100000,-0.100000)" stroke="none">
           <path
             d="M6163 4940 c-6 -14 -25 -66 -42 -116 l-33 -92 -105 50 c-58 27 -106
           48 -108 46 -2 -2 19 -50 46 -107 27 -57 48 -105 47 -106 -2 -1 -51 -19 -110

@@ -31,6 +31,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
         bet: p.bet,
         totalPlayerCards: p.hand.length + p.stack.length + p.revealedStack.length,
         playerId: p.id,
+        playerCardStyle: p.cardStyle,
         totalPlayers: this.props.players.length,
         positionIndex: i >= perspectiveIndex ? i - perspectiveIndex : perspectiveIndex + i,
         stackSize: p.stack.length,
@@ -46,8 +47,8 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
 
   renderZone(zoneProps: IPlayerZoneProps, index: number) {
     return (
-      <div className={css.zone} key={index}>
-        <PlayerZone {...zoneProps}></PlayerZone>
+      <div className={css.zone}>
+        <PlayerZone {...zoneProps} key={index}></PlayerZone>
       </div>
     );
   }

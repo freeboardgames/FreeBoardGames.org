@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 import css from './PlayerStack.css';
-import { FaceDownCardComponent, EmptyCardComponent } from './CardComponent';
+import { FaceDownCardComponent, EmptyCardComponent, CardStyle } from './CardComponent';
 
 export interface IPlayerStackProps {
   playerId: string;
   stackSize: number;
   revealCard?: (playerId: string) => void;
+  cardStyle: CardStyle;
 }
 
 export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
@@ -41,7 +42,7 @@ export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
     return new Array(this.props.stackSize).fill(0).map((_, i) => {
       return (
         <div className={css.cardContainer} key={i} style={{ margin: -i }}>
-          <FaceDownCardComponent></FaceDownCardComponent>
+          <FaceDownCardComponent style={this.props.cardStyle}></FaceDownCardComponent>
         </div>
       );
     });

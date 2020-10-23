@@ -51,7 +51,6 @@
 }
 
 .FaceDownCard {
-  border: none;
   background-color: #888;
 }
 
@@ -60,7 +59,7 @@
 }
 
 .BombCard {
-  background-color: rgb(192, 44, 44);
+  background-color: black;
 }
 
 .BunnyCard.hidden {
@@ -77,35 +76,53 @@
   clip-rule: evenodd;
   stroke-linejoin: round;
   stroke-miterlimit: 2;
+  fill: black;
 }
 
-.BunnyCardSVGOutline {
-  fill: rgb(255, 232, 111);
+.FaceDownCard.CardStyle1,
+.BunnyCard.CardStyle1 {
+  background-color: rgb(255, 78, 78);
+}
+.BombCard.CardStyle1 .CardSVG {
+  fill: rgb(255, 78, 78);
 }
 
-.BunnyCardSVGBackground {
-  fill: rgb(255, 232, 111);
+.FaceDownCard.CardStyle2,
+.BunnyCard.CardStyle2 {
+  background-color: rgb(255, 178, 78);
+}
+.BombCard.CardStyle2 .CardSVG {
+  fill: rgb(255, 178, 78);
 }
 
-.BombCardSVGOutline {
-  fill: rgb(133, 133, 133);
+.FaceDownCard.CardStyle3,
+.BunnyCard.CardStyle3 {
+  background-color: rgb(78, 255, 131);
+}
+.BombCard.CardStyle3 .CardSVG {
+  fill: rgb(78, 255, 131);
 }
 
-.BombCardSVGBackground {
-  fill: rgb(44, 120, 192);
+.FaceDownCard.CardStyle4,
+.BunnyCard.CardStyle4 {
+  background-color: rgb(78, 90, 255);
+}
+.BombCard.CardStyle4 .CardSVG {
+  fill: rgb(78, 90, 255);
 }
 
-.main {
-  fill: rgb(195, 195, 195);
+.FaceDownCard.CardStyle5,
+.BunnyCard.CardStyle5 {
+  background-color: rgb(240, 78, 255);
 }
-.ears {
-  fill: rgb(246, 224, 233);
+.BombCard.CardStyle5 .CardSVG {
+  fill: rgb(240, 78, 255);
 }
-.eyes {
-  fill: rgb(50, 50, 50);
+
+.FaceDownCard.CardStyle6,
+.BunnyCard.CardStyle6 {
+  background-color: rgb(228, 255, 78);
 }
-.nose {
-  stroke: rgb(170, 95, 126);
-  fill: transparent;
-  stroke-width: 1;
+.BombCard.CardStyle6 .CardSVG {
+  fill: rgb(228, 255, 78);
 }

@@ -133,11 +133,13 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     if (this.betPanelToggle) return null;
+    var player = getPlayerById(this.props.G, playerID);
 
     return (
       <PlayerHand
-        playerId={playerID}
-        hand={getPlayerById(this.props.G, playerID).hand}
+        playerId={player.id}
+        hand={player.hand}
+        cardStyle={player.cardStyle}
         selectCard={canPlaceCard(this.props.ctx, playerID) ? this._selectCard.bind(this) : null}
       />
     );
@@ -170,6 +172,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       <PlayerHandPenalty
         hand={penaltyPlayer.hand}
         playerId={playerId}
+        cardStyle={penaltyPlayer.cardStyle}
         targetPlayerId={penaltyPlayerId}
         selectCard={this._selectPenaltyCard.bind(this)}
       ></PlayerHandPenalty>

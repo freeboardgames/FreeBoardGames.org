@@ -1,8 +1,10 @@
 import { getMaxPlayerBet, IG } from './game';
 import IPlayer from './player';
 import { CardType } from './cardType';
+import { CardStyle } from './CardComponent';
 
 const defaultPlayer: IPlayer = {
+  cardStyle: CardStyle.Style1,
   bet: 0,
   betSkipped: false,
   hand: [CardType.Bunny, CardType.Bunny, CardType.Bunny, CardType.Bomb],
