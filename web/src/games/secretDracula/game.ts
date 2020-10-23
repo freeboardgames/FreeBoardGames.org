@@ -144,7 +144,7 @@ export const SecretDraculaGame = {
             G.policyHand
           :  //No other players should see the hand ever
             G.policyHand.map(() => { return null }),
-      // specialElection: null,
+      specialElection: null,
       policyPeek: playerIDInt == G.mayorID && G.policyPeek.length == 3 ? G.policyPeek : [],
       investigate: playerIDInt == G.mayorID ? G.investigate : 0,
       // everyone gets investigateID
