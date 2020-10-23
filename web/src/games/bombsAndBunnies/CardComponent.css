@@ -97,10 +97,10 @@
 
 .FaceDownCard.CardStyle3,
 .BunnyCard.CardStyle3 {
-  background-color: rgb(78, 255, 131);
+  background-color: rgb(69, 235, 63);
 }
 .BombCard.CardStyle3 .CardSVG {
-  fill: rgb(78, 255, 131);
+  fill: rgb(69, 235, 63);
 }
 
 .FaceDownCard.CardStyle4,

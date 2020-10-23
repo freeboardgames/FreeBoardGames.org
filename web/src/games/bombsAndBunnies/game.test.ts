@@ -21,6 +21,7 @@ const defaultG: IG = {
   minBet: 1,
   maxBet: 0,
   players: [],
+  discardPile: [],
 };
 
 test('max player bet is 2', () => {

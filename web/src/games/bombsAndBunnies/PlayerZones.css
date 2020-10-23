@@ -16,3 +16,10 @@
   position: absolute;
   width: 300px;
 }
+
+.centerDisplay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -4,8 +4,13 @@ import css from './PlayerZones.css';
 import { IPlayerZoneProps, PlayerZone, PlayerStatus } from './PlayerZone';
 import IPlayer from './player';
 import { getMaxPlayerBet } from './game';
+import { BetDisplay, IBetDisplayProps } from './BetDisplay';
+import { DiscardPile, IDiscardPileProps } from './DiscardPile';
 
 export interface IPlayerZonesProps {
+  betDisplayProps?: IBetDisplayProps;
+  discardPileProps?: IDiscardPileProps;
+
   currentPlayerId: string;
   perspectivePlayerId: string;
   players: IPlayer[];
@@ -18,8 +23,26 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
     return (
       <div className={css.playerZonesContainer}>
         <div className={css.playerZones}>{this.renderZones()}</div>
+        <div className={css.centerDisplay}>
+          {this.renderBetDisplay()}
+          {this.renderDiscardPile()}
+        </div>
       </div>
     );
+  }
+
+  renderBetDisplay() {
+    var props = this.props.betDisplayProps;
+    if (props === undefined) return null;
+
+    return <BetDisplay {...this.props.betDisplayProps}></BetDisplay>;
+  }
+
+  renderDiscardPile() {
+    var props = this.props.discardPileProps;
+    if (this.props.betDisplayProps !== undefined || props === undefined) return null;
+
+    return <DiscardPile {...this.props.discardPileProps}></DiscardPile>;
   }
 
   renderZones() {

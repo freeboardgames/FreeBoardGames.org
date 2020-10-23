@@ -29,6 +29,7 @@ export interface IG {
   currentBet: number;
   bombPlayerId: string | null;
   failedRevealPlayerId: string | null;
+  discardPile: CardStyle[];
 }
 
 export function canPlaceCard(ctx: Ctx, playerId: string): boolean {
@@ -48,15 +49,19 @@ export function canSkipBet(G: IG, ctx: Ctx, playerId: string): boolean {
   return isCurrentPlayer(ctx, playerId) && G.currentBet > 0 && canBet(G, ctx, playerId);
 }
 
-export function canReveal(ctx: Ctx): boolean {
+export function isRevealing(ctx: Ctx): boolean {
   return ctx.phase === Phases.reveal.toString();
+}
+
+export function isBetting(ctx: Ctx): boolean {
+  return ctx.phase === Phases.bet;
 }
 
 export function canRevealTargetStack(G: IG, ctx: Ctx, targetPlayerId: string) {
   var currentPlayer = getPlayerById(G, ctx.currentPlayer);
   var targetPlayer = getPlayerById(G, targetPlayerId);
   return (
-    canReveal(ctx) &&
+    isRevealing(ctx) &&
     ((currentPlayer.id === targetPlayer.id && currentPlayer.stack.length > 0) ||
       (currentPlayer.stack.length === 0 && targetPlayer.stack.length > 0))
   );
@@ -78,6 +83,12 @@ export function getMaxPlayerBet(players: IPlayer[]) {
   var playerBets = players.map((p) => p.bet).filter((b) => b !== null);
 
   return [...playerBets, 0].reduce((a, b) => (a >= b ? a : b));
+}
+
+export function getRevealCount(players: IPlayer[]) {
+  var playerRevealCounts = players.map((p) => p.revealedStack.length);
+
+  return [...playerRevealCounts, 0].reduce((a, b) => a + b);
 }
 
 function isCurrentPlayer(ctx: Ctx, playerId: string): boolean {
@@ -230,6 +241,8 @@ export const Moves = {
     var targetPlayer = getPlayerById(G, targetPlayerId);
     targetPlayer.hand.splice(handIndex, 1);
 
+    G.discardPile.push(targetPlayer.cardStyle);
+
     G.bombPlayerId = null;
     G.failedRevealPlayerId = null;
 
@@ -355,6 +368,7 @@ export const BombsAndBunniesGame: Game<IG> = {
       currentBet: 0,
       bombPlayerId: null,
       failedRevealPlayerId: null,
+      discardPile: [],
     };
   },
 };

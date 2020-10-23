@@ -9,14 +9,18 @@ import {
   canSkipBet,
   getPlayerById,
   canDiscard,
-  canReveal,
+  isRevealing,
+  isBetting,
   canRevealTargetStack,
   canPlaceCard,
+  getRevealCount,
 } from './game';
 import { PlayerHandPenalty } from './PlayerHandPenalty';
 import { PlayerHand } from './PlayerHand';
 import { BetPanel } from './BetPanel';
 import { BetButton, SkipButton } from './BetButton';
+import { IBetDisplayProps } from './BetDisplay';
+import { IDiscardPileProps } from './DiscardPile';
 
 import { ButtonComponent } from './ButtonComponent';
 
@@ -183,15 +187,34 @@ export class Board extends React.Component<IBoardProps, {}> {
     var currentPlayerId = this.props.ctx.currentPlayer;
     return (
       <PlayerZones
+        betDisplayProps={this.getBetDisplayProps()}
+        discardPileProps={this.getDiscardPileProps()}
         currentPlayerId={currentPlayerId}
         perspectivePlayerId={this.getBrowserPlayer()}
         players={this.props.G.players}
-        revealCard={canReveal(this.props.ctx) ? this._revealCard.bind(this) : null}
+        revealCard={isRevealing(this.props.ctx) ? this._revealCard.bind(this) : null}
         canRevealTargetStack={(targetPlayerId: string) =>
           canRevealTargetStack(this.props.G, this.props.ctx, targetPlayerId)
         }
       ></PlayerZones>
     );
+  }
+
+  getBetDisplayProps(): IBetDisplayProps | undefined {
+    var ctx = this.props.ctx;
+    if (!isBetting(ctx) && !isRevealing(ctx)) return;
+
+    return {
+      currentBet: this.props.G.currentBet,
+      isRevealing: isRevealing(ctx),
+      revealedCount: getRevealCount(this.props.G.players),
+    };
+  }
+
+  getDiscardPileProps(): IDiscardPileProps {
+    return {
+      cards: this.props.G.discardPile,
+    };
   }
 
   getBrowserPlayer() {
