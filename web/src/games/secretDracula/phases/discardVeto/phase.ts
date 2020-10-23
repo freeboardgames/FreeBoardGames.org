@@ -8,7 +8,7 @@ import { moveWantVetoMayor } from './moves';
 
 export let phaseDiscardMayor = {
   onBegin: (G: IG, ctx: Ctx) => {
-    console.log('starting phaseDiscardMayor');
+    //- console.log('starting phaseDiscardMayor');
     let p = G.mayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseDiscardMayor';
@@ -32,7 +32,7 @@ export let phaseDiscardMayor = {
   endIf: (G: IG, ctx: Ctx) => {
     if (G.policyHand.length == 2) {
       if (!G.vetoPower) {
-        console.log('Moving to phaseDiscardPriest');
+        //- console.log('Moving to phaseDiscardPriest');
         return { next: 'phaseDiscardPriest' };
       } else if (G.vetoPower) {
         return { next: 'phaseDiscardPriestVeto' };
@@ -40,7 +40,7 @@ export let phaseDiscardMayor = {
     }
   },
   onEnd: (G: IG, ctx: Ctx) => {
-    console.log('ending phaseDiscardMayor');
+    //- console.log('ending phaseDiscardMayor');
     G.lastMayorID = G.mayorID;
     G.lastPriestID = G.priestID;
     G.justPlayedVampirePolicy = -1;
@@ -49,7 +49,7 @@ export let phaseDiscardMayor = {
 };
 export let phaseDiscardPriest = {
   onBegin: (G: IG, ctx: Ctx) => {
-    console.log('starting phaseDiscardPriest');
+    //- console.log('starting phaseDiscardPriest');
     let p = G.priestID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseDiscardPriest';
@@ -64,15 +64,15 @@ export let phaseDiscardPriest = {
   },
   endIf: (G: IG, ctx: Ctx) => {
     if (G.policyHand.length == 1) {
-      console.log('A0');
+      //- console.log('A0');
       return { next: 'phaseSpecial' };
     }
     return false;
   },
   onEnd: (G: IG, ctx: Ctx) => {
-    console.log('ending phaseDiscardPriest');
-    console.log('and setting to ', G.policyHand[0].chalice ? G.policyBoardVampire.length : -1);
-    //     console.log("B0")
+    //- console.log('ending phaseDiscardPriest');
+    //- console.log('and setting to ', G.policyHand[0].chalice ? G.policyBoardVampire.length : -1);
+    //     //- console.log("B0")
     //     return G
     return {
       ...G,

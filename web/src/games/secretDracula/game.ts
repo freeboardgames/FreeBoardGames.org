@@ -169,20 +169,20 @@ export const SecretDraculaGame = {
 
     phaseCheckElectionCounter: {
       onBegin: (G, ctx) => {
-        console.log('starting phaseCheckElectionCounter');
+        //- console.log('starting phaseCheckElectionCounter');
         return G;
       },
       endIf: (G: IG, ctx: Ctx) => {
-        console.log('endIf phaseCheckElectionCounter');
+        //- console.log('endIf phaseCheckElectionCounter');
         if (G.electionTracker < 2) {
-          console.log('going to phaseChosePriest');
+          //- console.log('going to phaseChosePriest');
           return { next: 'phaseChosePriest' };
         }
-        console.log('going to phaseSpecial');
+        //- console.log('going to phaseSpecial');
         return { next: 'phaseSpecial' };
       },
       onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phaseCheckElectionCounter');
+        //- console.log('ending phaseCheckElectionCounter');
         if (G.electionTracker == 2) {
           G.electionTracker = 0;
 
@@ -215,7 +215,7 @@ export const SecretDraculaGame = {
     phaseSpecial: {
       // Used to see if we need to start a special phase or go back to start
       onBegin: (G: IG, ctx: Ctx) => {
-        console.log('starting phaseSpecial');
+        //- console.log('starting phaseSpecial');
         if (G.specialElection != -1) {
           // We were just in special. Go back to normal
           G.mayorID = G.specialElection;
@@ -225,64 +225,64 @@ export const SecretDraculaGame = {
         return G;
       },
       endIf: (G: IG, ctx: Ctx) => {
-        console.log('endIf phaseSpecial' + G.justPlayedVampirePolicy);
+        //- console.log('endIf phaseSpecial' + G.justPlayedVampirePolicy);
         if (G.justPlayedVampirePolicy == -1) {
-          console.log(' 1 ');
+          //- console.log(' 1 ');
           return { next: 'phaseNoSpecial' };
         }
         if (ctx.numPlayers < 7) {
           if (G.justPlayedVampirePolicy == 2) {
-            console.log(' 2 ');
+            //- console.log(' 2 ');
             return { next: 'phasePeekPolicy' };
           } else if (G.justPlayedVampirePolicy == 3) {
-            console.log(' 3 this one');
+            //- console.log(' 3 this one');
             return { next: 'phaseExecution' };
-            console.log(' 3 ');
+            //- console.log(' 3 ');
           } else if (G.justPlayedVampirePolicy == 4) {
-            console.log(' 4 ');
+            //- console.log(' 4 ');
             return { next: 'phaseExecution' };
           }
-          console.log(' 5 ');
+          //- console.log(' 5 ');
           return { next: 'phaseNoSpecial' };
         } else if (ctx.numPlayers < 9) {
           if (G.justPlayedVampirePolicy == 1) {
-            console.log(' 6 ');
+            //- console.log(' 6 ');
             return { next: 'phaseInvestigate1' };
           } else if (G.justPlayedVampirePolicy == 2) {
-            console.log(' 7 ');
+            //- console.log(' 7 ');
             return { next: 'phaseSpecialElection' };
           } else if (G.justPlayedVampirePolicy == 3) {
-            console.log(' 8 ');
+            //- console.log(' 8 ');
             return { next: 'phaseExecution' };
           } else if (G.justPlayedVampirePolicy == 4) {
-            console.log(' 9 ');
+            //- console.log(' 9 ');
             return { next: 'phaseExecution' };
           }
-          console.log(' 10 ');
+          //- console.log(' 10 ');
           return { next: 'phaseNoSpecial' };
         } else {
           if (G.justPlayedVampirePolicy == 0) {
-            console.log(' 11 ');
+            //- console.log(' 11 ');
             return { next: 'phaseInvestigate1' };
           } else if (G.justPlayedVampirePolicy == 1) {
-            console.log(' 11 ');
+            //- console.log(' 11 ');
             return { next: 'phaseInvestigate1' };
           } else if (G.justPlayedVampirePolicy == 2) {
-            console.log(' 12 ');
+            //- console.log(' 12 ');
             return { next: 'phaseSpecialElection' };
           } else if (G.justPlayedVampirePolicy == 3) {
-            console.log(' 13 ');
+            //- console.log(' 13 ');
             return { next: 'phaseExecution' };
           } else if (G.justPlayedVampirePolicy == 4) {
-            console.log(' 14 ');
+            //- console.log(' 14 ');
             return { next: 'phaseExecution' };
           }
-          console.log(' 15 ');
+          //- console.log(' 15 ');
           return { next: 'phaseNoSpecial' };
         }
       },
       onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phaseSpecial');
+        //- console.log('ending phaseSpecial');
         if (G.justPlayedVampirePolicy == 4) {
           G.vetoPower = true;
         }
@@ -293,25 +293,25 @@ export const SecretDraculaGame = {
     //used to reset things after speical elections
     phaseNoSpecial: {
       onBegin: (G: IG, cx: Ctx) => {
-        console.log('starting phaseNoSpecial');
+        //- console.log('starting phaseNoSpecial');
         return G;
       },
       endIf: (G: IG, ctx: Ctx) => {
-        console.log('endIf phaseNoSpecial');
+        //- console.log('endIf phaseNoSpecial');
         return { next: 'phaseChosePriest' };
       },
       onEnd: (G: IG, ctx: Ctx) => {
-        console.log('ending phaseNoSpecial');
+        //- console.log('ending phaseNoSpecial');
         G.electionTracker = 0;
         G.priestID = -1;
         if (G.specialElection != -1) {
-          console.log('reseting Mayor back to prior to special');
+          //- console.log('reseting Mayor back to prior to special');
           G.mayorID = G.specialElection;
           G.specialElection = -1;
         }
         G.mayorID = (G.mayorID + 1) % ctx.numPlayers;
         while (G.deadIDs.includes(G.mayorID)) {
-          console.log('Mayor ' + G.mayorID + ' is dead. Going to next.');
+          //- console.log('Mayor ' + G.mayorID + ' is dead. Going to next.');
           G.mayorID = (G.mayorID + 1) % ctx.numPlayers;
         }
 

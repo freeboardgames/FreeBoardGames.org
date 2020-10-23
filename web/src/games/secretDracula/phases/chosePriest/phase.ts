@@ -3,7 +3,7 @@ import { moveChosePriest } from './moves';
 export let phaseChosePriest = {
   start: true,
   onBegin: (G, ctx) => {
-    console.log('staring phaseChosePriest');
+    //- console.log('staring phaseChosePriest');
 
     let p = G.mayorID;
     let activePlayers = { value: {} };
@@ -24,7 +24,7 @@ export let phaseChosePriest = {
     }
   },
   onEnd: (G, ctx) => {
-    console.log('ending phaseChosePriest');
+    //- console.log('ending phaseChosePriest');
     return G;
   },
 };

@@ -3,8 +3,8 @@ import { IG } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
 
 export let phaseVotePriest = {
-  onBegin: (G, ctx) => {
-    console.log('starting phaseVotePriest');
+  onBegin: (G ) => {
+    //- console.log('starting phaseVotePriest');
     return G;
   },
   moves: {
@@ -31,7 +31,7 @@ export let phaseVotePriest = {
     return false;
   },
   onEnd: (G, ctx) => {
-    console.log('ending phaseVotePriest');
+    //- console.log('ending phaseVotePriest');
     let yesVotes = G.votesYes.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
@@ -53,7 +53,7 @@ export let phaseVotePriest = {
 };
 export let phaseEndVotePriest = {
   onBegin: (G, ctx) => {
-    console.log('starting phaseEndVotePriest');
+    ////- console.log('starting phaseEndVotePriest');
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
     return G;
   },
@@ -67,7 +67,7 @@ export let phaseEndVotePriest = {
     },
   },
   endIf: (G: IG, ctx: Ctx) => {
-    console.log('endIf phaseEndVotePriest');
+    //- console.log('endIf phaseEndVotePriest');
     if (
       G.voteOks.reduce((prev: boolean, curr: boolean) => {
         return curr && prev;
@@ -84,7 +84,7 @@ export let phaseEndVotePriest = {
     }
   },
   onEnd: (G: IG, ctx: Ctx) => {
-    console.log('ending phaseEndVotePriest');
+    //- console.log('ending phaseEndVotePriest');
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
     G.voteCountYes = -1;
     G.voteCountNo = -1;

@@ -3,7 +3,7 @@ import { IG } from '../../interfaces';
 import { Ctx } from 'boardgame.io';
 
 export function moveDiscardMayor(G: IG, ctx: Ctx, id: number, me: number): IG | 'INVALID_MOVE' {
-  console.log(id);
+  //- console.log(id);
   if (id == undefined) {
     return INVALID_MOVE;
   }
@@ -25,8 +25,8 @@ export function moveDiscardMayor(G: IG, ctx: Ctx, id: number, me: number): IG | 
 }
 
 export function moveDiscardPriest(G: IG, ctx: Ctx, id: number, me: number): IG | 'INVALID_MOVE' {
-  console.log('Move Discard Priest: ', id.toString());
-  console.log('Player ', me.toString());
+  //- console.log('Move Discard Priest: ', id.toString());
+  //- console.log('Player ', me.toString());
 
   if (id == undefined) {
     return INVALID_MOVE;

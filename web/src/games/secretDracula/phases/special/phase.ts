@@ -9,7 +9,7 @@ import { Ctx } from 'boardgame.io';
 
 export let phasePeekPolicy = {
   onBegin: (G: IG, ctx: Ctx) => {
-    console.log('starting phasePeekPolicy');
+    //- console.log('starting phasePeekPolicy');
     let p = G.mayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phasePeekPolicy';
@@ -26,7 +26,7 @@ export let phasePeekPolicy = {
     return G;
   },
   endIf: (G: IG, ctx: Ctx) => {
-    console.log('endIf phasePeekPolicy');
+    //- console.log('endIf phasePeekPolicy');
     if (G.ok) {
       return { next: 'phaseNoSpecial' };
     }
@@ -38,27 +38,27 @@ export let phasePeekPolicy = {
     },
   },
   onEnd: (G: IG, ctx: Ctx) => {
-    console.log('ending phasePeekPolicy');
+    //- console.log('ending phasePeekPolicy');
     return { ...G, ok: false };
   },
 };
 
 export let phaseInvestigate1 = {
   onBegin: (G: IG, ctx: Ctx) => {
-    console.log('starting phaseInvestigate1');
+    //- console.log('starting phaseInvestigate1');
     let p = G.mayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseInvestigate1';
     ctx.events.setActivePlayers(activePlayers);
   },
   endIf: (G: IG, ctx: Ctx) => {
-    console.log('endIf phaseInvestigate1');
+    //- console.log('endIf phaseInvestigate1');
     if (G.ok) {
       return { next: 'phaseInvestigate2' };
     }
   },
   onEnd: (G: IG, ctx: Ctx) => {
-    console.log('ending phaseInvestigate1');
+    //- console.log('ending phaseInvestigate1');
     return { ...G, ok: false };
   },
   moves: {
@@ -71,20 +71,20 @@ export let phaseInvestigate1 = {
 
 export let phaseInvestigate2 = {
   onBegin: (G: IG, ctx: Ctx) => {
-    console.log('starting phaseInvestigate2');
+    //- console.log('starting phaseInvestigate2');
     let p = G.mayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseInvestigate2';
     ctx.events.setActivePlayers(activePlayers);
   },
   endIf: (G: IG, ctx: Ctx) => {
-    console.log('endIf phaseInvestigate2');
+    //- console.log('endIf phaseInvestigate2');
     if (G.ok) {
       return { next: 'phaseNoSpecial' };
     }
   },
   onEnd: (G: IG, ctx: Ctx) => {
-    console.log('ending phaseInvestigate2');
+    //- console.log('ending phaseInvestigate2');
     return { ...G, ok: false };
   },
   moves: {
@@ -97,7 +97,7 @@ export let phaseInvestigate2 = {
 
 export let phaseSpecialElection = {
   onBegin: (G: IG, ctx: Ctx) => {
-    console.log('starting phaseSpecialElection');
+    //- console.log('starting phaseSpecialElection');
     let p = G.mayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseSpecialElection';
@@ -106,13 +106,13 @@ export let phaseSpecialElection = {
     return G;
   },
   endIf: (G: IG, ctx: Ctx) => {
-    console.log('endIf phaseSpecialElection');
+    //- console.log('endIf phaseSpecialElection');
     if (G.ok) {
       return { next: 'phaseChosePriest' };
     }
   },
   onEnd: (G: IG, ctx: Ctx) => {
-    console.log('ending phaseSpecialElection');
+    //- console.log('ending phaseSpecialElection');
     G.electionTracker = 0;
     G.priestID = -1;
     G.ok = false;
@@ -128,20 +128,20 @@ export let phaseSpecialElection = {
 
 export let phaseExecution = {
   onBegin: (G: IG, ctx: Ctx) => {
-    console.log('starting phaseExecution');
+    //- console.log('starting phaseExecution');
     let p = G.mayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseExecution';
     ctx.events.setActivePlayers(activePlayers);
   },
   endIf: (G: IG, ctx: Ctx) => {
-    console.log('endIf phaseExecution');
+    //- console.log('endIf phaseExecution');
     if (G.ok) {
       return { next: 'phaseNoSpecial' };
     }
   },
   onEnd: (G: IG, ctx: Ctx) => {
-    console.log('ending phaseExecution');
+    //- console.log('ending phaseExecution');
     return { ...G, ok: false };
   },
   moves: {
