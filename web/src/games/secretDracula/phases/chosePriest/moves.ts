@@ -14,7 +14,7 @@ export function moveChosePriest(G: IG, ctx: Ctx, id: number, me: number): IG | '
     return INVALID_MOVE;
   }
 
-  if (G.lastMayorID == id && ctx.numPlayers > 5) {
+  if (G.lastMayorID == id && (ctx.numPlayers - G.deadIDs.reduce((prev, curr) => {return curr == -1 ? prev : 1 + prev }, 0))> 5) {
     return INVALID_MOVE;
   }
 
