@@ -27,6 +27,20 @@ yarn install  # installs dependencies
 yarn run dev  # runs the webserver and backend (for online multiplayer games)
 ```
 
+## Important commands
+
+`yarn run dev` on root builds and starts the **development** environment.
+
+`yarn run test GAME` runs unit tests and linter for given game.
+
+`yarn run lint GAME` runs linter for given game.
+
+`yarn run fix GAME` tries to automatically fix linter errors for given game.
+
+`yarn run ci` on root runs everything CI will run (including e2e tests).
+
+Omitting the GAME from any command above will run it for all the codebase.
+
 ##  Thanks to
 
 - [JosefKuchar](https://github.com/JosefKuchar) for **Take 6**, **Cornerus**, **Reversi**, **Nine men's Morris** and **Checkers AI**
