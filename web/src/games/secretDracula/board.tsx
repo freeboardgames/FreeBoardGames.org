@@ -46,8 +46,8 @@ export class Board extends React.Component<IBoardProps> {
     return (
       <div className={css.div}>
         TODO: [] Allow only 5-10 players
-              [] Fix being able to renominate (for debug i allowed it)
-              [] Split up main render function 
+              [x] Fix being able to renominate (for debug i allowed it)
+              [x] Split up main render function 
               [] Add tests suite
               [] Show other players what player was investigated
               [] Show players the vote outcome (eg: 3yes, 4no)
