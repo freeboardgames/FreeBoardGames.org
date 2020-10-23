@@ -51,9 +51,61 @@ export class Board extends React.Component<IBoardProps> {
               [] Add tests suite
               [] Show other players what player was investigated
               [] Show players the vote outcome (eg: 3yes, 4no)
-                
+              [] check end conditions
+              [] remove a lot of console.logs
              
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
+          { this.render_players(playerorder, deads,vampires)}
+
+          <BVampirePolicies
+            playedPolicies={this.props.G.policyBoardVampire.length}
+            playerCount={this.props.ctx.numPlayers}
+          ></BVampirePolicies>
+
+          <BHumanPolicies
+            playedPolicies={this.props.G.policyBoardHuman.length}
+            playerCount={this.props.ctx.numPlayers}
+          ></BHumanPolicies>
+
+          { this.render_chosePriest(playerorder, deads, vampires) }
+
+          { this.render_votePriest() }
+
+          { this.render_discardMayor() }
+
+          { this.render_discardPriest() }
+
+          { this.render_vetoMayor() }
+
+          { this.render_peekPolicy() }
+
+          { this.render_investigate1(playerorder, deads, vampires) }
+
+          { this.render_investigate2() }
+
+          { this.render_specialElection(playerorder, deads, vampires) }
+
+          { this.render_execution(playerorder, deads, vampires) }
+
+
+        </GameLayout>
+      </div>
+    );
+  }
+  /*
+            { this.props.G.log.map((a) => {
+                return(<div>
+                       { a }
+                  </div>)})}
+            <div>
+                  <pre id="json">
+                   { JSON.stringify(this.props.ctx, null, '\t') }
+                  </pre>
+            </div>
+*/
+
+  render_players(playerorder, deads,vampires){
+    return( <>
           {playerorder.map((a) => {
             return (
               <div>
@@ -77,17 +129,12 @@ export class Board extends React.Component<IBoardProps> {
               </div>
             );
           })}
+    </>)
 
-          <BVampirePolicies
-            playedPolicies={this.props.G.policyBoardVampire.length}
-            playerCount={this.props.ctx.numPlayers}
-          ></BVampirePolicies>
+  }
 
-          <BHumanPolicies
-            playedPolicies={this.props.G.policyBoardHuman.length}
-            playerCount={this.props.ctx.numPlayers}
-          ></BHumanPolicies>
-
+  render_chosePriest(playerorder, deads, vampires){
+    return( <>
           {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseChosePriest' ? (
             <div>
@@ -122,26 +169,38 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
-          {// 
-          this.props.ctx.phase == 'phaseVotePriest' ? (
-            <div>
-              <p> Vote on Mayor and Priest </p>
-              { parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
-              <BVote
-                yes={() => {
-                  this.props.moves.moveVoteYes(parseInt(this.props.playerID));
-                }}
-                no={() => {
-                  this.props.moves.moveVoteNo(parseInt(this.props.playerID));
-                }}
-              ></BVote>
-              :
+
+    </>)
+  }
+
+  render_votePriest(){
+    return( <>
+            {// 
+            this.props.ctx.phase == 'phaseVotePriest' ? (
+              <div>
+                <p> Vote on Mayor and Priest </p>
+                { parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
+                <BVote
+                  yes={() => {
+                    this.props.moves.moveVoteYes(parseInt(this.props.playerID));
+                  }}
+                  no={() => {
+                    this.props.moves.moveVoteNo(parseInt(this.props.playerID));
+                  }}
+                ></BVote>
+                :
+                <></>
+              }
+              </div>
+            ) : (
               <></>
-            }
-            </div>
-          ) : (
-            <></>
-          )}
+            )}
+            </>
+    )
+            
+  }
+  render_discardMayor(){
+    return( <>
           {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseDiscardMayor' ? (
             <div>
@@ -157,6 +216,11 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
+
+    </>)
+  }
+  render_discardPriest(){
+    return( <>
           {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           (this.props.ctx.phase == 'phaseDiscardPriest' || this.props.ctx.phase == 'phaseDiscardPriestVeto') ? (
             <div>
@@ -172,6 +236,11 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
+
+    </>)
+  }
+  render_vetoMayor(){
+    return( <>
           {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
             this.props.ctx.phase == 'phaseVetoMayor' ? (
             <div>
@@ -187,6 +256,10 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
+    </>)
+  }
+  render_peekPolicy(){
+    return( <>
           {// 
           this.props.ctx.phase == 'phasePeekPolicy' ? (
             <div>
@@ -204,11 +277,15 @@ export class Board extends React.Component<IBoardProps> {
             <></>
           )}
 
-          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseInvestigate1' ? (
+    </>)
+  }
+  render_investigate1(playerorder, deads, vampires){
+    return( <>
+          {// parseInt(this.props.playerID) in this.props.ctx.activePlayers && this.props.ctx.phase == 'phaseInvestigate1' ? (
+            this.props.ctx.phase == 'phaseInvestigate1' ? (
             <div>
               <p> Mayor: Who to Investigate? </p>
-                            {
+              {
                 parseInt(this.props.playerID) in this.props.ctx.activePlayers ?
               <table>
                 <tbody>
@@ -239,6 +316,10 @@ export class Board extends React.Component<IBoardProps> {
             <></>
           )}
 
+    </>)
+  }
+  render_investigate2(){
+    return( <>
           {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseInvestigate2' ? (
             <div>
@@ -259,6 +340,10 @@ export class Board extends React.Component<IBoardProps> {
           <></>
           )}
 
+    </>)
+  }
+  render_specialElection(playerorder, deads, vampires){
+    return( <>
           {// parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseSpeicalElection' ? (
             <div>
@@ -293,6 +378,11 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
+
+    </>)
+  }
+  render_execution(playerorder, deads, vampires){
+    return( <>
           {// parseInt(this.props.playerID) in this.props.ctx.activePlayers && 
           this.props.ctx.phase == 'phaseExecution' ? (
             <div>
@@ -328,21 +418,9 @@ export class Board extends React.Component<IBoardProps> {
           ) : (
             <></>
           )}
-        </GameLayout>
-      </div>
-    );
+
+    </>)
   }
-  /*
-            { this.props.G.log.map((a) => {
-                return(<div>
-                       { a }
-                  </div>)})}
-            <div>
-                  <pre id="json">
-                   { JSON.stringify(this.props.ctx, null, '\t') }
-                  </pre>
-            </div>
-*/
   _discardWrapper(playerIndex: number) {
     if (this.props.ctx.phase == 'phaseDiscardMayor') {
       return (index: number) => {
