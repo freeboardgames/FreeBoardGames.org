@@ -102,7 +102,7 @@ export const SecretDraculaGame = {
 
   setup: setup,
 
-  playerView: (G: IG, ctx: Ctx, playerID) => {
+  playerView: (G: IG, playerID) => {
     let playerIDInt = parseInt(playerID);
 
     if (isNaN(playerIDInt)) {
@@ -168,11 +168,11 @@ export const SecretDraculaGame = {
     phaseVetoMayor: phaseVetoMayor,
 
     phaseCheckElectionCounter: {
-      onBegin: (G, ctx) => {
+      onBegin: (G ) => {
         //- console.log('starting phaseCheckElectionCounter');
         return G;
       },
-      endIf: (G: IG, ctx: Ctx) => {
+      endIf: (G: IG) => {
         //- console.log('endIf phaseCheckElectionCounter');
         if (G.electionTracker < 2) {
           //- console.log('going to phaseChosePriest');
@@ -196,7 +196,6 @@ export const SecretDraculaGame = {
             let n = G.policyBoardVampire.push(topCard);
             G.justPlayedVampirePolicy = n - 1;
           } else {
-            let n = G.policyBoardHuman.push(topCard);
             G.justPlayedVampirePolicy = -1;
           }
         } else {
@@ -214,7 +213,7 @@ export const SecretDraculaGame = {
     //used to navigate to special phases (if relevant)
     phaseSpecial: {
       // Used to see if we need to start a special phase or go back to start
-      onBegin: (G: IG, ctx: Ctx) => {
+      onBegin: (G: IG) => {
         //- console.log('starting phaseSpecial');
         if (G.specialElection != -1) {
           // We were just in special. Go back to normal
@@ -281,7 +280,7 @@ export const SecretDraculaGame = {
           return { next: 'phaseNoSpecial' };
         }
       },
-      onEnd: (G: IG, ctx: Ctx) => {
+      onEnd: (G: IG) => {
         //- console.log('ending phaseSpecial');
         if (G.justPlayedVampirePolicy == 4) {
           G.vetoPower = true;
@@ -292,11 +291,11 @@ export const SecretDraculaGame = {
     },
     //used to reset things after speical elections
     phaseNoSpecial: {
-      onBegin: (G: IG, cx: Ctx) => {
+      onBegin: (G: IG) => {
         //- console.log('starting phaseNoSpecial');
         return G;
       },
-      endIf: (G: IG, ctx: Ctx) => {
+      endIf: () => {
         //- console.log('endIf phaseNoSpecial');
         return { next: 'phaseChosePriest' };
       },
@@ -325,7 +324,7 @@ export const SecretDraculaGame = {
     phasePeekPolicy: phasePeekPolicy,
   },
 
-  endif: (G, ctx) => {
+  endif: (G) => {
     if (isLose(G)) {
       return { lose: true };
     }

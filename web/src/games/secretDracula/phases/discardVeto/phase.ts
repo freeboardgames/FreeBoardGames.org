@@ -29,7 +29,7 @@ export let phaseDiscardMayor = {
       client: false,
     },
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG) => {
     if (G.policyHand.length == 2) {
       if (!G.vetoPower) {
         //- console.log('Moving to phaseDiscardPriest');
@@ -39,7 +39,7 @@ export let phaseDiscardMayor = {
       }
     }
   },
-  onEnd: (G: IG, ctx: Ctx) => {
+  onEnd: (G: IG) => {
     //- console.log('ending phaseDiscardMayor');
     G.lastMayorID = G.mayorID;
     G.lastPriestID = G.priestID;
@@ -62,14 +62,14 @@ export let phaseDiscardPriest = {
       client: false,
     },
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG) => {
     if (G.policyHand.length == 1) {
       //- console.log('A0');
       return { next: 'phaseSpecial' };
     }
     return false;
   },
-  onEnd: (G: IG, ctx: Ctx) => {
+  onEnd: (G: IG) => {
     //- console.log('ending phaseDiscardPriest');
     //- console.log('and setting to ', G.policyHand[0].chalice ? G.policyBoardVampire.length : -1);
     //     //- console.log("B0")
@@ -105,14 +105,14 @@ export let phaseDiscardPriestVeto = {
       client: false,
     },
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG) => {
     if (!G.wantVeto) {
       return { next: 'phaseSpecial' }; // didn't use veto power
     } else if (G.wantVeto) {
       return { next: 'phaseVetoMayor' }; // didn't use veto power
     }
   },
-  onEnd: (G: IG, ctx: Ctx) => {
+  onEnd: (G: IG) => {
     if (!G.wantVeto) {
       return {
         ...G,
@@ -146,7 +146,7 @@ export let phaseVetoMayor = {
       }
     }
   },
-  onEnd: (G: IG, ctx: Ctx) => {
+  onEnd: (G: IG) => {
     if (G.wantVeto) {
       G.policyDiscard.push(G.policyHand.pop());
       G.policyDiscard.push(G.policyHand.pop());

@@ -25,7 +25,7 @@ export let phasePeekPolicy = {
 
     return G;
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG) => {
     //- console.log('endIf phasePeekPolicy');
     if (G.ok) {
       return { next: 'phaseNoSpecial' };
@@ -37,7 +37,7 @@ export let phasePeekPolicy = {
       client: false,
     },
   },
-  onEnd: (G: IG, ctx: Ctx) => {
+  onEnd: (G: IG) => {
     //- console.log('ending phasePeekPolicy');
     return { ...G, ok: false };
   },
@@ -51,13 +51,13 @@ export let phaseInvestigate1 = {
     activePlayers.value[p] = 'phaseInvestigate1';
     ctx.events.setActivePlayers(activePlayers);
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG) => {
     //- console.log('endIf phaseInvestigate1');
     if (G.ok) {
       return { next: 'phaseInvestigate2' };
     }
   },
-  onEnd: (G: IG, ctx: Ctx) => {
+  onEnd: (G: IG) => {
     //- console.log('ending phaseInvestigate1');
     return { ...G, ok: false };
   },
@@ -77,13 +77,13 @@ export let phaseInvestigate2 = {
     activePlayers.value[p] = 'phaseInvestigate2';
     ctx.events.setActivePlayers(activePlayers);
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG) => {
     //- console.log('endIf phaseInvestigate2');
     if (G.ok) {
       return { next: 'phaseNoSpecial' };
     }
   },
-  onEnd: (G: IG, ctx: Ctx) => {
+  onEnd: (G: IG) => {
     //- console.log('ending phaseInvestigate2');
     return { ...G, ok: false };
   },
@@ -105,13 +105,13 @@ export let phaseSpecialElection = {
     G.specialElection = -1;
     return G;
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG) => {
     //- console.log('endIf phaseSpecialElection');
     if (G.ok) {
       return { next: 'phaseChosePriest' };
     }
   },
-  onEnd: (G: IG, ctx: Ctx) => {
+  onEnd: (G: IG) => {
     //- console.log('ending phaseSpecialElection');
     G.electionTracker = 0;
     G.priestID = -1;
@@ -134,13 +134,13 @@ export let phaseExecution = {
     activePlayers.value[p] = 'phaseExecution';
     ctx.events.setActivePlayers(activePlayers);
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG) => {
     //- console.log('endIf phaseExecution');
     if (G.ok) {
       return { next: 'phaseNoSpecial' };
     }
   },
-  onEnd: (G: IG, ctx: Ctx) => {
+  onEnd: (G: IG) => {
     //- console.log('ending phaseExecution');
     return { ...G, ok: false };
   },

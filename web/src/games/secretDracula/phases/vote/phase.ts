@@ -66,7 +66,7 @@ export let phaseEndVotePriest = {
       client: false,
     },
   },
-  endIf: (G: IG, ctx: Ctx) => {
+  endIf: (G: IG ) => {
     //- console.log('endIf phaseEndVotePriest');
     if (
       G.voteOks.reduce((prev: boolean, curr: boolean) => {

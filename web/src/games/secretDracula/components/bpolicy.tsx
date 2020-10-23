@@ -1,4 +1,3 @@
-import { VALID_SETUP_FIRST_PLAYER } from 'games/seabattle/mocks';
 import React from 'react';
 import { IPolicy } from '../interfaces';
 

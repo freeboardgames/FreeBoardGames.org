@@ -1,6 +1,5 @@
 import { IAIConfig } from 'gamesShared/definitions/game';
 import { IG } from './interfaces';
-import { getValidMoves } from './moves';
 import { Ctx } from 'boardgame.io';
 
 interface IPlayState {

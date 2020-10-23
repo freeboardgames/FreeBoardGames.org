@@ -1,5 +1,3 @@
-import { Dictionary } from 'cypress/types/lodash';
-
 export interface IPolicy {
   garlic: boolean;
   chalice: boolean;

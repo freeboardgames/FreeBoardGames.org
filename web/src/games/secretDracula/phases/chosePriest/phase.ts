@@ -18,12 +18,12 @@ export let phaseChosePriest = {
       client: false,
     },
   },
-  endIf: (G, ctx) => {
+  endIf: (G) => {
     if (G.voting) {
       return { next: 'phaseVotePriest' };
     }
   },
-  onEnd: (G, ctx) => {
+  onEnd: (G) => {
     //- console.log('ending phaseChosePriest');
     return G;
   },

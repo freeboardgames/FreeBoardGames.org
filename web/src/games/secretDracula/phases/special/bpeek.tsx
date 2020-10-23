@@ -14,9 +14,9 @@ export class BPeek extends React.Component<InnerWrapper, {}> {
         <table>
           <tbody>
             <tr>
-              {this.props.policies.map((a, index) => {
+              {this.props.policies.map((a ) => {
                 return (
-                  <td>
+                  <td key={"Bpeek-"+a.toString()}>
                     {' '}
                     <BPolicy policy={a} discard={() => {}}></BPolicy>{' '}
                   </td>

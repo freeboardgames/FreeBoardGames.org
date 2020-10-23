@@ -1,4 +1,3 @@
-import { VALID_SETUP_FIRST_PLAYER } from 'games/seabattle/mocks';
 import React from 'react';
 
 interface InnerWrapper {
@@ -17,9 +16,9 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
               <td>{this.props.playedPolicies > 0 ? this._played() : this._first(this.props.playedPolicies)}</td>
               <td>{this.props.playedPolicies > 1 ? this._played() : this._second(this.props.playedPolicies)}</td>
               <td>{this.props.playedPolicies > 2 ? this._played() : this._third(this.props.playedPolicies)}</td>
-              <td>{this.props.playedPolicies > 3 ? this._played() : this._fourth(this.props.playedPolicies)}</td>
-              <td>{this.props.playedPolicies > 4 ? this._played() : this._fifth(this.props.playedPolicies)}</td>
-              <td>{this.props.playedPolicies > 5 ? this._played() : this._sixth(this.props.playedPolicies)}</td>
+              <td>{this.props.playedPolicies > 3 ? this._played() : this._fourth()}</td>
+              <td>{this.props.playedPolicies > 4 ? this._played() : this._fifth()}</td>
+              <td>{this.props.playedPolicies > 5 ? this._played() : this._sixth()}</td>
             </tr>
           </tbody>
         </table>
@@ -73,15 +72,15 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
     }
     return this._peek();
   };
-  _fourth = (playerCount: number) => {
+  _fourth = () => {
     return this._kill();
   };
 
-  _fifth = (playerCount: number) => {
+  _fifth = () => {
     return this._kill();
   };
 
-  _sixth = (playerCount: number) => {
+  _sixth = () => {
     return this._death();
   };
 }
