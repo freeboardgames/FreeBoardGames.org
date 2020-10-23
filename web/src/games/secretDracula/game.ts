@@ -144,7 +144,7 @@ export const SecretDraculaGame = {
             G.policyHand
           :  //No other players should see the hand ever
             G.policyHand.map(() => { return null }),
-      specialElection: null,
+      // specialElection: null,
       policyPeek: playerIDInt == G.mayorID && G.policyPeek.length == 3 ? G.policyPeek : [],
       investigate: playerIDInt == G.mayorID ? G.investigate : 0,
       // everyone gets investigateID
@@ -206,7 +206,7 @@ export const SecretDraculaGame = {
         return G;
       },
     },
- 
+    //used to navigate to special phases (if relevant)
     phaseSpecial: {
       // Used to see if we need to start a special phase or go back to start
       onBegin: (G: IG, ctx: Ctx) => {
@@ -285,6 +285,7 @@ export const SecretDraculaGame = {
         return G;
       },
     },
+    //used to reset things after speical elections
     phaseNoSpecial: {
       onBegin: (G: IG, cx: Ctx) => {
         console.log('starting phaseNoSpecial');
@@ -298,6 +299,11 @@ export const SecretDraculaGame = {
         console.log('ending phaseNoSpecial');
         G.electionTracker = 0;
         G.priestID = -1;
+        if (G.specialElection != -1) {
+          console.log("reseting Mayor back to prior to special")
+          G.mayorID = G.specialElection
+          G.specialElection = -1
+        }
         G.mayorID = (G.mayorID + 1) % ctx.numPlayers;
         while (G.deadIDs.includes(G.mayorID)) {
           console.log('Mayor ' + G.mayorID + ' is dead. Going to next.');
