@@ -1,6 +1,6 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Connection, MoreThan, QueryRunner } from 'typeorm';
+import { Repository, Connection, QueryRunner } from 'typeorm';
 import { RoomEntity } from './db/Room.entity';
 import { RoomMembershipEntity } from './db/RoomMembership.entity';
 import { UsersService } from '../users/users.service';
@@ -10,7 +10,6 @@ import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { PubSub } from 'graphql-subscriptions';
 import { roomEntityToRoom } from './RoomUtil';
 import { LobbyService } from './lobby.service';
-import { EXPIRE_MEMBERSHIP_AFTER_MS } from './constants';
 
 @Injectable()
 export class RoomsService {
@@ -137,7 +136,7 @@ export class RoomsService {
     return roomEntity;
   }
 
-  async notifyRoomUpdate(room: RoomEntity) {
+  async notifyRoomUpdate(room: RoomEntity): Promise<void> {
     await this.pubSub.publish(`room/${room.id}`, {
       roomMutated: roomEntityToRoom(room),
     });

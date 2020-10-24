@@ -1,0 +1,10 @@
+.cribbage-board {
+    width: 1fr;
+    min-width: 1fr;
+    height: '80px';
+    font-size: '10px';
+    display: 'grid';
+    justify-content: 'center';
+    overflow: 'hide';
+    background-color: '#555555';
+  }
