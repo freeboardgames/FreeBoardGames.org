@@ -42,15 +42,9 @@ export class Board extends React.Component<IBoardProps> {
 
     return (
       <div className={css.div}>
-        TODO: [] Allow only 5-10 players 
-        [x] Fix being able to renominate (for debug i allowed it) 
-        [x] Split up main render function 
-        [] Add tests suite 
-        [x] Show other players what player was investigated 
-        [x] Show players the vote outcome (eg: 3yes, 4no) 
-        [] check end conditions 
-        [x] remove a lot of console.logs
-
+        TODO: [] Allow only 5-10 players [x] Fix being able to renominate (for debug i allowed it) [x] Split up main
+        render function [] Add tests suite [x] Show other players what player was investigated [x] Show players the vote
+        outcome (eg: 3yes, 4no) [] check end conditions [x] remove a lot of console.logs
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
           {this.render_players(playerorder, deads, vampires)}
 
@@ -106,7 +100,7 @@ export class Board extends React.Component<IBoardProps> {
       <>
         {playerorder.map((a) => {
           return (
-            <div key={"render_players-" + a.toString}>
+            <div key={'render_players-' + a.toString}>
               <table>
                 <tbody>
                   <tr>
@@ -536,8 +530,9 @@ export class Board extends React.Component<IBoardProps> {
       };
     }
 
-    return (index: number) => { // gotta trick the linter, but at the same time this function needs this signature...
-      if (index == 1){
+    return (index: number) => {
+      // gotta trick the linter, but at the same time this function needs this signature...
+      if (index == 1) {
         return;
       }
       return;

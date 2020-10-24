@@ -15,7 +15,8 @@ export class BChosePlayer extends React.Component<InnerWrapper, {}> {
             <tr>
               {this.props.names.map((name: string, index: number) => {
                 return (
-                  <td key={"BChosePlayer-" + index.toString()}
+                  <td
+                    key={'BChosePlayer-' + index.toString()}
                     onClick={() => {
                       this.props.chose(index);
                     }}

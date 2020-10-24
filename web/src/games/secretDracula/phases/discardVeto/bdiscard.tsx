@@ -22,7 +22,7 @@ export class BDiscard extends React.Component<InnerWrapper, {}> {
             {this.props.vetoEnabled && this.props.mayor ? <td> {this._forceButton()} </td> : <></>}
             {this.props.policies.map((a, index) => {
               return (
-                <td key={"BDiscard-" + index.toString()}>
+                <td key={'BDiscard-' + index.toString()}>
                   <div>
                     {' '}
                     <BPolicy policy={a} discard={() => this.props.discard(index)}></BPolicy>{' '}

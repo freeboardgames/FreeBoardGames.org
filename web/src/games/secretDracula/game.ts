@@ -168,7 +168,7 @@ export const SecretDraculaGame = {
     phaseVetoMayor: phaseVetoMayor,
 
     phaseCheckElectionCounter: {
-      onBegin: (G ) => {
+      onBegin: (G) => {
         //- console.log('starting phaseCheckElectionCounter');
         return G;
       },

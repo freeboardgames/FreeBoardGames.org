@@ -3,7 +3,7 @@ import { IG } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
 
 export let phaseVotePriest = {
-  onBegin: (G ) => {
+  onBegin: (G) => {
     //- console.log('starting phaseVotePriest');
     return G;
   },
@@ -66,7 +66,7 @@ export let phaseEndVotePriest = {
       client: false,
     },
   },
-  endIf: (G: IG ) => {
+  endIf: (G: IG) => {
     //- console.log('endIf phaseEndVotePriest');
     if (
       G.voteOks.reduce((prev: boolean, curr: boolean) => {
