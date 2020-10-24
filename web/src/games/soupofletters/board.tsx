@@ -1,19 +1,19 @@
 import React from 'react';
-// game shared import 
+// game shared import
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { isOnlineGame, isAIGame, isLocalGame } from 'gamesShared/helpers/gameMode';
+import { isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import { Ctx } from 'boardgame.io';
 // node module import
-import { Modal, Button, Typography, Box, List, ListItem, ListItemText } from '@material-ui/core';
+import { Modal, Button, Typography, List, ListItem, ListItemText } from '@material-ui/core';
 import Timer from 'react-compound-timer';
 // with-in game folder input
 import { TIME_OUT, TIME_BUFF, playerColors } from './constants';
 import { IG, ISolvedWord } from './game';
-import { Soup } from './soup'
-import soupCSS from './soup.css'
+import { Soup } from './soup';
+import soupCSS from './soup.css';
 
 interface IBoardProps {
   G: IG;
@@ -30,7 +30,6 @@ interface IBoardState {
 export const localPlayerNames = { '0': 'red', '1': 'blue' };
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
-
   constructor(props) {
     super(props);
     // initialize state
@@ -41,7 +40,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _wordFound = (solvedWord: ISolvedWord) => {
     this.props.moves.wordFound(solvedWord);
-  }
+  };
 
   _playerInRoom(): IPlayerInRoom {
     return this.props.gameArgs.players[this.props.ctx.currentPlayer];
@@ -59,11 +58,13 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _checkTimeOut = (secondsLeft: number) => {
-    if (isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer) { return; }
-    if ((secondsLeft === 0) || ((Date.now() - this.props.G.timeRef) > ((TIME_OUT + TIME_BUFF) * 1000))) {
+    if (isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer) {
+      return;
+    }
+    if (secondsLeft === 0 || Date.now() - this.props.G.timeRef > (TIME_OUT + TIME_BUFF) * 1000) {
       this.props.moves.changeTurn();
     }
-  }
+  };
 
   _getTimeRemaining() {
     // check time every second
@@ -71,10 +72,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     for (let i = 0; i < TIME_OUT; i++) {
       secondlyCallback.push({
         time: i * 1000,
-        callback: () => { this._checkTimeOut(i) }
+        callback: () => {
+          this._checkTimeOut(i);
+        },
       });
     }
-    // render timer 
+    // render timer
     return (
       <Timer
         key={'timer-' + this.props.G.timeRef}
@@ -82,13 +85,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         direction="backward"
         checkpoints={secondlyCallback}
       >
-        {
-          isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer ?
-            <Timer.Seconds formatValue={value => this._playerInRoom().name + ` has ${value > TIME_OUT ? TIME_OUT : (value < 0 ? 0 : value)} seconds.`} /> :
-            <Timer.Seconds formatValue={value => `You have ${value > TIME_OUT ? TIME_OUT : value} seconds.`} />
-        }
+        {isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer ? (
+          <Timer.Seconds
+            formatValue={(value) =>
+              this._playerInRoom().name + ` has ${value > TIME_OUT ? TIME_OUT : value < 0 ? 0 : value} seconds.`
+            }
+          />
+        ) : (
+          <Timer.Seconds formatValue={(value) => `You have ${value > TIME_OUT ? TIME_OUT : value} seconds.`} />
+        )}
       </Timer>
-
     );
   }
 
@@ -114,18 +120,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             <Typography style={{ padding: '10px' }} variant="h5">
               Words
             </Typography>
-            <List style={{ maxHeight: '382px', overflow: 'auto' }} >
-              {
-                this.props.G.solution.map(s => (
-                  <ListItem
-                    key={'list-item-' + s.word}
-                    // add a strike style is word is found
-                    style={{ textDecoration: s.solvedBy ? 'line-through' : 'none' }}
-                  >
-                    <ListItemText primary={s.word} />
-                  </ListItem>
-                ))
-              }
+            <List style={{ maxHeight: '382px', overflow: 'auto' }}>
+              {this.props.G.solution.map((s) => (
+                <ListItem
+                  key={'list-item-' + s.word}
+                  // add a strike style is word is found
+                  style={{ textDecoration: s.solvedBy ? 'line-through' : 'none' }}
+                >
+                  <ListItemText primary={s.word} />
+                </ListItem>
+              ))}
             </List>
           </div>
         </Modal>
@@ -153,14 +157,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           width='100%' height={40}
           bgcolor="black"
         > */}
-          {this._renderPlayerBadges()}
-          <Button
-            variant="contained"
-            onClick={() => { this.setState({ showWords: true }) }}
-            style={{'float': 'right', 'marginRight': '4px'}}
-          >
-            Words
-          </Button>
+        {this._renderPlayerBadges()}
+        <Button
+          variant="contained"
+          onClick={() => {
+            this.setState({ showWords: true });
+          }}
+          style={{ float: 'right', marginRight: '4px' }}
+        >
+          Words
+        </Button>
         {/* </Box> */}
       </div>
     );
@@ -198,25 +204,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     if (this.props.ctx.gameover) {
       return (
-        <GameLayout
-          gameOver={this._getGameOver()}
-          extraCardContent={this._getBoard()}
-          gameArgs={this.props.gameArgs}
-        />
+        <GameLayout gameOver={this._getGameOver()} extraCardContent={this._getBoard()} gameArgs={this.props.gameArgs} />
       );
     }
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
-        <Typography
-          className={soupCSS.noselect} variant="h5"
-          style={{ color: 'white', textAlign: 'center' }}
-        >
+        <Typography className={soupCSS.noselect} variant="h5" style={{ color: 'white', textAlign: 'center' }}>
           {this._getStatus()}
         </Typography>
-        <Typography
-          className={soupCSS.noselect} variant='h6'
-          style={{ color: 'white', textAlign: 'center' }}
-        >
+        <Typography className={soupCSS.noselect} variant="h6" style={{ color: 'white', textAlign: 'center' }}>
           {this._getTimeRemaining()}
         </Typography>
         {this._getBoard()}

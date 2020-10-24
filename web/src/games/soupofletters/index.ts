@@ -10,7 +10,7 @@ export const soupOfLettersGameDef: IGameDef = {
   modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],
   minPlayers: 2,
   maxPlayers: 4,
-  description: "Always more fun with friends.",
+  description: 'Always more fun with friends.',
   descriptionTag: `Soup of letters, Alphabet soup. Find words in puzzel game.`,
   instructions: {
     // videoId: '_XVs7CmSXTw',
