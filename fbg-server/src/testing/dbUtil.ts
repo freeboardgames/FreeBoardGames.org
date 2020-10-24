@@ -16,7 +16,7 @@ import { Connection } from 'typeorm';
 })
 export class FakeDbModule {}
 
-export function closeDbConnection(module: TestingModule) {
+export function closeDbConnection(module: TestingModule): void {
   const connection = module.get<Connection>(Connection);
   if (connection.isConnected) {
     connection.close();

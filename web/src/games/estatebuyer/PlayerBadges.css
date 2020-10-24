@@ -1,0 +1,241 @@
+
+.playerBadgeContainer {
+  clear: both;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.playerBadgeContainer:after { 
+  content: "."; 
+  visibility: hidden; 
+  display: block; 
+  height: 0; 
+  clear: both;
+}
+
+.playerBadge {
+  float:left;
+  margin:0px 10px;
+  position: relative;
+}
+
+.nameText { 
+  fill:rgb(0, 0, 0);
+  font-family:'FreeFranchise', 'Impact', monospace;
+  font-weight:700;
+  font-size:66.667px;
+}
+
+.activeText { 
+  font-size:140px;
+}
+
+.playerCircle {
+  fill:rgb(255,0,0);
+}
+
+.active {
+  
+}
+
+@keyframes newTab {
+  0% {
+    transform: matrix(0.840306,0,0,0.758643,224.58,-40);
+  }
+  100% {
+    transform:matrix(0.840306,0,0,0.758643,224.58,51.3651));
+  }
+}
+
+.bidContainer {
+  animation: newTab 0.5s;
+  animation-iteration-count: 1;
+}
+
+.bid {
+  font-family:'Impact', sans-serif;
+  font-stretch:condensed;
+  font-size:100px;
+  fill:rgb(255,172,0);
+  stroke:black;
+  stroke-width:2.5px;
+  text-align: center;
+  text-anchor:middle;
+}
+
+.bidNumber {
+  fill:none;
+  stroke:black;
+  stroke-width:4.68px;
+  stroke-linecap:round;
+  stroke-miterlimit:1.5;
+}
+
+.bidCircle {
+  fill:rgb(255,249,213);
+}
+
+.passed .bidCircle {
+  fill:rgb(187,30,30);
+}
+
+.bidBackground {
+  fill:rgb(255,241,155);
+}
+
+.passed .bidBackground {
+  fill:rgb(255, 111, 111);
+}
+
+.moneyBackground {
+  fill:rgb(208,255,213);
+}
+
+.score {
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  width: 188px;
+  height: 20px;
+  border-radius: 0px 0px 10px 0px;
+  background-color: rgb(205, 255, 255);
+  text-align: right;
+  padding: 2px 6px;
+  font-family:'Copperplate', monospace;
+  font-size:66.667px;
+  fill:rgb(0, 0, 0);
+  stroke:rgb(0, 0, 0);
+  stroke-width:1.46px;
+  text-anchor: end;
+}
+
+.nameBackground {
+  fill:white;stroke:black;stroke-width:4.1px;stroke-linecap:round;stroke-miterlimit:1.5;
+}
+
+.self .nameBackground {
+  fill:rgb(242, 255, 64);
+}
+
+.cardAwardText {
+  font-family:'Impact', sans-serif;
+  font-stretch:condensed;
+  font-size:100px;
+  fill:white;
+  stroke:black;
+  stroke-width:2.5px;
+  stroke-linecap:butt;
+  stroke-miterlimit:2;
+  text-anchor:middle;
+}
+
+.cardAwardBackground {
+  fill:rgb(58,137,184);stroke:black;stroke-width:3.75px;
+}
+
+.cardAwardHighlight {
+  fill:rgb(38,117,164);
+}
+
+.moneyColor .cardAwardBackground {
+  fill:rgb(120,143,50);stroke:black;stroke-width:3.75px;
+}
+
+.moneyColor .cardAwardHighlight {
+  fill:rgb(100,123,30);
+}
+
+.something2 {
+
+  fill:rgb(255, 255, 255);
+  fill:none;stroke:black;stroke-width:3.49px;stroke-linecap:round;stroke-miterlimit:1.5;
+}
+
+.something3 {
+  fill:none;stroke:black;stroke-width:3.18px;stroke-linecap:round;stroke-miterlimit:1.5;
+}
+
+@keyframes awardCard {
+  0% {
+    opacity: 0;
+    top: 180px;
+    left: 30vw;
+    transform: scale(0.2) translate(-50%, -50%);
+  }
+  10% {
+    opacity: 1;
+    top: 220px;
+    left: 30vw;
+    transform: scale(0.4) translate(-50%, -50%);
+  }
+  40% {
+    top: 220px;
+    left: 30vw;
+    transform: scale(0.4) translate(-50%, -50%);
+  }
+
+  80% {
+    opacity: 1;
+    top: 180px;
+    left: 10px;
+    transform: scale(0.05) translate(0%, -50%);
+  }
+
+  95% {
+    top: 10px;
+    left: 10px;
+    transform: scale(0.05);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.newCard {
+  position: absolute;
+  z-index: 1000;
+  transform-origin: 0 0;
+  transform: scale(0);
+  opacity: 0;
+  animation: awardCard 2s;
+  animation-iteration-count: 1;
+}
+
+
+@keyframes spendCard {
+  0% {
+    opacity: 0;
+    top: 10px;
+    left: 10px;
+    transform: scale(0.05);
+  }
+  20% {
+    opacity: 1;
+    top: 40px;
+    left: 40px;
+    transform: scale(0.2);
+  }
+  90% {
+    opacity: 1;
+    top: 40px;
+    left: 40px;
+    transform: scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    top: 40px;
+    left: 40px;
+    transform: scale(0.5);
+  }
+}
+
+.spentCard {
+  position: absolute;
+  z-index: 900;
+  transform-origin: 0 0;
+  transform: scale(0);
+  opacity: 0;
+  animation: spendCard 3s;
+  animation-iteration-count: 1;
+}

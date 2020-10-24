@@ -1,6 +1,6 @@
 # web
 FROM fbg-common:latest AS common
-FROM node:14.2.0-buster
+FROM node:14.5.0-buster
 RUN groupadd -g 999 appuser && useradd -m -d /appdata -r -u 999 -g appuser appuser
 RUN rm /bin/su
 USER appuser
@@ -19,6 +19,7 @@ RUN yarn run build
 
 # internal configs for FreeBoardGames.org
 COPY --chown=appuser --from=common /internal /internal
+COPY --chown=appuser --from=common /common /common
 
 # run
 CMD yarn run start:prod

@@ -1,0 +1,38 @@
+.tableau {
+    margin: 10px auto;
+    height: 120px;
+    max-width: 520px;
+    background-color: rgba(255, 204, 64, 0.616);
+    box-shadow: 0px 0px 8px #66431b;
+    border-radius: 20px;
+    padding: 2em;
+    overflow: hidden;
+}
+
+.tableau:after { 
+    content: "."; 
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+ }
+
+ .tableau .cards {
+    margin-left: 100px;
+}
+
+ .tableau .cardContainer {
+    float: left;
+    width: 20%;
+    text-align: center;
+    transform-origin: 0 0;
+    transform: scale(0.2);
+    padding: 0;
+}
+
+@media only screen and (max-width: 500px) {
+    .tableau .cardContainer {
+        width: 15%;
+    }
+  }
+  

@@ -4,6 +4,7 @@ import Header from 'infra/home/Header';
 import { GamesList } from 'infra/common/components/game/GamesList';
 import SEO from 'infra/common/helpers/SEO';
 import Link from 'next/link';
+import LobbyCarousel from 'infra/lobby/LobbyCarousel';
 
 export class Home extends React.Component<{}, {}> {
   render() {
@@ -16,7 +17,9 @@ export class Home extends React.Component<{}, {}> {
           }
         />
         <Header />
+        <LobbyCarousel />
         <GamesList />
+        {this.maybeRenderGamesInDevelopment()}
         <p style={{ fontSize: '14px', textAlign: 'center' }}>
           <Link href="/about">
             <a>About</a>
@@ -24,5 +27,13 @@ export class Home extends React.Component<{}, {}> {
         </p>
       </FreeBoardGamesBar>
     );
+  }
+
+  maybeRenderGamesInDevelopment() {
+    const isProdChannel = process.env.NODE_ENV === 'production';
+    if (isProdChannel) {
+      return;
+    }
+    return <GamesList showDevOnly={true} />;
   }
 }

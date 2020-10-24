@@ -4,7 +4,6 @@ import { words } from './constants';
 import { Card, CardColor, IG, Phases, TeamColor } from './definitions';
 import {
   chooseCard,
-  clueGiven,
   getActivePlayersWithoutSpymaster,
   getCurrentTeam,
   getOtherTeam,
@@ -43,18 +42,17 @@ const GameConfig: Game<IG> = {
   playerView: (G: IG, ctx: Ctx, playerID: string): any => {
     if (ctx.gameover) return G;
     if (playerID === null) return G;
-    if (ctx.phase !== Phases.giveClue && ctx.phase !== Phases.guess) return G;
+    if (ctx.phase !== Phases.guess) return G;
     if (playerID == G.teams[0].spymasterID || playerID == G.teams[1].spymasterID) return G;
 
     const { cards } = G;
     return {
       ...G,
       cards: cards.map((card: Card) => {
-        let c = {
+        let c: Card = {
           word: card.word,
           revealed: card.revealed,
         };
-        // @ts-ignore
         if (c.revealed) c.color = card.color;
         return c;
       }),
@@ -70,30 +68,17 @@ const GameConfig: Game<IG> = {
         startGame,
       },
 
-      next: Phases.giveClue,
+      next: Phases.guess,
 
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
     },
 
-    [Phases.giveClue]: {
+    [Phases.guess]: {
       next: Phases.guess,
       turn: {
-        order: {
-          first: () => 0,
-          next: () => 0,
-          playOrder: (G: IG): string[] => [getCurrentTeam(G).spymasterID],
-        },
-      },
-      moves: {
-        clueGiven,
-      },
-    },
-
-    [Phases.guess]: {
-      next: Phases.giveClue,
-      turn: {
+        activePlayers: ActivePlayers.ALL,
         order: {
           first: () => 0,
           next: () => 0,
@@ -102,12 +87,10 @@ const GameConfig: Game<IG> = {
       },
       moves: {
         chooseCard: {
-          // @ts-ignore
           move: chooseCard,
           client: false,
         },
         pass: {
-          // @ts-ignore
           move: pass,
           client: false,
         },

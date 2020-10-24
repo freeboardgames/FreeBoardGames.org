@@ -1,3 +1,5 @@
+.internal
+
 # Logs
 logs
 *.log
@@ -119,7 +121,7 @@ dockerbuild
 reports/
 .config/
 .dockerignore
-static/sitemap.xml
+public/static/sitemap.xml
 backend/test.db
 
 # FBG Blog
@@ -160,3 +162,4 @@ __diff_output__
 
 # storybook auto-generated
 stories/
+public/static/docs

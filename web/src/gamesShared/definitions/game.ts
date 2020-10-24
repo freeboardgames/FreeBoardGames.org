@@ -6,7 +6,6 @@ export interface IGameArgs {
   gameCode: string;
   mode: GameMode;
   matchCode?: string;
-  playerID?: string;
   players?: IPlayerInRoom[];
 }
 
@@ -21,12 +20,15 @@ export interface IAIConfig {
   bgioAI: (level: string) => any;
 }
 
+export enum IGameStatus {
+  IN_DEVELOPMENT,
+  PUBLISHED,
+}
+
 export interface IGameDef {
   code: string;
   name: string;
-  imageURL: {
-    src: string;
-  };
+  imageURL: string;
   description: string;
   descriptionTag: string;
   minPlayers: number;
@@ -36,6 +38,7 @@ export interface IGameDef {
     videoId?: string;
     text?: string;
   };
+  status: IGameStatus;
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
 }

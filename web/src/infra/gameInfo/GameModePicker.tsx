@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import AndroidIcon from '@material-ui/icons/Android';
 import GroupIcon from '@material-ui/icons/Group';
 import WifiIcon from '@material-ui/icons/Wifi';
-import PersonIcon from '@material-ui/icons/Person';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Slider from '@material-ui/core/Slider';
-import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Avatar from '@material-ui/core/Avatar';
@@ -28,6 +26,8 @@ import { connect } from 'react-redux';
 import { ReduxState, ReduxUserState } from 'infra/common/redux/definitions';
 import NicknameRequired from '../common/components/auth/NicknameRequired';
 import { Dispatch } from 'redux';
+import { OccupancySelect } from 'infra/common/components/game/OccupancySelect';
+import css from './GameModePicker.css';
 
 interface IGameModePickerProps {
   gameDef: IGameDef;
@@ -181,7 +181,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
   _getExtraInfo(info: IGameModeInfo) {
     if (info.mode == GameMode.OnlineFriend) {
       if (this.props.gameDef.minPlayers < this.props.gameDef.maxPlayers) {
-        return this._getExtraInfoNumPlayers(info, this.props.gameDef.minPlayers, this.props.gameDef.maxPlayers);
+        return this._getExtraInfoNumPlayers(info);
       }
     }
     if (info.extraInfo) {
@@ -197,26 +197,18 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     return null;
   }
 
-  _getExtraInfoNumPlayers(info: IGameModeInfo, minPlayers: number, maxPlayers: number) {
-    const options = [];
-    for (let i = minPlayers; i <= maxPlayers; i++) {
-      options.push(
-        <MenuItem value={i} key={i}>
-          {i} Players
-        </MenuItem>,
-      );
-    }
+  _getExtraInfoNumPlayers(info: IGameModeInfo) {
     return (
-      <div style={{ marginBottom: '8px' }}>
-        <PersonIcon style={{ position: 'relative', top: '8px', padding: '0 8px' }} />
-        <Select value={this._getExtraInfoValue(info)} onChange={this._handleNumPlayersSelect}>
-          {options}
-        </Select>
-      </div>
+      <OccupancySelect
+        game={this.props.gameDef}
+        value={this._getExtraInfoValue(info)}
+        onChange={this._handleNumPlayersSelect}
+        className={css.OccupancySelect}
+      />
     );
   }
 
-  _handleNumPlayersSelect = (event: any) => {
+  _handleNumPlayersSelect = (event: ChangeEvent<{ value: number }>) => {
     const newState: IGameModePickerState = {
       ...this.state,
       extraInfo: {

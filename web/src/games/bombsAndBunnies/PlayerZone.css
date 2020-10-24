@@ -1,0 +1,8 @@
+.playerZone .stack {
+  display: inline-block;
+  width: 80px;
+}
+
+.playerZone .revealedStack {
+  display: inline-block;
+}

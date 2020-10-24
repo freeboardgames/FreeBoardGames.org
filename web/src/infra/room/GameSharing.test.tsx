@@ -12,7 +12,7 @@ describe('GameSharing', () => {
     window.location.assign = jest.fn();
     window.open = jest.fn();
     window.alert = jest.fn();
-    wrapper = render(<GameSharing gameCode={'foogame'} roomID={'fooroom'} />);
+    wrapper = render(<GameSharing gameCode={'foogame'} roomID={'fooroom'} isPublic={false} />);
   });
 
   it('should render', () => {

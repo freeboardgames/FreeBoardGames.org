@@ -6,7 +6,7 @@ const withWorkers = require('@zeit/next-workers');
 const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const CHANNEL = process.env.CHANNEL || 'development';
-const BGIO_SERVER_URL = process.env.BGIO_SERVER_URL;
+const GQL_WS_URL = process.env.GQL_WS_URL;
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
 const VERSION = process.env.GIT_REV || getGitHash();
 const SENTRY_DSN = process.env.SENTRY_DSN;
@@ -36,7 +36,7 @@ module.exports = withWorkers(
       env: {
         CHANNEL,
         VERSION,
-        BGIO_SERVER_URL,
+        GQL_WS_URL,
         BABEL_ENV_IS_PROD,
         GA_TRACKING_CODE: process.env.GA_TRACKING_CODE,
         SENTRY_DSN,

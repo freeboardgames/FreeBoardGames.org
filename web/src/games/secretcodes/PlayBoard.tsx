@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import { getPlayerTeam, isPlayerSpymaster } from './util';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
+import { GameMode } from 'gamesShared/definitions/mode';
 
 interface IPlayBoardProps {
   G: IG;
@@ -87,31 +88,28 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
   _renderHeader = () => {
     let instruction;
 
-    if (this.props.ctx.phase === Phases.giveClue) {
-      const button = this._isActive() ? (
-        <Button className={css.playActionBtn} variant="contained" onClick={this._clueGiven} color="primary">
-          Done
-        </Button>
-      ) : null;
-      instruction = (
-        <p>
-          <strong>{this._currentPlayerInRoom().name}</strong> give your teammates a clue!
-          {button}
-        </p>
-      );
-    } else {
-      const button = this._isActive() ? (
-        <Button className={css.playActionBtn} variant="contained" onClick={this._pass}>
-          Pass
-        </Button>
-      ) : null;
-      instruction = (
-        <p>
-          <strong>{this._currentPlayerTeam().color === TeamColor.Red ? 'Red' : 'Blue'} Team</strong> make your guess!
-          {button}
-        </p>
+    const button = this._isActive() ? (
+      <Button className={css.playActionBtn} variant="contained" onClick={this._pass}>
+        Pass
+      </Button>
+    ) : null;
+    let spymasterInstructions;
+    if (this.props.gameArgs.mode === GameMode.OnlineFriend) {
+      const spymasterName = this.props.gameArgs.players[this._currentPlayerTeam().spymasterID].name;
+      spymasterInstructions = (
+        <>
+          <strong>{spymasterName}</strong> give clue,&nbsp;
+        </>
       );
     }
+
+    instruction = (
+      <p>
+        {spymasterInstructions}
+        <strong>{this._currentPlayerTeam().color === TeamColor.Red ? 'Red' : 'Blue'} Team</strong> select cards!
+        {button}
+      </p>
+    );
 
     return (
       <div className={css.header}>
@@ -130,6 +128,10 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       const card = this.props.G.cards[i];
 
       const classes = [css.card];
+      if (card.revealed && this._showSpymasterView() && !this.props.isGameOver) {
+        classes.push(css.cardRevealedSpymasterView);
+      }
+
       if (card.revealed || this._showSpymasterView()) {
         if (card.color === CardColor.blue) classes.push(css.cardBlue);
         else if (card.color === CardColor.red) classes.push(css.cardRed);
@@ -156,10 +158,17 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
       .map((player) => player.playerID.toString())
       .map((playerID) => getPlayerTeam(this.props.G, playerID).color)
       .map((color) => (color == TeamColor.Red ? '#F25F5C' : '#247BA0'));
+
+    const prefixes = this.props.gameArgs.players
+      .map((player) => player.playerID.toString())
+      .map((playerID) => isPlayerSpymaster(this.props.G, playerID.toString()))
+      .map((isSpyMaster) => (isSpyMaster ? '🕵' : undefined));
+
     return (
       <PlayerBadges
         playerID={this.props.playerID}
         players={this.props.gameArgs.players}
+        prefixes={prefixes}
         colors={colors}
         ctx={this.props.ctx}
       />

@@ -8,6 +8,7 @@ interface IDecksProps {
   ctx: Ctx;
   playerID: string;
   selectDeck: (index: number) => void;
+  disabled?: boolean;
 }
 
 export class Decks extends React.Component<IDecksProps, {}> {
@@ -15,7 +16,11 @@ export class Decks extends React.Component<IDecksProps, {}> {
 
   render() {
     return (
-      <div>
+      <div
+        style={{
+          opacity: this.props.disabled ? 0.75 : 1,
+        }}
+      >
         {this.props.G.decks.map((deck, i) => (
           <div
             className="DeckRow"

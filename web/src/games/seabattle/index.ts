@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const seabattleGameDef: IGameDef = {
@@ -18,6 +18,7 @@ export const seabattleGameDef: IGameDef = {
     videoId: 'q0qpQ8doUp8',
     text: instructions,
   },
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };

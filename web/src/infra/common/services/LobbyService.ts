@@ -4,20 +4,20 @@ import { ActionNames, SyncUserAction } from '../redux/actions';
 import { ReduxUserState } from 'infra/common/redux/definitions';
 import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
-import { ApolloClient, ApolloError } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient, ApolloError, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
 import { NewRoom, NewRoomVariables } from 'gqlTypes/NewRoom';
 import { GetMatch, GetMatchVariables } from 'gqlTypes/GetMatch';
+import { GetLobby } from 'gqlTypes/GetLobby';
 import { StartMatch, StartMatchVariables } from 'gqlTypes/StartMatch';
 import { NextRoom, NextRoomVariables } from 'gqlTypes/NextRoom';
-import gql from 'graphql-tag';
-import { CheckinRoom, CheckinRoomVariables } from 'gqlTypes/CheckinRoom';
+import gql from 'graphql-tag.macro';
+import { JoinRoom, JoinRoomVariables } from 'gqlTypes/JoinRoom';
+import { RemoveUserFromRoom, RemoveUserFromRoomVariables } from 'gqlTypes/RemoveUserFromRoom';
 
-const FBG_NICKNAME_KEY = 'fbgNickname';
-const FBG_USER_TOKEN_KEY = 'fbgUserToken';
+const FBG_NICKNAME_KEY = 'fbgNickname2';
+const FBG_USER_TOKEN_KEY = 'fbgUserToken2';
 
 const httpLink = createHttpLink({
   uri: AddressHelper.getGraphQLServerAddress(),
@@ -88,7 +88,6 @@ export class LobbyService {
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data;
   }
-
   public static async startMatch(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<string> {
     const client = this.getClient();
     const result = await client
@@ -108,6 +107,7 @@ export class LobbyService {
     dispatch: Dispatch<SyncUserAction>,
     gameCode: string,
     capacity: number,
+    isPublic: boolean = false,
   ): Promise<NewRoom> {
     const client = this.getClient();
     const result = await client
@@ -119,7 +119,7 @@ export class LobbyService {
             }
           }
         `,
-        variables: { room: { gameCode, capacity, isPublic: false } },
+        variables: { room: { gameCode, capacity, isPublic } },
       })
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data;
@@ -138,16 +138,18 @@ export class LobbyService {
       })
       .catch(this.catchUnauthorizedGql(dispatch));
 
+    const payload: ReduxUserState = { ready: true, loggedIn: true, nickname };
+    dispatch({ type: ActionNames.SyncUser, payload });
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
   }
 
-  public static async checkin(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<CheckinRoom> {
+  public static async joinRoom(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<JoinRoom> {
     const client = this.getClient();
     const result = await client
-      .mutate<CheckinRoom, CheckinRoomVariables>({
+      .mutate<JoinRoom, JoinRoomVariables>({
         mutation: gql`
-          mutation CheckinRoom($roomId: String!) {
-            checkinRoom(roomId: $roomId) {
+          mutation JoinRoom($roomId: String!) {
+            joinRoom(roomId: $roomId) {
               gameCode
               capacity
               isPublic
@@ -169,6 +171,38 @@ export class LobbyService {
     return result.data;
   }
 
+  public static async leaveRoom(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<void> {
+    const client = this.getClient();
+    await client
+      .mutate({
+        mutation: gql`
+          mutation LeaveRoom($roomId: String!) {
+            leaveRoom(roomId: $roomId)
+          }
+        `,
+        variables: { roomId },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
+  }
+
+  public static async removeUser(
+    dispatch: Dispatch<SyncUserAction>,
+    userIdToBeRemoved: number,
+    roomId: string,
+  ): Promise<void> {
+    const client = this.getClient();
+    await client
+      .mutate<RemoveUserFromRoom, RemoveUserFromRoomVariables>({
+        mutation: gql`
+          mutation RemoveUserFromRoom($roomId: String!, $userIdToBeRemoved: Int!) {
+            removeFromRoom(userIdToBeRemoved: $userIdToBeRemoved, roomId: $roomId)
+          }
+        `,
+        variables: { roomId, userIdToBeRemoved },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
+  }
+
   // TODO dispatch/catchUnauthorized
   public static async getPlayAgainNextRoom(matchId: string): Promise<string> {
     const client = this.getClient();
@@ -181,6 +215,27 @@ export class LobbyService {
       variables: { matchId },
     });
     return result.data.nextRoom;
+  }
+
+  public static async getLobby() {
+    const client = this.getClient();
+    const result = await client.query<GetLobby, {}>({
+      query: gql`
+        query GetLobby {
+          lobby {
+            rooms {
+              id
+              gameCode
+              capacity
+              userMemberships {
+                isCreator
+              }
+            }
+          }
+        }
+      `,
+    });
+    return result.data;
   }
 
   public static getUserToken() {

@@ -4,7 +4,7 @@ import { FakeDbModule, closeDbConnection } from '../testing/dbUtil';
 import { UsersModule } from './users.module';
 import { UsersResolver } from './users.resolver';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from './definitions';
+import { JwtPayload } from '../internal/auth/definitions';
 import { RoomsModule } from '../rooms/rooms.module';
 import { MatchModule } from '../match/match.module';
 
