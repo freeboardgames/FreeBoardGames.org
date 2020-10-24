@@ -1,0 +1,29 @@
+import React from 'react';
+import { IPolicy } from '../interfaces';
+
+interface InnerWrapper {
+  policy: IPolicy;
+  discard(): any;
+}
+
+export class BPolicy extends React.Component<InnerWrapper, {}> {
+  render() {
+    return (
+      <div>
+        {this.props.policy == null ? (
+          <div> 🃏 </div>
+        ) : (
+          <div onClick={() => this.props.discard()}>{this.props.policy.chalice ? this._chalice() : this._garlic()}</div>
+        )}
+      </div>
+    );
+  }
+
+  _chalice = () => {
+    return <div>🩸</div>;
+  };
+
+  _garlic = () => {
+    return <div>💧</div>;
+  };
+}
