@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.png');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const soupOfLettersGameDef: IGameDef = {
@@ -16,6 +16,7 @@ export const soupOfLettersGameDef: IGameDef = {
     // videoId: '_XVs7CmSXTw',
     text: instructions,
   },
+  status: IGameStatus.IN_DEVELOPMENT,
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
 };
