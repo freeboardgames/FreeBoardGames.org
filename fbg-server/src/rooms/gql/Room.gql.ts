@@ -1,21 +1,21 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { RoomMembership } from './RoomMembership.gql';
 
 @ObjectType()
 export class Room {
-  @Field(() => String, { nullable: true })
+  @Field((type) => String, { nullable: true })
   id?: string;
 
   gameCode: string;
   capacity: number;
   isPublic: boolean;
 
-  @Field(() => String, { nullable: true })
+  @Field((type) => String, { nullable: true })
   matchId?: string;
 
-  @Field(() => Number, { nullable: true })
+  @Field((type) => Number, { nullable: true })
   userId?: number;
 
-  @Field(() => [RoomMembership])
+  @Field((type) => [RoomMembership])
   userMemberships: RoomMembership[];
 }

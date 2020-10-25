@@ -3,7 +3,7 @@ import { Connection, QueryRunner } from 'typeorm';
 export async function inTransaction(
   connection: Connection,
   callback: (queryRunner: QueryRunner) => Promise<any>,
-): Promise<any> {
+) {
   let hasError = false;
   const queryRunner = connection.createQueryRunner();
   await queryRunner.connect();

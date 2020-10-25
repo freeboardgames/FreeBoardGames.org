@@ -1,9 +1,8 @@
 import { LoggingWinston } from '@google-cloud/logging-winston';
 import winston from 'winston';
 import expressWinston from 'express-winston';
-import { INestApplication } from '@nestjs/common';
 
-export function setupLogging(app: INestApplication, name: string): void {
+export function setupLogging(app, name) {
   if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
     console.info(
       'GOOGLE_APPLICATION_CREDENTIALS env not found, skipping stackdriver logging.',

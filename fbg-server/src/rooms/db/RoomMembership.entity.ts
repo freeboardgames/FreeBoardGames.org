@@ -19,10 +19,10 @@ export class RoomMembershipEntity extends BaseEntity {
   @Column({ default: false })
   public isCreator!: boolean;
 
-  @ManyToOne(() => UserEntity, (user) => user.roomMemberships)
+  @ManyToOne((type) => UserEntity, (user) => user.roomMemberships)
   public user!: UserEntity;
 
-  @ManyToOne(() => RoomEntity, (room) => room.userMemberships)
+  @ManyToOne((type) => RoomEntity, (room) => room.userMemberships)
   public room!: RoomEntity;
 }
 

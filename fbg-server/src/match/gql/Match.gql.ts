@@ -3,7 +3,7 @@ import { MatchMembership } from './MatchMembership.gql';
 
 @ObjectType()
 export class Match {
-  @Field(() => Int, { nullable: true })
+  @Field((type) => Int, { nullable: true })
   id?: number;
   gameCode: string;
   bgioServerUrl: string;
@@ -11,6 +11,6 @@ export class Match {
   bgioSecret?: string;
   bgioPlayerId?: string;
 
-  @Field(() => [MatchMembership])
+  @Field((type) => [MatchMembership])
   playerMemberships: MatchMembership[];
 }

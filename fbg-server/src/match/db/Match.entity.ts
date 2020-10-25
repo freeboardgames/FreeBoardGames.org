@@ -27,13 +27,13 @@ export class MatchEntity extends BaseEntity {
   @Column()
   bgioMatchId: string;
 
-  @OneToMany(() => MatchMembershipEntity, (membership) => membership.match)
+  @OneToMany((type) => MatchMembershipEntity, (membership) => membership.match)
   public playerMemberships!: MatchMembershipEntity[];
 
-  @OneToOne(() => RoomEntity, (room) => room.match)
+  @OneToOne((type) => RoomEntity, (room) => room.match)
   public room?: RoomEntity;
 
-  @OneToOne(() => RoomEntity)
+  @OneToOne((type) => RoomEntity)
   @JoinColumn()
   public nextRoom?: RoomEntity;
 }

@@ -6,14 +6,15 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "test": "node cli/test/test.js",
-    "lint": "node cli/lint/lint.js",
-    "fix": "node cli/fix/fix.js",
+    "test": "run-s test:*",
     "ci": "run-s ci:*",
     "dev": "run-p web:dev backend:dev",
+    "format": "run-p format:*",
     "backend:dev": "cd fbg-server/ && yarn run start",
     "ci:web": "cd web/ && yarn run ci",
     "ci:backend": "cd fbg-server/ && yarn run test",
+    "format:backend": "cd fbg-server/ && yarn run format",
+    "format:web": "cd web/ && yarn run format",
     "install:backend": "cd fbg-server/ && yarn install",
     "install:web": "cd web/ && yarn install",
     "postinstall": "run-s install:*",
@@ -23,9 +24,5 @@
   },
   "dependencies": {
     "npm-run-all": "^4.1.5"
-  },
-  "devDependencies": {
-    "chalk": "^4.1.0",
-    "shelljs": "^0.8.4"
   }
 }

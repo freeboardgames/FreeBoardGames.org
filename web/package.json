@@ -3,12 +3,12 @@
   "version": "2.0.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "test": "node ../cli/test/test.js",
-    "lint": "node ../cli/lint/lint.js",
-    "fix": "node ../cli/fix/fix.js",
     "apollo:codegen": "rimraf src/gqlTypes && apollo client:codegen -c apollo.config.js --target typescript --outputFlat src/gqlTypes",
-    "pre": "run-s lint build:server jest ci:test:e2e",
-    "ci": "run-s lint build:server ci:test:unit ci:test:e2e report:combined",
+    "pre": "run-s lint format:check build:server test ci:test:e2e",
+    "ci": "run-s lint format:check build:server ci:test:unit ci:test:e2e report:combined",
+    "lint": "eslint --max-warnings=0 --ext .ts,.tsx src/",
+    "lint:fix": "eslint --fix --max-warnings=0 --ext .ts,.tsx src/",
+    "autopre": "run-s format lint:fix build:server test ci:test:e2e",
     "dev": "start-server-and-test dev:web http://localhost:3000 bgio:dev",
     "dev:web": "run-s build:server:dev dev:runserver",
     "dev:runserver": "node server/dist/server_web.js",
@@ -25,6 +25,10 @@
     "cyp:open:mobile": "cypress open --env userAgent=mobile",
     "cyp:open:tablet": "cypress open --env userAgent=tablet",
     "cyp:run": "run-s --silent cyp:run:*",
+    "format": "prettier --write \"./**/*.*(js|jsx|ts|tsx)\"",
+    "format:staged": "pretty-quick --staged",
+    "format:check": "prettier --check \"./**/*.ts\" \"./**/*.tsx\" \"./**/*.js\"",
+    "husky": "run-s lint format:staged test",
     "start:bgio": "node server/dist/server_bgio.js",
     "start": "run-s build:server start:server",
     "start:server": "cross-env CHANNEL=production NODE_ENV=production node server/dist/server_web.js",
@@ -33,6 +37,7 @@
     "e2e:buildandstartserver": "run-s build:server e2e:build e2e:startserver",
     "ci:test:unit": "jest --coverage",
     "ci:test:e2e": "start-server-and-test e2e:buildandstartserver http://localhost:3000 cyp:run",
+    "test": "jest",
     "test:coveralls": "cat coverage/lcov.info | node node_modules/.bin/coveralls",
     "mkdir:reports": "rimraf reports && mkdirp reports",
     "precopy:reports": "yarn run mkdir:reports",
@@ -154,6 +159,7 @@
     "enzyme-adapter-react-16": "^1.15.5",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
+    "husky": "^4.3.0",
     "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
     "image-trace-loader": "^1.0.2",
@@ -195,5 +201,10 @@
   },
   "nyc": {
     "report-dir": "coverage-e2e"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run husky"
+    }
   }
 }
