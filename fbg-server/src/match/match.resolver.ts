@@ -3,36 +3,35 @@ import { MatchService } from './match.service';
 import { CurrentUser, GqlAuthGuard } from '../internal/auth/GqlAuthGuard';
 import { UseGuards } from '@nestjs/common';
 import { Match } from './gql/Match.gql';
-import { User } from '../users/gql/User.gql';
 
-@Resolver(() => Match)
+@Resolver((of) => Match)
 export class MatchResolver {
   constructor(private matchService: MatchService) {}
 
-  @Query(() => Match)
+  @Query((returns) => Match)
   @UseGuards(GqlAuthGuard)
   async match(
-    @CurrentUser() currentUser: User,
+    @CurrentUser() currentUser,
     @Args({ name: 'id', type: () => String }) matchId: string,
-  ): Promise<Match> {
+  ) {
     return await this.matchService.getMatch(matchId, currentUser.id);
   }
 
-  @Mutation(() => String)
+  @Mutation((returns) => String)
   @UseGuards(GqlAuthGuard)
   async nextRoom(
-    @CurrentUser() currentUser: User,
+    @CurrentUser() currentUser,
     @Args({ name: 'matchId', type: () => String }) matchId: string,
-  ): Promise<string> {
+  ) {
     return this.matchService.getNextRoom(matchId, currentUser.id);
   }
 
-  @Mutation(() => String)
+  @Mutation((returns) => String)
   @UseGuards(GqlAuthGuard)
   async startMatch(
-    @CurrentUser() currentUser: User,
+    @CurrentUser() currentUser,
     @Args({ name: 'roomId', type: () => String }) roomId: string,
-  ): Promise<string> {
+  ) {
     return this.matchService.startMatch(roomId, currentUser.id);
   }
 }

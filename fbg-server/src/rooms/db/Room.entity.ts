@@ -24,10 +24,10 @@ export class RoomEntity extends BaseEntity {
   @Column()
   isPublic!: boolean;
 
-  @OneToMany(() => RoomMembershipEntity, (membership) => membership.room)
+  @OneToMany((type) => RoomMembershipEntity, (membership) => membership.room)
   public userMemberships!: RoomMembershipEntity[];
 
-  @OneToOne(() => MatchEntity, (match) => match.room)
+  @OneToOne((type) => MatchEntity, (match) => match.room)
   @JoinColumn()
   public match?: MatchEntity;
 }

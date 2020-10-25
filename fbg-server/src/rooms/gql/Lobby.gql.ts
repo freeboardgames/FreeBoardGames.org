@@ -3,6 +3,6 @@ import { Room } from './Room.gql';
 
 @ObjectType()
 export class Lobby {
-  @Field(() => [Room])
+  @Field((type) => [Room])
   rooms: Room[];
 }

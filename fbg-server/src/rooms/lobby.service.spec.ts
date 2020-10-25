@@ -1,12 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RoomsService } from './rooms.service';
+import { MatchService } from '../match/match.service';
 import { FakeDbModule, closeDbConnection } from '../testing/dbUtil';
 import { RoomsModule } from '../rooms/rooms.module';
 import { UsersService } from '../users/users.service';
 import { UsersModule } from '../users/users.module';
+import { Connection } from 'typeorm';
 import { MatchModule } from '../match/match.module';
 import { LobbyService } from './lobby.service';
 import { RoomEntity } from './db/Room.entity';
+import { HttpService } from '@nestjs/common';
 
 function roomIds(lobby: RoomEntity[]) {
   return lobby.map((room) => room.id);
@@ -17,6 +20,9 @@ describe('LobbyService', () => {
   let service: LobbyService;
   let usersService: UsersService;
   let roomsService: RoomsService;
+  let matchService: MatchService;
+  let connection: Connection;
+  let httpService: HttpService;
 
   beforeAll(async () => {
     jest.resetAllMocks();
@@ -26,7 +32,10 @@ describe('LobbyService', () => {
 
     usersService = module.get<UsersService>(UsersService);
     roomsService = module.get<RoomsService>(RoomsService);
+    matchService = module.get<MatchService>(MatchService);
     service = module.get<LobbyService>(LobbyService);
+    httpService = module.get<HttpService>(HttpService);
+    connection = module.get<Connection>(Connection);
   });
 
   afterAll(async () => {

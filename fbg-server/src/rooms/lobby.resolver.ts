@@ -2,20 +2,19 @@ import { Resolver, Query, Subscription } from '@nestjs/graphql';
 import { Lobby } from './gql/Lobby.gql';
 import { PubSub } from 'graphql-subscriptions';
 import { LobbyService } from './lobby.service';
-import { lobbyToGql } from './RoomUtil';
-import { Room } from './gql/Room.gql';
+import { roomEntityToRoom, lobbyToGql } from './RoomUtil';
 
-@Resolver(() => Lobby)
+@Resolver((of) => Lobby)
 export class LobbyResolver {
   constructor(private lobbyService: LobbyService, private pubSub: PubSub) {}
 
-  @Query(() => Lobby)
-  async lobby(): Promise<{ rooms: Room[] }> {
+  @Query((returns) => Lobby)
+  async lobby() {
     return { rooms: lobbyToGql(await this.lobbyService.getLobby()) };
   }
 
-  @Subscription(() => Lobby)
-  lobbyMutated(): AsyncIterator<unknown, any, undefined> {
+  @Subscription((returns) => Lobby)
+  lobbyMutated() {
     return this.pubSub.asyncIterator('lobby');
   }
 }
