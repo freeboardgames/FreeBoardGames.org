@@ -16,10 +16,12 @@ import { hangmanGameDef } from './hangman';
 import { estateBuyerGameDef } from './estatebuyer';
 import { cardtableGameDef } from './cardtable';
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
+import { secretDraculaGameDef } from './secretDracula';
 import { bombsAndBunniesDef } from './bombsAndBunnies';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
+  secretdracula: secretDraculaGameDef,
   mancala: mancalaGameDef,
   zooparade: zooParadeGameDef,
   chess: chessGameDef,
@@ -61,4 +63,5 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.ninemensmorris,
   GAMES_MAP.bombsAndBunnies,
   GAMES_MAP.cardtable,
+  GAMES_MAP.secretdracula,
 ];
