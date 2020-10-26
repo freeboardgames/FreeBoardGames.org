@@ -47,7 +47,6 @@ export const GAMES_MAP: IGameDefMap = {
 // Order roughly by popularity.
 // See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
-  GAMES_MAP.soupofletters,
   GAMES_MAP.estatebuyer,
   GAMES_MAP.mancala,
   GAMES_MAP.secretcodes,
@@ -67,4 +66,5 @@ export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.bombsAndBunnies,
   GAMES_MAP.cardtable,
   GAMES_MAP.secretdracula,
+  GAMES_MAP.soupofletters,
 ];

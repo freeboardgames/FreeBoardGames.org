@@ -1,15 +1,12 @@
 import React from 'react';
-// game shared import
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import { Ctx } from 'boardgame.io';
-// node module import
 import { Modal, Button, Typography, List, ListItem, ListItemText } from '@material-ui/core';
 import Timer from 'react-compound-timer';
-// with-in game folder input
 import { TIME_OUT, TIME_BUFF, playerColors } from './constants';
 import { IG, ISolvedWord } from './game';
 import { Soup } from './soup';
@@ -152,11 +149,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _renderFooter() {
     return (
       <div>
-        {/* <Box
-          display="flex"
-          width='100%' height={40}
-          bgcolor="black"
-        > */}
         {this._renderPlayerBadges()}
         <Button
           variant="contained"
@@ -167,7 +159,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         >
           Words
         </Button>
-        {/* </Box> */}
       </div>
     );
   }
@@ -192,7 +183,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _getBoard() {
     return (
       <Soup
-        puzzel={this.props.G.puzzel}
+        puzzle={this.props.G.puzzle}
         solution={this.props.G.solution}
         currentPlayer={this.props.ctx.currentPlayer}
         wordFoundCallback={this._wordFound}

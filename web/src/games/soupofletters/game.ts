@@ -1,5 +1,5 @@
 import { MAX_WORDS_IN_GAME, MAX_WORD_LEN, DRAW_AFTER_N_TIMERS, validOrientations, globalWordList } from './constants';
-import { newPuzzle, solvePuzzel } from './puzzel';
+import { newPuzzle, solvepuzzle } from './puzzle';
 
 export interface ISingleLetter {
   x: number;
@@ -18,7 +18,7 @@ export interface ISolvedWord {
 }
 
 export interface IG {
-  puzzel: Array<Array<string>>;
+  puzzle: Array<Array<string>>;
   solution: Array<ISolvedWord>;
   timeRef: number;
   countTimerFired: number;
@@ -87,25 +87,25 @@ function initialSetup(ctx, wordList = globalWordList, allowedOrientations = vali
       break;
     }
   }
-  // create a puzzel, and if all words are not found then reduce words and try again
-  let puzzel;
-  while (!puzzel) {
-    puzzel = newPuzzle(randWords, {
+  // create a puzzle, and if all words are not found then reduce words and try again
+  let puzzle;
+  while (!puzzle) {
+    puzzle = newPuzzle(randWords, {
       height: MAX_WORD_LEN,
       width: MAX_WORD_LEN,
       orientations: allowedOrientations,
     });
-    // if puzzel, try to solve it
-    if (puzzel) {
-      let { found, notFound } = solvePuzzel(puzzel, randWords, allowedOrientations);
-      // if some words not found, then reset puzzel and try again with less words
+    // if puzzle, try to solve it
+    if (puzzle) {
+      let { found, notFound } = solvepuzzle(puzzle, randWords, allowedOrientations);
+      // if some words not found, then reset puzzle and try again with less words
       if (notFound.length !== 0) {
-        puzzel = null;
+        puzzle = null;
       } else {
-        return { puzzel, solution: found, timeRef: Date.now(), countTimerFired: 0 };
+        return { puzzle, solution: found, timeRef: Date.now(), countTimerFired: 0 };
       }
     }
-    // if puzzel not found, reduce words
+    // if puzzle not found, reduce words
     wordPerPerson = wordPerPerson - 1;
     totalAllowedWords = wordPerPerson * ctx.numPlayers;
     randWords = randWords.slice(0, totalAllowedWords);

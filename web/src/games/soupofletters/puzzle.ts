@@ -310,7 +310,7 @@ const placeWord = function (puzzle, word, x, y, fnGetSquare) {
  * Returns the puzzle that was created.
  */
 
-export interface IPuzzelSettings {
+export interface IpuzzleSettings {
   height: number;
   width: number;
   orientations: string[];
@@ -332,7 +332,7 @@ const fillBlanks = function (puzzle) {
   }
 };
 
-export const newPuzzle = function (words: string[], settings: IPuzzelSettings) {
+export const newPuzzle = function (words: string[], settings: IpuzzleSettings) {
   let wordList,
     puzzle,
     attempts = 0,
@@ -345,7 +345,7 @@ export const newPuzzle = function (words: string[], settings: IPuzzelSettings) {
   });
 
   // initialize the options
-  let options: IPuzzelSettings = {
+  let options: IpuzzleSettings = {
     height: opts.height, //|| wordList[0].length
     width: opts.width, // || wordList[0].length
     orientations: opts.orientations,
@@ -393,7 +393,7 @@ export const newPuzzle = function (words: string[], settings: IPuzzelSettings) {
  * @param {[String]} words: The list of words to find
  * @api public
  */
-export const solvePuzzel = function (puzzle, words, validOrientations) {
+export const solvepuzzle = function (puzzle, words, validOrientations) {
   let options = {
       height: puzzle.length,
       width: puzzle[0].length,
