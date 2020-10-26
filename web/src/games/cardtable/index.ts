@@ -20,3 +20,5 @@ export const cardtableGameDef: IGameDef = {
   status: IGameStatus.IN_DEVELOPMENT,
   config: () => import('./config'),
 };
+
+export default cardtableGameDef;

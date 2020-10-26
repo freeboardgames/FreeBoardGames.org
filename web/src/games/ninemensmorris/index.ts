@@ -22,3 +22,5 @@ export const ninemensmorrisGameDef: IGameDef = {
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
 };
+
+export default ninemensmorrisGameDef;

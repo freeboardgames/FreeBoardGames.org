@@ -22,3 +22,5 @@ export const reversiGameDef: IGameDef = {
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
+
+export default reversiGameDef;

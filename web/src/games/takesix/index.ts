@@ -22,3 +22,5 @@ export const takesixGameDef: IGameDef = {
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
+
+export default takesixGameDef;

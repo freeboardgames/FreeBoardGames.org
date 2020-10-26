@@ -22,3 +22,5 @@ export const seabattleGameDef: IGameDef = {
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
+
+export default seabattleGameDef;

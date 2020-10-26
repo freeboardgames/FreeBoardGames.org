@@ -21,3 +21,5 @@ export const secretcodesGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default secretcodesGameDef;

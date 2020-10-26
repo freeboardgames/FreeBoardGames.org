@@ -4,7 +4,7 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const secretDraculaGameDef: IGameDef = {
-  code: 'secretdracula',
+  code: 'secretDracula',
   name: 'Secret Dracula',
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }],
@@ -20,3 +20,5 @@ export const secretDraculaGameDef: IGameDef = {
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
+
+export default secretDraculaGameDef;

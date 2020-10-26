@@ -19,3 +19,5 @@ export const zooParadeGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default zooParadeGameDef;

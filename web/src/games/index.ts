@@ -1,49 +1,47 @@
-import { mancalaGameDef } from './mancala';
-import { chessGameDef } from './chess';
-import { seabattleGameDef } from './seabattle';
-import { tictactoeGameDef } from './tictactoe';
-import { takesixGameDef } from './takesix';
-import { ninemensmorrisGameDef } from './ninemensmorris';
-import { checkersGameDef } from './checkers';
-import { reversiGameDef } from './reversi';
-import { cornerusGameDef } from './cornerus';
-import { tictactoeplusGameDef } from './tictactoeplus';
-import { fourinarowGameDef } from './fourinarow';
-import { zooParadeGameDef } from './zooparade';
-import { rotaGameDef } from './rota';
-import { secretcodesGameDef } from './secretcodes';
-import { hangmanGameDef } from './hangman';
-import { estateBuyerGameDef } from './estatebuyer';
-import { cardtableGameDef } from './cardtable';
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
-import { secretDraculaGameDef } from './secretDracula';
-import { bombsAndBunniesDef } from './bombsAndBunnies';
+import  mancala from './mancala';
+import  chess from './chess';
+import  seabattle from './seabattle';
+import  tictactoe from './tictactoe';
+import  takesix from './takesix';
+import  ninemensmorris from './ninemensmorris';
+import  checkers from './checkers';
+import  reversi from './reversi';
+import  cornerus from './cornerus';
+import  tictactoeplus from './tictactoeplus';
+import  fourinarow from './fourinarow';
+import  zooparade from './zooparade';
+import  rota from './rota';
+import  secretcodes from './secretcodes';
+import  hangman from './hangman';
+import  estatebuyer from './estatebuyer';
+import  cardtable from './cardtable';
+import  secretDracula from './secretDracula';
+import  bombsAndBunnies from './bombsAndBunnies';
 
 // Add new games here
 export const GAMES_MAP: IGameDefMap = {
-  secretdracula: secretDraculaGameDef,
-  mancala: mancalaGameDef,
-  zooparade: zooParadeGameDef,
-  chess: chessGameDef,
-  seabattle: seabattleGameDef,
-  tictactoe: tictactoeGameDef,
-  takesix: takesixGameDef,
-  cornerus: cornerusGameDef,
-  ninemensmorris: ninemensmorrisGameDef,
-  checkers: checkersGameDef,
-  reversi: reversiGameDef,
-  tictactoeplus: tictactoeplusGameDef,
-  fourinarow: fourinarowGameDef,
-  rota: rotaGameDef,
-  secretcodes: secretcodesGameDef,
-  hangman: hangmanGameDef,
-  estatebuyer: estateBuyerGameDef,
-  bombsAndBunnies: bombsAndBunniesDef,
-  cardtable: cardtableGameDef,
+  secretDracula,
+  mancala,
+  zooparade,
+  chess,
+  seabattle,
+  tictactoe,
+  takesix,
+  cornerus,
+  ninemensmorris,
+  checkers,
+  reversi,
+  tictactoeplus,
+  fourinarow,
+  rota,
+  secretcodes,
+  hangman,
+  estatebuyer,
+  bombsAndBunnies,
+  cardtable,
 };
 
-// Order roughly by popularity.
-// See https://stats.freeboardgames.org
 export const GAMES_LIST: IGameDef[] = [
   GAMES_MAP.estatebuyer,
   GAMES_MAP.mancala,

@@ -19,3 +19,5 @@ export const bombsAndBunniesDef: IGameDef = {
   status: IGameStatus.IN_DEVELOPMENT,
   config: () => import('./config'),
 };
+
+export default bombsAndBunniesDef;
