@@ -1,4 +1,4 @@
-import AIConfig from './ai';
+import AIConfig from './ai.ts';
 import { Step, MCTSBot } from 'boardgame.io/ai';
 import { TictactoePlusGame } from './game';
 import { Client } from 'boardgame.io/client';

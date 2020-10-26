@@ -1,4 +1,5 @@
 import { Resolver, Mutation, Args, Subscription, Int } from '@nestjs/graphql';
+import { User } from '../users/gql/User.gql';
 import { Room } from './gql/Room.gql';
 import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { NewRoom } from './gql/NewRoom.gql';
@@ -8,50 +9,50 @@ import { UseGuards } from '@nestjs/common';
 import { roomEntityToRoom } from './RoomUtil';
 import { PubSub } from 'graphql-subscriptions';
 
-@Resolver((of) => Room)
+@Resolver(() => Room)
 export class RoomsResolver {
   constructor(private roomsService: RoomsService, private pubSub: PubSub) {}
 
-  @Mutation((returns) => NewRoom)
+  @Mutation(() => NewRoom)
   @UseGuards(GqlAuthGuard)
   async newRoom(
-    @CurrentUser() currentUser,
+    @CurrentUser() currentUser: User,
     @Args({ name: 'room', type: () => NewRoomInput }) room: NewRoomInput,
-  ) {
+  ): Promise<{ roomId: string }> {
     const roomEntity = await this.roomsService.newRoom(room, currentUser.id);
     return { roomId: roomEntity.id };
   }
 
-  @Mutation((returns) => Room)
+  @Mutation(() => Room)
   @UseGuards(GqlAuthGuard)
   async joinRoom(
-    @CurrentUser() currentUser,
+    @CurrentUser() currentUser: User,
     @Args({ name: 'roomId', type: () => String }) roomId: string,
-  ) {
+  ): Promise<Room> {
     const userId = currentUser.id;
     const roomEntity = await this.roomsService.joinRoom(userId, roomId);
     const room = roomEntityToRoom(roomEntity);
     return { ...room, userId };
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async leaveRoom(
-    @CurrentUser() currentUser,
+    @CurrentUser() currentUser: User,
     @Args({ name: 'roomId', type: () => String }) roomId: string,
-  ) {
+  ): Promise<boolean> {
     await this.roomsService.leaveRoom(currentUser.id, roomId);
     return true;
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async removeFromRoom(
-    @CurrentUser() currentUser,
+    @CurrentUser() currentUser: User,
     @Args({ name: 'roomId', type: () => String }) roomId: string,
     @Args({ name: 'userIdToBeRemoved', type: () => Int })
     userIdToBeRemoved: number,
-  ) {
+  ): Promise<boolean> {
     await this.roomsService.removeFromRoom(
       currentUser.id,
       userIdToBeRemoved,
@@ -60,11 +61,10 @@ export class RoomsResolver {
     return true;
   }
 
-  @Subscription((returns) => Room)
+  @Subscription(() => Room)
   roomMutated(
     @Args({ name: 'roomId', type: () => String }) roomId: string,
-    @Args({ name: 'jwt', type: () => String, nullable: true }) jwt?: string,
-  ) {
+  ): AsyncIterator<unknown, any, undefined> {
     return this.pubSub.asyncIterator(`room/${roomId}`);
   }
 }
