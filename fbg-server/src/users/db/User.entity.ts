@@ -9,6 +9,6 @@ export class UserEntity {
   @Column()
   nickname: string;
 
-  @OneToMany((type) => RoomMembershipEntity, (membership) => membership.user)
+  @OneToMany(() => RoomMembershipEntity, (membership) => membership.user)
   public roomMemberships!: RoomMembershipEntity[];
 }
