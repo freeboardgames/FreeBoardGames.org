@@ -1,4 +1,4 @@
 #### Checklist
 
 * [ ] Use a separate branch in your local repo (not `master`).
-* [ ] Test coverage is 90% or better (or you have a story for why it's ok).
+* [ ] I've read and agree with the [contribution guidelines](https://www.freeboardgames.org/docs/?path=/story/documentation-contributing--page).
