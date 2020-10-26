@@ -44,6 +44,13 @@ function checkEnvironment() {
   }
 }
 
+function checkGameExists(game) {
+  if (!dirExists(path.resolve(ROOT, "web", "src", "games", game))) {
+    printErr(`${chalk.inverse(game)}: Game not found.`);
+    shell.exit(1);
+  }
+}
+
 module.exports = {
   ROOT,
   dirExists,
@@ -52,4 +59,5 @@ module.exports = {
   checkEnvironment,
   cd,
   fbgRun,
+  checkGameExists,
 };

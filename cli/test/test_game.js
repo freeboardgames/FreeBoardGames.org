@@ -1,14 +1,9 @@
-const shell = require("shelljs");
 const chalk = require("chalk");
-const path = require("path");
-const { dirExists, ROOT, print, printErr, cd, fbgRun } = require("../util.js");
+const { print, checkGameExists, cd, fbgRun } = require("../util.js");
 const { lintGame } = require("../lint/lint_game.js");
 
 function testGame(game) {
-  if (!dirExists(path.resolve(ROOT, "web", "src", "games", game))) {
-    printErr(`${chalk.inverse(game)}: Game not found.`);
-    shell.exit(1);
-  }
+  checkGameExists(game);
   test(game);
   lintGame(game);
 }

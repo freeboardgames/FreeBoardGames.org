@@ -2,7 +2,7 @@ const { print, cd, fbgRun } = require("../util.js");
 const chalk = require("chalk");
 
 function fixFailed(linter) {
-  return `Fix failed (${linter}).`;
+  return `Fix failed (${linter}), you will need to manually fix these errors.`;
 }
 
 function fixAll() {
