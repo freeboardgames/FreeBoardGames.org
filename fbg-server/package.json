@@ -38,7 +38,7 @@
     "cross-env": "^7.0.2",
     "csurf": "^1.11.0",
     "express-winston": "^4.0.3",
-    "graphql": "^15.0.0",
+    "graphql": "^15.3.0",
     "graphql-tools": "^6.0.8",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -74,6 +74,9 @@
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.0.3"
+  },
+  "resolutions": {
+    "graphql": "15.3.0"
   },
   "jest": {
     "moduleFileExtensions": [
