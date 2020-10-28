@@ -248,5 +248,4 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
       </rect>
     );
   }
-
 }

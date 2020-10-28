@@ -32,3 +32,5 @@ export const chessGameDef: IGameDef = {
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
+
+export default chessGameDef;

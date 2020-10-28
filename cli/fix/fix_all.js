@@ -2,7 +2,7 @@ const { print, cd, fbgRun } = require("../util.js");
 const chalk = require("chalk");
 
 function fixFailed(linter) {
-  return `Fix failed (${linter}).`;
+  return `Fix failed (${linter}), you will need to manually fix these errors.`;
 }
 
 function fixAll() {
@@ -20,7 +20,7 @@ function fixAll() {
   cmd = `FORCE_COLOR=true yarn run prettier --write \"${dir}.{ts,tsx,js}\" \"../cli/**/*.js\"`;
   fbgRun(cmd, fixFailed("prettier, web"));
   cd("fbg-server");
-  cmd = `FORCE_COLOR=true yarn run eslint --fix --max-warnings=0 \"{src,apps,libs,test}/**/*.ts\"`;
+  cmd = `FORCE_COLOR=true yarn run eslint --max-warnings=0 --fix \"{src,apps,libs,test}/**/*.ts\"`;
   fbgRun(cmd, fixFailed("eslint, fbg-server"));
 }
 

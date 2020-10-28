@@ -29,7 +29,7 @@ yarn run dev  # runs the webserver and backend (for online multiplayer games)
 
 ## Important commands
 
-`yarn run dev` on root builds and starts the **development** environment.
+`yarn run dev GAME` runs the **development** environment only for a given game.
 
 `yarn run test GAME` runs unit tests and linter for given game.
 

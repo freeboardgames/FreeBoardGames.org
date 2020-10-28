@@ -19,3 +19,5 @@ export const rotaGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default rotaGameDef;

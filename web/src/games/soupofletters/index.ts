@@ -20,3 +20,5 @@ export const soupOfLettersGameDef: IGameDef = {
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
 };
+
+export default soupOfLettersGameDef;
