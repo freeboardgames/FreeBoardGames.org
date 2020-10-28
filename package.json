@@ -9,8 +9,10 @@
     "test": "node cli/test/test.js",
     "lint": "node cli/lint/lint.js",
     "fix": "node cli/fix/fix.js",
-    "ci": "run-s ci:backend ci:web",
-    "dev": "run-p web:dev backend:dev",
+    "dev": "node cli/dev/cli.js",
+    "ci": "run-s gen:games ci:backend ci:web",
+    "gen:games": "node cli/genGames/cli.js",
+    "dev:internal": "run-p web:dev backend:dev",
     "backend:dev": "cd fbg-server/ && yarn run start",
     "ci:web": "cd web/ && yarn run ci",
     "ci:backend": "cd fbg-server/ && yarn run test:ci",
@@ -19,7 +21,7 @@
     "postinstall": "run-s install:*",
     "test:backend": "cd fbg-server/ && yarn run test",
     "test:web": "cd web/ && yarn run test",
-    "web:dev": "cd web/ && yarn run dev"
+    "web:dev": "cd web/ && yarn run dev:internal"
   },
   "dependencies": {
     "npm-run-all": "^4.1.5"

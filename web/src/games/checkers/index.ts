@@ -21,3 +21,5 @@ export const checkersGameDef: IGameDef = {
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
+
+export default checkersGameDef;

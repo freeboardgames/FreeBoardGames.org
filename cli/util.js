@@ -12,7 +12,15 @@ function fbgRun(cmd, err) {
 }
 
 function cd(dir) {
-  shell.cd(path.resolve(ROOT, dir));
+  if (dir) {
+    shell.cd(path.resolve(ROOT, dir));
+  } else {
+    shell.cd(ROOT);
+  }
+}
+
+function decodeCsv(csv) {
+  return csv.split(",").map((x) => x.trim());
 }
 
 function dirExists(dir) {
@@ -44,12 +52,21 @@ function checkEnvironment() {
   }
 }
 
+function checkGameExists(game) {
+  if (!dirExists(path.resolve(ROOT, "web", "src", "games", game))) {
+    printErr(`${chalk.inverse(game)}: Game not found.`);
+    shell.exit(1);
+  }
+}
+
 module.exports = {
   ROOT,
+  decodeCsv,
   dirExists,
   print,
   printErr,
   checkEnvironment,
   cd,
   fbgRun,
+  checkGameExists,
 };

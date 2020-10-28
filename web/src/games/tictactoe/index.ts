@@ -31,3 +31,5 @@ export const tictactoeGameDef: IGameDef = {
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
+
+export default tictactoeGameDef;

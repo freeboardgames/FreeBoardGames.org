@@ -20,3 +20,5 @@ export const estateBuyerGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default estateBuyerGameDef;

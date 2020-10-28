@@ -20,7 +20,7 @@ function lintAll() {
   cmd = `FORCE_COLOR=true yarn run prettier --check \"${dir}.{ts,tsx,js}\" \"../cli/**/*.js\"`;
   fbgRun(cmd, lintFailed("prettier, web"));
   cd("fbg-server");
-  cmd = `FORCE_COLOR=true yarn run eslint \"{src,apps,libs,test}/**/*.ts\"`;
+  cmd = `FORCE_COLOR=true yarn run eslint --max-warnings=0 \"{src,apps,libs,test}/**/*.ts\"`;
   fbgRun(cmd, lintFailed("eslint, fbg-server"));
 }
 
