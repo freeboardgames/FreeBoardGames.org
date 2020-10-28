@@ -32,7 +32,7 @@ const isProd = process.env.NODE_ENV === 'production';
       ...CONNECTION,
       autoLoadEntities: true,
       synchronize: true,
-      logging: !isProd,
+      logging: false,
     }),
     GraphQLModule.forRoot({
       debug: !isProd,

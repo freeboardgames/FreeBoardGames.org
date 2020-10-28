@@ -12,7 +12,15 @@ function fbgRun(cmd, err) {
 }
 
 function cd(dir) {
-  shell.cd(path.resolve(ROOT, dir));
+  if (dir) {
+    shell.cd(path.resolve(ROOT, dir));
+  } else {
+    shell.cd(ROOT);
+  }
+}
+
+function decodeCsv(csv) {
+  return csv.split(",").map((x) => x.trim());
 }
 
 function dirExists(dir) {
@@ -53,6 +61,7 @@ function checkGameExists(game) {
 
 module.exports = {
   ROOT,
+  decodeCsv,
   dirExists,
   print,
   printErr,

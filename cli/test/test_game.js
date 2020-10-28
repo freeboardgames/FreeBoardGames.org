@@ -1,9 +1,11 @@
 const chalk = require("chalk");
 const { print, checkGameExists, cd, fbgRun } = require("../util.js");
 const { lintGame } = require("../lint/lint_game.js");
+const { genGames } = require("../genGames/genGames.js");
 
 function testGame(game) {
   checkGameExists(game);
+  genGames([game]);
   test(game);
   lintGame(game);
 }

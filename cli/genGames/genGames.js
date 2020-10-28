@@ -3,7 +3,7 @@ const { cd, checkGameExists } = require("../util");
 const fs = require("fs");
 const path = require("path");
 
-function genGames(games) {
+function genGames(games = []) {
   cd("web/src/games");
   games.forEach((g) => checkGameExists(g));
   const finalGames = orderGames(games.length > 0 ? games : getAllGames());

@@ -9,9 +9,9 @@ function start() {
   const argv = process.argv;
   checkEnvironment();
   if (argv.length === 2) {
-    genGames([]);
+    genGames();
   } else if (argv.length === 3) {
-    genGames(argv[2].split(","));
+    genGames(decodeCsv(argv[2]));
   } else {
     printErr(USAGE);
     shell.exit(1);
