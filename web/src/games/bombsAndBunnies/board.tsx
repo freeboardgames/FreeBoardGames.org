@@ -3,7 +3,6 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { isLocalGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
-<<<<<<< HEAD
 import {
   IG,
   canBet,
@@ -22,11 +21,6 @@ import { BetPanel } from './BetPanel';
 import { BetButton, SkipButton } from './BetButton';
 import { IBetDisplayProps } from './BetDisplay';
 import { IDiscardPileProps } from './DiscardPile';
-=======
-import { IG, PlacementPhases } from './game';
-import { PlayerHand } from './PlayerHand';
-import { BetPanel } from './BetPanel';
->>>>>>> upstream/master
 
 import { ButtonComponent } from './ButtonComponent';
 
@@ -42,7 +36,6 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
-<<<<<<< HEAD
   betPanelToggle: boolean = false;
 
   _toggleBetPanel = () => {
@@ -50,8 +43,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     this.forceUpdate();
   };
 
-=======
->>>>>>> upstream/master
   _gs = () => {
     this.props.moves.GameStart();
   };
@@ -60,34 +51,22 @@ export class Board extends React.Component<IBoardProps, {}> {
     this.props.moves.MovePlaceCard(handIndex);
   }
 
-<<<<<<< HEAD
   _selectPenaltyCard(targetPlayerIndex: string, handIndex: number) {
     this.props.moves.MoveDiscard(targetPlayerIndex, handIndex);
   }
 
   _bet(bet: number) {
     this.betPanelToggle = false;
-=======
-  _bet(bet: number) {
->>>>>>> upstream/master
     this.props.moves.MoveBet(bet);
   }
 
   _skipBet() {
-<<<<<<< HEAD
     this.betPanelToggle = false;
     this.props.moves.MoveSkipBet();
   }
 
   _revealCard(targetPlayerId: string) {
     this.props.moves.MoveReveal(targetPlayerId);
-=======
-    this.props.moves.MoveSkipBet();
-  }
-
-  _revealCard(targetPlayerIndex: number) {
-    this.props.moves.MoveReveal(targetPlayerIndex);
->>>>>>> upstream/master
   }
 
   render() {
@@ -103,7 +82,6 @@ export class Board extends React.Component<IBoardProps, {}> {
       return this.getStartGameButton();
     }
 
-<<<<<<< HEAD
     return [
       this.getPlayerZones(),
       this.getBetButtons(),
@@ -111,9 +89,6 @@ export class Board extends React.Component<IBoardProps, {}> {
       this.getPlayerBettingOptions(),
       this.getOtherPlayerHandPenalty(),
     ];
-=======
-    return [this.getPlayerBettingOptions(), this.getPlayerZones(), this.getPlayerHand()];
->>>>>>> upstream/master
   }
 
   getStartGameButton() {
@@ -132,7 +107,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
   }
 
-<<<<<<< HEAD
   getBetButtons() {
     const playerID = this.getBrowserPlayer();
 
@@ -151,8 +125,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
-=======
->>>>>>> upstream/master
   getPlayerHand() {
     const playerID = this.getBrowserPlayer();
 
@@ -164,7 +136,6 @@ export class Board extends React.Component<IBoardProps, {}> {
       );
     }
 
-<<<<<<< HEAD
     if (this.betPanelToggle) return null;
     var player = getPlayerById(this.props.G, playerID);
 
@@ -174,17 +145,6 @@ export class Board extends React.Component<IBoardProps, {}> {
         hand={player.hand}
         cardStyle={player.cardStyle}
         selectCard={canPlaceCard(this.props.ctx, playerID) ? this._selectCard.bind(this) : null}
-=======
-    return (
-      <PlayerHand
-        playerIndex={parseInt(playerID)}
-        player={this.props.G.players[playerID]}
-        selectCard={
-          this.props.ctx.phase && PlacementPhases.map((p) => p.toString()).includes(this.props.ctx.phase)
-            ? this._selectCard.bind(this)
-            : null
-        }
->>>>>>> upstream/master
       />
     );
   }
@@ -192,18 +152,11 @@ export class Board extends React.Component<IBoardProps, {}> {
   getPlayerBettingOptions() {
     const playerID = this.getBrowserPlayer();
 
-<<<<<<< HEAD
     if (!this.betPanelToggle) return null;
 
     return (
       <BetPanel
         bet={this._bet.bind(this)}
-=======
-    return (
-      <BetPanel
-        bet={this._bet.bind(this)}
-        skip={this._skipBet.bind(this)}
->>>>>>> upstream/master
         minBet={this.props.G.minBet}
         maxBet={this.props.G.maxBet}
         playerIndex={parseInt(playerID)}
@@ -211,7 +164,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
-<<<<<<< HEAD
   getOtherPlayerHandPenalty() {
     var playerId = this.getBrowserPlayer();
     var penaltyPlayerId = this.props.G.failedRevealPlayerId;
@@ -244,20 +196,10 @@ export class Board extends React.Component<IBoardProps, {}> {
         canRevealTargetStack={(targetPlayerId: string) =>
           canRevealTargetStack(this.props.G, this.props.ctx, targetPlayerId)
         }
-=======
-  getPlayerZones() {
-    return (
-      <PlayerZones
-        currentPlayerIndex={this.props.ctx.playOrderPos}
-        perspectivePlayer={this.getBrowserPlayer()}
-        players={this.props.G.players}
-        revealCard={this._revealCard.bind(this)}
->>>>>>> upstream/master
       ></PlayerZones>
     );
   }
 
-<<<<<<< HEAD
   getBetDisplayProps(): IBetDisplayProps | undefined {
     var ctx = this.props.ctx;
     if (!isBetting(ctx) && !isRevealing(ctx)) return;
@@ -275,8 +217,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     };
   }
 
-=======
->>>>>>> upstream/master
   getBrowserPlayer() {
     let playerID = this.props.playerID;
     if (isLocalGame(this.props.gameArgs)) {

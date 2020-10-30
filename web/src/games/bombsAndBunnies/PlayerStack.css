@@ -1,5 +1,4 @@
 .playerStack {
-<<<<<<< HEAD
   display: inline-block;
   margin: 10px;
   width: 100%;
@@ -7,32 +6,20 @@
 
 .playerStack.active {
   cursor: pointer;
-=======
-  cursor: pointer;
-  display: inline-block;
-  margin: 10px;
->>>>>>> upstream/master
 }
 
 .cardContainer {
   position: absolute;
-<<<<<<< HEAD
-=======
-  width: 100px;
->>>>>>> upstream/master
   text-align: center;
   transform-origin: 0 0;
   transform: scale(0.2);
   padding: 0;
 }
 
-<<<<<<< HEAD
 .playerStack.active .cardContainer {
   box-shadow: 0px 0px 50px #ffc505;
 }
 
-=======
->>>>>>> upstream/master
 .cardCountContainer {
   position: absolute;
   transform: translate(24px, 116px);

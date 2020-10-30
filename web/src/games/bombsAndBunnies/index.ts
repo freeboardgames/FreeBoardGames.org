@@ -19,8 +19,5 @@ export const bombsAndBunniesDef: IGameDef = {
   status: IGameStatus.IN_DEVELOPMENT,
   config: () => import('./config'),
 };
-<<<<<<< HEAD
-=======
 
 export default bombsAndBunniesDef;
->>>>>>> upstream/master

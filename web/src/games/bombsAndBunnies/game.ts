@@ -3,10 +3,7 @@ import { INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
 
 import IPlayer from './player';
 import { CardType } from './cardType';
-<<<<<<< HEAD
 import { CardStyle } from './CardComponent';
-=======
->>>>>>> upstream/master
 
 export enum Phases {
   initial_placement = 'initial_placement',
@@ -17,13 +14,9 @@ export enum Phases {
   result = 'result',
 }
 
-<<<<<<< HEAD
 const BetPhases = [Phases.place_or_bet, Phases.bet];
 const PlacementPhases = [Phases.initial_placement, Phases.place_or_bet];
 export const MaxPlayers = 6;
-=======
-export const PlacementPhases = [Phases.initial_placement, Phases.place_or_bet];
->>>>>>> upstream/master
 
 export enum Stages {
   select_card = 'select_card',
@@ -34,7 +27,6 @@ export interface IG {
   minBet: number;
   maxBet: number;
   currentBet: number;
-<<<<<<< HEAD
   bombPlayerId: string | null;
   failedRevealPlayerId: string | null;
   discardPile: CardStyle[];
@@ -81,30 +73,18 @@ export function canDiscard(G: IG, playerId: string): boolean {
 
 export function getPlayerById(G: IG, playerId: string): IPlayer {
   return G.players.find((p) => p.id === playerId);
-=======
-}
-
-function getCurrentPlayerIndex(ctx: Ctx) {
-  return ctx.playOrderPos;
->>>>>>> upstream/master
 }
 
 export function getMaxPossibleBet(G: IG) {
   return G.players.map((p) => p.stack.length).reduce((a, b) => a + b);
 }
 
-<<<<<<< HEAD
 export function getMaxPlayerBet(players: IPlayer[]) {
   var playerBets = players.map((p) => p.bet).filter((b) => b !== null);
-=======
-export function getMaxPlayerBet(G: IG) {
-  var playerBets = G.players.map((p) => p.bet).filter((b) => b !== null);
->>>>>>> upstream/master
 
   return [...playerBets, 0].reduce((a, b) => (a >= b ? a : b));
 }
 
-<<<<<<< HEAD
 export function getRevealCount(players: IPlayer[]) {
   var playerRevealCounts = players.map((p) => p.revealedStack.length);
 
@@ -123,19 +103,14 @@ function getCurrentPlayerIndex(ctx: Ctx) {
   return ctx.playOrderPos;
 }
 
-=======
->>>>>>> upstream/master
 function hasEveryOtherPlayerSkippedBet(G: IG) {
   return G.players.filter((p) => p.betSkipped).length === G.players.length - 1;
 }
 
-<<<<<<< HEAD
 function hasInitialPlacementFinished(G: IG) {
   return G.players.every((p) => p.stack.length === 1);
 }
 
-=======
->>>>>>> upstream/master
 function pickUpHand(G: IG) {
   for (var i = 0; i < G.players.length; i++) {
     var player = G.players[i];
@@ -197,15 +172,12 @@ export const Moves = {
     G.minBet = bet + 1;
     G.currentBet = bet;
 
-<<<<<<< HEAD
     var maxBet = getMaxPossibleBet(G);
 
     if (bet === maxBet) {
       ctx.events.endPhase();
     }
 
-=======
->>>>>>> upstream/master
     return G;
   },
 
@@ -218,7 +190,6 @@ export const Moves = {
     var player = G.players[playerIndex];
     player.betSkipped = true;
 
-<<<<<<< HEAD
     var oneBetRemaining = hasEveryOtherPlayerSkippedBet(G);
     if (oneBetRemaining) {
       ctx.events.endTurn({ next: getPlayerWithMaxBet(G).id });
@@ -278,39 +249,6 @@ export const Moves = {
     ctx.events.endTurn({ next: ctx.currentPlayer });
     ctx.events.endPhase();
 
-=======
-    return G;
-  },
-
-  Reveal: (G: IG, ctx: Ctx, targetPlayerIndex: number) => {
-    var playerIndex = getCurrentPlayerIndex(ctx);
-    if (!(playerIndex in G.players)) {
-      return INVALID_MOVE;
-    }
-
-    var player = G.players[playerIndex];
-    if (targetPlayerIndex !== playerIndex && player.stack.length > 0) {
-      return INVALID_MOVE;
-    }
-
-    var targetPlayer = G.players[targetPlayerIndex];
-
-    var revealedCard = targetPlayer.stack.splice(targetPlayer.stack.length - 1, 1)[0];
-    targetPlayer.revealedStack.push(revealedCard);
-
-    return G;
-  },
-
-  Discard: (G: IG, ctx: Ctx, targetPlayerIndex: number, handIndex: number) => {
-    var playerIndex = getCurrentPlayerIndex(ctx);
-    if (!(playerIndex in G.players)) {
-      return INVALID_MOVE;
-    }
-
-    var targetPlayer = G.players[targetPlayerIndex];
-    targetPlayer.hand.splice(handIndex, 1);
-
->>>>>>> upstream/master
     return G;
   },
 };
@@ -322,36 +260,18 @@ export const BombsAndBunniesGame: Game<IG> = {
     GameStart: Moves.GameStart,
   },
 
-<<<<<<< HEAD
-=======
-  turn: {
-    moveLimit: 1,
-    order: {
-      first: () => 0,
-      next: (G, ctx) => ctx.random.Die(ctx.numPlayers) - 1,
-    },
-  },
-
->>>>>>> upstream/master
   phases: {
     initial_placement: {
       turn: {
         moveLimit: 1,
-<<<<<<< HEAD
         order: TurnOrder.CONTINUE,
-=======
-        order: TurnOrder.ONCE,
->>>>>>> upstream/master
       },
       moves: {
         MovePlaceCard: Moves.PlaceCard,
       },
       next: Phases.place_or_bet,
-<<<<<<< HEAD
 
       endIf: (G: IG) => hasInitialPlacementFinished(G),
-=======
->>>>>>> upstream/master
     },
 
     place_or_bet: {
@@ -371,10 +291,6 @@ export const BombsAndBunniesGame: Game<IG> = {
         var endPhase = currentPlayerBet !== null;
         if (endPhase) {
           var isMaxBet = currentPlayerBet === getMaxPossibleBet(G);
-<<<<<<< HEAD
-=======
-          //console.log("place ir bet end", isMaxBet);
->>>>>>> upstream/master
           return {
             next: isMaxBet ? Phases.reveal : Phases.bet,
           };
@@ -384,10 +300,7 @@ export const BombsAndBunniesGame: Game<IG> = {
 
     bet: {
       turn: {
-<<<<<<< HEAD
         moveLimit: 1,
-=======
->>>>>>> upstream/master
         order: TurnOrder.DEFAULT,
       },
 
@@ -397,17 +310,6 @@ export const BombsAndBunniesGame: Game<IG> = {
       },
 
       next: Phases.reveal,
-<<<<<<< HEAD
-=======
-
-      endIf: (G: IG) => {
-        var maxBet = getMaxPossibleBet(G);
-        var maxPlayerBet = getMaxPlayerBet(G);
-        var oneBetRemaining = hasEveryOtherPlayerSkippedBet(G);
-
-        return maxPlayerBet === maxBet || oneBetRemaining;
-      },
->>>>>>> upstream/master
     },
 
     reveal: {
@@ -419,31 +321,9 @@ export const BombsAndBunniesGame: Game<IG> = {
         MoveReveal: Moves.Reveal,
       },
 
-<<<<<<< HEAD
       next: Phases.initial_placement,
 
       onEnd: (G: IG) => {
-=======
-      endIf: (G: IG) => {
-        var targetBet = G.currentBet;
-        var revealed = getAllRevealedCards(G);
-
-        if (revealed.some((x) => x === CardType.Bomb)) {
-          return { next: Phases.penalty };
-        }
-
-        if (revealed.length === targetBet) {
-          return { next: Phases.initial_placement };
-        }
-      },
-
-      onEnd: (G: IG, ctx: Ctx) => {
-        //console.log("reveal - onEnd", G, ctx);
-        var revealed = getAllRevealedCards(G);
-        if (revealed.length === G.currentBet && !revealed.some((x) => x === CardType.Bomb)) {
-          G.players[getCurrentPlayerIndex(ctx)].wins++;
-        }
->>>>>>> upstream/master
         pickUpHand(G);
         resetBets(G);
       },
@@ -458,11 +338,7 @@ export const BombsAndBunniesGame: Game<IG> = {
         MoveDiscard: Moves.Discard,
       },
 
-<<<<<<< HEAD
       next: Phases.initial_placement,
-=======
-      endIf: () => true, // only allow one move
->>>>>>> upstream/master
     },
   },
 
@@ -474,7 +350,6 @@ export const BombsAndBunniesGame: Game<IG> = {
   },
 
   setup: (ctx: Ctx): IG => {
-<<<<<<< HEAD
     let players: IPlayer[] = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
       id: i.toString(),
       cardStyle: <CardStyle>i,
@@ -494,21 +369,6 @@ export const BombsAndBunniesGame: Game<IG> = {
       bombPlayerId: null,
       failedRevealPlayerId: null,
       discardPile: [],
-=======
-    return {
-      players: new Array(ctx.numPlayers).fill(0).map((_, i) => ({
-        id: i.toString(),
-        bet: null,
-        betSkipped: false,
-        hand: [CardType.Bunny, CardType.Bunny, CardType.Bunny, CardType.Bomb],
-        stack: [],
-        revealedStack: [],
-        wins: 0,
-      })),
-      minBet: 1,
-      maxBet: 0,
-      currentBet: 0,
->>>>>>> upstream/master
     };
   },
 };

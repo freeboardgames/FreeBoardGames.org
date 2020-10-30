@@ -1,6 +1,5 @@
 import * as React from 'react';
 import css from './CardComponent.css';
-<<<<<<< HEAD
 
 export enum CardStyle {
   Style1,
@@ -39,13 +38,6 @@ function getStyleClassName(style?: CardStyle) {
 
 export interface ICardProps {
   style?: CardStyle;
-=======
-import { CardType } from './cardType';
-
-export interface ICardProps {
-  card: CardType;
-  selectable?: boolean;
->>>>>>> upstream/master
   selected?: boolean;
   click?: () => void;
 }
@@ -59,15 +51,9 @@ export class CardComponent extends React.Component<ICardProps, {}> {
         className={[
           css.Card,
           this.front,
-<<<<<<< HEAD
           this.props.click ? css.Selectable : '',
           this.props.selected ? css.Selected : '',
           getStyleClassName(this.props.style),
-=======
-          this.props.selectable ? css.Selectable : '',
-          this.props.selected ? css.Selected : '',
-          //this.props.card.showing ? css['CardFront_' + this.props.card.value] : css.hidden,
->>>>>>> upstream/master
         ].join(' ')}
         onClick={this.props.click}
       >
@@ -81,11 +67,7 @@ export class CardComponent extends React.Component<ICardProps, {}> {
   }
 }
 export class FaceDownCardComponent extends CardComponent {
-<<<<<<< HEAD
   front: string = css.FaceDownCard;
-=======
-  front: string = css.FaceDown;
->>>>>>> upstream/master
 }
 
 export class EmptyCardComponent extends CardComponent {
@@ -98,11 +80,7 @@ export class BunnyCardComponent extends CardComponent {
   renderSVG() {
     return (
       <svg width="100%" height="100%" viewBox="0 0 750 1050" className={css.CardSVG}>
-<<<<<<< HEAD
         <g transform="translate(-50,850) scale(0.100000,-0.100000)" stroke="none">
-=======
-        <g transform="translate(-50,850) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
->>>>>>> upstream/master
           <path
             d="M2979 6807 c-337 -172 -203 -904 280 -1527 80 -104 286 -311 364
           -365 53 -38 69 -59 48 -67 -26 -9 -153 -225 -192 -325 -20 -52 -58 -214 -69
@@ -136,11 +114,7 @@ export class BombCardComponent extends CardComponent {
   renderSVG() {
     return (
       <svg width="100%" height="100%" viewBox="0 0 750 1050" className={css.CardSVG}>
-<<<<<<< HEAD
         <g transform="translate(-30,750) scale(0.100000,-0.100000)" stroke="none">
-=======
-        <g transform="translate(-30,750) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
->>>>>>> upstream/master
           <path
             d="M6163 4940 c-6 -14 -25 -66 -42 -116 l-33 -92 -105 50 c-58 27 -106
           48 -108 46 -2 -2 19 -50 46 -107 27 -57 48 -105 47 -106 -2 -1 -51 -19 -110

@@ -18,11 +18,7 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
   }
 
   renderCard(card: CardType, index: number) {
-<<<<<<< HEAD
     const offsetSize = 20;
-=======
-    const offsetSize = 40;
->>>>>>> upstream/master
     var rotateStyle = this._getCardRotationStyle(index);
 
     if (card === CardType.Bunny) {
@@ -32,22 +28,14 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
           key={index}
           style={{ marginLeft: index * offsetSize, transform: rotateStyle }}
         >
-<<<<<<< HEAD
           <BunnyCardComponent></BunnyCardComponent>
-=======
-          <BunnyCardComponent card={card}></BunnyCardComponent>
->>>>>>> upstream/master
         </div>
       );
     }
 
     return (
       <div className={css.cardContainer} key={index} style={{ marginLeft: index * offsetSize, transform: rotateStyle }}>
-<<<<<<< HEAD
         <BombCardComponent key={index}></BombCardComponent>
-=======
-        <BombCardComponent key={index} card={card}></BombCardComponent>
->>>>>>> upstream/master
       </div>
     );
   }

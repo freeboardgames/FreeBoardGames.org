@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import css from './PlayerZones.css';
-<<<<<<< HEAD
 import { IPlayerZoneProps, PlayerZone, PlayerStatus } from './PlayerZone';
 import IPlayer from './player';
 import { getMaxPlayerBet } from './game';
@@ -17,16 +16,6 @@ export interface IPlayerZonesProps {
   players: IPlayer[];
   canRevealTargetStack: (playerId: string) => boolean;
   revealCard?: (playerId: string) => void;
-=======
-import { IPlayerZoneProps, PlayerZone } from './PlayerZone';
-import IPlayer from './player';
-
-export interface IPlayerZonesProps {
-  currentPlayerIndex: number;
-  perspectivePlayer: string;
-  players: IPlayer[];
-  revealCard?: (playerIndex: number) => void;
->>>>>>> upstream/master
 }
 
 export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
@@ -34,18 +23,14 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
     return (
       <div className={css.playerZonesContainer}>
         <div className={css.playerZones}>{this.renderZones()}</div>
-<<<<<<< HEAD
         <div className={css.centerDisplay}>
           {this.renderBetDisplay()}
           {this.renderDiscardPile()}
         </div>
-=======
->>>>>>> upstream/master
       </div>
     );
   }
 
-<<<<<<< HEAD
   renderBetDisplay() {
     var props = this.props.betDisplayProps;
     if (props === undefined) return null;
@@ -75,15 +60,6 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
         stackSize: p.stack.length,
         revealedStack: p.revealedStack,
         revealCard: this.props.canRevealTargetStack(p.id) ? this.props.revealCard : null,
-=======
-  renderZones() {
-    var zones = this.props.players.map((p, i) => {
-      var result: IPlayerZoneProps = {
-        playerIndex: i,
-        stackSize: p.stack.length,
-        revealedStack: p.revealedStack,
-        revealCard: this.props.revealCard,
->>>>>>> upstream/master
       };
 
       return result;
@@ -93,7 +69,6 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
   }
 
   renderZone(zoneProps: IPlayerZoneProps, index: number) {
-<<<<<<< HEAD
     return (
       <div className={css.zone}>
         <PlayerZone {...zoneProps} key={index}></PlayerZone>
@@ -115,24 +90,4 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
 
     return statuses;
   }
-=======
-    var totalPlayers = this.props.players.length;
-    var tableRotation = 360 * (index / totalPlayers);
-    var maxSpacing = 200;
-    var minSpacing = 50;
-    var playerSpacing = minSpacing + (maxSpacing - minSpacing) * (totalPlayers / 6);
-    var transformOriginStyle = `50% -${playerSpacing}px`;
-    var transformStyle = `rotate(${tableRotation}deg)`;
-
-    return (
-      <div
-        className={css.zone}
-        key={index}
-        style={{ transformOrigin: transformOriginStyle, transform: transformStyle }}
-      >
-        <PlayerZone {...zoneProps}></PlayerZone>
-      </div>
-    );
-  }
->>>>>>> upstream/master
 }

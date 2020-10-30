@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .slider {
   writing-mode: bt-lr; /* IE */
   -webkit-appearance: slider-vertical; /* WebKit */
@@ -9,12 +8,4 @@
 
 .button {
   position: relative;
-=======
-.bidPanel {
-  background-color: green;
-}
-
-.betting {
-  background-color: blue;
->>>>>>> upstream/master
 }
