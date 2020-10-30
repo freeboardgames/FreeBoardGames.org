@@ -1,6 +1,7 @@
 .playerStack {
   display: inline-block;
   margin: 10px;
+  width: 100%;
 }
 
 .playerStack.active {

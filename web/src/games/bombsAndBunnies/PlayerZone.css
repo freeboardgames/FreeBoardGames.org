@@ -6,3 +6,7 @@
 .playerZone .revealedStack {
   display: inline-block;
 }
+
+.playerZone .statuses {
+  text-align: left;
+}

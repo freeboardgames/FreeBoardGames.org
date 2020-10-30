@@ -39,7 +39,7 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
     return (
       <div
         className={css.playerZone}
-        style={{ position: 'absolute', top: top, left: left, transform: `rotate(${angle}rad) translateX(-50%)` }}
+        style={{ position: 'absolute', top: top, left: left, transform: `translate(-50%, -50%) rotate(${angle}rad)` }}
       >
         <div className={css.statuses}>{this.renderStatuses()}</div>
         <div className={css.stack}>{this.renderStack()}</div>
@@ -89,7 +89,7 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   }
 
   getRadiusForPlayers(totalPlayers: number): number {
-    var minRadius = 50;
+    var minRadius = 25;
     var maxRadius = 200;
 
     return minRadius + ((maxRadius - minRadius) * totalPlayers) / MaxPlayers;
