@@ -1,0 +1,23 @@
+    .cardcontainer {
+      min-width: 200px;
+      display: 'inline-grid';
+      justify-content: 'center';
+      overflow: 'visible';
+      background-color: rgb(19, 252, 19);
+    }
+
+    .fitpicture {
+      height: 80px;
+      object-fit: 'scale-down';
+      border-radius: 3px;
+    }
+
+    .grid {
+      display: inline-grid;
+      grid-template-columns: repeat(6, 14%);
+    }
+  
+  
+   
+
+    

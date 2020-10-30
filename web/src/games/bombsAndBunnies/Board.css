@@ -1,13 +1,21 @@
 .board {
   padding-top: 10px;
   border-radius: 20px;
+<<<<<<< HEAD
   background-color: rgb(240, 240, 240);
   text-align: center;
   border: 1px solid rgb(63, 63, 63);
+=======
+  background-color: #bbb;
+  text-align: center;
+>>>>>>> upstream/master
 }
 
 .startButtonContainer {
   text-align: center;
+<<<<<<< HEAD
   color: black;
   padding: 20px;
+=======
+>>>>>>> upstream/master
 }

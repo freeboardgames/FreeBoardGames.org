@@ -23,8 +23,8 @@ import { gql } from 'apollo-boost';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const ROOM_SUBSCRIPTION = gql`
-  subscription RoomMutated($roomId: String!, $jwt: String) {
-    roomMutated(roomId: $roomId, jwt: $jwt) {
+  subscription RoomMutated($roomId: String!) {
+    roomMutated(roomId: $roomId) {
       gameCode
       capacity
       isPublic

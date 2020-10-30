@@ -1,10 +1,15 @@
 import { getMaxPlayerBet, IG } from './game';
 import IPlayer from './player';
 import { CardType } from './cardType';
+<<<<<<< HEAD
 import { CardStyle } from './CardComponent';
 
 const defaultPlayer: IPlayer = {
   cardStyle: CardStyle.Style1,
+=======
+
+const defaultPlayer: IPlayer = {
+>>>>>>> upstream/master
   bet: 0,
   betSkipped: false,
   hand: [CardType.Bunny, CardType.Bunny, CardType.Bunny, CardType.Bomb],
@@ -15,13 +20,19 @@ const defaultPlayer: IPlayer = {
 };
 
 const defaultG: IG = {
+<<<<<<< HEAD
   bombPlayerId: null,
   failedRevealPlayerId: null,
+=======
+>>>>>>> upstream/master
   currentBet: 0,
   minBet: 1,
   maxBet: 0,
   players: [],
+<<<<<<< HEAD
   discardPile: [],
+=======
+>>>>>>> upstream/master
 };
 
 test('max player bet is 2', () => {
@@ -39,5 +50,9 @@ test('max player bet is 2', () => {
     ],
   };
 
+<<<<<<< HEAD
   expect(getMaxPlayerBet(G.players)).toEqual(2);
+=======
+  expect(getMaxPlayerBet(G)).toEqual(2);
+>>>>>>> upstream/master
 });

@@ -35,5 +35,4 @@ export interface RoomMutated {
 
 export interface RoomMutatedVariables {
   roomId: string;
-  jwt?: string | null;
 }

@@ -7,6 +7,6 @@ server/dist/
 yarn-error.log
 **/.vscode
 # auto generated
-common/gql
 common/internal/*
+web/src/games/index.ts
 !common/internal/empty-file-so-git-commits-directory

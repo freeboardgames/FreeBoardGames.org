@@ -6,16 +6,18 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "test": "node ../cli/test/test.js",
+    "lint": "node ../cli/lint/lint.js",
+    "fix": "node ../cli/fix/fix.js",
+    "dev": "node ../cli/dev/cli.js",
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "rimraf dist && nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "cross-env NODE_ENV=production node dist/main",
     "rimraf": "./node_modules/rimraf/bin.js",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "test:ci": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -38,7 +40,7 @@
     "cross-env": "^7.0.2",
     "csurf": "^1.11.0",
     "express-winston": "^4.0.3",
-    "graphql": "^15.0.0",
+    "graphql": "^15.3.0",
     "graphql-tools": "^6.0.8",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -74,6 +76,9 @@
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.0.3"
+  },
+  "resolutions": {
+    "graphql": "15.3.0"
   },
   "jest": {
     "moduleFileExtensions": [

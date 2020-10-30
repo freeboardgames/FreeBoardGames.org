@@ -4,6 +4,10 @@
   box-sizing: border-box;
   background-origin: border-box;
   background-color: white;
+<<<<<<< HEAD
+=======
+  cursor: pointer;
+>>>>>>> upstream/master
   height: 583px;
   width: 406px;
   background-size: 4096px;
@@ -30,11 +34,14 @@
   box-shadow: 0px 0px 50px rgb(251, 255, 0);
 }
 
+<<<<<<< HEAD
 .Card.Selectable {
   cursor: pointer;
   box-shadow: 0px 0px 50px #ffc505;
 }
 
+=======
+>>>>>>> upstream/master
 .Card.Selectable:hover {
   animation: pulse 1s;
   animation-iteration-count: infinite;
@@ -47,10 +54,17 @@
   border-image-repeat: round;
   box-shadow: none;
   background: none;
+<<<<<<< HEAD
   cursor: default;
 }
 
 .FaceDownCard {
+=======
+}
+
+.FaceDownCard {
+  border: none;
+>>>>>>> upstream/master
   background-color: #888;
 }
 
@@ -59,7 +73,11 @@
 }
 
 .BombCard {
+<<<<<<< HEAD
   background-color: black;
+=======
+  background-color: rgb(192, 44, 44);
+>>>>>>> upstream/master
 }
 
 .BunnyCard.hidden {
@@ -76,6 +94,7 @@
   clip-rule: evenodd;
   stroke-linejoin: round;
   stroke-miterlimit: 2;
+<<<<<<< HEAD
   fill: black;
 }
 
@@ -125,4 +144,37 @@
 }
 .BombCard.CardStyle6 .CardSVG {
   fill: rgb(228, 255, 78);
+=======
+}
+
+.BunnyCardSVGOutline {
+  fill: rgb(255, 232, 111);
+}
+
+.BunnyCardSVGBackground {
+  fill: rgb(255, 232, 111);
+}
+
+.BombCardSVGOutline {
+  fill: rgb(133, 133, 133);
+}
+
+.BombCardSVGBackground {
+  fill: rgb(44, 120, 192);
+}
+
+.main {
+  fill: rgb(195, 195, 195);
+}
+.ears {
+  fill: rgb(246, 224, 233);
+}
+.eyes {
+  fill: rgb(50, 50, 50);
+}
+.nose {
+  stroke: rgb(170, 95, 126);
+  fill: transparent;
+  stroke-width: 1;
+>>>>>>> upstream/master
 }
