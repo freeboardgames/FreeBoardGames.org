@@ -315,6 +315,7 @@ it('end2end - 7 player veto and finish human', () => {
     players[6].moves.moveDiscardMayor(0,6)
     players[2].moves.moveDiscardPriest(1,2) // -- play holywater 2
 
+
     players[0].moves.moveChosePriest(4,0) 
     players.map((p, i) => p.moves.moveVoteYes(i))
     players.map((p, i) => p.moves.moveOKVote(i))
@@ -341,52 +342,53 @@ it('end2end - 7 player veto and finish human', () => {
     players[3].moves.moveWantVetoPriest(true, 3)
     var {G, ctx} = players[0].getState();
     expect(ctx.phase).toEqual('phaseVetoMayor')
-    players[1].moves.moveWantVetoMayor(false,1)
+    players[1].moves.moveWantVetoMayor(true,1)
 
     var {G, ctx} = players[0].getState();
     expect(ctx.phase).toEqual('phaseChosePriest')
     players[2].moves.moveChosePriest(4,2) 
     players.map((p, i) => p.moves.moveVoteYes(i))
     players.map((p, i) => p.moves.moveOKVote(i))
-    players[2].moves.moveDiscardMayor(0,2)
+    players[2].moves.moveDiscardMayor(1,2)
+
+
     players[4].moves.moveWantVetoPriest(true, 4)
-    players[2].moves.moveWantVetoMayor(true,2)
+    players[2].moves.moveWantVetoMayor(false,2)
     var {G, ctx} = players[0].getState();
     expect(ctx.phase).toEqual('phaseDiscardPriest')
+    players[4].moves.moveDiscardPriest(0,4) // -- play holywater 3
 
     var {G, ctx} = players[0].getState();
-    console.log(G)
-    console.log(ctx)
-
-    return
-
-
-    players[0].moves.moveChosePriest(2,0) // 
-    players.map((p, i) => p.moves.moveVoteYes(i))
-    players.map((p, i) => p.moves.moveOKVote(i))
-    players[0].moves.moveDiscardMayor(1,0)
-    players[2].moves.moveDiscardPriest(0,2) // -- play blood
-    var {G, ctx} = players[0].getState();
-    expect(ctx.phase).toEqual('phaseExecution')
-    players[0].moves.moveExecute(0,0) // -- execute self
-    var {G, ctx} = players[0].getState();
-    expect(ctx.phase).toEqual('phaseExecution')
-    players[0].moves.moveExecute(2,0)
-
-    players[3].moves.moveChosePriest(4,3) //  --
-    var {G, ctx} = players[0].getState();
-    expect(ctx.phase).toEqual('phaseVotePriest')
+    expect(ctx.phase).toEqual('phaseChosePriest')
+    players[3].moves.moveChosePriest(1,3) 
     players.map((p, i) => p.moves.moveVoteYes(i))
     players.map((p, i) => p.moves.moveOKVote(i))
     players[3].moves.moveDiscardMayor(0,3)
-    players[4].moves.moveDiscardPriest(0,4) // -- play 6th blood
+    players[1].moves.moveDiscardPriest(1,1) // -- play holywater 4
 
-    return
+    var {G, ctx} = players[0].getState();
+    expect(ctx.phase).toEqual('phaseChosePriest')
+    players[4].moves.moveChosePriest(2,4) 
+    players.map((p, i) => p.moves.moveVoteYes(i))
+    players.map((p, i) => p.moves.moveOKVote(i))
+    players[4].moves.moveDiscardMayor(1,4)
+    players[2].moves.moveWantVetoPriest(true, 2)
+    players[4].moves.moveWantVetoMayor(true, 4)
 
+    var {G, ctx} = players[0].getState();
+    expect(ctx.phase).toEqual('phaseChosePriest')
+    players[0].moves.moveChosePriest(3,0) 
+    players.map((p, i) => p.moves.moveVoteYes(i))
+    players.map((p, i) => p.moves.moveOKVote(i))
+    players[0].moves.moveDiscardMayor(1,0)
+    players[3].moves.moveDiscardPriest(1,3) // -- play holywater 5
+
+    var {G, ctx} = players[0].getState();
+    expect(G.policyBoardHuman.length).toEqual(5)
 
     // var {G, ctx} = players[0].getState();
     // console.log(G)
     // console.log(ctx)
-    // TODO: Now the game should be over, as Dracula is dead!
+    // TODO: Now the game should be over, as Humans won
   });
   

@@ -145,7 +145,7 @@ export let phaseVetoMayor = {
   },
   endIf: (G: IG, ctx: Ctx) => {
     if (G.ok) {
-      if (G.wantVeto) {
+      if (!G.wantVeto) {
         return { next: 'phaseDiscardPriest' };
       } else {
         return { next: 'phaseNoSpecial' };
