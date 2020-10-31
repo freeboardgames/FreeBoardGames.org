@@ -181,7 +181,6 @@ export const SecretDraculaGame = {
             G.policyHand.map(() => {
               return null;
             }),
-      specialElection: null,
       policyPeek: playerIDInt == G.mayorID && G.policyPeek.length == 3 ? G.policyPeek : [],
       investigate: playerIDInt == G.mayorID ? G.investigate : 0,
       // everyone gets investigateID
@@ -216,7 +215,6 @@ export const SecretDraculaGame = {
       onEnd: (G: IG, ctx: Ctx) => {
         //- console.log('ending phaseCheckElectionCounter');
         if (G.electionTracker == 2) {
-          G.electionTracker = 0;
 
           if (G.policyDraw.length < 3) {
             G.policyDraw.push(...G.policyDiscard);
@@ -230,12 +228,13 @@ export const SecretDraculaGame = {
           } else {
             G.justPlayedVampirePolicy = -1;
           }
+          G.lastMayorID = -1; // any mayor priest combi allowed again.
+          G.lastPriestID = -1;
+
         } else {
           G.electionTracker += 1;
         }
 
-        G.lastMayorID = -1; // any mayor priest combi allowed again.
-        G.lastPriestID = -1;
         G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
         G.priestID = -1; // no active priest
 
@@ -257,6 +256,10 @@ export const SecretDraculaGame = {
       },
       endIf: (G: IG, ctx: Ctx) => {
         //- console.log('endIf phaseSpecial' + G.justPlayedVampirePolicy);
+        if (G.electionTracker != 0){ // we got here by forcing a card due to the tracker
+          //- console.log(' 0 ');
+          return { next: 'phaseNoSpecial' };
+        }
         if (G.justPlayedVampirePolicy == -1) {
           //- console.log(' 1 ');
           return { next: 'phaseNoSpecial' };
@@ -333,7 +336,6 @@ export const SecretDraculaGame = {
       },
       onEnd: (G: IG, ctx: Ctx) => {
         //- console.log('ending phaseNoSpecial');
-        G.electionTracker = 0;
         G.priestID = -1;
         if (G.specialElection != -1) {
           //- console.log('reseting Mayor back to prior to special');

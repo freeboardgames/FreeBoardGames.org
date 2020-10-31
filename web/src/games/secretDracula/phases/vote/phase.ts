@@ -88,6 +88,9 @@ export let phaseEndVotePriest = {
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
     G.voteCountYes = -1;
     G.voteCountNo = -1;
+    if (G.voteCountYes > G.voteCountNo) {
+      G.electionTracker = 0
+    }
     return G;
   },
 };
