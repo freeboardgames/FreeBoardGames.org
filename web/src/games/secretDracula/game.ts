@@ -102,7 +102,7 @@ export const SecretDraculaGame = {
 
   setup: setup,
 
-  playerView: (G: IG, playerID) => {
+  playerView: (G: IG, ctx: Ctx, playerID: string) => {
     let playerIDInt = parseInt(playerID);
 
     if (isNaN(playerIDInt)) {
@@ -111,6 +111,7 @@ export const SecretDraculaGame = {
       return G;
     }
 
+    console.log("bruh bruh")
     return {
       ...G,
       policyDraw: G.policyDraw.map(() => {
