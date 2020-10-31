@@ -59,15 +59,18 @@ export let phaseVotePriest = {
   },
 };
 export let phaseEndVotePriest = {
+  turn: {
+     activePlayers: { all: 'phaseEndVotePriest', moveLimit: 1 },
+  },
   onBegin: (G, ctx) => {
+
     ////- console.log('starting phaseEndVotePriest');
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
+
     let activePlayers = {value: {}};
     for (let i = 0; i < ctx.numPlayers; i++){
       if (i in G.deadIDs){
-        activePlayers.value[i] = 'waiting'
-      } else {
-        activePlayers.value[i] = 'phaseEndVotePriest'
+        G.voteOks[i] = true
       }
     }
     return G;
@@ -80,13 +83,12 @@ export let phaseEndVotePriest = {
   },
   endIf: (G: IG, ctx: Ctx) => {
     //- console.log('endIf phaseEndVotePriest');
-    if (
-      G.voteOks.reduce((prev: number, curr: boolean) => {
+    let alive_players = ctx.numPlayers //- G.deadIDs.reduce((prev: number, curr: number) => { return curr == -1 ? prev : prev + 1},0)
+    let ok_count = G.voteOks.reduce((prev: number, curr: boolean) => {
         return curr == true ? prev + 1 : prev;
       }, 0) 
-      == 
-      (ctx.numPlayers - G.deadIDs.reduce((prev: number, curr: number) => { return curr == -1 ? prev : prev + 1},0))
-    ) {
+
+   if ( alive_players != ok_count ) {
       // not everyone has pressed OK yet.
       return false;
     }

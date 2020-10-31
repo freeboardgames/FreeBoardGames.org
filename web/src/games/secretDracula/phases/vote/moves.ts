@@ -1,8 +1,16 @@
 import { IG } from '../../interfaces';
 import { Ctx } from 'boardgame.io';
+import { INVALID_MOVE } from 'boardgame.io/core';
 
-export function moveVoteYes(G: IG, ctx: Ctx, me: number): IG {
-  ctx.playerID;
+export function moveVoteYes(G: IG, ctx: Ctx, me: number): IG | 'INVALID_MOVE' {
+  if (me != parseInt(ctx.playerID)){
+    return INVALID_MOVE
+  };
+
+  if ( G.votesYes[me] || G.votesNo[me]) {
+    // Already voted
+    return INVALID_MOVE
+  }
 
   return {
     ...G,
@@ -13,8 +21,15 @@ export function moveVoteYes(G: IG, ctx: Ctx, me: number): IG {
   };
 }
 
-export function moveVoteNo(G: IG, ctx: Ctx, me: number): IG {
-  ctx.playerID;
+export function moveVoteNo(G: IG, ctx: Ctx, me: number): IG  | 'INVALID_MOVE' {
+  if (me != parseInt(ctx.playerID)){
+    return INVALID_MOVE
+  };
+
+  if ( G.votesYes[me] || G.votesNo[me]) {
+    // Already voted
+    return INVALID_MOVE
+  }
 
   return {
     ...G,
