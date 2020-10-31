@@ -6,7 +6,7 @@ export function movePickMayor(G: IG, ctx: Ctx, id: number, me: number): IG | 'IN
   if (id == undefined) {
     return INVALID_MOVE;
   }
-  if (id < 0 || ctx.numPlayers > 2) {
+  if (id < 0 || ctx.numPlayers < id) {
     return INVALID_MOVE;
   }
   if (G.deadIDs.includes(id)) {
