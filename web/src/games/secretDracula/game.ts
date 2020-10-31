@@ -111,7 +111,6 @@ export const SecretDraculaGame = {
       return G;
     }
 
-    console.log("bruh bruh")
     return {
       ...G,
       policyDraw: G.policyDraw.map(() => {
@@ -126,15 +125,36 @@ export const SecretDraculaGame = {
       votesNo: G.votesNo.map(() => {
         return null;
       }),
-      draculaID: G.draculaID == playerIDInt ? G.draculaID : -1, // ONLY DRACULA
-      // ONLY VAMPIRES:
-      vampireIDs: G.vampireIDs.includes(playerIDInt)
-        ? [...G.vampireIDs]
-        : [
-            ...G.vampireIDs.map(() => {
-              return -1;
-            }),
-          ],
+      draculaID: 
+        (ctx.numPlayers < 7)
+        ?
+          (G.draculaID == playerIDInt) ? G.draculaID : -1 // only dracula knows if <7 players
+        :
+          (playerIDInt in G.vampireIDs) ? G.draculaID : -1, // all vampires know if >= 7 players
+      
+      vampireIDs: 
+        (ctx.numPlayers < 7)
+        ?
+        // in <7 player game, all vampires know of all others
+          G.vampireIDs.includes(playerIDInt) ? 
+                    [...G.vampireIDs]
+                    : [
+                         ...G.vampireIDs.map(() => {
+                           return -1;
+                         }),
+                       ]
+        :
+        // in >=7 player game, dracula doesn't know about other vampires
+          G.vampireIDs.includes(playerIDInt) 
+            ? 
+                    G.draculaID == playerIDInt
+                    ? [playerIDInt]
+                    : [...G.vampireIDs]
+            : [
+               ...G.vampireIDs.map(() => {
+               return -1;
+               }),
+            ],
       humanIDs: G.vampireIDs.includes(playerIDInt)
         ? G.humanIDs
         : G.humanIDs.map(() => {
