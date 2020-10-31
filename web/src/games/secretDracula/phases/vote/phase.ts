@@ -1,10 +1,20 @@
 import { moveVoteYes, moveVoteNo, moveOKVote } from './moves';
 import { IG } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
+import { createTextChangeRange } from 'typescript';
 
 export let phaseVotePriest = {
-  onBegin: (G) => {
+  onBegin: (G: IG, ctx: Ctx) => {
     //- console.log('starting phaseVotePriest');
+    let activePlayers = {value: {}};
+    for (let i = 0; i < ctx.numPlayers; i++){
+      if (i in G.deadIDs){
+        activePlayers.value[i] = 'waiting'
+      } else {
+        activePlayers.value[i] = 'phaseVotePriest'
+      }
+    }
+    ctx.events.setActivePlayers(activePlayers);
     return G;
   },
   moves: {
@@ -47,18 +57,20 @@ export let phaseVotePriest = {
     G.votesNo = <boolean[]>Array(ctx.numPlayers).fill(false);
     return G;
   },
-  turn: {
-    activePlayers: { all: 'phaseVotePriest', moveLimit: 1 },
-  },
 };
 export let phaseEndVotePriest = {
   onBegin: (G, ctx) => {
     ////- console.log('starting phaseEndVotePriest');
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
+    let activePlayers = {value: {}};
+    for (let i = 0; i < ctx.numPlayers; i++){
+      if (i in G.deadIDs){
+        activePlayers.value[i] = 'waiting'
+      } else {
+        activePlayers.value[i] = 'phaseEndVotePriest'
+      }
+    }
     return G;
-  },
-  turn: {
-    activePlayers: { all: 'phaseEndVotePriest', moveLimit: 1 },
   },
   moves: {
     moveOKVote: {
@@ -66,12 +78,14 @@ export let phaseEndVotePriest = {
       client: false,
     },
   },
-  endIf: (G: IG) => {
+  endIf: (G: IG, ctx: Ctx) => {
     //- console.log('endIf phaseEndVotePriest');
     if (
-      G.voteOks.reduce((prev: boolean, curr: boolean) => {
-        return curr && prev;
-      }, true) == false
+      G.voteOks.reduce((prev: number, curr: boolean) => {
+        return curr == true ? prev + 1 : prev;
+      }, 0) 
+      == 
+      (ctx.numPlayers - G.deadIDs.reduce((prev: number, curr: number) => { return curr == -1 ? prev : prev + 1},0))
     ) {
       // not everyone has pressed OK yet.
       return false;
@@ -86,11 +100,11 @@ export let phaseEndVotePriest = {
   onEnd: (G: IG, ctx: Ctx) => {
     //- console.log('ending phaseEndVotePriest');
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
-    G.voteCountYes = -1;
-    G.voteCountNo = -1;
     if (G.voteCountYes > G.voteCountNo) {
       G.electionTracker = 0
     }
+    G.voteCountYes = -1;
+    G.voteCountNo = -1;
     return G;
   },
 };
