@@ -9,6 +9,7 @@ export function moveChosePriest(G: IG, ctx: Ctx, id: number, me: number): IG | '
   if (G.deadIDs.includes(id)) {
     return INVALID_MOVE;
   }
+
   if (G.specialElection == -1){
     if (G.lastPriestID == id) {
       return INVALID_MOVE;
@@ -21,7 +22,8 @@ export function moveChosePriest(G: IG, ctx: Ctx, id: number, me: number): IG | '
     ctx.numPlayers -
       G.deadIDs.reduce((prev, curr) => {
         return prev += 1;
-      }, 0) >
+      }, 0) 
+      >
       5
   ) {
     return INVALID_MOVE;

@@ -115,6 +115,7 @@ export const SecretDraculaGame = {
 
   playerView: (G: IG, ctx: Ctx, playerID: string) => {
     let playerIDInt = parseInt(playerID);
+    return G
 
     if (isNaN(playerIDInt)) {
       // However, if this is not a multiplayer then this is NaN.
@@ -307,7 +308,7 @@ export const SecretDraculaGame = {
       },
       onEnd: (G: IG) => {
         //- console.log('ending phaseSpecial');
-        if (G.justPlayedVampirePolicy == 4) {
+        if (G.policyBoardVampire.length == 5) {
           G.vetoPower = true;
         }
         G.justPlayedVampirePolicy = -1;

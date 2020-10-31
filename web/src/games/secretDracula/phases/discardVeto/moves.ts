@@ -60,6 +60,7 @@ export function moveWantVetoMayor(G: IG, ctx: Ctx, want: boolean, me: number): I
   return {
     ...G,
     wantVeto: want,
+    ok: true,
     log: [...G.log, 'Player ' + me.toString() + 'moveWantVetoMayor'],
   };
 }
