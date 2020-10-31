@@ -44,16 +44,11 @@ export class Board extends React.Component<IBoardProps> {
     return (
       <div className={css.div}>
         TODO: 
-        [] Allow only 5-10 players 
-        [x] Fix being able to renominate (for debug i allowed it) 
-        [x] Split up main render function 
-        [] Add tests suite 
-        [x] Show other players what player was investigated 
-        [x] Show players the vote outcome (eg: 3yes, 4no) 
-        [] check end conditions 
-        [x] remove a lot of console.logs
-        [] special election is broken. Can't vote for anybody? I thought I fixed it ...?
-        [] after special election it's possible to elect wrong
+        Allow only 5-10 players 
+        Add tests suite 
+        check end conditions 
+        special election is broken. Cant vote for anybody? I thought I fixed it ...?
+        after special election its possible to elect wrong
         
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
           {this.render_players(playerorder, deads, vampires)}
