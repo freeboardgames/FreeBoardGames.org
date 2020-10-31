@@ -23,11 +23,20 @@ import {
 } from './phases/discardVeto/phase';
 
 function setup(ctx: Ctx): IG {
+
+  return _setup(ctx, true, true)
+}
+
+//this is the function used for having a better test setup
+export function _setup(ctx: Ctx, randomPlayers: boolean, randomDeck: boolean): IG {
   // SETUP BOARD
   let policyDeck = <IPolicy[]>Array(17).fill(<IPolicy>{ garlic: true, chalice: false });
   for (let i = 6; i < 17; i++) {
     policyDeck[i] = <IPolicy>{ garlic: false, chalice: true };
   } // 6 + 11
+  if (randomDeck) {
+    policyDeck = ctx.random.Shuffle(policyDeck);
+  }
 
   // SETUP PLAYERS
   // shuffle players
@@ -35,7 +44,9 @@ function setup(ctx: Ctx): IG {
   for (let i = 0; i < ctx.numPlayers; i++) {
     playerIDToGameID[i] = i;
   }
-  playerIDToGameID = ctx.random.Shuffle(playerIDToGameID);
+  if (randomPlayers) {
+    playerIDToGameID = ctx.random.Shuffle(playerIDToGameID);
+  }
   // chose dracula
   let draculaID = playerIDToGameID[0];
   let vampireCount;
