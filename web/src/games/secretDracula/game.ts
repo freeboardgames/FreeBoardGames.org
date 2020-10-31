@@ -88,7 +88,7 @@ export function _setup(ctx: Ctx, randomPlayers: boolean, randomDeck: boolean): I
 
     electionTracker: <number>0,
 
-    deadIDs: <number[]>Array(ctx.numPlayers).fill(-1),
+    deadIDs: <number[]>Array(0),
     draculaID: draculaID,
     vampireIDs: vampireIDs,
     humanIDs: humanIDs,
@@ -205,38 +205,28 @@ export const SecretDraculaGame = {
       },
       endIf: (G: IG) => {
         //- console.log('endIf phaseCheckElectionCounter');
-        if (G.electionTracker < 2) {
-          //- console.log('going to phaseChosePriest');
           return { next: 'phaseChosePriest' };
-        }
-        //- console.log('going to phaseSpecial');
-        return { next: 'phaseSpecial' };
       },
       onEnd: (G: IG, ctx: Ctx) => {
         //- console.log('ending phaseCheckElectionCounter');
         if (G.electionTracker == 2) {
-
+          G.electionTracker = 0
           if (G.policyDraw.length < 3) {
             G.policyDraw.push(...G.policyDiscard);
             G.policyDiscard = <IPolicy[]>Array(0);
           }
           let topCard = G.policyDraw.pop();
+          G.policyBoardVampire.push(topCard);
 
-          if (topCard.chalice) {
-            let n = G.policyBoardVampire.push(topCard);
-            G.justPlayedVampirePolicy = n - 1;
-          } else {
-            G.justPlayedVampirePolicy = -1;
-          }
           G.lastMayorID = -1; // any mayor priest combi allowed again.
           G.lastPriestID = -1;
-
+          G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+          G.priestID = -1; // no active priest
         } else {
           G.electionTracker += 1;
+          G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+          G.priestID = -1; // no active priest
         }
-
-        G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
-        G.priestID = -1; // no active priest
 
         return G;
       },

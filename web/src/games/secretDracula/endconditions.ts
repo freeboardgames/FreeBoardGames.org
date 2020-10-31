@@ -2,6 +2,14 @@ import { IG } from './interfaces';
 
 export function isWin(G: IG) {
   if (G.deadIDs.includes(G.draculaID)) {
+    console.log("as;lodifjaosdifhasdf")
+    console.log("as;lodifjaosdifhasdf")
+    console.log("as;lodifjaosdifhasdf")
+    console.log("as;lodifjaosdifhasdf")
+    console.log("as;lodifjaosdifhasdf")
+    console.log("as;lodifjaosdifhasdf")
+    console.log("as;lodifjaosdifhasdf")
+    console.log("as;lodifjaosdifhasdf")
     return true; // Dracula is dead
   }
   if (G.policyBoardHuman[4] != null) {

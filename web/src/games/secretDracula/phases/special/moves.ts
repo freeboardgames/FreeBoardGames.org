@@ -52,7 +52,7 @@ export function moveExecute(G: IG, ctx: Ctx, id: number, me: number): IG | 'INVA
     ...G,
     ok: true,
     deadIDs: [...G.deadIDs, id],
-    log: [...G.log, 'Player ' + me.toString() + ' moveOK ' + id.toString()],
+    log: [...G.log, 'Player ' + me.toString() + ' moveExecute ' + id.toString()],
   };
 }
 
