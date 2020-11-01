@@ -165,10 +165,10 @@ export const SecretDraculaGame = {
               }),
             ],
       humanIDs: G.vampireIDs.includes(playerIDInt)
-        ? ( G.draculaID == playerIDInt && ctx.numPlayers > 7) 
+        ? G.draculaID == playerIDInt && ctx.numPlayers > 7
           ? G.humanIDs.map(() => {
-            return -1;
-          })
+              return -1;
+            })
           : G.humanIDs
         : G.humanIDs.map(() => {
             return -1;

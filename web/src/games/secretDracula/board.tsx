@@ -43,7 +43,6 @@ export class Board extends React.Component<IBoardProps> {
 
     return (
       <div className={css.div}>
-
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
           {this.render_players(playerorder, deads, vampires)}
 

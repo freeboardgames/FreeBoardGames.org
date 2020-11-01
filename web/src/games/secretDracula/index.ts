@@ -8,7 +8,7 @@ export const secretDraculaGameDef: IGameDef = {
   name: 'Secret Dracula',
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
-  minPlayers: 5, 
+  minPlayers: 5,
   maxPlayers: 10,
   description: 'A game of decite, lies, and Vampires.',
   descriptionTag: 'Secret Dracula',
