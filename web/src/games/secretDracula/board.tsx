@@ -43,8 +43,7 @@ export class Board extends React.Component<IBoardProps> {
 
     return (
       <div className={css.div}>
-        TODO: Allow only 5-10 players Add tests suite check end conditions special election is broken. Cant vote for
-        anybody? I thought I fixed it ...? after special election its possible to elect wrong
+
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
           {this.render_players(playerorder, deads, vampires)}
 
@@ -59,7 +58,6 @@ export class Board extends React.Component<IBoardProps> {
             playedPolicies={this.props.G.policyBoardHuman.length}
             playerCount={this.props.ctx.numPlayers}
           ></BHumanPolicies>
-
           {this.render_chosePriest(playerorder, deads, vampires)}
 
           {this.render_votePriest()}
