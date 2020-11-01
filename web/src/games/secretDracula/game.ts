@@ -204,7 +204,7 @@ export const SecretDraculaGame = {
         //- console.log('starting phaseCheckElectionCounter');
         return G;
       },
-      endIf: (G: IG) => {
+      endIf: () => {
         //- console.log('endIf phaseCheckElectionCounter');
           return { next: 'phaseChosePriest' };
       },

@@ -1,7 +1,6 @@
 import { moveVoteYes, moveVoteNo, moveOKVote } from './moves';
 import { IG } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
-import { createTextChangeRange } from 'typescript';
 
 export let phaseVotePriest = {
   onBegin: (G: IG, ctx: Ctx) => {
@@ -67,7 +66,6 @@ export let phaseEndVotePriest = {
     ////- console.log('starting phaseEndVotePriest');
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
 
-    let activePlayers = {value: {}};
     for (let i = 0; i < ctx.numPlayers; i++){
       if (i in G.deadIDs){
         G.voteOks[i] = true

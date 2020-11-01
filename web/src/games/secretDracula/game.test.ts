@@ -2,7 +2,6 @@ import { Client } from 'boardgame.io/client';
 import { SecretDraculaGame, _setup } from './game';
 import { Ctx } from 'boardgame.io';
 import { Local } from 'boardgame.io/multiplayer';
-import { INVALID_MOVE } from 'boardgame.io/core';
 
 
 it('end2end - 5 player execute drac', () => {
@@ -632,6 +631,7 @@ it('end2end - 10 player dracula winner', () => {
 
     var {G, ctx} = players[0].getState(); 
     expect(ctx.activePlayers).toEqual({'6':'phaseChosePriest'})
+    expect(G.vetoPower).toEqual(true)
     players[6].moves.moveChosePriest(0,6) // chose Dracula
     var {G, ctx} = players[0].getState(); 
     expect(ctx.phase).toEqual('phaseVotePriest')
@@ -770,18 +770,10 @@ it('end2end - 10 player dracula winner', () => {
 
     var {G, ctx} = players[0].getState(); 
     expect(ctx.phase).toEqual('phaseExecution')
-    players[5].moves.moveExecute(4,5) // -- execute some guy
+    players[5].moves.moveExecute(0,5) // -- execute Dracula
 
     var {G, ctx} = players[0].getState(); 
-    expect(ctx.activePlayers).toEqual({'6':'phaseChosePriest'})
-    players[6].moves.moveChosePriest(0,6) // chose Dracula
-    var {G, ctx} = players[0].getState(); 
-    expect(ctx.phase).toEqual('phaseVotePriest')
-    players.map((p, i) => p.moves.moveVoteYes(i))
-    players.map((p, i) => p.moves.moveOKVote(i))
-    var {G, ctx} = players[0].getState(); 
-
-    // TODO Dracula is Winner
+    // TODO Dracula is dead
 
     return
   });
