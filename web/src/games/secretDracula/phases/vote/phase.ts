@@ -1,6 +1,7 @@
 import { moveVoteYes, moveVoteNo, moveOKVote } from './moves';
 import { IG } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
+import { defaultsDeep } from 'cypress/types/lodash';
 
 export let phaseVotePriest = {
   onBegin: (G: IG, ctx: Ctx) => {
@@ -8,7 +9,7 @@ export let phaseVotePriest = {
     let activePlayers = { value: {} };
     for (let i = 0; i < ctx.numPlayers; i++) {
       if (i in G.deadIDs) {
-        activePlayers.value[i] = 'waiting';
+        continue
       } else {
         activePlayers.value[i] = 'phaseVotePriest';
       }
@@ -27,13 +28,32 @@ export let phaseVotePriest = {
     },
   },
   endIf: (G: IG, ctx: Ctx) => {
+    let activePlayers = { value: {} };
+    let count = 0
+    for (let i = 0; i < ctx.numPlayers; i++) {
+      if (i in G.deadIDs) {
+       // activePlayers.value[i] = 'waiting';
+        continue
+      } else if (G.votesYes[i] || G.votesNo[i] ){ // already voted
+        continue
+      } else {
+        count += 1
+        activePlayers.value[i] = 'phaseVotePriest';
+      }
+    }
+
+    if (count > 0) { // fix for not running into Issue with no active players
+      ctx.events.setActivePlayers(activePlayers);
+    }
+
     let yesVotes = G.votesYes.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
     let noVotes = G.votesNo.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
-    if (yesVotes + noVotes == ctx.numPlayers) {
+    var deadCount = G.deadIDs.length
+    if (yesVotes + noVotes == ctx.numPlayers - deadCount) {
       // Successful Vote
       return { next: 'phaseEndVotePriest' };
     }
@@ -57,6 +77,7 @@ export let phaseVotePriest = {
     return G;
   },
 };
+
 export let phaseEndVotePriest = {
   turn: {
     activePlayers: { all: 'phaseEndVotePriest', moveLimit: 1 },

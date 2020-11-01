@@ -538,8 +538,11 @@ it('end2end - 10 player dracula winner', () => {
   var { G, ctx } = players[0].getState();
   expect(ctx.phase).toEqual('phaseInvestigate1');
   players[0].moves.moveInvestigateStart(3, 0); //
-  var { G, ctx } = players[1].getState();
+  var { G, ctx } = players[0].getState();
   expect(G.investigate).toEqual(1);
+  expect(G.investigateID).toEqual(3);
+  var { G, ctx } = players[1].getState();
+  expect(G.investigate).toEqual(0); // Non-Investigating Player should not know
   expect(G.investigateID).toEqual(3);
   expect(ctx.phase).toEqual('phaseInvestigate2');
   players[0].moves.moveInvestigateEnd(0); //
@@ -681,7 +684,7 @@ it('end2end - 10 player dracula dead', () => {
   var { G, ctx } = players[0].getState();
   expect(ctx.phase).toEqual('phaseInvestigate1');
   players[0].moves.moveInvestigateStart(3, 0); //
-  var { G, ctx } = players[1].getState();
+  var { G, ctx } = players[0].getState();
   expect(G.investigate).toEqual(1);
   expect(G.investigateID).toEqual(3);
   expect(ctx.phase).toEqual('phaseInvestigate2');
