@@ -8,7 +8,7 @@ import { IG } from './interfaces';
 import { BVampirePolicies } from './components/bvampirepolicy';
 import { BPlayer } from './components/bplayer';
 import { BHumanPolicies } from './components/bhumanpolicy';
-import {BElectionTracker } from './components/belectiontracker';
+import { BElectionTracker } from './components/belectiontracker';
 
 import { BVote } from './phases/vote/bvote';
 import { BEndVote } from './phases/vote/bvoteresults';
@@ -43,18 +43,12 @@ export class Board extends React.Component<IBoardProps> {
 
     return (
       <div className={css.div}>
-        TODO: 
-        Allow only 5-10 players 
-        Add tests suite 
-        check end conditions 
-        special election is broken. Cant vote for anybody? I thought I fixed it ...?
-        after special election its possible to elect wrong
-        
+        TODO: Allow only 5-10 players Add tests suite check end conditions special election is broken. Cant vote for
+        anybody? I thought I fixed it ...? after special election its possible to elect wrong
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
           {this.render_players(playerorder, deads, vampires)}
 
-          <BElectionTracker count={this.props.G.electionTracker }>
-            </BElectionTracker>
+          <BElectionTracker count={this.props.G.electionTracker}></BElectionTracker>
 
           <BVampirePolicies
             playedPolicies={this.props.G.policyBoardVampire.length}
@@ -65,7 +59,6 @@ export class Board extends React.Component<IBoardProps> {
             playedPolicies={this.props.G.policyBoardHuman.length}
             playerCount={this.props.ctx.numPlayers}
           ></BHumanPolicies>
-
 
           {this.render_chosePriest(playerorder, deads, vampires)}
 

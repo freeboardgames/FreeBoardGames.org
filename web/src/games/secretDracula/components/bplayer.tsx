@@ -52,20 +52,13 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
             </p>
           </td>
           <td>
-            {this.props.vampire && !this.props.dracula?
-              (
-                <div className={css.vampire}> {this.props.playerName} </div>
-              ) 
-            : 
-              this.props.dracula ?
-                (
-                  <div className={css.dracula}> {this.props.playerName} </div>
-                ) 
-              : 
-                (
-                  <div> {this.props.playerName} </div>
-                )
-            }
+            {this.props.vampire && !this.props.dracula ? (
+              <div className={css.vampire}> {this.props.playerName} </div>
+            ) : this.props.dracula ? (
+              <div className={css.dracula}> {this.props.playerName} </div>
+            ) : (
+              <div> {this.props.playerName} </div>
+            )}
           </td>
           <td>
             <p>{this.props.priest ? '✝️' : ' '}</p>

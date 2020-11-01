@@ -11,27 +11,9 @@ export class BElectionTracker extends React.Component<InnerWrapper, {}> {
         <table>
           <tbody>
             <tr>
-                <td>
-                { this.props.count == 0 ? 
-                    '❤️'
-                    :
-                    '💔'
-                }
-                </td>
-                <td>
-                { this.props.count <= 1 ? 
-                    '❤️'
-                    :
-                    '💔'
-                }
-                </td>
-                <td>
-                { this.props.count <= 2 ? 
-                    '❤️'
-                    :
-                    '💔'
-                }
-                </td>
+              <td>{this.props.count == 0 ? '❤️' : '💔'}</td>
+              <td>{this.props.count <= 1 ? '❤️' : '💔'}</td>
+              <td>{this.props.count <= 2 ? '❤️' : '💔'}</td>
             </tr>
           </tbody>
         </table>
@@ -39,4 +21,3 @@ export class BElectionTracker extends React.Component<InnerWrapper, {}> {
     );
   }
 }
-

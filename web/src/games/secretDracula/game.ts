@@ -23,8 +23,7 @@ import {
 } from './phases/discardVeto/phase';
 
 function setup(ctx: Ctx): IG {
-
-  return _setup(ctx, true, true)
+  return _setup(ctx, true, true);
 }
 
 //this is the function used for having a better test setup
@@ -115,7 +114,7 @@ export const SecretDraculaGame = {
 
   playerView: (G: IG, ctx: Ctx, playerID: string) => {
     let playerIDInt = parseInt(playerID);
-    return G
+    return G;
 
     if (isNaN(playerIDInt)) {
       // However, if this is not a multiplayer then this is NaN.
@@ -137,35 +136,34 @@ export const SecretDraculaGame = {
       votesNo: G.votesNo.map(() => {
         return null;
       }),
-      draculaID: 
-        (ctx.numPlayers < 7)
-        ?
-          (G.draculaID == playerIDInt) ? G.draculaID : -1 // only dracula knows if <7 players
-        :
-          (playerIDInt in G.vampireIDs) ? G.draculaID : -1, // all vampires know if >= 7 players
-      
-      vampireIDs: 
-        (ctx.numPlayers < 7)
-        ?
-        // in <7 player game, all vampires know of all others
-          G.vampireIDs.includes(playerIDInt) ? 
-                    [...G.vampireIDs]
-                    : [
-                         ...G.vampireIDs.map(() => {
-                           return -1;
-                         }),
-                       ]
-        :
-        // in >=7 player game, dracula doesn't know about other vampires
-          G.vampireIDs.includes(playerIDInt) 
-            ? 
-                    G.draculaID == playerIDInt
-                    ? [playerIDInt]
-                    : [...G.vampireIDs]
+      draculaID:
+        ctx.numPlayers < 7
+          ? G.draculaID == playerIDInt
+            ? G.draculaID
+            : -1 // only dracula knows if <7 players
+          : playerIDInt in G.vampireIDs
+          ? G.draculaID
+          : -1, // all vampires know if >= 7 players
+
+      vampireIDs:
+        ctx.numPlayers < 7
+          ? // in <7 player game, all vampires know of all others
+            G.vampireIDs.includes(playerIDInt)
+            ? [...G.vampireIDs]
             : [
-               ...G.vampireIDs.map(() => {
-               return -1;
-               }),
+                ...G.vampireIDs.map(() => {
+                  return -1;
+                }),
+              ]
+          : // in >=7 player game, dracula doesn't know about other vampires
+          G.vampireIDs.includes(playerIDInt)
+          ? G.draculaID == playerIDInt
+            ? [playerIDInt]
+            : [...G.vampireIDs]
+          : [
+              ...G.vampireIDs.map(() => {
+                return -1;
+              }),
             ],
       humanIDs: G.vampireIDs.includes(playerIDInt)
         ? G.humanIDs
@@ -206,12 +204,12 @@ export const SecretDraculaGame = {
       },
       endIf: () => {
         //- console.log('endIf phaseCheckElectionCounter');
-          return { next: 'phaseChosePriest' };
+        return { next: 'phaseChosePriest' };
       },
       onEnd: (G: IG, ctx: Ctx) => {
         //- console.log('ending phaseCheckElectionCounter');
         if (G.electionTracker == 2) {
-          G.electionTracker = 0
+          G.electionTracker = 0;
           if (G.policyDraw.length < 3) {
             G.policyDraw.push(...G.policyDiscard);
             G.policyDiscard = <IPolicy[]>Array(0);
@@ -221,20 +219,20 @@ export const SecretDraculaGame = {
 
           G.lastMayorID = -1; // any mayor priest combi allowed again.
           G.lastPriestID = -1;
-          if (G.specialElection != -1){
-            G.mayorID = G.specialElection
+          if (G.specialElection != -1) {
+            G.mayorID = G.specialElection;
             G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
-            G.specialElection = -1
+            G.specialElection = -1;
           } else {
             G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
           }
           G.priestID = -1; // no active priest
         } else {
           G.electionTracker += 1;
-          if (G.specialElection != -1){
-            G.mayorID = G.specialElection
+          if (G.specialElection != -1) {
+            G.mayorID = G.specialElection;
             G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
-            G.specialElection = -1
+            G.specialElection = -1;
           } else {
             G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
           }
@@ -259,7 +257,8 @@ export const SecretDraculaGame = {
       },
       endIf: (G: IG, ctx: Ctx) => {
         //- console.log('endIf phaseSpecial' + G.justPlayedVampirePolicy);
-        if (G.electionTracker != 0){ // we got here by forcing a card due to the tracker
+        if (G.electionTracker != 0) {
+          // we got here by forcing a card due to the tracker
           //- console.log(' 0 ');
           return { next: 'phaseNoSpecial' };
         }

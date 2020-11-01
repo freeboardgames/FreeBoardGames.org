@@ -107,13 +107,13 @@ export let phaseDiscardPriestVeto = {
   },
   endIf: (G: IG) => {
     if (G.wantVeto) {
-      return { next: 'phaseVetoMayor' }; 
+      return { next: 'phaseVetoMayor' };
     }
     if (G.policyHand.length == 1) {
       //- console.log('A0');
       return { next: 'phaseSpecial' };
     }
-    return false
+    return false;
   },
   onEnd: (G: IG) => {
     if (!G.wantVeto) {
@@ -129,7 +129,7 @@ export let phaseDiscardPriestVeto = {
     }
     return {
       ...G,
-      ok: false
+      ok: false,
     };
   },
 };
