@@ -114,7 +114,6 @@ export const SecretDraculaGame = {
 
   playerView: (G: IG, ctx: Ctx, playerID: string) => {
     let playerIDInt = parseInt(playerID);
-    return G;
 
     if (isNaN(playerIDInt)) {
       // However, if this is not a multiplayer then this is NaN.
@@ -166,7 +165,11 @@ export const SecretDraculaGame = {
               }),
             ],
       humanIDs: G.vampireIDs.includes(playerIDInt)
-        ? G.humanIDs
+        ? ( G.draculaID == playerIDInt && ctx.numPlayers > 7) 
+          ? G.humanIDs.map(() => {
+            return -1;
+          })
+          : G.humanIDs
         : G.humanIDs.map(() => {
             return -1;
           }),
