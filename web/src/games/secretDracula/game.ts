@@ -221,11 +221,23 @@ export const SecretDraculaGame = {
 
           G.lastMayorID = -1; // any mayor priest combi allowed again.
           G.lastPriestID = -1;
-          G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+          if (G.specialElection != -1){
+            G.mayorID = G.specialElection
+            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+            G.specialElection = -1
+          } else {
+            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+          }
           G.priestID = -1; // no active priest
         } else {
           G.electionTracker += 1;
-          G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+          if (G.specialElection != -1){
+            G.mayorID = G.specialElection
+            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+            G.specialElection = -1
+          } else {
+            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+          }
           G.priestID = -1; // no active priest
         }
 
