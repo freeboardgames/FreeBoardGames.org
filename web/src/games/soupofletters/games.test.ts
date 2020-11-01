@@ -23,7 +23,7 @@ describe('SoupOfLetter Rules', () => {
 
   it('should declare a draw when players find equal number of words', () => {
     const { G } = client.getState();
-    const solution = [ ...G.solution ];
+    const solution = [...G.solution];
 
     // find a word for each players
     for (let i = 0; i < 3 * numPlayers; i++) {
@@ -41,16 +41,12 @@ describe('SoupOfLetter Rules', () => {
 
   it('should have equal opportunity for all players', () => {
     const { G } = client.getState();
-    const solution = [ ...G.solution ];
+    const solution = [...G.solution];
 
-    const x = [];
     // each player solves equal number of words
     for (let i = 0; i < solution.length; i++) {
       client.moves.wordFound(solution[i]);
-      x.push(client.getState().ctx.currentPlayer)
     }
-
-    console.log(x, x.length); // see the end, it gives "1", "1" twice, and cannot understand why ???
 
     const { ctx } = client.getState();
     expect(ctx.gameover).toEqual({ draw: true });
@@ -58,7 +54,7 @@ describe('SoupOfLetter Rules', () => {
 
   it('should declare player 0 as the winner', () => {
     const { G } = client.getState();
-    const solution = [ ...G.solution ];
+    const solution = [...G.solution];
 
     // player 1 solves one word less than 0
     for (let i = 0; i < G.solution.length - 1; i++) {

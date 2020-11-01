@@ -1,5 +1,5 @@
-import { string } from 'prop-types';
 import { MAX_WORDS_IN_GAME, MAX_WORD_LEN, DRAW_AFTER_N_TIMERS, validOrientations, globalWordList } from './constants';
+import { shuffleArray } from './utils';
 import { newPuzzle, solvepuzzle } from './puzzle';
 
 export interface ISingleLetter {
@@ -48,13 +48,13 @@ export function isVictory(G) {
       playerScores[s.solvedBy] = 0;
     }
   }
-  for (const s of G.solution){
+  for (const s of G.solution) {
     playerScores[s.solvedBy] += 1;
   }
   // determine max score
   var maxScore = -1;
   Object.values(playerScores).forEach((score: number) => {
-    maxScore = Math.max(maxScore, score)
+    maxScore = Math.max(maxScore, score);
   });
   // determine the player(s) who got maxScore
   let playerWithMaxScore = undefined;
@@ -78,16 +78,8 @@ function initialSetup(ctx, wordList = globalWordList, allowedOrientations = vali
   let wordPerPerson = Math.floor(MAX_WORDS_IN_GAME / ctx.numPlayers);
   let totalAllowedWords = wordPerPerson * ctx.numPlayers;
   // select a fixed amount of random words from the list of words
-  let randWords = [];
-  for (let i = 0; i < wordList.length; i++) {
-    const rWord = wordList[Math.floor(Math.random() * wordList.length)].toUpperCase();
-    if (rWord.length <= MAX_WORD_LEN && !randWords.includes(rWord)) {
-      randWords.push(rWord);
-    }
-    if (randWords.length >= totalAllowedWords) {
-      break;
-    }
-  }
+  let randWords = shuffleArray(wordList).filter((word: string) => word.length < MAX_WORD_LEN);
+  randWords = randWords.slice(0, totalAllowedWords);
   // create a puzzle, and if all words are not found then reduce words and try again
   let puzzle;
   while (!puzzle) {
@@ -124,8 +116,8 @@ export const SoupOfLettersGame = {
     },
     wordFound: (G: IG, ctx: any, solvedWord: ISolvedWord) => {
       const solution = G.solution.map((s) => {
-        if (s.x === solvedWord.x && s.y === solvedWord.y) {
-          return { ...solvedWord, solvedBy: ctx.currentPlayer };
+        if (s.x === solvedWord.x && s.y === solvedWord.y && s.word === solvedWord.word) {
+          return { ...s, solvedBy: ctx.currentPlayer };
         }
         return { ...s };
       });
