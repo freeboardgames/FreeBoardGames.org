@@ -1,4 +1,4 @@
-domain: www.freeboardgames.org
+domain: my-fbg.info
 
 fbgServer:
   jwtSecret: SECRET_TO_SIGN_JWT
@@ -10,3 +10,11 @@ postgresql:
   postgresqlDatabase: fbgDb
   service:
     port: 5432
+
+mongodb:
+  rootPassword: MONGO_ROOT_PASSWORD
+  username: fbgUser
+  password: MONGO_DB_PASSWORD
+  database: fbgDb
+  service:
+    port: 27017

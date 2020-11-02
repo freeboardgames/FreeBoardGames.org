@@ -10,4 +10,5 @@ yarn-error.log
 common/internal/*
 web/src/games/index.ts
 !common/internal/empty-file-so-git-commits-directory
-helm/values.yaml
+helm/values.staging.yaml
+helm/values.prod.yaml

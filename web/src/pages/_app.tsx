@@ -22,9 +22,14 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { ApolloProvider } from '@apollo/react-hooks';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
 
+const GA_TRACKING_CODE = 'UA-105391878-2';
+const SENTRY_DSN = 'https://5957292e58cf4d2fbb781910e7b26b1f@o397015.ingest.sentry.io/5251165';
+
 const httpLink = createHttpLink({
   uri: AddressHelper.getGraphQLServerAddress(),
 });
+
+const isMainDomain = window.location.hostname.toLowerCase() === 'www.freeboardgames.org';
 
 // SSR makes this error
 const wsLink = process.browser
@@ -68,17 +73,14 @@ class defaultApp extends App {
     }
 
     // Initialize Google Analytics:
-    if (!(window as any).GA_INITIALIZED) {
-      const GA_TRACKING_CODE = process.env.GA_TRACKING_CODE;
+    if (!(window as any).GA_INITIALIZED && isMainDomain) {
       ReactGA.initialize(GA_TRACKING_CODE);
       (window as any).GA_INITIALIZED = true;
-      if (process.env.SENTRY_DSN) {
-        const version = process.env.VERSION;
-        const channel = process.env.CHANNEL;
-        let release;
-        if (version && channel) release = `${version}-${channel}`;
-        Sentry.init({ dsn: process.env.SENTRY_DSN, release });
-      }
+      const version = process.env.VERSION;
+      const channel = process.env.CHANNEL;
+      let release;
+      if (version && channel) release = `${version}-${channel}`;
+      Sentry.init({ dsn: SENTRY_DSN, release });
     }
     // https://github.com/sergiodxa/next-ga/blob/32899e9635efe1491a5f47469b0bd2250e496f99/src/index.js#L32
     (Router as any).onRouteChangeComplete = (path: string) => {
