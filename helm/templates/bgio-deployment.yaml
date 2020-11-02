@@ -24,7 +24,7 @@ spec:
         - name: SERVER_TYPE
           value: BGIO
         - name: MONGO_URI
-          value: mongodb://{{ .Values.mongodb.username }}:{{ .Values.mongodb.password }}@{{ .Release.Name }}-mongodb.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.mongodb.service.port }}/
+          value: mongodb://{{ .Values.mongodb.auth.username }}:{{ .Values.mongodb.auth.password }}@{{ .Release.Name }}-mongodb.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.mongodb.service.port }}/
         - name: MONGO_DATABASE
           value: {{ .Values.mongodb.database }}
         - name: BGIO_PORT
