@@ -1,5 +1,5 @@
-export default class AddressHelper { 
-   public static getGraphQLServerAddress() {
+export default class AddressHelper {
+  public static getGraphQLServerAddress() {
     return `/graphql`;
   }
 
