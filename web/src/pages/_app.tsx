@@ -29,7 +29,8 @@ const httpLink = createHttpLink({
   uri: AddressHelper.getGraphQLServerAddress(),
 });
 
-const isMainDomain = window.location.hostname.toLowerCase() === 'www.freeboardgames.org';
+const isMainDomain =
+  typeof window !== 'undefined' && window.location.hostname.toLowerCase() === 'www.freeboardgames.org';
 
 // SSR makes this error
 const wsLink = process.browser

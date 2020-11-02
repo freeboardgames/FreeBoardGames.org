@@ -4,11 +4,10 @@ export default class AddressHelper {
   }
 
   public static getWSServerAddress() {
-    const hostname = window.location.hostname;
-    if (hostname === 'localhost') {
+    if (!window || window.location.hostname === 'localhost') {
       return 'ws://localhost:3001/graphql';
     } else {
-      return `wss://${hostname}/graphql`;
+      return `wss://${window.location.hostname}/graphql`;
     }
   }
 }
