@@ -1,12 +1,5 @@
 #!/bin/bash
 IMAGENAME=freeboardgames/fbg-server:latest
 export DOCKER_BUILDKIT=1
-if [ "$#" -ne 1 ]
-then
-  docker build -f Dockerfile --progress=plain -t $IMAGENAME .
-else
-  echo "Building without cache"
-  docker build --no-cache -f Dockerfile --progress=plain -t $IMAGENAME .
-fi
+docker build -f Dockerfile --progress=plain -t $IMAGENAME .
 docker push $IMAGENAME
-

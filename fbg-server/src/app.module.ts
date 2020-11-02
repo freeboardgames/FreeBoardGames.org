@@ -11,12 +11,9 @@ const CONNECTION: any = process.env.POSTGRES_URL
   ? {
       type: 'postgres',
       url: process.env.POSTGRES_URL,
-      ssl: true,
+      ssl: false,
       extra: {
         max: 22,
-        ssl: {
-          rejectUnauthorized: false,
-        },
       },
     }
   : {
