@@ -1,5 +1,6 @@
 const { print, cd, fbgRun } = require("../util.js");
 const chalk = require("chalk");
+const shell = require("shelljs");
 
 function lintFailed(linter) {
   return `Lint failed (${linter}). Try ${chalk.inverse("yarn run fix")}`;
@@ -14,13 +15,14 @@ function lintAll() {
     )}`
   );
   cd("web");
-  let cmd = `FORCE_COLOR=true yarn run eslint --max-warnings=0 --ext .ts,.tsx src/`;
+  shell.env["FORCE_COLOR"] = "true";
+  let cmd = `yarn run eslint --max-warnings=0 --ext .ts,.tsx src/`;
   fbgRun(cmd, lintFailed("eslint, web"));
   const dir = `./**/*`;
-  cmd = `FORCE_COLOR=true yarn run prettier --check \"${dir}.{ts,tsx,js}\" \"../cli/**/*.js\"`;
+  cmd = `yarn run prettier --check \"${dir}.{ts,tsx,js}\" \"../cli/**/*.js\"`;
   fbgRun(cmd, lintFailed("prettier, web"));
   cd("fbg-server");
-  cmd = `FORCE_COLOR=true yarn run eslint --max-warnings=0 \"{src,apps,libs,test}/**/*.ts\"`;
+  cmd = `yarn run eslint --max-warnings=0 \"{src,apps,libs,test}/**/*.ts\"`;
   fbgRun(cmd, lintFailed("eslint, fbg-server"));
 }
 
