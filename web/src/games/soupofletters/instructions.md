@@ -1,0 +1,3 @@
+Soup of letter is a typical games that has so-far always been played "alone" (i.e. single-player) on Newspapers. But we have changed this classic game into a multiplayer game. 
+
+As in the classic version, here you will have a set of words, which will be embedded into a soup of letters. In a given turn, the player is required to find one word in a limited amount of time (20 sec). If the time limit is exceeded or if the player finds a word, the turn is passed on to the next player. The game ends if all players cannot find new words in two subsequent turn or if all the words are found. The player who finds most words wins the game. 

@@ -1,6 +1,7 @@
 const { print, cd, fbgRun } = require("../util.js");
 const chalk = require("chalk");
 const { lintAll } = require("../lint/lint_all.js");
+const { genGames } = require("../genGames/genGames.js");
 
 function testAll() {
   print(
@@ -10,6 +11,7 @@ function testAll() {
       "yarn run test GAME"
     )}`
   );
+  genGames();
   test();
   lintAll();
 }

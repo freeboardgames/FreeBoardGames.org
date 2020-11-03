@@ -6,10 +6,11 @@
     "test": "node ../cli/test/test.js",
     "lint": "node ../cli/lint/lint.js",
     "fix": "node ../cli/fix/fix.js",
+    "dev": "node ../cli/dev/cli.js",
     "apollo:codegen": "rimraf src/gqlTypes && apollo client:codegen -c apollo.config.js --target typescript --outputFlat src/gqlTypes",
-    "pre": "run-s lint build:server jest ci:test:e2e",
-    "ci": "run-s lint build:server ci:test:unit ci:test:e2e report:combined",
-    "dev": "start-server-and-test dev:web http://localhost:3000 bgio:dev",
+    "pre": "run-s lint lint build:server test ci:test:e2e",
+    "ci": "run-s apollo:codegen lint build:server ci:test:unit ci:test:e2e report:combined",
+    "dev:internal": "start-server-and-test dev:web http://localhost:3000 bgio:dev",
     "dev:web": "run-s build:server:dev dev:runserver",
     "dev:runserver": "node server/dist/server_web.js",
     "bgio:dev": "nodemon -e js,ts --exec yarn run bgio",
@@ -95,6 +96,7 @@
     "npm-run-all": "^4.1.5",
     "prop-types": "^15.6.0",
     "qrcode.react": "^1.0.0",
+    "react-compound-timer": "^1.2.0",
     "raw-loader": "^4.0.2",
     "react": "16.14.0",
     "react-dom": "16.14.0",
@@ -154,6 +156,7 @@
     "enzyme-adapter-react-16": "^1.15.5",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
+    "husky": "^4.3.0",
     "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
     "image-trace-loader": "^1.0.2",
@@ -191,7 +194,7 @@
     "webpack-node-externals": "^2.5.2"
   },
   "resolutions": {
-    "graphql": "14.5.7"
+    "graphql": "15.3.0"
   },
   "nyc": {
     "report-dir": "coverage-e2e"

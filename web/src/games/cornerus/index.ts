@@ -30,3 +30,5 @@ export const cornerusGameDef: IGameDef = {
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
 };
+
+export default cornerusGameDef;

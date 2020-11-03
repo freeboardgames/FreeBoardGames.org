@@ -11,12 +11,9 @@ const CONNECTION: any = process.env.POSTGRES_URL
   ? {
       type: 'postgres',
       url: process.env.POSTGRES_URL,
-      ssl: true,
+      ssl: false,
       extra: {
         max: 22,
-        ssl: {
-          rejectUnauthorized: false,
-        },
       },
     }
   : {
@@ -32,7 +29,7 @@ const isProd = process.env.NODE_ENV === 'production';
       ...CONNECTION,
       autoLoadEntities: true,
       synchronize: true,
-      logging: !isProd,
+      logging: false,
     }),
     GraphQLModule.forRoot({
       debug: !isProd,
