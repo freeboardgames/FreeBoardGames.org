@@ -24,7 +24,7 @@ function dev(games) {
     )} to access local FBG when ready.`
   );
   cd();
-  shell.env['FORCE_COLOR'] = "true";
+  shell.env["FORCE_COLOR"] = "true";
   let cmd = "yarn run dev:internal";
   fbgRun(cmd, "Dev failed.");
 }
