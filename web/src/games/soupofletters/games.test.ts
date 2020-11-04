@@ -30,7 +30,7 @@ describe('SoupOfLetter Rules', () => {
       client.moves.wordFound(solution[i]);
     }
 
-    // trigger draw
+    // trigger game end
     for (let i = 0; i < DRAW_AFTER_N_TIMERS * numPlayers; i++) {
       client.moves.changeTurn();
     }
