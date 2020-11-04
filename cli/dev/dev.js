@@ -1,6 +1,7 @@
 const { genGames } = require("../genGames/genGames");
 const { cd, print, fbgRun } = require("../util");
 const chalk = require("chalk");
+const shell = require("shelljs");
 
 function dev(games) {
   genGames();
@@ -23,7 +24,8 @@ function dev(games) {
     )} to access local FBG when ready.`
   );
   cd();
-  let cmd = "FORCE_COLOR=true yarn run dev:internal";
+  shell.env['FORCE_COLOR'] = "true";
+  let cmd = "yarn run dev:internal";
   fbgRun(cmd, "Dev failed.");
 }
 
