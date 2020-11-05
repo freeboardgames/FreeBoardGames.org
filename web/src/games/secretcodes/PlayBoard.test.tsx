@@ -40,10 +40,13 @@ describe('Secretcodes UI', () => {
       game: SecretcodesGame,
     });
     state = client.store.getState();
-    state.G.teams = [
-      { color: TeamColor.Red, playersID: ['0', '1'], spymasterID: '0' },
-      { color: TeamColor.Blue, playersID: ['2', '3'], spymasterID: '2' },
-    ];
+    state.G = {
+      ...state.G,
+      teams: [
+        { color: TeamColor.Red, playersID: ['0', '1'], spymasterID: '0' },
+        { color: TeamColor.Blue, playersID: ['2', '3'], spymasterID: '2' },
+      ],
+    };
   });
 
   it('should highlight the last selected card.', () => {
@@ -67,7 +70,9 @@ describe('Secretcodes UI', () => {
 
   it('should style revealed cards to the spymaster.', () => {
     state.ctx.currentPlayer = '0';
-    state.G.cards[0].revealed = true;
+    const newCards = [...state.G.cards];
+    newCards[0] = { ...newCards[0], revealed: true };
+    state.G = { ...state.G, cards: newCards };
 
     const wrapper = render(client, state);
     // Normal view
@@ -84,7 +89,9 @@ describe('Secretcodes UI', () => {
 
   it('should not style revealed cards to regular players.', () => {
     state.ctx.currentPlayer = '1';
-    state.G.cards[0].revealed = true;
+    const newCards = [...state.G.cards];
+    newCards[0] = { ...newCards[0], revealed: true };
+    state.G = { ...state.G, cards: newCards };
 
     const wrapper = render(client, state);
 
@@ -93,7 +100,9 @@ describe('Secretcodes UI', () => {
 
   it('should not style revealed cards to the spymaster at the end of the game.', () => {
     state.ctx.currentPlayer = '0';
-    state.G.cards[0].revealed = true;
+    const newCards = [...state.G.cards];
+    newCards[0] = { ...newCards[0], revealed: true };
+    state.G = { ...state.G, cards: newCards };
 
     const wrapper = render(client, state, /* gameOver= */ true);
 

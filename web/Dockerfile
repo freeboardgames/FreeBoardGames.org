@@ -19,13 +19,9 @@ COPY --chown=appuser server /appdata/server
 RUN yarn run build:server
 
 # build website
-ARG GA_TRACKING_CODE
-ARG GTM_ID
-ARG GQL_WS_URL
 ARG GIT_REV
-ARG SENTRY_DSN
 COPY --chown=appuser .babelrc next.config.js /appdata/
-COPY --chown=appuser static /appdata/static
+COPY --chown=appuser public /appdata/public
 COPY --chown=appuser .storybook /appdata/.storybook
 COPY --chown=appuser docs /appdata/docs
 RUN yarn run build

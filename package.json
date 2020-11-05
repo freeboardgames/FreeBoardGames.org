@@ -6,23 +6,28 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "test": "run-s test:*",
-    "ci": "run-s ci:*",
-    "dev": "run-p web:dev backend:dev",
-    "format": "run-p format:*",
+    "test": "node cli/test/test.js",
+    "lint": "node cli/lint/lint.js",
+    "fix": "node cli/fix/fix.js",
+    "dev": "node cli/dev/cli.js",
+    "ci": "run-s gen:games ci:backend ci:web",
+    "gen:games": "node cli/genGames/cli.js",
+    "dev:internal": "run-p web:dev backend:dev",
     "backend:dev": "cd fbg-server/ && yarn run start",
     "ci:web": "cd web/ && yarn run ci",
-    "ci:backend": "cd fbg-server/ && yarn run test",
-    "format:backend": "cd fbg-server/ && yarn run format",
-    "format:web": "cd web/ && yarn run format",
+    "ci:backend": "cd fbg-server/ && yarn run test:ci",
     "install:backend": "cd fbg-server/ && yarn install",
     "install:web": "cd web/ && yarn install",
     "postinstall": "run-s install:*",
     "test:backend": "cd fbg-server/ && yarn run test",
     "test:web": "cd web/ && yarn run test",
-    "web:dev": "cd web/ && yarn run dev"
+    "web:dev": "cd web/ && yarn run dev:internal"
   },
   "dependencies": {
     "npm-run-all": "^4.1.5"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.0",
+    "shelljs": "^0.8.4"
   }
 }

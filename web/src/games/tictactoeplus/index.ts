@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode, IGameModeExtraInfoDropdown } from 'gamesShared/definitions/mode';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const tictactoeplusGameDef: IGameDef = {
@@ -25,6 +25,9 @@ export const tictactoeplusGameDef: IGameDef = {
   instructions: {
     text: instructions,
   },
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
+
+export default tictactoeplusGameDef;

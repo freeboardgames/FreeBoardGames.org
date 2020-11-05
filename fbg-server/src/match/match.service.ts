@@ -147,7 +147,7 @@ export class MatchService {
         numPlayers: room.capacity,
       })
       .toPromise();
-    return response.data.gameID;
+    return response.data.matchID;
   }
 
   private async roomToMatchMembership(

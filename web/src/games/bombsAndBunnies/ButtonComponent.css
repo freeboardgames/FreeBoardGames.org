@@ -1,0 +1,33 @@
+.btn {
+  background-color: rgb(157, 255, 0);
+  border-radius: 0.5em;
+  padding: 0.2em;
+  line-height: 20px;
+  color: black;
+  font-size: 20px;
+}
+
+@keyframes flash {
+  0% {
+    background-color: rgb(200, 255, 0);
+  }
+  50% {
+    background-color: rgb(251, 255, 100);
+  }
+  100% {
+    background-color: rgb(200, 255, 0);
+  }
+}
+
+.btn:hover {
+  animation: flash 1s infinite;
+}
+
+.btn.disabled {
+  background-color: #999;
+  color: #ccc;
+}
+
+.btn.disabled:hover {
+  animation: none;
+}

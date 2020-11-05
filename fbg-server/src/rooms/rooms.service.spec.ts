@@ -4,7 +4,6 @@ import { UsersService } from '../users/users.service';
 import { FakeDbModule, closeDbConnection } from '../testing/dbUtil';
 import { RoomsModule } from '../rooms/rooms.module';
 import { UsersModule } from '../users/users.module';
-import { Connection } from 'typeorm';
 import { MatchModule } from '../match/match.module';
 import { HttpService } from '@nestjs/common';
 import { MatchService } from '../match/match.service';
@@ -15,7 +14,6 @@ describe('RoomsService', () => {
   let service: RoomsService;
   let usersService: UsersService;
   let matchService: MatchService;
-  let connection: Connection;
   let httpService: HttpService;
 
   beforeAll(async () => {
@@ -26,7 +24,6 @@ describe('RoomsService', () => {
 
     usersService = module.get<UsersService>(UsersService);
     service = module.get<RoomsService>(RoomsService);
-    connection = module.get<Connection>(Connection);
     httpService = module.get<HttpService>(HttpService);
     matchService = module.get<MatchService>(MatchService);
   });
@@ -185,7 +182,7 @@ describe('RoomsService', () => {
   it('should not leaveRoom after match started', async () => {
     const promiseMock = jest
       .fn()
-      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(Promise.resolve({ data: { matchID: 'bgioGameId' } }))
       .mockReturnValueOnce(
         Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
       )
@@ -252,7 +249,7 @@ describe('RoomsService', () => {
   it('should give the match id after creation', async () => {
     const promiseMock = jest
       .fn()
-      .mockReturnValueOnce(Promise.resolve({ data: { gameID: 'bgioGameId' } }))
+      .mockReturnValueOnce(Promise.resolve({ data: { matchID: 'bgioGameId' } }))
       .mockReturnValueOnce(
         Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
       )

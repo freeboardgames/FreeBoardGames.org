@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const hangmanGameDef: IGameDef = {
@@ -16,5 +16,8 @@ export const hangmanGameDef: IGameDef = {
     videoId: 'leW9ZotUVYo',
     text: instructions,
   },
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default hangmanGameDef;

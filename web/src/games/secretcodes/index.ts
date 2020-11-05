@@ -1,5 +1,5 @@
 const Thumbnail = require('./media/thumbnail.jpg');
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
 import instructions from './instructions.md';
 
@@ -18,5 +18,8 @@ export const secretcodesGameDef: IGameDef = {
     videoId: 'zQVHkl8oQEU',
     text: instructions,
   },
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default secretcodesGameDef;

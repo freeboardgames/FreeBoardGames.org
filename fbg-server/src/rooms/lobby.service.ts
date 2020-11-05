@@ -33,7 +33,7 @@ export class LobbyService {
   }
 
   /** Issue pub/sub event when lobby changes. */
-  public async notifyLobbyUpdate() {
+  public async notifyLobbyUpdate(): Promise<void> {
     await this.pubSub.publish(`lobby`, {
       lobbyMutated: { rooms: lobbyToGql(await this.getLobby()) },
     });

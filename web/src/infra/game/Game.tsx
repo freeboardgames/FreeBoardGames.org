@@ -12,6 +12,7 @@ import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import ReactGA from 'react-ga';
 import { SocketIO, Local } from 'boardgame.io/multiplayer';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
+import { Debug } from 'boardgame.io/debug';
 
 interface IGameProps {
   // FIXME: fix which props are req
@@ -125,18 +126,17 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         credentials,
         matchCode,
         players: this._getPlayers(),
-        playerID,
       } as IGameArgs;
       const clientConfig: any = {
         game: this.state.config.bgioGame,
-        debug: this.state.config.debug || false,
+        debug: this.state.config.debug ? { impl: Debug } : false,
         loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
           board: this.state.config.bgioBoard,
           gameArgs,
         }),
         credentials,
-        gameID: matchCode,
+        machID: matchCode,
       };
       const allEnhancers = this.state.config.enhancers
         ? this.state.config.enhancers.concat(DEFAULT_ENHANCERS)
@@ -164,9 +164,9 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         action: `Started ${this.mode} game`,
       });
       if (this.mode === GameMode.OnlineFriend) {
-        return <App gameID={matchCode} playerID={playerID} credentials={credentials} />;
+        return <App matchID={matchCode} playerID={playerID} credentials={credentials} />;
       } else {
-        return <App gameID={matchCode} playerID={playerID} />;
+        return <App matchID={matchCode} playerID={playerID} />;
       }
     } else if (this.state.loading) {
       const LoadingPage = getMessagePage('loading', `Downloading ${this.gameDef.name}...`);

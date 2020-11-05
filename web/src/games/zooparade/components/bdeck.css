@@ -1,0 +1,11 @@
+.wrapper {
+  position: relative;
+}
+
+.counter {
+  position: absolute;
+  bottom: 0;
+  right: 11px;
+  background-color: white;
+  color: black;
+}

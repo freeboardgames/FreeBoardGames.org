@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const fourinarowGameDef: IGameDef = {
@@ -18,5 +18,8 @@ export const fourinarowGameDef: IGameDef = {
     videoId: 'utXzIFEVPjA',
     text: instructions,
   },
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default fourinarowGameDef;
