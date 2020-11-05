@@ -1,7 +1,7 @@
 import Chat from './Chat';
 
 export default {
-  title: 'Games (shared)/Components/Chat/Chat',
+  title: 'Infrastructure/Chat/Chat',
 };
 
 export const chat = () => <Chat />;
