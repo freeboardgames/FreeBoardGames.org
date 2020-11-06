@@ -8,6 +8,7 @@ import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import Router from 'next/router';
 import getMessagePage from 'infra/common/components/alert/MessagePage';
+import { IGameStatus } from 'gamesShared/definitions/game';
 
 interface NewRoomModalProps {
   handleClickaway: () => void;
@@ -57,7 +58,7 @@ export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModa
   }
 
   renderGameSelect() {
-    const gamesMenuItems = GAMES_LIST.map((gameDef) => (
+    const gamesMenuItems = GAMES_LIST.filter((g) => g.status === IGameStatus.PUBLISHED).map((gameDef) => (
       <MenuItem value={gameDef.code} key={gameDef.code}>
         {gameDef.name}
       </MenuItem>
