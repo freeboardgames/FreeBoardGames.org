@@ -18,5 +18,6 @@ export const secretDraculaGameDef: IGameDef = {
   },
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
-  aiConfig: () => import('./ai'),
 };
+
+export default secretDraculaGameDef;
