@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
 import SearchBox from './SearchBox';
 import { DesktopView, MobileView } from 'infra/common/device/DesktopMobileView';
+import css from './GamesList.css';
 
 interface State {
   searchQuery?: string;
@@ -13,6 +14,8 @@ interface State {
 
 interface Props {
   showDevOnly?: boolean;
+  gamePickedCallback?: (game: IGameDef) => void;
+  hideHeader?: boolean;
 }
 
 export class GamesList extends React.Component<Props, State> {
@@ -37,13 +40,11 @@ export class GamesList extends React.Component<Props, State> {
       });
     }
 
-    gamesList = filteredGamesList.map((game) => (
-      <Link href={`/play/[gameCode]`} as={`/play/${game.code}`} key={game.code}>
-        <a style={{ textDecoration: 'none', flex: 1, minWidth: '300px', maxWidth: '380px', margin: '8px' }}>
-          <GameCard game={game} isLink={true} />
-        </a>
-      </Link>
-    ));
+    gamesList = filteredGamesList.map((game) => this.renderGameCard(game));
+
+    if (this.props.hideHeader) {
+      return gamesList;
+    }
     return (
       <div style={{ marginBottom: '16px' }}>
         <DesktopView>
@@ -74,8 +75,29 @@ export class GamesList extends React.Component<Props, State> {
     return this.props.showDevOnly ? 'Games In Development' : 'Games';
   }
 
+  renderGameCard(game: IGameDef) {
+    if (this.props.gamePickedCallback) {
+      return (
+        <a className={css.Card} onClick={this.onClick(game)}>
+          <GameCard game={game} isLink={true} />
+        </a>
+      );
+    } else {
+      return (
+        <Link href={`/play/[gameCode]`} as={`/play/${game.code}`} key={game.code}>
+          <a className={css.Card}>
+            <GameCard game={game} isLink={true} />
+          </a>
+        </Link>
+      );
+    }
+  }
   getFilteredGamesList() {
     const status = this.props.showDevOnly ? IGameStatus.IN_DEVELOPMENT : IGameStatus.PUBLISHED;
     return GAMES_LIST.filter((gameDef) => gameDef.status === status);
   }
+
+  onClick = (game: IGameDef) => () => {
+    this.props.gamePickedCallback(game);
+  };
 }
