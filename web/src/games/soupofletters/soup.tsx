@@ -120,6 +120,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
             fill={this._getHighlightColor(xId, yId, l)}
             stroke={grey[500]}
             strokeWidth={0.05 * fontSize}
+            data-testid={`letter-sqr-${xId}-${yId}`}
           />,
         );
         // letter inside the square
@@ -243,8 +244,8 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
         onMouseMove={(event) => this._handleLetterClick(event, 'move')}
         onTouchStart={(event) => this._handleLetterClick(event, 'start')}
         onTouchMove={(event) => this._handleLetterClick(event, 'move')}
+        data-testid={'sol-main-touch-board'}
       >
-        {' '}
       </rect>
     );
   }

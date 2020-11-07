@@ -51,7 +51,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (isOnlineGame(this.props.gameArgs)) {
       return `Online Game`;
     }
-    return `Turn Player ${this.props.ctx.currentPlayer}`;
+    return `Turn Player ${parseInt(this.props.ctx.currentPlayer) + 1}`;
   }
 
   _checkTimeOut = (secondsLeft: number) => {
@@ -175,7 +175,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       }
     } else {
       if (this.props.ctx.gameover.winner) {
-        return `${localPlayerNames[this.props.ctx.gameover.winner]} won`;
+        return `Player ${parseInt(this.props.ctx.currentPlayer) + 1} (${localPlayerNames[this.props.ctx.gameover.winner]}) won`;
       }
     }
   }
