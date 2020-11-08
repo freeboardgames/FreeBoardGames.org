@@ -43,16 +43,20 @@ function isGameOver(G, ctx) {
 export function isVictory(G) {
   // count the score of each player
   const playerScores = {};
-  for (const s of G.solution) {
+  G.solution.forEach((s) => {
     if (s.solvedBy) {
       playerScores[s.solvedBy] = 0;
     }
-  }
-  for (const s of G.solution) {
-    playerScores[s.solvedBy] += 1;
-  }
+  });
+  G.solution.forEach((s) => {
+    if (s.solvedBy) {
+      playerScores[s.solvedBy] = playerScores[s.solvedBy] + 1;
+    }
+  });
+
+
   // determine max score
-  var maxScore = -1;
+  var maxScore = 0;
   Object.values(playerScores).forEach((score: number) => {
     maxScore = Math.max(maxScore, score);
   });
@@ -65,6 +69,7 @@ export function isVictory(G) {
       numPlayersAtMaxScore = numPlayersAtMaxScore + 1;
     }
   });
+
   // if the max-score is same for any two players, then declare draw
   if (numPlayersAtMaxScore === 1) {
     return { winner: playerWithMaxScore };
