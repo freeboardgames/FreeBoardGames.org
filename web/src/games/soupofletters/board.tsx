@@ -37,12 +37,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _isAllowedToMakeMove = () => {
-    const {gameArgs, playerID, ctx} = this.props
-    return ((isOnlineGame(gameArgs) && playerID === ctx.currentPlayer) || isLocalGame(gameArgs));
-  }
+    const { gameArgs, playerID, ctx } = this.props;
+    return (isOnlineGame(gameArgs) && playerID === ctx.currentPlayer) || isLocalGame(gameArgs);
+  };
 
   _wordFound = (solvedWord: ISolvedWord) => {
-    if(this._isAllowedToMakeMove()){
+    if (this._isAllowedToMakeMove()) {
       this.props.moves.wordFound(solvedWord);
     }
   };
@@ -63,7 +63,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _checkTimeOut = (secondsLeft: number) => {
-    if (this._isAllowedToMakeMove()){
+    if (this._isAllowedToMakeMove()) {
       if (secondsLeft <= 0 || Date.now() - this.props.G.timeRef > (TIME_OUT + TIME_BUFF) * 1000) {
         this.props.moves.changeTurn();
       }
@@ -188,31 +188,28 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       }
     } else {
       if (this.props.ctx.gameover.winner) {
-        return `Player ${parseInt(this.props.ctx.currentPlayer) + 1} (${localPlayerNames[this.props.ctx.gameover.winner]}) won`;
+        return `Player ${parseInt(this.props.ctx.currentPlayer) + 1} (${
+          localPlayerNames[this.props.ctx.gameover.winner]
+        }) won`;
       }
     }
   }
 
   _getBoard() {
-
-    // score board to be shown at the end of the game 
-    let scoreBoard = null; 
-    if (this.props.ctx.gameover){
+    // score board to be shown at the end of the game
+    let scoreBoard = null;
+    if (this.props.ctx.gameover) {
       const scores: IScore[] = this.props.gameArgs.players.map((player) => {
-        return { 
-          playerID: `${player.playerID}`, 
-          score: this.props.G.solution.filter((s)=>(s.solvedBy === player.playerID.toString())).length
+        return {
+          playerID: `${player.playerID}`,
+          score: this.props.G.solution.filter((s) => s.solvedBy === player.playerID.toString()).length,
         };
       });
       scoreBoard = (
-        <Scoreboard 
-          scoreboard={scores} 
-          players={this.props.gameArgs.players} 
-          playerID={this.props.ctx.playerID} 
-        />
+        <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
       );
     }
-    
+
     return (
       <span>
         <Soup
@@ -230,11 +227,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     if (this.props.ctx.gameover) {
       return (
-        <GameLayout 
-          gameOver={this._getGameOver()} 
-          extraCardContent={this._getBoard()} 
-          gameArgs={this.props.gameArgs} 
-        />
+        <GameLayout gameOver={this._getGameOver()} extraCardContent={this._getBoard()} gameArgs={this.props.gameArgs} />
       );
     }
     return (

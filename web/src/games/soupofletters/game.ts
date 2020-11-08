@@ -54,7 +54,6 @@ export function isVictory(G) {
     }
   });
 
-
   // determine max score
   var maxScore = 0;
   Object.values(playerScores).forEach((score: number) => {

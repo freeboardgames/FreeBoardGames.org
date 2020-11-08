@@ -426,4 +426,4 @@ export const globalWordList = [
   'change',
   'cap',
   'triangle',
-].map((word: string)=>(word.toUpperCase()));
+].map((word: string) => word.toUpperCase());

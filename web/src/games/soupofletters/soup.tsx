@@ -245,8 +245,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
         onTouchStart={(event) => this._handleLetterClick(event, 'start')}
         onTouchMove={(event) => this._handleLetterClick(event, 'move')}
         data-testid={'sol-interaction-board'}
-      >
-      </rect>
+      ></rect>
     );
   }
 }
