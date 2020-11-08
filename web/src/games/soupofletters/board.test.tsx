@@ -82,6 +82,9 @@ describe('SoupOfLetters UI', () => {
       });
 
       expect(wrapper.text()).toContain('draw'); 
+      // score display 
+      expect(wrapper.text()).toContain('Score');
+      expect(wrapper.text()).toContain(`${state0.G.solution.length/2}`);
     });
 
     it('should declare player 1 as the winner', () => {
@@ -99,29 +102,51 @@ describe('SoupOfLetters UI', () => {
 
     });
 
-    it('should highlight the clicked letter', () => {
+    it('should highlight selected words', () => {
 
-      // get main board and simulate click
-      const touchBoard = wrapper.find('[data-testid="sol-main-touch-board"]').at(0);
-      touchBoard.simulate('click', {
-        clientX: 0, 
-        clientY: 0, 
-        target: {
-          getBoundingClientRect: () => {console.log('was called ...'); return {left:0, top:0, width:10, height:10 }}
-        }});
-      updateGameProps(); 
+      // select some word
+      const word = state0.G.solution[0];
+      instance._wordFound(word); 
+      updateGameProps();
 
       // check if first letter is clicked
-      const letter00 = wrapper.find('[data-testid="letter-sqr-0-0"]').at(0);
-      expect(letter00.prop('fill')).toEqual('#f44336');
+      word.letters.forEach((l) => {
+        const letter00 = wrapper.find(`[data-testid="letter-sqr-${l.x}-${l.y}"]`).at(0);
+        expect(letter00.prop('fill')).toEqual('#f44336');
+      });
+      
     }); 
 
+    describe('online-specific tests', () => {
+      beforeEach(() => {
+        const gameArgs = {
+          gameCode: 'soupofletters', 
+          mode: GameMode.OnlineFriend, 
+          players: [
+            { playerID: 0, name: 'Player A', roomID: 'fooroom' },
+            { playerID: 1, name: 'Player B', roomID: 'fooroom' },
+          ],
+        };
+        wrapper.setProps({gameArgs}); 
+      });
 
-    it('should mark the selected word in red', () => {
+      it('should show player names', () => {
+        expect(wrapper.text()).toContain('You have'); 
+        instance._checkTimeOut(0);
+        updateGameProps();
+        expect(wrapper.text()).toContain('Player B has'); 
+      });
 
-    }); 
-    
+      it('should show not make a move when its not your turn', () => {
 
+        client.moves.wordFound = jest.fn();
+        updateGameProps();
+        wrapper.setProps({ playerID: '1' });
+        instance._wordFound(state0.G.solution[0]); 
 
+        expect(client.moves.wordFound).not.toHaveBeenCalled();
+      });
+
+    });
 
 });
