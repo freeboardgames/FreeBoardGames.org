@@ -21,3 +21,5 @@ export const fourinarowGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default fourinarowGameDef;

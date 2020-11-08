@@ -19,3 +19,5 @@ export const hangmanGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default hangmanGameDef;

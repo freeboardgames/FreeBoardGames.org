@@ -9,6 +9,7 @@
     "test": "node ../cli/test/test.js",
     "lint": "node ../cli/lint/lint.js",
     "fix": "node ../cli/fix/fix.js",
+    "dev": "node ../cli/dev/cli.js",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "start": "rimraf dist && nest start",

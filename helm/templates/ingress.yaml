@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    certmanager.k8s.io/acme-challenge-type: http01
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/cors-allow-origin: https://{{ .Values.domain }}
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  generation: 1
+  name: ingress
+spec:
+  rules:
+  - host: {{ .Values.domain }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .Release.Name }}-bgio
+          servicePort: 80
+        path: /socket.io/
+        pathType: ImplementationSpecific
+      - backend:
+          serviceName: {{ .Release.Name }}-fbg-server
+          servicePort: 80
+        path: /graphql
+        pathType: ImplementationSpecific
+      - backend:
+          serviceName: {{ .Release.Name }}-web
+          servicePort: 80
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - {{ .Values.domain }}
+    secretName: tls-secret-{{ .Release.Name }}
+status:
+  loadBalancer: {}
