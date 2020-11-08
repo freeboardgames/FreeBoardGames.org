@@ -1,5 +1,5 @@
 const shell = require("shelljs");
-const { print, printErr, checkEnvironment } = require("../util");
+const { decodeCsv, printErr, checkEnvironment } = require("../util");
 const { genGames } = require("./genGames");
 const chalk = require("chalk");
 
