@@ -149,7 +149,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     const coordinates = event.touches ? event.touches[0] : event;
     const x = Math.floor(((coordinates.clientX - bounds.left) / bounds.width) * puzzle.length);
     const y = Math.floor(((coordinates.clientY - bounds.top) / bounds.height) * puzzle[0].length);
-    if (y >= 0 && x >= 0) {
+    if (y >= 0 && x >= 0 && y < puzzle.length && x < puzzle[y].length) {
       const letter = puzzle[y][x];
       return { x, y, letter };
     } else {
