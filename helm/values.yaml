@@ -1,5 +1,10 @@
 domain: my-fbg.info
 
+replicas:
+  web: 1
+  fbgServer: 1
+  bgio: 1
+
 fbgServer:
   jwtSecret: SECRET_TO_SIGN_JWT
 
