@@ -28,7 +28,7 @@ export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModa
     if (this.state.game) {
       return (
         <NicknameRequired skipFbgBar={true}>
-          <AlertLayer>
+          <AlertLayer onClickaway={this.props.handleClickaway}>
             <Card className={css.Card}>{this.renderCardContent()}</Card>
           </AlertLayer>
         </NicknameRequired>
@@ -38,16 +38,20 @@ export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModa
     }
   }
 
-  _changeGame = (game: IGameDef) => {
-    this.setState({ game, occupancy: undefined });
+  _changeGame = (game?: IGameDef) => {
+    if (game) {
+      this.setState({ game, occupancy: undefined });
+    } else {
+      this.props.handleClickaway();
+    }
   };
 
   renderCardContent() {
     if (this.state.loading) {
-      return getMessagePage('loading', 'Loading...', true);
+      return getMessagePage('loading', 'Loading...', true)();
     }
     if (this.state.error) {
-      return getMessagePage('error', 'Error while creating room', true);
+      return getMessagePage('error', 'Error while creating room', true)();
     }
     return (
       <>
@@ -117,7 +121,7 @@ export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModa
   _createRoom = () => {
     this.setState({ loading: true });
     const occupancy = this.state.occupancy || this.state.game.minPlayers;
-    LobbyService.newRoom((this.props as any).dispatch, this.state.game.gameCode, occupancy, true).then(
+    LobbyService.newRoom((this.props as any).dispatch, this.state.game.code, occupancy, true).then(
       (response) => {
         // we use .replace instead of .push so that the browser back button works correctly
         Router.replace(`/room/${response.newRoom.roomId}`);

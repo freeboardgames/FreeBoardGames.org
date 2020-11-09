@@ -22,6 +22,32 @@ export class GamesList extends React.Component<Props, State> {
   state = { searchQuery: '' };
 
   render() {
+    if (this.props.hideHeader) {
+      return this.renderGames();
+    }
+    return (
+      <div style={{ marginBottom: '16px' }}>
+        <DesktopView>
+          <div style={{ display: 'inline' }}>
+            <SearchBox handleSearchOnChange={this._handleSearchOnChange} style={{ float: 'right', width: '235px' }} />
+            <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
+              {this.getTitle()}
+            </Typography>
+          </div>
+        </DesktopView>
+
+        <MobileView>
+          <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
+            {this.getTitle()}
+          </Typography>
+          <SearchBox handleSearchOnChange={this._handleSearchOnChange} />
+        </MobileView>
+        {this.renderGames()}
+      </div>
+    );
+  }
+
+  renderGames() {
     const { searchQuery } = this.state;
     let gamesList: JSX.Element[];
     let filteredGamesList: IGameDef[];
@@ -41,31 +67,9 @@ export class GamesList extends React.Component<Props, State> {
     }
 
     gamesList = filteredGamesList.map((game) => this.renderGameCard(game));
-
-    if (this.props.hideHeader) {
-      return gamesList;
-    }
-    return (
-      <div style={{ marginBottom: '16px' }}>
-        <DesktopView>
-          <div style={{ display: 'inline' }}>
-            <SearchBox handleSearchOnChange={this._handleSearchOnChange} style={{ float: 'right', width: '235px' }} />
-            <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
-              {this.getTitle()}
-            </Typography>
-          </div>
-        </DesktopView>
-
-        <MobileView>
-          <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
-            {this.getTitle()}
-          </Typography>
-          <SearchBox handleSearchOnChange={this._handleSearchOnChange} />
-        </MobileView>
-        <div style={{ margin: '0 4px', display: 'flex', flexWrap: 'wrap' }}>{gamesList}</div>
-      </div>
-    );
+    return <div style={{ margin: '0 4px', display: 'flex', flexWrap: 'wrap' }}>{gamesList}</div>;
   }
+
   _handleSearchOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchQuery = event.target.value;
     this.setState({ searchQuery });
@@ -78,7 +82,7 @@ export class GamesList extends React.Component<Props, State> {
   renderGameCard(game: IGameDef) {
     if (this.props.gamePickedCallback) {
       return (
-        <a className={css.Card} onClick={this.onClick(game)}>
+        <a className={css.Card} onClick={this.onClick(game)} key={game.code}>
           <GameCard game={game} isLink={true} />
         </a>
       );
