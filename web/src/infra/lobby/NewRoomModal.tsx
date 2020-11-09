@@ -1,49 +1,57 @@
 import React, { ChangeEvent } from 'react';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';
-import { Card, Typography, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { GAMES_LIST, GAMES_MAP } from 'games';
+import { Card, Typography, Button } from '@material-ui/core';
 import css from './NewRoomModal.css';
 import { OccupancySelect } from 'infra/common/components/game/OccupancySelect';
 import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import Router from 'next/router';
 import getMessagePage from 'infra/common/components/alert/MessagePage';
-import { IGameStatus } from 'gamesShared/definitions/game';
+import { IGameDef } from 'gamesShared/definitions/game';
+import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
 
 interface NewRoomModalProps {
   handleClickaway: () => void;
 }
 
 interface NewRoomModalState {
-  gameCode?: string;
+  game?: IGameDef;
   occupancy?: number;
   loading: boolean;
   error: boolean;
 }
 
 export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModalState> {
-  state = { gameCode: undefined, occupancy: undefined, loading: false, error: false };
+  state = { game: undefined, occupancy: undefined, loading: false, error: false };
 
   render() {
-    return (
-      <NicknameRequired skipFbgBar={true}>
-        <AlertLayer>
-          <Card className={css.Card}>{this.renderCardContent()}</Card>
-        </AlertLayer>
-      </NicknameRequired>
-    );
+    if (this.state.game) {
+      return (
+        <NicknameRequired skipFbgBar={true}>
+          <AlertLayer onClickaway={this.props.handleClickaway}>
+            <Card className={css.Card}>{this.renderCardContent()}</Card>
+          </AlertLayer>
+        </NicknameRequired>
+      );
+    } else {
+      return <GamePickerModal gamePickedCallback={this._changeGame} />;
+    }
   }
 
-  _changeGame = (e: ChangeEvent<{ value: string }>) => {
-    this.setState({ gameCode: e.target.value, occupancy: undefined });
+  _changeGame = (game?: IGameDef) => {
+    if (game) {
+      this.setState({ game, occupancy: undefined });
+    } else {
+      this.props.handleClickaway();
+    }
   };
 
   renderCardContent() {
     if (this.state.loading) {
-      return getMessagePage('loading', 'Loading...', true);
+      return getMessagePage('loading', 'Loading...', true)();
     }
     if (this.state.error) {
-      return getMessagePage('error', 'Error while creating room', true);
+      return getMessagePage('error', 'Error while creating room', true)();
     }
     return (
       <>
@@ -58,24 +66,11 @@ export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModa
   }
 
   renderGameSelect() {
-    const gamesMenuItems = GAMES_LIST.filter((g) => g.status === IGameStatus.PUBLISHED).map((gameDef) => (
-      <MenuItem value={gameDef.code} key={gameDef.code}>
-        {gameDef.name}
-      </MenuItem>
-    ));
-
+    const name = this.state.game.name;
     return (
-      <FormControl>
-        <InputLabel id="game-select-label">Select a game</InputLabel>
-        <Select
-          className={css.GameSelect}
-          labelId="game-select-label"
-          value={this.state.gameCode || ''}
-          onChange={this._changeGame}
-        >
-          {gamesMenuItems}
-        </Select>
-      </FormControl>
+      <div>
+        Game: <b>{name}</b>
+      </div>
     );
   }
 
@@ -84,10 +79,10 @@ export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModa
   };
 
   renderOccupancySelect() {
-    if (!this.state.gameCode) {
+    if (!this.state.game) {
       return;
     }
-    const game = GAMES_MAP[this.state.gameCode];
+    const game = this.state.game;
     if (game.minPlayers === game.maxPlayers) {
       return;
     }
@@ -114,7 +109,7 @@ export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModa
           variant="contained"
           color="primary"
           className={css.Button}
-          disabled={!this.state.gameCode}
+          disabled={!this.state.game}
           onClick={this._createRoom}
         >
           Create
@@ -125,8 +120,8 @@ export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModa
 
   _createRoom = () => {
     this.setState({ loading: true });
-    const occupancy = this.state.occupancy || GAMES_MAP[this.state.gameCode].minPlayers;
-    LobbyService.newRoom((this.props as any).dispatch, this.state.gameCode, occupancy, true).then(
+    const occupancy = this.state.occupancy || this.state.game.minPlayers;
+    LobbyService.newRoom((this.props as any).dispatch, this.state.game.code, occupancy, true).then(
       (response) => {
         // we use .replace instead of .push so that the browser back button works correctly
         Router.replace(`/room/${response.newRoom.roomId}`);
