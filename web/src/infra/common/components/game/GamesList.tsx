@@ -49,7 +49,7 @@ export class GamesList extends React.Component<Props, State> {
 
   renderGames() {
     const { searchQuery } = this.state;
-    let gamesList: JSX.Element[];
+    let gamesList: React.ReactNode[];
     let filteredGamesList: IGameDef[];
 
     filteredGamesList = this.getFilteredGamesList();
