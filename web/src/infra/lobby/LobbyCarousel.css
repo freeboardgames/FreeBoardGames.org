@@ -6,7 +6,7 @@
   margin: auto auto;
 }
 
-.errorMessage {
+.message {
   padding-top: 16px;
-  margin-left: 6px;
+  padding-left: 12px;
 }
