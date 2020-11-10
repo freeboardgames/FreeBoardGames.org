@@ -10,6 +10,7 @@ import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { PubSub } from 'graphql-subscriptions';
 import { roomEntityToRoom } from './RoomUtil';
 import { LobbyService } from './lobby.service';
+import { User } from 'src/users/gql/User.gql';
 
 @Injectable()
 export class RoomsService {
@@ -136,6 +137,14 @@ export class RoomsService {
     return roomEntity;
   }
 
+  /** Notifies all rooms that a given user had their info updated. */
+  async notifyUserUpdated(user: User): Promise<void> {
+    const rooms = await this.getRoomsUserIsMember(user);
+    for (const room of rooms) {
+      await this.notifyRoomUpdate(room);
+    }
+  }
+
   async notifyRoomUpdate(room: RoomEntity): Promise<void> {
     await this.pubSub.publish(`room/${room.id}`, {
       roomMutated: roomEntityToRoom(room),
@@ -194,4 +203,18 @@ export class RoomsService {
     });
     await this.notifyRoomUpdate(room);
   }
+
+  private async getRoomsUserIsMember(user: User): Promise<RoomEntity[]> {
+    return this.roomRepository
+      .createQueryBuilder('room')
+      .leftJoinAndSelect('room.match', 'match')
+      .leftJoinAndSelect('room.userMemberships', 'userMemberships')
+      .leftJoinAndSelect('userMemberships.user', 'user')
+      .where('user.id = :userId', { userId: user.id })
+      .andWhere('room.match IS NULL')
+      .orderBy({
+        'userMemberships.id': 'ASC',
+      })
+      .getMany();
+  } 
 }

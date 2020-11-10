@@ -6,11 +6,13 @@ import { UsersService } from './users.service';
 import { CurrentUser, GqlAuthGuard } from '../internal/auth/GqlAuthGuard';
 import { UseGuards } from '@nestjs/common';
 import { FbgJwtService } from '../internal/auth/FbgJwtService';
+import { RoomsService } from 'src/rooms/rooms.service';
 
 @Resolver(() => User)
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
+    private roomsService: RoomsService,
     private readonly fbgJwtService: FbgJwtService,
   ) {}
 
@@ -31,6 +33,7 @@ export class UsersResolver {
     @Args({ name: 'user', type: () => NewUserInput }) userInput: NewUserInput,
   ): Promise<boolean> {
     await this.usersService.updateUser(currentUser.id, userInput);
+    await this.roomsService.notifyUserUpdated(currentUser);
     return true;
   }
 
