@@ -1,30 +1,26 @@
 import React from 'react';
+import css from './AlertLayer.css';
 
-class AlertLayer extends React.Component<{}, {}> {
+interface AlertLayerProps {
+  onClickaway?: () => void;
+}
+
+class AlertLayer extends React.Component<AlertLayerProps, {}> {
+  outerLayerRef = React.createRef<HTMLDivElement>();
+
   render() {
-    const mainStyle: React.CSSProperties = {
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      background: 'rgba(255,255,255,.85)',
-      right: 0,
-      height: '100%',
-      zIndex: 1000,
-      display: 'block',
-      textAlign: 'center',
-    };
-    const alignStyle: React.CSSProperties = {
-      transform: 'translateX(-50%) translateY(-50%)',
-      left: '50%',
-      top: '50%',
-      position: 'absolute',
-    };
     return (
-      <div style={mainStyle}>
-        <div style={alignStyle}>{this.props.children}</div>
+      <div className={css.Main} onClick={this.onClick} ref={this.outerLayerRef}>
+        <div className={css.Inner}>{this.props.children}</div>
       </div>
     );
   }
+
+  onClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === this.outerLayerRef.current) {
+      this.props.onClickaway();
+    }
+  };
 }
 
 export default AlertLayer;
