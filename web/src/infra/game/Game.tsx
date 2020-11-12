@@ -136,7 +136,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
           gameArgs,
         }),
         credentials,
-        machID: matchCode,
+        matchID: matchCode,
       };
       const allEnhancers = this.state.config.enhancers
         ? this.state.config.enhancers.concat(DEFAULT_ENHANCERS)
