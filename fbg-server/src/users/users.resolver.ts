@@ -33,7 +33,7 @@ export class UsersResolver {
     @Args({ name: 'user', type: () => NewUserInput }) userInput: NewUserInput,
   ): Promise<boolean> {
     await this.usersService.updateUser(currentUser.id, userInput);
-    await this.roomsService.notifyUserUpdated(currentUser);
+    await this.roomsService.notifyUserUpdated(currentUser.id);
     return true;
   }
 
