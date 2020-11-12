@@ -23,7 +23,7 @@ interface IBoardConfig {
 interface ISoupState {
   selectedLetters: Array<ISingleLetter>;
   boardConfig: IBoardConfig;
-  probableWord?: ISolvedWord;
+  probableWords: ISolvedWord[];
   highlightLetter: ISingleLetter | null;
 }
 
@@ -38,6 +38,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     // initialize state
     this.state = {
       selectedLetters: [],
+      probableWords: [],
       boardConfig: {
         letterHeight,
         letterWidth,
@@ -68,6 +69,19 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
   }
 
   _getHighlightColor(x, y, letter) {
+    // if highlighted
+    const { highlightLetter } = this.state;
+    if (highlightLetter && highlightLetter.x === x && highlightLetter.y === y) {
+      return playerColors[this.props.currentPlayer];
+    }
+
+    // if selected in state, give color of player who selected the first letter
+    for (const sl of this.state.selectedLetters) {
+      if (sl.x === x && sl.y === y) {
+        return playerColors[this.props.currentPlayer];
+      }
+    }
+
     // if belongs to a user, give user specific color back
     for (const sl of this.props.solution) {
       for (const l of sl.letters) {
@@ -81,19 +95,12 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
       }
     }
 
-    const { highlightLetter, probableWord } = this.state;
-
-    // if highlighted
-    if (highlightLetter && highlightLetter.x === x && highlightLetter.y === y) {
-      return playerColors[this.props.currentPlayer];
-    }
-
-    // if selected in state, give color of player who selected the first letter
-    for (const sl of this.state.selectedLetters) {
-      if (sl.x === x && sl.y === y) {
-        return playerColors[probableWord.solvedBy];
-      }
-    }
+    // // if developer wants to highlight start of word for debugging
+    // for (const sl of this.props.solution) {
+    //   if(sl.letters[0].x===x && sl.letters[0].y === y){
+    //       return 'green';
+    //   }
+    // }
 
     return 'black';
   }
@@ -149,7 +156,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     const coordinates = event.touches ? event.touches[0] : event;
     const x = Math.floor(((coordinates.clientX - bounds.left) / bounds.width) * puzzle.length);
     const y = Math.floor(((coordinates.clientY - bounds.top) / bounds.height) * puzzle[0].length);
-    if (y >= 0 && x >= 0) {
+    if (y >= 0 && x >= 0 && y < puzzle.length && x < puzzle[y].length) {
       const letter = puzzle[y][x];
       return { x, y, letter };
     } else {
@@ -164,22 +171,41 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     }
 
     const highlightLetter = { x, y, letter };
-    let probableWord = this.state.probableWord;
+    let probableWords = [...this.state.probableWords];
 
-    if (probableWord) {
+    if (probableWords.length > 0) {
       // check if the same players is still playing, else remove selections
-      if (probableWord.solvedBy != this.props.currentPlayer) {
-        this.setState({ selectedLetters: [], probableWord: undefined, highlightLetter: null });
-        return;
+      for (const pWord of probableWords) {
+        if (pWord.solvedBy != this.props.currentPlayer) {
+          this.setState({ selectedLetters: [], probableWords: [], highlightLetter: null });
+          return;
+        }
       }
 
       // check if the letter selected currently is properly oriented or not
       const selectedLetters = [...this.state.selectedLetters];
       const lastSl = selectedLetters[selectedLetters.length - 1];
-      const nextSl = orientations[probableWord.orientation](lastSl.x, lastSl.y, 1);
+      let isNextLetter = false;
+      let probableWord = null;
+      for (const pWord of probableWords) {
+        let nextSl = orientations[pWord.orientation](lastSl.x, lastSl.y, 1);
+        if (nextSl.x == x && nextSl.y == y) {
+          isNextLetter = true;
+          // compare the entire list of selected letters to the probable word
+          selectedLetters.forEach((sl, idx) => {
+            if (sl.x != pWord.letters[idx].x || sl.y != pWord.letters[idx].y) {
+              isNextLetter = false;
+            }
+          });
+          // if it is confirmed that this is the next letter, then store ref to this word
+          if (isNextLetter) {
+            probableWord = pWord;
+          }
+        }
+      }
 
-      // if not equal, clear the state for start or simply return for move
-      if (nextSl.x != x || nextSl.y != y) {
+      // if not the next letter, clear the state for start or simply return for move
+      if (!isNextLetter) {
         if (callType === 'start') {
           // do nothing, if the letter has already been included in the list of selected letter
           for (let sl of selectedLetters) {
@@ -187,7 +213,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
               return;
             }
           }
-          this.setState({ probableWord: undefined, selectedLetters: [], highlightLetter });
+          this.setState({ probableWords: [], selectedLetters: [], highlightLetter });
         }
         return;
       }
@@ -197,8 +223,8 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
 
       // if the complete word has been selected, then dont go further
       if (selectedLetters.length >= probableWord.word.length) {
-        this.props.wordFoundCallback(this.state.probableWord);
-        this.setState({ selectedLetters: [], probableWord: undefined, highlightLetter: null });
+        this.props.wordFoundCallback(probableWord);
+        this.setState({ selectedLetters: [], probableWords: [], highlightLetter: null });
         return;
       }
 
@@ -209,20 +235,21 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
       if (callType === 'start') {
         for (const s of this.props.solution) {
           if (s.x === x && s.y === y) {
-            if (s.solvedBy) {
-              return; // the word is already found by another player
+            if (!s.solvedBy) {
+              // the word is already found by player, dont consider it
+              probableWords.push({ ...s });
             }
-            probableWord = { ...s };
-            break;
           }
         }
       }
 
-      if (probableWord) {
+      if (probableWords.length > 0) {
         // create a new list of selectedLetters
         const selectedLetters = [{ x, y, letter }];
-        probableWord.solvedBy = this.props.currentPlayer;
-        this.setState({ highlightLetter, probableWord, selectedLetters });
+        for (const pWord of probableWords) {
+          pWord.solvedBy = this.props.currentPlayer;
+        }
+        this.setState({ highlightLetter, probableWords, selectedLetters });
       } else if (callType === 'start') {
         this.setState({ highlightLetter });
       }
