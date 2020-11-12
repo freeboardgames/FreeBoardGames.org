@@ -6,7 +6,7 @@ import { UsersService } from './users.service';
 import { CurrentUser, GqlAuthGuard } from '../internal/auth/GqlAuthGuard';
 import { UseGuards } from '@nestjs/common';
 import { FbgJwtService } from '../internal/auth/FbgJwtService';
-import { RoomsService } from 'src/rooms/rooms.service';
+import { RoomsService } from '../rooms/rooms.service';
 
 @Resolver(() => User)
 export class UsersResolver {
