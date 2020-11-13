@@ -16,16 +16,16 @@ import {
   canRevealTargetStack,
   canPlaceCard,
   getRevealCount,
-} from './game';
-import { PlayerHandPenalty } from './components/PlayerHandPenalty';
-import { PlayerHand } from './components/PlayerHand';
-import { BetPanel } from './components/BetPanel';
-import { BetButton, SkipButton } from './components/BetButton';
-import { IBetDisplayProps } from './components/BetDisplay';
-import { IDiscardPileProps } from './components/DiscardPile';
+} from '../game';
+import { PlayerHandPenalty } from './PlayerHandPenalty';
+import { PlayerHand } from './PlayerHand';
+import { BetPanel } from './BetPanel';
+import { BetButton, SkipButton } from './BetButton';
+import { IBetDisplayProps } from './BetDisplay';
+import { IDiscardPileProps } from './DiscardPile';
 
 import css from './Board.css';
-import { PlayerZones } from './components/PlayerZones';
+import { PlayerZones } from './PlayerZones';
 
 interface IBoardProps {
   G: IG;
