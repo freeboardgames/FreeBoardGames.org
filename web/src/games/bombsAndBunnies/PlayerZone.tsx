@@ -13,6 +13,7 @@ export enum PlayerStatus {
   Skipped,
   HasBet,
   HasMaxBet,
+  IsOut
 }
 
 export interface IPlayerZoneProps {
@@ -26,6 +27,7 @@ export interface IPlayerZoneProps {
   revealCard?: (playerId: string) => void;
   totalPlayers: number;
   positionIndex: number;
+  playerIsOut: boolean;
 }
 
 export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
@@ -41,6 +43,20 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
         className={css.playerZone}
         style={{ position: 'absolute', top: top, left: left, transform: `translate(-50%, -50%) rotate(${angle}rad)` }}
       >
+        {this.renderZoneContent()}
+      </div>
+    );
+  }
+
+  renderZoneContent() {
+    if (this.props.playerIsOut) {
+      return (
+        <div className={css.playerOut}>💀</div>
+      );
+    }
+
+    return (
+      <div>
         <div className={css.statuses}>{this.renderStatuses()}</div>
         <div className={css.stack}>{this.renderStack()}</div>
         <div className={css.revealedStack}>{this.renderRevealedStack()}</div>
@@ -68,6 +84,9 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
 
       case PlayerStatus.HasMaxBet:
         return <span key={index}>😰</span>;
+
+      case PlayerStatus.IsOut:
+        return <span key={index}>💀</span>
     }
 
     return null;

@@ -5,6 +5,7 @@
   height: 80px;
   overflow: hidden;
   padding-top: 15px;
+  color: black;
 }
 
 .playerHand .cards {

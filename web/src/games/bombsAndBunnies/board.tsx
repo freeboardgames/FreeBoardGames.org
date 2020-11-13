@@ -250,7 +250,9 @@ export class Board extends React.Component<IBoardProps, {}> {
       }
     } else {
       if (this.props.ctx.gameover.winner) {
-        return `Player ${this.props.ctx.gameover.winner} won`;
+        var winnerIndex = parseInt(this.props.ctx.gameover.winner);
+        var winner = this.props.gameArgs.players.find(p => p.playerID === winnerIndex);
+        return `${winner.name} won`;
       }
     }
   }
@@ -258,9 +260,10 @@ export class Board extends React.Component<IBoardProps, {}> {
   _getScoreboard() {
     if (this.props.ctx.gameover) {
     const scores: IScore[] = this.props.gameArgs.players.map((player) => {
+      var gamePlayer = getPlayerById(this.props.G, player.playerID.toString());
       return {
         playerID: `${player.playerID}`,
-        score: getPlayerById(this.props.G, player.playerID.toString()).wins,
+        score: gamePlayer.isOut ? -1 : gamePlayer.wins,
       }
     });
 

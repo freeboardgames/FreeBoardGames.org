@@ -110,6 +110,15 @@ function hasEveryOtherPlayerSkippedBet(G: IG) {
 function hasInitialPlacementFinished(G: IG) {
   return G.players.every((p) => p.stack.length === 1);
 }
+function findWinner(G: IG) {
+  var naturalWinner = G.players.find((p) => p.wins === 2);
+  if (naturalWinner)
+    return naturalWinner;
+
+  var remainingPlayers = G.players.filter(p => !p.isOut);
+  if (remainingPlayers.length === 1)
+    return remainingPlayers[0];
+}
 
 function pickUpHand(G: IG) {
   for (var i = 0; i < G.players.length; i++) {
@@ -216,6 +225,7 @@ export const Moves = {
 
       ctx.events.endTurn({ next: G.bombPlayerId });
       ctx.events.setPhase(Phases.penalty);
+      return G;
     }
 
     var revealed = getAllRevealedCards(G);
@@ -239,10 +249,16 @@ export const Moves = {
     }
 
     var targetPlayer = getPlayerById(G, targetPlayerId);
+    if (targetPlayer.hand.length === 0) {
+      return INVALID_MOVE;
+    }
+
     targetPlayer.hand.splice(handIndex, 1);
 
+    if (targetPlayer.hand.length === 0) {
+      targetPlayer.isOut = true;
+    }
     G.discardPile.push(targetPlayer.cardStyle);
-
     G.bombPlayerId = null;
     G.failedRevealPlayerId = null;
 
@@ -343,7 +359,7 @@ export const BombsAndBunniesGame: Game<IG> = {
   },
 
   endIf: (G: IG) => {
-    var winner = G.players.find((p) => p.wins === 2);
+    var winner = findWinner(G);
     if (winner !== undefined) {
       return { winner: winner.id };
     }
@@ -359,6 +375,7 @@ export const BombsAndBunniesGame: Game<IG> = {
       stack: [],
       revealedStack: [],
       wins: 0,
+      isOut: false
     }));
 
     return {

@@ -10,4 +10,5 @@ export default interface IPlayer {
   wins: number;
   bet: null | number;
   betSkipped: boolean;
+  isOut: boolean;
 }

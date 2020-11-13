@@ -60,6 +60,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
         stackSize: p.stack.length,
         revealedStack: p.revealedStack,
         revealCard: this.props.canRevealTargetStack(p.id) ? this.props.revealCard : null,
+        playerIsOut: p.isOut
       };
 
       return result;
@@ -78,15 +79,23 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
 
   getPlayerStatuses(player: IPlayer): PlayerStatus[] {
     var statuses: PlayerStatus[] = [];
-    if (player.id === this.props.currentPlayerId) statuses.push(PlayerStatus.CurrentPlayer);
+    if (player.isOut)
+      return [PlayerStatus.IsOut];
 
-    if (player.wins > 0) statuses.push(PlayerStatus.HasWin);
+    if (player.id === this.props.currentPlayerId) 
+      statuses.push(PlayerStatus.CurrentPlayer);
 
-    if (player.betSkipped) statuses.push(PlayerStatus.Skipped);
+    if (player.wins > 0) 
+      statuses.push(PlayerStatus.HasWin);
 
-    if (player.bet > 0) statuses.push(PlayerStatus.HasBet);
+    if (player.betSkipped) 
+      statuses.push(PlayerStatus.Skipped);
 
-    if (getMaxPlayerBet(this.props.players) === player.bet) statuses.push(PlayerStatus.HasMaxBet);
+    if (player.bet > 0) 
+      statuses.push(PlayerStatus.HasBet);
+
+    if (getMaxPlayerBet(this.props.players) === player.bet) 
+      statuses.push(PlayerStatus.HasMaxBet);
 
     return statuses;
   }
