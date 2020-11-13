@@ -13,7 +13,7 @@ export enum PlayerStatus {
   Skipped,
   HasBet,
   HasMaxBet,
-  IsOut
+  IsOut,
 }
 
 export interface IPlayerZoneProps {
@@ -50,9 +50,7 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
 
   renderZoneContent() {
     if (this.props.playerIsOut) {
-      return (
-        <div className={css.playerOut}>💀</div>
-      );
+      return <div className={css.playerOut}>💀</div>;
     }
 
     return (
@@ -86,7 +84,7 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
         return <span key={index}>😰</span>;
 
       case PlayerStatus.IsOut:
-        return <span key={index}>💀</span>
+        return <span key={index}>💀</span>;
     }
 
     return null;

@@ -39,19 +39,21 @@ export function canPlaceCard(ctx: Ctx, playerId: string): boolean {
 
 export function canBet(G: IG, ctx: Ctx, playerId: string): boolean {
   return (
-    isCurrentPlayer(ctx, playerId) 
-    && BetPhases.map((x) => x.toString()).includes(ctx.phase) 
-    && G.maxBet >= G.minBet 
-    && G.minBet > 0
+    isCurrentPlayer(ctx, playerId) &&
+    BetPhases.map((x) => x.toString()).includes(ctx.phase) &&
+    G.maxBet >= G.minBet &&
+    G.minBet > 0
   );
 }
 
 export function canSkipBet(G: IG, ctx: Ctx, playerId: string): boolean {
-  return isCurrentPlayer(ctx, playerId) 
-    && G.currentBet > 0 
-    && canBet(G, ctx, playerId)
+  return (
+    isCurrentPlayer(ctx, playerId) &&
+    G.currentBet > 0 &&
+    canBet(G, ctx, playerId) &&
     // in the 'place_or_bet' phase you cannot skip if you have nothing to place
-    && (ctx.phase !== Phases.place_or_bet || getPlayerById(G, playerId).hand.length > 0);
+    (ctx.phase !== Phases.place_or_bet || getPlayerById(G, playerId).hand.length > 0)
+  );
 }
 
 export function isRevealing(ctx: Ctx): boolean {
@@ -101,11 +103,13 @@ function isCurrentPlayer(ctx: Ctx, playerId: string): boolean {
 }
 
 function getPlayerWithMaxBet(G: IG): IPlayer {
-  return getActivePlayers(G).filter(p => !p.betSkipped).reduce((a, b) => (a.bet >= b.bet ? a : b));
+  return getActivePlayers(G)
+    .filter((p) => !p.betSkipped)
+    .reduce((a, b) => (a.bet >= b.bet ? a : b));
 }
 
 function getActivePlayers(G: IG): IPlayer[] {
-  return G.players.filter(p => !p.isOut);
+  return G.players.filter((p) => !p.isOut);
 }
 
 function hasEveryOtherPlayerSkippedBet(G: IG) {
@@ -117,17 +121,15 @@ function hasInitialPlacementFinished(G: IG) {
 }
 
 function getPlayOrder(G: IG, ctx: Ctx) {
-  return ctx.playOrder.filter(id => !getPlayerById(G, id).isOut);
+  return ctx.playOrder.filter((id) => !getPlayerById(G, id).isOut);
 }
 
 function findWinner(G: IG) {
   var naturalWinner = G.players.find((p) => p.wins === 2);
-  if (naturalWinner)
-    return naturalWinner;
+  if (naturalWinner) return naturalWinner;
 
-  var remainingPlayers = G.players.filter(p => !p.isOut);
-  if (remainingPlayers.length === 1)
-    return remainingPlayers[0];
+  var remainingPlayers = G.players.filter((p) => !p.isOut);
+  if (remainingPlayers.length === 1) return remainingPlayers[0];
 }
 
 function pickUpHand(G: IG) {
@@ -153,7 +155,9 @@ function resetBets(G: IG) {
 }
 
 function getAllRevealedCards(G: IG) {
-  return getActivePlayers(G).map((p) => p.revealedStack).reduce((a, b) => a.concat(b));
+  return getActivePlayers(G)
+    .map((p) => p.revealedStack)
+    .reduce((a, b) => a.concat(b));
 }
 
 export const Moves = {
@@ -192,7 +196,7 @@ export const Moves = {
   },
 
   SkipBet: (G: IG, ctx: Ctx) => {
-    var player =  getPlayerById(G, ctx.currentPlayer);
+    var player = getPlayerById(G, ctx.currentPlayer);
 
     player.betSkipped = true;
 
@@ -274,9 +278,9 @@ export const BombsAndBunniesGame: Game<IG> = {
         order: {
           first: (G: IG, ctx: Ctx) => {
             if (G.bombPlayerId !== null && !getPlayerById(G, G.bombPlayerId).isOut) {
-              return ctx.playOrder.findIndex(id => id === G.bombPlayerId);
+              return ctx.playOrder.findIndex((id) => id === G.bombPlayerId);
             }
-            
+
             if (G.lastWinningPlayerId !== null) {
               return (ctx.playOrderPos + 1) % ctx.playOrder.length;
             }
@@ -284,8 +288,8 @@ export const BombsAndBunniesGame: Game<IG> = {
             return ctx.playOrderPos;
           },
           next: (G: IG, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
-          playOrder: getPlayOrder
-        }
+          playOrder: getPlayOrder,
+        },
       },
 
       onBegin: (G: IG) => {
@@ -308,8 +312,8 @@ export const BombsAndBunniesGame: Game<IG> = {
         order: {
           first: (G: IG, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
           next: (G: IG, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
-          playOrder: getPlayOrder
-        }
+          playOrder: getPlayOrder,
+        },
       },
 
       moves: {
@@ -336,8 +340,8 @@ export const BombsAndBunniesGame: Game<IG> = {
         order: {
           first: (G: IG, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
           next: (G: IG, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
-          playOrder: getPlayOrder
-        }
+          playOrder: getPlayOrder,
+        },
       },
 
       moves: {
@@ -351,10 +355,10 @@ export const BombsAndBunniesGame: Game<IG> = {
     reveal: {
       turn: {
         order: {
-          first: (G: IG, ctx: Ctx) => ctx.playOrder.findIndex(id => id === getPlayerWithMaxBet(G).id),
+          first: (G: IG, ctx: Ctx) => ctx.playOrder.findIndex((id) => id === getPlayerWithMaxBet(G).id),
           next: (G: IG, ctx: Ctx) => ctx.playOrderPos,
-          playOrder: getPlayOrder
-        }
+          playOrder: getPlayOrder,
+        },
       },
 
       moves: {
@@ -372,10 +376,10 @@ export const BombsAndBunniesGame: Game<IG> = {
     penalty: {
       turn: {
         order: {
-          first: (G: IG, ctx: Ctx) => ctx.playOrder.findIndex(id => id === G.bombPlayerId),
+          first: (G: IG, ctx: Ctx) => ctx.playOrder.findIndex((id) => id === G.bombPlayerId),
           next: (G: IG, ctx: Ctx) => ctx.playOrderPos,
-          playOrder: getPlayOrder
-        }
+          playOrder: getPlayOrder,
+        },
       },
 
       moves: {
@@ -403,7 +407,7 @@ export const BombsAndBunniesGame: Game<IG> = {
       stack: [],
       revealedStack: [],
       wins: 0,
-      isOut: false
+      isOut: false,
     }));
 
     return {

@@ -12,7 +12,7 @@ const defaultPlayer: IPlayer = {
   stack: [],
   revealedStack: [],
   wins: 0,
-  isOut: false
+  isOut: false,
 };
 
 const defaultG: IG = {

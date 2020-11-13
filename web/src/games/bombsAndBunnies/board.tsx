@@ -72,7 +72,11 @@ export class Board extends React.Component<IBoardProps, {}> {
   render() {
     if (this.props.ctx.gameover) {
       return (
-        <GameLayout gameOver={this._getGameOver()} extraCardContent={this._getScoreboard()} gameArgs={this.props.gameArgs} />
+        <GameLayout
+          gameOver={this._getGameOver()}
+          extraCardContent={this._getScoreboard()}
+          gameArgs={this.props.gameArgs}
+        />
       );
     }
 
@@ -229,7 +233,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     } else {
       if (this.props.ctx.gameover.winner) {
         var winnerIndex = parseInt(this.props.ctx.gameover.winner);
-        var winner = this.props.gameArgs.players.find(p => p.playerID === winnerIndex);
+        var winner = this.props.gameArgs.players.find((p) => p.playerID === winnerIndex);
         return `${winner.name} won`;
       }
     }
@@ -237,20 +241,19 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getScoreboard() {
     if (this.props.ctx.gameover) {
-    const scores: IScore[] = this.props.gameArgs.players.map((player) => {
-      var gamePlayer = getPlayerById(this.props.G, player.playerID.toString());
-      return {
-        playerID: `${player.playerID}`,
-        score: gamePlayer.isOut ? -1 : gamePlayer.wins,
-      }
-    });
+      const scores: IScore[] = this.props.gameArgs.players.map((player) => {
+        var gamePlayer = getPlayerById(this.props.G, player.playerID.toString());
+        return {
+          playerID: `${player.playerID}`,
+          score: gamePlayer.isOut ? -1 : gamePlayer.wins,
+        };
+      });
 
-      return (        
+      return (
         <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
       );
     }
 
     return null;
-
   }
 }
