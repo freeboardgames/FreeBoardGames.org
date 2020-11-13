@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
-import { isLocalGame } from 'gamesShared/helpers/gameMode';
+import { isLocalGame, isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
+import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
+
 import {
   IG,
   canBet,
@@ -70,6 +72,12 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   render() {
+    if (this.props.ctx.gameover) {
+      return (
+        <GameLayout gameOver={this._getGameOver()} extraCardContent={this._getScoreboard()} gameArgs={this.props.gameArgs} />
+      );
+    }
+
     return (
       <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
         <div className={css.board}>{this.getGameComponents()}</div>
@@ -228,5 +236,40 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   isNewGame() {
     return this.props.ctx.phase == null && !this.props.ctx.gameover;
+  }
+
+  _getGameOver() {
+    if (this.props.ctx.gameover.draw) {
+      return 'draw';
+    }
+    if (isOnlineGame(this.props.gameArgs)) {
+      if (this.props.ctx.gameover.winner === this.props.playerID) {
+        return 'you won';
+      } else {
+        return 'you lost';
+      }
+    } else {
+      if (this.props.ctx.gameover.winner) {
+        return `Player ${this.props.ctx.gameover.winner} won`;
+      }
+    }
+  }
+
+  _getScoreboard() {
+    if (this.props.ctx.gameover) {
+    const scores: IScore[] = this.props.gameArgs.players.map((player) => {
+      return {
+        playerID: `${player.playerID}`,
+        score: getPlayerById(this.props.G, player.playerID.toString()).wins,
+      }
+    });
+
+      return (        
+        <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
+      );
+    }
+
+    return null;
+
   }
 }
