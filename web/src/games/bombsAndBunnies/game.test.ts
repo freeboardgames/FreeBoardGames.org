@@ -12,11 +12,13 @@ const defaultPlayer: IPlayer = {
   stack: [],
   revealedStack: [],
   wins: 0,
+  isOut: false
 };
 
 const defaultG: IG = {
   bombPlayerId: null,
   failedRevealPlayerId: null,
+  lastWinningPlayerId: null,
   currentBet: 0,
   minBet: 1,
   maxBet: 0,

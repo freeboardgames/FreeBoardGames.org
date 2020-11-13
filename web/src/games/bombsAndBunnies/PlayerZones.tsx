@@ -48,6 +48,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
   renderZones() {
     var players = this.props.players;
     var perspectiveIndex = players.findIndex((p) => p.id === this.props.perspectivePlayerId);
+    var totalPlayers = this.props.players.length;
     var zones = this.props.players.map((p: IPlayer, i) => {
       var result: IPlayerZoneProps = {
         playerStatuses: this.getPlayerStatuses(p),
@@ -55,8 +56,8 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
         totalPlayerCards: p.hand.length + p.stack.length + p.revealedStack.length,
         playerId: p.id,
         playerCardStyle: p.cardStyle,
-        totalPlayers: this.props.players.length,
-        positionIndex: i >= perspectiveIndex ? i - perspectiveIndex : perspectiveIndex + i,
+        totalPlayers: totalPlayers,
+        positionIndex: i >= perspectiveIndex ? i - perspectiveIndex : totalPlayers - perspectiveIndex + i,
         stackSize: p.stack.length,
         revealedStack: p.revealedStack,
         revealCard: this.props.canRevealTargetStack(p.id) ? this.props.revealCard : null,

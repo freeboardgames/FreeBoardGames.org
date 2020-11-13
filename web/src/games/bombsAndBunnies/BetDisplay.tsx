@@ -27,7 +27,7 @@ export class BetDisplay extends React.Component<IBetDisplayProps> {
       <svg className={css.BetDisplay} version="1.0" width="100" height="100" viewBox="0 0 100 100">
         <defs id="defs8" />
         <g style={{ animation: animationStyle }}>
-          <text x="50%" y="50%" textAnchor="middle" fontSize="50">
+          <text x="50%" y="75" textAnchor="middle" fontSize="50">
             {text}
           </text>
         </g>
@@ -38,8 +38,8 @@ export class BetDisplay extends React.Component<IBetDisplayProps> {
   getAnimationStyle() {
     if (!this.props.isRevealing) return `${css.heartbeat} 1s infinite`;
 
-    const maxDuration = 1;
-    const minDuration = 0.4;
+    const maxDuration = 1.2;
+    const minDuration = 0.6;
 
     var duration =
       minDuration + (maxDuration - minDuration) * (1 - this.props.revealedCount / (this.props.currentBet - 1));

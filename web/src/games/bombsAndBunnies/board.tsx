@@ -86,10 +86,6 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   getGameComponents() {
-    if (this.isNewGame()) {
-      return this.getStartGameButton();
-    }
-
     return [
       this.getPlayerZones(),
       this.getBetButtons(),
@@ -97,22 +93,6 @@ export class Board extends React.Component<IBoardProps, {}> {
       this.getPlayerBettingOptions(),
       this.getOtherPlayerHandPenalty(),
     ];
-  }
-
-  getStartGameButton() {
-    if (this.props.playerID == this.props.ctx.currentPlayer || this.props.playerID == null) {
-      return (
-        <div className={css.startButtonContainer}>
-          <ButtonComponent click={this._gs}>START GAME</ButtonComponent>
-        </div>
-      );
-    } else {
-      return (
-        <div className={css.startButtonContainer}>
-          <span className={css.startWaiting}>Waiting for the Lobby Owner to Start...</span>
-        </div>
-      );
-    }
   }
 
   getBetButtons() {
@@ -232,10 +212,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     return playerID;
-  }
-
-  isNewGame() {
-    return this.props.ctx.phase == null && !this.props.ctx.gameover;
   }
 
   _getGameOver() {
