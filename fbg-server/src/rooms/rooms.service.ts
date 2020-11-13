@@ -136,6 +136,14 @@ export class RoomsService {
     return roomEntity;
   }
 
+  /** Notifies all rooms that a given user had their info updated. */
+  async notifyUserUpdated(userId: number): Promise<void> {
+    const rooms = await this.getRoomsUserIsMember(userId);
+    for (const roomId of rooms) {
+      await this.notifyRoomUpdate(await this.getRoomEntity(roomId));
+    }
+  }
+
   async notifyRoomUpdate(room: RoomEntity): Promise<void> {
     await this.pubSub.publish(`room/${room.id}`, {
       roomMutated: roomEntityToRoom(room),
@@ -194,4 +202,19 @@ export class RoomsService {
     });
     await this.notifyRoomUpdate(room);
   }
+
+  private async getRoomsUserIsMember(userId: number): Promise<string[]> {
+    const rooms = await this.roomRepository
+      .createQueryBuilder('room')
+      .leftJoinAndSelect('room.match', 'match')
+      .leftJoinAndSelect('room.userMemberships', 'userMemberships')
+      .leftJoinAndSelect('userMemberships.user', 'user')
+      .where('user.id = :userId', { userId })
+      .andWhere('room.match IS NULL')
+      .orderBy({
+        'userMemberships.id': 'ASC',
+      })
+      .getMany();
+    return rooms.map(r => r.id);
+  } 
 }

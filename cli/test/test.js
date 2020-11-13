@@ -14,6 +14,8 @@ function start() {
   } else if (argv.length === 3) {
     testGame(argv[2]);
   } else {
+    const extraArgs = argv.slice(3).join(" ");
+    testGame(argv[2], extraArgs);
     printErr(USAGE);
     shell.exit(1);
   }

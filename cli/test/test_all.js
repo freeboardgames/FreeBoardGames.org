@@ -2,6 +2,7 @@ const { print, cd, fbgRun } = require("../util.js");
 const chalk = require("chalk");
 const { lintAll } = require("../lint/lint_all.js");
 const { genGames } = require("../genGames/genGames.js");
+const shell = require("shelljs");
 
 function testAll() {
   print(
@@ -18,7 +19,8 @@ function testAll() {
 
 function test() {
   cd("web");
-  let cmd = "FORCE_COLOR=true yarn run jest";
+  shell.env["FORCE_COLOR"] = "true";
+  let cmd = "yarn run jest";
   fbgRun(cmd, "Tests failed (web).");
   cd("fbg-server");
   fbgRun(cmd, "Tests failed (fbg-server).");

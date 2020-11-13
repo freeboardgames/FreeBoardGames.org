@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Release.Name }}-bgio
+  name: {{ .Release.Name }}-bgio
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8001
+  selector:
+    app: {{ .Release.Name }}-bgio
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

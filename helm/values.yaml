@@ -1,0 +1,30 @@
+domain: my-fbg.info
+
+replicas:
+  web: 1
+  fbgServer: 1
+  bgio: 1
+
+fbgServer:
+  jwtSecret: SECRET_TO_SIGN_JWT
+
+postgresql:
+  postgresqlPostgresPassword: PG_ROOT_PASSWORD
+  postgresqlUsername: fbgUser
+  postgresqlPassword: PG_DB_PASSWORD
+  postgresqlDatabase: fbgDb
+  service:
+    port: 5432
+  volumePermissions:
+    enabled: true
+
+mongodb:
+  auth:
+    rootPassword: MONGO_ROOT_PASSWORD
+    username: fbgUser
+    password: MONGO_DB_PASSWORD
+    database: fbgDb
+  service:
+    port: 27017
+  volumePermissions:
+    enabled: true

@@ -1,0 +1,28 @@
+.Card {
+  max-width: 1200px;
+  width: 90vw;
+  height: 90vh;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.GamesList {
+  flex-grow: 1;
+  overflow-y: auto;
+ }
+
+.Title {
+  padding: 16px 0;
+} 
+
+.ButtonContainer {
+  height: 32px;
+  display: flex;
+  padding: 16px;
+}
+
+.Button {
+  margin: 16px 0;
+}

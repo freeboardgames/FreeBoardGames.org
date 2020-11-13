@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Documentation/Running PROD" />
+
+Install docker, minikube, and helm.
+
+Install minikube ingress extension:
+``minikube addons enable ingress``
+
+Create a new helm release, in the root:
+``helm install my-fbg ./helm``
+
+Run:
+``kubectl get ingress``
+
+It should return something like (might take some minutes):
+```
+NAME              CLASS    HOSTS              ADDRESS        PORTS   AGE
+my-fbg-ingress    <none>   my-fbg.info        172.17.0.15    80      38s
+```
+
+Add the line below to your ``/etc/hosts``, replacing the ``172.17.0.15`` with the address you obtained from the ingress:
+```
+172.17.0.15    my-fbg.info
+```
+
+Now acccess ``https://my-fbg.info``. Because you don't actually own this domain, LetsEncrypt wont emit a certificate and you will get a certificate error on the browser. 
+
+To skip the error, type ``thisisunsafe`` (Chrome). You should be able to access fbg running in your kubernetes cluster now!
