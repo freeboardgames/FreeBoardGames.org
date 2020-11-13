@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { BunnyCardComponent, BombCardComponent, CardStyle } from './CardComponent';
+import { CardType, CardStyle } from '../card';
+import { BunnyCardComponent, BombCardComponent } from './CardComponent';
 
 import css from './PlayerHand.css';
-import { CardType } from './cardType';
 
 export interface IPlayerHandProps {
   playerId: string;

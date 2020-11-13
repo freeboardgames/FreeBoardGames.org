@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import css from './PlayerZones.css';
 import { IPlayerZoneProps, PlayerZone, PlayerStatus } from './PlayerZone';
-import IPlayer from './player';
-import { getMaxPlayerBet } from './game';
+import IPlayer from '../player';
+import { getMaxPlayerBet } from '../game';
 import { BetDisplay, IBetDisplayProps } from './BetDisplay';
 import { DiscardPile, IDiscardPileProps } from './DiscardPile';
 

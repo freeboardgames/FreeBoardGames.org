@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { CardStyle } from '../card';
 
 import css from './PlayerStack.css';
-import { FaceDownCardComponent, EmptyCardComponent, CardStyle } from './CardComponent';
+import { FaceDownCardComponent, EmptyCardComponent } from './CardComponent';
 
 export interface IPlayerStackProps {
   playerId: string;

@@ -3,9 +3,8 @@ import * as React from 'react';
 import css from './PlayerZone.css';
 import { PlayerStack } from './PlayerStack';
 import { PlayerRevealedStack } from './PlayerRevealedStack';
-import { CardType } from './cardType';
-import { MaxPlayers } from './game';
-import { CardStyle } from './CardComponent';
+import { CardType, CardStyle } from '../card';
+import { MaxPlayers } from '../game';
 
 export enum PlayerStatus {
   CurrentPlayer,

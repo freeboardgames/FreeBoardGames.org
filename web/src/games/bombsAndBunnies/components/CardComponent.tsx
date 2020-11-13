@@ -1,14 +1,7 @@
 import * as React from 'react';
 import css from './CardComponent.css';
 
-export enum CardStyle {
-  Style1,
-  Style2,
-  Style3,
-  Style4,
-  Style5,
-  Style6,
-}
+import { CardStyle } from '../card';
 
 function getStyleClassName(style?: CardStyle) {
   if (style === undefined) return '';

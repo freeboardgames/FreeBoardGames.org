@@ -17,15 +17,15 @@ import {
   canPlaceCard,
   getRevealCount,
 } from './game';
-import { PlayerHandPenalty } from './PlayerHandPenalty';
-import { PlayerHand } from './PlayerHand';
-import { BetPanel } from './BetPanel';
-import { BetButton, SkipButton } from './BetButton';
-import { IBetDisplayProps } from './BetDisplay';
-import { IDiscardPileProps } from './DiscardPile';
+import { PlayerHandPenalty } from './components/PlayerHandPenalty';
+import { PlayerHand } from './components/PlayerHand';
+import { BetPanel } from './components/BetPanel';
+import { BetButton, SkipButton } from './components/BetButton';
+import { IBetDisplayProps } from './components/BetDisplay';
+import { IDiscardPileProps } from './components/DiscardPile';
 
 import css from './Board.css';
-import { PlayerZones } from './PlayerZones';
+import { PlayerZones } from './components/PlayerZones';
 
 interface IBoardProps {
   G: IG;

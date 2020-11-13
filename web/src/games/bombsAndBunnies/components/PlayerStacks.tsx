@@ -1,5 +1,5 @@
 import * as React from 'react';
-import IPlayer from './player';
+import IPlayer from '../player';
 
 import css from './PlayerStacks.css';
 import { PlayerStack } from './PlayerStack';

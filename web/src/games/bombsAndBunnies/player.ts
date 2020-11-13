@@ -1,5 +1,4 @@
-import { CardStyle } from './CardComponent';
-import { CardType } from './cardType';
+import { CardType, CardStyle } from './card';
 
 export default interface IPlayer {
   id: string;

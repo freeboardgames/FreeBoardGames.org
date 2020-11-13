@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { FaceDownCardComponent, BunnyCardComponent, BombCardComponent, CardStyle } from './CardComponent';
-import { CardType } from './cardType';
+import { FaceDownCardComponent, BunnyCardComponent, BombCardComponent } from './CardComponent';
+import { CardType, CardStyle } from '../card';
 
 import css from './PlayerHandPenalty.css';
 

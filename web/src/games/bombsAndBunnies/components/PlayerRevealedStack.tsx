@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import css from './PlayerRevealedStack.css';
 import { BunnyCardComponent, BombCardComponent } from './CardComponent';
-import { CardType } from './cardType';
+import { CardType } from '../card';
 
 export interface IPlayerRevealedStackProps {
   stack: CardType[];

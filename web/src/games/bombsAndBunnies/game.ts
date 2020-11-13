@@ -2,8 +2,7 @@ import { Ctx, Game } from 'boardgame.io';
 import { INVALID_MOVE } from 'boardgame.io/core';
 
 import IPlayer from './player';
-import { CardType } from './cardType';
-import { CardStyle } from './CardComponent';
+import { CardType, CardStyle } from './card';
 
 export enum Phases {
   initial_placement = 'initial_placement',
