@@ -30,5 +30,5 @@ test('game start', async () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('START GAME');
+  expect(comp.html()).toContain('Bet');
 });

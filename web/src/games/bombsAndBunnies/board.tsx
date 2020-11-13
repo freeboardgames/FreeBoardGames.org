@@ -24,8 +24,6 @@ import { BetButton, SkipButton } from './BetButton';
 import { IBetDisplayProps } from './BetDisplay';
 import { IDiscardPileProps } from './DiscardPile';
 
-import { ButtonComponent } from './ButtonComponent';
-
 import css from './Board.css';
 import { PlayerZones } from './PlayerZones';
 
@@ -87,19 +85,19 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   getGameComponents() {
     return [
-      this.getPlayerZones(),
-      this.getBetButtons(),
-      this.getPlayerHand(),
-      this.getPlayerBettingOptions(),
-      this.getOtherPlayerHandPenalty(),
+      this.getPlayerZones(0),
+      this.getBetButtons(1),
+      this.getPlayerHand(2),
+      this.getPlayerBettingOptions(3),
+      this.getOtherPlayerHandPenalty(4),
     ];
   }
 
-  getBetButtons() {
+  getBetButtons(key: number) {
     const playerID = this.getBrowserPlayer();
 
     return (
-      <div style={{ marginBottom: '-10px' }}>
+      <div key={key} style={{ marginBottom: '-10px' }}>
         <span style={{ marginRight: '20px' }}>
           <BetButton
             click={canBet(this.props.G, this.props.ctx, playerID) ? this._toggleBetPanel.bind(this) : null}
@@ -113,12 +111,12 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
-  getPlayerHand() {
+  getPlayerHand(key: number) {
     const playerID = this.getBrowserPlayer();
 
     if (playerID === null) {
       return (
-        <div className={css.spectator}>
+        <div key={key} className={css.spectator}>
           <span>You are in spectator mode.</span>
         </div>
       );
@@ -129,6 +127,7 @@ export class Board extends React.Component<IBoardProps, {}> {
 
     return (
       <PlayerHand
+        key={key}
         playerId={player.id}
         hand={player.hand}
         cardStyle={player.cardStyle}
@@ -137,13 +136,14 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
-  getPlayerBettingOptions() {
+  getPlayerBettingOptions(key: number) {
     const playerID = this.getBrowserPlayer();
 
     if (!this.betPanelToggle) return null;
 
     return (
       <BetPanel
+        key={key}
         bet={this._bet.bind(this)}
         minBet={this.props.G.minBet}
         maxBet={this.props.G.maxBet}
@@ -152,7 +152,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
-  getOtherPlayerHandPenalty() {
+  getOtherPlayerHandPenalty(key: number) {
     var playerId = this.getBrowserPlayer();
     var penaltyPlayerId = this.props.G.failedRevealPlayerId;
     if (!penaltyPlayerId) return null;
@@ -162,6 +162,7 @@ export class Board extends React.Component<IBoardProps, {}> {
 
     return (
       <PlayerHandPenalty
+        key={key}
         hand={penaltyPlayer.hand}
         playerId={playerId}
         cardStyle={penaltyPlayer.cardStyle}
@@ -171,10 +172,11 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 
-  getPlayerZones() {
+  getPlayerZones(key: number) {
     var currentPlayerId = this.props.ctx.currentPlayer;
     return (
       <PlayerZones
+        key={key}
         betDisplayProps={this.getBetDisplayProps()}
         discardPileProps={this.getDiscardPileProps()}
         currentPlayerId={currentPlayerId}

@@ -24,25 +24,25 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
       <div className={css.playerZonesContainer}>
         <div className={css.playerZones}>{this.renderZones()}</div>
         <div className={css.centerDisplay}>
-          {this.renderBetDisplay()}
-          {this.renderDiscardPile()}
+          {this.renderBetDisplay(0)}
+          {this.renderDiscardPile(1)}
         </div>
       </div>
     );
   }
 
-  renderBetDisplay() {
+  renderBetDisplay(key: number) {
     var props = this.props.betDisplayProps;
     if (props === undefined) return null;
 
-    return <BetDisplay {...this.props.betDisplayProps}></BetDisplay>;
+    return <BetDisplay key={key} {...this.props.betDisplayProps}></BetDisplay>;
   }
 
-  renderDiscardPile() {
+  renderDiscardPile(key: number) {
     var props = this.props.discardPileProps;
     if (this.props.betDisplayProps !== undefined || props === undefined) return null;
 
-    return <DiscardPile {...this.props.discardPileProps}></DiscardPile>;
+    return <DiscardPile key={key} {...this.props.discardPileProps}></DiscardPile>;
   }
 
   renderZones() {
@@ -72,7 +72,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
 
   renderZone(zoneProps: IPlayerZoneProps, index: number) {
     return (
-      <div className={css.zone}>
+      <div key={index} className={css.zone}>
         <PlayerZone {...zoneProps} key={index}></PlayerZone>
       </div>
     );
