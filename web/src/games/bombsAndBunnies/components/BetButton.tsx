@@ -13,13 +13,13 @@ class BaseButton extends React.Component<IBetButtonProps> {
   flip: boolean = false;
 
   render() {
-    var availableClass = !!this.props.click ? css.available : '';
-    var activeClass = !!this.props.active ? css.active : '';
-    var classNames = `${css.btn} ${availableClass} ${activeClass}`;
+    const availableClass = !!this.props.click ? css.available : '';
+    const activeClass = !!this.props.active ? css.active : '';
+    const classNames = `${css.btn} ${availableClass} ${activeClass}`;
 
-    var text = this.text;
+    let text = this.text;
     if (this.props.active && this.activeText) {
-      var text = this.activeText;
+      text = this.activeText;
     }
 
     return (

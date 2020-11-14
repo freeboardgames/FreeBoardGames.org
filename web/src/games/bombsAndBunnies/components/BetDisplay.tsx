@@ -14,14 +14,13 @@ export class BetDisplay extends React.Component<IBetDisplayProps> {
   flip: boolean = false;
 
   render() {
-    var text;
+    const animationStyle = this.getAnimationStyle();
+    let text;
     if (this.props.isRevealing) {
       text = `${this.props.revealedCount} / ${this.props.currentBet}`;
     } else {
       text = this.props.currentBet;
     }
-
-    var animationStyle = this.getAnimationStyle();
 
     return (
       <svg className={css.BetDisplay} version="1.0" width="100" height="100" viewBox="0 0 100 100">
@@ -41,10 +40,9 @@ export class BetDisplay extends React.Component<IBetDisplayProps> {
     const maxDuration = 1.2;
     const minDuration = 0.6;
 
-    var duration =
+    const duration =
       minDuration + (maxDuration - minDuration) * (1 - this.props.revealedCount / (this.props.currentBet - 1));
-    var animationStyle = `${css.heartbeat} ${duration}s infinite`;
 
-    return animationStyle;
+    return `${css.heartbeat} ${duration}s infinite`;
   }
 }

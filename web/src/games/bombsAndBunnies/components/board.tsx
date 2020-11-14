@@ -127,7 +127,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     if (this.betPanelToggle) return null;
-    var player = getPlayerById(this.props.G, playerID);
+    const player = getPlayerById(this.props.G, playerID);
 
     return (
       <PlayerHand
@@ -157,11 +157,11 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   getOtherPlayerHandPenalty(key: number) {
-    var playerId = this.getBrowserPlayer();
-    var penaltyPlayerId = this.props.G.failedRevealPlayerId;
+    const playerId = this.getBrowserPlayer();
+    const penaltyPlayerId = this.props.G.failedRevealPlayerId;
     if (!penaltyPlayerId) return null;
 
-    var penaltyPlayer = getPlayerById(this.props.G, penaltyPlayerId);
+    const penaltyPlayer = getPlayerById(this.props.G, penaltyPlayerId);
     if (!canDiscard(this.props.G, playerId)) return null;
 
     return (
@@ -177,7 +177,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   getPlayerZones(key: number) {
-    var currentPlayerId = this.props.ctx.currentPlayer;
+    const currentPlayerId = this.props.ctx.currentPlayer;
     return (
       <PlayerZones
         key={key}
@@ -190,12 +190,12 @@ export class Board extends React.Component<IBoardProps, {}> {
         canRevealTargetStack={(targetPlayerId: string) =>
           canRevealTargetStack(this.props.G, this.props.ctx, targetPlayerId)
         }
-      ></PlayerZones>
+      />
     );
   }
 
   getBetDisplayProps(): IBetDisplayProps | undefined {
-    var ctx = this.props.ctx;
+    const ctx = this.props.ctx;
     if (!isBetting(ctx) && !isRevealing(ctx)) return;
 
     return {
@@ -232,8 +232,8 @@ export class Board extends React.Component<IBoardProps, {}> {
       }
     } else {
       if (this.props.ctx.gameover.winner) {
-        var winnerIndex = parseInt(this.props.ctx.gameover.winner);
-        var winner = this.props.gameArgs.players.find((p) => p.playerID === winnerIndex);
+        const winnerIndex = parseInt(this.props.ctx.gameover.winner);
+        const winner = this.props.gameArgs.players.find((p) => p.playerID === winnerIndex);
         return `${winner.name} won`;
       }
     }
@@ -242,12 +242,14 @@ export class Board extends React.Component<IBoardProps, {}> {
   _getScoreboard() {
     if (this.props.ctx.gameover) {
       const scores: IScore[] = this.props.gameArgs.players.map((player) => {
-        var gamePlayer = getPlayerById(this.props.G, player.playerID.toString());
+        const gamePlayer = getPlayerById(this.props.G, player.playerID.toString());
         return {
           playerID: `${player.playerID}`,
           score: gamePlayer.isOut ? -1 : gamePlayer.wins,
         };
       });
+
+      scores.sort((a, b) => b.score - a.score);
 
       return (
         <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />

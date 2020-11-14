@@ -32,8 +32,8 @@ export class BetPanel extends React.Component<IBetPanelProps, { value: number }>
       return <button disabled={true}>No bets avaliable</button>;
     }
 
-    var stepSize = (_height - 10) / (this.props.maxBet - this.props.minBet);
-    var buttonOffsetBottom = (this.state.value - this.props.minBet) * stepSize;
+    const stepSize = (_height - 10) / (this.props.maxBet - this.props.minBet);
+    const buttonOffsetBottom = (this.state.value - this.props.minBet) * stepSize;
 
     return (
       <div>
@@ -46,8 +46,8 @@ export class BetPanel extends React.Component<IBetPanelProps, { value: number }>
   }
 
   renderSlider() {
-    var minBet = this.props.minBet;
-    var maxBet = this.props.maxBet;
+    const minBet = this.props.minBet;
+    const maxBet = this.props.maxBet;
     if (minBet === maxBet) return;
 
     return (

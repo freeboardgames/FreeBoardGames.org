@@ -8,22 +8,22 @@ function getStyleClassName(style?: CardStyle) {
 
   switch (style) {
     case CardStyle.Style1:
-      return css.CardStyle1;
+      return css.cardStyle1;
 
     case CardStyle.Style2:
-      return css.CardStyle2;
+      return css.cardStyle2;
 
     case CardStyle.Style3:
-      return css.CardStyle3;
+      return css.cardStyle3;
 
     case CardStyle.Style4:
-      return css.CardStyle4;
+      return css.cardStyle4;
 
     case CardStyle.Style5:
-      return css.CardStyle5;
+      return css.cardStyle5;
 
     case CardStyle.Style6:
-      return css.CardStyle6;
+      return css.cardStyle6;
   }
 
   return '';
@@ -42,10 +42,10 @@ export class CardComponent extends React.Component<ICardProps, {}> {
     return (
       <div
         className={[
-          css.Card,
+          css.card,
           this.front,
-          this.props.click ? css.Selectable : '',
-          this.props.selected ? css.Selected : '',
+          this.props.click ? css.selectable : '',
+          this.props.selected ? css.selected : '',
           getStyleClassName(this.props.style),
         ].join(' ')}
         onClick={this.props.click}
@@ -60,19 +60,19 @@ export class CardComponent extends React.Component<ICardProps, {}> {
   }
 }
 export class FaceDownCardComponent extends CardComponent {
-  front: string = css.FaceDownCard;
+  front: string = css.faceDownCard;
 }
 
 export class EmptyCardComponent extends CardComponent {
-  front: string = css.EmptyCard;
+  front: string = css.emptyCard;
 }
 
 export class BunnyCardComponent extends CardComponent {
-  front: string = css.BunnyCard;
+  front: string = css.bunnyCard;
 
   renderSVG() {
     return (
-      <svg width="100%" height="100%" viewBox="0 0 750 1050" className={css.CardSVG}>
+      <svg width="100%" height="100%" viewBox="0 0 750 1050" className={css.cardSVG}>
         <g transform="translate(-50,850) scale(0.100000,-0.100000)" stroke="none">
           <path
             d="M2979 6807 c-337 -172 -203 -904 280 -1527 80 -104 286 -311 364
@@ -102,11 +102,11 @@ export class BunnyCardComponent extends CardComponent {
 }
 
 export class BombCardComponent extends CardComponent {
-  front: string = css.BombCard;
+  front: string = css.bombCard;
 
   renderSVG() {
     return (
-      <svg width="100%" height="100%" viewBox="0 0 750 1050" className={css.CardSVG}>
+      <svg width="100%" height="100%" viewBox="0 0 750 1050" className={css.cardSVG}>
         <g transform="translate(-30,750) scale(0.100000,-0.100000)" stroke="none">
           <path
             d="M6163 4940 c-6 -14 -25 -66 -42 -116 l-33 -92 -105 50 c-58 27 -106

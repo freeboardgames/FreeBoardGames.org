@@ -19,7 +19,7 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
 
   renderCard(card: CardType, index: number) {
     const offsetSize = 20;
-    var rotateStyle = this._getCardRotationStyle(index);
+    const rotateStyle = this._getCardRotationStyle(index);
 
     if (card === CardType.Bunny) {
       return (
@@ -43,7 +43,7 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
   // The idea is to make the card placement seem more natural, but consistent.
   _getCardRotationStyle(index: number) {
     const fixedRotations = [-2, 3, -3, 2];
-    var rotate = fixedRotations[index % fixedRotations.length];
+    const rotate = fixedRotations[index % fixedRotations.length];
     return `scale(0.2) rotate(${rotate}deg)`;
   }
 }

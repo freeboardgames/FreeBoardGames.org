@@ -21,7 +21,7 @@ export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
   };
 
   render() {
-    var className = `${css.playerStack} ${this.props.revealCard ? css.active : ''}`;
+    const className = `${css.playerStack} ${this.props.revealCard ? css.active : ''}`;
 
     return (
       <div className={className} onClick={() => this._revealCard()}>
@@ -50,7 +50,7 @@ export class PlayerStack extends React.Component<IPlayerStackProps, {}> {
   }
 
   renderCount() {
-    var stackSize = this.props.stackSize;
+    const stackSize = this.props.stackSize;
     if (stackSize <= 0) return;
 
     return (

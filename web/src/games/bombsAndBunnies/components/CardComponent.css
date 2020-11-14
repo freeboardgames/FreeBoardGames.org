@@ -1,4 +1,4 @@
-.Card {
+.card {
   color: black;
   border: 20px #eee solid;
   box-sizing: border-box;
@@ -25,22 +25,22 @@
   }
 }
 
-.Card.Selected {
+.card.selected {
   margin-top: -160px;
   box-shadow: 0px 0px 50px rgb(251, 255, 0);
 }
 
-.Card.Selectable {
+.card.selectable {
   cursor: pointer;
   box-shadow: 0px 0px 50px #ffc505;
 }
 
-.Card.Selectable:hover {
+.card.selectable:hover {
   animation: pulse 1s;
   animation-iteration-count: infinite;
 }
 
-.EmptyCard {
+.emptyCard {
   border-image-source: url('http://i.stack.imgur.com/wLdVc.png');
   border-image-width: 1;
   border-image-slice: 2;
@@ -50,28 +50,28 @@
   cursor: default;
 }
 
-.FaceDownCard {
+.faceDownCard {
   background-color: #888;
 }
 
-.BunnyCard {
+.bunnyCard {
   background-color: rgb(98, 138, 72);
 }
 
-.BombCard {
+.bombCard {
   background-color: black;
 }
 
-.BunnyCard.hidden {
+.bunnyCard.hidden {
   animation: none;
 }
 
-.BombCard.hidden {
+.bombCard.hidden {
   animation: none;
   border: 20px rgb(44, 120, 192) solid;
 }
 
-.CardSVG {
+.cardSVG {
   fill-rule: evenodd;
   clip-rule: evenodd;
   stroke-linejoin: round;
@@ -79,50 +79,50 @@
   fill: black;
 }
 
-.FaceDownCard.CardStyle1,
-.BunnyCard.CardStyle1 {
+.faceDownCard.cardStyle1,
+.bunnyCard.cardStyle1 {
   background-color: rgb(255, 78, 78);
 }
-.BombCard.CardStyle1 .CardSVG {
+.bombCard.cardStyle1 .cardSVG {
   fill: rgb(255, 78, 78);
 }
 
-.FaceDownCard.CardStyle2,
-.BunnyCard.CardStyle2 {
+.faceDownCard.cardStyle2,
+.bunnyCard.cardStyle2 {
   background-color: rgb(255, 178, 78);
 }
-.BombCard.CardStyle2 .CardSVG {
+.bombCard.cardStyle2 .cardSVG {
   fill: rgb(255, 178, 78);
 }
 
-.FaceDownCard.CardStyle3,
-.BunnyCard.CardStyle3 {
+.faceDownCard.cardStyle3,
+.bunnyCard.cardStyle3 {
   background-color: rgb(69, 235, 63);
 }
-.BombCard.CardStyle3 .CardSVG {
+.bombCard.cardStyle3 .cardSVG {
   fill: rgb(69, 235, 63);
 }
 
-.FaceDownCard.CardStyle4,
-.BunnyCard.CardStyle4 {
+.faceDownCard.cardStyle4,
+.bunnyCard.cardStyle4 {
   background-color: rgb(78, 90, 255);
 }
-.BombCard.CardStyle4 .CardSVG {
+.bombCard.cardStyle4 .cardSVG {
   fill: rgb(78, 90, 255);
 }
 
-.FaceDownCard.CardStyle5,
-.BunnyCard.CardStyle5 {
+.faceDownCard.cardStyle5,
+.bunnyCard.cardStyle5 {
   background-color: rgb(240, 78, 255);
 }
-.BombCard.CardStyle5 .CardSVG {
+.bombCard.cardStyle5 .cardSVG {
   fill: rgb(240, 78, 255);
 }
 
-.FaceDownCard.CardStyle6,
-.BunnyCard.CardStyle6 {
+.faceDownCard.cardStyle6,
+.bunnyCard.cardStyle6 {
   background-color: rgb(228, 255, 78);
 }
-.BombCard.CardStyle6 .CardSVG {
+.bombCard.cardStyle6 .cardSVG {
   fill: rgb(228, 255, 78);
 }

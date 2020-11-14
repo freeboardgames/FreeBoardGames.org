@@ -31,9 +31,9 @@ export class PlayerHandPenalty extends React.Component<IPlayerHandPenaltyProps, 
       return this.props.hand.map((c: CardType, index: number) => this.renderOwnCard(c, index));
     }
 
-    var shuffledIndexes = this.getShuffledHandIndexes(this.props.hand);
-
-    return shuffledIndexes.map((shuffledIndex) => this.renderOtherPlayersCard(shuffledIndex));
+    return this.getShuffledHandIndexes(this.props.hand).map((shuffledIndex) =>
+      this.renderOtherPlayersCard(shuffledIndex),
+    );
   }
 
   renderOwnCard(card: CardType, index: number) {
@@ -78,11 +78,11 @@ export class PlayerHandPenalty extends React.Component<IPlayerHandPenaltyProps, 
   }
 
   getShuffledHandIndexes(hand: CardType[]): number[] {
-    var indexes = hand.map((_, index) => index);
-    var shuffledIndexes = [];
+    const indexes = hand.map((_, index) => index);
+    let shuffledIndexes = [];
 
     while (indexes.length > 0) {
-      var randomIndex = Math.floor(Math.random() * indexes.length);
+      const randomIndex = Math.floor(Math.random() * indexes.length);
       shuffledIndexes.push(indexes.splice(randomIndex, 1));
     }
 

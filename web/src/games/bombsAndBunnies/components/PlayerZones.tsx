@@ -32,42 +32,28 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
   }
 
   renderBetDisplay(key: number) {
-    var props = this.props.betDisplayProps;
+    const props = this.props.betDisplayProps;
     if (props === undefined) return null;
 
     return <BetDisplay key={key} {...this.props.betDisplayProps}></BetDisplay>;
   }
 
   renderDiscardPile(key: number) {
-    var props = this.props.discardPileProps;
+    const props = this.props.discardPileProps;
     if (this.props.betDisplayProps !== undefined || props === undefined) return null;
 
     return <DiscardPile key={key} {...this.props.discardPileProps}></DiscardPile>;
   }
 
   renderZones() {
-    var players = this.props.players;
-    var perspectiveIndex = players.findIndex((p) => p.id === this.props.perspectivePlayerId);
-    var totalPlayers = this.props.players.length;
-    var zones = this.props.players.map((p: IPlayer, i) => {
-      var result: IPlayerZoneProps = {
-        playerStatuses: this.getPlayerStatuses(p),
-        bet: p.bet,
-        totalPlayerCards: p.hand.length + p.stack.length + p.revealedStack.length,
-        playerId: p.id,
-        playerCardStyle: p.cardStyle,
-        totalPlayers: totalPlayers,
-        positionIndex: i >= perspectiveIndex ? i - perspectiveIndex : totalPlayers - perspectiveIndex + i,
-        stackSize: p.stack.length,
-        revealedStack: p.revealedStack,
-        revealCard: this.props.canRevealTargetStack(p.id) ? this.props.revealCard : null,
-        playerIsOut: p.isOut,
-      };
+    const players = this.props.players;
+    const perspectiveIndex = players.findIndex((p) => p.id === this.props.perspectivePlayerId);
+    const totalPlayers = this.props.players.length;
 
-      return result;
+    return this.props.players.map((player, i) => {
+      const zone = this.getPlayerZoneProps(player, i, totalPlayers, perspectiveIndex);
+      return this.renderZone(zone, i);
     });
-
-    return zones.map((z, i) => this.renderZone(z, i));
   }
 
   renderZone(zoneProps: IPlayerZoneProps, index: number) {
@@ -78,8 +64,39 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
     );
   }
 
+  getPlayerZoneProps(player: IPlayer, index: number, totalPlayers: number, perspectiveIndex: number): IPlayerZoneProps {
+    const playerStatuses = this.getPlayerStatuses(player);
+    const bet = player.bet;
+    const totalPlayerCards = player.hand.length + player.stack.length + player.revealedStack.length;
+    const playerId = player.id;
+    const playerCardStyle = player.cardStyle;
+    const positionIndex = this.getPositionIndex(index, perspectiveIndex, totalPlayers);
+    const stackSize = player.stack.length;
+    const revealedStack = player.revealedStack;
+    const revealCard = this.props.canRevealTargetStack(player.id) ? this.props.revealCard : null;
+    const playerIsOut = player.isOut;
+
+    return {
+      playerStatuses,
+      bet,
+      totalPlayerCards,
+      playerId,
+      playerCardStyle,
+      totalPlayers,
+      positionIndex,
+      stackSize,
+      revealedStack,
+      revealCard,
+      playerIsOut,
+    };
+  }
+
+  getPositionIndex(index: number, perspectiveIndex: number, totalPlayers: number) {
+    return index >= perspectiveIndex ? index - perspectiveIndex : totalPlayers - perspectiveIndex + index;
+  }
+
   getPlayerStatuses(player: IPlayer): PlayerStatus[] {
-    var statuses: PlayerStatus[] = [];
+    let statuses: PlayerStatus[] = [];
     if (player.isOut) return [PlayerStatus.IsOut];
 
     if (player.id === this.props.currentPlayerId) statuses.push(PlayerStatus.CurrentPlayer);

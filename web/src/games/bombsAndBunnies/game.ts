@@ -64,8 +64,9 @@ export function isBetting(ctx: Ctx): boolean {
 }
 
 export function canRevealTargetStack(G: IG, ctx: Ctx, targetPlayerId: string) {
-  var currentPlayer = getPlayerById(G, ctx.currentPlayer);
-  var targetPlayer = getPlayerById(G, targetPlayerId);
+  const currentPlayer = getPlayerById(G, ctx.currentPlayer);
+  const targetPlayer = getPlayerById(G, targetPlayerId);
+
   return (
     isRevealing(ctx) &&
     ((currentPlayer.id === targetPlayer.id && currentPlayer.stack.length > 0) ||
@@ -86,13 +87,13 @@ export function getMaxPossibleBet(G: IG) {
 }
 
 export function getMaxPlayerBet(players: IPlayer[]) {
-  var playerBets = players.map((p) => p.bet).filter((b) => b !== null);
+  const playerBets = players.map((p) => p.bet).filter((b) => b !== null);
 
   return [...playerBets, 0].reduce((a, b) => (a >= b ? a : b));
 }
 
 export function getRevealCount(players: IPlayer[]) {
-  var playerRevealCounts = players.map((p) => p.revealedStack.length);
+  const playerRevealCounts = players.map((p) => p.revealedStack.length);
 
   return [...playerRevealCounts, 0].reduce((a, b) => a + b);
 }
@@ -124,16 +125,16 @@ function getPlayOrder(G: IG, ctx: Ctx) {
 }
 
 function findWinner(G: IG) {
-  var naturalWinner = G.players.find((p) => p.wins === 2);
+  const naturalWinner = G.players.find((p) => p.wins === 2);
   if (naturalWinner) return naturalWinner;
 
-  var remainingPlayers = G.players.filter((p) => !p.isOut);
+  const remainingPlayers = G.players.filter((p) => !p.isOut);
   if (remainingPlayers.length === 1) return remainingPlayers[0];
 }
 
 function pickUpHand(G: IG) {
-  for (var i = 0; i < G.players.length; i++) {
-    var player = G.players[i];
+  for (let i = 0; i < G.players.length; i++) {
+    const player = G.players[i];
     player.hand = player.hand.concat(player.stack).concat(player.revealedStack);
     player.hand.sort();
     player.stack = [];
@@ -146,8 +147,8 @@ function resetBets(G: IG) {
   G.maxBet = 0;
   G.currentBet = 0;
 
-  for (var i = 0; i < G.players.length; i++) {
-    var player = G.players[i];
+  for (let i = 0; i < G.players.length; i++) {
+    const player = G.players[i];
     player.betSkipped = false;
     player.bet = null;
   }
@@ -161,12 +162,12 @@ function getAllRevealedCards(G: IG) {
 
 export const Moves = {
   PlaceCard: (G: IG, ctx: Ctx, handIndex: number) => {
-    var player = getPlayerById(G, ctx.currentPlayer);
+    const player = getPlayerById(G, ctx.currentPlayer);
     if (player.hand.length <= handIndex) {
       return INVALID_MOVE;
     }
 
-    var chosenCard = player.hand.splice(handIndex, 1)[0];
+    const chosenCard = player.hand.splice(handIndex, 1)[0];
     player.stack.push(chosenCard);
 
     G.maxBet += 1;
@@ -175,7 +176,7 @@ export const Moves = {
   },
 
   Bet: (G: IG, ctx: Ctx, bet: number) => {
-    var player = getPlayerById(G, ctx.currentPlayer);
+    const player = getPlayerById(G, ctx.currentPlayer);
 
     if (bet < G.minBet || bet > G.maxBet) {
       return INVALID_MOVE;
@@ -185,7 +186,7 @@ export const Moves = {
     G.minBet = bet + 1;
     G.currentBet = bet;
 
-    var maxBet = getMaxPossibleBet(G);
+    const maxBet = getMaxPossibleBet(G);
 
     if (bet === maxBet) {
       ctx.events.endPhase();
@@ -195,12 +196,11 @@ export const Moves = {
   },
 
   SkipBet: (G: IG, ctx: Ctx) => {
-    var player = getPlayerById(G, ctx.currentPlayer);
+    const player = getPlayerById(G, ctx.currentPlayer);
 
     player.betSkipped = true;
 
-    var oneBetRemaining = hasEveryOtherPlayerSkippedBet(G);
-    if (oneBetRemaining) {
+    if (hasEveryOtherPlayerSkippedBet(G)) {
       ctx.events.endPhase();
     }
 
@@ -208,14 +208,14 @@ export const Moves = {
   },
 
   Reveal: (G: IG, ctx: Ctx, targetPlayerId: string) => {
-    var currentPlayer = getPlayerById(G, ctx.currentPlayer);
-    var targetPlayer = getPlayerById(G, targetPlayerId);
+    const currentPlayer = getPlayerById(G, ctx.currentPlayer);
+    const targetPlayer = getPlayerById(G, targetPlayerId);
 
     if (targetPlayer.stack.length <= 0 || (currentPlayer.stack.length > 0 && targetPlayerId !== currentPlayer.id)) {
       return INVALID_MOVE;
     }
 
-    var revealedCard = targetPlayer.stack.splice(targetPlayer.stack.length - 1, 1)[0];
+    const revealedCard = targetPlayer.stack.splice(targetPlayer.stack.length - 1, 1)[0];
     targetPlayer.revealedStack.push(revealedCard);
 
     if (revealedCard === CardType.Bomb) {
@@ -226,7 +226,7 @@ export const Moves = {
       return G;
     }
 
-    var revealed = getAllRevealedCards(G);
+    const revealed = getAllRevealedCards(G);
     if (revealed.length === currentPlayer.bet) {
       currentPlayer.wins++;
       G.lastWinningPlayerId = currentPlayer.id;
@@ -246,7 +246,7 @@ export const Moves = {
       return INVALID_MOVE;
     }
 
-    var targetPlayer = getPlayerById(G, targetPlayerId);
+    const targetPlayer = getPlayerById(G, targetPlayerId);
     if (targetPlayer.hand.length === 0) {
       return INVALID_MOVE;
     }
@@ -321,11 +321,11 @@ export const BombsAndBunniesGame: Game<IG> = {
       },
 
       endIf: (G: IG, ctx: Ctx) => {
-        var player = getPlayerById(G, ctx.currentPlayer);
-        var currentPlayerBet = player.bet;
-        var endPhase = currentPlayerBet !== null;
+        const player = getPlayerById(G, ctx.currentPlayer);
+        const currentPlayerBet = player.bet;
+        const endPhase = currentPlayerBet !== null;
         if (endPhase) {
-          var isMaxBet = currentPlayerBet === getMaxPossibleBet(G);
+          const isMaxBet = currentPlayerBet === getMaxPossibleBet(G);
           return {
             next: isMaxBet ? Phases.reveal : Phases.bet,
           };
@@ -390,7 +390,7 @@ export const BombsAndBunniesGame: Game<IG> = {
   },
 
   endIf: (G: IG) => {
-    var winner = findWinner(G);
+    const winner = findWinner(G);
     if (winner !== undefined) {
       return { winner: winner.id };
     }

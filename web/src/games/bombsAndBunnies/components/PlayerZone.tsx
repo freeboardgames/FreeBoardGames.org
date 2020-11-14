@@ -6,6 +6,9 @@ import { PlayerRevealedStack } from './PlayerRevealedStack';
 import { CardType, CardStyle } from '../card';
 import { MaxPlayers } from '../game';
 
+const MIN_PLAYER_RADIUS = 25;
+const MAX_PLAYER_RADIUS = 200;
+
 export enum PlayerStatus {
   CurrentPlayer,
   HasWin,
@@ -31,11 +34,10 @@ export interface IPlayerZoneProps {
 
 export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   render() {
-    var radius = this.getRadiusForPlayers(this.props.totalPlayers);
-
-    var angle = (2 * Math.PI * this.props.positionIndex) / this.props.totalPlayers;
-    var top = Math.cos(angle) * radius;
-    var left = -Math.sin(angle) * radius;
+    const radius = this.getRadiusForPlayers(this.props.totalPlayers);
+    const angle = (2 * Math.PI * this.props.positionIndex) / this.props.totalPlayers;
+    const top = Math.cos(angle) * radius;
+    const left = -Math.sin(angle) * radius;
 
     return (
       <div
@@ -105,9 +107,6 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   }
 
   getRadiusForPlayers(totalPlayers: number): number {
-    var minRadius = 25;
-    var maxRadius = 200;
-
-    return minRadius + ((maxRadius - minRadius) * totalPlayers) / MaxPlayers;
+    return MIN_PLAYER_RADIUS + ((MAX_PLAYER_RADIUS - MIN_PLAYER_RADIUS) * totalPlayers) / MaxPlayers;
   }
 }
