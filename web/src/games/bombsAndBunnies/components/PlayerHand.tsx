@@ -1,36 +1,28 @@
 import * as React from 'react';
-import IPlayer from './player';
 
+import { CardType, CardStyle } from '../card';
 import { BunnyCardComponent, BombCardComponent } from './CardComponent';
 
 import css from './PlayerHand.css';
-import { CardType } from './cardType';
 
 export interface IPlayerHandProps {
-  playerIndex: number;
-  player: IPlayer;
+  playerId: string;
+  hand: CardType[];
+  cardStyle: CardStyle;
   selectCard?: (handIndex: number) => void;
 }
 
 export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
-  _selectCard = (handIndex: number) => {
-    if (!this.props.selectCard) {
-      return;
-    }
-
-    this.props.selectCard(handIndex);
-  };
-
   render() {
     return <div className={css.playerHand}>{this.renderCards()}</div>;
   }
 
   renderCards() {
-    if (this.props.player.hand.length == 0) {
+    if (this.props.hand.length == 0) {
       return <div className={css.title}>No Cards left...</div>;
     }
 
-    const w: number = this.props.player.hand.length * 40 + 80;
+    const w: number = this.props.hand.length * 40 + 80;
 
     return (
       <div className={css.cards} style={{ width: w }}>
@@ -40,9 +32,9 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
   }
 
   renderHand() {
-    return [...this.props.player.hand]
+    return [...this.props.hand]
       .sort((a, b) => a - b)
-      .map((card: CardType, index: number) => this.renderCard(card, index, this.props.player.hand.length));
+      .map((card: CardType, index: number) => this.renderCard(card, index, this.props.hand.length));
   }
 
   renderCard(card: CardType, index: number, count: number) {
@@ -59,10 +51,8 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
         <div className={css.cardContainer} key={index}>
           <div style={styles}>
             <BunnyCardComponent
-              click={() => this._selectCard(index)}
-              selectable={this.props.selectCard ? true : false}
-              //selected={isSelected}
-              card={card}
+              style={this.props.cardStyle}
+              click={this.props.selectCard ? () => this.props.selectCard(index) : null}
             />
           </div>
         </div>
@@ -73,10 +63,8 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
       <div className={css.cardContainer} key={index}>
         <div style={styles}>
           <BombCardComponent
-            click={() => this._selectCard(index)}
-            selectable={this.props.selectCard ? true : false}
-            //selected={isSelected}
-            card={card}
+            style={this.props.cardStyle}
+            click={this.props.selectCard ? () => this.props.selectCard(index) : null}
           />
         </div>
       </div>

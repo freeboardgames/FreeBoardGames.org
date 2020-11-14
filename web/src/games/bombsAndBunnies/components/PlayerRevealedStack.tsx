@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import css from './PlayerRevealedStack.css';
 import { BunnyCardComponent, BombCardComponent } from './CardComponent';
-import { CardType } from './cardType';
+import { CardType } from '../card';
 
 export interface IPlayerRevealedStackProps {
   stack: CardType[];
@@ -18,8 +18,8 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
   }
 
   renderCard(card: CardType, index: number) {
-    const offsetSize = 40;
-    var rotateStyle = this._getCardRotationStyle(index);
+    const offsetSize = 20;
+    const rotateStyle = this._getCardRotationStyle(index);
 
     if (card === CardType.Bunny) {
       return (
@@ -28,14 +28,14 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
           key={index}
           style={{ marginLeft: index * offsetSize, transform: rotateStyle }}
         >
-          <BunnyCardComponent card={card}></BunnyCardComponent>
+          <BunnyCardComponent></BunnyCardComponent>
         </div>
       );
     }
 
     return (
       <div className={css.cardContainer} key={index} style={{ marginLeft: index * offsetSize, transform: rotateStyle }}>
-        <BombCardComponent key={index} card={card}></BombCardComponent>
+        <BombCardComponent key={index}></BombCardComponent>
       </div>
     );
   }
@@ -43,7 +43,7 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
   // The idea is to make the card placement seem more natural, but consistent.
   _getCardRotationStyle(index: number) {
     const fixedRotations = [-2, 3, -3, 2];
-    var rotate = fixedRotations[index % fixedRotations.length];
+    const rotate = fixedRotations[index % fixedRotations.length];
     return `scale(0.2) rotate(${rotate}deg)`;
   }
 }

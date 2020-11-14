@@ -2,9 +2,9 @@ import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Client } from 'boardgame.io/client';
-import { BombsAndBunniesGame } from './game';
+import { BombsAndBunniesGame } from '../game';
 
-import { Board } from './board';
+import { Board } from '../components/board';
 import { GameMode } from 'gamesShared/definitions/mode';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -30,5 +30,5 @@ test('game start', async () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('START GAME');
+  expect(comp.html()).toContain('Bet');
 });

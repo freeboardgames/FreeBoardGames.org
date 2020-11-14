@@ -1,0 +1,32 @@
+.playerHand {
+  height: 80px;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.playerHand .cards {
+  margin: 0 auto;
+  height: 100%;
+  text-align: center;
+}
+
+.playerHand .cards:after {
+  content: '.';
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+.playerHand .cardContainer {
+  display: inline-block;
+  width: 100px;
+  margin: 20px;
+  text-align: center;
+  transform-origin: 0 0;
+  transform: scale(0.25);
+  padding: 0;
+}
