@@ -3,8 +3,17 @@ import { IG } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
 
 export let phaseVotePriest = {
-  onBegin: (G) => {
+  onBegin: (G: IG, ctx: Ctx) => {
     //- console.log('starting phaseVotePriest');
+    let activePlayers = { value: {} };
+    for (let i = 0; i < ctx.numPlayers; i++) {
+      if (i in G.deadIDs) {
+        continue;
+      } else {
+        activePlayers.value[i] = 'phaseVotePriest';
+      }
+    }
+    ctx.events.setActivePlayers(activePlayers);
     return G;
   },
   moves: {
@@ -18,13 +27,34 @@ export let phaseVotePriest = {
     },
   },
   endIf: (G: IG, ctx: Ctx) => {
+    let activePlayers = { value: {} };
+    let count = 0;
+    for (let i = 0; i < ctx.numPlayers; i++) {
+      if (i in G.deadIDs) {
+        // activePlayers.value[i] = 'waiting';
+        continue;
+      } else if (G.votesYes[i] || G.votesNo[i]) {
+        // already voted
+        continue;
+      } else {
+        count += 1;
+        activePlayers.value[i] = 'phaseVotePriest';
+      }
+    }
+
+    if (count > 0) {
+      // fix for not running into Issue with no active players
+      ctx.events.setActivePlayers(activePlayers);
+    }
+
     let yesVotes = G.votesYes.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
     let noVotes = G.votesNo.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
-    if (yesVotes + noVotes == ctx.numPlayers) {
+    var deadCount = G.deadIDs.length;
+    if (yesVotes + noVotes == ctx.numPlayers - deadCount) {
       // Successful Vote
       return { next: 'phaseEndVotePriest' };
     }
@@ -47,18 +77,22 @@ export let phaseVotePriest = {
     G.votesNo = <boolean[]>Array(ctx.numPlayers).fill(false);
     return G;
   },
-  turn: {
-    activePlayers: { all: 'phaseVotePriest', moveLimit: 1 },
-  },
 };
+
 export let phaseEndVotePriest = {
+  turn: {
+    activePlayers: { all: 'phaseEndVotePriest', moveLimit: 1 },
+  },
   onBegin: (G, ctx) => {
     ////- console.log('starting phaseEndVotePriest');
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
+
+    for (let i = 0; i < ctx.numPlayers; i++) {
+      if (i in G.deadIDs) {
+        G.voteOks[i] = true;
+      }
+    }
     return G;
-  },
-  turn: {
-    activePlayers: { all: 'phaseEndVotePriest', moveLimit: 1 },
   },
   moves: {
     moveOKVote: {
@@ -66,13 +100,14 @@ export let phaseEndVotePriest = {
       client: false,
     },
   },
-  endIf: (G: IG) => {
+  endIf: (G: IG, ctx: Ctx) => {
     //- console.log('endIf phaseEndVotePriest');
-    if (
-      G.voteOks.reduce((prev: boolean, curr: boolean) => {
-        return curr && prev;
-      }, true) == false
-    ) {
+    let alive_players = ctx.numPlayers; //- G.deadIDs.reduce((prev: number, curr: number) => { return curr == -1 ? prev : prev + 1},0)
+    let ok_count = G.voteOks.reduce((prev: number, curr: boolean) => {
+      return curr == true ? prev + 1 : prev;
+    }, 0);
+
+    if (alive_players != ok_count) {
       // not everyone has pressed OK yet.
       return false;
     }
@@ -86,6 +121,9 @@ export let phaseEndVotePriest = {
   onEnd: (G: IG, ctx: Ctx) => {
     //- console.log('ending phaseEndVotePriest');
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
+    if (G.voteCountYes > G.voteCountNo) {
+      G.electionTracker = 0;
+    }
     G.voteCountYes = -1;
     G.voteCountNo = -1;
     return G;

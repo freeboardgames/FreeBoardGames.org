@@ -4,11 +4,11 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const secretDraculaGameDef: IGameDef = {
-  code: 'secretDracula',
+  code: 'secretdracula',
   name: 'Secret Dracula',
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }],
-  minPlayers: 2, // TODO - set to 5
+  modes: [{ mode: GameMode.OnlineFriend }],
+  minPlayers: 5,
   maxPlayers: 10,
   description: 'A game of decite, lies, and Vampires.',
   descriptionTag: 'Secret Dracula',
@@ -16,9 +16,8 @@ export const secretDraculaGameDef: IGameDef = {
     videoId: 'mbGXIDYdtas',
     text: instructions,
   },
-  status: IGameStatus.IN_DEVELOPMENT,
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
-  aiConfig: () => import('./ai'),
 };
 
 export default secretDraculaGameDef;
