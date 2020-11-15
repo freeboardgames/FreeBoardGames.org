@@ -14,5 +14,12 @@
 
 .zone {
   position: absolute;
-  width: 200px;
+  width: 300px;
+}
+
+.centerDisplay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
