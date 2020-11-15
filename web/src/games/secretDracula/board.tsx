@@ -43,7 +43,10 @@ export class Board extends React.Component<IBoardProps> {
 
     return (
       <div className={css.div}>
-        <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
+        <GameLayout gameArgs={this.props.gameArgs}
+          allowWiderScreen={true}
+          gameOver={this._getGameOver()}>
+
           {this.render_players(playerorder, deads, vampires)}
 
           <BElectionTracker count={this.props.G.electionTracker}></BElectionTracker>
@@ -552,5 +555,14 @@ export class Board extends React.Component<IBoardProps> {
     return () => {
       return;
     };
+  }
+
+  _getGameOver() {
+    // Online game
+    if (this.props.ctx.gameover.win == true) {
+        return 'Humans win';
+      } else {
+        return 'Vampires win';
+      }
   }
 }
