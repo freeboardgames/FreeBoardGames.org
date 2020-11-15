@@ -2,6 +2,7 @@ import React from 'react';
 import MessagePage from 'infra/common/components/alert/MessagePageClass';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { GAMES_MAP } from 'games';
+import { IGameDef } from 'gamesShared/definitions/game';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';
 import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import { GameSharing } from 'infra/room/GameSharing';
@@ -21,6 +22,8 @@ import Router from 'next/router';
 import { Subscription } from '@apollo/react-components';
 import { gql } from 'apollo-boost';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import css from './Room.css';
+import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -57,6 +60,7 @@ interface State {
   error: string;
   editingName: boolean;
   removedFromRoom: boolean;
+  changingGame: boolean;
 }
 
 class Room extends React.Component<Props, State> {
@@ -66,6 +70,7 @@ class Room extends React.Component<Props, State> {
     partialLoading: false,
     editingName: false,
     removedFromRoom: false,
+    changingGame: false,
   };
 
   componentDidMount() {
@@ -92,8 +97,7 @@ class Room extends React.Component<Props, State> {
     return (
       <FreeBoardGamesBar>
         {this.getNicknamePrompt()}
-        <GameCard game={gameDef} />
-        {this._getGameSharing()}
+        {this.state.changingGame ? <GamePickerModal gamePickedCallback={this._newGamePicked} /> : null}
         <Subscription
           subscription={ROOM_SUBSCRIPTION}
           variables={{ roomId: this._roomId(), jwt: LobbyService.getUserToken() }}
@@ -114,10 +118,13 @@ class Room extends React.Component<Props, State> {
             }
             return (
               <React.Fragment>
+                {this.renderGameCard(gameDef)}
+                {this._getGameSharing()}
                 <ListPlayers
                   roomMetadata={room}
                   editNickname={this._toggleEditingName}
                   removeUser={this._removeUser}
+                  changeCapacity={this._changeCapacity}
                   userId={this.state.userId}
                 />
                 {this.renderLeaveRoomButton()}
@@ -128,6 +135,19 @@ class Room extends React.Component<Props, State> {
         </Subscription>
       </FreeBoardGamesBar>
     );
+  }
+
+  renderGameCard(gameDef: IGameDef) {
+    return (<div style={{position: 'relative'}}>
+      <GameCard game={gameDef} />
+      <Button 
+        style={{position: 'absolute', backgroundColor: 'rgb(220, 0, 78)', color: 'white'}}
+        className={css.ChangeGameButton} 
+        color="secondary" 
+        onClick={this._toggleChangingGame}>
+        Change Game
+      </Button>
+    </div>);
   }
 
   redirectToMatch(matchId: string) {
@@ -157,6 +177,7 @@ class Room extends React.Component<Props, State> {
       </Button>
     );
   }
+
   getNicknamePrompt() {
     if (!this.state.editingName) {
       return;
@@ -170,6 +191,22 @@ class Room extends React.Component<Props, State> {
         />
       </AlertLayer>
     );
+  }
+
+  _newGamePicked = (game?: IGameDef) => {
+    this._toggleChangingGame();
+    if (!game) {
+      return;
+    }
+    alert(`Game picked: ${game.name}`);
+  }
+
+  _changeCapacity = (delta: number) => () => {
+    alert(`Capacity change: ${delta}`);
+  } 
+
+  _toggleChangingGame = () => {
+    this.setState({ changingGame: !this.state.changingGame });
   }
 
   _toggleEditingName = () => {

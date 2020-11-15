@@ -4,9 +4,13 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+import css from './ListPlayers.css';
 
 import {
   Button,
+  ButtonGroup,
   List,
   ListItem,
   ListItemAvatar,
@@ -16,12 +20,14 @@ import {
   ListItemSecondaryAction,
   Tooltip,
 } from '@material-ui/core';
+import { GAMES_MAP } from 'games';
 
 interface IListPlayersProps {
   roomMetadata: JoinRoom_joinRoom;
   userId?: number;
   editNickname: () => void;
   removeUser: (userId: number) => () => void;
+  changeCapacity: (delta: number) => () => void;
 }
 
 export class ListPlayers extends React.Component<IListPlayersProps, {}> {
@@ -80,12 +86,35 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
       );
     }
     return (
-      <div>
+      <div style={{position: 'relative'}}>
         <List subheader={<ListSubheader>Players</ListSubheader>}>
           {playersList}
           {waitingList}
         </List>
+        {this.renderCapacityButtons()}
       </div>
+    );
+  }
+
+  renderCapacityButtons() {
+    const metadata = this.props.roomMetadata;
+    const occupancy = metadata.userMemberships.length;
+    const gameDef = GAMES_MAP[metadata.gameCode];
+    const minCapacity = Math.max(gameDef.minPlayers, occupancy);
+    const maxCapacity = gameDef.maxPlayers;
+    if (minCapacity === maxCapacity) {
+      return;
+    }
+    const capacity = metadata.capacity;
+    return (
+      <ButtonGroup size="small" className={css.CapacityButtons}>
+        <Button onClick={this.props.changeCapacity(-1)} disabled={capacity - 1 < minCapacity}>
+          <RemoveIcon />
+        </Button>
+        <Button onClick={this.props.changeCapacity(+1)} disabled={capacity + 1 > maxCapacity}>
+          <AddIcon />
+        </Button>
+      </ButtonGroup>
     );
   }
 }

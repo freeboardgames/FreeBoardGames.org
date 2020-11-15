@@ -18,7 +18,9 @@ class AlertLayer extends React.Component<AlertLayerProps, {}> {
 
   onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === this.outerLayerRef.current) {
-      this.props.onClickaway();
+      if (this.props.onClickaway) {
+        this.props.onClickaway();
+      }
     }
   };
 }
