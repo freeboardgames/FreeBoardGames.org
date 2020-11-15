@@ -40,14 +40,7 @@ export default class LobbyCarousel extends React.Component<Props, State> {
   state: State = { showNewRoomModal: false, loading: true };
 
   componentDidMount() {
-    LobbyService.getLobby().then(
-      (queryResult: GetLobby) => {
-        this.setState({ loading: false, lobby: queryResult.lobby });
-      },
-      (error) => {
-        this.setState({ loading: false, error });
-      },
-    );
+    this._loadLobby();
   }
 
   render() {
@@ -80,8 +73,8 @@ export default class LobbyCarousel extends React.Component<Props, State> {
       );
     } else if (this.state.error) {
       return (
-        <Typography component="h2" variant="body2" className={css.errorMessage}>
-          An error happened loading the lobby, try reloading.
+        <Typography component="h2" variant="body2" className={css.message}>
+          An error occurred while loading the lobby. Try reloading.
         </Typography>
       );
     }
@@ -91,7 +84,7 @@ export default class LobbyCarousel extends React.Component<Props, State> {
           const lobby = resp.data?.lobbyMutated || this.state.lobby;
           if (lobby.rooms.length === 0) {
             return (
-              <Typography component="h2" variant="body2" className={css.errorMessage}>
+              <Typography component="h2" variant="body2" className={css.message}>
                 No public room available. Click on &quot;<b>New Room</b>&quot; and create one!
               </Typography>
             );
@@ -117,5 +110,16 @@ export default class LobbyCarousel extends React.Component<Props, State> {
 
   _toggleNewRoomModal = () => {
     this.setState((prevState) => ({ ...prevState, showNewRoomModal: !prevState.showNewRoomModal }));
+  };
+
+  _loadLobby = () => {
+    LobbyService.getLobby().then(
+      (queryResult: GetLobby) => {
+        this.setState({ loading: false, lobby: queryResult.lobby });
+      },
+      (error) => {
+        this.setState({ loading: false, error });
+      },
+    );
   };
 }

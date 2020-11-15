@@ -4,7 +4,7 @@ export const MAX_WORDS_IN_GAME = 20;
 export const MAX_WORD_LEN = 12;
 export const DRAW_AFTER_N_TIMERS = 2;
 export const TIME_OUT = 20;
-export const TIME_BUFF = 1;
+export const TIME_BUFF = 1.5;
 
 export const BOARD_SIZE = 500;
 export const SOLUTION_COLOR = yellow[800];
@@ -426,4 +426,4 @@ export const globalWordList = [
   'change',
   'cap',
   'triangle',
-];
+].map((word: string) => word.toUpperCase());

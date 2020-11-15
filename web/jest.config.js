@@ -22,6 +22,7 @@ module.exports = {
     '!deprecated-bgio-ui/**',
     '!.storybook/**',
     '!**/*.stories.tsx',
+    '!**/*.json',
   ],
   coverageReporters: ['json', 'lcov'],
   coverageDirectory: '../coverage-unit',

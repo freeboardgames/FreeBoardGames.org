@@ -1,0 +1,42 @@
+.playerStack {
+  display: inline-block;
+  margin: 10px;
+  width: 100%;
+}
+
+.playerStack.active {
+  cursor: pointer;
+}
+
+.cardContainer {
+  position: absolute;
+  text-align: center;
+  transform-origin: 0 0;
+  transform: scale(0.2);
+  padding: 0;
+}
+
+.playerStack.active .cardContainer {
+  box-shadow: 0px 0px 50px #ffc505;
+}
+
+.cardCountContainer {
+  position: absolute;
+  transform: translate(24px, 116px);
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.349);
+  border-radius: 0px 0px 5px 5px;
+  height: 22px;
+  cursor: default;
+}
+
+.cardCountContainer .count {
+  float: right;
+  text-align: center;
+  color: white;
+  padding: 2px;
+  font-size: 14px;
+  border-radius: 10px;
+  width: 16px;
+  background-color: rgba(0, 0, 0, 0.445);
+}

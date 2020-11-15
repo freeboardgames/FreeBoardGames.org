@@ -1,6 +1,6 @@
 import { IGameConfig } from 'gamesShared/definitions/game';
 import { BombsAndBunniesGame } from './game';
-import { Board } from './board';
+import { Board } from './components/board';
 
 const config: IGameConfig = {
   bgioGame: BombsAndBunniesGame,
