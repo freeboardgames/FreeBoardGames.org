@@ -84,10 +84,8 @@ it('end2end - 5 player execute drac', () => {
 
   players[1].moves.moveExecute(0, 1);
 
-  // var {G, ctx} = players[0].getState();
-  // console.log(G)
-  // console.log(ctx)
-  // TODO: Now the game should be over, as Dracula is dead!
+  var { G, ctx } = players[0].getState();
+  expect(ctx.gameover).toEqual({ lose: true });
 });
 
 it('end2end - 6 player finish vampire', () => {
@@ -192,12 +190,9 @@ it('end2end - 6 player finish vampire', () => {
   players[3].moves.moveDiscardMayor(0, 3);
   players[4].moves.moveDiscardPriest(0, 4); // -- play 6th blood
 
+  var { G, ctx } = players[0].getState();
+  expect(ctx.gameover).toEqual({ lose: true });
   return;
-
-  // var {G, ctx} = players[0].getState();
-  // console.log(G)
-  // console.log(ctx)
-  // TODO: Now the game should be over, as Dracula is dead!
 });
 
 it('end2end - 7 player veto and finish human', () => {
@@ -396,10 +391,8 @@ it('end2end - 7 player veto and finish human', () => {
   var { G, ctx } = players[0].getState();
   expect(G.policyBoardHuman.length).toEqual(5);
 
-  // var {G, ctx} = players[0].getState();
-  // console.log(G)
-  // console.log(ctx)
-  // TODO: Now the game should be over, as Humans won
+  var { G, ctx } = players[0].getState();
+  expect(ctx.gameover).toEqual({ win: true });
 });
 
 it('end2end - 7 player different special election', () => {
@@ -496,6 +489,8 @@ it('end2end - 7 player different special election', () => {
   players[3].moves.moveChosePriest(0, 3); // --Can chose previos Priest
   var { G, ctx } = players[0].getState();
   expect(ctx.phase).toEqual('phaseVotePriest');
+
+  // Game is not over, but test stops here
 
   return;
 });
@@ -643,6 +638,9 @@ it('end2end - 10 player dracula winner', () => {
 
   // TODO Dracula is Winner
 
+  var { G, ctx } = players[0].getState();
+  expect(ctx.gameover).toEqual({ lose: true });
+
   return;
 });
 
@@ -777,5 +775,7 @@ it('end2end - 10 player dracula dead', () => {
   var { G, ctx } = players[0].getState();
   // TODO Dracula is dead
 
+  var { G, ctx } = players[0].getState();
+  expect(ctx.gameover).toEqual({ win: true });
   return;
 });
