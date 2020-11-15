@@ -108,7 +108,7 @@ export function _setup(ctx: Ctx, randomPlayers: boolean, randomDeck: boolean): I
 }
 
 export const SecretDraculaGame = {
-  name: 'secretdracula',
+  name: 'secretDracula',
 
   setup: setup,
 

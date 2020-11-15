@@ -4,7 +4,7 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const secretDraculaGameDef: IGameDef = {
-  code: 'secretdracula',
+  code: 'secretDracula',
   name: 'Secret Dracula',
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
