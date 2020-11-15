@@ -33,9 +33,26 @@ interface IListPlayersProps {
 export class ListPlayers extends React.Component<IListPlayersProps, {}> {
   render() {
     const metadata = this.props.roomMetadata;
+    const occupancy = metadata.userMemberships.length;
+    const capacity = metadata.capacity;
+    return (
+      <div style={{position: 'relative'}}>
+        <List subheader={<ListSubheader>Players ({occupancy}/{capacity})</ListSubheader>}>
+          <div style={{maxHeight: '309px', overflowY: 'auto'}}>
+            {this.renderPlayersList()}
+            {this.renderWaitingList()}
+          </div>
+        </List>
+        {this.renderCapacityButtons()}
+      </div>
+    );
+  }
+
+  renderPlayersList() {
+    const metadata = this.props.roomMetadata;
     const creator = metadata.userMemberships.find((membership) => membership.isCreator);
     const isCreator = creator?.user.id === this.props.userId;
-    const playersList = metadata.userMemberships.map((membership, idx: number) => {
+    return metadata.userMemberships.map((membership, idx: number) => {
       let secondaryAction;
       if (membership.user.id == this.props.userId) {
         secondaryAction = (
@@ -70,8 +87,14 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
         </ListItem>
       );
     });
+  }
+
+  renderWaitingList() {
+    const metadata = this.props.roomMetadata;
+    const occupancy = metadata.userMemberships.length;
+    const capacity = metadata.capacity;
     const waitingList = [];
-    for (let i = 0; i < metadata.capacity - metadata.userMemberships.length; i++) {
+    for (let i = 0; i < capacity - occupancy; i++) {
       waitingList.push(
         <ListItem key={`waiting-${i}`}>
           <ListItemAvatar>
@@ -85,15 +108,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
         </ListItem>,
       );
     }
-    return (
-      <div style={{position: 'relative'}}>
-        <List subheader={<ListSubheader>Players</ListSubheader>}>
-          {playersList}
-          {waitingList}
-        </List>
-        {this.renderCapacityButtons()}
-      </div>
-    );
+    return waitingList;
   }
 
   renderCapacityButtons() {
