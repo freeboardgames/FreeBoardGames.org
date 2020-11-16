@@ -555,6 +555,9 @@ export class Board extends React.Component<IBoardProps> {
   }
 
   _getGameOver() {
+    if (!this.props.ctx.gameover) {
+      return;
+    }
     // Online game
     if (this.props.ctx.gameover.win == true) {
       return 'Humans win';
