@@ -10,7 +10,7 @@ export const secretDraculaGameDef: IGameDef = {
   modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 5,
   maxPlayers: 10,
-  description: 'A game of decite, lies, and Vampires.',
+  description: 'Similar to Secret Hitler',
   descriptionTag: 'Secret Dracula',
   instructions: {
     videoId: 'mbGXIDYdtas',
