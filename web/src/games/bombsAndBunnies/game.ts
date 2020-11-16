@@ -281,7 +281,8 @@ export const BombsAndBunniesGame: Game<IG> = {
             }
 
             if (G.lastWinningPlayerId !== null) {
-              return (ctx.playOrderPos + 1) % ctx.playOrder.length;
+              var winningPlayerIndex = ctx.playOrder.findIndex((id) => id === G.lastWinningPlayerId);
+              return (winningPlayerIndex + 1) % ctx.playOrder.length;
             }
 
             return ctx.playOrderPos;
@@ -291,18 +292,18 @@ export const BombsAndBunniesGame: Game<IG> = {
         },
       },
 
-      onBegin: (G: IG) => {
-        G.bombPlayerId = null;
-        G.failedRevealPlayerId = null;
-        G.lastWinningPlayerId = null;
-      },
-
       moves: {
         MovePlaceCard: Moves.PlaceCard,
       },
       next: Phases.place_or_bet,
 
       endIf: (G: IG) => hasInitialPlacementFinished(G),
+
+      onEnd: (G: IG) => {
+        G.bombPlayerId = null;
+        G.failedRevealPlayerId = null;
+        G.lastWinningPlayerId = null;
+      },
     },
 
     place_or_bet: {

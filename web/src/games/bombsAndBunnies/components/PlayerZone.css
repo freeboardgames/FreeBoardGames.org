@@ -10,6 +10,7 @@
 .playerZone .statuses {
   text-align: left;
   height: 1.5em;
+  cursor: default;
 }
 
 .playerOut {

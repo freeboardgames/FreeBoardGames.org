@@ -70,22 +70,46 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   renderStatus(status: PlayerStatus, index: number) {
     switch (status) {
       case PlayerStatus.CurrentPlayer:
-        return <span key={index}>🕒</span>;
+        return (
+          <span key={index} title="Waiting for player's move">
+            🕒
+          </span>
+        );
 
       case PlayerStatus.HasWin:
-        return <span key={index}>🔥</span>;
+        return (
+          <span key={index} title="Has a win">
+            🔥
+          </span>
+        );
 
       case PlayerStatus.Skipped:
-        return <span key={index}>❌</span>;
+        return (
+          <span key={index} title="Skipped bet">
+            ❌
+          </span>
+        );
 
       case PlayerStatus.HasBet:
-        return <span key={index}>✋</span>;
+        return (
+          <span key={index} title="Has bet">
+            ✋
+          </span>
+        );
 
       case PlayerStatus.HasMaxBet:
-        return <span key={index}>😰</span>;
+        return (
+          <span key={index} title="Has max bet">
+            😰
+          </span>
+        );
 
       case PlayerStatus.IsOut:
-        return <span key={index}>💀</span>;
+        return (
+          <span key={index} title="Knocked out">
+            💀
+          </span>
+        );
     }
 
     return null;
