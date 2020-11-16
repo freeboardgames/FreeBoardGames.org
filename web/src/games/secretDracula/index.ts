@@ -7,18 +7,17 @@ export const secretDraculaGameDef: IGameDef = {
   code: 'secretDracula',
   name: 'Secret Dracula',
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }],
-  minPlayers: 2, // TODO - set to 5
+  modes: [{ mode: GameMode.OnlineFriend }],
+  minPlayers: 5,
   maxPlayers: 10,
-  description: 'A game of decite, lies, and Vampires.',
+  description: 'Similar to Secret Hitler',
   descriptionTag: 'Secret Dracula',
   instructions: {
     videoId: 'mbGXIDYdtas',
     text: instructions,
   },
-  status: IGameStatus.IN_DEVELOPMENT,
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
-  aiConfig: () => import('./ai'),
 };
 
 export default secretDraculaGameDef;
