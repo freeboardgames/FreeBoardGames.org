@@ -10,7 +10,7 @@ import { Ctx } from 'boardgame.io';
 export let phasePeekPolicy = {
   onBegin: (G: IG, ctx: Ctx) => {
     //- console.log('starting phasePeekPolicy');
-    let p = G.mayorID;
+    let p = G.lastMayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phasePeekPolicy';
     ctx.events.setActivePlayers(activePlayers);
@@ -46,7 +46,7 @@ export let phasePeekPolicy = {
 export let phaseInvestigate1 = {
   onBegin: (G: IG, ctx: Ctx) => {
     //- console.log('starting phaseInvestigate1');
-    let p = G.mayorID;
+    let p = G.lastMayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseInvestigate1';
     ctx.events.setActivePlayers(activePlayers);
@@ -72,7 +72,7 @@ export let phaseInvestigate1 = {
 export let phaseInvestigate2 = {
   onBegin: (G: IG, ctx: Ctx) => {
     //- console.log('starting phaseInvestigate2');
-    let p = G.mayorID;
+    let p = G.lastMayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseInvestigate2';
     ctx.events.setActivePlayers(activePlayers);
@@ -98,7 +98,7 @@ export let phaseInvestigate2 = {
 export let phaseSpecialElection = {
   onBegin: (G: IG, ctx: Ctx) => {
     //- console.log('starting phaseSpecialElection');
-    let p = G.mayorID;
+    let p = G.lastMayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseSpecialElection';
     ctx.events.setActivePlayers(activePlayers);
@@ -113,7 +113,7 @@ export let phaseSpecialElection = {
   },
   onEnd: (G: IG) => {
     //- console.log('ending phaseSpecialElection');
-    G.electionTracker = 0;
+    // G.electionTracker = 0;
     G.priestID = -1;
     G.ok = false;
     return G;
@@ -129,7 +129,7 @@ export let phaseSpecialElection = {
 export let phaseExecution = {
   onBegin: (G: IG, ctx: Ctx) => {
     //- console.log('starting phaseExecution');
-    let p = G.mayorID;
+    let p = G.lastMayorID;
     let activePlayers = { value: {} };
     activePlayers.value[p] = 'phaseExecution';
     ctx.events.setActivePlayers(activePlayers);
