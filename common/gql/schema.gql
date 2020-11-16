@@ -61,6 +61,7 @@ type Mutation {
   joinRoom(roomId: String!): Room!
   leaveRoom(roomId: String!): Boolean!
   removeFromRoom(userIdToBeRemoved: Int!, roomId: String!): Boolean!
+  updateRoom(room: UpdateRoomInput!): Boolean!
   nextRoom(matchId: String!): String!
   startMatch(roomId: String!): String!
 }
@@ -73,6 +74,12 @@ input NewRoomInput {
   gameCode: String!
   capacity: Float!
   isPublic: Boolean!
+}
+
+input UpdateRoomInput {
+  roomId: String!
+  gameCode: String!
+  capacity: Float!
 }
 
 type Subscription {

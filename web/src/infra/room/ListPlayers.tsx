@@ -36,9 +36,15 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
     const occupancy = metadata.userMemberships.length;
     const capacity = metadata.capacity;
     return (
-      <div style={{position: 'relative'}}>
-        <List subheader={<ListSubheader>Players ({occupancy}/{capacity})</ListSubheader>}>
-          <div style={{maxHeight: '309px', overflowY: 'auto'}}>
+      <div style={{ position: 'relative' }}>
+        <List
+          subheader={
+            <ListSubheader>
+              Players ({occupancy}/{capacity})
+            </ListSubheader>
+          }
+        >
+          <div style={{ maxHeight: '309px', overflowY: 'auto' }}>
             {this.renderPlayersList()}
             {this.renderWaitingList()}
           </div>

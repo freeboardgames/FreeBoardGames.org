@@ -138,16 +138,19 @@ class Room extends React.Component<Props, State> {
   }
 
   renderGameCard(gameDef: IGameDef) {
-    return (<div style={{position: 'relative'}}>
-      <GameCard game={gameDef} />
-      <Button 
-        style={{position: 'absolute', backgroundColor: 'rgb(220, 0, 78)', color: 'white'}}
-        className={css.ChangeGameButton} 
-        color="secondary" 
-        onClick={this._toggleChangingGame}>
-        Change Game
-      </Button>
-    </div>);
+    return (
+      <div style={{ position: 'relative' }}>
+        <GameCard game={gameDef} />
+        <Button
+          style={{ position: 'absolute', backgroundColor: 'rgb(220, 0, 78)', color: 'white' }}
+          className={css.ChangeGameButton}
+          color="secondary"
+          onClick={this._toggleChangingGame}
+        >
+          Change Game
+        </Button>
+      </div>
+    );
   }
 
   redirectToMatch(matchId: string) {
@@ -199,15 +202,15 @@ class Room extends React.Component<Props, State> {
       return;
     }
     alert(`Game picked: ${game.name}`);
-  }
+  };
 
   _changeCapacity = (delta: number) => () => {
     alert(`Capacity change: ${delta}`);
-  } 
+  };
 
   _toggleChangingGame = () => {
     this.setState({ changingGame: !this.state.changingGame });
-  }
+  };
 
   _toggleEditingName = () => {
     this.setState({ editingName: !this.state.editingName });
