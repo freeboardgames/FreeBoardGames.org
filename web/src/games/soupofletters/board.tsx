@@ -205,6 +205,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           score: this.props.G.solution.filter((s) => s.solvedBy === player.playerID.toString()).length,
         };
       });
+      scores.sort((a, b) => b.score - a.score);
       scoreBoard = (
         <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
       );
