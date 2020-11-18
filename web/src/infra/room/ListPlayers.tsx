@@ -7,6 +7,7 @@ import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import css from './ListPlayers.css';
+import { isCreator } from './RoomMetadataHelper';
 
 import {
   Button,
@@ -56,8 +57,6 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
 
   renderPlayersList() {
     const metadata = this.props.roomMetadata;
-    const creator = metadata.userMemberships.find((membership) => membership.isCreator);
-    const isCreator = creator?.user.id === this.props.userId;
     return metadata.userMemberships.map((membership, idx: number) => {
       let secondaryAction;
       if (membership.user.id == this.props.userId) {
@@ -70,7 +69,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
             </Tooltip>
           </ListItemSecondaryAction>
         );
-      } else if (isCreator) {
+      } else if (isCreator(metadata, this.props.userId)) {
         secondaryAction = (
           <ListItemSecondaryAction>
             <Tooltip title="Remove user" placement="top">
@@ -119,20 +118,21 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
 
   renderCapacityButtons() {
     const metadata = this.props.roomMetadata;
+    let allDisabled = false;
+    if (!isCreator(metadata, this.props.userId)) {
+      allDisabled = true;
+    }
     const occupancy = metadata.userMemberships.length;
     const gameDef = GAMES_MAP[metadata.gameCode];
     const minCapacity = Math.max(gameDef.minPlayers, occupancy);
     const maxCapacity = gameDef.maxPlayers;
-    if (minCapacity === maxCapacity) {
-      return;
-    }
     const capacity = metadata.capacity;
     return (
       <ButtonGroup size="small" className={css.CapacityButtons}>
-        <Button onClick={this.props.changeCapacity(-1)} disabled={capacity - 1 < minCapacity}>
+        <Button onClick={this.props.changeCapacity(-1)} disabled={allDisabled || capacity - 1 < minCapacity}>
           <RemoveIcon />
         </Button>
-        <Button onClick={this.props.changeCapacity(+1)} disabled={capacity + 1 > maxCapacity}>
+        <Button onClick={this.props.changeCapacity(+1)} disabled={allDisabled || capacity + 1 > maxCapacity}>
           <AddIcon />
         </Button>
       </ButtonGroup>
