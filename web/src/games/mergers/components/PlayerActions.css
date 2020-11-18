@@ -1,0 +1,50 @@
+.Actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 0.25em solid var(--mergers-color);
+  border-radius: 0.25em;
+  padding: 0 0.5em;
+  margin-top: 0.25em;
+  min-height: 3.5em;
+}
+
+.Actions.YourTurn {
+  border-color: var(--mergers-highlight-green);
+}
+
+.ActionButton {
+  min-width: 80px;
+}
+
+.ActionInput {
+  width: 1em;
+}
+
+.ErrorText {
+  color: var(--mergers-error-red);
+  font-size: 0.75em;
+}
+
+.SwapSellEntry {
+  display: flex;
+  align-items: center;
+  margin-right: 1em;
+}
+
+.SwapSellLabel {
+  margin-right: 0.25em;
+  font-size: 1em;
+}
+
+.WrapRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0.25em 0;
+}
+
+.MarginRight {
+  margin-right: 1em;
+}
