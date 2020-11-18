@@ -219,7 +219,6 @@ export function chooseChainToMerge(G: IG, ctx, chain: Chain) {
 }
 
 export function swapAndSellStock(G: IG, ctx: Ctx, swap?: number, sell?: number) {
-  debugger;
   const { chainToMerge, survivingChain } = G.merger;
   const player = G.players[ctx.playerID];
   const originalStockCount = player.stocks[chainToMerge];
