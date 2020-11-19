@@ -47,8 +47,20 @@ const changeCapacity = (delta) => () => {
 };
 
 export const example = () => (
-  <ListPlayers changeCapacity={changeCapacity} roomMetadata={roomMetadata} editNickname={editNickname} removeUser={removeUser} userId={1} />
+  <ListPlayers
+    changeCapacity={changeCapacity}
+    roomMetadata={roomMetadata}
+    editNickname={editNickname}
+    removeUser={removeUser}
+    userId={1}
+  />
 );
 export const isCreator = () => (
-  <ListPlayers changeCapacity={changeCapacity} roomMetadata={roomMetadata} editNickname={editNickname} removeUser={removeUser} userId={0} />
+  <ListPlayers
+    changeCapacity={changeCapacity}
+    roomMetadata={roomMetadata}
+    editNickname={editNickname}
+    removeUser={removeUser}
+    userId={0}
+  />
 );
