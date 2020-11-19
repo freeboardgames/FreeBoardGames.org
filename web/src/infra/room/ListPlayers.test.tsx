@@ -13,8 +13,10 @@ describe('List of players', () => {
     const wrapper = mount(
       <ListPlayers
         editNickname={jest.fn()}
+        removeUser={jest.fn()}
+        changeCapacity={jest.fn()}
         roomMetadata={{
-          gameCode: 'foomatch',
+          gameCode: 'chess',
           userMemberships: [user1membership],
           isPublic: false,
           capacity: 2,

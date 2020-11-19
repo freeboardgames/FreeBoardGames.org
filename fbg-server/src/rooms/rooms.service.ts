@@ -10,6 +10,7 @@ import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { PubSub } from 'graphql-subscriptions';
 import { roomEntityToRoom } from './RoomUtil';
 import { LobbyService } from './lobby.service';
+import { UpdateRoomInput } from './gql/UpdateRoomInput.gql';
 
 @Injectable()
 export class RoomsService {
@@ -98,21 +99,49 @@ export class RoomsService {
       if (room.match) {
         return room;
       }
-      const userMembership = room.userMemberships.find(
-        (membership) => membership.user.id === userIdOfCaller,
-      );
-      if (!userMembership || !userMembership.isCreator) {
-        throw new HttpException(
-          'You must be the creator of the room',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+      await this.checkIsOwner(userIdOfCaller, room);
       await this.removeMembership(queryRunner, userIdToBeRemoved, room);
       if (room.isPublic) {
         await this.lobbyService.notifyLobbyUpdate();
       }
       return room;
     });
+  }
+
+  /** Updates room metadata (capacity and game). */
+  async updateRoom(
+    userIdOfCaller: number,
+    updateRoomInput: UpdateRoomInput
+  ): Promise<void> {
+    await inTransaction(this.connection, async (queryRunner) => {
+      const room = await this.getRoomEntity(updateRoomInput.roomId);
+      if (room.match) {
+        throw new HttpException(
+          'Game already started for this Room',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      await this.checkIsOwner(userIdOfCaller, room);
+      room.capacity = updateRoomInput.capacity;
+      room.gameCode = updateRoomInput.gameCode;
+      await queryRunner.manager.save(room);
+      await this.notifyRoomUpdate(room);
+      if (room.isPublic) {
+        await this.lobbyService.notifyLobbyUpdate();
+      }
+    });
+  }
+
+  private async checkIsOwner(userId, room: RoomEntity) {
+    const userMembership = room.userMemberships.find(
+        (membership) => membership.user.id === userId,
+    );
+    if (!userMembership?.isCreator) {
+      throw new HttpException(
+        'You must be the creator of the room',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   /** Gets a raw RoomEntity, with user information populated. */

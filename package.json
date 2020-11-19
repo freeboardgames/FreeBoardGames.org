@@ -11,6 +11,7 @@
     "fix": "node cli/fix/fix.js",
     "dev": "node cli/dev/cli.js",
     "ci": "run-s gen:games ci:backend ci:web",
+    "storybook": "cd web/ && yarn run storybook",
     "gen:games": "node cli/genGames/cli.js",
     "dev:internal": "run-p web:dev backend:dev",
     "backend:dev": "cd fbg-server/ && yarn run start",
