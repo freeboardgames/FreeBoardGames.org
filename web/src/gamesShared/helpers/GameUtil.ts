@@ -6,3 +6,8 @@ export function isPlayersTurn(player: string, ctx: Ctx): boolean {
   const isCurrentPlayer = ctx.activePlayers === null && ctx.currentPlayer === player;
   return isActive || isCurrentPlayer;
 }
+
+/** Whether user is spectating the match. */
+export function isSpectator(playerID: string | null) {
+  return playerID === null;
+}
