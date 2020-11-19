@@ -136,7 +136,7 @@ export class RoomsService {
     const userMembership = room.userMemberships.find(
         (membership) => membership.user.id === userId,
     );
-    if (!userMembership || !userMembership.isCreator) {
+    if (!userMembership?.isCreator) {
       throw new HttpException(
         'You must be the creator of the room',
         HttpStatus.BAD_REQUEST,
