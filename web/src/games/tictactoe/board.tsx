@@ -11,8 +11,7 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Circle, Cross, Lines } from './Shapes';
 import Typography from '@material-ui/core/Typography';
-import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
-import { isSpectator } from 'gamesShared/helpers/GameUtil';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
 interface IBoardProps {
   G: any;
@@ -36,7 +35,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getStatus() {
-    if ((isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) && !isSpectator(this.props.playerID)) {
+    if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'YOUR TURN';
       } else {
@@ -53,7 +52,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getGameOver() {
-    if ((isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) && !isSpectator(this.props.playerID)) {
+    if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
         if (this.props.ctx.gameover.winner === this.props.playerID) {

@@ -1,4 +1,6 @@
 import { Ctx } from 'boardgame.io';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { isOnlineGame, isAIGame } from './gameMode';
 
 /** Whether given player should play now or not. */
 export function isPlayersTurn(player: string, ctx: Ctx): boolean {
@@ -10,4 +12,9 @@ export function isPlayersTurn(player: string, ctx: Ctx): boolean {
 /** Whether user is spectating the match. */
 export function isSpectator(playerID: string | null) {
   return playerID === null;
+}
+
+/** Whether the whole view is for a single player of the game.  */
+export function isFirstPersonView(gameArgs: IGameArgs, playerID: string | null) {
+  return (isOnlineGame(gameArgs) || isAIGame(gameArgs)) && !isSpectator(playerID);
 }
