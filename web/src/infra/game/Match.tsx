@@ -41,11 +41,7 @@ export class Match extends React.Component<MatchProps, MatchState> {
 
   render() {
     if (this.state.loading) {
-      return (
-        <NicknameRequired>
-          <MessagePage type={'loading'} message={'Loading...'} />
-        </NicknameRequired>
-      );
+      return <MessagePage type={'loading'} message={'Loading...'} />;
     } else if (this.state.error) {
       return <MessagePage type={'error'} message={'Could not load match.'} />;
     } else if (!this.state.match) {
@@ -62,4 +58,14 @@ const mapStateToProps = function (state) {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Match));
+const requireNickname = function (Comp) {
+  return function (props) {
+    return (
+      <NicknameRequired>
+        <Comp {...props} />
+      </NicknameRequired>
+    );
+  };
+};
+
+export default requireNickname(withRouter(connect(mapStateToProps)(Match)));
