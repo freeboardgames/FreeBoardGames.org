@@ -1,11 +1,11 @@
 import * as React from 'react';
-import IPlayer from '../player';
+import {IPlayerProps} from './shared/interfaces';
 
 import css from './PlayerStacks.css';
 import { PlayerStack } from './PlayerStack';
 
 export interface IPlayerStacksProps {
-  players: IPlayer[];
+  players: IPlayerProps[];
   revealCard: (playerId: string) => void;
 }
 
@@ -18,7 +18,7 @@ export class PlayerStacks extends React.Component<IPlayerStacksProps, {}> {
     return this.props.players.map((p, i) => this.renderStack(p, i));
   }
 
-  renderStack(player: IPlayer, playerIndex: number) {
+  renderStack(player: IPlayerProps, playerIndex: number) {
     return (
       <PlayerStack
         key={playerIndex}

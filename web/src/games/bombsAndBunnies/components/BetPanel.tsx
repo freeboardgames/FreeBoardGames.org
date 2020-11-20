@@ -3,7 +3,6 @@ import * as React from 'react';
 import css from './BetPanel.css';
 
 export interface IBetPanelProps {
-  playerIndex: number;
   minBet: number;
   maxBet: number;
   bet: (bet: number) => void;

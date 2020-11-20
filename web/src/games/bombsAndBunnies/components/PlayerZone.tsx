@@ -3,9 +3,9 @@ import * as React from 'react';
 import css from './PlayerZone.css';
 import { PlayerStack } from './PlayerStack';
 import { PlayerRevealedStack } from './PlayerRevealedStack';
-import { CardType, CardStyle } from '../card';
-import { MaxPlayers } from '../game';
+import { CardType, CardStyle } from './shared/interfaces';
 
+const MAX_PLAYERS = 6;
 const MIN_PLAYER_RADIUS = 25;
 const MAX_PLAYER_RADIUS = 200;
 
@@ -131,6 +131,6 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   }
 
   getRadiusForPlayers(totalPlayers: number): number {
-    return MIN_PLAYER_RADIUS + ((MAX_PLAYER_RADIUS - MIN_PLAYER_RADIUS) * totalPlayers) / MaxPlayers;
+    return MIN_PLAYER_RADIUS + ((MAX_PLAYER_RADIUS - MIN_PLAYER_RADIUS) * totalPlayers) / MAX_PLAYERS;
   }
 }

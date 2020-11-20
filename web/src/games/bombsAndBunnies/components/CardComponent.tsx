@@ -1,7 +1,7 @@
 import * as React from 'react';
 import css from './CardComponent.css';
 
-import { CardStyle } from '../card';
+import { CardStyle } from './shared/interfaces';
 
 function getStyleClassName(style?: CardStyle) {
   if (style === undefined) return '';

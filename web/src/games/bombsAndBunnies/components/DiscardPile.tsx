@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import css from './DiscardPile.css';
 import { FaceDownCardComponent } from './CardComponent';
-import { CardStyle } from '../card';
+import { CardStyle } from './shared/interfaces';
 
 export interface IDiscardPileProps {
   cards: CardStyle[];

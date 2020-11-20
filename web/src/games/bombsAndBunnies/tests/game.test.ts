@@ -1,6 +1,5 @@
-import { getMaxPlayerBet, IG } from '../game';
-import IPlayer from '../player';
-import { CardType, CardStyle } from '../card';
+import { getMaxPlayerBet } from '../engine/stateExtensions';
+import { IG, IPlayer, CardType, CardStyle } from '../engine/interfaces';
 
 const defaultPlayer: IPlayer = {
   cardStyle: CardStyle.Style1,
