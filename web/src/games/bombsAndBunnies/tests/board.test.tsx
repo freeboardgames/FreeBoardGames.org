@@ -18,7 +18,7 @@ test('game start', async () => {
     <BgioBoard
       G={state0.G}
       ctx={state0.ctx}
-      moves={client.moves}
+      moves={client.moves as any}
       playerID={'0'}
       gameArgs={{
         gameCode: 'bombsAndBunnies',

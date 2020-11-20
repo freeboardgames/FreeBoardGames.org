@@ -7,6 +7,14 @@ export enum Phases {
   result = 'result',
 }
 
+export interface IGameMoves {
+  PlaceCard(handIndex: number): void;
+  Bet(bet: number): void;
+  SkipBet(): void;
+  Reveal(targetPlayerId: string): void;
+  Discard(targetPlayerId: string, handIndex: number): void;
+}
+
 export interface IG {
   players: IPlayer[];
   minBet: number;

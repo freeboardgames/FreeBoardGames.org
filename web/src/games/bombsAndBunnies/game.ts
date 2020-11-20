@@ -1,7 +1,7 @@
 import { Ctx, Game } from 'boardgame.io';
 
 import { IG, IPlayer, CardType, CardStyle, Phases } from './engine/interfaces';
-import * as Moves from './engine/moves';
+import { Moves } from './engine/moves';
 import * as StateExtensions from './engine/stateExtensions';
 
 export const BombsAndBunniesGame: Game<IG> = {
@@ -32,7 +32,7 @@ export const BombsAndBunniesGame: Game<IG> = {
       },
 
       moves: {
-        MovePlaceCard: Moves.PlaceCard,
+        PlaceCard: Moves.PlaceCard,
       },
       next: Phases.place_or_bet,
 
@@ -56,8 +56,8 @@ export const BombsAndBunniesGame: Game<IG> = {
       },
 
       moves: {
-        MovePlaceCard: Moves.PlaceCard,
-        MoveBet: Moves.Bet,
+        PlaceCard: Moves.PlaceCard,
+        Bet: Moves.Bet,
       },
 
       endIf: (G: IG, ctx: Ctx) => {
@@ -84,8 +84,8 @@ export const BombsAndBunniesGame: Game<IG> = {
       },
 
       moves: {
-        MoveBet: Moves.Bet,
-        MoveSkipBet: Moves.SkipBet,
+        Bet: Moves.Bet,
+        SkipBet: Moves.SkipBet,
       },
 
       next: Phases.reveal,
@@ -101,7 +101,7 @@ export const BombsAndBunniesGame: Game<IG> = {
       },
 
       moves: {
-        MoveReveal: Moves.Reveal,
+        Reveal: Moves.Reveal,
       },
 
       next: Phases.initial_placement,
@@ -122,7 +122,7 @@ export const BombsAndBunniesGame: Game<IG> = {
       },
 
       moves: {
-        MoveDiscard: Moves.Discard,
+        Discard: Moves.Discard,
       },
 
       next: Phases.initial_placement,

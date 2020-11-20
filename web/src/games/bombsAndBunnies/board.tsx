@@ -7,7 +7,7 @@ import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 import { Board, IBoardProps } from './components/Board';
 
 import { IPlayerProps, CardStyle as ViewCardStyle, CardType as ViewCardType } from './components/shared/interfaces';
-import { IG, IPlayer, CardStyle as GameCardStyle, CardType as GameCardType } from './engine/interfaces';
+import { IG, IGameMoves, IPlayer, CardStyle as GameCardStyle, CardType as GameCardType } from './engine/interfaces';
 import {
   canBet,
   canDiscard,
@@ -23,47 +23,38 @@ import {
 interface IBgioBoardProps {
   G: IG;
   ctx: Ctx;
-  moves: any;
+  moves: IGameMoves;
   playerID: string;
   gameArgs?: IGameArgs;
 }
 
 export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
-  betPanelToggle: boolean = false;
-
-  _toggleBetPanel = () => {
-    this.betPanelToggle = !this.betPanelToggle;
-    this.forceUpdate();
-  };
-
   _selectCard(handIndex: number) {
-    this.props.moves.MovePlaceCard(handIndex);
+    this.props.moves.PlaceCard(handIndex);
   }
 
   _selectPenaltyCard(targetPlayerIndex: string, handIndex: number) {
-    this.props.moves.MoveDiscard(targetPlayerIndex, handIndex);
+    this.props.moves.Discard(targetPlayerIndex, handIndex);
   }
 
   _bet(bet: number) {
-    this.betPanelToggle = false;
-    this.props.moves.MoveBet(bet);
+    this.props.moves.Bet(bet);
   }
 
   _skipBet() {
-    this.betPanelToggle = false;
-    this.props.moves.MoveSkipBet();
+    this.props.moves.SkipBet();
   }
 
   _revealCard(targetPlayerId: string) {
-    this.props.moves.MoveReveal(targetPlayerId);
+    this.props.moves.Reveal(targetPlayerId);
   }
 
   render() {
     if (this.props.ctx.gameover) {
       return (
         <GameLayout
-          gameOver={this._getGameOver()}
-          extraCardContent={this._getScoreboard()}
+          gameOver={this.getGameOver()}
+          extraCardContent={this.getScoreboard()}
           gameArgs={this.props.gameArgs}
         />
       );
@@ -154,12 +145,10 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
   }
 
   getBrowserPlayer() {
-    return isLocalGame(this.props.gameArgs)
-      ? this.props.ctx.currentPlayer
-      : this.props.playerID;
+    return isLocalGame(this.props.gameArgs) ? this.props.ctx.currentPlayer : this.props.playerID;
   }
 
-  _getGameOver() {
+  getGameOver() {
     if (this.props.ctx.gameover.draw) {
       return 'draw';
     }
@@ -178,7 +167,7 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
     }
   }
 
-  _getScoreboard() {
+  getScoreboard() {
     if (this.props.ctx.gameover) {
       const scores: IScore[] = this.props.gameArgs.players.map((player) => {
         const gamePlayer = getPlayerById(this.props.G, player.playerID.toString());

@@ -98,9 +98,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   getPlayerBettingOptions() {
     if (!this.betPanelToggle) return null;
 
-    return (
-      <BetPanel bet={this.props.bet} minBet={this.props.minBet} maxBet={this.props.maxBet} />
-    );
+    return <BetPanel bet={this.props.bet} minBet={this.props.minBet} maxBet={this.props.maxBet} />;
   }
 
   getOtherPlayerHandPenalty() {
