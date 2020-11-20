@@ -30,6 +30,7 @@ import Rook from './pieces/rook';
 import { playSound } from './sound';
 import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
 import Typography from '@material-ui/core/Typography';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
 const COL_NAMES = 'abcdefgh';
 const HIGHLIGHTED_COLOR = 'green';
@@ -294,8 +295,7 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getStatus() {
     // Online Multiplayer or AI
-    const mode = this.props.gameArgs.mode;
-    if (this.props.gameArgs && (mode === GameMode.OnlineFriend || mode === GameMode.AI)) {
+    if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.chess.in_check()) {
         return 'CHECK';
       }

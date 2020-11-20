@@ -166,6 +166,28 @@ describe('RoomsService', () => {
     expect(newRoom.userMemberships.length).toEqual(1);
   });
 
+  it('should notify about new room capacity and game', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const newCapacity = 5;
+    const newGameCode = 'chess';
+    jest.clearAllMocks();
+    const publish = jest.spyOn(pubSub, 'publish');
+    await service.updateRoom(bobId, { roomId: room.id, capacity: newCapacity, gameCode: newGameCode});
+
+    const args = publish.mock.calls[0];
+    expect(args[0]).toEqual(`room/${room.id}`);
+    expect(args[1].roomMutated.capacity).toEqual(newCapacity);
+    expect(args[1].roomMutated.gameCode).toEqual(newGameCode);
+  });
+
   it('should notify that about a user update succesfully', async () => {
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const room = await service.newRoom(
@@ -178,6 +200,7 @@ describe('RoomsService', () => {
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
     await service.joinRoom(aliceId, room.id);
+    jest.clearAllMocks();
     const publish = jest.spyOn(pubSub, 'publish');
     await usersService.updateUser(aliceId, { nickname: 'Alice!'});
     await service.notifyUserUpdated(aliceId);

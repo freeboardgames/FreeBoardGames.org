@@ -1,0 +1,50 @@
+import { Meta } from '@storybook/addon-docs/blocks'; 
+
+<Meta title="Documentation/Debugging Backend (fbg-server)" />
+
+# Setup
+You can manually start only the backend by going to the `fbg-server` folder and using `yarn run start`.
+
+In order to only run the unit tests for the fbg-server, you can use `yarn run jest` in that folder.
+
+# Debugging GraphQL queries
+
+For manually testing the GraphQL queries, you can access the GraphQL console at http://localhost:3001/graphql.
+
+Create a user with this query:
+
+```
+mutation newUser($nickname: String!) {
+  newUser(user:{nickname:$nickname}){
+    jwtToken
+  }
+}
+```
+
+with the variables below:
+
+```
+{
+  "nickname": "hello"
+}
+```
+
+You can authenticate with this user for the next query by copying the JWT value returned and setting the header like below:
+
+```
+{"authorization": "Bearer JWT_VALUE"}
+```
+
+Replace the `JWT_VALUE` from the previous query.
+
+An instance of a query for fetching the current user data:
+```
+query getUser {
+  user {
+    id,
+    nickname
+  }
+}
+```
+
+Use the right tab on the console to see all possible queries.

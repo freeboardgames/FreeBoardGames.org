@@ -17,6 +17,12 @@ export interface NewUserInput {
   nickname: string;
 }
 
+export interface UpdateRoomInput {
+  roomId: string;
+  gameCode: string;
+  capacity: number;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

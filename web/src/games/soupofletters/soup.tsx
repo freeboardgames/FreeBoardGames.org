@@ -165,6 +165,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
   };
 
   _handleLetterClick = (event: any, callType: string) => {
+    event.preventDefault();
     const { x, y, letter } = this._resolveLetterAndCoordinates(event);
     if (!letter) {
       return;
