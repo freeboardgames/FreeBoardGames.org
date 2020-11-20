@@ -16,6 +16,12 @@ export class BetPanel extends React.Component<IBetPanelProps, { value: number }>
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidUpdate() {
+    if (this.state.value < this.props.minBet) {
+      this.setState({ value: Math.max(this.state.value, this.props.minBet) });
+    }
+  }
+
   _bet = () => {
     this.props.bet(this.state.value);
   };

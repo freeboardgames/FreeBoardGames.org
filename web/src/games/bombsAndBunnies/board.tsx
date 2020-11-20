@@ -4,12 +4,13 @@ import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { isLocalGame, isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
 import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
-import { Board, IBoardProps } from './components/board';
+import { Board, IBoardProps } from './components/Board';
 
 import { IPlayerProps, CardStyle as ViewCardStyle, CardType as ViewCardType } from './components/shared/interfaces';
 import { IG, IPlayer, CardStyle as GameCardStyle, CardType as GameCardType } from './engine/interfaces';
 import {
   canBet,
+  canDiscard,
   canPlaceCard,
   canRevealTargetStack,
   canSkipBet,
@@ -100,7 +101,7 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
       bet: canBet(this.props.G, this.props.ctx, playerId) ? this._bet.bind(this) : null,
       skipBet: canSkipBet(this.props.G, this.props.ctx, playerId) ? this._skipBet.bind(this) : null,
       selectCard: canPlaceCard(this.props.ctx, playerId) ? this._selectCard.bind(this) : null,
-      selectPenaltyCard: this.props.G.failedRevealPlayerId ? this._selectPenaltyCard.bind(this) : null,
+      selectPenaltyCard: canDiscard(this.props.G, this.props.ctx, playerId) ? this._selectPenaltyCard.bind(this) : null,
       revealCard: this._revealCard.bind(this),
       canRevealCard: (targetPlayerId: string) => canRevealTargetStack(this.props.G, this.props.ctx, targetPlayerId),
     };
@@ -153,12 +154,9 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
   }
 
   getBrowserPlayer() {
-    let playerID = this.props.playerID;
-    if (isLocalGame(this.props.gameArgs)) {
-      playerID = this.props.ctx.currentPlayer;
-    }
-
-    return playerID;
+    return isLocalGame(this.props.gameArgs)
+      ? this.props.ctx.currentPlayer
+      : this.props.playerID;
   }
 
   _getGameOver() {

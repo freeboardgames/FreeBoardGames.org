@@ -45,6 +45,8 @@ export class Board extends React.Component<IBoardProps, {}> {
   };
 
   render() {
+    this.betPanelToggle = this.betPanelToggle && !!this.props.bet;
+
     return (
       <div className={css.board}>
         {this.getPlayerZones()}
@@ -61,7 +63,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       <div style={{ marginBottom: '-10px' }}>
         <span style={{ marginRight: '20px' }}>
           <BetButton
-            click={this.props.bet ? this._toggleBetPanel.bind(this) : null}
+            click={this.props.bet || this.betPanelToggle ? this._toggleBetPanel.bind(this) : null}
             active={this.betPanelToggle}
           ></BetButton>
         </span>
@@ -96,7 +98,9 @@ export class Board extends React.Component<IBoardProps, {}> {
   getPlayerBettingOptions() {
     if (!this.betPanelToggle) return null;
 
-    return <BetPanel bet={this.props.bet} minBet={this.props.minBet} maxBet={this.props.maxBet} />;
+    return (
+      <BetPanel bet={this.props.bet} minBet={this.props.minBet} maxBet={this.props.maxBet} />
+    );
   }
 
   getOtherPlayerHandPenalty() {

@@ -51,8 +51,8 @@ export function canRevealTargetStack(G: IG, ctx: Ctx, targetPlayerId: string) {
   );
 }
 
-export function canDiscard(G: IG, playerId: string): boolean {
-  return G.bombPlayerId !== null && G.bombPlayerId === playerId;
+export function canDiscard(G: IG, ctx: Ctx, playerId: string): boolean {
+  return ctx.phase === Phases.penalty && G.bombPlayerId !== null && G.bombPlayerId === playerId;
 }
 
 export function getPlayerById(G: IG, playerId: string): IPlayer {
