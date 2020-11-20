@@ -77,7 +77,7 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
 
   getBoardProps(): IBoardProps {
     const playerId = this.getBrowserPlayer();
-    const players = this.props.G.players.map(this.getPlayerProps);
+    const players = this.props.G.players.map((p) => this.getPlayerProps(p));
     const player = players.find((p) => p.id === playerId);
     const penaltyPlayer = players.find((p) => p.id === this.props.G.failedRevealPlayerId);
     const discardPile = this.props.G.discardPile;
@@ -112,10 +112,10 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
       bet: player.bet,
       betSkipped: player.betSkipped,
       cardStyle: this.getCardStyle(player.cardStyle),
-      hand: player.hand.map(this.getCardType),
+      hand: player.hand.map((c) => this.getCardType(c)),
       isOut: player.isOut,
-      revealedStack: player.revealedStack.map(this.getCardType),
-      stack: player.stack.map(this.getCardType),
+      revealedStack: player.revealedStack.map((c) => this.getCardType(c)),
+      stack: player.stack.map((c) => this.getCardType(c)),
       wins: player.wins,
     };
   }
