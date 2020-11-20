@@ -64,7 +64,12 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
     );
   }
 
-  getPlayerZoneProps(player: IPlayerProps, index: number, totalPlayers: number, perspectiveIndex: number): IPlayerZoneProps {
+  getPlayerZoneProps(
+    player: IPlayerProps,
+    index: number,
+    totalPlayers: number,
+    perspectiveIndex: number,
+  ): IPlayerZoneProps {
     const playerStatuses = this.getPlayerStatuses(player);
     const bet = player.bet;
     const totalPlayerCards = player.hand.length + player.stack.length + player.revealedStack.length;

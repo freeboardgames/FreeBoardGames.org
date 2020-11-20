@@ -8,7 +8,16 @@ import { Board, IBoardProps } from './components/board';
 
 import { IPlayerProps, CardStyle as ViewCardStyle, CardType as ViewCardType } from './components/shared/interfaces';
 import { IG, IPlayer, CardStyle as GameCardStyle, CardType as GameCardType } from './engine/interfaces';
-import { canBet, canPlaceCard, canRevealTargetStack, canSkipBet, getPlayerById, getRevealCount, isBetting, isRevealing } from './engine/stateExtensions';
+import {
+  canBet,
+  canPlaceCard,
+  canRevealTargetStack,
+  canSkipBet,
+  getPlayerById,
+  getRevealCount,
+  isBetting,
+  isRevealing,
+} from './engine/stateExtensions';
 
 interface IBgioBoardProps {
   G: IG;
@@ -69,17 +78,17 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
   getBoardProps(): IBoardProps {
     const playerId = this.getBrowserPlayer();
     const players = this.props.G.players.map(this.getPlayerProps);
-    const player = players.find(p => p.id === playerId);
-    const penaltyPlayer = players.find(p => p.id === this.props.G.failedRevealPlayerId);
+    const player = players.find((p) => p.id === playerId);
+    const penaltyPlayer = players.find((p) => p.id === this.props.G.failedRevealPlayerId);
     const discardPile = this.props.G.discardPile;
 
     return {
       player: player,
       penaltyPlayer: penaltyPlayer,
       players: players,
-  
+
       currentPlayerId: this.props.ctx.currentPlayer,
-  
+
       isBetting: isBetting(this.props.ctx),
       isRevealing: isRevealing(this.props.ctx),
       currentBet: this.props.G.currentBet,
@@ -87,7 +96,7 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
       maxBet: this.props.G.maxBet,
       revealedCount: getRevealCount(this.props.G.players),
       discardPile: discardPile,
-  
+
       bet: canBet(this.props.G, this.props.ctx, playerId) ? this._bet.bind(this) : null,
       skipBet: canSkipBet(this.props.G, this.props.ctx, playerId) ? this._skipBet.bind(this) : null,
       selectCard: canPlaceCard(this.props.ctx, playerId) ? this._selectCard.bind(this) : null,
@@ -107,7 +116,7 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
       isOut: player.isOut,
       revealedStack: player.revealedStack.map(this.getCardType),
       stack: player.stack.map(this.getCardType),
-      wins: player.wins
+      wins: player.wins,
     };
   }
 

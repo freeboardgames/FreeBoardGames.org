@@ -1,8 +1,8 @@
 import { Ctx, Game } from 'boardgame.io';
 
-import { IG, IPlayer, CardType, CardStyle, Phases } from './engine/interfaces'
+import { IG, IPlayer, CardType, CardStyle, Phases } from './engine/interfaces';
 import * as Moves from './engine/moves';
-import * as StateExtensions from './engine/stateExtensions'
+import * as StateExtensions from './engine/stateExtensions';
 
 export const BombsAndBunniesGame: Game<IG> = {
   name: 'bombsAndBunnies',

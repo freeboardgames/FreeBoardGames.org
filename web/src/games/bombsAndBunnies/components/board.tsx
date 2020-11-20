@@ -12,26 +12,26 @@ import { PlayerZones } from './PlayerZones';
 import { CardStyle, IPlayerProps } from './shared/interfaces';
 
 export interface IBoardProps {
-    player: IPlayerProps;
-    penaltyPlayer: IPlayerProps;
-    players: IPlayerProps[];
+  player: IPlayerProps;
+  penaltyPlayer: IPlayerProps;
+  players: IPlayerProps[];
 
-    currentPlayerId: string;
+  currentPlayerId: string;
 
-    isBetting: boolean;
-    isRevealing: boolean;
-    currentBet: number;
-    minBet: number;
-    maxBet: number;
-    revealedCount: number;
-    discardPile: CardStyle[];
+  isBetting: boolean;
+  isRevealing: boolean;
+  currentBet: number;
+  minBet: number;
+  maxBet: number;
+  revealedCount: number;
+  discardPile: CardStyle[];
 
-    bet?: (bet: number) => void;
-    skipBet: () => void;
-    selectCard?: (handIndex: number) => void;
-    selectPenaltyCard?: (argetPlayerIndex: string, handIndex: number) => void;
-    revealCard?: (targetPlayerId: string) => void;
-    canRevealCard?: (targetPlayerId: string) => boolean;
+  bet?: (bet: number) => void;
+  skipBet: () => void;
+  selectCard?: (handIndex: number) => void;
+  selectPenaltyCard?: (argetPlayerIndex: string, handIndex: number) => void;
+  revealCard?: (targetPlayerId: string) => void;
+  canRevealCard?: (targetPlayerId: string) => boolean;
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
@@ -46,13 +46,13 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   render() {
     return (
-        <div className={css.board}>
-            {this.getPlayerZones()}
-            {this.getBetButtons()}
-            {this.getPlayerHand()}
-            {this.getPlayerBettingOptions()}
-            {this.getOtherPlayerHandPenalty()}
-        </div>
+      <div className={css.board}>
+        {this.getPlayerZones()}
+        {this.getBetButtons()}
+        {this.getPlayerHand()}
+        {this.getPlayerBettingOptions()}
+        {this.getOtherPlayerHandPenalty()}
+      </div>
     );
   }
 
@@ -65,9 +65,7 @@ export class Board extends React.Component<IBoardProps, {}> {
             active={this.betPanelToggle}
           ></BetButton>
         </span>
-        <SkipButton
-          click={this.props.skipBet}
-        ></SkipButton>
+        <SkipButton click={this.props.skipBet}></SkipButton>
       </div>
     );
   }
@@ -98,13 +96,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   getPlayerBettingOptions() {
     if (!this.betPanelToggle) return null;
 
-    return (
-      <BetPanel
-        bet={this.props.bet}
-        minBet={this.props.minBet}
-        maxBet={this.props.maxBet}
-      />
-    );
+    return <BetPanel bet={this.props.bet} minBet={this.props.minBet} maxBet={this.props.maxBet} />;
   }
 
   getOtherPlayerHandPenalty() {
@@ -129,7 +121,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       <PlayerZones
         betDisplayProps={this.getBetDisplayProps()}
         discardPileProps={this.getDiscardPileProps()}
-        currentPlayerId={ this.props.currentPlayerId}
+        currentPlayerId={this.props.currentPlayerId}
         perspectivePlayerId={this.props.player.id}
         players={this.props.players}
         currentBet={this.props.currentBet}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IPlayerProps} from './shared/interfaces';
+import { IPlayerProps } from './shared/interfaces';
 
 import css from './PlayerStacks.css';
 import { PlayerStack } from './PlayerStack';

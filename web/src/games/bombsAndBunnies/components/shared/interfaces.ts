@@ -1,25 +1,25 @@
 export enum CardStyle {
-    Style1,
-    Style2,
-    Style3,
-    Style4,
-    Style5,
-    Style6,
+  Style1,
+  Style2,
+  Style3,
+  Style4,
+  Style5,
+  Style6,
 }
 
 export enum CardType {
-    Bunny,
-    Bomb
+  Bunny,
+  Bomb,
 }
 
 export interface IPlayerProps {
-    id: string;
-    cardStyle: CardStyle;
-    hand: CardType[];
-    stack: CardType[];
-    revealedStack: CardType[];
-    wins: number;
-    bet: null | number;
-    betSkipped: boolean;
-    isOut: boolean;
+  id: string;
+  cardStyle: CardStyle;
+  hand: CardType[];
+  stack: CardType[];
+  revealedStack: CardType[];
+  wins: number;
+  bet: null | number;
+  betSkipped: boolean;
+  isOut: boolean;
 }
