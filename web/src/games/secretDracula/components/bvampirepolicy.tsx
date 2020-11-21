@@ -47,7 +47,7 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
           Otherwise the Mayor will see a 💧.
 
           NOTE: This does not reveal if a vampire is 
-          <div className={css2.dracula}> dracula </div>.
+          <div className={css2.dracula}> <b>Dracula</b></div>.
         </span>
       </div>;
   };
