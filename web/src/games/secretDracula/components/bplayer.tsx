@@ -43,7 +43,7 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
             <p>{this.props.playerActive ? '🕒 ' : ' '}</p>
           </td>
           <td>
-            <p>
+            <p className={css.banana}>
               {this.props.dead
                 ? this.deads[my_rand_id % this.deads.length]
                 : this.props.vampire

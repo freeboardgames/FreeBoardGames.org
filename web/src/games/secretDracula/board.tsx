@@ -44,55 +44,52 @@ export class Board extends React.Component<IBoardProps> {
     return (
       <div className={css.div}>
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true} gameOver={this._getGameOver()}>
-          {this.render_players(playerorder, deads, vampires)}
+          <div className={css.header}>
+            {this.render_players(playerorder, deads, vampires)}
+          </div>
 
-          <BElectionTracker count={this.props.G.electionTracker}></BElectionTracker>
+          <div className={css.middle}>
+            <BElectionTracker count={this.props.G.electionTracker}></BElectionTracker>
 
-          <BVampirePolicies
-            playedPolicies={this.props.G.policyBoardVampire.length}
-            playerCount={this.props.ctx.numPlayers}
-          ></BVampirePolicies>
+            <BVampirePolicies
+              playedPolicies={this.props.G.policyBoardVampire.length}
+              playerCount={this.props.ctx.numPlayers}
+            ></BVampirePolicies>
 
-          <BHumanPolicies
-            playedPolicies={this.props.G.policyBoardHuman.length}
-            playerCount={this.props.ctx.numPlayers}
-          ></BHumanPolicies>
-          {this.render_chosePriest(playerorder, deads, vampires)}
+            <BHumanPolicies
+              playedPolicies={this.props.G.policyBoardHuman.length}
+              playerCount={this.props.ctx.numPlayers}
+            ></BHumanPolicies>
+          </div>
 
-          {this.render_votePriest()}
+          <div className={css.bottom}>
+            {this.render_chosePriest(playerorder, deads, vampires)}
 
-          {this.render_endVotePriest()}
+            {this.render_votePriest()}
 
-          {this.render_discardMayor()}
+            {this.render_endVotePriest()}
 
-          {this.render_discardPriest()}
+            {this.render_discardMayor()}
 
-          {this.render_vetoMayor()}
+            {this.render_discardPriest()}
 
-          {this.render_peekPolicy()}
+            {this.render_vetoMayor()}
 
-          {this.render_investigate1(playerorder, deads, vampires)}
+            {this.render_peekPolicy()}
 
-          {this.render_investigate2()}
+            {this.render_investigate1(playerorder, deads, vampires)}
 
-          {this.render_specialElection(playerorder, deads, vampires)}
+            {this.render_investigate2()}
 
-          {this.render_execution(playerorder, deads, vampires)}
+            {this.render_specialElection(playerorder, deads, vampires)}
+
+            {this.render_execution(playerorder, deads, vampires)}
+          </div>
         </GameLayout>
       </div>
     );
   }
-  /*
-            { this.props.G.log.map((a) => {
-                return(<div>
-                       { a }
-                  </div>)})}
-            <div>
-                  <pre id="json">
-                   { JSON.stringify(this.props.ctx, null, '\t') }
-                  </pre>
-            </div>
-*/
+
 
   render_players(playerorder: number[], deads, vampires) {
     return (
@@ -260,6 +257,7 @@ export class Board extends React.Component<IBoardProps> {
       </>
     );
   }
+
   render_discardPriest() {
     return (
       <>
@@ -285,6 +283,7 @@ export class Board extends React.Component<IBoardProps> {
       </>
     );
   }
+
   render_vetoMayor() {
     return (
       <>
