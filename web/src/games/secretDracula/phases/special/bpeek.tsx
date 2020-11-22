@@ -18,7 +18,9 @@ export class BPeek extends React.Component<InnerWrapper, {}> {
                 return (
                   <td key={'Bpeek-' + a.toString()}>
                     {' '}
-                    <BPolicy policy={a} discard={() => {}}></BPolicy>{' '}
+                    <BPolicy policy={a} 
+                             hover={false}
+                             discard={() => {}}></BPolicy>{' '}
                   </td>
                 );
               })}

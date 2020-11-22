@@ -41,12 +41,15 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
         >
 
           <span className={css.tooltip}>
+            <span style={{float:"left"}}>
                   {this.props.playerActive ? '🕒 ' : ' '}
               <span className={css.tooltiptext}>
                   This player needs to perform an action.
               </span>
           </span>
+          </span>
           <span className={css.tooltip}>
+              <span style={{textAlign:"center"}}>
               {this.props.dead
                 ? this.deads[my_rand_id % this.deads.length]
                 : this.props.vampire
@@ -62,6 +65,7 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
             ): (
               <span> {this.props.playerName} </span>
             )}
+            </span>
               <span className={css.tooltiptext}>
                 Player. Depending on the color, this player is either
                 <span className={css.dracula}> <b>Dracula </b></span> 
@@ -80,14 +84,15 @@ export class BPlayer extends React.Component<InnerWrapper, {}> {
                 or being nominated as such.
                 </span>
           </span>
-          <span className={css.tooltip}>
-            {this.props.mayor ? '🏅' : ' '}
+
+          <span className={css.tooltip} >
+                      {this.props.mayor ? '🏅' : ' '}
               <span className={css.tooltiptext}>
                 This player is currently the Mayor 🏅,
                 or being nominated as such.
               </span>
           </span>
-        </span>
+      </span>
       </span>
     );
   }

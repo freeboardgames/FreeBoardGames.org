@@ -65,13 +65,13 @@ export class Board extends React.Component<IBoardProps> {
           <div className={css.bottom}>
             {this.render_chosePriest(playerorder, deads, vampires)}
 
-            {this.render_votePriest()}
+            {this.render_votePriest(vampires)}
 
             {this.render_endVotePriest()}
 
-            {this.render_discardMayor()}
+            {this.render_discardMayor(vampires)}
 
-            {this.render_discardPriest()}
+            {this.render_discardPriest(vampires)}
 
             {this.render_vetoMayor()}
 
@@ -96,10 +96,12 @@ export class Board extends React.Component<IBoardProps> {
       <>
         {playerorder.map((a) => {
           return (
-            <div key={'render_players-' + a.toString}>
-              <table>
-                <tbody>
-                  <tr>
+            <>
+            <span key={'render_players-' + a.toString}
+                 style={{width: "49%",
+                 display: "inline-block",
+                 border: "1px solid blue"}}
+                  >
                     <BPlayer
                       me={Number(this.props.playerID) == a}
                       playerName={this.props.gameArgs.players[a].name}
@@ -113,10 +115,8 @@ export class Board extends React.Component<IBoardProps> {
                         return;
                       }}
                     ></BPlayer>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            </span>
+            </>
           );
         })}
       </>
@@ -130,11 +130,11 @@ export class Board extends React.Component<IBoardProps> {
           // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseChosePriest' ? (
             <div>
-              <p> Chose Priest </p>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <table>
-                  <tbody>
-                    <tr>
+                <>
+                <div style={{textAlign: "center"}}>
+                  You are the Mayor 🏅 and are required to select a Priest  ✝ ️ for your Term.
+                </div>
                       {playerorder.map((a) => {
                         return (
                           <>
@@ -151,33 +151,78 @@ export class Board extends React.Component<IBoardProps> {
                                 this.props.moves.moveChosePriest(a, parseInt(this.props.playerID));
                               }}
                             ></BPlayer>
+                            <span style={{width: "5%",
+                                          display: "inline-block"}}>
+
+                                          </span>
                           </>
                         );
                       })}
-                    </tr>
-                  </tbody>
-                </table>
+                </>
               ) : (
-                <></>
+                <>
+                <div style={{textAlign: "center"}}>
+                  The Mayor 🏅 is selecting a Priest ✝ ️. 
+                </div>
+                </>
               )}
             </div>
           ) : (
-            <></>
+            <>
+            </>
           )
         }
       </>
     );
   }
 
-  render_votePriest() {
+  render_votePriest(vampires) {
+    var priestID = this.props.G.priestID
+    var mayorID = this.props.G.mayorID
+
     return (
       <>
         {
           //
           this.props.ctx.phase == 'phaseVotePriest' ? (
             <div>
-              <p> Vote on Mayor and Priest </p>
+              <span style={{textAlign: "center"}}>
+                <p> Do you want to confirm </p>
+                <p> 
+                            <BPlayer
+                              me={false}
+                              playerName={this.props.gameArgs.players[mayorID].name}
+                              playerActive={false}
+                              dead={false}
+                              vampire={vampires[mayorID]}
+                              dracula={this.props.G.draculaID == mayorID}
+                              mayor={true}
+                              priest={false}
+                              chose={() => {
+                                return;
+                              }}
+                            ></BPlayer>
+                </p>
+                <p> 
+                            <BPlayer
+                              me={false}
+                              playerName={this.props.gameArgs.players[priestID].name}
+                              playerActive={false}
+                              dead={false}
+                              vampire={vampires[priestID]}
+                              dracula={this.props.G.draculaID == priestID}
+                              mayor={false}
+                              priest={true}
+                              chose={() => {
+                                return;
+                              }}
+                            ></BPlayer>
+                </p>
+                <p> for this Term? </p>
+              </span>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
+                <span style={{textAlign: "center"}}>
+                  <p>
                 <BVote
                   yes={() => {
                     this.props.moves.moveVoteYes(parseInt(this.props.playerID));
@@ -186,8 +231,17 @@ export class Board extends React.Component<IBoardProps> {
                     this.props.moves.moveVoteNo(parseInt(this.props.playerID));
                   }}
                 ></BVote>
+              </p>
+              </span>
               ) : (
-                <></>
+                <>
+                 <span style={{textAlign: "center"}}>
+                   <p>
+                    Waiting for other players to Vote.
+                   </p>
+                 </span>
+                
+                </>
               )}
             </div>
           ) : (
@@ -199,13 +253,16 @@ export class Board extends React.Component<IBoardProps> {
   }
 
   render_endVotePriest() {
+    var priestID = this.props.G.priestID
+    var mayorID = this.props.G.mayorID
+
     return (
       <>
         {
           //
           this.props.ctx.phase == 'phaseEndVotePriest' ? (
-            <div>
-              <p> Results of Election </p>
+            <span style={{textAlign:"center"}}>
+              <p> Results of the Election </p>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
                 <BEndVote
                   yes={this.props.G.voteCountYes}
@@ -225,7 +282,7 @@ export class Board extends React.Component<IBoardProps> {
                   }}
                 ></BEndVote>
               )}
-            </div>
+            </span>
           ) : (
             <></>
           )
@@ -234,14 +291,43 @@ export class Board extends React.Component<IBoardProps> {
     );
   }
 
-  render_discardMayor() {
+  render_discardMayor(vampires) {
+    var priestID = this.props.G.priestID
+    var mayorID = this.props.G.mayorID
+
     return (
       <>
         {
           // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseDiscardMayor' ? (
             <div>
-              <p> Mayor: Discard Card </p>
+              <span style={{textAlign: "center"}}>
+              { (parseInt(this.props.playerID) == mayorID) ?
+               ( <p> You are the Mayor 🏅 and must <b>discard</b> a sample!</p>)  
+               :
+               (
+                <p> The Mayor
+
+                <BPlayer
+                  me={false}
+                  playerName={this.props.gameArgs.players[mayorID].name}
+                  playerActive={false}
+                  dead={false}
+                  vampire={vampires[mayorID]}
+                  dracula={this.props.G.draculaID == mayorID}
+                  mayor={true}
+                  priest={false}
+                  chose={() => {
+                    return;
+                  }}
+                ></BPlayer>
+                is chosing to discard a sample.
+                </p>
+               )
+              }
+              </span>
+              <span style={{textAlign: "center"}}>
+                <p>
               <BDiscard
                 policies={this.props.G.policyHand}
                 vetoEnabled={false}
@@ -249,6 +335,8 @@ export class Board extends React.Component<IBoardProps> {
                 discard={this._discardWrapper(parseInt(this.props.playerID))}
                 veto={this._vetoWrapper(parseInt(this.props.playerID))}
               ></BDiscard>
+              </p>
+              </span>
             </div>
           ) : (
             <></>
@@ -258,7 +346,7 @@ export class Board extends React.Component<IBoardProps> {
     );
   }
 
-  render_discardPriest() {
+  render_discardPriest(vampires) {
     return (
       <>
         {
