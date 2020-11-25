@@ -4,11 +4,11 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const secretDraculaGameDef: IGameDef = {
-  code: 'secretDracula',
+  code: 'secretdracula',
   name: 'Secret Dracula',
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
-  minPlayers: 2,
+  minPlayers: 5,
   maxPlayers: 10,
   description: 'Similar to Secret Hitler',
   descriptionTag: 'Secret Dracula',
@@ -19,5 +19,3 @@ export const secretDraculaGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
-
-export default secretDraculaGameDef;
