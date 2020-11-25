@@ -10,31 +10,28 @@ interface InnerWrapper {
 export class BPeek extends React.Component<InnerWrapper, {}> {
   render() {
     return (
-      <div>
-        <table>
-          <tbody>
-            <tr>
+      <span style={{textAlign:"center"}}>
+        <p>
               {this.props.policies.map((a) => {
                 return (
-                  <td key={'Bpeek-' + a.toString()}>
+                  <span key={'Bpeek-' + a.toString()}
+                        style={{textAlign:"center"}}>
                     {' '}
                     <BPolicy policy={a} 
                              hover={false}
                              discard={() => {}}></BPolicy>{' '}
-                  </td>
+                  </span>
                 );
               })}
-              <td
+              <span
                 onClick={() => {
                   this.props.ok();
                 }}
-              >
+                style={{textAlign:"center"}}>
                 🆗
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+               </span>
+        </p>
+      </span>
     );
   }
 }

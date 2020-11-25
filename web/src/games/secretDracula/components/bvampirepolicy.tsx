@@ -4,7 +4,6 @@ import css2 from './bplayer.css';
 
 interface InnerWrapper {
   playerCount: number;
-
   playedPolicies: number;
 }
 
@@ -12,12 +11,12 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
   render() {
     return (
       <div className={css.vampire}>
-              {this.props.playedPolicies > 0 ? this._played() : this._first(this.props.playedPolicies)}
-              {this.props.playedPolicies > 1 ? this._played() : this._second(this.props.playedPolicies)}
-              {this.props.playedPolicies > 2 ? this._played() : this._third(this.props.playedPolicies)}
-              {this.props.playedPolicies > 3 ? this._played() : this._fourth()}                    
-              {this.props.playedPolicies > 4 ? this._played() : this._fifth()}                     
-              {this.props.playedPolicies > 5 ? this._played() : this._sixth()}                     
+              {this.props.playedPolicies > 0 ? this._played() : this._first(this.props.playerCount)}
+              {this.props.playedPolicies > 1 ? this._played() : this._second(this.props.playerCount)}
+              {this.props.playedPolicies > 2 ? this._played() : this._third(this.props.playerCount)}
+              {this.props.playedPolicies > 3 ? this._played() : this._fourth(this.props.playerCount)}                    
+              {this.props.playedPolicies > 4 ? this._played() : this._fifth(this.props.playerCount)}                     
+              {this.props.playedPolicies > 5 ? this._played() : this._sixth(this.props.playerCount)}                     
       </div>                                                                                            
     );
   }
@@ -99,11 +98,17 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
     if (playerCount >= 9) {
       return this._investigate();
     }
+    if (playerCount < 3){
+      return this._empty();
+    }
     return this._empty();
   };
   _second = (playerCount: number) => {
     if (playerCount >= 7) {
       return this._investigate();
+    }
+    if (playerCount < 3){
+      return this._empty();
     }
     return this._empty();
   };
@@ -111,17 +116,26 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
     if (playerCount >= 7) {
       return this._special();
     }
+    if (playerCount < 3){
+      return this._peek();
+    }
     return this._peek();
   };
-  _fourth = () => {
+  _fourth = (playerCount: number) => {
+    if (playerCount < 3){
+      return this._peek();
+    }
     return this._kill();
   };
 
-  _fifth = () => {
+  _fifth = (playerCount: number) => {
+    if (playerCount < 3){
+      return this._peek();
+    }
     return this._kill();
   };
 
-  _sixth = () => {
+  _sixth = (playerCount: number) => {
     return this._death();
   };
 }
