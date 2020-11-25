@@ -60,6 +60,21 @@ export class Board extends React.Component<IBoardProps> {
               playedPolicies={this.props.G.policyBoardHuman.length}
               playerCount={this.props.ctx.numPlayers}
             ></BHumanPolicies>
+
+            <div>
+              {this.props.G.vetoPower ? 
+              <>Veto Power <b>Enabled</b>.</>
+              :
+              <>Veto Power <b>Disabled</b>.</>
+              }
+            </div>
+            <div>
+              {( this.props.G.policyBoardVampire[2] != null )? 
+              <>Draculas power is <b>great</b>.</>
+              :
+              <>Draculas power is <b>weak</b>.</>
+              }
+            </div>
           </div>
 
           <div className={css.bottom}>
@@ -304,7 +319,22 @@ export class Board extends React.Component<IBoardProps> {
             <div>
               <span style={{textAlign: "center"}}>
               { (parseInt(this.props.playerID) == mayorID) ?
-               ( <p> You are the Mayor 🏅 and must <b>discard</b> a sample!</p>)  
+               (<>
+                  <p> You are the Mayor 🏅 and must <b>discard</b> a sample!</p>
+                
+              <span style={{textAlign: "center"}}>
+                <p>
+                  <BDiscard
+                    policies={this.props.G.policyHand}
+                    vetoEnabled={false}
+                    mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
+                    discard={this._discardWrapper(parseInt(this.props.playerID))}
+                    veto={this._vetoWrapper(parseInt(this.props.playerID))}
+                  ></BDiscard>
+                  </p>
+              </span>
+                </>
+                )  
                :
                (
                 <p> The Mayor
@@ -327,17 +357,6 @@ export class Board extends React.Component<IBoardProps> {
                )
               }
               </span>
-              <span style={{textAlign: "center"}}>
-                <p>
-              <BDiscard
-                policies={this.props.G.policyHand}
-                vetoEnabled={false}
-                mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
-                discard={this._discardWrapper(parseInt(this.props.playerID))}
-                veto={this._vetoWrapper(parseInt(this.props.playerID))}
-              ></BDiscard>
-              </p>
-              </span>
             </div>
           ) : (
             <></>
@@ -359,7 +378,24 @@ export class Board extends React.Component<IBoardProps> {
             <div>
               <span style={{textAlign: "center"}}>
               { (parseInt(this.props.playerID) == priestID) ?
-               ( <p> You are the Priest  and must <b>discard</b> a sample!</p>)  
+               ( <>
+                  <p> You are the Priest  and must <b>discard</b> a sample!</p>
+                    { (this.props.G.vetoPower) ? (<p>You may also propse a Veto.</p>) 
+                    : <></>} 
+                    <span style={{textAlign: "center"}}>
+                      <p>
+                    <BDiscard
+                      policies={this.props.G.policyHand.map((a) => {
+                        return parseInt(this.props.playerID) in this.props.ctx.activePlayers ? a : null;
+                      })}
+                      vetoEnabled={this.props.G.vetoPower}
+                      mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
+                      discard={this._discardWrapper(parseInt(this.props.playerID))}
+                      veto={this._vetoWrapper(parseInt(this.props.playerID))}
+                    ></BDiscard>
+                     </p>
+                    </span>
+                </>)  
                :
                (
                 <p> The Priest 
@@ -382,19 +418,6 @@ export class Board extends React.Component<IBoardProps> {
                )
               }
               </span>
-              <span style={{textAlign: "center"}}>
-                <p>
-              <BDiscard
-                policies={this.props.G.policyHand.map((a) => {
-                  return parseInt(this.props.playerID) in this.props.ctx.activePlayers ? a : null;
-                })}
-                vetoEnabled={this.props.G.vetoPower}
-                mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
-                discard={this._discardWrapper(parseInt(this.props.playerID))}
-                veto={this._vetoWrapper(parseInt(this.props.playerID))}
-              ></BDiscard>
-               </p>
-              </span>
             </div>
           ) : (
             <></>
@@ -411,14 +434,33 @@ export class Board extends React.Component<IBoardProps> {
           // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseVetoMayor' ? (
             <div>
-              <p> Mayor: Agree Veto? </p>
-              <BDiscard
-                policies={this.props.G.policyHand}
-                vetoEnabled={this.props.G.vetoPower}
-                mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
-                discard={this._discardWrapper(parseInt(this.props.playerID))}
-                veto={this._vetoWrapper(parseInt(this.props.playerID))}
-              ></BDiscard>
+            <span style={{textAlign:"center"}}>
+              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? 
+              (
+                <>
+                  <p> 
+                  You are the Mayor 🏅.
+                  </p>
+                  <p>
+                  You may force (👎) the Priest ✝️ to play, or may agree (👍) to the Veto. 
+                  </p>
+                  <BDiscard
+                    policies={this.props.G.policyHand}
+                    vetoEnabled={this.props.G.vetoPower}
+                    mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
+                    discard={this._discardWrapper(parseInt(this.props.playerID))}
+                    veto={this._vetoWrapper(parseInt(this.props.playerID))}
+                  ></BDiscard>
+                </>
+                ) : (
+                <>
+                  <p> 
+                  The Mayor 🏅 is contemplating a Veto.
+                  </p>
+                </>
+              )
+              }
+              </span>
             </div>
           ) : (
             <></>
@@ -692,9 +734,9 @@ export class Board extends React.Component<IBoardProps> {
         return this.props.moves.moveWantVetoPriest(playerIndex);
       };
     }
-    if (this.props.ctx.phase == 'phaseDiscardMayor') {
+    if (this.props.ctx.phase == 'phaseVetoMayor') {
       return (want: boolean) => {
-        return this.props.moves.moveWantVetoPriest(want, playerIndex);
+        return this.props.moves.moveWantVetoMayor(want, playerIndex);
       };
     }
     return () => {
