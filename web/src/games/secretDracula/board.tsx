@@ -75,7 +75,7 @@ export class Board extends React.Component<IBoardProps> {
 
             {this.render_vetoMayor()}
 
-            {this.render_peekPolicy()}
+            {this.render_peekPolicy(vampires)}
 
             {this.render_investigate1(playerorder, deads, vampires)}
 
@@ -347,13 +347,42 @@ export class Board extends React.Component<IBoardProps> {
   }
 
   render_discardPriest(vampires) {
+    var priestID = this.props.G.priestID
+    var mayorID = this.props.G.mayorID
+
     return (
       <>
         {
           // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseDiscardPriest' || this.props.ctx.phase == 'phaseDiscardPriestVeto' ? (
             <div>
-              <p> Priest: Discard Card </p>
+              <span style={{textAlign: "center"}}>
+              { (parseInt(this.props.playerID) == priestID) ?
+               ( <p> You are the Priest  and must <b>discard</b> a sample!</p>)  
+               :
+               (
+                <p> The Priest 
+
+                <BPlayer
+                  me={false}
+                  playerName={this.props.gameArgs.players[priestID].name}
+                  playerActive={false}
+                  dead={false}
+                  vampire={vampires[priestID]}
+                  dracula={this.props.G.draculaID == priestID}
+                  mayor={false}
+                  priest={true}
+                  chose={() => {
+                    return;
+                  }}
+                ></BPlayer>
+                is chosing to discard a sample.
+                </p>
+               )
+              }
+              </span>
+              <span style={{textAlign: "center"}}>
+                <p>
               <BDiscard
                 policies={this.props.G.policyHand.map((a) => {
                   return parseInt(this.props.playerID) in this.props.ctx.activePlayers ? a : null;
@@ -363,6 +392,8 @@ export class Board extends React.Component<IBoardProps> {
                 discard={this._discardWrapper(parseInt(this.props.playerID))}
                 veto={this._vetoWrapper(parseInt(this.props.playerID))}
               ></BDiscard>
+               </p>
+              </span>
             </div>
           ) : (
             <></>
@@ -395,14 +426,38 @@ export class Board extends React.Component<IBoardProps> {
       </>
     );
   }
-  render_peekPolicy() {
+
+  render_peekPolicy(vampires) {
+    var mayorID = this.props.G.mayorID
+
     return (
       <>
         {
           //
           this.props.ctx.phase == 'phasePeekPolicy' ? (
-            <div>
-              <p> Next Three Samples </p>
+            <span style={{textAlign:"center"}}>
+              { (parseInt(this.props.playerID) == mayorID) ?
+               ( <p> You are the Mayor 🏅 . These are the following three samples.</p>)  
+               :
+               (
+              <p> The Mayor
+              <BPlayer
+                  me={false}
+                  playerName={this.props.gameArgs.players[mayorID].name}
+                  playerActive={false}
+                  dead={false}
+                  vampire={vampires[mayorID]}
+                  dracula={this.props.G.draculaID == mayorID}
+                  mayor={true}
+                  priest={false}
+                  chose={() => {
+                    return;
+                  }}
+                ></BPlayer>
+                is looking at the next three samples.
+                </p>
+               )
+               }
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
                 <BPeek
                   policies={this.props.G.policyPeek}
@@ -413,7 +468,7 @@ export class Board extends React.Component<IBoardProps> {
               ) : (
                 <></>
               )}
-            </div>
+            </span>
           ) : (
             <></>
           )
@@ -421,6 +476,7 @@ export class Board extends React.Component<IBoardProps> {
       </>
     );
   }
+
   render_investigate1(playerorder, deads, vampires) {
     return (
       <>
@@ -466,6 +522,7 @@ export class Board extends React.Component<IBoardProps> {
       </>
     );
   }
+
   render_investigate2() {
     return (
       <>
@@ -509,6 +566,7 @@ export class Board extends React.Component<IBoardProps> {
       </>
     );
   }
+
   render_specialElection(playerorder, deads, vampires) {
     return (
       <>
@@ -554,6 +612,7 @@ export class Board extends React.Component<IBoardProps> {
       </>
     );
   }
+
   render_execution(playerorder, deads, vampires) {
     return (
       <>
@@ -599,6 +658,7 @@ export class Board extends React.Component<IBoardProps> {
       </>
     );
   }
+
   _discardWrapper(playerIndex: number) {
     if (this.props.ctx.phase == 'phaseDiscardMayor') {
       return (index: number) => {
