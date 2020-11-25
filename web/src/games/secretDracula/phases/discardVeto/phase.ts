@@ -138,7 +138,7 @@ export let phaseVetoMayor = {
   onBegin: (G: IG, ctx: Ctx) => {
     let p = G.mayorID;
     let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phaseDiscardPriestVeto';
+    activePlayers.value[p] = 'phaseVetoMayor';
     ctx.events.setActivePlayers(activePlayers);
 
     return G;
