@@ -503,25 +503,19 @@ export class Board extends React.Component<IBoardProps> {
           this.props.ctx.phase == 'phasePeekPolicy' ? (
             <span style={{textAlign:"center"}}>
               { (parseInt(this.props.playerID) == mayorID) ?
-               ( <p> You are the Mayor 🏅 . These are the following three samples.</p>)  
+               ( 
+                 <>
+               <p> 🧪 <b> Peek </b> 🧪 </p>
+                <p> You are the Mayor 🏅. These are the following three samples.</p>
+                </>
+               )
                :
                (
-              <p> The Mayor
-              <BPlayer
-                  me={false}
-                  playerName={this.props.gameArgs.players[mayorID].name}
-                  playerActive={false}
-                  dead={false}
-                  vampire={vampires[mayorID]}
-                  dracula={this.props.G.draculaID == mayorID}
-                  mayor={true}
-                  priest={false}
-                  chose={() => {
-                    return;
-                  }}
-                ></BPlayer>
-                is looking at the next three samples.
+                 <>
+              <p>  🧪 <b> Peek </b> </p>
+              <p> 🧪 The Mayor 🏅 is looking at te next three samples.
                 </p>
+                </>
                )
                }
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
@@ -552,6 +546,7 @@ export class Board extends React.Component<IBoardProps> {
             <div style={{textAlign: "center"}}>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
                 <>
+                <p>  🕵 <b> Investigate </b> 🕵  </p>
                 <p> You are the Mayor 🏅. Investigate a Player! </p>
 
                       {playerorder.map((a) => {
@@ -580,6 +575,7 @@ export class Board extends React.Component<IBoardProps> {
                 </>
               ) : (
                 <>
+                  <p>  🕵 <b> Investigate </b> 🕵 </p>
                   <p> The Mayor 🏅 is Investigating a Player. </p>
                 </>
               )}
@@ -645,7 +641,8 @@ export class Board extends React.Component<IBoardProps> {
             <div style={{textAlign: "center"}}>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
                 <>
-                <p><b>Special Election:</b> Chose next Mayor!</p>
+                <p> 🗳️ <b>Special Election</b>  🗳️ </p> 
+                <p> Chose next Mayor!</p>
                       {playerorder.map((a) => {
                         return (
                           <>
@@ -672,7 +669,8 @@ export class Board extends React.Component<IBoardProps> {
                 </>
               ) : (
                 <>
-                <p><b>Special Election:</b> The Mayor is chosing the next Mayor.</p>
+                <p>  🗳️<b>Special Election</b>  🗳️ </p>
+                <p> The Mayor is chosing the next Mayor.</p>
                 </>
               )}
             </div>
@@ -693,7 +691,8 @@ export class Board extends React.Component<IBoardProps> {
             <div style={{textAlign: "center"}}>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
                 <>
-                  <p><b>Execution: </b> You are the Mayor, and must Execute a Player!</p>
+                  <p>🗡️ <b>Execution </b> 🗡️ </p>
+                  <p>You are the Mayor, and must Execute a Player!</p>
                       {playerorder.map((a) => {         
                         return (
                           <>
@@ -720,7 +719,8 @@ export class Board extends React.Component<IBoardProps> {
                 </>
               ) : (
                 <>
-                  <p><b>Execution: </b> The Mayor must Execute a Player!</p>
+                  <p> 🗡️ <b>Execution</b> 🗡️</p>
+                  <p> The Mayor must Execute a Player!</p>
                 </>
               )}
             </div>
