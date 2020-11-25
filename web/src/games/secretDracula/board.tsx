@@ -62,18 +62,41 @@ export class Board extends React.Component<IBoardProps> {
             ></BHumanPolicies>
 
             <div>
+              <span className={css.tooltip}>
               {this.props.G.vetoPower ? 
               <>Veto Power <b>Enabled</b>.</>
               :
               <>Veto Power <b>Disabled</b>.</>
               }
+              <span className={css.tooltiptext}>
+                <p>
+                <b>Enabled:</b> The Priest may <i>propose</i> a Veto.
+                If the Mayor <b>agrees</b> to the Veto no sample is played. 
+                If the Mayor <b>disagrees</b> to the Veto, the Priest must play
+                a sample.
+                </p>
+                <p>
+                <b>Disabled:</b> This ability is not yet enabled. The Prist must play a sample.
+                </p>
+              </span>
+              </span>
             </div>
             <div>
+              <span className={css.tooltip}>
               {( this.props.G.policyBoardVampire[2] != null )? 
               <>Draculas power is <b>great</b>.</>
               :
               <>Draculas power is <b>weak</b>.</>
               }
+              <span className={css.tooltiptext}>
+                <p>
+                <b>great:</b> Electing Dracula as Priest ends the game in favor of the Vampires.
+                </p>
+                <p>
+                <b>weak:</b> Electing Dracula as Priest has no further consequences.
+                </p>
+              </span>
+            </span>
             </div>
           </div>
 
@@ -526,12 +549,11 @@ export class Board extends React.Component<IBoardProps> {
         {
           // parseInt(this.props.playerID) in this.props.ctx.activePlayers && this.props.ctx.phase == 'phaseInvestigate1' ? (
           this.props.ctx.phase == 'phaseInvestigate1' ? (
-            <div>
-              <p> Mayor: Who to Investigate? </p>
+            <div style={{textAlign: "center"}}>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <table>
-                  <tbody>
-                    <tr>
+                <>
+                <p> You are the Mayor 🏅. Investigate a Player! </p>
+
                       {playerorder.map((a) => {
                         return (
                           <>
@@ -548,14 +570,18 @@ export class Board extends React.Component<IBoardProps> {
                                 this.props.moves.moveInvestigateStart(a, parseInt(this.props.playerID));
                               }}
                             ></BPlayer>
+                            <span style={{width: "5%",
+                                          display: "inline-block"}}>
+
+                                          </span>
                           </>
                         );
                       })}
-                    </tr>
-                  </tbody>
-                </table>
+                </>
               ) : (
-                <></>
+                <>
+                  <p> The Mayor 🏅 is Investigating a Player. </p>
+                </>
               )}
             </div>
           ) : (
@@ -572,8 +598,8 @@ export class Board extends React.Component<IBoardProps> {
         {
           // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseInvestigate2' ? (
-            <div>
-              <p>Finish Investigation</p>
+            <div style={{textAlign: "center"}}>
+              <p>Investigation Results:</p>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
                 <BShowPlayer
                   name={
@@ -616,12 +642,10 @@ export class Board extends React.Component<IBoardProps> {
         {
           // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseSpecialElection' ? (
-            <div>
-              <p>Special Election: Chose next Mayor</p>
+            <div style={{textAlign: "center"}}>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <table>
-                  <tbody>
-                    <tr>
+                <>
+                <p><b>Special Election:</b> Chose next Mayor!</p>
                       {playerorder.map((a) => {
                         return (
                           <>
@@ -638,14 +662,18 @@ export class Board extends React.Component<IBoardProps> {
                                 this.props.moves.movePickMayor(a, parseInt(this.props.playerID));
                               }}
                             ></BPlayer>
+                            <span style={{width: "5%",
+                                          display: "inline-block"}}>
+
+                                          </span>
                           </>
                         );
                       })}
-                    </tr>
-                  </tbody>
-                </table>
+                </>
               ) : (
-                <></>
+                <>
+                <p><b>Special Election:</b> The Mayor is chosing the next Mayor.</p>
+                </>
               )}
             </div>
           ) : (
@@ -662,13 +690,11 @@ export class Board extends React.Component<IBoardProps> {
         {
           // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
           this.props.ctx.phase == 'phaseExecution' ? (
-            <div>
-              <p>Mayor: Execute player </p>
+            <div style={{textAlign: "center"}}>
               {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <table>
-                  <tbody>
-                    <tr>
-                      {playerorder.map((a) => {
+                <>
+                  <p><b>Execution: </b> You are the Mayor, and must Execute a Player!</p>
+                      {playerorder.map((a) => {         
                         return (
                           <>
                             <BPlayer
@@ -684,14 +710,18 @@ export class Board extends React.Component<IBoardProps> {
                                 this.props.moves.moveExecute(a, parseInt(this.props.playerID));
                               }}
                             ></BPlayer>
+                            <span style={{width: "5%",
+                                          display: "inline-block"}}>
+
+                                          </span>
                           </>
                         );
                       })}
-                    </tr>
-                  </tbody>
-                </table>
+                </>
               ) : (
-                <></>
+                <>
+                  <p><b>Execution: </b> The Mayor must Execute a Player!</p>
+                </>
               )}
             </div>
           ) : (
