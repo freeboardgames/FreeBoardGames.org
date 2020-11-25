@@ -123,9 +123,13 @@ export let phaseEndVotePriest = {
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
     if (G.voteCountYes > G.voteCountNo) {
       G.electionTracker = 0;
+      G.lastMayorID = G.mayorID;
+      G.lastPriestID = G.priestID;
     }
     G.voteCountYes = -1;
     G.voteCountNo = -1;
+
+
     return G;
   },
 };

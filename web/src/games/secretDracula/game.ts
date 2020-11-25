@@ -375,8 +375,8 @@ export const SecretDraculaGame = {
     phasePeekPolicy: phasePeekPolicy,
   },
 
-  endIf: (G) => {
-    if (isLose(G)) {
+  endIf: (G: IG, ctx: Ctx) => {
+    if (isLose(G, ctx)) {
       return { lose: true };
     }
     if (isWin(G)) {
