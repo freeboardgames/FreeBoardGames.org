@@ -95,6 +95,7 @@ export class Board extends React.Component<IBoardProps> {
     return (
       <>
         {playerorder.map((a) => {
+          var activePlayers = this.props.ctx.activePlayers !== null ? this.props.ctx.activePlayers : []
           return (
             <>
             <span key={'render_players-' + a.toString}
@@ -105,7 +106,7 @@ export class Board extends React.Component<IBoardProps> {
                     <BPlayer
                       me={Number(this.props.playerID) == a}
                       playerName={this.props.gameArgs.players[a].name}
-                      playerActive={a in this.props.ctx.activePlayers}
+                      playerActive={a in activePlayers} 
                       dead={deads[a]}
                       vampire={vampires[a]}
                       dracula={this.props.G.draculaID == a}
