@@ -15,7 +15,9 @@ export class BPolicy extends React.Component<InnerWrapper, {}> {
         {this.props.policy == null ? (
           <span> 🃏 </span>
         ) : (
-          <span onClick={() => this.props.discard()}>{this.props.policy.chalice ? this._chalice() : this._garlic()}</span>
+          <span onClick={() => this.props.discard()}>
+            {this.props.policy.chalice ? this._chalice() : this._garlic()}
+          </span>
         )}
       </>
     );
@@ -26,13 +28,13 @@ export class BPolicy extends React.Component<InnerWrapper, {}> {
       return <span className={css.hoveringb}> </span>;
     }
 
-    return (<>🩸</>);
+    return <>🩸</>;
   };
 
   _garlic = () => {
     if (this.props.hover) {
       return <span className={css.hoveringh}> </span>;
     }
-    return (<>💧</>);
+    return <>💧</>;
   };
 }
