@@ -14,7 +14,7 @@ export function isWin(G: IG) {
 
 export function isLose(G: IG, ctx: Ctx) {
   if (!G.voting && G.draculaID == G.priestID) {
-    if ((G.policyBoardVampire[2] != null) && (ctx.phase == 'phaseDiscardMayor' )){
+    if (G.policyBoardVampire[2] != null && ctx.phase == 'phaseDiscardMayor') {
       return true; // Dracula is mayor
     }
   }

@@ -66,12 +66,12 @@ it('end2end - 5 player execute drac', () => {
   expect(G.electionTracker).toEqual(2);
   expect(ctx.phase).toEqual('phaseChosePriest');
   players[0].moves.moveChosePriest(3, 0);
-  var { G, ctx } = players[0].getState(); 
+  var { G, ctx } = players[0].getState();
   expect(ctx.phase).toEqual('phaseVotePriest');
   players.map((p, i) => p.moves.moveVoteNo(i));
   players.map((p, i) => p.moves.moveOKVote(i));
 
-  var { G, ctx } = players[0].getState(); 
+  var { G, ctx } = players[0].getState();
   //    and play blood
 
   expect(G.electionTracker).toEqual(0);
@@ -640,7 +640,6 @@ it('end2end - 10 player dracula winner', () => {
 
   var { G, ctx } = players[0].getState();
 
-
   expect(ctx.gameover).toEqual({ lose: true });
 
   return;
@@ -875,10 +874,6 @@ it('end2end - 10 player dracula priest on 3 blood', () => {
 
   var { G, ctx } = players[7].getState();
 
-  console.log(G)
-  console.log(ctx)
-
   expect(ctx.gameover).toEqual({ lose: true });
-  return
-
+  return;
 });

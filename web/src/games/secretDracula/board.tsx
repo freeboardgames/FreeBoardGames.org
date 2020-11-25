@@ -139,10 +139,7 @@ export class Board extends React.Component<IBoardProps> {
           var activePlayers = this.props.ctx.activePlayers !== null ? this.props.ctx.activePlayers : [];
           return (
             <>
-              <span
-                key={'render_players-' + a.toString}
-                style={{ width: '49%', display: 'inline-block' }}
-              >
+              <span key={'render_players-' + a.toString} style={{ width: '49%', display: 'inline-block' }}>
                 <BPlayer
                   me={Number(this.props.playerID) == a}
                   playerName={this.props.gameArgs.players[a].name}

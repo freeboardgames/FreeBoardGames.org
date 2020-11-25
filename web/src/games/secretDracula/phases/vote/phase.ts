@@ -129,7 +129,6 @@ export let phaseEndVotePriest = {
     G.voteCountYes = -1;
     G.voteCountNo = -1;
 
-
     return G;
   },
 };
