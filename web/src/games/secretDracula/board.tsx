@@ -141,7 +141,7 @@ export class Board extends React.Component<IBoardProps> {
             <>
               <span
                 key={'render_players-' + a.toString}
-                style={{ width: '49%', display: 'inline-block', border: '1px solid blue' }}
+                style={{ width: '49%', display: 'inline-block' }}
               >
                 <BPlayer
                   me={Number(this.props.playerID) == a}
