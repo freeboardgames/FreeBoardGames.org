@@ -232,7 +232,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       );
     }
     return (
-      <GameLayout gameArgs={this.props.gameArgs} avoidOverscrollReload={true}>
+      <GameLayout gameArgs={this.props.gameArgs} avoidOverscrollReload>
         <Typography className={soupCSS.noselect} variant="h5" style={{ color: 'white', textAlign: 'center' }}>
           {this._getStatus()}
         </Typography>
