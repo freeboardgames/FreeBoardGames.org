@@ -1,4 +1,5 @@
 import { IG } from './interfaces';
+import { Ctx } from 'boardgame.io';
 
 export function isWin(G: IG) {
   if (G.deadIDs.includes(G.draculaID)) {
@@ -11,9 +12,9 @@ export function isWin(G: IG) {
   return false;
 }
 
-export function isLose(G: IG) {
+export function isLose(G: IG, ctx: Ctx) {
   if (!G.voting && G.draculaID == G.priestID) {
-    if (G.policyBoardVampire[3] != null) {
+    if (G.policyBoardVampire[2] != null && ctx.phase == 'phaseDiscardMayor') {
       return true; // Dracula is mayor
     }
   }

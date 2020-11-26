@@ -269,6 +269,18 @@ export const SecretDraculaGame = {
           //- console.log(' 1 ');
           return { next: 'phaseNoSpecial' };
         }
+
+        // if (ctx.numPlayers < 3) { // ONLY FOR TESTING
+        //   return { next: 'phaseExecution' };
+        //   if (G.justPlayedVampirePolicy == 2) {
+        //     return { next: 'phaseSpecialElection' };
+        //   } else if (G.justPlayedVampirePolicy == 3) {
+        //     return { next: 'phaseSpecialElection' };
+        //   } else if (G.justPlayedVampirePolicy == 4) {
+        //     return { next: 'phaseSpecialElection' };
+        //   }
+        // }
+
         if (ctx.numPlayers < 7) {
           if (G.justPlayedVampirePolicy == 2) {
             //- console.log(' 2 ');
@@ -363,8 +375,8 @@ export const SecretDraculaGame = {
     phasePeekPolicy: phasePeekPolicy,
   },
 
-  endIf: (G) => {
-    if (isLose(G)) {
+  endIf: (G: IG, ctx: Ctx) => {
+    if (isLose(G, ctx)) {
       return { lose: true };
     }
     if (isWin(G)) {
