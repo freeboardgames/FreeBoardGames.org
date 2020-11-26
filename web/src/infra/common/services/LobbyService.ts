@@ -15,6 +15,7 @@ import { NextRoom, NextRoomVariables } from 'gqlTypes/NextRoom';
 import gql from 'graphql-tag.macro';
 import { JoinRoom, JoinRoomVariables } from 'gqlTypes/JoinRoom';
 import { RemoveUserFromRoom, RemoveUserFromRoomVariables } from 'gqlTypes/RemoveUserFromRoom';
+import { UpdateRoomInput } from 'gqlTypes/globalTypes';
 
 const FBG_NICKNAME_KEY = 'fbgNickname2';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken2';
@@ -141,6 +142,20 @@ export class LobbyService {
     const payload: ReduxUserState = { ready: true, loggedIn: true, nickname };
     dispatch({ type: ActionNames.SyncUser, payload });
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
+  }
+
+  public static async updateRoom(dispatch: Dispatch<SyncUserAction>, room: UpdateRoomInput): Promise<void> {
+    const client = this.getClient();
+    await client
+      .mutate({
+        mutation: gql`
+          mutation UpdateRoom($room: UpdateRoomInput!) {
+            updateRoom(room: $room)
+          }
+        `,
+        variables: { room },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
   }
 
   public static async joinRoom(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<JoinRoom> {

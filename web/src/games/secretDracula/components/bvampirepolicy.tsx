@@ -35,7 +35,7 @@ export class BVampirePolicies extends React.Component<InnerWrapper, {}> {
   };
 
   _investigate = () => {
-    return <p>🧄</p>;
+    return <p>🕵️</p>;
   };
 
   _special = () => {

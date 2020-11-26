@@ -13,7 +13,9 @@ export function isWin(G: IG) {
 
 export function isLose(G: IG) {
   if (!G.voting && G.draculaID == G.priestID) {
-    return true; // Dracula is mayor
+    if (G.policyBoardVampire[3] != null) {
+      return true; // Dracula is mayor
+    }
   }
   if (G.policyBoardVampire[5] != null) {
     return true; // 6 Vampire Policies were played

@@ -106,11 +106,14 @@ export let phaseDiscardPriestVeto = {
     },
   },
   endIf: (G: IG) => {
-    if (!G.wantVeto) {
-      return { next: 'phaseSpecial' }; // didn't use veto power
-    } else if (G.wantVeto) {
-      return { next: 'phaseVetoMayor' }; // didn't use veto power
+    if (G.wantVeto) {
+      return { next: 'phaseVetoMayor' };
     }
+    if (G.policyHand.length == 1) {
+      //- console.log('A0');
+      return { next: 'phaseSpecial' };
+    }
+    return false;
   },
   onEnd: (G: IG) => {
     if (!G.wantVeto) {
@@ -124,7 +127,10 @@ export let phaseDiscardPriestVeto = {
         justPlayedVampirePolicy: G.policyHand[0].chalice ? G.policyBoardVampire.length : -1,
       };
     }
-    return G;
+    return {
+      ...G,
+      ok: false,
+    };
   },
 };
 
@@ -137,9 +143,9 @@ export let phaseVetoMayor = {
 
     return G;
   },
-  endIf: (G: IG, ctx: Ctx) => {
-    if (ctx.activePlayers == null) {
-      if (G.wantVeto) {
+  endIf: (G: IG) => {
+    if (G.ok) {
+      if (!G.wantVeto) {
         return { next: 'phaseDiscardPriest' };
       } else {
         return { next: 'phaseNoSpecial' };
