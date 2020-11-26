@@ -1,25 +1,12 @@
-.div{
-    font-size: 20px;
-    box-sizing: border-box;
+.vampire{
+  text-align: center;
+  letter-spacing: 0.1em;
 }
-
-.header {
-  padding: 15px;
-}
-
-.middle {
-  padding: 15px;
-}
-
-.bottom {
-  padding: 15px;
-}
-
 
 .tooltip {
   position: relative;
+  display: inline-block;
   border-bottom: 1px dotted black;
-  display: inline;
 }
 
 .tooltip .tooltiptext {
