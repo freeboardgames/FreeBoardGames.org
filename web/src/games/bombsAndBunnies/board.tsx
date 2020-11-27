@@ -4,7 +4,7 @@ import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { isLocalGame, isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
 import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
-import { Board, IBoardProps } from './components/Board';
+import { Board, IBoardProps } from './components/GameBoard';
 
 import { IPlayerProps, CardStyle as ViewCardStyle, CardType as ViewCardType } from './components/shared/interfaces';
 import { IG, IGameMoves, IPlayer, CardStyle as GameCardStyle, CardType as GameCardType } from './engine/interfaces';

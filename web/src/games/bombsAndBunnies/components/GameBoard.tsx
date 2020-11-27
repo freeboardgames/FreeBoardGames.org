@@ -7,7 +7,7 @@ import { BetButton, SkipButton } from './BetButton';
 import { IBetDisplayProps } from './BetDisplay';
 import { IDiscardPileProps } from './DiscardPile';
 
-import css from './Board.css';
+import css from './GameBoard.css';
 import { PlayerZones } from './PlayerZones';
 import { CardStyle, IPlayerProps } from './shared/interfaces';
 
