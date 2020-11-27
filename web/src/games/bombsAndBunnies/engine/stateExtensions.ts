@@ -40,12 +40,17 @@ export function isBetting(ctx: Ctx): boolean {
   return ctx.phase === Phases.bet;
 }
 
-export function canRevealTargetStack(G: IG, ctx: Ctx, targetPlayerId: string) {
+export function isBeingPunished(G: IG, ctx: Ctx, playerId: string) {
+  return ctx.phase === Phases.penalty && G.failedRevealPlayerId !== null && G.failedRevealPlayerId == playerId;
+}
+
+export function canRevealTargetStack(G: IG, ctx: Ctx, playerId: string, targetPlayerId: string) {
   const currentPlayer = getPlayerById(G, ctx.currentPlayer);
   const targetPlayer = getPlayerById(G, targetPlayerId);
 
   return (
     isRevealing(ctx) &&
+    playerId === currentPlayer.id &&
     ((currentPlayer.id === targetPlayer.id && currentPlayer.stack.length > 0) ||
       (currentPlayer.stack.length === 0 && targetPlayer.stack.length > 0))
   );
@@ -111,14 +116,17 @@ export function findWinner(G: IG) {
   if (remainingPlayers.length === 1) return remainingPlayers[0];
 }
 
-export function pickUpHand(G: IG) {
+export function pickUpHands(G: IG) {
   for (let i = 0; i < G.players.length; i++) {
-    const player = G.players[i];
-    player.hand = player.hand.concat(player.stack).concat(player.revealedStack);
-    player.hand.sort();
-    player.stack = [];
-    player.revealedStack = [];
+    pickUpHand(G.players[i]);
   }
+}
+
+export function pickUpHand(player: IPlayer) {
+  player.hand = player.hand.concat(player.stack).concat(player.revealedStack);
+  player.hand.sort();
+  player.stack = [];
+  player.revealedStack = [];
 }
 
 export function resetBets(G: IG) {

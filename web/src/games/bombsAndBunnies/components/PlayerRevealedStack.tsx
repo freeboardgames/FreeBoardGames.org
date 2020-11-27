@@ -2,10 +2,11 @@ import * as React from 'react';
 
 import css from './PlayerRevealedStack.css';
 import { BunnyCardComponent, BombCardComponent } from './CardComponent';
-import { CardType } from './shared/interfaces';
+import { CardStyle, CardType } from './shared/interfaces';
 
 export interface IPlayerRevealedStackProps {
   stack: CardType[];
+  cardStyle: CardStyle;
 }
 
 export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackProps, {}> {
@@ -28,14 +29,14 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
           key={index}
           style={{ marginLeft: index * offsetSize, transform: rotateStyle }}
         >
-          <BunnyCardComponent></BunnyCardComponent>
+          <BunnyCardComponent style={this.props.cardStyle}></BunnyCardComponent>
         </div>
       );
     }
 
     return (
       <div className={css.cardContainer} key={index} style={{ marginLeft: index * offsetSize, transform: rotateStyle }}>
-        <BombCardComponent key={index}></BombCardComponent>
+        <BombCardComponent key={index} style={this.props.cardStyle}></BombCardComponent>
       </div>
     );
   }

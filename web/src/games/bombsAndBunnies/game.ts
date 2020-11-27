@@ -105,14 +105,13 @@ export const BombsAndBunniesGame: Game<IG> = {
       },
 
       next: Phases.initial_placement,
-
-      onEnd: (G: IG) => {
-        StateExtensions.pickUpHand(G);
-        StateExtensions.resetBets(G);
-      },
     },
 
     penalty: {
+      onBegin: (G: IG, ctx: Ctx) => {
+        StateExtensions.pickUpHand(StateExtensions.getPlayerById(G, ctx.currentPlayer));
+      },
+
       turn: {
         order: {
           first: (G: IG, ctx: Ctx) => ctx.playOrder.findIndex((id) => id === G.bombPlayerId),
@@ -123,6 +122,11 @@ export const BombsAndBunniesGame: Game<IG> = {
 
       moves: {
         Discard: Moves.Discard,
+      },
+
+      onEnd: (G: IG) => {
+        StateExtensions.pickUpHands(G);
+        StateExtensions.resetBets(G);
       },
 
       next: Phases.initial_placement,

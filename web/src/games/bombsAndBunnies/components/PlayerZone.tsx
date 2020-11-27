@@ -16,6 +16,8 @@ export enum PlayerStatus {
   HasBet,
   HasMaxBet,
   IsOut,
+  Discarding,
+  BeingPunished,
 }
 
 export interface IPlayerZoneProps {
@@ -110,6 +112,20 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
             💀
           </span>
         );
+
+      case PlayerStatus.Discarding:
+        return (
+          <span key={index} title="Discarding">
+            🤏
+          </span>
+        );
+
+      case PlayerStatus.BeingPunished:
+        return (
+          <span key={index} title="Being punished">
+            🙏
+          </span>
+        );
     }
 
     return null;
@@ -127,7 +143,12 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   }
 
   renderRevealedStack() {
-    return <PlayerRevealedStack stack={this.props.revealedStack}></PlayerRevealedStack>;
+    return (
+      <PlayerRevealedStack
+        stack={this.props.revealedStack}
+        cardStyle={this.props.playerCardStyle}
+      ></PlayerRevealedStack>
+    );
   }
 
   getRadiusForPlayers(totalPlayers: number): number {

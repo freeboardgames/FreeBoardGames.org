@@ -21,5 +21,7 @@ export interface IPlayerProps {
   wins: number;
   bet: null | number;
   betSkipped: boolean;
+  isDiscarding: boolean;
+  isBeingPunished: boolean;
   isOut: boolean;
 }

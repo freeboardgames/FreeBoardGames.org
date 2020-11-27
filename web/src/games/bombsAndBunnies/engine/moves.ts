@@ -73,6 +73,8 @@ export const Moves = {
     if (revealed.length === currentPlayer.bet) {
       currentPlayer.wins++;
       G.lastWinningPlayerId = currentPlayer.id;
+      StateExtensions.pickUpHands(G);
+      StateExtensions.resetBets(G);
       ctx.events.setPhase(Phases.initial_placement);
     }
 
@@ -92,6 +94,12 @@ export const Moves = {
     const targetPlayer = StateExtensions.getPlayerById(G, targetPlayerId);
     if (targetPlayer.hand.length === 0) {
       return INVALID_MOVE;
+    }
+
+    // if another player is choosing the card to discard
+    // ignore the chosen handIndex and choose a random card.
+    if (ctx.currentPlayer !== targetPlayer.id) {
+      handIndex = Math.floor(Math.random() * targetPlayer.hand.length);
     }
 
     targetPlayer.hand.splice(handIndex, 1);

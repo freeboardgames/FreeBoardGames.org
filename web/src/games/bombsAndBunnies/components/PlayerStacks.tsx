@@ -6,7 +6,7 @@ import { PlayerStack } from './PlayerStack';
 
 export interface IPlayerStacksProps {
   players: IPlayerProps[];
-  revealCard: (playerId: string) => void;
+  revealCard?: (playerId: string) => void;
 }
 
 export class PlayerStacks extends React.Component<IPlayerStacksProps, {}> {
@@ -24,7 +24,7 @@ export class PlayerStacks extends React.Component<IPlayerStacksProps, {}> {
         key={playerIndex}
         playerId={player.id}
         stackSize={player.stack.length}
-        revealCard={player.stack.length > 0 ? this.props.revealCard : null}
+        revealCard={this.props.revealCard}
         cardStyle={player.cardStyle}
       ></PlayerStack>
     );

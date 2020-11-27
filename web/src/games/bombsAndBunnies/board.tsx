@@ -18,6 +18,7 @@ import {
   getRevealCount,
   isBetting,
   isRevealing,
+  isBeingPunished,
 } from './engine/stateExtensions';
 
 interface IBgioBoardProps {
@@ -94,7 +95,8 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
       selectCard: canPlaceCard(this.props.ctx, playerId) ? this._selectCard.bind(this) : null,
       selectPenaltyCard: canDiscard(this.props.G, this.props.ctx, playerId) ? this._selectPenaltyCard.bind(this) : null,
       revealCard: this._revealCard.bind(this),
-      canRevealCard: (targetPlayerId: string) => canRevealTargetStack(this.props.G, this.props.ctx, targetPlayerId),
+      canRevealCard: (targetPlayerId: string) =>
+        canRevealTargetStack(this.props.G, this.props.ctx, playerId, targetPlayerId),
     };
   }
 
@@ -105,6 +107,8 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
       betSkipped: player.betSkipped,
       cardStyle: this.getCardStyle(player.cardStyle),
       hand: player.hand.map((c) => this.getCardType(c)),
+      isDiscarding: canDiscard(this.props.G, this.props.ctx, player.id),
+      isBeingPunished: isBeingPunished(this.props.G, this.props.ctx, player.id),
       isOut: player.isOut,
       revealedStack: player.revealedStack.map((c) => this.getCardType(c)),
       stack: player.stack.map((c) => this.getCardType(c)),

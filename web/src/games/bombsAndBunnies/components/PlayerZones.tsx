@@ -110,9 +110,15 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
 
     if (player.betSkipped) statuses.push(PlayerStatus.Skipped);
 
-    if (player.bet > 0) statuses.push(PlayerStatus.HasBet);
+    if (player.isDiscarding) {
+      statuses.push(PlayerStatus.Discarding);
+    } else if (player.isBeingPunished) {
+      statuses.push(PlayerStatus.BeingPunished);
+    } else {
+      if (player.bet > 0) statuses.push(PlayerStatus.HasBet);
 
-    if (this.props.currentBet === player.bet) statuses.push(PlayerStatus.HasMaxBet);
+      if (this.props.currentBet === player.bet) statuses.push(PlayerStatus.HasMaxBet);
+    }
 
     return statuses;
   }
