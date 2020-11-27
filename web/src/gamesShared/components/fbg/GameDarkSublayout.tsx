@@ -16,6 +16,7 @@ interface IGameDarkSublayoutProps {
   optionsMenuItems?: () => IOptionsItems[];
   allowWiderScreen?: boolean;
   gameArgs: IGameArgs;
+  avoidOverscrollReload?: boolean;
 }
 
 interface IGameDarkSublayoutState {
@@ -34,9 +35,15 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
     super(props);
     this.state = { feedback: null, menuAnchorEl: null, prevBgColor: document.body.style.backgroundColor };
     document.body.style.backgroundColor = 'black';
+    if (props.avoidOverscrollReload) {
+      document.body.style.overscrollBehavior = 'none';
+    }
   }
 
   componentWillUnmount() {
+    if (this.props.avoidOverscrollReload) {
+      document.body.style.overscrollBehavior = 'auto';
+    }
     document.body.style.backgroundColor = this.state.prevBgColor;
   }
 
