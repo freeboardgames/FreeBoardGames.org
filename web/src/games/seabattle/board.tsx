@@ -79,7 +79,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       );
     }
     return (
-      <GameLayout optionsMenuItems={this._getOptionsMenuItems} gameArgs={this.props.gameArgs}>
+      <GameLayout optionsMenuItems={this._getOptionsMenuItems} gameArgs={this.props.gameArgs} avoidOverscrollReload>
         {child}
       </GameLayout>
     );
