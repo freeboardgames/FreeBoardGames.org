@@ -5,7 +5,7 @@ import { BgioBoard } from './board';
 const config: IGameConfig = {
   bgioGame: BombsAndBunniesGame,
   bgioBoard: BgioBoard,
-  debug: true,
+  debug: false,
 };
 
 export default config;
