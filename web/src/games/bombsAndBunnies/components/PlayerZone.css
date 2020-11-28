@@ -1,15 +1,24 @@
 .playerZone .stack {
   display: inline-block;
-  width: 80px;
+  width: 72px;
 }
 
 .playerZone .revealedStack {
   display: inline-block;
 }
 
+.playerZone .playerName {
+  text-align: center;
+}
+
 .playerZone .statuses {
   text-align: left;
-  height: 1.5em;
+  cursor: default;
+  border-radius: 3em;
+  background-color: rgb(255 255 255 / 33%);
+  padding: 5px;
+  width: 100px;
+  height: 40px;
 }
 
 .playerOut {
