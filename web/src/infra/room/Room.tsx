@@ -22,7 +22,6 @@ import Router from 'next/router';
 import { Subscription } from '@apollo/react-components';
 import { gql } from 'apollo-boost';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import css from './Room.css';
 import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
 import { isCreator, getPlayerIds, getPlayerNicknames } from './RoomMetadataHelper';
 
@@ -167,8 +166,7 @@ class Room extends React.Component<Props, State> {
     const color = changeGameEnabled ? 'white' : 'darkgrey';
     const changeGameButton = (
       <Button
-        style={{ position: 'absolute', backgroundColor, color }}
-        className={css.ChangeGameButton}
+        style={{ position: 'absolute', backgroundColor, color, right: '8px', top: '12px' }}
         color="secondary"
         disabled={!changeGameEnabled}
         onClick={this._toggleChangingGame}
