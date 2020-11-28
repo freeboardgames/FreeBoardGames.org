@@ -4,6 +4,10 @@ dist: focal
 node_js:
   - "stable"
 
+branches:
+  only:
+    - "master"
+
 cache:
   yarn: true
   directories:
