@@ -1,11 +1,19 @@
+.betPanel {
+  padding: 20px;
+}
+
 .slider {
-  writing-mode: bt-lr; /* IE */
-  -webkit-appearance: slider-vertical; /* WebKit */
-  width: 8px;
-  height: 175px;
-  padding: 0 5px;
+  width: 100px;
 }
 
 .button {
-  position: relative;
+  padding: 10px;
+  margin: 0 20px;
+  cursor: pointer;
+	position: relative;
+	background: #e3e3e3;
+  border-radius: .4em;
+  color: #000;
+  box-shadow: rgb(255, 197, 5) 0px 0px 10px;
+  border: none;
 }
