@@ -70,9 +70,7 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   }
 
   renderPlayerName() {
-    return (
-    <div className={css.playerName}>{this.props.playerName}</div>
-    );
+    return <div className={css.playerName}>{this.props.playerName}</div>;
   }
 
   renderStatuses() {

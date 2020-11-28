@@ -103,7 +103,7 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
   getPlayerProps(player: IPlayer): IPlayerProps {
     return {
       id: player.id,
-      name: this.props.gameArgs.players.find(p => p.playerID === parseInt(player.id)).name,
+      name: this.props.gameArgs.players.find((p) => p.playerID === parseInt(player.id)).name,
       bet: player.bet,
       betSkipped: player.betSkipped,
       cardStyle: this.getCardStyle(player.cardStyle),

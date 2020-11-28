@@ -61,10 +61,10 @@ export class Board extends React.Component<IBoardProps, {}> {
   getBetButtons() {
     return (
       <div style={{ marginBottom: '10px' }}>
-          <BetButton
-            click={this.props.bet || this.betPanelToggle ? this._toggleBetPanel.bind(this) : null}
-            active={this.betPanelToggle}
-          ></BetButton>
+        <BetButton
+          click={this.props.bet || this.betPanelToggle ? this._toggleBetPanel.bind(this) : null}
+          active={this.betPanelToggle}
+        ></BetButton>
         <SkipButton click={this.props.skipBet}></SkipButton>
       </div>
     );
