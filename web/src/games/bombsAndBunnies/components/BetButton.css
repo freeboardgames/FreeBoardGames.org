@@ -1,0 +1,18 @@
+.btn {
+  fill: rgb(150, 150, 150);
+  cursor: default;
+}
+
+.btn.available {
+  cursor: pointer;
+  fill: black;
+}
+
+.btn.available:hover,
+.btn.active:hover {
+  fill: rgb(0, 119, 255);
+}
+
+.btn.active {
+  fill: rgb(0, 68, 146);
+}

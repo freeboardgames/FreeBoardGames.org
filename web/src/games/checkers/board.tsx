@@ -17,7 +17,8 @@ import { Token } from 'deprecated-bgio-ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
-import { isOnlineGame, isLocalGame, isAIGame } from '../../gamesShared/helpers/gameMode';
+import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
 interface IBoardProps {
   G: IG;
@@ -151,7 +152,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   _getStatus() {
-    if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
+    if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'Move piece';
       } else {
@@ -170,17 +171,17 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _getGameOver() {
     const winner = this.props.ctx.gameover.winner;
     if (winner) {
-      if (isLocalGame(this.props.gameArgs)) {
-        if (winner === '0') {
-          return 'white won';
-        } else {
-          return 'black won';
-        }
-      } else {
+      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
         if (winner === this.props.playerID) {
           return 'you won';
         } else {
           return 'you lost';
+        }
+      } else {
+        if (winner === '0') {
+          return 'white won';
+        } else {
+          return 'black won';
         }
       }
     }

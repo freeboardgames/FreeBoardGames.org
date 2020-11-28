@@ -1,0 +1,13 @@
+.board {
+  padding-top: 10px;
+  border-radius: 20px;
+  background-color: rgb(240, 240, 240);
+  text-align: center;
+  border: 1px solid rgb(63, 63, 63);
+}
+
+.startButtonContainer {
+  text-align: center;
+  color: black;
+  padding: 20px;
+}

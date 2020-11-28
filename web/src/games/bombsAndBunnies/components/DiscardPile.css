@@ -1,0 +1,12 @@
+.pile {
+  display: inline-block;
+  margin: 10px;
+}
+
+.cardContainer {
+  position: absolute;
+  transform-origin: 0 0;
+  transform: scale(0.1);
+  top: -35px;
+  left: -25px;
+}

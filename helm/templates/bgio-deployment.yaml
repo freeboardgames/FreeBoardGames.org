@@ -4,7 +4,7 @@ metadata:
   name: {{ .Release.Name }}-bgio
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.replicas.bgio }}
   revisionHistoryLimit: 10
   selector:
     matchLabels:

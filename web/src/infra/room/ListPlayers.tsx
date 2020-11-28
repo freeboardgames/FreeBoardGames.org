@@ -4,9 +4,14 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+import css from './ListPlayers.css';
+import { isCreator } from './RoomMetadataHelper';
 
 import {
   Button,
+  ButtonGroup,
   List,
   ListItem,
   ListItemAvatar,
@@ -16,20 +21,43 @@ import {
   ListItemSecondaryAction,
   Tooltip,
 } from '@material-ui/core';
+import { GAMES_MAP } from 'games';
 
 interface IListPlayersProps {
   roomMetadata: JoinRoom_joinRoom;
   userId?: number;
   editNickname: () => void;
   removeUser: (userId: number) => () => void;
+  changeCapacity: (delta: number) => () => void;
 }
 
 export class ListPlayers extends React.Component<IListPlayersProps, {}> {
   render() {
     const metadata = this.props.roomMetadata;
-    const creator = metadata.userMemberships.find((membership) => membership.isCreator);
-    const isCreator = creator?.user.id === this.props.userId;
-    const playersList = metadata.userMemberships.map((membership, idx: number) => {
+    const occupancy = metadata.userMemberships.length;
+    const capacity = metadata.capacity;
+    return (
+      <div style={{ position: 'relative' }}>
+        <List
+          subheader={
+            <ListSubheader>
+              Players ({occupancy}/{capacity})
+            </ListSubheader>
+          }
+        >
+          <div style={{ maxHeight: '309px', overflowY: 'auto' }}>
+            {this.renderPlayersList()}
+            {this.renderWaitingList()}
+          </div>
+        </List>
+        {this.renderCapacityButtons()}
+      </div>
+    );
+  }
+
+  renderPlayersList() {
+    const metadata = this.props.roomMetadata;
+    return metadata.userMemberships.map((membership, idx: number) => {
       let secondaryAction;
       if (membership.user.id == this.props.userId) {
         secondaryAction = (
@@ -41,7 +69,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
             </Tooltip>
           </ListItemSecondaryAction>
         );
-      } else if (isCreator) {
+      } else if (isCreator(metadata, this.props.userId)) {
         secondaryAction = (
           <ListItemSecondaryAction>
             <Tooltip title="Remove user" placement="top">
@@ -64,8 +92,14 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
         </ListItem>
       );
     });
+  }
+
+  renderWaitingList() {
+    const metadata = this.props.roomMetadata;
+    const occupancy = metadata.userMemberships.length;
+    const capacity = metadata.capacity;
     const waitingList = [];
-    for (let i = 0; i < metadata.capacity - metadata.userMemberships.length; i++) {
+    for (let i = 0; i < capacity - occupancy; i++) {
       waitingList.push(
         <ListItem key={`waiting-${i}`}>
           <ListItemAvatar>
@@ -79,13 +113,29 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
         </ListItem>,
       );
     }
+    return waitingList;
+  }
+
+  renderCapacityButtons() {
+    const metadata = this.props.roomMetadata;
+    let allDisabled = false;
+    if (!isCreator(metadata, this.props.userId)) {
+      allDisabled = true;
+    }
+    const occupancy = metadata.userMemberships.length;
+    const gameDef = GAMES_MAP[metadata.gameCode];
+    const minCapacity = Math.max(gameDef.minPlayers, occupancy);
+    const maxCapacity = gameDef.maxPlayers;
+    const capacity = metadata.capacity;
     return (
-      <div>
-        <List subheader={<ListSubheader>Players</ListSubheader>}>
-          {playersList}
-          {waitingList}
-        </List>
-      </div>
+      <ButtonGroup size="small" className={css.CapacityButtons}>
+        <Button onClick={this.props.changeCapacity(-1)} disabled={allDisabled || capacity - 1 < minCapacity}>
+          <RemoveIcon />
+        </Button>
+        <Button onClick={this.props.changeCapacity(+1)} disabled={allDisabled || capacity + 1 > maxCapacity}>
+          <AddIcon />
+        </Button>
+      </ButtonGroup>
     );
   }
 }

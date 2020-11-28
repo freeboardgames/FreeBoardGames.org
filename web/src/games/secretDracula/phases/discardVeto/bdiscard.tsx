@@ -16,44 +16,38 @@ interface InnerWrapper {
 export class BDiscard extends React.Component<InnerWrapper, {}> {
   render() {
     return (
-      <table>
-        <tbody>
-          <tr>
-            {this.props.vetoEnabled && this.props.mayor ? <td> {this._forceButton()} </td> : <></>}
-            {this.props.policies.map((a, index) => {
-              return (
-                <td key={'BDiscard-' + index.toString()}>
-                  <div>
-                    {' '}
-                    <BPolicy policy={a} discard={() => this.props.discard(index)}></BPolicy>{' '}
-                  </div>
-                </td>
-              );
-            })}
-            <td>
-              {this.props.vetoEnabled ? (
-                this.props.mayor ? (
-                  <div> {this._agreeVeto()} </div>
-                ) : (
-                  <div> {this._proposeVeto()} </div>
-                )
-              ) : (
-                <> </>
-              )}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <span style={{ textAlign: 'center' }}>
+        {this.props.vetoEnabled && this.props.mayor ? <> {this._forceButton()} </> : <></>}
+        {this.props.policies.map((a, index) => {
+          return (
+            <span key={'BDiscard-' + index.toString()}>
+              <span>
+                {' '}
+                <BPolicy policy={a} hover={true} discard={() => this.props.discard(index)}></BPolicy>{' '}
+              </span>
+            </span>
+          );
+        })}
+        {this.props.vetoEnabled ? (
+          this.props.mayor ? (
+            <span> {this._agreeVeto()} </span>
+          ) : (
+            <span> {this._proposeVeto()} </span>
+          )
+        ) : (
+          <> </>
+        )}
+      </span>
     );
   }
 
   _forceButton = () => {
-    return <div onClick={() => this.props.veto(false)}>👎</div>;
+    return <span onClick={() => this.props.veto(false)}>👎</span>;
   };
   _agreeVeto = () => {
-    return <div onClick={() => this.props.veto(true)}>👍</div>;
+    return <span onClick={() => this.props.veto(true)}>👍</span>;
   };
   _proposeVeto = () => {
-    return <div onClick={() => this.props.veto(true)}>✋</div>;
+    return <span onClick={() => this.props.veto(true)}>✋</span>;
   };
 }

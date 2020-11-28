@@ -23,11 +23,19 @@ import {
 } from './phases/discardVeto/phase';
 
 function setup(ctx: Ctx): IG {
+  return _setup(ctx, true, true);
+}
+
+//this is the function used for having a better test setup
+export function _setup(ctx: Ctx, randomPlayers: boolean, randomDeck: boolean): IG {
   // SETUP BOARD
   let policyDeck = <IPolicy[]>Array(17).fill(<IPolicy>{ garlic: true, chalice: false });
   for (let i = 6; i < 17; i++) {
     policyDeck[i] = <IPolicy>{ garlic: false, chalice: true };
   } // 6 + 11
+  if (randomDeck) {
+    policyDeck = ctx.random.Shuffle(policyDeck);
+  }
 
   // SETUP PLAYERS
   // shuffle players
@@ -35,7 +43,9 @@ function setup(ctx: Ctx): IG {
   for (let i = 0; i < ctx.numPlayers; i++) {
     playerIDToGameID[i] = i;
   }
-  playerIDToGameID = ctx.random.Shuffle(playerIDToGameID);
+  if (randomPlayers) {
+    playerIDToGameID = ctx.random.Shuffle(playerIDToGameID);
+  }
   // chose dracula
   let draculaID = playerIDToGameID[0];
   let vampireCount;
@@ -77,7 +87,7 @@ function setup(ctx: Ctx): IG {
 
     electionTracker: <number>0,
 
-    deadIDs: <number[]>Array(ctx.numPlayers).fill(-1),
+    deadIDs: <number[]>Array(0),
     draculaID: draculaID,
     vampireIDs: vampireIDs,
     humanIDs: humanIDs,
@@ -98,11 +108,11 @@ function setup(ctx: Ctx): IG {
 }
 
 export const SecretDraculaGame = {
-  name: 'secretdracula',
+  name: 'secretDracula',
 
   setup: setup,
 
-  playerView: (G: IG, playerID) => {
+  playerView: (G: IG, ctx: Ctx, playerID: string) => {
     let playerIDInt = parseInt(playerID);
 
     if (isNaN(playerIDInt)) {
@@ -125,17 +135,41 @@ export const SecretDraculaGame = {
       votesNo: G.votesNo.map(() => {
         return null;
       }),
-      draculaID: G.draculaID == playerIDInt ? G.draculaID : -1, // ONLY DRACULA
-      // ONLY VAMPIRES:
-      vampireIDs: G.vampireIDs.includes(playerIDInt)
-        ? [...G.vampireIDs]
-        : [
-            ...G.vampireIDs.map(() => {
-              return -1;
-            }),
-          ],
+      draculaID:
+        ctx.numPlayers < 7
+          ? G.draculaID == playerIDInt
+            ? G.draculaID
+            : -1 // only dracula knows if <7 players
+          : playerIDInt in G.vampireIDs
+          ? G.draculaID
+          : -1, // all vampires know if >= 7 players
+
+      vampireIDs:
+        ctx.numPlayers < 7
+          ? // in <7 player game, all vampires know of all others
+            G.vampireIDs.includes(playerIDInt)
+            ? [...G.vampireIDs]
+            : [
+                ...G.vampireIDs.map(() => {
+                  return -1;
+                }),
+              ]
+          : // in >=7 player game, dracula doesn't know about other vampires
+          G.vampireIDs.includes(playerIDInt)
+          ? G.draculaID == playerIDInt
+            ? [playerIDInt]
+            : [...G.vampireIDs]
+          : [
+              ...G.vampireIDs.map(() => {
+                return -1;
+              }),
+            ],
       humanIDs: G.vampireIDs.includes(playerIDInt)
-        ? G.humanIDs
+        ? G.draculaID == playerIDInt && ctx.numPlayers > 7
+          ? G.humanIDs.map(() => {
+              return -1;
+            })
+          : G.humanIDs
         : G.humanIDs.map(() => {
             return -1;
           }),
@@ -149,7 +183,6 @@ export const SecretDraculaGame = {
             G.policyHand.map(() => {
               return null;
             }),
-      specialElection: null,
       policyPeek: playerIDInt == G.mayorID && G.policyPeek.length == 3 ? G.policyPeek : [],
       investigate: playerIDInt == G.mayorID ? G.investigate : 0,
       // everyone gets investigateID
@@ -172,40 +205,42 @@ export const SecretDraculaGame = {
         //- console.log('starting phaseCheckElectionCounter');
         return G;
       },
-      endIf: (G: IG) => {
+      endIf: () => {
         //- console.log('endIf phaseCheckElectionCounter');
-        if (G.electionTracker < 2) {
-          //- console.log('going to phaseChosePriest');
-          return { next: 'phaseChosePriest' };
-        }
-        //- console.log('going to phaseSpecial');
-        return { next: 'phaseSpecial' };
+        return { next: 'phaseChosePriest' };
       },
       onEnd: (G: IG, ctx: Ctx) => {
         //- console.log('ending phaseCheckElectionCounter');
         if (G.electionTracker == 2) {
           G.electionTracker = 0;
-
           if (G.policyDraw.length < 3) {
             G.policyDraw.push(...G.policyDiscard);
             G.policyDiscard = <IPolicy[]>Array(0);
           }
           let topCard = G.policyDraw.pop();
+          G.policyBoardVampire.push(topCard);
 
-          if (topCard.chalice) {
-            let n = G.policyBoardVampire.push(topCard);
-            G.justPlayedVampirePolicy = n - 1;
+          G.lastMayorID = -1; // any mayor priest combi allowed again.
+          G.lastPriestID = -1;
+          if (G.specialElection != -1) {
+            G.mayorID = G.specialElection;
+            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+            G.specialElection = -1;
           } else {
-            G.justPlayedVampirePolicy = -1;
+            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
           }
+          G.priestID = -1; // no active priest
         } else {
           G.electionTracker += 1;
+          if (G.specialElection != -1) {
+            G.mayorID = G.specialElection;
+            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+            G.specialElection = -1;
+          } else {
+            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+          }
+          G.priestID = -1; // no active priest
         }
-
-        G.lastMayorID = -1; // any mayor priest combi allowed again.
-        G.lastPriestID = -1;
-        G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
-        G.priestID = -1; // no active priest
 
         return G;
       },
@@ -225,10 +260,27 @@ export const SecretDraculaGame = {
       },
       endIf: (G: IG, ctx: Ctx) => {
         //- console.log('endIf phaseSpecial' + G.justPlayedVampirePolicy);
+        if (G.electionTracker != 0) {
+          // we got here by forcing a card due to the tracker
+          //- console.log(' 0 ');
+          return { next: 'phaseNoSpecial' };
+        }
         if (G.justPlayedVampirePolicy == -1) {
           //- console.log(' 1 ');
           return { next: 'phaseNoSpecial' };
         }
+
+        // if (ctx.numPlayers < 3) { // ONLY FOR TESTING
+        //   return { next: 'phaseExecution' };
+        //   if (G.justPlayedVampirePolicy == 2) {
+        //     return { next: 'phaseSpecialElection' };
+        //   } else if (G.justPlayedVampirePolicy == 3) {
+        //     return { next: 'phaseSpecialElection' };
+        //   } else if (G.justPlayedVampirePolicy == 4) {
+        //     return { next: 'phaseSpecialElection' };
+        //   }
+        // }
+
         if (ctx.numPlayers < 7) {
           if (G.justPlayedVampirePolicy == 2) {
             //- console.log(' 2 ');
@@ -282,7 +334,7 @@ export const SecretDraculaGame = {
       },
       onEnd: (G: IG) => {
         //- console.log('ending phaseSpecial');
-        if (G.justPlayedVampirePolicy == 4) {
+        if (G.policyBoardVampire.length == 5) {
           G.vetoPower = true;
         }
         G.justPlayedVampirePolicy = -1;
@@ -301,7 +353,6 @@ export const SecretDraculaGame = {
       },
       onEnd: (G: IG, ctx: Ctx) => {
         //- console.log('ending phaseNoSpecial');
-        G.electionTracker = 0;
         G.priestID = -1;
         if (G.specialElection != -1) {
           //- console.log('reseting Mayor back to prior to special');
@@ -324,8 +375,8 @@ export const SecretDraculaGame = {
     phasePeekPolicy: phasePeekPolicy,
   },
 
-  endif: (G) => {
-    if (isLose(G)) {
+  endIf: (G: IG, ctx: Ctx) => {
+    if (isLose(G, ctx)) {
       return { lose: true };
     }
     if (isWin(G)) {

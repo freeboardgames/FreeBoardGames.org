@@ -1,0 +1,15 @@
+table.StockGuide {
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid;
+}
+
+.StockGuide th {
+  border: 1px solid;
+}
+
+.StockGuide td {
+  border: 1px solid;
+  text-align: center;
+  vertical-align: middle;
+}

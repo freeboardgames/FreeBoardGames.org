@@ -1,4 +1,5 @@
 import { MAX_WORDS_IN_GAME, MAX_WORD_LEN, DRAW_AFTER_N_TIMERS, validOrientations, globalWordList } from './constants';
+import { shuffleArray } from './utils';
 import { newPuzzle, solvepuzzle } from './puzzle';
 
 export interface ISingleLetter {
@@ -42,33 +43,37 @@ function isGameOver(G, ctx) {
 export function isVictory(G) {
   // count the score of each player
   const playerScores = {};
-  for (const s of G.solution) {
+  G.solution.forEach((s) => {
     if (s.solvedBy) {
-      playerScores[s.solvedBy] = playerScores[s.solvedBy] || 0;
+      playerScores[s.solvedBy] = 0;
+    }
+  });
+  G.solution.forEach((s) => {
+    if (s.solvedBy) {
       playerScores[s.solvedBy] = playerScores[s.solvedBy] + 1;
     }
-  }
-  // determine max score
-  let scores = Object.keys(playerScores).map(function (key) {
-    return playerScores[key];
   });
-  var maxScore = Math.max.apply(null, scores);
+
+  // determine max score
+  var maxScore = 0;
+  Object.values(playerScores).forEach((score: number) => {
+    maxScore = Math.max(maxScore, score);
+  });
   // determine the player(s) who got maxScore
   let playerWithMaxScore = undefined;
   let numPlayersAtMaxScore = 0;
-  for (var player in playerScores) {
+  Object.keys(playerScores).forEach((player: string) => {
     if (maxScore === playerScores[player]) {
       playerWithMaxScore = player;
       numPlayersAtMaxScore = numPlayersAtMaxScore + 1;
     }
-  }
+  });
+
   // if the max-score is same for any two players, then declare draw
   if (numPlayersAtMaxScore === 1) {
     return { winner: playerWithMaxScore };
-  } else if (numPlayersAtMaxScore > 1) {
-    return { draw: true };
   } else {
-    return;
+    return { draw: true };
   }
 }
 
@@ -77,16 +82,8 @@ function initialSetup(ctx, wordList = globalWordList, allowedOrientations = vali
   let wordPerPerson = Math.floor(MAX_WORDS_IN_GAME / ctx.numPlayers);
   let totalAllowedWords = wordPerPerson * ctx.numPlayers;
   // select a fixed amount of random words from the list of words
-  let randWords = [];
-  for (let i = 0; i < wordList.length; i++) {
-    const rWord = wordList[Math.floor(Math.random() * wordList.length)].toUpperCase();
-    if (rWord.length <= MAX_WORD_LEN && !randWords.includes(rWord)) {
-      randWords.push(rWord);
-    }
-    if (randWords.length >= totalAllowedWords) {
-      break;
-    }
-  }
+  let randWords = shuffleArray(wordList).filter((word: string) => word.length < MAX_WORD_LEN);
+  randWords = randWords.slice(0, totalAllowedWords);
   // create a puzzle, and if all words are not found then reduce words and try again
   let puzzle;
   while (!puzzle) {
@@ -118,14 +115,13 @@ export const SoupOfLettersGame = {
   setup: (ctx): IG => initialSetup(ctx),
 
   moves: {
-    changeTurn: (G: any, ctx: any) => {
-      ctx.events.endTurn();
+    changeTurn: (G: IG) => {
       return { ...G, timeRef: Date.now(), countTimerFired: G.countTimerFired + 1 };
     },
-    wordFound: (G: any, ctx: any, solvedWord: ISolvedWord) => {
+    wordFound: (G: IG, ctx: any, solvedWord: ISolvedWord) => {
       const solution = G.solution.map((s) => {
-        if (s.x === solvedWord.x && s.y === solvedWord.y) {
-          return { ...solvedWord, solvedBy: ctx.currentPlayer };
+        if (s.x === solvedWord.x && s.y === solvedWord.y && s.word === solvedWord.word) {
+          return { ...s, solvedBy: ctx.currentPlayer };
         }
         return { ...s };
       });
@@ -137,7 +133,7 @@ export const SoupOfLettersGame = {
     moveLimit: 1,
   },
 
-  endIf: (G, ctx) => {
+  endIf: (G: IG, ctx) => {
     if (isGameOver(G, ctx)) {
       return isVictory(G);
     }

@@ -1,20 +1,22 @@
 {
   "order": [
-    "estatebuyer",
-    "mancala",
-    "secretcodes",
-    "takesix",
+    "secretDracula",
+    "soupofletters",
     "checkers",
     "fourinarow",
-    "seabattle",
     "tictactoe",
     "hangman",
-    "zooparade",
+    "seabattle",
+    "mancala",
+    "secretcodes",
     "chess",
-    "cornerus",
-    "reversi",
+    "estatebuyer",
     "tictactoeplus",
+    "cornerus",
+    "takesix",
+    "zooparade",
     "rota",
+    "reversi",
     "ninemensmorris"
   ]
 }

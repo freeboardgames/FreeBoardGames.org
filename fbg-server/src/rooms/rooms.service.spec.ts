@@ -8,6 +8,7 @@ import { MatchModule } from '../match/match.module';
 import { HttpService } from '@nestjs/common';
 import { MatchService } from '../match/match.service';
 import { NewRoomInput } from './gql/NewRoomInput.gql';
+import { PubSub } from 'graphql-subscriptions';
 
 describe('RoomsService', () => {
   let module: TestingModule;
@@ -15,6 +16,7 @@ describe('RoomsService', () => {
   let usersService: UsersService;
   let matchService: MatchService;
   let httpService: HttpService;
+  let pubSub: PubSub;
 
   beforeAll(async () => {
     jest.resetAllMocks();
@@ -26,6 +28,7 @@ describe('RoomsService', () => {
     service = module.get<RoomsService>(RoomsService);
     httpService = module.get<HttpService>(HttpService);
     matchService = module.get<MatchService>(MatchService);
+    pubSub = module.get<PubSub>(PubSub);
   });
 
   afterAll(async () => {
@@ -161,6 +164,50 @@ describe('RoomsService', () => {
     await service.removeFromRoom(bobId, aliceId, room.id);
     const newRoom = await service.getRoomEntity(room.id);
     expect(newRoom.userMemberships.length).toEqual(1);
+  });
+
+  it('should notify about new room capacity and game', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const newCapacity = 5;
+    const newGameCode = 'chess';
+    jest.clearAllMocks();
+    const publish = jest.spyOn(pubSub, 'publish');
+    await service.updateRoom(bobId, { roomId: room.id, capacity: newCapacity, gameCode: newGameCode});
+
+    const args = publish.mock.calls[0];
+    expect(args[0]).toEqual(`room/${room.id}`);
+    expect(args[1].roomMutated.capacity).toEqual(newCapacity);
+    expect(args[1].roomMutated.gameCode).toEqual(newGameCode);
+  });
+
+  it('should notify that about a user update succesfully', async () => {
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    const room = await service.newRoom(
+      {
+        capacity: 3,
+        gameCode: 'checkers',
+        isPublic: false,
+      },
+      bobId,
+    );
+    const aliceId = await usersService.newUser({ nickname: 'alice' });
+    await service.joinRoom(aliceId, room.id);
+    jest.clearAllMocks();
+    const publish = jest.spyOn(pubSub, 'publish');
+    await usersService.updateUser(aliceId, { nickname: 'Alice!'});
+    await service.notifyUserUpdated(aliceId);
+
+    const args = publish.mock.calls[0];
+    expect(args[0]).toEqual(`room/${room.id}`);
+    expect(args[1].roomMutated.userMemberships[1].user.nickname).toEqual('Alice!');
   });
 
   it('should not allow non-owner to remove from room', async () => {
