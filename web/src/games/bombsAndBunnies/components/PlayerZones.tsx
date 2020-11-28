@@ -2,10 +2,9 @@ import * as React from 'react';
 
 import css from './PlayerZones.css';
 import { IPlayerZoneProps, PlayerZone, PlayerStatus } from './PlayerZone';
-import IPlayer from '../player';
-import { getMaxPlayerBet } from '../game';
 import { BetDisplay, IBetDisplayProps } from './BetDisplay';
 import { DiscardPile, IDiscardPileProps } from './DiscardPile';
+import { IPlayerProps } from './shared/interfaces';
 
 export interface IPlayerZonesProps {
   betDisplayProps?: IBetDisplayProps;
@@ -13,7 +12,8 @@ export interface IPlayerZonesProps {
 
   currentPlayerId: string;
   perspectivePlayerId: string;
-  players: IPlayer[];
+  players: IPlayerProps[];
+  currentBet: number;
   canRevealTargetStack: (playerId: string) => boolean;
   revealCard?: (playerId: string) => void;
 }
@@ -64,11 +64,17 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
     );
   }
 
-  getPlayerZoneProps(player: IPlayer, index: number, totalPlayers: number, perspectiveIndex: number): IPlayerZoneProps {
+  getPlayerZoneProps(
+    player: IPlayerProps,
+    index: number,
+    totalPlayers: number,
+    perspectiveIndex: number,
+  ): IPlayerZoneProps {
     const playerStatuses = this.getPlayerStatuses(player);
     const bet = player.bet;
     const totalPlayerCards = player.hand.length + player.stack.length + player.revealedStack.length;
     const playerId = player.id;
+    const playerName = player.name;
     const playerCardStyle = player.cardStyle;
     const positionIndex = this.getPositionIndex(index, perspectiveIndex, totalPlayers);
     const stackSize = player.stack.length;
@@ -81,6 +87,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
       bet,
       totalPlayerCards,
       playerId,
+      playerName,
       playerCardStyle,
       totalPlayers,
       positionIndex,
@@ -95,7 +102,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
     return index >= perspectiveIndex ? index - perspectiveIndex : totalPlayers - perspectiveIndex + index;
   }
 
-  getPlayerStatuses(player: IPlayer): PlayerStatus[] {
+  getPlayerStatuses(player: IPlayerProps): PlayerStatus[] {
     let statuses: PlayerStatus[] = [];
     if (player.isOut) return [PlayerStatus.IsOut];
 
@@ -105,9 +112,15 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
 
     if (player.betSkipped) statuses.push(PlayerStatus.Skipped);
 
-    if (player.bet > 0) statuses.push(PlayerStatus.HasBet);
+    if (player.isDiscarding) {
+      statuses.push(PlayerStatus.Discarding);
+    } else if (player.isBeingPunished) {
+      statuses.push(PlayerStatus.BeingPunished);
+    } else {
+      if (player.bet > 0) statuses.push(PlayerStatus.HasBet);
 
-    if (getMaxPlayerBet(this.props.players) === player.bet) statuses.push(PlayerStatus.HasMaxBet);
+      if (this.props.currentBet === player.bet) statuses.push(PlayerStatus.HasMaxBet);
+    }
 
     return statuses;
   }

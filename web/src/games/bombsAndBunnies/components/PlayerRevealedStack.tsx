@@ -2,10 +2,11 @@ import * as React from 'react';
 
 import css from './PlayerRevealedStack.css';
 import { BunnyCardComponent, BombCardComponent } from './CardComponent';
-import { CardType } from '../card';
+import { CardStyle, CardType } from './shared/interfaces';
 
 export interface IPlayerRevealedStackProps {
   stack: CardType[];
+  cardStyle: CardStyle;
 }
 
 export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackProps, {}> {
@@ -28,14 +29,14 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
           key={index}
           style={{ marginLeft: index * offsetSize, transform: rotateStyle }}
         >
-          <BunnyCardComponent></BunnyCardComponent>
+          <BunnyCardComponent style={this.props.cardStyle}></BunnyCardComponent>
         </div>
       );
     }
 
     return (
       <div className={css.cardContainer} key={index} style={{ marginLeft: index * offsetSize, transform: rotateStyle }}>
-        <BombCardComponent key={index}></BombCardComponent>
+        <BombCardComponent key={index} style={this.props.cardStyle}></BombCardComponent>
       </div>
     );
   }
@@ -44,6 +45,6 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
   _getCardRotationStyle(index: number) {
     const fixedRotations = [-2, 3, -3, 2];
     const rotate = fixedRotations[index % fixedRotations.length];
-    return `scale(0.2) rotate(${rotate}deg)`;
+    return `scale(0.17) rotate(${rotate}deg)`;
   }
 }

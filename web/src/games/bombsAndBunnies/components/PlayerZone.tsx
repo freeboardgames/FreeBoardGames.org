@@ -3,9 +3,9 @@ import * as React from 'react';
 import css from './PlayerZone.css';
 import { PlayerStack } from './PlayerStack';
 import { PlayerRevealedStack } from './PlayerRevealedStack';
-import { CardType, CardStyle } from '../card';
-import { MaxPlayers } from '../game';
+import { CardType, CardStyle } from './shared/interfaces';
 
+const MAX_PLAYERS = 6;
 const MIN_PLAYER_RADIUS = 25;
 const MAX_PLAYER_RADIUS = 200;
 
@@ -16,6 +16,8 @@ export enum PlayerStatus {
   HasBet,
   HasMaxBet,
   IsOut,
+  Discarding,
+  BeingPunished,
 }
 
 export interface IPlayerZoneProps {
@@ -25,6 +27,7 @@ export interface IPlayerZoneProps {
   stackSize: number;
   revealedStack: CardType[];
   playerId: string;
+  playerName: string;
   playerCardStyle: CardStyle;
   revealCard?: (playerId: string) => void;
   totalPlayers: number;
@@ -56,11 +59,18 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
 
     return (
       <div>
-        <div className={css.statuses}>{this.renderStatuses()}</div>
+        <div className={css.statuses}>
+          {this.renderPlayerName()}
+          {this.renderStatuses()}
+        </div>
         <div className={css.stack}>{this.renderStack()}</div>
         <div className={css.revealedStack}>{this.renderRevealedStack()}</div>
       </div>
     );
+  }
+
+  renderPlayerName() {
+    return <div className={css.playerName}>{this.props.playerName}</div>;
   }
 
   renderStatuses() {
@@ -70,22 +80,60 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   renderStatus(status: PlayerStatus, index: number) {
     switch (status) {
       case PlayerStatus.CurrentPlayer:
-        return <span key={index}>🕒</span>;
+        return (
+          <span key={index} title="Waiting for player's move">
+            🕒
+          </span>
+        );
 
       case PlayerStatus.HasWin:
-        return <span key={index}>🔥</span>;
+        return (
+          <span key={index} title="Has a win">
+            🔥
+          </span>
+        );
 
       case PlayerStatus.Skipped:
-        return <span key={index}>❌</span>;
+        return (
+          <span key={index} title="Skipped bet">
+            ❌
+          </span>
+        );
 
       case PlayerStatus.HasBet:
-        return <span key={index}>✋</span>;
+        return (
+          <span key={index} title="Has bet">
+            ✋
+          </span>
+        );
 
       case PlayerStatus.HasMaxBet:
-        return <span key={index}>😰</span>;
+        return (
+          <span key={index} title="Has max bet">
+            😰
+          </span>
+        );
 
       case PlayerStatus.IsOut:
-        return <span key={index}>💀</span>;
+        return (
+          <span key={index} title="Knocked out">
+            💀
+          </span>
+        );
+
+      case PlayerStatus.Discarding:
+        return (
+          <span key={index} title="Discarding">
+            🤏
+          </span>
+        );
+
+      case PlayerStatus.BeingPunished:
+        return (
+          <span key={index} title="Being punished">
+            🙏
+          </span>
+        );
     }
 
     return null;
@@ -103,10 +151,15 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
   }
 
   renderRevealedStack() {
-    return <PlayerRevealedStack stack={this.props.revealedStack}></PlayerRevealedStack>;
+    return (
+      <PlayerRevealedStack
+        stack={this.props.revealedStack}
+        cardStyle={this.props.playerCardStyle}
+      ></PlayerRevealedStack>
+    );
   }
 
   getRadiusForPlayers(totalPlayers: number): number {
-    return MIN_PLAYER_RADIUS + ((MAX_PLAYER_RADIUS - MIN_PLAYER_RADIUS) * totalPlayers) / MaxPlayers;
+    return MIN_PLAYER_RADIUS + ((MAX_PLAYER_RADIUS - MIN_PLAYER_RADIUS) * totalPlayers) / MAX_PLAYERS;
   }
 }
