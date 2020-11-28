@@ -161,5 +161,4 @@ android/local.properties
 __diff_output__
 
 # storybook auto-generated
-stories/
 public/static/docs

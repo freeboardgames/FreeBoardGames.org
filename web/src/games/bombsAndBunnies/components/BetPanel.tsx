@@ -2,10 +2,7 @@ import * as React from 'react';
 
 import css from './BetPanel.css';
 
-const _height: number = 100;
-
 export interface IBetPanelProps {
-  playerIndex: number;
   minBet: number;
   maxBet: number;
   bet: (bet: number) => void;
@@ -19,12 +16,18 @@ export class BetPanel extends React.Component<IBetPanelProps, { value: number }>
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidUpdate() {
+    if (this.state.value < this.props.minBet) {
+      this.setState({ value: Math.max(this.state.value, this.props.minBet) });
+    }
+  }
+
   _bet = () => {
     this.props.bet(this.state.value);
   };
 
   render() {
-    return <div className={css.bidPanel}>{this.renderBettingOptions()}</div>;
+    return <div className={css.betPanel}>{this.renderBettingOptions()}</div>;
   }
 
   renderBettingOptions() {
@@ -32,13 +35,10 @@ export class BetPanel extends React.Component<IBetPanelProps, { value: number }>
       return <button disabled={true}>No bets avaliable</button>;
     }
 
-    const stepSize = (_height - 10) / (this.props.maxBet - this.props.minBet);
-    const buttonOffsetBottom = (this.state.value - this.props.minBet) * stepSize;
-
     return (
       <div>
         {this.renderSlider()}
-        <button className={css.button} onClick={() => this._bet()} style={{ bottom: buttonOffsetBottom }}>
+        <button className={css.button} onClick={() => this._bet()}>
           Bet {this.state.value}
         </button>
       </div>
@@ -59,7 +59,6 @@ export class BetPanel extends React.Component<IBetPanelProps, { value: number }>
         step={1}
         value={this.state.value}
         onChange={this.handleChange}
-        style={{ height: _height }}
       />
     );
   }
