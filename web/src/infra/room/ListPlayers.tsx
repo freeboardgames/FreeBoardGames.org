@@ -127,7 +127,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
     const maxCapacity = gameDef.maxPlayers;
     const capacity = metadata.capacity;
     return (
-      <ButtonGroup size="small" style={{top: '8px', right: '8px', position: 'absolute', zIndex: 10}}>
+      <ButtonGroup size="small" style={{ top: '8px', right: '8px', position: 'absolute', zIndex: 10 }}>
         <Button onClick={this.props.changeCapacity(-1)} disabled={allDisabled || capacity - 1 < minCapacity}>
           <RemoveIcon />
         </Button>
