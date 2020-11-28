@@ -45,6 +45,6 @@ export class PlayerRevealedStack extends React.Component<IPlayerRevealedStackPro
   _getCardRotationStyle(index: number) {
     const fixedRotations = [-2, 3, -3, 2];
     const rotate = fixedRotations[index % fixedRotations.length];
-    return `scale(0.2) rotate(${rotate}deg)`;
+    return `scale(0.17) rotate(${rotate}deg)`;
   }
 }

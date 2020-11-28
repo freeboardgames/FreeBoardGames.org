@@ -74,6 +74,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
     const bet = player.bet;
     const totalPlayerCards = player.hand.length + player.stack.length + player.revealedStack.length;
     const playerId = player.id;
+    const playerName = player.name;
     const playerCardStyle = player.cardStyle;
     const positionIndex = this.getPositionIndex(index, perspectiveIndex, totalPlayers);
     const stackSize = player.stack.length;
@@ -86,6 +87,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
       bet,
       totalPlayerCards,
       playerId,
+      playerName,
       playerCardStyle,
       totalPlayers,
       positionIndex,

@@ -14,6 +14,7 @@ export enum CardType {
 
 export interface IPlayerProps {
   id: string;
+  name: string;
   cardStyle: CardStyle;
   hand: CardType[];
   stack: CardType[];

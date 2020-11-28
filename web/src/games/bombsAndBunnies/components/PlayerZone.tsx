@@ -27,6 +27,7 @@ export interface IPlayerZoneProps {
   stackSize: number;
   revealedStack: CardType[];
   playerId: string;
+  playerName: string;
   playerCardStyle: CardStyle;
   revealCard?: (playerId: string) => void;
   totalPlayers: number;
@@ -58,10 +59,19 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
 
     return (
       <div>
-        <div className={css.statuses}>{this.renderStatuses()}</div>
+        <div className={css.statuses}>
+          {this.renderPlayerName()}
+          {this.renderStatuses()}
+        </div>
         <div className={css.stack}>{this.renderStack()}</div>
         <div className={css.revealedStack}>{this.renderRevealedStack()}</div>
       </div>
+    );
+  }
+
+  renderPlayerName() {
+    return (
+    <div className={css.playerName}>{this.props.playerName}</div>
     );
   }
 
