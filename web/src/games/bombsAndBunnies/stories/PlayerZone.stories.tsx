@@ -10,6 +10,7 @@ export default {
 
 const defaultData: IPlayerZoneProps = {
   playerId: '0',
+  playerName: 'Player 1',
   stackSize: 0,
   revealedStack: [],
   totalPlayers: 1,

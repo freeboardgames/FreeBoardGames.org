@@ -13,6 +13,7 @@ const defaultPlayer: IPlayerProps = {
   betSkipped: false,
   hand: [],
   id: '0',
+  name: 'Player 1',
   stack: [CardType.Bunny],
   revealedStack: [CardType.Bunny, CardType.Bunny, CardType.Bomb],
   wins: 0,
