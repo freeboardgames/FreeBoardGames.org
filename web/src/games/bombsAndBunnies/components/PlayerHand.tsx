@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { CardType, CardStyle } from '../card';
+import { CardType, CardStyle } from './shared/interfaces';
 import { BunnyCardComponent, BombCardComponent } from './CardComponent';
 
 import css from './PlayerHand.css';

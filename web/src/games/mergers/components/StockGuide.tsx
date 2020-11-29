@@ -25,25 +25,25 @@ export function StockGuide() {
   const headerCells = [];
   headerCells.push(
     <th key="Header1">
-      Tower
+      Toro
       <br />
-      Luxor
+      Lucius
     </th>,
   );
   headerCells.push(
     <th key="Header2">
-      American
+      Amore
       <br />
-      Worldwide
+      Worldywise
       <br />
-      Festival
+      Festivus
     </th>,
   );
   headerCells.push(
     <th key="Header3">
-      Imperial
+      Imperative
       <br />
-      Continental
+      Continuum
     </th>,
   );
   headerCells.push(<th key="Header4">Stock price</th>);

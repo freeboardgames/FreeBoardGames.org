@@ -70,13 +70,13 @@ describe('Board', () => {
     });
 
     it('renders the available stocks', () => {
-      expect(comp.find('#available-stock-Tower').at(0).text()).toContain('25');
-      expect(comp.find('#available-stock-Luxor').at(0).text()).toContain('25');
-      expect(comp.find('#available-stock-Worldwide').at(0).text()).toContain('25');
-      expect(comp.find('#available-stock-American').at(0).text()).toContain('25');
-      expect(comp.find('#available-stock-Festival').at(0).text()).toContain('25');
-      expect(comp.find('#available-stock-Continental').at(0).text()).toContain('25');
-      expect(comp.find('#available-stock-Imperial').at(0).text()).toContain('25');
+      expect(comp.find('#available-stock-Toro').at(0).text()).toContain('25');
+      expect(comp.find('#available-stock-Lucius').at(0).text()).toContain('25');
+      expect(comp.find('#available-stock-Worldywise').at(0).text()).toContain('25');
+      expect(comp.find('#available-stock-Amore').at(0).text()).toContain('25');
+      expect(comp.find('#available-stock-Festivus').at(0).text()).toContain('25');
+      expect(comp.find('#available-stock-Continuum').at(0).text()).toContain('25');
+      expect(comp.find('#available-stock-Imperative').at(0).text()).toContain('25');
     });
 
     it('renders the last move', () => {
@@ -98,9 +98,9 @@ describe('Board', () => {
     beforeEach(() => {
       const G = setupInitialState(3);
       G.merger = {
-        survivingChain: Chain.Continental,
-        chainToMerge: Chain.Tower,
-        mergingChains: [Chain.Tower],
+        survivingChain: Chain.Continuum,
+        chainToMerge: Chain.Toro,
+        mergingChains: [Chain.Toro],
         chainSize: 3,
         stockCounts: { '0': 10, '1': 5, '2': 0 },
         bonuses: { '0': 3000, '1': 1500 },
@@ -116,8 +116,8 @@ describe('Board', () => {
     });
 
     it('displays merger details', () => {
-      expect(comp.find('#bonus-Tower-0').first().text()).toContain('player0 gets $3000');
-      expect(comp.find('#bonus-Tower-1').first().text()).toContain('player1 gets $1500');
+      expect(comp.find('#bonus-Toro-0').first().text()).toContain('player0 gets $3000');
+      expect(comp.find('#bonus-Toro-1').first().text()).toContain('player1 gets $1500');
     });
 
     describe('when the dialog is dismissed', () => {

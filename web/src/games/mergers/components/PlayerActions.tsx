@@ -32,13 +32,13 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
     super(props);
     this.state = {
       stocksToBuy: {
-        Tower: '',
-        Luxor: '',
-        Worldwide: '',
-        American: '',
-        Festival: '',
-        Continental: '',
-        Imperial: '',
+        Toro: '',
+        Lucius: '',
+        Worldywise: '',
+        Amore: '',
+        Festivus: '',
+        Continuum: '',
+        Imperative: '',
       },
     };
   }
@@ -119,7 +119,7 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
       const label = 'Continue (you have no playable hotels)';
       return this.renderButton(label, () => this.props.moves.placeHotel());
     } else {
-      return <div>Click an outlined square above to place hotel</div>;
+      return <div>{'Click a square with a "+" above to place a hotel'}</div>;
     }
   }
 

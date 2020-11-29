@@ -1,97 +1,99 @@
-.HotelGrid {
+.HotelGridContainer {
+  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin: 1em 0;
+  align-items: center;
 }
 
-.Hotel {
-  height: 6.25vw;
-  width: 6.25vw;
-  max-width: 6.25vh;
-  max-height: 6.25vh;
-  border-radius: 0.25em;
-  font-size: 1em;
-  text-align: center;
-  box-sizing: border-box;
-  border: 0.25em solid transparent;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--mergers-color);
+.HotelGrid {
+  margin-top: 0.5em;
+  font-size: 40px;
+  height: 100%;
+  width: 100%;
+  max-width: 800px;
+}
+
+.HotelLabel {
+  font-size: 60px;
+  fill: black;
+  font-weight: 700;
 }
 
 .Hotel.Empty {
-  background-color: var(--mergers-light-grey);
-  color: black;
+  fill: var(--mergers-blue-grey);
+}
+
+.HotelLabel.Empty {
+  fill: black;
 }
 
 .Hotel.InRack {
-  background-color: var(--mergers-light-grey);
-  border-color: var(--mergers-blue-grey);
-  border-style: dashed;
-  color: black;
+  fill: var(--mergers-blue-grey);
+}
+
+.HotelLabel.InRack {
+  fill: var(--mergers-light-grey);
+  font-size: 80px;
 }
 
 .Hotel.InRack.Hover {
   cursor: pointer;
-  background-color: var(--mergers-blue-grey);
+  fill: var(--mergers-light-grey);
+}
+
+.HotelLabel.InRack.Hover {
+  cursor: pointer;
+  fill: black;
 }
 
 .Hotel.Unclaimed {
-  background-color: var(--mergers-blue-grey);
+  fill: var(--mergers-light-grey);
+}
+
+.HotelLabel.Unclaimed {
+  fill: black;
 }
 
 .Hotel.Removed {
-  background-color: var(--mergers-light-grey);
-  color: var(--mergers-blue-grey);
+  fill: var(--mergers-blue-grey);
 }
 
-.Hotel.Tower {
-  background-color: var(--chain-color-tower);
+.HotelLabel.Removed {
+  fill: black;
 }
 
-.Hotel.Luxor {
-  background-color: var(--chain-color-luxor);
+.Hotel.Toro {
+  fill: var(--chain-color-toro);
 }
 
-.Hotel.Festival {
-  background-color: var(--chain-color-festival);
+.Hotel.Lucius {
+  fill: var(--chain-color-lucius);
 }
 
-.Hotel.American {
-  background-color: var(--chain-color-american);
+.Hotel.Festivus {
+  fill: var(--chain-color-festivus);
 }
 
-.Hotel.Worldwide {
-  background-color: var(--chain-color-worldwide);
+.Hotel.Amore {
+  fill: var(--chain-color-amore);
 }
 
-.Hotel.Continental {
-  background-color: var(--chain-color-continental);
+.Hotel.Worldywise {
+  fill: var(--chain-color-worldywise);
 }
 
-.Hotel.Imperial {
-  background-color: var(--chain-color-imperial);
+.Hotel.Continuum {
+  fill: var(--chain-color-continuum);
 }
 
-.StarIcon {
-  height: 1em;
-  width: 1em;
-  font-size: 1.25em;
+.Hotel.Imperative {
+  fill: var(--chain-color-imperative);
 }
 
-.ClearIcon {
-  height: 1em;
-  width: 1em;
-  font-size: 1.25em;
+.HotelLabel.Unclaimed {
+  fill: black;
 }
 
 .GridLabel {
-  line-height: 100%;
-  text-align: center;
-  box-sizing: border-box;
-  font-size: 0.75em;
-  color: var(--mergers-color);
+  fill: var(--mergers-blue-grey);
 }

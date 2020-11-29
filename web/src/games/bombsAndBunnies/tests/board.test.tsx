@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import { Client } from 'boardgame.io/client';
 import { BombsAndBunniesGame } from '../game';
 
-import { Board } from '../components/board';
+import { BgioBoard } from '../board';
 import { GameMode } from 'gamesShared/definitions/mode';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -15,10 +15,10 @@ test('game start', async () => {
   });
   const state0 = client.store.getState();
   const comp = Enzyme.mount(
-    <Board
+    <BgioBoard
       G={state0.G}
       ctx={state0.ctx}
-      moves={client.moves}
+      moves={client.moves as any}
       playerID={'0'}
       gameArgs={{
         gameCode: 'bombsAndBunnies',
