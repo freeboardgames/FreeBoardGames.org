@@ -5,14 +5,17 @@
 import { GAMES_LIST } from 'games';
 import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
-const { Server } = require('boardgame.io/server'); // tslint:disable-line
+import { Server } from 'boardgame.io/server';
+const { PostgresStore } = require('bgio-postgres');
 
-const PORT = process.env.BGIO_PORT || '8001';
+const PORT = parseInt(process.env.BGIO_PORT || '8001', 10);
 
 const startServer = async () => {
   const configs = Promise.all(GAMES_LIST.map((gameDef) => gameDef.config()));
   const games = (await configs).map((config) => config.default.bgioGame);
-  const server = Server({ games });
+  const pgUrl = process.env.POSTGRES_URL;
+  const db = pgUrl ? new PostgresStore(pgUrl) : undefined;
+  const server = Server({ games, db });
   server.app.use(noCache({ global: true }));
   server.app.use(cors());
   server.run(PORT, () => {
