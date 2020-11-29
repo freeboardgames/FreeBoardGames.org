@@ -94,42 +94,6 @@
   fill: black;
 }
 
-.Hotel.Removed {
-  fill: var(--mergers-blue-grey);
-}
-
-.HotelLabel.Removed {
-  fill: black;
-}
-
-.Hotel.Tower {
-  fill: var(--chain-color-tower);
-}
-
-.Hotel.Luxor {
-  fill: var(--chain-color-luxor);
-}
-
-.Hotel.Festival {
-  fill: var(--chain-color-festival);
-}
-
-.Hotel.American {
-  fill: var(--chain-color-american);
-}
-
-.Hotel.Worldwide {
-  fill: var(--chain-color-worldwide);
-}
-
-.Hotel.Continental {
-  fill: var(--chain-color-continental);
-}
-
-.Hotel.Imperial {
-  fill: var(--chain-color-imperial);
-}
-
 .GridLabel {
   fill: var(--mergers-blue-grey);
 }
