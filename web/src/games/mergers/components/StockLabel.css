@@ -3,6 +3,7 @@
   width: 1.5em;
   margin-right: 0.25em;
   font-size: 1em;
+  font-weight: 700;
   border-radius: 0.25em;
   border: 0.25em solid transparent;
   display: flex;
@@ -10,7 +11,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: white;
+  color: black;
 }
 
 .StockLabel.Tower {

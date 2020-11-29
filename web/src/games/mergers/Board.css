@@ -13,13 +13,13 @@
   --mergers-error-red: #f44336; /* material red 500 */
 
   /* Chain colors */
-  --chain-color-tower: #fbc02d; /* material yellow 700 */
+  --chain-color-tower: #fbc02d;  /* material yellow 700 */
   --chain-color-luxor: #d32f2f; /* material red 700 */
-  --chain-color-festival: #2e7d32; /* material green 800 */
-  --chain-color-american: #1565c0; /* material blue 800 */
-  --chain-color-worldwide: #6d4c41; /* material brown 600 */
+  --chain-color-festival: #388e3C; /* material green 700 */
+  --chain-color-american: #0288d1; /* material blue 700 */
+  --chain-color-worldwide: #795548; /* material brown 500 */
   --chain-color-continental: #00838f; /* material teal 800 */
-  --chain-color-imperial: #c2185b; /* material pink 700 */
+  --chain-color-imperial: #d81b60; /* material pink 600 */
 }
 
 .Mergers div {
