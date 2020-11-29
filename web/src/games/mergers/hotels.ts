@@ -120,9 +120,9 @@ export class Hotels {
       basePrice = 1000;
     }
 
-    if ([Chain.Worldwide, Chain.American, Chain.Festival].includes(chain)) {
+    if ([Chain.Worldywise, Chain.Amore, Chain.Festivus].includes(chain)) {
       return basePrice + 100;
-    } else if ([Chain.Continental, Chain.Imperial].includes(chain)) {
+    } else if ([Chain.Continuum, Chain.Imperative].includes(chain)) {
       return basePrice + 200;
     } else {
       return basePrice;

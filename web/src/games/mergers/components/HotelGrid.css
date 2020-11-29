@@ -62,32 +62,36 @@
   fill: black;
 }
 
-.Hotel.Tower {
-  fill: var(--chain-color-tower);
+.Hotel.Toro {
+  fill: var(--chain-color-toro);
 }
 
-.Hotel.Luxor {
-  fill: var(--chain-color-luxor);
+.Hotel.Lucius {
+  fill: var(--chain-color-lucius);
 }
 
-.Hotel.Festival {
-  fill: var(--chain-color-festival);
+.Hotel.Festivus {
+  fill: var(--chain-color-festivus);
 }
 
-.Hotel.American {
-  fill: var(--chain-color-american);
+.Hotel.Amore {
+  fill: var(--chain-color-amore);
 }
 
-.Hotel.Worldwide {
-  fill: var(--chain-color-worldwide);
+.Hotel.Worldywise {
+  fill: var(--chain-color-worldywise);
 }
 
-.Hotel.Continental {
-  fill: var(--chain-color-continental);
+.Hotel.Continuum {
+  fill: var(--chain-color-continuum);
 }
 
-.Hotel.Imperial {
-  fill: var(--chain-color-imperial);
+.Hotel.Imperative {
+  fill: var(--chain-color-imperative);
+}
+
+.HotelLabel.Unclaimed {
+  fill: black;
 }
 
 .GridLabel {

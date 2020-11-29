@@ -32,13 +32,13 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
     super(props);
     this.state = {
       stocksToBuy: {
-        Tower: '',
-        Luxor: '',
-        Worldwide: '',
-        American: '',
-        Festival: '',
-        Continental: '',
-        Imperial: '',
+        Toro: '',
+        Lucius: '',
+        Worldywise: '',
+        Amore: '',
+        Festivus: '',
+        Continuum: '',
+        Imperative: '',
       },
     };
   }
