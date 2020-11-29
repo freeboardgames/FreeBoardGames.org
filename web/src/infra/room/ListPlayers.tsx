@@ -6,7 +6,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import css from './ListPlayers.css';
 import { isCreator } from './RoomMetadataHelper';
 
 import {
@@ -128,7 +127,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
     const maxCapacity = gameDef.maxPlayers;
     const capacity = metadata.capacity;
     return (
-      <ButtonGroup size="small" className={css.CapacityButtons}>
+      <ButtonGroup size="small" style={{ top: '8px', right: '8px', position: 'absolute', zIndex: 10 }}>
         <Button onClick={this.props.changeCapacity(-1)} disabled={allDisabled || capacity - 1 < minCapacity}>
           <RemoveIcon />
         </Button>

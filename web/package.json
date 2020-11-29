@@ -42,7 +42,7 @@
     "combine:reports": "nyc merge reports && move-cli coverage.json .nyc_output/out.json",
     "prereport:combined": "yarn run combine:reports",
     "report:combined": "nyc report --reporter lcov --report-dir coverage",
-    "storybook": "cross-env NODE_PATH=src/ NODE_OPTIONS='--max-old-space-size=2048' start-storybook -p 6006"
+    "storybook": "cross-env NODE_PATH=src/ NODE_OPTIONS='--max-old-space-size=4096' start-storybook -p 6006"
   },
   "dependencies": {
     "@apollo/react-components": "^4.0.0",
