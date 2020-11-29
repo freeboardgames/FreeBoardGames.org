@@ -6,7 +6,7 @@ import { GAMES_LIST } from 'games';
 import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
 import { Server } from 'boardgame.io/server';
-const { PostgresStore } = require('bgio-postgres');
+import { PostgresStore } from "bgio-postgres";
 
 const PORT = parseInt(process.env.BGIO_PORT || '8001', 10);
 
