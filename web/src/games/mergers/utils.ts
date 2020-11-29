@@ -27,13 +27,13 @@ export function setupPlayers(numPlayers: number): Record<string, Player> {
 
 export function fillStockMap<T>(value: T): Record<Chain, T> {
   return {
-    Tower: value,
-    Luxor: value,
-    Worldwide: value,
-    American: value,
-    Festival: value,
-    Continental: value,
-    Imperial: value,
+    Toro: value,
+    Lucius: value,
+    Worldywise: value,
+    Amore: value,
+    Festivus: value,
+    Continuum: value,
+    Imperative: value,
   };
 }
 

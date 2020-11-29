@@ -14,32 +14,32 @@
   color: black;
 }
 
-.StockLabel.Tower {
-  background-color: var(--chain-color-tower);
+.StockLabel.Toro {
+  background-color: var(--chain-color-toro);
 }
 
-.StockLabel.Luxor {
-  background-color: var(--chain-color-luxor);
+.StockLabel.Lucius {
+  background-color: var(--chain-color-lucius);
 }
 
-.StockLabel.Festival {
-  background-color: var(--chain-color-festival);
+.StockLabel.Festivus {
+  background-color: var(--chain-color-festivus);
 }
 
-.StockLabel.American {
-  background-color: var(--chain-color-american);
+.StockLabel.Amore {
+  background-color: var(--chain-color-amore);
 }
 
-.StockLabel.Worldwide {
-  background-color: var(--chain-color-worldwide);
+.StockLabel.Worldywise {
+  background-color: var(--chain-color-worldywise);
 }
 
-.StockLabel.Continental {
-  background-color: var(--chain-color-continental);
+.StockLabel.Continuum {
+  background-color: var(--chain-color-continuum);
 }
 
-.StockLabel.Imperial {
-  background-color: var(--chain-color-imperial);
+.StockLabel.Imperative {
+  background-color: var(--chain-color-imperative);
 }
 
 .StockLabel.Clickable {
