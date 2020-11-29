@@ -24,7 +24,7 @@ Each turn, you take the following actions:
 
 ### Action 1: Build a hotel
 
-On the board, the outlined squares are the hotels you've drawn. Click one of them to build the hotel on the square.
+On the board, the squares marked with a "+" are the hotels you've drawn. Click one of them to build the hotel on the square.
 
 Gray squares indicate tiles that have been built, but that are not part of a chain. If you build a hotel adjacent to one of these tiles (meaning they share an edge), these hotels form a new chain. You get to choose which chain to form (there are 7 different chains, across 3 pricing tiers, click "SHOW GUIDE" to see the stock prices and bonuses). You then get 1 free share of stock in the new company. If all 7 chains are already on the board you cannot play a tile that would form a new chain.
 
