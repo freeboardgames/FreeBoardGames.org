@@ -23,10 +23,8 @@ spec:
       - env:
         - name: SERVER_TYPE
           value: BGIO
-        - name: MONGO_URI
-          value: mongodb://{{ .Values.mongodb.auth.username }}:{{ .Values.mongodb.auth.password }}@{{ .Release.Name }}-mongodb.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.mongodb.service.port }}/
-        - name: MONGO_DATABASE
-          value: {{ .Values.mongodb.database }}
+        - name: POSTGRES_URL
+          value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.postgresqlDatabase }}
         - name: BGIO_PORT
           value: "8001"
         image: freeboardgames/web
