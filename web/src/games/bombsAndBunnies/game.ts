@@ -141,7 +141,7 @@ export const BombsAndBunniesGame: Game<IG> = {
   },
 
   setup: (ctx: Ctx): IG => {
-    let players: IPlayer[] = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
+    const players: IPlayer[] = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
       id: i.toString(),
       cardStyle: <CardStyle>i,
       bet: null,
