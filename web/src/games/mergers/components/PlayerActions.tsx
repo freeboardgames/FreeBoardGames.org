@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import React, { ReactNode } from 'react';
-import { Chain, Merger, Player } from '../types';
+import { Chain, Merger, Player, SwapAndSell } from '../types';
 import { fillStockMap } from '../utils';
 
 import { StockLabel } from './StockLabel';
@@ -23,8 +23,8 @@ interface PlayerActionsProps {
 
 interface PlayerActionsState {
   stocksToBuy: Record<Chain, string>;
-  stocksToSwap?: number;
-  stocksToSell?: number;
+  stocksToSwap?: string;
+  stocksToSell?: string;
 }
 
 export class PlayerActions extends React.Component<PlayerActionsProps, PlayerActionsState> {
@@ -40,6 +40,8 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
         Continuum: '',
         Imperative: '',
       },
+      stocksToSwap: '',
+      stocksToSell: '',
     };
   }
 
@@ -95,10 +97,36 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
       totalPrice += numToBuy * this.props.hotels.priceOfStock(chain);
     }
     if (totalCount > 3) {
-      return 'You  may only buy up to 3 stocks per turn';
+      return 'You may only buy up to 3 stocks per turn';
     }
     if (totalPrice > this.playerState().money) {
       return "You don't have enough money";
+    }
+    return '';
+  }
+
+  parseStocksToExchange(): SwapAndSell {
+    return {
+      swap: this.parseNumber(this.state.stocksToSwap),
+      sell: this.parseNumber(this.state.stocksToSell),
+    };
+  }
+
+  validateStocksToExchange(): string {
+    const parsed = this.parseStocksToExchange();
+    if (Number.isNaN(parsed.sell) || Number.isNaN(parsed.swap)) {
+      return 'Please enter numbers only';
+    }
+    const numStocksToExchange = this.playerState().stocks[this.props.merger.chainToMerge];
+    if (parsed.swap + parsed.sell > numStocksToExchange) {
+      return `You only have ${numStocksToExchange} ${this.props.merger.chainToMerge} stock`;
+    }
+    if (parsed.swap % 2 !== 0) {
+      return `You may only swap an even number of stock (2 ${this.props.merger.chainToMerge} for 1 ${this.props.merger.survivingChain})`;
+    }
+    const numAvailableToSwapFor = this.props.availableStocks[this.props.merger.survivingChain];
+    if (parsed.swap / 2 > numAvailableToSwapFor) {
+      return `There are only ${numAvailableToSwapFor} ${this.props.merger.survivingChain} stocks available to swap for`;
     }
     return '';
   }
@@ -243,39 +271,50 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
     return this.renderBreakMergerTieChain('There is a tie. Choose the chain to merge next:', 'chooseChainToMerge');
   }
 
-  renderSwapAndSellInput(label: string, onChange: (n: number) => void, value?: number) {
+  renderExchangeStockInput(label: string, onChange: (n: string) => void, value: string) {
     return (
       <div className={css.SwapSellEntry}>
         <div className={css.SwapSellLabel}>{label}</div>
         <TextField
+          name={`stock-to-exchange-input-${label}`}
           className={css.ActionInput}
           placeholder="#"
-          value={value || ''}
-          onChange={(e) => onChange(this.safeParseNumber(e.target.value))}
+          value={value}
+          onChange={(e) => onChange(e.target.value || '')}
         />
       </div>
     );
   }
 
-  renderSwapAndSellStock() {
-    const { stocksToSwap, stocksToSell } = this.state;
-    const numToSwap = stocksToSwap || 0;
-    const numToSell = stocksToSell || 0;
-    const setSwap = (n: number) => this.setState({ stocksToSwap: n });
-    const setSell = (n: number) => this.setState({ stocksToSell: n });
+  renderExchangeStock() {
+    const stocksToExchange = this.parseStocksToExchange();
+    const errorMsg = this.validateStocksToExchange();
+
+    const setSwap = (v: string) => this.setState({ stocksToSwap: v });
+    const setSell = (v: string) => this.setState({ stocksToSell: v });
     const onClick = () => {
-      this.props.moves.swapAndSellStock(numToSwap, numToSell);
-      this.setState({ stocksToSwap: 0, stocksToSell: 0 });
+      if (!!errorMsg) {
+        return;
+      }
+      this.props.moves.swapAndSellStock(stocksToExchange.swap, stocksToExchange.sell);
+      this.setState({ stocksToSwap: '', stocksToSell: '' });
     };
 
     return (
-      <div className={css.WrapRow}>
-        <div className={css.MarginRight}>{`Do you want to exchange any ${this.props.merger.chainToMerge} stock?`}</div>
-        {this.renderSwapAndSellInput('Swap', setSwap, stocksToSwap)}
-        {this.renderSwapAndSellInput('Sell', setSell, stocksToSell)}
-        <Button className={css.ActionButton} variant="contained" onClick={onClick}>
-          {numToSwap + numToSell > 0 ? 'OK' : 'Pass'}
-        </Button>
+      <div className="ExchangeStockContainer">
+        <div className={css.WrapRow}>
+          <div className={css.MarginRight}>
+            {`Sell ${this.props.merger.chainToMerge} stock, or swap 2-for-1 with ${this.props.merger.survivingChain}?`}
+          </div>
+          <div className={css.WrapRow}>
+            {this.renderExchangeStockInput('Swap', setSwap, this.state.stocksToSwap)}
+            {this.renderExchangeStockInput('Sell', setSell, this.state.stocksToSell)}
+            <Button className={css.ActionButton} variant="contained" onClick={onClick} disabled={!!errorMsg}>
+              {stocksToExchange.swap + stocksToExchange.sell > 0 ? 'Exchange' : 'Keep all'}
+            </Button>
+          </div>
+        </div>
+        <div className={css.ErrorText}>{errorMsg}</div>
       </div>
     );
   }
@@ -310,7 +349,7 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
       case 'chooseChainToMergePhase':
         return this.renderChooseChainToMerge();
       case 'mergerPhase':
-        return this.renderSwapAndSellStock();
+        return this.renderExchangeStock();
       default:
         break;
     }
