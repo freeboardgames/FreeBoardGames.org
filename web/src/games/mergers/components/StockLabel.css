@@ -1,0 +1,47 @@
+.StockLabel {
+  height: 2em;
+  width: 1.5em;
+  margin-right: 0.25em;
+  font-size: 1em;
+  font-weight: 700;
+  border-radius: 0.25em;
+  border: 0.25em solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: black;
+}
+
+.StockLabel.Toro {
+  background-color: var(--chain-color-toro);
+}
+
+.StockLabel.Lucius {
+  background-color: var(--chain-color-lucius);
+}
+
+.StockLabel.Festivus {
+  background-color: var(--chain-color-festivus);
+}
+
+.StockLabel.Amore {
+  background-color: var(--chain-color-amore);
+}
+
+.StockLabel.Worldywise {
+  background-color: var(--chain-color-worldywise);
+}
+
+.StockLabel.Continuum {
+  background-color: var(--chain-color-continuum);
+}
+
+.StockLabel.Imperative {
+  background-color: var(--chain-color-imperative);
+}
+
+.StockLabel.Clickable {
+  cursor: pointer;
+}

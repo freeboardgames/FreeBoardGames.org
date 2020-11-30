@@ -1,0 +1,24 @@
+{
+  "presets": ["next/babel"],
+  "plugins": ["@babel/plugin-syntax-dynamic-import", "macros"],
+  "env": {
+    "production": {
+      "plugins": ["babel-plugin-jsx-remove-data-test-id"]
+    },
+    "development": {
+      "plugins": ["styled-jsx/babel-test", "istanbul"],
+      "compact": false
+    },
+    "test": {
+      "plugins": ["styled-jsx/babel-test"],
+      "compact": false
+    },
+    "e2e": {
+      "plugins": ["istanbul"],
+      "compact": false
+    },
+    "unoptimized": {
+      "compact": false
+    }
+  }
+}

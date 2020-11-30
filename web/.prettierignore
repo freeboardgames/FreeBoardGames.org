@@ -1,0 +1,17 @@
+# package.json is formatted by package managers, so we ignore it here
+package.json
+package-lock.json
+yarn.lock
+package.json
+.next/
+node_modules/
+coverage/
+coverage-*/
+stockfish8.worker.js
+sw.js
+blog/
+server/dist/
+.cache/
+static/
+public/
+src/gqlTypes

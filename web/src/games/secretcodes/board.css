@@ -1,0 +1,102 @@
+.header {
+  text-align: center;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-gap: 0.5rem;
+
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+button.playActionBtn {
+  margin-left: 0.5rem;
+}
+
+.selectTeamBtn {
+  float: right;
+  margin-right: 4px;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* vw - 2 * margin-l + margin-r - all grid-gap / card columns*/
+  height: calc((100vw - 1.6rem - 2rem) / 5);
+  max-height: 100px;
+  padding: 0.2rem;
+
+  border-radius: 3px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);
+  box-sizing: border-box;
+
+  text-align: center;
+  hyphens: auto;
+  font-size: 14px;
+  color: black;
+  fill: #50514F;
+  word-break: break-all;
+  background-color: #f7f7f7;
+
+  text-transform: capitalize;
+  transition: box-shadow 200ms ease-out, transform 200ms ease-out;
+}
+
+.card:not(.cardRevealed):hover {
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+.redTitle {
+  display: inline;
+  padding: 8px;
+  border-radius: 3px;
+  background-color: #F25F5C;
+}
+
+.blueTitle {
+  display: inline;
+  padding: 8px;
+  border-radius: 3px;
+  background-color: #247BA0;
+}
+
+.cardBlue {
+  background-color: #247BA0;
+  fill: #fff;
+}
+
+.cardRed {
+  background-color: #F25F5C;
+  fill: #fff;
+}
+
+.cardCivilian {
+  background-color: beige;
+  fill: #50514F;
+}
+
+.cardAssassin {
+  background-color: #50514F;
+  fill: #fff;
+}
+
+.cardLastSelected {
+  border: dashed 3px palegreen;
+  border-style: ridge;
+}
+
+.cardRevealedSpymasterView {
+  visibility: hidden;
+}
+
+.winners {
+  color: black;
+  text-align: center;
+}

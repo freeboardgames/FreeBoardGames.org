@@ -1,0 +1,123 @@
+.Mergers {
+  font-size: 1.25em;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+
+  /* Mergers colors */
+  --mergers-background-color: black;
+  --mergers-color: var(--mergers-light-grey);
+  --mergers-light-grey: #e0e0e0; /* material gray 300 */
+  --mergers-medium-grey: #9E9E9E; /* material gray 500 */
+  --mergers-dark-grey: #212121; /* material gray 900 */
+  --mergers-blue-grey: #455a64; /* material blue-gray 700 */
+  --mergers-highlight-green: #76ff03; /* material light green A400 */
+  --mergers-error-red: #f44336; /* material red 500 */
+
+  /* Chain colors */
+  --chain-color-toro: #fbc02d;  /* material yellow 700 */
+  --chain-color-lucius: #d32f2f; /* material red 700 */
+  --chain-color-festivus: #388e3C; /* material green 700 */
+  --chain-color-amore: #0288d1; /* material blue 700 */
+  --chain-color-worldywise: #795548; /* material brown 500 */
+  --chain-color-continuum: #00838f; /* material teal 800 */
+  --chain-color-imperative: #d81b60; /* material pink 600 */
+}
+
+.Mergers div {
+  box-sizing: border-box;
+}
+
+.Mergers p {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.MergersContainer {
+  padding: 1em;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 50px 10px 10px 10px;
+  box-sizing: border-box;
+  color: var(--mergers-color);
+  background-color: var(--mergers-background-color);
+}
+
+.AvailableStockAndPrice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 0.5em;
+}
+
+.Player {
+  margin-right: 1em;
+  border: 4px solid transparent;
+  border-radius: 0.25em;
+  padding: 0.25em;
+}
+
+.Player.CurrentTurn {
+  border-color: var(--mergers-color);
+}
+
+.Player.YourTurn {
+  border-color: var(--mergers-highlight-green);
+}
+
+.PlayerMoney {
+  margin-right: 1em;
+}
+
+.WrapRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0.25em 0;
+}
+
+.Spacer {
+  flex-grow: 1;
+}
+
+.FlexColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.WrapRow button {
+  margin-left: 1em;
+}
+
+.PlayerStock {
+  display: flex;
+  align-items: flex-end;
+  margin-right: 0.5em;
+}
+
+.PlayerStock.HiddenStock {
+  /* hide so height is maintained but width shrinks to 0 */
+  visibility: hidden;
+  width: 0;
+  margin: 0;
+}
+
+.MarginTopBottom {
+  margin-bottom: 1em !important;
+  margin-top: 1em !important;
+}
+
+.MarginBottom {
+  margin-bottom: 1em !important;
+}
+
+.MarginTop {
+  margin-top: 1em !important;
+}
+
+.MarginLeft {
+  margin-left: 1em;
+}
+
+.MarginRight {
+  margin-right: 1em;
+}

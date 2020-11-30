@@ -1,7 +1,12 @@
 os: linux
 language: node_js
+dist: focal
 node_js:
   - "stable"
+
+branches:
+  only:
+    - "master"
 
 cache:
   yarn: true
@@ -9,7 +14,10 @@ cache:
     # cache folder with Cypress binary
     - ~/.cache
     # next.js build cache
-    - .next/cache
+    - web/.next/cache
+    # node_modules
+    - web/node_modules
+    - fbg-server/node_modules
 
 install:
   - yarn install
@@ -18,4 +26,4 @@ script:
   - yarn run ci
 
 after_success:
-  - yarn run test:coveralls
+  - cd web/ && yarn run test:coveralls

@@ -1,0 +1,88 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int
+  nickname: String!
+}
+
+type NewUser {
+  jwtToken: String!
+}
+
+type RoomMembership {
+  isCreator: Boolean!
+  user: User!
+}
+
+type Room {
+  id: String
+  matchId: String
+  userId: Float
+  userMemberships: [RoomMembership!]!
+  gameCode: String!
+  capacity: Float!
+  isPublic: Boolean!
+}
+
+type NewRoom {
+  roomId: String!
+}
+
+type Lobby {
+  rooms: [Room!]!
+}
+
+type MatchMembership {
+  user: User!
+}
+
+type Match {
+  id: Int
+  playerMemberships: [MatchMembership!]!
+  gameCode: String!
+  bgioServerUrl: String!
+  bgioMatchId: String!
+  bgioSecret: String
+  bgioPlayerId: String
+}
+
+type Query {
+  user: User!
+  lobby: Lobby!
+  match(id: String!): Match!
+}
+
+type Mutation {
+  newUser(user: NewUserInput!): NewUser!
+  updateUser(user: NewUserInput!): Boolean!
+  newRoom(room: NewRoomInput!): NewRoom!
+  joinRoom(roomId: String!): Room!
+  leaveRoom(roomId: String!): Boolean!
+  removeFromRoom(userIdToBeRemoved: Int!, roomId: String!): Boolean!
+  updateRoom(room: UpdateRoomInput!): Boolean!
+  nextRoom(matchId: String!): String!
+  startMatch(roomId: String!): String!
+}
+
+input NewUserInput {
+  nickname: String!
+}
+
+input NewRoomInput {
+  gameCode: String!
+  capacity: Float!
+  isPublic: Boolean!
+}
+
+input UpdateRoomInput {
+  roomId: String!
+  gameCode: String!
+  capacity: Float!
+}
+
+type Subscription {
+  roomMutated(roomId: String!): Room!
+  lobbyMutated: Lobby!
+}

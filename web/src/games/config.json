@@ -1,0 +1,23 @@
+{
+  "order": [
+    "bombsAndBunnies",
+    "secretDracula",
+    "soupofletters",
+    "checkers",
+    "fourinarow",
+    "tictactoe",
+    "hangman",
+    "seabattle",
+    "mancala",
+    "secretcodes",
+    "chess",
+    "estatebuyer",
+    "tictactoeplus",
+    "cornerus",
+    "takesix",
+    "zooparade",
+    "rota",
+    "reversi",
+    "ninemensmorris"
+  ]
+}
