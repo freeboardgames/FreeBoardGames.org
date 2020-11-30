@@ -15,8 +15,8 @@ import {
 } from 'gamesShared/components/boards/Checkerboard';
 import { Token } from 'deprecated-bgio-ui';
 import Typography from '@material-ui/core/Typography';
-import grey from '@material-ui/core/colors/grey';
-import blue from '@material-ui/core/colors/blue';
+import {grey, blue, green} from '@material-ui/core/colors';
+// import blue from '@material-ui/core/colors/blue';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 

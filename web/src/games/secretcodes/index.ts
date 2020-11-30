@@ -1,4 +1,4 @@
-const Thumbnail = require('./media/thumbnail.jpg');
+const Thumbnail = require('./media/thumbnail.png');
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
 import instructions from './instructions.md';
