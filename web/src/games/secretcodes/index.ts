@@ -4,6 +4,7 @@ import { GameMode } from 'gamesShared/definitions/mode';
 import instructions from './instructions.md';
 
 export const secretcodesGameDef: IGameDef = {
+  urlName: 'shreejis-secret',
   code: 'secretcodes',
   name: "Shreeji's Secret",
   imageURL: Thumbnail,

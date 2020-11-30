@@ -43,6 +43,7 @@ function genFileContent(games) {
   for (const game of games) {
     importGen.push(`import ${game} from './${game}';`);
     mapGen.push(`  ${game},`);
+    mapGen.push(`  [${game}.urlName] :${game},`);
     listGen.push(`  GAMES_MAP.${game},`);
   }
 

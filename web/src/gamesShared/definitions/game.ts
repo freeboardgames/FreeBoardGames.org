@@ -26,6 +26,7 @@ export enum IGameStatus {
 }
 
 export interface IGameDef {
+  urlName?: string;
   code: string;
   name: string;
   imageURL: string;

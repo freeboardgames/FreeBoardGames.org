@@ -4,6 +4,7 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const rotaGameDef: IGameDef = {
+  urlName: 'rass',
   code: 'rota',
   name: 'Rass',
   imageURL: Thumbnail,

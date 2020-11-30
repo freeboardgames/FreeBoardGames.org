@@ -296,25 +296,26 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
   _getLink(info: IGameModeInfo) {
     const mode = info.mode;
     let hrefAndAs: string[];
+    const gameCode = this.props.gameDef.urlName || this.props.gameDef.code;
     switch (mode) {
       case GameMode.AI:
         if (info.extraInfo) {
           hrefAndAs = [
             '/play/[gameCode]/[mode]/[aiLevel]',
-            `/play/${this.props.gameDef.code}/AI/${this._getExtraInfoValue(info)}`,
+            `/play/${gameCode}/AI/${this._getExtraInfoValue(info)}`,
           ];
           break;
         } else {
-          hrefAndAs = ['/play/[gameCode]/[mode]', `/play/${this.props.gameDef.code}/AI`];
+          hrefAndAs = ['/play/[gameCode]/[mode]', `/play/${gameCode}/AI`];
           break;
         }
       case GameMode.LocalFriend:
-        hrefAndAs = ['/play/[gameCode]/[mode]', `/play/${this.props.gameDef.code}/local`];
+        hrefAndAs = ['/play/[gameCode]/[mode]', `/play/${gameCode}/local`];
         break;
       case GameMode.OnlineFriend:
         hrefAndAs = [
           '/room/new/[gameCode]/[numPlayers]',
-          `/room/new/${this.props.gameDef.code}/${this._getExtraInfoValue(info)}`,
+          `/room/new/${gameCode}/${this._getExtraInfoValue(info)}`,
         ];
         break;
     }

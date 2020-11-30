@@ -88,7 +88,7 @@ export class GamesList extends React.Component<Props, State> {
       );
     } else {
       return (
-        <Link href={`/play/[gameCode]`} as={`/play/${game.code}`} key={game.code}>
+        <Link href={`/play/[gameCode]`} as={`/play/${game.urlName || game.code}`} key={game.code}>
           <a className={css.Card}>
             <GameCard game={game} isLink={true} />
           </a>

@@ -4,6 +4,7 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const hangmanGameDef: IGameDef = {
+  urlName: 'guess-the-word',
   code: 'hangman',
   name: 'Guess the Word',
   minPlayers: 2,

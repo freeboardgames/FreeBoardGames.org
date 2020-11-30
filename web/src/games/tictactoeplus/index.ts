@@ -4,6 +4,7 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const tictactoeplusGameDef: IGameDef = {
+  urlName: 'tictactoe',
   code: 'tictactoeplus',
   name: 'Tic-Tac-Toe',
   minPlayers: 2,

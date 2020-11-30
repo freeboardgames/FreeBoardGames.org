@@ -4,6 +4,7 @@ import instructions from './instructions.md';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 
 export const ninemensmorrisGameDef: IGameDef = {
+  urlName: 'tri-murti',
   code: 'ninemensmorris',
   name: 'Tri-Murti',
   imageURL: Thumbnail,
