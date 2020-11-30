@@ -14,7 +14,7 @@ function genGames(games = []) {
 function orderGames(games) {
   const config = JSON.parse(shell.cat("config.json"));
   const order = config.order;
-  const result = [...games].sort((a, b) => {
+  const result = [...games].filter((g)=>(order.includes(g))).sort((a, b) => {
     let aIndex = order.indexOf(a);
     let bIndex = order.indexOf(b);
     if (aIndex === -1) {
