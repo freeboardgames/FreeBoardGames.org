@@ -104,15 +104,15 @@ export function buyStock(G: IG, ctx: Ctx, order: Partial<Record<Chain, number>>)
     const hotels = getHotels(G);
     const player = G.players[ctx.playerID];
     let purchasesRemaining = 3;
-    Object.keys(Chain).forEach((key) => {
+    for (const key of Object.keys(Chain)) {
       const chain = Chain[key];
       const num = order[chain];
-      if (!num) {
-        return;
+      if (!num || num < 0) {
+        continue;
       }
       const stockPrice = hotels.priceOfStock(chain);
       if (stockPrice === undefined) {
-        return;
+        continue;
       }
       let stocksToBuy = Math.min(num, Math.min(G.availableStocks[chain], purchasesRemaining));
       if (!G.lastMove) {
@@ -128,7 +128,7 @@ export function buyStock(G: IG, ctx: Ctx, order: Partial<Record<Chain, number>>)
         stocksToBuy--;
         purchasesRemaining--;
       }
-    });
+    }
   }
 
   if (!G.lastMove) {
@@ -230,6 +230,7 @@ export function swapAndSellStock(G: IG, ctx: Ctx, swap?: number, sell?: number) 
   }
 
   let toSwap = swap || 0;
+  toSwap = Math.max(toSwap, 0);
   toSwap = Math.min(toSwap, player.stocks[chainToMerge]);
   toSwap = Math.min(toSwap, G.availableStocks[survivingChain] * 2);
   toSwap = roundDownToNearest2(toSwap);
@@ -246,6 +247,7 @@ export function swapAndSellStock(G: IG, ctx: Ctx, swap?: number, sell?: number) 
   G.availableStocks[survivingChain] -= toSwap / 2;
 
   let toSell = sell || 0;
+  toSell = Math.max(toSell, 0);
   toSell = Math.min(toSell, player.stocks[chainToMerge] || 0);
 
   // players sells stocks

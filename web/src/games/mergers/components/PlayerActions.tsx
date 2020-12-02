@@ -86,8 +86,8 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
       if (numToBuy === 0) {
         continue;
       }
-      if (Number.isNaN(numToBuy)) {
-        return 'Please enter numbers only';
+      if (Number.isNaN(numToBuy) || numToBuy < 0) {
+        return 'Please enter positive numbers only';
       }
       const numAvailable = this.props.availableStocks[chain];
       if (numToBuy > numAvailable) {
@@ -113,19 +113,19 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
   }
 
   validateStocksToExchange(): string {
-    const parsed = this.parseStocksToExchange();
-    if (Number.isNaN(parsed.sell) || Number.isNaN(parsed.swap)) {
-      return 'Please enter numbers only';
+    const { swap, sell } = this.parseStocksToExchange();
+    if (Number.isNaN(sell) || sell < 0 || Number.isNaN(swap) || swap < 0) {
+      return 'Please enter positive numbers only';
     }
     const numStocksToExchange = this.playerState().stocks[this.props.merger.chainToMerge];
-    if (parsed.swap + parsed.sell > numStocksToExchange) {
+    if (swap + sell > numStocksToExchange) {
       return `You only have ${numStocksToExchange} ${this.props.merger.chainToMerge} stock`;
     }
-    if (parsed.swap % 2 !== 0) {
+    if (swap % 2 !== 0) {
       return `You may only swap an even number of stock (2 ${this.props.merger.chainToMerge} for 1 ${this.props.merger.survivingChain})`;
     }
     const numAvailableToSwapFor = this.props.availableStocks[this.props.merger.survivingChain];
-    if (parsed.swap / 2 > numAvailableToSwapFor) {
+    if (swap / 2 > numAvailableToSwapFor) {
       return `There are only ${numAvailableToSwapFor} ${this.props.merger.survivingChain} stocks available to swap for`;
     }
     return '';
