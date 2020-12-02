@@ -1,3 +1,5 @@
+import {blue, green} from '@material-ui/core/colors';
+
 
 export const CARD_CONTENT = {
     elephant: require('./media/elephant.jpg'), 
@@ -11,6 +13,12 @@ export const CARD_CONTENT = {
     owl: require('./media/owl.jpg'), 
     seahorse: require('./media/seahorse.jpg'), 
     tortoise: require('./media/tortoise.jpg'), 
+    vulture: require('./media/vulture.jpg'), 
 };
 
-export const GRID_SIZE = 4;
+export const GRID_SIZE = 5;
+
+export const PLAYER_COLORS = {
+    '0':  blue[500], 
+    '1':  green[500]
+}

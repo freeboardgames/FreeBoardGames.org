@@ -5,14 +5,20 @@ export enum ECardState {
     HIDDEN, SHOWN, OPEN
 }
 
+export enum ECardAnimation {
+    FRONT, BACK, AS_IT_IS
+}
+
 export interface ICardInfo {
     id: number;
-    content: string; 
+    name: string; 
     state: ECardState;
+    openedBy?: string;
 }
 
 export interface IGameState {
     cards: ICardInfo[];
+    timeShownCards: boolean;
 }
 
 export interface IBoardState{

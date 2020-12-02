@@ -1,34 +1,71 @@
 import { Game } from 'boardgame.io';
 import { IGameState, ICardInfo, ECardState} from './definations';
 import { CARD_CONTENT, GRID_SIZE } from './constants';
-import { shuffleArray } from './utils';
+import { shuffleArray, getScoreBoard } from './utils';
 
 export const MemoryMatchGame: Game<IGameState> = {
     name: 'memorymatch',
     setup: () => { 
-        const shuffeledContnet = shuffleArray(Object.keys(CARD_CONTENT)).slice(0, GRID_SIZE * GRID_SIZE / 2);
+        const shuffeledContnet = shuffleArray(Object.keys(CARD_CONTENT)).slice(0, Math.floor(GRID_SIZE * GRID_SIZE / 2));
         const doubledContent = shuffleArray([...shuffeledContnet, ...shuffeledContnet]);
-        const cards = [];
-        for (let row = 0; row < GRID_SIZE; row++) {
-            for (let col = 0; col < GRID_SIZE; col++) {
-                let id = row * GRID_SIZE + col;
-                cards.push({
-                    id,
-                    name: doubledContent[id],
-                    state: ECardState.HIDDEN
-                });
-            }
+        const cards: ICardInfo[] = [];
+        for (let id = 0; id < doubledContent.length; id++) {            
+            cards.push({
+                // if grid is odd, then move the empty box to center
+                id: (id >= shuffeledContnet.length && GRID_SIZE % 2)? (id+1) : id,
+                name: doubledContent[id],
+                state: ECardState.HIDDEN,
+            });
         }
-        return { cards };
+        return { cards, timeShownCards: false };
     },
     moves: {
         cardClicked: (G: IGameState, ctx, cardId: number) => { 
             const clickedCard = G.cards.filter((c)=>(c.id === cardId))[0]; 
-            clickedCard.state = ECardState.SHOWN;
+            const cardPair = G.cards.filter((c)=>(c.name === clickedCard.name && c.id !== cardId))[0];
+            const shownCards = G.cards.filter((c)=>(c.state === ECardState.SHOWN));
+            const currentPlayer = ctx.currentPlayer;
+            clickedCard.openedBy = currentPlayer;
+            G.timeShownCards = false;   // disable timer by default 
+            if (clickedCard.state === ECardState.HIDDEN){
+                if (shownCards.length >= 1) {
+                    if (cardPair.state === ECardState.SHOWN && cardPair.openedBy === currentPlayer) {
+                        // mark the pair as open 
+                        cardPair.state = ECardState.OPEN;
+                        clickedCard.state = ECardState.OPEN; 
+                        ctx.events.endTurn()
+                    } else {
+                        // mark current card as shown
+                        clickedCard.state = ECardState.SHOWN; 
+                        G.timeShownCards = true;
+                    }
+                } else {
+                    clickedCard.state = ECardState.SHOWN;
+                }
+            }
+            return G;
+        }, 
+        hideShownCards: (G: IGameState, ctx) => {
+            const shownCards = G.cards.filter((c)=>(c.state === ECardState.SHOWN));
+            for(let i = 0; i < shownCards.length; i++){
+                shownCards[i].state = ECardState.HIDDEN;
+                shownCards[i].openedBy = undefined;
+            }
+            G.timeShownCards = false; 
+            ctx.events.endTurn()
             return G;
         }
     },
-    endIf: () => { 
-
+    endIf: (G: IGameState, ctx) => { 
+        // check if game is over 
+        const unOpenedCards = G.cards.filter((c)=>(!c.openedBy)); 
+        if (unOpenedCards.length === 0){    // game should end
+            const scoreBoard = getScoreBoard(G, ctx); 
+            if (scoreBoard[0].score == scoreBoard[1].score){
+                return {draw: true};
+            } else {
+                return {winner: scoreBoard[0].playerID};
+            }
+        }
     },
 };
