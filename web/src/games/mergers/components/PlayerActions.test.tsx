@@ -198,7 +198,29 @@ describe('#renderBuyStock', () => {
     it('disables the Buy button and displays an error', () => {
       expect(comp.props().moves.buyStock).not.toHaveBeenCalled();
       expect(comp.find(`.${css.ActionButton}`).at(0).props().disabled).toBeTrue();
-      expect(comp.text()).toContain('Please enter numbers only');
+      expect(comp.text()).toContain('Please enter positive numbers only');
+    });
+  });
+
+  describe('entering a negative value', () => {
+    beforeEach(() => {
+      setUpComponent((G) => {
+        G.players['0'].money = 1000;
+      });
+
+      // player enters a negative value
+      comp
+        .find('input[name="stock-to-buy-input-Toro"]')
+        .at(0)
+        .simulate('change', { target: { name: 'stock-to-buy-input-Toro', value: '-1' } });
+
+      comp.find(`.${css.ActionButton}`).at(0).simulate('click');
+    });
+
+    it('disables the Buy button and displays an error', () => {
+      expect(comp.props().moves.buyStock).not.toHaveBeenCalled();
+      expect(comp.find(`.${css.ActionButton}`).at(0).props().disabled).toBeTrue();
+      expect(comp.text()).toContain('Please enter positive numbers only');
     });
   });
 });
@@ -385,7 +407,24 @@ describe('#renderExchangeStock', () => {
     it('disables the Buy button and displays an error', () => {
       expect(comp.props().moves.swapAndSellStock).not.toHaveBeenCalled();
       expect(comp.find(`.${css.ActionButton}`).at(0).props().disabled).toBeTrue();
-      expect(comp.text()).toContain('Please enter numbers only');
+      expect(comp.text()).toContain('Please enter positive numbers only');
+    });
+  });
+
+  describe('entering a negative value', () => {
+    beforeEach(() => {
+      comp
+        .find('input[name="stock-to-exchange-input-Swap"]')
+        .at(0)
+        .simulate('change', { target: { name: 'stock-to-exchange-input-Swap', value: '-1' } });
+
+      comp.find(`.${css.ActionButton}`).at(0).simulate('click');
+    });
+
+    it('disables the Buy button and displays an error', () => {
+      expect(comp.props().moves.swapAndSellStock).not.toHaveBeenCalled();
+      expect(comp.find(`.${css.ActionButton}`).at(0).props().disabled).toBeTrue();
+      expect(comp.text()).toContain('Please enter positive numbers only');
     });
   });
 });

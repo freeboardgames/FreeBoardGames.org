@@ -12,6 +12,7 @@ import {
   mergerPhaseNextTurn,
   MergersGame,
   placeHotel,
+  swapAndSellStock,
 } from './game';
 import { fillInTestHotels, getMultiplayerTestClients } from './test_utils';
 import { Chain, Hotel, IG, Player } from './types';
@@ -282,12 +283,129 @@ describe('buyStock', () => {
     expect(ctx.events.setStage).toHaveBeenCalledWith('drawHotelsStage');
   });
 
+  it('does not buy negative stocks', () => {
+    buyStock(G, ctx, { [Chain.Toro]: -1 });
+
+    // no change
+    expect(G.players['0'].money).toEqual(1000);
+    expect(G.players['0'].stocks[Chain.Toro]).toEqual(10);
+    expect(G.availableStocks[Chain.Toro]).toEqual(2);
+    expect(ctx.events.setStage).toHaveBeenCalledWith('drawHotelsStage');
+  });
+
   it('moves to declareGameOverStage if the game can be declared over', () => {
     G.hotels = GAME_OVER_HOTELS;
 
     buyStock(G, ctx, {});
 
     expect(ctx.events.setStage).toHaveBeenCalledWith('declareGameOverStage');
+  });
+});
+
+describe('swapAndSellStock', () => {
+  let G: IG;
+  let ctx: Ctx;
+
+  const TEST_HOTELS = [
+    [
+      { chain: Chain.Toro },
+      { chain: Chain.Toro },
+      {},
+      { chain: Chain.Continuum },
+      { chain: Chain.Continuum },
+      { chain: Chain.Continuum },
+    ],
+  ];
+
+  beforeEach(() => {
+    G = {
+      hotels: TEST_HOTELS,
+      merger: { chainToMerge: Chain.Toro, survivingChain: Chain.Continuum, swapAndSells: {} },
+      players: {
+        '0': {
+          stocks: { ...fillStockMap(0), [Chain.Toro]: 10 },
+          money: 1000,
+        },
+      },
+      availableStocks: { ...fillStockMap(25), [Chain.Toro]: 2 },
+    };
+    ctx = {
+      ...DEFAULT_CTX,
+      playerID: '0',
+      events: { setStage: jest.fn() },
+    };
+  });
+
+  it('swaps and sells stock if available', () => {
+    // swaps 2, sells 3 ($200 each)
+    swapAndSellStock(G, ctx, 2, 3);
+
+    expect(G.players['0'].money).toEqual(1600);
+    expect(G.players['0'].stocks[Chain.Toro]).toEqual(5);
+    expect(G.players['0'].stocks[Chain.Continuum]).toEqual(1);
+    expect(G.availableStocks[Chain.Toro]).toEqual(7);
+    expect(G.availableStocks[Chain.Continuum]).toEqual(24);
+  });
+
+  it('does not allow selling more than a player has', () => {
+    // swaps 2, sells 9 ($200 each)
+    swapAndSellStock(G, ctx, 2, 9);
+
+    // only sells 8
+    expect(G.players['0'].money).toEqual(2600);
+    expect(G.players['0'].stocks[Chain.Toro]).toEqual(0);
+    expect(G.players['0'].stocks[Chain.Continuum]).toEqual(1);
+    expect(G.availableStocks[Chain.Toro]).toEqual(12);
+    expect(G.availableStocks[Chain.Continuum]).toEqual(24);
+  });
+
+  it('does not allow swapping more than a player has', () => {
+    // swaps 12
+    swapAndSellStock(G, ctx, 12, 0);
+
+    // only swaps 10
+    expect(G.players['0'].money).toEqual(1000);
+    expect(G.players['0'].stocks[Chain.Toro]).toEqual(0);
+    expect(G.players['0'].stocks[Chain.Continuum]).toEqual(5);
+    expect(G.availableStocks[Chain.Toro]).toEqual(12);
+    expect(G.availableStocks[Chain.Continuum]).toEqual(20);
+  });
+
+  it('does not allow swapping for more than is available', () => {
+    G.availableStocks[Chain.Continuum] = 3;
+
+    // swaps 12
+    swapAndSellStock(G, ctx, 12, 0);
+
+    // only swaps 6
+    expect(G.players['0'].money).toEqual(1000);
+    expect(G.players['0'].stocks[Chain.Toro]).toEqual(4);
+    expect(G.players['0'].stocks[Chain.Continuum]).toEqual(3);
+    expect(G.availableStocks[Chain.Toro]).toEqual(8);
+    expect(G.availableStocks[Chain.Continuum]).toEqual(0);
+  });
+
+  it('does not allow selling more stock than is left after swapping', () => {
+    // swaps 8, sells 3 ($200 each)
+    swapAndSellStock(G, ctx, 8, 3);
+
+    // only swaps 8 and sells 2
+    expect(G.players['0'].money).toEqual(1400);
+    expect(G.players['0'].stocks[Chain.Toro]).toEqual(0);
+    expect(G.players['0'].stocks[Chain.Continuum]).toEqual(4);
+    expect(G.availableStocks[Chain.Toro]).toEqual(12);
+    expect(G.availableStocks[Chain.Continuum]).toEqual(21);
+  });
+
+  it('does not allow negative values', () => {
+    swapAndSellStock(G, ctx, -2, -1);
+
+    // no change
+    expect(G.players['0'].money).toEqual(1000);
+    expect(G.players['0'].stocks[Chain.Toro]).toEqual(10);
+    expect(G.players['0'].stocks[Chain.Continuum]).toEqual(0);
+    expect(G.availableStocks[Chain.Toro]).toEqual(2);
+    expect(G.availableStocks[Chain.Continuum]).toEqual(25);
   });
 });
 
