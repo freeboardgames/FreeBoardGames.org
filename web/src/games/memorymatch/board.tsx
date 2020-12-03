@@ -10,113 +10,111 @@ import { PLAYER_COLORS } from './constants';
 import { getScoreBoard } from './utils';
 
 const localPlayerNames = {
-    '0': 'Player 1', 
-    '1': 'Player 2'
-}; 
+  '0': 'Player 1',
+  '1': 'Player 2',
+};
 
 export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> {
-    constructor(props) {
-        super(props);
-        this.state = { };
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  _isAllowedToMakeMoves = () => {
+    return (
+      isLocalGame(this.props.gameArgs) ||
+      (isOnlineGame(this.props.gameArgs) && this.props.playerID === this.props.ctx.currentPlayer)
+    );
+  };
+
+  _getStatus = () => {
+    if (!this.props.gameArgs) {
+      return;
     }
 
-    _isAllowedToMakeMoves = () => {
-        return isLocalGame(this.props.gameArgs) || (isOnlineGame(this.props.gameArgs) && this.props.playerID === this.props.ctx.currentPlayer);
+    let playerName;
+    if (isLocalGame(this.props.gameArgs)) {
+      playerName = localPlayerNames[this.props.ctx.currentPlayer];
+      return playerName + "'s Turn";
+    } else if (isOnlineGame(this.props.gameArgs)) {
+      playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
+      if (this.props.ctx.currentPlayer !== this.props.playerID) {
+        return 'Waiting for ' + playerName;
+      } else {
+        return 'Your Turn';
+      }
+    }
+  };
+
+  _getGameOverStatus = () => {
+    const { gameover } = this.props.ctx;
+    if (gameover.draw) {
+      return 'draw';
+    }
+    if (isLocalGame(this.props.gameArgs)) {
+      return localPlayerNames[gameover.winner];
+    } else if (isOnlineGame(this.props.gameArgs)) {
+      if (gameover.winner === this.props.playerID) {
+        return 'you won';
+      } else {
+        return 'you lost';
+      }
+    }
+  };
+
+  _renderScoreBoard = () => {
+    return (
+      <Scoreboard
+        scoreboard={getScoreBoard(this.props.G, this.props.ctx)}
+        playerID={this.props.playerID}
+        players={this.props.gameArgs.players}
+      />
+    );
+  };
+
+  render() {
+    if (this.props.ctx.gameover) {
+      return (
+        <GameLayout
+          gameOver={this._getGameOverStatus()}
+          extraCardContent={this._renderScoreBoard()}
+          gameArgs={this.props.gameArgs}
+        />
+      );
     }
 
-    _getStatus = () => {
-        if (!this.props.gameArgs) {
-          return;
+    if (this.props.G.timeShownCards && this._isAllowedToMakeMoves()) {
+      setTimeout(() => {
+        if (this._isAllowedToMakeMoves()) {
+          this.props.moves.hideShownCards();
         }
-
-        let playerName; 
-        if (isLocalGame(this.props.gameArgs)){
-            playerName = localPlayerNames[this.props.ctx.currentPlayer];            
-            return  playerName + "'s Turn";
-        } else if (isOnlineGame(this.props.gameArgs)) {
-            playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
-            if (this.props.ctx.currentPlayer !== this.props.playerID){
-                return 'Waiting for ' + playerName;
-            } else {
-                return 'Your Turn';
-            }
-        }
+      }, 1500);
     }
 
-    _getGameOverStatus = () => {
-        const {gameover} = this.props.ctx;
-        if (gameover.draw){
-            return 'draw';
-        }
-        if (isLocalGame(this.props.gameArgs)){
-            return localPlayerNames[gameover.winner];
-        } else if (isOnlineGame(this.props.gameArgs)) {
-            if (gameover.winner === this.props.playerID) {
-                return 'you won';
-            } else {
-                return 'you lost';
-            }
-        }
-    }
-
-    _renderScoreBoard = () => {
-        return (
-          <Scoreboard
-            scoreboard={getScoreBoard(this.props.G, this.props.ctx)}
+    return (
+      <GameLayout gameArgs={this.props.gameArgs}>
+        <div style={{ backgroundColor: 'black' }}>
+          <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+            {this._getStatus()}
+          </Typography>
+          <CardGrid
+            gridSize={this.props.G.gridSize}
+            cards={this.props.G.cards}
+            onCardClick={(cardId: number) => {
+              if (!this.props.G.timeShownCards && this._isAllowedToMakeMoves()) {
+                this.props.moves.cardClicked(cardId);
+              }
+            }}
+          />
+          <PlayerBadges
+            scores={getScoreBoard(this.props.G, this.props.ctx)}
             playerID={this.props.playerID}
             players={this.props.gameArgs.players}
+            colors={Object.values(PLAYER_COLORS)}
+            ctx={this.props.ctx}
           />
-        );
-    }
-    
-    render() {
-
-        if (this.props.ctx.gameover) {
-            return (
-              <GameLayout
-                gameOver={this._getGameOverStatus()}
-                extraCardContent={this._renderScoreBoard()}
-                gameArgs={this.props.gameArgs}
-              />
-            );
-          }
-
-        if (this.props.G.timeShownCards && this._isAllowedToMakeMoves()){
-            setTimeout(()=>{
-                if(this._isAllowedToMakeMoves()){
-                    this.props.moves.hideShownCards();
-                }
-            }, 1500);
-        }
-
-        return (
-            <GameLayout gameArgs={this.props.gameArgs}>
-                <div style={{backgroundColor: 'black'}}>
-                    <Typography 
-                        variant="h5" 
-                        style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}
-                    >
-                        {this._getStatus()}
-                    </Typography>
-                    <CardGrid 
-                        gridSize={this.props.G.gridSize}
-                        cards={this.props.G.cards} 
-                        onCardClick={(cardId: number) => { 
-                            if(!this.props.G.timeShownCards && this._isAllowedToMakeMoves()){
-                                this.props.moves.cardClicked(cardId)
-                            }
-                        }} 
-                    />
-                    <PlayerBadges
-                        scores={getScoreBoard(this.props.G, this.props.ctx)}
-                        playerID={this.props.playerID}
-                        players={this.props.gameArgs.players}
-                        colors={Object.values(PLAYER_COLORS)}
-                        ctx={this.props.ctx}
-                    />
-                </div>
-            </GameLayout>
-          );
-    }
+        </div>
+      </GameLayout>
+    );
+  }
 }
-
