@@ -17,6 +17,7 @@ export interface ICardInfo {
 }
 
 export interface IGameState {
+    gridSize: number;
     cards: ICardInfo[];
     timeShownCards: boolean;
 }

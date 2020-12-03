@@ -20,6 +20,10 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
         this.state = { };
     }
 
+    _isAllowedToMakeMoves = () => {
+        return isLocalGame(this.props.gameArgs) || (isOnlineGame(this.props.gameArgs) && this.props.playerID === this.props.ctx.currentPlayer);
+    }
+
     _getStatus = () => {
         if (!this.props.gameArgs) {
           return;
@@ -30,7 +34,7 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
             playerName = localPlayerNames[this.props.ctx.currentPlayer];            
             return  playerName + "'s Turn";
         } else if (isOnlineGame(this.props.gameArgs)) {
-            playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer];
+            playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
             if (this.props.ctx.currentPlayer !== this.props.playerID){
                 return 'Waiting for ' + playerName;
             } else {
@@ -77,9 +81,14 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
             );
           }
 
-        if (this.props.G.timeShownCards){
-            setTimeout(()=>{this.props.moves.hideShownCards();}, 1500);
+        if (this.props.G.timeShownCards && this._isAllowedToMakeMoves()){
+            setTimeout(()=>{
+                if(this._isAllowedToMakeMoves()){
+                    this.props.moves.hideShownCards();
+                }
+            }, 1500);
         }
+
         return (
             <GameLayout gameArgs={this.props.gameArgs}>
                 <div style={{backgroundColor: 'black'}}>
@@ -90,9 +99,10 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
                         {this._getStatus()}
                     </Typography>
                     <CardGrid 
+                        gridSize={this.props.G.gridSize}
                         cards={this.props.G.cards} 
                         onCardClick={(cardId: number) => { 
-                            if(!this.props.G.timeShownCards){
+                            if(!this.props.G.timeShownCards && this._isAllowedToMakeMoves()){
                                 this.props.moves.cardClicked(cardId)
                             }
                         }} 

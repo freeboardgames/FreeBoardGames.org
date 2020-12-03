@@ -1,13 +1,14 @@
 import * as React from 'react';
 
 import { ECardState, ICardInfo } from './definations';
-import {GRID_SIZE, CARD_CONTENT, PLAYER_COLORS} from './constants'; 
+import {CARD_CONTENT, PLAYER_COLORS} from './constants'; 
 
 
 
 const fbgIcon = require('./media/fbg_icon.png');
 
 interface IOneCardProps {
+    gridSize: number;
     card: ICardInfo;
     onCardClick: (number) => void;
 }
@@ -15,17 +16,17 @@ function OneCard(props: IOneCardProps) {
 
     const isHidden = props.card.state === ECardState.HIDDEN;
 
-    const xPos = Math.floor(props.card.id / GRID_SIZE); 
-    const yPos = props.card.id % GRID_SIZE;
-    const strokeWidth = 0.125 / GRID_SIZE;
+    const xPos = Math.floor(props.card.id / props.gridSize); 
+    const yPos = props.card.id % props.gridSize;
+    const strokeWidth = 0.125 / props.gridSize;
     const margin = strokeWidth;
-    const cornerAdjustment = ( 1 + 1 / GRID_SIZE);
+    const cornerAdjustment = ( 1 + 1 / props.gridSize);
     const imageScale = isHidden ? 8 : 1;
 
     const animationStyle = {
         transition: '0.6s', 
         transform: `rotateY(${props.card.state === ECardState.HIDDEN ? -180 : 0}deg)`,
-        transformOrigin: `${((xPos+0.5)/GRID_SIZE)*100}% 50%`
+        transformOrigin: `${((xPos+0.5)/props.gridSize)*100}% 50%`
     }
 
     return (
@@ -66,6 +67,7 @@ function OneCard(props: IOneCardProps) {
 }
 
 interface ICardGridProps {
+    gridSize: number;
     cards: ICardInfo[]; 
     onCardClick: (number) => void;
 }
@@ -73,10 +75,11 @@ interface ICardGridProps {
 export default function CardGrid(props: ICardGridProps) {
 
     return (
-        <svg width="100%" height="100%" viewBox={`0 0 ${GRID_SIZE} ${GRID_SIZE}`}>
+        <svg width="100%" height="100%" viewBox={`0 0 ${props.gridSize} ${props.gridSize}`}>
             {props.cards.map((c, idx)=>(
                 <OneCard 
                     key={`mm_card_${idx}`}
+                    gridSize={props.gridSize}
                     card={c} 
                     onCardClick={props.onCardClick}
                 />)

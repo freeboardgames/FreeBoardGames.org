@@ -16,8 +16,6 @@ export const CARD_CONTENT = {
     vulture: require('./media/vulture.jpg'), 
 };
 
-export const GRID_SIZE = 5;
-
 export const PLAYER_COLORS = {
     '0':  blue[500], 
     '1':  green[500]
