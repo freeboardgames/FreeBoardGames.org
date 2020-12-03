@@ -29,6 +29,7 @@ function OneCard(props: IOneCardProps) {
   return (
     <g
       key={`mm_card_group_${props.card.id}`}
+      data-testid={`mm-card-group-${props.card.id}`}
       onClick={() => {
         if (props.card.state === ECardState.HIDDEN) {
           props.onCardClick(props.card.id);

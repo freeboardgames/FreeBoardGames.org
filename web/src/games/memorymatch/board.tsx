@@ -52,7 +52,7 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
       return 'draw';
     }
     if (isLocalGame(this.props.gameArgs)) {
-      return localPlayerNames[gameover.winner];
+      return localPlayerNames[gameover.winner] + ' won';
     } else if (isOnlineGame(this.props.gameArgs)) {
       if (gameover.winner === this.props.playerID) {
         return 'you won';
