@@ -9,13 +9,13 @@ export interface IG {
 }
 
 export enum Chain {
-  Tower = 'Tower',
-  Luxor = 'Luxor',
-  Worldwide = 'Worldwide',
-  American = 'American',
-  Festival = 'Festival',
-  Continental = 'Continental',
-  Imperial = 'Imperial',
+  Toro = 'Toro',
+  Lucius = 'Lucius',
+  Worldywise = 'Worldywise',
+  Amore = 'Amore',
+  Festivus = 'Festivus',
+  Continuum = 'Continuum',
+  Imperative = 'Imperative',
 }
 
 export interface Hotel {

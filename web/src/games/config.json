@@ -1,5 +1,7 @@
 {
   "order": [
+    "mergers",
+    "bombsAndBunnies",
     "secretDracula",
     "soupofletters",
     "checkers",

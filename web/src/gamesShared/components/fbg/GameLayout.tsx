@@ -9,6 +9,7 @@ interface IGameLayoutProps {
   children?: React.ReactNode;
   gameOver?: string;
   allowWiderScreen?: boolean;
+  avoidOverscrollReload?: boolean;
   optionsMenuItems?: () => IOptionsItems[];
   extraCardContent?: React.ReactNode;
 }
@@ -28,6 +29,7 @@ export class GameLayout extends React.Component<IGameLayoutProps, {}> {
         <GameDarkSublayout
           optionsMenuItems={this.props.optionsMenuItems}
           allowWiderScreen={this.props.allowWiderScreen}
+          avoidOverscrollReload={this.props.avoidOverscrollReload}
           gameArgs={this.props.gameArgs}
         >
           {this.props.children}

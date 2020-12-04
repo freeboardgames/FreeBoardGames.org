@@ -17,14 +17,3 @@ postgresql:
     port: 5432
   volumePermissions:
     enabled: true
-
-mongodb:
-  auth:
-    rootPassword: MONGO_ROOT_PASSWORD
-    username: fbgUser
-    password: MONGO_DB_PASSWORD
-    database: fbgDb
-  service:
-    port: 27017
-  volumePermissions:
-    enabled: true

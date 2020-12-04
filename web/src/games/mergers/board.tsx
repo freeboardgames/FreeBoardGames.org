@@ -31,6 +31,8 @@ export interface BoardState {
 //  - animations
 //  - sounds
 //  - add validation to swap/sell stock
+//  - highlight players with stock during a merger
+//  - countdown at the end
 export class Board extends React.Component<BoardProps, BoardState> {
   constructor(props) {
     super(props);

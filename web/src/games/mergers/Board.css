@@ -6,20 +6,20 @@
   --mergers-background-color: black;
   --mergers-color: var(--mergers-light-grey);
   --mergers-light-grey: #e0e0e0; /* material gray 300 */
-  --mergers-medium-grey: #9E9E9E; /* material gray 500 */
+  --mergers-medium-grey: #9e9e9e; /* material gray 500 */
   --mergers-dark-grey: #212121; /* material gray 900 */
   --mergers-blue-grey: #455a64; /* material blue-gray 700 */
   --mergers-highlight-green: #76ff03; /* material light green A400 */
   --mergers-error-red: #f44336; /* material red 500 */
 
   /* Chain colors */
-  --chain-color-tower: #fbc02d; /* material yellow 700 */
-  --chain-color-luxor: #d32f2f; /* material red 700 */
-  --chain-color-festival: #2e7d32; /* material green 800 */
-  --chain-color-american: #1565c0; /* material blue 800 */
-  --chain-color-worldwide: #6d4c41; /* material brown 600 */
-  --chain-color-continental: #00838f; /* material teal 800 */
-  --chain-color-imperial: #c2185b; /* material pink 700 */
+  --chain-color-toro: #fbc02d;  /* material yellow 700 */
+  --chain-color-lucius: #f44336; /* material red 500 */
+  --chain-color-festivus: #388e3c; /* material green 700 */
+  --chain-color-amore: #0277bd; /* material blue 800 */
+  --chain-color-worldywise: #795548; /* material brown 500 */
+  --chain-color-continuum: #0097a7; /* material teal 700 */
+  --chain-color-imperative: #ad1457; /* material pink 800 */
 }
 
 .Mergers div {
@@ -35,7 +35,7 @@
   padding: 1em;
   max-height: 100vh;
   overflow-y: auto;
-  padding: 50px 10px 10px 10px;
+  padding: 50px 10px 28px 10px;
   box-sizing: border-box;
   color: var(--mergers-color);
   background-color: var(--mergers-background-color);

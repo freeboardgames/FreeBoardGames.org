@@ -16,7 +16,7 @@ export const bombsAndBunniesDef: IGameDef = {
     videoId: 'Cv1_6AfbwlQ',
     text: instructions,
   },
-  status: IGameStatus.IN_DEVELOPMENT,
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
 

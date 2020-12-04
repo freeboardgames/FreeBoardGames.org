@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
+import Paper, { PaperProps } from '@material-ui/core/Paper';
+import Draggable from 'react-draggable';
 
 import css from '../Board.css';
 
@@ -16,6 +18,14 @@ export class MergersDialog extends React.Component<MergersDialogProps> {
     super(props);
   }
 
+  PaperComponent(props: PaperProps) {
+    return (
+      <Draggable handle={`#${this.createId('title')}`} cancel={'[class*="MuiDialogContent-root"]'}>
+        <Paper {...props} />
+      </Draggable>
+    );
+  }
+
   createId(suffix: string): string {
     return `${this.props.dialogId}-${suffix}`;
   }
@@ -26,10 +36,11 @@ export class MergersDialog extends React.Component<MergersDialogProps> {
         id={this.props.dialogId}
         className={css.Mergers}
         onClose={this.props.onClose}
+        PaperComponent={this.PaperComponent.bind(this)}
         aria-labelledby={this.createId('title')}
         open
       >
-        <DialogTitle disableTypography id={this.createId('title')}>
+        <DialogTitle disableTypography style={{ cursor: 'move' }} id={this.createId('title')}>
           <Typography variant="h4">{this.props.title}</Typography>
         </DialogTitle>
         <DialogContent>{this.props.children}</DialogContent>

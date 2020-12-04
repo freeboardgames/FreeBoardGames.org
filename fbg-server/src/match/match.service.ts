@@ -121,17 +121,17 @@ export class MatchService {
     newMatch.bgioServerExternalUrl = bgioServerUrl.external;
     newMatch.bgioMatchId = bgioMatchId;
     await queryRunner.manager.insert(MatchEntity, newMatch);
-    await Promise.all(
-      room.userMemberships.map((membership, index) =>
-        this.roomToMatchMembership(
-          membership,
-          newMatch,
-          index,
-        ).then((membership) =>
-          queryRunner.manager.insert(MatchMembershipEntity, membership),
-        ),
-      ),
-    );
+    let index = 0;
+    for (const userMembership of room.userMemberships) {
+      // These requests to BGIO server need to be in serial b/c of race condition inside it.
+      const matchMembership = await this.roomToMatchMembership(
+        userMembership,
+        newMatch,
+        index,
+      );
+      await queryRunner.manager.insert(MatchMembershipEntity, matchMembership);
+      index++;
+    }
     room.match = newMatch;
     await queryRunner.manager.save(room);
     await this.roomsService.notifyRoomUpdate(room);

@@ -8,8 +8,8 @@ const setUpComponent = (): ReactWrapper<MergerDetailsProps, {}, MergerDetails> =
   return Enzyme.mount(
     <MergerDetails
       merger={{
-        survivingChain: Chain.Continental,
-        chainToMerge: Chain.Tower,
+        survivingChain: Chain.Continuum,
+        chainToMerge: Chain.Toro,
         chainSize: 3,
         stockCounts: { '0': 10, '1': 5 },
         bonuses: { '0': 3000, '1': 1500 },
@@ -26,7 +26,7 @@ describe('MergerDetails', () => {
     comp = setUpComponent();
   });
   it('renders the stock counts', () => {
-    expect(comp.text()).toContain('The following players have Tower stock:');
+    expect(comp.text()).toContain('The following players have Toro stock:');
     expect(comp.text()).toContain('Test Player 0 has 10');
     expect(comp.text()).toContain('Test Player 1 has 5');
   });

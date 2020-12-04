@@ -1,29 +1,40 @@
 import React from 'react';
 import { IPolicy } from '../interfaces';
+import css from './bpolicy.css';
 
 interface InnerWrapper {
   policy: IPolicy;
+  hover: boolean;
   discard(): any;
 }
 
 export class BPolicy extends React.Component<InnerWrapper, {}> {
   render() {
     return (
-      <div>
+      <>
         {this.props.policy == null ? (
-          <div> 🃏 </div>
+          <span> 🃏 </span>
         ) : (
-          <div onClick={() => this.props.discard()}>{this.props.policy.chalice ? this._chalice() : this._garlic()}</div>
+          <span onClick={() => this.props.discard()}>
+            {this.props.policy.chalice ? this._chalice() : this._garlic()}
+          </span>
         )}
-      </div>
+      </>
     );
   }
 
   _chalice = () => {
-    return <div>🩸</div>;
+    if (this.props.hover) {
+      return <span className={css.hoveringb}> </span>;
+    }
+
+    return <>🩸</>;
   };
 
   _garlic = () => {
-    return <div>💧</div>;
+    if (this.props.hover) {
+      return <span className={css.hoveringh}> </span>;
+    }
+    return <>💧</>;
   };
 }
