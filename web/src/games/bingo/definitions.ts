@@ -8,14 +8,21 @@ export interface INumberState {
   missed: boolean;
 }
 
-export interface IPlayerNumbers {
-  [id: string]: INumberState[];
+export interface IPlayerState {
+  numbers: INumberState[];
+  shoutCount: number;
+  isWinner: boolean;
+}
+
+interface IPlayerDict {
+  [id: string]: IPlayerState;
 }
 
 export interface IGameState {
-  playerNumbers: IPlayerNumbers;
+  players: IPlayerDict;
   callQueue: number[];
   callRef: number;
+  timeRef: number;
 }
 
 export interface IBoardState {}

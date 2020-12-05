@@ -1,37 +1,60 @@
 import * as React from 'react';
+import { red, blue } from '@material-ui/core/colors';
 
 import { INumberState } from './definitions';
+import { GRID_SIZE, TIME_OUT, TIME_BUFF } from './constants';
+import gridCSS from './grid.css';
 
-const GRID_SIZE = 5;
-const CALL_BOX_SIZE = 2;
 const STROKE_WIDTH = 0.125 / GRID_SIZE;
 const cornerAdjustment = 1 + 1 / GRID_SIZE;
-// const TIME_OUT = 7;
-// const TIME_BUFF = 1.5;
+const CALL_BOX_SIZE = 2;
 
 interface ICountdownProps {
-  // yPos: number;
-  // timeTef: number;
-  // callOnTimeout: () => void;
+  timeRef: number;
+  callOnTimeout: () => void;
 }
 
-class Countdown extends React.Component<ICountdownProps, any> {
+interface ICountdownState {
+  timeLeft: number;
+}
+
+class Countdown extends React.Component<ICountdownProps, ICountdownState> {
   constructor(props: ICountdownProps) {
     super(props);
-    this.state = {
-      timeLeft: 5,
-    };
+    this.state = { timeLeft: this._getTimeLeft() };
+  }
+
+  _getTimeLeft = () => {
+    let timeLeft = (TIME_OUT + TIME_BUFF) * 1000 - (Date.now() - this.props.timeRef);
+    timeLeft = Math.floor((timeLeft >= 0 ? timeLeft : 0) / 1000);
+    return timeLeft;
+  };
+
+  _fireTimer = () => {
+    const timeLeft = this._getTimeLeft();
+    if (timeLeft > 0) {
+      setTimeout(() => {
+        this.setState({ timeLeft });
+      }, 200);
+    } else {
+      this.props.callOnTimeout();
+    }
+  };
+
+  componentDidMount() {
+    this._fireTimer();
+  }
+
+  componentDidUpdate() {
+    this._fireTimer();
   }
 
   render() {
-    setTimeout(() => {
-      this.setState({ timeLeft: this.state.timeLeft - 1 });
-    }, 1000);
-
-    return (
+    return [1, GRID_SIZE - 1].map((xPos, idx) => (
       <text
-        key={`bi_count_down`}
-        x={GRID_SIZE - 1}
+        key={`bi_count_down_${idx}`}
+        className={gridCSS.noselect}
+        x={xPos}
         y={0.25 + CALL_BOX_SIZE / 2}
         fontSize={0.45}
         textAnchor="middle"
@@ -39,29 +62,30 @@ class Countdown extends React.Component<ICountdownProps, any> {
       >
         {this.state.timeLeft}
       </text>
-    );
+    ));
   }
 }
 
-interface ICallCard {
+interface ICallCardProps {
   callRef: number;
   callQueue: number[];
 }
 
-function CallCard(props: ICallCard) {
+function CallCard(props: ICallCardProps) {
   const xPos = GRID_SIZE / 2 - CALL_BOX_SIZE / 2;
   const yPos = 0;
   const boxMargin = 0.3;
   const animationStyle = {
-    // transition: '0.6s',
-    // transform: `rotateY(${props.number.state === ECardState.HIDDEN ? -180 : 0}deg)`,
-    // transformOrigin: `${((xPos + 0.5) / GRID_SIZE) * 100}% 50%`,
+    transition: '0.6s',
+    transform: `rotateY(${360 * props.callRef}deg)`,
+    transformOrigin: `${50}% 50%`,
   };
 
   return (
     <g key={'bi_call_group'}>
       <text
         key={'bi_call_text'}
+        className={gridCSS.noselect}
         x={xPos + 0.5 * CALL_BOX_SIZE}
         y={yPos + 0.67 * CALL_BOX_SIZE}
         fontSize={0.45 * CALL_BOX_SIZE}
@@ -91,35 +115,26 @@ function CallCard(props: ICallCard) {
 
 interface IGridCardProps {
   number: INumberState;
-  onCardClick: (number) => void;
+  onNumberClicked: (number: INumberState) => void;
 }
 
 function GridCard(props: IGridCardProps) {
-  const xPos = Math.floor(props.number.id / GRID_SIZE);
-  const yPos = props.number.id % GRID_SIZE;
+  const { number } = props;
+  const xPos = Math.floor(number.id / GRID_SIZE);
+  const yPos = number.id % GRID_SIZE;
   const boxMargin = STROKE_WIDTH;
 
   return (
     <g
-      key={`bi_card_group_${props.number.id}`}
-      data-testid={`bi-card-group-${props.number.id}`}
+      key={`bi_card_group_${number.id}`}
+      data-testid={`bi-card-group-${number.id}`}
       onClick={() => {
-        props.onCardClick(props.number.id);
+        props.onNumberClicked(number);
       }}
     >
-      <text
-        key={`bi_card_text_${props.number.id}`}
-        x={xPos + 0.5}
-        y={yPos + 0.68 + CALL_BOX_SIZE}
-        fontSize={0.45}
-        textAnchor="middle"
-        fill="white"
-      >
-        {props.number.value}
-      </text>
       <rect
-        id={`bi_card_rect_id_${props.number.id}`}
-        key={`bi_card_rect_${props.number.id}`}
+        id={`bi_card_rect_id_${number.id}`}
+        key={`bi_card_rect_${number.id}`}
         x={xPos + boxMargin}
         y={yPos + boxMargin + CALL_BOX_SIZE}
         width={1 - 2 * boxMargin}
@@ -128,25 +143,43 @@ function GridCard(props: IGridCardProps) {
         style={{
           stroke: 'white',
           strokeWidth: STROKE_WIDTH,
-          fillOpacity: 0,
+          fill: number.missed ? red['A200'] : number.marked ? blue[500] : 'white',
+          fillOpacity: number.missed ? 0.75 : number.marked ? 0.82 : 0,
         }}
       />
+      <text
+        key={`bi_card_text_${number.id}`}
+        className={gridCSS.noselect}
+        x={xPos + 0.5}
+        y={yPos + 0.68 + CALL_BOX_SIZE}
+        fontSize={0.45}
+        textAnchor="middle"
+        fill="white"
+      >
+        {number.value}
+      </text>
     </g>
   );
 }
 
-interface IGameGridProps extends ICallCard {
+interface IGameGridProps extends ICountdownProps, ICallCardProps {
+  size: number;
   numbers: INumberState[];
-  onCardClick: (number) => void;
+  onNumberClicked: (number: INumberState) => void;
 }
 
 export default function GameGrid(props: IGameGridProps) {
   return (
-    <svg width="100%" height="140%" viewBox={`0 0 ${GRID_SIZE} ${GRID_SIZE + CALL_BOX_SIZE}`}>
-      <Countdown />
+    <svg
+      width={`${props.size * 100}%`}
+      height={`${props.size * 140}%`}
+      viewBox={`0 0 ${GRID_SIZE} ${GRID_SIZE + CALL_BOX_SIZE}`}
+      style={{ backgroundColor: 'black', display: 'block', margin: 'auto' }}
+    >
+      <Countdown key={`bi_counter_${props.timeRef}`} timeRef={props.timeRef} callOnTimeout={props.callOnTimeout} />
       <CallCard callQueue={props.callQueue} callRef={props.callRef} />
       {props.numbers.map((n, idx) => (
-        <GridCard key={`bi_card_${idx}`} number={n} onCardClick={props.onCardClick} />
+        <GridCard key={`bi_card_${idx}`} number={n} onNumberClicked={props.onNumberClicked} />
       ))}
     </svg>
   );
