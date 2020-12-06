@@ -16,7 +16,7 @@ export class ChatService {
     private pubSub: PubSub,
   ) {}
 
-  public async sendMessage(userId: number, messageInput: SendMessageInput) {
+  public async sendMessage(userId: number, messageInput: SendMessageInput): Promise<void> {
     if (messageInput.channelType === 'room') {
         await this.checkUserInRoom(userId, messageInput.channelId);
     } else if (messageInput.channelType === 'match') {

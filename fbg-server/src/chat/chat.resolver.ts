@@ -1,5 +1,5 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
-import { Resolver, Mutation, Args, Subscription, Int } from '@nestjs/graphql';
+import { HttpStatus, HttpException } from '@nestjs/common';
+import { Resolver, Mutation, Args, Subscription } from '@nestjs/graphql';
 import { Message } from './gql/Message.gql';
 import { PubSub } from 'graphql-subscriptions';
 import { ChatService } from './chat.service';
@@ -19,7 +19,6 @@ export class ChatResolver {
   async sendMessage(
     @CurrentUser() currentUser: User,
     @Args({ name: 'message', type: () => SendMessageInput }) messageInput: SendMessageInput,
-    userIdToBeRemoved: number,
   ): Promise<boolean> {
     await this.chatService.sendMessage(
       currentUser.id,
