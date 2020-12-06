@@ -1,6 +1,7 @@
 import { Game } from 'boardgame.io';
+import { ActivePlayers } from 'boardgame.io/core';
 import { IGameState, INumberState } from './definitions';
-import { GRID_SIZE, COL_DELTA, WILDCARD_NUM } from './constants';
+import { GRID_SIZE, COL_DELTA, WILDCARD_NUM, MAX_BINGO_CALLS, WAIT_MSG_NUMBER } from './constants';
 import { shuffleArray } from './utils';
 
 export const BingoGame: Game<IGameState> = {
@@ -20,18 +21,17 @@ export const BingoGame: Game<IGameState> = {
       players[i] = {
         numbers: gridNumbers.map((n, idx) => ({
           id: idx,
-          value: n,
+          value: idx === 12 ? WILDCARD_NUM : n,
           marked: false,
-          missed: false,
         })),
-        shoutCount: 3,
+        shoutCount: MAX_BINGO_CALLS,
         isWinner: false,
       };
     }
 
     return {
       players,
-      callQueue: shuffleArray(new Array(COL_DELTA * GRID_SIZE).fill(0).map((n, idx) => idx + 1)),
+      callQueue: [WAIT_MSG_NUMBER, ...shuffleArray(new Array(COL_DELTA * GRID_SIZE).fill(0).map((n, idx) => idx + 1))],
       callRef: 0,
       timeRef: Date.now(),
     };
@@ -42,7 +42,7 @@ export const BingoGame: Game<IGameState> = {
       G.timeRef = Date.now();
       return G;
     },
-    playerClickedNumber: (G: IGameState, ctx, number: INumberState, playerID: string = '0') => {
+    playerClickedNumber: (G: IGameState, _, number: INumberState, playerID: string) => {
       for (let n of G.players[playerID].numbers) {
         if (n.id === number.id) {
           n.marked = !n.marked;
@@ -50,8 +50,8 @@ export const BingoGame: Game<IGameState> = {
       }
       return G;
     },
-    playerShouted: (G: IGameState, ctx, playerID: string = '0') => {
-      const numbersShown = G.callQueue.slice(0, G.callRef);
+    playerShouted: (G: IGameState, _, playerID: string) => {
+      const numbersShown = G.callQueue.slice(0, G.callRef + 1);
 
       // check if any columns (5), rows (5) or diagonals (2) are complete
       let found, xPos, yPos, marked;
@@ -82,23 +82,29 @@ export const BingoGame: Game<IGameState> = {
       } else {
         G.players[playerID].shoutCount -= 1;
       }
-
       return G;
     },
   },
-  endIf: (G: IGameState) => {
+  turn: {
+    activePlayers: ActivePlayers.ALL,
+  },
+  endIf: (G: IGameState, ctx) => {
     // if the callRef exceeds the length of callQueue
     if (G.callRef >= G.callQueue.length) {
       return { draw: true };
     }
     // if someone is marked as winner
-    if (G.players[0].isWinner) {
-      return { winner: '0' };
+    for (let p = 0; p < ctx.numPlayers; p++) {
+      if (G.players[p].isWinner) {
+        return { winner: p.toString() };
+      }
     }
-    // if no shoutCount remains for each player
-    if (G.players[0].shoutCount <= 0) {
-      return { draw: true };
+    // if one or more players have a shoutCount, then let them play
+    for (let p = 0; p < ctx.numPlayers; p++) {
+      if (G.players[p].shoutCount > 0) {
+        return null;
+      }
     }
-    return null;
+    return { draw: true }; // else declare draw
   },
 };

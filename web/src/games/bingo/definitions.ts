@@ -25,7 +25,9 @@ export interface IGameState {
   timeRef: number;
 }
 
-export interface IBoardState {}
+export interface IBoardState {
+  showCallTable: boolean;
+}
 
 export interface IBoardProps {
   G: IGameState;
