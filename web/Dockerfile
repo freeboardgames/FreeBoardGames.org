@@ -36,7 +36,7 @@ COPY --chown=appuser package.json /appdata/
 RUN yarn install --production && yarn cache clean
 
 COPY --chown=appuser docker_run.sh /appdata/
-COPY --chown=appuser public /appdata/public
+COPY --chown=appuser --from=builder  /appdata/public /appdata/public
 COPY --chown=appuser --from=builder /appdata/.next /appdata/.next
 COPY --chown=appuser --from=builder /appdata/server /appdata/server
 
