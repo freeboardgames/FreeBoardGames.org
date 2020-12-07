@@ -16,7 +16,12 @@ import { BDiscard } from './phases/discardVeto/bdiscard';
 import { BPeek } from './phases/special/bpeek';
 import { BShowPlayer } from './components/bshowplayer';
 
+import PlayerInfo from './svgComponents/playerInfo';
+
 import css from './board.css';
+
+import {B_HEIGHT, B_WIDTH} from './constants';
+
 
 interface IBoardProps {
   G: IG;
@@ -126,11 +131,43 @@ export class Board extends React.Component<IBoardProps> {
             {this.render_specialElection(playerorder, deads, vampires)}
 
             {this.render_execution(playerorder, deads, vampires)}
+
+            {this._renderMainBoard()}
+
           </div>
+
         </GameLayout>
       </div>
     );
   }
+
+  _getPlayerID = () => (this.props.playerID || this.props.ctx.currentPlayer);
+
+  _renderMainBoard = () => {
+    var activePlayers = this.props.ctx.activePlayers !== null ? this.props.ctx.activePlayers : [];
+    const nP = 8;
+    return (
+      <svg width="500px" height="500px" viewBox={`0 0 ${B_WIDTH} ${B_HEIGHT}`}>
+        {
+          Array(this.props.ctx.numPlayers + nP).fill(0).map((_, idx) => (
+            <PlayerInfo
+              id={idx}
+              me={Number(this._getPlayerID()) == idx}
+              renderForVampire={this.props.G.vampireIDs.includes(Number(this._getPlayerID()))}
+              playerName={(this.props.gameArgs.players[idx] || {name: 'BLA BLA BLA'}).name}
+              playerActive={idx in activePlayers}
+              dead={this.props.G.deadIDs.includes(idx)}
+              vampire={this.props.G.vampireIDs.includes(idx)}
+              dracula={this.props.G.draculaID == idx}
+              mayor={this.props.G.mayorID == idx}
+              priest={this.props.G.priestID == idx}
+              totalPlayers={this.props.ctx.numPlayers + nP}
+              chose={(idx) => {}}
+          />))
+        }
+      </svg>
+    );
+  };
 
   render_players(playerorder: number[], deads, vampires) {
     return (
