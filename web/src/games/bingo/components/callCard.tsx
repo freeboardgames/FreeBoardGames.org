@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { GRID_SIZE, CALL_BOX_SIZE, STROKE_WIDTH, WAIT_MSG_NUMBER } from '../constants';
+import { GRID_SIZE, CALL_BOX_SIZE, STROKE_WIDTH, INITIAL_WAIT_REF_NUM } from '../constants';
 import commonCSS from './biComponent.css';
 
 const cornerAdjustment = 1 + 1 / GRID_SIZE;
@@ -20,8 +20,8 @@ export default function CallCard(props: ICallCardProps) {
     transformOrigin: `50% 50%`,
   };
   const number = props.callQueue[props.callRef];
-  const fontSize = number === WAIT_MSG_NUMBER ? 0.2 : 0.45;
-  const yOffset = number === WAIT_MSG_NUMBER ? 0.6 : 0.67;
+  const fontSize = number === INITIAL_WAIT_REF_NUM ? 0.18 : 0.45;
+  const yOffset = number === INITIAL_WAIT_REF_NUM ? 0.48 : 0.67;
 
   return (
     <g key={'bi_call_group'}>
@@ -35,7 +35,18 @@ export default function CallCard(props: ICallCardProps) {
         fill="white"
         style={{ ...animationStyle }}
       >
-        {number === WAIT_MSG_NUMBER ? 'Wait...' : number}
+        {number === INITIAL_WAIT_REF_NUM ? (
+          <>
+            <tspan x="50%" dy="0">
+              Starting
+            </tspan>
+            <tspan x="50%" dy={fontSize * 2}>
+              in ...
+            </tspan>
+          </>
+        ) : (
+          number
+        )}
       </text>
       <rect
         id={'bi_call_rect_id'}

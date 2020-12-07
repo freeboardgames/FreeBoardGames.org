@@ -1,11 +1,14 @@
 import * as React from 'react';
 
-import { TIME_OUT, TIME_BUFF, GRID_SIZE, CALL_BOX_SIZE } from '../constants';
+import { TIME_BUFF, GRID_SIZE, CALL_BOX_SIZE } from '../constants';
 import commonCSS from './biComponent.css';
 
 interface ICountdownProps {
+  callRef: number;
   timeRef: number;
-  callOnTimeout: () => void;
+  backOff: number;
+  duration: number;
+  callOnTimeout: (callRef: number) => void;
 }
 
 interface ICountdownState {
@@ -17,22 +20,21 @@ export default class Countdown extends React.Component<ICountdownProps, ICountdo
   constructor(props: ICountdownProps) {
     super(props);
     this.state = { timeLeft: this._getTimeLeft() };
-    this.timer = 1;
   }
 
   _getTimeLeft = () => {
-    let timeLeft = (TIME_OUT + TIME_BUFF) * 1000 - (Date.now() - this.props.timeRef);
-    timeLeft = Math.floor((timeLeft >= 0 ? timeLeft : 0) / 1000);
+    let timeLeft = this.props.duration + TIME_BUFF - (Date.now() - this.props.timeRef);
+    timeLeft = timeLeft >= this.props.duration ? this.props.duration : timeLeft;
     return timeLeft;
   };
 
   componentDidMount() {
     this.timer = setInterval(() => {
       const timeLeft = this._getTimeLeft();
-      if (timeLeft > 0) {
+      if (timeLeft + this.props.backOff > 0) {
         this.setState({ timeLeft });
       } else {
-        this.props.callOnTimeout();
+        this.props.callOnTimeout(this.props.callRef);
       }
     }, 200);
   }
@@ -54,7 +56,7 @@ export default class Countdown extends React.Component<ICountdownProps, ICountdo
         textAnchor="middle"
         fill="white"
       >
-        {this.state.timeLeft}
+        {Math.floor((this.state.timeLeft >= 0 ? this.state.timeLeft : 0) / 1000)}
       </text>
     ));
   }

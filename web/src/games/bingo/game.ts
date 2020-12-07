@@ -1,8 +1,8 @@
 import { Game } from 'boardgame.io';
 import { ActivePlayers } from 'boardgame.io/core';
 import { IGameState, INumberState } from './definitions';
-import { GRID_SIZE, COL_DELTA, WILDCARD_NUM, MAX_BINGO_CALLS, WAIT_MSG_NUMBER } from './constants';
-import { shuffleArray } from './utils';
+import { GRID_SIZE, COL_DELTA, WILDCARD_NUM, MAX_BINGO_CALLS, INITIAL_WAIT_REF_NUM } from './constants';
+import { shuffleArray, inferActivePlayers } from './utils';
 
 export const BingoGame: Game<IGameState> = {
   name: 'bingo',
@@ -31,15 +31,20 @@ export const BingoGame: Game<IGameState> = {
 
     return {
       players,
-      callQueue: [WAIT_MSG_NUMBER, ...shuffleArray(new Array(COL_DELTA * GRID_SIZE).fill(0).map((n, idx) => idx + 1))],
+      callQueue: [
+        INITIAL_WAIT_REF_NUM,
+        ...shuffleArray(new Array(COL_DELTA * GRID_SIZE).fill(0).map((n, idx) => idx + 1)),
+      ],
       callRef: 0,
       timeRef: Date.now(),
+      activePlayers: ['0', '1'],
     };
   },
   moves: {
-    incrementCallRef: (G: IGameState) => {
+    incrementCallRef: (G: IGameState, _, playerID: string) => {
       G.callRef = G.callRef + 1;
       G.timeRef = Date.now();
+      G.activePlayers = inferActivePlayers(G, playerID);
       return G;
     },
     playerClickedNumber: (G: IGameState, _, number: INumberState, playerID: string) => {

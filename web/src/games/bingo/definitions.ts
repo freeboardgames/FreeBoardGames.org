@@ -23,6 +23,7 @@ export interface IGameState {
   callQueue: number[];
   callRef: number;
   timeRef: number;
+  activePlayers: string[];
 }
 
 export interface IBoardState {

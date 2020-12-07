@@ -4,7 +4,15 @@ import { isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { Button } from '@material-ui/core';
 
 import { IBoardProps, IBoardState, INumberState } from './definitions';
-import { GRID_SIZE, CALL_BOX_SIZE, MAX_BINGO_CALLS } from './constants';
+import {
+  GRID_SIZE,
+  CALL_BOX_SIZE,
+  MAX_BINGO_CALLS,
+  TIME_OUT,
+  INITIAL_WAIT_REF_NUM,
+  INITIAL_WAIT_TIME,
+  BACKOFF_INTERVAL,
+} from './constants';
 import PlayCard from './components/playCard';
 import CallCard from './components/callCard';
 import Countdown from './components/countDown';
@@ -20,9 +28,9 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
 
   _getPlayerID = () => this.props.playerID || this.props.ctx.currentPlayer;
 
-  _callOnTimeout = () => {
-    if (this._getPlayerID() === '0') {
-      this.props.moves.incrementCallRef();
+  _callOnTimeout = (callRef: number) => {
+    if (callRef >= this.props.G.callRef) {
+      this.props.moves.incrementCallRef(this._getPlayerID());
     }
   };
 
@@ -91,32 +99,56 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
   };
 
   _renderPlayComponents = (gameOver = false) => {
+    const { callQueue, callRef, players, timeRef, activePlayers } = this.props.G;
     let playCard = (
       <PlayCard
-        numbers={this.props.G.players[gameOver ? this.props.ctx.gameover.winner : this._getPlayerID()].numbers}
+        numbers={players[gameOver ? this.props.ctx.gameover.winner : this._getPlayerID()].numbers}
         onNumberClicked={gameOver ? () => {} : this._numberClicked}
       />
     );
-    if (!gameOver && this.props.G.players[this._getPlayerID()].shoutCount <= 0) {
+    // if player has no Bingo! shouts left, then show special message
+    if (!gameOver && players[this._getPlayerID()].shoutCount <= 0) {
+      const msgLineHeight = 0.5;
       playCard = (
-        <text key={`bi_bingo_call_over_text`} x={0.2} y={3} fill="white" fontSize={0.45}>
-          Not allowed to play
+        <text
+          key={`bi_bingo_call_over_text`}
+          x="50%"
+          y={CALL_BOX_SIZE + 1.5}
+          fill="white"
+          textAnchor="middle"
+          fontSize={msgLineHeight * 0.8}
+        >
+          <tspan x="50%" dy="0">
+            Sorry, you used up
+          </tspan>
+          <tspan x="50%" dy={msgLineHeight}>
+            all your Bingo! calls ☹️
+          </tspan>
+          <tspan x="50%" dy={msgLineHeight * 2}>
+            Better luck next time !
+          </tspan>
         </text>
       );
     }
+
+    // calculate backOff based on the list of activePlayers
+    // first person is 0 ms, then 500 ms, ..., and the rest will have max 500*length ms
+    const backOff =
+      BACKOFF_INTERVAL *
+      (activePlayers.includes(this._getPlayerID()) ? activePlayers.indexOf(this._getPlayerID()) : activePlayers.length);
+
     return (
       <>
         <Countdown
-          key={`bi_counter_${this.props.G.timeRef}`}
-          timeRef={this.props.G.timeRef}
+          key={`bi_counter_${timeRef}`}
+          callRef={callRef}
+          backOff={backOff}
+          duration={callQueue[callRef] === INITIAL_WAIT_REF_NUM ? INITIAL_WAIT_TIME : TIME_OUT}
+          timeRef={timeRef}
           callOnTimeout={gameOver ? () => {} : this._callOnTimeout}
         />
-        <CallCard callQueue={this.props.G.callQueue} callRef={this.props.G.callRef} />
-        {this.state.showCallTable ? (
-          <CallTable callQueue={this.props.G.callQueue} callRef={this.props.G.callRef} />
-        ) : (
-          playCard
-        )}
+        <CallCard callQueue={callQueue} callRef={callRef} />
+        {this.state.showCallTable ? <CallTable callQueue={callQueue} callRef={callRef} /> : playCard}
       </>
     );
   };
