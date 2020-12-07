@@ -24,6 +24,7 @@ import { gql } from 'apollo-boost';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
 import { isCreator, getPlayerIds, getPlayerNicknames } from './RoomMetadataHelper';
+import { Chat } from '../chat/Chat';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -88,6 +89,7 @@ class Room extends React.Component<Props, State> {
       <FreeBoardGamesBar>
         {this.getNicknamePrompt()}
         {this.state.changingGame ? <GamePickerModal gamePickedCallback={this._newGamePicked} /> : null}
+        <Chat channelType="room" channelId={this._roomId()} dispatch={this.props.dispatch} />
         <Subscription
           subscription={ROOM_SUBSCRIPTION}
           variables={{ roomId: this._roomId(), jwt: LobbyService.getUserToken() }}

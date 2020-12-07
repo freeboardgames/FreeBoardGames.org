@@ -8,9 +8,11 @@ export default function (props: Props) {
   const { message } = props;
   return (
     <p style={{ marginBottom: 0 }}>
-      {message.text}
+      <strong>{message.userNickname}&gt;</strong>
+      &nbsp;
+      {message.message}
       <br />
-      <small>{message.timestamp}</small>
+      <small>{message.isoTimestamp}</small>
     </p>
   );
 }
