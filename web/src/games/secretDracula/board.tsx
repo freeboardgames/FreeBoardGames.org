@@ -1,9 +1,13 @@
 import * as React from 'react';
+import { Typography, Box, Button } from '@material-ui/core';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
 
 import { IG } from './interfaces';
+import * as CNST from './constants';
+import {PlayerInfo, IPlayerInfo} from './svgComponents/playerInfo';
+import PlayStatus from './svgComponents/playStatus';
 
 import { BVampirePolicies } from './components/bvampirepolicy';
 import { BPlayer } from './components/bplayer';
@@ -16,7 +20,6 @@ import { BDiscard } from './phases/discardVeto/bdiscard';
 import { BPeek } from './phases/special/bpeek';
 import { BShowPlayer } from './components/bshowplayer';
 
-import PlayerInfo from './svgComponents/playerInfo';
 
 import css from './board.css';
 
@@ -33,23 +36,10 @@ interface IBoardProps {
 
 export class Board extends React.Component<IBoardProps> {
   render() {
-    let playerorder = Array(this.props.ctx.numPlayers).fill(0);
-    let deads = Array(this.props.ctx.numPlayers).fill(false);
-    let vampires = Array(this.props.ctx.numPlayers).fill(false);
-    for (let i = 0; i < this.props.ctx.numPlayers; i++) {
-      playerorder[i] = i;
-      if (this.props.G.deadIDs.includes(i)) {
-        deads[i] = true;
-      }
-      if (this.props.G.vampireIDs.includes(i)) {
-        vampires[i] = true;
-      }
-    }
 
     return (
-      <div className={css.div}>
         <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true} gameOver={this._getGameOver()}>
-          <div className={css.header}>{this.render_players(playerorder, deads, vampires)}</div>
+         
 
           <div className={css.middle}>
             <BElectionTracker count={this.props.G.electionTracker}></BElectionTracker>
@@ -109,699 +99,413 @@ export class Board extends React.Component<IBoardProps> {
             </div>
           </div>
 
-          <div className={css.bottom}>
-            {this.render_chosePriest(playerorder, deads, vampires)}
+          {this._renderCommonTitle()}
 
-            {this.render_votePriest(vampires)}
+          {this._renderMainBoard()}
 
-            {this.render_endVotePriest()}
+          {this._renderPhaseReleatedMessage()}
 
-            {this.render_discardMayor(vampires)}
-
-            {this.render_discardPriest(vampires)}
-
-            {this.render_vetoMayor()}
-
-            {this.render_peekPolicy(vampires)}
-
-            {this.render_investigate1(playerorder, deads, vampires)}
-
-            {this.render_investigate2()}
-
-            {this.render_specialElection(playerorder, deads, vampires)}
-
-            {this.render_execution(playerorder, deads, vampires)}
-
-            {this._renderMainBoard()}
-
-          </div>
+          {this._renderPhaseRelatedInteractions()}
 
         </GameLayout>
-      </div>
     );
   }
 
   _getPlayerID = () => (this.props.playerID || this.props.ctx.currentPlayer);
 
-  _renderMainBoard = () => {
+  _isActivePlayer = (playerID = null) => {
     var activePlayers = this.props.ctx.activePlayers !== null ? this.props.ctx.activePlayers : [];
-    const nP = 8;
+    return (playerID === null ? parseInt(this._getPlayerID()) : playerID) in activePlayers;
+  }
+
+  _getPlayerName = (playerID = null) => {
+    return (this.props.gameArgs.players[playerID === null ? parseInt(this._getPlayerID()) : playerID] || {name: 'BLA BLA BLA'}).name
+  }
+
+  _getPolicyText = () => (this.props.G.policyHand.map((p)=>(p.garlic ? CNST.SY_BAD_PO : CNST.SY_GOOD_PO)).join(' '));
+
+  _renderCommonTitle = () => {
     return (
-      <svg width="500px" height="500px" viewBox={`0 0 ${B_WIDTH} ${B_HEIGHT}`}>
+      <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+        {CNST.PHASE_TITLES[this.props.ctx.phase] || 'Play'}
+      </Typography>
+    );
+  }
+
+  _renderMainBoard = () => {
+    const nP = 0;
+    return (
+      <svg width="500px" height="350px" viewBox={`0 0 ${B_WIDTH} ${B_HEIGHT}`}>
         {
           Array(this.props.ctx.numPlayers + nP).fill(0).map((_, idx) => (
             <PlayerInfo
               id={idx}
               me={Number(this._getPlayerID()) == idx}
               renderForVampire={this.props.G.vampireIDs.includes(Number(this._getPlayerID()))}
-              playerName={(this.props.gameArgs.players[idx] || {name: 'BLA BLA BLA'}).name}
-              playerActive={idx in activePlayers}
+              playerName={this._getPlayerName(idx)}
+              playerActive={this._isActivePlayer(idx)}
               dead={this.props.G.deadIDs.includes(idx)}
               vampire={this.props.G.vampireIDs.includes(idx)}
               dracula={this.props.G.draculaID == idx}
               mayor={this.props.G.mayorID == idx}
               priest={this.props.G.priestID == idx}
               totalPlayers={this.props.ctx.numPlayers + nP}
-              chose={(idx) => {}}
+              phaseName={this.props.ctx.phase}
+              isInvestigated={idx === this.props.G.investigateID}
+              chose={this._getPhaseRelatedPlayerFunction()}
           />))
         }
+        <PlayStatus
+          vampiresPlayed={this.props.G.policyBoardVampire.length}
+          villagersPlayed={this.props.G.policyBoardHuman.length}
+          electionCount={this.props.G.electionTracker}
+          draculaStrength={this.props.G.policyBoardVampire[2] != null}
+          vetoEnabled={this.props.G.vetoPower}
+          playerCount={this.props.ctx.numPlayers}
+          onItemClick={(itemName: string) => {}}
+        />
       </svg>
     );
   };
 
-  render_players(playerorder: number[], deads, vampires) {
-    return (
-      <>
-        {playerorder.map((a) => {
-          var activePlayers = this.props.ctx.activePlayers !== null ? this.props.ctx.activePlayers : [];
-          return (
-            <>
-              <span key={'render_players-' + a.toString} style={{ width: '49%', display: 'inline-block' }}>
-                <BPlayer
-                  me={Number(this.props.playerID) == a}
-                  playerName={this.props.gameArgs.players[a].name}
-                  playerActive={a in activePlayers}
-                  dead={deads[a]}
-                  vampire={vampires[a]}
-                  dracula={this.props.G.draculaID == a}
-                  mayor={this.props.G.mayorID == a}
-                  priest={this.props.G.priestID == a}
-                  chose={() => {
-                    return;
-                  }}
-                ></BPlayer>
-              </span>
-            </>
-          );
-        })}
-      </>
-    );
-  }
+  _getPhaseRelatedPlayerFunction = () => {
+    const phaseName = this.props.ctx.phase;
+    const intPlayerID = parseInt(this._getPlayerID());
 
-  render_chosePriest(playerorder, deads, vampires) {
-    return (
-      <>
-        {
-          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseChosePriest' ? (
-            <div>
-              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <>
-                  <div style={{ textAlign: 'center' }}>
-                    You are the Mayor 🏅 and are required to select a Priest ✝ ️ for your Term.
-                  </div>
-                  {playerorder.map((a) => {
-                    return (
-                      <>
-                        <BPlayer
-                          me={Number(this.props.playerID) == a}
-                          playerName={this.props.gameArgs.players[a].name}
-                          playerActive={false}
-                          dead={deads[a]}
-                          vampire={vampires[a]}
-                          dracula={this.props.G.draculaID == a}
-                          mayor={false}
-                          priest={false}
-                          chose={() => {
-                            this.props.moves.moveChosePriest(a, parseInt(this.props.playerID));
-                          }}
-                        ></BPlayer>
-                        <span style={{ width: '5%', display: 'inline-block' }}></span>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                <>
-                  <div style={{ textAlign: 'center' }}>The Mayor 🏅 is selecting a Priest ✝ ️.</div>
-                </>
-              )}
-            </div>
-          ) : (
-            <></>
-          )
+    switch (phaseName) {
+      case 'phaseChosePriest': 
+        if(this._isActivePlayer()){
+          return (pInfo: IPlayerInfo) => {
+            if(!pInfo.mayor && !pInfo.dead){
+              this.props.moves.moveChosePriest(pInfo.id, pInfo.me);
+            }
+          }
         }
-      </>
-    );
-  }
+        break;
 
-  render_votePriest(vampires) {
-    var priestID = this.props.G.priestID;
-    var mayorID = this.props.G.mayorID;
-
-    return (
-      <>
-        {
-          //
-          this.props.ctx.phase == 'phaseVotePriest' ? (
-            <div>
-              <span style={{ textAlign: 'center' }}>
-                <p> Do you want to confirm </p>
-                <p>
-                  <BPlayer
-                    me={false}
-                    playerName={this.props.gameArgs.players[mayorID].name}
-                    playerActive={false}
-                    dead={false}
-                    vampire={vampires[mayorID]}
-                    dracula={this.props.G.draculaID == mayorID}
-                    mayor={true}
-                    priest={false}
-                    chose={() => {
-                      return;
-                    }}
-                  ></BPlayer>
-                </p>
-                <p>
-                  <BPlayer
-                    me={false}
-                    playerName={this.props.gameArgs.players[priestID].name}
-                    playerActive={false}
-                    dead={false}
-                    vampire={vampires[priestID]}
-                    dracula={this.props.G.draculaID == priestID}
-                    mayor={false}
-                    priest={true}
-                    chose={() => {
-                      return;
-                    }}
-                  ></BPlayer>
-                </p>
-                <p> for this Term? </p>
-              </span>
-              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <span style={{ textAlign: 'center' }}>
-                  <p>
-                    <BVote
-                      yes={() => {
-                        this.props.moves.moveVoteYes(parseInt(this.props.playerID));
-                      }}
-                      no={() => {
-                        this.props.moves.moveVoteNo(parseInt(this.props.playerID));
-                      }}
-                    ></BVote>
-                  </p>
-                </span>
-              ) : (
-                <>
-                  <span style={{ textAlign: 'center' }}>
-                    <p>Waiting for other players to Vote.</p>
-                  </span>
-                </>
-              )}
-            </div>
-          ) : (
-            <></>
-          )
+      case 'phaseInvestigate1': 
+        if(this._isActivePlayer()){
+          return (pInfo: IPlayerInfo) => {
+            if(!pInfo.mayor && !pInfo.dead){
+              this.props.moves.moveInvestigateStart(pInfo.id, intPlayerID);
+            }
+          }
         }
-      </>
-    );
-  }
+        break;
 
-  render_endVotePriest() {
-    return (
-      <>
-        {
-          //
-          this.props.ctx.phase == 'phaseEndVotePriest' ? (
-            <span style={{ textAlign: 'center' }}>
-              <p> Results of the Election </p>
-              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <BEndVote
-                  yes={this.props.G.voteCountYes}
-                  no={this.props.G.voteCountNo}
-                  done={true}
-                  ok={() => {
-                    this.props.moves.moveOKVote(parseInt(this.props.playerID));
-                  }}
-                ></BEndVote>
-              ) : (
-                <BEndVote
-                  yes={this.props.G.voteCountYes}
-                  no={this.props.G.voteCountNo}
-                  done={false}
-                  ok={() => {
-                    this.props.moves.moveOKVote(parseInt(this.props.playerID));
-                  }}
-                ></BEndVote>
-              )}
-            </span>
-          ) : (
-            <></>
-          )
+      case 'phaseSpecialElection': 
+      case 'phaseExecution':
+        if (this._isActivePlayer()){
+          return (pInfo: IPlayerInfo) => {
+            if(!pInfo.mayor && !pInfo.dead) {
+              if (phaseName === 'phaseSpecialElection'){
+                this.props.moves.movePickMayor(pInfo.id, intPlayerID);
+              } else if (phaseName === 'phaseExecution') {
+                this.props.moves.moveExecute(pInfo.id, intPlayerID);
+              }
+            }
+          }
         }
-      </>
-    );
-  }
+        break;
 
-  render_discardMayor(vampires) {
-    var mayorID = this.props.G.mayorID;
 
-    return (
-      <>
-        {
-          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseDiscardMayor' ? (
-            <div>
-              <span style={{ textAlign: 'center' }}>
-                {parseInt(this.props.playerID) == mayorID ? (
-                  <>
-                    <p>
-                      {' '}
-                      You are the Mayor 🏅 and must <b>discard</b> a sample!
-                    </p>
-
-                    <span style={{ textAlign: 'center' }}>
-                      <p>
-                        <BDiscard
-                          policies={this.props.G.policyHand}
-                          vetoEnabled={false}
-                          mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
-                          discard={this._discardWrapper(parseInt(this.props.playerID))}
-                          veto={this._vetoWrapper(parseInt(this.props.playerID))}
-                        ></BDiscard>
-                      </p>
-                    </span>
-                  </>
-                ) : (
-                  <p>
-                    {' '}
-                    The Mayor
-                    <BPlayer
-                      me={false}
-                      playerName={this.props.gameArgs.players[mayorID].name}
-                      playerActive={false}
-                      dead={false}
-                      vampire={vampires[mayorID]}
-                      dracula={this.props.G.draculaID == mayorID}
-                      mayor={true}
-                      priest={false}
-                      chose={() => {
-                        return;
-                      }}
-                    ></BPlayer>
-                    is chosing to discard a sample.
-                  </p>
-                )}
-              </span>
-            </div>
-          ) : (
-            <></>
-          )
-        }
-      </>
-    );
-  }
-
-  render_discardPriest(vampires) {
-    var priestID = this.props.G.priestID;
-
-    return (
-      <>
-        {
-          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseDiscardPriest' || this.props.ctx.phase == 'phaseDiscardPriestVeto' ? (
-            <div>
-              <span style={{ textAlign: 'center' }}>
-                {parseInt(this.props.playerID) == priestID ? (
-                  <>
-                    <p>
-                      {' '}
-                      You are the Priest and must <b>discard</b> a sample!
-                    </p>
-                    {this.props.G.vetoPower ? <p>You may also propse a Veto.</p> : <></>}
-                    <span style={{ textAlign: 'center' }}>
-                      <p>
-                        <BDiscard
-                          policies={this.props.G.policyHand.map((a) => {
-                            return parseInt(this.props.playerID) in this.props.ctx.activePlayers ? a : null;
-                          })}
-                          vetoEnabled={this.props.G.vetoPower}
-                          mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
-                          discard={this._discardWrapper(parseInt(this.props.playerID))}
-                          veto={this._vetoWrapper(parseInt(this.props.playerID))}
-                        ></BDiscard>
-                      </p>
-                    </span>
-                  </>
-                ) : (
-                  <p>
-                    {' '}
-                    The Priest
-                    <BPlayer
-                      me={false}
-                      playerName={this.props.gameArgs.players[priestID].name}
-                      playerActive={false}
-                      dead={false}
-                      vampire={vampires[priestID]}
-                      dracula={this.props.G.draculaID == priestID}
-                      mayor={false}
-                      priest={true}
-                      chose={() => {
-                        return;
-                      }}
-                    ></BPlayer>
-                    is chosing to discard a sample.
-                  </p>
-                )}
-              </span>
-            </div>
-          ) : (
-            <></>
-          )
-        }
-      </>
-    );
-  }
-
-  render_vetoMayor() {
-    return (
-      <>
-        {
-          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseVetoMayor' ? (
-            <div>
-              <span style={{ textAlign: 'center' }}>
-                {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                  <>
-                    <p>You are the Mayor 🏅.</p>
-                    <p>You may force (👎) the Priest ✝️ to play, or may agree (👍) to the Veto.</p>
-                    <BDiscard
-                      policies={this.props.G.policyHand}
-                      vetoEnabled={this.props.G.vetoPower}
-                      mayor={this.props.G.mayorID == parseInt(this.props.playerID)}
-                      discard={this._discardWrapper(parseInt(this.props.playerID))}
-                      veto={this._vetoWrapper(parseInt(this.props.playerID))}
-                    ></BDiscard>
-                  </>
-                ) : (
-                  <>
-                    <p>The Mayor 🏅 is contemplating a Veto.</p>
-                  </>
-                )}
-              </span>
-            </div>
-          ) : (
-            <></>
-          )
-        }
-      </>
-    );
-  }
-
-  render_peekPolicy(vampires) {
-    if (vampires) {
-    }
-    var mayorID = this.props.G.mayorID;
-
-    return (
-      <>
-        {
-          //
-          this.props.ctx.phase == 'phasePeekPolicy' ? (
-            <span style={{ textAlign: 'center' }}>
-              {parseInt(this.props.playerID) == mayorID ? (
-                <>
-                  <p>
-                    {' '}
-                    🧪 <b> Peek </b> 🧪{' '}
-                  </p>
-                  <p> You are the Mayor 🏅. These are the following three samples.</p>
-                </>
-              ) : (
-                <>
-                  <p>
-                    {' '}
-                    🧪 <b> Peek </b>{' '}
-                  </p>
-                  <p> 🧪 The Mayor 🏅 is looking at te next three samples.</p>
-                </>
-              )}
-              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <BPeek
-                  policies={this.props.G.policyPeek}
-                  ok={() => {
-                    this.props.moves.moveOK(parseInt(this.props.playerID));
-                  }}
-                ></BPeek>
-              ) : (
-                <></>
-              )}
-            </span>
-          ) : (
-            <></>
-          )
-        }
-      </>
-    );
-  }
-
-  render_investigate1(playerorder, deads, vampires) {
-    return (
-      <>
-        {
-          // parseInt(this.props.playerID) in this.props.ctx.activePlayers && this.props.ctx.phase == 'phaseInvestigate1' ? (
-          this.props.ctx.phase == 'phaseInvestigate1' ? (
-            <div style={{ textAlign: 'center' }}>
-              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <>
-                  <p>
-                    {' '}
-                    🕵 <b> Investigate </b> 🕵{' '}
-                  </p>
-                  <p> You are the Mayor 🏅. Investigate a Player! </p>
-
-                  {playerorder.map((a) => {
-                    return (
-                      <>
-                        <BPlayer
-                          me={Number(this.props.playerID) == a}
-                          playerName={this.props.gameArgs.players[a].name}
-                          playerActive={false}
-                          dead={deads[a]}
-                          vampire={vampires[a]}
-                          dracula={this.props.G.draculaID == a}
-                          mayor={false}
-                          priest={false}
-                          chose={() => {
-                            this.props.moves.moveInvestigateStart(a, parseInt(this.props.playerID));
-                          }}
-                        ></BPlayer>
-                        <span style={{ width: '5%', display: 'inline-block' }}></span>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                <>
-                  <p>
-                    {' '}
-                    🕵 <b> Investigate </b> 🕵{' '}
-                  </p>
-                  <p> The Mayor 🏅 is Investigating a Player. </p>
-                </>
-              )}
-            </div>
-          ) : (
-            <></>
-          )
-        }
-      </>
-    );
-  }
-
-  render_investigate2() {
-    return (
-      <>
-        {
-          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseInvestigate2' ? (
-            <div style={{ textAlign: 'center' }}>
-              <p>Investigation Results:</p>
-              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <BShowPlayer
-                  name={
-                    this.props.gameArgs.players.map((player) => {
-                      return player.name;
-                    })[(this.props.G.investigateID, this.props.G.investigateID)]
-                  }
-                  vampire={this.props.G.investigate == 1}
-                  finish={() => {
-                    this.props.moves.moveInvestigateEnd(parseInt(this.props.playerID));
-                  }}
-                  iInvestigate={true}
-                ></BShowPlayer>
-              ) : (
-                <BShowPlayer
-                  name={
-                    this.props.gameArgs.players.map((player) => {
-                      return player.name;
-                    })[(this.props.G.investigateID, this.props.G.investigateID)]
-                  }
-                  vampire={null}
-                  finish={() => {
-                    return;
-                  }}
-                  iInvestigate={false}
-                ></BShowPlayer>
-              )}
-            </div>
-          ) : (
-            <></>
-          )
-        }
-      </>
-    );
-  }
-
-  render_specialElection(playerorder, deads, vampires) {
-    return (
-      <>
-        {
-          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseSpecialElection' ? (
-            <div style={{ textAlign: 'center' }}>
-              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <>
-                  <p>
-                    {' '}
-                    🗳️ <b>Special Election</b> 🗳️{' '}
-                  </p>
-                  <p> Chose next Mayor!</p>
-                  {playerorder.map((a) => {
-                    return (
-                      <>
-                        <BPlayer
-                          me={Number(this.props.playerID) == a}
-                          playerName={this.props.gameArgs.players[a].name}
-                          playerActive={false}
-                          dead={deads[a]}
-                          vampire={vampires[a]}
-                          dracula={this.props.G.draculaID == a}
-                          mayor={false}
-                          priest={false}
-                          chose={() => {
-                            this.props.moves.movePickMayor(a, parseInt(this.props.playerID));
-                          }}
-                        ></BPlayer>
-                        <span style={{ width: '5%', display: 'inline-block' }}></span>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                <>
-                  <p>
-                    {' '}
-                    🗳️<b>Special Election</b> 🗳️{' '}
-                  </p>
-                  <p> The Mayor is chosing the next Mayor.</p>
-                </>
-              )}
-            </div>
-          ) : (
-            <></>
-          )
-        }
-      </>
-    );
-  }
-
-  render_execution(playerorder, deads, vampires) {
-    return (
-      <>
-        {
-          // parseInt(this.props.playerID) in this.props.ctx.activePlayers &&
-          this.props.ctx.phase == 'phaseExecution' ? (
-            <div style={{ textAlign: 'center' }}>
-              {parseInt(this.props.playerID) in this.props.ctx.activePlayers ? (
-                <>
-                  <p>
-                    🗡️ <b>Execution </b> 🗡️{' '}
-                  </p>
-                  <p>You are the Mayor, and must Execute a Player!</p>
-                  {playerorder.map((a) => {
-                    return (
-                      <>
-                        <BPlayer
-                          me={Number(this.props.playerID) == a}
-                          playerName={this.props.gameArgs.players[a].name}
-                          playerActive={false}
-                          dead={deads[a]}
-                          vampire={vampires[a]}
-                          dracula={this.props.G.draculaID == a}
-                          mayor={false}
-                          priest={false}
-                          chose={() => {
-                            this.props.moves.moveExecute(a, parseInt(this.props.playerID));
-                          }}
-                        ></BPlayer>
-                        <span style={{ width: '5%', display: 'inline-block' }}></span>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                <>
-                  <p>
-                    {' '}
-                    🗡️ <b>Execution</b> 🗡️
-                  </p>
-                  <p> The Mayor must Execute a Player!</p>
-                </>
-              )}
-            </div>
-          ) : (
-            <></>
-          )
-        }
-      </>
-    );
-  }
-
-  _discardWrapper(playerIndex: number) {
-    if (this.props.ctx.phase == 'phaseDiscardMayor') {
-      return (index: number) => {
-        return this.props.moves.moveDiscardMayor(index, playerIndex);
-      };
-    }
-    if (this.props.ctx.phase == 'phaseDiscardPriest') {
-      return (index: number) => {
-        return this.props.moves.moveDiscardPriest(index, playerIndex);
-      };
-    }
-    if (this.props.ctx.phase == 'phaseDiscardPriestVeto') {
-      return (index: number) => {
-        return this.props.moves.moveDiscardPriest(index, playerIndex);
-      };
-    }
-
-    return (index: number) => {
-      // gotta trick the linter, but at the same time this function needs this signature...
-      if (index == 1) {
-        return;
-      }
-      return;
     };
+    return (pInfo: IPlayerInfo) => {};
   }
 
-  _vetoWrapper(playerIndex: number) {
-    if (this.props.ctx.phase == 'phaseDiscardPriestVeto') {
-      return () => {
-        return this.props.moves.moveWantVetoPriest(playerIndex);
-      };
+  _renderPhaseReleatedMessage = () => {
+    let message: any = {}; 
+    const intPlayerID = parseInt(this._getPlayerID());
+    const {mayorID, priestID, lastMayorID, lastPriestID} = this.props.G; 
+    switch (this.props.ctx.phase) {
+      case 'phaseChosePriest':
+        if(this._isActivePlayer()) {
+          message.primary = [
+            `As the ${CNST.N_MAYOR}, you are required to nominate a ${CNST.N_PRIEST}.`,
+            `You can do this by clicking on one of the players with ${CNST.SY_CANDIDATE} above.`
+          ];
+        } else {
+          message.info = [`Wait for the ${CNST.N_MAYOR} to nominate a ${CNST.N_PRIEST} for voting ...`];
+          message.text = [`${CNST.SY_CANDIDATE} represents possible nominees for priest.`]
+        }
+        break;
+
+      case 'phaseVotePriest': 
+        if(this._isActivePlayer()){
+          message.primary = [`Give your vote for ${this._getPlayerName(priestID)} ${CNST.SY_CANDIDATE} as the new ${CNST.N_PRIEST}.`];
+        } else {
+          message.text = ['Waiting for other players to vote...'];
+        }
+        break; 
+
+      case 'phaseEndVotePriest': 
+        if(this._isActivePlayer()){
+          const yes = this.props.G.voteCountYes;
+          const no = this.props.G.voteCountNo; 
+          message[ yes > no ? 'success' : 'error' ] = [`Election Results: ${yes} Yes 👍 and ${no} No 👎`];
+          message.text = ['Click Okay to continue...'];
+        } else {
+          message.text = ['Waiting for other players to click Okay...'];
+        }
+        break;
+      
+      case 'phaseDiscardMayor': 
+      case 'phaseDiscardPriest':
+      case 'phaseDiscardPriestVeto': 
+        const priestPhase = (this.props.ctx.phase !== 'phaseDiscardMayor');
+        const playerTag = priestPhase? CNST.N_PRIEST : CNST.N_MAYOR;
+        if (this._isActivePlayer() && (intPlayerID === (priestPhase ? priestID : mayorID))) {
+          message.warning = [
+            `As the ${playerTag}, you must discard one  ${CNST.N_SAMPLE}.`, 
+          ]; 
+          message.text = [
+            `${CNST.SY_BAD_PO} is for ${CNST.N_VAMPIRES} and ${CNST.SY_GOOD_PO} is for ${CNST.N_VILLAGERS}.`,
+            `Click on a ${CNST.N_SAMPLE} to discard,`
+          ];
+          // special actions related to priest Veto 
+          if(priestPhase && this.props.G.vetoPower) {
+            message.secondary = ['You may also propse a Veto.']; 
+          }
+        } else {
+          message.text = [`Wait for the ${playerTag} to discard a ${CNST.N_SAMPLE}...`]
+        }
+
+        break; 
+
+      case 'phaseVetoMayor': 
+        if (this._isActivePlayer()){
+          message.warning = [
+            `As the ${CNST.N_MAYOR}, you can`, 
+            `either Reject ${CNST.SY_TDOWN} or Agree ${CNST.SY_TUP} with the ${CNST.N_VETO}`, 
+          ];
+          message.text = [
+            `Previously, ${this._getPolicyText()} was given to the ${CNST.N_PRIEST}.`
+          ]; 
+        } else {
+          message.text = [
+            `The ${CNST.N_MAYOR} is considering the ${CNST.N_VETO}...`
+          ];
+        }
+        break;
+
+      case 'phasePeekPolicy': 
+        if (this._isActivePlayer() && intPlayerID === mayorID){
+          message.warning = [
+            `You can see the upcoming ${CNST.N_SAMPLE}s`,
+            `Upcoming sample are:  ${this._getPolicyText()}`
+          ]; 
+          message.text = ['Click Okay to continue...'];
+        } else {
+          message.text = [`The ${CNST.N_MAYOR} is looking at te next three samples.`]
+        }
+        break;
+
+      case 'phaseInvestigate1': 
+        if(this._isActivePlayer()){
+          message.warning = [
+            `You are the ${CNST.N_MAYOR}.`, 
+            `You can investigate any player with the ${CNST.SY_SEARCH} symbol.`, 
+            `Click on the player you would like to search...`
+          ]
+        } else {
+          message.text = [`The ${CNST.N_MAYOR} is Investigating ${CNST.SY_PEEK} a Player...`];
+        }
+        break;
+
+      case 'phaseInvestigate2': 
+        const pi2PlayerName = this._getPlayerName(this.props.G.investigateID);
+        if(this._isActivePlayer()){
+          const isVampire = (this.props.G.investigate == 1);
+          message.primary = [`Player ${pi2PlayerName} is a ${isVampire ? CNST.N_VAMPIRE : CNST.N_VILLAGER}`];
+          message.text = ['Click Okay to continue...'];
+        } else {
+          message.info = [`Player ${pi2PlayerName} is being investigated.`]
+        }
+        break;
+
+      case 'phaseSpecialElection': 
+        if (this._isActivePlayer()){
+          message.warning = [
+            `You are the current ${CNST.N_MAYOR}, please choose the next ${CNST.N_MAYOR}`, 
+          ];
+          message.text = [
+            `You can do this by clicking on one of the player with the ${CNST.SY_CANDIDATE} symbol.`
+          ];
+        } else {
+          message.info = [`Current ${CNST.N_MAYOR} is selecting the next ${CNST.N_MAYOR}.`]
+        }
+        break; 
+
+      case 'phaseExecution': 
+        if (this._isActivePlayer()){
+          message.warning = [
+            `You are the ${CNST.N_MAYOR}, any you must ${CNST.N_EXECUTE} a Player!`, 
+          ];
+          message.text = [
+            `You can do this by clicking on one of the player with the ${CNST.SY_CANDIDATE} symbol.`
+          ];
+        } else {
+          message.error = [`The ${CNST.N_MAYOR} will ${CNST.N_EXECUTE} a Player!.`]
+        }
+        break; 
+
+
     }
-    if (this.props.ctx.phase == 'phaseVetoMayor') {
-      return (want: boolean) => {
-        return this.props.moves.moveWantVetoMayor(want, playerIndex);
-      };
-    }
-    return () => {
-      return;
-    };
+
+    const typogStyles = {marginRight: '10px', marginLeft: '10px'}
+
+    return (
+      <> 
+        {
+          Object.keys(message).map((color) => {
+            return (
+              <Box 
+                bgcolor={color === 'text' ? 'text.primary':`${color}.main`} 
+                color={color === 'text' ? 'background.paper': `${color}.contrastText`} display='block' 
+                maxWidth='486px'
+                padding='7px'
+              >
+                <> 
+                {
+                  message[color].map((m) => (
+                    <Typography align='left' variant='body1' style={typogStyles} >
+                      {m}
+                    </Typography>
+                  ))
+                }
+                </>
+              </Box>
+            );
+          })
+        }
+      
+      </>      
+    );
   }
 
-  _getGameOver() {
+  _renderPhaseRelatedInteractions = () => {
+
+    const interactions: any = []; 
+    const playerID = this._getPlayerID();
+    const intPlayerID = parseInt(playerID);
+    const {mayorID, priestID, lastMayorID, lastPriestID} = this.props.G; 
+
+    switch (this.props.ctx.phase) {
+
+      case 'phaseVotePriest': 
+        if(this._isActivePlayer()){
+          interactions.push({
+            text: 'Yes 👍',
+            onClick: () => {this.props.moves.moveVoteYes(parseInt(playerID))}
+          });
+          interactions.push({
+            text: 'No 👎',
+            onClick: () => {this.props.moves.moveVoteNo(parseInt(playerID))}
+          });
+        }
+        break; 
+
+      case 'phaseEndVotePriest': 
+        if(this._isActivePlayer()){
+          interactions.push({
+            text: 'Okay', 
+            onClick: () => {this.props.moves.moveOKVote(intPlayerID)},
+          })
+        }
+        break;
+
+      case 'phaseDiscardMayor': 
+      case 'phaseDiscardPriest':
+      case 'phaseDiscardPriestVeto': 
+        const priestPhase = (this.props.ctx.phase !== 'phaseDiscardMayor');
+        if (this._isActivePlayer() && (intPlayerID === (priestPhase ? priestID : mayorID))) {
+          this.props.G.policyHand.forEach((p, idx) => {
+            interactions.push({
+              text: p.garlic ? `${CNST.SY_BAD_PO}` : `${CNST.SY_GOOD_PO}`,
+              onClick: () => {
+                if(priestPhase){
+                  this.props.moves.moveDiscardPriest(idx, intPlayerID);
+                } else {
+                  this.props.moves.moveDiscardMayor(idx, intPlayerID);
+                }
+              },
+            })
+          });
+          if(priestPhase && this.props.G.vetoPower){
+            interactions.push({
+              text: `${CNST.N_VETO}`,
+              color: 'secondary',
+              onClick: () => {
+                this.props.moves.moveWantVetoPriest(intPlayerID);
+              }
+            })
+          }
+        }
+        break;
+
+      case 'phaseVetoMayor': 
+        if (this._isActivePlayer()) {
+          interactions.push({
+            text: CNST.N_AGREE_VETO, 
+            color: 'primary', 
+            onClick: () => {this.props.moves.moveWantVetoMayor(true, intPlayerID);}
+          });
+          interactions.push({
+            text: CNST.N_REJECT_VETO, 
+            color: 'secondary', 
+            onClick: () => {this.props.moves.moveWantVetoMayor(false, intPlayerID);}
+          });
+        }
+        break;
+
+      case 'phasePeekPolicy': 
+        if (this._isActivePlayer() && intPlayerID === mayorID) {
+          interactions.push({
+            text: 'Okay', 
+            onClick: () => {this.props.moves.moveOK(intPlayerID);}
+          });
+        }
+        break;
+
+      case 'phaseInvestigate2': 
+        if (this._isActivePlayer()) {
+          interactions.push({
+            text: 'Okay', 
+            onClick: () => {this.props.moves.moveInvestigateEnd(intPlayerID);}
+          })
+        }
+        break;
+
+    }; 
+
+    return (
+      <div style={{ display: 'flex', maxWidth: '500px' }}>
+        {
+          interactions.map((i, idx) => (
+            <Button
+              key={`sd_btn_${this.props.ctx.phase}_${idx}`}
+              variant="contained"
+              color= { i.color || "default"}
+              style={{
+                marginTop: '10px',
+                alignContent: 'center',
+                marginLeft: idx === 0 ? 'auto' : '10px',
+                justifyContent: 'center',
+              }}
+              onClick={i.onClick}
+            >
+              {i.text}
+            </Button>
+          ))
+        }
+
+      </div>
+    );
+
+  }
+
+
+  _getGameOver = () => {
     if (!this.props.ctx.gameover) {
       return;
     }
