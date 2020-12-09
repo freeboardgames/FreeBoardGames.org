@@ -5,7 +5,7 @@ import { Board } from './board';
 const config: IGameConfig = {
   bgioGame: SecretDraculaGame,
   bgioBoard: Board,
-  debug: true,
+  // debug: true,
 };
 
 export default config;
