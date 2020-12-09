@@ -6,7 +6,7 @@ export function uaIsMobile(userAgent: string) {
   return isMobile;
 }
 
-export function isMobileFromReq(req: any) {
+export function isMobileFromReq(req?: any) {
   let userAgent;
   if (req) {
     userAgent = req.headers['user-agent'];
