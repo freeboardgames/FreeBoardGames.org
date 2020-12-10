@@ -1,5 +1,5 @@
 const Thumbnail = require('./media/thumbnail.jpg');
-import { GameMode, IGameModeExtraInfoDropdown } from 'gamesShared/definitions/mode';
+import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
