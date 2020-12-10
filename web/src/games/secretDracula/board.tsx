@@ -234,7 +234,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (isDead) {
       message.error.push(`You have been executed ${CNST.SY_DEAD}.`);
       // TODO: if dead not required to play, then comment this
-      message.error.push(`But please continue participating by pressing Yes ${CNST.SY_TUP}, No ${CNST.SY_TDOWN} & Okay whenever prompted!!! This is a known bug 😅 and will be fixed soon.`);
+      message.error.push(
+        `But please continue participating by pressing Yes ${CNST.SY_TUP}, No ${CNST.SY_TDOWN} & Okay whenever prompted!!! This is a known bug 😅 and will be fixed soon.`
+      );
     }
 
     switch (phaseName) {
