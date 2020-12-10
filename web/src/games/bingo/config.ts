@@ -5,7 +5,6 @@ import { BingoBoard } from './board';
 const config: IGameConfig = {
   bgioGame: BingoGame,
   bgioBoard: BingoBoard,
-  debug: true,
 };
 
 export default config;

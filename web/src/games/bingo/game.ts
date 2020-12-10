@@ -56,6 +56,10 @@ export const BingoGame: Game<IGameState> = {
       return G;
     },
     playerShouted: (G: IGameState, _, playerID: string) => {
+      if (G.players[playerID].shoutCount <= 0) {
+        return G;
+      }
+
       const numbersShown = G.callQueue.slice(0, G.callRef + 1);
 
       // check if any columns (5), rows (5) or diagonals (2) are complete
@@ -66,17 +70,13 @@ export const BingoGame: Game<IGameState> = {
         yPos = n.id % GRID_SIZE;
         marked = (n.marked && numbersShown.includes(n.value)) || n.value === WILDCARD_NUM;
         // columns
-        found[0] = found[0] + (xPos === 0 && marked);
-        found[1] = found[1] + (xPos === 1 && marked);
-        found[2] = found[2] + (xPos === 2 && marked);
-        found[3] = found[3] + (xPos === 3 && marked);
-        found[4] = found[4] + (xPos === 4 && marked);
+        for (let xi = 0; xi < GRID_SIZE; xi++) {
+          found[xi] = found[xi] + (xPos === xi && marked);
+        }
         // rows
-        found[5] = found[5] + (yPos === 0 && marked);
-        found[6] = found[6] + (yPos === 1 && marked);
-        found[7] = found[7] + (yPos === 2 && marked);
-        found[8] = found[8] + (yPos === 3 && marked);
-        found[9] = found[9] + (yPos === 4 && marked);
+        for (let yi = 0; yi < GRID_SIZE; yi++) {
+          found[yi + GRID_SIZE] = found[yi + GRID_SIZE] + (yPos === 0 && marked);
+        }
         // diagonal
         found[10] = found[10] + (xPos === yPos && marked);
         found[11] = found[11] + (xPos + yPos === GRID_SIZE - 1 && marked);

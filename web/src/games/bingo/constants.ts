@@ -1,6 +1,6 @@
 export const GRID_SIZE = 5;
 export const COL_DELTA = 15;
-export const TIME_OUT = 5000; // time in ms
+export const TIME_OUT = 10000; // time in ms
 export const TIME_BUFF = 1000; // time in ms
 export const WILDCARD_NUM = -100;
 export const INITIAL_WAIT_REF_NUM = -1;

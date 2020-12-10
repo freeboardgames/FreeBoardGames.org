@@ -26,7 +26,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     };
   }
 
-  _getPlayerID = () => this.props.playerID || this.props.ctx.currentPlayer;
+  _getPlayerID = () => (isOnlineGame(this.props.gameArgs) ? this.props.playerID : this.props.ctx.currentPlayer);
 
   _callOnTimeout = (callRef: number) => {
     if (callRef >= this.props.G.callRef) {
@@ -42,6 +42,13 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     this.props.moves.playerShouted(this._getPlayerID());
   };
 
+  _getPlayerName = (playerID = null) => {
+    if (isOnlineGame(this.props.gameArgs)) {
+      return this.props.gameArgs.players[playerID || this.props.ctx.currentPlayer].name;
+    } 
+    return 'Player ' + this.props.ctx.currentPlayer;
+  }
+
   _gameOverStatus = () => {
     if (this.props.ctx.gameover.draw) {
       return 'draw';
@@ -50,7 +57,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
-        return 'you lost';
+        return `you lost (winner: ${this._getPlayerName(this.props.ctx.gameover.winner)})`;
       }
     } else {
       return `Player ${this.props.ctx.gameover.winner} won`;
@@ -72,6 +79,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
         <Button
           key="bi_call_table_btn"
           variant="contained"
+          data-testid="bingo-table-btn"
           color="primary"
           style={{
             ...btnStyles,
@@ -84,6 +92,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
         <Button
           key="bi_shout_btn"
           variant="contained"
+          data-testid="bingo-shout-btn"
           color="primary"
           style={{
             ...btnStyles,

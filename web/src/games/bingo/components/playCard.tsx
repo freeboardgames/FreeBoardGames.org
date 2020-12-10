@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { blue, red } from '@material-ui/core/colors';
+import { blue } from '@material-ui/core/colors';
 
 import { INumberState } from '../definitions';
 import { GRID_SIZE, CALL_BOX_SIZE, STROKE_WIDTH, WILDCARD_NUM } from '../constants';
@@ -42,8 +42,8 @@ function OneCard(props: IOneCardProps) {
         style={{
           stroke: 'white',
           strokeWidth: STROKE_WIDTH,
-          fill: number.missed ? red['A200'] : number.marked ? blue[500] : 'white',
-          fillOpacity: number.missed ? 0.75 : number.marked ? 0.82 : 0,
+          fill: number.marked ? blue[500] : 'white',
+          fillOpacity: number.marked ? 0.82 : 0,
         }}
       />
       {isWildcard ? (

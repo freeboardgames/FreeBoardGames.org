@@ -5,7 +5,6 @@ export interface INumberState {
   id: number;
   value: number;
   marked: boolean;
-  missed: boolean;
 }
 
 export interface IPlayerState {
