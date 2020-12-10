@@ -225,18 +225,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   _renderPhaseReleatedMessage = () => {
-    let message: any = { error: [] };
+    let message: any = { error: [], success: [] };
     const intPlayerID = parseInt(this._getPlayerID());
     const { mayorID, priestID } = this.props.G;
     const phaseName = this.state.hintKey ? 'user-info' : this.props.ctx.phase;
     const isDead = this.props.G.deadIDs.includes(intPlayerID);
 
     if (isDead) {
-      message.error = [
-        `You have been executed ${CNST.SY_DEAD}.`,
-        // TODO: if dead not required to play, then comment this
-        `But please continue playing till the end !!!`,
-      ];
+      message.error.push(`You have been executed ${CNST.SY_DEAD}.`);
+      // TODO: if dead not required to play, then comment this
+      message.error.push(`But please continue participating by pressing Yes ${CNST.SY_TUP}, No ${CNST.SY_TDOWN} & Okay whenever prompted!!! This is a known bug 😅 and will be fixed soon.`);
     }
 
     switch (phaseName) {
@@ -268,7 +266,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         if (this._isActivePlayer() && !isDead) {
           const yes = this.props.G.voteCountYes;
           const no = this.props.G.voteCountNo;
-          message[yes > no ? 'success' : 'error'] = [`Election Results: ${yes} Yes 👍 and ${no} No 👎`];
+          message[yes > no ? 'success' : 'error'].push(`Election Results: ${yes} Yes 👍 and ${no} No 👎`);
           message.text = ['Click Okay to continue...'];
         } else {
           message.text = ['Waiting for other players to click Okay...'];
