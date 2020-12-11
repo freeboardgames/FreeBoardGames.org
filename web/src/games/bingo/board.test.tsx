@@ -61,11 +61,9 @@ describe('Bingo UI', () => {
     wrapper.setProps({ G: { ...state0.G, callRef } });
     wrapper.find(`[data-testid="bingo-shout-btn"]`).at(0).simulate('click');
     wrapper.setState({ showCallTable: true });
-    for (let i = 1; i < callRef; i++) {
-      expect(wrapper.text()).toContain(state0.G.players['0'].numbers[i].value);
+    for (let i = 1; i < callRef + 1; i++) {
+      expect(wrapper.text()).toContain(state0.G.callQueue[i]);
     }
-    // the current value of call should not be shown
-    expect(wrapper.text()).not.toContain(state0.G.players['0'].numbers[callRef].value);
   });
 
   test('used up bingo calls shows sorry message', () => {
