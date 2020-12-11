@@ -234,9 +234,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (isDead) {
       message.error.push(`You have been executed ${CNST.SY_DEAD}.`);
       // TODO: if dead not required to play, then comment this
-      message.error.push(
-        `But please continue participating by pressing Yes ${CNST.SY_TUP}, No ${CNST.SY_TDOWN} & Okay whenever prompted!!! This is a known bug 😅 and will be fixed soon.`,
-      );
+      // message.error.push(
+      //   `But please continue participating by pressing Yes ${CNST.SY_TUP}, No ${CNST.SY_TDOWN} & Okay whenever prompted!!! This is a known bug 😅 and will be fixed soon.`,
+      // );
     }
 
     switch (phaseName) {
@@ -409,10 +409,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const phaseName = this.state.hintKey ? 'user-info' : this.props.ctx.phase;
 
     // TODO: if dead not required to play, then uncomment this!
-    // const isDead = this.props.G.deadIDs.includes(intPlayerID);
-    // if (isDead){
-    //   return null;
-    // }
+    const isDead = this.props.G.deadIDs.includes(intPlayerID);
+    if (isDead) {
+      return null;
+    }
 
     switch (phaseName) {
       case 'phaseVotePriest':
