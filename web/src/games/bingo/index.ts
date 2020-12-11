@@ -10,7 +10,7 @@ export const BingoDef: IGameDef = {
   maxPlayers: 30,
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
-  description: 'The game needs no Introduction',
+  description: 'Try your luck at Bingo!',
   descriptionTag: 'Play Bingo for free online with upto 30 persons.',
   instructions: {
     videoId: 'dJ4YDTqmhJk',
