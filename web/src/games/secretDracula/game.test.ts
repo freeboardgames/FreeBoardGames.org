@@ -890,7 +890,6 @@ it('end2end - 10 player dracula priest on 3 blood', () => {
   return;
 });
 
-
 it('end2end - 10 NoVote into Dead Mayor', () => {
   // set up a specific board scenario
   const SecretDraculaCustomScenario = {
@@ -1033,7 +1032,6 @@ it('end2end - 10 NoVote into Dead Mayor', () => {
   return;
 });
 
-
 it('end2end - 10 execute the following mayor', () => {
   // set up a specific board scenario
   const SecretDraculaCustomScenario = {
@@ -1169,7 +1167,6 @@ it('end2end - 10 execute the following mayor', () => {
   return;
 });
 
-
 it('end2end - 10 execute the special election guy', () => {
   // set up a specific board scenario
   const SecretDraculaCustomScenario = {
@@ -1275,7 +1272,7 @@ it('end2end - 10 execute the special election guy', () => {
   var { G, ctx } = players[0].getState();
   expect(ctx.activePlayers).toEqual({ '3': 'phaseChosePriest' }); // should rollover to the next player
 
-  return
+  return;
 });
 
 it('end2end - 10 execute the guy after special election guy ', () => {
@@ -1383,5 +1380,5 @@ it('end2end - 10 execute the guy after special election guy ', () => {
   var { G, ctx } = players[0].getState();
   expect(ctx.activePlayers).toEqual({ '4': 'phaseChosePriest' }); // should rollover to the next player
 
-  return
+  return;
 });

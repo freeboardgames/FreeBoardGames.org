@@ -410,7 +410,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     // TODO: if dead not required to play, then uncomment this!
     const isDead = this.props.G.deadIDs.includes(intPlayerID);
-    if (isDead){
+    if (isDead) {
       return null;
     }
 

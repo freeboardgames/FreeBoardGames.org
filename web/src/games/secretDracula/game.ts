@@ -238,7 +238,7 @@ export const SecretDraculaGame = {
           G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
         }
 
-        while (G.deadIDs.includes(G.mayorID)){
+        while (G.deadIDs.includes(G.mayorID)) {
           G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
         }
 
