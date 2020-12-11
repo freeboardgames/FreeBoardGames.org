@@ -137,40 +137,32 @@ export const SecretDraculaGame = {
       }),
       draculaID:
         ctx.numPlayers < 7
-          ? 
-            // < 7
+          ? // < 7
             G.vampireIDs.includes(playerIDInt)
-            ? 
-            G.draculaID // all vampires get to know ( there are only 2, so you can deduce the other one is dracula)
+            ? G.draculaID // all vampires get to know ( there are only 2, so you can deduce the other one is dracula)
             : -1 // only dracula knows if <7 players
-          : 
-            // >= 7
-            G.vampireIDs.includes(playerIDInt)
-            ? 
-            G.draculaID // all vampires know who is dracula
-            : -1, // you are not a vampire
+          : // >= 7
+          G.vampireIDs.includes(playerIDInt)
+          ? G.draculaID // all vampires know who is dracula
+          : -1, // you are not a vampire
 
       vampireIDs:
         ctx.numPlayers < 7
-          ? 
-            // in <7 player game, all vampires know of all others
+          ? // in <7 player game, all vampires know of all others
             G.vampireIDs.includes(playerIDInt)
-            ? 
-            [...G.vampireIDs] // you are a vampire and know of all vampires
+            ? [...G.vampireIDs] // you are a vampire and know of all vampires
             : [
                 ...G.vampireIDs.map(() => {
                   return -1;
                 }),
               ] // you are not a vampire and don't konw who is a vapmire
-          : 
-            // in >=7 player game, dracula doesn't know about other vampires
-            G.vampireIDs.includes(playerIDInt)
-            ? 
-            G.draculaID == playerIDInt
-              ? [playerIDInt] // you are Dracula, and only know about yourself as vampire
-              : [...G.vampireIDs] // you are a vampire, and know all vampires 
-            :
-            [ // you are not a vampire and know nohting
+          : // in >=7 player game, dracula doesn't know about other vampires
+          G.vampireIDs.includes(playerIDInt)
+          ? G.draculaID == playerIDInt
+            ? [playerIDInt] // you are Dracula, and only know about yourself as vampire
+            : [...G.vampireIDs] // you are a vampire, and know all vampires
+          : [
+              // you are not a vampire and know nohting
               ...G.vampireIDs.map(() => {
                 return -1;
               }),
@@ -197,7 +189,7 @@ export const SecretDraculaGame = {
       policyPeek: playerIDInt == G.mayorID && G.policyPeek.length == 3 ? G.policyPeek : [],
       investigate: playerIDInt == G.mayorID ? G.investigate : 0,
       // everyone gets investigateID
-      log: null
+      log: null,
     };
   },
 
