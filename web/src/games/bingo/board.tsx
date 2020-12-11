@@ -45,9 +45,9 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
   _getPlayerName = (playerID = null) => {
     if (isOnlineGame(this.props.gameArgs)) {
       return this.props.gameArgs.players[playerID || this.props.ctx.currentPlayer].name;
-    } 
+    }
     return 'Player ' + this.props.ctx.currentPlayer;
-  }
+  };
 
   _gameOverStatus = () => {
     if (this.props.ctx.gameover.draw) {
