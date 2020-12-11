@@ -1,5 +1,5 @@
 const Thumbnail = require('./media/thumbnail.jpg');
-import { GameMode, IGameModeExtraInfoDropdown } from 'gamesShared/definitions/mode';
+import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
@@ -12,11 +12,11 @@ export const memoryMatchDef: IGameDef = {
   modes: [
     {
       mode: GameMode.OnlineFriend,
-      extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
+      // extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
     },
     {
       mode: GameMode.LocalFriend,
-      extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
+      // extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
     },
   ],
   description: 'A small game to sharpen memory',
@@ -26,7 +26,7 @@ export const memoryMatchDef: IGameDef = {
     text: instructions,
   },
   config: () => import('./config'),
-  status: IGameStatus.IN_DEVELOPMENT,
+  status: IGameStatus.PUBLISHED,
 };
 
 export default memoryMatchDef;
