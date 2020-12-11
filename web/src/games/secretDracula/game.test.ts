@@ -167,8 +167,20 @@ it('end2end - 6 player finish vampire', () => {
   var { G, ctx } = players[0].getState();
   expect(ctx.phase).toEqual('phaseVotePriest');
   var { G, ctx } = players[0].getState();
+  expect(ctx.activePlayers[0]).toEqual('phaseVotePriest');
+  expect(ctx.activePlayers[1]).toEqual(undefined);
+  expect(ctx.activePlayers[2]).toEqual('phaseVotePriest');
+  expect(ctx.activePlayers[3]).toEqual('phaseVotePriest');
+  expect(ctx.activePlayers[4]).toEqual('phaseVotePriest');
+  expect(ctx.activePlayers[5]).toEqual('phaseVotePriest');
   players.map((p, i) => p.moves.moveVoteYes(i));
   var { G, ctx } = players[0].getState();
+  expect(ctx.activePlayers[0]).toEqual('phaseEndVotePriest');
+  expect(ctx.activePlayers[1]).toEqual(undefined);
+  expect(ctx.activePlayers[2]).toEqual('phaseEndVotePriest');
+  expect(ctx.activePlayers[3]).toEqual('phaseEndVotePriest');
+  expect(ctx.activePlayers[4]).toEqual('phaseEndVotePriest');
+  expect(ctx.activePlayers[5]).toEqual('phaseEndVotePriest');
   players.map((p, i) => p.moves.moveOKVote(i));
   players[5].moves.moveDiscardMayor(2, 5);
   players[4].moves.moveDiscardPriest(1, 4); // -- play holywater
