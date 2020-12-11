@@ -30,6 +30,10 @@ function getTestComp(client: any, gameMode: any, state?: any) {
       gameArgs={{
         gameCode: 'fourinarow',
         mode: gameMode,
+        players: [
+          { name: 'Player A', playerID: 0 },
+          { name: 'Player B', playerID: 1 },
+        ],
       }}
     />,
   );
@@ -95,7 +99,7 @@ test('render your turn - online friend', () => {
   const client = getTestClient();
   client.moves.selectColumn(0);
   const comp = getTestComp(client, GameMode.OnlineFriend);
-  expect(comp.html()).toContain('Waiting for opponent...');
+  expect(comp.html()).toContain('Waiting for Player B...');
 });
 
 test('render you won - Online friend', () => {

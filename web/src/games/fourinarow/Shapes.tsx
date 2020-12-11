@@ -34,8 +34,8 @@ interface IFilledDiskProps {
 }
 
 const colorMap = {
-  '0': red[500],
-  '1': blue[500],
+  '0': blue[500],
+  '1': red[500],
 };
 
 export const FilledDisk = (props: IFilledDiskProps) => {

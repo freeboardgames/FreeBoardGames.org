@@ -5,6 +5,7 @@ import { EmptyDisk, FilledDisk } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { numOfColumns, numOfRows, localPlayerNames } from './constants';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
 interface IBoardProps {
   G: any;
@@ -25,10 +26,15 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getStatus() {
     if (isOnlineGame(this.props.gameArgs)) {
-      if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'YOUR TURN';
+      const pName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
+      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
+        if (this.props.ctx.currentPlayer === this.props.playerID) {
+          return 'YOUR TURN';
+        } else {
+          return `Waiting for ${pName}...`;
+        }
       } else {
-        return 'Waiting for opponent...';
+        return `${pName}'s turn`;
       }
     } else {
       // Local or AI game
@@ -40,10 +46,14 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (isOnlineGame(this.props.gameArgs)) {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
-        if (this.props.ctx.gameover.winner === this.props.playerID) {
-          return 'you won';
+        if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
+          if (this.props.ctx.gameover.winner === this.props.playerID) {
+            return 'you won';
+          } else {
+            return 'you lost';
+          }
         } else {
-          return 'you lost';
+          return `${this.props.gameArgs.players[this.props.ctx.gameover.winner].name} won`;
         }
       } else {
         return 'draw';
@@ -85,8 +95,8 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getCells() {
     const cells = [];
-    for (let i = 0; i < numOfColumns; i++) {
-      for (let j = 0; j < numOfRows; j++) {
+    for (let i = numOfColumns - 1; i >= 0; i--) {
+      for (let j = numOfRows - 1; j >= 0; j--) {
         const id = 10 * i + j;
 
         // draw Red and Blue disks, and when every it is to be shown drop it down
