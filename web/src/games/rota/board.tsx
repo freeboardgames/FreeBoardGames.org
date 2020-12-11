@@ -57,7 +57,11 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     if (this.props.ctx.currentPlayer !== this.props.playerID && !isLocalGame(this.props.gameArgs)) {
-      return `Waiting for ${this._playerInRoom().name} ...`;
+      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
+        return `Waiting for ${this._playerInRoom().name} ...`;
+      } else {
+        return `${this._playerInRoom().name}'s turn`;
+      }
     }
 
     if (this.props.ctx.phase === Phase.Place) {
