@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
-import { EmptyDisk, CircleBlue, CircleRed } from './Shapes';
+import { EmptyDisk, FilledDisk } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { numOfColumns, numOfRows, localPlayerNames } from './constants';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
 interface IBoardProps {
   G: any;
@@ -17,24 +18,23 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
-  onClick = (id: number) => () => {
-    if (this.isActive(id)) {
+  onClick = (id: number) => {
+    if (this.props.isActive) {
       this.props.moves.selectColumn(id);
     }
   };
 
-  isActive(id: number) {
-    const rowId = id % 10;
-    const colId = Math.floor(id / 10);
-    return this.props.isActive && this.props.G.grid[colId][rowId] === null;
-  }
-
   _getStatus() {
     if (isOnlineGame(this.props.gameArgs)) {
-      if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'YOUR TURN';
+      const pName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
+      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
+        if (this.props.ctx.currentPlayer === this.props.playerID) {
+          return 'YOUR TURN';
+        } else {
+          return `Waiting for ${pName}...`;
+        }
       } else {
-        return 'Waiting for opponent...';
+        return `${pName}'s turn`;
       }
     } else {
       // Local or AI game
@@ -46,10 +46,14 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (isOnlineGame(this.props.gameArgs)) {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
-        if (this.props.ctx.gameover.winner === this.props.playerID) {
-          return 'you won';
+        if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
+          if (this.props.ctx.gameover.winner === this.props.playerID) {
+            return 'you won';
+          } else {
+            return 'you lost';
+          }
         } else {
-          return 'you lost';
+          return `${this.props.gameArgs.players[this.props.ctx.gameover.winner].name} won`;
         }
       } else {
         return 'draw';
@@ -91,32 +95,33 @@ export class Board extends React.Component<IBoardProps, {}> {
 
   _getCells() {
     const cells = [];
-    for (let i = 0; i < numOfColumns; i++) {
-      for (let j = 0; j < numOfRows; j++) {
+    for (let i = numOfColumns - 1; i >= 0; i--) {
+      for (let j = numOfRows - 1; j >= 0; j--) {
         const id = 10 * i + j;
+
+        // draw Red and Blue disks, and when every it is to be shown drop it down
+        ['0', '1'].forEach((c) => {
+          cells.push(
+            <FilledDisk
+              key={`filled_chip_${c}_${id}`}
+              x={i}
+              y={j}
+              color={c}
+              showOnScreen={c === this.props.G.grid[i][j]}
+            />,
+          );
+        });
+
         cells.push(
-          <rect
-            key={`cell_${id}`}
+          <EmptyDisk
+            key={`empty_chip_${id}`}
             x={i}
             y={j}
-            width="1"
-            height="1"
-            //fill="#dac292"
-            //stroke="#dac292"
-            strokeWidth="0.05"
+            onClick={() => {
+              this.onClick(id);
+            }}
           />,
         );
-        cells.push(<EmptyDisk x={i} y={j} key={`empty_chip_${id}`} onClick={this.onClick(id)} />);
-
-        let overlay;
-        if (this.props.G.grid[i][j] === '0') {
-          overlay = <CircleBlue x={i} y={j} key={`chip_${id}`} />;
-        } else if (this.props.G.grid[i][j] === '1') {
-          overlay = <CircleRed x={i} y={j} key={`chip_${id}`} />;
-        }
-        if (overlay) {
-          cells.push(overlay);
-        }
       }
     }
     return cells;
@@ -127,7 +132,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
           {this._getStatus()}
         </Typography>
-        <svg width="100%" height="100%" viewBox="0 0 7 6">
+        <svg width="100%" height="100%" viewBox="0 0 7 6" style={{ backgroundColor: 'black' }}>
           {this._getCells()}
         </svg>
       </div>
@@ -137,7 +142,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   _getGameOverBoard() {
     return (
       <div style={{ textAlign: 'center' }}>
-        <svg width="50%" height="50%" viewBox="0 0 7 6">
+        <svg width="50%" height="50%" viewBox="0 0 7 6" style={{ backgroundColor: 'black' }}>
           {this._getCells()}
         </svg>
       </div>
