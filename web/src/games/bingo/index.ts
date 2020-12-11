@@ -17,7 +17,7 @@ export const BingoDef: IGameDef = {
     text: instructions,
   },
   config: () => import('./config'),
-  status: IGameStatus.PUBLISHED,
+  status: IGameStatus.IN_DEVELOPMENT,
 };
 
 export default BingoDef;
