@@ -12,6 +12,7 @@ import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Circle, Cross, Lines, WildCardChar } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
+import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 
 interface IBoardProps {
   G: any;
@@ -22,6 +23,11 @@ interface IBoardProps {
   gameArgs?: IGameArgs;
   step?: any;
 }
+
+const localPlayerNames = {
+  '0': 'Red',
+  '1': 'Green',
+};
 
 export class Board extends React.Component<IBoardProps, {}> {
   onClick = (id: number) => () => {
@@ -34,20 +40,24 @@ export class Board extends React.Component<IBoardProps, {}> {
     return this.props.isActive && this.props.G.cells[id] === null;
   }
 
+  _getPlayerName = (playerID = null) => {
+    const pID = playerID === null ? this.props.ctx.currentPlayer : playerID;
+    if (isLocalGame(this.props.gameArgs)) {
+      return localPlayerNames[pID];
+    } else {
+      return this.props.gameArgs.players ? this.props.gameArgs.players[pID].name : 'Unknown';
+    }
+  };
+
   _getStatus() {
     if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'YOUR TURN';
       } else {
-        return 'Waiting for opponent...';
+        return `Waiting for ${this._getPlayerName()}...`;
       }
     } else {
-      switch (this.props.ctx.currentPlayer) {
-        case '0':
-          return "Red's turn";
-        case '1':
-          return "Green's turn";
-      }
+      return `${this._getPlayerName()}'s turn`;
     }
   }
 
@@ -59,19 +69,13 @@ export class Board extends React.Component<IBoardProps, {}> {
         } else {
           return 'you lost';
         }
-      } else {
-        return 'draw';
       }
     } else {
-      switch (this.props.ctx.gameover.winner) {
-        case '0':
-          return 'red won';
-        case '1':
-          return 'green won';
-        case undefined:
-          return 'draw';
+      if (this.props.ctx.gameover.winner) {
+        return `${this._getPlayerName(this.props.ctx.gameover.winner)} won`;
       }
     }
+    return 'draw';
   }
 
   render() {
