@@ -15,13 +15,9 @@ export let phaseVotePriest = {
     let activePlayers = { value: {} };
 
     for (let i = 0; i < ctx.numPlayers; i++) {
-      var skip = false;
-      for (let j = 0; j < G.deadIDs.length; j++) {
-        if (i == G.deadIDs[j]) {
-          skip = true;
-        }
-      }
-      if (!skip) {
+      if (G.deadIDs.includes(i)) {
+        continue;
+      } else {
         activePlayers.value[i] = 'phaseVotePriest';
       }
     }
@@ -43,18 +39,12 @@ export let phaseVotePriest = {
     let activePlayers = { value: {} };
     let count = 0;
     for (let i = 0; i < ctx.numPlayers; i++) {
-      var skip = false;
-      for (let j = 0; j < G.deadIDs.length; j++) {
-        if (i == G.deadIDs[j]) {
-          // player is dead
-          skip = true;
-        }
-      }
-      if (G.votesYes[i] || G.votesNo[i]) {
+      if (G.deadIDs.includes(i)) {
+        continue;
+      } else if (G.votesYes[i] || G.votesNo[i]) {
         // already voted
-        skip = true;
-      }
-      if (!skip) {
+        continue;
+      } else {
         count += 1;
         activePlayers.value[i] = 'phaseVotePriest';
       }
@@ -108,18 +98,13 @@ export let phaseEndVotePriest = {
 
     let activePlayers = { value: {} };
     for (let i = 0; i < ctx.numPlayers; i++) {
-      var skip = false;
-      for (let j = 0; j < G.deadIDs.length; j++) {
-        if (i == G.deadIDs[j]) {
-          skip = true;
-        }
+      if (G.deadIDs.includes(i)) {
+        continue;
       }
       if (G.voteOks[i] == true) {
-        skip = true;
+        continue;
       }
-      if (!skip) {
-        activePlayers.value[i] = 'phaseEndVotePriest';
-      }
+      activePlayers.value[i] = 'phaseEndVotePriest';
     }
 
     ctx.events.setActivePlayers(activePlayers);
@@ -135,18 +120,13 @@ export let phaseEndVotePriest = {
     // EXPLICIT SETTING
     let activePlayers = { value: {} };
     for (let i = 0; i < ctx.numPlayers; i++) {
-      var skip = false;
-      for (let j = 0; j < G.deadIDs.length; j++) {
-        if (i == G.deadIDs[j]) {
-          skip = true;
-        }
+      if (G.deadIDs.includes(i)) {
+        continue;
       }
       if (G.voteOks[i] == true) {
-        skip = true;
+        continue;
       }
-      if (!skip) {
-        activePlayers.value[i] = 'phaseEndVotePriest';
-      }
+      activePlayers.value[i] = 'phaseEndVotePriest';
     }
     ctx.events.setActivePlayers(activePlayers);
 
