@@ -112,7 +112,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     return (
       <GameLayout gameArgs={this.props.gameArgs} gameOver={this._getGameOver()}>
-        <div style={{ height: '80vh', overflow: 'auto' }}>
+        <div style={{ height: '80vh', overflow: 'auto', backgroundColor: 'black' }}>
           {this._renderCommonTitle()}
 
           {this._renderPlayerAndProgressInfo()}
@@ -161,6 +161,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
               phaseName={this.props.ctx.phase}
               isInvestigated={idx === this.props.G.investigateID}
               wasLastPreist={idx === this.props.G.lastPriestID}
+              wasLastMayor={idx === this.props.G.lastMayorID}
+              numAlivePlayers={this.props.ctx.numPlayers - this.props.G.deadIDs.length}
               chose={this._getPhaseRelatedPlayerFunction()}
             />
           ))}
@@ -188,6 +190,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         if (this._isActivePlayer()) {
           return (pInfo: IPlayerInfo) => {
             if (!pInfo.mayor && !pInfo.dead && !pInfo.wasLastPreist) {
+              if(pInfo.wasLastMayor && (pInfo.numAlivePlayers > 5)){
+                return;
+              }
               this.props.moves.moveChosePriest(pInfo.id, pInfo.me);
             }
           };
@@ -233,10 +238,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     if (isDead) {
       message.error.push(`You have been executed ${CNST.SY_DEAD}.`);
-      // TODO: if dead not required to play, then comment this
-      // message.error.push(
-      //   `But please continue participating by pressing Yes ${CNST.SY_TUP}, No ${CNST.SY_TDOWN} & Okay whenever prompted!!! This is a known bug 😅 and will be fixed soon.`,
-      // );
+      message.error.push('But, you can still stay around to see how the game ends!');
     }
 
     switch (phaseName) {
@@ -328,7 +330,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           message.warning = [
             `You are the ${CNST.N_MAYOR}.`,
             `You can investigate any player with the ${CNST.SY_SEARCH} symbol.`,
-            `Click on the player you would like to search...`,
+            `Click on the player you would like to investigate...`,
           ];
         } else {
           message.text = [`The ${CNST.N_MAYOR} is Investigating ${CNST.SY_PEEK} a Player...`];
@@ -339,10 +341,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         const pi2PlayerName = this._getPlayerName(this.props.G.investigateID);
         if (this._isActivePlayer()) {
           const isVampire = this.props.G.investigate == 1;
-          message.primary = [`Player ${pi2PlayerName} is a ${isVampire ? CNST.N_VAMPIRE : CNST.N_VILLAGER}`];
+          message.primary = [`${pi2PlayerName} is a ${isVampire ? CNST.N_VAMPIRE : CNST.N_VILLAGER}`];
           message.text = ['Click Okay to continue...'];
         } else {
-          message.info = [`Player ${pi2PlayerName} is being investigated.`];
+          message.info = [`${pi2PlayerName} is being investigated.`];
         }
         break;
 
@@ -408,7 +410,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const { mayorID, priestID } = this.props.G;
     const phaseName = this.state.hintKey ? 'user-info' : this.props.ctx.phase;
 
-    // TODO: if dead not required to play, then uncomment this!
     const isDead = this.props.G.deadIDs.includes(intPlayerID);
     if (isDead) {
       return null;
