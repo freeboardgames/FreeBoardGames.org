@@ -29,11 +29,11 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
 
   _getPlayerID = () => (isOnlineGame(this.props.gameArgs) ? this.props.playerID : this.props.ctx.currentPlayer);
 
-  _isFirstPerson = () => (isFirstPersonView(this.props.gameArgs, this.props.playerID));
+  _isFirstPerson = () => isFirstPersonView(this.props.gameArgs, this.props.playerID);
 
   _callOnTimeout = (callRef: number) => {
     if (this._isFirstPerson() && callRef >= this.props.G.callRef) {
-      this.props.moves.incrementCallRef(this._getPlayerID());
+      this.props.moves.incrementCallRef(this._getPlayerID(), true);
     }
   };
 
@@ -57,7 +57,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
       return 'draw';
     }
     if (isOnlineGame(this.props.gameArgs)) {
-      if(!this._isFirstPerson()){
+      if (!this._isFirstPerson()) {
         return `winner: ${this._getPlayerName(this.props.ctx.gameover.winner)}`;
       }
       if (this.props.ctx.gameover.winner === this.props.playerID) {
@@ -71,8 +71,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
   };
 
   _renderFooter = () => {
-
-    if(!this._isFirstPerson()){
+    if (!this._isFirstPerson()) {
       return null;
     }
 
@@ -125,7 +124,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
         numbers={players[gameOver ? this.props.ctx.gameover.winner : this._getPlayerID()].numbers}
         onNumberClicked={gameOver ? () => {} : this._numberClicked}
       />
-    ):null;
+    ) : null;
     // if player has no Bingo! shouts left, then show special message
     if (this._isFirstPerson() && !gameOver && players[this._getPlayerID()].shoutCount <= 0) {
       const msgLineHeight = 0.5;
@@ -167,7 +166,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
           timeRef={timeRef}
           callOnTimeout={gameOver ? () => {} : this._callOnTimeout}
         />
-        <CallCard callQueue={callQueue} callRef={callRef} isSpectator={!this._isFirstPerson()}/>
+        <CallCard callQueue={callQueue} callRef={callRef} isSpectator={!this._isFirstPerson()} />
         {this.state.showCallTable ? <CallTable callQueue={callQueue} callRef={callRef} /> : playCard}
       </>
     );

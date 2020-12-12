@@ -15,7 +15,7 @@ export default function CallCard(props: ICallCardProps) {
   const scale = props.isSpectator ? 1.7 : 1;
   const boxSize = CALL_BOX_SIZE * scale;
   const xPos = GRID_SIZE / 2 - boxSize / 2;
-  const yPos = props.isSpectator ? ( GRID_SIZE / 2) : 0;
+  const yPos = props.isSpectator ? GRID_SIZE / 2 : 0;
   const boxMargin = 0.3;
   const animationStyle = {
     transition: '0.6s',

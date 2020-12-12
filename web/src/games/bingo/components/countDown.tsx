@@ -33,7 +33,7 @@ export default class Countdown extends React.Component<ICountdownProps, ICountdo
       clearInterval(this.timer);
       this.timer = null;
     }
-  }
+  };
 
   componentDidMount() {
     this.clearTimer();

@@ -41,9 +41,9 @@ export const BingoGame: Game<IGameState> = {
     };
   },
   moves: {
-    incrementCallRef: (G: IGameState, _, playerID: string) => {
-      // if call is made too early, then reject 
-      if((G.timeRef + TIME_OUT) > Date.now()){
+    incrementCallRef: (G: IGameState, _, playerID: string, strict: boolean = true) => {
+      // if call is made too early, then reject
+      if (strict && G.timeRef + TIME_OUT > Date.now()) {
         return INVALID_MOVE;
       }
 
