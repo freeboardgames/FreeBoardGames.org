@@ -118,16 +118,19 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     return (
       <GameLayout gameArgs={this.props.gameArgs} gameOver={this._getGameOver()}>
-        <div style={{ height: '80vh', overflow: 'auto', backgroundColor: 'black' }}>
-          {this._renderCommonTitle()}
+        <div style={{ height: '100vh', overflow: 'auto', backgroundColor: 'black' }}>
+          
+          {/* Leave some space on top for FBG logo and title */}
+          <div style={{height:'12%'}}></div>
 
+          {/* Render Title and Player Info */}
+          {this._renderCommonTitle()}
           {this._renderPlayerAndProgressInfo()}
 
-          <div style={{ minHeight: '25%' }}>
-            {this._renderPhaseReleatedMessage()}
+          {/* Render Phase specific messages and interactions */}
+          {this._renderPhaseReleatedMessage()}
+          {this._renderPhaseRelatedInteractions()}
 
-            {this._renderPhaseRelatedInteractions()}
-          </div>
         </div>
       </GameLayout>
     );
