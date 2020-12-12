@@ -32,7 +32,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getPlayerID = () => this.props.playerID || this.props.ctx.currentPlayer;
 
-  _isFirstPerson = () => (isFirstPersonView(this.props.gameArgs, this.props.playerID));
+  _isFirstPerson = () => isFirstPersonView(this.props.gameArgs, this.props.playerID);
 
   _isActivePlayer = (playerID = null) => {
     if (!this._isFirstPerson()) {
@@ -119,9 +119,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return (
       <GameLayout gameArgs={this.props.gameArgs} gameOver={this._getGameOver()}>
         <div style={{ height: '100vh', overflow: 'auto', backgroundColor: 'black' }}>
-          
           {/* Leave some space on top for FBG logo and title */}
-          <div style={{height:'12%'}}></div>
+          <div style={{ height: '12%' }}></div>
 
           {/* Render Title and Player Info */}
           {this._renderCommonTitle()}
@@ -130,7 +129,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           {/* Render Phase specific messages and interactions */}
           {this._renderPhaseReleatedMessage()}
           {this._renderPhaseRelatedInteractions()}
-
         </div>
       </GameLayout>
     );
@@ -158,7 +156,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
               key={`sd_player_info_${idx}`}
               id={idx}
               me={parseInt(this._getPlayerID()) == idx}
-              renderForVampire={this._isFirstPerson() && this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))}
+              renderForVampire={
+                this._isFirstPerson() && this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))
+              }
               playerName={this._getPlayerName(idx)}
               playerActive={this._isActivePlayer(idx)}
               dead={this.props.G.deadIDs.includes(idx)}
@@ -199,7 +199,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         if (this._isActivePlayer()) {
           return (pInfo: IPlayerInfo) => {
             if (!pInfo.mayor && !pInfo.dead && !pInfo.wasLastPreist) {
-              if(pInfo.wasLastMayor && (pInfo.numAlivePlayers > 5)){
+              if (pInfo.wasLastMayor && pInfo.numAlivePlayers > 5) {
                 return;
               }
               this.props.moves.moveChosePriest(pInfo.id, pInfo.me);
@@ -419,8 +419,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const { mayorID, priestID } = this.props.G;
     const phaseName = this.state.hintKey ? 'user-info' : this.props.ctx.phase;
 
-    if(!this._isFirstPerson()){
-      return null;  // spectators have no interactions 
+    if (!this._isFirstPerson()) {
+      return null; // spectators have no interactions
     }
 
     const isDead = this.props.G.deadIDs.includes(intPlayerID);
