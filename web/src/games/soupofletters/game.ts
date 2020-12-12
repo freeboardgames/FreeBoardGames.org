@@ -1,5 +1,12 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
-import { MAX_WORDS_IN_GAME, MAX_WORD_LEN, DRAW_AFTER_N_TIMERS, validOrientations, globalWordList, TIME_OUT } from './constants';
+import {
+  MAX_WORDS_IN_GAME,
+  MAX_WORD_LEN,
+  DRAW_AFTER_N_TIMERS,
+  validOrientations,
+  globalWordList,
+  TIME_OUT,
+} from './constants';
 import { shuffleArray } from './utils';
 import { newPuzzle, solvepuzzle } from './puzzle';
 
@@ -116,8 +123,8 @@ export const SoupOfLettersGame = {
   setup: (ctx): IG => initialSetup(ctx),
 
   moves: {
-    changeTurn: (G: IG) => {
-      if(G.timeRef + TIME_OUT*1000 > Date.now()){
+    changeTurn: (G: IG, _, strict: boolean = true) => {
+      if (strict && G.timeRef + TIME_OUT * 1000 > Date.now()) {
         return INVALID_MOVE;
       }
       return { ...G, timeRef: Date.now(), countTimerFired: G.countTimerFired + 1 };

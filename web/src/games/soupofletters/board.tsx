@@ -58,7 +58,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     if (isOnlineGame(this.props.gameArgs)) {
-      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)){
+      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
         return 'Online Game';
       } else {
         return 'Spectator View';
@@ -68,17 +68,13 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _getTimeRemaining = () => {
-    let timeLeft = (TIME_OUT + TIME_BUFF) * 1000 - (Date.now() - this.props.G.timeRef); 
-    timeLeft = Math.floor(timeLeft / 1000); 
+    let timeLeft = (TIME_OUT + TIME_BUFF) * 1000 - (Date.now() - this.props.G.timeRef);
+    timeLeft = Math.floor(timeLeft / 1000);
     return timeLeft > TIME_OUT ? TIME_OUT : timeLeft < 0 ? 0 : timeLeft;
   };
 
-  _checkTimeOut = () => {
-    if (this._isAllowedToMakeMove()) {
-      if (this._getTimeRemaining() === 0) {
-        this.props.moves.changeTurn();
-      }
-    }
+  _changeTurn = (strict: boolean = true) => {
+    this.props.moves.changeTurn(strict);
   };
 
   _renderTimeRemaining() {
@@ -88,21 +84,18 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       secondlyCallback.push({
         time: i * 1000,
         callback: () => {
-          this._checkTimeOut();
+          if (this._isAllowedToMakeMove()) {
+            if (this._getTimeRemaining() === 0) {
+              this._changeTurn(true);
+            }
+          }
         },
       });
     }
     return (
-      <Timer
-        key={'timer-' + this.props.G.timeRef}
-        checkpoints={secondlyCallback}
-      >
+      <Timer key={'timer-' + this.props.G.timeRef} checkpoints={secondlyCallback}>
         {!this._isAllowedToMakeMove() ? (
-          <Timer.Seconds
-            formatValue={() =>
-              this._playerInRoom().name + ` has ${this._getTimeRemaining()} seconds.`
-            }
-          />
+          <Timer.Seconds formatValue={() => this._playerInRoom().name + ` has ${this._getTimeRemaining()} seconds.`} />
         ) : (
           <Timer.Seconds formatValue={() => `You have ${this._getTimeRemaining()} seconds.`} />
         )}
