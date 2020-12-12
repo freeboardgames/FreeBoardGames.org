@@ -3,6 +3,7 @@ import { Typography, Box, Button } from '@material-ui/core';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
 import { IG } from './interfaces';
 import * as CNST from './constants';
@@ -31,7 +32,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getPlayerID = () => this.props.playerID || this.props.ctx.currentPlayer;
 
+  _isFirstPerson = () => isFirstPersonView(this.props.gameArgs, this.props.playerID);
+
   _isActivePlayer = (playerID = null) => {
+    if (!this._isFirstPerson()) {
+      return false;
+    }
     var activePlayers = this.props.ctx.activePlayers !== null ? this.props.ctx.activePlayers : [];
     return (playerID === null ? parseInt(this._getPlayerID()) : playerID) in activePlayers;
   };
@@ -112,16 +118,17 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     return (
       <GameLayout gameArgs={this.props.gameArgs} gameOver={this._getGameOver()}>
-        <div style={{ height: '80vh', overflow: 'auto' }}>
-          {this._renderCommonTitle()}
+        <div style={{ height: '100vh', overflow: 'auto', backgroundColor: 'black' }}>
+          {/* Leave some space on top for FBG logo and title */}
+          <div style={{ height: '12%' }}></div>
 
+          {/* Render Title and Player Info */}
+          {this._renderCommonTitle()}
           {this._renderPlayerAndProgressInfo()}
 
-          <div style={{ minHeight: '25%' }}>
-            {this._renderPhaseReleatedMessage()}
-
-            {this._renderPhaseRelatedInteractions()}
-          </div>
+          {/* Render Phase specific messages and interactions */}
+          {this._renderPhaseReleatedMessage()}
+          {this._renderPhaseRelatedInteractions()}
         </div>
       </GameLayout>
     );
@@ -149,7 +156,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
               key={`sd_player_info_${idx}`}
               id={idx}
               me={parseInt(this._getPlayerID()) == idx}
-              renderForVampire={this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))}
+              renderForVampire={
+                this._isFirstPerson() && this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))
+              }
               playerName={this._getPlayerName(idx)}
               playerActive={this._isActivePlayer(idx)}
               dead={this.props.G.deadIDs.includes(idx)}
@@ -161,6 +170,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
               phaseName={this.props.ctx.phase}
               isInvestigated={idx === this.props.G.investigateID}
               wasLastPreist={idx === this.props.G.lastPriestID}
+              wasLastMayor={idx === this.props.G.lastMayorID}
+              numAlivePlayers={this.props.ctx.numPlayers - this.props.G.deadIDs.length}
               chose={this._getPhaseRelatedPlayerFunction()}
             />
           ))}
@@ -188,6 +199,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         if (this._isActivePlayer()) {
           return (pInfo: IPlayerInfo) => {
             if (!pInfo.mayor && !pInfo.dead && !pInfo.wasLastPreist) {
+              if (pInfo.wasLastMayor && pInfo.numAlivePlayers > 5) {
+                return;
+              }
               this.props.moves.moveChosePriest(pInfo.id, pInfo.me);
             }
           };
@@ -233,10 +247,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     if (isDead) {
       message.error.push(`You have been executed ${CNST.SY_DEAD}.`);
-      // TODO: if dead not required to play, then comment this
-      // message.error.push(
-      //   `But please continue participating by pressing Yes ${CNST.SY_TUP}, No ${CNST.SY_TDOWN} & Okay whenever prompted!!! This is a known bug 😅 and will be fixed soon.`,
-      // );
+      message.error.push('But, you can still stay around to see how the game ends!');
     }
 
     switch (phaseName) {
@@ -328,7 +339,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           message.warning = [
             `You are the ${CNST.N_MAYOR}.`,
             `You can investigate any player with the ${CNST.SY_SEARCH} symbol.`,
-            `Click on the player you would like to search...`,
+            `Click on the player you would like to investigate...`,
           ];
         } else {
           message.text = [`The ${CNST.N_MAYOR} is Investigating ${CNST.SY_PEEK} a Player...`];
@@ -339,10 +350,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         const pi2PlayerName = this._getPlayerName(this.props.G.investigateID);
         if (this._isActivePlayer()) {
           const isVampire = this.props.G.investigate == 1;
-          message.primary = [`Player ${pi2PlayerName} is a ${isVampire ? CNST.N_VAMPIRE : CNST.N_VILLAGER}`];
+          message.primary = [`${pi2PlayerName} is a ${isVampire ? CNST.N_VAMPIRE : CNST.N_VILLAGER}`];
           message.text = ['Click Okay to continue...'];
         } else {
-          message.info = [`Player ${pi2PlayerName} is being investigated.`];
+          message.info = [`${pi2PlayerName} is being investigated.`];
         }
         break;
 
@@ -408,7 +419,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const { mayorID, priestID } = this.props.G;
     const phaseName = this.state.hintKey ? 'user-info' : this.props.ctx.phase;
 
-    // TODO: if dead not required to play, then uncomment this!
+    if (!this._isFirstPerson()) {
+      return null; // spectators have no interactions
+    }
+
     const isDead = this.props.G.deadIDs.includes(intPlayerID);
     if (isDead) {
       return null;
