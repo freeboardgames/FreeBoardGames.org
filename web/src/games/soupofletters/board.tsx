@@ -2,6 +2,7 @@ import React from 'react';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { isOnlineGame, isLocalGame } from 'gamesShared/helpers/gameMode';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
@@ -57,7 +58,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     if (isOnlineGame(this.props.gameArgs)) {
-      return `Online Game`;
+      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)){
+        return 'Online Game';
+      } else {
+        return 'Spectator View';
+      }
     }
     return `Turn Player ${parseInt(this.props.ctx.currentPlayer) + 1}`;
   }
@@ -158,7 +163,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _renderFooter() {
     return (
-      <div>
+      <>
         {this._renderPlayerBadges()}
         <Button
           variant="contained"
@@ -169,7 +174,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         >
           Words
         </Button>
-      </div>
+      </>
     );
   }
 
@@ -181,6 +186,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
+        if (!isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
+          return ' ';
+        }
         return 'you lost';
       }
     } else {
