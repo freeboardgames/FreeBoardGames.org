@@ -3,6 +3,7 @@ import { Typography, Box, Button } from '@material-ui/core';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
 import { IG } from './interfaces';
 import * as CNST from './constants';
@@ -31,7 +32,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getPlayerID = () => this.props.playerID || this.props.ctx.currentPlayer;
 
+  _isFirstPerson = () => (isFirstPersonView(this.props.gameArgs, this.props.playerID));
+
   _isActivePlayer = (playerID = null) => {
+    if (!this._isFirstPerson()) {
+      return false;
+    }
     var activePlayers = this.props.ctx.activePlayers !== null ? this.props.ctx.activePlayers : [];
     return (playerID === null ? parseInt(this._getPlayerID()) : playerID) in activePlayers;
   };
@@ -149,7 +155,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
               key={`sd_player_info_${idx}`}
               id={idx}
               me={parseInt(this._getPlayerID()) == idx}
-              renderForVampire={this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))}
+              renderForVampire={this._isFirstPerson() && this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))}
               playerName={this._getPlayerName(idx)}
               playerActive={this._isActivePlayer(idx)}
               dead={this.props.G.deadIDs.includes(idx)}
@@ -409,6 +415,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const intPlayerID = parseInt(playerID);
     const { mayorID, priestID } = this.props.G;
     const phaseName = this.state.hintKey ? 'user-info' : this.props.ctx.phase;
+
+    if(!this._isFirstPerson()){
+      return null;  // spectators have no interactions 
+    }
 
     const isDead = this.props.G.deadIDs.includes(intPlayerID);
     if (isDead) {
