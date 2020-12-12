@@ -8,11 +8,14 @@ const cornerAdjustment = 1 + 1 / GRID_SIZE;
 interface ICallCardProps {
   callRef: number;
   callQueue: number[];
+  isSpectator: boolean;
 }
 
 export default function CallCard(props: ICallCardProps) {
-  const xPos = GRID_SIZE / 2 - CALL_BOX_SIZE / 2;
-  const yPos = 0;
+  const scale = props.isSpectator ? 1.7 : 1;
+  const boxSize = CALL_BOX_SIZE * scale;
+  const xPos = GRID_SIZE / 2 - boxSize / 2;
+  const yPos = props.isSpectator ? ( GRID_SIZE / 2) : 0;
   const boxMargin = 0.3;
   const animationStyle = {
     transition: '0.6s',
@@ -28,9 +31,9 @@ export default function CallCard(props: ICallCardProps) {
       <text
         key={'bi_call_text'}
         className={commonCSS.noselect}
-        x={xPos + 0.5 * CALL_BOX_SIZE}
-        y={yPos + yOffset * CALL_BOX_SIZE}
-        fontSize={fontSize * CALL_BOX_SIZE}
+        x={xPos + 0.5 * boxSize}
+        y={yPos + yOffset * boxSize}
+        fontSize={fontSize * boxSize}
         textAnchor="middle"
         fill="white"
         style={{ ...animationStyle }}
@@ -40,7 +43,7 @@ export default function CallCard(props: ICallCardProps) {
             <tspan x="50%" dy="0">
               Starting
             </tspan>
-            <tspan x="50%" dy={fontSize * 2}>
+            <tspan x="50%" dy={fontSize * 2 * scale}>
               in ...
             </tspan>
           </>
@@ -53,8 +56,8 @@ export default function CallCard(props: ICallCardProps) {
         key={'bi_call_rect'}
         x={xPos + boxMargin}
         y={yPos + boxMargin}
-        width={CALL_BOX_SIZE - 2 * boxMargin}
-        height={CALL_BOX_SIZE - 2 * boxMargin}
+        width={boxSize - 2 * boxMargin}
+        height={boxSize - 2 * boxMargin}
         rx={STROKE_WIDTH * cornerAdjustment}
         style={{
           stroke: 'white',

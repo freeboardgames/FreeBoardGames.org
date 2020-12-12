@@ -28,7 +28,15 @@ export default class Countdown extends React.Component<ICountdownProps, ICountdo
     return timeLeft;
   };
 
+  clearTimer = () => {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+
   componentDidMount() {
+    this.clearTimer();
     this.timer = setInterval(() => {
       const timeLeft = this._getTimeLeft();
       if (timeLeft + this.props.backOff > 0) {
@@ -40,9 +48,7 @@ export default class Countdown extends React.Component<ICountdownProps, ICountdo
   }
 
   componentWillUnmount() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
+    this.clearTimer();
   }
 
   render() {

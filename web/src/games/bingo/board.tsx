@@ -2,6 +2,7 @@ import * as React from 'react';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { Button } from '@material-ui/core';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
 import { IBoardProps, IBoardState, INumberState } from './definitions';
 import {
@@ -28,8 +29,10 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
 
   _getPlayerID = () => (isOnlineGame(this.props.gameArgs) ? this.props.playerID : this.props.ctx.currentPlayer);
 
+  _isFirstPerson = () => (isFirstPersonView(this.props.gameArgs, this.props.playerID));
+
   _callOnTimeout = (callRef: number) => {
-    if (callRef >= this.props.G.callRef) {
+    if (this._isFirstPerson() && callRef >= this.props.G.callRef) {
       this.props.moves.incrementCallRef(this._getPlayerID());
     }
   };
@@ -44,7 +47,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
 
   _getPlayerName = (playerID = null) => {
     if (isOnlineGame(this.props.gameArgs)) {
-      return this.props.gameArgs.players[playerID || this.props.ctx.currentPlayer].name;
+      return this.props.gameArgs.players[playerID === null ? this.props.ctx.currentPlayer : playerID].name;
     }
     return 'Player ' + this.props.ctx.currentPlayer;
   };
@@ -54,6 +57,9 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
       return 'draw';
     }
     if (isOnlineGame(this.props.gameArgs)) {
+      if(!this._isFirstPerson()){
+        return `winner: ${this._getPlayerName(this.props.ctx.gameover.winner)}`;
+      }
       if (this.props.ctx.gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
@@ -65,6 +71,11 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
   };
 
   _renderFooter = () => {
+
+    if(!this._isFirstPerson()){
+      return null;
+    }
+
     const btnStyles = {
       marginTop: '10px',
       alignContent: 'center',
@@ -109,14 +120,14 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
 
   _renderPlayComponents = (gameOver = false) => {
     const { callQueue, callRef, players, timeRef, activePlayers } = this.props.G;
-    let playCard = (
+    let playCard = this._isFirstPerson() ? (
       <PlayCard
         numbers={players[gameOver ? this.props.ctx.gameover.winner : this._getPlayerID()].numbers}
         onNumberClicked={gameOver ? () => {} : this._numberClicked}
       />
-    );
+    ):null;
     // if player has no Bingo! shouts left, then show special message
-    if (!gameOver && players[this._getPlayerID()].shoutCount <= 0) {
+    if (this._isFirstPerson() && !gameOver && players[this._getPlayerID()].shoutCount <= 0) {
       const msgLineHeight = 0.5;
       playCard = (
         <text
@@ -156,7 +167,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
           timeRef={timeRef}
           callOnTimeout={gameOver ? () => {} : this._callOnTimeout}
         />
-        <CallCard callQueue={callQueue} callRef={callRef} />
+        <CallCard callQueue={callQueue} callRef={callRef} isSpectator={!this._isFirstPerson()}/>
         {this.state.showCallTable ? <CallTable callQueue={callQueue} callRef={callRef} /> : playCard}
       </>
     );
