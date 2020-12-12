@@ -149,7 +149,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     return (
       <>
         <Countdown
-          key={`bi_counter_${timeRef}`}
+          key={`bi_counter`}
           callRef={callRef}
           backOff={backOff}
           duration={callQueue[callRef] === INITIAL_WAIT_REF_NUM ? INITIAL_WAIT_TIME : TIME_OUT}

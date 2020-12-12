@@ -36,7 +36,7 @@ export default class Countdown extends React.Component<ICountdownProps, ICountdo
       } else {
         this.props.callOnTimeout(this.props.callRef);
       }
-    }, 200);
+    }, 350);
   }
 
   componentWillUnmount() {

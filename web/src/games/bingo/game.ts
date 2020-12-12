@@ -1,7 +1,7 @@
 import { Game } from 'boardgame.io';
-import { ActivePlayers } from 'boardgame.io/core';
+import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
 import { IGameState, INumberState } from './definitions';
-import { GRID_SIZE, COL_DELTA, WILDCARD_NUM, MAX_BINGO_CALLS, INITIAL_WAIT_REF_NUM } from './constants';
+import { GRID_SIZE, COL_DELTA, WILDCARD_NUM, MAX_BINGO_CALLS, INITIAL_WAIT_REF_NUM, TIME_OUT } from './constants';
 import { shuffleArray, inferActivePlayers } from './utils';
 
 export const BingoGame: Game<IGameState> = {
@@ -42,6 +42,11 @@ export const BingoGame: Game<IGameState> = {
   },
   moves: {
     incrementCallRef: (G: IGameState, _, playerID: string) => {
+      // if call is made too early, then reject 
+      if((G.timeRef + TIME_OUT) > Date.now()){
+        return INVALID_MOVE;
+      }
+
       G.callRef = G.callRef + 1;
       G.timeRef = Date.now();
       G.activePlayers = inferActivePlayers(G, playerID);
