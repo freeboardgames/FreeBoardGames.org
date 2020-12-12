@@ -62,47 +62,44 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return `Turn Player ${parseInt(this.props.ctx.currentPlayer) + 1}`;
   }
 
-  _checkTimeOut = (secondsLeft: number) => {
+  _getTimeRemaining = () => {
+    let timeLeft = (TIME_OUT + TIME_BUFF) * 1000 - (Date.now() - this.props.G.timeRef); 
+    timeLeft = Math.floor(timeLeft / 1000); 
+    return timeLeft > TIME_OUT ? TIME_OUT : timeLeft < 0 ? 0 : timeLeft;
+  };
+
+  _checkTimeOut = () => {
     if (this._isAllowedToMakeMove()) {
-      if (secondsLeft <= 0 || Date.now() - this.props.G.timeRef > (TIME_OUT + TIME_BUFF) * 1000) {
+      if (this._getTimeRemaining() === 0) {
         this.props.moves.changeTurn();
       }
     }
   };
 
-  _getTimeRemaining() {
+  _renderTimeRemaining() {
     // check time every second
     const secondlyCallback = [];
-    for (let i = 0; i < TIME_OUT; i++) {
+    for (let i = 0; i < TIME_OUT * 1.5; i++) {
       secondlyCallback.push({
         time: i * 1000,
         callback: () => {
-          this._checkTimeOut(i);
+          this._checkTimeOut();
         },
       });
     }
-    const initialTime = (TIME_OUT + TIME_BUFF) * 1000 - (Date.now() - this.props.G.timeRef);
-    // if the time has already expired then trigger change turn directly
-    if (initialTime <= 0 && this._isAllowedToMakeMove()) {
-      this.props.moves.changeTurn();
-      return null;
-    }
-    // render timer
     return (
       <Timer
         key={'timer-' + this.props.G.timeRef}
-        initialTime={initialTime}
-        direction="backward"
         checkpoints={secondlyCallback}
       >
         {!this._isAllowedToMakeMove() ? (
           <Timer.Seconds
-            formatValue={(value) =>
-              this._playerInRoom().name + ` has ${value > TIME_OUT ? TIME_OUT : value < 0 ? 0 : value} seconds.`
+            formatValue={() =>
+              this._playerInRoom().name + ` has ${this._getTimeRemaining()} seconds.`
             }
           />
         ) : (
-          <Timer.Seconds formatValue={(value) => `You have ${value > TIME_OUT ? TIME_OUT : value} seconds.`} />
+          <Timer.Seconds formatValue={() => `You have ${this._getTimeRemaining()} seconds.`} />
         )}
       </Timer>
     );
@@ -237,7 +234,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           {this._getStatus()}
         </Typography>
         <Typography className={soupCSS.noselect} variant="h6" style={{ color: 'white', textAlign: 'center' }}>
-          {this._getTimeRemaining()}
+          {this._renderTimeRemaining()}
         </Typography>
         {this._getBoard()}
         {this._renderFooter()}
