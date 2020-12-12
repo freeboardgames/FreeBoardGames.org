@@ -121,7 +121,7 @@ test('render board - X wins - local friend', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('red won');
+  expect(comp.html()).toContain('Red won');
 });
 
 test('render board - O wins - local friend', () => {
@@ -143,7 +143,7 @@ test('render board - O wins - local friend', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('green won');
+  expect(comp.html()).toContain('Green won');
 });
 
 test('render board - X wins - AI', () => {
@@ -277,7 +277,7 @@ test('render board - their turn - online', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('Waiting for opponent');
+  expect(comp.html()).toContain('Waiting for');
 });
 
 test('render board - one X and one O - online', () => {

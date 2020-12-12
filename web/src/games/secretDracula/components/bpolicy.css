@@ -1,12 +1,11 @@
-.hoveringb:after {
-      content: '🩸';
-}
-.hoveringb:hover:after {
-  content: '🚫';
-}
-.hoveringh:after {
-      content: '💧';
-}
-.hoveringh:hover:after {
-  content: '🚫';
-}
+.hoveringb:after {	
+    content: '🩸';	
+}	
+.hoveringb:hover:after {	
+content: '🚫';	
+}	
+.hoveringh:after {	
+    content: '💧';	
+}	
+.hoveringh:hover:after {	
+content: '🚫';	
