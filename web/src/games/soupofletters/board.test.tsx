@@ -51,7 +51,7 @@ describe('SoupOfLetters UI', () => {
   });
 
   it('should change turn when timer fires', () => {
-    instance._checkTimeOut(0);
+    instance._changeTurn(false);
     updateGameProps();
 
     expect(wrapper.text()).toContain('Turn Player 2');
@@ -85,7 +85,7 @@ describe('SoupOfLetters UI', () => {
         updateGameProps();
       }
     });
-    instance._checkTimeOut(0);
+    instance._changeTurn(false);
     instance._wordFound(state0.G.solution[state0.G.solution.length - 1]);
     updateGameProps();
 
@@ -120,7 +120,7 @@ describe('SoupOfLetters UI', () => {
 
     it('should show player names', () => {
       expect(wrapper.text()).toContain('You have');
-      instance._checkTimeOut(0);
+      instance._changeTurn(false);
       updateGameProps();
       expect(wrapper.text()).toContain('Player B has');
     });
