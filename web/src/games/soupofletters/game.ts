@@ -1,4 +1,12 @@
-import { MAX_WORDS_IN_GAME, MAX_WORD_LEN, DRAW_AFTER_N_TIMERS, validOrientations, globalWordList } from './constants';
+import { INVALID_MOVE } from 'boardgame.io/core';
+import {
+  MAX_WORDS_IN_GAME,
+  MAX_WORD_LEN,
+  DRAW_AFTER_N_TIMERS,
+  validOrientations,
+  globalWordList,
+  TIME_OUT,
+} from './constants';
 import { shuffleArray } from './utils';
 import { newPuzzle, solvepuzzle } from './puzzle';
 
@@ -27,7 +35,7 @@ export interface IG {
 
 function isGameOver(G, ctx) {
   // if timer fired too many times, end game
-  if (G.countTimerFired >= ctx.numPlayers * DRAW_AFTER_N_TIMERS) {
+  if (G.countTimerFired >= Math.max(3, ctx.numPlayers) * DRAW_AFTER_N_TIMERS) {
     return true;
   }
   // if all words are found then true
@@ -115,7 +123,10 @@ export const SoupOfLettersGame = {
   setup: (ctx): IG => initialSetup(ctx),
 
   moves: {
-    changeTurn: (G: IG) => {
+    changeTurn: (G: IG, _, strict: boolean = true) => {
+      if (strict && G.timeRef + TIME_OUT * 1000 > Date.now()) {
+        return INVALID_MOVE;
+      }
       return { ...G, timeRef: Date.now(), countTimerFired: G.countTimerFired + 1 };
     },
     wordFound: (G: IG, ctx: any, solvedWord: ISolvedWord) => {
