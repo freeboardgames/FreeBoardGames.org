@@ -40,9 +40,9 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
     } else if (isOnlineGame(this.props.gameArgs)) {
       playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
       if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'Your Turn';        
+        return 'Your Turn';
       } else {
-        if (isSpectator(this.props.playerID)){
+        if (isSpectator(this.props.playerID)) {
           return `${playerName}'s turn`;
         }
         return 'Waiting for ' + playerName;
@@ -61,7 +61,7 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
       if (gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
-        if (isSpectator(this.props.playerID)){
+        if (isSpectator(this.props.playerID)) {
           return 'see scoreboard';
         }
         return 'you lost';
