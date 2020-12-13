@@ -2,6 +2,7 @@ import * as React from 'react';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import Typography from '@material-ui/core/Typography';
+import { isSpectator } from 'gamesShared/helpers/GameUtil';
 import { EnterWordPrompt } from './EnterWordPrompt';
 import css from './board.css';
 import { isOnlineGame } from '../../gamesShared/helpers/gameMode';
@@ -62,7 +63,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'Your Turn to GUESS';
       } else {
-        return 'Opponent is Guessing';
+        return `${this._playerName()} is guessing`;
       }
     } else {
       return 'Player ' + this._playerName() + "'s Turn";
@@ -229,6 +230,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _playerName() {
+    if (isOnlineGame(this.props.gameArgs)) {
+      return this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
+    }
     switch (this.props.ctx.currentPlayer) {
       case '0':
         return 'A';
@@ -242,7 +246,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (!isPlayersTurn(this.props.playerID, this.props.ctx) && isOnlineGame(this.props.gameArgs)) {
       return (
         <Typography variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px' }}>
-          Waiting for Your Opponent ...
+          Waiting for {this._playerName()} to enter a word...
         </Typography>
       );
     }
@@ -277,8 +281,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.playerID !== this.props.ctx.currentPlayer) {
-        guessMessage = `Your opponent's guess was ${guessOutcome}.`;
-        extraMessage = `Your opponent has scored ${getScore(player.guesses)} points.`;
+        guessMessage = `${this._playerName()}'s guess was ${guessOutcome}.`;
+        extraMessage = `${this._playerName()} has scored ${getScore(player.guesses)} points.`;
         nextButton = null;
       }
     }
@@ -334,6 +338,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
+        if (isSpectator(this.props.playerID)) {
+          return 'see scoreboard';
+        }
         return 'you lost';
       }
     } else {

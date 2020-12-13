@@ -8,6 +8,7 @@ import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 import { Ctx } from 'boardgame.io';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
+import { isSpectator } from 'gamesShared/helpers/GameUtil';
 import css from './Board.css';
 
 import red from '@material-ui/core/colors/red';
@@ -54,6 +55,9 @@ export class Board extends React.Component<IBoardProps, {}> {
       return 'draw';
     } else {
       if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
+        if (isSpectator(this.props.playerID)) {
+          return 'see scoreboard';
+        }
         if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
           return 'you won';
         } else {
@@ -103,10 +107,23 @@ export class Board extends React.Component<IBoardProps, {}> {
         }
       }
       message = `${player}'s turn`;
-    } else if (this.props.ctx.currentPlayer === this.props.playerID && !this.isLocalGame()) {
-      message = 'Place piece';
-    } else if (this.props.ctx.currentPlayer !== this.props.playerID && !this.isLocalGame()) {
-      message = 'Waiting for opponent...';
+    } else if (isAIGame(this.props.gameArgs)) {
+      if (this.props.ctx.currentPlayer === this.props.playerID) {
+        message = 'Place piece';
+      } else {
+        message = 'Waiting for opponent...';
+      }
+    } else if (isOnlineGame(this.props.gameArgs)) {
+      const playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
+      if (this.props.ctx.currentPlayer === this.props.playerID) {
+        message = 'Your turn';
+      } else {
+        if (isSpectator(this.props.playerID)) {
+          message = `${playerName}'s turn`;
+        } else {
+          message = `Waiting for ${playerName}...`;
+        }
+      }
     }
     return message;
   }

@@ -8,6 +8,7 @@ import { Phase } from './game';
 import Typography from '@material-ui/core/Typography';
 import css from './Board.css';
 import { isOnlineGame, isAIGame, isLocalGame } from '../../gamesShared/helpers/gameMode';
+import { isSpectator } from 'gamesShared/helpers/GameUtil';
 
 interface IBoardProps {
   G: IG;
@@ -35,6 +36,13 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     if (this.props.ctx.currentPlayer !== this.props.playerID && !isLocalGame(this.props.gameArgs)) {
+      if (isOnlineGame(this.props.gameArgs)) {
+        const playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
+        if (isSpectator(this.props.playerID)) {
+          return `${playerName}'s turn`;
+        }
+        return `Wait for ${playerName}`;
+      }
       return 'Waiting for opponent...';
     } else if (this.props.G.haveToRemovePiece) {
       return `${prefix} REMOVE PIECE`;
@@ -52,6 +60,10 @@ export class Board extends React.Component<IBoardProps, {}> {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
+        if (isOnlineGame(this.props.gameArgs) && isSpectator(this.props.playerID)) {
+          const winnerName = this.props.gameArgs.players[this.props.ctx.gameover.winner].name;
+          return `${winnerName} won`;
+        }
         return 'you lost';
       }
     } else {
