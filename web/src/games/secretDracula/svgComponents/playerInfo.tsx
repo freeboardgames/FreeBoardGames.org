@@ -18,6 +18,8 @@ export interface IPlayerInfo {
   phaseName: string;
   isInvestigated: boolean;
   wasLastPreist: boolean;
+  wasLastMayor: boolean;
+  numAlivePlayers: number;
   chose: (pInfo: any) => void;
 }
 
@@ -25,6 +27,9 @@ function getPhaseRelatedInfoSymbol(pInfo: IPlayerInfo) {
   switch (pInfo.phaseName) {
     case 'phaseChosePriest':
       if (!pInfo.mayor && !pInfo.dead && !pInfo.wasLastPreist) {
+        if (pInfo.wasLastMayor && pInfo.numAlivePlayers > 5) {
+          return null;
+        }
         return CNST.SY_CANDIDATE;
       }
       break;
@@ -161,7 +166,7 @@ export function PlayerInfo(props: IPlayerInfo) {
         textAnchor="middle"
         fill="white"
       >
-        {playerName}
+        {props.me ? 'You' : playerName}
       </text>
 
       {symbols.map((s, sID) => (
