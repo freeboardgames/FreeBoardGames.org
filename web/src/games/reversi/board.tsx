@@ -55,7 +55,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       return 'draw';
     } else {
       if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
-        if(isSpectator(this.props.playerID)){
+        if (isSpectator(this.props.playerID)) {
           return 'see scoreboard';
         }
         if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
@@ -113,13 +113,13 @@ export class Board extends React.Component<IBoardProps, {}> {
       } else {
         message = 'Waiting for opponent...';
       }
-    } else if (isOnlineGame(this.props.gameArgs)){
+    } else if (isOnlineGame(this.props.gameArgs)) {
       const playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
       if (this.props.ctx.currentPlayer === this.props.playerID) {
         message = 'Your turn';
       } else {
-        if(isSpectator(this.props.playerID)){
-          message = `${playerName}'s turn`
+        if (isSpectator(this.props.playerID)) {
+          message = `${playerName}'s turn`;
         } else {
           message = `Waiting for ${playerName}...`;
         }
