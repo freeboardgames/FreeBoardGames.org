@@ -33,7 +33,7 @@ describe('Bingo Game Rules', () => {
   it('should declare diagonal winner', () => {
     // call out all numbers
     for (let i = 0; i < GRID_SIZE * COL_DELTA; i++) {
-      client.moves.incrementCallRef('1');
+      client.moves.incrementCallRef('1', false);
     }
     for (let id of [4, 8, 20, 16]) {
       client.moves.playerClickedNumber({ id }, '1');
@@ -46,7 +46,7 @@ describe('Bingo Game Rules', () => {
   it('should declare vertical winner', () => {
     // call out all numbers
     for (let i = 0; i < GRID_SIZE * COL_DELTA; i++) {
-      client.moves.incrementCallRef('0');
+      client.moves.incrementCallRef('0', false);
     }
     for (let id of [10, 11, 13, 14]) {
       client.moves.playerClickedNumber({ id }, '0');
@@ -59,7 +59,7 @@ describe('Bingo Game Rules', () => {
   it('should declare vertical winner', () => {
     // call out all numbers
     for (let i = 0; i < GRID_SIZE * COL_DELTA; i++) {
-      client.moves.incrementCallRef('1');
+      client.moves.incrementCallRef('1', false);
     }
     for (let id of [15, 16, 17, 18, 19]) {
       client.moves.playerClickedNumber({ id }, '1');
@@ -80,7 +80,7 @@ describe('Bingo Game Rules', () => {
   it('should declare draw when no numbers left', () => {
     // call out all numbers
     for (let i = 0; i < GRID_SIZE * COL_DELTA + 1; i++) {
-      client.moves.incrementCallRef('1');
+      client.moves.incrementCallRef('1', false);
     }
     expect(client.getState().ctx.gameover).toEqual({ draw: true });
   });
