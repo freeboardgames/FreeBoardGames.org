@@ -30,7 +30,7 @@ const httpLink = createHttpLink({
 });
 
 const isMainDomain =
-  typeof window !== 'undefined' && window.location.hostname.toLowerCase() === 'www.freeboardgames.org';
+  typeof window !== 'undefined' && window.location.hostname.toLowerCase() === 'www.sahajanand-games.com';
 
 // SSR makes this error
 const wsLink = process.browser
@@ -98,8 +98,8 @@ class defaultApp extends App {
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta name="application-name" content="FreeBoardGames.org" />
-          <meta name="apple-mobile-web-app-title" content="FreeBoardGames.org" />
+          <meta name="application-name" content="sahajanand-games.com" />
+          <meta name="apple-mobile-web-app-title" content="sahajanand-games.com" />
           <meta name="theme-color" content="#3f51b5" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
           <meta name="msapplication-TileColor" content="#ffc40d" />
