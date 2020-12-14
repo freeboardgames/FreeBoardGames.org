@@ -3,7 +3,7 @@ import { ICard, IHint, IHintMask } from '../interfaces';
 import { BCard } from './bcard';
 import { BHintIcon } from './bhinticon';
 
-import css from './bcardwithhint.css';
+import css from './bcardwithhint.module.css';
 
 interface BCardWithHintProps {
   card: ICard; // if null, show back of card.

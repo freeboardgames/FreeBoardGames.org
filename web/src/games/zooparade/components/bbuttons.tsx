@@ -1,6 +1,6 @@
 import React from 'react';
 import { BHintIcon } from './bhinticon';
-import css from './bbuttons.css';
+import css from './bbuttons.module.css';
 
 interface InnerWrapper {
   onHintValue(nr: number): any;

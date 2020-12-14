@@ -1,7 +1,7 @@
 import { Typography } from '@material-ui/core';
 import React from 'react';
 
-import css from './StockGuide.css';
+import css from './StockGuide.module.css';
 
 export function StockGuide() {
   const indexToCountMap = {

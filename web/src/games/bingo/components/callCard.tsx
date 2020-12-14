@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { GRID_SIZE, CALL_BOX_SIZE, STROKE_WIDTH, INITIAL_WAIT_REF_NUM } from '../constants';
-import commonCSS from './biComponent.css';
+import commonCSS from './biComponent.module.css';
 
 const cornerAdjustment = 1 + 1 / GRID_SIZE;
 

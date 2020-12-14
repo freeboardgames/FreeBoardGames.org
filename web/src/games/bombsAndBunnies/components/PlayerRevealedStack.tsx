@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from './PlayerRevealedStack.css';
+import css from './PlayerRevealedStack.module.css';
 import { BunnyCardComponent, BombCardComponent } from './CardComponent';
 import { CardStyle, CardType } from './shared/interfaces';
 

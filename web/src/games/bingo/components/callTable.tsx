@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { CALL_BOX_SIZE, GRID_SIZE } from '../constants';
-import commonCSS from './biComponent.css';
+import commonCSS from './biComponent.module.css';
 
 interface ICallTableProps {
   callQueue: number[];

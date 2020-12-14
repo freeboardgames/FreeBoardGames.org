@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Button from '@material-ui/core/Button';
 
-import css from '../Board.css';
+import css from '../Board.module.css';
 import { StockLabel } from './StockLabel';
 import { Chain, Player } from '../types';
 import { Hotels } from '../hotels';

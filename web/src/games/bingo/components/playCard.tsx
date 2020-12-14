@@ -3,7 +3,7 @@ import { blue } from '@material-ui/core/colors';
 
 import { INumberState } from '../definitions';
 import { GRID_SIZE, CALL_BOX_SIZE, STROKE_WIDTH, WILDCARD_NUM } from '../constants';
-import commonCSS from './biComponent.css';
+import commonCSS from './biComponent.module.css';
 
 const fbgIcon = require('../media/fbg_icon.png');
 const cornerAdjustment = 1 + 1 / GRID_SIZE;

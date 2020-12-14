@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from './ButtonComponent.css';
+import css from './ButtonComponent.module.css';
 
 interface IButtonProps {
   disabled?: boolean;

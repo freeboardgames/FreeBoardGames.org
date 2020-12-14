@@ -6,7 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 
-import css from './Scoreboard.css';
+import css from './Scoreboard.module.css';
 
 export interface IScore {
   playerID: string;

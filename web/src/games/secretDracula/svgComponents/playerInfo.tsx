@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { grey } from '@material-ui/core/colors';
-import textCSS from './textStyles.css';
+import textCSS from './textStyles.module.css';
 import * as CNST from '../constants';
 
 export interface IPlayerInfo {

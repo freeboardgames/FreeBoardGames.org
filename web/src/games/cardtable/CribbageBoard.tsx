@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { IScoreKeeper } from './game';
-import './CribbageBoard.css';
+import './CribbageBoard.module.css';
 
 type CribbageBoardProps = {
   scoreKeeper: IScoreKeeper;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from './BetButton.css';
+import css from './BetButton.module.css';
 
 interface IBetButtonProps {
   click?: () => void;

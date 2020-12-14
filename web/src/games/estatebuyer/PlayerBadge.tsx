@@ -2,7 +2,7 @@ import * as React from 'react';
 import { IScore } from './Scoreboard';
 import ICard from './card';
 
-import css from './PlayerBadges.css';
+import css from './PlayerBadges.module.css';
 import { BuildingCardComponent, MoneyCardComponent } from './CardComponent';
 
 export interface IPlayerBadgeProps {
