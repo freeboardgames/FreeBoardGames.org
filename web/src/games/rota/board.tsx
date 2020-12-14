@@ -1,8 +1,9 @@
 import React from 'react';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { isOnlineGame, isAIGame, isLocalGame } from '../../gamesShared/helpers/gameMode';
+import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 import Typography from '@material-ui/core/Typography';
 import { IG, Phase } from './game';
 import { Field } from './Field';
@@ -41,8 +42,8 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
   };
 
-  _playerInRoom(): IPlayerInRoom {
-    return this.props.gameArgs.players[this.props.ctx.currentPlayer];
+  _playerInRoom(playerID = null): IPlayerInRoom {
+    return this.props.gameArgs.players[playerID === null ? this.props.ctx.currentPlayer : playerID];
   }
 
   _getStatus() {
@@ -56,7 +57,11 @@ export class Board extends React.Component<IBoardProps, {}> {
     // }
 
     if (this.props.ctx.currentPlayer !== this.props.playerID && !isLocalGame(this.props.gameArgs)) {
-      return `Waiting for ${this._playerInRoom().name} ...`;
+      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
+        return `Waiting for ${this._playerInRoom().name} ...`;
+      } else {
+        return `${this._playerInRoom().name}'s turn`;
+      }
     }
 
     if (this.props.ctx.phase === Phase.Place) {
@@ -67,15 +72,17 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getGameOver() {
-    if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
+    if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
         return 'you lost';
       }
-    } else {
-      if (this.props.ctx.gameover.winner) {
+    } else if (this.props.ctx.gameover.winner) {
+      if (isLocalGame(this.props.gameArgs)) {
         return `${localPlayerNames[this.props.ctx.gameover.winner]} won`;
+      } else {
+        return `${this._playerInRoom(this.props.ctx.gameover.winner).name} won`;
       }
     }
   }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IPlayerProps } from './shared/interfaces';
 
-import css from './PlayerStacks.css';
+import css from './PlayerStacks.module.css';
 import { PlayerStack } from './PlayerStack';
 
 export interface IPlayerStacksProps {

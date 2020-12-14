@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CardStyle } from './shared/interfaces';
 
-import css from './PlayerStack.css';
+import css from './PlayerStack.module.css';
 import { FaceDownCardComponent, EmptyCardComponent } from './CardComponent';
 
 export interface IPlayerStackProps {

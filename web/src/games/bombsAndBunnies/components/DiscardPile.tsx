@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from './DiscardPile.css';
+import css from './DiscardPile.module.css';
 import { FaceDownCardComponent } from './CardComponent';
 import { CardStyle } from './shared/interfaces';
 

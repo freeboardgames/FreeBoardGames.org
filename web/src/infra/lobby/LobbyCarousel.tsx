@@ -10,7 +10,7 @@ import { getGroupedRoomsDisplay } from './LobbyUtil';
 import { NewRoomModal } from './NewRoomModal';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { Subscription } from '@apollo/react-components';
-import css from './LobbyCarousel.css';
+import css from './LobbyCarousel.module.css';
 
 export const LOBBIES_SUBSCRIPTION = gql`
   subscription SubscribeToLobby {

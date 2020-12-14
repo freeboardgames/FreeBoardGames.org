@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from './PlayerZones.css';
+import css from './PlayerZones.module.css';
 import { IPlayerZoneProps, PlayerZone, PlayerStatus } from './PlayerZone';
 import { BetDisplay, IBetDisplayProps } from './BetDisplay';
 import { DiscardPile, IDiscardPileProps } from './DiscardPile';

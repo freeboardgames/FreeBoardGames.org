@@ -27,7 +27,7 @@ import { ReduxState, ReduxUserState } from 'infra/common/redux/definitions';
 import NicknameRequired from '../common/components/auth/NicknameRequired';
 import { Dispatch } from 'redux';
 import { OccupancySelect } from 'infra/common/components/game/OccupancySelect';
-import css from './GameModePicker.css';
+import css from './GameModePicker.module.css';
 
 interface IGameModePickerProps {
   gameDef: IGameDef;

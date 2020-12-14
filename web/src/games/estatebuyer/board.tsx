@@ -13,7 +13,7 @@ import { ButtonComponent } from './ButtonComponent';
 import { playSound } from './Sound';
 import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 
-import css from './Board.css';
+import css from './Board.module.css';
 
 interface IBoardProps {
   G: IG;

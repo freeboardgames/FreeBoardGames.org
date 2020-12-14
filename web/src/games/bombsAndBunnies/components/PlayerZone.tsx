@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from './PlayerZone.css';
+import css from './PlayerZone.module.css';
 import { PlayerStack } from './PlayerStack';
 import { PlayerRevealedStack } from './PlayerRevealedStack';
 import { CardType, CardStyle } from './shared/interfaces';

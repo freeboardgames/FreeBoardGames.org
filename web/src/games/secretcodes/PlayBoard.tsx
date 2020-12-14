@@ -2,7 +2,7 @@ import { IG, CardColor, Team, TeamColor, Phases } from './definitions';
 import { Ctx } from 'boardgame.io';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import * as React from 'react';
-import css from './board.css';
+import css from './board.module.css';
 import { isLocalGame, isOnlineGame } from 'gamesShared/helpers/gameMode';
 import Button from '@material-ui/core/Button';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';

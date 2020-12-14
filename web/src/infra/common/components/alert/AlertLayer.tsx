@@ -1,5 +1,5 @@
 import React from 'react';
-import css from './AlertLayer.css';
+import css from './AlertLayer.module.css';
 
 interface AlertLayerProps {
   onClickaway?: () => void;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IG, TeamColor } from './definitions';
-import css from './Lobby.css';
+import css from './Lobby.module.css';
 import Button from '@material-ui/core/Button';
 import { getPlayerTeam } from './util';
 

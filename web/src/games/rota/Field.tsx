@@ -1,7 +1,7 @@
 import React from 'react';
 import { Point } from './game';
 import css from './Field.css';
-import { red, blue, green, deepOrange } from '@material-ui/core/colors';
+import { blue, deepOrange } from '@material-ui/core/colors';
 
 import ShreejiImg from './media/RassShreeji.png';
 import SaintImg from './media/RassSaint.png';

@@ -121,6 +121,12 @@ function getCreditsCard() {
               FreeBoardGames.org
             </Button>
           </ListItem>
+          <ListItem>
+            <ListItemText primary="Bingo Thumbnail Image" />
+            <Button size="small" color="primary" href="http://www.freepik.com">
+              freepik.com
+            </Button>
+          </ListItem>
         </List>
       </CardContent>
     </Card>

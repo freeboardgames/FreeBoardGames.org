@@ -3,7 +3,7 @@ import * as React from 'react';
 import { CardType, CardStyle } from './shared/interfaces';
 import { BunnyCardComponent, BombCardComponent } from './CardComponent';
 
-import css from './PlayerHand.css';
+import css from './PlayerHand.module.css';
 
 export interface IPlayerHandProps {
   playerId: string;

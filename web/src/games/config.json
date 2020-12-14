@@ -1,13 +1,15 @@
 {
   "order": [
+    "secretcodes",
+    "bingo",
+    "memorymatch",
     "rota",
+    "secretDracula",
     "soupofletters",
     "fourinarow",
     "tictactoeplus",
     "hangman",
-    "secretcodes",
     "reversi",
-    "checkers",
     "ninemensmorris"
   ]
 }

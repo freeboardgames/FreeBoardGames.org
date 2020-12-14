@@ -3,7 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography }
 import Paper, { PaperProps } from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 
-import css from '../Board.css';
+import css from '../Board.module.css';
 
 export interface MergersDialogProps {
   dialogId: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ICard } from '../interfaces';
-import css from './bscore.css';
+import css from './bscore.module.css';
 
 interface ScoreProps {
   piles: ICard[][];
