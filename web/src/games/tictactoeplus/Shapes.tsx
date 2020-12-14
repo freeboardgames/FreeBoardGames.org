@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ShjImg from './media/ShjSqr.png'
+import ShjImg from './media/ShjSqr.png';
 
 interface IShapeProps {
   x: number;
@@ -40,12 +40,7 @@ export const Cross = (props: IShapeProps) => {
 };
 
 export const WildCardChar = (props: IShapeProps) => {
-  return (
-    <image 
-      x={props.x + 0.05} y={props.y + 0.05} width="0.9" height="0.9"
-      href={ShjImg}
-      /> 
-  );
+  return <image x={props.x + 0.05} y={props.y + 0.05} width="0.9" height="0.9" href={ShjImg} />;
 };
 
 export const Circle = (props: IShapeProps) => {

@@ -60,24 +60,26 @@ export class Board extends React.Component<IBoardProps, {}> {
       return 'draw';
     } else {
       try {
-      if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
-        if (isSpectator(this.props.playerID)) {
-          return 'see scoreboard';
-        }
-        if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
-          return 'you won';
+        if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
+          if (isSpectator(this.props.playerID)) {
+            return 'see scoreboard';
+          }
+          if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
+            return 'you won';
+          } else {
+            return 'you lost';
+          }
         } else {
-          return 'you lost';
+          // local game
+          if (scoreboard[0].score > scoreboard[1].score) {
+            return 'Player 1 wins';
+          } else {
+            return 'Player 2 wins';
+          }
         }
-      } else {
-        // local game
-        if (scoreboard[0].score > scoreboard[1].score) {
-          return 'Player 1 wins';
-        } else {
-          return 'Player 2 wins';
-        }
+      } catch (err) {
+        return 'See the Scorecard';
       }
-    } catch(err) { return 'See the Scorecard'; }
     }
   }
 
@@ -152,10 +154,8 @@ export class Board extends React.Component<IBoardProps, {}> {
         : [red[500], green[500], yellow[500], blue[500]];
     const colorMap = this.getColorMap();
 
-    const murti = 
-      this.props.ctx.numPlayers !== 2
-        ? [GopImg, NarNImg, ShjImg, HanuImg]
-        : [GopImg, ShjImg, NarNImg, HanuImg];
+    const murti =
+      this.props.ctx.numPlayers !== 2 ? [GopImg, NarNImg, ShjImg, HanuImg] : [GopImg, ShjImg, NarNImg, HanuImg];
 
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
@@ -168,19 +168,16 @@ export class Board extends React.Component<IBoardProps, {}> {
             .filter((point) => point.player !== null)
             .map((point) => (
               <Token animate={false} key={point.position} x={point.position % 8} y={(point.position / 8) << 0}>
-              <g>
-                <rect
-                  width="0.8"
-                  height="0.8"
-                  x="0.1"
-                  y="0.1"
-                  style={{ fill: colors[point.player as any] }}
-                  className={css.Piece}
-                ></rect>
-                <image 
-                  x="0.1" y="0.1" width="0.8" height="0.8"
-                  href={ murti[point.player as any] }
-                  /> 
+                <g>
+                  <rect
+                    width="0.8"
+                    height="0.8"
+                    x="0.1"
+                    y="0.1"
+                    style={{ fill: colors[point.player as any] }}
+                    className={css.Piece}
+                  ></rect>
+                  <image x="0.1" y="0.1" width="0.8" height="0.8" href={murti[point.player as any]} />
                 </g>
               </Token>
             ))}

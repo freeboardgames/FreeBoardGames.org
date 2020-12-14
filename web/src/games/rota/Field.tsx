@@ -118,7 +118,7 @@ export class Field extends React.Component<IFieldProps, {}> {
         const radiusFactor = 1 / (Math.sqrt(point.x ** 2 + point.y ** 2) || 1);
         const scale = idx === this.props.idSelectedPoint ? POINT_SELECTION_ZOOM : 1;
         cells.push(
-            <circle
+          <circle
             key={`rota_piece_${point.pieceID}`}
             id={`id_rota_piece_${point.pieceID}`}
             className={`${css.RotaPiece}`}
@@ -135,18 +135,19 @@ export class Field extends React.Component<IFieldProps, {}> {
           />,
         );
         cells.push(
-          <image 
+          <image
             key={`rota_murti_${point.pieceID}`}
             id={`id_rota_murti_${point.pieceID}`}
-            width={IMAGE_WIDTH} height={IMAGE_WIDTH}
-            href={ point.playerID === '0' ? ShreejiImg : SaintImg }
+            width={IMAGE_WIDTH}
+            height={IMAGE_WIDTH}
+            href={point.playerID === '0' ? ShreejiImg : SaintImg}
             onClick={() => this.props.clickPoint(idx)}
             className={`${css.RotaPiece} RotaPiece`}
             style={{
-              transform: `translate(${point.x * CIRCLE_RADIUS * radiusFactor - IMAGE_WIDTH/2 - 4 }px, 
-                ${point.y * CIRCLE_RADIUS * radiusFactor - IMAGE_WIDTH/2 - 4 }px)`,
+              transform: `translate(${point.x * CIRCLE_RADIUS * radiusFactor - IMAGE_WIDTH / 2 - 4}px, 
+                ${point.y * CIRCLE_RADIUS * radiusFactor - IMAGE_WIDTH / 2 - 4}px)`,
             }}
-          /> 
+          />,
         );
       }
     });

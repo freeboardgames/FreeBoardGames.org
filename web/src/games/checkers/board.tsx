@@ -15,7 +15,7 @@ import {
 } from 'gamesShared/components/boards/Checkerboard';
 import { Token } from 'deprecated-bgio-ui';
 import Typography from '@material-ui/core/Typography';
-import {grey, blue, green} from '@material-ui/core/colors';
+import { grey, blue, green } from '@material-ui/core/colors';
 // import blue from '@material-ui/core/colors/blue';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
@@ -117,8 +117,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (this.state.selected !== null) {
       result[cartesianToAlgebraic(this.state.selected.x, this.state.selected.y, false)] = green[600];
       this.state.validMoves
-        .filter(move => areCoordsEqual(this.state.selected, move.from))
-        .forEach(move => {
+        .filter((move) => areCoordsEqual(this.state.selected, move.from))
+        .forEach((move) => {
           result[cartesianToAlgebraic(move.to.x, move.to.y, false)] = green[300];
         });
     }
@@ -145,10 +145,13 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           >
             <g>
               <circle r="0.4" fill={piece.data.isKing ? blue[300] : grey[50]} cx="0.5" cy="0.5" />
-              <image 
-                x="0.11" y="0.11" width="0.78" height="0.78"
-                href={ piece.data.playerID === '0' ? ShjImg : GopImg }
-                /> 
+              <image
+                x="0.11"
+                y="0.11"
+                width="0.78"
+                height="0.78"
+                href={piece.data.playerID === '0' ? ShjImg : GopImg}
+              />
             </g>
           </Token>
         );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { grey, red, blue, green } from '@material-ui/core/colors';
+import { grey, red, blue } from '@material-ui/core/colors';
 
 import ShjImg from './media/ShjSqr.png';
 // import GopImg from './media/GopSqr.png';
@@ -57,14 +57,14 @@ export const FilledDisk = (props: IFilledDiskProps) => {
         fill={colorMap[props.color]}
         style={animate}
       />
-      <image 
-        x={props.x + 0.11} 
-        y={(!props.showOnScreen ? 0 : 1 + props.y) - diskRadius * 2.1} 
-        width="0.78" height="0.78" 
-        href={ ShjImg }
+      <image
+        x={props.x + 0.11}
+        y={(!props.showOnScreen ? 0 : 1 + props.y) - diskRadius * 2.1}
+        width="0.78"
+        height="0.78"
+        href={ShjImg}
         style={animate}
-      /> 
-
+      />
     </g>
   );
 };

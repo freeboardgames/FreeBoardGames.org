@@ -74,22 +74,23 @@ export class Field extends React.Component<IFieldProps, {}> {
       return (
         <g key={'grp' + point.piece.key}>
           <circle
-            r={PIECE_RADIUS*1.05}
+            r={PIECE_RADIUS * 1.05}
             key={point.piece.key}
             fill={point.piece.player === '0' ? 'white' : red[500]}
             onClick={this._selectPoint(i)}
             className={`${css.Piece} Piece`}
             style={{ transform: `translate(${coords[i].cx}px, ${coords[i].cy}px) scale(${scale})` }}
           />
-          <image 
-            // x={(coords[i].cx ) + 'px'} 
+          <image
+            // x={(coords[i].cx ) + 'px'}
             // y={(coords[i].cy - PIECE_RADIUS) + 'px'}
-            width={1.8*PIECE_RADIUS} height={1.8*PIECE_RADIUS}
-            href={ point.piece.player === '0' ? ShjImg : GopImg }
+            width={1.8 * PIECE_RADIUS}
+            height={1.8 * PIECE_RADIUS}
+            href={point.piece.player === '0' ? ShjImg : GopImg}
             onClick={this._selectPoint(i)}
             className={`${css.Piece} Piece`}
             style={{ transform: `translate(${coords[i].cx - PIECE_RADIUS}px, ${coords[i].cy - PIECE_RADIUS}px)` }}
-            /> 
+          />
         </g>
       );
     });
