@@ -2,13 +2,18 @@ import React from 'react';
 import { gql } from 'apollo-boost';
 import { Subscription } from '@apollo/react-components';
 import Message from './internal/Message';
-import ChatPanel from './internal/ChatPanel';
+import ChatInput from './internal/ChatInput';
+import ChatMessageHistory from './internal/ChatMessageHistory';
 import { Dispatch } from 'redux';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { isMobileFromReq } from 'infra/common/device/UaHelper';
 import IconButton from '@material-ui/core/IconButton';
 import ChatIcon from '@material-ui/icons/Chat';
-import css from './Chat.css';
+import css from './Chat.module.css';
+import AlertLayer from 'infra/common/components/alert/AlertLayer';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CloseIcon from '@material-ui/icons/Close';
 
 export interface ChatProps {
   channelType: 'room' | 'match';
@@ -73,10 +78,47 @@ export class Chat extends React.Component<ChatProps, ChatState> {
     if (!this.state.isOpen) {
       return null;
     }
-    const className = isMobile ? css.MobilePanelWrapper : css.DesktopPanelWrapper;
+    if (isMobile) {
+      return (
+        <AlertLayer onClickaway={this._togglePanel}>
+          <Card className={css.MobileCard}>{this.renderInnerPanel(messages, false)}</Card>
+        </AlertLayer>
+      );
+    } else {
+      return <div className={css.DesktopPanelWrapper}>{this.renderInnerPanel(messages, true)}</div>;
+    }
+  }
+
+  private renderInnerPanel(messages: Message[], isDesktop: boolean) {
+    let className = '';
+    let closeButton = null;
+    if (isDesktop) {
+      className = css.DesktopInput;
+    } else {
+      closeButton = this.renderMobileHeader();
+    }
     return (
-      <div className={className}>
-        <ChatPanel messages={messages} sendMessage={this._sendMessage} />
+      <div className={css.InnerPanel}>
+        {closeButton}
+        <div style={{ flex: '1', overflowY: 'auto' }}>
+          <ChatMessageHistory messages={messages} />
+        </div>
+        <ChatInput sendMessage={this._sendMessage} className={className} />
+      </div>
+    );
+  }
+
+  private renderMobileHeader() {
+    return (
+      <div>
+        <IconButton aria-label="close" onClick={this._togglePanel} style={{ float: 'right' }}>
+          <CloseIcon />
+        </IconButton>
+        <div style={{ paddingTop: '8px' }}>
+          <Typography variant="h5" component="span">
+            Messages
+          </Typography>
+        </div>
       </div>
     );
   }

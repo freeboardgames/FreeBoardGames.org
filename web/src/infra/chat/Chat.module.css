@@ -9,6 +9,19 @@
   z-index: 9999;
 }
 
-.MobilePanelWrapper {
+.InnerPanel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.MobileCard {
   padding: 8px;
+  width: 90vw;
+  height: 90vh;
+}
+
+.DesktopInput {
+  padding-bottom: 16px;
 }

@@ -1,31 +1,28 @@
 import React from 'react';
-import ChatMessageHistory from './ChatMessageHistory';
-import Message from './Message';
-import css from './ChatPanel.css';
+import css from './ChatInput.module.css';
 
-interface ChatPanelProps {
-  messages: Message[];
+interface ChatInputProps {
   sendMessage: (msg: string) => void;
+  className?: string;
 }
 
-interface ChatPanelState {
+interface ChatInputState {
   inputText: string;
 }
 
-class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
+export default class ChatInput extends React.Component<ChatInputProps, ChatInputState> {
   state = {
     inputText: '',
   };
 
   render() {
     return (
-      <div className={css.window}>
-        <ChatMessageHistory messages={this.props.messages} />
-        <form style={{ display: 'flex' }} onSubmit={this._handleSubmit}>
+      <form onSubmit={this._handleSubmit}>
+        <div className={`${css.InputWrapper} ${this.props.className}`}>
           <input style={{ flex: '1 auto' }} type="text" onChange={this._onChange} value={this.state.inputText} />
           <button className={css.button}>Send</button>
-        </form>
-      </div>
+        </div>
+      </form>
     );
   }
 
@@ -39,5 +36,3 @@ class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     this.setState({ inputText: e.target.value });
   };
 }
-
-export default ChatPanel;
