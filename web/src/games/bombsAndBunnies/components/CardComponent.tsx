@@ -1,5 +1,5 @@
 import * as React from 'react';
-import css from './CardComponent.css';
+import css from './CardComponent.module.css';
 
 import { CardStyle } from './shared/interfaces';
 

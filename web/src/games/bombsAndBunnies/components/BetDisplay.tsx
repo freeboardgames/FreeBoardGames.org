@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from './BetDisplay.css';
+import css from './BetDisplay.module.css';
 
 export interface IBetDisplayProps {
   currentBet: number;

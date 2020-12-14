@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ICard from './card';
 import { EmptyCardComponent, BuildingCardComponent, MoneyCardComponent } from './CardComponent';
-import css from './DeckComponent.css';
+import css from './DeckComponent.module.css';
 
 export interface IDeckProps {
   cards: ICard[];

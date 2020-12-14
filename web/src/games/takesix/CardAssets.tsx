@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from './CardComponent.css';
+import css from './CardComponent.module.css';
 
 export const CardBackgroundAsset = () => {
   return (

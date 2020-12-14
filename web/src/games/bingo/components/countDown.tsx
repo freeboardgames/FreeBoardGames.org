@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { TIME_BUFF, GRID_SIZE, CALL_BOX_SIZE } from '../constants';
-import commonCSS from './biComponent.css';
+import commonCSS from './biComponent.module.css';
 
 interface ICountdownProps {
   callRef: number;

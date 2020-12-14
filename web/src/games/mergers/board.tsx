@@ -4,7 +4,7 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
 
-import css from './Board.css';
+import css from './Board.module.css';
 import { HotelGrid } from './components/HotelGrid';
 import { IG, Merger, Score } from './types';
 import { PlayerActions } from './components/PlayerActions';

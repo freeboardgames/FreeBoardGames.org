@@ -1,7 +1,7 @@
 import React from 'react';
 import { Chain } from '../types';
 
-import css from './StockLabel.css';
+import css from './StockLabel.module.css';
 
 interface StockLabelProps {
   chain: Chain;

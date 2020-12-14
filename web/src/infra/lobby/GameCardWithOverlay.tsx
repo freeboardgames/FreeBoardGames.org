@@ -2,7 +2,7 @@ import React from 'react';
 import { IGameDef } from 'gamesShared/definitions/game';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import css from './GameCardWithOverlay.css';
+import css from './GameCardWithOverlay.module.css';
 import Router from 'next/router';
 
 interface GameCardWithOverlayProps {

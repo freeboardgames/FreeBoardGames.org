@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Chain, Hotel } from '../types';
-import css from './HotelGrid.css';
+import css from './HotelGrid.module.css';
 import { Hotels } from '../hotels';
 
 interface HotelGridProps {

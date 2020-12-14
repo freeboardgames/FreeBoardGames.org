@@ -4,7 +4,7 @@ import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import Typography from '@material-ui/core/Typography';
 import { isSpectator } from 'gamesShared/helpers/GameUtil';
 import { EnterWordPrompt } from './EnterWordPrompt';
-import css from './board.css';
+import css from './board.module.css';
 import { isOnlineGame } from '../../gamesShared/helpers/gameMode';
 import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 import { grey } from '@material-ui/core/colors';
