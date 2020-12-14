@@ -9,7 +9,7 @@ import { Ctx } from 'boardgame.io';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import { isSpectator } from 'gamesShared/helpers/GameUtil';
-import css from './Board.css';
+import css from './Board.module.css';
 
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';

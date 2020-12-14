@@ -3,7 +3,7 @@ import IPlayer from './player';
 import { BuildingCardComponent } from './CardComponent';
 import { playSound } from './Sound';
 
-import css from './PlayerHand.css';
+import css from './PlayerHand.module.css';
 
 export interface IPlayerHandProps {
   playerIndex: number;

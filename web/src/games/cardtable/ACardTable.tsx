@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import css from './ACardTable.css';
+import css from './ACardTable.module.css';
 import { IG } from './game';
 import CardContainer from './CardContainer';
 import { Ctx } from 'boardgame.io';

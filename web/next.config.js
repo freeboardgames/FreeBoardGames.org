@@ -1,4 +1,3 @@
-const withCSS = require('@zeit/next-css');
 const WebpackBar = require('webpackbar');
 const withOptimizedImages = require('next-optimized-images');
 const childProcess = require('child_process');
@@ -18,72 +17,70 @@ function getGitHash() {
 }
 
 module.exports = withWorkers(
-  withOptimizedImages(
-    withCSS({
-      cssModules: true,
-      // next-optimized-images
-      defaultImageLoader: 'responsive-loader',
-      inlineImageLimit: -1,
-      optipng: {
-        optimizationLevel: 7,
-      },
-      mozjpeg: {
-        quality: 80,
-      },
-      poweredByHeader: false,
-      env: {
-        CHANNEL,
-        VERSION,
-        BABEL_ENV_IS_PROD,
-      },
-      webpack: (config) => {
-        config.module.rules.push({
-          test: /\.test.(js|jsx|ts|tsx)$/,
-          loader: 'ignore-loader',
-        });
+  withOptimizedImages({
+    cssModules: true,
+    // next-optimized-images
+    defaultImageLoader: 'responsive-loader',
+    inlineImageLimit: -1,
+    optipng: {
+      optimizationLevel: 7,
+    },
+    mozjpeg: {
+      quality: 80,
+    },
+    poweredByHeader: false,
+    env: {
+      CHANNEL,
+      VERSION,
+      BABEL_ENV_IS_PROD,
+    },
+    webpack: (config) => {
+      config.module.rules.push({
+        test: /\.test.(js|jsx|ts|tsx)$/,
+        loader: 'ignore-loader',
+      });
 
-        config.module.rules.push({
-          test: /jest.(config|setup).(js|jsx|ts|tsx)$/,
-          loader: 'ignore-loader',
-        });
+      config.module.rules.push({
+        test: /jest.(config|setup).(js|jsx|ts|tsx)$/,
+        loader: 'ignore-loader',
+      });
 
-        config.module.rules.push({
-          test: /\.md$/,
-          use: 'raw-loader',
-        });
+      config.module.rules.push({
+        test: /\.md$/,
+        use: 'raw-loader',
+      });
 
-        config.module.rules.push({
-          test: /\.(webp|svg|mp3|wav)$/,
-          exclude: /node_modules/,
-          use: [
-            {
-              loader: 'url-loader',
-            },
-          ],
-        });
+      config.module.rules.push({
+        test: /\.(webp|svg|mp3|wav)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'url-loader',
+          },
+        ],
+      });
 
-        if (process.env.NODE_ENV !== 'development') {
-          config.plugins.push(
-            new WebpackBar({
-              fancy: true,
-              profile: true,
-              basic: false,
-            }),
-          );
-        }
+      if (process.env.NODE_ENV !== 'development') {
+        config.plugins.push(
+          new WebpackBar({
+            fancy: true,
+            profile: true,
+            basic: false,
+          }),
+        );
+      }
 
-        if (config.resolve.plugins) {
-          config.resolve.plugins.push(new TSConfigPathsPlugin());
-        } else {
-          config.plugins = [new TSConfigPathsPlugin()];
-        }
+      if (config.resolve.plugins) {
+        config.resolve.plugins.push(new TSConfigPathsPlugin());
+      } else {
+        config.plugins = [new TSConfigPathsPlugin()];
+      }
 
-        if (!BABEL_ENV_IS_PROD) {
-          config.optimization.minimizer = [];
-        }
+      if (!BABEL_ENV_IS_PROD) {
+        config.optimization.minimizer = [];
+      }
 
-        return config;
-      },
-    }),
-  ),
+      return config;
+    },
+  }),
 );

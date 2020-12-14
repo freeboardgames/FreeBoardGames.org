@@ -12,7 +12,7 @@ import Timer from 'react-compound-timer';
 import { TIME_OUT, TIME_BUFF, playerColors } from './constants';
 import { IG, ISolvedWord } from './game';
 import { Soup } from './soup';
-import soupCSS from './soup.css';
+import soupCSS from './soup.module.css';
 
 interface IBoardProps {
   G: IG;

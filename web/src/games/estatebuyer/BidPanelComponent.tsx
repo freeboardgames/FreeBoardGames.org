@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ButtonComponent } from './ButtonComponent';
 import { playSound } from './Sound';
 
-import css from './BidPanelComponent.css';
+import css from './BidPanelComponent.module.css';
 
 export interface IPlayerBidPanelProps {
   players: any;

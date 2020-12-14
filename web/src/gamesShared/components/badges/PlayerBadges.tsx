@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IScore } from 'gamesShared/components/scores/Scoreboard';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
-import css from './PlayerBadges.css';
+import css from './PlayerBadges.module.css';
 import Typography from '@material-ui/core/Typography';
 import { Ctx } from 'boardgame.io';
 import { isPlayersTurn } from 'gamesShared/helpers/GameUtil';

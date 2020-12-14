@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Typography } from '@material-ui/core';
 import { Merger } from '../types';
 
-import css from './MergerDetails.css';
+import css from './MergerDetails.module.css';
 
 export interface MergerDetailsProps {
   merger: Merger;

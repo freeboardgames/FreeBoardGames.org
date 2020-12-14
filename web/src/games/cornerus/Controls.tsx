@@ -14,7 +14,7 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import IconButton from '@material-ui/core/IconButton';
 
-import css from './Controls.css';
+import css from './Controls.module.css';
 
 interface IControlsProps {
   placePiece: () => void;

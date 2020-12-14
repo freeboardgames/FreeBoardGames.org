@@ -1,6 +1,6 @@
 import React from 'react';
 import { IHintIcon } from '../interfaces';
-import css from './bhinticon.css';
+import css from './bhinticon.module.css';
 
 interface InnerWrapper {
   hintIcon: IHintIcon;

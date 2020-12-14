@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { ICard } from './game';
-import css from './CardContainer.css';
+import css from './CardContainer.module.css';
 
 interface ICardContainerProps {
   cards: ICard[];

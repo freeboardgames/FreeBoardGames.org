@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { blue } from '@material-ui/core/colors';
 
-import textCSS from './textStyles.css';
+import textCSS from './textStyles.module.css';
 import * as CNST from '../constants';
 
 const boxWidth = CNST.B_WIDTH * 0.09;

@@ -15,7 +15,7 @@ import empty from './media/empty.png';
 import white from './media/white.png';
 import deck from './media/deck.png';
 
-import style from './bcard.css';
+import style from './bcard.module.css';
 
 interface InnerWrapper {
   card: ICard; // if null, show back of card.
