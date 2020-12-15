@@ -13,7 +13,9 @@ import css from './Chat.module.css';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
+import Paper from '@material-ui/core/Paper';
 import CloseIcon from '@material-ui/icons/Close';
+import Badge from '@material-ui/core/Badge';
 
 export interface ChatProps {
   channelType: 'room' | 'match';
@@ -24,7 +26,15 @@ export interface ChatProps {
 export interface ChatState {
   messageHistory: Message[];
   isOpen: boolean;
+  unseenMessages: number;
 }
+
+const INITIAL_MESSAGE: Message = {
+  userId: 0,
+  userNickname: '*** NOTICE ***',
+  message: 'Messages will be lost after reloading. Do not provide any personal information here.',
+  isoTimestamp: '',
+};
 
 const isMobile = isMobileFromReq();
 export const CHAT_SUBSCRIPTION = gql`
@@ -39,9 +49,12 @@ export const CHAT_SUBSCRIPTION = gql`
 `;
 
 export class Chat extends React.Component<ChatProps, ChatState> {
+  private messagesRef = React.createRef<HTMLDivElement>();
+
   state = {
-    messageHistory: [],
+    messageHistory: [INITIAL_MESSAGE],
     isOpen: !isMobile,
+    unseenMessages: 0,
   };
 
   render() {
@@ -52,12 +65,17 @@ export class Chat extends React.Component<ChatProps, ChatState> {
           const newMessage = resp.data?.chatMutated;
           let messageHistory = this.state.messageHistory;
           const lastMessage = messageHistory.slice(-1)[0];
-          if (!this.isSameMessage(newMessage, lastMessage)) {
+          if (newMessage && !this.isSameMessage(newMessage, lastMessage)) {
             messageHistory = [...messageHistory, newMessage];
-            this.setState({ messageHistory });
+            let unseenMessages = 0;
+            if (!this.state.isOpen) {
+              unseenMessages = this.state.unseenMessages + 1;
+            }
+            this.setState({ messageHistory, unseenMessages });
           }
           const button = this.renderButton();
           const panel = this.renderPanel(messageHistory);
+          this.scrollToBottom();
           return (
             <>
               {button}
@@ -85,22 +103,24 @@ export class Chat extends React.Component<ChatProps, ChatState> {
         </AlertLayer>
       );
     } else {
-      return <div className={css.DesktopPanelWrapper}>{this.renderInnerPanel(messages, true)}</div>;
+      return (
+        <Paper elevation={4} className={css.DesktopPanelWrapper}>
+          {this.renderInnerPanel(messages, true)}
+        </Paper>
+      );
     }
   }
 
   private renderInnerPanel(messages: Message[], isDesktop: boolean) {
     let className = '';
-    let closeButton = null;
+    let closeButton = this.renderMobileHeader();
     if (isDesktop) {
       className = css.DesktopInput;
-    } else {
-      closeButton = this.renderMobileHeader();
     }
     return (
       <div className={css.InnerPanel}>
         {closeButton}
-        <div style={{ flex: '1', overflowY: 'auto' }}>
+        <div style={{ flex: '1', overflowY: 'auto' }} ref={this.messagesRef}>
           <ChatMessageHistory messages={messages} />
         </div>
         <ChatInput sendMessage={this._sendMessage} className={className} />
@@ -111,14 +131,12 @@ export class Chat extends React.Component<ChatProps, ChatState> {
   private renderMobileHeader() {
     return (
       <div>
-        <IconButton aria-label="close" onClick={this._togglePanel} style={{ float: 'right' }}>
+        <IconButton aria-label="close" onClick={this._togglePanel} className={css.ChatClose}>
           <CloseIcon />
         </IconButton>
-        <div style={{ paddingTop: '8px' }}>
-          <Typography variant="h5" component="span">
-            Messages
-          </Typography>
-        </div>
+        <Typography variant="h6" component="span" className={css.ChatTitle}>
+          Chat
+        </Typography>
       </div>
     );
   }
@@ -126,7 +144,9 @@ export class Chat extends React.Component<ChatProps, ChatState> {
   private renderButton() {
     return (
       <IconButton aria-label="Toggle chat panel" onClick={this._togglePanel}>
-        <ChatIcon />
+        <Badge badgeContent={this.state.unseenMessages} color="secondary">
+          <ChatIcon />
+        </Badge>
       </IconButton>
     );
   }
@@ -145,12 +165,25 @@ export class Chat extends React.Component<ChatProps, ChatState> {
     document.getElementsByTagName('body')[0].style.marginRight = newPadding;
   }
 
+  private scrollToBottom() {
+    const el = this.messagesRef.current;
+    if (!el) {
+      return;
+    }
+    el.scrollTop = el.scrollHeight;
+  }
+
   _sendMessage = (msg: string) => {
     // TODO: Refactor this out of lobby service.
     LobbyService.sendMessage(this.props.dispatch, this.props.channelType, this.props.channelId, msg);
   };
 
   _togglePanel = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+    const isOpen = !this.state.isOpen;
+    let unseenMessages = this.state.unseenMessages;
+    if (isOpen) {
+      unseenMessages = 0;
+    }
+    this.setState({ isOpen, unseenMessages });
   };
 }

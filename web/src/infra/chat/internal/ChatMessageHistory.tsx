@@ -6,25 +6,9 @@ interface Props {
 }
 
 export default function (props: Props) {
-  var ulStyles = {
-    listStyle: 'none',
-    margin: 0,
-    padding: 0,
-  };
-
-  return <ul style={ulStyles}>{props.messages.map(_createMessage)}</ul>;
+  return props.messages.map(_createMessage);
 }
 
-const _createMessage = (message: Message, index: number) => {
-  const liStyles = {
-    backgroundColor: index % 2 == 1 ? '#ddd' : '#efefef',
-    borderBottom: '1px solid #ddd',
-    padding: '1rem',
-  };
-
-  return (
-    <li key={`msg-${index}`} style={liStyles}>
-      <ChatMessage message={message} />
-    </li>
-  );
+const _createMessage = (message: Message) => {
+  return <ChatMessage message={message} />;
 };

@@ -1,3 +1,7 @@
 .InputWrapper {
   display: flex;
-}
+ }
+
+.TextField {
+  flex: 1 auto;
+ }

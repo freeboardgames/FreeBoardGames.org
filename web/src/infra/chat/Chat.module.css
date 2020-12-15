@@ -7,6 +7,7 @@
   height: 100%;
   width: 250x;
   z-index: 9999;
+  max-width: 234px;
 }
 
 .InnerPanel {
@@ -14,12 +15,24 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .MobileCard {
   padding: 8px;
   width: 90vw;
   height: 90vh;
+}
+
+.ChatTitle {
+  position: relative;
+  top: 9px;
+}
+
+.ChatClose {
+  float: right;
+  position: relative;
+  left: 12px;
 }
 
 .DesktopInput {

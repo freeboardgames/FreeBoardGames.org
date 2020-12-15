@@ -1,5 +1,8 @@
 import React from 'react';
 import css from './ChatInput.module.css';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import SendIcon from '@material-ui/icons/Send';
 
 interface ChatInputProps {
   sendMessage: (msg: string) => void;
@@ -16,11 +19,27 @@ export default class ChatInput extends React.Component<ChatInputProps, ChatInput
   };
 
   render() {
+    const isDisabled = this.state.inputText.length == 0;
     return (
-      <form onSubmit={this._handleSubmit}>
+      <form onSubmit={this._handleSubmit} autoComplete="off" noValidate>
         <div className={`${css.InputWrapper} ${this.props.className}`}>
-          <input style={{ flex: '1 auto' }} type="text" onChange={this._onChange} value={this.state.inputText} />
-          <button className={css.button}>Send</button>
+          <TextField
+            label="Message"
+            variant="outlined"
+            color="secondary"
+            onChange={this._onChange}
+            value={this.state.inputText}
+            className={css.TextField}
+            autoFocus
+          />
+          <IconButton
+            color="secondary"
+            onClick={this._handleSubmit}
+            disabled={isDisabled}
+            style={{ marginLeft: '8px' }}
+          >
+            <SendIcon />
+          </IconButton>
         </div>
       </form>
     );
@@ -28,7 +47,11 @@ export default class ChatInput extends React.Component<ChatInputProps, ChatInput
 
   _handleSubmit = (e: any) => {
     e.preventDefault();
-    this.props.sendMessage(this.state.inputText);
+    const text = this.state.inputText;
+    if (text.length === 0) {
+      return;
+    }
+    this.props.sendMessage(text);
     this.setState({ inputText: '' });
   };
 
