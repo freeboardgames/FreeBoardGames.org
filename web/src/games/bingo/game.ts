@@ -80,7 +80,7 @@ export const BingoGame: Game<IGameState> = {
         }
         // rows
         for (let yi = 0; yi < GRID_SIZE; yi++) {
-          found[yi + GRID_SIZE] = found[yi + GRID_SIZE] + (yPos === 0 && marked);
+          found[yi + GRID_SIZE] = found[yi + GRID_SIZE] + (yPos === yi && marked);
         }
         // diagonal
         found[10] = found[10] + (xPos === yPos && marked);
