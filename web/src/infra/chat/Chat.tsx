@@ -88,7 +88,8 @@ export class Chat extends React.Component<ChatProps, ChatState> {
   }
 
   componentWillUnmount() {
-    this.updateBodyRightMargin();
+    this.updateBodyRightMargin(true);
+    this.setState({ isOpen: false });
   }
 
   private renderPanel(messages: Message[]) {
@@ -145,7 +146,7 @@ export class Chat extends React.Component<ChatProps, ChatState> {
     return (
       <IconButton aria-label="Toggle chat panel" onClick={this._togglePanel}>
         <Badge badgeContent={this.state.unseenMessages} color="secondary">
-          <ChatIcon />
+          <ChatIcon style={{ color: 'white' }} />
         </Badge>
       </IconButton>
     );
@@ -155,9 +156,9 @@ export class Chat extends React.Component<ChatProps, ChatState> {
     return m1?.message === m2?.message && m1?.userId === m2?.userId && m1?.isoTimestamp === m2?.isoTimestamp;
   }
 
-  private updateBodyRightMargin() {
+  private updateBodyRightMargin(forceClose?: boolean) {
     let newPadding;
-    if (typeof window === 'undefined' || !this.state.isOpen || isMobileFromReq()) {
+    if (forceClose || typeof window === 'undefined' || !this.state.isOpen || isMobileFromReq()) {
       newPadding = '0px';
     } else {
       newPadding = '250px';
@@ -175,6 +176,7 @@ export class Chat extends React.Component<ChatProps, ChatState> {
 
   _sendMessage = (msg: string) => {
     // TODO: Refactor this out of lobby service.
+    debugger;
     LobbyService.sendMessage(this.props.dispatch, this.props.channelType, this.props.channelId, msg);
   };
 

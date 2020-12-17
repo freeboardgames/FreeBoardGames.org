@@ -86,10 +86,9 @@ class Room extends React.Component<Props, State> {
       return <MessagePage type={'loading'} message={'Loading...'} />;
     }
     return (
-      <FreeBoardGamesBar>
+      <FreeBoardGamesBar toolbarContent={this.renderChatButton()}>
         {this.getNicknamePrompt()}
         {this.state.changingGame ? <GamePickerModal gamePickedCallback={this._newGamePicked} /> : null}
-        <Chat channelType="room" channelId={this._roomId()} dispatch={this.props.dispatch} />
         <Subscription
           subscription={ROOM_SUBSCRIPTION}
           variables={{ roomId: this._roomId(), jwt: LobbyService.getUserToken() }}
@@ -180,6 +179,14 @@ class Room extends React.Component<Props, State> {
       <div style={{ position: 'relative' }}>
         <GameCard game={gameDef} />
         {changeGameButton}
+      </div>
+    );
+  }
+
+  private renderChatButton() {
+    return (
+      <div style={{ marginLeft: 'auto' }}>
+        <Chat channelType="room" channelId={this._roomId()} dispatch={this.props.dispatch} />
       </div>
     );
   }

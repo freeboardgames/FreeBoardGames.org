@@ -7,6 +7,9 @@ export function uaIsMobile(userAgent: string) {
 }
 
 export function isMobileFromReq(req?: any) {
+  if (typeof window === 'undefined') {
+    return true;
+  }
   let userAgent;
   if (req) {
     userAgent = req.headers['user-agent'];

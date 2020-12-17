@@ -1,3 +1,4 @@
+import React from 'react';
 import Message from './Message';
 import css from './ChatMessage.module.css';
 import Typography from '@material-ui/core/Typography';

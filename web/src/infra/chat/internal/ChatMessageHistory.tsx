@@ -1,3 +1,4 @@
+import React from 'react';
 import ChatMessage from './ChatMessage';
 import Message from './Message';
 
@@ -6,7 +7,7 @@ interface Props {
 }
 
 export default function (props: Props) {
-  return props.messages.map(_createMessage);
+  return <>{props.messages.map(_createMessage)}</>;
 }
 
 const _createMessage = (message: Message) => {
