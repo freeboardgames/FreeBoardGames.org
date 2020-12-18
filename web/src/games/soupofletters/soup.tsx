@@ -8,6 +8,7 @@ import { playerColors, BOARD_SIZE, SOLUTION_COLOR } from './constants';
 interface ISoupProps {
   puzzle: Array<Array<string>>;
   solution: Array<ISolvedWord>;
+  isActivePlayer: boolean;
   currentPlayer: string;
   wordFoundCallback?: (solvedWord: ISolvedWord) => void;
   isGameOver: boolean;
@@ -166,6 +167,9 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
 
   _handleLetterClick = (event: any, callType: string) => {
     event.preventDefault();
+    if(!this.props.isActivePlayer){
+      return; // dont allow non-active players to select words
+    }
     const { x, y, letter } = this._resolveLetterAndCoordinates(event);
     if (!letter) {
       return;

@@ -142,6 +142,17 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   }
 
+  _getPlayerScores = () => {
+    const scores: IScore[] = this.props.gameArgs.players.map((player) => {
+      return {
+        playerID: `${player.playerID}`,
+        score: this.props.G.solution.filter((s) => s.solvedBy === player.playerID.toString()).length,
+      };
+    });
+    scores.sort((a, b) => b.score - a.score);
+    return scores;
+  };
+
   _renderPlayerBadges = () => {
     const colors = Object.values(playerColors);
     return (
@@ -150,6 +161,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         players={this.props.gameArgs.players}
         colors={colors}
         ctx={this.props.ctx}
+        scores={this._getPlayerScores()}
       />
     );
   };
@@ -195,25 +207,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getBoard() {
     // score board to be shown at the end of the game
-    let scoreBoard = null;
-    if (this.props.ctx.gameover) {
-      const scores: IScore[] = this.props.gameArgs.players.map((player) => {
-        return {
-          playerID: `${player.playerID}`,
-          score: this.props.G.solution.filter((s) => s.solvedBy === player.playerID.toString()).length,
-        };
-      });
-      scores.sort((a, b) => b.score - a.score);
-      scoreBoard = (
-        <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
-      );
-    }
+    let scoreBoard = this.props.ctx.gameover ? (
+      <Scoreboard scoreboard={this._getPlayerScores()} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
+    ) : null;
 
     return (
       <span>
         <Soup
           puzzle={this.props.G.puzzle}
           solution={this.props.G.solution}
+          isActivePlayer={this._isAllowedToMakeMove()}
           currentPlayer={this.props.ctx.currentPlayer}
           wordFoundCallback={this._wordFound}
           isGameOver={this.props.ctx.gameover}
