@@ -7,6 +7,8 @@ import { SendMessageInput } from './gql/SendMessageInput.gql';
 import { Message } from './gql/Message.gql';
 import Filter from 'bad-words';
 
+const MAX_MESSAGE_LENGTH = 280;
+
 @Injectable()
 export class ChatService {
   constructor (
@@ -30,7 +32,14 @@ export class ChatService {
     const user = await this.usersService.getById(userId);
     const userNickname = user.nickname;
     const isoTimestamp = new Date().toISOString();
-    const messageContent = new Filter().clean(messageInput.message);
+    let messageContent;
+    try {
+     messageContent = new Filter().clean(messageInput.message); 
+    } catch {
+     messageContent = messageInput.message; 
+    }
+    messageContent = (messageContent || '').substring(0, MAX_MESSAGE_LENGTH);
+    messageContent = messageContent.replace(/[\r\n]+/gm, '');
     const message: Message = {
       channelType: messageInput.channelType,
       channelId: messageInput.channelId,

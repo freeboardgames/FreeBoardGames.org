@@ -29,7 +29,7 @@ export default function (props: Props) {
         </Typography>
       </div>
       <div>
-        <Typography variant="body2" component="span">
+        <Typography variant="body2" component="span" style={{ wordBreak: 'break-word' }}>
           {message.message}
         </Typography>
       </div>

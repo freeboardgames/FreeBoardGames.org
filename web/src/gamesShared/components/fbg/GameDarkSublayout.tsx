@@ -34,6 +34,8 @@ export interface IOptionsItems {
   onClick: () => void;
 }
 
+const isJest = process.env.JEST_WORKER_ID !== undefined;
+
 class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
   constructor(props: IGameDarkSublayoutProps) {
     super(props);
@@ -76,59 +78,52 @@ class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps,
     }
 
     return (
-      <div>
+      <>
         <div
           style={{
-            position: 'fixed',
-            top: '0',
-            width: '100%',
-            zIndex: 1,
+            display: 'flex',
+            maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}
         >
-          <div
-            style={{
-              maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-          >
-            <Link href="/">
-              <a style={{ float: 'left', textDecoration: 'none' }}>
-                <img src={FbgLogo} alt="FreeBoardGames.org" style={{ float: 'left', paddingRight: '16px' }} />
-                {fbgTopLeftText}
-              </a>
-            </Link>
-            {this._getOptionsMenuButton()}
-            {this._getOptionsMenuItems()}
-            {this.renderChatButton()}
-          </div>
+          <Link href="/">
+            <a style={{ textDecoration: 'none', display: 'flex' }}>
+              <img src={FbgLogo} alt="FreeBoardGames.org" style={{ paddingRight: '16px' }} />
+              {fbgTopLeftText}
+            </a>
+          </Link>
+          <div style={{ flexGrow: 1 }}></div>
+          {this.renderChatButton()}
+          {this.getOptionsMenuButton()}
+          {this.getOptionsMenuItems()}
         </div>
         <div
           style={{
-            position: 'fixed',
+            position: 'relative',
             width: '100%',
             maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
             color: 'white',
-            top: '50%',
+            top: 'calc(50vh - 49px)',
             left: '50%',
             transform: 'translate(-50%, -50%)',
           }}
         >
           {this.props.children}
         </div>
-      </div>
+      </>
     );
   }
 
   private renderChatButton() {
-    if (typeof window === 'undefined') {
+    if (typeof window === 'undefined' || isJest) {
       return null;
     }
     const gameArgs = this.props.gameArgs;
     if (gameArgs.mode !== GameMode.OnlineFriend) {
       return null;
     }
-    const matchId = this.props.router.query.matchID as string;
+    const matchId = this.props.router.query.matchId as string;
     return (
       <div style={{ float: 'right' }}>
         <Chat channelType="match" channelId={matchId} dispatch={this.props.dispatch} />
@@ -136,15 +131,10 @@ class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps,
     );
   }
 
-  _getOptionsMenuButton() {
+  private getOptionsMenuButton() {
     if (this.props.optionsMenuItems) {
       return (
-        <Button
-          onClick={this._openOptionsMenu}
-          aria-label="Open options"
-          variant="outlined"
-          style={{ margin: '8px', float: 'right' }}
-        >
+        <Button onClick={this._openOptionsMenu} aria-label="Open options" variant="outlined">
           <MoreVert style={{ color: 'white' }} />
         </Button>
       );
@@ -165,7 +155,7 @@ class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps,
     onClickFunc();
   };
 
-  _getOptionsMenuItems = () => {
+  private getOptionsMenuItems() {
     if (!this.props.optionsMenuItems) {
       return;
     }
@@ -182,7 +172,7 @@ class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps,
         {menuItems}
       </Menu>
     );
-  };
+  }
 }
 
 const sublayoutWithRouter = (props) => {
@@ -197,4 +187,7 @@ const mapStateToProps = function (state) {
   };
 };
 
-export const GameDarkSublayout = connect(mapStateToProps)(sublayoutWithRouter);
+// Do not connect to redux or router if using jest... Chat button wont work in jest.
+export const GameDarkSublayout = isJest
+  ? (GameDarkSublayoutInternal as any)
+  : connect(mapStateToProps)(sublayoutWithRouter);

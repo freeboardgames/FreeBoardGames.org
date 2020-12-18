@@ -176,7 +176,6 @@ export class Chat extends React.Component<ChatProps, ChatState> {
 
   _sendMessage = (msg: string) => {
     // TODO: Refactor this out of lobby service.
-    debugger;
     LobbyService.sendMessage(this.props.dispatch, this.props.channelType, this.props.channelId, msg);
   };
 
