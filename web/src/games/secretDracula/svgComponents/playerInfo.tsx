@@ -20,6 +20,8 @@ export interface IPlayerInfo {
   wasLastPreist: boolean;
   wasLastMayor: boolean;
   numAlivePlayers: number;
+  isGameOver: boolean;
+  isSpectator: boolean;
   chose: (pInfo: any) => void;
 }
 
@@ -72,13 +74,29 @@ export function PlayerInfo(props: IPlayerInfo) {
 
   // setup profile pic
   const humanPic = CNST.SY_HUMANS[props.id % CNST.SY_HUMANS.length];
-  const profilePic = props.me
+  let profilePic = props.me
     ? props.vampire
       ? CNST.SY_VAMPIRE
       : humanPic
     : props.renderForVampire && props.vampire
     ? CNST.SY_VAMPIRE
     : humanPic;
+
+  if (props.isGameOver) {
+    if (props.vampire) {
+      profilePic = CNST.SY_VAMPIRE;
+    }
+  } else {
+    if (props.isSpectator) {
+      profilePic = humanPic;
+    }
+  }
+
+  let showDracula = !props.isSpectator && props.dracula && props.renderForVampire;
+  if (props.isGameOver && props.dracula) {
+    showDracula = true;
+    profilePic = CNST.SY_VAMPIRE;
+  }
 
   // setup additional symbols
   const symbols = [];
@@ -142,7 +160,7 @@ export function PlayerInfo(props: IPlayerInfo) {
         {profilePic}
       </text>
 
-      {props.dracula && props.renderForVampire ? (
+      {showDracula ? (
         <text
           key={`sd_p_${props.id}_crone`}
           className={textCSS.noselect}
