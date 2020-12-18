@@ -13,5 +13,6 @@ import { RoomsModule } from '../rooms/rooms.module';
     HttpModule,
   ],
   providers: [MatchService, MatchResolver],
+  exports: [MatchService]
 })
 export class MatchModule {}

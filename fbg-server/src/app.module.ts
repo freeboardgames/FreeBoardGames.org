@@ -6,6 +6,7 @@ import { MatchModule } from './match/match.module';
 import { HealthzController } from './healthz.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { ChatModule } from './chat/chat.module';
 
 const CONNECTION: any = process.env.POSTGRES_URL
   ? {
@@ -41,6 +42,7 @@ const isProd = process.env.NODE_ENV === 'production';
     UsersModule,
     RoomsModule,
     MatchModule,
+    ChatModule,
   ],
   controllers: [HealthzController],
 })
