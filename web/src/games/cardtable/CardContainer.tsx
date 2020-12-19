@@ -12,30 +12,20 @@ interface ICardContainerProps {
   className?: string;
 }
 
-/**
- * The example data is structured as follows:
- *
- * import image from 'path/to/image.jpg';
- * [etc...]
- *
- * const tileData = [
- *   {
- *     img: image,
- *     title: 'Image',
- *     author: 'author',
- *   },
- *   {
- *     [etc...]
- *   },
- * ];
- */
 const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardContainerProps) => {
   let tileData = props.cards;
   let privacy = props.concealed && !props.turn;
   let view = props.flipped ? !privacy : privacy;
 
-  let tileList = tileData.map((tile) => (
+  const handleClick = (evt: React.MouseEvent, idx: number) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    alert(`you clicked : ${idx}`);
+  };
+
+  let tileList = tileData.map((tile, index) => (
     <img
+      onClick={(evt) => handleClick(evt, index)}
       key={tile.id}
       className={css.fitpicture}
       src={require(`${view ? './media/png/gray_back.png' : tile.img}`)}

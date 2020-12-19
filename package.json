@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "chalk": "^4.1.0",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.4",
+    "cypress": "^5.4.0"
   }
 }

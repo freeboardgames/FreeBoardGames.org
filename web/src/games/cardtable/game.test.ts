@@ -217,10 +217,10 @@ describe('flipCrib() changes game state', () => {
 
   let client = Client({ game: customGameSetup });
 
-  test('default value of cribFlipped s/b undefined', () => {
+  test('default value of cribFlipped s/b false after deal', () => {
     client.moves.deal();
     const { G } = client.store.getState();
-    expect(G.hands.east.cribFlipped).toEqual(undefined);
+    expect(G.hands.east.cribFlipped).toEqual(false);
   });
 
   test('after initial flipCrib call, cribFlipped s/b true', () => {
@@ -261,5 +261,29 @@ describe('pegScore game state changes', () => {
     expect(playerScoreLane.back).toEqual(5);
     expect(playerScoreLane.game).toEqual(0);
     expect(client.playerID).toEqual('0');
+  });
+
+  test('reset cribbage board game score', () => {
+    let client = Client({ game: customGameSetup, playerID: '0' });
+    client.moves.pegPoints(5);
+    client.moves.pegPoints(3);
+    client.moves.resetGamePegs();
+    let { G } = client.store.getState();
+    let { score } = G;
+    expect(score.north.front).toEqual(0);
+    expect(score.north.back).toEqual(-1);
+    expect(score.north.game).toEqual(0);
+    expect(client.playerID).toEqual('0');
+  });
+
+  test('cut for deal state changes', () => {
+    let clientN = Client({ game: customGameSetup, playerID: '0' });
+    clientN.start();
+    let clientS = Client({ game: customGameSetup, playerID: '1' });
+    clientS.start();
+    clientN.moves.cutForDeal(1);
+    let { G } = clientN.store.getState();
+    let { hands } = G;
+    expect(hands.north.played[0].id).toEqual('AC');
   });
 });
