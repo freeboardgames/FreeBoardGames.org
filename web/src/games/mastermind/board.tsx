@@ -18,7 +18,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       <GameLayout
         gameArgs={this.props.gameArgs}>
         <h2>Hello world!</h2>
-        <pre>{JSON.stringify(this.props.gameArgs, null, 2)}</pre>
+        <pre>{JSON.stringify(this.props, null, 2)}</pre>
       </GameLayout>
     );
   }
