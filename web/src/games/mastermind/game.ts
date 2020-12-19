@@ -1,5 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
+import { blue, green, common, yellow, brown, red, lightGreen } from '@material-ui/core/colors';
 
 interface Colour {
     id: number;
@@ -9,7 +10,7 @@ interface Colour {
 export interface IG {
     attempts: any;
     colours: Colour[];
-    current: number[];
+    current: any;
     currentAttempt: any;
     secret: Colour[];
     secretLength: number;
@@ -67,17 +68,17 @@ export const MastermindGame = {
 
     setup: (ctx: Ctx) => {
         const secretLength = 4;
-        const limitOfAttempts = 3;
+        const limitOfAttempts = 12;
         const allowToRepeat = false;
 
         const colours = [
-            {id: 1, img: 'certificate.svg', hex: "#b71c1c"},
-            {id: 2, img: 'circle.svg', hex: '#1a237e'},
-            {id: 3, img: 'heart.svg', hex: '#0277bd'},
-            {id: 4, img: 'moon.svg', hex: '#1b5e20'},
-            {id: 5, img: 'play.svg', hex: '#FFC300'},
-            {id: 6, img: 'square.svg', hex: '#5d4037'},
-            {id: 7, img: 'star.svg', hex: '#000000'},
+            {id: 1, img: 'certificate', hex: common['black']},
+            {id: 2, img: 'circle', hex: brown[800]},
+            {id: 3, img: 'heart', hex: red[700]},
+            {id: 4, img: 'moon', hex: blue[300]},
+            {id: 5, img: 'play', hex: green[700]},
+            {id: 6, img: 'square', hex: lightGreen['A400']},
+            {id: 7, img: 'star', hex: yellow[700]},
         ];
 
         const secret = generateSecret(ctx, colours, secretLength, allowToRepeat);
@@ -124,8 +125,4 @@ export const MastermindGame = {
             return { loose: true };
         }
     },
-
-    onEnd: (G: IG, ctx: Ctx) => {
-        console.log(ctx.gameover);
-    }
 };
