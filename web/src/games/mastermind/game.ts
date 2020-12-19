@@ -7,9 +7,10 @@ interface Colour {
     hex: string;
 }
 export interface IG {
-    attempts: Array<number[]>;
+    attempts: any;
     colours: Colour[];
     current: number[];
+    currentAttempt: any;
     secret: Colour[];
     secretLength: number;
     limitOfAttempts: number;
@@ -34,9 +35,9 @@ export const checkSecret = (current, secret) => {
 
     for (let i in current) {
         const pin = current[i]
-        if (pin === secret[i]) {
+        if (pin.id === secret[i].id) {
             hints.push(1);
-        } else if (secret.contains(pin)) {
+        } else if (secret.some((s => s.id === pin.id))) {
             hints.push(0);
         } else {
             hints.push(-1);
@@ -44,9 +45,21 @@ export const checkSecret = (current, secret) => {
     }
 
     return {
-        hints,
+        hints: hints.sort((a, b) => (b - a)),
         combination: current,
     }
+}
+
+export const isVictory = (G: IG) => {
+    if (G.currentAttempt && G.currentAttempt.hints && G.currentAttempt.hints.every(n => n === 1)) {
+        return true;
+    }
+
+    return false;
+}
+
+export const isGameOver = (G: IG) => {
+    return G.limitOfAttempts === G.attempts.length;
 }
 
 export const MastermindGame = {
@@ -54,8 +67,8 @@ export const MastermindGame = {
 
     setup: (ctx: Ctx) => {
         const secretLength = 4;
-        const limitOfAttempts = 12;
-        const allowToRepeat = true;
+        const limitOfAttempts = 3;
+        const allowToRepeat = false;
 
         const colours = [
             {id: 1, img: 'certificate.svg', hex: "#b71c1c"},
@@ -73,6 +86,7 @@ export const MastermindGame = {
             attempts: [],
             colours,
             current: Array(secretLength).fill(null),
+            currentAttempt: null,
             secret,
             secretLength,
             limitOfAttempts
@@ -81,7 +95,7 @@ export const MastermindGame = {
 
     moves: {
         setColourInPosition(G: any, ctx: any, colourId: number, position: number) {
-            G.current[position] = G.colours[colourId];
+            G.current[position] = G.colours.find(c => c.id === colourId);
         },
         check(G: any) {
             if (G.current.some(n => n === null)) {
@@ -90,11 +104,10 @@ export const MastermindGame = {
 
             const attempt = checkSecret(G.current, G.secret);
 
-            if (attempt.hints.every(n => n === 1)) {
-                return 'END'
+            if (!isVictory(G) && !isGameOver(G)) {
+                G.attempts.push(attempt);
+                G.currentAttempt = attempt;
             }
-
-            G.attempts.push(attempt);
         },
     },
 
@@ -102,9 +115,17 @@ export const MastermindGame = {
         moveLimit: 1,
     },
 
-    // endIf: (G, ctx) => {
-    //     if (G.cells.filter((c: any) => c === null).length === 0) {
-    //         return { draw: true };
-    //     }
-    // },
+    endIf: (G: IG, ctx: Ctx) => {
+        if (isVictory(G)) {
+            return { winner: ctx.currentPlayer };
+        }
+
+        if (isGameOver(G)) {
+            return { loose: true };
+        }
+    },
+
+    onEnd: (G: IG, ctx: Ctx) => {
+        console.log(ctx.gameover);
+    }
 };
