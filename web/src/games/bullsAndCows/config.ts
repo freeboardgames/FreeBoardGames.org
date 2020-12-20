@@ -5,7 +5,7 @@ import { Board } from './board';
 const config: IGameConfig = {
   bgioGame: BullsAndCowsGame,
   bgioBoard: Board,
-  debug: true,
+  debug: false,
 };
 
 export default config;
