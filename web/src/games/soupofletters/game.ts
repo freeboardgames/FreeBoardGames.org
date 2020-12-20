@@ -1,4 +1,4 @@
-import { INVALID_MOVE } from 'boardgame.io/core';
+import { INVALID_MOVE, ActivePlayers } from 'boardgame.io/core';
 import {
   MAX_WORDS_IN_GAME,
   MAX_WORD_LEN,
@@ -123,10 +123,11 @@ export const SoupOfLettersGame = {
   setup: (ctx): IG => initialSetup(ctx),
 
   moves: {
-    changeTurn: (G: IG, _, strict: boolean = true) => {
+    changeTurn: (G: IG, ctx: any, strict: boolean = true) => {
       if (strict && G.timeRef + TIME_OUT * 1000 > Date.now()) {
         return INVALID_MOVE;
       }
+      ctx.events.endTurn({ next: ((parseInt(ctx.currentPlayer) + 1) % ctx.numPlayers).toString() });
       return { ...G, timeRef: Date.now(), countTimerFired: G.countTimerFired + 1 };
     },
     wordFound: (G: IG, ctx: any, solvedWord: ISolvedWord) => {
@@ -136,12 +137,13 @@ export const SoupOfLettersGame = {
         }
         return { ...s };
       });
+      ctx.events.endTurn({ next: ((parseInt(ctx.currentPlayer) + 1) % ctx.numPlayers).toString() });
       return { ...G, solution, timeRef: Date.now(), countTimerFired: 0 };
     },
   },
 
   turn: {
-    moveLimit: 1,
+    activePlayers: ActivePlayers.ALL,
   },
 
   endIf: (G: IG, ctx) => {

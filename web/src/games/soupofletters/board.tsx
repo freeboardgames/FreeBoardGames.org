@@ -37,9 +37,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     };
   }
 
+  _isFirstPerson = () => isFirstPersonView(this.props.gameArgs, this.props.playerID);
+
   _isAllowedToMakeMove = () => {
     const { gameArgs, playerID, ctx } = this.props;
-    return (isOnlineGame(gameArgs) && playerID === ctx.currentPlayer) || isLocalGame(gameArgs);
+    return (this._isFirstPerson() && playerID === ctx.currentPlayer) || isLocalGame(gameArgs);
   };
 
   _wordFound = (solvedWord: ISolvedWord) => {
@@ -58,7 +60,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     if (isOnlineGame(this.props.gameArgs)) {
-      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
+      if (this._isFirstPerson()) {
         return 'Online Game';
       } else {
         return 'Spectator View';
@@ -67,8 +69,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return `Turn Player ${parseInt(this.props.ctx.currentPlayer) + 1}`;
   }
 
-  _getTimeRemaining = () => {
+  _getTimeRemaining = (considerBuffer: boolean = false) => {
     let timeLeft = (TIME_OUT + TIME_BUFF) * 1000 - (Date.now() - this.props.G.timeRef);
+    if (considerBuffer && !this._isAllowedToMakeMove() && this._isFirstPerson()) {
+      // after some buffer everyone can claim turn end for current player
+      timeLeft = timeLeft + 2000 + 500 * parseInt(this.props.playerID);
+    }
     timeLeft = Math.floor(timeLeft / 1000);
     return timeLeft > TIME_OUT ? TIME_OUT : timeLeft < 0 ? 0 : timeLeft;
   };
@@ -84,8 +90,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       secondlyCallback.push({
         time: i * 1000,
         callback: () => {
-          if (this._isAllowedToMakeMove()) {
-            if (this._getTimeRemaining() === 0) {
+          if (this._isFirstPerson() || isLocalGame(this.props.gameArgs)) {
+            if (this._getTimeRemaining(true) === 0 && !this.props.ctx.gameover) {
               this._changeTurn(true);
             }
           }
@@ -93,12 +99,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       });
     }
     return (
-      <Timer key={'timer-' + this.props.G.timeRef} checkpoints={secondlyCallback}>
-        {!this._isAllowedToMakeMove() ? (
-          <Timer.Seconds formatValue={() => this._playerInRoom().name + ` has ${this._getTimeRemaining()} seconds.`} />
-        ) : (
-          <Timer.Seconds formatValue={() => `You have ${this._getTimeRemaining()} seconds.`} />
-        )}
+      <Timer key={`sol_timer_${this.props.G.timeRef}`} checkpoints={secondlyCallback}>
+        <Timer.Seconds
+          formatValue={() =>
+            this._isAllowedToMakeMove()
+              ? `You have ${this._getTimeRemaining(false)} seconds.`
+              : `${this._playerInRoom().name} has ${this._getTimeRemaining(false)} seconds.`
+          }
+        />
       </Timer>
     );
   }
@@ -142,6 +150,17 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   }
 
+  _getPlayerScores = () => {
+    const scores: IScore[] = this.props.gameArgs.players.map((player) => {
+      return {
+        playerID: `${player.playerID}`,
+        score: this.props.G.solution.filter((s) => s.solvedBy === player.playerID.toString()).length,
+      };
+    });
+    scores.sort((a, b) => b.score - a.score);
+    return scores;
+  };
+
   _renderPlayerBadges = () => {
     const colors = Object.values(playerColors);
     return (
@@ -149,7 +168,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         playerID={this.props.playerID}
         players={this.props.gameArgs.players}
         colors={colors}
-        ctx={this.props.ctx}
+        ctx={{ ...this.props.ctx, activePlayers: null }}
+        scores={this._getPlayerScores()}
       />
     );
   };
@@ -179,8 +199,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
-        if (!isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
-          return ' ';
+        if (!this._isFirstPerson()) {
+          return 'see scoreboard';
         }
         return 'you lost';
       }
@@ -195,25 +215,20 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getBoard() {
     // score board to be shown at the end of the game
-    let scoreBoard = null;
-    if (this.props.ctx.gameover) {
-      const scores: IScore[] = this.props.gameArgs.players.map((player) => {
-        return {
-          playerID: `${player.playerID}`,
-          score: this.props.G.solution.filter((s) => s.solvedBy === player.playerID.toString()).length,
-        };
-      });
-      scores.sort((a, b) => b.score - a.score);
-      scoreBoard = (
-        <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
-      );
-    }
+    let scoreBoard = this.props.ctx.gameover ? (
+      <Scoreboard
+        scoreboard={this._getPlayerScores()}
+        players={this.props.gameArgs.players}
+        playerID={this.props.ctx.playerID}
+      />
+    ) : null;
 
     return (
       <span>
         <Soup
           puzzle={this.props.G.puzzle}
           solution={this.props.G.solution}
+          isActivePlayer={this._isAllowedToMakeMove()}
           currentPlayer={this.props.ctx.currentPlayer}
           wordFoundCallback={this._wordFound}
           isGameOver={this.props.ctx.gameover}
