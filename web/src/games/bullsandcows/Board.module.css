@@ -8,20 +8,34 @@
 .digit {
     background: transparent;
     border-radius: 25%;
-    cursor: pointer;
     padding: 0;
     margin: .5rem;
     border: 0;
     width: 2rem;
     height: 2rem;
 }
+
+.colours .digit,
+.guess .digit {
+    cursor: pointer;
+}
+
 .attempts {
     flex: 1 1;
 }
+
 .attempt {
     display: flex;
     justify-content: flex-start;
     margin-bottom: 1rem;
+}
+
+.attempt.result{
+    margin-bottom: 2rem;
+    justify-content: center;
+    border-bottom: 1px solid #888;
+    margin-left: 2rem;
+    padding: .5rem;
 }
 
 .number {
@@ -53,13 +67,14 @@
     flex-direction: column;
 }
 
+
 .svg {
     width: 2rem;
     height: 2rem;
 }
 
 .guess {
-    border-top: 1px solid #222;
+    margin-top: 2rem;
     padding-left: 1.3rem;
     padding-top: .5rem;
     display: flex;

@@ -1,4 +1,4 @@
-Bulls and Cows is deduction game where you need to discover the secret code.
+Bulls and Cows is a deduction game where you need to discover the secret code.
 
 For each guess, you'll receive hints.
 

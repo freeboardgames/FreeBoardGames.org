@@ -12,7 +12,7 @@ export const bullsAndCowsGameDef: IGameDef = {
     {
       mode: GameMode.LocalFriend,
       // extraInfo: { type: 'dropdown', options: ['Easy', 'Medium', 'Hard'] } as IGameModeExtraInfoDropdown,
-    }
+    },
   ],
   minPlayers: 1,
   maxPlayers: 1,
