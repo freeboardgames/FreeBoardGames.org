@@ -21,7 +21,7 @@
 .MobileCard {
   padding: 8px;
   width: 90vw;
-  height: 90vh;
+  height: calc(90vh - 112px);
 }
 
 .ChatTitle {

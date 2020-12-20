@@ -8,6 +8,7 @@ import { playerColors, BOARD_SIZE, SOLUTION_COLOR } from './constants';
 interface ISoupProps {
   puzzle: Array<Array<string>>;
   solution: Array<ISolvedWord>;
+  isActivePlayer: boolean;
   currentPlayer: string;
   wordFoundCallback?: (solvedWord: ISolvedWord) => void;
   isGameOver: boolean;
@@ -97,8 +98,8 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
 
     // // if developer wants to highlight start of word for debugging
     // for (const sl of this.props.solution) {
-    //   if(sl.letters[0].x===x && sl.letters[0].y === y){
-    //       return 'green';
+    //   if (sl.letters[0].x === x && sl.letters[0].y === y) {
+    //     return 'green';
     //   }
     // }
 
@@ -166,6 +167,12 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
 
   _handleLetterClick = (event: any, callType: string) => {
     event.preventDefault();
+    if (!this.props.isActivePlayer) {
+      if (this.state.highlightLetter || this.state.probableWords.length > 0) {
+        this.setState({ selectedLetters: [], probableWords: [], highlightLetter: null });
+      }
+      return; // dont allow non-active players to select words
+    }
     const { x, y, letter } = this._resolveLetterAndCoordinates(event);
     if (!letter) {
       return;
