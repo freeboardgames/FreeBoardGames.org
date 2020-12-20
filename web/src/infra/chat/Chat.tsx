@@ -75,7 +75,6 @@ export class Chat extends React.Component<ChatProps, ChatState> {
           }
           const button = this.renderButton();
           const panel = this.renderPanel(messageHistory);
-          this.scrollToBottom();
           return (
             <>
               {button}
@@ -90,6 +89,10 @@ export class Chat extends React.Component<ChatProps, ChatState> {
   componentWillUnmount() {
     this.updateBodyRightMargin(true);
     this.setState({ isOpen: false });
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
   }
 
   private renderPanel(messages: Message[]) {
