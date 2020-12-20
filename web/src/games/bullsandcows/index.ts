@@ -4,27 +4,26 @@ import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
-export const mastermindGameDef: IGameDef = {
-  code: 'mastermind',
-  name: 'Master-Mind',
+export const bullsAndCowsGameDef: IGameDef = {
+  code: 'bullsAndCows',
+  name: 'Bulls & Cows',
   imageURL: Thumbnail,
   modes: [
-    // {
-    //   mode: GameMode.AI,
-    //   extraInfo: { type: 'dropdown', options: ['Easy', 'Medium', 'Hard'] } as IGameModeExtraInfoDropdown,
-    // },
-    { mode: GameMode.LocalFriend },
+    {
+      mode: GameMode.LocalFriend,
+      // extraInfo: { type: 'dropdown', options: ['Easy', 'Medium', 'Hard'] } as IGameModeExtraInfoDropdown,
+    }
   ],
   minPlayers: 1,
   maxPlayers: 1,
-  description: 'A code breaking game',
-  descriptionTag: `Play MasterMind (also called Bulls and Cows) for free online.`,
+  description: 'also known as Mastermind',
+  descriptionTag: `Play Bulls and Cows (also known as Mastermind) for free online.`,
   instructions: {
     videoId: 'dMHxyulGrEk',
-    // text: instructions,
+    text: instructions,
   },
   status: IGameStatus.IN_DEVELOPMENT,
   config: () => import('./config'),
 };
 
-export default mastermindGameDef;
+export default bullsAndCowsGameDef;

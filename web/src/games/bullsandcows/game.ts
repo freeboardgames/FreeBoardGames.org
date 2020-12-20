@@ -63,8 +63,8 @@ export const isGameOver = (G: IG) => {
     return G.limitOfAttempts === G.attempts.length;
 }
 
-export const MastermindGame = {
-    name: 'mastermind',
+export const BullsAndCowsGame = {
+    name: 'bullsAndCows',
 
     setup: (ctx: Ctx) => {
         const secretLength = 4;
@@ -124,5 +124,5 @@ export const MastermindGame = {
         if (isGameOver(G)) {
             return { loose: true };
         }
-    },
+    }
 };

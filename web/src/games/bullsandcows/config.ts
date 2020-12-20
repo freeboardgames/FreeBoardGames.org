@@ -1,9 +1,9 @@
 import { IGameConfig } from 'gamesShared/definitions/game';
-import { MastermindGame } from './game';
+import { BullsAndCowsGame } from './game';
 import { Board } from './board';
 
 const config: IGameConfig = {
-  bgioGame: MastermindGame,
+  bgioGame: BullsAndCowsGame,
   bgioBoard: Board,
   debug: true,
 };
