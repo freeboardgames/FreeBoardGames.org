@@ -28,7 +28,7 @@ test('set ships', () => {
     board: BoardTest,
   }) as any;
   const comp = Enzyme.mount(<App playerID={'0'} gameID={'foo'} />);
-  comp.find('button').at(2).simulate('click');
+  comp.find('button').at(1).simulate('click');
   expect(comp.html()).toContain('Waiting');
 });
 

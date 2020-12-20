@@ -8,6 +8,7 @@ import { ApolloClient, ApolloError, InMemoryCache, createHttpLink } from '@apoll
 import { setContext } from '@apollo/client/link/context';
 import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
 import { NewRoom, NewRoomVariables } from 'gqlTypes/NewRoom';
+import { SendMessage, SendMessageVariables } from 'gqlTypes/SendMessage';
 import { GetMatch, GetMatchVariables } from 'gqlTypes/GetMatch';
 import { GetLobby } from 'gqlTypes/GetLobby';
 import { StartMatch, StartMatchVariables } from 'gqlTypes/StartMatch';
@@ -251,6 +252,26 @@ export class LobbyService {
       `,
     });
     return result.data;
+  }
+
+  public static async sendMessage(
+    dispatch: Dispatch<SyncUserAction>,
+    channelType: 'room' | 'match',
+    channelId: string,
+    message: string,
+  ): Promise<Boolean> {
+    const client = this.getClient();
+    const result = await client
+      .mutate<SendMessage, SendMessageVariables>({
+        mutation: gql`
+          mutation SendMessage($channelType: String!, $channelId: String!, $message: String!) {
+            sendMessage(message: { channelType: $channelType, channelId: $channelId, message: $message })
+          }
+        `,
+        variables: { channelType, channelId, message },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
+    return result.data.sendMessage;
   }
 
   public static getUserToken() {

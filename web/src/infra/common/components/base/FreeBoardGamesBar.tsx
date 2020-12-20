@@ -7,6 +7,7 @@ import Link from 'next/link';
 
 interface FBGBarProps {
   FEATURE_FLAG_readyForDesktopView?: boolean;
+  toolbarContent?: React.ReactNode;
 }
 
 class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
@@ -14,7 +15,7 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
     const maxWidth = this.props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
 
     return (
-      <React.Fragment>
+      <>
         <div
           style={{
             marginLeft: 'auto',
@@ -22,16 +23,17 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
           }}
         >
           <AppBar position="sticky">
-            <Link href="/">
-              <a style={{ textDecoration: 'none' }}>
-                <Toolbar>
+            <Toolbar>
+              <Link href="/">
+                <a style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                   <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
                   <Typography component="h1" variant="h6" style={{ color: 'white' }}>
                     FreeBoardGames.org
                   </Typography>
-                </Toolbar>
-              </a>
-            </Link>
+                </a>
+              </Link>
+              {this.props.toolbarContent}
+            </Toolbar>
           </AppBar>
         </div>
         <div
@@ -44,7 +46,7 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
         >
           {this.props.children}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

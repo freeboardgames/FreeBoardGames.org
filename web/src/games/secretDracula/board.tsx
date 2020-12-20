@@ -3,6 +3,7 @@ import { Typography, Box, Button } from '@material-ui/core';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
+import { isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
 import { IG } from './interfaces';
@@ -30,7 +31,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   // common helpers
 
-  _getPlayerID = () => this.props.playerID || this.props.ctx.currentPlayer;
+  _getPlayerID = () => (isOnlineGame(this.props.gameArgs) ? this.props.playerID : this.props.ctx.currentPlayer);
 
   _isFirstPerson = () => isFirstPersonView(this.props.gameArgs, this.props.playerID);
 
@@ -57,9 +58,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getGameOver = () => {
     if (!this.props.ctx.gameover) {
-      return;
+      return null;
     }
-    // Online game
     if (this.props.ctx.gameover.win == true) {
       return `${CNST.N_VILLAGERS} win`;
     } else {
@@ -117,14 +117,22 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   render() {
     return (
-      <GameLayout gameArgs={this.props.gameArgs} gameOver={this._getGameOver()}>
+      <GameLayout
+        gameArgs={this.props.gameArgs}
+        gameOver={this._getGameOver()}
+        extraCardContent={
+          this._getGameOver() ? (
+            <div style={{ textAlign: 'center' }}> {this._renderPlayerAndProgressInfo(0.5)} </div>
+          ) : null
+        }
+      >
         <div style={{ height: '100vh', overflow: 'auto', backgroundColor: 'black' }}>
           {/* Leave some space on top for FBG logo and title */}
           <div style={{ height: '12%' }}></div>
 
           {/* Render Title and Player Info */}
           {this._renderCommonTitle()}
-          {this._renderPlayerAndProgressInfo()}
+          {this._renderPlayerAndProgressInfo(1)}
 
           {/* Render Phase specific messages and interactions */}
           {this._renderPhaseReleatedMessage()}
@@ -141,14 +149,20 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         variant="h5"
         style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}
       >
+        {!this._isFirstPerson() ? '[SPECTATOR] ' : null}
         {CNST.PHASE_TITLES[this.props.ctx.phase] || 'Play'}
       </Typography>
     );
   };
 
-  _renderPlayerAndProgressInfo = () => {
+  _renderPlayerAndProgressInfo = (scale: number) => {
     return (
-      <svg width="100%" height="55%" viewBox={`0 0 ${CNST.B_WIDTH} ${CNST.B_HEIGHT}`}>
+      <svg
+        width={`${100 * scale}%`}
+        height={`${55 * scale}%`}
+        viewBox={`0 0 ${CNST.B_WIDTH} ${CNST.B_HEIGHT}`}
+        style={{ backgroundColor: 'black' }}
+      >
         {Array(this.props.ctx.numPlayers)
           .fill(0)
           .map((_, idx) => (
@@ -156,9 +170,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
               key={`sd_player_info_${idx}`}
               id={idx}
               me={parseInt(this._getPlayerID()) == idx}
-              renderForVampire={
-                this._isFirstPerson() && this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))
-              }
+              renderForVampire={this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))}
               playerName={this._getPlayerName(idx)}
               playerActive={this._isActivePlayer(idx)}
               dead={this.props.G.deadIDs.includes(idx)}
@@ -172,6 +184,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
               wasLastPreist={idx === this.props.G.lastPriestID}
               wasLastMayor={idx === this.props.G.lastMayorID}
               numAlivePlayers={this.props.ctx.numPlayers - this.props.G.deadIDs.length}
+              isGameOver={this._getGameOver() !== null}
+              isSpectator={!this._isFirstPerson()}
               chose={this._getPhaseRelatedPlayerFunction()}
             />
           ))}
