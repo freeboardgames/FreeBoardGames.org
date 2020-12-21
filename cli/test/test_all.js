@@ -20,7 +20,7 @@ function testAll() {
 function test() {
   cd("web");
   shell.env["FORCE_COLOR"] = "true";
-  let cmd = "yarn run jest";
+  let cmd = "yarn run jest --silent";
   fbgRun(cmd, "Tests failed (web).");
   cd("fbg-server");
   fbgRun(cmd, "Tests failed (fbg-server).");
