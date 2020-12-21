@@ -114,7 +114,7 @@ describe('Bulls and Cows Service', () => {
   });
 
   describe('isGameOver', () => {
-    it('should ignore while player still has attemps', () => {
+    it('should ignore while player still has attempts', () => {
       const G: any = { limitOfAttempts: 3, attempts: [{}, {}] };
       expect(isGameOver(G)).toBe(false);
     });

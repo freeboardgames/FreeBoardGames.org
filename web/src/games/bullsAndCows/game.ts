@@ -42,10 +42,10 @@ export const BullsAndCowsGame = {
   },
 
   moves: {
-    setColourInPosition(G: any, ctx: any, colourId: number, position: number) {
+    setColourInPosition(G: IG, ctx: Ctx, colourId: number, position: number) {
       G.current[position] = G.colours.find((c) => c.id === colourId);
     },
-    check(G: any) {
+    check(G: IG) {
       if (G.current.some((n) => n === null)) {
         return INVALID_MOVE;
       }
