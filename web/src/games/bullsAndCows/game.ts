@@ -94,6 +94,13 @@ export const BullsAndCowsGame = {
     };
   },
 
+  playerView: (G: IG, ctx: Ctx) => {
+    return {
+      ...G,
+      secret: ctx.gameover ? G.secret : [],
+    };
+  },
+
   moves: {
     setColourInPosition(G: any, ctx: any, colourId: number, position: number) {
       G.current[position] = G.colours.find((c) => c.id === colourId);

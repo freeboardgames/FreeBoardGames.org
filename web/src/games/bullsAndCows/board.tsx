@@ -73,7 +73,11 @@ const BoardBullsAndCows = ({ G, ctx, moves, selectColour, currentColourId, getHi
     <div className={css.colours}>
       {G.colours.map((colour) => (
         <button className={css.digit} key={colour.id} onClick={() => selectColour(colour.id)}>
-          <Image className={css.svg} img={colour.img} hex={colour.hex} />
+          <Image
+            className={`${css.svg} ${currentColourId === colour.id ? css.selected : ''}`}
+            img={colour.img}
+            hex={colour.hex}
+          />
         </button>
       ))}
     </div>
