@@ -38,7 +38,7 @@ const BoardBullsAndCows = ({ G, ctx, moves, selectColour, currentColourId, getHi
       {G.attempts
         .map((attempt, key) => (
           <div key={key} className={css.attempt}>
-            <span className={css.number}>{key + 1}.</span>
+            <span className={css.number}>{String(key + 1).padStart(2, '0')}.</span>
             {attempt.combination.map((combinationValue, position) => (
               <span className={css.digit} key={position}>
                 <Image img={combinationValue.img} hex={combinationValue.hex} />
@@ -72,9 +72,9 @@ const BoardBullsAndCows = ({ G, ctx, moves, selectColour, currentColourId, getHi
     </div>
     <div className={css.colours}>
       {G.colours.map((colour) => (
-        <button className={css.digit} key={colour.id} onClick={() => selectColour(colour.id)}>
+        <button className={`${css.digit} ${currentColourId === colour.id ? css.selected : ''}`} key={colour.id} onClick={() => selectColour(colour.id)}>
           <Image
-            className={`${css.svg} ${currentColourId === colour.id ? css.selected : ''}`}
+            className={css.svg}
             img={colour.img}
             hex={colour.hex}
           />
