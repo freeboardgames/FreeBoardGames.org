@@ -3,9 +3,9 @@ import css from './Board.module.css';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
-import { IG } from './game';
 import { grey } from '@material-ui/core/colors';
 import { Image } from './images';
+import { IG } from './service';
 
 interface IBoardProps {
   G: IG;
@@ -72,12 +72,12 @@ const BoardBullsAndCows = ({ G, ctx, moves, selectColour, currentColourId, getHi
     </div>
     <div className={css.colours}>
       {G.colours.map((colour) => (
-        <button className={`${css.digit} ${currentColourId === colour.id ? css.selected : ''}`} key={colour.id} onClick={() => selectColour(colour.id)}>
-          <Image
-            className={css.svg}
-            img={colour.img}
-            hex={colour.hex}
-          />
+        <button
+          className={`${css.digit} ${currentColourId === colour.id ? css.selected : ''}`}
+          key={colour.id}
+          onClick={() => selectColour(colour.id)}
+        >
+          <Image className={css.svg} img={colour.img} hex={colour.hex} />
         </button>
       ))}
     </div>
