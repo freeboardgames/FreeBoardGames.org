@@ -109,7 +109,7 @@ export class NicknamePrompt extends React.Component<Props, State> {
 
   _nicknameIsValid = () => {
     const name = this.state.nameTextField;
-    return name && name.length > 0 && name.match(VALID_NICKNAME_REGEX);
+    return name?.length > 0 && name.match(VALID_NICKNAME_REGEX);
   };
 
   _onClick = () => {
