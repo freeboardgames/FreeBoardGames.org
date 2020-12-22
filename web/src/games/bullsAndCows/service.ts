@@ -1,21 +1,29 @@
 import { Ctx } from 'boardgame.io';
 
+export interface IMoves {
+  setColourInPosition: (colourId: number, position: number) => void;
+  check: () => string | void;
+}
+export interface IAttempt {
+  hints: number[];
+  combination: IColour[];
+}
 export interface IG {
-  attempts: any;
-  colours: Colour[];
-  current: any;
-  currentAttempt: any;
-  secret: Colour[];
+  attempts: IAttempt[];
+  colours: IColour[];
+  current: IColour[];
+  secret: IColour[];
   secretLength: number;
+  lastAttempt: IAttempt | null;
   limitOfAttempts: number;
 }
-export interface Colour {
+export interface IColour {
   id: number;
   img: string;
   hex: string;
 }
 
-export const generateSecret = (ctx: Ctx, colours: Colour[], secretLength: number, allowToRepeat: boolean) => {
+export const generateSecret = (ctx: Ctx, colours: IColour[], secretLength: number, allowToRepeat: boolean) => {
   if (allowToRepeat) {
     const secret = [];
     for (let i = 0; i < secretLength; i++) {
@@ -51,10 +59,10 @@ export const checkSecret = (current, secret) => {
 
 export const isVictory = (G: IG) => {
   if (
-    G.currentAttempt &&
-    G.currentAttempt.hints &&
-    G.currentAttempt.hints.length > 0 &&
-    G.currentAttempt.hints.every((n) => n === 1)
+    G.lastAttempt &&
+    G.lastAttempt.hints &&
+    G.lastAttempt.hints.length > 0 &&
+    G.lastAttempt.hints.every((n) => n === 1)
   ) {
     return true;
   }

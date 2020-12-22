@@ -85,22 +85,20 @@ describe('Bulls and Cows Service', () => {
   });
 
   describe('isVictory', () => {
-    describe.each([
-      {},
-      { currentAttempt: {} },
-      { currentAttempt: { hints: [] } },
-      { currentAttempt: { hints: [0, -1] } },
-    ])('G = (%o)', (G: any) => {
-      it(`should return false, if none of the hints are bulls`, () => {
-        expect(isVictory(G)).toBe(false);
-      });
-    });
+    describe.each([{}, { lastAttempt: {} }, { lastAttempt: { hints: [] } }, { lastAttempt: { hints: [0, -1] } }])(
+      'G = (%o)',
+      (G: any) => {
+        it(`should return false, if none of the hints are bulls`, () => {
+          expect(isVictory(G)).toBe(false);
+        });
+      },
+    );
 
     describe.each([
-      { currentAttempt: { hints: [-1, -1, -1] } },
-      { currentAttempt: { hints: [0, -1, -1] } },
-      { currentAttempt: { hints: [1, 0, -1] } },
-      { currentAttempt: { hints: [1, 1, 0] } },
+      { lastAttempt: { hints: [-1, -1, -1] } },
+      { lastAttempt: { hints: [0, -1, -1] } },
+      { lastAttempt: { hints: [1, 0, -1] } },
+      { lastAttempt: { hints: [1, 1, 0] } },
     ])('G = %o', (G: any) => {
       it(`should return false, if only a few hints are bulls`, () => {
         expect(isVictory(G)).toBe(false);
@@ -108,7 +106,7 @@ describe('Bulls and Cows Service', () => {
     });
 
     it('should return true, if all a few hints are bulls', () => {
-      const G: any = { currentAttempt: { hints: [1, 1, 1] } };
+      const G: any = { lastAttempt: { hints: [1, 1, 1] } };
       expect(isVictory(G)).toBe(true);
     });
   });

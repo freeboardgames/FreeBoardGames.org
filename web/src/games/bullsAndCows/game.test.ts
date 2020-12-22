@@ -29,7 +29,7 @@ describe('Bulls and Cows game', () => {
       expect(G.current).toEqual([null, null, null, null]);
       expect(G.secretLength).toBe(4);
       expect(G.limitOfAttempts).toBe(12);
-      expect(G.currentAttempt).toBe(null);
+      expect(G.lastAttempt).toBe(null);
 
       expect(generateSecret).toHaveBeenCalledWith(expect.anything(), G.colours, G.secretLength, false);
     });
@@ -115,7 +115,7 @@ describe('Bulls and Cows game', () => {
 
         expect(checkSecret).toHaveBeenCalled();
 
-        expect(G.currentAttempt).toEqual(MOCK_CHECK_SECRET_VALUE);
+        expect(G.lastAttempt).toEqual(MOCK_CHECK_SECRET_VALUE);
         expect(G.attempts[0]).toEqual(MOCK_CHECK_SECRET_VALUE);
       });
     });

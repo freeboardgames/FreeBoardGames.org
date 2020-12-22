@@ -27,7 +27,7 @@ export const BullsAndCowsGame = {
       attempts: [],
       colours,
       current: Array(secretLength).fill(null),
-      currentAttempt: null,
+      lastAttempt: null,
       secret,
       secretLength,
       limitOfAttempts,
@@ -54,7 +54,7 @@ export const BullsAndCowsGame = {
 
       if (!isVictory(G) && !isGameOver(G)) {
         G.attempts.push(attempt);
-        G.currentAttempt = attempt;
+        G.lastAttempt = attempt;
       }
     },
   },

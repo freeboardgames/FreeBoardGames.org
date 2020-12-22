@@ -1,69 +1,41 @@
 import * as React from 'react';
 import css from './Board.module.css';
+
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
 import { grey } from '@material-ui/core/colors';
-import { Image } from './images';
-import { IG } from './service';
+import { IG, IMoves } from './service';
+
+import Attempt from './components/Attempt';
+import ColourCode from './components/ColourButton';
+import ColourButton from './components/ColourCode';
+import Secret from './components/Secret';
 
 interface IBoardProps {
   G: IG;
   ctx?: Ctx;
-  moves: any;
+  moves: IMoves;
   playerID?: string;
   gameArgs?: IGameArgs;
-  selectColour?: any;
+  selectColour: (colourId: number) => void;
   currentColourId?: number | null;
-  getHintValue?: any;
 }
 
 interface IBoardState {
   currentColourId: number | null;
 }
 
-const BoardBullsAndCows = ({ G, ctx, moves, selectColour, currentColourId, getHintValue }: IBoardProps) => (
+const BoardBullsAndCows = ({ G, ctx, moves, selectColour, currentColourId }: IBoardProps) => (
   <div className={css.board} style={{ backgroundColor: grey[400] }}>
     <div className={css.attempts}>
-      {ctx.gameover && (
-        <div className={`${css.attempt} ${css.result}`}>
-          <span className={css.number}>CODE:</span>
-          {G.secret.map((secretValue, position) => (
-            <span className={css.digit} key={position}>
-              <Image img={secretValue.img} hex={secretValue.hex} />
-            </span>
-          ))}
-        </div>
-      )}
-      {G.attempts
-        .map((attempt, key) => (
-          <div key={key} className={css.attempt}>
-            <span className={css.number}>{String(key + 1).padStart(2, '0')}.</span>
-            {attempt.combination.map((combinationValue, position) => (
-              <span className={css.digit} key={position}>
-                <Image img={combinationValue.img} hex={combinationValue.hex} />
-              </span>
-            ))}
-            <div className={css.hints}>
-              {attempt.hints.map((value, position) => (
-                <span className={`${css.digit} ${css.hint}`} key={position}>
-                  {getHintValue(value)}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))
-        .reverse()}
+      {ctx.gameover && <Secret secret={G.secret} />}
+      {G.attempts.map((attempt, key) => (
+        <Attempt key={key} attempt={attempt} index={String(key + 1).padStart(2, '0')} />
+      )).reverse()}
       <div className={css.guess}>
         {G.current.map((currentValue, position) => (
-          <button
-            className={css.digit}
-            key={position}
-            onClick={() => moves.setColourInPosition(currentColourId, position)}
-            style={{ backgroundColor: !currentValue ? 'grey' : 'transparent' }}
-          >
-            {(currentValue && <Image className={css.svg} img={currentValue.img} hex={currentValue.hex} />) || ''}
-          </button>
+          <ColourButton key={position} colour={currentValue} currentColourId={currentColourId} position={position} onClick={moves.setColourInPosition} />
         ))}
         <button className={css.guessBtn} onClick={() => moves.check()}>
           GUESS
@@ -72,13 +44,7 @@ const BoardBullsAndCows = ({ G, ctx, moves, selectColour, currentColourId, getHi
     </div>
     <div className={css.colours}>
       {G.colours.map((colour) => (
-        <button
-          className={`${css.digit} ${currentColourId === colour.id ? css.selected : ''}`}
-          key={colour.id}
-          onClick={() => selectColour(colour.id)}
-        >
-          <Image className={css.svg} img={colour.img} hex={colour.hex} />
-        </button>
+        <ColourCode key={colour.id} currentColourId={currentColourId} colour={colour} onClick={selectColour} />
       ))}
     </div>
   </div>
@@ -93,18 +59,8 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     };
   }
 
-  selectColour = (id: number) => {
-    this.setState({ currentColourId: id });
-  };
-
-  getHintValue = (hint: number) => {
-    if (hint === 1) {
-      return '✓';
-    } else if (hint === 0) {
-      return 'X';
-    } else {
-      return '∅';
-    }
+  selectColour = (colourId: number): void => {
+    this.setState({ currentColourId: colourId });
   };
 
   getGameOverStatus = (ctx: Ctx) => {
@@ -124,7 +80,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         moves={moves}
         selectColour={this.selectColour}
         currentColourId={this.state.currentColourId}
-        getHintValue={this.getHintValue}
       />
     );
 
@@ -136,7 +91,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           moves={moves}
           selectColour={this.selectColour}
           currentColourId={this.state.currentColourId}
-          getHintValue={this.getHintValue}
         />
       </GameLayout>
     );
