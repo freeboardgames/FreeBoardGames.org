@@ -30,14 +30,20 @@ const BoardBullsAndCows = ({ G, ctx, moves, selectColour, currentColourId }: IBo
   <div className={css.board} style={{ backgroundColor: grey[400] }}>
     <div className={css.attempts}>
       {ctx.gameover && <Secret secret={G.secret} />}
-      {G.attempts.map((attempt, key) => (
-        <Attempt key={key} attempt={attempt} index={String(key + 1).padStart(2, '0')} />
-      )).reverse()}
+      {G.attempts
+        .map((attempt, key) => <Attempt key={key} attempt={attempt} index={String(key + 1).padStart(2, '0')} />)
+        .reverse()}
       <div className={css.guess}>
         {G.current.map((currentValue, position) => (
-          <ColourButton key={position} colour={currentValue} currentColourId={currentColourId} position={position} onClick={moves.setColourInPosition} />
+          <ColourButton
+            key={position}
+            colour={currentValue}
+            currentColourId={currentColourId}
+            position={position}
+            onClick={moves.setColourInPosition}
+          />
         ))}
-        <button className={css.guessBtn} onClick={() => moves.check()}>
+        <button className={css.guessBtn} onClick={moves.check}>
           GUESS
         </button>
       </div>

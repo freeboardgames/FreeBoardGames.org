@@ -11,15 +11,19 @@ interface ColourCodeProps {
   onClick: (currentColourId: number, position: number) => void;
 }
 
-const ColourCode = ({ colour, currentColourId, onClick, position }: ColourCodeProps) => (
+const ColourCode = ({ colour, currentColourId, onClick, position }: ColourCodeProps) => {
+  const selectColour = () => onClick(currentColourId, position);
+
+  return (
     <button
-    className={css.digit}
-    key={position}
-    onClick={() => onClick(currentColourId, position)}
-    style={{ backgroundColor: !colour ? 'grey' : 'transparent' }}
-  >
-    {(colour && <Image className={css.svg} img={colour.img} hex={colour.hex} />) || ''}
-  </button>
-);
+      className={css.digit}
+      key={position}
+      onClick={selectColour}
+      style={{ backgroundColor: !colour ? 'grey' : 'transparent' }}
+    >
+      {(colour && <Image className={css.svg} img={colour.img} hex={colour.hex} />) || ''}
+    </button>
+  );
+};
 
 export default ColourCode;
