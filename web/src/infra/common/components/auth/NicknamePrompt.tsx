@@ -8,6 +8,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import AlertLayer from '../alert/AlertLayer';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+const VALID_NICKNAME_REGEX = /^[A-Za-z0-9]*$/;
+
 interface Props {
   closePrompt?: () => void;
   setNickname: (nickname: string) => void;
@@ -30,7 +32,7 @@ export class NicknamePrompt extends React.Component<Props, State> {
   }
 
   render() {
-    const errorText = this.state.hasChangedTextSinceError ? null : this.props.errorText;
+    const errorText = this.getError();
     let content = (
       <React.Fragment>
         <div>
@@ -42,6 +44,7 @@ export class NicknamePrompt extends React.Component<Props, State> {
             onKeyPress={this._setNicknameOnEnterButton}
             helperText={errorText}
             error={!!errorText}
+            inputProps={{ maxLength: 15 }}
           />
         </div>
         <Button
@@ -94,9 +97,19 @@ export class NicknamePrompt extends React.Component<Props, State> {
     }
   };
 
+  private getError() {
+    let error;
+    if (!this.state.nameTextField.match(VALID_NICKNAME_REGEX)) {
+      error = 'Alphanumerical characters only';
+    } else if (!this.state.hasChangedTextSinceError) {
+      error = this.props.errorText;
+    }
+    return error;
+  }
+
   _nicknameIsValid = () => {
     const name = this.state.nameTextField;
-    return name && name.length > 0;
+    return name?.length > 0 && name.match(VALID_NICKNAME_REGEX);
   };
 
   _onClick = () => {

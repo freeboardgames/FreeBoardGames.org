@@ -26,10 +26,28 @@ describe('UsersService', () => {
   });
 
   it('should create a new user correctly', async () => {
-    const nickname = 'foo nick';
+    const nickname = 'foo';
     const id = await service.newUser({ nickname });
     const user = await service.getById(id);
     expect(user).toEqual({ id, nickname });
+  });
+
+  it('should throw error for short nickname', async () => {
+    const nickname = '';
+    const newUserId = service.newUser({ nickname });
+    await expect(newUserId).rejects.toThrow();
+  });
+
+  it('should throw error for long nickname', async () => {
+    const nickname = '0123456789012345';
+    const newUserId = service.newUser({ nickname });
+    await expect(newUserId).rejects.toThrow();
+  });
+
+  it('should throw error for non-alphanumerical nickname', async () => {
+    const nickname = 'hi!';
+    const newUserId = service.newUser({ nickname });
+    await expect(newUserId).rejects.toThrow();
   });
 
   it('should return undefined if user does not exist', async () => {
@@ -38,9 +56,9 @@ describe('UsersService', () => {
   });
 
   it('should update nickname correctly', async () => {
-    const oldNickname = 'foo nick';
+    const oldNickname = 'foo';
     const id = await service.newUser({ nickname: oldNickname });
-    const nickname = 'bar nick';
+    const nickname = 'bar';
     await service.updateUser(id, { nickname });
     const user = await service.getById(id);
     expect(user).toEqual({ id, nickname });

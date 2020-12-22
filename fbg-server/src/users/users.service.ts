@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { userEntityToUser } from './UserUtil';
 
+const VALID_NICKNAME_REGEX = /^[A-Za-z0-9]*$/;
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -55,7 +57,19 @@ export class UsersService {
     }
     if (!user.nickname || user.nickname.length < 1) {
       throw new HttpException(
-        `Invalid nickname: ${user.nickname}`,
+        `Nickname is too short: ${user.nickname}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (user.nickname.length > 15) {
+      throw new HttpException(
+        `Nickname is too long: ${user.nickname}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!user.nickname.match(VALID_NICKNAME_REGEX)) {
+      throw new HttpException(
+        `Only alphanumerics are allowed: ${user.nickname}`,
         HttpStatus.BAD_REQUEST,
       );
     }
