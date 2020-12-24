@@ -41,6 +41,7 @@ export interface IGameDef {
   status: IGameStatus;
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
+  customization?: () => Promise<any>;
 }
 
 export interface IGameDefMap {

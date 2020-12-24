@@ -6,20 +6,12 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import Slider from '@material-ui/core/Slider';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Link from 'next/link';
 import { IGameDef } from 'gamesShared/definitions/game';
-import {
-  GameMode,
-  IGameModeInfo,
-  IGameModeExtraInfoDropdown,
-  IGameModeExtraInfoSlider,
-} from 'gamesShared/definitions/mode';
+import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import { LobbyService } from '../common/services/LobbyService';
 import Router from 'next/router';
 import { connect } from 'react-redux';
@@ -184,6 +176,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
         return this._getExtraInfoNumPlayers(info);
       }
     }
+    // TODO: Replace this with new customization logic.
     if (info.extraInfo) {
       const extraInfo = info.extraInfo;
       if (extraInfo.type === 'slider') {
@@ -219,23 +212,6 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     this.setState(newState);
   };
 
-  _getExtraInfoSlider(info: IGameModeInfo, slider: IGameModeExtraInfoSlider) {
-    const value = this._getExtraInfoValue(info);
-    return (
-      <div style={{ margin: '8px', width: '80%' }}>
-        <Typography id="label" style={{ marginBottom: '8px' }}>
-          Difficulty {value}/{slider.max}
-        </Typography>
-        <Slider
-          value={value}
-          min={slider.min}
-          max={slider.max}
-          step={1}
-          onChange={this._handleSliderChange(info.mode)}
-        />
-      </div>
-    );
-  }
 
   _handleSliderChange = (mode: GameMode) => (event: any, value: number) => {
     const newState: IGameModePickerState = {
@@ -247,35 +223,6 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     newState.extraInfo[mode] = value;
     this.setState(newState);
   };
-
-  _getExtraInfoDropdown(info: IGameModeInfo, dropdown: IGameModeExtraInfoDropdown) {
-    const list: JSX.Element[] = dropdown.options.map((option, idx) => {
-      idx++;
-      return (
-        <MenuItem
-          onClick={this._handleClickSelection(info.mode, idx)}
-          key={option}
-          value={option}
-          selected={this._getExtraInfoValue(info) === idx}
-        >
-          {option}
-        </MenuItem>
-      );
-    });
-    return (
-      <div>
-        <MenuList
-          style={{
-            paddingTop: 0,
-            paddingBottom: 0,
-            display: 'flex',
-          }}
-        >
-          {list}
-        </MenuList>
-      </div>
-    );
-  }
 
   _getNumOfCardsToDisplay(cardsToDisplay) {
     const numberOfGameModes = this.props.gameDef.modes.length;
