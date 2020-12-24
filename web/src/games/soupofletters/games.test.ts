@@ -13,8 +13,8 @@ describe('SoupOfLetter Rules', () => {
   });
 
   it('should declare draw when players are unable to find a single word.', () => {
-    for (let i = 0; i < DRAW_AFTER_N_TIMERS * numPlayers; i++) {
-      client.moves.changeTurn();
+    for (let i = 0; i < DRAW_AFTER_N_TIMERS * Math.max(3, numPlayers); i++) {
+      client.moves.changeTurn(false);
     }
 
     const { ctx } = client.getState();
@@ -31,8 +31,8 @@ describe('SoupOfLetter Rules', () => {
     }
 
     // trigger game end
-    for (let i = 0; i < DRAW_AFTER_N_TIMERS * numPlayers; i++) {
-      client.moves.changeTurn();
+    for (let i = 0; i < DRAW_AFTER_N_TIMERS * Math.max(3, numPlayers); i++) {
+      client.moves.changeTurn(false);
     }
 
     const { ctx } = client.getState();
@@ -62,7 +62,7 @@ describe('SoupOfLetter Rules', () => {
     }
 
     // player 0 skips one, which is solved by player 1
-    client.moves.changeTurn();
+    client.moves.changeTurn(false);
     client.moves.wordFound(solution[solution.length - 1]);
 
     const { ctx } = client.getState();

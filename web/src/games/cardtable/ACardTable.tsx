@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import css from './ACardTable.css';
 import { IG, IScoreKeeper } from './game';
+import css from './ACardTable.module.css';
 import CardContainer from './CardContainer';
 import { Ctx } from 'boardgame.io';
 import CribbageBoardB from './CribbageBoardB';

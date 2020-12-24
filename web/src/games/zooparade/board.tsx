@@ -15,7 +15,7 @@ import { BLog } from './components/blog';
 import { Ctx } from 'boardgame.io';
 import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
 
-import css from './board.css';
+import css from './board.module.css';
 import { AutoHide } from 'gamesShared/components/animation/AutoHide';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';
 import { isWin } from './endconditions';

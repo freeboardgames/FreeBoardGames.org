@@ -2,7 +2,7 @@ import React from 'react';
 import { Log, Moves } from '../interfaces';
 import { BHintIcon } from './bhinticon';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
-import css from './blog.css';
+import css from './blog.module.css';
 import { BCard } from './bcard';
 
 interface InnerWrapper {

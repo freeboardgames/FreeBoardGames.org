@@ -1,0 +1,96 @@
+.board {
+    display: flex;
+    color: black;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    align-items: flex-end;
+}
+
+.digit {
+    background: transparent;
+    border-radius: 25%;
+    padding: 0;
+    margin: .5rem;
+    border: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.colours .digit,
+.guess .digit {
+    cursor: pointer;
+}
+
+.attempts {
+    flex: 1 1;
+    padding-top: 2rem;
+}
+
+.attempt {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+}
+
+.attempt.result{
+    margin-bottom: 2rem;
+    justify-content: center;
+    border-bottom: 1px solid #888;
+    margin-left: 2rem;
+    padding: .5rem;
+}
+
+.number {
+    align-self: center;
+    margin-left: .5rem;
+}
+
+.hints {
+    align-items: center;
+    background-color: #ccc;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    margin-left: 1rem;
+    margin-right: .5rem;
+    padding: 0;
+}
+
+.hint {
+    flex: 1;
+    font-size: 1.5rem;
+    margin: 0;
+    text-align: center;
+}
+
+.colours {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: .5rem;
+}
+
+.svg {
+    width: 2rem;
+    height: 2rem;
+}
+.svg.selected {
+    outline: 2px dashed black;
+}
+
+.guess {
+    margin-top: 2rem;
+    padding: .5rem 1.3rem;
+    display: flex;
+}
+
+.guessBtn {
+    border: 1px solid #333;
+    border-radius: 25px;
+    background-color: #555;
+    color: white;
+    border: 0;
+    padding: .1rem 1rem;
+    margin: .2rem;
+    margin-left: 1rem;
+    font-weight: bold;
+}

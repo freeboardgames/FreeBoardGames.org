@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { ICard } from './game';
-import css from './CardContainer.css';
 import { Dialog, DialogContent, DialogActions, Slider, DialogTitle, Button } from '@material-ui/core';
+import css from './CardContainer.module.css';
 
 interface ICardContainerProps {
   collaborator?: {

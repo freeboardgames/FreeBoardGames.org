@@ -2,7 +2,7 @@ import React from 'react';
 import Fab from '@material-ui/core/Fab';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import css from './DesktopCarousel.css';
+import css from './DesktopCarousel.module.css';
 
 interface DesktopCarouselProps {
   height?: string;

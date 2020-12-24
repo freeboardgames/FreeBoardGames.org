@@ -2,7 +2,7 @@ import * as React from 'react';
 import { IG, Phases, TeamColor } from './definitions';
 import { Ctx } from 'boardgame.io';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import css from './board.css';
+import css from './board.module.css';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Lobby } from './Lobby';
 import { PlayBoard } from './PlayBoard';

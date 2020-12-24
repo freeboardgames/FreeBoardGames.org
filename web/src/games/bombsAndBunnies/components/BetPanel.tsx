@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from './BetPanel.css';
+import css from './BetPanel.module.css';
 
 export interface IBetPanelProps {
   minBet: number;

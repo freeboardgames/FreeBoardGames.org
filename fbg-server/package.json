@@ -36,6 +36,7 @@
     "@types/superagent": "^4.1.7",
     "apollo": "^2.28.0",
     "apollo-server-express": "^2.14.2",
+    "bad-words": "^3.0.4",
     "cookie-parser": "^1.4.5",
     "cross-env": "^7.0.2",
     "csurf": "^1.11.0",

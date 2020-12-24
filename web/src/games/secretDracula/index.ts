@@ -7,7 +7,11 @@ export const secretDraculaGameDef: IGameDef = {
   code: 'secretDracula',
   name: 'Secret Dracula',
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.OnlineFriend }],
+  modes: [
+    { mode: GameMode.OnlineFriend },
+    // Local mode is quite helpful during development
+    // { mode: GameMode.LocalFriend }
+  ],
   minPlayers: 5,
   maxPlayers: 10,
   description: 'Similar to Secret Hitler',

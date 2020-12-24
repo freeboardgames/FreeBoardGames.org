@@ -1,0 +1,40 @@
+.DesktopPanelWrapper {
+  padding: 8px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: rgb(207, 207, 207);
+  height: 100%;
+  width: 250x;
+  z-index: 9999;
+  max-width: 234px;
+}
+
+.InnerPanel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.MobileCard {
+  padding: 8px;
+  width: 90vw;
+  height: calc(90vh - 112px);
+}
+
+.ChatTitle {
+  position: relative;
+  top: 9px;
+}
+
+.ChatClose {
+  float: right;
+  position: relative;
+  left: 12px;
+}
+
+.DesktopInput {
+  padding-bottom: 16px;
+}

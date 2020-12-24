@@ -3,7 +3,7 @@ import { IHand, ICard, IHintMask } from '../interfaces';
 import { BPlay } from './bplay';
 import { BCardWithHint } from './bcardwithhint';
 
-import style from './bhand.css';
+import style from './bhand.module.css';
 
 interface InnerWrapper {
   hand: IHand;

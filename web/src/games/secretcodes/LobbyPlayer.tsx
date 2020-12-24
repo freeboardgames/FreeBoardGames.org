@@ -1,5 +1,5 @@
 import * as React from 'react';
-import css from './Lobby.css';
+import css from './Lobby.module.css';
 import { getPlayerTeam, isPlayerSpymaster } from './util';
 import { IG } from './definitions';
 

@@ -6,15 +6,15 @@ export function uaIsMobile(userAgent: string) {
   return isMobile;
 }
 
-export function isMobileFromReq(req: any) {
+export function isMobileFromReq(req?: any) {
   let userAgent;
   if (req) {
     userAgent = req.headers['user-agent'];
-  } else if (window) {
+  } else if (typeof window !== 'undefined') {
     userAgent = window.navigator.userAgent;
   }
   if (!userAgent) {
-    return false;
+    return true;
   }
   const isMobile = uaIsMobile(userAgent);
   return isMobile;
