@@ -1,9 +1,10 @@
     .cardcontainer {
       min-width: 200px;
+      min-height: 25%;
       display: 'inline-grid';
       justify-content: 'center';
       overflow: 'visible';
-      background-color: rgb(19, 252, 19);
+      background-color: rgb(29, 90, 29);
     }
 
     .fitpicture {
