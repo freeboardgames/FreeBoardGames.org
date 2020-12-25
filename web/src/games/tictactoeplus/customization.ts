@@ -1,12 +1,11 @@
 import { GameCustomization } from 'gamesShared/definitions/customization';
-import slider from 'gamesShared/components/customization/Slider';
+import dropdown from 'gamesShared/components/customization/Dropdown';
 import { GameMode } from 'gamesShared/definitions/mode';
 
-const MIN_VALUE = 1;
-const MAX_VALUE = 8;
+const options = ['Easy', 'Hard'];
 
 export interface QuickCustomizationState {
-  difficulty: number;
+  difficulty: 'Easy' | 'Hard';
 }
 
 const customization: GameCustomization = {
@@ -15,7 +14,12 @@ const customization: GameCustomization = {
       return null;
     }
     const state = currentValue as QuickCustomizationState;
-    return slider(MIN_VALUE, MAX_VALUE, state.difficulty, (difficulty) => {
+    let idx = options.indexOf(state.difficulty);
+    if (idx === -1) {
+      idx = 0;
+    }
+    return dropdown(options, idx, (newIdx) => {
+      const difficulty = options[newIdx];
       onChange({ difficulty });
     });
   },

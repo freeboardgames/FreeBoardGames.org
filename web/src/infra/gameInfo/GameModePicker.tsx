@@ -18,19 +18,25 @@ interface IGameModePickerProps {
 
 interface IGameModePickerState {
   onlinePlayRequested: number;
+  playButtonError: boolean;
+  playButtonDisabled: boolean;
 }
 
 export class GameModePickerInternal extends React.Component<IGameModePickerProps, IGameModePickerState> {
   state = {
-    onlinePlayRequested: 0
+    onlinePlayRequested: 0,
+    playButtonDisabled: false,
+    playButtonError: false,
   };
 
-  async render() {
+  render() {
     const cards = [];
     for (const info of this.props.gameDef.modes) {
       cards.push(<GameModePickerCard
         gameDef={this.props.gameDef}
         info={info}
+        playButtonDisabled={this.state.playButtonDisabled}
+        playButtonError={this.state.playButtonError}
         playOnlineGameCallback={this._playOnlineGame}
       />);
     }
@@ -54,14 +60,22 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     }
   }
 
- _playOnlineGame = (info: IGameModeInfo, numPlayers: number) => async () => {
+ _playOnlineGame = (info: IGameModeInfo, numPlayers: number) => () => {
     if (!this.props.user.loggedIn) {
       this.setState({ onlinePlayRequested: numPlayers });
       return;
     }
+    this.setState({ playButtonDisabled: true });
     const gameCode = this.props.gameDef.code;
-    const response = await LobbyService.newRoom((this.props as any).dispatch, gameCode, numPlayers);
-    Router.replace(`/room/${response.newRoom.roomId}`);
+    LobbyService.newRoom((this.props as any).dispatch, gameCode, numPlayers).then(
+      (response) => {
+        // we use .replace instead of .push so that the browser back button works correctly
+        Router.replace(`/room/${response.newRoom.roomId}`);
+      },
+      () => {
+        this.setState({ playButtonError: true, playButtonDisabled: false });
+      },
+    );;
   };
 
   static async getInitialProps(router) {

@@ -18,18 +18,21 @@ import Typography from '@material-ui/core/Typography';
 interface GameModePickerCardProps {
   gameDef: IGameDef;
   info: IGameModeInfo;
-  playOnlineGameCallback: (info: IGameModeInfo, numPlayers: number) => () => Promise<void>;
-}
-
-interface GameModePickerCardState {
-  numPlayers: number;
+  playOnlineGameCallback: (info: IGameModeInfo, numPlayers: number) => () => void;
   playButtonError: boolean;
   playButtonDisabled: boolean;
 }
 
-export class GameModePickerCard extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
+interface GameModePickerCardState {
+  numPlayers: number;
+}
 
- async render() {
+export class GameModePickerCard extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
+ state = {
+    numPlayers: 2
+ }
+
+ render() {
     let title;
     let description;
     let icon;
@@ -67,10 +70,10 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
  private renderButton() {
     let btnText = 'Play';
     let color = 'primary'; // FIXME: couldn't find the type
-    if (this.state.playButtonError) {
+    if (this.props.playButtonError) {
       btnText = 'Error';
       color = 'secondary';
-    } else if (this.state.playButtonDisabled) {
+    } else if (this.props.playButtonDisabled) {
       btnText = 'Loading';
     }
     if (this.props.info.mode === GameMode.OnlineFriend) {
@@ -81,7 +84,7 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
           color={color as any}
           style={{ marginLeft: 'auto' }}
           onClick={this.props.playOnlineGameCallback(this.props.info, this.state.numPlayers)}
-          disabled={this.state.playButtonDisabled}
+          disabled={this.props.playButtonDisabled}
         >
           {btnText}
         </Button>
