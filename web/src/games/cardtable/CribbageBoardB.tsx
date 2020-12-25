@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import css from './CribbageBoardB.css';
+import css from './CribbageBoardB.module.css';
 import { IScore, IScoreKeeper } from './game';
 import Dialog from '@material-ui/core/Dialog';
 import Slider from '@material-ui/core/Slider';
@@ -82,15 +82,15 @@ const Pegstreet: FunctionComponent<PeggroupProps> = ({ start, className, score, 
       <Peggroup className={css.Peggroup_upstreet} start={start + 25} score={score} opponent={opponent} />
     </div>
   ) : (
-    <div className={className}>
-      <Peggroup className={css.Peggroup} start={start} score={score} opponent={opponent} />
-      <Peggroup className={css.Peggroup} start={start + 5} score={score} opponent={opponent} />
-      <Peggroup className={css.Peggroup} start={start + 10} score={score} opponent={opponent} />
-      <Peggroup className={css.Peggroup} start={start + 15} score={score} opponent={opponent} />
-      <Peggroup className={css.Peggroup} start={start + 20} score={score} opponent={opponent} />
-      <Peggroup className={css.Peggroup} start={start + 25} score={score} opponent={opponent} />
-    </div>
-  );
+      <div className={className}>
+        <Peggroup className={css.Peggroup} start={start} score={score} opponent={opponent} />
+        <Peggroup className={css.Peggroup} start={start + 5} score={score} opponent={opponent} />
+        <Peggroup className={css.Peggroup} start={start + 10} score={score} opponent={opponent} />
+        <Peggroup className={css.Peggroup} start={start + 15} score={score} opponent={opponent} />
+        <Peggroup className={css.Peggroup} start={start + 20} score={score} opponent={opponent} />
+        <Peggroup className={css.Peggroup} start={start + 25} score={score} opponent={opponent} />
+      </div>
+    );
 };
 
 type HomestreetProps = {
@@ -107,8 +107,8 @@ const Homestreet: FunctionComponent<HomestreetProps> = ({ start, className, scor
     start < 31 ? (
       <Peghole className={`${css.Peghole} ${css.tooltip} home`} opponent={opponent} idx={0} score={score} />
     ) : (
-      <Peghole className={`${css.Peghole} ${css.tooltip}`} opponent={opponent} score={score} idx={-1} />
-    );
+        <Peghole className={`${css.Peghole} ${css.tooltip}`} opponent={opponent} score={score} idx={-1} />
+      );
 
   return (
     <div className={css.Homestreet}>
