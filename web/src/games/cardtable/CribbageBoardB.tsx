@@ -19,23 +19,16 @@ function Peghole(props: PegholeProps) {
   let clazz = css.Peghole;
 
   const isPegged = (idx: number) => {
-    let pegged = false;
-
-    if (idx < 1 && props.score.back === idx) {
-      pegged = true;
-    } else if (idx < 1 && props.score.front === idx) {
-      pegged = true;
-    } else if (idx < 61 && props.score.front === idx) {
-      pegged = true;
-    } else if (idx < 61 && props.score.back === idx) {
-      pegged = true;
-    } else if (props.score.front > 60 && props.score.front % 60 === idx) {
-      pegged = true;
-    } else if (props.score.back > 60 && props.score.back % 60 === idx) {
-      pegged = true;
-    }
-    return pegged;
+    return (
+      (idx < 1 && props.score.back === idx) ||
+      (idx < 1 && props.score.front === idx) ||
+      (idx < 61 && props.score.front === idx) ||
+      (idx < 61 && props.score.back === idx) ||
+      (props.score.front > 60 && props.score.front % 60 === idx) ||
+      (props.score.back > 60 && props.score.back % 60 === idx)
+    );
   };
+
   let pegged = isPegged(props.idx);
 
   if (pegged) {
