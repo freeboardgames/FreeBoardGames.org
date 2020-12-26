@@ -3,7 +3,9 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { dealCribbage } from './deals';
 
 export interface IG {
-  count: number;
+  bestCut?: number;
+  chosenDealer?: number;
+  cutTie?: boolean;
   score: IScoreKeeper;
   deck: ICard[];
   hands: ITable;
@@ -39,23 +41,46 @@ export interface ILocation {
   cardcount?: number;
 }
 
-export interface IScore {
+export type IScore = {
   back: number;
   front: number;
   games?: number;
-}
+};
 
-export interface IScoreKeeper {
+export type IScoreKeeper = {
   north: IScore;
   south: IScore;
   east: IScore;
   west: IScore;
-}
+};
 
 export interface ICardMove {
   from: ILocation;
   to: ILocation;
 }
+
+const doesCutResolve = (G: IG, ctx: Ctx) => {
+  let myCard = ctx.playerID === '0' ? G.hands.north.played[0] : G.hands.south.played[0];
+  let theirCard = ctx.playerID === '0' ? G.hands.south.played[0] : G.hands.north.played[0];
+  let response = false;
+  if (myCard && theirCard && myCard.rank % 13 !== theirCard.rank % 13) {
+    response = true;
+  }
+  return response;
+};
+
+const doesCutResolveSelf = (G: IG, ctx: Ctx) => {
+  let myCard = ctx.playerID === '0' ? G.hands.north.played[0] : G.hands.south.played[0];
+  let theirCard = ctx.playerID === '0' ? G.hands.south.played[0] : G.hands.north.played[0];
+  let response = false;
+  if (myCard && theirCard) {
+    response = myCard.rank % 13 < theirCard.rank % 13;
+    if (myCard.rank % 13 === theirCard.rank % 13) {
+      G.cutTie = true;
+    }
+  }
+  return response;
+};
 
 const moveCards = (G: IG, ctx: Ctx, cm: ICardMove) => {
   if (cm.from && cm.to) {
@@ -63,6 +88,19 @@ const moveCards = (G: IG, ctx: Ctx, cm: ICardMove) => {
     let source: ICard[] = getNamedContainer(G, cm.from.container);
     let target: ICard[] = getNamedContainer(G, cm.to.container);
     let moving: ICard[] = source.splice(cm.from.ordinal, cm.from.cardcount ? cm.from.cardcount : 1);
+    target.splice(cm.to.ordinal, 0, ...moving);
+  } else return INVALID_MOVE;
+};
+
+const cloneCardAt = (G: IG, ctx: Ctx, cm: ICardMove) => {
+  if (cm.from && cm.to) {
+    //this uses Immer mutability under the hood
+    let source: ICard[] = getNamedContainer(G, cm.from.container);
+    let target: ICard[] = getNamedContainer(G, cm.to.container);
+    let moving: ICard[] = source.slice(
+      cm.from.ordinal,
+      cm.from.cardcount ? cm.from.cardcount + cm.from.ordinal : 1 + cm.from.ordinal,
+    );
     target.splice(cm.to.ordinal, 0, ...moving);
   } else return INVALID_MOVE;
 };
@@ -79,86 +117,201 @@ const cutDeck = (G: IG, ctx: Ctx, depth: number) => {
   return { ...G, deck: top };
 };
 
+const resetGamePegs = (G: IG) => {
+  G.score.south.back = -1;
+  G.score.north.back = -1;
+  G.score.south.front = 0;
+  G.score.north.front = 0;
+};
+
+const resetMatchPegs = (G: IG) => {
+  G.score.south.games = 0;
+  G.score.north.games = 0;
+};
+
+const deal = (G: IG, ctx: Ctx) => {
+  let fresh: ICard[] = dealCribbage.fresh.slice(0);
+  let { pattern } = dealCribbage;
+  //player 0 sits north, player 1 sits south
+  let dealer = ctx.playerID;
+  fresh = ctx.random.Shuffle(fresh);
+  let draftNorth = [];
+  let draftSouth = [];
+  let holders = dealer === '1' ? [draftNorth, draftSouth] : [draftSouth, draftNorth];
+  for (var i = 0; i < pattern.hand; i++) {
+    for (var j = 0; j < pattern.players; j++) {
+      holders[j % pattern.players].push(fresh.pop());
+    }
+  }
+  G.hands.north.melds.length = 0;
+  G.hands.north.played.length = 0;
+  G.hands.north.private.length = 0;
+  G.hands.north.tricks.length = 0;
+  G.hands.north.tricks.length = 0;
+  G.hands.north.held.length = 0;
+  G.hands.north.held = draftNorth;
+  G.hands.east.private.length = 0; //used for crib
+  G.hands.south.melds.length = 0;
+  G.hands.south.played.length = 0;
+  G.hands.south.private.length = 0;
+  G.hands.south.tricks.length = 0;
+  G.hands.south.held.length = 0;
+  G.hands.south.held = draftSouth;
+  G.stock = [];
+  G.hands.east.cribFlipped = false;
+  G.deck = fresh;
+  if (ctx.activePlayers && ctx.activePlayers[0] === 'theCount' && ctx.activePlayers[1] === 'theCount') {
+    ctx.events.endTurn();
+  } else {
+    ctx.events.setActivePlayers({ all: 'putToCrib' });
+  }
+};
+
+const putToCrib = (G: IG, ctx: Ctx, idx: number) => {
+  let who = ctx.playerID;
+  let playFrom: ILocation = findFromForPlayer(G, ctx, idx, who);
+  let playTo: ILocation = findCribForPlayer();
+  let cribMove = {
+    from: playFrom,
+    to: playTo,
+  };
+  moveCards(G, ctx, cribMove);
+  if (G.hands.east.private.length > 3) {
+    ctx.events.setActivePlayers({ all: 'cutForTurn' });
+  }
+};
+
+const cutCardClone = (G: IG, ctx: Ctx, move: ICardMove) => {
+  cloneCardAt(G, ctx, move);
+};
+
+const assignIfCutBetter = (G: IG, ctx: Ctx) => {
+  //when defined G.bestCut shows best so far
+  if (G.bestCut) {
+    if (doesCutResolve(G, ctx)) {
+      if (doesCutResolveSelf(G, ctx)) {
+        G.chosenDealer = ctx.playerID === '0' ? 0 : 1;
+        G.bestCut = ctx.playerID === '0' ? G.hands.north.played[0].rank % 13 : G.hands.south.played[0].rank % 13;
+      } else {
+        G.chosenDealer = ctx.playerID === '0' ? 1 : 0;
+        G.bestCut = ctx.playerID === '0' ? G.hands.south.played[0].rank % 13 : G.hands.north.played[0].rank % 13;
+      }
+    } else {
+      if (G.hands.north.played[0].rank % 13 === G.hands.south.played[0].rank % 13) {
+        G.cutTie = true;
+      }
+    }
+  } else {
+    let { container } = findPlayedForPlayer(G, ctx, ctx.playerID);
+    G.bestCut = getNamedContainer(G, container)[0].rank % 13;
+  }
+};
+
+const cutForDeal = (G: IG, ctx: Ctx, idx: number) => {
+  if (G.cutTie) {
+    //clear everything
+    G.cutTie = false;
+    G.hands.north.played = [];
+    G.hands.south.played = [];
+    G.bestCut = null;
+  }
+  let who = ctx.playerID;
+  let cloneFrom: ILocation = {
+    container: 'deck',
+    ordinal: idx,
+  };
+  let playTo: ILocation = findPlayedForPlayer(G, ctx, who);
+  let cutClone = {
+    from: cloneFrom,
+    to: playTo,
+  };
+  cutCardClone(G, ctx, cutClone);
+  assignIfCutBetter(G, ctx);
+};
+
+const play = (G: IG, ctx: Ctx, idx: number) => {
+  let who = ctx.playerID;
+  let playFrom: ILocation = findFromForPlayer(G, ctx, idx, who);
+  let playTo: ILocation = findPlayedForPlayer(G, ctx, who);
+  let playMove = {
+    from: playFrom,
+    to: playTo,
+  };
+  moveCards(G, ctx, playMove);
+  if (G.hands.north.held.length === 0 && G.hands.south.held.length === 0) {
+    ctx.events.setActivePlayers({ all: 'theCount' });
+  }
+};
+
+const rotateTurnToDeal = (G: IG, ctx: Ctx) => {
+  G.chosenDealer = ctx.currentPlayer === '0' ? 1 : 0;
+  G.hands.north.held.length = 0;
+  G.hands.south.held.length = 0;
+  G.hands.east.private.length = 0;
+  G.hands.north.played.length = 0;
+  G.hands.south.played.length = 0;
+  G.deck.push(G.deck[0]); //kludge to face the turn
+  G.bestCut = null;
+  G.cutTie = false;
+  ctx.events.endTurn();
+};
+const cutShowTurn = (G: IG, ctx: Ctx, idx: number) => {
+  cutDeck(G, ctx, idx);
+  G.deck.length = 1;
+  ctx.events.setActivePlayers({ all: 'thePlay' });
+};
+
+const flipCrib = (G: IG) => {
+  G.hands.east.cribFlipped = !G.hands.east.cribFlipped;
+};
+
+const pegPoints = (G: IG, ctx: Ctx, score: number) => {
+  //pegs are as a back, and fwd peg
+  //as score ensues, back2front+score,
+  //is the general behavior
+  let playerScore: IScore = findPegLaneForPlayer(G, ctx);
+  let { front, back } = playerScore;
+  let temp = front;
+  front = front + score;
+  back = temp;
+  playerScore.front = front;
+  playerScore.back = back;
+};
+
 export const moves = {
   cutDeck,
 
   moveCards,
 
-  deal(G: IG, ctx: Ctx) {
-    let fresh: ICard[] = dealCribbage.fresh.slice(0);
-    let { pattern } = dealCribbage;
-    //player 0 sits north, player 1 sits south
-    let dealer = ctx.playerID;
-    fresh = ctx.random.Shuffle(fresh);
-    let draftNorth = [];
-    let draftSouth = [];
-    let holders = dealer === '1' ? [draftNorth, draftSouth] : [draftSouth, draftNorth];
-    for (var i = 0; i < pattern.hand; i++) {
-      for (var j = 0; j < pattern.players; j++) {
-        holders[j % pattern.players].push(fresh.pop());
-      }
-    }
-    G.hands.north.melds.length = 0;
-    G.hands.north.played.length = 0;
-    G.hands.north.private.length = 0;
-    G.hands.north.tricks.length = 0;
-    G.hands.north.tricks.length = 0;
-    G.hands.north.held.length = 0;
-    G.hands.north.held = draftNorth;
-    G.hands.east.private.length = 0; //used for crib
-    G.hands.south.melds.length = 0;
-    G.hands.south.played.length = 0;
-    G.hands.south.private.length = 0;
-    G.hands.south.tricks.length = 0;
-    G.hands.south.held.length = 0;
-    G.hands.south.held = draftSouth;
-    G.stock = [];
-    G.deck = fresh;
-  },
+  deal,
 
-  putToCrib(G: IG, ctx: Ctx, idx: number) {
-    let who = ctx.playerID;
-    let playFrom: ILocation = findFromForPlayer(G, ctx, idx, who);
-    let playTo: ILocation = findCribForPlayer();
-    let cribMove = {
-      from: playFrom,
-      to: playTo,
-    };
-    moveCards(G, ctx, cribMove);
-  },
+  putToCrib,
 
-  play(G: IG, ctx: Ctx, idx: number) {
-    let who = ctx.playerID;
-    let playFrom: ILocation = findFromForPlayer(G, ctx, idx, who);
-    let playTo: ILocation = findPlayedForPlayer(G, ctx, who);
-    let playMove = {
-      from: playFrom,
-      to: playTo,
-    };
-    moveCards(G, ctx, playMove);
-  },
-  cutShowTurn(G: IG, ctx: Ctx, idx: number) {
-    cutDeck(G, ctx, idx);
-    G.deck.length = 1;
-    return;
-  },
+  play,
 
-  flipCrib(G: IG) {
-    G.hands.east.cribFlipped = !G.hands.east.cribFlipped;
-  },
-  pegPoints(G: IG, ctx: Ctx, score: number) {
-    //pegs are as a back, and fwd peg
-    //as score ensues, back2front+score,
-    //is the general behavior
-    let playerScore: IScore = findPegLaneForPlayer(G, ctx);
-    let { front, back } = playerScore;
-    let temp = front;
-    front = front + score;
-    back = temp;
-    playerScore.front = front;
-    playerScore.back = back;
-  },
+  cutShowTurn,
+
+  rotateTurnToDeal,
+
+  cutForDeal,
+
+  pegPoints,
+
+  flipCrib,
+
+  resetGamePegs,
+
+  resetMatchPegs,
 };
+
+// // const getDealerDecision = (G: IG) => {
+
+// //   G.hands.north.played[0].rank % 13 > G.hands.north.played[0].rank % 13 ? 'northDealer' : 'southDealer';
+// // }
+
+// const isDealerDecided = (G: IG) => {
+//   return G.hands.north.played[0].rank % 13 > G.hands.north.played[0].rank % 13;
+// }
 
 const getNamedContainer = (G: IG, name: String) => {
   let path: string[] = name.split('.');
@@ -204,10 +357,10 @@ export const CardTableGame = {
 
   setup: () => ({
     score: {
-      north: { front: 0, back: 0, game: 0 },
-      south: { front: 0, back: 0, game: 0 },
-      east: { front: 0, back: 0, game: 0 },
-      west: { front: 0, back: 0, game: 0 },
+      north: { front: 0, back: -1, game: 0 },
+      south: { front: 0, back: -1, game: 0 },
+      east: { front: 0, back: -1, game: 0 },
+      west: { front: 0, back: -1, game: 0 },
     },
     count: 0,
     deck: [
@@ -225,7 +378,72 @@ export const CardTableGame = {
     stock: [],
   }),
 
-  moves: moves,
+  moves,
 
-  movesPerTurn: 1,
+  phases: {
+    preGame: {
+      onBegin: (G: IG, ctx: Ctx) => {
+        let draftDeck: ICard[] = dealCribbage.fresh.slice(0);
+        draftDeck = ctx.random.Shuffle(draftDeck);
+        return { ...G, deck: draftDeck, chosenDealer: null, bestCut: null };
+      },
+      endIf: (G: IG) => G.chosenDealer === 0 || G.chosenDealer === 1,
+      start: true,
+      next: 'gamePlay',
+      turn: {
+        activePlayers: { all: 'cuttingForDeal' },
+        stages: {
+          cuttingForDeal: {
+            moves: { cutForDeal, deal, pegPoints, resetGamePegs, resetMatchPegs },
+          },
+        },
+      },
+    },
+    gamePlay: {
+      next: 'gameEnd',
+      moves,
+      turn: {
+        activePlayers: { all: 'dealHand' },
+        order: {
+          first: (G) => {
+            return G.chosenDealer;
+          },
+          next: (G, ctx) => {
+            return ctx.playerID === '0' ? 1 : 0;
+          },
+        },
+      },
+      stages: {
+        dealHand: {
+          next: 'putToCrib',
+          moves: { deal, pegPoints, resetGamePegs, resetMatchPegs },
+        },
+        putToCrib: {
+          next: 'cutForTurn',
+          moves: { putToCrib },
+        },
+        cutForTurn: {
+          next: 'thePlay',
+          moves: { cutShowTurn, pegPoints },
+        },
+        thePlay: {
+          next: 'theCount',
+          moves: { play, pegPoints },
+        },
+        theCount: {
+          next: 'dealHand',
+          moves: { pegPoints, rotateTurnToDeal, flipCrib },
+        },
+      },
+    },
+
+    gameEnd: {
+      next: 'predicteGameOver',
+      moves,
+    },
+    matchEnd: {
+      next: 'predicateMatchOver',
+      moves,
+    },
+  },
 };
