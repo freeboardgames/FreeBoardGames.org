@@ -31,6 +31,7 @@ export interface IG {
 
 const piece = (id: number, player: number): ICheckerPiece => ({ id, playerID: player.toString(), isKing: false });
 
+// prettier-ignore
 export const INITIAL_BOARD: Piece[] = [
           null,  piece(0, 1),         null,  piece(1, 1),         null,  piece(2, 1),         null,  piece(3, 1),
    piece(4, 1),         null,  piece(5, 1),         null,  piece(6, 1),         null,  piece(7, 1),         null,
@@ -148,7 +149,7 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
     G.board.forEach((piece, index) => {
       if (piece !== null && piece.playerID === playerID) {
         const coord = toCoord(index);
-        const { moves, jumped } = checkPosition(G, playerID,         piece, coord);
+        const { moves, jumped } = checkPosition(G, playerID, piece, coord);
         movesTotal.push(...moves);
         jumpedTotal = jumpedTotal || jumped;
       }
