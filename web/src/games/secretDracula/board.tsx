@@ -165,57 +165,58 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       >
         {Array(this.props.ctx.numPlayers)
           .fill(0)
-          .map((_, idx) => (
-            this._getGameOver() === null ?
-            // Ingame Render
-            <PlayerInfo
-              key={`sd_player_info_${idx}`}
-              id={idx}
-              me={parseInt(this._getPlayerID()) == idx}
-              renderForVampire={this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))}
-              playerName={this._getPlayerName(idx)}
-              playerActive={this._isActivePlayer(idx)}
-              dead={this.props.G.deadIDs.includes(idx)}
-              vampire={this.props.G.vampireIDs.includes(idx)}
-              dracula={this.props.G.draculaID == idx}
-              mayor={this.props.G.mayorID == idx}
-              priest={this.props.G.priestID == idx}
-              totalPlayers={this.props.ctx.numPlayers}
-              phaseName={this.props.ctx.phase}
-              isInvestigated={idx === this.props.G.investigateID}
-              wasLastPreist={idx === this.props.G.lastPriestID}
-              wasLastMayor={idx === this.props.G.lastMayorID}
-              numAlivePlayers={this.props.ctx.numPlayers - this.props.G.deadIDs.length}
-              isGameOver={this._getGameOver() !== null}
-              isSpectator={!this._isFirstPerson()}
-              chose={this._getPhaseRelatedPlayerFunction()}
-            />
-            :
-            // Endgame Render
-            <PlayerInfo
-              key={`sd_player_info_${idx}`}
-              id={idx}
-              me={parseInt(this._getPlayerID()) == idx}
-              renderForVampire={true}
-              playerName={this._getPlayerName(idx) + this.props.G.draculaID}
-              playerActive={this._isActivePlayer(idx)}
-              dead={this.props.G.deadIDs.includes(idx)}
-              //dead={false} // if player is dead and vampire, it would show dead. So set this to false to 'overwrite' with vampire
-              vampire={this.props.G.vampireIDs.includes(idx)}
-              dracula={this.props.G.draculaID == idx}
-              mayor={this.props.G.mayorID == idx}
-              priest={this.props.G.priestID == idx}
-              totalPlayers={this.props.ctx.numPlayers}
-              phaseName={this.props.ctx.phase}
-              isInvestigated={idx === this.props.G.investigateID}
-              wasLastPreist={idx === this.props.G.lastPriestID}
-              wasLastMayor={idx === this.props.G.lastMayorID}
-              numAlivePlayers={this.props.ctx.numPlayers - this.props.G.deadIDs.length}
-              isGameOver={this._getGameOver() !== null}
-              isSpectator={!this._isFirstPerson()}
-              chose={this._getPhaseRelatedPlayerFunction()}
-            />
-          ))}
+          .map((_, idx) =>
+            this._getGameOver() === null ? (
+              // Ingame Render
+              <PlayerInfo
+                key={`sd_player_info_${idx}`}
+                id={idx}
+                me={parseInt(this._getPlayerID()) == idx}
+                renderForVampire={this.props.G.vampireIDs.includes(parseInt(this._getPlayerID()))}
+                playerName={this._getPlayerName(idx)}
+                playerActive={this._isActivePlayer(idx)}
+                dead={this.props.G.deadIDs.includes(idx)}
+                vampire={this.props.G.vampireIDs.includes(idx)}
+                dracula={this.props.G.draculaID == idx}
+                mayor={this.props.G.mayorID == idx}
+                priest={this.props.G.priestID == idx}
+                totalPlayers={this.props.ctx.numPlayers}
+                phaseName={this.props.ctx.phase}
+                isInvestigated={idx === this.props.G.investigateID}
+                wasLastPreist={idx === this.props.G.lastPriestID}
+                wasLastMayor={idx === this.props.G.lastMayorID}
+                numAlivePlayers={this.props.ctx.numPlayers - this.props.G.deadIDs.length}
+                isGameOver={this._getGameOver() !== null}
+                isSpectator={!this._isFirstPerson()}
+                chose={this._getPhaseRelatedPlayerFunction()}
+              />
+            ) : (
+              // Endgame Render
+              <PlayerInfo
+                key={`sd_player_info_${idx}`}
+                id={idx}
+                me={parseInt(this._getPlayerID()) == idx}
+                renderForVampire={true}
+                playerName={this._getPlayerName(idx) + this.props.G.draculaID}
+                playerActive={this._isActivePlayer(idx)}
+                dead={this.props.G.deadIDs.includes(idx)}
+                //dead={false} // if player is dead and vampire, it would show dead. So set this to false to 'overwrite' with vampire
+                vampire={this.props.G.vampireIDs.includes(idx)}
+                dracula={this.props.G.draculaID == idx}
+                mayor={this.props.G.mayorID == idx}
+                priest={this.props.G.priestID == idx}
+                totalPlayers={this.props.ctx.numPlayers}
+                phaseName={this.props.ctx.phase}
+                isInvestigated={idx === this.props.G.investigateID}
+                wasLastPreist={idx === this.props.G.lastPriestID}
+                wasLastMayor={idx === this.props.G.lastMayorID}
+                numAlivePlayers={this.props.ctx.numPlayers - this.props.G.deadIDs.length}
+                isGameOver={this._getGameOver() !== null}
+                isSpectator={!this._isFirstPerson()}
+                chose={this._getPhaseRelatedPlayerFunction()}
+              />
+            ),
+          )}
         <PlayStatus
           vampiresPlayed={this.props.G.policyBoardVampire.length}
           villagersPlayed={this.props.G.policyBoardHuman.length}
