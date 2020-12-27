@@ -121,7 +121,7 @@ export const SecretDraculaGame = {
       return G;
     }
 
-    if (isWin(G) || isLose(G, ctx)) {
+    if (ctx.gameover) {
       return G;
     }
 
