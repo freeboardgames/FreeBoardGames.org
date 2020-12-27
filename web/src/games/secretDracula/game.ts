@@ -121,6 +121,10 @@ export const SecretDraculaGame = {
       return G;
     }
 
+    if (isWin(G) || isLose(G, ctx)) {
+      return G;
+    }
+
     return {
       ...G,
       policyDraw: G.policyDraw.map(() => {
