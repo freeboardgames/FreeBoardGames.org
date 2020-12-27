@@ -1,49 +1,55 @@
 import * as React from 'react';
 
-import { ICityData, CITIES, cityImgSize, cityFontSize, ECityDotPosition, getCityTextPosition, getCityTextBoxSize } from '../constants/cities';
+import {
+  ICityData,
+  CITIES,
+  cityImgSize,
+  cityFontSize,
+  ECityDotPosition,
+  getCityTextPosition,
+  getCityTextBoxSize,
+} from '../constants/cities';
 
 export class CityBoard extends React.Component<any, {}> {
-
   _getCityCenterPosition = (c: ICityData) => {
     const relativeToText = c.dotPosition && c.dotPosition.includes(ECityDotPosition.Text);
-    let {x, y} = relativeToText ? getCityTextPosition(c) : c.position;
-    
-    if (relativeToText){
+    let { x, y } = relativeToText ? getCityTextPosition(c) : c.position;
+
+    if (relativeToText) {
       // change x-pos
-      if(c.dotPosition.includes(ECityDotPosition.Left)){
+      if (c.dotPosition.includes(ECityDotPosition.Left)) {
         x = x - (getCityTextBoxSize(c) / 2 + cityFontSize * 0.45);
-      } else if(c.dotPosition.includes(ECityDotPosition.Right)){
+      } else if (c.dotPosition.includes(ECityDotPosition.Right)) {
         x = x + (getCityTextBoxSize(c) / 2 + cityFontSize * 0.4);
       }
       // change y-pos
-      if(c.dotPosition.includes(ECityDotPosition.Top)){
+      if (c.dotPosition.includes(ECityDotPosition.Top)) {
         y = y - cityFontSize * 1.5;
-      } else if(c.dotPosition.includes(ECityDotPosition.Bottom)){
+      } else if (c.dotPosition.includes(ECityDotPosition.Bottom)) {
         y = y + cityFontSize * 0.65;
       } else {
         y = y - cityFontSize / 2;
       }
-
     } else if (c.dotPosition) {
-      const commonImgOffset = (cityImgSize / 2 - cityFontSize / 2);
+      const commonImgOffset = cityImgSize / 2 - cityFontSize / 2;
       // change x-pos
-      if(c.dotPosition.includes(ECityDotPosition.Left)){
+      if (c.dotPosition.includes(ECityDotPosition.Left)) {
         x = x - commonImgOffset;
-      } else if(c.dotPosition.includes(ECityDotPosition.Right)){
+      } else if (c.dotPosition.includes(ECityDotPosition.Right)) {
         x = x + commonImgOffset;
       }
       // change y-pos
-      if(c.dotPosition.includes(ECityDotPosition.Top)){
+      if (c.dotPosition.includes(ECityDotPosition.Top)) {
         y = y - commonImgOffset;
-      } else if(c.dotPosition.includes(ECityDotPosition.Bottom)){
+      } else if (c.dotPosition.includes(ECityDotPosition.Bottom)) {
         y = y + commonImgOffset;
       }
     }
 
-    // const cityDotOffset = {x: 0, y:0, ...c.dotOffset};  
+    // const cityDotOffset = {x: 0, y:0, ...c.dotOffset};
     return {
-      cx: x , //+ cityDotOffset.x ,
-      cy: y , //+ cityDotOffset.y ,
+      cx: x,
+      cy: y,
     };
   };
 
@@ -92,7 +98,7 @@ export class CityBoard extends React.Component<any, {}> {
         <circle key={`cons_city_center_${idx}`} {...this._getCityCenterPosition(c)} r={0.75} fill="white" />,
       );
 
-      // add rect behind text 
+      // add rect behind text
       const textPos = getCityTextPosition(c);
       const cTextLength = getCityTextBoxSize(c);
       allCityContent.push(

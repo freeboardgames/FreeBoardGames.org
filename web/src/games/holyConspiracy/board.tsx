@@ -19,7 +19,7 @@ export class Board extends React.Component<any, {}> {
         style={{ backgroundColor: 'black' }}
       >
         <CityBoard />
-        <SainstOnBoard/>
+        <SainstOnBoard />
       </svg>
     );
   };
