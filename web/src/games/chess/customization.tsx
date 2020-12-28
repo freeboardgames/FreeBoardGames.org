@@ -1,5 +1,6 @@
-import { GameCustomization } from 'gamesShared/definitions/customization';
-import slider from 'gamesShared/components/customization/Slider';
+import React from 'react';
+import { GameCustomization, GameCustomizationProps } from 'gamesShared/definitions/customization';
+import Slider from 'gamesShared/components/customization/Slider';
 import { GameMode } from 'gamesShared/definitions/mode';
 
 const MIN_VALUE = 1;
@@ -10,14 +11,22 @@ export interface QuickCustomizationState {
 }
 
 const customization: GameCustomization = {
-  renderQuick: ({ mode, currentValue, onChange }) => {
+  renderQuick: ({ mode, currentValue, onChange }: GameCustomizationProps) => {
     if (mode != GameMode.AI) {
       return null;
     }
-    const state = currentValue as QuickCustomizationState;
-    return slider(MIN_VALUE, MAX_VALUE, state.difficulty, (difficulty) => {
-      onChange({ difficulty });
-    });
+    const state = (currentValue as QuickCustomizationState) || { difficulty: MIN_VALUE };
+    return (
+      <Slider
+        label={'Difficulty'}
+        min={MIN_VALUE}
+        max={MAX_VALUE}
+        value={state.difficulty}
+        callback={(difficulty) => {
+          onChange({ difficulty });
+        }}
+      />
+    );
   },
 };
 

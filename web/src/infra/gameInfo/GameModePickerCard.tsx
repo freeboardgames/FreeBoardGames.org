@@ -14,6 +14,7 @@ import css from './GameModePicker.module.css';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import Typography from '@material-ui/core/Typography';
+import { GameCustomization } from 'gamesShared/definitions/customization';
 
 interface GameModePickerCardProps {
   gameDef: IGameDef;
@@ -25,14 +26,18 @@ interface GameModePickerCardProps {
 
 interface GameModePickerCardState {
   numPlayers: number;
+  customization: GameCustomization | null;
+  quickCustomValue: unknown;
 }
 
 export class GameModePickerCard extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
- state = {
-    numPlayers: 2
- }
+  state = {
+    numPlayers: 2,
+    customization: null,
+    quickCustomValue: null,
+  };
 
- render() {
+  render() {
     let title;
     let description;
     let icon;
@@ -65,9 +70,15 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
         </CardActions>
       </Card>
     );
- }
+  }
 
- private renderButton() {
+  componentDidMount() {
+    this.props.gameDef.customization().then((customizationModule) => {
+      this.setState({ customization: customizationModule.default });
+    });
+  }
+
+  private renderButton() {
     let btnText = 'Play';
     let color = 'primary'; // FIXME: couldn't find the type
     if (this.props.playButtonError) {
@@ -107,18 +118,34 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
         </Link>
       );
     }
- }
+  }
 
-private renderPersonalization() {
+  private renderPersonalization() {
     let numPlayers = null;
     if (this.props.info.mode == GameMode.OnlineFriend) {
       if (this.props.gameDef.minPlayers < this.props.gameDef.maxPlayers) {
         numPlayers = this.getExtraInfoNumPlayers();
       }
     }
-    let quickCustomization = null;
-    // TODO: Write new customization logic.
-    return <>{numPlayers}{quickCustomization}</>;
+    let quickCustomization = this.renderQuickCustomization();
+    return (
+      <>
+        {numPlayers}
+        {quickCustomization}
+      </>
+    );
+  }
+
+  private renderQuickCustomization() {
+    const custom = this.state.customization;
+    if (!custom || !custom.renderQuick) {
+      return null;
+    }
+    return custom.renderQuick({
+      mode: this.props.info.mode,
+      currentValue: this.state.quickCustomValue,
+      onChange: this._changeQuickCustomValue,
+    });
   }
 
   private getExtraInfoNumPlayers() {
@@ -155,5 +182,9 @@ private renderPersonalization() {
   _handleNumPlayersSelect = (event: ChangeEvent<{ value: number }>) => {
     const numPlayers = event.target.value;
     this.setState({ numPlayers });
+  };
+
+  _changeQuickCustomValue = (quickCustomValue: unknown) => {
+    this.setState({ quickCustomValue });
   };
 }

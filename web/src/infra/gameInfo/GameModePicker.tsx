@@ -32,13 +32,15 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
   render() {
     const cards = [];
     for (const info of this.props.gameDef.modes) {
-      cards.push(<GameModePickerCard
-        gameDef={this.props.gameDef}
-        info={info}
-        playButtonDisabled={this.state.playButtonDisabled}
-        playButtonError={this.state.playButtonError}
-        playOnlineGameCallback={this._playOnlineGame}
-      />);
+      cards.push(
+        <GameModePickerCard
+          gameDef={this.props.gameDef}
+          info={info}
+          playButtonDisabled={this.state.playButtonDisabled}
+          playButtonError={this.state.playButtonError}
+          playOnlineGameCallback={this._playOnlineGame}
+        />,
+      );
     }
     const modePicker = (
       <div style={{ marginTop: '8px', maxWidth: '500px' }}>
@@ -60,7 +62,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     }
   }
 
- _playOnlineGame = (info: IGameModeInfo, numPlayers: number) => () => {
+  _playOnlineGame = (info: IGameModeInfo, numPlayers: number) => () => {
     if (!this.props.user.loggedIn) {
       this.setState({ onlinePlayRequested: numPlayers });
       return;
@@ -75,7 +77,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
       () => {
         this.setState({ playButtonError: true, playButtonDisabled: false });
       },
-    );;
+    );
   };
 
   static async getInitialProps(router) {

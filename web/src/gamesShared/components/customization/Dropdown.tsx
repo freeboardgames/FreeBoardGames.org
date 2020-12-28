@@ -2,11 +2,16 @@ import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 
-const dropdown = (options: string[], selectedIdx: number, callback: (idx: number) => void) => {
-  const list: JSX.Element[] = options.map((option, idx) => {
-    idx++;
+interface DropdownProps {
+  options: string[];
+  selectedIdx: number;
+  callback: (idx: number) => void;
+}
+
+const dropdown = (props: DropdownProps) => {
+  const list: JSX.Element[] = props.options.map((option, idx) => {
     return (
-      <MenuItem onClick={() => callback(idx)} key={option} value={option} selected={selectedIdx === idx}>
+      <MenuItem onClick={() => props.callback(idx)} key={option} value={option} selected={props.selectedIdx === idx}>
         {option}
       </MenuItem>
     );

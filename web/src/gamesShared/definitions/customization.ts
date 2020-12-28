@@ -5,13 +5,13 @@ export interface GameCustommizationState {
   full?: unknown;
 }
 
-export interface GameCustomizationRenderArgs {
+export interface GameCustomizationProps {
   mode: GameMode;
   currentValue: unknown;
   onChange: (result: unknown) => void;
 }
 
 export interface GameCustomization {
-  renderQuick?: (args: GameCustomizationRenderArgs) => JSX.Element | null;
-  renderFull?: (args: GameCustomizationRenderArgs) => JSX.Element | null;
+  renderQuick?: (args: GameCustomizationProps) => JSX.Element | null;
+  renderFull?: (args: GameCustomizationProps) => JSX.Element | null;
 }

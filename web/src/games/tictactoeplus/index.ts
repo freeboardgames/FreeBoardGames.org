@@ -27,7 +27,7 @@ export const tictactoeplusGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
-  customization: () => import('./customization')
+  customization: () => import('./customization'),
 };
 
 export default tictactoeplusGameDef;
