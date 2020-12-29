@@ -4,19 +4,18 @@ import css from '../Board.module.css';
 import { Image } from '../images';
 import { IColour } from '../service';
 
-interface ColourButtonProps {
+export interface IColourButtonProps {
   currentColourId: number;
   colour: IColour;
   onClick: (colourId: number) => void;
 }
 
-const ColourButton = ({ currentColourId, colour, onClick }: ColourButtonProps) => {
+const ColourButton = ({ currentColourId, colour, onClick }: IColourButtonProps) => {
   const setColourInPosition = () => onClick(colour.id);
 
   return (
     <button
-      className={`${css.digit} ${currentColourId === colour.id ? css.selected : ''}`}
-      key={colour.id}
+      className={`${css.digit} ${currentColourId === colour?.id ? css.selected : ''}`}
       onClick={setColourInPosition}
     >
       {(colour && <Image className={css.svg} img={colour.img} hex={colour.hex} />) || ''}
