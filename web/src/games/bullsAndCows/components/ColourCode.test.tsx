@@ -1,25 +1,28 @@
 import { mount, ReactWrapper } from 'enzyme';
 import { Image } from '../images';
 
-import ColourButton, { IColourButtonProps } from './ColourButton';
+import ColourCode, { IColourCodeProps } from './ColourCode';
 
 let wrapper: ReactWrapper;
-let props: IColourButtonProps;
+let props: IColourCodeProps;
 
-describe('ColourButton', () => {
+describe('ColourCode', () => {
   beforeAll(() => {
     props = {
+      position: 4,
       currentColourId: 3,
       colour: { id: 3, img: 'c', hex: '#333' },
       onClick: jest.fn(),
     };
 
-    wrapper = mount(<ColourButton {...props} />);
+    wrapper = mount(<ColourCode {...props} />);
   });
 
-  it('should ignore in case colour is empty', () => {
-    const wrapperWithoutColour = mount(<ColourButton {...props} colour={null} />);
+  it('should be grey if colour is empty', () => {
+    const wrapperWithoutColour = mount(<ColourCode {...props} colour={null} />);
     expect(wrapperWithoutColour.find(Image).exists()).toBeFalse();
+
+    expect(wrapperWithoutColour.find('button').props().style).toMatchObject({ backgroundColor: 'grey' });
   });
 
   it('should show button with Colour Image', () => {
@@ -31,9 +34,9 @@ describe('ColourButton', () => {
     });
   });
 
-  it('should invoque method onClick with colourId', () => {
+  it('should invoque method onClick with colourId and positon', () => {
     wrapper.find('button').at(0).simulate('click');
 
-    expect(props.onClick).toHaveBeenCalledWith(props.colour.id);
+    expect(props.onClick).toHaveBeenCalledWith(props.colour.id, props.position);
   });
 });

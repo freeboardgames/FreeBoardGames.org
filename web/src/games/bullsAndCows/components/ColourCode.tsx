@@ -4,14 +4,14 @@ import css from '../Board.module.css';
 import { Image } from '../images';
 import { IColour } from '../service';
 
-interface ColourCodeProps {
+export interface IColourCodeProps {
   colour: IColour;
   currentColourId: number;
   position: number;
   onClick: (currentColourId: number, position: number) => void;
 }
 
-const ColourCode = ({ colour, currentColourId, onClick, position }: ColourCodeProps) => {
+const ColourCode = ({ colour, currentColourId, onClick, position }: IColourCodeProps) => {
   const selectColour = () => onClick(currentColourId, position);
 
   return (
