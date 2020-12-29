@@ -1,5 +1,5 @@
 import * as React from 'react';
-import css from '../Board.module.css';
+import css from './BullsAndCows.module.css';
 
 import { Image } from '../images';
 import { IColour } from '../service';
