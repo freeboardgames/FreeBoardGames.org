@@ -21,7 +21,7 @@ export interface IViewProps {
   currentColourId?: number | null;
 }
 
-export const View = ({ G, ctx, moves, selectColour, currentColourId }: IViewProps) => (
+const View = ({ G, ctx, moves, selectColour, currentColourId }: IViewProps) => (
   <div className={css.board} style={{ backgroundColor: grey[400] }}>
     <div className={css.attempts}>
       {ctx.gameover && <Secret secret={G.secret} />}
@@ -50,3 +50,5 @@ export const View = ({ G, ctx, moves, selectColour, currentColourId }: IViewProp
     </div>
   </div>
 );
+
+export default View;

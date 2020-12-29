@@ -1,5 +1,6 @@
 import React from 'react';
-import { mount, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
+import Enzyme, { mount, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
 import Attempt from './Attempt';
 import ColourButton from './ColourButton';
@@ -7,11 +8,14 @@ import ColourCode from './ColourCode';
 import Secret from './Secret';
 
 import { IColour } from '../service';
-import { IViewProps, View } from './View';
+import View, { IViewProps } from './View';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 let wrapper: ShallowWrapper | ReactWrapper;
 let props: IViewProps;
 let ctx: any = {};
+
 const mockColours: IColour[] = [
   { id: 1, img: 'a', hex: '#111' }, // 0
   { id: 2, img: 'b', hex: '#222' }, // 1

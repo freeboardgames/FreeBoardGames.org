@@ -3,7 +3,7 @@ import * as React from 'react';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
 
-import { View, IViewProps } from './components/View';
+import View, { IViewProps } from './components/View';
 
 export interface IBoardState {
   currentColourId: number | null;

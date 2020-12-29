@@ -1,8 +1,12 @@
-import { mount, ReactWrapper } from 'enzyme';
+import Enzyme, { mount, ReactWrapper } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import { Image } from '../images';
 import { IAttempt } from '../service';
 
 import Attempt from './Attempt';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 let wrapper: ReactWrapper;
 let attempt: IAttempt;

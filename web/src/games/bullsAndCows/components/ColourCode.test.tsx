@@ -1,7 +1,11 @@
-import { mount, ReactWrapper } from 'enzyme';
+import Enzyme, { mount, ReactWrapper } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 import { Image } from '../images';
 
 import ColourCode, { IColourCodeProps } from './ColourCode';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 let wrapper: ReactWrapper;
 let props: IColourCodeProps;
