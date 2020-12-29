@@ -59,10 +59,6 @@ export const BullsAndCowsGame = {
     },
   },
 
-  turn: {
-    moveLimit: 1,
-  },
-
   endIf: (G: IG, ctx: Ctx) => {
     if (isVictory(G)) {
       return { winner: ctx.currentPlayer };
