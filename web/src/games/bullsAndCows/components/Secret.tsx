@@ -4,11 +4,11 @@ import css from '../Board.module.css';
 import { Image } from '../images';
 import { IColour } from '../service';
 
-interface SecretProps {
+export interface ISecretProps {
   secret: IColour[];
 }
 
-const Secret = ({ secret }: SecretProps) => (
+const Secret = ({ secret }: ISecretProps) => (
   <div className={`${css.attempt} ${css.result}`}>
     <span className={css.number}>CODE:</span>
     {secret.map((secretValue, position) => (
