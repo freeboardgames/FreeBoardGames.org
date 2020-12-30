@@ -81,6 +81,12 @@ function getContributorsCard() {
             </Button>
           </ListItem>
           <ListItem>
+            <ListItemText primary="gk-patel" />
+            <Button size="small" color="primary" href="https://github.com/gk-patel">
+              GitHub
+            </Button>
+          </ListItem>
+          <ListItem>
             <ListItemText primary="JvSomeren" />
             <Button size="small" color="primary" href="https://joostvansomeren.nl">
               Website
