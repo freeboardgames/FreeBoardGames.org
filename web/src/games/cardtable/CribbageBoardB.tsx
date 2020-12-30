@@ -15,18 +15,13 @@ interface PegholeProps {
   opponent: boolean;
 }
 
-function Peghole(props: PegholeProps) {
+export function Peghole(props: PegholeProps) {
   let clazz = css.Peghole;
 
   const isPegged = (idx: number) => {
-    return (
-      (idx < 1 && props.score.back === idx) ||
-      (idx < 1 && props.score.front === idx) ||
-      (idx < 61 && props.score.front === idx) ||
-      (idx < 61 && props.score.back === idx) ||
-      (props.score.front > 60 && props.score.front % 60 === idx) ||
-      (props.score.back > 60 && props.score.back % 60 === idx)
-    );
+    let front = props.score.front < 61 ? props.score.front : props.score.front % 60 === 0 ? 60 : props.score.front % 60;
+    let back = props.score.back < 61 ? props.score.back : props.score.back % 60 === 0 ? 60 : props.score.back % 60;
+    return front === idx || back === idx;
   };
 
   let pegged = isPegged(props.idx);
