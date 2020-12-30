@@ -18,8 +18,9 @@ export class Board extends React.Component<any, {}> {
         viewBox={`0 0 ${cityBoardWidth} ${cityBoardHeight}`}
         style={{ backgroundColor: 'black' }}
       >
-        <CityBoard />
+        <CityBoard renderTextBoxes={false}/>
         <SainstOnBoard />
+        <CityBoard renderTextBoxes={true}/>
       </svg>
     );
   };
