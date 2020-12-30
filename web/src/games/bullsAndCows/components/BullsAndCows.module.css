@@ -68,18 +68,25 @@
     flex-direction: column;
     padding: .5rem;
 }
-
+.guess .digit,
+.colours .digit,
 .svg {
     width: 2rem;
     height: 2rem;
 }
-.svg.selected {
-    outline: 2px dashed black;
+.selected {
+    background-color: #ccc;
+    border: 1px dashed black;
+    outline: none;
+}
+.selected svg {
+    width: 1.7rem;
+    height: 1.7rem;
 }
 
 .guess {
     margin-top: 2rem;
-    padding: .5rem 1.3rem;
+    padding: .5rem .3rem;
     display: flex;
 }
 
