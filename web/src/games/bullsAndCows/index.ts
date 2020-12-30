@@ -22,7 +22,7 @@ export const bullsAndCowsGameDef: IGameDef = {
     videoId: 'dMHxyulGrEk',
     text: instructions,
   },
-  status: IGameStatus.IN_DEVELOPMENT,
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
 

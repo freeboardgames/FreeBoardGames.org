@@ -1,67 +1,7 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
 import { blue, green, common, yellow, brown, red, lightGreen } from '@material-ui/core/colors';
-
-interface Colour {
-  id: number;
-  img: string;
-  hex: string;
-}
-export interface IG {
-  attempts: any;
-  colours: Colour[];
-  current: any;
-  currentAttempt: any;
-  secret: Colour[];
-  secretLength: number;
-  limitOfAttempts: number;
-}
-
-export const generateSecret = (ctx: Ctx, colours: Colour[], secretLength: number, allowToRepeat: boolean) => {
-  if (allowToRepeat) {
-    const secret = [];
-    for (let i = 0; i < secretLength; i++) {
-      const n = ctx.random.Die(colours.length);
-      secret.push(colours[n - 1]);
-    }
-
-    return secret;
-  }
-
-  return ctx.random.Shuffle(colours).slice(0, secretLength);
-};
-
-export const checkSecret = (current, secret) => {
-  let hints = [];
-
-  for (let i in current) {
-    const pin = current[i];
-    if (pin.id === secret[i].id) {
-      hints.push(1);
-    } else if (secret.some((s) => s.id === pin.id)) {
-      hints.push(0);
-    } else {
-      hints.push(-1);
-    }
-  }
-
-  return {
-    hints: hints.sort((a, b) => b - a),
-    combination: current,
-  };
-};
-
-export const isVictory = (G: IG) => {
-  if (G.currentAttempt && G.currentAttempt.hints && G.currentAttempt.hints.every((n) => n === 1)) {
-    return true;
-  }
-
-  return false;
-};
-
-export const isGameOver = (G: IG) => {
-  return G.limitOfAttempts === G.attempts.length;
-};
+import { IG, generateSecret, checkSecret, isVictory, isGameOver } from './service';
 
 export const BullsAndCowsGame = {
   name: 'bullsAndCows',
@@ -87,7 +27,7 @@ export const BullsAndCowsGame = {
       attempts: [],
       colours,
       current: Array(secretLength).fill(null),
-      currentAttempt: null,
+      lastAttempt: null,
       secret,
       secretLength,
       limitOfAttempts,
@@ -102,10 +42,10 @@ export const BullsAndCowsGame = {
   },
 
   moves: {
-    setColourInPosition(G: any, ctx: any, colourId: number, position: number) {
+    setColourInPosition(G: IG, ctx: Ctx, colourId: number, position: number) {
       G.current[position] = G.colours.find((c) => c.id === colourId);
     },
-    check(G: any) {
+    check(G: IG) {
       if (G.current.some((n) => n === null)) {
         return INVALID_MOVE;
       }
@@ -114,13 +54,9 @@ export const BullsAndCowsGame = {
 
       if (!isVictory(G) && !isGameOver(G)) {
         G.attempts.push(attempt);
-        G.currentAttempt = attempt;
+        G.lastAttempt = attempt;
       }
     },
-  },
-
-  turn: {
-    moveLimit: 1,
   },
 
   endIf: (G: IG, ctx: Ctx) => {
