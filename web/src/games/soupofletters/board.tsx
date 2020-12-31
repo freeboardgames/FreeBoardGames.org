@@ -224,7 +224,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     ) : null;
 
     return (
-      <div style={{marginTop: '10px'}}>
+      <div style={{ marginTop: '10px' }}>
         <Soup
           puzzle={this.props.G.puzzle}
           solution={this.props.G.solution}
