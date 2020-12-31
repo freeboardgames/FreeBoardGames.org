@@ -73,7 +73,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     let timeLeft = (TIME_OUT + TIME_BUFF) * 1000 - (Date.now() - this.props.G.timeRef);
     if (considerBuffer && !this._isAllowedToMakeMove() && this._isFirstPerson()) {
       // after some buffer everyone can claim turn end for current player
-      timeLeft = timeLeft + 2000 + 500 * parseInt(this.props.playerID);
+      timeLeft = timeLeft + 2000 + 1000 * parseInt(this.props.playerID);
     }
     timeLeft = Math.floor(timeLeft / 1000);
     return timeLeft > TIME_OUT ? TIME_OUT : timeLeft < 0 ? 0 : timeLeft;
@@ -224,7 +224,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     ) : null;
 
     return (
-      <span>
+      <div style={{marginTop: '10px'}}>
         <Soup
           puzzle={this.props.G.puzzle}
           solution={this.props.G.solution}
@@ -234,7 +234,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           isGameOver={this.props.ctx.gameover}
         />
         {scoreBoard}
-      </span>
+      </div>
     );
   }
 
