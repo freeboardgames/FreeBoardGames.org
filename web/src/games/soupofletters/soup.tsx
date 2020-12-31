@@ -52,20 +52,18 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
 
   render() {
     return (
-      <div style={{ textAlign: 'center' }}>
-        <svg
-          width={`${this.props.isGameOver ? 50 : 100}%`}
-          height={`${this.props.isGameOver ? 50 : 100}%`}
-          viewBox={`0 0 ${BOARD_SIZE} ${BOARD_SIZE}`}
-          pointerEvents="visible"
-          style={{ marginTop: '10px', padding: '0 5px' }}
-        >
-          <g>
-            {this._placeLetters()}
-            {this._placeRectOverLetters()}
-          </g>
-        </svg>
-      </div>
+      <svg
+        width={`${this.props.isGameOver ? 50 : 100}%`}
+        height={`${this.props.isGameOver ? 50 : 100}%`}
+        viewBox={`0 0 ${BOARD_SIZE} ${BOARD_SIZE}`}
+        pointerEvents="visible"
+        style={{ display: 'block', margin: 'auto' }}
+      >
+        <g>
+          {this._placeLetters()}
+          {this._placeRectOverLetters()}
+        </g>
+      </svg>
     );
   }
 
