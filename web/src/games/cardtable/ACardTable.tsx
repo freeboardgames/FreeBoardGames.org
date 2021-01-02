@@ -10,6 +10,7 @@ type IACardTableProps = {
   ctx: Ctx;
   gameArgs?: any;
   moves?: any;
+  playerID: string;
 };
 
 const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps) => {
@@ -31,7 +32,7 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
       handleFlip: props.moves.flipCrib,
       handleRotateTurn: props.moves.rotateTurnToDeal,
     },
-    gameState: { phase: props.ctx.phase, stage: stage, cutTie: G.cutTie },
+    gameState: { playerID: props.playerID, phase: props.ctx.phase, stage: stage, cutTie: G.cutTie },
   };
 
   return (

@@ -15,6 +15,7 @@ interface ICardContainerProps {
       handleRotateTurn: () => void;
     };
     gameState: {
+      playerID?: string;
       stage?: string;
       phase?: string;
       cutTie?: boolean;
@@ -37,6 +38,9 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   let privacy = props.concealed && !props.turn;
   let view = props.flipped ? !privacy : privacy;
   let stage = props.collaborator.gameState.stage;
+  let name = props.name;
+  let playerID = props.collaborator.gameState.playerID;
+
   const handleDeal = props.collaborator.handlers.handleDeal;
   const handleCrib = props.collaborator.handlers.handleCrib;
   const handleCutDeal = props.collaborator.handlers.handleCutDeal;
@@ -47,10 +51,39 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   const [isOpen, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(19);
 
-  const handleClick = (evt: React.MouseEvent, idx?: number) => {
+  const isClickAllowed = (parentContainer: string): boolean => {
+    if (stage && parentContainer) {
+      switch (stage) {
+        case 'cuttingForDeal': {
+          return name === 'Deck'; //&& currentPlayer === eventClicker;
+        }
+        case 'thePlay': {
+          return (name === 'North Hand' && playerID === '0') || (name === 'South Hand' && playerID === '1');
+        }
+        case 'putToCrib': {
+          return (name === 'North Hand' && playerID === '0') || (name === 'South Hand' && playerID === '1');
+        }
+        case 'dealHand': {
+          return name === 'Deck'; //&& playerID matches dealer
+        }
+        case 'cutForTurn': {
+          return name === 'Deck'; //&& playerID matches non-dealer
+        }
+        case 'theCount': {
+          return name === 'Crib' || name === 'Deck';
+        }
+        default:
+          return false;
+      }
+    }
+  };
+
+  const handleClick = (evt: React.MouseEvent, idx?: number, name?: string) => {
     evt.preventDefault();
     evt.stopPropagation();
-    if (stage) {
+    let allowed: boolean = isClickAllowed(name);
+
+    if (stage && allowed) {
       switch (stage) {
         case 'cutForTurn': {
           setOpen(true);
@@ -121,8 +154,8 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
 
   let tileList = tileData.map((tile, index) => (
     <img
-      onClick={(evt) => handleClick(evt, index)}
       key={tile.id}
+      onClick={(evt) => handleClick(evt, index, name)}
       className={css.fitpicture}
       src={require(`${view ? './media/png/gray_back.png' : tile.img}`)}
       alt={tile.id}
