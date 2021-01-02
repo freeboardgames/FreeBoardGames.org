@@ -24,7 +24,6 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
   let theTurn = props.G.deck.length === 1 ? { turn: true } : { concealed: true };
   let playerIDStr: string = props.playerID;
   let playerID: playerEnum = playerIDStr === '0' ? playerEnum.north : playerEnum.south;
-  console.log(playerIDStr, playerID)
 
   const collaborator = {
     handlers: {

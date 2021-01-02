@@ -65,7 +65,6 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
           );
         }
         case stageEnum.putToCrib: {
-          console.log(`in put to crib; pid: ${playerID}`)
           return (
             (name === 'North Hand' && playerID === playerEnum.north) ||
             (name === 'South Hand' && playerID === playerEnum.south)
@@ -89,9 +88,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   const handleClick = (evt: React.MouseEvent, idx?: number, name?: string) => {
     evt.preventDefault();
     evt.stopPropagation();
-    console.log(`dipshit: `, stage);
     let allowed: boolean = isClickAllowed(name);
-    console.log(allowed);
     if (stage && allowed) {
       switch (stage) {
         case 'cutForTurn': {
