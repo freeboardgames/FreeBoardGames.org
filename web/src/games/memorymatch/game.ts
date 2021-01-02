@@ -2,6 +2,7 @@ import { Game } from 'boardgame.io';
 import { IGameState, ICardInfo, ECardState } from './definations';
 import { CARD_CONTENT } from './constants';
 import { shuffleArray, getScoreBoard } from './utils';
+import { selectHttpOptionsAndBody } from '@apollo/react-hooks';
 
 export const MemoryMatchGame: Game<IGameState> = {
   name: 'memorymatch',
@@ -36,11 +37,13 @@ export const MemoryMatchGame: Game<IGameState> = {
             // mark the pair as open
             cardPair.state = ECardState.OPEN;
             clickedCard.state = ECardState.OPEN;
-            changeTurn = true;
           } else {
             // mark current card as shown
             clickedCard.state = ECardState.SHOWN;
             G.timeShownCards = true;
+            if (shownCards.length % 2 == 0) {
+              changeTurn = true;
+            }
           }
         } else {
           clickedCard.state = ECardState.SHOWN;
