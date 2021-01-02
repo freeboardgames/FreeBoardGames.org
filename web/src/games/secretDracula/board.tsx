@@ -126,7 +126,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           ) : null
         }
       >
-        <div style={{ height: '100vh', overflow: 'auto', backgroundColor: 'black' }}>
+        <div style={{ overflow: 'auto', backgroundColor: 'black' }}>
           {/* Leave some space on top for FBG logo and title */}
           <div style={{ height: '12%' }}></div>
 
