@@ -10,10 +10,10 @@ describe('deck moves', () => {
     client.moves.cutDeck(1);
     const { G } = client.store.getState();
 
-    expect(G.deck[0]).toEqual({ id: 'KS', rank: 13, faced: false, img: './media/png/KS.png' });
-    expect(G.deck[1]).toEqual({ id: 'JS', rank: 11, faced: false, img: './media/png/JS.png' });
-    expect(G.deck[2]).toEqual({ id: '9H', rank: 48, faced: false, img: './media/png/9H.png' });
-    expect(G.deck[3]).toEqual({ id: '2H', rank: 41, faced: false, img: './media/png/2H.png' });
+    expect(G.deck[0]).toEqual({ id: 'KS', rank: 13, faced: false });
+    expect(G.deck[1]).toEqual({ id: 'JS', rank: 11, faced: false });
+    expect(G.deck[2]).toEqual({ id: '9H', rank: 48, faced: false });
+    expect(G.deck[3]).toEqual({ id: '2H', rank: 41, faced: false });
   });
 
   test('cutDeck(-3) should rotate deck by one card', () => {
@@ -22,10 +22,10 @@ describe('deck moves', () => {
     client.events.setPhase(null);
     client.moves.cutDeck(-3);
     const { G } = client.store.getState();
-    expect(G.deck[0]).toEqual({ id: 'QS', rank: 12, faced: false, img: './media/png/QS.png' });
-    expect(G.deck[1]).toEqual({ id: '9D', rank: 35, faced: false, img: './media/png/9D.png' });
-    expect(G.deck[2]).toEqual({ id: 'AD', rank: 27, faced: false, img: './media/png/AD.png' });
-    expect(G.deck[3]).toEqual({ id: '6D', rank: 32, faced: false, img: './media/png/6D.png' });
+    expect(G.deck[0]).toEqual({ id: 'QS', rank: 12, faced: false });
+    expect(G.deck[1]).toEqual({ id: '9D', rank: 35, faced: false });
+    expect(G.deck[2]).toEqual({ id: 'AD', rank: 27, faced: false });
+    expect(G.deck[3]).toEqual({ id: '6D', rank: 32, faced: false });
   });
 
   test('cutDeck(2) should rotate deck by two cards', () => {
@@ -34,10 +34,10 @@ describe('deck moves', () => {
     client.events.setPhase(null);
     client.moves.cutDeck(-3);
     const { G } = client.store.getState();
-    expect(G.deck[0]).toEqual({ id: 'QS', rank: 12, faced: false, img: './media/png/QS.png' });
-    expect(G.deck[1]).toEqual({ id: '9D', rank: 35, faced: false, img: './media/png/9D.png' });
-    expect(G.deck[2]).toEqual({ id: 'AD', rank: 27, faced: false, img: './media/png/AD.png' });
-    expect(G.deck[3]).toEqual({ id: '6D', rank: 32, faced: false, img: './media/png/6D.png' });
+    expect(G.deck[0]).toEqual({ id: 'QS', rank: 12, faced: false });
+    expect(G.deck[1]).toEqual({ id: '9D', rank: 35, faced: false });
+    expect(G.deck[2]).toEqual({ id: 'AD', rank: 27, faced: false });
+    expect(G.deck[3]).toEqual({ id: '6D', rank: 32, faced: false });
   });
 
   test('cutDeck(-11) should rotate deck by one card', () => {
@@ -46,10 +46,10 @@ describe('deck moves', () => {
     client.events.setPhase(null);
     client.moves.cutDeck(-11);
     const { G } = client.store.getState();
-    expect(G.deck[0]).toEqual({ id: '5C', rank: 18, faced: false, img: './media/png/5C.png' });
-    expect(G.deck[1]).toEqual({ id: '2C', rank: 15, faced: false, img: './media/png/2C.png' });
-    expect(G.deck[2]).toEqual({ id: 'JD', rank: 37, faced: false, img: './media/png/JD.png' });
-    expect(G.deck[3]).toEqual({ id: '10C', rank: 23, faced: false, img: './media/png/10C.png' });
+    expect(G.deck[0]).toEqual({ id: '5C', rank: 18, faced: false });
+    expect(G.deck[1]).toEqual({ id: '2C', rank: 15, faced: false });
+    expect(G.deck[2]).toEqual({ id: 'JD', rank: 37, faced: false });
+    expect(G.deck[3]).toEqual({ id: '10C', rank: 23, faced: false });
   });
 
   test('cutDeck(5) should rotate deck by one card', () => {
@@ -58,10 +58,10 @@ describe('deck moves', () => {
     client.events.setPhase(null);
     client.moves.cutDeck(5);
     const { G } = client.store.getState();
-    expect(G.deck[0]).toEqual({ id: '7C', rank: 20, faced: false, img: './media/png/7C.png' });
-    expect(G.deck[1]).toEqual({ id: '6C', rank: 19, faced: false, img: './media/png/6C.png' });
-    expect(G.deck[2]).toEqual({ id: '10D', rank: 36, faced: false, img: './media/png/10D.png' });
-    expect(G.deck[3]).toEqual({ id: '5D', rank: 31, faced: false, img: './media/png/5D.png' });
+    expect(G.deck[0]).toEqual({ id: '7C', rank: 20, faced: false });
+    expect(G.deck[1]).toEqual({ id: '6C', rank: 19, faced: false });
+    expect(G.deck[2]).toEqual({ id: '10D', rank: 36, faced: false });
+    expect(G.deck[3]).toEqual({ id: '5D', rank: 31, faced: false });
   });
 });
 
@@ -95,19 +95,16 @@ describe('moveCard(ICardMove) consistent state changes to G', () => {
         id: '6D',
         rank: 32,
         faced: false,
-        img: './media/png/6D.png',
       },
       {
         id: 'KS',
         rank: 13,
         faced: false,
-        img: './media/png/KS.png',
       },
       {
         id: 'JS',
         rank: 11,
         faced: false,
-        img: './media/png/JS.png',
       },
     ]);
   });

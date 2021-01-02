@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { ICard } from './game';
 import { Dialog, DialogContent, DialogActions, Slider, DialogTitle, Button } from '@material-ui/core';
 import css from './CardContainer.module.css';
+import { deckAssets } from './deals';
 
 interface ICardContainerProps {
   collaborator?: {
@@ -157,7 +158,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
       key={tile.id}
       onClick={(evt) => handleClick(evt, index, name)}
       className={css.fitpicture}
-      src={require(`${view ? './media/png/gray_back.png' : tile.img}`)}
+      src={view ? deckAssets.greyBack : deckAssets[tile.id]}
       alt={tile.id}
     />
   ));

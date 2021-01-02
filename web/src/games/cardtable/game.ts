@@ -23,7 +23,6 @@ export interface ICard {
   id: string;
   rank: number;
   faced: boolean;
-  img: string;
 }
 
 export interface IHand {
