@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import { ICard } from './game';
+import { ICard, playerEnum, stageEnum, phaseEnum } from './game';
 import { Dialog, DialogContent, DialogActions, Slider, DialogTitle, Button } from '@material-ui/core';
 import css from './CardContainer.module.css';
-import { deckAssets } from './deals';
+import { deckAssets, cardEnum } from './deals';
 
 interface ICardContainerProps {
   collaborator?: {
@@ -16,9 +16,9 @@ interface ICardContainerProps {
       handleRotateTurn: () => void;
     };
     gameState: {
-      playerID?: string;
-      stage?: string;
-      phase?: string;
+      playerID?: playerEnum;
+      stage?: stageEnum;
+      phase?: phaseEnum;
       cutTie?: boolean;
     };
   };
@@ -38,9 +38,9 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   let tileData = props.cards;
   let privacy = props.concealed && !props.turn;
   let view = props.flipped ? !privacy : privacy;
-  let stage = props.collaborator.gameState.stage;
+  let stage: stageEnum = props.collaborator.gameState.stage;
   let name = props.name;
-  let playerID = props.collaborator.gameState.playerID;
+  let playerID: playerEnum = props.collaborator.gameState.playerID;
 
   const handleDeal = props.collaborator.handlers.handleDeal;
   const handleCrib = props.collaborator.handlers.handleCrib;
@@ -55,22 +55,29 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   const isClickAllowed = (parentContainer: string): boolean => {
     if (stage && parentContainer) {
       switch (stage) {
-        case 'cuttingForDeal': {
+        case stageEnum.cuttingForDeal: {
           return name === 'Deck'; //&& currentPlayer === eventClicker;
         }
-        case 'thePlay': {
-          return (name === 'North Hand' && playerID === '0') || (name === 'South Hand' && playerID === '1');
+        case stageEnum.thePlay: {
+          return (
+            (name === 'North Hand' && playerID === playerEnum.north) ||
+            (name === 'South Hand' && playerID === playerEnum.south)
+          );
         }
-        case 'putToCrib': {
-          return (name === 'North Hand' && playerID === '0') || (name === 'South Hand' && playerID === '1');
+        case stageEnum.putToCrib: {
+          console.log(`in put to crib; pid: ${playerID}`)
+          return (
+            (name === 'North Hand' && playerID === playerEnum.north) ||
+            (name === 'South Hand' && playerID === playerEnum.south)
+          );
         }
-        case 'dealHand': {
+        case stageEnum.dealHand: {
           return name === 'Deck'; //&& playerID matches dealer
         }
-        case 'cutForTurn': {
+        case stageEnum.cutForTurn: {
           return name === 'Deck'; //&& playerID matches non-dealer
         }
-        case 'theCount': {
+        case stageEnum.theCount: {
           return name === 'Crib' || name === 'Deck';
         }
         default:
@@ -82,8 +89,9 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   const handleClick = (evt: React.MouseEvent, idx?: number, name?: string) => {
     evt.preventDefault();
     evt.stopPropagation();
+    console.log(`dipshit: `, stage);
     let allowed: boolean = isClickAllowed(name);
-
+    console.log(allowed);
     if (stage && allowed) {
       switch (stage) {
         case 'cutForTurn': {
@@ -158,8 +166,8 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
       key={tile.id}
       onClick={(evt) => handleClick(evt, index, name)}
       className={css.fitpicture}
-      src={view ? deckAssets.greyBack : deckAssets[tile.id]}
-      alt={tile.id}
+      src={view ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
+      alt={`card: ${tile.id}`}
     />
   ));
   if (props.deck) {

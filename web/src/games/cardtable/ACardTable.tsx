@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { IG, IScoreKeeper } from './game';
+import { IG, IScoreKeeper, playerEnum, stageEnum, phaseEnum } from './game';
 import css from './ACardTable.module.css';
 import CardContainer from './CardContainer';
 import { Ctx } from 'boardgame.io';
@@ -17,10 +17,14 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
   let { G } = props;
   let thescore: IScoreKeeper = G.score;
   let pegPointsMove = props.moves.pegPoints;
-  let stage = props.ctx.activePlayers ? props.ctx.activePlayers[props.ctx.playerID === '0' ? 0 : 1] : null;
+  let stageStr = props.ctx.activePlayers ? props.ctx.activePlayers[props.ctx.playerID === '0' ? 0 : 1] : null;
+  let stage: stageEnum = stageEnum[stageStr];
   let crib = G.hands.east.private;
   let cribFlipped = G.hands.east.cribFlipped ? { flipped: true } : {};
   let theTurn = props.G.deck.length === 1 ? { turn: true } : { concealed: true };
+  let playerIDStr: string = props.playerID;
+  let playerID: playerEnum = playerIDStr === '0' ? playerEnum.north : playerEnum.south;
+  console.log(playerIDStr, playerID)
 
   const collaborator = {
     handlers: {
@@ -32,7 +36,7 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
       handleFlip: props.moves.flipCrib,
       handleRotateTurn: props.moves.rotateTurnToDeal,
     },
-    gameState: { playerID: props.playerID, phase: props.ctx.phase, stage: stage, cutTie: G.cutTie },
+    gameState: { playerID: playerID, phase: phaseEnum[props.ctx.phase], stage: stage, cutTie: G.cutTie },
   };
 
   return (
