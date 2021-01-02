@@ -2,7 +2,6 @@ import { Game } from 'boardgame.io';
 import { IGameState, ICardInfo, ECardState } from './definations';
 import { CARD_CONTENT } from './constants';
 import { shuffleArray, getScoreBoard } from './utils';
-import { selectHttpOptionsAndBody } from '@apollo/react-hooks';
 
 export const MemoryMatchGame: Game<IGameState> = {
   name: 'memorymatch',
