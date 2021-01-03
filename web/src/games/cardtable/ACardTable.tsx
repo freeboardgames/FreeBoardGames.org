@@ -23,7 +23,7 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
   let cribFlipped = G.hands.east.cribFlipped ? { flipped: true } : {};
   let theTurn = props.G.deck.length === 1 ? { turn: true } : { concealed: true };
   let playerIDStr: string = props.playerID;
-  let playerID: playerEnum = playerIDStr === '0' ? playerEnum.north : playerEnum.south;
+  let playerID: playerEnum = playerIDStr as playerEnum;
 
   const collaborator = {
     handlers: {
