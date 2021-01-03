@@ -10,12 +10,14 @@ export interface QuickCustomizationState {
   difficulty: number;
 }
 
+export const DEFAULT_QUICK_CUSTOMIZATION = { difficulty: MIN_VALUE };
+
 const customization: GameCustomization = {
   renderQuick: ({ mode, currentValue, onChange }: GameCustomizationProps) => {
     if (mode != GameMode.AI) {
       return null;
     }
-    const state = (currentValue as QuickCustomizationState) || { difficulty: MIN_VALUE };
+    const state = (currentValue as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
     return (
       <Slider
         label={'Difficulty'}

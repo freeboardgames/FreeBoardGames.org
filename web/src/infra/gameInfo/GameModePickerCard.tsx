@@ -14,7 +14,8 @@ import css from './GameModePicker.module.css';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import Typography from '@material-ui/core/Typography';
-import { GameCustomization } from 'gamesShared/definitions/customization';
+import { GameCustomization, GameCustommizationState } from 'gamesShared/definitions/customization';
+import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 
 interface GameModePickerCardProps {
   gameDef: IGameDef;
@@ -22,19 +23,20 @@ interface GameModePickerCardProps {
   playOnlineGameCallback: (info: IGameModeInfo, numPlayers: number) => () => void;
   playButtonError: boolean;
   playButtonDisabled: boolean;
+  settingsService: SettingsService;
 }
 
 interface GameModePickerCardState {
   numPlayers: number;
   customization: GameCustomization | null;
-  quickCustomValue: unknown;
+  customizationState: GameCustommizationState;
 }
 
-export class GameModePickerCard extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
+class GameModePickerCardInternal extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
   state = {
     numPlayers: 2,
     customization: null,
-    quickCustomValue: null,
+    customizationState: {} as GameCustommizationState,
   };
 
   render() {
@@ -76,6 +78,8 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
     this.props.gameDef.customization().then((customizationModule) => {
       this.setState({ customization: customizationModule.default });
     });
+    const customizationState = this.props.settingsService.getGameSetting('customization', this.props.gameDef.code);
+    this.setState({ customizationState });
   }
 
   private renderButton() {
@@ -143,7 +147,7 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
     }
     return custom.renderQuick({
       mode: this.props.info.mode,
-      currentValue: this.state.quickCustomValue,
+      currentValue: this.state.customizationState?.quick,
       onChange: this._changeQuickCustomValue,
     });
   }
@@ -185,6 +189,11 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
   };
 
   _changeQuickCustomValue = (quickCustomValue: unknown) => {
-    this.setState({ quickCustomValue });
+    const customizationState = this.state.customizationState || {};
+    customizationState.quick = quickCustomValue;
+    this.props.settingsService.setGameSetting('customization', this.props.gameDef.code, customizationState);
+    this.setState({ customizationState });
   };
 }
+
+export const GameModePickerCard = withSettingsService(GameModePickerCardInternal);

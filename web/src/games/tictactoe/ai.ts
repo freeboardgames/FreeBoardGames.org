@@ -1,5 +1,7 @@
 import { IAIConfig } from 'gamesShared/definitions/game';
 import { MCTSBot } from 'boardgame.io/ai';
+import { GameCustommizationState } from 'gamesShared/definitions/customization';
+import { DEFAULT_QUICK_CUSTOMIZATION, QuickCustomizationState, TicTacToeDifficulty } from './customization';
 
 interface IPlayState {
   G: any;
@@ -32,9 +34,10 @@ class TictactoeRandomBot {
   }
 }
 const config: IAIConfig = {
-  bgioAI: (level: string) => {
-    if (level === '2') {
-      // Hard
+  bgioAI: (customization: GameCustommizationState) => {
+    const quickCustomizationState = (customization?.quick as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
+    const difficulty = quickCustomizationState.difficulty;
+    if (difficulty === TicTacToeDifficulty.HARD) {
       return {
         type: MCTSBot,
         ai: {
@@ -49,8 +52,7 @@ const config: IAIConfig = {
           },
         },
       };
-    } else if (level === '1') {
-      // Easy
+    } else if (difficulty === TicTacToeDifficulty.EASY) {
       return { ai: TictactoeRandomBot };
     }
   },

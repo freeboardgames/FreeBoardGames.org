@@ -3,24 +3,29 @@ import { GameCustomization, GameCustomizationProps } from 'gamesShared/definitio
 import Dropdown from 'gamesShared/components/customization/Dropdown';
 import { GameMode } from 'gamesShared/definitions/mode';
 
-const options = ['Easy', 'Hard'];
+export enum TicTacToePlusDifficulty {
+  EASY = 0,
+  HARD = 1,
+}
 
 export interface QuickCustomizationState {
-  difficultyIdx: number;
+  difficulty: TicTacToePlusDifficulty;
 }
+
+export const DEFAULT_QUICK_CUSTOMIZATION = { difficulty: TicTacToePlusDifficulty.EASY };
 
 const customization: GameCustomization = {
   renderQuick: ({ mode, currentValue, onChange }: GameCustomizationProps) => {
     if (mode != GameMode.AI) {
       return null;
     }
-    const state = (currentValue as QuickCustomizationState) || { difficultyIdx: 0 };
+    const state = (currentValue as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
     return (
       <Dropdown
-        options={options}
-        selectedIdx={state.difficultyIdx}
-        callback={(difficultyIdx) => {
-          onChange({ difficultyIdx });
+        options={['Easy', 'Hard']}
+        selectedIdx={state.difficulty}
+        callback={(difficulty) => {
+          onChange({ difficulty });
         }}
       />
     );

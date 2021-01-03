@@ -1,8 +1,5 @@
-export interface GameSettings {
-  customization?: CustomizationGameSettings;
-}
+import { GameCustommizationState } from 'gamesShared/definitions/customization';
 
-export interface CustomizationGameSettings {
-  quick: unknown;
-  full: unknown;
+export interface GameSettings {
+  customization?: GameCustommizationState;
 }

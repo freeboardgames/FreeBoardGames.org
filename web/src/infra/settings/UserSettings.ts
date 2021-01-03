@@ -1,5 +1,5 @@
 export interface UserSettings {
-  sound?: SoundUserSettings; 
+  sound?: SoundUserSettings;
   chat?: ChatUserSettings;
 }
 
