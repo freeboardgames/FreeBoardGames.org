@@ -14,6 +14,7 @@ import {
   INITIAL_WAIT_TIME,
   BACKOFF_INTERVAL,
 } from './constants';
+import { gameLocalStore } from './utils';
 import PlayCard from './components/playCard';
 import CallCard from './components/callCard';
 import Countdown from './components/countDown';
@@ -24,6 +25,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     super(props);
     this.state = {
       showCallTable: false,
+      idNumbersSelected: gameLocalStore('get', 'idNumbersSelected') || [],
     };
   }
 
@@ -38,11 +40,29 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
   };
 
   _numberClicked = (number: INumberState) => {
-    this.props.moves.playerClickedNumber(number, this._getPlayerID());
+    let idNumbersSelected;
+    if (this.state.idNumbersSelected.includes(number.id)) {
+      idNumbersSelected = this.state.idNumbersSelected.filter((n) => n !== number.id);
+    } else {
+      idNumbersSelected = [...this.state.idNumbersSelected, number.id];
+    }
+    gameLocalStore('set', 'idNumbersSelected', idNumbersSelected);
+    this.setState({ idNumbersSelected });
+  };
+
+  _markLocallySelectedNumbers = (gameOver: boolean) => {
+    if (gameOver) {
+      return this.props.G.players[this.props.ctx.gameover.winner].numbers;
+    } else {
+      return this.props.G.players[this._getPlayerID()].numbers.map((n) => ({
+        ...n,
+        marked: this.state.idNumbersSelected.includes(n.id),
+      }));
+    }
   };
 
   _shoutBingo = () => {
-    this.props.moves.playerShouted(this._getPlayerID());
+    this.props.moves.playerShouted(this._getPlayerID(), this.state.idNumbersSelected);
   };
 
   _getPlayerName = (playerID = null) => {
@@ -121,7 +141,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     const { callQueue, callRef, players, timeRef, activePlayers } = this.props.G;
     let playCard = this._isFirstPerson() ? (
       <PlayCard
-        numbers={players[gameOver ? this.props.ctx.gameover.winner : this._getPlayerID()].numbers}
+        numbers={this._markLocallySelectedNumbers(gameOver)}
         onNumberClicked={gameOver ? () => {} : this._numberClicked}
       />
     ) : null;

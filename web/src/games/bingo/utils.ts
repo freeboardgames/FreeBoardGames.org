@@ -17,3 +17,23 @@ export function inferActivePlayers(G: IGameState, playerID: string) {
   const shoutCallPlayers = Object.keys(G.players).filter((p) => G.players[p].shoutCount > 0 && p !== playerID);
   return [playerID, ...shoutCallPlayers].slice(0, MAX_BACKOFF_CANDIDATES);
 }
+
+export function gameLocalStore(action: string, key: string, value: any = null) {
+  if (typeof window !== 'undefined') {
+    const version = 'v01';
+    const storeKey = 'bingoLocalStore';
+    let storeValue = JSON.parse(localStorage.getItem(storeKey)) || {};
+    if (storeValue.version !== version) {
+      storeValue = {};
+    }
+    if (action === 'get') {
+      return storeValue[key];
+    }
+    if (action === 'set') {
+      storeValue = { ...storeValue, version, [key]: value };
+      localStorage.setItem(storeKey, JSON.stringify(storeValue));
+      return true;
+    }
+  }
+  return null;
+}
