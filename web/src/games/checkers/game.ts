@@ -8,19 +8,54 @@ interface ICheckerPiece {
 }
 
 interface ICoord {
-  x: number;
-  y: number;
+  readonly x: number;
+  readonly y: number;
+}
+
+export class Coord implements ICoord {
+  readonly x: number;
+  readonly y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  sum(other: Coord): Coord {
+    return new Coord(this.x + other.x, this.y + other.y);
+  }
+
+  multiply(multiplier: number): Coord {
+    return new Coord(this.x * multiplier, this.y * multiplier);
+  }
+
+  toIndex(): number {
+    return this.x + this.y * 8;
+  }
+  inBounds(): boolean {
+    return this.x >= 0 && this.x < 8 && this.y >= 0 && this.y < 8;
+  }
+
+  equals(other: ICoord): boolean {
+    return this.x === other.x && this.y === other.y;
+  }
+
+  static fromPosition(position: number): Coord {
+    const x = position % 8;
+    const y = Math.floor(position / 8);
+    return new Coord(x, y);
+  }
 }
 
 interface ICheckerPieceWithCoord {
   data: ICheckerPiece;
-  coord: ICoord;
+  coord: Coord;
 }
 
 export interface IMove {
-  from: ICoord;
-  to: ICoord;
-  jumped: ICoord;
+  from: Coord;
+  to: Coord;
+  jumped: Coord;
 }
 
 type Piece = ICheckerPiece | null;
@@ -31,122 +66,30 @@ export interface IG {
 
 const piece = (id: number, player: number): ICheckerPiece => ({ id, playerID: player.toString(), isKing: false });
 
+// prettier-ignore
 export const INITIAL_BOARD: Piece[] = [
-  null,
-  piece(0, 1),
-  null,
-  piece(1, 1),
-  null,
-  piece(2, 1),
-  null,
-  piece(3, 1),
-  piece(4, 1),
-  null,
-  piece(5, 1),
-  null,
-  piece(6, 1),
-  null,
-  piece(7, 1),
-  null,
-  null,
-  piece(8, 1),
-  null,
-  piece(9, 1),
-  null,
-  piece(10, 1),
-  null,
-  piece(11, 1),
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  piece(12, 0),
-  null,
-  piece(13, 0),
-  null,
-  piece(14, 0),
-  null,
-  piece(15, 0),
-  null,
-  null,
-  piece(16, 0),
-  null,
-  piece(17, 0),
-  null,
-  piece(18, 0),
-  null,
-  piece(19, 0),
-  piece(20, 0),
-  null,
-  piece(21, 0),
-  null,
-  piece(22, 0),
-  null,
-  piece(23, 0),
-  null,
+          null,  piece(0, 1),         null,  piece(1, 1),         null,  piece(2, 1),         null,  piece(3, 1),
+   piece(4, 1),         null,  piece(5, 1),         null,  piece(6, 1),         null,  piece(7, 1),         null,
+          null,  piece(8, 1),         null,  piece(9, 1),         null, piece(10, 1),         null, piece(11, 1),
+          null,         null,         null,         null,         null,         null,         null,         null,
+          null,         null,         null,         null,         null,         null,         null,         null,
+  piece(12, 0),         null, piece(13, 0),         null, piece(14, 0),         null, piece(15, 0),         null,
+          null, piece(16, 0),         null, piece(17, 0),         null, piece(18, 0),         null, piece(19, 0),
+  piece(20, 0),         null, piece(21, 0),         null, piece(22, 0),         null, piece(23, 0),         null,
 ];
 
-const MAN_DIRS = [
-  [
-    { x: -1, y: -1 },
-    { x: 1, y: -1 },
-  ],
-  [
-    { x: -1, y: 1 },
-    { x: 1, y: 1 },
-  ],
+const MAN_DIRS: Coord[][] = [
+  [new Coord(-1, -1), new Coord(1, -1)],
+  [new Coord(-1, 1), new Coord(1, 1)],
 ];
 
-const KING_DIRS = [
-  { x: -1, y: 1 },
-  { x: 1, y: 1 },
-  { x: -1, y: -1 },
-  { x: 1, y: -1 },
-];
-
-export function sumCoords(a: ICoord, b: ICoord) {
-  return { x: a.x + b.x, y: a.y + b.y };
-}
-
-export function multiplyCoord(coord: ICoord, multiplier: number) {
-  return { x: coord.x * multiplier, y: coord.y * multiplier };
-}
-
-export function inBounds(coord: ICoord) {
-  return coord.x >= 0 && coord.x < 8 && coord.y >= 0 && coord.y < 8;
-}
-
-export function toCoord(position: number): ICoord {
-  const x = position % 8;
-  const y = Math.floor(position / 8);
-  return { x, y };
-}
-
-export function toIndex(coord: ICoord) {
-  return coord.x + coord.y * 8;
-}
-
-export function areCoordsEqual(a: ICoord, b: ICoord) {
-  return a.x === b.x && a.y === b.y;
-}
+const KING_DIRS: Coord[] = [new Coord(-1, 1), new Coord(1, 1), new Coord(-1, -1), new Coord(1, -1)];
 
 export function checkPosition(
   G: IG,
   playerID: string,
   piece: ICheckerPiece,
-  coord: ICoord,
+  coord: Coord,
 ): { moves: IMove[]; jumped: boolean } {
   const dirs = piece.isKing ? KING_DIRS : MAN_DIRS[playerID as any];
   let moves: IMove[] = [];
@@ -156,14 +99,14 @@ export function checkPosition(
     // Look into all valid directions
     let opponentBefore = null;
     for (let i = 1; piece.isKing ? true : i < 3; i++) {
-      const final = sumCoords(coord, multiplyCoord(dir, i));
+      const final = coord.sum(dir.multiply(i));
 
       // Break if move is out of bounds
-      if (!inBounds(final)) {
+      if (!final.inBounds()) {
         break;
       }
 
-      const moveTo = G.board[toIndex(final)];
+      const moveTo = G.board[final.toIndex()];
 
       // Break if we encounter our piece
       if (moveTo !== null && moveTo.playerID === playerID) {
@@ -203,7 +146,7 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
   if (typeof jumping === 'undefined') {
     G.board.forEach((piece, index) => {
       if (piece !== null && piece.playerID === playerID) {
-        const coord = toCoord(index);
+        const coord = Coord.fromPosition(index);
         const { moves, jumped } = checkPosition(G, playerID, piece, coord);
         movesTotal.push(...moves);
         jumpedTotal = jumpedTotal || jumped;
@@ -223,8 +166,10 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
 }
 
 export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
-  const indexFrom = toIndex(from);
-  const indexTo = toIndex(to);
+  const fromCoord = new Coord(from.x, from.y);
+  const toCoord = new Coord(to.x, to.y);
+  const indexFrom = fromCoord.toIndex();
+  const indexTo = toCoord.toIndex();
   const piece = G.board[indexFrom];
   const crownhead = ctx.playerID === '0' ? 0 : 7;
 
@@ -233,13 +178,13 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
   }
 
   const moves = G.jumping === null ? getValidMoves(G, ctx.playerID) : getValidMoves(G, ctx.playerID, G.jumping);
-  const move = moves.find((move) => areCoordsEqual(move.from, from) && areCoordsEqual(move.to, to));
+  const move = moves.find((move) => move.from.equals(from) && move.to.equals(to));
 
   if (typeof move === 'undefined') {
     return INVALID_MOVE;
   }
 
-  const jumped = move.jumped !== null ? toIndex(move.jumped) : -1;
+  const jumped = move.jumped !== null ? move.jumped.toIndex() : -1;
   const isKing = piece.isKing || to.y === crownhead;
 
   const newG: IG = {
@@ -271,7 +216,7 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
       ...piece,
       isKing,
     },
-    coord: to,
+    coord: toCoord,
   };
   const postMoves = getValidMoves(newG, ctx.playerID, jumping);
 

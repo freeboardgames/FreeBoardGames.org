@@ -1,0 +1,121 @@
+.Pegstreet {
+    display: flex;
+    flex:2 2 100%;
+    flex-direction: row;
+    justify-content:space-around;
+    width: 100%;
+}
+
+.Homestreet {
+    display: flex;
+    flex: 2 2 100%;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.Pegstreet_upstreet {
+    display: flex;
+    flex: 2 2 100%;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.Peggroup {
+    display: flex;
+    flex: 1 2 110px;
+    justify-content: space-evenly;
+    flex-direction: row;
+    border-color: rgba(0,0,0,0.01);
+    border-style: solid;
+    padding: 5px;
+}
+
+.Peggroup_upstreet {
+    display: flex;
+    flex: 2 2 110px;
+    justify-content: space-evenly;
+    flex-direction: row-reverse;
+    border-color: rgba(0,0,0,0.01);
+    border-style: solid;
+    padding: 5px;
+}
+
+.Peghole {
+    color:rebeccapurple;
+    flex: 0 2 9px;
+    height: 9px;
+    width: 9px;
+    justify-content: space-around;
+    background-color: darkred;
+    border-radius: 50%;
+    padding: 1px;
+}
+
+.Peghole_pegged {
+    composes: Peghole;
+    background-color: whitesmoke;
+}
+
+.Peghole_opegged {
+    composes: Peghole;
+    background-color: red;
+}
+
+.Peghole:hover {
+    background-color: darkgray;
+    transition-duration: 200ms;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 30px;
+    background-color: cornflowerblue;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    left: 10%;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  .CribbagePlayer {
+    flex: 2 2 100%;
+    display:flex;
+    flex-direction:column
+  }
+
+  .CribbagePlayer_inverted {
+      composes: CribbagePlayer;
+      flex-direction: column-reverse;
+  }
+
+  .CribbageBoardB {
+    background-color: brown;
+    min-height: inherit;
+    max-height: inherit;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    width: 100%;
+    max-width: 600px;
+    min-width: 600px;
+    margin-right: 9px;
+}

@@ -121,6 +121,10 @@ export const SecretDraculaGame = {
       return G;
     }
 
+    if (ctx.gameover) {
+      return G;
+    }
+
     return {
       ...G,
       policyDraw: G.policyDraw.map(() => {
