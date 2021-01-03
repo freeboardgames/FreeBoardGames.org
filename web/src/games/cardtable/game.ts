@@ -1,6 +1,28 @@
 import { Ctx } from 'boardgame.io';
 import { INVALID_MOVE } from 'boardgame.io/core';
-import { dealCribbage } from './deals';
+import { cardEnum, dealCribbage } from './deals';
+
+export enum playerEnum {
+  north = '0',
+  south = '1',
+  east = '2',
+  west = '3',
+}
+
+export enum stageEnum {
+  cuttingForDeal = 'cuttingForDeal',
+  dealHand = 'dealHand',
+  putToCrib = 'putToCrib',
+  cutForTurn = 'cutForTurn',
+  thePlay = 'thePlay',
+  theCount = 'theCount',
+}
+
+export enum phaseEnum {
+  preGame = 'preGame',
+  gamePlay = 'gamePlay',
+  gameEnd = 'gameEnd',
+}
 
 export interface IG {
   bestCut?: number;
@@ -20,10 +42,9 @@ export interface ITable {
 }
 
 export interface ICard {
-  id: string;
+  id: cardEnum;
   rank: number;
   faced: boolean;
-  img: string;
 }
 
 export interface IHand {
@@ -370,10 +391,10 @@ export const CardTableGame = {
       { id: 'AH', rank: 52, faced: false, img: './media/png/AH.png' },
     ],
     hands: {
-      north: { playerId: '1', private: [], melds: [], tricks: [], played: [], held: [] },
-      east: { playerId: '2', private: [], melds: [], tricks: [], played: [], held: [] },
-      south: { playerId: '3', private: [], melds: [], tricks: [], played: [], held: [] },
-      west: { playerId: '4', private: [], melds: [], tricks: [], played: [], held: [] },
+      north: { private: [], melds: [], tricks: [], played: [], held: [] },
+      east: { private: [], melds: [], tricks: [], played: [], held: [] },
+      south: { private: [], melds: [], tricks: [], played: [], held: [] },
+      west: { private: [], melds: [], tricks: [], played: [], held: [] },
     },
     stock: [],
   }),
@@ -393,17 +414,17 @@ export const CardTableGame = {
       turn: {
         activePlayers: { all: 'cuttingForDeal' },
         stages: {
-          cuttingForDeal: {
+          [stageEnum.cuttingForDeal]: {
             moves: { cutForDeal, deal, pegPoints, resetGamePegs, resetMatchPegs },
           },
         },
       },
     },
     gamePlay: {
-      next: 'gameEnd',
+      next: phaseEnum.gameEnd,
       moves,
       turn: {
-        activePlayers: { all: 'dealHand' },
+        activePlayers: { all: stageEnum.dealHand },
         order: {
           first: (G) => {
             return G.chosenDealer;
@@ -414,24 +435,24 @@ export const CardTableGame = {
         },
       },
       stages: {
-        dealHand: {
-          next: 'putToCrib',
+        [stageEnum.dealHand]: {
+          next: stageEnum.putToCrib,
           moves: { deal, pegPoints, resetGamePegs, resetMatchPegs },
         },
         putToCrib: {
-          next: 'cutForTurn',
+          next: stageEnum.cutForTurn,
           moves: { putToCrib },
         },
-        cutForTurn: {
-          next: 'thePlay',
+        [stageEnum.cutForTurn]: {
+          next: stageEnum.thePlay,
           moves: { cutShowTurn, pegPoints },
         },
-        thePlay: {
-          next: 'theCount',
+        [stageEnum.thePlay]: {
+          next: stageEnum.theCount,
           moves: { play, pegPoints },
         },
-        theCount: {
-          next: 'dealHand',
+        [stageEnum.theCount]: {
+          next: stageEnum.dealHand,
           moves: { pegPoints, rotateTurnToDeal, flipCrib },
         },
       },
