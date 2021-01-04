@@ -18,19 +18,18 @@ export function inferActivePlayers(G: IGameState, playerID: string) {
   return [playerID, ...shoutCallPlayers].slice(0, MAX_BACKOFF_CANDIDATES);
 }
 
-export function gameLocalStore(action: string, key: string, value: any = null) {
+export function gameLocalStore(action: string, matchCode: string, key: string, value: any = null) {
   if (typeof window !== 'undefined') {
-    const version = 'v01';
     const storeKey = 'bingoLocalStore';
     let storeValue = JSON.parse(localStorage.getItem(storeKey)) || {};
-    if (storeValue.version !== version) {
+    if (storeValue.matchCode !== matchCode) {
       storeValue = {};
     }
     if (action === 'get') {
       return storeValue[key];
     }
     if (action === 'set') {
-      storeValue = { ...storeValue, version, [key]: value };
+      storeValue = { ...storeValue, matchCode, [key]: value };
       localStorage.setItem(storeKey, JSON.stringify(storeValue));
       return true;
     }

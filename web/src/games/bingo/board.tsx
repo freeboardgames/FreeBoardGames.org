@@ -25,7 +25,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     super(props);
     this.state = {
       showCallTable: false,
-      idNumbersSelected: gameLocalStore('get', 'idNumbersSelected') || [],
+      idNumbersSelected: gameLocalStore('get', this.props.gameArgs.matchCode, 'idNumbersSelected') || [],
     };
   }
 
@@ -46,7 +46,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     } else {
       idNumbersSelected = [...this.state.idNumbersSelected, number.id];
     }
-    gameLocalStore('set', 'idNumbersSelected', idNumbersSelected);
+    gameLocalStore('set', this.props.gameArgs.matchCode, 'idNumbersSelected', idNumbersSelected);
     this.setState({ idNumbersSelected });
   };
 
