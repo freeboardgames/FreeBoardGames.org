@@ -14,7 +14,7 @@ import {
   INITIAL_WAIT_TIME,
   BACKOFF_INTERVAL,
 } from './constants';
-import { gameLocalStore } from './utils';
+import { getFromSessionStore, setInSessionStore } from './utils';
 import PlayCard from './components/playCard';
 import CallCard from './components/callCard';
 import Countdown from './components/countDown';
@@ -25,7 +25,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     super(props);
     this.state = {
       showCallTable: false,
-      idNumbersSelected: gameLocalStore('get', this.props.gameArgs.matchCode, 'idNumbersSelected') || [],
+      idNumbersSelected: getFromSessionStore(this.props.gameArgs.matchCode, 'idNumbersSelected') || [],
     };
   }
 
@@ -46,7 +46,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     } else {
       idNumbersSelected = [...this.state.idNumbersSelected, number.id];
     }
-    gameLocalStore('set', this.props.gameArgs.matchCode, 'idNumbersSelected', idNumbersSelected);
+    setInSessionStore(this.props.gameArgs.matchCode, 'idNumbersSelected', idNumbersSelected);
     this.setState({ idNumbersSelected });
   };
 
