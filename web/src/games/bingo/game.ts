@@ -1,6 +1,6 @@
 import { Game } from 'boardgame.io';
 import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
-import { IGameState, INumberState } from './definitions';
+import { IGameState } from './definitions';
 import { GRID_SIZE, COL_DELTA, WILDCARD_NUM, MAX_BINGO_CALLS, INITIAL_WAIT_REF_NUM, TIME_OUT } from './constants';
 import { shuffleArray, inferActivePlayers } from './utils';
 
@@ -52,25 +52,21 @@ export const BingoGame: Game<IGameState> = {
       G.activePlayers = inferActivePlayers(G, playerID);
       return G;
     },
-    playerClickedNumber: (G: IGameState, _, number: INumberState, playerID: string) => {
-      for (let n of G.players[playerID].numbers) {
-        if (n.id === number.id) {
-          n.marked = !n.marked;
-        }
-      }
-      return G;
-    },
-    playerShouted: (G: IGameState, _, playerID: string) => {
+    playerShouted: (G: IGameState, _, playerID: string, idNumbersSelected: number[]) => {
       if (G.players[playerID].shoutCount <= 0) {
         return G;
       }
 
       const numbersShown = G.callQueue.slice(0, G.callRef + 1);
+      const numbers = G.players[playerID].numbers.map((n) => ({
+        ...n,
+        marked: idNumbersSelected.includes(n.id),
+      }));
 
       // check if any columns (5), rows (5) or diagonals (2) are complete
       let found, xPos, yPos, marked;
       found = new Array(12).fill(0);
-      for (let n of G.players[playerID].numbers) {
+      for (let n of numbers) {
         xPos = Math.floor(n.id / GRID_SIZE);
         yPos = n.id % GRID_SIZE;
         marked = (n.marked && numbersShown.includes(n.value)) || n.value === WILDCARD_NUM;
@@ -88,6 +84,7 @@ export const BingoGame: Game<IGameState> = {
       }
 
       if (found.includes(GRID_SIZE)) {
+        G.players[playerID].numbers = numbers;
         G.players[playerID].isWinner = true;
       } else {
         G.players[playerID].shoutCount -= 1;
