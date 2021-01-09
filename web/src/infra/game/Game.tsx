@@ -32,7 +32,7 @@ interface IGameState {
   ai?: IAIConfig;
 }
 
-class GameInternal extends React.Component<IGameProps, IGameState> {
+export class GameInternal extends React.Component<IGameProps, IGameState> {
   mode: GameMode;
   loadAI: boolean;
   gameCode: string;

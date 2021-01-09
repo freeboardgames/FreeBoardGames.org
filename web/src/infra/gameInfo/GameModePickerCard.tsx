@@ -32,7 +32,7 @@ interface GameModePickerCardState {
   customizationState: GameCustommizationState;
 }
 
-class GameModePickerCardInternal extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
+export class GameModePickerCardInternal extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
   state = {
     numPlayers: 2,
     customization: null,

@@ -39,6 +39,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
           playButtonDisabled={this.state.playButtonDisabled}
           playButtonError={this.state.playButtonError}
           playOnlineGameCallback={this._playOnlineGame}
+          key={info.mode}
         />,
       );
     }
