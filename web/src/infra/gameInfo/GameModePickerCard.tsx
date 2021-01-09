@@ -75,6 +75,9 @@ export class GameModePickerCardInternal extends React.Component<GameModePickerCa
   }
 
   componentDidMount() {
+    if (!this.props.gameDef.customization) {
+      return;
+    }
     this.props.gameDef.customization().then((customizationModule) => {
       this.setState({ customization: customizationModule.default });
     });
