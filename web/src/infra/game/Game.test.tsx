@@ -1,9 +1,10 @@
 import React from 'react';
-import Game from './Game';
+import { GameInternal as Game } from './Game';
 import { mount } from 'enzyme';
 import { GAMES_MAP } from 'games';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
 
 // so we don't actually use SocketIO and attempt a connection:
 jest.mock('boardgame.io/multiplayer');
@@ -13,6 +14,11 @@ beforeEach(() => {
 });
 
 describe('Game', () => {
+  let settingsService;
+  beforeEach(() => {
+    settingsService = { getGameSetting: jest.fn() };
+  });
+
   it('should render properly for multiplayer', async () => {
     const gameCode = 'tictactoe';
     const game = GAMES_MAP[gameCode];
@@ -33,7 +39,7 @@ describe('Game', () => {
           bgioPlayerId: '0',
           bgioSecret: 'fooSecret',
         };
-        const app = <Game match={match} />;
+        const app = <Game match={match} settingsService={settingsService} />;
         const wrapper = mount(app);
         await (wrapper.find(Game).instance() as any).promise;
         expect(wrapper.text()).toContain('Downloading Chess');
@@ -45,7 +51,7 @@ describe('Game', () => {
 
   it('should render properly for singleplayer', async () => {
     const gameCode = 'tictactoe';
-    const app = <Game gameCode={gameCode} mode={'local'} />;
+    const app = <Game gameCode={gameCode} mode={'local'} settingsService={settingsService} />;
     const wrapper = mount(app);
     await (wrapper.find(Game).instance() as any).promise;
     wrapper.update();
@@ -54,7 +60,11 @@ describe('Game', () => {
 
   it('should render properly for ai', async () => {
     const gameCode = 'tictactoe';
-    const app = <Game gameCode={gameCode} mode={GameMode.AI} aiLevel={'1'} />;
+    const gameCustomizationState: GameCustomizationState = {
+      quick: { difficulty: 1 },
+    };
+    settingsService.getGameSetting.mockReturnValue(gameCustomizationState);
+    const app = <Game gameCode={gameCode} mode={GameMode.AI} settingsService={settingsService} />;
     const wrapper = mount(app);
     await (wrapper.find(Game).instance() as any).promise;
     wrapper.update();
@@ -63,7 +73,7 @@ describe('Game', () => {
 
   it('should render error correctly with rejected Promise', async () => {
     GAMES_MAP.chess.config = () => Promise.reject(new Error('fail'));
-    const app = <Game gameCode={'chess'} mode={'local'} />;
+    const app = <Game gameCode={'chess'} mode={'local'} settingsService={settingsService} />;
     const wrapper = mount(app);
     await (wrapper.find(Game).instance() as any).promise;
     wrapper.update();
@@ -71,7 +81,7 @@ describe('Game', () => {
   });
 
   it('should render error correctly with unknown gameCode', async () => {
-    const app = <Game gameCode={'notAGame'} mode={'local'} />;
+    const app = <Game gameCode={'notAGame'} mode={'local'} settingsService={settingsService} />;
     const wrapper = mount(app);
     await (wrapper.find(Game).instance() as any).promise;
     wrapper.update();
@@ -79,7 +89,7 @@ describe('Game', () => {
   });
 
   it('should render error correctly with invalid game mode', async () => {
-    const app = <Game gameCode={'chess'} mode={'invalid'} />;
+    const app = <Game gameCode={'chess'} mode={'invalid'} settingsService={settingsService} />;
     const wrapper = mount(app);
     await (wrapper.find(Game).instance() as any).promise;
     wrapper.update();
@@ -87,7 +97,7 @@ describe('Game', () => {
   });
 
   it('should render loading correctly', () => {
-    const app = <Game gameCode="tictactoe" mode="local" />;
+    const app = <Game gameCode="tictactoe" mode="local" settingsService={settingsService} />;
     const wrapper = mount(app);
     (wrapper.find(Game).instance() as any).clear();
     (wrapper.find(Game).instance() as any).forceUpdate();
@@ -95,7 +105,7 @@ describe('Game', () => {
   });
 
   it('should call componentWillUnmount() without error', () => {
-    const app = <Game gameCode={'chess'} mode={'local'} />;
+    const app = <Game gameCode={'chess'} mode={'local'} settingsService={settingsService} />;
     const wrapper = mount(app);
     (wrapper.find(Game).instance() as any).componentWillUnmount();
   });
