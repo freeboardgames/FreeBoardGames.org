@@ -1,7 +1,7 @@
 import { IGameModeInfo } from './mode';
 import { GameMode } from './mode';
 import { IPlayerInRoom } from './player';
-import { GameCustommizationState } from 'gamesShared/definitions/customization';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
 
 export interface IGameArgs {
   gameCode: string;
@@ -18,7 +18,7 @@ export interface IGameConfig {
 }
 
 export interface IAIConfig {
-  bgioAI: (customization: GameCustommizationState) => any;
+  bgioAI: (customization: GameCustomizationState) => any;
 }
 
 export enum IGameStatus {
