@@ -82,6 +82,33 @@ describe('Bulls and Cows Service', () => {
     it('should save current combination', () => {
       expect(guessResult.combination).toEqual(current);
     });
+
+    it('should not show more hints than the secret needed', () => {
+      current = [{ id: 3 }, { id: 3 }, { id: 1 }, { id: 2 }, { id: 6 }, { id: 9 }];
+      secret = [{ id: 3 }, { id: 1 }, { id: 4 }, { id: 2 }, { id: 7 }, { id: 8 }];
+
+      const result = checkSecret(current, secret);
+
+      expect(result.hints).toEqual([1, 1, 0, -1, -1, -1]);
+    });
+
+    it('should not show more hints than the secret needed', () => {
+      current = [{ id: 7 }, { id: 1 }, { id: 1 }, { id: 2 }, { id: 3 }, { id: 3 }];
+      secret = [{ id: 3 }, { id: 1 }, { id: 4 }, { id: 2 }, { id: 7 }, { id: 3 }];
+
+      const result = checkSecret(current, secret);
+
+      expect(result.hints).toEqual([1, 1, 1, 0, -1, -1]);
+    });
+
+    it('should not show more hints than the secret needed for repeated secret', () => {
+      current = [{ id: 3 }, { id: 3 }, { id: 1 }, { id: 2 }, { id: 6 }, { id: 9 }];
+      secret = [{ id: 3 }, { id: 1 }, { id: 4 }, { id: 2 }, { id: 7 }, { id: 3 }];
+
+      const result = checkSecret(current, secret);
+
+      expect(result.hints).toEqual([1, 1, 0, 0, -1, -1]);
+    });
   });
 
   describe('isVictory', () => {
