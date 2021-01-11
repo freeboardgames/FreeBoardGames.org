@@ -1,6 +1,7 @@
+import React from 'react';
 import { GameMode } from './mode';
 
-export interface GameCustommizationState {
+export interface GameCustomizationState {
   quick?: unknown;
   full?: unknown;
 }
@@ -12,6 +13,6 @@ export interface GameCustomizationProps {
 }
 
 export interface GameCustomization {
-  renderQuick?: (args: GameCustomizationProps) => JSX.Element | null;
-  renderFull?: (args: GameCustomizationProps) => JSX.Element | null;
+  renderQuick?: (args: GameCustomizationProps) => React.ReactNode;
+  renderFull?: (args: GameCustomizationProps) => React.ReactNode;
 }

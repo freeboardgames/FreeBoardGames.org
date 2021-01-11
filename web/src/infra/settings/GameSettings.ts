@@ -1,5 +1,5 @@
-import { GameCustommizationState } from 'gamesShared/definitions/customization';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
 
 export interface GameSettings {
-  customization?: GameCustommizationState;
+  customization?: GameCustomizationState;
 }

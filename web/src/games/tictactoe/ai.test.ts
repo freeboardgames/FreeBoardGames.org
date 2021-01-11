@@ -2,10 +2,10 @@ import AIConfig from './ai';
 import { Step, MCTSBot } from 'boardgame.io/ai';
 import { TictactoeGame } from './game';
 import { Client } from 'boardgame.io/client';
-import { GameCustommizationState } from 'gamesShared/definitions/customization';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
 import { TicTacToeDifficulty, QuickCustomizationState } from './customization';
 
-function customizationState(difficulty: TicTacToeDifficulty): GameCustommizationState {
+function customizationState(difficulty: TicTacToeDifficulty): GameCustomizationState {
   const quick: QuickCustomizationState = { difficulty };
   return {
     quick,

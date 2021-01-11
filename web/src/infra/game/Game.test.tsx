@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { GAMES_MAP } from 'games';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
-import { GameCustommizationState } from 'gamesShared/definitions/customization';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
 
 // so we don't actually use SocketIO and attempt a connection:
 jest.mock('boardgame.io/multiplayer');
@@ -60,7 +60,7 @@ describe('Game', () => {
 
   it('should render properly for ai', async () => {
     const gameCode = 'tictactoe';
-    const gameCustomizationState: GameCustommizationState = {
+    const gameCustomizationState: GameCustomizationState = {
       quick: { difficulty: 1 },
     };
     settingsService.getGameSetting.mockReturnValue(gameCustomizationState);

@@ -1,6 +1,6 @@
 import { IAIConfig } from 'gamesShared/definitions/game';
 import StockfishWorker from './stockfish8.worker';
-import { GameCustommizationState } from 'gamesShared/definitions/customization';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
 import { DEFAULT_QUICK_CUSTOMIZATION, QuickCustomizationState } from './customization';
 
 interface IPlayState {
@@ -74,7 +74,7 @@ export class StockfishBot {
 }
 
 const config: IAIConfig = {
-  bgioAI: (customization: GameCustommizationState) => {
+  bgioAI: (customization: GameCustomizationState) => {
     const quickCustomizationState = (customization?.quick as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
     botLevel = quickCustomizationState.difficulty;
     return StockfishBot;

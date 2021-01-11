@@ -14,7 +14,7 @@ import css from './GameModePicker.module.css';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import Typography from '@material-ui/core/Typography';
-import { GameCustomization, GameCustommizationState } from 'gamesShared/definitions/customization';
+import { GameCustomization, GameCustomizationState } from 'gamesShared/definitions/customization';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 
 interface GameModePickerCardProps {
@@ -29,14 +29,14 @@ interface GameModePickerCardProps {
 interface GameModePickerCardState {
   numPlayers: number;
   customization: GameCustomization | null;
-  customizationState: GameCustommizationState;
+  customizationState: GameCustomizationState;
 }
 
 export class GameModePickerCardInternal extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
   state = {
     numPlayers: 2,
     customization: null,
-    customizationState: {} as GameCustommizationState,
+    customizationState: {} as GameCustomizationState,
   };
 
   render() {

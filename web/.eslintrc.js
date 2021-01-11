@@ -18,7 +18,6 @@ module.exports = {
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
     'react/display-name': 'off',
     'react/react-in-jsx-scope': 'off',
-    //'react/prop-types': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
     'react/no-unused-state': 'warn',
     'no-console': 'warn',
