@@ -37,22 +37,53 @@ export const generateSecret = (ctx: Ctx, colours: IColour[], secretLength: numbe
   return ctx.random.Shuffle(colours).slice(0, secretLength);
 };
 
-export const checkSecret = (current, secret) => {
+const findFirstIndex = (list: number[], id: number) => {
+  const indexes = [];
+  list.filter((item, index) => {
+    if (item === id) {
+      indexes.push(index);
+      return true;
+    }
+
+    return false;
+  });
+
+  return indexes[0] || null;
+};
+
+const isBull = (secret, value, index) => {
+  return secret[index] === value;
+};
+
+const isCow = (secret, value) => {
+  return secret.includes(value);
+};
+
+export const checkSecret = (current: IColour[], secret: IColour[]): IAttempt => {
   let hints = [];
+  let secretToCheck = secret.map((s) => s.id);
 
   for (let i in current) {
-    const pin = current[i];
-    if (pin.id === secret[i].id) {
+    const { id } = current[i];
+    if (secretToCheck[i] !== null && isBull(secretToCheck, id, i)) {
       hints.push(1);
-    } else if (secret.some((s) => s.id === pin.id)) {
-      hints.push(0);
-    } else {
-      hints.push(-1);
+      secretToCheck[i] = null;
     }
   }
 
+  for (let i in current) {
+    const { id } = current[i];
+    if (secretToCheck[i] !== null && isCow(secretToCheck, id)) {
+      hints.push(0);
+      const index = findFirstIndex(secretToCheck, id);
+      secretToCheck[index] = null;
+    }
+  }
+
+  const leftHints = secretToCheck.filter((s) => s !== null).map(() => -1);
+
   return {
-    hints: hints.sort((a, b) => b - a),
+    hints: [...hints, ...leftHints],
     combination: current,
   };
 };
