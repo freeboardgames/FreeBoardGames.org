@@ -1,6 +1,6 @@
 import { ActivePlayers } from 'boardgame.io/core';
 import { Ctx, Game } from 'boardgame.io';
-import { words } from './constants';
+import { ENGLISH_WORDS } from './constants';
 import { Card, CardColor, IG, Phases, TeamColor } from './definitions';
 import {
   chooseCard,
@@ -28,7 +28,7 @@ const GameConfig: Game<IG> = {
       teams[1].spymasterID = '1';
     }
     const cards = ctx.random
-      .Shuffle(words)
+      .Shuffle(ENGLISH_WORDS)
       .slice(0, 25)
       .map((word) => makeCard(word));
     const lastSelectedCardIndex = null;

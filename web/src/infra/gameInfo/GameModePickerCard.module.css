@@ -1,0 +1,32 @@
+.OccupancySelect {
+  padding-bottom: 8px;
+}
+
+.CustomizationCard {
+  padding: 8px;
+  max-width: 800px;
+  max-height: 600px;
+ }
+
+.DialogClose {
+  float: right;
+  position: relative;
+  left: 12px;
+}
+
+.DialogTitleWrapper {
+  padding-bottom: 16px;
+}
+
+.DialogContentWrapper {
+ text-align: left;
+ overflow-y: auto;
+ overflow-x: hidden;
+ height: calc(100% - 48px);
+}
+
+.DialogTitle {
+  position: relative;
+  top: 9px;
+  padding-bottom: 8px;
+}
