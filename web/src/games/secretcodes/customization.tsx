@@ -72,7 +72,7 @@ const renderPredefinedWordsSelect = (
       displayEmpty={true}
       renderValue={renderSelectValue}
       onChange={handlePredefinedWordChange(onChange)}
-      style={{ width: '180px' }}
+      style={{ width: '250px' }}
     >
       {PREDEFINED_WORDS.map((predefinedWords, index) => (
         <MenuItem value={index} key={index}>
@@ -89,11 +89,11 @@ const customization: GameCustomization = {
     return (
       <div>
         {renderPredefinedWordsSelect(onChange, state)}
-        <div style={{ height: '16px' }}></div>
+        <div style={{ height: '32px' }}></div>
         <TextField
           label={`Words (${state.words.length})`}
           multiline
-          style={{ width: '180px' }}
+          style={{ width: '250px' }}
           rows={15}
           value={stateToText(state)}
           variant="outlined"
