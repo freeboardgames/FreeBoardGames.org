@@ -16,10 +16,8 @@ import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import Typography from '@material-ui/core/Typography';
 import { GameCustomization, GameCustomizationState, CustomizationType } from 'gamesShared/definitions/customization';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import SettingsIcon from '@material-ui/icons/Settings';
-import AlertLayer from '../common/components/alert/AlertLayer';
+import { QuickCustomization } from 'infra/settings/QuickCustomization';
+import { FullCustomization } from 'infra/settings/FullCustomization';
 
 interface GameModePickerCardProps {
   gameDef: IGameDef;
@@ -34,7 +32,6 @@ interface GameModePickerCardState {
   numPlayers: number;
   customization: GameCustomization | null;
   customizationState: GameCustomizationState;
-  showCustomizationDialog: boolean;
 }
 
 export class GameModePickerCardInternal extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
@@ -42,7 +39,6 @@ export class GameModePickerCardInternal extends React.Component<GameModePickerCa
     numPlayers: this.props.gameDef.minPlayers,
     customization: null,
     customizationState: {} as GameCustomizationState,
-    showCustomizationDialog: false,
   };
 
   render() {
@@ -68,18 +64,17 @@ export class GameModePickerCardInternal extends React.Component<GameModePickerCa
     }
     return (
       <>
-        {this.renderCustomizationDialog()}
         <Card key={title} style={{ margin: '0 0 16px 0' }}>
           <CardHeader
             avatar={<Avatar aria-label={title}>{icon}</Avatar>}
-            action={this.renderFullCustomizationButton()}
+            action={this.renderFullCustomization()}
             title={title}
           />
           <CardContent>
             <Typography component="p">{description}</Typography>
           </CardContent>
           <CardActions>
-            {this.renderPersonalization()}
+            {this.renderCustomizationActions()}
             {this.renderButton()}
           </CardActions>
         </Card>
@@ -140,96 +135,35 @@ export class GameModePickerCardInternal extends React.Component<GameModePickerCa
     }
   }
 
-  private renderPersonalization() {
+  private renderFullCustomization() {
+    return (
+      <FullCustomization
+        info={this.props.info}
+        customization={this.state.customization}
+        customizationState={this.state.customizationState}
+        changeCustomValue={this._changeCustomValue}
+      />
+    );
+  }
+
+  private renderCustomizationActions() {
     let numPlayers = null;
     if (this.props.info.mode == GameMode.OnlineFriend) {
       if (this.props.gameDef.minPlayers < this.props.gameDef.maxPlayers) {
         numPlayers = this.getExtraInfoNumPlayers();
       }
     }
-    let quickCustomization = this.renderQuickCustomization();
     return (
       <>
         {numPlayers}
-        {quickCustomization}
+        <QuickCustomization
+          info={this.props.info}
+          customization={this.state.customization}
+          customizationState={this.state.customizationState}
+          changeCustomValue={this._changeCustomValue}
+        />
       </>
     );
-  }
-
-  private hasFullCustomization() {
-    const custom = this.state.customization;
-    if (!custom || !custom.renderFull) {
-      return false;
-    }
-    const fullCustom = custom.renderFull({
-      mode: this.props.info.mode,
-      currentValue: this.state.customizationState?.quick,
-      onChange: () => {},
-    });
-    return fullCustom !== null;
-  }
-
-  private renderCustomizationDialog() {
-    if (!this.state.showCustomizationDialog) {
-      return null;
-    }
-    return (
-      <AlertLayer onClickaway={this.toggleFullCustomizationDialog}>
-        <Card className={css.CustomizationCard}>
-          {this.renderCustomizationDialogHeader()}
-          <div className={css.DialogContentWrapper}>{this.renderCustomizationDialogContent()}</div>
-        </Card>
-      </AlertLayer>
-    );
-  }
-
-  private renderCustomizationDialogContent() {
-    const custom = this.state.customization;
-    return custom.renderFull({
-      mode: this.props.info.mode,
-      currentValue: this.state.customizationState?.full,
-      onChange: this._changeCustomValue(CustomizationType.FULL),
-    });
-  }
-
-  private renderCustomizationDialogHeader() {
-    return (
-      <div className={css.DialogTitleWrapper}>
-        <IconButton aria-label="close" onClick={this.toggleFullCustomizationDialog} className={css.DialogClose}>
-          <CloseIcon />
-        </IconButton>
-        <Typography variant="h6" component="span" className={css.DialogTitle}>
-          Customization
-        </Typography>
-      </div>
-    );
-  }
-
-  private renderFullCustomizationButton() {
-    if (!this.hasFullCustomization()) {
-      return null;
-    }
-    return (
-      <IconButton aria-label="Customize game" onClick={this.toggleFullCustomizationDialog}>
-        <SettingsIcon style={{ color: this.state.customizationState?.full ? '#3f51b5' : undefined }} />
-      </IconButton>
-    );
-  }
-
-  toggleFullCustomizationDialog = () => {
-    this.setState({ showCustomizationDialog: !this.state.showCustomizationDialog });
-  };
-
-  private renderQuickCustomization() {
-    const custom = this.state.customization;
-    if (!custom || !custom.renderQuick) {
-      return null;
-    }
-    return custom.renderQuick({
-      mode: this.props.info.mode,
-      currentValue: this.state.customizationState?.quick,
-      onChange: this._changeCustomValue(CustomizationType.QUICK),
-    });
   }
 
   private getExtraInfoNumPlayers() {
