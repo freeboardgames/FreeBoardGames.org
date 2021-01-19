@@ -45,11 +45,15 @@ export class Coord implements ICoord {
     const y = Math.floor(position / 8);
     return new Coord(x, y);
   }
+
+  static fromICoord(other: ICoord): Coord {
+    return new Coord(other.x, other.y);
+  }
 }
 
 interface ICheckerPieceWithCoord {
   data: ICheckerPiece;
-  coord: Coord;
+  coord: ICoord;
 }
 
 export interface IMove {
@@ -153,7 +157,7 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
       }
     });
   } else {
-    const { moves, jumped } = checkPosition(G, playerID, jumping.data, jumping.coord);
+    const { moves, jumped } = checkPosition(G, playerID, jumping.data, Coord.fromICoord(jumping.coord));
     movesTotal = moves;
     jumpedTotal = jumped;
   }
