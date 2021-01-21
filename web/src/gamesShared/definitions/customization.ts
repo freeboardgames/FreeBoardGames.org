@@ -11,6 +11,12 @@ export interface GameCustomizationState {
   full?: unknown;
 }
 
+export interface FullGameCustomizationState {
+  local?: GameCustomizationState;
+  online?: GameCustomizationState;
+  AI?: GameCustomizationState;
+}
+
 export interface GameCustomizationProps {
   mode: GameMode;
   currentValue: unknown;

@@ -1,5 +1,9 @@
 import React from 'react';
-import { GameCustomization, GameCustomizationState, CustomizationType } from 'gamesShared/definitions/customization';
+import {
+  GameCustomization,
+  FullGameCustomizationState,
+  CustomizationType,
+} from 'gamesShared/definitions/customization';
 import { IGameModeInfo } from 'gamesShared/definitions/mode';
 import AlertLayer from '../common/components/alert/AlertLayer';
 import CloseIcon from '@material-ui/icons/Close';
@@ -12,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 interface FullCustomizationProps {
   info: IGameModeInfo;
   customization: GameCustomization | null;
-  customizationState: GameCustomizationState;
+  customizationState: FullGameCustomizationState;
   changeCustomValue: (customizationType: CustomizationType) => (value?: unknown) => void;
 }
 
@@ -35,13 +39,14 @@ export class FullCustomization extends React.Component<FullCustomizationProps, F
   }
 
   private hasFullCustomization() {
+    const mode = this.props.info.mode;
     const custom = this.props.customization;
     if (!custom || !custom.renderFull) {
       return false;
     }
     const fullCustom = custom.renderFull({
       mode: this.props.info.mode,
-      currentValue: this.props.customizationState?.quick,
+      currentValue: this.props.customizationState[mode]?.quick,
       onChange: () => {},
     });
     return fullCustom !== null;
@@ -51,9 +56,10 @@ export class FullCustomization extends React.Component<FullCustomizationProps, F
     if (!this.hasFullCustomization()) {
       return null;
     }
+    const mode = this.props.info.mode;
     return (
       <IconButton aria-label="Customize game" onClick={this.toggleFullCustomizationDialog}>
-        <SettingsIcon style={{ color: this.props.customizationState?.full ? '#3f51b5' : undefined }} />
+        <SettingsIcon style={{ color: this.props.customizationState[mode]?.full ? '#3f51b5' : undefined }} />
       </IconButton>
     );
   }
@@ -74,9 +80,10 @@ export class FullCustomization extends React.Component<FullCustomizationProps, F
 
   private renderCustomizationDialogContent() {
     const custom = this.props.customization;
+    const mode = this.props.info.mode;
     return custom.renderFull({
       mode: this.props.info.mode,
-      currentValue: this.props.customizationState?.full,
+      currentValue: this.props.customizationState[mode]?.full,
       onChange: this.props.changeCustomValue(CustomizationType.FULL),
     });
   }

@@ -14,7 +14,12 @@ import css from './GameModePickerCard.module.css';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import Typography from '@material-ui/core/Typography';
-import { GameCustomization, GameCustomizationState, CustomizationType } from 'gamesShared/definitions/customization';
+import {
+  GameCustomization,
+  FullGameCustomizationState,
+  GameCustomizationState,
+  CustomizationType,
+} from 'gamesShared/definitions/customization';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 import { QuickCustomization } from 'infra/settings/QuickCustomization';
 import { FullCustomization } from 'infra/settings/FullCustomization';
@@ -31,14 +36,14 @@ interface GameModePickerCardProps {
 interface GameModePickerCardState {
   numPlayers: number;
   customization: GameCustomization | null;
-  customizationState: GameCustomizationState;
+  customizationState: FullGameCustomizationState;
 }
 
 export class GameModePickerCardInternal extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
   state = {
     numPlayers: this.props.gameDef.minPlayers,
     customization: null,
-    customizationState: {} as GameCustomizationState,
+    customizationState: {} as FullGameCustomizationState,
   };
 
   render() {
@@ -203,14 +208,19 @@ export class GameModePickerCardInternal extends React.Component<GameModePickerCa
   };
 
   _changeCustomValue = (customizationType: CustomizationType) => (value?: unknown) => {
-    const customizationState = this.state.customizationState || {};
+    const mode = this.props.info.mode;
+    const customizationState: GameCustomizationState = this.state.customizationState[mode] || {};
     if (customizationType == CustomizationType.QUICK) {
       customizationState.quick = value;
     } else if (customizationType == CustomizationType.FULL) {
       customizationState.full = value;
     }
-    this.props.settingsService.setGameSetting('customization', this.props.gameDef.code, customizationState);
-    this.setState({ customizationState });
+    const fullCustomizationState: FullGameCustomizationState = {
+      ...this.state.customizationState,
+      [mode]: customizationState,
+    };
+    this.props.settingsService.setGameSetting('customization', this.props.gameDef.code, fullCustomizationState);
+    this.setState({ customizationState: fullCustomizationState });
   };
 }
 
