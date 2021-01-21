@@ -2,7 +2,8 @@ import * as React from 'react';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
-import { Coord, IG, IMove, getValidMoves } from './game';
+import { fromPosition, equals } from './coord';
+import { IG, IMove, getValidMoves } from './game';
 import {
   Checkerboard,
   IAlgebraicCoords,
@@ -53,7 +54,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return false;
     }
 
-    return this.state.validMoves.some((move) => move.from.equals(coords));
+    return this.state.validMoves.some((move) => equals(move.from, coords));
   };
 
   _onClick = (coords: IAlgebraicCoords) => {
@@ -114,7 +115,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (this.state.selected !== null) {
       result[cartesianToAlgebraic(this.state.selected.x, this.state.selected.y, false)] = blue[700];
       this.state.validMoves
-        .filter((move) => move.from.equals(this.state.selected))
+        .filter((move) => equals(move.from, this.state.selected))
         .forEach((move) => {
           result[cartesianToAlgebraic(move.to.x, move.to.y, false)] = blue[500];
         });
@@ -128,7 +129,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       .map((piece, index) => ({ data: piece, index }))
       .filter((piece) => piece.data !== null)
       .map((piece) => {
-        const { x, y } = Coord.fromPosition(piece.index);
+        const { x, y } = fromPosition(piece.index);
         return (
           <Token
             x={x}
