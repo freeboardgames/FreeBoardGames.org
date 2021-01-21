@@ -22,7 +22,7 @@ export class QuickCustomization extends React.Component<QuickCustomizationProps,
     const mode = this.props.info.mode;
     return custom.renderQuick({
       mode,
-      currentValue: this.props.customizationState[mode]?.quick,
+      currentValue: (this.props.customizationState || {})[mode]?.quick,
       onChange: this.props.changeCustomValue(CustomizationType.QUICK),
     });
   }

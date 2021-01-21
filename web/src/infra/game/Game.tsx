@@ -145,7 +145,7 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
       clientConfig.enhancer = applyMiddleware(...enhancers);
       const ai = this.state.ai;
       if (this.loadAI && ai) {
-        const gameAIConfig = ai.bgioAI(this.getCustomizationState());
+        const gameAIConfig = ai.bgioAI(this.getCustomizationState().AI);
         const gameAI = gameAIConfig.ai || gameAIConfig.bot || gameAIConfig;
         const gameAIType = gameAIConfig.type || gameAI;
 
@@ -178,7 +178,7 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
   }
 
   private getCustomizationState() {
-    return this.props.settingsService.getGameSetting('customization', this.gameCode);
+    return this.props.settingsService.getGameSetting('customization', this.gameCode) || {};
   }
 
   _getPlayers(): IPlayerInRoom[] {
