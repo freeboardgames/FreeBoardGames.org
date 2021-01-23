@@ -175,7 +175,7 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
       ...piece,
       isKing,
     },
-    coord: toCoord,
+    coord: to,
   };
   const postMoves = getValidMoves(newG, ctx.playerID, jumping);
 
