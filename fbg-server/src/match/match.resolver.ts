@@ -32,7 +32,8 @@ export class MatchResolver {
   async startMatch(
     @CurrentUser() currentUser: User,
     @Args({ name: 'roomId', type: () => String }) roomId: string,
+    @Args({ name: 'setupData', type: () => String }) setupData: string,
   ): Promise<string> {
-    return this.matchService.startMatch(roomId, currentUser.id);
+    return this.matchService.startMatch(roomId, currentUser.id, setupData);
   }
 }

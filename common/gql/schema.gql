@@ -72,7 +72,7 @@ type Mutation {
   removeFromRoom(userIdToBeRemoved: Int!, roomId: String!): Boolean!
   updateRoom(room: UpdateRoomInput!): Boolean!
   nextRoom(matchId: String!): String!
-  startMatch(roomId: String!): String!
+  startMatch(setupData: String!, roomId: String!): String!
   sendMessage(message: SendMessageInput!): Boolean!
 }
 

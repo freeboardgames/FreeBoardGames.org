@@ -27,6 +27,7 @@ import { isCreator, getPlayerIds, getPlayerNicknames } from './RoomMetadataHelpe
 import { Chat } from '../chat/Chat';
 import { CustomizationBar } from 'infra/settings/CustomizationBar';
 import { GameMode } from 'gamesShared/definitions/mode';
+import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -48,10 +49,10 @@ export const ROOM_SUBSCRIPTION = gql`
 `;
 
 interface Props {
-  gameCode: string;
   router: NextRouter;
   user: ReduxUserState;
   dispatch: Dispatch;
+  settingsService: SettingsService;
 }
 
 interface State {
@@ -139,10 +140,14 @@ class Room extends React.Component<Props, State> {
   }
 
   private renderBottomBar(room, gameDef) {
+    const isAdmin = isCreator(room, this.state.userId);
+    const customizationBar = <CustomizationBar gameDef={gameDef} info={{ mode: GameMode.OnlineFriend }} />;
+    const placeholder = <div style={{ flexGrow: 1, display: 'flex' }}></div>;
+    const middleContent = isAdmin ? customizationBar : placeholder;
     return (
       <div style={{ display: 'flex' }}>
         {this.renderLeaveRoomButton()}
-        <CustomizationBar gameDef={gameDef} info={{ mode: GameMode.OnlineFriend }} />
+        {middleContent}
         <StartMatchButton roomMetadata={room} userId={this.state.userId} startMatch={this._startMatch} />
       </div>
     );
@@ -259,6 +264,14 @@ class Room extends React.Component<Props, State> {
     );
   }
 
+  private gameCode() {
+    return this.state.roomMetadata.gameCode;
+  }
+
+  private getSetupData() {
+    return (this.props.settingsService.getGameSetting('customization', this.gameCode()) || {})[GameMode.OnlineFriend];
+  }
+
   _newGamePicked = (game?: IGameDef) => {
     this._toggleChangingGame();
     if (!game) {
@@ -292,11 +305,10 @@ class Room extends React.Component<Props, State> {
   _changeCapacity = (delta: number) => () => {
     const metadata = this.state.roomMetadata;
     const capacity = metadata.capacity;
-    const game = GAMES_MAP[this.state.roomMetadata.gameCode];
     const newCapacity = capacity + delta;
     LobbyService.updateRoom(this.props.dispatch, {
       roomId: this._roomId(),
-      gameCode: game.code,
+      gameCode: this.gameCode(),
       capacity: newCapacity,
     }).then(
       () => {
@@ -344,8 +356,9 @@ class Room extends React.Component<Props, State> {
   };
 
   _getGameSharing = () => {
-    const gameCode = this.props.router.query.gameCode as string;
-    return <GameSharing gameCode={gameCode} roomID={this._roomId()} isPublic={this.state.roomMetadata.isPublic} />;
+    return (
+      <GameSharing gameCode={this.gameCode()} roomID={this._roomId()} isPublic={this.state.roomMetadata.isPublic} />
+    );
   };
 
   _roomId() {
@@ -354,7 +367,7 @@ class Room extends React.Component<Props, State> {
 
   _startMatch = () => {
     this.setState({ partialLoading: true });
-    LobbyService.startMatch(this.props.dispatch, this._roomId()).then(
+    LobbyService.startMatch(this.props.dispatch, this._roomId(), this.getSetupData()).then(
       (matchId) => {
         this.redirectToMatch(matchId);
       },
@@ -390,4 +403,4 @@ const mapStateToProps = function (state) {
   };
 };
 
-export default connect(mapStateToProps)(roomWithRouter);
+export default withSettingsService(connect(mapStateToProps)(roomWithRouter));

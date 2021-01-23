@@ -42,7 +42,8 @@ export class CustomizationBarInternal extends React.Component<CustomizationBarPr
     this.props.gameDef.customization().then((customizationModule) => {
       this.setState({ customization: customizationModule.default });
     });
-    const customizationState = this.props.settingsService.getGameSetting('customization', this.props.gameDef.code);
+    const customizationState =
+      this.props.settingsService.getGameSetting('customization', this.props.gameDef.code) || {};
     this.setState({ customizationState });
   }
 
@@ -51,7 +52,6 @@ export class CustomizationBarInternal extends React.Component<CustomizationBarPr
       <div className={css.BarWrapper}>
         {this.renderCustomizationDialog()}
         {this.renderQuickCustomization()}
-        <div style={{ flex: 'grow' }}></div>
         {this.renderFullCustomizationButton()}
       </div>
     );

@@ -13,4 +13,5 @@ export interface StartMatch {
 
 export interface StartMatchVariables {
   roomId: string;
+  setupData: string;
 }

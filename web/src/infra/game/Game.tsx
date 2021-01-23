@@ -145,7 +145,7 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
       clientConfig.enhancer = applyMiddleware(...enhancers);
       const ai = this.state.ai;
       if (this.loadAI && ai) {
-        const gameAIConfig = ai.bgioAI(this.getCustomizationState().AI);
+        const gameAIConfig = ai.bgioAI(this.getSetupData());
         const gameAI = gameAIConfig.ai || gameAIConfig.bot || gameAIConfig;
         const gameAIType = gameAIConfig.type || gameAI;
 
@@ -177,8 +177,8 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
     }
   }
 
-  private getCustomizationState() {
-    return this.props.settingsService.getGameSetting('customization', this.gameCode) || {};
+  private getSetupData() {
+    return (this.props.settingsService.getGameSetting('customization', this.gameCode) || {})[this.mode];
   }
 
   private injectSetupData(bgioGame: any) {
@@ -187,8 +187,7 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
       // BGIO injects this correctly for online games.
       return bgioGame;
     }
-    const customizationState = this.getCustomizationState();
-    const setupData = customizationState[this.mode];
+    const setupData = this.getSetupData();
     const setup = bgioGame.setup ? (ctx) => bgioGame.setup(ctx, setupData) : undefined;
     return { ...bgioGame, setup };
   }
