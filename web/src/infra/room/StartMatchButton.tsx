@@ -22,17 +22,15 @@ export class StartMatchButton extends React.Component<IStartMatchButtonProps, {}
       explanation = `Only ${creator.user.nickname} can start.`;
     }
     const button = (
-      <div style={{ float: 'right', paddingBottom: '32px' }}>
-        <Button
-          variant="outlined"
-          color="primary"
-          disabled={disabled}
-          onClick={this.props.startMatch}
-          data-testid="startButton"
-        >
-          Start match
-        </Button>
-      </div>
+      <Button
+        variant="outlined"
+        color="primary"
+        disabled={disabled}
+        onClick={this.props.startMatch}
+        data-testid="startButton"
+      >
+        Start match
+      </Button>
     );
     if (disabled) {
       return <Tooltip title={explanation}>{button}</Tooltip>;

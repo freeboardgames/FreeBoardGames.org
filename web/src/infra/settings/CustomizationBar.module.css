@@ -27,3 +27,8 @@
   top: 9px;
   padding-bottom: 8px;
 }
+
+.BarWrapper {
+  display: flex;
+  flex-grow: 1;
+}

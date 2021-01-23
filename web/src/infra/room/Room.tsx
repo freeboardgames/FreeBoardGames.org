@@ -25,6 +25,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
 import { isCreator, getPlayerIds, getPlayerNicknames } from './RoomMetadataHelper';
 import { Chat } from '../chat/Chat';
+import { CustomizationBar } from 'infra/settings/CustomizationBar';
+import { GameMode } from 'gamesShared/definitions/mode';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -127,13 +129,22 @@ class Room extends React.Component<Props, State> {
                   changeCapacity={this._changeCapacity}
                   userId={this.state.userId}
                 />
-                {this.renderLeaveRoomButton()}
-                <StartMatchButton roomMetadata={room} userId={this.state.userId} startMatch={this._startMatch} />
+                {this.renderBottomBar(room, gameDef)}
               </React.Fragment>
             );
           }}
         </Subscription>
       </FreeBoardGamesBar>
+    );
+  }
+
+  private renderBottomBar(room, gameDef) {
+    return (
+      <div style={{ display: 'flex' }}>
+        {this.renderLeaveRoomButton()}
+        <CustomizationBar gameDef={gameDef} info={{ mode: GameMode.OnlineFriend }} />
+        <StartMatchButton roomMetadata={room} userId={this.state.userId} startMatch={this._startMatch} />
+      </div>
     );
   }
 
