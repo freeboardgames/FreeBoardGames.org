@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx, Game } from 'boardgame.io';
-import { ICoord, sum, coord, multiply, inBounds, toIndex, fromPosition, fromICoord, equals } from './coord';
+import { ICoord, sum, multiply, inBounds, toIndex, fromPosition, createCoord, equals } from './coord';
 
 interface ICheckerPiece {
   id: number;
@@ -40,11 +40,11 @@ export const INITIAL_BOARD: Piece[] = [
 ];
 
 const MAN_DIRS: ICoord[][] = [
-  [coord(-1, -1), coord(1, -1)],
-  [coord(-1, 1), coord(1, 1)],
+  [createCoord(-1, -1), createCoord(1, -1)],
+  [createCoord(-1, 1), createCoord(1, 1)],
 ];
 
-const KING_DIRS: ICoord[] = [coord(-1, 1), coord(1, 1), coord(-1, -1), coord(1, -1)];
+const KING_DIRS: ICoord[] = [createCoord(-1, 1), createCoord(1, 1), createCoord(-1, -1), createCoord(1, -1)];
 
 export function checkPosition(
   G: IG,
@@ -114,7 +114,7 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
       }
     });
   } else {
-    const { moves, jumped } = checkPosition(G, playerID, jumping.data, fromICoord(jumping.coord));
+    const { moves, jumped } = checkPosition(G, playerID, jumping.data, jumping.coord);
     movesTotal = moves;
     jumpedTotal = jumped;
   }
@@ -127,8 +127,8 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
 }
 
 export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
-  const fromCoord = coord(from.x, from.y);
-  const toCoord = coord(to.x, to.y);
+  const fromCoord = createCoord(from.x, from.y);
+  const toCoord = createCoord(to.x, to.y);
   const indexFrom = toIndex(fromCoord);
   const indexTo = toIndex(toCoord);
   const piece = G.board[indexFrom];

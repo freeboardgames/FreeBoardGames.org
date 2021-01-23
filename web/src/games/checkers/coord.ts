@@ -3,7 +3,7 @@ export interface ICoord {
   readonly y: number;
 }
 
-export function coord(x: number, y: number): ICoord {
+export function createCoord(x: number, y: number): ICoord {
   return { x, y };
 }
 
@@ -31,8 +31,4 @@ export function fromPosition(position: number): ICoord {
   const x = position % 8;
   const y = Math.floor(position / 8);
   return { x, y };
-}
-
-export function fromICoord(other: ICoord): ICoord {
-  return coord(other.x, other.y);
 }

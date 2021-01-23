@@ -1,17 +1,17 @@
-import { fromPosition, equals, coord, sum, multiply, inBounds, toIndex } from './coord';
+import { fromPosition, equals, createCoord, sum, multiply, inBounds, toIndex } from './coord';
 
 describe('Coord', () => {
   it('sums with another coord.', () => {
-    const initial = coord(5, 10);
+    const initial = createCoord(5, 10);
 
-    const result = sum(initial, coord(-1, 6));
+    const result = sum(initial, createCoord(-1, 6));
 
     expect(result.x).toEqual(4);
     expect(result.y).toEqual(16);
   });
 
   it('multiplies by a scalar.', () => {
-    const initial = coord(5, 10);
+    const initial = createCoord(5, 10);
 
     const result = multiply(initial, 3);
 
@@ -20,7 +20,7 @@ describe('Coord', () => {
   });
 
   it('compares to another coord.', () => {
-    const c = coord(5, 10);
+    const c = createCoord(5, 10);
 
     expect(equals(c, { x: 5, y: 10 })).toBeTrue();
     expect(equals(c, { x: 8, y: 10 })).toBeFalse();
@@ -28,18 +28,18 @@ describe('Coord', () => {
   });
 
   it('converts to an index.', () => {
-    const c = coord(2, 1);
+    const c = createCoord(2, 1);
 
     expect(toIndex(c)).toEqual(10);
   });
 
   it('checks boundaries.', () => {
-    expect(inBounds(coord(-1, 2))).toBeFalse();
-    expect(inBounds(coord(1, -2))).toBeFalse();
-    expect(inBounds(coord(8, 2))).toBeFalse();
-    expect(inBounds(coord(1, 8))).toBeFalse();
+    expect(inBounds(createCoord(-1, 2))).toBeFalse();
+    expect(inBounds(createCoord(1, -2))).toBeFalse();
+    expect(inBounds(createCoord(8, 2))).toBeFalse();
+    expect(inBounds(createCoord(1, 8))).toBeFalse();
 
-    expect(inBounds(coord(3, 4))).toBeTrue();
+    expect(inBounds(createCoord(3, 4))).toBeTrue();
   });
 
   it('constructs from an index.', () => {
