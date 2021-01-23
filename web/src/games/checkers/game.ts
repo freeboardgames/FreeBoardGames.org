@@ -127,10 +127,8 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
 }
 
 export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
-  const fromCoord = createCoord(from.x, from.y);
-  const toCoord = createCoord(to.x, to.y);
-  const indexFrom = toIndex(fromCoord);
-  const indexTo = toIndex(toCoord);
+  const indexFrom = toIndex(from);
+  const indexTo = toIndex(to);
   const piece = G.board[indexFrom];
   const crownhead = ctx.playerID === '0' ? 0 : 7;
 
