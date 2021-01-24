@@ -69,7 +69,7 @@ const renderPredefinedWordsSelect = (
   return (
     <Select
       value={getPredefinedWordsBucket(state)}
-      displayEmpty={true}
+      displayEmpty
       renderValue={renderSelectValue}
       onChange={handlePredefinedWordChange(onChange)}
       style={{ width: '250px' }}

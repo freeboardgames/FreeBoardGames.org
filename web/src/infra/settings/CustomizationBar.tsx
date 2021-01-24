@@ -73,7 +73,7 @@ export class CustomizationBarInternal extends React.Component<CustomizationBarPr
   private hasFullCustomization() {
     const mode = this.props.info.mode;
     const custom = this.state.customization;
-    if (!custom || !custom.renderFull) {
+    if (!custom?.renderFull) {
       return false;
     }
     const fullCustom = custom.renderFull({
@@ -138,7 +138,7 @@ export class CustomizationBarInternal extends React.Component<CustomizationBarPr
   }
 
   toggleFullCustomizationDialog = () => {
-    this.setState({ showCustomizationDialog: !this.state.showCustomizationDialog });
+    this.setState((prevState) => ({ showCustomizationDialog: !prevState.showCustomizationDialog }));
   };
 
   _changeCustomValue = (customizationType: CustomizationType) => (value?: unknown) => {
