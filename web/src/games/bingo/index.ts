@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const BingoDef: IGameDef = {
   code: 'bingo',
   name: 'Bingo',
+  contributors: ['gk-patel'],
   minPlayers: 2,
   maxPlayers: 30,
   imageURL: Thumbnail,

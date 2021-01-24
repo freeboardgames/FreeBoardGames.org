@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const chessGameDef: IGameDef = {
   code: 'chess',
   name: 'Chess',
+  contributors: ['flamecoals'],
   imageURL: Thumbnail,
   minPlayers: 2,
   maxPlayers: 2,

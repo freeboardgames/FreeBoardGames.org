@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const tictactoeplusGameDef: IGameDef = {
   code: 'tictactoeplus',
   name: 'Tic-Tac-Toe-Plus',
+  contributors: ['gk-patel'],
   minPlayers: 2,
   maxPlayers: 2,
   imageURL: Thumbnail,

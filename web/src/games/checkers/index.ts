@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const checkersGameDef: IGameDef = {
   code: 'checkers',
   name: 'Checkers',
+  contributors: ['JosefKuchar'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,

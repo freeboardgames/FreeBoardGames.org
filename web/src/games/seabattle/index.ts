@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const seabattleGameDef: IGameDef = {
   code: 'seabattle',
   name: 'Sea Battle',
+  contributors: ['flamecoals'],
   imageURL: Thumbnail,
   minPlayers: 2,
   maxPlayers: 2,
