@@ -1,9 +1,20 @@
 import React from 'react';
 import { GameMode } from './mode';
 
+export enum CustomizationType {
+  QUICK,
+  FULL,
+}
+
 export interface GameCustomizationState {
   quick?: unknown;
   full?: unknown;
+}
+
+export interface FullGameCustomizationState {
+  local?: GameCustomizationState;
+  online?: GameCustomizationState;
+  AI?: GameCustomizationState;
 }
 
 export interface GameCustomizationProps {

@@ -1,10 +1,9 @@
 import React from 'react';
-import { GameModePickerCardInternal as GameModePickerCard } from './GameModePickerCard';
+import { GameModePickerCard } from './GameModePickerCard';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { render, cleanup, waitFor } from '@testing-library/react';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { GameCustomization } from 'gamesShared/definitions/customization';
-import { SettingsService } from 'infra/settings/SettingsService';
 
 const GAME_DEF_TEST: IGameDef = {
   code: 'foocode',
@@ -64,21 +63,14 @@ function getWrapper() {
   };
   const customization = () => Promise.resolve({ default: custom });
   const playOnlineGameCallback = jest.fn();
-  const settingsService: SettingsService = {
-    getGameSetting: jest.fn(),
-    setGameSetting: jest.fn(),
-    getUserSetting: jest.fn(),
-    setUserSetting: jest.fn(),
-  };
   const wrapper = render(
     <GameModePickerCard
       gameDef={{ ...GAME_DEF_TEST, customization }}
       info={{ mode: GameMode.AI }}
-      settingsService={settingsService}
       playButtonError={false}
       playButtonDisabled={false}
       playOnlineGameCallback={playOnlineGameCallback}
     />,
   );
-  return { wrapper, settingsService, playOnlineGameCallback };
+  return { wrapper, playOnlineGameCallback };
 }

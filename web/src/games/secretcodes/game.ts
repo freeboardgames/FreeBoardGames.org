@@ -1,6 +1,5 @@
 import { ActivePlayers } from 'boardgame.io/core';
 import { Ctx, Game } from 'boardgame.io';
-import { words } from './constants';
 import { Card, CardColor, IG, Phases, TeamColor } from './definitions';
 import {
   chooseCard,
@@ -15,11 +14,14 @@ import {
   startGame,
   switchTeam,
 } from './util';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
+import { DEFAULT_FULL_CUSTOMIZATION, FullCustomizationState } from './customization';
 
 const GameConfig: Game<IG> = {
   name: 'secretcodes',
 
-  setup: (ctx): IG => {
+  setup: (ctx, customData: GameCustomizationState): IG => {
+    const fullCustomization = (customData?.full as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
     const teams = new Array(2).fill(0).map((_, i) => makeTeam(i === 0 ? TeamColor.Blue : TeamColor.Red));
     if (ctx.numPlayers === 2) {
       teams[0].playersID = ['0'];
@@ -28,7 +30,7 @@ const GameConfig: Game<IG> = {
       teams[1].spymasterID = '1';
     }
     const cards = ctx.random
-      .Shuffle(words)
+      .Shuffle(fullCustomization.words)
       .slice(0, 25)
       .map((word) => makeCard(word));
     const lastSelectedCardIndex = null;

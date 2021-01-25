@@ -128,7 +128,7 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
         players: this._getPlayers(),
       } as IGameArgs;
       const clientConfig: any = {
-        game: this.state.config.bgioGame,
+        game: this.injectSetupData(this.state.config.bgioGame),
         debug: this.state.config.debug ? { impl: Debug } : false,
         loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
@@ -145,7 +145,7 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
       clientConfig.enhancer = applyMiddleware(...enhancers);
       const ai = this.state.ai;
       if (this.loadAI && ai) {
-        const gameAIConfig = ai.bgioAI(this.getCustomizationState());
+        const gameAIConfig = ai.bgioAI(this.getSetupData());
         const gameAI = gameAIConfig.ai || gameAIConfig.bot || gameAIConfig;
         const gameAIType = gameAIConfig.type || gameAI;
 
@@ -177,8 +177,19 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
     }
   }
 
-  private getCustomizationState() {
-    return this.props.settingsService.getGameSetting('customization', this.gameCode);
+  private getSetupData() {
+    return (this.props.settingsService.getGameSetting('customization', this.gameCode) || {})[this.mode];
+  }
+
+  private injectSetupData(bgioGame: any) {
+    // See https://github.com/boardgameio/boardgame.io/issues/555#issuecomment-749800592
+    if (this.mode === GameMode.OnlineFriend) {
+      // BGIO injects this correctly for online games.
+      return bgioGame;
+    }
+    const setupData = this.getSetupData();
+    const setup = bgioGame.setup ? (ctx) => bgioGame.setup(ctx, setupData) : undefined;
+    return { ...bgioGame, setup };
   }
 
   _getPlayers(): IPlayerInRoom[] {

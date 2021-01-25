@@ -90,16 +90,21 @@ export class LobbyService {
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data;
   }
-  public static async startMatch(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<string> {
+  public static async startMatch(
+    dispatch: Dispatch<SyncUserAction>,
+    roomId: string,
+    rawSetupData?: unknown,
+  ): Promise<string> {
     const client = this.getClient();
+    const setupData = rawSetupData ? JSON.stringify(rawSetupData) : '';
     const result = await client
       .mutate<StartMatch, StartMatchVariables>({
         mutation: gql`
-          mutation StartMatch($roomId: String!) {
-            startMatch(roomId: $roomId)
+          mutation StartMatch($roomId: String!, $setupData: String!) {
+            startMatch(roomId: $roomId, setupData: $setupData)
           }
         `,
-        variables: { roomId },
+        variables: { roomId, setupData },
       })
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data.startMatch;
