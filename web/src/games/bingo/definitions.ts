@@ -27,6 +27,7 @@ export interface IGameState {
 
 export interface IBoardState {
   showCallTable: boolean;
+  idNumbersSelected: number[];
 }
 
 export interface IBoardProps {

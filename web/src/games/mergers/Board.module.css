@@ -32,10 +32,7 @@
 }
 
 .MergersContainer {
-  padding: 1em;
-  max-height: 100vh;
-  overflow-y: auto;
-  padding: 50px 10px 28px 10px;
+  margin: 32px 10px 28px 10px;
   box-sizing: border-box;
   color: var(--mergers-color);
   background-color: var(--mergers-background-color);

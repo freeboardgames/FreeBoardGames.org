@@ -7,6 +7,7 @@ export default {
 
 const GAME_DEF_TEST: IGameDef = {
   code: 'foocode',
+  contributors: ['foo'],
   name: 'foo name',
   imageURL: 'http://www.biotoday.bio/wp-content/uploads/sites/2/2016/01/500x250.png',
   description: 'foo desc',

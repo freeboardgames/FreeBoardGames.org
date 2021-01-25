@@ -13,6 +13,7 @@ import ReactGA from 'react-ga';
 import { SocketIO, Local } from 'boardgame.io/multiplayer';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { Debug } from 'boardgame.io/debug';
+import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 
 interface IGameProps {
   // FIXME: fix which props are req
@@ -21,8 +22,8 @@ interface IGameProps {
   matchCode?: string;
   gameCode?: string;
   mode?: string;
-  aiLevel?: string;
   playerID?: string;
+  settingsService: SettingsService;
 }
 
 interface IGameState {
@@ -31,7 +32,7 @@ interface IGameState {
   ai?: IAIConfig;
 }
 
-export default class Game extends React.Component<IGameProps, IGameState> {
+export class GameInternal extends React.Component<IGameProps, IGameState> {
   mode: GameMode;
   loadAI: boolean;
   gameCode: string;
@@ -102,13 +103,12 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   }
 
   render() {
-    let aiLevel, matchCode, playerID, credentials;
+    let matchCode, playerID, credentials;
     if (this.props.match) {
       credentials = this.props.match.bgioSecret;
       matchCode = this.props.match.bgioMatchId;
       playerID = this.props.match.bgioPlayerId;
     } else {
-      aiLevel = this.props.aiLevel;
       matchCode = this.props.matchCode;
       playerID = this.mode === GameMode.AI ? '1' : this.props.playerID;
     }
@@ -128,7 +128,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
         players: this._getPlayers(),
       } as IGameArgs;
       const clientConfig: any = {
-        game: this.state.config.bgioGame,
+        game: this.injectSetupData(this.state.config.bgioGame),
         debug: this.state.config.debug ? { impl: Debug } : false,
         loading: getMessagePage('loading', 'Connecting...'),
         board: gameBoardWrapper({
@@ -145,7 +145,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
       clientConfig.enhancer = applyMiddleware(...enhancers);
       const ai = this.state.ai;
       if (this.loadAI && ai) {
-        const gameAIConfig = ai.bgioAI(aiLevel);
+        const gameAIConfig = ai.bgioAI(this.getSetupData());
         const gameAI = gameAIConfig.ai || gameAIConfig.bot || gameAIConfig;
         const gameAIType = gameAIConfig.type || gameAI;
 
@@ -177,6 +177,21 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     }
   }
 
+  private getSetupData() {
+    return (this.props.settingsService.getGameSetting('customization', this.gameCode) || {})[this.mode];
+  }
+
+  private injectSetupData(bgioGame: any) {
+    // See https://github.com/boardgameio/boardgame.io/issues/555#issuecomment-749800592
+    if (this.mode === GameMode.OnlineFriend) {
+      // BGIO injects this correctly for online games.
+      return bgioGame;
+    }
+    const setupData = this.getSetupData();
+    const setup = bgioGame.setup ? (ctx) => bgioGame.setup(ctx, setupData) : undefined;
+    return { ...bgioGame, setup };
+  }
+
   _getPlayers(): IPlayerInRoom[] {
     switch (this.mode) {
       case GameMode.OnlineFriend:
@@ -197,3 +212,5 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     }
   }
 }
+
+export default withSettingsService(GameInternal);

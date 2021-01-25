@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const zooParadeGameDef: IGameDef = {
   code: 'zooparade',
   name: 'Zoo Parade',
+  contributors: ['Spooky-0', 'DanielSherlock'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 2,

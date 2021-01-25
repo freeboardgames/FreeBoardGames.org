@@ -22,7 +22,7 @@ import { Client } from 'boardgame.io/client';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-test('one phase - hit', () => {
+test('test a peg { f: 59, b:58} +1', () => {
   const client = Client({
     game: CardTableGame,
   });

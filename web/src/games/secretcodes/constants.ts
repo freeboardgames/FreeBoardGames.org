@@ -1,4 +1,4 @@
-export const words = [
+export const ENGLISH_WORDS = [
   'hollywood',
   'well',
   'foot',
@@ -401,7 +401,7 @@ export const words = [
   'triangle',
 ];
 
-export const wordsAlt = [
+export const ENGLISH_WORDS_ALT = [
   'africa',
   'agent',
   'air',
@@ -808,7 +808,7 @@ export const wordsAlt = [
   'yard',
 ];
 
-export const wordsNL = [
+export const DUTCH_WORDS = [
   'post',
   'roulette',
   'draak',
@@ -1247,4 +1247,15 @@ export const wordsNL = [
   'chili',
   'zalm',
   'schuim',
+];
+
+interface PredefinedWords {
+  label: string;
+  words: string[];
+}
+
+export const PREDEFINED_WORDS: PredefinedWords[] = [
+  { label: 'English', words: ENGLISH_WORDS },
+  { label: 'English - Alternative', words: ENGLISH_WORDS_ALT },
+  { label: 'Dutch', words: DUTCH_WORDS },
 ];

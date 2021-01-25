@@ -6,6 +6,7 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 export const reversiGameDef: IGameDef = {
   code: 'reversi',
   name: 'Reversi',
+  contributors: ['JosefKuchar'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,

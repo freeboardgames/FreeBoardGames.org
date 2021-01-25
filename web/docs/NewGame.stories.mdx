@@ -33,6 +33,7 @@ import instructions from './instructions.md';
 export const fooBarGameDef: IGameDef = {
   code: 'foobar',
   name: 'Foo Bar Game',
+  contributors: ['YourGithubUser'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
@@ -54,6 +55,7 @@ Explaining what is going on here:
 
 - _code_: Internal code we are going to use for this game, must match the folder name.
 - _name_: Name that will show up to users.
+- _contributors_: A list of github usernames of contributors.
 - _imageURL_: Thumbnail used across the app on the home page, game page and lobby. Generally a screenshot of the game, should be 500x250 pixels.
 - _modes_: Each game mode will represent a card in the game page ([check chess here](https://www.freeboardgames.org/play/chess)).
   - `GameMode.AI`: Makes the game available offline, allowing users to play single player matches against the computer (more configuration is needed).

@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const secretcodesGameDef: IGameDef = {
   code: 'secretcodes',
   name: 'Secret Codes',
+  contributors: ['JvSomeren', 'mateusazis'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],
   minPlayers: 4,
@@ -20,6 +21,7 @@ export const secretcodesGameDef: IGameDef = {
   },
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
+  customization: () => import('./customization'),
 };
 
 export default secretcodesGameDef;

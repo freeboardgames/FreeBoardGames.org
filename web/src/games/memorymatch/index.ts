@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const memoryMatchDef: IGameDef = {
   code: 'memorymatch',
   name: 'Memory Match',
+  contributors: ['gk-patel'],
   minPlayers: 2,
   maxPlayers: 2,
   imageURL: Thumbnail,

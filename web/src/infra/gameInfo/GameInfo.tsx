@@ -12,6 +12,7 @@ import { Typography } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 import { GameInstructionsText } from 'infra/gameInfo/GameInstructionsText';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
+import { GameContributors } from './GameContributors';
 
 interface gameInfoProps {
   gameCode: string;
@@ -53,6 +54,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
               <Typography variant="h4" component="h1">
                 Play {gameDef.name}
               </Typography>
+              <GameContributors game={gameDef} />
               <GameModePicker gameDef={gameDef} />
             </div>
             <div style={{ flex: '55%', padding: '8px' }}>
@@ -71,6 +73,7 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
           <div style={{ padding: '8px' }} data-testid={'MobileViewDiv'}>
             <GameModePicker gameDef={gameDef} />
             {videoInstructions}
+            <GameContributors game={gameDef} />
             {textInstructions}
           </div>
         </MobileView>

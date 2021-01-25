@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const rotaGameDef: IGameDef = {
   code: 'rota',
   name: 'Rota',
+  contributors: ['gk-patel'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,

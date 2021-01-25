@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
-import { Coord, CheckersGame, IG, move, INITIAL_BOARD } from './game';
+import { CheckersGame, IG, move, INITIAL_BOARD } from './game';
 import { Local } from 'boardgame.io/multiplayer';
 
 test('invalid moves', () => {
@@ -84,53 +84,4 @@ it('should declare player 1 as the winner', () => {
   // player '1' should be declared the winner
   const { ctx } = p0.getState();
   expect(ctx.gameover).toEqual({ winner: '1' });
-});
-
-describe('Coord', () => {
-  it('sums with another coord.', () => {
-    const initial = new Coord(5, 10);
-
-    const result = initial.sum(new Coord(-1, 6));
-
-    expect(result.x).toEqual(4);
-    expect(result.y).toEqual(16);
-  });
-
-  it('multiplies by a scalar.', () => {
-    const initial = new Coord(5, 10);
-
-    const result = initial.multiply(3);
-
-    expect(result.x).toEqual(15);
-    expect(result.y).toEqual(30);
-  });
-
-  it('compares to another coord.', () => {
-    const coord = new Coord(5, 10);
-
-    expect(coord.equals({ x: 5, y: 10 })).toBeTrue();
-    expect(coord.equals({ x: 8, y: 10 })).toBeFalse();
-    expect(coord.equals({ x: 5, y: 11 })).toBeFalse();
-  });
-
-  it('converts to an index.', () => {
-    const coord = new Coord(2, 1);
-
-    expect(coord.toIndex()).toEqual(10);
-  });
-
-  it('checks boundaries.', () => {
-    expect(new Coord(-1, 2).inBounds()).toBeFalse();
-    expect(new Coord(1, -2).inBounds()).toBeFalse();
-    expect(new Coord(8, 2).inBounds()).toBeFalse();
-    expect(new Coord(1, 8).inBounds()).toBeFalse();
-
-    expect(new Coord(3, 4).inBounds()).toBeTrue();
-  });
-
-  it('constructs from an index.', () => {
-    const result = Coord.fromPosition(10);
-
-    expect(result.equals({ x: 2, y: 1 })).toBeTrue();
-  });
 });

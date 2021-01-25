@@ -1,0 +1,114 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Documentation/Game Customization" />
+
+# Game Customization 
+
+**This is still in development**
+
+The game personalization framework in FBG intends to allow game developers 
+to give user options on rules or AI behavior variations for any game. This enables 
+experimentating with game rules, regional variations of classic
+games, and other use cases.
+
+There are two types of customization supported by the framework, quick and 
+full customization.
+
+## Customization types
+
+### Quick Customization
+
+Quick Customization are widgets that are rendered on the card directly on the
+game page. This is useful for most frequently used options that are
+very important for the user. An example of this is the difficulty level of AI:
+
+<img src="https://i.imgur.com/7ftok4q.png" alt="quick customization widget" height="250"/>
+
+In order to keep a consistent user experience across games, **all quick customizations MUST fit in the same line as the play button.**
+
+### Full Customization
+
+Full customization are dialogs that are rendered when the user clicks on the "gear" icon on 
+the game card on the game page or on lobby.
+
+
+## Implementation
+
+### Defining customization data and React components
+
+In order to add customizations to your game, create a file called `customization.tsx`.
+This file's default export must be an instance of `GameCustomization`.
+Use the starter template below:
+
+```typescript
+import React from 'react';
+import { GameCustomization, GameCustomizationProps } from 'gamesShared/definitions/customization';
+import { GameMode } from 'gamesShared/definitions/mode';
+
+export interface QuickCustomizationState {
+  difficulty: number;
+}
+
+export const DEFAULT_QUICK_CUSTOMIZATION = { difficulty: 1 };
+
+const customization: GameCustomization = {
+  renderQuick: ({ mode, currentState, onChange }: GameCustomizationProps) => {
+    if (mode != GameMode.AI) {
+      return null;
+    }
+    const state = (currentState as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
+    return <AReactComponent difficulty={state.difficulty} callback={onChange} />
+  },
+
+  renderFull: ({ mode, currentState, onChange }: GameCustomizationProps) => {
+      (...)
+  }
+};
+
+export default customization;
+```
+
+There are some important takeaways from the code above:
+- `renderQuick` is used for Quick Customization, and `renderFull` is used for Full Customization.
+- `mode` allows you to avoid the widget/dialog for a given game mode by returning `null` in these cases.
+- You should have a interface(s) for defining the shape of the customization data, one for each type of customization (`QuickCustomizationState` in this case). This will allow for strong typing in parts reading the customization options.
+- `onChange` should be called by your React Component when the user changes some option. The first parameter should be of the type of your customization state (`QuickCustomizationState` in this case). This will trigger a re-render of your component with `currentValue` with the new state.
+- The state is saved on user's local storage, this means that you must always support old stored values as the user might come back a long time after your implementation is updated.
+
+Then, setup the reference to `customization.tsx` on your `index.ts`:
+```typescript
+export const fooGameDef: IGameDef = {
+  code: 'foo',
+  name: 'Foo',
+  config: () => import('./config'),
+  aiConfig: () => import('./ai'),
+  customization: () => import('./customization'), // <---
+};
+```
+
+### Using customization data
+
+The customization data as `GameCustomizationState` will be available at Boardgame.io's `customData` on Game's `setup` definition:
+```typescript
+export const FooBarGame = {
+  name: 'foobar',
+
+  setup: (ctx, customData: GameCustomizationState)) => { // <--
+    const fullCustomization = (customData?.full as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
+    return doSomethingWith(fullCustomization.words) 
+  },
+```
+
+On AI mode, the customization values are also going to be available when creating the AI bot:
+
+```typescript
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
+import { DEFAULT_QUICK_CUSTOMIZATION, QuickCustomizationState } from './customization';
+
+const config: IAIConfig = {
+  bgioAI: (customization: GameCustomizationState) => { // <--
+    const quickCustomizationState = customization?.quick as QuickCustomizationState || DEFAULT_QUICK_CUSTOMIZATION;
+    const difficulty = quickCustomizationState.difficulty;
+```
+
+It is important to note that the state as well as its attributes might be undefined. In that case, use the default values defined in `customization.tsx` (i.e. `|| DEFAULT_QUICK_CUSTOMIZATION`).

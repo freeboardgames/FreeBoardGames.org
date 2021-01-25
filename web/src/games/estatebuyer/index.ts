@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const estateBuyerGameDef: IGameDef = {
   code: 'estatebuyer',
   name: 'Estate Buyer',
+  contributors: ['ryandriskel'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
