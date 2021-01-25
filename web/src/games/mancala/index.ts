@@ -7,6 +7,7 @@ export const mancalaGameDef: IGameDef = {
   code: 'mancala',
   name: 'Mancala',
   imageURL: Thumbnail,
+  contributors: ['pestopancake'],
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,

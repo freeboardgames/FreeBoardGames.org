@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const takesixGameDef: IGameDef = {
   code: 'takesix',
   name: 'Take 6!',
+  contributors: ['JosefKuchar'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }],
   minPlayers: 2,
