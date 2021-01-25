@@ -71,9 +71,12 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
         <MobileView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
           <GameCard game={gameDef} />
           <div style={{ padding: '8px' }} data-testid={'MobileViewDiv'}>
+            <Typography variant="h5" component="h1">
+              Play {gameDef.name}
+            </Typography>
+            <GameContributors game={gameDef} />
             <GameModePicker gameDef={gameDef} />
             {videoInstructions}
-            <GameContributors game={gameDef} />
             {textInstructions}
           </div>
         </MobileView>

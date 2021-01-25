@@ -15,7 +15,7 @@ export function GameContributors({ game }: GameContributorsProps) {
       target="_blank"
       rel="noreferrer"
     >
-      <Typography variant="body2" component="span" style={{ color: 'blue' }}>
+      <Typography variant="body2" component="span" style={{ color: 'black' }}>
         {username}
       </Typography>
     </a>
