@@ -10,8 +10,10 @@ import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import SEO from 'infra/common/helpers/SEO';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
 import { useRouter } from 'next/router';
+import { GAMES_LIST } from 'games';
+import { IGameStatus } from 'gamesShared/definitions/game';
 
-export default () => {
+const About = () => {
   const router = useRouter();
   return (
     <FreeBoardGamesBar>
@@ -31,6 +33,7 @@ export default () => {
     </FreeBoardGamesBar>
   );
 };
+export default About;
 
 function getAboutCard() {
   return (
@@ -48,7 +51,37 @@ function getAboutCard() {
   );
 }
 
+function getContributorToGames(): { [contributor: string]: string[] } {
+  let result = {};
+  for (const game of GAMES_LIST) {
+    if (game.status != IGameStatus.PUBLISHED) {
+      continue;
+    }
+    for (const contributor of game.contributors) {
+      result = {
+        ...result,
+        [contributor]: [...(result[contributor] || []), game.name],
+      };
+    }
+  }
+  return result;
+}
+
+function compare(a, b) {
+  const initialA = a.toUpperCase();
+  const initialB = b.toUpperCase();
+
+  if (initialA > initialB) {
+    return 1;
+  } else if (initialA < initialB) {
+    return -1;
+  }
+  return 0;
+}
+
 function getContributorsCard() {
+  const contributorsToGames = getContributorToGames();
+  const contributors = Object.keys(contributorsToGames).sort(compare);
   return (
     <Card style={{ marginTop: '16px' }}>
       <CardContent>
@@ -56,45 +89,20 @@ function getContributorsCard() {
           Contributors
         </Typography>
         <List>
-          <ListItem>
-            <ListItemText primary="flamecoals" />
-            <Button size="small" color="primary" href="https://github.com/flamecoals">
-              GitHub
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="JasonHarrison" />
-            <Button size="small" color="primary" href="https://www.jasonharrison.us/?from=freeboardgame.org">
-              Website
-            </Button>
-            <Button size="small" color="primary" href="https://github.com/jasonharrison">
-              GitHub
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="JosefKuchar" />
-            <Button size="small" color="primary" href="http://josefkuchar.com">
-              Website
-            </Button>
-            <Button size="small" color="primary" href="https://github.com/JosefKuchar">
-              GitHub
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="gk-patel" />
-            <Button size="small" color="primary" href="https://github.com/gk-patel">
-              GitHub
-            </Button>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="JvSomeren" />
-            <Button size="small" color="primary" href="https://joostvansomeren.nl">
-              Website
-            </Button>
-            <Button size="small" color="primary" href="https://github.com/JvSomeren">
-              GitHub
-            </Button>
-          </ListItem>
+          {contributors.map((contributor) => (
+            <ListItem key={contributor}>
+              <ListItemText primary={contributor} secondary={contributorsToGames[contributor].join(', ')} />
+              <Button
+                size="small"
+                color="primary"
+                target="_blank"
+                rel="noreferrer"
+                href={`https://github.com/${contributor}`}
+              >
+                GitHub
+              </Button>
+            </ListItem>
+          ))}
         </List>
       </CardContent>
     </Card>
