@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const secretDraculaGameDef: IGameDef = {
   code: 'secretDracula',
   name: 'Secret Dracula',
+  contributors: ['Spooky-0'],
   imageURL: Thumbnail,
   modes: [
     { mode: GameMode.OnlineFriend },

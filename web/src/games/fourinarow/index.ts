@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const fourinarowGameDef: IGameDef = {
   code: 'fourinarow',
   name: 'Four in a Row',
+  contributors: ['gk-patel'],
   minPlayers: 2,
   maxPlayers: 2,
   imageURL: Thumbnail,

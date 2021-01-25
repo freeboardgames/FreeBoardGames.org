@@ -7,6 +7,7 @@ import instructions from './instructions.md';
 export const bullsAndCowsGameDef: IGameDef = {
   code: 'bullsAndCows',
   name: 'Bulls & Cows',
+  contributors: ['leocaseiro'],
   imageURL: Thumbnail,
   modes: [
     {

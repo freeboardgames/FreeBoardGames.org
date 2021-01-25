@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const bombsAndBunniesDef: IGameDef = {
   code: 'bombsAndBunnies',
   name: 'Bombs & Bunnies',
+  contributors: ['b-hub'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,

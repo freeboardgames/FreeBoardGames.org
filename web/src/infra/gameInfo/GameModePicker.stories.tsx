@@ -11,6 +11,7 @@ export default {
 const GAME_DEF_TEST: IGameDef = {
   code: 'foocode',
   name: 'foo name',
+  contributors: ['foo'],
   imageURL: 'foo.jpg',
   description: 'foo desc',
   descriptionTag: 'foo tag',
