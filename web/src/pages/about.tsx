@@ -12,6 +12,8 @@ import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
 import { useRouter } from 'next/router';
 import { GAMES_LIST } from 'games';
 import { IGameStatus } from 'gamesShared/definitions/game';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
 
 const About = () => {
   const router = useRouter();
@@ -91,6 +93,9 @@ function getContributorsCard() {
         <List>
           {contributors.map((contributor) => (
             <ListItem key={contributor}>
+              <ListItemAvatar>
+                <Avatar alt={contributor} src={`https://github.com/${contributor}.png?size=40`} />
+              </ListItemAvatar>
               <ListItemText primary={contributor} secondary={contributorsToGames[contributor].join(', ')} />
               <Button
                 size="small"
