@@ -2,9 +2,21 @@
 # define paths
 SCRIPT=$(readlink -f "$0")
 DIR=$(dirname "$SCRIPT")
-BUILD_COMMON="$DIR/common"
 BUILD_FBG="$DIR/fbg-server"
 EXPORT_FILE="freeboardgames.tar"
+
+## read docker build paths and image names from env file
+if [ ! -f .env ]; then
+    echo -e "No .env file found"
+    exit 1
+else
+    source .env
+fi
+
+# ensure a docker-compose.yml is present
+if [ ! -f docker-compose.yml ]; then
+    cp docker-compose.yml.example docker-compose.yml
+fi
 
 # ensure yarn and npm are installed
 yarn -v > /dev/null 2>&1 || (echo "ERROR: yarn is not installed." && exit 1)
@@ -24,16 +36,10 @@ confirm() {
     esac
 }
 
-install_fbg() {
-    cd "$BUILD_FBG"
-    read -p "Now fbg will be installed and started. Shut down the server after startup with CTRL+C. [PROCEED]"
-    yarn install && yarn start || exit 1
-}
-
 run_gameserver() {
     cd "$DIR"
-    read -p "Now the webserver and backend will start. Shut down the server after startup with CTRL+C. [PROCEED]"
-    yarn run dev || (echo -e "ERROR. (ensure node is up-to-date)" && exit 1)
+    echo -e "Now the webserver and backend will be started."
+    yarn run gen:games || (echo -e "ERROR. (ensure node is up-to-date)" && exit 1)
 }
 
 install_dependencies() {
@@ -46,16 +52,11 @@ compile_dependencies() {
     install_dependencies && run_gameserver || exit 1
 }
 
-build_common_docker() {
-    cd "$BUILD_COMMON"
-    docker build -t fbg-common:latest .
-}
-
 build_docker() {
-    build_common_docker
-
     cd "$DIR"
-    docker-compose build
+    docker build -t "$BUILD_IMAGE_COMMON" "$BUILD_DIR_COMMON"
+    docker build -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB"
+    docker build -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG"
 }
 
 prune_docker_images() {
