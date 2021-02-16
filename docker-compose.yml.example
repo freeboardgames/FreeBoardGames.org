@@ -10,6 +10,7 @@ services:
       - '3000:3000'
     environment:
       SERVER_TYPE: 'WEB'
+      FBG_BACKEND_TARGET: 'http://backend:3001'
   bgio:
     image: '${BUILD_IMAGE_WEB}'
     ports:
