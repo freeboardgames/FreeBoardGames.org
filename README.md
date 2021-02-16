@@ -62,12 +62,13 @@ docker-compose up -d
 Usage:
 
 ```bash
-Usage: ./docker-build.sh -[d|b|e|i|h]
+Usage: ./docker-build.sh -[d|b|e|i|r|h]
 
    -d,    Installs dependencies and run the webserver and backend.
    -b,    Build docker image
    -e,    Export build docker images
    -i,    Import docker images
+   -r,    Prune docker images
    -h,    Print this help text
 
 If the script will be called without parameters, it will run:

@@ -55,8 +55,15 @@ build_docker() {
     build_common_docker
 
     cd "$DIR"
-
     docker-compose build
+}
+
+prune_docker_images() {
+    PRUNE_IMAGES=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep freeboardgames/)
+    echo -e "$PRUNE_IMAGES"
+    if $(confirm "Delete listed docker images?") ; then
+        echo "$PRUNE_IMAGES" | xargs docker rmi
+    fi
 }
 
 exportdocker() {
@@ -75,12 +82,13 @@ importdocker() {
 # ###### Parsing arguments
 #Usage print
 usage() {
-    echo "Usage: $0 -[d|b|e|i|h]" >&2
+    echo "Usage: $0 -[d|b|e|i|r|h]" >&2
     echo "
    -d,    Installs dependencies and run the webserver and backend.
    -b,    Build docker image
    -e,    Export build docker images
    -i,    Import docker images
+   -r,    Prune docker images
    -h,    Print this help text
 
 If the script will be called without parameters, it will run:
@@ -89,7 +97,7 @@ If the script will be called without parameters, it will run:
     exit 1
 }
 
-while getopts ':dbei' opt
+while getopts ':dbeir' opt
 do
 case "$opt" in
    'd')compile_dependencies;
@@ -99,6 +107,8 @@ case "$opt" in
    'e')exportdocker;
        ;;
    'i')importdocker;
+       ;;
+   'r')prune_docker_images;
        ;;
     *) usage;
        ;;
