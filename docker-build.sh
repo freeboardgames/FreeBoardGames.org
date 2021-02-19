@@ -38,7 +38,7 @@ confirm() {
 
 run_gameserver() {
     cd "$DIR"
-    echo -e "Now the webserver and backend will be started."
+    echo -e "Now the game index will be generated."
     yarn run gen:games || (echo -e "ERROR. (ensure node is up-to-date)" && exit 1)
 }
 
@@ -57,6 +57,12 @@ build_docker() {
     docker build -t "$BUILD_IMAGE_COMMON" "$BUILD_DIR_COMMON"
     docker build -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB"
     docker build -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG"
+}
+
+push_docker() {
+    cd "$DIR"
+    docker push "$BUILD_IMAGE_WEB"
+    docker push "$BUILD_IMAGE_FBG" 
 }
 
 prune_docker_images() {
@@ -83,10 +89,11 @@ importdocker() {
 # ###### Parsing arguments
 #Usage print
 usage() {
-    echo "Usage: $0 -[d|b|e|i|r|h]" >&2
+    echo "Usage: $0 -[d|b|p|e|i|r|h]" >&2
     echo "
-   -d,    Installs dependencies and run the webserver and backend.
+   -d,    Installs dependencies and generates game index. 
    -b,    Build docker image
+   -p,    Push docker images
    -e,    Export build docker images
    -i,    Import docker images
    -r,    Prune docker images
@@ -98,12 +105,14 @@ If the script will be called without parameters, it will run:
     exit 1
 }
 
-while getopts ':dbeir' opt
+while getopts ':dbpeir' opt
 do
 case "$opt" in
    'd')compile_dependencies;
        ;;
    'b')build_docker;
+       ;;
+   'p')push_docker;
        ;;
    'e')exportdocker;
        ;;
@@ -118,7 +127,7 @@ done
 
 # Executed when no arguments passed
 if [ $OPTIND -eq 1 ]; then
-    if $(confirm "Install dependencies and run the webserver and backend?") ; then
+    if $(confirm "Install dependencies and generate game index?") ; then
         compile_dependencies
     fi
     if $(confirm "Build docker image?") ; then

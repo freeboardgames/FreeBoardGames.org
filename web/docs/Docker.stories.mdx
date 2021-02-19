@@ -30,6 +30,11 @@ The previous steps can be also called by a setup script:
 ```
 
 
+After that you can push the images to a repository:
+
+```bash
+./docker-build.sh -p
+```
 
 After the build process the server can be started via docker compose.
 
@@ -44,6 +49,7 @@ Usage: ./docker-build.sh -[d|b|e|i|r|h]
 
    -d,    Installs dependencies and run the webserver and backend.
    -b,    Build docker image
+   -p,    Push docker images
    -e,    Export build docker images
    -i,    Import docker images
    -r,    Prune docker images
