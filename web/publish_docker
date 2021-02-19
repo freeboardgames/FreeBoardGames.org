@@ -1,9 +1,0 @@
-#!/bin/bash
-IMAGENAME=freeboardgames/web:latest
-GIT_REV=`git rev-parse --short HEAD`
-export DOCKER_BUILDKIT=1
-docker build -f Dockerfile --progress=plain \
---build-arg GIT_REV=$GIT_REV \
--t $IMAGENAME . 
-docker push $IMAGENAME
-docker image prune -f

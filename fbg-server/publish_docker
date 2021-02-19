@@ -1,5 +1,0 @@
-#!/bin/bash
-IMAGENAME=freeboardgames/fbg-server:latest
-export DOCKER_BUILDKIT=1
-docker build -f Dockerfile --progress=plain -t $IMAGENAME .
-docker push $IMAGENAME
