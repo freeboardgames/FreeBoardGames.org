@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IG, TeamColor } from './definitions';
-import css from './Lobby.css';
+import css from './Lobby.module.css';
 import { LobbyTeam } from './LobbyTeam';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { LobbyPlayer } from './LobbyPlayer';

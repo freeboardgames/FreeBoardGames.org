@@ -48,6 +48,15 @@ type Match {
   bgioPlayerId: String
 }
 
+type Message {
+  channelType: String!
+  channelId: String!
+  userId: Float!
+  userNickname: String!
+  isoTimestamp: String!
+  message: String!
+}
+
 type Query {
   user: User!
   lobby: Lobby!
@@ -63,7 +72,8 @@ type Mutation {
   removeFromRoom(userIdToBeRemoved: Int!, roomId: String!): Boolean!
   updateRoom(room: UpdateRoomInput!): Boolean!
   nextRoom(matchId: String!): String!
-  startMatch(roomId: String!): String!
+  startMatch(setupData: String!, roomId: String!): String!
+  sendMessage(message: SendMessageInput!): Boolean!
 }
 
 input NewUserInput {
@@ -82,7 +92,14 @@ input UpdateRoomInput {
   capacity: Float!
 }
 
+input SendMessageInput {
+  channelType: String!
+  channelId: String!
+  message: String!
+}
+
 type Subscription {
   roomMutated(roomId: String!): Room!
   lobbyMutated: Lobby!
+  chatMutated(channelId: String!, channelType: String!): Message!
 }

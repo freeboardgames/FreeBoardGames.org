@@ -1,6 +1,6 @@
 import React from 'react';
 import { IPolicy } from '../interfaces';
-import css from './bpolicy.css';
+import css from './bpolicy.module.css';
 
 interface InnerWrapper {
   policy: IPolicy;

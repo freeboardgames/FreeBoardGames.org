@@ -202,12 +202,12 @@ describe('RoomsService', () => {
     await service.joinRoom(aliceId, room.id);
     jest.clearAllMocks();
     const publish = jest.spyOn(pubSub, 'publish');
-    await usersService.updateUser(aliceId, { nickname: 'Alice!'});
+    await usersService.updateUser(aliceId, { nickname: 'Alice'});
     await service.notifyUserUpdated(aliceId);
 
     const args = publish.mock.calls[0];
     expect(args[0]).toEqual(`room/${room.id}`);
-    expect(args[1].roomMutated.userMemberships[1].user.nickname).toEqual('Alice!');
+    expect(args[1].roomMutated.userMemberships[1].user.nickname).toEqual('Alice');
   });
 
   it('should not allow non-owner to remove from room', async () => {

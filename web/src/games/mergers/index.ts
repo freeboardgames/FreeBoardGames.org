@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const mergersGameDef: IGameDef = {
   code: 'mergers',
   name: 'Mergers',
+  contributors: ['lfkellogg'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 3,

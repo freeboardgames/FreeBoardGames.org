@@ -1,19 +1,18 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameModeExtraInfoSlider } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const chessGameDef: IGameDef = {
   code: 'chess',
   name: 'Chess',
+  contributors: ['flamecoals'],
   imageURL: Thumbnail,
   minPlayers: 2,
   maxPlayers: 2,
   modes: [
     {
       mode: GameMode.AI,
-      extraInfo: { type: 'slider', min: 1, max: 8 } as IGameModeExtraInfoSlider,
     },
     { mode: GameMode.OnlineFriend },
     { mode: GameMode.LocalFriend },
@@ -31,6 +30,7 @@ export const chessGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
+  customization: () => import('./customization'),
 };
 
 export default chessGameDef;

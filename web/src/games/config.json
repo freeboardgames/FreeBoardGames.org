@@ -1,5 +1,8 @@
 {
   "order": [
+    "bullsAndCows",
+    "bingo",
+    "memorymatch",
     "mergers",
     "bombsAndBunnies",
     "secretDracula",

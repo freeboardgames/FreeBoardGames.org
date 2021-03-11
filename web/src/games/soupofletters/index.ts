@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const soupOfLettersGameDef: IGameDef = {
   code: 'soupofletters',
   name: 'Soup of Letters',
+  contributors: ['gk-patel'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],
   minPlayers: 2,

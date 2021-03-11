@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const hangmanGameDef: IGameDef = {
   code: 'hangman',
   name: 'Hangman',
+  contributors: ['gk-patel'],
   minPlayers: 2,
   maxPlayers: 2,
   imageURL: Thumbnail,

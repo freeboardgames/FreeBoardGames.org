@@ -3,7 +3,7 @@ import * as React from 'react';
 import { FaceDownCardComponent, BunnyCardComponent, BombCardComponent } from './CardComponent';
 import { CardType, CardStyle } from './shared/interfaces';
 
-import css from './PlayerHandPenalty.css';
+import css from './PlayerHandPenalty.module.css';
 
 export interface IPlayerHandPenaltyProps {
   playerId: string;

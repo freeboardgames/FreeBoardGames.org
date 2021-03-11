@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import CardProps from './card';
-import css from './CardComponent.css';
+import css from './CardComponent.module.css';
 import { CardBackgroundAsset, CardValueAsset } from './CardAssets';
 
 const BANANA_COLOR = {

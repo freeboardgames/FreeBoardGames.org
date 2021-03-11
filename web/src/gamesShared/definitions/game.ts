@@ -1,6 +1,7 @@
 import { IGameModeInfo } from './mode';
 import { GameMode } from './mode';
 import { IPlayerInRoom } from './player';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
 
 export interface IGameArgs {
   gameCode: string;
@@ -17,7 +18,7 @@ export interface IGameConfig {
 }
 
 export interface IAIConfig {
-  bgioAI: (level: string) => any;
+  bgioAI: (customization: GameCustomizationState) => any;
 }
 
 export enum IGameStatus {
@@ -28,6 +29,7 @@ export enum IGameStatus {
 export interface IGameDef {
   code: string;
   name: string;
+  contributors: string[];
   imageURL: string;
   description: string;
   descriptionTag: string;
@@ -41,6 +43,7 @@ export interface IGameDef {
   status: IGameStatus;
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
+  customization?: () => Promise<any>;
 }
 
 export interface IGameDefMap {

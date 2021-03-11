@@ -1,6 +1,6 @@
 import React from 'react';
 import { BCard } from './bcard';
-import css from './bdeck.css';
+import css from './bdeck.module.css';
 
 interface InnerWrapper {
   cardsLeft: number;

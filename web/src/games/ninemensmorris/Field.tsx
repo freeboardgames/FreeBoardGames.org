@@ -1,6 +1,6 @@
 import React from 'react';
 import Point from './point';
-import css from './Field.css';
+import css from './Field.module.css';
 import red from '@material-ui/core/colors/red';
 
 const COORDS = [

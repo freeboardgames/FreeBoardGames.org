@@ -1,4 +1,9 @@
-A game of deceit, lies and Vampires.
+Thank you to https://www.secrethitler.com ! 
+
+This game 'Secret Dracula' is an interpretaion of 'Secret Hitler'. See
+https://www.secrethitler.com/assets/Secret_Hitler_Rules.pdf for the rules of Secret Hitler. The differences between 'Secret Hitler' and 'Secret Dracula' are mainly cosmetic, as the rules of the game remain the same.
+
+A GAME OF DECITE, LIES AND VAMPIRES!
 
 In Secret Dracula, there are two group of players, the vampires and the rest of the village. One of the vampires is Dracula. Even though Vampires are a minority, they know each other identities, while villagers do not.
 

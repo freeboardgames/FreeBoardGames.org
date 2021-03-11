@@ -4,6 +4,7 @@ import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import { Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 import { isOnlineGame, isLocalGame } from '../../gamesShared/helpers/gameMode';
 import Typography from '@material-ui/core/Typography';
+import { isSpectator } from 'gamesShared/helpers/GameUtil';
 import { IBoardProps, IBoardState } from './definations';
 import CardGrid from './grid';
 import { PLAYER_COLORS } from './constants';
@@ -38,10 +39,13 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
       return playerName + "'s Turn";
     } else if (isOnlineGame(this.props.gameArgs)) {
       playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
-      if (this.props.ctx.currentPlayer !== this.props.playerID) {
-        return 'Waiting for ' + playerName;
-      } else {
+      if (this.props.ctx.currentPlayer === this.props.playerID) {
         return 'Your Turn';
+      } else {
+        if (isSpectator(this.props.playerID)) {
+          return `${playerName}'s turn`;
+        }
+        return 'Waiting for ' + playerName;
       }
     }
   };
@@ -57,6 +61,9 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
       if (gameover.winner === this.props.playerID) {
         return 'you won';
       } else {
+        if (isSpectator(this.props.playerID)) {
+          return 'see scoreboard';
+        }
         return 'you lost';
       }
     }

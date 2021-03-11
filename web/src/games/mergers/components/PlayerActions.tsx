@@ -5,7 +5,7 @@ import { Chain, Merger, Player, SwapAndSell } from '../types';
 import { fillStockMap } from '../utils';
 
 import { StockLabel } from './StockLabel';
-import css from './PlayerActions.css';
+import css from './PlayerActions.module.css';
 import { Hotels } from '../hotels';
 
 interface PlayerActionsProps {

@@ -7,6 +7,7 @@ export const cornerusGameDef: IGameDef = {
   code: 'cornerus',
   name: 'Cornerus',
   imageURL: Thumbnail,
+  contributors: ['JosefKuchar'],
   modes: [
     /*
             {
