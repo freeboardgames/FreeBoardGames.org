@@ -177,4 +177,43 @@ export const BombsAndBunniesGame: Game<IG> = {
       discardPile: [],
     };
   },
+
+  playerView: (G: IG, ctx: Ctx, playerID: string) => {
+    let playerIDInt = parseInt(playerID);
+
+    if (isNaN(playerIDInt)) {
+      // This never happens in real play - just in testing.
+      // This function is executed on server.
+      return G;
+    }
+
+    if (ctx.gameover) {
+      return G;
+    }
+
+    return {
+      ...G,
+      players: [
+        ...G.players.map((player: IPlayer) => {
+          if (player.id == playerID) {
+            return player;
+          } else {
+            return {
+              ...player,
+              hand: player.hand.map(() => {
+                return CardType.Bunny; // just overwrite what
+                // you shouldn't be able to see anyway.
+                // If you try to cheat, you will see the wrong thing.
+              }),
+              stack: player.stack.map(() => {
+                return CardType.Bunny; // just overwrite what
+                // you shouldn't be able to see anyway.
+                // If you try to cheat, you will see the wrong thing.
+              }),
+            };
+          }
+        }),
+      ],
+    };
+  },
 };
