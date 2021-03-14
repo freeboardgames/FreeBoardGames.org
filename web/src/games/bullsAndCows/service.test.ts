@@ -1,4 +1,5 @@
 import { generateSecret, checkSecret, isVictory, isGameOver } from './service';
+import { IColour } from './service';
 
 describe('Bulls and Cows Service', () => {
   describe('generateSecret', () => {
@@ -98,7 +99,7 @@ describe('Bulls and Cows Service', () => {
 
       const result = checkSecret(current, secret);
 
-      expect(result.hints).toEqual([1, 1, 1, 0, -1, -1]);
+      expect(result.hints).toEqual([1, 1, 1, 0, 0, -1]);
     });
 
     it('should not show more hints than the secret needed for repeated secret', () => {
@@ -149,4 +150,30 @@ describe('Bulls and Cows Service', () => {
       expect(isGameOver(G)).toBe(true);
     });
   });
+});
+
+it('should work for the issue posted', () => {
+  let secret = <IColour[]>[{ id: 5 }, { id: 4 }, { id: 6 }, { id: 1 }];
+
+  let current = <IColour[]>[{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+  let result = checkSecret(current, secret);
+  expect(result.hints).toEqual([0, 0, -1, -1]);
+
+  current = <IColour[]>[{ id: 4 }, { id: 5 }, { id: 6 }, { id: 7 }];
+  result = checkSecret(current, secret);
+  expect(result.hints).toEqual([1, 0, 0, -1]);
+
+  current = <IColour[]>[{ id: 2 }, { id: 5 }, { id: 7 }, { id: 1 }];
+  result = checkSecret(current, secret);
+  expect(result.hints).toEqual([1, 0, -1, -1]);
+
+  // some more in Issue
+
+  current = <IColour[]>[{ id: 5 }, { id: 5 }, { id: 6 }, { id: 1 }];
+  result = checkSecret(current, secret);
+  expect(result.hints).toEqual([1, 1, 1, -1]);
+
+  current = <IColour[]>[{ id: 5 }, { id: 4 }, { id: 6 }, { id: 1 }];
+  result = checkSecret(current, secret);
+  expect(result.hints).toEqual([1, 1, 1, 1]);
 });

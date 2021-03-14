@@ -30,8 +30,11 @@ describe('Bulls and Cows game', () => {
       expect(G.secretLength).toBe(4);
       expect(G.limitOfAttempts).toBe(12);
       expect(G.lastAttempt).toBe(null);
-
-      expect(generateSecret).toHaveBeenCalledWith(expect.anything(), G.colours, G.secretLength, false);
+      if (G.allowToRepeat) {
+        expect(generateSecret).toHaveBeenCalledWith(expect.anything(), G.colours, G.secretLength, true);
+      } else {
+        expect(generateSecret).toHaveBeenCalledWith(expect.anything(), G.colours, G.secretLength, false);
+      }
     });
   });
 
