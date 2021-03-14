@@ -3,9 +3,6 @@ import Message from './Message';
 import css from './ChatMessage.module.css';
 import Typography from '@material-ui/core/Typography';
 
-interface Props {
-  message: Message;
-}
 const zeroPad = (num, places) => String(num).padStart(places, '0');
 
 function formatTimestamp(isoTimestamp: string) {
@@ -16,8 +13,11 @@ function formatTimestamp(isoTimestamp: string) {
   return `${zeroPad(d.getHours(), 2)}:${zeroPad(d.getMinutes(), 2)}:${zeroPad(d.getSeconds(), 2)}`;
 }
 
-export default function (props: Props) {
-  const { message } = props;
+interface Props {
+  message: Message;
+}
+
+export default function ChatMessage({ message }: Props) {
   return (
     <div className={css.ChatMessageWrapper}>
       <div>
