@@ -31,6 +31,7 @@ export const BullsAndCowsGame = {
       secret,
       secretLength,
       limitOfAttempts,
+      allowToRepeat: allowToRepeat,
     };
   },
 

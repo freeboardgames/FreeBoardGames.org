@@ -16,6 +16,7 @@ export interface IG {
   secretLength: number;
   lastAttempt: IAttempt | null;
   limitOfAttempts: number;
+  allowToRepeat: boolean;
 }
 export interface IColour {
   id: number;
