@@ -4,6 +4,8 @@ const childProcess = require('child_process');
 const withWorkers = require('@zeit/next-workers');
 const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const { i18n } = require('./next-i18next.config');
+const { I18NextHMRPlugin } = require('i18next-hmr/plugin');
+const { resolve } = require('path');
 
 const CHANNEL = process.env.CHANNEL || 'development';
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
@@ -80,6 +82,13 @@ module.exports = withWorkers(
       if (!BABEL_ENV_IS_PROD) {
         config.optimization.minimizer = [];
       }
+
+      // i18next-hmr for better developer experience
+      config.plugins.push(
+        new I18NextHMRPlugin({
+          localesDir: resolve(__dirname, 'public/static/locales'),
+        }),
+      );
 
       return config;
     },
