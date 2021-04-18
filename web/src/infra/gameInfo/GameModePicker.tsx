@@ -13,7 +13,7 @@ import { compose } from 'recompose';
 import { WithTranslation } from 'next-i18next';
 import { nextI18Next } from 'infra/i18n';
 
-interface IGameModePickerInnerProps extends WithTranslation {
+interface IGameModePickerInnerProps extends Pick<WithTranslation, 't'> {
   user: ReduxUserState;
   dispatch: Dispatch;
 }
