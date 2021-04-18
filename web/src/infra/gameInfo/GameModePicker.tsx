@@ -9,12 +9,18 @@ import { ReduxState, ReduxUserState } from 'infra/common/redux/definitions';
 import NicknameRequired from '../common/components/auth/NicknameRequired';
 import { Dispatch } from 'redux';
 import { GameModePickerCard } from './GameModePickerCard';
+import { compose } from 'recompose';
 
-interface IGameModePickerProps {
-  gameDef: IGameDef;
+interface IGameModePickerInnerProps {
   user: ReduxUserState;
   dispatch: Dispatch;
 }
+
+interface IGameModePickerOutterProps {
+  gameDef: IGameDef;
+}
+
+interface IGameModePickerProps extends IGameModePickerInnerProps, IGameModePickerOutterProps {}
 
 interface IGameModePickerState {
   onlinePlayRequested: number;
@@ -92,4 +98,6 @@ const mapStateToProps = (state: ReduxState) => ({
   user: { ...state.user },
 });
 
-export const GameModePicker = connect(mapStateToProps)(GameModePickerInternal);
+const enhance = compose<IGameModePickerInnerProps, IGameModePickerOutterProps>(connect(mapStateToProps));
+
+export const GameModePicker = enhance(GameModePickerInternal);
