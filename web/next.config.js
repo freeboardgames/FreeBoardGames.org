@@ -3,6 +3,7 @@ const withOptimizedImages = require('next-optimized-images');
 const childProcess = require('child_process');
 const withWorkers = require('@zeit/next-workers');
 const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const { i18n } = require('./next-i18next.config');
 
 const CHANNEL = process.env.CHANNEL || 'development';
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
@@ -82,5 +83,6 @@ module.exports = withWorkers(
 
       return config;
     },
+    i18n,
   }),
 );
