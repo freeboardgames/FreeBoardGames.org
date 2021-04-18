@@ -14,4 +14,5 @@ server/dist/
 .cache/
 static/
 public/
+!public/static/locales
 src/gqlTypes

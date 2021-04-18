@@ -89,7 +89,10 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
     if (!GAMES_MAP[gameCode] && ctx.res) {
       return generatePageError(404);
     }
-    return { gameCode };
+    return {
+      gameCode,
+      namespacesRequired: ['common', 'GameModePicker'],
+    };
   }
 }
 
