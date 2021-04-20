@@ -9,7 +9,7 @@ export const BullsAndCowsGame = {
   setup: (ctx: Ctx) => {
     const secretLength = 4;
     const limitOfAttempts = 12;
-    const allowToRepeat = false;
+    const allowToRepeat = true;
 
     const colours = [
       { id: 1, img: 'certificate', hex: common['black'] },
@@ -31,6 +31,7 @@ export const BullsAndCowsGame = {
       secret,
       secretLength,
       limitOfAttempts,
+      allowToRepeat: allowToRepeat,
     };
   },
 

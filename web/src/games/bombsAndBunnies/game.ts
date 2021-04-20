@@ -15,13 +15,26 @@ export const BombsAndBunniesGame: Game<IG> = {
         moveLimit: 1,
         order: {
           first: (G: IG, ctx: Ctx) => {
-            if (G.bombPlayerId !== null && !StateExtensions.getPlayerById(G, G.bombPlayerId).isOut) {
-              return ctx.playOrder.findIndex((id) => id === G.bombPlayerId);
+            var oldPlayOrder = ctx.playOrder;
+            var newPlayOrder = StateExtensions.getPlayOrder(G, ctx);
+
+            // If a bomb was revealed last round
+            if (G.bombPlayerId !== null) {
+              // Player with bomb starts the round, if they are not out
+              if (!StateExtensions.getPlayerById(G, G.bombPlayerId).isOut) {
+                return newPlayOrder.findIndex((id) => id === G.bombPlayerId);
+              } else {
+                // Otherwise the next player starts
+                var oldBombOrderPos = oldPlayOrder.findIndex((id) => id === G.bombPlayerId);
+                var nextPlayerId = oldPlayOrder[(oldBombOrderPos + 1) % oldPlayOrder.length];
+
+                return newPlayOrder.findIndex((id) => id === nextPlayerId);
+              }
             }
 
             if (G.lastWinningPlayerId !== null) {
-              var winningPlayerIndex = ctx.playOrder.findIndex((id) => id === G.lastWinningPlayerId);
-              return (winningPlayerIndex + 1) % ctx.playOrder.length;
+              var winningPlayerIndex = oldPlayOrder.findIndex((id) => id === G.lastWinningPlayerId);
+              return (winningPlayerIndex + 1) % oldPlayOrder.length;
             }
 
             return ctx.playOrderPos;
@@ -141,7 +154,7 @@ export const BombsAndBunniesGame: Game<IG> = {
   },
 
   setup: (ctx: Ctx): IG => {
-    let players: IPlayer[] = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
+    const players: IPlayer[] = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
       id: i.toString(),
       cardStyle: <CardStyle>i,
       bet: null,
@@ -162,6 +175,45 @@ export const BombsAndBunniesGame: Game<IG> = {
       failedRevealPlayerId: null,
       lastWinningPlayerId: null,
       discardPile: [],
+    };
+  },
+
+  playerView: (G: IG, ctx: Ctx, playerID: string) => {
+    let playerIDInt = parseInt(playerID);
+
+    if (isNaN(playerIDInt)) {
+      // This never happens in real play - just in testing.
+      // This function is executed on server.
+      return G;
+    }
+
+    if (ctx.gameover) {
+      return G;
+    }
+
+    return {
+      ...G,
+      players: [
+        ...G.players.map((player: IPlayer) => {
+          if (player.id == playerID) {
+            return player;
+          } else {
+            return {
+              ...player,
+              hand: player.hand.map(() => {
+                return CardType.Bunny; // just overwrite what
+                // you shouldn't be able to see anyway.
+                // If you try to cheat, you will see the wrong thing.
+              }),
+              stack: player.stack.map(() => {
+                return CardType.Bunny; // just overwrite what
+                // you shouldn't be able to see anyway.
+                // If you try to cheat, you will see the wrong thing.
+              }),
+            };
+          }
+        }),
+      ],
     };
   },
 };

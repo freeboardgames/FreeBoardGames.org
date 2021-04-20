@@ -21,6 +21,8 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { ApolloProvider } from '@apollo/react-hooks';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
+import { compose } from 'recompose';
+import { nextI18Next } from 'infra/i18n';
 
 const GA_TRACKING_CODE = 'UA-105391878-2';
 const SENTRY_DSN = 'https://5957292e58cf4d2fbb781910e7b26b1f@o397015.ingest.sentry.io/5251165';
@@ -128,4 +130,6 @@ class defaultApp extends App {
   }
 }
 
-export default wrapper.withRedux(withError(ErrorPage)(defaultApp));
+const enhance = compose(wrapper.withRedux, nextI18Next.appWithTranslation, withError(ErrorPage));
+
+export default enhance(defaultApp);

@@ -9,12 +9,20 @@ import { ReduxState, ReduxUserState } from 'infra/common/redux/definitions';
 import NicknameRequired from '../common/components/auth/NicknameRequired';
 import { Dispatch } from 'redux';
 import { GameModePickerCard } from './GameModePickerCard';
+import { compose } from 'recompose';
+import { WithTranslation } from 'next-i18next';
+import { nextI18Next } from 'infra/i18n';
 
-interface IGameModePickerProps {
-  gameDef: IGameDef;
+interface IGameModePickerInnerProps extends Pick<WithTranslation, 't'> {
   user: ReduxUserState;
   dispatch: Dispatch;
 }
+
+interface IGameModePickerOutterProps {
+  gameDef: IGameDef;
+}
+
+interface IGameModePickerProps extends IGameModePickerInnerProps, IGameModePickerOutterProps {}
 
 interface IGameModePickerState {
   onlinePlayRequested: number;
@@ -46,7 +54,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     const modePicker = (
       <div style={{ marginTop: '8px', maxWidth: '500px' }}>
         <Typography variant="h6" component="h2" style={{ marginBottom: '16px' }}>
-          Choose game mode
+          {this.props.t('choose_game_mode')}
         </Typography>
         <div>{cards}</div>
       </div>
@@ -92,4 +100,9 @@ const mapStateToProps = (state: ReduxState) => ({
   user: { ...state.user },
 });
 
-export const GameModePicker = connect(mapStateToProps)(GameModePickerInternal);
+const enhance = compose<IGameModePickerInnerProps, IGameModePickerOutterProps>(
+  nextI18Next.withTranslation('GameModePicker'),
+  connect(mapStateToProps),
+);
+
+export const GameModePicker = enhance(GameModePickerInternal);
