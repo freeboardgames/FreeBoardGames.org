@@ -31,6 +31,7 @@ function getWrapper(modes: IGameModeInfo[]): RenderResult {
     <GameModePicker
       gameDef={{ ...GAME_DEF_TEST, modes }}
       dispatch={jest.fn()}
+      t={jest.fn()}
       user={{ loggedIn: true, ready: true }}
     />,
   );
