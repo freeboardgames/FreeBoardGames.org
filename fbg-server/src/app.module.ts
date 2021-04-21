@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { RoomsModule } from './rooms/rooms.module';
@@ -43,6 +43,10 @@ const isProd = process.env.NODE_ENV === 'production';
     RoomsModule,
     MatchModule,
     ChatModule,
+    HttpModule.register({
+      timeout: 5000,
+      maxRedirects: 5,
+    }),
   ],
   controllers: [HealthzController],
 })
