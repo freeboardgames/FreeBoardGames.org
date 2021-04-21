@@ -38,9 +38,9 @@ spec:
             port: 3001
             scheme: HTTP
           initialDelaySeconds: 180
-          periodSeconds: 10
+          periodSeconds: 30
           successThreshold: 1
-          timeoutSeconds: 1
+          timeoutSeconds: 10
         name: {{ .Release.Name }}-fbg-server
         resources:
           limits:
