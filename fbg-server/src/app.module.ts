@@ -7,6 +7,7 @@ import { HealthzController } from './healthz.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ChatModule } from './chat/chat.module';
+import { ComplexityPlugin } from './complexity.plugin';
 
 const CONNECTION: any = process.env.POSTGRES_URL
   ? {
@@ -25,6 +26,7 @@ const CONNECTION: any = process.env.POSTGRES_URL
 const isProd = process.env.NODE_ENV === 'production';
 
 @Module({
+  providers: [ComplexityPlugin],
   imports: [
     TypeOrmModule.forRoot({
       ...CONNECTION,
