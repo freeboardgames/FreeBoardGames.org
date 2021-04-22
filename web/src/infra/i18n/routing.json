@@ -1,0 +1,6 @@
+[
+  {
+    "default": "/play/:rest+",
+    "locales": { "pt": "/jogar/:rest+" }
+  }
+]

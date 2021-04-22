@@ -3,10 +3,10 @@ import { GAMES_LIST } from 'games';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { GameCard } from './GameCard';
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import SearchBox from './SearchBox';
 import { DesktopView, MobileView } from 'infra/common/device/DesktopMobileView';
 import css from './GamesList.module.css';
+import { Link } from '../link/Link';
 
 interface State {
   searchQuery?: string;
@@ -88,7 +88,7 @@ export class GamesList extends React.Component<Props, State> {
       );
     } else {
       return (
-        <Link href={`/play/[gameCode]`} as={`/play/${game.code}`} key={game.code}>
+        <Link href={`/play/${game.code}`} key={game.code}>
           <a className={css.Card}>
             <GameCard game={game} isLink={true} />
           </a>
