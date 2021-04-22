@@ -36,4 +36,10 @@ export class Home extends React.Component<{}, {}> {
     }
     return <GamesList showDevOnly={true} />;
   }
+
+  static async getInitialProps() {
+    return {
+      namespacesRequired: ['LobbyCarousel'],
+    };
+  }
 }

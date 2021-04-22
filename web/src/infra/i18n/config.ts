@@ -3,7 +3,7 @@ import { resolve } from 'path';
 
 export const nextI18Next = new NextI18Next({
   defaultLanguage: 'en',
-  otherLanguages: [],
+  otherLanguages: ['pt'],
   localePath: resolve('./public/static/locales'),
 });
 
