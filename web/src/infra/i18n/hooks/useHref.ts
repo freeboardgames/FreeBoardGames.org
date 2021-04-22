@@ -14,6 +14,7 @@ export function useHref(href: LinkProps['href']): LinkProps['href'] {
       try {
         return toPath(parsedUrl.params);
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.warn('fallback to unlocalized href.', localizedRoute, defaultRoute, e.message);
       }
     }
