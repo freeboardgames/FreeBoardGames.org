@@ -8,7 +8,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import Link from 'next/link';
+import { Link } from 'infra/i18n';
+
 import { OccupancySelect } from 'infra/common/components/game/OccupancySelect';
 import css from './GameModePickerCard.module.css';
 import { IGameDef } from 'gamesShared/definitions/game';

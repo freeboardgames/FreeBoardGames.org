@@ -3,7 +3,7 @@ import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import Header from 'infra/home/Header';
 import { GamesList } from 'infra/common/components/game/GamesList';
 import SEO from 'infra/common/helpers/SEO';
-import Link from 'next/link';
+import { Link } from 'infra/i18n';
 import LobbyCarousel from 'infra/lobby/LobbyCarousel';
 
 export class Home extends React.Component<{}, {}> {
