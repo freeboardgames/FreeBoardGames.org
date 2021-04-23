@@ -24,8 +24,29 @@ describe('Link', () => {
   describe('when translated route is available', () => {
     it('replaces the href property for it ', async () => {
       forGivenLanguage('pt');
-      whenLinkGotRenderedWith({ href: '/play/bingo' });
-      await thenLinkShouldHave({ href: '/jogar/bingo' });
+      const text = 'Play bingo';
+
+      renderLink(text, { href: '/play/bingo' });
+
+      await thenLinkShouldHave(text, { href: '/jogar/bingo' });
+    });
+
+    it('does not change the url on invalid languages', async () => {
+      forGivenLanguage('invalid');
+      const text = 'Play bingo';
+
+      renderLink(text, { href: '/play/bingo' });
+
+      await thenLinkShouldHave(text, { href: '/play/bingo' });
+    });
+
+    it('does not change url for non-translated path ', async () => {
+      forGivenLanguage('pt');
+      const text = 'Play bingo';
+
+      renderLink(text, { href: '/unknown/path' });
+
+      await thenLinkShouldHave(text, { href: '/unknown/path' });
     });
   });
 });
@@ -36,14 +57,14 @@ function forGivenLanguage(language: string) {
   } as ReturnType<typeof mockedNextI18Next.useTranslation>);
 }
 
-function whenLinkGotRenderedWith(props: Pick<LinkProps, 'href'>) {
-  RTL.render(<Link {...props}>Play bingo</Link>);
+function renderLink(text: string, props: Pick<LinkProps, 'href'>) {
+  RTL.render(<Link {...props}>{text}</Link>);
 }
 
-async function thenLinkShouldHave(props: Pick<LinkProps, 'href'>) {
+async function thenLinkShouldHave(text: string, props: Pick<LinkProps, 'href'>) {
   await waitFor(() => {
     Object.entries(props).forEach(([key, value]) => {
-      expect(screen.getByText('Play bingo')).toHaveAttribute(key, value);
+      expect(screen.getByText(text)).toHaveAttribute(key, value);
     });
   });
 }

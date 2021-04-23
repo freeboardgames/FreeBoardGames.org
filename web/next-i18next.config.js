@@ -29,12 +29,12 @@ function buildLocalizedRoutes(routing) {
     rewrites: locales.map(([locale, route]) => [
       {
         source: `/:lang(${locale})${route}`,
-        destination: `${routing.default}`,
+        destination: `${routing.original}`,
       },
     ]),
     redirects: locales.map(([locale, route]) => [
       {
-        source: `/:lang(${locale})${routing.default}`,
+        source: `/:lang(${locale})${routing.original}`,
         destination: `/:lang(${locale})${route}`,
         permanent: true,
       },

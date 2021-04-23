@@ -1,9 +1,9 @@
-import routing from './routing.json';
+import translatedPaths from './translatedPaths';
 
-describe('routing.json', () => {
-  routing.forEach((r) => {
-    it(`match params of each translated route from ${r.default} route`, () => {
-      const defaultTokens = extractPathParams(r.default);
+describe('routing', () => {
+  translatedPaths.forEach((r) => {
+    it(`match params of each translated route from ${r.original} route`, () => {
+      const defaultTokens = extractPathParams(r.original);
       Object.values(r.locales).forEach((l) => {
         const localeTokens = extractPathParams(l);
         expect(defaultTokens).toEqual(localeTokens);

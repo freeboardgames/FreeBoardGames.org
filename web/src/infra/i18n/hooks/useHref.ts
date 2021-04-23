@@ -1,50 +1,33 @@
 import { LinkProps } from 'next/link';
-import { match as matcher, compile, MatchResult } from 'path-to-regexp';
-import routing from 'infra/i18n/routing.json';
+import { match as matcher, compile } from 'path-to-regexp';
+import routing from 'infra/i18n/translatedPaths';
 import { nextI18Next } from 'infra/i18n';
 
 export function useHref(href: LinkProps['href']): LinkProps['href'] {
   const { i18n } = nextI18Next.useTranslation();
-  const { isMatch, locales, parsedUrl, defaultRoute } = matchHrefWithRouting(href.toString());
+  const result = getPathTranslation(href.toString());
 
-  if (isMatch) {
-    const localizedRoute = locales[i18n.language];
-    if (localizedRoute) {
-      const toPath = compile(localizedRoute);
-      try {
-        return toPath(parsedUrl.params);
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('fallback to unlocalized href.', localizedRoute, defaultRoute, e.message);
-      }
-    }
+  if (!result) {
+    return href;
+  }
+  const { pathTranslation, parsedUrl } = result;
+  const localizedRoute = pathTranslation.locales[i18n.language];
+  if (!localizedRoute) {
+    return href;
   }
 
-  return href;
+  const toPath = compile(localizedRoute);
+  return toPath(parsedUrl.params);
 }
 
-function matchHrefWithRouting(url: string) {
-  let _isMatch = false;
-  let _locales: Record<string, string>;
-  let _parsedUrl: MatchResult<{ path: string }>;
-  let _defaultRoute: string;
-
+function getPathTranslation(url: string) {
   for (let i = 0; i < routing.length; i++) {
-    const match = matcher<{ path: string }>(routing[i].default);
+    const match = matcher<{ path: string }>(routing[i].original);
     const parsed = match(url);
-    if (parsed) {
-      _isMatch = true;
-      _defaultRoute = routing[i].default;
-      _locales = routing[i].locales;
-      _parsedUrl = parsed;
-      break;
+    if (!parsed) {
+      continue;
     }
+    return { pathTranslation: routing[i], parsedUrl: parsed };
   }
-
-  return {
-    isMatch: _isMatch,
-    locales: _locales,
-    parsedUrl: _parsedUrl,
-    defaultRoute: _defaultRoute,
-  };
+  return null;
 }
