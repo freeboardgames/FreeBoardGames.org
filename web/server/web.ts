@@ -58,7 +58,7 @@ function generateSiteMapXML(pagesManifest) {
 
   const urls = [];
   for (const path of paths) {
-    urls.push(`<url><loc>${URL}${path}</loc></url>`);
+    urls.push(`<url><loc>${URL}/en${path}</loc></url>`);
   }
 
   const sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>
