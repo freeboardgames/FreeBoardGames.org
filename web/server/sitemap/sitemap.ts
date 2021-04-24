@@ -40,7 +40,7 @@ function getGamesPaths(): string[] {
     if (game.status === IGameStatus.IN_DEVELOPMENT) {
       continue;
     }
-    paths.push(`/en/play/${game.code}`);
+    paths.push(`/play/${game.code}`);
   }
   return paths;
 }
