@@ -17,6 +17,20 @@ jest.mock('fs', () => ({
 const { writeFileSync } = mocked(fs, true);
 
 describe('generateSiteMapXML', () => {
+  beforeEach(() => {
+    const oldNodeEnv = process.env.NODE_ENV;
+
+    process.env = Object.assign(process.env, {
+      NODE_ENV: 'production',
+    });
+
+    afterEach(() => {
+      process.env = Object.assign(process.env, {
+        NODE_ENV: oldNodeEnv,
+      });
+    });
+  });
+
   it('should generate sitemap', () => {
     generateSiteMapXML({
       manifest: manifestFixture(),
