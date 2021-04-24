@@ -2,12 +2,10 @@
 import next from 'next';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import fs from 'fs';
 import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
-import { GAMES_LIST } from 'games';
 import { setupLogging } from './logging';
-import { IGameStatus } from 'gamesShared/definitions/game';
+import { generateSiteMapXML } from './sitemap';
 
 const INTERNAL_BACKEND_TARGET = process.env.FBG_BACKEND_TARGET || 'http://localhost:3001';
 const dev = process.env.NODE_ENV !== 'production';
@@ -22,57 +20,14 @@ const handle = app.getRequestHandler();
 
 const csrfProtection = csurf({ cookie: true });
 
-const excludedPaths = ['/_error', '/_document', '/_app', '/play'];
-
-function isExcludedPath(path) {
-  if (path.includes('[')) {
-    return true;
-  }
-  if (excludedPaths.includes(path)) {
-    return true;
-  }
-  if (path.endsWith('index')) {
-    return true;
-  }
-}
-
 const DOMAIN = 'www.freeboardgames.org';
 const URL = 'https://' + DOMAIN;
 
-function generateSiteMapXML(pagesManifest) {
-  let pathsFromManifest = Object.keys(pagesManifest).reverse();
-  const paths = [];
-  for (const path of pathsFromManifest) {
-    if (!isExcludedPath(path)) {
-      paths.push(path);
-    }
-  }
-
-  // games
-  for (const game of GAMES_LIST) {
-    if (game.status === IGameStatus.IN_DEVELOPMENT) {
-      continue;
-    }
-    paths.push(`/play/${game.code}`);
-  }
-
-  const urls = [];
-  for (const path of paths) {
-    urls.push(`<url><loc>${URL}${path}</loc></url>`);
-  }
-
-  const sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.join('')}
-</urlset>`;
-
-  return sitemapXML.replace(/(\r\n|\n|\r)/gm, '');
-}
-
-if (!dev) {
-  const sitemapXML = generateSiteMapXML(app.pagesManifest);
-  fs.writeFileSync(`${STATIC_DIR}/sitemap.xml`, sitemapXML);
-}
+generateSiteMapXML({
+  manifest: app.pagesManifest,
+  host: URL,
+  staticDir: STATIC_DIR,
+});
 
 app
   .prepare()

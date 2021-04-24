@@ -1,13 +1,12 @@
 module.exports = {
-  rootDir: 'src/',
-  roots: ['<rootDir>'],
+  roots: ['<rootDir>/src/', '<rootDir>/server/'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
-  setupFilesAfterEnv: ['../jest.setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   transform: {
     '^.+\\.[t|j]sx?$': 'babel-jest',
   },
   moduleNameMapper: {
-    '\\.(sass|scss|png|jpg|mp3|md).*$': '<rootDir>/infra/common/helpers/__mocks__/emptyModule.js',
+    '\\.(sass|scss|png|jpg|mp3|md).*$': '<rootDir>/src/infra/common/helpers/__mocks__/emptyModule.js',
     '\\.(css|less)$': 'identity-obj-proxy',
   },
   coverageReporters: ['json', 'lcov', 'text', 'text-summary'],
@@ -26,5 +25,5 @@ module.exports = {
   ],
   coverageReporters: ['json', 'lcov'],
   coverageDirectory: '../coverage-unit',
-  modulePaths: ['<rootDir>'],
+  modulePaths: ['<rootDir>/src/'],
 };
