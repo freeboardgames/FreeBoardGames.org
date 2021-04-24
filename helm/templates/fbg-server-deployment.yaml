@@ -37,10 +37,10 @@ spec:
             path: /healthz
             port: 3001
             scheme: HTTP
-          initialDelaySeconds: 30
+          initialDelaySeconds: 180
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 1
+          timeoutSeconds: 2
         name: {{ .Release.Name }}-fbg-server
         resources:
           limits:

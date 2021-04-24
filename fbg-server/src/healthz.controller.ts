@@ -1,13 +1,33 @@
-import { Controller, Get } from '@nestjs/common';
-import { LobbyService } from './rooms/lobby.service';
+import { Controller, Get, HttpService } from '@nestjs/common';
+import { PORT } from './constants';
+
+const LOBBY_QUERY = `
+  query GetLobby { 
+    lobby { 
+      rooms { 
+        gameCode, 
+        capacity, 
+        userMemberships { 
+          isCreator, 
+          __typename 
+        }, 
+        __typename 
+      }, 
+      __typename 
+    }
+  }
+`;
 
 @Controller('healthz')
 export class HealthzController {
-  constructor(private lobbyService: LobbyService) {}
+  constructor(private httpService: HttpService) {}
 
   @Get()
   async healthz(): Promise<string> {
-    await this.lobbyService.getLobby();
+    const postData = {
+      query: LOBBY_QUERY
+    };
+    await this.httpService.post(`http://localhost:${PORT}/graphql`, postData).toPromise();
     return 'OK';
   }
 }

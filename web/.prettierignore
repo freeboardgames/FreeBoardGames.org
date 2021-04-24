@@ -16,3 +16,4 @@ static/**/*.*
 public/**/*.*
 !public/static/locales/**/*.json
 src/gqlTypes
+*.xml

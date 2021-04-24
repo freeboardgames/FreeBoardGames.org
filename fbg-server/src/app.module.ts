@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { RoomsModule } from './rooms/rooms.module';
@@ -7,6 +7,7 @@ import { HealthzController } from './healthz.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ChatModule } from './chat/chat.module';
+import { ComplexityPlugin } from './complexity.plugin';
 
 const CONNECTION: any = process.env.POSTGRES_URL
   ? {
@@ -25,6 +26,7 @@ const CONNECTION: any = process.env.POSTGRES_URL
 const isProd = process.env.NODE_ENV === 'production';
 
 @Module({
+  providers: [ComplexityPlugin],
   imports: [
     TypeOrmModule.forRoot({
       ...CONNECTION,
@@ -43,6 +45,10 @@ const isProd = process.env.NODE_ENV === 'production';
     RoomsModule,
     MatchModule,
     ChatModule,
+    HttpModule.register({
+      timeout: 5000,
+      maxRedirects: 5,
+    }),
   ],
   controllers: [HealthzController],
 })
