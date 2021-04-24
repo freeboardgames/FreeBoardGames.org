@@ -160,6 +160,8 @@
     "cypress": "^5.4.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.22.1",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "husky": "^4.3.0",
