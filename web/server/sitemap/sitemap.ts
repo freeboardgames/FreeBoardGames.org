@@ -5,7 +5,7 @@ import { template } from './sitemap.template';
 import { Manifest, Url } from './types';
 
 export const generateSiteMapXML = (options: { manifest: Manifest; staticDir: string; host: string }) => {
-  if (!isDevelopment()) return;
+  if (isDevelopment()) return;
 
   const paths = [...getManifestPaths(options.manifest), ...getGamesPaths()];
   const urls = createUrlTags(options.host, paths);
