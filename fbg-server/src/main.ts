@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import csurf from 'csurf';
 import { setupLogging } from './util/logging';
+import { PORT } from './constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -18,6 +19,6 @@ async function bootstrap() {
     app.enableCors();
   }
 
-  await app.listen(3001);
+  await app.listen(PORT);
 }
 bootstrap();

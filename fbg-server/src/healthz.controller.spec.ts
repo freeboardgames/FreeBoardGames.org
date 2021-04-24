@@ -1,25 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthzController } from './healthz.controller';
-import { FakeDbModule, closeDbConnection } from './testing/dbUtil';
-import { RoomsModule } from './rooms/rooms.module';
-import { UsersModule } from './users/users.module';
-import { MatchModule } from './match/match.module';
+import { HttpModule, HttpService } from '@nestjs/common';
+import { of } from 'rxjs';
+import { AxiosResponse } from 'axios';
 
 describe('Healthz Controller', () => {
   let controller: HealthzController;
   let module: TestingModule;
+  let httpService: HttpService;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [FakeDbModule, UsersModule, RoomsModule, MatchModule],
+      imports: [HttpModule.register({})],
       controllers: [HealthzController],
     }).compile();
 
     controller = module.get<HealthzController>(HealthzController);
-  });
-
-  afterAll(async () => {
-    closeDbConnection(module);
+    httpService = module.get<HttpService>(HttpService);
   });
 
   it('should be defined', () => {
@@ -27,6 +24,16 @@ describe('Healthz Controller', () => {
   });
 
   it('should return OK', async () => {
+    const result: AxiosResponse = {
+      data: {
+        foo: 'Bar',
+      },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {},
+    };
+    jest.spyOn(httpService, 'post').mockImplementationOnce(() => of(result));
     expect(await controller.healthz()).toEqual('OK');
   });
 });
