@@ -2,10 +2,10 @@
 // fetch is not found globally and no fetcher passed, to fix pass a fetch for
 // your environment like https://www.npmjs.com/package/node-fetch.
 (global as any).fetch = require('node-fetch');
+import '@testing-library/jest-dom';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import 'jest-extended';
-import '@testing-library/jest-dom';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -52,4 +52,21 @@ jest.mock('next/router', () => ({
   withRouter: jest.fn(),
 }));
 
-const useRouter = jest.spyOn(require('next/router'), 'useRouter');
+jest.spyOn(require('next/router'), 'useRouter');
+
+jest.mock('react-i18next/dist/commonjs/context', () => {
+  const { createContext } = jest.requireActual('react');
+  const i18next = jest.requireActual('i18next');
+
+  i18next.init({
+    lng: 'en',
+    supportedLngs: ['en', 'pt'],
+    initImmediate: false,
+    resources: {},
+  });
+
+  return {
+    ...jest.requireActual('react-i18next/dist/commonjs/context'),
+    I18nContext: createContext({ i18n: i18next }),
+  };
+});
