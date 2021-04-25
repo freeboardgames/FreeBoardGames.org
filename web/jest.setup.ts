@@ -70,3 +70,12 @@ jest.mock('react-i18next/dist/commonjs/context', () => {
     I18nContext: createContext({ i18n: i18next }),
   };
 });
+
+jest.mock('gamesShared/components/fbg/GameDarkSublayout', () => {
+  const { GameDarkSublayoutInternal, ...others } = jest.requireActual('gamesShared/components/fbg/GameDarkSublayout');
+  return {
+    ...others,
+    GameDarkSublayoutInternal,
+    GameDarkSublayout: GameDarkSublayoutInternal,
+  };
+});

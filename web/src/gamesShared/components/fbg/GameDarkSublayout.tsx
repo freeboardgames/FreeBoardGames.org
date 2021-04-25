@@ -11,32 +11,35 @@ import { GameMode } from 'gamesShared/definitions/mode';
 import { Chat } from 'infra/chat/Chat';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { useRouter, NextRouter } from 'next/router';
-import { Link } from 'infra/i18n';
+import { NextRouter, Link, withRouter } from 'infra/i18n';
+import { compose } from 'recompose';
+import { IOptionsItems } from 'gamesShared/definitions/options';
 
-interface IGameDarkSublayoutProps {
+export * from '../../definitions/options';
+
+interface IGameDarkSublayoutInnerProps {
+  dispatch: Dispatch;
+  router: NextRouter;
+}
+
+interface IGameDarkSublayoutOutterProps {
   children: React.ReactNode;
   optionsMenuItems?: () => IOptionsItems[];
   allowWiderScreen?: boolean;
   gameArgs: IGameArgs;
   avoidOverscrollReload?: boolean;
-  dispatch: Dispatch;
-  router: NextRouter;
 }
+
+interface IGameDarkSublayoutProps extends IGameDarkSublayoutInnerProps, IGameDarkSublayoutOutterProps {}
 
 interface IGameDarkSublayoutState {
   menuAnchorEl: any;
   prevBgColor: string;
 }
 
-export interface IOptionsItems {
-  text: string;
-  onClick: () => void;
-}
-
 const isJest = process.env.JEST_WORKER_ID !== undefined;
 
-class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
+export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
   constructor(props: IGameDarkSublayoutProps) {
     super(props);
     this.state = { menuAnchorEl: null, prevBgColor: document.body.style.backgroundColor };
@@ -175,11 +178,6 @@ class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps,
   }
 }
 
-const sublayoutWithRouter = (props) => {
-  const router = useRouter();
-  return <GameDarkSublayoutInternal {...props} router={router} />;
-};
-
 /* istanbul ignore next */
 const mapStateToProps = function (state) {
   return {
@@ -187,7 +185,9 @@ const mapStateToProps = function (state) {
   };
 };
 
-// Do not connect to redux or router if using jest... Chat button wont work in jest.
-export const GameDarkSublayout = isJest
-  ? (GameDarkSublayoutInternal as any)
-  : connect(mapStateToProps)(sublayoutWithRouter);
+const enhance = compose<IGameDarkSublayoutInnerProps, IGameDarkSublayoutOutterProps>(
+  connect(mapStateToProps),
+  withRouter,
+);
+
+export const GameDarkSublayout = enhance(GameDarkSublayoutInternal);
