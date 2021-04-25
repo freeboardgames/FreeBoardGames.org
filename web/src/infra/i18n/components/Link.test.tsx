@@ -5,60 +5,42 @@ import { screen, waitFor } from '@testing-library/react';
 import { Link } from './Link';
 import { LinkProps } from 'next/link';
 import { nextI18Next } from '../config';
-import { mock, mockDeep } from 'jest-mock-extended';
-import { UseTranslation } from 'next-i18next';
-import { mocked } from 'ts-jest/utils';
 
 describe('Link', () => {
-  beforeEach(() => {
-    const useTranslation = jest.spyOn(nextI18Next, 'useTranslation');
-    const useContext = jest.spyOn(React, 'useContext').mockReturnValue(
-      mockDeep<ReturnType<UseTranslation>>({ i18n: { options: { react: { useSuspense: false, wait: undefined } } } }),
-    );
-    afterEach(() => {
-      useTranslation.mockReset();
-      useContext.mockReset();
+  beforeAll(() => {
+    const { language } = nextI18Next.i18n;
+    afterAll(() => {
+      nextI18Next.i18n.changeLanguage(language);
     });
   });
 
-  describe('Link', () => {
-    describe('when translated route is available', () => {
-      it('replaces the href property for it ', async () => {
-        forGivenLanguage('pt');
-        const text = 'Play bingo';
+  describe('when translated route is available', () => {
+    it('replaces the href property for it ', async () => {
+      await forGivenLanguage('pt');
+      renderLink('Play bingo', { href: '/play/bingo' });
+      await thenLinkShouldHave('Play bingo', { href: '/pt/jogar/bingo' });
+    });
 
-        renderLink(text, { href: '/play/bingo' });
+    it('does not change the url on invalid languages', async () => {
+      const spy = jest.spyOn(console, 'warn').mockImplementation();
 
-        await thenLinkShouldHave(text, { href: '/jogar/bingo' });
-      });
+      await forGivenLanguage('invalid');
+      renderLink('Play chess', { href: '/play/chess' });
+      await thenLinkShouldHave('Play chess', { href: '/play/chess' });
 
-      it('does not change the url on invalid languages', async () => {
-        forGivenLanguage('invalid');
-        const text = 'Play bingo';
+      spy.mockRestore();
+    });
 
-        renderLink(text, { href: '/play/bingo' });
-
-        await thenLinkShouldHave(text, { href: '/play/bingo' });
-      });
-
-      it('does not change url for non-translated path ', async () => {
-        forGivenLanguage('pt');
-        const text = 'Play bingo';
-
-        renderLink(text, { href: '/unknown/path' });
-
-        await thenLinkShouldHave(text, { href: '/unknown/path' });
-      });
+    it('does not change url for non-translated path ', async () => {
+      await forGivenLanguage('pt');
+      renderLink('Play unknown', { href: '/unknown/path' });
+      await thenLinkShouldHave('Play unknown', { href: '/pt/unknown/path' });
     });
   });
 });
 
-function forGivenLanguage(language: string) {
-  mocked<UseTranslation>(nextI18Next.useTranslation).mockReturnValue(
-    mock<ReturnType<UseTranslation>>({
-      i18n: { language },
-    }),
-  );
+async function forGivenLanguage(language: string) {
+  nextI18Next.i18n.changeLanguage(language);
 }
 
 function renderLink(text: string, props: Pick<LinkProps, 'href'>) {
