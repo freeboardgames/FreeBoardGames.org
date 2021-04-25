@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import SearchBox from './SearchBox';
 import { DesktopView, MobileView } from 'infra/common/device/DesktopMobileView';
 import css from './GamesList.module.css';
-import { Link } from '../link/Link';
+import { Link } from 'infra/i18n';
 
 interface State {
   searchQuery?: string;
