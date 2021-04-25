@@ -173,6 +173,7 @@
     "istanbul-lib-coverage": "^3.0.0",
     "jest": "^26.5.3",
     "jest-extended": "^0.11.4",
+    "jest-mock-extended": "^1.0.13",
     "jimp": "^0.16.1",
     "lqip-loader": "^2.2.1",
     "mkdirp": "^1.0.4",
