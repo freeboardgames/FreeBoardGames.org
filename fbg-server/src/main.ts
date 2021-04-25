@@ -14,7 +14,15 @@ async function bootstrap() {
   app.use(cookieParser());
   const isProd = process.env.NODE_ENV === 'production';
   if (isProd) {
-    app.use(csurf({ cookie: true }));
+    const csrf = csurf({ cookie: true });
+    const conditionalCSRF = function (req, res, next) {
+      if (req.ip === "::ffff:127.0.0.1" || req.ip === "127.0.0.1") {
+        next();
+      } else {
+        csrf(req, res, next);
+      }
+    }
+    app.use(conditionalCSRF);
   } else {
     app.enableCors();
   }
