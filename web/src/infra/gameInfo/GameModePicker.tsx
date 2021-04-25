@@ -10,8 +10,7 @@ import NicknameRequired from '../common/components/auth/NicknameRequired';
 import { Dispatch } from 'redux';
 import { GameModePickerCard } from './GameModePickerCard';
 import { compose } from 'recompose';
-import { WithTranslation } from 'next-i18next';
-import { nextI18Next } from 'infra/i18n';
+import { withTranslation, WithTranslation } from 'infra/i18n';
 
 interface IGameModePickerInnerProps extends Pick<WithTranslation, 't'> {
   user: ReduxUserState;
@@ -101,7 +100,7 @@ const mapStateToProps = (state: ReduxState) => ({
 });
 
 const enhance = compose<IGameModePickerInnerProps, IGameModePickerOutterProps>(
-  nextI18Next.withTranslation('GameModePicker'),
+  withTranslation('GameModePicker'),
   connect(mapStateToProps),
 );
 

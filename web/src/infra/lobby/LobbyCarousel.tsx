@@ -11,8 +11,7 @@ import { NewRoomModal } from './NewRoomModal';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { Subscription } from '@apollo/react-components';
 import css from './LobbyCarousel.module.css';
-import { nextI18Next } from 'infra/i18n';
-import { WithTranslation } from 'next-i18next';
+import { withTranslation, WithTranslation } from 'infra/i18n';
 
 export const LOBBIES_SUBSCRIPTION = gql`
   subscription SubscribeToLobby {
@@ -126,6 +125,6 @@ class LobbyCarousel extends React.Component<Props, State> {
   };
 }
 
-const enhance = nextI18Next.withTranslation('LobbyCarousel');
+const enhance = withTranslation('LobbyCarousel');
 
 export default enhance(LobbyCarousel);
