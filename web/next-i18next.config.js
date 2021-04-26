@@ -3,8 +3,12 @@ const routing = require('./src/infra/i18n/routing.json');
 
 const i18n = {
   defaultLocale: 'en',
-  locales: ['en', 'pt'],
+  locales: ['en', ...otherLanguages()],
 };
+
+function otherLanguages() {
+  return process.env.I18N_ENABLED ? ['pt'] : [];
+}
 
 const localeSubpaths = i18n.locales.reduce((localeSubpaths, locale) => {
   localeSubpaths[locale] = locale;
@@ -14,11 +18,15 @@ const localeSubpaths = i18n.locales.reduce((localeSubpaths, locale) => {
 const localizedRoutes = routing.map((r) => buildLocalizedRoutes(r));
 
 function i18nRewrites() {
+  if (!process.env.I18N_ENABLED) return [];
+
   const rewrites = localizedRoutes.map((r) => r.rewrites.flat()).flat();
   return [...rewrites, ...nextI18NextRewrites(localeSubpaths)];
 }
 
 function i18nRedirects() {
+  if (!process.env.I18N_ENABLED) return [];
+
   const redirects = localizedRoutes.map((r) => r.redirects.flat()).flat();
   return [...redirects];
 }
@@ -45,5 +53,4 @@ function buildLocalizedRoutes(routing) {
 module.exports.i18nRewrites = i18nRewrites;
 module.exports.i18nRedirects = i18nRedirects;
 module.exports.localeSubpaths = localeSubpaths;
-module.exports.localizedRoutes = localizedRoutes;
 module.exports.i18n = i18n;

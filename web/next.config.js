@@ -92,7 +92,7 @@ module.exports = withWorkers(
 
       return config;
     },
-    i18n,
+    ...(process.env.I18N_ENABLED && i18n),
     rewrites: () => [...i18nRewrites()],
     redirects: () => [...i18nRedirects()],
   }),

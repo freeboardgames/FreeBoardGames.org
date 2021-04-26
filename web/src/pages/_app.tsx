@@ -21,7 +21,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { ApolloProvider } from '@apollo/react-hooks';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
-import { compose } from 'recompose';
+import { branch, compose } from 'recompose';
 import { nextI18Next } from 'infra/i18n';
 
 const GA_TRACKING_CODE = 'UA-105391878-2';
