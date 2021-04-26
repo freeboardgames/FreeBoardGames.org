@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import FbgLogo from './media/fbg_logo_white_48.png';
-import Link from 'next/link';
+import { Link } from 'infra/i18n';
 
 interface FBGBarProps {
   FEATURE_FLAG_readyForDesktopView?: boolean;

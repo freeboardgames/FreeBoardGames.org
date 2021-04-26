@@ -5,7 +5,7 @@ import { template } from './sitemap.template';
 import { Manifest, Url } from './types';
 
 export const generateSiteMapXML = (options: { manifest: Manifest; staticDir: string; host: string }) => {
-  if (!isDevelopment()) return;
+  if (isDevelopment()) return;
 
   const paths = [...getManifestPaths(options.manifest), ...getGamesPaths()];
   const urls = createUrlTags(options.host, paths);
@@ -48,7 +48,7 @@ function getGamesPaths(): string[] {
 function createUrlTags(host: string, paths: string[]): Url[] {
   const urls: Url[] = [];
   for (const path of paths) {
-    urls.push({ host, language: '/en', path });
+    urls.push({ host, path, ...(process.env.I18N_ENABLED && { language: '/en' }) });
   }
   return urls;
 }

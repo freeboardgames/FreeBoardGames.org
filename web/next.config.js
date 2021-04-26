@@ -3,7 +3,7 @@ const withOptimizedImages = require('next-optimized-images');
 const childProcess = require('child_process');
 const withWorkers = require('@zeit/next-workers');
 const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const { i18n } = require('./next-i18next.config');
+const { i18n, i18nRewrites, i18nRedirects } = require('./next-i18next.config');
 const { I18NextHMRPlugin } = require('i18next-hmr/plugin');
 const { resolve } = require('path');
 
@@ -92,6 +92,8 @@ module.exports = withWorkers(
 
       return config;
     },
-    i18n,
+    ...(process.env.I18N_ENABLED && i18n),
+    rewrites: () => [...i18nRewrites()],
+    redirects: () => [...i18nRedirects()],
   }),
 );

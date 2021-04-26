@@ -1,6 +1,5 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import FbgLogo from 'infra/common/components/base/media/fbg_logo_white_48.png';
 import Button from '@material-ui/core/Button';
 import MoreVert from '@material-ui/icons/MoreVert';
@@ -13,6 +12,7 @@ import { Chat } from 'infra/chat/Chat';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { useRouter, NextRouter } from 'next/router';
+import { Link } from 'infra/i18n';
 
 interface IGameDarkSublayoutProps {
   children: React.ReactNode;

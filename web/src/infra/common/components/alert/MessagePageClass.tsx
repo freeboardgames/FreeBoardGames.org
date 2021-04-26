@@ -5,7 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FreeBoardGamesBar from '../base/FreeBoardGamesBar';
 import SvgError from './media/SvgError';
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
+import { Link } from 'infra/i18n';
 
 interface IMessageState {
   linkHidden: boolean;
