@@ -48,7 +48,7 @@ function getGamesPaths(): string[] {
 function createUrlTags(host: string, paths: string[]): Url[] {
   const urls: Url[] = [];
   for (const path of paths) {
-    urls.push({ host, path, ...(process.env.I18N_ENABLED && { language: '/en' }) });
+    urls.push({ host, path, ...(process.env.NEXT_PUBLIC_I18N_ENABLED === 'true' && { language: '/en' }) });
   }
   return urls;
 }

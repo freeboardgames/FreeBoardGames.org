@@ -2,6 +2,6 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
-    readonly I18N_ENABLED: boolean;
+    readonly NEXT_PUBLIC_I18N_ENABLED?: 'true' | 'false';
   }
 }

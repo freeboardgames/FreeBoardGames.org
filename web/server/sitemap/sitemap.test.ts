@@ -41,7 +41,7 @@ describe('generateSiteMapXML', () => {
     expect(writeFileSync).toHaveBeenCalledWith(expect.any(String), sitemapFixture);
     writeFileSync.mockClear();
     process.env = Object.assign(process.env, {
-      I18N_ENABLED: 'true',
+      NEXT_PUBLIC_I18N_ENABLED: 'true',
     });
     generateSiteMapXML({
       manifest: manifestFixture(),
