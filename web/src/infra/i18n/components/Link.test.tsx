@@ -2,29 +2,26 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import * as RTL from '@testing-library/react';
 import { screen, waitFor } from '@testing-library/react';
-import { Link } from './Link';
 import { LinkProps } from 'next/link';
-import { nextI18Next } from '../config';
+import mockedEnv from 'mocked-env';
 
 describe('Link', () => {
+  const context = { nextI18Next: null, Link: null };
+
   beforeAll(() => {
-    const { language } = nextI18Next.i18n;
-    afterAll(() => {
-      nextI18Next.i18n.changeLanguage(language);
-    });
+    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'true' });
+    afterEach(restore);
   });
 
-  beforeEach(() => {
-    const oldI18nEnabled = process.env.NEXT_PUBLIC_I18N_ENABLED === 'true';
+  beforeAll(async () => {
+    context.nextI18Next = (await import('../config')).nextI18Next;
+    context.Link = (await import('./Link')).Link;
+  });
 
-    process.env = Object.assign(process.env, {
-      NEXT_PUBLIC_I18N_ENABLED: 'true',
-    });
-
-    afterEach(() => {
-      process.env = Object.assign(process.env, {
-        NEXT_PUBLIC_I18N_ENABLED: oldI18nEnabled,
-      });
+  beforeAll(() => {
+    const { language } = context.nextI18Next.i18n;
+    afterAll(() => {
+      context.nextI18Next.i18n.changeLanguage(language);
     });
   });
 
@@ -51,20 +48,21 @@ describe('Link', () => {
       await thenLinkShouldHave('Play unknown', { href: '/pt/unknown/path' });
     });
   });
-});
 
-async function forGivenLanguage(language: string) {
-  nextI18Next.i18n.changeLanguage(language);
-}
+  async function forGivenLanguage(language: string) {
+    context.nextI18Next.i18n.changeLanguage(language);
+  }
 
-function renderLink(text: string, props: Pick<LinkProps, 'href'>) {
-  RTL.render(<Link {...props}>{text}</Link>);
-}
+  function renderLink(text: string, props: Pick<LinkProps, 'href'>) {
+    const { Link } = context;
+    RTL.render(<Link {...props}>{text}</Link>);
+  }
 
-async function thenLinkShouldHave(text: string, props: Pick<LinkProps, 'href'>) {
-  await waitFor(() => {
-    Object.entries(props).forEach(([key, value]) => {
-      expect(screen.getByText(text)).toHaveAttribute(key, value);
+  async function thenLinkShouldHave(text: string, props: Pick<LinkProps, 'href'>) {
+    await waitFor(() => {
+      Object.entries(props).forEach(([key, value]) => {
+        expect(screen.getByText(text)).toHaveAttribute(key, value);
+      });
     });
-  });
-}
+  }
+});
