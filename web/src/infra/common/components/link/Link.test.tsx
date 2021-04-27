@@ -22,6 +22,19 @@ const mockedNextI18Next = mocked(nextI18Next, true);
 
 describe('Link', () => {
   describe('when translated route is available', () => {
+    beforeEach(() => {
+      const oldI18nEnabled = process.env.NEXT_PUBLIC_I18N_ENABLED === 'true';
+
+      process.env = Object.assign(process.env, {
+        NEXT_PUBLIC_I18N_ENABLED: 'true',
+      });
+
+      afterEach(() => {
+        process.env = Object.assign(process.env, {
+          NEXT_PUBLIC_I18N_ENABLED: oldI18nEnabled,
+        });
+      });
+    });
     it('replaces the href property for it ', async () => {
       forGivenLanguage('pt');
       const text = 'Play bingo';

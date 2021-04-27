@@ -5,12 +5,18 @@ import { template } from './sitemap.template';
 import { Manifest, Url } from './types';
 
 export const generateSiteMapXML = (options: { manifest: Manifest; staticDir: string; host: string }) => {
+  if (isDevelopment()) return;
+
   const paths = [...getManifestPaths(options.manifest), ...getGamesPaths()];
   const urls = createUrlTags(options.host, paths);
   const xml = buildTemplateWith(urls);
   const sanitizedXml = sanitize(xml);
   writeOnDisk(options.staticDir, sanitizedXml);
 };
+
+function isDevelopment() {
+  return process.env.NODE_ENV !== 'production';
+}
 
 function getManifestPaths(manifest: Manifest): string[] {
   const paths = [];
@@ -42,7 +48,7 @@ function getGamesPaths(): string[] {
 function createUrlTags(host: string, paths: string[]): Url[] {
   const urls: Url[] = [];
   for (const path of paths) {
-    urls.push({ host, language: '/en', path });
+    urls.push({ host, path, ...(process.env.NEXT_PUBLIC_I18N_ENABLED === 'true' && { language: '/en' }) });
   }
   return urls;
 }

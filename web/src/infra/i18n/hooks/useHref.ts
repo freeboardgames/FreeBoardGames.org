@@ -4,6 +4,8 @@ import routing from '../translatedPaths';
 import { nextI18Next } from '../config';
 
 export function useHref(href: LinkProps['href']): LinkProps['href'] {
+  if (process.env.NEXT_PUBLIC_I18N_ENABLED !== 'true') return href;
+
   const { i18n } = nextI18Next.useTranslation();
   const result = getPathTranslation(href.toString());
 
