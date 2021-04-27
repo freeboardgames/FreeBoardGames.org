@@ -1,7 +1,7 @@
 import { LinkProps } from 'next/link';
 import { match as matcher, compile } from 'path-to-regexp';
-import routing from 'infra/i18n/translatedPaths';
-import { nextI18Next } from 'infra/i18n';
+import routing from '../translatedPaths';
+import { nextI18Next } from '../config';
 
 export function useHref(href: LinkProps['href']): LinkProps['href'] {
   if (process.env.NEXT_PUBLIC_I18N_ENABLED !== 'true') return href;
