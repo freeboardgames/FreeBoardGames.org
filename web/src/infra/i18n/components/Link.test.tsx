@@ -14,6 +14,20 @@ describe('Link', () => {
     });
   });
 
+  beforeEach(() => {
+    const oldI18nEnabled = process.env.NEXT_PUBLIC_I18N_ENABLED === 'true';
+
+    process.env = Object.assign(process.env, {
+      NEXT_PUBLIC_I18N_ENABLED: 'true',
+    });
+
+    afterEach(() => {
+      process.env = Object.assign(process.env, {
+        NEXT_PUBLIC_I18N_ENABLED: oldI18nEnabled,
+      });
+    });
+  });
+
   describe('when translated route is available', () => {
     it('replaces the href property for it ', async () => {
       await forGivenLanguage('pt');
