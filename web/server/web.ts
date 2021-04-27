@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import './env';
 import next from 'next';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';

@@ -23,15 +23,15 @@ const mockedNextI18Next = mocked(nextI18Next, true);
 describe('Link', () => {
   describe('when translated route is available', () => {
     beforeEach(() => {
-      const oldI18nEnabled = process.env.I18N_ENABLED;
+      const oldI18nEnabled = process.env.NEXT_PUBLIC_I18N_ENABLED === 'true';
 
       process.env = Object.assign(process.env, {
-        I18N_ENABLED: 'true',
+        NEXT_PUBLIC_I18N_ENABLED: 'true',
       });
 
       afterEach(() => {
         process.env = Object.assign(process.env, {
-          I18N_ENABLED: oldI18nEnabled,
+          NEXT_PUBLIC_I18N_ENABLED: oldI18nEnabled,
         });
       });
     });
