@@ -5,7 +5,7 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { LobbyService } from '../../../infra/common/services/LobbyService';
 import ReplayIcon from '@material-ui/icons/Replay';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
 
 beforeEach(() => {
   jest.resetAllMocks();
