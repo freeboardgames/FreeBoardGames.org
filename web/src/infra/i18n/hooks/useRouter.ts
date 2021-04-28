@@ -1,5 +1,5 @@
-import { nextI18Next } from '../config';
+import { Router } from '../utils/router';
 
 export const useRouter = () => {
-  return nextI18Next.Router;
+  return Router;
 };
