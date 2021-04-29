@@ -4,24 +4,27 @@ import * as RTL from '@testing-library/react';
 import { screen, waitFor } from '@testing-library/react';
 import { LinkProps } from 'next/link';
 import mockedEnv from 'mocked-env';
+import NextI18Next from 'next-i18next';
+import { Link } from 'next-i18next';
 
 describe('Link', () => {
-  const context = { nextI18Next: null, Link: null };
+  let nextI18Next: NextI18Next;
+  let Link: Link;
 
   beforeAll(() => {
     const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'true' });
     afterEach(restore);
   });
 
-  beforeAll(async () => {
-    context.nextI18Next = (await import('../config')).nextI18Next;
-    context.Link = (await import('./Link')).Link;
+  beforeEach(async () => {
+    nextI18Next = require('../config').nextI18Next;
+    Link = require('./Link').Link;
   });
 
-  beforeAll(() => {
-    const { language } = context.nextI18Next.i18n;
+  beforeEach(() => {
+    const { language } = nextI18Next.i18n;
     afterAll(() => {
-      context.nextI18Next.i18n.changeLanguage(language);
+      nextI18Next.i18n.changeLanguage(language);
     });
   });
 
@@ -50,11 +53,10 @@ describe('Link', () => {
   });
 
   async function forGivenLanguage(language: string) {
-    context.nextI18Next.i18n.changeLanguage(language);
+    return nextI18Next.i18n.changeLanguage(language);
   }
 
   function renderLink(text: string, props: Pick<LinkProps, 'href'>) {
-    const { Link } = context;
     RTL.render(<Link {...props}>{text}</Link>);
   }
 

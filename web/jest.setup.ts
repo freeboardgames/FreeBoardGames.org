@@ -5,7 +5,6 @@
 import '@testing-library/jest-dom';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { Router } from 'infra/i18n';
 import 'jest-extended';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -55,7 +54,10 @@ jest.mock('next/router', () => ({
 
 jest.spyOn(require('next/router'), 'useRouter');
 
-jest.spyOn(Router, 'push');
+jest.isolateModules(() => {
+  const { Router } = require('infra/i18n');
+  jest.spyOn(Router, 'push');
+});
 
 jest.mock('react-i18next/dist/commonjs/context', () => {
   const { createContext } = jest.requireActual('react');
