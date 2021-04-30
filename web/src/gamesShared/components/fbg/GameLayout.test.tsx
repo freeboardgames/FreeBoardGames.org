@@ -5,10 +5,10 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { LobbyService } from '../../../infra/common/services/LobbyService';
 import ReplayIcon from '@material-ui/icons/Replay';
-import { Router } from 'infra/i18n';
+import Router from 'next/router';
 
 beforeEach(() => {
-  jest.resetAllMocks();
+  jest.clearAllMocks();
 });
 
 describe('ReplayIcon', () => {
@@ -49,16 +49,16 @@ describe('ReplayIcon', () => {
 
     wrapper.find(ReplayIcon).simulate('click');
     await p;
-    expect(Router.push).toHaveBeenCalledWith('/room/fooNextRoom');
+    expect(Router.push).toHaveBeenCalledWith('/room/fooNextRoom', undefined, undefined);
   });
 
-  it('should call window.location.reload', () => {
+  it('should call Router.push with window.location.pathname', () => {
     const gameArgs: IGameArgs = {
       gameCode: 'FooGame',
       mode: GameMode.AI,
     };
     const wrapper = mount(<GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />);
     wrapper.find(ReplayIcon).simulate('click');
-    expect(Router.push).toHaveBeenCalled();
+    expect(Router.push).toHaveBeenCalledWith(window.location.pathname, undefined, undefined);
   });
 });

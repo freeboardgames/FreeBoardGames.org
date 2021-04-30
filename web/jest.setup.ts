@@ -6,7 +6,6 @@ import '@testing-library/jest-dom';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import 'jest-extended';
-
 Enzyme.configure({ adapter: new Adapter() });
 
 // Google analytics mock
@@ -40,24 +39,16 @@ if (typeof window !== 'undefined') {
 }
 
 jest.mock('next/router', () => ({
+  query: '',
   push: jest.fn(),
-  useRouter() {
-    return {
-      route: '',
-      pathname: '',
-      query: '',
-      asPath: '',
-    };
-  },
+  useRouter: jest.fn().mockReturnValue({
+    route: '',
+    pathname: '',
+    query: {},
+    asPath: '',
+  }),
   withRouter: jest.fn(),
 }));
-
-jest.spyOn(require('next/router'), 'useRouter');
-
-jest.isolateModules(() => {
-  const { Router } = require('infra/i18n');
-  jest.spyOn(Router, 'push');
-});
 
 jest.mock('react-i18next/dist/commonjs/context', () => {
   const { createContext } = jest.requireActual('react');

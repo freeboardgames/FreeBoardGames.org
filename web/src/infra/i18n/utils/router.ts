@@ -2,12 +2,12 @@ import { nextI18Next } from '../config';
 import translatedPaths from '../translatedPaths';
 import { translateHref } from '.';
 import { TransitionOptions, Url } from '../types';
+import { mix } from './mix';
 
-export const Router = {
-  ...nextI18Next.Router,
+export const Router = mix(nextI18Next.Router, {
   push: wrap(nextI18Next.Router.push),
   replace: wrap(nextI18Next.Router.replace),
-};
+});
 
 function wrap(fn: RouterNavigationFunction): RouterNavigationFunction {
   return (url, as, options) => {
