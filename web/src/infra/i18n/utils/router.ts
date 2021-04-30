@@ -1,7 +1,7 @@
 import { nextI18Next } from '../config';
 import translatedPaths from '../translatedPaths';
-import { translateHref } from '.';
 import { TransitionOptions, Url } from '../types';
+import { translateHref } from './href';
 import { mix } from './mix';
 
 export const Router = mix(nextI18Next.Router, {

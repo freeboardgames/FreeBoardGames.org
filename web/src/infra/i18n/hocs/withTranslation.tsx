@@ -1,3 +1,3 @@
-import { nextI18Next } from 'infra/i18n';
+import { nextI18Next } from '../config';
 
 export const withTranslation = nextI18Next.withTranslation;
