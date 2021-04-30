@@ -3,14 +3,13 @@ import Typography from '@material-ui/core/Typography';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import { LobbyService } from '../common/services/LobbyService';
-import Router from 'next/router';
 import { connect } from 'react-redux';
 import { ReduxState, ReduxUserState } from 'infra/common/redux/definitions';
 import NicknameRequired from '../common/components/auth/NicknameRequired';
 import { Dispatch } from 'redux';
 import { GameModePickerCard } from './GameModePickerCard';
 import { compose } from 'recompose';
-import { withTranslation, WithTranslation } from 'infra/i18n';
+import { Router, withTranslation, WithTranslation } from 'infra/i18n';
 
 interface IGameModePickerInnerProps extends Pick<WithTranslation, 't'> {
   user: ReduxUserState;
@@ -88,8 +87,8 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     );
   };
 
-  static async getInitialProps(router) {
-    const gameCode = router.query.gameCode as string;
+  static async getInitialProps({ query }) {
+    const gameCode = query.gameCode as string;
     return { gameCode };
   }
 }
