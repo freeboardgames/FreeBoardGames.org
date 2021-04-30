@@ -2,11 +2,10 @@
 // fetch is not found globally and no fetcher passed, to fix pass a fetch for
 // your environment like https://www.npmjs.com/package/node-fetch.
 (global as any).fetch = require('node-fetch');
+import '@testing-library/jest-dom';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import 'jest-extended';
-import '@testing-library/jest-dom';
-
 Enzyme.configure({ adapter: new Adapter() });
 
 // Google analytics mock
@@ -40,16 +39,39 @@ if (typeof window !== 'undefined') {
 }
 
 jest.mock('next/router', () => ({
+  query: '',
   push: jest.fn(),
-  useRouter() {
-    return {
-      route: '',
-      pathname: '',
-      query: '',
-      asPath: '',
-    };
-  },
+  useRouter: jest.fn().mockReturnValue({
+    route: '',
+    pathname: '',
+    query: {},
+    asPath: '',
+  }),
   withRouter: jest.fn(),
 }));
 
-const useRouter = jest.spyOn(require('next/router'), 'useRouter');
+jest.mock('react-i18next/dist/commonjs/context', () => {
+  const { createContext } = jest.requireActual('react');
+  const i18next = jest.requireActual('i18next');
+
+  i18next.init({
+    lng: 'en',
+    supportedLngs: ['en', 'pt'],
+    initImmediate: false,
+    resources: {},
+  });
+
+  return {
+    ...jest.requireActual('react-i18next/dist/commonjs/context'),
+    I18nContext: createContext({ i18n: i18next }),
+  };
+});
+
+jest.mock('gamesShared/components/fbg/GameDarkSublayout', () => {
+  const { GameDarkSublayoutInternal, ...others } = jest.requireActual('gamesShared/components/fbg/GameDarkSublayout');
+  return {
+    ...others,
+    GameDarkSublayoutInternal,
+    GameDarkSublayout: GameDarkSublayoutInternal,
+  };
+});

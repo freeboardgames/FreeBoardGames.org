@@ -1,6 +1,7 @@
-import { nextI18Next } from './config';
-
+export * from './components';
 export * from './config';
+export * from './hocs';
 export * from './hooks';
-
-export const { Link } = nextI18Next;
+export * from './utils';
+export * from './types';
+export type { WithTranslation } from 'next-i18next';

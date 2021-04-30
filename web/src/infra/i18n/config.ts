@@ -2,6 +2,8 @@ import NextI18Next from 'next-i18next';
 import { resolve } from 'path';
 import { i18n, localeSubpaths } from '../../../next-i18next.config';
 
+export type INextI18Next = NextI18Next;
+
 export const nextI18Next = new NextI18Next({
   ...(process.env.NEXT_PUBLIC_I18N_ENABLED === 'true' && { localeSubpaths }),
   defaultLanguage: i18n.defaultLocale,

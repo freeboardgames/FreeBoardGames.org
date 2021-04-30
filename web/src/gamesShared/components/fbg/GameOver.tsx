@@ -9,7 +9,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import ReactGA from 'react-ga';
 import getMessagePage from '../../../infra/common/components/alert/MessagePage';
 import { LobbyService } from '../../../infra/common/services/LobbyService';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
 
 export interface IGameOverProps {
   result: string;

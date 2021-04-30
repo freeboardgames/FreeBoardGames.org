@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { mocked } from 'ts-jest/utils';
 import { generateSiteMapXML } from './sitemap';
+import mockedEnv from 'mocked-env';
 
 const sitemapI18nFixture = fs.readFileSync(path.resolve(__dirname, './__fixtures__/sitemap_i18n.xml'), 'utf-8');
 const sitemapFixture = fs.readFileSync(path.resolve(__dirname, './__fixtures__/sitemap.xml'), 'utf-8');
@@ -19,27 +20,24 @@ const { writeFileSync } = mocked(fs, true);
 
 describe('generateSiteMapXML', () => {
   beforeEach(() => {
-    const oldNodeEnv = process.env.NODE_ENV;
-
-    process.env = Object.assign(process.env, {
-      NODE_ENV: 'production',
-    });
-
-    afterEach(() => {
-      process.env = Object.assign(process.env, {
-        NODE_ENV: oldNodeEnv,
-      });
-    });
+    const restore = mockedEnv({ NODE_ENV: 'production' });
+    afterEach(restore);
   });
 
-  it('should generate sitemap', () => {
+  afterEach(() => {
+    writeFileSync.mockClear();
+  });
+
+  it('should generate sitemap with i18n disabled', () => {
     generateSiteMapXML({
       manifest: manifestFixture(),
       staticDir: staticDirFixture(),
       host: hostFixture(),
     });
     expect(writeFileSync).toHaveBeenCalledWith(expect.any(String), sitemapFixture);
-    writeFileSync.mockClear();
+  });
+
+  it('should generate sitemap with i18n enabled', () => {
     process.env = Object.assign(process.env, {
       NEXT_PUBLIC_I18N_ENABLED: 'true',
     });
