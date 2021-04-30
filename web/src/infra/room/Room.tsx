@@ -9,7 +9,6 @@ import { GameSharing } from 'infra/room/GameSharing';
 import { ListPlayers } from 'infra/room/ListPlayers';
 import { GameCard } from 'infra/common/components/game/GameCard';
 import { NicknamePrompt } from 'infra/common/components/auth/NicknamePrompt';
-import { useRouter, NextRouter } from 'next/router';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
 import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
@@ -18,7 +17,6 @@ import { ReduxUserState } from 'infra/common/redux/definitions';
 import { connect } from 'react-redux';
 import { JoinRoom_joinRoom, JoinRoom_joinRoom_userMemberships } from 'gqlTypes/JoinRoom';
 import { Dispatch } from 'redux';
-import Router from 'next/router';
 import { Subscription } from '@apollo/react-components';
 import { gql } from 'apollo-boost';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -28,6 +26,8 @@ import { Chat } from '../chat/Chat';
 import { CustomizationBar } from 'infra/settings/CustomizationBar';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
+import { compose } from 'recompose';
+import { Router, NextRouter, withRouter } from 'infra/i18n';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -48,12 +48,14 @@ export const ROOM_SUBSCRIPTION = gql`
   }
 `;
 
-interface Props {
+interface InnerProps {
   router: NextRouter;
   user: ReduxUserState;
   dispatch: Dispatch;
   settingsService: SettingsService;
 }
+
+interface OutterProps {}
 
 interface State {
   roomMetadata?: JoinRoom_joinRoom;
@@ -67,7 +69,7 @@ interface State {
   changingGame: boolean;
 }
 
-class Room extends React.Component<Props, State> {
+class Room extends React.Component<InnerProps & OutterProps, State> {
   state: State = {
     error: '',
     warning: '',
@@ -387,11 +389,10 @@ class Room extends React.Component<Props, State> {
   };
 }
 
-const roomWithRouter = (props) => {
-  const router = useRouter();
+const RoomWithNicknameRequired = (props) => {
   return (
     <NicknameRequired>
-      <Room {...props} router={router} />
+      <Room {...props} />
     </NicknameRequired>
   );
 };
@@ -403,4 +404,6 @@ const mapStateToProps = function (state) {
   };
 };
 
-export default withSettingsService(connect(mapStateToProps)(roomWithRouter));
+const enhance = compose<InnerProps, OutterProps>(withRouter, withSettingsService, connect(mapStateToProps));
+
+export default enhance(RoomWithNicknameRequired);
