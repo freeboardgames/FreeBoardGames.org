@@ -17,7 +17,7 @@ interface AILocalGameProps {
   mode: string;
 }
 
-export default class extends React.Component<AILocalGameProps, {}> {
+export default class AILocalGame extends React.Component<AILocalGameProps, {}> {
   render() {
     if (this.props.gameDef) {
       return (

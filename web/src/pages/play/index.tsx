@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'infra/i18n';
 
-export default class extends React.Component {
+export default class Play extends React.Component {
   static async getInitialProps({ res }) {
     const redirectTo = '/';
     if (res) {
