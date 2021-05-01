@@ -1,15 +1,16 @@
 import React from 'react';
 import Game from 'infra/game/Game';
 import { connect } from 'react-redux';
-import { NextRouter, withRouter } from 'next/router';
+import { NextRouter, withRouter } from 'infra/i18n';
 import { Dispatch } from 'redux';
 import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
 import MessagePage from 'infra/common/components/alert/MessagePageClass';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import * as Sentry from '@sentry/browser';
+import { compose } from 'recompose';
 
-interface MatchProps {
+interface MatchInnerProps {
   router: NextRouter;
   dispatch: Dispatch;
 }
@@ -20,7 +21,7 @@ interface MatchState {
   error: boolean;
 }
 
-export class Match extends React.Component<MatchProps, MatchState> {
+export class Match extends React.Component<MatchInnerProps, MatchState> {
   state = { loading: true, error: false, match: undefined };
 
   componentDidMount() {
@@ -68,4 +69,6 @@ const requireNickname = function (Comp) {
   };
 };
 
-export default requireNickname(withRouter(connect(mapStateToProps)(Match)));
+const enhance = compose<MatchInnerProps, {}>(requireNickname, withRouter, connect(mapStateToProps));
+
+export default enhance(Match);

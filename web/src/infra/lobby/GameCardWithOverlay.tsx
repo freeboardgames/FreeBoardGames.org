@@ -3,7 +3,7 @@ import { IGameDef } from 'gamesShared/definitions/game';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import css from './GameCardWithOverlay.module.css';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
 
 interface GameCardWithOverlayProps {
   game: IGameDef;

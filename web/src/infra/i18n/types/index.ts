@@ -8,3 +8,5 @@ export interface TransitionOptions {
 }
 
 export type NextRouter = Router;
+
+export type { WithRouterProps } from 'next/dist/client/with-router';

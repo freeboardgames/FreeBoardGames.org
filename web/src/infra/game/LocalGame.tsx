@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'infra/i18n';
 import { GameMode } from 'gamesShared/definitions/mode';
 import dynamic from 'next/dynamic';
 import SEO from '../common/helpers/SEO';

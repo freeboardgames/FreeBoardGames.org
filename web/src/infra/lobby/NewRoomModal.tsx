@@ -5,7 +5,7 @@ import css from './NewRoomModal.module.css';
 import { OccupancySelect } from 'infra/common/components/game/OccupancySelect';
 import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
 import { LobbyService } from 'infra/common/services/LobbyService';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
 import getMessagePage from 'infra/common/components/alert/MessagePage';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';

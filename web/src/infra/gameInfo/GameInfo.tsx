@@ -4,7 +4,6 @@ import { GameCard } from 'infra/common/components/game/GameCard';
 import { GameModePicker } from 'infra/gameInfo/GameModePicker';
 import { GameInstructionsVideo } from 'infra/gameInfo/GameInstructionsVideo';
 import { GAMES_MAP } from 'games';
-import { withRouter } from 'next/router';
 import { generatePageError } from 'next-with-error';
 import SEO from 'infra/common/helpers/SEO';
 import { DesktopView, MobileView } from 'infra/common/device/DesktopMobileView';
@@ -14,7 +13,7 @@ import { GameInstructionsText } from 'infra/gameInfo/GameInstructionsText';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
 import { GameContributors } from './GameContributors';
 
-interface gameInfoProps {
+interface GameInfoProps {
   gameCode: string;
   asPath: string;
   userAgent?: string;
@@ -22,7 +21,7 @@ interface gameInfoProps {
 
 const DESKTOP_MOBILE_THRESHOLD = 768;
 
-class GameInfo extends React.Component<gameInfoProps, {}> {
+class GameInfo extends React.Component<GameInfoProps, {}> {
   render() {
     const gameDef = GAMES_MAP[this.props.gameCode];
     const videoInstructions = gameDef.instructions.videoId ? (
@@ -96,4 +95,4 @@ class GameInfo extends React.Component<gameInfoProps, {}> {
   }
 }
 
-export default withRouter(GameInfo as any);
+export default GameInfo;
