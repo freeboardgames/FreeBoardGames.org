@@ -15,7 +15,6 @@ function wrap(fn: RouterNavigationFunction): RouterNavigationFunction {
       translateHref({
         href: url,
         language: nextI18Next.i18n.language,
-        translatedPaths,
       }),
       as,
       options,

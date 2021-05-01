@@ -18,6 +18,8 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { QrCodePopup } from './QrCodePopup';
 import { lightGreen } from '@material-ui/core/colors';
 import { shortIdToAnimal } from '../lobby/LobbyUtil';
+import { translateHref, withTranslation, WithTranslation, nextI18Next } from 'infra/i18n';
+import { compose } from 'recompose';
 
 const theme = createMuiTheme({
   palette: {
@@ -25,7 +27,9 @@ const theme = createMuiTheme({
   },
 });
 
-interface IGameSharingProps {
+interface IGameSharingInnerProps extends Pick<WithTranslation, 'i18n'> {}
+
+interface IGameSharingOutterProps {
   gameCode: string;
   roomID: string;
   isPublic: boolean;
@@ -36,12 +40,11 @@ interface IGameSharingState {
   copyButtonRecentlyPressed: boolean;
 }
 
-export class GameSharing extends React.Component<IGameSharingProps, IGameSharingState> {
+export class GameSharingInternal extends React.Component<
+  IGameSharingInnerProps & IGameSharingOutterProps,
+  IGameSharingState
+> {
   state: IGameSharingState = { showingQrCode: false, copyButtonRecentlyPressed: false };
-
-  constructor(props: any) {
-    super(props);
-  }
 
   render() {
     let copyButtonColor;
@@ -165,6 +168,11 @@ export class GameSharing extends React.Component<IGameSharingProps, IGameSharing
   _getLink = () => {
     const origin = window.location.origin;
     const roomID = this.props.roomID;
-    return `${origin}/room/${roomID}`;
+    const href = translateHref({ href: `/room/${roomID}`, language: this.props.i18n.language });
+    return `${origin}${href}`;
   };
 }
+
+const enhance = compose<IGameSharingInnerProps, IGameSharingOutterProps>(withTranslation());
+
+export const GameSharing = enhance(GameSharingInternal);
