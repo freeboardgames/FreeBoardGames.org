@@ -24,7 +24,9 @@ spec:
         - name: SERVER_TYPE
           value: WEB
         - name: FBG_BACKEND_TARGET
-          value: http://{{ .Release.Name }}-fbg-server 
+          value: http://{{ .Release.Name }}-fbg-server
+        - name: NEXT_PUBLIC_I18N_ENABLED
+          value: 'true'
         image: freeboardgames/web
         imagePullPolicy: Always
         livenessProbe:
