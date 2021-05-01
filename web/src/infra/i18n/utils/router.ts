@@ -1,5 +1,4 @@
 import { nextI18Next } from '../config';
-import translatedPaths from '../translatedPaths';
 import { TransitionOptions, Url } from '../types';
 import { translateHref } from './href';
 import { mix } from './mix';
@@ -15,7 +14,6 @@ function wrap(fn: RouterNavigationFunction): RouterNavigationFunction {
       translateHref({
         href: url,
         language: nextI18Next.i18n.language,
-        translatedPaths,
       }),
       as,
       options,

@@ -1,10 +1,10 @@
 import React from 'react';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GAMES_MAP } from 'games';
 import { generatePageError } from 'next-with-error';
 
-export default class extends React.Component {
+export default class G extends React.Component {
   static async getInitialProps({ res, query }) {
     const gameCode = query.gameCode as string;
     const gameDef: IGameDef = GAMES_MAP[gameCode];
