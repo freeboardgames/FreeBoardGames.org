@@ -1,5 +1,5 @@
 import React from 'react';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GAMES_MAP } from 'games';
 import { generatePageError } from 'next-with-error';
