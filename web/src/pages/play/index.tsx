@@ -1,5 +1,5 @@
 import React from 'react';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
 
 export default class extends React.Component {
   static async getInitialProps({ res }) {
