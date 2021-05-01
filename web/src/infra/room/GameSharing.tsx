@@ -18,7 +18,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { QrCodePopup } from './QrCodePopup';
 import { lightGreen } from '@material-ui/core/colors';
 import { shortIdToAnimal } from '../lobby/LobbyUtil';
-import { translateHref, withTranslation, WithTranslation } from 'infra/i18n';
+import { nextI18Next, translateHref, withTranslation, WithTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
 
 const theme = createMuiTheme({
@@ -168,8 +168,8 @@ export class GameSharingInternal extends React.Component<
   _getLink = () => {
     const origin = window.location.origin;
     const roomID = this.props.roomID;
-    const href = translateHref({ href: `/room/${roomID}`, language: this.props.i18n.language });
-    return `${origin}${href}`;
+    const href = translateHref({ href: `/room/${roomID}`, language: nextI18Next.i18n.language });
+    return new URL(href, origin).toString();
   };
 }
 
