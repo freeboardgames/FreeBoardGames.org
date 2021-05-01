@@ -11,7 +11,7 @@ import UaContext from 'infra/common/device/IsMobileContext';
 import withError from 'next-with-error';
 import ErrorPage from './_error';
 import ReactGA from 'react-ga';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
 import * as Sentry from '@sentry/browser';
 
 import { wrapper } from 'infra/common/redux/store';
@@ -62,7 +62,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-class defaultApp extends App {
+class DefaultApp extends App {
   logPageView(path: string) {
     ReactGA.set({ page: path });
     ReactGA.pageview(path);
@@ -85,12 +85,14 @@ class defaultApp extends App {
       if (version && channel) release = `${version}-${channel}`;
       Sentry.init({ dsn: SENTRY_DSN, release });
     }
-    // https://github.com/sergiodxa/next-ga/blob/32899e9635efe1491a5f47469b0bd2250e496f99/src/index.js#L32
-    (Router as any).onRouteChangeComplete = (path: string) => {
-      this.logPageView(path);
-    };
+    Router.events.on('routeChangeComplete', this.logPageView);
     this.logPageView(window.location.pathname);
   }
+
+  componentWillUnmount() {
+    Router.events.off('routeChangeComplete', this.logPageView);
+  }
+
   render() {
     const { Component, pageProps, isMobile } = this.props as any;
     return (
@@ -132,4 +134,4 @@ class defaultApp extends App {
 
 const enhance = compose(wrapper.withRedux, appWithTranslation, withError(ErrorPage));
 
-export default enhance(defaultApp);
+export default enhance(DefaultApp);
