@@ -18,7 +18,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { QrCodePopup } from './QrCodePopup';
 import { lightGreen } from '@material-ui/core/colors';
 import { shortIdToAnimal } from '../lobby/LobbyUtil';
-import { translateHref, withTranslation, WithTranslation, nextI18Next } from 'infra/i18n';
+import { translateHref, withTranslation, WithTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
 
 const theme = createMuiTheme({

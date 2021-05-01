@@ -1,5 +1,4 @@
 import { nextI18Next } from '../config';
-import translatedPaths from '../translatedPaths';
 import { TransitionOptions, Url } from '../types';
 import { translateHref } from './href';
 import { mix } from './mix';
