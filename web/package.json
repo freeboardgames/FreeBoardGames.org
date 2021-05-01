@@ -42,7 +42,8 @@
     "combine:reports": "nyc merge reports && move-cli coverage.json .nyc_output/out.json",
     "prereport:combined": "yarn run combine:reports",
     "report:combined": "nyc report --reporter lcov --report-dir coverage",
-    "storybook": "cross-env NODE_PATH=src/ NODE_OPTIONS='--max-old-space-size=4096' start-storybook -p 6006"
+    "storybook": "cross-env NODE_PATH=src/ NODE_OPTIONS='--max-old-space-size=4096' start-storybook -p 6006",
+    "prepare": "cd .. && husky install web/.husky"
   },
   "dependencies": {
     "@apollo/react-components": "^4.0.0",
@@ -164,7 +165,7 @@
     "eslint-plugin-import": "^2.22.1",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
-    "husky": "^4.3.0",
+    "husky": "^6.0.0",
     "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
     "image-trace-loader": "^1.0.2",
@@ -177,6 +178,7 @@
     "jest-extended": "^0.11.4",
     "jest-mock-extended": "^1.0.13",
     "jimp": "^0.16.1",
+    "lint-staged": "^10.5.4",
     "lqip-loader": "^2.2.1",
     "mkdirp": "^1.0.4",
     "mocked-env": "^1.3.4",
