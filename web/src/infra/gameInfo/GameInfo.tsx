@@ -12,10 +12,10 @@ import ReactMarkdown from 'react-markdown';
 import { GameInstructionsText } from 'infra/gameInfo/GameInstructionsText';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
 import { GameContributors } from './GameContributors';
-import { translateHref, WithNamedT, withNamedT, withTranslation, WithTranslation } from 'infra/i18n';
+import { translateHref, WithTranslate, withTranslate, withTranslation, WithTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
 
-interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithNamedT {}
+interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithTranslate {}
 
 interface GameInfoOutterProps {
   gameCode: string;
@@ -105,9 +105,6 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
   }
 }
 
-const enhance = compose(
-  withTranslation('GameInfo'),
-  withNamedT<GameInfoOutterProps>(({ gameCode }) => gameCode),
-);
+const enhance = compose(withTranslation('GameInfo'), withTranslate());
 
 export default enhance(GameInfo);

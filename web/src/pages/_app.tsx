@@ -23,6 +23,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
 import { compose } from 'recompose';
 import { appWithTranslation } from 'infra/i18n';
+import { GameProvider } from 'infra/game/GameProvider';
 
 const GA_TRACKING_CODE = 'UA-105391878-2';
 const SENTRY_DSN = 'https://5957292e58cf4d2fbb781910e7b26b1f@o397015.ingest.sentry.io/5251165';
@@ -85,7 +86,9 @@ class DefaultApp extends App {
       if (version && channel) release = `${version}-${channel}`;
       Sentry.init({ dsn: SENTRY_DSN, release });
     }
+
     Router.events.on('routeChangeComplete', this.logPageView);
+
     this.logPageView(window.location.pathname);
   }
 
@@ -113,13 +116,16 @@ class DefaultApp extends App {
           <SelfXSSWarning />
           <UaContext.Provider value={isMobile}>
             <ApolloProvider client={client}>
-              <Component {...pageProps} />
+              <GameProvider gameCode={this.props.pageProps.gameCode}>
+                <Component {...pageProps} />
+              </GameProvider>
             </ApolloProvider>
           </UaContext.Provider>
         </ThemeProvider>
       </>
     );
   }
+
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
 

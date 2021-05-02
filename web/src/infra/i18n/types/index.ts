@@ -11,4 +11,4 @@ export type NextRouter = Router;
 
 export type { WithRouterProps } from 'next/dist/client/with-router';
 
-export type WithNamedT<T extends string = 'translate'> = Record<T, TFunction>;
+export type WithTranslate<T extends string = 'translate'> = Record<T, TFunction>;

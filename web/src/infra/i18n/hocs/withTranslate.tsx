@@ -1,15 +1,13 @@
 import { getDisplayName } from 'recompose';
 import { nextI18Next } from '../config';
 import React from 'react';
+import { useCurrentGame } from 'infra/game/GameProvider';
 
-export const withNamedT = <TOutterProps, TReturn extends string = string>(
-  codeGetter: (props: TOutterProps) => TReturn,
-  propertyName: string = 'translate',
-  options: { withRef?: boolean } = {},
-) => {
+export const withTranslate = (propertyName: string = 'translate', options: { withRef?: boolean } = {}) => {
   return function Extend(WrappedComponent) {
     function I18nextWithTranslation({ forwardedRef, ...rest }) {
-      const ns = codeGetter(rest as TOutterProps);
+      const { game } = useCurrentGame();
+      const ns = game?.code;
       const [t] = nextI18Next.useTranslation(ns, rest);
 
       const passDownProps = { ...rest, [propertyName]: t };

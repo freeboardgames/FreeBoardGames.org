@@ -3,10 +3,10 @@ import { IGameDef } from 'gamesShared/definitions/game';
 import IconButton from '@material-ui/core/IconButton';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Typography from '@material-ui/core/Typography';
-import { WithNamedT, withNamedT, WithTranslation, withTranslation } from 'infra/i18n';
+import { WithTranslate, withTranslate, WithTranslation, withTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
 
-interface IGameCardInnerProps extends Pick<WithTranslation, 't'>, WithNamedT {}
+interface IGameCardInnerProps extends Pick<WithTranslation, 't'>, WithTranslate {}
 
 interface IGameCardOutterProps {
   game: IGameDef;
@@ -94,9 +94,6 @@ export class GameCardInternal extends React.Component<IGameCardInnerProps & IGam
   }
 }
 
-const enhance = compose<IGameCardInnerProps, IGameCardOutterProps>(
-  withTranslation('GameCard'),
-  withNamedT<IGameCardOutterProps>(({ game }) => game.code),
-);
+const enhance = compose<IGameCardInnerProps, IGameCardOutterProps>(withTranslation('GameCard'), withTranslate());
 
 export const GameCard = enhance(GameCardInternal);
