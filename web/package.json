@@ -43,7 +43,8 @@
     "prereport:combined": "yarn run combine:reports",
     "report:combined": "nyc report --reporter lcov --report-dir coverage",
     "storybook": "cross-env NODE_PATH=src/ NODE_OPTIONS='--max-old-space-size=4096' start-storybook -p 6006",
-    "prepare": "cd .. && husky install web/.husky"
+    "prepare": "cd .. && husky install web/.husky",
+    "gen:games": "cd .. && yarn run gen:games"
   },
   "dependencies": {
     "@apollo/react-components": "^4.0.0",

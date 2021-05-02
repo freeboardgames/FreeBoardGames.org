@@ -6,7 +6,9 @@ export const mix = <TOriginal extends object, TAdditional>(
   const props = Object.getOwnPropertyNames(original);
   for (const prop of props) {
     const descriptor = Object.getOwnPropertyDescriptor(original, prop);
-    Object.defineProperty(copy, prop, descriptor);
+    if (!copy.hasOwnProperty(prop)) {
+      Object.defineProperty(copy, prop, descriptor);
+    }
   }
   return copy;
 };
