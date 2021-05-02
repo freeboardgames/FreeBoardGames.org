@@ -1,11 +1,11 @@
-const WebpackBar = require('webpackbar');
-const withOptimizedImages = require('next-optimized-images');
-const childProcess = require('child_process');
-const withWorkers = require('@zeit/next-workers');
-const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const { i18n, i18nRewrites, i18nRedirects } = require('./next-i18next.config');
-const { I18NextHMRPlugin } = require('i18next-hmr/plugin');
-const { resolve } = require('path');
+import WebpackBar from 'webpackbar';
+import withOptimizedImages from 'next-optimized-images';
+import childProcess from 'child_process';
+import withWorkers from '@zeit/next-workers';
+import TSConfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import { i18n, i18nRewrites, i18nRedirects } from './config/i18n';
+import { I18NextHMRPlugin } from 'i18next-hmr/plugin';
+import { resolve } from 'path';
 
 const CHANNEL = process.env.CHANNEL || 'development';
 const BABEL_ENV_IS_PROD = (process.env.BABEL_ENV || 'production') === 'production';
@@ -19,7 +19,7 @@ function getGitHash() {
   return hash;
 }
 
-module.exports = withWorkers(
+export default withWorkers(
   withOptimizedImages({
     cssModules: true,
     // next-optimized-images
@@ -86,7 +86,7 @@ module.exports = withWorkers(
       // i18next-hmr for better developer experience
       config.plugins.push(
         new I18NextHMRPlugin({
-          localesDir: resolve(__dirname, 'public/static/locales'),
+          localesDir: resolve(__dirname, '../public/static/locales'),
         }),
       );
 
