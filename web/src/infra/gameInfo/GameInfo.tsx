@@ -12,8 +12,12 @@ import ReactMarkdown from 'react-markdown';
 import { GameInstructionsText } from 'infra/gameInfo/GameInstructionsText';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
 import { GameContributors } from './GameContributors';
+import { translateHref, WithNamedT, withNamedT, withTranslation, WithTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-interface GameInfoProps {
+interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithNamedT {}
+
+interface GameInfoOutterProps {
   gameCode: string;
   asPath: string;
   userAgent?: string;
@@ -21,28 +25,34 @@ interface GameInfoProps {
 
 const DESKTOP_MOBILE_THRESHOLD = 768;
 
-class GameInfo extends React.Component<GameInfoProps, {}> {
+class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps, {}> {
   render() {
-    const gameDef = GAMES_MAP[this.props.gameCode];
-    const videoInstructions = gameDef.instructions.videoId ? (
-      <GameInstructionsVideo videoId={gameDef.instructions.videoId} />
-    ) : null;
-    const textInstructions = gameDef.instructions.text ? (
-      <GameInstructionsText text={gameDef.instructions.text} />
-    ) : null;
+    const { gameCode, t, translate, i18n } = this.props;
+    const gameDef = GAMES_MAP[gameCode];
+    const { name, instructions, description, descriptionTag } = gameDef;
+
+    const videoInstructions = translate('instructions.videoId', instructions.videoId);
+    const gameVideoInstructions = videoInstructions ? <GameInstructionsVideo videoId={videoInstructions} /> : null;
+
+    const textInstructions = translate('instructions.text', instructions.text);
+    const gameTextInstructions = textInstructions ? <GameInstructionsText text={textInstructions} /> : null;
+
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
-        <SEO title={`Play ${gameDef.name}, ${gameDef.description}`} description={gameDef.descriptionTag} />
+        <SEO
+          title={`${t('play', name, { name: translate('name', name) })}, ${translate('description', description)}`}
+          description={translate('descriptionTag', descriptionTag)}
+        />
         <Breadcrumbs
           itemListElements={[
             {
               position: 1,
-              name: 'Play',
-              item: '/play',
+              name: t('breadcrumb'),
+              item: translateHref({ href: '/play', language: i18n.language }),
             },
             {
               position: 2,
-              name: gameDef.name,
+              name: translate('name', name),
               item: this.props.asPath,
             },
           ]}
@@ -51,7 +61,7 @@ class GameInfo extends React.Component<GameInfoProps, {}> {
           <div style={{ padding: '18px 8px', display: 'flex' }} data-testid={'TabletViewDiv'}>
             <div style={{ flex: '60%', paddingRight: '32px' }}>
               <Typography variant="h4" component="h1">
-                Play {gameDef.name}
+                {t('play', name, { name: translate('name', name) })}
               </Typography>
               <GameContributors game={gameDef} />
               <GameModePicker gameDef={gameDef} />
@@ -60,10 +70,10 @@ class GameInfo extends React.Component<GameInfoProps, {}> {
               <GameCard game={gameDef} />
               <div style={{ marginTop: '16px' }}>
                 <Typography variant="body1" component="p">
-                  <ReactMarkdown linkTarget="_blank" source={gameDef.instructions.text} />
+                  <ReactMarkdown linkTarget="_blank" source={textInstructions} />
                 </Typography>
               </div>
-              <div style={{ marginTop: '32px' }}>{videoInstructions}</div>
+              <div style={{ marginTop: '32px' }}>{gameVideoInstructions}</div>
             </div>
           </div>
         </DesktopView>
@@ -71,12 +81,12 @@ class GameInfo extends React.Component<GameInfoProps, {}> {
           <GameCard game={gameDef} />
           <div style={{ padding: '8px' }} data-testid={'MobileViewDiv'}>
             <Typography variant="h5" component="h1">
-              Play {gameDef.name}
+              {t('play', name, { name: translate('name', name) })}
             </Typography>
             <GameContributors game={gameDef} />
             <GameModePicker gameDef={gameDef} />
-            {videoInstructions}
-            {textInstructions}
+            {gameVideoInstructions}
+            {gameTextInstructions}
           </div>
         </MobileView>
       </FreeBoardGamesBar>
@@ -90,9 +100,14 @@ class GameInfo extends React.Component<GameInfoProps, {}> {
     }
     return {
       gameCode,
-      namespacesRequired: ['common', 'GameModePicker'],
+      namespacesRequired: ['common', 'GameInfo', 'GameModePicker', gameCode],
     };
   }
 }
 
-export default GameInfo;
+const enhance = compose(
+  withTranslation('GameInfo'),
+  withNamedT<GameInfoOutterProps>(({ gameCode }) => gameCode),
+);
+
+export default enhance(GameInfo);

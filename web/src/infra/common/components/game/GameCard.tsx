@@ -3,14 +3,20 @@ import { IGameDef } from 'gamesShared/definitions/game';
 import IconButton from '@material-ui/core/IconButton';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Typography from '@material-ui/core/Typography';
+import { WithNamedT, withNamedT, WithTranslation, withTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-interface IGameCardProps {
+interface IGameCardInnerProps extends Pick<WithTranslation, 't'>, WithNamedT {}
+
+interface IGameCardOutterProps {
   game: IGameDef;
   isLink?: boolean;
 }
 
-export class GameCard extends React.Component<IGameCardProps, {}> {
+export class GameCardInternal extends React.Component<IGameCardInnerProps & IGameCardOutterProps, {}> {
   render() {
+    const { t, translate } = this.props;
+
     let navigateButton = null;
     const image = this.props.game.imageURL;
     const mainDivStyle: React.CSSProperties = {
@@ -51,11 +57,11 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
     }
     const gameNameHeading = this.props.isLink ? (
       <Typography gutterBottom={false} variant="h4" component="h2" style={{ fontWeight: 300 }}>
-        {`Play ${this.props.game.name}`}
+        {t('play', { name: translate('name', this.props.game.name) })}
       </Typography>
     ) : (
       <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
-        {this.props.game.name}
+        {translate('name', this.props.game.name)}
       </Typography>
     );
     return (
@@ -79,7 +85,7 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
           }}
         >
           <Typography gutterBottom={false} variant="overline" component="h5">
-            {this.props.game.description}
+            {translate('description', this.props.game.description)}
           </Typography>
         </div>
         {navigateButton}
@@ -87,3 +93,10 @@ export class GameCard extends React.Component<IGameCardProps, {}> {
     );
   }
 }
+
+const enhance = compose<IGameCardInnerProps, IGameCardOutterProps>(
+  withTranslation('GameCard'),
+  withNamedT<IGameCardOutterProps>(({ game }) => game.code),
+);
+
+export const GameCard = enhance(GameCardInternal);
