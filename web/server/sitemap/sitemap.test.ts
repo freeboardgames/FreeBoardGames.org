@@ -29,24 +29,25 @@ describe('generateSiteMapXML', () => {
   });
 
   it('should generate sitemap with i18n disabled', () => {
+    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'false' });
     generateSiteMapXML({
       manifest: manifestFixture(),
       staticDir: staticDirFixture(),
       host: hostFixture(),
     });
     expect(writeFileSync).toHaveBeenCalledWith(expect.any(String), sitemapFixture);
+    restore();
   });
 
   it('should generate sitemap with i18n enabled', () => {
-    process.env = Object.assign(process.env, {
-      NEXT_PUBLIC_I18N_ENABLED: 'true',
-    });
+    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'true' });
     generateSiteMapXML({
       manifest: manifestFixture(),
       staticDir: staticDirFixture(),
       host: hostFixture(),
     });
     expect(writeFileSync).toHaveBeenCalledWith(expect.any(String), sitemapI18nFixture);
+    restore();
   });
 });
 
