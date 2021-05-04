@@ -11,7 +11,7 @@ COPY --chown=appuser tsconfig.json package.json yarn.lock /appdata/
 RUN yarn install && yarn cache clean
 
 # config
-COPY --chown=appuser .env next-i18next.config.js tsconfig.server.json webpack.server.config.js /appdata/
+COPY --chown=appuser .env tsconfig.server.json webpack.server.config.js /appdata/
 
 # build server
 COPY --chown=appuser src /appdata/src
