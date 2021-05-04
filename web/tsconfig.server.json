@@ -5,11 +5,7 @@
       "server/*": ["../server/*"]
     },
     "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -19,26 +15,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "jsx": "react",
-    "typeRoots": [
-      "node_modules/@types",
-      "src/@types",
-    ],
+    "typeRoots": ["node_modules/@types", "src/@types"],
     "incremental": true,
     "outDir": "server/"
   },
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.test.ts",
-    "**/*.test.tsx"
-  ],
-  "include": [
-    // "next-env.d.ts",
-    // "next-env.d.ts",
-    // "**/*.ts",
-    // "**/*.tsx"
-    "server/typings.d.ts",
-    "server/*.ts",
-  ]
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx", "**/*.test.ts", "**/*.test.tsx"],
+  "include": ["server/typings.d.ts", "server/*.ts"]
 }

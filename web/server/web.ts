@@ -7,7 +7,6 @@ import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import { setupLogging } from './logging';
 import { generateSiteMapXML } from './sitemap';
-import nextConfig from './next.config';
 
 const INTERNAL_BACKEND_TARGET = process.env.FBG_BACKEND_TARGET || 'http://localhost:3001';
 const dev = process.env.NODE_ENV !== 'production';
@@ -17,7 +16,7 @@ const STATIC_DIR = APP_DIR + 'public/static/';
 
 const PORT = process.env.SERVER_PORT || 3000;
 const isProdChannel = process.env.CHANNEL === 'production';
-const app = next({ dev, conf: nextConfig });
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const csrfProtection = csurf({ cookie: true });
