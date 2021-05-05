@@ -11,7 +11,7 @@ describe('Link', () => {
   let nextI18Next: NextI18Next;
   let Link: Link;
 
-  beforeAll(() => {
+  beforeEach(() => {
     const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'true' });
     afterEach(restore);
   });
@@ -35,14 +35,17 @@ describe('Link', () => {
       await thenLinkShouldHave('Play bingo', { href: '/pt/jogar/bingo' });
     });
 
-    it('does not change the url on invalid languages', async () => {
-      const spy = jest.spyOn(console, 'warn').mockImplementation();
+    it('does not render Link whe using a invalid language', async () => {
+      jest.spyOn(console, 'warn').mockImplementation();
+      jest.spyOn(console, 'error').mockImplementation();
 
       await forGivenLanguage('invalid');
-      renderLink('Play chess', { href: '/play/chess' });
-      await thenLinkShouldHave('Play chess', { href: '/play/chess' });
 
-      spy.mockRestore();
+      expect(() => {
+        renderLink('Play chess', { href: '/play/chess' });
+      }).toThrow('Invalid configuration: Current language is not included in all languages array');
+
+      jest.restoreAllMocks();
     });
 
     it('does not change url for non-translated path ', async () => {

@@ -13,6 +13,12 @@ var config = {
     server_web: path.resolve(__dirname, 'server/web.ts'),
   },
 
+  node: {
+    global: false,
+    __filename: false,
+    __dirname: true,
+  },
+
   output: {
     publicPath: '/',
     path: path.resolve(__dirname, 'server/dist'),

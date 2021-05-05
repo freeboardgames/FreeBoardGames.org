@@ -54,15 +54,15 @@ compile_dependencies() {
 
 build_docker() {
     cd "$DIR"
-    docker build -t "$BUILD_IMAGE_COMMON" "$BUILD_DIR_COMMON"
-    docker build -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB"
-    docker build -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG"
+    docker build -t "$BUILD_IMAGE_COMMON" "$BUILD_DIR_COMMON" || exit 1
+    docker build -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB" || exit 1
+    docker build -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG" || exit 1
 }
 
 push_docker() {
     cd "$DIR"
-    docker push "$BUILD_IMAGE_WEB"
-    docker push "$BUILD_IMAGE_FBG" 
+    docker push "$BUILD_IMAGE_WEB" || exit 1
+    docker push "$BUILD_IMAGE_FBG" || exit 1
 }
 
 prune_docker_images() {

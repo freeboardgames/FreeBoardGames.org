@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import 'dotenv/config';
 import next from 'next';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
