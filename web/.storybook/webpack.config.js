@@ -1,3 +1,5 @@
+const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 module.exports = ({ config }) => {
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
@@ -32,5 +34,8 @@ module.exports = ({ config }) => {
   });
 
   config.resolve.extensions.push('.ts', '.tsx');
+  config.resolve.modules.push('src');
+  config.resolve.plugins.push(new TSConfigPathsPlugin());
+
   return config;
 };

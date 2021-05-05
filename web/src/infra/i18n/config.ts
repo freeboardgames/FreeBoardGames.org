@@ -1,6 +1,6 @@
 import NextI18Next from 'next-i18next';
 import { resolve } from 'path';
-import { i18n, localeSubpaths } from '../../../next-i18next.config';
+import { i18n, localeSubpaths } from 'server/config/i18n';
 
 export type INextI18Next = NextI18Next;
 
