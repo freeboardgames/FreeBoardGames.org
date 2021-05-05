@@ -55,8 +55,8 @@ compile_dependencies() {
 build_docker() {
     cd "$DIR"
     docker build -t "$BUILD_IMAGE_COMMON" "$BUILD_DIR_COMMON" || exit 1
-    docker build -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB" || exit 1
-    docker build -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG" || exit 1
+    docker build -t "fbg-web:latest" -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB" || exit 1
+    docker build -t "fbg-server:latest" -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG" || exit 1
 }
 
 push_docker() {
@@ -71,6 +71,13 @@ prune_docker_images() {
     if $(confirm "Delete listed docker images?") ; then
         echo "$PRUNE_IMAGES" | xargs docker rmi
     fi
+}
+
+upload_minikube() {
+    echo -e "Uploading fbg-web..."
+    minikube cache add fbg-web:latest || exit 1
+    echo -e "Uploading fbg-server..."
+    minikube cache add fbg-server:latest || exit 1
 }
 
 exportdocker() {
@@ -89,7 +96,7 @@ importdocker() {
 # ###### Parsing arguments
 #Usage print
 usage() {
-    echo "Usage: $0 -[d|b|p|e|i|r|h]" >&2
+    echo "Usage: $0 -[d|b|p|e|i|r|h|m]" >&2
     echo "
    -d,    Installs dependencies and generates game index. 
    -b,    Build docker image
@@ -98,6 +105,7 @@ usage() {
    -i,    Import docker images
    -r,    Prune docker images
    -h,    Print this help text
+   -m,    Upload images to minikube
 
 If the script will be called without parameters, it will run:
     $0 -d -b
@@ -105,7 +113,7 @@ If the script will be called without parameters, it will run:
     exit 1
 }
 
-while getopts ':dbpeir' opt
+while getopts ':dbpeirm' opt
 do
 case "$opt" in
    'd')compile_dependencies;
@@ -120,6 +128,8 @@ case "$opt" in
        ;;
    'r')prune_docker_images;
        ;;
+   'm')upload_minikube;
+       ;;
     *) usage;
        ;;
 esac
@@ -132,5 +142,8 @@ if [ $OPTIND -eq 1 ]; then
     fi
     if $(confirm "Build docker image?") ; then
         build_docker
+    fi
+    if $(confirm "Upload images to minikube?") ; then
+       use_minikube 
     fi
 fi

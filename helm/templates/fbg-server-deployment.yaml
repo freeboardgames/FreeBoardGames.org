@@ -29,8 +29,8 @@ spec:
           value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.postgresqlDatabase }}
         - name: JWT_SECRET
           value: {{ .Values.fbgServer.jwtSecret }}
-        image: freeboardgames/fbg-server
-        imagePullPolicy: Always
+        image: {{ .Values.images.fbgServer }}
+        imagePullPolicy: {{ .Values.images.imagePullPolicy }}
         livenessProbe:
           failureThreshold: 3
           httpGet:
