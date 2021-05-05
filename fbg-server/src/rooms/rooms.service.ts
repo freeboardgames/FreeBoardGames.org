@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection, QueryRunner } from 'typeorm';
 import { RoomEntity } from './db/Room.entity';
@@ -11,6 +11,7 @@ import { PubSub } from 'graphql-subscriptions';
 import { roomEntityToRoom } from './RoomUtil';
 import { LobbyService } from './lobby.service';
 import { UpdateRoomInput } from './gql/UpdateRoomInput.gql';
+import { FBG_PUB_SUB } from '../internal/FbgPubSubModule';
 
 @Injectable()
 export class RoomsService {
@@ -20,7 +21,7 @@ export class RoomsService {
     private usersService: UsersService,
     private lobbyService: LobbyService,
     private connection: Connection,
-    private pubSub: PubSub,
+    @Inject(FBG_PUB_SUB) private pubSub: PubSub,
   ) {}
 
   /** Creates a new room. */
