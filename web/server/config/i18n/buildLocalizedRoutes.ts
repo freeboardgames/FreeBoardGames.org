@@ -1,4 +1,4 @@
-import { TranslatedPath } from 'infra/i18n/translatedPaths';
+import { TranslatedPath } from 'infra/i18n/types';
 
 export function buildLocalizedRoutes(routing: TranslatedPath) {
   const locales = Object.entries(routing.locales);

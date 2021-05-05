@@ -1,4 +1,4 @@
-import translatedPaths from './translatedPaths';
+import translatedPaths from './paths';
 
 describe('routing', () => {
   translatedPaths.forEach((r) => {

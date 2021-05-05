@@ -1,7 +1,7 @@
 import { lngPathCorrector } from 'next-i18next/dist/commonjs/utils';
 import { compile, match as matcher } from 'path-to-regexp';
 import { LinkProps } from 'next/link';
-import translatedPaths from '../translatedPaths';
+import translatedPaths from '../paths';
 import { nextI18Next } from '../config';
 
 export const translateHref = (options: Options) => {
