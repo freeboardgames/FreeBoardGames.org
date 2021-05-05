@@ -144,6 +144,6 @@ if [ $OPTIND -eq 1 ]; then
         build_docker
     fi
     if $(confirm "Upload images to minikube?") ; then
-       use_minikube 
+       upload_minikube 
     fi
 fi
