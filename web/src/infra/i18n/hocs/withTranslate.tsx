@@ -7,8 +7,8 @@ export const withTranslate = (propertyName: string = 'translate', options: { wit
   return function Extend(WrappedComponent) {
     function I18nextWithTranslation({ forwardedRef, ...rest }) {
       const { game } = useCurrentGame();
-      const ns = game?.code;
-      const [t] = nextI18Next.useTranslation(ns, rest);
+      const namespace = game?.code;
+      const [t] = nextI18Next.useTranslation(namespace);
 
       const passDownProps = { ...rest, [propertyName]: t };
 

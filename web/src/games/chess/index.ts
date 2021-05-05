@@ -5,6 +5,7 @@ import instructions from './instructions.md';
 
 export const chessGameDef: IGameDef = {
   code: 'chess',
+  codes: { xadrez: 'pt' },
   name: 'Chess',
   contributors: ['flamecoals'],
   imageURL: Thumbnail,

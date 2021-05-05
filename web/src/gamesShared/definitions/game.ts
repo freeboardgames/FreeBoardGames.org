@@ -28,6 +28,7 @@ export enum IGameStatus {
 
 export interface IGameDef {
   code: string;
+  codes?: Record<string, string>;
   name: string;
   contributors: string[];
   imageURL: string;
