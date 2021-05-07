@@ -16,7 +16,7 @@ import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import Typography from '@material-ui/core/Typography';
 import { CustomizationBar } from 'infra/settings/CustomizationBar';
-import { play, room } from 'infra/navigation';
+import { LanguagePathResolver, play, room } from 'infra/navigation';
 
 interface GameModePickerCardProps {
   gameDef: IGameDef;
@@ -137,18 +137,18 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
   }
 
   private getLink() {
-    const mode = this.props.info.mode;
-    let link: string;
+    const { info, gameDef } = this.props;
+    let link: LanguagePathResolver;
 
-    switch (mode) {
+    switch (info.mode) {
       case GameMode.AI:
-        link = play(this.props.gameDef, GameMode.AI);
+        link = play(gameDef, GameMode.AI);
         break;
       case GameMode.LocalFriend:
-        link = play(this.props.gameDef, GameMode.LocalFriend);
+        link = play(gameDef, GameMode.LocalFriend);
         break;
       case GameMode.OnlineFriend:
-        link = room('new', this.props.gameDef, this.state.numPlayers);
+        link = room('new', gameDef, this.state.numPlayers);
         break;
     }
 

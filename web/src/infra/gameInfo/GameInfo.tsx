@@ -11,10 +11,11 @@ import ReactMarkdown from 'react-markdown';
 import { GameInstructionsText } from 'infra/gameInfo/GameInstructionsText';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
 import { GameContributors } from './GameContributors';
-import { translateHref, WithTranslate, withTranslate, withTranslation, WithTranslation } from 'infra/i18n';
+import { WithTranslate, withTranslate, withTranslation, WithTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
 import { getGameDefinition } from 'infra/game';
 import { NextPageContext } from 'next';
+import { play } from 'infra/navigation';
 
 interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithTranslate {}
 
@@ -49,7 +50,7 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
             {
               position: 1,
               name: t('breadcrumb'),
-              item: translateHref({ href: '/play', language: i18n.language }),
+              item: play()(i18n.language),
             },
             {
               position: 2,

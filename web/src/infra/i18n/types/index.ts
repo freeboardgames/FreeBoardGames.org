@@ -1,5 +1,6 @@
 import { Router, TFunction } from 'next-i18next';
 import { UrlObject } from 'url';
+import { WithTranslation as NextWithTranslation } from 'next-i18next';
 
 export type Url = UrlObject | string;
 
@@ -32,3 +33,7 @@ export interface TranslatedPath {
 }
 
 export type Language = 'pt' | 'en';
+
+export type WithTranslation = NextWithTranslation & {
+  i18n: NextWithTranslation['i18n'] & { language: Language };
+};

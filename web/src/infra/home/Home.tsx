@@ -22,7 +22,7 @@ export class Home extends React.Component<{}, {}> {
         <GamesList />
         {this.maybeRenderGamesInDevelopment()}
         <p style={{ fontSize: '14px', textAlign: 'center' }}>
-          <Link href={about()}>
+          <Link href={() => about()}>
             <a>About</a>
           </Link>
         </p>

@@ -6,7 +6,7 @@ import { generatePageError } from 'next-with-error';
 import { play } from 'infra/navigation';
 
 export default class LegacyRoom extends React.Component {
-  static async getInitialProps({ res, query }) {
+  static async getInitialProps({ req, res, query }) {
     // our old URL scheme had the gameCode in place of the roomID, so capture that:
     const gameCode = query.roomID as string;
     const gameDef: IGameDef = GAMES_MAP[gameCode];
@@ -14,7 +14,7 @@ export default class LegacyRoom extends React.Component {
       return generatePageError(404);
     }
     // if the gamecode exists, redirect them to the gameinfo page:
-    const redirectTo = play(gameDef);
+    const redirectTo = play(gameDef)(req.language);
     if (res) {
       res.writeHead(302, { Location: redirectTo });
       res.end();

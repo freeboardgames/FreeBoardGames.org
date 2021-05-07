@@ -1,3 +1,1 @@
-export const home = () => {
-  return '/';
-};
+export const home = () => '/';

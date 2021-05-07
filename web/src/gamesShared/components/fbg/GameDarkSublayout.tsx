@@ -91,7 +91,7 @@ export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayou
             marginRight: 'auto',
           }}
         >
-          <Link href={home()}>
+          <Link href={() => home()}>
             <a style={{ textDecoration: 'none', display: 'flex' }}>
               <img src={FbgLogo} alt="FreeBoardGames.org" style={{ paddingRight: '16px' }} />
               {fbgTopLeftText}

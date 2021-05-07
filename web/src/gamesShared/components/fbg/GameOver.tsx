@@ -9,10 +9,13 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import ReactGA from 'react-ga';
 import getMessagePage from '../../../infra/common/components/alert/MessagePage';
 import { LobbyService } from '../../../infra/common/services/LobbyService';
-import { Router } from 'infra/i18n';
+import { Router, WithTranslation, withTranslation } from 'infra/i18n';
 import { room } from 'infra/navigation';
+import { compose } from 'recompose';
 
-export interface IGameOverProps {
+export interface IGameOverInnerProps extends Pick<WithTranslation, 'i18n'> {}
+
+export interface IGameOverOutterProps {
   result: string;
   gameArgs?: IGameArgs;
   extraCardContent?: React.ReactNode;
@@ -22,7 +25,7 @@ export interface IGameOverState {
   loading: boolean;
 }
 
-export class GameOver extends React.Component<IGameOverProps, {}> {
+export class GameOverInternal extends React.Component<IGameOverInnerProps & IGameOverOutterProps, {}> {
   state = { loading: false };
   render() {
     if (this.state.loading) {
@@ -80,6 +83,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
   };
 
   _playAgainHandle = async () => {
+    const { i18n } = this.props;
     const args = this.props.gameArgs;
     ReactGA.event({
       category: 'GameOver',
@@ -93,7 +97,11 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       this.setState({ loading: true });
       const matchId = Router.query.matchId as string;
       const nextRoomId = await LobbyService.getPlayAgainNextRoom(matchId);
-      Router.push(room(nextRoomId));
+      Router.push(room(nextRoomId)(i18n.language));
     }
   };
 }
+
+const enhance = compose<IGameOverInnerProps, IGameOverOutterProps>(withTranslation());
+
+export const GameOver = enhance(GameOverInternal);

@@ -27,7 +27,7 @@ import { CustomizationBar } from 'infra/settings/CustomizationBar';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 import { compose } from 'recompose';
-import { Router, NextRouter, withRouter } from 'infra/i18n';
+import { NextRouter, withRouter, Link } from 'infra/i18n';
 import { home, match } from 'infra/navigation';
 
 export const ROOM_SUBSCRIPTION = gql`
@@ -246,9 +246,11 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
 
   private renderLeaveRoomButton() {
     return (
-      <Button variant="outlined" onClick={this._leaveRoom}>
-        Leave room
-      </Button>
+      <Link href={() => home()}>
+        <Button variant="outlined" onClick={this._leaveRoom}>
+          Leave room
+        </Button>
+      </Link>
     );
   }
 
@@ -334,9 +336,6 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   _leaveRoom = () => {
     const dispatch = (this.props as any).dispatch;
     LobbyService.leaveRoom(dispatch, this._roomId());
-    // FIXME: on dev only, this does not work for a redirect to '/'.
-    // However, it works for other routes such as '/about' ... why?
-    Router.push(home());
   };
 
   _removeUser = (userIdToBeRemoved: number) => () => {

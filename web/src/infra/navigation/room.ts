@@ -1,7 +1,7 @@
 import { IGameDef } from 'gamesShared/definitions/game';
-import { nextI18Next } from 'infra/i18n';
+import { Language } from 'infra/i18n';
+import { LanguagePathResolver } from './types';
 
-export const room = (roomId: string, game?: IGameDef, numberOfPlayers?: number) => {
-  const { language } = nextI18Next.i18n;
-  return `/${['room', roomId, game.codes[language], numberOfPlayers].filter((e) => e != null).join('/')}`;
-};
+export const room = (roomId: string, game?: IGameDef, numberOfPlayers?: number): LanguagePathResolver => (
+  language: Language,
+) => `/${[language, 'room', roomId, game?.codes[language], numberOfPlayers].filter((e) => e != null).join('/')}`;

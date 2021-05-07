@@ -12,7 +12,7 @@ import { compose } from 'recompose';
 import { Router, withTranslation, WithTranslation } from 'infra/i18n';
 import { room } from 'infra/navigation';
 
-interface IGameModePickerInnerProps extends Pick<WithTranslation, 't'> {
+interface IGameModePickerInnerProps extends Pick<WithTranslation, 't' | 'i18n'> {
   user: ReduxUserState;
   dispatch: Dispatch;
 }
@@ -71,7 +71,8 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
   }
 
   _playOnlineGame = (info: IGameModeInfo, numPlayers: number) => () => {
-    if (!this.props.user.loggedIn) {
+    const { i18n, user } = this.props;
+    if (!user.loggedIn) {
       this.setState({ onlinePlayRequested: numPlayers });
       return;
     }
@@ -80,7 +81,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     LobbyService.newRoom((this.props as any).dispatch, gameCode, numPlayers).then(
       (response) => {
         // we use .replace instead of .push so that the browser back button works correctly
-        Router.replace(room(response.newRoom.roomId));
+        Router.replace(room(response.newRoom.roomId)(i18n.language));
       },
       () => {
         this.setState({ playButtonError: true, playButtonDisabled: false });

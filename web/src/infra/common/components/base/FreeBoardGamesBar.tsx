@@ -25,7 +25,7 @@ class FreeBoardGamesBar extends React.Component<FBGBarProps, {}> {
         >
           <AppBar position="sticky">
             <Toolbar>
-              <Link href={home()}>
+              <Link href={() => home()}>
                 <a style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                   <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
                   <Typography component="h1" variant="h6" style={{ color: 'white' }}>
