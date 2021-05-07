@@ -1,3 +1,6 @@
+/// <reference path='./typings.d.ts'/>
+
+import 'server/config/import/hack';
 import WebpackBar from 'webpackbar';
 import withOptimizedImages from 'next-optimized-images';
 import childProcess from 'child_process';
