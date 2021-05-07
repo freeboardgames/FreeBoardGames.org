@@ -9,6 +9,7 @@ import { Router } from 'infra/i18n';
 import getMessagePage from 'infra/common/components/alert/MessagePage';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
+import { room } from 'infra/navigation';
 
 interface NewRoomModalProps {
   handleClickaway: () => void;
@@ -124,7 +125,7 @@ export class NewRoomModal extends React.Component<NewRoomModalProps, NewRoomModa
     LobbyService.newRoom((this.props as any).dispatch, this.state.game.code, occupancy, true).then(
       (response) => {
         // we use .replace instead of .push so that the browser back button works correctly
-        Router.replace(`/room/${response.newRoom.roomId}`);
+        Router.replace(room(response.newRoom.roomId));
       },
       () => {
         this.setState({ loading: false, error: true });

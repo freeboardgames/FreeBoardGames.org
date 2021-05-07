@@ -10,6 +10,7 @@ import ReactGA from 'react-ga';
 import getMessagePage from '../../../infra/common/components/alert/MessagePage';
 import { LobbyService } from '../../../infra/common/services/LobbyService';
 import { Router } from 'infra/i18n';
+import { room } from 'infra/navigation';
 
 export interface IGameOverProps {
   result: string;
@@ -92,7 +93,7 @@ export class GameOver extends React.Component<IGameOverProps, {}> {
       this.setState({ loading: true });
       const matchId = Router.query.matchId as string;
       const nextRoomId = await LobbyService.getPlayAgainNextRoom(matchId);
-      Router.push(`/room/${nextRoomId}`);
+      Router.push(room(nextRoomId));
     }
   };
 }

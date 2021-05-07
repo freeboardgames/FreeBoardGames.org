@@ -28,6 +28,7 @@ import { GameMode } from 'gamesShared/definitions/mode';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 import { compose } from 'recompose';
 import { Router, NextRouter, withRouter } from 'infra/i18n';
+import { home, match } from 'infra/navigation';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -210,7 +211,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   }
 
   private redirectToMatch(matchId: string) {
-    Router.replace(`/match/${matchId}`);
+    Router.replace(match(matchId));
   }
 
   private shouldUpdateMetadata(room: JoinRoom_joinRoom) {
@@ -335,7 +336,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
     LobbyService.leaveRoom(dispatch, this._roomId());
     // FIXME: on dev only, this does not work for a redirect to '/'.
     // However, it works for other routes such as '/about' ... why?
-    Router.push('/');
+    Router.push(home());
   };
 
   _removeUser = (userIdToBeRemoved: number) => () => {

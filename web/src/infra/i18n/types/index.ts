@@ -30,3 +30,5 @@ export interface TranslatedPath {
   rewrite(): Rewrite[];
   redirect(): Redirect[];
 }
+
+export type Language = 'pt' | 'en';

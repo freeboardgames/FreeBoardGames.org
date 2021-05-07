@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { NextRouter, Link, withRouter } from 'infra/i18n';
 import { compose } from 'recompose';
 import { IOptionsItems } from 'gamesShared/definitions/options';
+import { home } from 'infra/navigation';
 
 export * from '../../definitions/options';
 
@@ -90,7 +91,7 @@ export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayou
             marginRight: 'auto',
           }}
         >
-          <Link href="/">
+          <Link href={home()}>
             <a style={{ textDecoration: 'none', display: 'flex' }}>
               <img src={FbgLogo} alt="FreeBoardGames.org" style={{ paddingRight: '16px' }} />
               {fbgTopLeftText}

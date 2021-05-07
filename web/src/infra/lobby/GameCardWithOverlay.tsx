@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import css from './GameCardWithOverlay.module.css';
 import { Router } from 'infra/i18n';
+import { room } from 'infra/navigation';
 
 interface GameCardWithOverlayProps {
   game: IGameDef;
@@ -68,7 +69,7 @@ export class GameCardWithOverlay extends React.Component<GameCardWithOverlayProp
             variant="h6"
             style={{ flex: '20', cursor: 'pointer' }}
             onClick={() => {
-              Router.push(`/room/${room.id}`);
+              Router.push(room(room.id));
             }}
           >
             <b>Join</b>

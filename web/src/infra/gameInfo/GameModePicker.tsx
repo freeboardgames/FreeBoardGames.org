@@ -10,6 +10,7 @@ import { Dispatch } from 'redux';
 import { GameModePickerCard } from './GameModePickerCard';
 import { compose } from 'recompose';
 import { Router, withTranslation, WithTranslation } from 'infra/i18n';
+import { room } from 'infra/navigation';
 
 interface IGameModePickerInnerProps extends Pick<WithTranslation, 't'> {
   user: ReduxUserState;
@@ -79,7 +80,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     LobbyService.newRoom((this.props as any).dispatch, gameCode, numPlayers).then(
       (response) => {
         // we use .replace instead of .push so that the browser back button works correctly
-        Router.replace(`/room/${response.newRoom.roomId}`);
+        Router.replace(room(response.newRoom.roomId));
       },
       () => {
         this.setState({ playButtonError: true, playButtonDisabled: false });
