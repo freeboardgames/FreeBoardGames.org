@@ -26,8 +26,6 @@ export type Rewrite = {
 };
 
 export interface TranslatedPath {
-  original: string;
-  locales: { [locale: string]: string };
   rewrite(): Rewrite[];
   redirect(): Redirect[];
 }

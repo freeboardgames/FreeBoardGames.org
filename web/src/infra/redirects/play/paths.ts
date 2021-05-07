@@ -19,8 +19,6 @@ const combinedPaths = cartesianProduct(...transposed) as string[][];
 
 export const playPaths: TranslatedPath[] = [
   {
-    original: '/play/:rest+',
-    locales: { pt: '/jogar/:rest+' },
     rewrite() {
       return [
         ...buildRewrite(Object.values(omit(pathsByLocale, ['en'])), pathsByLocale.en),

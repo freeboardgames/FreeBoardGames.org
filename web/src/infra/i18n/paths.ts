@@ -1,4 +1,4 @@
-import { playPaths } from 'pages/play/paths';
+import { playPaths } from 'infra/redirects/play/paths';
 import { TranslatedPath } from './types';
 
 const translatedPaths: TranslatedPath[] = [...playPaths];
