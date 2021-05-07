@@ -7285,6 +7285,11 @@ cardinal@^2.1.1:
     ansicolors "~0.3.2"
     redeyed "~2.1.0"
 
+cartesian-product-multiple-arrays@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/cartesian-product-multiple-arrays/-/cartesian-product-multiple-arrays-1.0.9.tgz#f0728557f6ea7963f42df78bdb2f5fdd3ec41692"
+  integrity sha512-XwVkPg/Vv8j9HpokEkoKiPC0jBgUo2sK1JL33eNK6BoHyL+AzGx8VVeDMo62TO9tki+WGJCmcVSF7DS3r6S2+A==
+
 case-sensitive-paths-webpack-plugin@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.3.0.tgz#23ac613cc9a856e4f88ff8bb73bbb5e989825cf7"
@@ -14613,6 +14618,11 @@ lodash.merge@^4.6.1:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
+
+lodash.omit@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.omit/-/lodash.omit-4.5.0.tgz#6eb19ae5a1ee1dd9df0b969e66ce0b7fa30b5e60"
+  integrity sha1-brGa5aHuHdnfC5aeZs4Lf6MLXmA=
 
 lodash.once@^4.1.1:
   version "4.1.1"
