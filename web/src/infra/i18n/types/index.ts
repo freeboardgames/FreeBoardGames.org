@@ -12,7 +12,14 @@ export type NextRouter = Router;
 
 export type { WithRouterProps } from 'next/dist/client/with-router';
 
-export type WithTranslate<T extends string = 'translate'> = Record<T, TFunction>;
+export type WithCurrentGameTranslation = {
+  forwardedRef?: unknown;
+  translate: TFunction;
+};
+
+export type WithNamespace = {
+  withNamespace: (namespace: string) => TFunction;
+};
 
 export type Redirect = {
   source: string;
