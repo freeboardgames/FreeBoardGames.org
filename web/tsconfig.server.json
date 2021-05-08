@@ -6,6 +6,7 @@
     },
     "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
@@ -19,5 +20,5 @@
     "outDir": "server/"
   },
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx", "**/*.test.ts", "**/*.test.tsx"],
-  "include": ["server/typings.d.ts", "server/*.ts", "./typings.d.ts"]
+  "include": ["server/typings.d.ts", "server/*.ts"]
 }
