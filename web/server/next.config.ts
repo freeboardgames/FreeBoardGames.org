@@ -22,7 +22,7 @@ function getGitHash() {
   return hash;
 }
 
-const config = withWorkers(
+export default withWorkers(
   withOptimizedImages({
     cssModules: true,
     // next-optimized-images
@@ -100,5 +100,3 @@ const config = withWorkers(
     redirects: () => [...i18nRedirects()],
   }),
 );
-
-export default config;

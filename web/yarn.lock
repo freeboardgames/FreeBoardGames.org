@@ -7273,11 +7273,6 @@ cardinal@^2.1.1:
     ansicolors "~0.3.2"
     redeyed "~2.1.0"
 
-cartesian-product-multiple-arrays@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/cartesian-product-multiple-arrays/-/cartesian-product-multiple-arrays-1.0.9.tgz#f0728557f6ea7963f42df78bdb2f5fdd3ec41692"
-  integrity sha512-XwVkPg/Vv8j9HpokEkoKiPC0jBgUo2sK1JL33eNK6BoHyL+AzGx8VVeDMo62TO9tki+WGJCmcVSF7DS3r6S2+A==
-
 case-sensitive-paths-webpack-plugin@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.3.0.tgz#23ac613cc9a856e4f88ff8bb73bbb5e989825cf7"
@@ -10341,6 +10336,11 @@ extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
+
+fast-cartesian@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/fast-cartesian/-/fast-cartesian-5.1.0.tgz#496ff07b4d60d9e4ba6888d0f04a97b2115f4aca"
+  integrity sha512-sZqtZoSpvB64whoAfZYaHY2EMF4yX039MlXoL7UpXpy38OxaN2ZJcZbS1qu7hsEkPrrReqTi0EBrfx5bd+HNBQ==
 
 fast-deep-equal@^3.1.1:
   version "3.1.3"

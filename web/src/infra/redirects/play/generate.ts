@@ -1,6 +1,6 @@
 import { transpose } from 'infra/i18n/utils/transpose';
 import { Language, Rewrite, Redirect } from 'infra/i18n/types';
-import { cartesianProduct } from 'cartesian-product-multiple-arrays';
+import cartesian from 'fast-cartesian';
 import { buildRewrite, buildRedirect } from 'infra/i18n/utils/url';
 import { getAllGames } from 'infra/game';
 import { playDictionary } from 'infra/navigation/dictionary';
@@ -25,7 +25,7 @@ export function generate() {
       });
 
       const transposed = transpose(Object.values(pathsByLocale));
-      const combinedPaths = cartesianProduct(...transposed) as string[][];
+      const combinedPaths = cartesian(transposed) as string[][];
 
       return {
         ...wrapper,
