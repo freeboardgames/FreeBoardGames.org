@@ -1,7 +1,7 @@
-import { GAMES_MAP } from 'games';
+import { GAMES_LIST } from 'games';
 
-const allGames = Object.entries(GAMES_MAP).reduce((games, [code, game]) => {
-  games[code] = game;
+const gameDictionaryByCodes = GAMES_LIST.reduce((games, game) => {
+  games[game.code] = game;
 
   if (game.codes) {
     Object.entries(game.codes).forEach(([, code]) => {
@@ -13,7 +13,7 @@ const allGames = Object.entries(GAMES_MAP).reduce((games, [code, game]) => {
 }, {});
 
 export const getGameDefinition = (gameCode: string) => {
-  return allGames[gameCode];
+  return gameDictionaryByCodes[gameCode];
 };
 
-export const getAllGames = () => Object.values(GAMES_MAP);
+export const getAllGames = () => GAMES_LIST;
