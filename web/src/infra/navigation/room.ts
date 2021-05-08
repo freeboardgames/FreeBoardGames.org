@@ -4,4 +4,7 @@ import { LanguagePathResolver } from './types';
 
 export const room = (roomId: string, game?: IGameDef, numberOfPlayers?: number): LanguagePathResolver => (
   language: Language,
-) => `/${[language, 'room', roomId, game?.codes[language], numberOfPlayers].filter((e) => e != null).join('/')}`;
+) =>
+  `/${[language, 'room', roomId, game?.codes?.[language] || game?.code, numberOfPlayers]
+    .filter((e) => e != null)
+    .join('/')}`;

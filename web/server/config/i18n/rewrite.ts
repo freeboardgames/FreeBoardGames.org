@@ -6,9 +6,9 @@ import { logger } from './log';
 export function i18nRewrites() {
   if (process.env.NEXT_PUBLIC_I18N_ENABLED !== 'true') return [];
 
-  const rewrites = translatedPaths.map((t) => t.rewrite()).flat();
+  const rewrites = translatedPaths.map((t) => t.rewrites).flat();
 
-  logger.debug('rewrites %j', rewrites);
+  logger.debug('rewrites (%d) %j', rewrites.length, rewrites);
 
   return [...rewrites, ...nextI18NextRewrites(localeSubpaths)];
 }

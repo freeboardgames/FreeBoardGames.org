@@ -1,8 +1,9 @@
-import { Language } from 'infra/i18n';
+import { Language } from 'infra/i18n/types';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { LanguagePathResolver } from './types';
-
-const playDictionary = { en: 'play', pt: 'jogar' };
+import { playDictionary } from './dictionary';
 
 export const play = (game?: IGameDef, mode?: string): LanguagePathResolver => (language: Language) =>
-  `/${[language, playDictionary[language], game?.codes[language], mode].filter((e) => e != null).join('/')}`;
+  `/${[language, playDictionary[language], game?.codes?.[language] || game?.code, mode]
+    .filter((e) => e != null)
+    .join('/')}`;

@@ -15,3 +15,5 @@ const allGames = Object.entries(GAMES_MAP).reduce((games, [code, game]) => {
 export const getGameDefinition = (gameCode: string) => {
   return allGames[gameCode];
 };
+
+export const getAllGames = () => Object.values(GAMES_MAP);
