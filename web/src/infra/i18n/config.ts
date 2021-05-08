@@ -16,7 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
   applyClientHMR(nextI18Next.i18n);
 }
 
-if (typeof window !== 'undefined') {
+if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
   // @ts-ignore
   window.nextI18Next = nextI18Next;
 }
