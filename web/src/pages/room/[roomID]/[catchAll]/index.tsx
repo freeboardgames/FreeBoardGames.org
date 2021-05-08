@@ -1,15 +1,15 @@
 import React from 'react';
 import { Router } from 'infra/i18n';
 import { IGameDef } from 'gamesShared/definitions/game';
-import { GAMES_MAP } from 'games';
 import { generatePageError } from 'next-with-error';
 import { play } from 'infra/navigation';
+import { getGameDefinition } from 'infra/game';
 
 export default class LegacyRoom extends React.Component {
   static async getInitialProps({ req, res, query }) {
     // our old URL scheme had the gameCode in place of the roomID, so capture that:
     const gameCode = query.roomID as string;
-    const gameDef: IGameDef = GAMES_MAP[gameCode];
+    const gameDef: IGameDef = getGameDefinition(gameCode);
     if (!gameDef && res) {
       return generatePageError(404);
     }

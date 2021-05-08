@@ -6,7 +6,6 @@ import MoreVert from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { GAMES_MAP } from 'games';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { Chat } from 'infra/chat/Chat';
 import { Dispatch } from 'redux';
@@ -15,6 +14,7 @@ import { NextRouter, Link, withRouter } from 'infra/i18n';
 import { compose } from 'recompose';
 import { IOptionsItems } from 'gamesShared/definitions/options';
 import { home } from 'infra/navigation';
+import { getGameDefinition } from 'infra/game';
 
 export * from '../../definitions/options';
 
@@ -59,7 +59,7 @@ export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayou
 
   render() {
     const isProdChannel = process.env.NODE_ENV === 'production';
-    const gameName = GAMES_MAP[this.props.gameArgs.gameCode].name;
+    const gameName = getGameDefinition(this.props.gameArgs.gameCode).name;
     let fbgTopLeftText;
     if (isProdChannel) {
       if (gameName) {

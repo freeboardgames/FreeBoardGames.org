@@ -1,7 +1,6 @@
 import React from 'react';
 import MessagePage from 'infra/common/components/alert/MessagePageClass';
 import { LobbyService } from 'infra/common/services/LobbyService';
-import { GAMES_MAP } from 'games';
 import { IGameDef } from 'gamesShared/definitions/game';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';
 import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
@@ -27,8 +26,9 @@ import { CustomizationBar } from 'infra/settings/CustomizationBar';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 import { compose } from 'recompose';
-import { NextRouter, withRouter, Link } from 'infra/i18n';
+import { NextRouter, withRouter, Link, Router } from 'infra/i18n';
 import { home, match } from 'infra/navigation';
+import { getGameDefinition } from 'infra/game';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -121,7 +121,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
             if (this.shouldUpdateMetadata(room)) {
               this.setState({ roomMetadata: room });
             }
-            const gameDef = GAMES_MAP[room.gameCode];
+            const gameDef = getGameDefinition(room.gameCode);
             return (
               <React.Fragment>
                 {this.renderGameCard(room, gameDef)}
