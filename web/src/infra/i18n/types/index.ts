@@ -1,7 +1,6 @@
 export * from './I18n';
 export * from './Language';
 export * from './LinkProps';
-export * from './newFile';
 export * from './NextRouter';
 export * from './Redirect';
 export * from './Rewrite';
@@ -10,4 +9,5 @@ export * from './TranslatedPath';
 export * from './Url';
 export * from './WithCurrentGameTranslation';
 export * from './WithNamespace';
+export * from './WithRouterProps';
 export * from './WithTranslation';
