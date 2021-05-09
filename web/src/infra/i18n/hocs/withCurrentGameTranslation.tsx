@@ -1,4 +1,5 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
+import { getGamesNamespace } from 'infra/game';
 import { useCurrentGame } from 'infra/game/GameProvider';
 import React from 'react';
 import { useTranslation } from '../hooks';
@@ -14,7 +15,7 @@ export const withCurrentGameTranslation = <P extends {}>(
   const WithNamespace = (props: P) => {
     const { game } = useCurrentGame();
     const namespace = game?.code;
-    const { t } = useTranslation(namespace);
+    const { t } = useTranslation(getGamesNamespace(namespace));
     return <Component {...props} translate={t} />;
   };
 

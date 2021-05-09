@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWithNamespace } from '../hooks';
+import { useWithGameNamespace } from '../hooks';
 import { WithNamespace as TWithNamespace } from '../types';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
@@ -11,8 +11,8 @@ export const withNamespaceTranslation = <P extends {}>(
   {}
 > => {
   const WithNamespace = (props: P) => {
-    const withNamespace = useWithNamespace();
-    return <Component {...props} withNamespace={withNamespace} />;
+    const withGameNamespace = useWithGameNamespace();
+    return <Component {...props} withGameNamespace={withGameNamespace} />;
   };
 
   WithNamespace.displayName = `withNamespaceTranslation(${componentName})`;

@@ -6,7 +6,7 @@ import SEO from 'infra/common/helpers/SEO';
 import { Link } from 'infra/i18n';
 import LobbyCarousel from 'infra/lobby/LobbyCarousel';
 import { about } from 'infra/navigation';
-import { getAllGames } from 'infra/game';
+import { getAllGames, getGamesNamespace } from 'infra/game';
 
 export class Home extends React.Component<{}, {}> {
   render() {
@@ -41,7 +41,7 @@ export class Home extends React.Component<{}, {}> {
 
   static async getInitialProps() {
     return {
-      namespacesRequired: ['LobbyCarousel', 'GameCard', ...getAllGames().map((g) => g.code)],
+      namespacesRequired: ['LobbyCarousel', 'GameCard', ...getAllGames().map((g) => getGamesNamespace(g.code))],
     };
   }
 }

@@ -15,8 +15,8 @@ interface IGameCardOutterProps {
 
 export class GameCardInternal extends React.Component<IGameCardInnerProps & IGameCardOutterProps, {}> {
   render() {
-    const { t, game, withNamespace } = this.props;
-    const translate = withNamespace(game.code);
+    const { t, game, withGameNamespace } = this.props;
+    const translate = withGameNamespace(game.code);
 
     let navigateButton = null;
     const image = game.imageURL;
