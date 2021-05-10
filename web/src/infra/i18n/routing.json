@@ -1,6 +1,0 @@
-[
-  {
-    "original": "/play/:rest+",
-    "locales": { "pt": "/jogar/:rest+" }
-  }
-]

@@ -16,6 +16,7 @@ import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import Typography from '@material-ui/core/Typography';
 import { CustomizationBar } from 'infra/settings/CustomizationBar';
+import { LanguagePathResolver, play, room } from 'infra/navigation';
 
 interface GameModePickerCardProps {
   gameDef: IGameDef;
@@ -93,11 +94,8 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
         </Button>
       );
     } else {
-      const linkInfo = this.getLink();
-      const linkHref = linkInfo[0],
-        linkAs = linkInfo[1];
       return (
-        <Link href={linkHref} as={linkAs}>
+        <Link href={this.getLink()}>
           <Button
             data-testid={`playbutton-${this.props.gameDef.code}-${this.props.info.mode}`}
             component={'a'}
@@ -139,23 +137,22 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
   }
 
   private getLink() {
-    const mode = this.props.info.mode;
-    let hrefAndAs: string[];
-    switch (mode) {
+    const { info, gameDef } = this.props;
+    let link: LanguagePathResolver;
+
+    switch (info.mode) {
       case GameMode.AI:
-        hrefAndAs = ['/play/[gameCode]/[mode]', `/play/${this.props.gameDef.code}/AI`];
+        link = play(gameDef, GameMode.AI);
         break;
       case GameMode.LocalFriend:
-        hrefAndAs = ['/play/[gameCode]/[mode]', `/play/${this.props.gameDef.code}/local`];
+        link = play(gameDef, GameMode.LocalFriend);
         break;
       case GameMode.OnlineFriend:
-        hrefAndAs = [
-          '/room/new/[gameCode]/[numPlayers]',
-          `/room/new/${this.props.gameDef.code}/${this.state.numPlayers}`,
-        ];
+        link = room('new', gameDef, this.state.numPlayers);
         break;
     }
-    return hrefAndAs;
+
+    return link;
   }
 
   _handleNumPlayersSelect = (event: ChangeEvent<{ value: number }>) => {

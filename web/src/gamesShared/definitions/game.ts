@@ -2,6 +2,7 @@ import { IGameModeInfo } from './mode';
 import { GameMode } from './mode';
 import { IPlayerInRoom } from './player';
 import { GameCustomizationState } from 'gamesShared/definitions/customization';
+import { Language } from 'infra/i18n/types';
 
 export interface IGameArgs {
   gameCode: string;
@@ -28,6 +29,7 @@ export enum IGameStatus {
 
 export interface IGameDef {
   code: string;
+  codes?: Record<Language, string>;
   name: string;
   contributors: string[];
   imageURL: string;

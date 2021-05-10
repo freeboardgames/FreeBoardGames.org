@@ -20,7 +20,7 @@ import {
   ListItemSecondaryAction,
   Tooltip,
 } from '@material-ui/core';
-import { GAMES_MAP } from 'games';
+import { getGameDefinition } from 'infra/game';
 
 interface IListPlayersProps {
   roomMetadata: JoinRoom_joinRoom;
@@ -122,7 +122,7 @@ export class ListPlayers extends React.Component<IListPlayersProps, {}> {
       allDisabled = true;
     }
     const occupancy = metadata.userMemberships.length;
-    const gameDef = GAMES_MAP[metadata.gameCode];
+    const gameDef = getGameDefinition(metadata.gameCode);
     const minCapacity = Math.max(gameDef.minPlayers, occupancy);
     const maxCapacity = gameDef.maxPlayers;
     const capacity = metadata.capacity;

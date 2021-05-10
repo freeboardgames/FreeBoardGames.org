@@ -7,6 +7,7 @@ import SearchBox from './SearchBox';
 import { DesktopView, MobileView } from 'infra/common/device/DesktopMobileView';
 import css from './GamesList.module.css';
 import { Link } from 'infra/i18n';
+import { play } from 'infra/navigation';
 
 interface State {
   searchQuery?: string;
@@ -88,7 +89,7 @@ export class GamesList extends React.Component<Props, State> {
       );
     } else {
       return (
-        <Link href={`/play/${game.code}`} key={game.code}>
+        <Link href={play(game)} key={game.code}>
           <a className={css.Card}>
             <GameCard game={game} isLink={true} />
           </a>
