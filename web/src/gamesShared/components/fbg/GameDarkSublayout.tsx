@@ -187,8 +187,8 @@ const mapStateToProps = function (state) {
 };
 
 const enhance = compose<IGameDarkSublayoutInnerProps, IGameDarkSublayoutOutterProps>(
-  connect(mapStateToProps),
   withRouter,
+  connect(mapStateToProps),
 );
 
 export const GameDarkSublayout = enhance(GameDarkSublayoutInternal);
