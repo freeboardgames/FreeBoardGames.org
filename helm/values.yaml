@@ -22,3 +22,7 @@ postgresql:
     port: 5432
   volumePermissions:
     enabled: true
+
+redis:
+  auth:
+    password: REDIS_FBG_PASSWORD

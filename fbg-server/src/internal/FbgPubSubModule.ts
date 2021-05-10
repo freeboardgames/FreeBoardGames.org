@@ -1,7 +1,7 @@
 import { PubSub } from "graphql-subscriptions";
 import { IS_PROD } from "./util";
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import * as Redis from 'ioredis';
+import Redis from 'ioredis';
 import { Module } from '@nestjs/common';
 
 export const FBG_PUB_SUB = 'FbgPubSub';
@@ -16,7 +16,8 @@ export const FBG_PUB_SUB = 'FbgPubSub';
         }
         const options = {
           host: process.env.FBG_REDIS_HOST,
-          port: process.env.FBG_REDIS_PORT
+          port: process.env.FBG_REDIS_PORT,
+          password: process.env.FBG_REDIS_PASSWORD,
         };
 
         return new RedisPubSub({

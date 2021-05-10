@@ -55,8 +55,8 @@ compile_dependencies() {
 build_docker() {
     cd "$DIR"
     docker build -t "$BUILD_IMAGE_COMMON" "$BUILD_DIR_COMMON" || exit 1
-    docker build -t "fbg-web:latest" -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB" || exit 1
-    docker build -t "fbg-server:latest" -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG" || exit 1
+    docker build -t "fbg-web" -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB" || exit 1
+    docker build -t "fbg-server" -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG" || exit 1
 }
 
 push_docker() {
@@ -66,7 +66,7 @@ push_docker() {
 }
 
 prune_docker_images() {
-    PRUNE_IMAGES=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep freeboardgames/)
+    PRUNE_IMAGES=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep -e freeboardgames -e fbg)
     echo -e "$PRUNE_IMAGES"
     if $(confirm "Delete listed docker images?") ; then
         echo "$PRUNE_IMAGES" | xargs docker rmi
@@ -75,9 +75,11 @@ prune_docker_images() {
 
 upload_minikube() {
     echo -e "Uploading fbg-web..."
-    minikube cache add fbg-web:latest || exit 1
+    minikube cache delete fbg-web
+    minikube cache add fbg-web || exit 1
     echo -e "Uploading fbg-server..."
-    minikube cache add fbg-server:latest || exit 1
+    minikube cache delete fbg-server
+    minikube cache add fbg-server || exit 1
 }
 
 exportdocker() {
