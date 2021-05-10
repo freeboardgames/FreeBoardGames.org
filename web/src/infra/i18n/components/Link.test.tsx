@@ -2,14 +2,15 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import * as RTL from '@testing-library/react';
 import { screen, waitFor } from '@testing-library/react';
-import { LinkProps } from 'next/link';
 import mockedEnv from 'mocked-env';
 import NextI18Next from 'next-i18next';
-import { Link } from 'next-i18next';
+import { LinkProps } from '../types';
+import { GAMES_MAP } from 'games';
 
 describe('Link', () => {
   let nextI18Next: NextI18Next;
-  let Link: Link;
+  let Link;
+  let play;
 
   beforeEach(() => {
     const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'true' });
@@ -19,6 +20,7 @@ describe('Link', () => {
   beforeEach(async () => {
     nextI18Next = require('../config').nextI18Next;
     Link = require('./Link').Link;
+    play = require('infra/navigation').play;
   });
 
   beforeEach(() => {
@@ -28,11 +30,21 @@ describe('Link', () => {
     });
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   describe('when translated route is available', () => {
     it('replaces the href property for it ', async () => {
       await forGivenLanguage('pt');
-      renderLink('Play bingo', { href: '/play/bingo' });
+      renderLink('Play bingo', { href: play(GAMES_MAP.bingo) });
       await thenLinkShouldHave('Play bingo', { href: '/pt/jogar/bingo' });
+    });
+
+    it('renders Link with translated game', async () => {
+      await forGivenLanguage('pt');
+      renderLink('Play chess', { href: play(GAMES_MAP.chess) });
+      await thenLinkShouldHave('Play chess', { href: '/pt/jogar/xadrez' });
     });
 
     it('does not render Link whe using a invalid language', async () => {
@@ -40,17 +52,13 @@ describe('Link', () => {
       jest.spyOn(console, 'error').mockImplementation();
 
       await forGivenLanguage('invalid');
-
-      expect(() => {
-        renderLink('Play chess', { href: '/play/chess' });
-      }).toThrow('Invalid configuration: Current language is not included in all languages array');
-
-      jest.restoreAllMocks();
+      renderLink('Play chess', { href: play(GAMES_MAP.chess) });
+      await thenLinkShouldHave('Play chess', { href: '/en/play/chess' });
     });
 
     it('does not change url for non-translated path ', async () => {
       await forGivenLanguage('pt');
-      renderLink('Play unknown', { href: '/unknown/path' });
+      renderLink('Play unknown', { href: () => '/unknown/path' });
       await thenLinkShouldHave('Play unknown', { href: '/pt/unknown/path' });
     });
   });
@@ -63,7 +71,7 @@ describe('Link', () => {
     RTL.render(<Link {...props}>{text}</Link>);
   }
 
-  async function thenLinkShouldHave(text: string, props: Pick<LinkProps, 'href'>) {
+  async function thenLinkShouldHave(text: string, props: { href: string }) {
     await waitFor(() => {
       Object.entries(props).forEach(([key, value]) => {
         expect(screen.getByText(text)).toHaveAttribute(key, value);

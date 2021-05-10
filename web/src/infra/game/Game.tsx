@@ -1,6 +1,5 @@
 import React from 'react';
 import { Client } from 'boardgame.io/react';
-import { GAMES_MAP } from 'games';
 import { IGameDef, IGameConfig, IAIConfig, IGameArgs } from 'gamesShared/definitions/game';
 import { gameBoardWrapper } from './GameBoardWrapper';
 import { GameMode } from 'gamesShared/definitions/mode';
@@ -14,6 +13,7 @@ import { SocketIO, Local } from 'boardgame.io/multiplayer';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { Debug } from 'boardgame.io/debug';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
+import { getGameDefinition } from './utils';
 
 interface IGameProps {
   // FIXME: fix which props are req
@@ -54,7 +54,7 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
       this.loadAI = this.mode === GameMode.AI && typeof window !== 'undefined';
       this.gameCode = this.props.gameCode;
     }
-    this.gameDef = GAMES_MAP[this.gameCode];
+    this.gameDef = getGameDefinition(this.gameCode);
   }
 
   clear() {

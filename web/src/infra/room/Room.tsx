@@ -1,7 +1,6 @@
 import React from 'react';
 import MessagePage from 'infra/common/components/alert/MessagePageClass';
 import { LobbyService } from 'infra/common/services/LobbyService';
-import { GAMES_MAP } from 'games';
 import { IGameDef } from 'gamesShared/definitions/game';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';
 import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
@@ -27,7 +26,9 @@ import { CustomizationBar } from 'infra/settings/CustomizationBar';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 import { compose } from 'recompose';
-import { Router, NextRouter, withRouter } from 'infra/i18n';
+import { NextRouter, withRouter, Link, Router } from 'infra/i18n';
+import { home, match } from 'infra/navigation';
+import { getGameDefinition } from 'infra/game';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -120,7 +121,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
             if (this.shouldUpdateMetadata(room)) {
               this.setState({ roomMetadata: room });
             }
-            const gameDef = GAMES_MAP[room.gameCode];
+            const gameDef = getGameDefinition(room.gameCode);
             return (
               <React.Fragment>
                 {this.renderGameCard(room, gameDef)}
@@ -210,7 +211,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   }
 
   private redirectToMatch(matchId: string) {
-    Router.replace(`/match/${matchId}`);
+    Router.replace(match(matchId));
   }
 
   private shouldUpdateMetadata(room: JoinRoom_joinRoom) {
@@ -245,9 +246,11 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
 
   private renderLeaveRoomButton() {
     return (
-      <Button variant="outlined" onClick={this._leaveRoom}>
-        Leave room
-      </Button>
+      <Link href={() => home()}>
+        <Button variant="outlined" onClick={this._leaveRoom}>
+          Leave room
+        </Button>
+      </Link>
     );
   }
 
@@ -333,9 +336,6 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   _leaveRoom = () => {
     const dispatch = (this.props as any).dispatch;
     LobbyService.leaveRoom(dispatch, this._roomId());
-    // FIXME: on dev only, this does not work for a redirect to '/'.
-    // However, it works for other routes such as '/about' ... why?
-    Router.push('/');
   };
 
   _removeUser = (userIdToBeRemoved: number) => () => {

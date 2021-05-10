@@ -3,7 +3,6 @@ import { Carousel } from 'infra/common/components/carousel/Carousel';
 import { GameCardWithOverlay } from './GameCardWithOverlay';
 import { gql } from 'apollo-boost';
 import { GetLobby, GetLobby_lobby } from 'gqlTypes/GetLobby';
-import { GAMES_MAP } from 'games';
 import { Typography, Button, CircularProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { getGroupedRoomsDisplay } from './LobbyUtil';
@@ -12,6 +11,7 @@ import { LobbyService } from 'infra/common/services/LobbyService';
 import { Subscription } from '@apollo/react-components';
 import css from './LobbyCarousel.module.css';
 import { withTranslation, WithTranslation } from 'infra/i18n';
+import { getGameDefinition } from 'infra/game';
 
 export const LOBBIES_SUBSCRIPTION = gql`
   subscription SubscribeToLobby {
@@ -102,7 +102,7 @@ class LobbyCarousel extends React.Component<Props, State> {
     for (const [gameCode, rooms] of Object.entries(grouped)) {
       result.push(
         <div key={gameCode} style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
-          <GameCardWithOverlay rooms={rooms} game={GAMES_MAP[gameCode]} />
+          <GameCardWithOverlay rooms={rooms} game={getGameDefinition(gameCode)} />
         </div>,
       );
     }

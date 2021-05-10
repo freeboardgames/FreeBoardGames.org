@@ -5,6 +5,8 @@ import { GamesList } from 'infra/common/components/game/GamesList';
 import SEO from 'infra/common/helpers/SEO';
 import { Link } from 'infra/i18n';
 import LobbyCarousel from 'infra/lobby/LobbyCarousel';
+import { about } from 'infra/navigation';
+import { getAllGames } from 'infra/game';
 
 export class Home extends React.Component<{}, {}> {
   render() {
@@ -21,7 +23,7 @@ export class Home extends React.Component<{}, {}> {
         <GamesList />
         {this.maybeRenderGamesInDevelopment()}
         <p style={{ fontSize: '14px', textAlign: 'center' }}>
-          <Link href="/about">
+          <Link href={() => about()}>
             <a>About</a>
           </Link>
         </p>
@@ -39,7 +41,7 @@ export class Home extends React.Component<{}, {}> {
 
   static async getInitialProps() {
     return {
-      namespacesRequired: ['LobbyCarousel'],
+      namespacesRequired: ['LobbyCarousel', 'GameCard', ...getAllGames().map((g) => g.code)],
     };
   }
 }

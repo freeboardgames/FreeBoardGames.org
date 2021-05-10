@@ -3,7 +3,6 @@ import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import { GameCard } from 'infra/common/components/game/GameCard';
 import { GameModePicker } from 'infra/gameInfo/GameModePicker';
 import { GameInstructionsVideo } from 'infra/gameInfo/GameInstructionsVideo';
-import { GAMES_MAP } from 'games';
 import { generatePageError } from 'next-with-error';
 import SEO from 'infra/common/helpers/SEO';
 import { DesktopView, MobileView } from 'infra/common/device/DesktopMobileView';
@@ -12,10 +11,13 @@ import ReactMarkdown from 'react-markdown';
 import { GameInstructionsText } from 'infra/gameInfo/GameInstructionsText';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
 import { GameContributors } from './GameContributors';
-import { translateHref, WithTranslate, withTranslate, withTranslation, WithTranslation } from 'infra/i18n';
+import { WithCurrentGameTranslation, withCurrentGameTranslation, withTranslation, WithTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
+import { getGameDefinition } from 'infra/game';
+import { NextPageContext } from 'next';
+import { play } from 'infra/navigation';
 
-interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithTranslate {}
+interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithCurrentGameTranslation {}
 
 interface GameInfoOutterProps {
   gameCode: string;
@@ -28,7 +30,7 @@ const DESKTOP_MOBILE_THRESHOLD = 768;
 class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps, {}> {
   render() {
     const { gameCode, t, translate, i18n } = this.props;
-    const gameDef = GAMES_MAP[gameCode];
+    const gameDef = getGameDefinition(gameCode);
     const { name, instructions, description, descriptionTag } = gameDef;
 
     const videoInstructions = translate('instructions.videoId', instructions.videoId);
@@ -48,7 +50,7 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
             {
               position: 1,
               name: t('breadcrumb'),
-              item: translateHref({ href: '/play', language: i18n.language }),
+              item: play()(i18n.language),
             },
             {
               position: 2,
@@ -93,11 +95,14 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
     );
   }
 
-  static async getInitialProps(ctx) {
+  static async getInitialProps(ctx: NextPageContext) {
     const gameCode = ctx.query.gameCode as string;
-    if (!GAMES_MAP[gameCode] && ctx.res) {
+    const game = getGameDefinition(gameCode);
+
+    if (!game && ctx.res) {
       return generatePageError(404);
     }
+
     return {
       gameCode,
       namespacesRequired: ['common', 'GameInfo', 'GameModePicker', gameCode],
@@ -105,6 +110,6 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
   }
 }
 
-const enhance = compose(withTranslation('GameInfo'), withTranslate());
+const enhance = compose(withTranslation('GameInfo'), withCurrentGameTranslation);
 
 export default enhance(GameInfo);

@@ -1,12 +1,12 @@
-import React from 'react';
-import { IGameDef } from 'gamesShared/definitions/game';
 import IconButton from '@material-ui/core/IconButton';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Typography from '@material-ui/core/Typography';
-import { WithTranslate, withTranslate, WithTranslation, withTranslation } from 'infra/i18n';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import { IGameDef } from 'gamesShared/definitions/game';
+import { withNamespaceTranslation, WithTranslation, withTranslation, WithNamespace } from 'infra/i18n';
+import React from 'react';
 import { compose } from 'recompose';
 
-interface IGameCardInnerProps extends Pick<WithTranslation, 't'>, WithTranslate {}
+interface IGameCardInnerProps extends Pick<WithTranslation, 't'>, WithNamespace {}
 
 interface IGameCardOutterProps {
   game: IGameDef;
@@ -15,10 +15,11 @@ interface IGameCardOutterProps {
 
 export class GameCardInternal extends React.Component<IGameCardInnerProps & IGameCardOutterProps, {}> {
   render() {
-    const { t, translate } = this.props;
+    const { t, game, withNamespace } = this.props;
+    const translate = withNamespace(game.code);
 
     let navigateButton = null;
-    const image = this.props.game.imageURL;
+    const image = game.imageURL;
     const mainDivStyle: React.CSSProperties = {
       position: 'relative',
       height: '250px',
@@ -57,15 +58,15 @@ export class GameCardInternal extends React.Component<IGameCardInnerProps & IGam
     }
     const gameNameHeading = this.props.isLink ? (
       <Typography gutterBottom={false} variant="h4" component="h2" style={{ fontWeight: 300 }}>
-        {t('play', { name: translate('name', this.props.game.name) })}
+        {t('play', { name: translate('name', game.name) })}
       </Typography>
     ) : (
       <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
-        {translate('name', this.props.game.name)}
+        {translate('name', game.name)}
       </Typography>
     );
     return (
-      <div style={mainDivStyle} data-testid={`gamecard-${this.props.game.code}`}>
+      <div style={mainDivStyle} data-testid={`gamecard-${game.code}`}>
         <div
           style={{
             ...baseBadgeStyle,
@@ -85,7 +86,7 @@ export class GameCardInternal extends React.Component<IGameCardInnerProps & IGam
           }}
         >
           <Typography gutterBottom={false} variant="overline" component="h5">
-            {translate('description', this.props.game.description)}
+            {translate('description', game.description)}
           </Typography>
         </div>
         {navigateButton}
@@ -94,6 +95,9 @@ export class GameCardInternal extends React.Component<IGameCardInnerProps & IGam
   }
 }
 
-const enhance = compose<IGameCardInnerProps, IGameCardOutterProps>(withTranslation('GameCard'), withTranslate());
+const enhance = compose<IGameCardInnerProps, IGameCardOutterProps>(
+  withTranslation(['GameCard']),
+  withNamespaceTranslation,
+);
 
 export const GameCard = enhance(GameCardInternal);

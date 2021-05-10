@@ -1,9 +1,9 @@
 import React from 'react';
 import { GameSharingInternal as GameSharing } from './GameSharing';
 import { render, fireEvent, RenderResult, cleanup } from '@testing-library/react';
-import { I18n } from 'next-i18next';
 import { mock } from 'jest-mock-extended';
 import mockedEnv from 'mocked-env';
+import { I18n } from 'infra/i18n';
 require('@testing-library/jest-dom/extend-expect');
 
 const GAME_LINK = 'http://localhost/room/fooroom';
