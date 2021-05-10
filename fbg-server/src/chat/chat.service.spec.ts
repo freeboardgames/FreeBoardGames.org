@@ -10,7 +10,7 @@ import { MatchService } from '../match/match.service';
 import { PubSub } from 'graphql-subscriptions';
 import { closeDbConnection } from '../testing/dbUtil';
 import { HttpService } from '@nestjs/common';
-import { FbgPubSubModule, FBG_PUB_SUB } from '../internal/FbgPubSubModule';
+import { FBG_PUB_SUB } from '../internal/FbgPubSubModule';
 
 describe('ChatService', () => {
   let module: TestingModule;

@@ -6,8 +6,8 @@ images:
   fbgServer: fbg-server     # For prod, use freeboardgames/fbg-server
 
 replicas:
-  web: 1
-  fbgServer: 1
+  web: 2
+  fbgServer: 2
   bgio: 1
 
 fbgServer:
