@@ -1,14 +1,13 @@
-import { Router, TFunction } from 'next-i18next';
-import { UrlObject } from 'url';
-
-export type Url = UrlObject | string;
-
-export interface TransitionOptions {
-  shallow?: boolean;
-}
-
-export type NextRouter = Router;
-
-export type { WithRouterProps } from 'next/dist/client/with-router';
-
-export type WithTranslate<T extends string = 'translate'> = Record<T, TFunction>;
+export * from './I18n';
+export * from './Language';
+export * from './LinkProps';
+export * from './NextRouter';
+export * from './Redirect';
+export * from './Rewrite';
+export * from './TransitionOptions';
+export * from './TranslatedPath';
+export * from './Url';
+export * from './WithCurrentGameTranslation';
+export * from './WithNamespace';
+export * from './WithRouterProps';
+export * from './WithTranslation';

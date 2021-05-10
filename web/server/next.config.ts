@@ -1,3 +1,5 @@
+/// <reference path='./typings.d.ts'/>
+
 import WebpackBar from 'webpackbar';
 import withOptimizedImages from 'next-optimized-images';
 import childProcess from 'child_process';

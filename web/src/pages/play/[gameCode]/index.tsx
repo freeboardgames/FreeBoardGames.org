@@ -1,3 +1,3 @@
-import GameInfo from '../../../infra/gameInfo/GameInfo';
+import GameInfo from 'infra/gameInfo/GameInfo';
 
 export default GameInfo;

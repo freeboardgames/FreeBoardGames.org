@@ -1,4 +1,5 @@
 export * from './appWithTranslation';
 export * from './withRouter';
-export * from './withTranslate';
+export * from './withCurrentGameTranslation';
+export * from './withNamespaceTranslation';
 export * from './withTranslation';

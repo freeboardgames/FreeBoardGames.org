@@ -3,7 +3,11 @@ import { GameModePickerInternal as GameModePicker } from './GameModePicker';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { render, RenderResult, cleanup } from '@testing-library/react';
+import { I18n } from 'next-i18next';
+import { mock } from 'jest-mock-extended';
 require('@testing-library/jest-dom/extend-expect');
+
+const i18n = mock<I18n>({ language: 'en' });
 
 const CUSTOMIZATION = { module: undefined };
 
@@ -29,6 +33,7 @@ const GAME_DEF_TEST: IGameDef = {
 function getWrapper(modes: IGameModeInfo[]): RenderResult {
   return render(
     <GameModePicker
+      i18n={i18n}
       gameDef={{ ...GAME_DEF_TEST, modes }}
       dispatch={jest.fn()}
       t={jest.fn()}
