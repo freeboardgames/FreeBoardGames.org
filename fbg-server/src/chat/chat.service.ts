@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
 import { RoomsService } from '../rooms/rooms.service';
 import { MatchService } from '../match/match.service';
 import { UsersService } from '../users/users.service';
@@ -6,6 +6,7 @@ import { PubSub } from 'graphql-subscriptions';
 import { SendMessageInput } from './gql/SendMessageInput.gql';
 import { Message } from './gql/Message.gql';
 import Filter from 'bad-words';
+import { FBG_PUB_SUB } from '../internal/FbgPubSubModule';
 
 const MAX_MESSAGE_LENGTH = 280;
 
@@ -15,7 +16,7 @@ export class ChatService {
     private roomsService: RoomsService,
     private matchService: MatchService,
     private usersService: UsersService,
-    private pubSub: PubSub,
+    @Inject(FBG_PUB_SUB) private pubSub: PubSub,
   ) {}
 
   public async sendMessage(userId: number, messageInput: SendMessageInput): Promise<void> {

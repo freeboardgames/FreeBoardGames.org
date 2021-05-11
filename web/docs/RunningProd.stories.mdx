@@ -7,6 +7,10 @@ Install docker, minikube, and helm.
 Install minikube ingress extension:
 ``minikube addons enable ingress``
 
+Compile the docker images locally using:
+``./docker-build.sh``
+on the root folder. When asked by the script, upload the images to minikube. This will make it possible to run your local code on minikube.
+
 Create a new helm release, in the root:
 ``helm install my-fbg ./helm``
 
