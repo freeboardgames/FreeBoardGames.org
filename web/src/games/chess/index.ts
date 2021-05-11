@@ -6,7 +6,7 @@ import instructions from './instructions.md';
 export const chessGameDef: IGameDef = {
   code: 'chess',
   codes: { en: 'chess', pt: 'xadrez' },
-  translationStatus: { en: IGameTranslationStatus.PARTIAL, pt: IGameTranslationStatus.PARTIAL },
+  translationStatus: { pt: IGameTranslationStatus.PARTIAL },
   name: 'Chess',
   contributors: ['flamecoals'],
   imageURL: Thumbnail,

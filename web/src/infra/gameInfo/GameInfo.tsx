@@ -11,12 +11,22 @@ import ReactMarkdown from 'react-markdown';
 import { GameInstructionsText } from 'infra/gameInfo/GameInstructionsText';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
 import { GameContributors } from './GameContributors';
-import { WithCurrentGameTranslation, withCurrentGameTranslation, withTranslation, WithTranslation } from 'infra/i18n';
+import {
+  nextI18Next,
+  WithCurrentGameTranslation,
+  withCurrentGameTranslation,
+  withTranslation,
+  WithTranslation,
+} from 'infra/i18n';
 import { compose } from 'recompose';
 import { getGameDefinition } from 'infra/game';
 import { NextPageContext } from 'next';
 import { play } from 'infra/navigation';
+import Alert from '@material-ui/lab/Alert';
 import { getGameCodeNamespace } from 'infra/game/utils';
+import { makeTranslationStatusComparator } from 'gamesShared/helpers/translationStatus';
+
+const { Trans } = nextI18Next;
 
 interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithCurrentGameTranslation {}
 
@@ -39,6 +49,8 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
 
     const textInstructions = translate('instructions.text', instructions.text);
     const gameTextInstructions = textInstructions ? <GameInstructionsText text={textInstructions} /> : null;
+
+    const isFullyTranslated = makeTranslationStatusComparator(i18n.language);
 
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
@@ -72,6 +84,11 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
             <div style={{ flex: '55%', padding: '8px' }}>
               <GameCard game={gameDef} />
               <div style={{ marginTop: '16px' }}>
+                {!isFullyTranslated(gameDef) && (
+                  <Alert severity="warning">
+                    <Trans t={t} i18nKey="missing_translation_warning" components={{ docs: <a href="/docs" /> }} />
+                  </Alert>
+                )}
                 <Typography variant="body1" component="p">
                   <ReactMarkdown linkTarget="_blank" source={textInstructions} />
                 </Typography>

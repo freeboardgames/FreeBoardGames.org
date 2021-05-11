@@ -29,7 +29,7 @@ export enum IGameStatus {
 
 export interface IGameDef {
   code: string;
-  codes?: Record<Language, string>;
+  codes?: Partial<Record<Language, string>>;
   name: string;
   contributors: string[];
   imageURL: string;
@@ -43,7 +43,7 @@ export interface IGameDef {
     text?: string;
   };
   status: IGameStatus;
-  translationStatus?: Record<Language, IGameTranslationStatus>;
+  translationStatus?: Partial<Record<Language, IGameTranslationStatus>>;
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
   customization?: () => Promise<any>;
