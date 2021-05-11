@@ -5,7 +5,7 @@ import { generate } from './generate';
 
 const fallbackPathsByLocale = {
   en: ['en', 'play', ':rest+'],
-  pt: ['en', 'jogar', ':rest+'],
+  pt: ['pt', 'jogar', ':rest+'],
 };
 
 const { rewrites: gameRewrites, redirects: gameRedirects } = generate();
