@@ -28,7 +28,7 @@
     "cyp:open:tablet": "cypress open --env userAgent=tablet",
     "cyp:run": "run-s --silent cyp:run:*",
     "start:bgio": "node server/dist/server_bgio.js",
-    "start": "run-s i18n:copy build:server start:server",
+    "start": "run-s build:server start:server",
     "start:server": "cross-env CHANNEL=production NODE_ENV=production node server/dist/server_web.js",
     "e2e:build": "cross-env NODE_ENV=production CHANNEL=staging BABEL_ENV=e2e next build",
     "e2e:startserver": "cross-env NODE_ENV=production CHANNEL=staging BABEL_ENV=e2e node server/dist/server_web.js",
