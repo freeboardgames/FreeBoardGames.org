@@ -43,6 +43,7 @@ export interface IGameDef {
     text?: string;
   };
   status: IGameStatus;
+  translationStatus?: Record<Language, IGameTranslationStatus>;
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
   customization?: () => Promise<any>;
@@ -50,4 +51,9 @@ export interface IGameDef {
 
 export interface IGameDefMap {
   [code: string]: IGameDef;
+}
+
+export enum IGameTranslationStatus {
+  PARTIAL,
+  DONE,
 }
