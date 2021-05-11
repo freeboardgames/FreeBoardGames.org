@@ -16,6 +16,7 @@ import { compose } from 'recompose';
 import { getGameDefinition } from 'infra/game';
 import { NextPageContext } from 'next';
 import { play } from 'infra/navigation';
+import { getGameCodeNamespace } from 'infra/game/utils';
 
 interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithCurrentGameTranslation {}
 
@@ -105,7 +106,7 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
 
     return {
       gameCode,
-      namespacesRequired: ['common', 'GameInfo', 'GameModePicker', gameCode],
+      namespacesRequired: ['common', 'GameInfo', 'GameModePicker', getGameCodeNamespace(gameCode)],
     };
   }
 }

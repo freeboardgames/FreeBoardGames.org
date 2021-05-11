@@ -18,4 +18,4 @@ export const getGameDefinition = (gameCode: string) => {
 
 export const getAllGames = () => GAMES_LIST;
 
-export const getGamesNamespace = (gameCode: string) => `games/${gameCode}`;
+export const getGameCodeNamespace = (gameCode: string) => `games/${gameCode}`;
