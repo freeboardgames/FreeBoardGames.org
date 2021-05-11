@@ -3,8 +3,6 @@
 import Head from 'next/head';
 import App from 'next/app';
 import React from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
-import theme from 'infra/common/components/base/theme';
 import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
 import { isMobileFromReq } from 'infra/common/device/UaHelper';
 import UaContext from 'infra/common/device/IsMobileContext';
@@ -24,6 +22,7 @@ import AddressHelper from 'infra/common/helpers/AddressHelper';
 import { compose } from 'recompose';
 import { appWithTranslation } from 'infra/i18n';
 import { GameProvider } from 'infra/game/GameProvider';
+import { ThemeProvider } from 'infra/common';
 
 const GA_TRACKING_CODE = 'UA-105391878-2';
 const SENTRY_DSN = 'https://5957292e58cf4d2fbb781910e7b26b1f@o397015.ingest.sentry.io/5251165';
@@ -112,7 +111,7 @@ class DefaultApp extends App {
           <meta name="msapplication-TileColor" content="#ffc40d" />
           <meta name="msapplication-config" content="/static/icons/browserconfig.xml" />
         </Head>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider>
           <SelfXSSWarning />
           <UaContext.Provider value={isMobile}>
             <ApolloProvider client={client}>
