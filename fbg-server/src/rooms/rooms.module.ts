@@ -9,12 +9,14 @@ import { PubSub } from 'graphql-subscriptions';
 import { AuthModule } from '../internal/auth/auth.module';
 import { LobbyResolver } from './lobby.resolver';
 import { LobbyService } from './lobby.service';
+import { FbgPubSubModule } from '../internal/FbgPubSubModule';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([RoomMembershipEntity, RoomEntity]),
     forwardRef(() => UsersModule),
     AuthModule,
+    FbgPubSubModule,
   ],
   providers: [RoomsResolver, RoomsService, LobbyResolver, LobbyService, PubSub],
   exports: [RoomsService, LobbyService],

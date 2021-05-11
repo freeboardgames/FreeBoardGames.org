@@ -9,6 +9,7 @@ import { HttpService } from '@nestjs/common';
 import { MatchService } from '../match/match.service';
 import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { PubSub } from 'graphql-subscriptions';
+import { FBG_PUB_SUB } from '../internal/FbgPubSubModule';
 
 describe('RoomsService', () => {
   let module: TestingModule;
@@ -28,7 +29,7 @@ describe('RoomsService', () => {
     service = module.get<RoomsService>(RoomsService);
     httpService = module.get<HttpService>(HttpService);
     matchService = module.get<MatchService>(MatchService);
-    pubSub = module.get<PubSub>(PubSub);
+    pubSub = module.get<PubSub>(FBG_PUB_SUB);
   });
 
   afterAll(async () => {

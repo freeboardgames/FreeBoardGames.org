@@ -27,8 +27,8 @@ spec:
           value: http://{{ .Release.Name }}-fbg-server
         - name: NEXT_PUBLIC_I18N_ENABLED
           value: 'true'
-        image: freeboardgames/web
-        imagePullPolicy: Always
+        image: {{ .Values.images.web }} 
+        imagePullPolicy: {{ .Values.images.imagePullPolicy }}
         livenessProbe:
           failureThreshold: 3
           httpGet:

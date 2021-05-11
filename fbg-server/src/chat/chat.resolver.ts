@@ -1,4 +1,4 @@
-import { HttpStatus, HttpException } from '@nestjs/common';
+import { HttpStatus, HttpException, Inject } from '@nestjs/common';
 import { Resolver, Mutation, Args, Subscription } from '@nestjs/graphql';
 import { Message } from './gql/Message.gql';
 import { PubSub } from 'graphql-subscriptions';
@@ -8,10 +8,11 @@ import { UseGuards } from '@nestjs/common';
 import { CurrentUser, GqlAuthGuard } from '../internal/auth/GqlAuthGuard';
 import { User } from '../users/gql/User.gql';
 import { SendMessageInput } from './gql/SendMessageInput.gql';
+import { FBG_PUB_SUB } from '../internal/FbgPubSubModule';
 
 @Resolver(() => Message)
 export class ChatResolver {
-  constructor(private chatService: ChatService, private pubSub: PubSub) {}
+  constructor(private chatService: ChatService, @Inject(FBG_PUB_SUB) private pubSub: PubSub) {}
 
   
   @Mutation(() => Boolean)
