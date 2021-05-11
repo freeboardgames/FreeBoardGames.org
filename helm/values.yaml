@@ -1,8 +1,13 @@
-domain: my-fbg.info
+domain: my-fbg.info         # For prod, use freeboardgames.org
+
+images:
+  imagePullPolicy: Never    # For prod, use Always
+  web: fbg-web              # For prod, use freeboardgames/web
+  fbgServer: fbg-server     # For prod, use freeboardgames/fbg-server
 
 replicas:
-  web: 1
-  fbgServer: 1
+  web: 2
+  fbgServer: 2
   bgio: 1
 
 fbgServer:
@@ -17,3 +22,7 @@ postgresql:
     port: 5432
   volumePermissions:
     enabled: true
+
+redis:
+  auth:
+    password: REDIS_FBG_PASSWORD
