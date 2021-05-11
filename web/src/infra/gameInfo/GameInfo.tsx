@@ -1,32 +1,30 @@
-import React from 'react';
+import { Typography } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import { makeTranslationStatusComparator } from 'gamesShared/helpers/translationStatus';
 import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import { GameCard } from 'infra/common/components/game/GameCard';
-import { GameModePicker } from 'infra/gameInfo/GameModePicker';
-import { GameInstructionsVideo } from 'infra/gameInfo/GameInstructionsVideo';
-import { generatePageError } from 'next-with-error';
-import SEO from 'infra/common/helpers/SEO';
 import { DesktopView, MobileView } from 'infra/common/device/DesktopMobileView';
-import { Typography } from '@material-ui/core';
-import ReactMarkdown from 'react-markdown';
-import { GameInstructionsText } from 'infra/gameInfo/GameInstructionsText';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
-import { GameContributors } from './GameContributors';
+import SEO from 'infra/common/helpers/SEO';
+import { getGameDefinition } from 'infra/game';
+import { getGameCodeNamespace } from 'infra/game/utils';
+import { GameInstructionsText } from 'infra/gameInfo/GameInstructionsText';
+import { GameInstructionsVideo } from 'infra/gameInfo/GameInstructionsVideo';
+import { GameModePicker } from 'infra/gameInfo/GameModePicker';
 import {
-  nextI18Next,
+  Trans,
   WithCurrentGameTranslation,
   withCurrentGameTranslation,
   withTranslation,
   WithTranslation,
 } from 'infra/i18n';
-import { compose } from 'recompose';
-import { getGameDefinition } from 'infra/game';
-import { NextPageContext } from 'next';
 import { play } from 'infra/navigation';
-import Alert from '@material-ui/lab/Alert';
-import { getGameCodeNamespace } from 'infra/game/utils';
-import { makeTranslationStatusComparator } from 'gamesShared/helpers/translationStatus';
-
-const { Trans } = nextI18Next;
+import { NextPageContext } from 'next';
+import { generatePageError } from 'next-with-error';
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import { compose } from 'recompose';
+import { GameContributors } from './GameContributors';
 
 interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithCurrentGameTranslation {}
 
