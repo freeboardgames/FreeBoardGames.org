@@ -10,7 +10,7 @@
     "apollo:codegen": "rimraf src/gqlTypes && apollo client:codegen -c apollo.config.js --target typescript --outputFlat src/gqlTypes",
     "pre": "run-s lint lint build:server test ci:test:e2e",
     "ci": "run-s apollo:codegen lint build:server ci:test:unit ci:test:e2e report:combined",
-    "dev:internal": "run-p i18n:watch dev:internal:seq",
+    "dev:internal": "run-p i18n:watch dev:internal:start",
     "dev:internal:start": "start-server-and-test dev:web http://localhost:3000 bgio:dev",
     "dev:web": "run-s build:server:dev dev:runserver",
     "dev:runserver": "node server/dist/server_web.js",
