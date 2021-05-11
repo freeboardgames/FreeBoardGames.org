@@ -1,7 +1,6 @@
 import NextI18Next from 'next-i18next';
 import { i18n, localeSubpaths } from 'server/config/i18n';
 import { localePath } from './constants';
-import { backend } from './utils/backend';
 import { namespace } from './utils/ns';
 
 export type INextI18Next = NextI18Next;
@@ -12,7 +11,6 @@ export const nextI18Next = new NextI18Next({
   otherLanguages: i18n.locales.filter((l) => l !== i18n.defaultLocale),
   localePath: localePath,
   ns: namespace,
-  backend: backend,
 });
 
 if (process.env.NODE_ENV !== 'production') {
