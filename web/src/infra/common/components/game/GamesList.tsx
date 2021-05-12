@@ -1,17 +1,11 @@
-import React from 'react';
-import { GAMES_LIST } from 'games';
+/* eslint-disable react/prop-types */
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import { GameCard } from './GameCard';
-import Typography from '@material-ui/core/Typography';
-import SearchBox from './SearchBox';
-import { DesktopView, MobileView } from 'infra/common/device/DesktopMobileView';
-import css from './GamesList.module.css';
-import { Link } from 'infra/i18n';
+import { getAllGames } from 'infra/game';
 import { play } from 'infra/navigation';
-
-interface State {
-  searchQuery?: string;
-}
+import React, { ChangeEvent, Fragment, useMemo, useState } from 'react';
+import { GameCard } from './GameCard';
+import { Container, Games, Header, Navigable } from './GamesList.ui';
+import SearchBox from './SearchBox';
 
 interface Props {
   showDevOnly?: boolean;
@@ -19,90 +13,40 @@ interface Props {
   hideHeader?: boolean;
 }
 
-export class GamesList extends React.Component<Props, State> {
-  state = { searchQuery: '' };
+export function GamesList({ hideHeader, showDevOnly, gamePickedCallback }: Props) {
+  const [query, setQuery] = useState('');
+  const games = useFilteredGamesList(query, { showDevOnly });
 
-  render() {
-    if (this.props.hideHeader) {
-      return this.renderGames();
-    }
-    return (
-      <div style={{ marginBottom: '16px' }}>
-        <DesktopView>
-          <div style={{ display: 'inline' }}>
-            <SearchBox handleSearchOnChange={this._handleSearchOnChange} style={{ float: 'right', width: '235px' }} />
-            <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
-              {this.getTitle()}
-            </Typography>
-          </div>
-        </DesktopView>
+  const Wrapper = hideHeader ? Fragment : Container;
 
-        <MobileView>
-          <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
-            {this.getTitle()}
-          </Typography>
-          <SearchBox handleSearchOnChange={this._handleSearchOnChange} />
-        </MobileView>
-        {this.renderGames()}
-      </div>
-    );
-  }
-
-  renderGames() {
-    const { searchQuery } = this.state;
-    let gamesList: React.ReactNode[];
-    let filteredGamesList: IGameDef[];
-
-    filteredGamesList = this.getFilteredGamesList();
-
-    if (searchQuery) {
-      const searchQueryL = searchQuery.toLowerCase();
-      filteredGamesList = filteredGamesList.filter((game) => {
-        const nameL = game.name.toLowerCase();
-        const descL = game.description.toLowerCase();
-        const descTagL = game.descriptionTag.toLowerCase();
-        if (nameL.includes(searchQueryL)) return true;
-        if (descL.includes(searchQueryL)) return true;
-        if (descTagL.includes(searchQueryL)) return true;
-      });
-    }
-
-    gamesList = filteredGamesList.map((game) => this.renderGameCard(game));
-    return <div style={{ margin: '0 4px', display: 'flex', flexWrap: 'wrap' }}>{gamesList}</div>;
-  }
-
-  _handleSearchOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchQuery = event.target.value;
-    this.setState({ searchQuery });
-  };
-
-  getTitle() {
-    return this.props.showDevOnly ? 'Games In Development' : 'Games';
-  }
-
-  renderGameCard(game: IGameDef) {
-    if (this.props.gamePickedCallback) {
-      return (
-        <a className={css.Card} onClick={this.onClick(game)} key={game.code}>
-          <GameCard game={game} isLink={true} />
-        </a>
-      );
-    } else {
-      return (
-        <Link href={play(game)} key={game.code}>
-          <a className={css.Card}>
+  return (
+    <Wrapper>
+      <Header showDevOnly={showDevOnly}>
+        <SearchBox onInputChange={({ target }: ChangeEvent<HTMLInputElement>) => setQuery(target.value)} />
+      </Header>
+      <Games>
+        {games.map((game) => (
+          <Navigable key={game.code} href={play(game)} onClick={gamePickedCallback?.bind(null, game)}>
             <GameCard game={game} isLink={true} />
-          </a>
-        </Link>
-      );
-    }
-  }
-  getFilteredGamesList() {
-    const status = this.props.showDevOnly ? IGameStatus.IN_DEVELOPMENT : IGameStatus.PUBLISHED;
-    return GAMES_LIST.filter((gameDef) => gameDef.status === status);
-  }
+          </Navigable>
+        ))}
+      </Games>
+    </Wrapper>
+  );
+}
 
-  onClick = (game: IGameDef) => () => {
-    this.props.gamePickedCallback(game);
-  };
+function useFilteredGamesList(searchQuery: string, options: { showDevOnly?: boolean }) {
+  return useMemo(() => {
+    const status = options.showDevOnly ? IGameStatus.IN_DEVELOPMENT : IGameStatus.PUBLISHED;
+    return getAllGames().filter((game) => {
+      if (searchQuery) {
+        return [
+          game.name.toLowerCase(),
+          game.description.toLowerCase(),
+          game.descriptionTag.toLowerCase(),
+        ].some((text) => text.includes(searchQuery.toLowerCase()));
+      }
+      return game.status === status;
+    });
+  }, [searchQuery, options.showDevOnly]);
 }
