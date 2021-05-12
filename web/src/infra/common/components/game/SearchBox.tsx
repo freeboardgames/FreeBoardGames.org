@@ -54,14 +54,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function SearchBox(props: Props & HTMLAttributes<HTMLDivElement>) {
+function SearchBox({ onInputChange, ...props }: Props & HTMLAttributes<HTMLDivElement>) {
   const classes = useStyles();
   const [query, setQuery] = useState('');
   const { t } = useTranslation('SearchBox');
 
   const handleSearchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
-    props.onInputChange(e);
+    onInputChange(e);
   };
 
   const clearSearchQuery = () => {
