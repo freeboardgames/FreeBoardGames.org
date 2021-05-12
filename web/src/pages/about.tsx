@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import SEO from 'infra/common/helpers/SEO';
 import Breadcrumbs from 'infra/common/helpers/Breadcrumbs';
-import { useRouter } from 'infra/i18n';
+import { useRouter } from 'next/router';
 import { GAMES_LIST } from 'games';
 import { IGameStatus } from 'gamesShared/definitions/game';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
