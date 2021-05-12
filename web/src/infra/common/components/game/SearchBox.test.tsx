@@ -8,7 +8,7 @@ let mockHandleSearchOnChange: jest.Mock;
 describe('SearchBox', () => {
   beforeEach(() => {
     mockHandleSearchOnChange = jest.fn();
-    wrapper = Enzyme.shallow(<SearchBox handleSearchOnChange={mockHandleSearchOnChange} />).dive();
+    wrapper = Enzyme.shallow(<SearchBox onInputChange={mockHandleSearchOnChange} />).dive();
   });
 
   it('renders', () => {
