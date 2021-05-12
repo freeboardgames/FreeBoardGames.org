@@ -18,4 +18,4 @@ export const namespace =
         .map((file) => {
           return file.replace(new RegExp(`${localePath}/${defaultLanguage}/(.+?).${localeExtension}`), '$1');
         })
-    : ['common'];
+    : [];

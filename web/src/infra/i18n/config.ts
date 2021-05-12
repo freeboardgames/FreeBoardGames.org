@@ -11,6 +11,8 @@ export const nextI18Next = new NextI18Next({
   fallbackLng: i18n.defaultLocale,
   otherLanguages: i18n.locales.filter((l) => l !== i18n.defaultLocale),
   localePath: localePath,
+  // @ts-ignore // do not require a defaultNS
+  defaultNS: [],
   ns: namespace,
 });
 
