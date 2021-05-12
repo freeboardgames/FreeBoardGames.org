@@ -40,6 +40,7 @@ run_gameserver() {
     cd "$DIR"
     echo -e "Now the game index will be generated."
     yarn run gen:games || (echo -e "ERROR. (ensure node is up-to-date)" && exit 1)
+    cd web && yarn run i18n:copy && cd -
 }
 
 install_dependencies() {

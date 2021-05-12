@@ -162,3 +162,6 @@ __diff_output__
 
 # storybook auto-generated
 public/static/docs
+
+# i18n for games
+public/static/locales/**/games

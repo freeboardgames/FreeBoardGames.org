@@ -14,6 +14,10 @@ module.exports = ({ config }) => {
     ],
   });
 
+  config.node = {
+    fs: 'empty',
+  };
+
   // Do not use Storybook's CSS rules
   // https://github.com/storybookjs/storybook/issues/6055#issuecomment-521046352
   // https://github.com/webpack/webpack/issues/10843

@@ -17,3 +17,5 @@ export const getGameDefinition = (gameCode: string) => {
 };
 
 export const getAllGames = () => GAMES_LIST;
+
+export const getGameCodeNamespace = (gameCode: string) => `games/${gameCode}`;
