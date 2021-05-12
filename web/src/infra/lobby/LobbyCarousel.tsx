@@ -10,7 +10,7 @@ import { NewRoomModal } from './NewRoomModal';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { Subscription } from '@apollo/react-components';
 import css from './LobbyCarousel.module.css';
-import { withTranslation, WithTranslation } from 'infra/i18n';
+import { Trans, withTranslation, WithTranslation } from 'infra/i18n';
 import { getGameDefinition } from 'infra/game';
 
 export const LOBBIES_SUBSCRIPTION = gql`
@@ -45,11 +45,12 @@ class LobbyCarousel extends React.Component<Props, State> {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <div className={css.wrapper}>
         {this.state.showNewRoomModal && <NewRoomModal handleClickaway={this._toggleNewRoomModal} />}
         <Typography display="inline" component="h2" variant="h6" style={{ margin: '16px 0', marginLeft: '6px' }}>
-          {this.props.t('public_rooms')}
+          {t('public_rooms')}
         </Typography>
         <Button
           variant="contained"
@@ -58,7 +59,7 @@ class LobbyCarousel extends React.Component<Props, State> {
           startIcon={<AddIcon />}
           onClick={this._toggleNewRoomModal}
         >
-          New Room
+          {t('new_room')}
         </Button>
         {this.renderCarousel()}
       </div>
@@ -66,6 +67,8 @@ class LobbyCarousel extends React.Component<Props, State> {
   }
 
   renderCarousel() {
+    const { t } = this.props;
+
     if (this.state.loading) {
       return (
         <Carousel>
@@ -75,7 +78,7 @@ class LobbyCarousel extends React.Component<Props, State> {
     } else if (this.state.error) {
       return (
         <Typography component="h2" variant="body2" className={css.message}>
-          An error occurred while loading the lobby. Try reloading.
+          {t('error')}
         </Typography>
       );
     }
@@ -86,7 +89,7 @@ class LobbyCarousel extends React.Component<Props, State> {
           if (lobby.rooms.length === 0) {
             return (
               <Typography component="h2" variant="body2" className={css.message}>
-                No public room available. Click on &quot;<b>New Room</b>&quot; and create one!
+                <Trans t={t} i18nKey="no_public_room_available" components={{ b: <b /> }} />
               </Typography>
             );
           }
