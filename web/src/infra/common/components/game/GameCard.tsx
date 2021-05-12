@@ -1,11 +1,10 @@
-import { Tooltip } from '@material-ui/core';
-import { IGameDef, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import { makeStyles, Tooltip } from '@material-ui/core';
+import { IGameDef } from 'gamesShared/definitions/game';
 import { makeTranslationStatusComparator } from 'gamesShared/helpers/translationStatus';
 import { WithNamespace, withNamespaceTranslation, WithTranslation, withTranslation } from 'infra/i18n';
 import React from 'react';
 import { compose } from 'recompose';
-import styles from './GameCard.module.css';
-import { Warning, Description, Heading, NavigateButton, Title } from './GameCard.ui';
+import { Description, Heading, NavigateButton, Title, Warning } from './GameCard.ui';
 
 interface IGameCardInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithNamespace {}
 
@@ -14,6 +13,21 @@ interface IGameCardOutterProps {
   isLink?: boolean;
 }
 
+const useStyles = makeStyles({
+  Main: (props: { isLink: boolean }) => ({
+    position: 'relative',
+    height: '250px',
+    width: '100%',
+    backgroundPosition: 'left center',
+    backgroundSize: 'cover',
+    color: 'black',
+    ...(props.isLink && {
+      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)',
+      borderRadius: '8px',
+    }),
+  }),
+});
+
 export function GameCardInternal({
   i18n,
   t,
@@ -21,13 +35,14 @@ export function GameCardInternal({
   withGameNamespace,
   isLink,
 }: IGameCardInnerProps & IGameCardOutterProps) {
+  const styles = useStyles({ isLink });
   const translate = withGameNamespace(game.code);
   const gameName = translate('name', game.name);
   const isFullyTranslated = makeTranslationStatusComparator(i18n.language);
 
   return (
     <div
-      className={`${styles['Main']} ${isLink && styles['Main--link']}`}
+      className={styles.Main}
       style={{ backgroundImage: `url(${game.imageURL})` }}
       data-testid={`gamecard-${game.code}`}
     >
