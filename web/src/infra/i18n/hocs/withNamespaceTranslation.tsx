@@ -1,5 +1,5 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { useWithGameNamespace } from '../hooks';
 import { WithNamespace as TWithNamespace } from '../types';
 
