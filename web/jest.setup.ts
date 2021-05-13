@@ -6,6 +6,7 @@ import '@testing-library/jest-dom';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import 'jest-extended';
+
 Enzyme.configure({ adapter: new Adapter() });
 
 // Google analytics mock
@@ -56,18 +57,25 @@ jest.mock('react-i18next/dist/commonjs/context', () => {
   const glob = jest.requireActual('glob');
   const { readFileSync } = jest.requireActual('fs');
 
+  const paths: string[] = glob.sync('public/static/locales/en/**/*.json', { nonull: false });
+  if (!paths.length) throw new Error('Locale files not found');
+
   i18next.init({
     lng: 'en',
     supportedLngs: ['en', 'pt'],
     initImmediate: false,
-    resources: {},
-  });
-
-  const paths = glob.sync('public/static/locales/en/**/*.json', { nonull: false });
-  paths.forEach((path: string) => {
-    const shortPath = path.replace('public/static/locales/en/', '').replace('.json', '');
-    const translations = JSON.parse(readFileSync(path, 'utf-8'));
-    i18next.addResourceBundle('en', shortPath, translations);
+    resources: paths.reduce(
+      (resources, path: string) => {
+        const shortPath = path.replace('public/static/locales/en/', '').replace('.json', '');
+        const translations = JSON.parse(readFileSync(path, 'utf-8'));
+        resources.en = {
+          ...resources.en,
+          [shortPath]: translations,
+        };
+        return resources;
+      },
+      { en: {} },
+    ),
   });
 
   return {
