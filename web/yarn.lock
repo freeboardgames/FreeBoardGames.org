@@ -18042,6 +18042,11 @@ react-markdown@^4.3.1:
     unist-util-visit "^1.3.0"
     xtend "^4.0.1"
 
+react-only-html-props@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-only-html-props/-/react-only-html-props-1.0.1.tgz#edf6e8e25c7974f72b975f5a656a8249bc9bc29c"
+  integrity sha512-ukdM5KbnwatHtmCSCYzON+R5dnEaM3NyuJHfqagAQl0SRwCCyaLdXuEtFEb66oaoXKckmMKRxlSbGPhrzw3lhQ==
+
 react-popper-tooltip@^2.11.0:
   version "2.11.1"
   resolved "https://registry.yarnpkg.com/react-popper-tooltip/-/react-popper-tooltip-2.11.1.tgz#3c4bdfd8bc10d1c2b9a162e859bab8958f5b2644"

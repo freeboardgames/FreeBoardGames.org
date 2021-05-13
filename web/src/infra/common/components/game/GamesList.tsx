@@ -22,7 +22,7 @@ export function GamesList({ hideHeader, showDevOnly, gamePickedCallback }: Props
   return (
     <Wrapper>
       <Header showDevOnly={showDevOnly}>
-        <SearchBox onInputChange={({ target }: ChangeEvent<HTMLInputElement>) => setQuery(target.value)} />
+        <SearchBox onInputChange={(value: string) => setQuery(value)} />
       </Header>
       <Games>
         {games.map((game) => (

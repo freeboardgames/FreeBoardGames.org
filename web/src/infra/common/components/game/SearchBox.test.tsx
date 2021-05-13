@@ -1,58 +1,51 @@
-import Enzyme from 'enzyme';
-import { getByTestID } from 'infra/common/helpers/tests';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SearchBox from './SearchBox';
 
-let wrapper: Enzyme.ShallowWrapper;
 let mockHandleSearchOnChange: jest.Mock;
 
 describe('SearchBox', () => {
   beforeEach(() => {
     mockHandleSearchOnChange = jest.fn();
-    wrapper = Enzyme.shallow(<SearchBox onInputChange={mockHandleSearchOnChange} />).dive();
+    render(<SearchBox onInputChange={mockHandleSearchOnChange} />);
   });
 
   it('renders', () => {
-    const searchIcon = getByTestID(wrapper, 'SearchIcon').at(0);
-    expect(searchIcon.exists()).toBeTruthy();
+    expect(screen.getByTestId('SearchIcon')).toBeInTheDocument();
   });
 
-  it('does not show ClearIcon', () => {
-    const clearSearchFieldButton = getByTestID(wrapper, 'clearSearchField').at(0);
-    expect(clearSearchFieldButton.exists()).toBeFalsy();
+  it('does not show ClearIcon', async () => {
+    await waitFor(() => {
+      expect(screen.queryByTestId('clearSearchField')).not.toBeInTheDocument();
+    });
   });
 
   it('calls props.handleSearchOnChange()', () => {
-    const instance: any = wrapper.instance();
-    const event = { target: { value: 'foo' } };
-    instance._handleSearchOnChange(event);
-    expect(mockHandleSearchOnChange).toHaveBeenCalledWith({ target: { value: 'foo' } });
+    type('foo');
+    expect(mockHandleSearchOnChange).toHaveBeenCalledWith('foo');
   });
 
   it('shows ClearIcon', () => {
-    const input = wrapper.find(`[data-testid="searchInput"]`).at(0);
-    input.simulate('change', { target: { value: 'foo' } });
-
-    const endAdornment = getByTestID(wrapper, 'searchInput').at(0).prop('endAdornment');
-    expect(endAdornment).not.toBeUndefined();
+    type('foo');
+    expect(screen.getByTestId('clearSearchField')).toBeInTheDocument();
   });
 
-  it('clears search query', () => {
-    const instance: any = wrapper.instance();
-    const event = { target: { value: 'foo' } };
-    instance._handleSearchOnChange(event);
+  it('clears search query', async () => {
+    type('foo');
+    expect(screen.getByTestId('clearSearchField')).toBeInTheDocument();
 
-    // has clear button
-    const endAdornment0 = getByTestID(wrapper, 'searchInput').at(0).prop('endAdornment');
-    expect(endAdornment0).not.toBeUndefined();
+    const input = type('');
+    expect(input).toHaveValue('');
 
-    instance._clearSearchQuery();
-
-    // clear button disappears
-    const endAdornment1 = getByTestID(wrapper, 'searchInput').at(0).prop('endAdornment');
-    expect(endAdornment1).toBeUndefined();
-
-    // text cleared
-    const inputAfter = getByTestID(wrapper, 'searchInput');
-    expect(inputAfter.props().value).toEqual('');
+    await waitFor(() => {
+      expect(screen.queryByTestId('clearSearchField')).not.toBeInTheDocument();
+    });
   });
 });
+
+function type(value: string) {
+  const input = screen.getByRole('textbox', { name: 'search' });
+  act(() => {
+    fireEvent.change(input, { target: { value } });
+  });
+  return input;
+}

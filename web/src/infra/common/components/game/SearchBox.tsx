@@ -7,7 +7,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { useTranslation } from 'infra/i18n';
 
 interface Props {
-  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onInputChange: (value: string) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -61,7 +61,7 @@ function SearchBox({ onInputChange, ...props }: Props & HTMLAttributes<HTMLDivEl
 
   const handleSearchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
-    onInputChange(e);
+    onInputChange(e.target.value);
   };
 
   const clearSearchQuery = () => {

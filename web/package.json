@@ -117,6 +117,7 @@
     "react-ga": "^3.2.0",
     "react-is": "^16.8.0",
     "react-markdown": "^4.3.1",
+    "react-only-html-props": "^1.0.1",
     "react-redux": "^7.2.1",
     "recompose": "^0.30.0",
     "redux": "^4.0.0",
