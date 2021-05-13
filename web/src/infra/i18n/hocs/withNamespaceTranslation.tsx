@@ -3,18 +3,19 @@ import React, { PropsWithChildren } from 'react';
 import { useWithGameNamespace } from '../hooks';
 import { WithNamespace as TWithNamespace } from '../types';
 
-export const withNamespaceTranslation = <P extends {}, C extends React.ComponentType<P & TWithNamespace>>(
-  Component: C,
-  componentName = Component.displayName ?? Component.name,
-) => {
-  type Props = JSX.LibraryManagedAttributes<C, PropsWithChildren<P & TWithNamespace>>;
-
-  const WithNamespace: React.ComponentType<Props> = (props) => {
+export const withNamespaceTranslation = <P extends {}>(
+  Component: React.ComponentType<P & TWithNamespace>,
+  componentName = null,
+): { (props: P): JSX.Element; displayName: string } & hoistNonReactStatics.NonReactStatics<
+  React.ComponentType<P>,
+  {}
+> => {
+  const WithNamespace = (props: P) => {
     const withGameNamespace = useWithGameNamespace();
     return <Component {...props} withGameNamespace={withGameNamespace} />;
   };
-
-  WithNamespace.displayName = `withNamespaceTranslation(${componentName})`;
+  const finalComponentName = componentName ?? Component.displayName ?? Component.name;
+  WithNamespace.displayName = `withNamespaceTranslation(${finalComponentName})`;
 
   return (hoistNonReactStatics(WithNamespace, Component) as unknown) as C;
 };
