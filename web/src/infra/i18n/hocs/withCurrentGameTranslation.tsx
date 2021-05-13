@@ -10,7 +10,7 @@ export const withCurrentGameTranslation = <
   C extends React.ComponentType<P & TWithCurrentGameTranslation>
 >(
   Component: C,
-  componentName = Component.displayName ?? Component.name,
+  componentName = null,
 ) => {
   type Props = JSX.LibraryManagedAttributes<C, PropsWithChildren<P & TWithCurrentGameTranslation>>;
 
@@ -21,7 +21,9 @@ export const withCurrentGameTranslation = <
     return <Component {...props} translate={t} />;
   };
 
-  WithNamespace.displayName = `withCurrentGameTranslation(${componentName})`;
+  const finalComponentName = componentName ?? Component.displayName ?? Component.name;
+
+  WithNamespace.displayName = `withCurrentGameTranslation(${finalComponentName})`;
 
   return (hoistNonReactStatics(WithNamespace, Component) as unknown) as C;
 };
