@@ -10,5 +10,3 @@ export const useWithGameNamespace = (): WithNamespace => {
     return t(key, fallback, { ns: getGameCodeNamespace(namespace) });
   };
 };
-
-export const useTranslation = nextI18Next.useTranslation;
