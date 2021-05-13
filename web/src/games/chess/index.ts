@@ -1,11 +1,12 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
 export const chessGameDef: IGameDef = {
   code: 'chess',
   codes: { en: 'chess', pt: 'xadrez' },
+  translationStatus: { pt: IGameTranslationStatus.PARTIAL },
   name: 'Chess',
   contributors: ['flamecoals'],
   imageURL: Thumbnail,

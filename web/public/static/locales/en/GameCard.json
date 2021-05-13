@@ -1,3 +1,4 @@
 {
-  "play": "Play {{name}}"
+  "play": "Play {{name}}",
+  "missing_translation_warning": "This game is not fully translated to your language yet. Click here to learn how to help us translating it."
 }

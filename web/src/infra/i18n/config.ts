@@ -8,6 +8,7 @@ export type INextI18Next = NextI18Next;
 export const nextI18Next = new NextI18Next({
   ...(process.env.NEXT_PUBLIC_I18N_ENABLED === 'true' && { localeSubpaths }),
   defaultLanguage: i18n.defaultLocale,
+  fallbackLng: i18n.defaultLocale,
   otherLanguages: i18n.locales.filter((l) => l !== i18n.defaultLocale),
   localePath: localePath,
   ns: namespace,

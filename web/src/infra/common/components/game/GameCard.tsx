@@ -1,102 +1,74 @@
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import { makeStyles, Tooltip } from '@material-ui/core';
 import { IGameDef } from 'gamesShared/definitions/game';
-import { withNamespaceTranslation, WithTranslation, withTranslation, WithNamespace } from 'infra/i18n';
+import { makeTranslationStatusComparator } from 'gamesShared/helpers/translationStatus';
+import { WithNamespace, withNamespaceTranslation, WithTranslation, withTranslation } from 'infra/i18n';
 import React from 'react';
 import { compose } from 'recompose';
+import { Description, Heading, NavigateButton, Title, Warning } from './GameCard.ui';
 
-interface IGameCardInnerProps extends Pick<WithTranslation, 't'>, WithNamespace {}
+interface IGameCardInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithNamespace {}
 
 interface IGameCardOutterProps {
   game: IGameDef;
   isLink?: boolean;
 }
 
-export class GameCardInternal extends React.Component<IGameCardInnerProps & IGameCardOutterProps, {}> {
-  render() {
-    const { t, game, withGameNamespace } = this.props;
-    const translate = withGameNamespace(game.code);
-
-    let navigateButton = null;
-    const image = game.imageURL;
-    const mainDivStyle: React.CSSProperties = {
-      position: 'relative',
-      height: '250px',
-      width: '100%',
-      backgroundPosition: 'left center',
-      backgroundImage: `url(${image})`,
-      backgroundSize: 'cover',
-    };
-    const baseBadgeStyle: React.CSSProperties = {
-      position: 'absolute',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-      padding: '0px 8px',
+const useStyles = makeStyles({
+  Main: (props: { isLink: boolean }) => ({
+    position: 'relative',
+    height: '250px',
+    width: '100%',
+    backgroundPosition: 'left center',
+    backgroundSize: 'cover',
+    color: 'black',
+    ...(props.isLink && {
+      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)',
       borderRadius: '8px',
-      backgroundColor: 'white',
-      color: 'black',
-      textDecoration: 'none',
-    };
-    if (this.props.isLink) {
-      mainDivStyle.boxShadow = '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)';
-      mainDivStyle.borderRadius = '8px';
-      navigateButton = (
-        <div
-          style={{
-            ...baseBadgeStyle,
-            bottom: '12px',
-            right: '8px',
-            borderRadius: '32px',
-            padding: '0',
-          }}
-        >
-          <IconButton aria-label="Next">
-            <NavigateNextIcon />
-          </IconButton>
-        </div>
-      );
-    }
-    const gameNameHeading = this.props.isLink ? (
-      <Typography gutterBottom={false} variant="h4" component="h2" style={{ fontWeight: 300 }}>
-        {t('play', { name: translate('name', game.name) })}
-      </Typography>
-    ) : (
-      <Typography gutterBottom={false} variant="h4" component="h1" style={{ fontWeight: 300 }}>
-        {translate('name', game.name)}
-      </Typography>
-    );
-    return (
-      <div style={mainDivStyle} data-testid={`gamecard-${game.code}`}>
-        <div
-          style={{
-            ...baseBadgeStyle,
-            top: '12px',
-            left: '8px',
-            paddingTop: '4px',
-            maxWidth: '500px',
-          }}
-        >
-          {gameNameHeading}
-        </div>
-        <div
-          style={{
-            ...baseBadgeStyle,
-            bottom: '12px',
-            left: '8px',
-          }}
-        >
-          <Typography gutterBottom={false} variant="overline" component="h5">
-            {translate('description', game.description)}
-          </Typography>
-        </div>
-        {navigateButton}
-      </div>
-    );
-  }
+    }),
+  }),
+});
+
+export function GameCardInternal({
+  i18n,
+  t,
+  game,
+  withGameNamespace,
+  isLink,
+}: IGameCardInnerProps & IGameCardOutterProps) {
+  const styles = useStyles({ isLink });
+  const translate = withGameNamespace(game.code);
+  const gameName = translate('name', game.name);
+  const isFullyTranslated = makeTranslationStatusComparator(i18n.language);
+
+  return (
+    <div
+      className={styles.Main}
+      style={{ backgroundImage: `url(${game.imageURL})` }}
+      data-testid={`gamecard-${game.code}`}
+    >
+      <Heading>
+        <Title>{isLink ? t('play', { name: gameName }) : gameName}</Title>
+
+        {!isFullyTranslated(game) && (
+          <Tooltip title={t('missing_translation_warning')} placement="top">
+            <a href="/docs" aria-label="Translation docs" target="_blank" onClick={(e) => e.stopPropagation()}>
+              <Warning />
+            </a>
+          </Tooltip>
+        )}
+      </Heading>
+
+      <Description>
+        <>{translate('description', game.description)}</>
+      </Description>
+
+      {isLink && <NavigateButton />}
+    </div>
+  );
 }
 
 const enhance = compose<IGameCardInnerProps, IGameCardOutterProps>(
-  withTranslation(['GameCard']),
+  withTranslation('GameCard'),
   withNamespaceTranslation,
 );
 
