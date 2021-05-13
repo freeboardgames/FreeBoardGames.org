@@ -1,21 +1,20 @@
-import React from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
+import React, { PropsWithChildren } from 'react';
 import { useWithGameNamespace } from '../hooks';
 import { WithNamespace as TWithNamespace } from '../types';
-import hoistNonReactStatics from 'hoist-non-react-statics';
 
-export const withNamespaceTranslation = <P extends {}>(
-  Component: React.ComponentType<P & TWithNamespace>,
-  componentName = null,
-): { (props: P): JSX.Element; displayName: string } & hoistNonReactStatics.NonReactStatics<
-  React.ComponentType<P>,
-  {}
-> => {
-  const WithNamespace = (props: P) => {
+export const withNamespaceTranslation = <P extends {}, C extends React.ComponentType<P & TWithNamespace>>(
+  Component: C,
+  componentName: string,
+) => {
+  type Props = JSX.LibraryManagedAttributes<C, PropsWithChildren<P & TWithNamespace>>;
+
+  const WithNamespace: React.ComponentType<Props> = (props) => {
     const withGameNamespace = useWithGameNamespace();
     return <Component {...props} withGameNamespace={withGameNamespace} />;
   };
-  const finalComponentName = componentName ?? Component.displayName ?? Component.name;
-  WithNamespace.displayName = `withNamespaceTranslation(${finalComponentName})`;
 
-  return hoistNonReactStatics(WithNamespace, Component);
+  WithNamespace.displayName = `withNamespaceTranslation(${componentName ?? Component.displayName ?? Component.name})`;
+
+  return (hoistNonReactStatics(WithNamespace, Component) as unknown) as C;
 };
