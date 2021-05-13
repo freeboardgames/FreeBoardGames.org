@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import { MessagePage } from './MessagePageClass';
+import { MessagePage } from './MessagePage';
 
 Enzyme.configure({ adapter: new Adapter() });
 

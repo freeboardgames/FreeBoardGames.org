@@ -1,14 +1,14 @@
 import React from 'react';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { GamesList } from '../../../infra/common/components/game/GamesList';
-import FreeBoardGamesBar from '../../../infra/common/components/base/FreeBoardGamesBar';
+import { GamesList } from 'infra/common/components/game/GamesList';
+import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ReactGA from 'react-ga';
-import getMessagePage from '../../../infra/common/components/alert/MessagePage';
-import { LobbyService } from '../../../infra/common/services/LobbyService';
+import getMessagePage from 'infra/common/factories/MessagePage';
+import { LobbyService } from 'infra/common/services/LobbyService';
 import { Router, WithTranslation, withTranslation } from 'infra/i18n';
 import { room } from 'infra/navigation';
 import { compose } from 'recompose';

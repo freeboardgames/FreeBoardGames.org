@@ -1,7 +1,7 @@
 import Enzyme from 'enzyme';
 import { Match } from './Match';
 import { LobbyService } from 'infra/common/services/LobbyService';
-import MessagePage from 'infra/common/components/alert/MessagePageClass';
+import MessagePage from 'infra/common/components/alert/MessagePage';
 import Game from 'infra/game/Game';
 
 jest.mock('infra/common/services/LobbyService');
