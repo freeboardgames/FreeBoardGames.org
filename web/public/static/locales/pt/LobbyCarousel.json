@@ -1,3 +1,6 @@
 {
-  "public_rooms": "Salas públicas"
+  "public_rooms": "Salas públicas",
+  "new_room": "Nova Sala",
+  "error": "Um erro aconteceu durante o carregamento das salas públicas. Tente recarregar.",
+  "no_public_room_available": "Nenhuma sala pública disponível. Clique em \"<b>Nova Sala</b>\" e crie uma!"
 }

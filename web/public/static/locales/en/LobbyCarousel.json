@@ -1,3 +1,6 @@
 {
-  "public_rooms": "Public rooms"
+  "public_rooms": "Public rooms",
+  "new_room": "New Room",
+  "error": "An error occurred while loading the lobby. Try reloading.",
+  "no_public_room_available": "No public room available. Click on \"<b>New Room</b>\" and create one!"
 }

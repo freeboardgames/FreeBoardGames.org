@@ -1,30 +1,31 @@
-import React from 'react';
 import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
-import Header from 'infra/home/Header';
 import { GamesList } from 'infra/common/components/game/GamesList';
 import SEO from 'infra/common/helpers/SEO';
-import { Link } from 'infra/i18n';
+import { getAllGames, getGameCodeNamespace } from 'infra/game';
+import Header from 'infra/home/Header';
+import { Link, withTranslation, WithTranslation } from 'infra/i18n';
 import LobbyCarousel from 'infra/lobby/LobbyCarousel';
 import { about } from 'infra/navigation';
-import { getAllGames, getGameCodeNamespace } from 'infra/game';
+import React from 'react';
 
-export class Home extends React.Component<{}, {}> {
+interface HomeInternalInnerProps extends Pick<WithTranslation, 't'> {}
+
+interface HomeInternalOutterProps {}
+
+export class HomeInternal extends React.Component<HomeInternalInnerProps & HomeInternalOutterProps, {}> {
   render() {
+    const { t } = this.props;
+
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
-        <SEO
-          title={'Play Free Board Games Online'}
-          description={
-            'Play board games in your browser for free.  Compete against your online friends or play locally.  Free and open-source software project.'
-          }
-        />
+        <SEO title={t('title')} description={t('description')} />
         <Header />
         <LobbyCarousel />
         <GamesList />
         {this.maybeRenderGamesInDevelopment()}
         <p style={{ fontSize: '14px', textAlign: 'center' }}>
           <Link href={() => about()}>
-            <a>About</a>
+            <a>{t('about')}</a>
           </Link>
         </p>
       </FreeBoardGamesBar>
@@ -41,7 +42,17 @@ export class Home extends React.Component<{}, {}> {
 
   static async getInitialProps() {
     return {
-      namespacesRequired: ['LobbyCarousel', 'GameCard', ...getAllGames().map((g) => getGameCodeNamespace(g.code))],
+      namespacesRequired: [
+        'Home',
+        'Header',
+        'LobbyCarousel',
+        'GamesList',
+        'GameCard',
+        'SearchBox',
+        ...getAllGames().map((g) => getGameCodeNamespace(g.code)),
+      ],
     };
   }
 }
+
+export const Home = withTranslation('Home')(HomeInternal);

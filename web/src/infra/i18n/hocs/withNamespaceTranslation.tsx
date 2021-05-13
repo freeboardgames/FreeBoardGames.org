@@ -5,7 +5,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 
 export const withNamespaceTranslation = <P extends {}>(
   Component: React.ComponentType<P & TWithNamespace>,
-  componentName = Component.displayName ?? Component.name,
+  componentName = null,
 ): { (props: P): JSX.Element; displayName: string } & hoistNonReactStatics.NonReactStatics<
   React.ComponentType<P>,
   {}
@@ -14,8 +14,8 @@ export const withNamespaceTranslation = <P extends {}>(
     const withGameNamespace = useWithGameNamespace();
     return <Component {...props} withGameNamespace={withGameNamespace} />;
   };
-
-  WithNamespace.displayName = `withNamespaceTranslation(${componentName})`;
+  const finalComponentName = componentName ?? Component.displayName ?? Component.name;
+  WithNamespace.displayName = `withNamespaceTranslation(${finalComponentName})`;
 
   return hoistNonReactStatics(WithNamespace, Component);
 };
