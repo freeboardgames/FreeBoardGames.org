@@ -52,7 +52,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.find('[data-testid="gameOverText"]')).toContainText('black_won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('black won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -63,7 +63,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.find('[data-testid="gameOverText"]')).toContainText('white_won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('white won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -73,7 +73,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.find('[data-testid="status"]')).toContainText('white_s_turn');
+  expect(board.find('[data-testid="status"]')).toContainText("White's turn");
   board.setProps({
     ...board.props(),
     ctx: {
@@ -84,7 +84,7 @@ test('render board - all states - local friend', () => {
     },
     G: { pgn: '1.f4' },
   });
-  expect(board.find('[data-testid="status"]')).toContainText('black_s_turn');
+  expect(board.find('[data-testid="status"]')).toContainText("Black's turn");
   board.setProps({
     ...board.props(),
     ctx: {
@@ -95,7 +95,7 @@ test('render board - all states - local friend', () => {
     },
     G: { pgn: '1.f4 e5 2.g4 Qh4#' },
   });
-  expect(board.find('[data-testid="status"]')).toContainText('check');
+  expect(board.find('[data-testid="status"]')).toContainText('CHECK');
 });
 
 test('render board - all states - online friend', () => {
@@ -132,7 +132,7 @@ test('render board - all states - online friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.find('[data-testid="gameOverText"]')).toContainText('you_lost');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you lost');
 
   // displays a message for a win
   board.setProps({
@@ -145,14 +145,14 @@ test('render board - all states - online friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.find('[data-testid="gameOverText"]')).toContainText('you_won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you won');
 
   // displays a message for a lost on player 1
   board.setProps({
     ...board.props(),
     playerID: '1',
   });
-  expect(board.find('[data-testid="gameOverText"]')).toContainText('you_lost');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you lost');
 
   // displays  a message for a check
   board.setProps({
@@ -165,7 +165,7 @@ test('render board - all states - online friend', () => {
     },
     G: { pgn: '1.f4 e5 2.g4 Qh4#' },
   });
-  expect(board.find('[data-testid="status"]')).toContainText('check');
+  expect(board.find('[data-testid="status"]')).toContainText('CHECK');
 });
 
 function rowColAt(row: number, col: number) {
@@ -191,7 +191,7 @@ test('little game', () => {
     />,
   );
 
-  expect(board.find('[data-testid="status"]')).toContainText('your_turn');
+  expect(board.find('[data-testid="status"]')).toContainText('YOUR TURN');
   // select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
   expect(board.find('rect').at(rowColAt(2, 1)).html()).toContain('green');
@@ -219,7 +219,7 @@ test('little game', () => {
     },
     G: { pgn: '1.f4' },
   });
-  expect(board.find('[data-testid="status"]')).toContainText('waiting');
+  expect(board.find('[data-testid="status"]')).toContainText('Waiting for opponent...');
 
   // try invalid selection
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
@@ -308,7 +308,7 @@ test('AI gameover - all cases', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.find('[data-testid="gameOverText"]')).toContainText('you_lost');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -319,7 +319,7 @@ test('AI gameover - all cases', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.find('[data-testid="gameOverText"]')).toContainText('you_won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you won');
 });
 
 test('castling fix', () => {
