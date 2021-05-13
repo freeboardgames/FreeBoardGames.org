@@ -1,5 +1,5 @@
 import React from 'react';
-import MessagePage from 'infra/common/components/alert/MessagePageClass';
+import MessagePage from 'infra/common/components/alert/MessagePage';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { IGameDef } from 'gamesShared/definitions/game';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';

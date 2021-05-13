@@ -3,8 +3,8 @@ import { Client } from 'boardgame.io/react';
 import { IGameDef, IGameConfig, IAIConfig, IGameArgs } from 'gamesShared/definitions/game';
 import { gameBoardWrapper } from './GameBoardWrapper';
 import { GameMode } from 'gamesShared/definitions/mode';
-import getMessagePage from '../common/components/alert/MessagePage';
-import MessagePageClass from '../common/components/alert/MessagePageClass';
+import getMessagePage from '../common/factories/MessagePage';
+import MessagePage from '../common/components/alert/MessagePage';
 import { applyMiddleware } from 'redux';
 import DEFAULT_ENHANCERS from '../common/enhancers';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
@@ -113,11 +113,11 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
       playerID = this.mode === GameMode.AI ? '1' : this.props.playerID;
     }
     if (!this.gameDef) {
-      return <MessagePageClass type={'error'} message={'Game Not Found'} />;
+      return <MessagePage type={'error'} message={'Game Not Found'} />;
     }
     const validGameModes = this.gameDef.modes.map((mode) => mode.mode.toLowerCase());
     if (!validGameModes.includes(this.mode.toLowerCase())) {
-      return <MessagePageClass type={'error'} message={'Invalid Game Mode'} />;
+      return <MessagePage type={'error'} message={'Invalid Game Mode'} />;
     }
     if (!this.state.loading && this.state.config) {
       const gameArgs = {

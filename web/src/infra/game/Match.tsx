@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { NextRouter, withRouter } from 'infra/i18n';
 import { Dispatch } from 'redux';
 import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
-import MessagePage from 'infra/common/components/alert/MessagePageClass';
+import MessagePage from 'infra/common/components/alert/MessagePage';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import * as Sentry from '@sentry/browser';

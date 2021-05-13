@@ -1,13 +1,11 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import getMessagePage from 'infra/common/components/alert/MessagePage';
 import { NextPage } from 'next';
-
-const LoadingPage = getMessagePage('loading', 'Loading...');
+import { LoadingMessage } from 'infra/common/components/alert/LoadingMessage';
 
 const DynamicRoom = dynamic(() => import('infra/room/Room'), {
   ssr: false,
-  loading: LoadingPage,
+  loading: LoadingMessage,
 });
 
 const Room: NextPage = () => {

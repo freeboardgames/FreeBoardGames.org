@@ -1,13 +1,11 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-import getMessagePage from 'infra/common/components/alert/MessagePage';
+import { LoadingMessage } from 'infra/common/components/alert/LoadingMessage';
 import { NextPage } from 'next';
-
-const LoadingPage = getMessagePage('loading', 'Loading...');
+import dynamic from 'next/dynamic';
+import React from 'react';
 
 const GameMatch = dynamic(() => import('infra/game/Match'), {
   ssr: false,
-  loading: LoadingPage,
+  loading: LoadingMessage,
 });
 
 const Match: NextPage = () => {

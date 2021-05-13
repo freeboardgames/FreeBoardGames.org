@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 
-import MessagePageClass from 'infra/common/components/alert/MessagePageClass';
+import MessagePage from 'infra/common/components/alert/MessagePage';
 
 export default function ErrorPage() {
-  return <MessagePageClass type={'error'} message={'Page Not Found'} />;
+  return <MessagePage type={'error'} message={'Page Not Found'} />;
 }
