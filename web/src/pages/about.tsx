@@ -14,40 +14,40 @@ import { GAMES_LIST } from 'games';
 import { IGameStatus } from 'gamesShared/definitions/game';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import { useTranslation } from 'infra/i18n';
 
 const About = () => {
   const router = useRouter();
+  const { t } = useTranslation('About');
   return (
     <FreeBoardGamesBar>
       <Breadcrumbs
         itemListElements={[
           {
             position: 1,
-            name: 'About',
+            name: t('title'),
             item: router.pathname,
           },
         ]}
       />
-      <SEO title={'About'} description={'About FreeBoardGames.org, a free and open-source software project.'} />
-      {getAboutCard()}
-      {getContributorsCard()}
-      {getCreditsCard()}
+      <SEO title={t('title')} description={t('description')} />
+      <AboutCard />
+      <Contributors />
+      <Credits />
     </FreeBoardGamesBar>
   );
 };
 export default About;
 
-function getAboutCard() {
+function AboutCard() {
+  const { t } = useTranslation('About');
   return (
     <Card style={{ marginTop: '16px' }}>
       <CardContent>
         <Typography variant="h5" component="h2" style={{ marginBottom: '17px' }}>
-          About FreeBoardGames.org
+          {t('card.title')}
         </Typography>
-        <Typography component="p">
-          FreeBoardGames.org is a free (as in freedom), mobile-first, board game platform. Its goal is to popularize
-          board games and to make them easy to play with friends, even from afar.
-        </Typography>
+        <Typography component="p">{t('card.description')}</Typography>
       </CardContent>
     </Card>
   );
@@ -81,14 +81,15 @@ function compare(a, b) {
   return 0;
 }
 
-function getContributorsCard() {
+function Contributors() {
+  const { t } = useTranslation('About');
   const contributorsToGames = getContributorToGames();
   const contributors = Object.keys(contributorsToGames).sort(compare);
   return (
     <Card style={{ marginTop: '16px' }}>
       <CardContent>
         <Typography variant="h5" component="h2">
-          Contributors
+          {t('contributors.title')}
         </Typography>
         <List>
           {contributors.map((contributor) => (
@@ -96,7 +97,9 @@ function getContributorsCard() {
               <ListItemAvatar>
                 <Avatar alt={contributor} src={`https://github.com/${contributor}.png?size=40`} />
               </ListItemAvatar>
+
               <ListItemText primary={contributor} secondary={contributorsToGames[contributor].join(', ')} />
+
               <Button
                 size="small"
                 color="primary"
@@ -114,52 +117,60 @@ function getContributorsCard() {
   );
 }
 
-function getCreditsCard() {
+function Credits() {
+  const { t } = useTranslation('About');
   return (
     <Card style={{ marginTop: '16px' }}>
       <CardContent>
         <Typography variant="h5" component="h2">
-          Credits
+          {t('credits.title')}
         </Typography>
+
         <List>
           <ListItem>
-            <ListItemText primary="Chess move sound by SpliceSound" />
+            <ListItemText primary={t('chess_move_sound_by_splice_sound')} />
             <Button size="small" color="primary" href="https://freesound.org/people/SpliceSound/sounds/218333/">
               freesound.org
             </Button>
           </ListItem>
+
           <ListItem>
-            <ListItemText primary="Seabattle hit sound by fridobeck" />
+            <ListItemText primary={t('seabattle_hit_sound_by_fridobeck')} />
             <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
               freesound.org
             </Button>
           </ListItem>
+
           <ListItem>
-            <ListItemText primary="Seabattle hit sound by qubodup" />
+            <ListItemText primary={t('seabattle_hit_sound_by_qubodup')} />
             <Button size="small" color="primary" href="https://freesound.org/people/qubodup/sounds/182429/">
               freesound.org
             </Button>
           </ListItem>
+
           <ListItem>
-            <ListItemText primary="Seabattle miss sound by InspectorJ" />
+            <ListItemText primary={t('seabattle_miss_sound_by_inspector_j')} />
             <Button size="small" color="primary" href="https://freesound.org/people/InspectorJ/sounds/352103/">
               freesound.org
             </Button>
           </ListItem>
+
           <ListItem>
-            <ListItemText primary="Seabattle miss sound by CGEffex" />
+            <ListItemText primary={t('seabattle_miss_sound_by_cg_effex')} />
             <Button size="small" color="primary" href="https://freesound.org/people/CGEffex/sounds/98335/">
               freesound.org
             </Button>
           </ListItem>
+
           <ListItem>
-            <ListItemText primary="Blox font (used in logo) by Brian Kent" />
+            <ListItemText primary={t('blox_font_used_in_logo_by_brian_kent')} />
             <Button size="small" color="primary" href="https://www.dafont.com/blox.font">
               dafont.com
             </Button>
           </ListItem>
+
           <ListItem>
-            <ListItemText primary="Bingo Thumbnail Image" />
+            <ListItemText primary={t('bingo_thumbnail_image')} />
             <Button size="small" color="primary" href="http://www.freepik.com">
               freepik.com
             </Button>
