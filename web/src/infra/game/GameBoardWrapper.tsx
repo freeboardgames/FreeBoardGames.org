@@ -1,7 +1,6 @@
-import React from 'react';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import AlertLayer from '../common/components/alert/AlertLayer';
-import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import { ConnectionLost } from './ConnectionLost';
 
 export interface IBoardWrapperArgs {
   gameArgs: IGameArgs;
@@ -18,7 +17,7 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
       const child = React.createElement(args.board, props);
       let alert;
       if (!this.props.isConnected) {
-        alert = this._getConnectionLost();
+        alert = <ConnectionLost />;
       }
       if (!alert) {
         return child;
@@ -28,15 +27,6 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
           {child}
           {alert}
         </div>
-      );
-    }
-
-    _getConnectionLost() {
-      return (
-        <AlertLayer>
-          <Typography variant="h4">Connection lost</Typography>
-          <Typography variant="body1">Trying to connect...</Typography>
-        </AlertLayer>
       );
     }
   }
