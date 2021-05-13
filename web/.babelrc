@@ -1,10 +1,6 @@
 {
   "presets": ["next/babel"],
-  "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
-    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
-    "macros"
-  ],
+  "plugins": ["@babel/plugin-syntax-dynamic-import", "macros"],
   "env": {
     "production": {
       "plugins": ["babel-plugin-jsx-remove-data-test-id"]
