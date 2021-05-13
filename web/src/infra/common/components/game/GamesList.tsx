@@ -2,7 +2,7 @@
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { getAllGames } from 'infra/game';
 import { play } from 'infra/navigation';
-import React, { ChangeEvent, Fragment, useMemo, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import { GameCard } from './GameCard';
 import { Container, Games, Header, Navigable } from './GamesList.ui';
 import SearchBox from './SearchBox';
