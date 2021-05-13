@@ -1,14 +1,15 @@
-import React from 'react';
-import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef } from 'gamesShared/definitions/game';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { LoadingMessage } from 'infra/common/components/alert/LoadingMessage';
+import SEO from 'infra/common/helpers/SEO';
 import dynamic from 'next/dynamic';
 import Error from 'pages/_error';
-import SEO from 'infra/common/helpers/SEO';
+import React from 'react';
 import { getGameDefinition } from './utils';
 
 const GameWrapper = dynamic(import('infra/game/Game'), {
   ssr: false,
-  loading: () => <div>Loading...</div>,
+  loading: LoadingMessage,
 });
 
 interface AILocalGameProps {
