@@ -53,21 +53,12 @@ jest.mock('next/router', () => ({
 jest.mock('react-i18next/dist/commonjs/context', () => {
   const { createContext } = jest.requireActual('react');
   const i18next = jest.requireActual('i18next');
-  const glob = jest.requireActual('glob');
-  const { readFileSync } = jest.requireActual('fs');
 
   i18next.init({
     lng: 'en',
     supportedLngs: ['en', 'pt'],
     initImmediate: false,
     resources: {},
-  });
-
-  const paths = glob.sync('public/static/locales/en/**/*.json', { nonull: false });
-  paths.forEach((path: string) => {
-    const shortPath = path.replace('public/static/locales/en/', '').replace('.json', '');
-    const translations = JSON.parse(readFileSync(path, 'utf-8'));
-    i18next.addResourceBundle('en', shortPath, translations);
   });
 
   return {
@@ -84,21 +75,3 @@ jest.mock('gamesShared/components/fbg/GameDarkSublayout', () => {
     GameDarkSublayout: GameDarkSublayoutInternal,
   };
 });
-
-const denylist = [
-  'react-i18next:: It seems you are still using the old wait option, you may migrate to the new useSuspense behaviour.',
-];
-/* eslint-disable no-console */
-const warn = console.warn;
-jest.spyOn(console, 'warn').mockImplementation((...[message, ...args]) => {
-  if (!denylist.includes(message)) {
-    warn(...[message, ...args]);
-  }
-});
-/* eslint-enable no-console */
-
-// mock functions for HTMLMediaElement
-// https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395
-(window as any).HTMLMediaElement.prototype.play = () => {
-  /* do nothing */
-};

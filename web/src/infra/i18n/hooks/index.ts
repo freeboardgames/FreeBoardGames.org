@@ -1,2 +1,1 @@
-export * from './useWithGameNamespace';
-export * from './useTranslation';
+export * from './useWithNamespace';
