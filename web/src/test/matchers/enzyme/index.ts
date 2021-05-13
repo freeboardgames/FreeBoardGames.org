@@ -1,1 +1,1 @@
-export * from './to-have-text';
+export * from './to-contain-text';
