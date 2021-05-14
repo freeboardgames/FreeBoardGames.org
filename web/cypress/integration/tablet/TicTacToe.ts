@@ -1,6 +1,6 @@
 it('plays a local game', () => {
   let x, y;
-  cy.visit('/play/tictactoe/local');
+  cy.visit('/en/play/tictactoe/local');
   cy.contains("Red's turn");
   [x, y] = [0, 0];
   cy.get(`[x="${x}"][y="${y}"]`).click();
