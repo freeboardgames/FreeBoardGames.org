@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'infra/i18n';
 
 export function ConnectionLost() {
-  const { t } = useTranslation('');
+  const { t } = useTranslation('ConnectionLost');
   return (
     <AlertLayer>
       <Typography variant="h4">{t('connection_lost')}</Typography>
