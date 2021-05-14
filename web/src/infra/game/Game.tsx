@@ -14,8 +14,12 @@ import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { Debug } from 'boardgame.io/debug';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 import { getGameDefinition } from './utils';
+import { compose } from 'recompose';
+import { withTranslation, WithTranslation } from 'infra/i18n';
 
-interface IGameProps {
+interface IGameOutterProps extends WithTranslation {}
+
+interface IGameInnerProps {
   // FIXME: fix which props are req
   history?: { push: (url: string) => void };
   match?: GetMatch_match;
@@ -32,7 +36,7 @@ interface IGameState {
   ai?: IAIConfig;
 }
 
-export class GameInternal extends React.Component<IGameProps, IGameState> {
+export class GameInternal extends React.Component<IGameInnerProps & IGameOutterProps, IGameState> {
   mode: GameMode;
   loadAI: boolean;
   gameCode: string;
@@ -40,7 +44,7 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
   gameDef: IGameDef;
   promise: any; // for testing
 
-  constructor(props: IGameProps) {
+  constructor(props: IGameInnerProps & IGameOutterProps) {
     super(props);
     this.state = {
       loading: true,
@@ -103,6 +107,8 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
   }
 
   render() {
+    const { t } = this.props;
+
     let matchCode, playerID, credentials;
     if (this.props.match) {
       credentials = this.props.match.bgioSecret;
@@ -113,11 +119,11 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
       playerID = this.mode === GameMode.AI ? '1' : this.props.playerID;
     }
     if (!this.gameDef) {
-      return <MessagePage type={'error'} message={'Game Not Found'} />;
+      return <MessagePage type={'error'} message={t('game_not_found')} />;
     }
     const validGameModes = this.gameDef.modes.map((mode) => mode.mode.toLowerCase());
     if (!validGameModes.includes(this.mode.toLowerCase())) {
-      return <MessagePage type={'error'} message={'Invalid Game Mode'} />;
+      return <MessagePage type={'error'} message={t('invalid_game_mode')} />;
     }
     if (!this.state.loading && this.state.config) {
       const gameArgs = {
@@ -130,7 +136,7 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
       const clientConfig: any = {
         game: this.injectSetupData(this.state.config.bgioGame),
         debug: this.state.config.debug ? { impl: Debug } : false,
-        loading: getMessagePage('loading', 'Connecting...'),
+        loading: getMessagePage('loading', t('connecting')),
         board: gameBoardWrapper({
           board: this.state.config.bgioBoard,
           gameArgs,
@@ -169,10 +175,10 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
         return <App matchID={matchCode} playerID={playerID} />;
       }
     } else if (this.state.loading) {
-      const LoadingPage = getMessagePage('loading', `Downloading ${this.gameDef.name}...`);
+      const LoadingPage = getMessagePage('loading', t('downloading', { name: this.gameDef.name }));
       return <LoadingPage />;
     } else {
-      const ErrorPage = getMessagePage('error', `Failed to download ${this.gameDef.name}.`);
+      const ErrorPage = getMessagePage('error', t('failed_to_download', { name: this.gameDef.name }));
       return <ErrorPage />;
     }
   }
@@ -193,6 +199,8 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
   }
 
   _getPlayers(): IPlayerInRoom[] {
+    const { t } = this.props;
+
     switch (this.mode) {
       case GameMode.OnlineFriend:
         return this.props.match.playerMemberships.map((membership, index) => ({
@@ -201,16 +209,18 @@ export class GameInternal extends React.Component<IGameProps, IGameState> {
         }));
       case GameMode.AI:
         return [
-          { playerID: 0, name: 'Computer' },
-          { playerID: 1, name: 'You' },
+          { playerID: 0, name: t('computer') },
+          { playerID: 1, name: t('you') },
         ];
       case GameMode.LocalFriend:
         return [
-          { playerID: 0, name: 'Player 1' },
-          { playerID: 1, name: 'Player 2' },
+          { playerID: 0, name: t('player_1') },
+          { playerID: 1, name: t('player_2') },
         ];
     }
   }
 }
 
-export default withSettingsService(GameInternal);
+const enhance = compose<IGameInnerProps, IGameOutterProps>(withSettingsService, withTranslation('Game'));
+
+export default enhance(GameInternal);
