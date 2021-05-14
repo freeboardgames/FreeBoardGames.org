@@ -17,16 +17,15 @@ import { getGameDefinition } from './utils';
 import { compose } from 'recompose';
 import { withTranslation, WithTranslation } from 'infra/i18n';
 
-interface IGameOutterProps extends WithTranslation {}
-
-interface IGameInnerProps {
-  // FIXME: fix which props are req
-  history?: { push: (url: string) => void };
-  match?: GetMatch_match;
-  matchCode?: string;
+export interface IGameOutterProps {
   gameCode?: string;
   mode?: string;
+  match?: GetMatch_match;
+  matchCode?: string;
   playerID?: string;
+}
+
+export interface IGameInnerProps extends WithTranslation {
   settingsService: SettingsService;
 }
 

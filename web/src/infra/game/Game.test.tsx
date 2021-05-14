@@ -1,10 +1,14 @@
 import React from 'react';
-import { GameInternal as Game } from './Game';
+import Game, { GameInternal } from './Game';
 import { mount } from 'enzyme';
 import { GAMES_MAP } from 'games';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { GameCustomizationState } from 'gamesShared/definitions/customization';
+import * as Settings from 'infra/settings/SettingsService';
+import { IGameOutterProps } from './Game';
+
+const { withSettingsService } = Settings;
 
 // so we don't actually use SocketIO and attempt a connection:
 jest.mock('boardgame.io/multiplayer');
@@ -17,6 +21,9 @@ describe('Game', () => {
   let settingsService;
   beforeEach(() => {
     settingsService = { getGameSetting: jest.fn() };
+    jest
+      .spyOn(Settings, 'withSettingsService')
+      .mockImplementation((Component) => (props) => <Component settingsService={settingsService} {...props} />);
   });
 
   it('should render properly for multiplayer', async () => {
@@ -39,9 +46,9 @@ describe('Game', () => {
           bgioPlayerId: '0',
           bgioSecret: 'fooSecret',
         };
-        const app = <Game match={match} settingsService={settingsService} />;
+        const app = component({ match });
         const wrapper = mount(app);
-        await (wrapper.find(Game).instance() as any).promise;
+        await instance(wrapper).promise;
         expect(wrapper.text()).toContain('Downloading Chess');
         wrapper.update();
         expect(wrapper.find('Board').length).toBeGreaterThan(0);
@@ -51,9 +58,9 @@ describe('Game', () => {
 
   it('should render properly for singleplayer', async () => {
     const gameCode = 'tictactoe';
-    const app = <Game gameCode={gameCode} mode={'local'} settingsService={settingsService} />;
+    const app = component({ gameCode, mode: 'local' });
     const wrapper = mount(app);
-    await (wrapper.find(Game).instance() as any).promise;
+    await instance(wrapper).promise;
     wrapper.update();
     expect(wrapper.find('Board').length).toBeGreaterThan(0);
   });
@@ -64,49 +71,59 @@ describe('Game', () => {
       quick: { difficulty: 1 },
     };
     settingsService.getGameSetting.mockReturnValue(gameCustomizationState);
-    const app = <Game gameCode={gameCode} mode={GameMode.AI} settingsService={settingsService} />;
+    const app = component({ gameCode, mode: GameMode.AI });
     const wrapper = mount(app);
-    await (wrapper.find(Game).instance() as any).promise;
+    await instance(wrapper).promise;
     wrapper.update();
     expect(wrapper.find('Board').length).toBeGreaterThan(0);
   });
 
   it('should render error correctly with rejected Promise', async () => {
     GAMES_MAP.chess.config = () => Promise.reject(new Error('fail'));
-    const app = <Game gameCode={'chess'} mode={'local'} settingsService={settingsService} />;
+    const app = component({ gameCode: 'chess', mode: 'local' });
     const wrapper = mount(app);
-    await (wrapper.find(Game).instance() as any).promise;
+    await instance(wrapper).promise;
     wrapper.update();
     expect(wrapper.text()).toContain('Failed to download');
   });
 
   it('should render error correctly with unknown gameCode', async () => {
-    const app = <Game gameCode={'notAGame'} mode={'local'} settingsService={settingsService} />;
+    const app = component({ gameCode: 'notAGame', mode: 'local' });
     const wrapper = mount(app);
-    await (wrapper.find(Game).instance() as any).promise;
+    await instance(wrapper).promise;
     wrapper.update();
     expect(wrapper.text()).toContain('Game Not Found');
   });
 
   it('should render error correctly with invalid game mode', async () => {
-    const app = <Game gameCode={'chess'} mode={'invalid'} settingsService={settingsService} />;
+    const app = component({ gameCode: 'chess', mode: 'invalid' });
     const wrapper = mount(app);
-    await (wrapper.find(Game).instance() as any).promise;
+    await instance(wrapper).promise;
     wrapper.update();
     expect(wrapper.text()).toContain('Invalid Game Mode');
   });
 
   it('should render loading correctly', () => {
-    const app = <Game gameCode="tictactoe" mode="local" settingsService={settingsService} />;
+    const app = component({ gameCode: 'tictactoe', mode: 'local' });
     const wrapper = mount(app);
-    (wrapper.find(Game).instance() as any).clear();
-    (wrapper.find(Game).instance() as any).forceUpdate();
+    instance(wrapper).clear();
+    instance(wrapper).forceUpdate();
     expect(wrapper.html()).toContain('Downloading');
   });
 
   it('should call componentWillUnmount() without error', () => {
-    const app = <Game gameCode={'chess'} mode={'local'} settingsService={settingsService} />;
+    const app = component({ gameCode: 'chess', mode: 'local' });
     const wrapper = mount(app);
-    (wrapper.find(Game).instance() as any).componentWillUnmount();
+    instance(wrapper).componentWillUnmount();
   });
 });
+
+function component(props: IGameOutterProps) {
+  const Component = () => <Game {...props} />;
+  const WrappedComponent = withSettingsService(Component);
+  return <WrappedComponent />;
+}
+
+function instance(wrapper) {
+  return wrapper.find(GameInternal).instance() as GameInternal;
+}
