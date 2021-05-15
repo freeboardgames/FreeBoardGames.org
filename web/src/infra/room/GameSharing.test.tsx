@@ -1,14 +1,9 @@
-import React from 'react';
-import { GameSharingInternal as GameSharing } from './GameSharing';
-import { render, fireEvent, RenderResult, cleanup } from '@testing-library/react';
-import { mock } from 'jest-mock-extended';
+import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
 import mockedEnv from 'mocked-env';
-import { I18n } from 'infra/i18n';
-require('@testing-library/jest-dom/extend-expect');
+import React from 'react';
+import { GameSharing } from './GameSharing';
 
 const GAME_LINK = 'http://localhost/room/fooroom';
-
-const i18n = mock<I18n>({ language: 'en' });
 
 afterEach(cleanup);
 
@@ -18,7 +13,7 @@ describe('GameSharing', () => {
     window.location.assign = jest.fn();
     window.open = jest.fn();
     window.alert = jest.fn();
-    wrapper = render(<GameSharing i18n={i18n} gameCode={'foogame'} roomID={'fooroom'} isPublic={false} />);
+    wrapper = render(<GameSharing gameCode={'foogame'} roomID={'fooroom'} isPublic={false} />);
   });
 
   it('should render', () => {
