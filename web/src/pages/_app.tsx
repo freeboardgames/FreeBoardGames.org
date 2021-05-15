@@ -1,28 +1,26 @@
 /* eslint-disable react/react-in-jsx-scope */
 
-import Head from 'next/head';
-import App from 'next/app';
-import React from 'react';
-import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
-import { isMobileFromReq } from 'infra/common/device/UaHelper';
-import UaContext from 'infra/common/device/IsMobileContext';
-import withError from 'next-with-error';
-import ErrorPage from './_error';
-import ReactGA from 'react-ga';
-import { Router } from 'infra/i18n';
-import * as Sentry from '@sentry/browser';
-
-import { wrapper } from 'infra/common/redux/store';
-import { ApolloClient, split, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache, split } from '@apollo/client';
 import { createHttpLink } from '@apollo/client/link/http';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { ApolloProvider } from '@apollo/react-hooks';
-import AddressHelper from 'infra/common/helpers/AddressHelper';
-import { compose } from 'recompose';
-import { appWithTranslation } from 'infra/i18n';
-import { GameProvider } from 'infra/game/GameProvider';
+import * as Sentry from '@sentry/browser';
 import { ThemeProvider } from 'infra/common';
+import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
+import UaContext from 'infra/common/device/IsMobileContext';
+import { isMobileFromReq } from 'infra/common/device/UaHelper';
+import AddressHelper from 'infra/common/helpers/AddressHelper';
+import { wrapper } from 'infra/common/redux/store';
+import { GameProvider } from 'infra/game/GameProvider';
+import { appWithTranslation, Router } from 'infra/i18n';
+import withError from 'next-with-error';
+import App from 'next/app';
+import Head from 'next/head';
+import React from 'react';
+import ReactGA from 'react-ga';
+import { compose } from 'recompose';
+import ErrorPage from './_error';
 
 const GA_TRACKING_CODE = 'UA-105391878-2';
 const SENTRY_DSN = 'https://5957292e58cf4d2fbb781910e7b26b1f@o397015.ingest.sentry.io/5251165';
@@ -115,7 +113,7 @@ class DefaultApp extends App {
           <SelfXSSWarning />
           <UaContext.Provider value={isMobile}>
             <ApolloProvider client={client}>
-              <GameProvider gameCode={this.props.pageProps.gameCode}>
+              <GameProvider {...pageProps}>
                 <Component {...pageProps} />
               </GameProvider>
             </ApolloProvider>
