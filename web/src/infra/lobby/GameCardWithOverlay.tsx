@@ -1,10 +1,10 @@
-import React from 'react';
-import { IGameDef } from 'gamesShared/definitions/game';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import css from './GameCardWithOverlay.module.css';
-import { Link } from 'infra/i18n';
+import Typography from '@material-ui/core/Typography';
+import { IGameDef } from 'gamesShared/definitions/game';
+import { Link, useTranslation } from 'infra/i18n';
 import { room as navigate } from 'infra/navigation';
+import React from 'react';
+import css from './GameCardWithOverlay.module.css';
 
 interface GameCardWithOverlayProps {
   game: IGameDef;
@@ -25,53 +25,57 @@ const WhiteTextTypography = withStyles({
   },
 })(Typography);
 
-export class GameCardWithOverlay extends React.Component<GameCardWithOverlayProps, {}> {
-  render() {
-    return (
-      <div
-        className={css.wrapper}
-        style={{
-          backgroundImage: `url(${this.props.game.imageURL})`,
-        }}
-        data-testid={`gamecard-${this.props.game.code}`}
-      >
-        <div className={css.heading}>
-          <Typography gutterBottom={false} variant="h4" component="h2" style={{ fontWeight: 300 }}>
-            {this.props.game.name}
-          </Typography>
-        </div>
-        <div className={css.overlay}></div>
-        <div className={css.tableWrapper}>
-          <table className={css.table}>
-            <tbody>{this._getRows(this.props.rooms)}</tbody>
-          </table>
-        </div>
+export const GameCardWithOverlay = function GameCardWithOverlay({ game, rooms }: GameCardWithOverlayProps) {
+  return (
+    <div
+      className={css.wrapper}
+      style={{ backgroundImage: `url(${game.imageURL})` }}
+      data-testid={`gamecard-${game.code}`}
+    >
+      <div className={css.heading}>
+        <Typography gutterBottom={false} variant="h4" component="h2" style={{ fontWeight: 300 }}>
+          {game.name}
+        </Typography>
       </div>
-    );
-  }
+      <div className={css.overlay}></div>
+      <div className={css.tableWrapper}>
+        <table className={css.table}>
+          <tbody>
+            <Rooms rooms={rooms} />
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
 
-  _getRows(rooms: RoomDisplay[]) {
-    const rowsComp = rooms.map((room, index) => (
-      <tr key={index}>
-        <td>
-          <WhiteTextTypography gutterBottom={false} variant="h6">
-            {room.name}
-          </WhiteTextTypography>
-        </td>
-        <td>
-          <WhiteTextTypography gutterBottom={false} variant="h6">
-            {room.occupancy}/{room.capacity}
-          </WhiteTextTypography>
-        </td>
-        <td>
-          <Link href={navigate(room.id)}>
-            <WhiteTextTypography gutterBottom={false} variant="h6" style={{ flex: '20', cursor: 'pointer' }}>
-              <b>Join</b>
+function Rooms({ rooms }: { rooms: RoomDisplay[] }) {
+  const { t } = useTranslation('GameCardWithOverlay');
+  return (
+    <>
+      {rooms.map((room, index) => (
+        <tr key={index}>
+          <td>
+            <WhiteTextTypography gutterBottom={false} variant="h6">
+              {room.name}
             </WhiteTextTypography>
-          </Link>
-        </td>
-      </tr>
-    ));
-    return rowsComp;
-  }
+          </td>
+
+          <td>
+            <WhiteTextTypography gutterBottom={false} variant="h6">
+              {room.occupancy}/{room.capacity}
+            </WhiteTextTypography>
+          </td>
+
+          <td>
+            <Link href={navigate(room.id)}>
+              <WhiteTextTypography gutterBottom={false} variant="h6" style={{ flex: '20', cursor: 'pointer' }}>
+                <b>{t('join')}</b>
+              </WhiteTextTypography>
+            </Link>
+          </td>
+        </tr>
+      ))}
+    </>
+  );
 }
