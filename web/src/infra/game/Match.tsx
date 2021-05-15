@@ -1,7 +1,7 @@
 import React from 'react';
 import Game from 'infra/game/Game';
 import { connect } from 'react-redux';
-import { NextRouter, withRouter } from 'infra/i18n';
+import { NextRouter, withRouter, withTranslation, WithTranslation } from 'infra/i18n';
 import { Dispatch } from 'redux';
 import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
 import MessagePage from 'infra/common/components/alert/MessagePage';
@@ -10,7 +10,9 @@ import { LobbyService } from 'infra/common/services/LobbyService';
 import * as Sentry from '@sentry/browser';
 import { compose } from 'recompose';
 
-interface MatchInnerProps {
+interface MatchOutterProps {}
+
+interface MatchInnerProps extends WithTranslation {
   router: NextRouter;
   dispatch: Dispatch;
 }
@@ -21,7 +23,7 @@ interface MatchState {
   error: boolean;
 }
 
-export class Match extends React.Component<MatchInnerProps, MatchState> {
+export class Match extends React.Component<MatchInnerProps & MatchOutterProps, MatchState> {
   state = { loading: true, error: false, match: undefined };
 
   componentDidMount() {
@@ -41,12 +43,13 @@ export class Match extends React.Component<MatchInnerProps, MatchState> {
   }
 
   render() {
+    const { t } = this.props;
     if (this.state.loading) {
-      return <MessagePage type={'loading'} message={'Loading...'} />;
+      return <MessagePage type={'loading'} message={t('loading')} />;
     } else if (this.state.error) {
-      return <MessagePage type={'error'} message={'Could not load match.'} />;
+      return <MessagePage type={'error'} message={t('could_not_load_match')} />;
     } else if (!this.state.match) {
-      return <MessagePage type={'error'} message={'Match not found.'} />;
+      return <MessagePage type={'error'} message={t('match_not_found')} />;
     }
     return <Game match={this.state.match} />;
   }
@@ -59,16 +62,21 @@ const mapStateToProps = function (state) {
   };
 };
 
-const requireNickname = function (Comp) {
+const withNickNameRequired = function (Component) {
   return function (props) {
     return (
       <NicknameRequired>
-        <Comp {...props} />
+        <Component {...props} />
       </NicknameRequired>
     );
   };
 };
 
-const enhance = compose<MatchInnerProps, {}>(requireNickname, withRouter, connect(mapStateToProps));
+const enhance = compose<MatchInnerProps, MatchOutterProps>(
+  withNickNameRequired,
+  withRouter,
+  withTranslation('Match'),
+  connect(mapStateToProps),
+);
 
 export default enhance(Match);
