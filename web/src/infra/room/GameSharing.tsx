@@ -28,7 +28,7 @@ const theme = createMuiTheme({
   },
 });
 
-interface IGameSharingInnerProps extends Pick<WithTranslation, 'i18n'> {}
+interface IGameSharingInnerProps extends WithTranslation {}
 
 interface IGameSharingOutterProps {
   gameCode: string;
@@ -48,15 +48,18 @@ export class GameSharingInternal extends React.Component<
   state: IGameSharingState = { showingQrCode: false, copyButtonRecentlyPressed: false };
 
   render() {
+    const { t } = this.props;
+
     let copyButtonColor;
     let copyButtonText;
     if (this.state.copyButtonRecentlyPressed) {
-      copyButtonText = 'Copied!';
+      copyButtonText = t('copied');
       copyButtonColor = 'secondary';
     } else {
-      copyButtonText = 'Copy Link';
+      copyButtonText = t('copy_link');
       copyButtonColor = 'primary';
     }
+
     return (
       <MuiThemeProvider theme={theme}>
         <div>
@@ -69,7 +72,7 @@ export class GameSharingInternal extends React.Component<
             <CardContent>
               {this.renderGameName()}
               <Typography style={{ paddingBottom: '16px' }} variant="h5" component="h2">
-                Invite Your Friends
+                {t('invite_your_friends')}
               </Typography>
               <TextField
                 style={{ width: '100%' }}
@@ -79,17 +82,17 @@ export class GameSharingInternal extends React.Component<
               />
             </CardContent>
             <CardActions>
-              <Tooltip title="Share on Facebook" aria-label="Facebook">
+              <Tooltip title={t('share_on_facebook')} aria-label="Facebook">
                 <IconButton onClick={this._shareFacebook}>
                   <FacebookIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Share on WhatsApp" aria-label="WhatsApp">
+              <Tooltip title={t('share_on_whats_app')} aria-label="WhatsApp">
                 <IconButton onClick={this._shareWhatsApp}>
                   <WhatsAppIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Show QR code" aria-label="QR code">
+              <Tooltip title={t('show_qr_code')} aria-label="QR code">
                 <IconButton onClick={this._showQrCode}>
                   <QrCodeIcon />
                 </IconButton>
@@ -111,10 +114,12 @@ export class GameSharingInternal extends React.Component<
   }
 
   renderGameName() {
-    if (this.props.isPublic) {
+    const { isPublic, t, roomID } = this.props;
+
+    if (isPublic) {
       return (
         <Typography style={{ paddingBottom: '16px', float: 'right' }} variant="h6" component="h3">
-          Room: {shortIdToAnimal(this.props.roomID)}
+          {t('room', { name: shortIdToAnimal(roomID) })}
         </Typography>
       );
     }
@@ -174,6 +179,6 @@ export class GameSharingInternal extends React.Component<
   };
 }
 
-const enhance = compose<IGameSharingInnerProps, IGameSharingOutterProps>(withTranslation());
+const enhance = compose<IGameSharingInnerProps, IGameSharingOutterProps>(withTranslation('GameSharing'));
 
 export const GameSharing = enhance(GameSharingInternal);
