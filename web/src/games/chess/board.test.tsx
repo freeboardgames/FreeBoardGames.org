@@ -5,6 +5,8 @@ import Enzyme from 'enzyme';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { GameProvider } from 'infra/game/GameProvider';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { mockStore } from 'test/utils/rtl';
 import { Board, BoardInternal } from './board';
 
 const players = [
@@ -13,9 +15,11 @@ const players = [
 ];
 
 const getTestBoard = (mode: GameMode) => (props: any) => (
-  <GameProvider gameCode="chess">
-    <Board {...props} gameArgs={{ gameCode: 'chess', mode, players }} />
-  </GameProvider>
+  <Provider store={mockStore({})}>
+    <GameProvider gameCode="chess">
+      <Board {...props} gameArgs={{ gameCode: 'chess', mode, players }} />
+    </GameProvider>
+  </Provider>
 );
 
 test('render board - all states - local friend', () => {

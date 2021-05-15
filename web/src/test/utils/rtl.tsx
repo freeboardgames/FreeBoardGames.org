@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store';
 
 export * from '@testing-library/react';
 
-const mockStore = configureMockStore();
+export const mockStore = configureMockStore();
 
 export function render(ui: ReactElement, options?: rtl.RenderOptions & ProvidersOptions) {
   return makeRender()(ui, options);
