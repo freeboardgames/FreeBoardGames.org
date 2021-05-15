@@ -13,11 +13,10 @@ const GameWrapper = dynamic(import('./Game'), {
 export default function LocalGame() {
   const router = useRouter();
   const gameCode = router.query.gameCode as string;
-  const aiLevel = router.query.aiLevel as string;
   return (
     <React.Fragment>
       <SEO noindex={true} />
-      <GameWrapper mode={GameMode.AI} gameCode={gameCode} aiLevel={aiLevel} />
+      <GameWrapper mode={GameMode.AI} gameCode={gameCode} />
     </React.Fragment>
   );
 }
