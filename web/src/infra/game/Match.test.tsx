@@ -1,87 +1,50 @@
-import Enzyme from 'enzyme';
-import { Match } from './Match';
-import { LobbyService } from 'infra/common/services/LobbyService';
-import MessagePage from 'infra/common/components/alert/MessagePage';
-import Game from 'infra/game/Game';
-
 jest.mock('infra/common/services/LobbyService');
+jest.mock('infra/common/components/auth/NicknameRequired', () => ({ children }) => children);
+jest.mock('infra/game/Game', () => () => <div>Mocked game</div>);
+jest.mock('infra/i18n/hocs/withRouter', () => ({
+  withRouter: (C) => (p) => {
+    const props = { ...p, router: { query: { matchId: 'fooMatch' } }, dispatch: jest.fn() };
+    return <C {...props} />;
+  },
+}));
+
+import Match from './Match';
+import { LobbyService } from 'infra/common/services/LobbyService';
+import { mocked } from 'ts-jest/utils';
+import { mock } from 'jest-mock-extended';
+import { makeRender, screen, waitFor } from 'test/utils/rtl';
+
+const render = makeRender({ dispatch: jest.fn() });
 
 it('renders loading page', async () => {
-  let mockRouter: any = { query: { matchId: 'fooMatch' } };
-  let mockDispatch: any = jest.fn();
-  (LobbyService.getMatch as jest.Mock).mockResolvedValue('fooMatch');
-
-  const wrapper = Enzyme.shallow(<Match router={mockRouter} dispatch={mockDispatch} />);
-
-  const messagePage = wrapper.find(MessagePage);
-  expect(messagePage.length).toBe(1);
-  expect(messagePage.prop('message')).toEqual('Loading...');
-
-  const flushPromises = () => new Promise(setImmediate);
-  await flushPromises();
-
-  wrapper.update();
+  mocked(LobbyService.getMatch).mockResolvedValue(mock());
+  render(<Match />);
+  expect(screen.getByText('Loading...')).toBeInTheDocument();
 });
 
 it('renders game', async () => {
-  let mockRouter: any = { query: { matchId: 'fooMatch' } };
-  let mockDispatch: any = jest.fn();
-  (LobbyService.getMatch as jest.Mock).mockResolvedValue({ match: 'fooMatch' });
-
-  const wrapper = Enzyme.shallow(<Match router={mockRouter} dispatch={mockDispatch} />);
-
-  const messagePage = wrapper.find(MessagePage);
-  expect(messagePage.length).toBe(1);
-  expect(messagePage.prop('message')).toEqual('Loading...');
-
-  const flushPromises = () => new Promise(setImmediate);
-  await flushPromises();
-
-  wrapper.update();
-
-  const game = wrapper.find(Game);
-  expect(game.length).toBe(1);
-  expect(game.prop('match')).toEqual('fooMatch');
+  mocked(LobbyService.getMatch).mockResolvedValue(mock());
+  render(<Match />);
+  expect(screen.getByText('Loading...')).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.queryByText('Mocked game')).toBeInTheDocument();
+  });
 });
 
 it('renders 404', async () => {
-  let mockRouter: any = { query: { matchId: 'fooMatch' } };
-  let mockDispatch: any = jest.fn();
-  (LobbyService.getMatch as jest.Mock).mockRejectedValue({ response: { notFound: true } });
-
-  const wrapper = Enzyme.shallow(<Match router={mockRouter} dispatch={mockDispatch} />);
-
-  const messagePage = wrapper.find(MessagePage);
-  expect(messagePage.length).toBe(1);
-  expect(messagePage.prop('message')).toEqual('Loading...');
-
-  const flushPromises = () => new Promise(setImmediate);
-  await flushPromises();
-
-  wrapper.update();
-
-  const messagePage2 = wrapper.find(MessagePage);
-
-  expect(messagePage2.prop('message')).toEqual('Match not found.');
+  mocked(LobbyService.getMatch).mockRejectedValue({ response: { notFound: true } });
+  render(<Match />);
+  expect(screen.getByText('Loading...')).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.queryByText('Match not found.')).toBeInTheDocument();
+  });
 });
 
 it('renders error', async () => {
-  let mockRouter: any = { query: { matchId: 'fooMatch' } };
-  let mockDispatch: any = jest.fn();
-  (LobbyService.getMatch as jest.Mock).mockRejectedValue({});
-
-  const wrapper = Enzyme.shallow(<Match router={mockRouter} dispatch={mockDispatch} />);
-
-  const messagePage = wrapper.find(MessagePage);
-  expect(messagePage.length).toBe(1);
-  expect(messagePage.prop('message')).toEqual('Loading...');
-
-  const flushPromises = () => new Promise(setImmediate);
-  await flushPromises();
-
-  wrapper.update();
-
-  const messagePage2 = wrapper.find(MessagePage);
-
-  expect(messagePage2.prop('message')).toEqual('Could not load match.');
+  mocked(LobbyService).getMatch.mockRejectedValue(mock());
+  render(<Match />);
+  expect(screen.getByText('Loading...')).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.queryByText('Could not load match.')).toBeInTheDocument();
+  });
 });

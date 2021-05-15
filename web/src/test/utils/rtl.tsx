@@ -10,7 +10,7 @@ export * from '@testing-library/react';
 const mockStore = configureMockStore();
 
 export function render(ui: ReactElement, options?: rtl.RenderOptions & ProvidersOptions) {
-  return makeRender(options)(ui, options);
+  return makeRender()(ui, options);
 }
 
 export function makeRender(globalOptions?: ProvidersOptions) {
