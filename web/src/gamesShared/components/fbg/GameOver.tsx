@@ -13,7 +13,7 @@ import { Router, WithTranslation, withTranslation } from 'infra/i18n';
 import { room } from 'infra/navigation';
 import { compose } from 'recompose';
 
-export interface IGameOverInnerProps extends Pick<WithTranslation, 'i18n'> {}
+export interface IGameOverInnerProps extends WithTranslation {}
 
 export interface IGameOverOutterProps {
   result: string;
@@ -45,7 +45,7 @@ export class GameOverInternal extends React.Component<IGameOverInnerProps & IGam
             style={{ marginRight: 'auto', marginLeft: 'auto', marginBottom: '24px' }}
           >
             <ReplayIcon style={{ marginRight: '8px' }} />
-            Play Again
+            {this.props.t('play_again')}
           </Button>
         </div>
       );
@@ -64,7 +64,7 @@ export class GameOverInternal extends React.Component<IGameOverInnerProps & IGam
           style={{ marginTop: '16px' }}
           data-testid={'gameOverText'}
         >
-          Game Over, {this.props.result}!
+          {this.props.t('game_over', { result: this.props.result })}
         </Typography>
         {playAgain}
         {extraCardContent}
@@ -102,6 +102,6 @@ export class GameOverInternal extends React.Component<IGameOverInnerProps & IGam
   };
 }
 
-const enhance = compose<IGameOverInnerProps, IGameOverOutterProps>(withTranslation());
+const enhance = compose<IGameOverInnerProps, IGameOverOutterProps>(withTranslation('GameOver'));
 
 export const GameOver = enhance(GameOverInternal);
