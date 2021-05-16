@@ -1,34 +1,35 @@
-import React from 'react';
-import MessagePage from 'infra/common/components/alert/MessagePage';
-import { LobbyService } from 'infra/common/services/LobbyService';
+import { Subscription } from '@apollo/react-components';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import ReplayIcon from '@material-ui/icons/Replay';
+import { gql } from 'apollo-boost';
 import { IGameDef } from 'gamesShared/definitions/game';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { JoinRoom_joinRoom, JoinRoom_joinRoom_userMemberships } from 'gqlTypes/JoinRoom';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';
+import { LoadingMessage } from 'infra/common/components/alert/LoadingMessage';
+import MessagePage from 'infra/common/components/alert/MessagePage';
+import { withNickNameRequired } from 'infra/common/components/auth/hocs/withNickNameRequired';
+import { NicknamePrompt } from 'infra/common/components/auth/NicknamePrompt';
 import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
+import { GameCard } from 'infra/common/components/game/GameCard';
+import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
+import { ReduxUserState } from 'infra/common/redux/definitions';
+import { LobbyService } from 'infra/common/services/LobbyService';
+import { getGameDefinition } from 'infra/game';
+import { Link, NextRouter, Router, withRouter, withTranslation, WithTranslation } from 'infra/i18n';
+import { home, match } from 'infra/navigation';
 import { GameSharing } from 'infra/room/GameSharing';
 import { ListPlayers } from 'infra/room/ListPlayers';
-import { GameCard } from 'infra/common/components/game/GameCard';
-import { NicknamePrompt } from 'infra/common/components/auth/NicknamePrompt';
-import Button from '@material-ui/core/Button';
-import ReplayIcon from '@material-ui/icons/Replay';
-import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
-import { StartMatchButton } from './StartMatchButton';
-import { ReduxUserState } from 'infra/common/redux/definitions';
-import { connect } from 'react-redux';
-import { JoinRoom_joinRoom, JoinRoom_joinRoom_userMemberships } from 'gqlTypes/JoinRoom';
-import { Dispatch } from 'redux';
-import { Subscription } from '@apollo/react-components';
-import { gql } from 'apollo-boost';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
-import { isCreator, getPlayerIds, getPlayerNicknames } from './RoomMetadataHelper';
-import { Chat } from '../chat/Chat';
 import { CustomizationBar } from 'infra/settings/CustomizationBar';
-import { GameMode } from 'gamesShared/definitions/mode';
-import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
+import { SettingsService, withSettingsService } from 'infra/settings/SettingsService';
+import React from 'react';
+import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { NextRouter, withRouter, Link, Router } from 'infra/i18n';
-import { home, match } from 'infra/navigation';
-import { getGameDefinition } from 'infra/game';
+import { Dispatch } from 'redux';
+import { Chat } from '../chat/Chat';
+import { getPlayerIds, getPlayerNicknames, isCreator } from './RoomMetadataHelper';
+import { StartMatchButton } from './StartMatchButton';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -49,7 +50,7 @@ export const ROOM_SUBSCRIPTION = gql`
   }
 `;
 
-interface InnerProps {
+interface InnerProps extends WithTranslation {
   router: NextRouter;
   user: ReduxUserState;
   dispatch: Dispatch;
@@ -85,12 +86,16 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   }
 
   render() {
+    const { t } = this.props;
+
     if (this.state.error) {
       return this.renderError();
     }
+
     if (this.state.loading) {
-      return <MessagePage type={'loading'} message={'Loading...'} />;
+      return <LoadingMessage />;
     }
+
     return (
       <FreeBoardGamesBar toolbarContent={this.renderChatButton()}>
         {this.getNicknamePrompt()}
@@ -103,24 +108,29 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
             if (this.state.warning) {
               return this.renderWarning();
             }
+
             if (this.state.partialLoading) {
               return <CircularProgress style={{ paddingTop: '16px' }} />;
             }
+
             const room = resp.data?.roomMutated || this.state.roomMetadata;
             if (room.matchId) {
               this.redirectToMatch(room.matchId);
               this.setState({ partialLoading: true });
               return null;
             }
+
             const currentUserInMetadata = room.userMemberships.find(
               (membership: JoinRoom_joinRoom_userMemberships) => membership.user.id === this.state.userId,
             );
             if (!currentUserInMetadata) {
-              return <MessagePage type={'error'} message={'You were removed from the room.'} skipFbgBar={true} />;
+              return <MessagePage type={'error'} message={t('you_were_removed_from_the_room')} skipFbgBar={true} />;
             }
+
             if (this.shouldUpdateMetadata(room)) {
               this.setState({ roomMetadata: room });
             }
+
             const gameDef = getGameDefinition(room.gameCode);
             return (
               <React.Fragment>
@@ -157,19 +167,21 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   }
 
   private renderError() {
+    const { t } = this.props;
     const TryAgain = (
       <Button variant="outlined" style={{ margin: '8px' }} onClick={this._tryAgain}>
         <ReplayIcon style={{ marginRight: '8px' }} />
-        Try Again
+        {t('try_again')}
       </Button>
     );
     return <MessagePage type={'error'} message={this.state.error} actionComponent={TryAgain} />;
   }
 
   private renderWarning() {
+    const { t } = this.props;
     const btn = (
       <Button variant="outlined" style={{ margin: '8px' }} onClick={this._dismissWarning}>
-        OK
+        {t('ok')}
       </Button>
     );
     return (
@@ -181,6 +193,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   }
 
   private renderGameCard(room: JoinRoom_joinRoom, gameDef: IGameDef) {
+    const { t } = this.props;
     const changeGameEnabled = isCreator(room, this.state.userId);
     const backgroundColor = changeGameEnabled ? 'rgb(220, 0, 78)' : '#e0e0e0';
     const color = changeGameEnabled ? 'white' : 'darkgrey';
@@ -191,7 +204,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
         disabled={!changeGameEnabled}
         onClick={this._toggleChangingGame}
       >
-        Change Game
+        {t('change_game')}
       </Button>
     );
     return (
@@ -229,6 +242,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   }
 
   joinRoom = () => {
+    const { t } = this.props;
     LobbyService.joinRoom(this.props.dispatch, this._roomId()).then(
       async (response) => {
         const roomMetadata = response.joinRoom;
@@ -238,17 +252,18 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
           this.setState({ loading: false, roomMetadata: roomMetadata, userId: roomMetadata.userId });
         }
       },
-      () => {
-        this.setState({ error: 'Failed to fetch room metadata.' });
+      (e) => {
+        this.setState({ error: t('failed_to_fetch_room_metadata') });
       },
     );
   };
 
   private renderLeaveRoomButton() {
+    const { t } = this.props;
     return (
       <Link href={() => home()}>
         <Button variant="outlined" onClick={this._leaveRoom}>
-          Leave room
+          {t('leave_room')}
         </Button>
       </Link>
     );
@@ -278,6 +293,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   }
 
   _newGamePicked = (game?: IGameDef) => {
+    const { t } = this.props;
     this._toggleChangingGame();
     if (!game) {
       return;
@@ -287,7 +303,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
     const capacity = metadata.capacity;
     if (occupancy > game.maxPlayers) {
       this.setState({
-        warning: `${game.name} can play up to ${game.maxPlayers} players, but the room has ${occupancy} players.`,
+        warning: t('max_players', { name: game.name, max: game.maxPlayers, current: occupancy }),
       });
       return;
     }
@@ -302,12 +318,13 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
         this.setState({ partialLoading: false });
       },
       () => {
-        this.setState({ partialLoading: false, error: 'Failed to change game' });
+        this.setState({ partialLoading: false, error: t('failed_to_change_game') });
       },
     );
   };
 
   _changeCapacity = (delta: number) => () => {
+    const { t } = this.props;
     const metadata = this.state.roomMetadata;
     const capacity = metadata.capacity;
     const newCapacity = capacity + delta;
@@ -320,7 +337,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
         this.setState({ partialLoading: false });
       },
       () => {
-        this.setState({ partialLoading: false, error: 'Failed to update capacity' });
+        this.setState({ partialLoading: false, error: t('failed_to_update_capacity') });
       },
     );
   };
@@ -344,6 +361,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   };
 
   _setNickname = (nickname: string) => {
+    const { t } = this.props;
     this._toggleEditingName();
     this.setState({ partialLoading: true });
     const dispatch = (this.props as any).dispatch;
@@ -352,7 +370,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
         this.setState({ partialLoading: false });
       },
       () => {
-        this.setState({ partialLoading: false, error: 'Failed to set nickname.' });
+        this.setState({ partialLoading: false, error: t('failed_to_set_nickname') });
       },
     );
   };
@@ -368,13 +386,14 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   }
 
   _startMatch = () => {
+    const { t } = this.props;
     this.setState({ partialLoading: true });
     LobbyService.startMatch(this.props.dispatch, this._roomId(), this.getSetupData()).then(
       (matchId) => {
         this.redirectToMatch(matchId);
       },
       () => {
-        this.setState({ partialLoading: false, error: 'Failed to start match' });
+        this.setState({ partialLoading: false, error: t('failed_to_start_match') });
       },
     );
   };
@@ -389,14 +408,6 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   };
 }
 
-const RoomWithNicknameRequired = (props) => {
-  return (
-    <NicknameRequired>
-      <Room {...props} />
-    </NicknameRequired>
-  );
-};
-
 /* istanbul ignore next */
 const mapStateToProps = function (state) {
   return {
@@ -404,6 +415,12 @@ const mapStateToProps = function (state) {
   };
 };
 
-const enhance = compose<InnerProps, OutterProps>(withRouter, withSettingsService, connect(mapStateToProps));
+const enhance = compose<InnerProps, OutterProps>(
+  withRouter,
+  withTranslation('Room'),
+  withSettingsService,
+  withNickNameRequired,
+  connect(mapStateToProps),
+);
 
-export default enhance(RoomWithNicknameRequired);
+export default enhance(Room);

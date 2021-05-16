@@ -1,14 +1,14 @@
-import React from 'react';
-import Game from 'infra/game/Game';
-import { connect } from 'react-redux';
-import { NextRouter, withRouter, withTranslation, WithTranslation } from 'infra/i18n';
-import { Dispatch } from 'redux';
-import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
-import MessagePage from 'infra/common/components/alert/MessagePage';
-import { GetMatch_match } from 'gqlTypes/GetMatch';
-import { LobbyService } from 'infra/common/services/LobbyService';
 import * as Sentry from '@sentry/browser';
+import { GetMatch_match } from 'gqlTypes/GetMatch';
+import MessagePage from 'infra/common/components/alert/MessagePage';
+import { withNickNameRequired } from 'infra/common/components/auth/hocs/withNickNameRequired';
+import { LobbyService } from 'infra/common/services/LobbyService';
+import Game from 'infra/game/Game';
+import { NextRouter, withRouter, withTranslation, WithTranslation } from 'infra/i18n';
+import React from 'react';
+import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import { Dispatch } from 'redux';
 
 interface MatchOutterProps {}
 
@@ -59,16 +59,6 @@ export class Match extends React.Component<MatchInnerProps & MatchOutterProps, M
 const mapStateToProps = function (state) {
   return {
     user: { ...state.user },
-  };
-};
-
-const withNickNameRequired = function (Component) {
-  return function (props) {
-    return (
-      <NicknameRequired>
-        <Component {...props} />
-      </NicknameRequired>
-    );
   };
 };
 
