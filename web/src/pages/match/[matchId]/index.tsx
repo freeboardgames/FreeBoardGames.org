@@ -12,8 +12,10 @@ const Match: NextPage = () => {
   return <GameMatch />;
 };
 
-Match.getInitialProps = () => {
+Match.getInitialProps = async ({ query }) => {
+  const matchId = query.matchId as string;
   return {
+    matchId,
     namespacesRequired: [],
   };
 };

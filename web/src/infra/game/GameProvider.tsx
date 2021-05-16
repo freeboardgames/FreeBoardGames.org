@@ -1,19 +1,34 @@
 /* eslint-disable react/prop-types */
 import { IGameDef } from 'gamesShared/definitions/game';
-import { createContext, FC, useContext } from 'react';
-import React from 'react';
+import { LobbyService } from 'infra/common/services/LobbyService';
+import React, { createContext, FC, useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAsyncEffect } from 'use-async-effect';
 import { getGameDefinition } from './utils';
-
 const Context = createContext<GameContext>({} as GameContext);
 
 export const useCurrentGame = () => useContext(Context);
 
-export const GameProvider: FC<{ gameCode: string }> = ({ children, gameCode }) => {
+type Props = {
+  gameCode?: string;
+  matchId?: string;
+};
+
+export const GameProvider: FC<Props> = ({ children, gameCode, matchId }) => {
+  const [matchGameCode, setMatchGameCode] = useState<string>();
+  const dispatch = useDispatch();
+
+  useAsyncEffect(async () => {
+    if (gameCode) return;
+    const { match } = await LobbyService.getMatch(dispatch, matchId);
+    setMatchGameCode(match.gameCode);
+  }, [matchId]);
+
   return (
     <Context.Provider
       value={{
-        game: getGameDefinition(gameCode),
-        gameCode,
+        game: getGameDefinition(matchGameCode || gameCode),
+        gameCode: matchGameCode || gameCode,
       }}
     >
       {children}

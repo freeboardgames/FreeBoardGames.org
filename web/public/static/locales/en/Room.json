@@ -1,0 +1,11 @@
+{
+  "you_were_removed_from_the_room": "You were removed from the room.",
+  "try_again": "Try Again",
+  "ok": "OK",
+  "change_game": "Change Game",
+  "failed_to_fetch_room_metadata": "Failed to fetch room metadata.",
+  "leave_room": "Leave room",
+  "max_players": "{{ name }} can play up to {{ max }} players, but the room has {{ current }} players.",
+  "failed_to_set_nickname": "Failed to set nickname.",
+  "failed_to_start_match": "Failed to start match"
+}

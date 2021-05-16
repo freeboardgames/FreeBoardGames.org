@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { NicknamePrompt } from './NicknamePrompt';
 import { LobbyService } from '../../services/LobbyService';
 import { Dispatch } from 'redux';
@@ -6,25 +6,25 @@ import { connect } from 'react-redux';
 import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import { ReduxState, ReduxUserState } from 'infra/common/redux/definitions';
 
-interface Props {
+interface InnerProps {
   dispatch: Dispatch;
+  user: ReduxUserState;
+}
+
+interface OutterProps {
   onSuccess?: (...args: any) => void;
   handleClickaway?: () => void;
-  conditional: boolean;
+  children: ReactNode;
   renderAsPopup?: boolean;
   skipFbgBar?: boolean;
-  user: ReduxUserState;
 }
 
 interface State {
   errorText: string;
 }
 
-export class NicknameRequired extends React.Component<Props, State> {
+export class NicknameRequired extends React.Component<InnerProps & OutterProps, State> {
   state = { errorText: undefined };
-  constructor(props: Props) {
-    super(props);
-  }
 
   async componentDidMount() {
     this.props.dispatch(LobbyService.getSyncUserAction());
