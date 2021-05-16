@@ -1,7 +1,9 @@
 import { BPiles } from './bpiles';
+import { gameDecorator } from '../decorators/game';
 
 export default {
   title: 'Games/Zoo Parade/Components/Piles',
+  decorators: [gameDecorator],
 };
 
 export const Example = () => (

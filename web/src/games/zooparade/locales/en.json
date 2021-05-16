@@ -1,0 +1,15 @@
+{
+  "bscore": {
+    "score": "Score {{ score }}"
+  },
+  "blog": {
+    "success": "✅ SUCCESS",
+    "fail": "❌ FAIL",
+    "status_player_played_card": "<b>{{ status }}: {{ player }}</b> played\n<card></card>",
+    "status_player_played_color_value": "<b>{{ status }}: {{ player }}</b> played\n<color></color> <value></value> card.",
+    "player_discarded_card": "<b>{{ player }} discarded\n<card></card></b>",
+    "player_discarded_color_value": "<b>{{ player }}</b> discarded <color></color> <value></value> card.",
+    "player_gave_a_color_hint": "<b>{{ player }}</> gave {{ receiver }} a color hint: <color></color>",
+    "player_gave_a_value_hint": "<b>{{ player }}</> gave {{ receiver }} a value hint: <value></value>"
+  }
+}
