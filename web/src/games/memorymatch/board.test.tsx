@@ -46,8 +46,10 @@ describe('SoupOfLetters UI', () => {
     const card = state0.G.cards[0];
     wrapper.find(`[data-testid="mm-card-group-${card.id}"]`).at(0).simulate('click');
     updateGameProps();
-    const pair = state0.G.cards.filter((c) => c.name === card.name && c.id !== card.id)[0];
+    const pair = state0.G.cards.filter((c) => c.name !== card.name)[0];
     wrapper.find(`[data-testid="mm-card-group-${pair.id}"]`).at(0).simulate('click');
+    updateGameProps();
+    instance.props.moves.hideShownCards();
     updateGameProps();
     // now next player should be allowed to play
     expect(wrapper.text()).toContain("Player 2's Turn");
@@ -59,34 +61,42 @@ describe('SoupOfLetters UI', () => {
       const namedCards = state0.G.cards.filter((c) => c.name === cName);
       wrapper.find(`[data-testid="mm-card-group-${namedCards[0].id}"]`).at(0).simulate('click');
       updateGameProps();
+      const bCards = state0.G.cards.filter((c) => c.name !== cName);
+      wrapper.find(`[data-testid="mm-card-group-${bCards[0].id}"]`).at(0).simulate('click');
+      updateGameProps();
+      instance.props.moves.hideShownCards();
+      updateGameProps();
+      wrapper.find(`[data-testid="mm-card-group-${namedCards[0].id}"]`).at(0).simulate('click');
+      updateGameProps();
       wrapper.find(`[data-testid="mm-card-group-${namedCards[1].id}"]`).at(0).simulate('click');
       updateGameProps();
     });
     expect(wrapper.text()).toContain('Game Over, draw!');
   });
 
-  it('should declare Player 2 as th winner', () => {
+  it('should declare Player 2 as the winner', () => {
     const cardNames = new Set(state0.G.cards.map((c) => c.name));
-    const matchingPairs = [];
-    cardNames.forEach((cName) => {
-      matchingPairs.push(state0.G.cards.filter((c) => c.name === cName));
+    let names = [...cardNames];
+    let lastName = names.pop();
+    names.forEach((cName) => {
+      const namedCards = state0.G.cards.filter((c) => c.name === cName);
+      wrapper.find(`[data-testid="mm-card-group-${namedCards[0].id}"]`).at(0).simulate('click');
+      updateGameProps();
+      const bCards = state0.G.cards.filter((c) => c.name !== cName);
+      wrapper.find(`[data-testid="mm-card-group-${bCards[0].id}"]`).at(0).simulate('click');
+      updateGameProps();
+      instance.props.moves.hideShownCards();
+      updateGameProps();
+      wrapper.find(`[data-testid="mm-card-group-${namedCards[0].id}"]`).at(0).simulate('click');
+      updateGameProps();
+      wrapper.find(`[data-testid="mm-card-group-${namedCards[1].id}"]`).at(0).simulate('click');
+      updateGameProps();
     });
-    // now insert two non-matchin pairs at position 0 and 2
-    matchingPairs.push(matchingPairs[0]);
-    matchingPairs.push(matchingPairs[2]);
-    matchingPairs[0] = '_skip_';
-    matchingPairs[2] = '_skip_';
-
-    matchingPairs.forEach((mp) => {
-      if (mp === '_skip_') {
-        instance.props.moves.hideShownCards();
-      } else {
-        wrapper.find(`[data-testid="mm-card-group-${mp[0].id}"]`).at(0).simulate('click');
-        updateGameProps();
-        wrapper.find(`[data-testid="mm-card-group-${mp[1].id}"]`).at(0).simulate('click');
-        updateGameProps();
-      }
-    });
+    const lastCards = state0.G.cards.filter((c) => c.name === lastName);
+    wrapper.find(`[data-testid="mm-card-group-${lastCards[0].id}"]`).at(0).simulate('click');
+    updateGameProps();
+    wrapper.find(`[data-testid="mm-card-group-${lastCards[1].id}"]`).at(0).simulate('click');
+    updateGameProps();
     expect(wrapper.text()).toContain('Game Over, Player 2 won!');
   });
 

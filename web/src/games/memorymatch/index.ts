@@ -23,11 +23,12 @@ export const memoryMatchDef: IGameDef = {
   description: 'A small game to sharpen memory',
   descriptionTag: `Play memory match for free online. You can either play a multi-player game against a friend online, or share your device and play locally against a friend.`,
   instructions: {
-    videoId: 'leW9ZotUVYo',
+    videoId: 'oFfYmrGeTPs',
     text: instructions,
   },
   config: () => import('./config'),
   status: IGameStatus.PUBLISHED,
+  customization: () => import('./customization'),
 };
 
 export default memoryMatchDef;
