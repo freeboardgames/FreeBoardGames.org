@@ -24,6 +24,7 @@ export interface IGameState {
   gridSize: number;
   cards: ICardInfo[];
   timeShownCards: boolean;
+  stayInTurnOnMatch: boolean;
 }
 
 export interface IBoardState {}

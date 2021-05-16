@@ -28,6 +28,7 @@ export const memoryMatchDef: IGameDef = {
   },
   config: () => import('./config'),
   status: IGameStatus.PUBLISHED,
+  customization: () => import('./customization'),
 };
 
 export default memoryMatchDef;

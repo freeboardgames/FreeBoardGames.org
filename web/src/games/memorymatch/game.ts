@@ -2,10 +2,14 @@ import { Game } from 'boardgame.io';
 import { IGameState, ICardInfo, ECardState } from './definations';
 import { CARD_CONTENT } from './constants';
 import { shuffleArray, getScoreBoard } from './utils';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
+import { FullCustomizationState, DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
 export const MemoryMatchGame: Game<IGameState> = {
   name: 'memorymatch',
-  setup: () => {
+  setup: (ctx, customData: GameCustomizationState) => {
+    const customizationState = (customData?.full as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
+    const stayInTurnOnMatch = customizationState.stayInTurnOnMatch;
     const gridSize = 5;
     const shuffeledContnet = shuffleArray(Object.keys(CARD_CONTENT)).slice(0, Math.floor((gridSize * gridSize) / 2));
     const doubledContent = shuffleArray([...shuffeledContnet, ...shuffeledContnet]);
@@ -18,7 +22,7 @@ export const MemoryMatchGame: Game<IGameState> = {
         state: ECardState.HIDDEN,
       });
     }
-    return { cards, timeShownCards: false, gridSize };
+    return { cards, timeShownCards: false, gridSize, stayInTurnOnMatch };
   },
   moves: {
     cardClicked: (G: IGameState, ctx, cardId: number) => {
@@ -36,11 +40,14 @@ export const MemoryMatchGame: Game<IGameState> = {
             // mark the pair as open
             cardPair.state = ECardState.OPEN;
             clickedCard.state = ECardState.OPEN;
+            if (!G.stayInTurnOnMatch) {
+              changeTurn = true;
+            }
           } else {
             // mark current card as shown
             clickedCard.state = ECardState.SHOWN;
             G.timeShownCards = true;
-            if (shownCards.length % 2 == 0) {
+            if (G.stayInTurnOnMatch && shownCards.length % 2 == 0) {
               changeTurn = true;
             }
           }
