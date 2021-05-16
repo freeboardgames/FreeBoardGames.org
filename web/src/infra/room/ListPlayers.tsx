@@ -39,18 +39,13 @@ const enhance = compose<IListPlayersInnerProps, IListPlayersOutterProps>(withTra
 export const ListPlayers = enhance(
   class ListPlayers extends React.Component<IListPlayersInnerProps & IListPlayersOutterProps, {}> {
     render() {
+      const { t } = this.props;
       const metadata = this.props.roomMetadata;
       const occupancy = metadata.userMemberships.length;
       const capacity = metadata.capacity;
       return (
         <div style={{ position: 'relative' }}>
-          <List
-            subheader={
-              <ListSubheader>
-                Players ({occupancy}/{capacity})
-              </ListSubheader>
-            }
-          >
+          <List subheader={<ListSubheader>{t('players', { occupancy, capacity })}</ListSubheader>}>
             <div style={{ maxHeight: '309px', overflowY: 'auto' }}>
               {this.renderPlayersList()}
               {this.renderWaitingList()}
