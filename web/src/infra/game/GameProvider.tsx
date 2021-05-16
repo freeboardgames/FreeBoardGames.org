@@ -19,7 +19,7 @@ export const GameProvider: FC<Props> = ({ children, gameCode, matchId }) => {
   const dispatch = useDispatch();
 
   useAsyncEffect(async () => {
-    if (gameCode) return;
+    if (gameCode || !matchId) return;
     const { match } = await LobbyService.getMatch(dispatch, matchId);
     setMatchGameCode(match.gameCode);
   }, [matchId]);
