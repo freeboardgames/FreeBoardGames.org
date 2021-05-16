@@ -121,7 +121,14 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
 
     return {
       gameCode,
-      namespacesRequired: ['common', 'GameContributors', 'GameInfo', 'GameModePicker', getGameCodeNamespace(gameCode)],
+      namespacesRequired: [
+        'common',
+        'GameInfo',
+        'GameModePicker',
+        'GameModePickerCard',
+        'GameContributors',
+        getGameCodeNamespace(gameCode),
+      ],
     };
   }
 }
