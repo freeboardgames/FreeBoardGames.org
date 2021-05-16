@@ -1,3 +1,5 @@
+const TSConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 module.exports = ({ config }) => {
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
@@ -11,6 +13,10 @@ module.exports = ({ config }) => {
       },
     ],
   });
+
+  config.node = {
+    fs: 'empty',
+  };
 
   // Do not use Storybook's CSS rules
   // https://github.com/storybookjs/storybook/issues/6055#issuecomment-521046352
@@ -32,5 +38,8 @@ module.exports = ({ config }) => {
   });
 
   config.resolve.extensions.push('.ts', '.tsx');
+  config.resolve.modules.push('src');
+  config.resolve.plugins.push(new TSConfigPathsPlugin());
+
   return config;
 };

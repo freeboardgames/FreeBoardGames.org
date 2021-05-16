@@ -11,6 +11,13 @@ var config = {
   entry: {
     server_bgio: path.resolve(__dirname, 'server/bgio.ts'),
     server_web: path.resolve(__dirname, 'server/web.ts'),
+    'next.config': path.resolve(__dirname, 'server/next.config.ts'),
+  },
+
+  node: {
+    global: false,
+    __filename: false,
+    __dirname: true,
   },
 
   output: {
@@ -18,6 +25,7 @@ var config = {
     path: path.resolve(__dirname, 'server/dist'),
     filename: '[name].js',
     chunkFilename: '[chunkhash].js',
+    libraryTarget: 'commonjs',
   },
 
   optimization: {

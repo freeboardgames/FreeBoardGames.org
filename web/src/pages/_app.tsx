@@ -1,28 +1,26 @@
 /* eslint-disable react/react-in-jsx-scope */
 
-import Head from 'next/head';
-import App from 'next/app';
-import React from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
-import theme from 'infra/common/components/base/theme';
-import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
-import { isMobileFromReq } from 'infra/common/device/UaHelper';
-import UaContext from 'infra/common/device/IsMobileContext';
-import withError from 'next-with-error';
-import ErrorPage from './_error';
-import ReactGA from 'react-ga';
-import Router from 'next/router';
-import * as Sentry from '@sentry/browser';
-
-import { wrapper } from 'infra/common/redux/store';
-import { ApolloClient, split, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache, split } from '@apollo/client';
 import { createHttpLink } from '@apollo/client/link/http';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { ApolloProvider } from '@apollo/react-hooks';
+import * as Sentry from '@sentry/browser';
+import { ThemeProvider } from 'infra/common';
+import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
+import UaContext from 'infra/common/device/IsMobileContext';
+import { isMobileFromReq } from 'infra/common/device/UaHelper';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
+import { wrapper } from 'infra/common/redux/store';
+import { GameProvider } from 'infra/game/GameProvider';
+import { appWithTranslation, Router } from 'infra/i18n';
+import withError from 'next-with-error';
+import App from 'next/app';
+import Head from 'next/head';
+import React from 'react';
+import ReactGA from 'react-ga';
 import { compose } from 'recompose';
-import { nextI18Next } from 'infra/i18n';
+import ErrorPage from './_error';
 
 const GA_TRACKING_CODE = 'UA-105391878-2';
 const SENTRY_DSN = 'https://5957292e58cf4d2fbb781910e7b26b1f@o397015.ingest.sentry.io/5251165';
@@ -62,7 +60,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-class defaultApp extends App {
+class DefaultApp extends App {
   logPageView(path: string) {
     ReactGA.set({ page: path });
     ReactGA.pageview(path);
@@ -85,12 +83,16 @@ class defaultApp extends App {
       if (version && channel) release = `${version}-${channel}`;
       Sentry.init({ dsn: SENTRY_DSN, release });
     }
-    // https://github.com/sergiodxa/next-ga/blob/32899e9635efe1491a5f47469b0bd2250e496f99/src/index.js#L32
-    (Router as any).onRouteChangeComplete = (path: string) => {
-      this.logPageView(path);
-    };
+
+    Router.events.on('routeChangeComplete', this.logPageView);
+
     this.logPageView(window.location.pathname);
   }
+
+  componentWillUnmount() {
+    Router.events.off('routeChangeComplete', this.logPageView);
+  }
+
   render() {
     const { Component, pageProps, isMobile } = this.props as any;
     return (
@@ -107,17 +109,20 @@ class defaultApp extends App {
           <meta name="msapplication-TileColor" content="#ffc40d" />
           <meta name="msapplication-config" content="/static/icons/browserconfig.xml" />
         </Head>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider>
           <SelfXSSWarning />
           <UaContext.Provider value={isMobile}>
             <ApolloProvider client={client}>
-              <Component {...pageProps} />
+              <GameProvider {...pageProps}>
+                <Component {...pageProps} />
+              </GameProvider>
             </ApolloProvider>
           </UaContext.Provider>
         </ThemeProvider>
       </>
     );
   }
+
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
 
@@ -130,6 +135,6 @@ class defaultApp extends App {
   }
 }
 
-const enhance = compose(wrapper.withRedux, nextI18Next.appWithTranslation, withError(ErrorPage));
+const enhance = compose(wrapper.withRedux, appWithTranslation, withError(ErrorPage));
 
-export default enhance(defaultApp);
+export default enhance(DefaultApp);

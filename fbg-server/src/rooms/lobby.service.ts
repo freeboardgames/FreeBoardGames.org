@@ -1,3 +1,4 @@
+import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomEntity } from './db/Room.entity';
 import { Injectable } from '@nestjs/common';
@@ -5,13 +6,14 @@ import { PubSub } from 'graphql-subscriptions';
 import { Repository } from 'typeorm';
 import { lobbyToGql } from './RoomUtil';
 import { EXPIRE_MEMBERSHIP_AFTER_MS } from './constants';
+import { FBG_PUB_SUB } from '../internal/FbgPubSubModule';
 
 @Injectable()
 export class LobbyService {
   constructor(
     @InjectRepository(RoomEntity)
     private roomRepository: Repository<RoomEntity>,
-    private pubSub: PubSub,
+    @Inject(FBG_PUB_SUB) private pubSub: PubSub,
   ) {}
 
   /** Gets list of open public rooms. */

@@ -1,19 +1,13 @@
 jest.mock('./stockfish8.worker');
-import React from 'react';
-import { Board } from './board';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
-import { GameMode } from 'gamesShared/definitions/mode';
-
-Enzyme.configure({ adapter: new Adapter() });
 jest.mock('react-ga');
 
-// mock functions for HTMLMediaElement
-// https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395
-(window as any).HTMLMediaElement.prototype.play = () => {
-  /* do nothing */
-};
+import Enzyme from 'enzyme';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { GameProvider } from 'infra/game/GameProvider';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { mockStore } from 'test/utils/rtl';
+import { Board, BoardInternal } from './board';
 
 const players = [
   { playerID: 0, name: 'foo', roomID: '' },
@@ -21,16 +15,11 @@ const players = [
 ];
 
 const getTestBoard = (mode: GameMode) => (props: any) => (
-  <Board
-    {...{
-      ...props,
-      gameArgs: {
-        gameCode: 'chess',
-        mode,
-        players,
-      },
-    }}
-  />
+  <Provider store={mockStore({})}>
+    <GameProvider gameCode="chess">
+      <Board {...props} gameArgs={{ gameCode: 'chess', mode, players }} />
+    </GameProvider>
+  </Provider>
 );
 
 test('render board - all states - local friend', () => {
@@ -52,7 +41,7 @@ test('render board - all states - local friend', () => {
       isConnected={true}
     />,
   );
-  expect(board.html()).toContain('draw');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('draw');
   // squares should not be selectable after the game ends:
   // attempt to select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
@@ -67,7 +56,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).toContain('black won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('black won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -78,7 +67,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).toContain('white won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('white won');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -88,7 +77,7 @@ test('render board - all states - local friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).toContain("White's turn");
+  expect(board.find('[data-testid="status"]')).toContainText("White's turn");
   board.setProps({
     ...board.props(),
     ctx: {
@@ -99,7 +88,7 @@ test('render board - all states - local friend', () => {
     },
     G: { pgn: '1.f4' },
   });
-  expect(board.html()).toContain("Black's turn");
+  expect(board.find('[data-testid="status"]')).toContainText("Black's turn");
   board.setProps({
     ...board.props(),
     ctx: {
@@ -110,7 +99,7 @@ test('render board - all states - local friend', () => {
     },
     G: { pgn: '1.f4 e5 2.g4 Qh4#' },
   });
-  expect(board.html()).toContain('CHECK');
+  expect(board.find('[data-testid="status"]')).toContainText('CHECK');
 });
 
 test('render board - all states - online friend', () => {
@@ -132,7 +121,11 @@ test('render board - all states - online friend', () => {
       isConnected={true}
     />,
   );
-  expect(board.html()).toContain('draw');
+
+  // displays a message for a draw
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('draw');
+
+  // displays a message for a lost on player 0
   board.setProps({
     ...board.props(),
     ctx: {
@@ -143,7 +136,9 @@ test('render board - all states - online friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).toContain('you lost');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you lost');
+
+  // displays a message for a win
   board.setProps({
     ...board.props(),
     ctx: {
@@ -154,12 +149,16 @@ test('render board - all states - online friend', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).toContain('you won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you won');
+
+  // displays a message for a lost on player 1
   board.setProps({
     ...board.props(),
     playerID: '1',
   });
-  expect(board.html()).toContain('you lost');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you lost');
+
+  // displays  a message for a check
   board.setProps({
     ...board.props(),
     ctx: {
@@ -170,7 +169,7 @@ test('render board - all states - online friend', () => {
     },
     G: { pgn: '1.f4 e5 2.g4 Qh4#' },
   });
-  expect(board.html()).toContain('CHECK');
+  expect(board.find('[data-testid="status"]')).toContainText('CHECK');
 });
 
 function rowColAt(row: number, col: number) {
@@ -195,7 +194,8 @@ test('little game', () => {
       isConnected={true}
     />,
   );
-  expect(board.html()).toContain('YOUR TURN');
+
+  expect(board.find('[data-testid="status"]')).toContainText('YOUR TURN');
   // select a2
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
   expect(board.find('rect').at(rowColAt(2, 1)).html()).toContain('green');
@@ -223,7 +223,7 @@ test('little game', () => {
     },
     G: { pgn: '1.f4' },
   });
-  expect(board.html()).toContain('Waiting for opponent');
+  expect(board.find('[data-testid="status"]')).toContainText('Waiting for opponent...');
 
   // try invalid selection
   board.find('rect').at(rowColAt(2, 1)).simulate('click');
@@ -301,7 +301,7 @@ test('AI gameover - all cases', () => {
       step={stepMock}
     />,
   );
-  expect(board.html()).toContain('draw');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('draw');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -312,7 +312,7 @@ test('AI gameover - all cases', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).toContain('you lost');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you lost');
   board.setProps({
     ...board.props(),
     ctx: {
@@ -323,7 +323,7 @@ test('AI gameover - all cases', () => {
       currentPlayerMoves: 0,
     },
   });
-  expect(board.html()).toContain('you won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you won');
 });
 
 test('castling fix', () => {
@@ -342,8 +342,9 @@ test('castling fix', () => {
       isActive={true}
       isConnected={true}
     />,
-  );
-  const result = (board.find('Board').instance() as any)._fixHistory([
+  ).find(BoardInternal);
+
+  const result = (board.instance() as any)._fixHistory([
     { san: 'O-O-O', color: 'w' },
     { san: 'O-O-O', color: 'b' },
     { san: 'O-O', color: 'w' },
@@ -363,12 +364,11 @@ test('castling fix', () => {
 
 describe('drag and drop', () => {
   let moveMock: jest.Mock;
-  let testBoard: Enzyme.ReactWrapper;
   let board: Enzyme.ReactWrapper;
   beforeEach(() => {
     const TestBoard = getTestBoard(GameMode.LocalFriend);
     moveMock = jest.fn();
-    testBoard = Enzyme.mount(
+    board = Enzyme.mount(
       <TestBoard
         G={{ pgn: '' }}
         ctx={{
@@ -382,8 +382,7 @@ describe('drag and drop', () => {
         isActive={true}
         isConnected={true}
       />,
-    );
-    board = testBoard.find(Board);
+    ).find(BoardInternal);
   });
 
   it('should drag', () => {
@@ -416,13 +415,12 @@ describe('drag and drop', () => {
 
 describe('sound toggle', () => {
   let moveMock: jest.Mock;
-  let testBoard: Enzyme.ReactWrapper;
   let board: Enzyme.ReactWrapper;
 
   beforeEach(() => {
     moveMock = jest.fn();
     const TestBoard = getTestBoard(GameMode.LocalFriend);
-    testBoard = Enzyme.mount(
+    board = Enzyme.mount(
       <TestBoard
         G={{ pgn: '' }}
         ctx={{
@@ -436,8 +434,7 @@ describe('sound toggle', () => {
         isActive={true}
         isConnected={true}
       />,
-    );
-    board = testBoard.find(Board);
+    ).find(BoardInternal);
   });
 
   it('should start with sound enabled', () => {

@@ -1,11 +1,12 @@
+import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
+import mockedEnv from 'mocked-env';
 import React from 'react';
 import { GameSharing } from './GameSharing';
-import { render, fireEvent, RenderResult, cleanup } from '@testing-library/react';
-require('@testing-library/jest-dom/extend-expect');
 
 const GAME_LINK = 'http://localhost/room/fooroom';
 
 afterEach(cleanup);
+
 describe('GameSharing', () => {
   let wrapper: RenderResult;
   beforeEach(() => {
@@ -40,12 +41,25 @@ describe('GameSharing', () => {
     expect(window.open as any).toHaveBeenCalled();
   });
 
-  it('should copy link', () => {
+  it('should copy link when i18n is disabled', () => {
+    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'false' });
     jest.useFakeTimers();
     const button = wrapper.getByLabelText('Copy');
     fireEvent.click(button);
     expect(wrapper.getByText('Copied!')).toBeInTheDocument();
     jest.runAllTimers();
     expect((window as any).copyClipboardMock).toHaveBeenCalledWith(GAME_LINK);
+    restore();
+  });
+
+  it('should copy link when i18n is enabled', () => {
+    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'true' });
+    jest.useFakeTimers();
+    const button = wrapper.getByLabelText('Copy');
+    fireEvent.click(button);
+    expect(wrapper.getByText('Copied!')).toBeInTheDocument();
+    jest.runAllTimers();
+    expect((window as any).copyClipboardMock).toHaveBeenCalledWith(GAME_LINK);
+    restore();
   });
 });

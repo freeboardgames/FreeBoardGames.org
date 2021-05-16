@@ -2,7 +2,7 @@ import React from 'react';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Grid, Token } from 'deprecated-bgio-ui';
-import { IG, IPieceTransform, getPlayer, getValidPositions, inBounds, getAllPositions } from './game';
+import { getPlayer, getValidPositions, inBounds, getAllPositions } from './game';
 import { Ctx } from 'boardgame.io';
 import { Scoreboard, IScore } from 'gamesShared/components/scores/Scoreboard';
 import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
@@ -19,21 +19,7 @@ import Controls from './Controls';
 
 import { pieces } from './pieces';
 import { isLocalGame } from '../../gamesShared/helpers/gameMode';
-
-export interface ICoords {
-  x: number;
-  y: number;
-}
-
-export interface IColorMap {
-  [key: string]: string;
-}
-
-export interface IPiece {
-  transform: IPieceTransform;
-  index: number;
-  data: boolean[];
-}
+import { IG, IPiece, IColorMap, IPieceTransform } from './types';
 
 interface IBoardProps {
   G: IG;

@@ -3,7 +3,6 @@ import { Carousel } from 'infra/common/components/carousel/Carousel';
 import { GameCardWithOverlay } from './GameCardWithOverlay';
 import { gql } from 'apollo-boost';
 import { GetLobby, GetLobby_lobby } from 'gqlTypes/GetLobby';
-import { GAMES_MAP } from 'games';
 import { Typography, Button, CircularProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { getGroupedRoomsDisplay } from './LobbyUtil';
@@ -11,6 +10,8 @@ import { NewRoomModal } from './NewRoomModal';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { Subscription } from '@apollo/react-components';
 import css from './LobbyCarousel.module.css';
+import { Trans, withTranslation, WithTranslation } from 'infra/i18n';
+import { getGameDefinition } from 'infra/game';
 
 export const LOBBIES_SUBSCRIPTION = gql`
   subscription SubscribeToLobby {
@@ -27,7 +28,7 @@ export const LOBBIES_SUBSCRIPTION = gql`
   }
 `;
 
-interface Props {}
+interface Props extends Pick<WithTranslation, 't'> {}
 
 interface State {
   showNewRoomModal: boolean;
@@ -36,7 +37,7 @@ interface State {
   lobby?: GetLobby_lobby;
 }
 
-export default class LobbyCarousel extends React.Component<Props, State> {
+class LobbyCarousel extends React.Component<Props, State> {
   state: State = { showNewRoomModal: false, loading: true };
 
   componentDidMount() {
@@ -44,11 +45,12 @@ export default class LobbyCarousel extends React.Component<Props, State> {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <div className={css.wrapper}>
         {this.state.showNewRoomModal && <NewRoomModal handleClickaway={this._toggleNewRoomModal} />}
         <Typography display="inline" component="h2" variant="h6" style={{ margin: '16px 0', marginLeft: '6px' }}>
-          Public rooms
+          {t('public_rooms')}
         </Typography>
         <Button
           variant="contained"
@@ -57,7 +59,7 @@ export default class LobbyCarousel extends React.Component<Props, State> {
           startIcon={<AddIcon />}
           onClick={this._toggleNewRoomModal}
         >
-          New Room
+          {t('new_room')}
         </Button>
         {this.renderCarousel()}
       </div>
@@ -65,6 +67,8 @@ export default class LobbyCarousel extends React.Component<Props, State> {
   }
 
   renderCarousel() {
+    const { t } = this.props;
+
     if (this.state.loading) {
       return (
         <Carousel>
@@ -74,7 +78,7 @@ export default class LobbyCarousel extends React.Component<Props, State> {
     } else if (this.state.error) {
       return (
         <Typography component="h2" variant="body2" className={css.message}>
-          An error occurred while loading the lobby. Try reloading.
+          {t('error')}
         </Typography>
       );
     }
@@ -85,7 +89,7 @@ export default class LobbyCarousel extends React.Component<Props, State> {
           if (lobby.rooms.length === 0) {
             return (
               <Typography component="h2" variant="body2" className={css.message}>
-                No public room available. Click on &quot;<b>New Room</b>&quot; and create one!
+                <Trans t={t} i18nKey="no_public_room_available" components={{ b: <b /> }} />
               </Typography>
             );
           }
@@ -101,7 +105,7 @@ export default class LobbyCarousel extends React.Component<Props, State> {
     for (const [gameCode, rooms] of Object.entries(grouped)) {
       result.push(
         <div key={gameCode} style={{ textDecoration: 'none', minWidth: '250px', width: '250px', margin: '8px' }}>
-          <GameCardWithOverlay rooms={rooms} game={GAMES_MAP[gameCode]} />
+          <GameCardWithOverlay rooms={rooms} game={getGameDefinition(gameCode)} />
         </div>,
       );
     }
@@ -123,3 +127,7 @@ export default class LobbyCarousel extends React.Component<Props, State> {
     );
   };
 }
+
+const enhance = withTranslation('LobbyCarousel');
+
+export default enhance(LobbyCarousel);

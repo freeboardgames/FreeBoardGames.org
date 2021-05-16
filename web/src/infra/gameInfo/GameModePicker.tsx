@@ -3,17 +3,16 @@ import Typography from '@material-ui/core/Typography';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import { LobbyService } from '../common/services/LobbyService';
-import Router from 'next/router';
 import { connect } from 'react-redux';
 import { ReduxState, ReduxUserState } from 'infra/common/redux/definitions';
 import NicknameRequired from '../common/components/auth/NicknameRequired';
 import { Dispatch } from 'redux';
 import { GameModePickerCard } from './GameModePickerCard';
 import { compose } from 'recompose';
-import { WithTranslation } from 'next-i18next';
-import { nextI18Next } from 'infra/i18n';
+import { Router, withTranslation, WithTranslation } from 'infra/i18n';
+import { room } from 'infra/navigation';
 
-interface IGameModePickerInnerProps extends Pick<WithTranslation, 't'> {
+interface IGameModePickerInnerProps extends Pick<WithTranslation, 't' | 'i18n'> {
   user: ReduxUserState;
   dispatch: Dispatch;
 }
@@ -72,7 +71,8 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
   }
 
   _playOnlineGame = (info: IGameModeInfo, numPlayers: number) => () => {
-    if (!this.props.user.loggedIn) {
+    const { i18n, user } = this.props;
+    if (!user.loggedIn) {
       this.setState({ onlinePlayRequested: numPlayers });
       return;
     }
@@ -81,7 +81,7 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     LobbyService.newRoom((this.props as any).dispatch, gameCode, numPlayers).then(
       (response) => {
         // we use .replace instead of .push so that the browser back button works correctly
-        Router.replace(`/room/${response.newRoom.roomId}`);
+        Router.replace(room(response.newRoom.roomId)(i18n.language));
       },
       () => {
         this.setState({ playButtonError: true, playButtonDisabled: false });
@@ -89,8 +89,8 @@ export class GameModePickerInternal extends React.Component<IGameModePickerProps
     );
   };
 
-  static async getInitialProps(router) {
-    const gameCode = router.query.gameCode as string;
+  static async getInitialProps({ query }) {
+    const gameCode = query.gameCode as string;
     return { gameCode };
   }
 }
@@ -101,7 +101,7 @@ const mapStateToProps = (state: ReduxState) => ({
 });
 
 const enhance = compose<IGameModePickerInnerProps, IGameModePickerOutterProps>(
-  nextI18Next.withTranslation('GameModePicker'),
+  withTranslation('GameModePicker'),
   connect(mapStateToProps),
 );
 

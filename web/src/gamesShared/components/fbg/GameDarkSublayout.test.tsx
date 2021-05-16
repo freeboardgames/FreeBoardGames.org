@@ -1,9 +1,8 @@
+import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameMode } from 'gamesShared/definitions/mode';
 import React from 'react';
 import { GameDarkSublayout, IOptionsItems } from './GameDarkSublayout';
-import { render, fireEvent, RenderResult, cleanup, waitFor } from '@testing-library/react';
-import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameArgs } from 'gamesShared/definitions/game';
-require('@testing-library/jest-dom/extend-expect');
 
 afterEach(cleanup);
 
@@ -12,11 +11,7 @@ const mockGameArgs: IGameArgs = { gameCode: 'tictactoe', mode: GameMode.LocalFri
 describe('Game Dark Sublayout - No Options Menu', () => {
   let wrapper: RenderResult;
   beforeEach(() => {
-    wrapper = render(
-      <GameDarkSublayout gameArgs={mockGameArgs}>
-        <p>Foobar Game</p>
-      </GameDarkSublayout>,
-    );
+    wrapper = renderComponent();
   });
 
   it('should display', () => {
@@ -26,19 +21,15 @@ describe('Game Dark Sublayout - No Options Menu', () => {
 
 describe('Game Dark Sublayout - Options Menu', () => {
   let wrapper: RenderResult;
-  let options: IOptionsItems[];
   beforeEach(() => {
-    options = [
-      {
-        onClick: jest.fn(),
-        text: `toggle me`,
-      },
-    ];
-    wrapper = render(
-      <GameDarkSublayout gameArgs={mockGameArgs} optionsMenuItems={() => options}>
-        <p>Foobar Game</p>
-      </GameDarkSublayout>,
-    );
+    wrapper = renderComponent({
+      options: [
+        {
+          onClick: jest.fn(),
+          text: `toggle me`,
+        },
+      ],
+    });
   });
 
   it('should start with the options menu closed', () => {
@@ -59,14 +50,18 @@ describe('Game Dark Sublayout - Options Menu', () => {
 describe('Game Dark Sublayout - With Game Name', () => {
   let wrapper: RenderResult;
   beforeEach(() => {
-    wrapper = render(
-      <GameDarkSublayout gameArgs={mockGameArgs}>
-        <p>Foobar Game</p>
-      </GameDarkSublayout>,
-    );
+    wrapper = renderComponent();
   });
 
   it('should display game name', () => {
     expect(wrapper.getByText(/Tic-Tac-Toe/)).toBeTruthy();
   });
 });
+
+function renderComponent(params: { options?: IOptionsItems[] } = {}) {
+  return render(
+    <GameDarkSublayout gameArgs={mockGameArgs} {...(params.options && { optionsMenuItems: () => params.options })}>
+      <p>Foobar Game</p>
+    </GameDarkSublayout>,
+  );
+}

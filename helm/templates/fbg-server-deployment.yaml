@@ -29,29 +29,25 @@ spec:
           value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.postgresqlDatabase }}
         - name: JWT_SECRET
           value: {{ .Values.fbgServer.jwtSecret }}
-        image: freeboardgames/fbg-server
-        imagePullPolicy: Always
+        - name: FBG_REDIS_HOST
+          value: {{ .Release.Name }}-redis-master-0.{{ .Release.Name }}-redis-headless.{{ .Release.Namespace }}.svc.{{ .Values.redis.clusterDomain }}
+        - name: FBG_REDIS_PORT
+          value: {{ .Values.redis.master.service.port | quote }}
+        - name: FBG_REDIS_PASSWORD
+          value: {{ .Values.redis.auth.password }}
+        image: {{ .Values.images.fbgServer }}
+        imagePullPolicy: {{ .Values.images.imagePullPolicy }}
         livenessProbe:
           failureThreshold: 3
           httpGet:
             path: /healthz
             port: 3001
             scheme: HTTP
-          initialDelaySeconds: 30
+          initialDelaySeconds: 180
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 1
+          timeoutSeconds: 2
         name: {{ .Release.Name }}-fbg-server
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /healthz
-            port: 3001
-            scheme: HTTP
-          initialDelaySeconds: 30
-          periodSeconds: 5
-          successThreshold: 1
-          timeoutSeconds: 1
         resources:
           limits:
             cpu: "1"

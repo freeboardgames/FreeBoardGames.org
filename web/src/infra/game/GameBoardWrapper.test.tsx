@@ -1,10 +1,7 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { gameBoardWrapper } from 'infra/game/GameBoardWrapper';
-
-Enzyme.configure({ adapter: new Adapter() });
+import { render as rendr, screen, waitFor } from '@testing-library/react';
 
 class MockBoard extends React.Component<any, any> {
   render() {
@@ -13,27 +10,21 @@ class MockBoard extends React.Component<any, any> {
 }
 
 describe('GameBoardWrapper', () => {
-  it('should not show warning', () => {
-    const Board = gameBoardWrapper({
-      board: MockBoard,
-      gameArgs: {
-        gameCode: 'chess',
-        mode: GameMode.OnlineFriend,
-      },
-    });
-    const wrapper = Enzyme.mount(<Board isConnected={true} G={{ pgn: '' }} ctx={{}} />);
-    expect(wrapper.find('AlertLayer').length).toEqual(0);
+  it('should not show warning', async () => {
+    render({ isConnected: true });
+    await waitFor(() => expect(screen.queryByText('Connection lost')).not.toBeInTheDocument());
   });
 
   it('should show disconnected warning', () => {
-    const Board = gameBoardWrapper({
-      board: MockBoard,
-      gameArgs: {
-        gameCode: 'chess',
-        mode: GameMode.OnlineFriend,
-      },
-    });
-    const wrapper = Enzyme.mount(<Board isConnected={false} G={{ pgn: '' }} ctx={{}} />);
-    expect(wrapper.html()).toContain('Connection lost');
+    render({ isConnected: false });
+    expect(screen.queryByText('Connection lost')).toBeInTheDocument();
   });
 });
+
+function render({ isConnected }) {
+  const Board = gameBoardWrapper({
+    board: MockBoard,
+    gameArgs: { gameCode: 'chess', mode: GameMode.OnlineFriend },
+  });
+  return rendr(<Board isConnected={isConnected} G={{ pgn: '' }} ctx={{}} />);
+}

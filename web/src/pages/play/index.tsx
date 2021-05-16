@@ -1,13 +1,12 @@
 import React from 'react';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
+import { home } from 'infra/navigation';
 
-export default class extends React.Component {
+export default class Play extends React.Component {
   static async getInitialProps({ res }) {
-    const redirectTo = '/';
+    const redirectTo = home();
     if (res) {
-      res.writeHead(302, {
-        Location: redirectTo,
-      });
+      res.writeHead(302, { Location: redirectTo });
       res.end();
     } else {
       Router.push(redirectTo);

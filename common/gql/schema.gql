@@ -2,40 +2,8 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: Int
-  nickname: String!
-}
-
-type NewUser {
-  jwtToken: String!
-}
-
-type RoomMembership {
-  isCreator: Boolean!
-  user: User!
-}
-
-type Room {
-  id: String
-  matchId: String
-  userId: Float
-  userMemberships: [RoomMembership!]!
-  gameCode: String!
-  capacity: Float!
-  isPublic: Boolean!
-}
-
-type NewRoom {
-  roomId: String!
-}
-
 type Lobby {
   rooms: [Room!]!
-}
-
-type MatchMembership {
-  user: User!
 }
 
 type Match {
@@ -48,6 +16,10 @@ type Match {
   bgioPlayerId: String
 }
 
+type MatchMembership {
+  user: User!
+}
+
 type Message {
   channelType: String!
   channelId: String!
@@ -55,12 +27,6 @@ type Message {
   userNickname: String!
   isoTimestamp: String!
   message: String!
-}
-
-type Query {
-  user: User!
-  lobby: Lobby!
-  match(id: String!): Match!
 }
 
 type Mutation {
@@ -76,8 +42,8 @@ type Mutation {
   sendMessage(message: SendMessageInput!): Boolean!
 }
 
-input NewUserInput {
-  nickname: String!
+type NewRoom {
+  roomId: String!
 }
 
 input NewRoomInput {
@@ -86,10 +52,33 @@ input NewRoomInput {
   isPublic: Boolean!
 }
 
-input UpdateRoomInput {
-  roomId: String!
+type NewUser {
+  jwtToken: String!
+}
+
+input NewUserInput {
+  nickname: String!
+}
+
+type Query {
+  user: User!
+  lobby: Lobby!
+  match(id: String!): Match!
+}
+
+type Room {
+  id: String
+  matchId: String
+  userId: Float
+  userMemberships: [RoomMembership!]!
   gameCode: String!
   capacity: Float!
+  isPublic: Boolean!
+}
+
+type RoomMembership {
+  isCreator: Boolean!
+  user: User!
 }
 
 input SendMessageInput {
@@ -102,4 +91,15 @@ type Subscription {
   roomMutated(roomId: String!): Room!
   lobbyMutated: Lobby!
   chatMutated(channelId: String!, channelType: String!): Message!
+}
+
+input UpdateRoomInput {
+  roomId: String!
+  gameCode: String!
+  capacity: Float!
+}
+
+type User {
+  id: Int
+  nickname: String!
 }

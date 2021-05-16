@@ -2,27 +2,7 @@ import { INVALID_MOVE, TurnOrder } from 'boardgame.io/core';
 import { Game, Ctx } from 'boardgame.io';
 import { IScore } from 'gamesShared/components/scores/Scoreboard';
 import { pieces } from './pieces';
-
-export interface IPieceTransform {
-  x: number;
-  y: number;
-  rotation: number;
-  flipX: boolean;
-  flipY: boolean;
-}
-
-export interface IPlayer {
-  end: boolean;
-  pieces: number[];
-}
-
-export interface IG {
-  board: string[];
-  players: IPlayer[];
-  turnOrder: string[];
-  turn: number;
-  playOrderPos: number;
-}
+import { IG, IPieceTransform } from './types';
 
 export function getXY(position: number, size: number) {
   return { x: position % size, y: Math.floor(position / size) };

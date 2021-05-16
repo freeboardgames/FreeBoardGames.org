@@ -1,47 +1,40 @@
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { GAMES_LIST } from 'games';
 import { GamesList } from './GamesList';
-import Enzyme from 'enzyme';
-import { GAMES_LIST } from '../../../../games';
 
 const FIRST_GAME = GAMES_LIST[0];
 
-let wrapper: Enzyme.ReactWrapper;
-
 beforeEach(() => {
-  wrapper = Enzyme.mount(<GamesList />);
+  render(<GamesList />);
 });
 
 describe('GamesList', () => {
   it('should have correct games listed', () => {
-    const game = wrapper.find(`[data-testid="gamecard-${FIRST_GAME.code}"]`).at(0);
-    expect(game.exists()).toBeTruthy();
+    expect(screen.getByTestId(`gamecard-${FIRST_GAME.code}`)).toBeInTheDocument();
   });
 
   describe('filtering', () => {
-    it('handles onChange()', () => {
-      const instance: any = wrapper.instance();
-      const searchQuery = 'foo';
-      const mockEvent = { target: { value: searchQuery } };
-      instance._handleSearchOnChange(mockEvent);
-      const searchQueryInState = wrapper.state('searchQuery');
-      expect(searchQueryInState).toEqual('foo');
-    });
-
     it('should filter by name', () => {
-      wrapper.setState({ searchQuery: FIRST_GAME.name });
-      const game = wrapper.find(`[data-testid="gamecard-${FIRST_GAME.code}"]`).at(0);
-      expect(game.exists()).toBeTruthy();
+      type(FIRST_GAME.name);
+      expect(screen.getByTestId(`gamecard-${FIRST_GAME.code}`)).toBeInTheDocument();
     });
 
     it('should filter by description', () => {
-      wrapper.setState({ searchQuery: FIRST_GAME.description });
-      const game = wrapper.find(`[data-testid="gamecard-${FIRST_GAME.code}"]`).at(0);
-      expect(game.exists()).toBeTruthy();
+      type(FIRST_GAME.description);
+      expect(screen.getByTestId(`gamecard-${FIRST_GAME.code}`)).toBeInTheDocument();
     });
 
     it('should filter by description tag', () => {
-      wrapper.setState({ searchQuery: FIRST_GAME.descriptionTag });
-      const game = wrapper.find(`[data-testid="gamecard-${FIRST_GAME.code}"]`).at(0);
-      expect(game.exists()).toBeTruthy();
+      type(FIRST_GAME.descriptionTag);
+      expect(screen.getByTestId(`gamecard-${FIRST_GAME.code}`)).toBeInTheDocument();
     });
   });
 });
+
+function type(value: string) {
+  const input = screen.getByRole('textbox', { name: 'search' });
+  act(() => {
+    fireEvent.change(input, { target: { value } });
+  });
+  return input;
+}

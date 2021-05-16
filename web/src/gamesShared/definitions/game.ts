@@ -2,6 +2,7 @@ import { IGameModeInfo } from './mode';
 import { GameMode } from './mode';
 import { IPlayerInRoom } from './player';
 import { GameCustomizationState } from 'gamesShared/definitions/customization';
+import { Language } from 'infra/i18n/types';
 
 export interface IGameArgs {
   gameCode: string;
@@ -28,6 +29,7 @@ export enum IGameStatus {
 
 export interface IGameDef {
   code: string;
+  codes?: Partial<Record<Language, string>>;
   name: string;
   contributors: string[];
   imageURL: string;
@@ -41,6 +43,7 @@ export interface IGameDef {
     text?: string;
   };
   status: IGameStatus;
+  translationStatus?: Partial<Record<Language, IGameTranslationStatus>>;
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
   customization?: () => Promise<any>;
@@ -48,4 +51,9 @@ export interface IGameDef {
 
 export interface IGameDefMap {
   [code: string]: IGameDef;
+}
+
+export enum IGameTranslationStatus {
+  PARTIAL,
+  DONE,
 }

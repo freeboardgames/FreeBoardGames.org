@@ -3,15 +3,29 @@ import { mount } from 'enzyme';
 import { GameLayout } from './GameLayout';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
-import { LobbyService } from '../../../infra/common/services/LobbyService';
+import { LobbyService } from 'infra/common/services/LobbyService';
 import ReplayIcon from '@material-ui/icons/Replay';
-import Router from 'next/router';
+import { Router } from 'infra/i18n';
 
 beforeEach(() => {
-  jest.resetAllMocks();
+  jest.clearAllMocks();
 });
 
 describe('ReplayIcon', () => {
+  let querySpy: jest.SpyInstance<typeof Router['query']>;
+
+  beforeEach(() => {
+    querySpy = jest.spyOn(Router, 'query', 'get');
+  });
+
+  beforeAll(() => {
+    jest.spyOn(Router, 'push');
+  });
+
+  afterEach(() => {
+    querySpy.mockClear();
+  });
+
   it('should show ReplayIcon for AI', () => {
     const gameArgs: IGameArgs = {
       gameCode: 'FooGame',
@@ -34,7 +48,8 @@ describe('ReplayIcon', () => {
   });
 
   it('should redirect to room returned by play again endpoint', async () => {
-    Router.query = { matchId: 'roomFoo' };
+    querySpy.mockReturnValue({ matchId: 'roomFoo' });
+
     const p = Promise.resolve('fooNextRoom');
     LobbyService.getPlayAgainNextRoom = jest.fn().mockReturnValue(p);
 
@@ -52,13 +67,13 @@ describe('ReplayIcon', () => {
     expect(Router.push).toHaveBeenCalledWith('/room/fooNextRoom');
   });
 
-  it('should call window.location.reload', () => {
+  it('should call Router.push with window.location.pathname', () => {
     const gameArgs: IGameArgs = {
       gameCode: 'FooGame',
       mode: GameMode.AI,
     };
     const wrapper = mount(<GameLayout gameOver={'Foo Won'} gameArgs={gameArgs} />);
     wrapper.find(ReplayIcon).simulate('click');
-    expect(Router.push).toHaveBeenCalled();
+    expect(Router.push).toHaveBeenCalledWith(window.location.pathname);
   });
 });

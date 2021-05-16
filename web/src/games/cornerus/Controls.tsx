@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Ctx } from 'boardgame.io';
 
-import { IG, rotatePiece, flipPieceY, flipPieceX, getPlayer } from './game';
-import { IPiece } from './board';
+import { rotatePiece, flipPieceY, flipPieceX, getPlayer } from './game';
+import { IG, IPiece } from './types';
 import { pieces } from './pieces';
 
 import Done from '@material-ui/icons/Done';

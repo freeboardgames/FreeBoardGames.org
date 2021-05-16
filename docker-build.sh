@@ -40,6 +40,7 @@ run_gameserver() {
     cd "$DIR"
     echo -e "Now the game index will be generated."
     yarn run gen:games || (echo -e "ERROR. (ensure node is up-to-date)" && exit 1)
+    cd web && yarn run i18n:copy && cd -
 }
 
 install_dependencies() {
@@ -54,23 +55,32 @@ compile_dependencies() {
 
 build_docker() {
     cd "$DIR"
-    docker build -t "$BUILD_IMAGE_COMMON" "$BUILD_DIR_COMMON"
-    docker build -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB"
-    docker build -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG"
+    docker build -t "$BUILD_IMAGE_COMMON" "$BUILD_DIR_COMMON" || exit 1
+    docker build -t "fbg-web" -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB" || exit 1
+    docker build -t "fbg-server" -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG" || exit 1
 }
 
 push_docker() {
     cd "$DIR"
-    docker push "$BUILD_IMAGE_WEB"
-    docker push "$BUILD_IMAGE_FBG" 
+    docker push "$BUILD_IMAGE_WEB" || exit 1
+    docker push "$BUILD_IMAGE_FBG" || exit 1
 }
 
 prune_docker_images() {
-    PRUNE_IMAGES=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep freeboardgames/)
+    PRUNE_IMAGES=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep -e freeboardgames -e fbg)
     echo -e "$PRUNE_IMAGES"
     if $(confirm "Delete listed docker images?") ; then
         echo "$PRUNE_IMAGES" | xargs docker rmi
     fi
+}
+
+upload_minikube() {
+    echo -e "Uploading fbg-web..."
+    minikube cache delete fbg-web
+    minikube cache add fbg-web || exit 1
+    echo -e "Uploading fbg-server..."
+    minikube cache delete fbg-server
+    minikube cache add fbg-server || exit 1
 }
 
 exportdocker() {
@@ -89,7 +99,7 @@ importdocker() {
 # ###### Parsing arguments
 #Usage print
 usage() {
-    echo "Usage: $0 -[d|b|p|e|i|r|h]" >&2
+    echo "Usage: $0 -[d|b|p|e|i|r|h|m]" >&2
     echo "
    -d,    Installs dependencies and generates game index. 
    -b,    Build docker image
@@ -98,6 +108,7 @@ usage() {
    -i,    Import docker images
    -r,    Prune docker images
    -h,    Print this help text
+   -m,    Upload images to minikube
 
 If the script will be called without parameters, it will run:
     $0 -d -b
@@ -105,7 +116,7 @@ If the script will be called without parameters, it will run:
     exit 1
 }
 
-while getopts ':dbpeir' opt
+while getopts ':dbpeirm' opt
 do
 case "$opt" in
    'd')compile_dependencies;
@@ -120,6 +131,8 @@ case "$opt" in
        ;;
    'r')prune_docker_images;
        ;;
+   'm')upload_minikube;
+       ;;
     *) usage;
        ;;
 esac
@@ -132,5 +145,8 @@ if [ $OPTIND -eq 1 ]; then
     fi
     if $(confirm "Build docker image?") ; then
         build_docker
+    fi
+    if $(confirm "Upload images to minikube?") ; then
+       upload_minikube 
     fi
 fi

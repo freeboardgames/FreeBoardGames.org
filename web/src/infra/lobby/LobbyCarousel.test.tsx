@@ -24,7 +24,7 @@ describe('Room Lobby', () => {
         <LobbyCarousel />
       </Provider>,
     );
-    await waitFor(() => expect(getByText(/error occurred/)).toBeTruthy());
+    await waitFor(() => expect(getByText(/error/)).toBeTruthy());
   });
 
   it('should display rooms', async () => {

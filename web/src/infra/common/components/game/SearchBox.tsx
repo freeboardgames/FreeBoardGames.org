@@ -1,21 +1,16 @@
-import React from 'react';
+import React, { HTMLAttributes, useState } from 'react';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import { Theme } from '@material-ui/core/styles';
-import { InputAdornment, IconButton, withStyles } from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { InputAdornment, IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
+import { useTranslation } from 'infra/i18n';
 
 interface Props {
-  handleSearchOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  style?: React.CSSProperties;
-  classes?: any;
+  onInputChange: (value: string) => void;
 }
 
-interface State {
-  query: string;
-}
-
-const styles = (theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -57,67 +52,59 @@ const styles = (theme: Theme) => ({
       width: '20ch',
     },
   },
-});
+}));
 
-class SearchBox extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { query: '' };
-  }
+function SearchBox({ onInputChange, ...props }: Props & HTMLAttributes<HTMLDivElement>) {
+  const classes = useStyles();
+  const [query, setQuery] = useState('');
+  const { t } = useTranslation('SearchBox');
 
-  render() {
-    const classes = this.props.classes;
-    const query = this.state.query;
-    let endAdornment: JSX.Element;
+  const handleSearchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    onInputChange(e.target.value);
+  };
 
-    if (query.length > 0) {
-      endAdornment = (
-        <div className={classes.clearIcon}>
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="clear search field"
-              onClick={this._clearSearchQuery}
-              data-testid={'clearSearchField'}
-            >
-              <ClearIcon />
-            </IconButton>
-          </InputAdornment>
-        </div>
-      );
-    }
-    return (
-      <div className={classes.search} style={this.props.style}>
-        <div className={classes.searchIcon}>
-          <SearchIcon data-testid={'SearchIcon'} />
-        </div>
-        <OutlinedInput
-          fullWidth
-          placeholder="Search…"
-          autoComplete="off"
-          value={query}
-          data-testid={'searchInput'}
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-          }}
-          onChange={this._handleSearchOnChange}
-          inputProps={{ 'aria-label': 'search' }}
-          endAdornment={endAdornment}
-        />
+  const clearSearchQuery = () => {
+    const event: any = { target: { value: '' } };
+    handleSearchOnChange(event);
+  };
+
+  let endAdornment: JSX.Element;
+
+  if (query.length > 0) {
+    endAdornment = (
+      <div className={classes.clearIcon}>
+        <InputAdornment position="end">
+          <IconButton aria-label="clear search field" onClick={clearSearchQuery} data-testid={'clearSearchField'}>
+            <ClearIcon />
+          </IconButton>
+        </InputAdornment>
       </div>
     );
   }
 
-  _handleSearchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    this.setState({ query });
-    this.props.handleSearchOnChange(e);
-  };
+  return (
+    <div {...props} className={classes.search}>
+      <div className={classes.searchIcon}>
+        <SearchIcon data-testid={'SearchIcon'} />
+      </div>
 
-  _clearSearchQuery = () => {
-    const event: any = { target: { value: '' } };
-    this._handleSearchOnChange(event);
-  };
+      <OutlinedInput
+        fullWidth
+        placeholder={t('search')}
+        autoComplete="off"
+        value={query}
+        data-testid={'searchInput'}
+        classes={{
+          root: classes.inputRoot,
+          input: classes.inputInput,
+        }}
+        onChange={handleSearchOnChange}
+        inputProps={{ 'aria-label': 'search' }}
+        endAdornment={endAdornment}
+      />
+    </div>
+  );
 }
 
-export default withStyles(styles as any)(SearchBox);
+export default SearchBox;

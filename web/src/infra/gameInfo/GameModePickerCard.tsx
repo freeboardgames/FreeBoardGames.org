@@ -8,15 +8,20 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import Link from 'next/link';
+import { Link } from 'infra/i18n';
 import { OccupancySelect } from 'infra/common/components/game/OccupancySelect';
 import css from './GameModePickerCard.module.css';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode, IGameModeInfo } from 'gamesShared/definitions/mode';
 import Typography from '@material-ui/core/Typography';
 import { CustomizationBar } from 'infra/settings/CustomizationBar';
+import { LanguagePathResolver, play, room } from 'infra/navigation';
+import { withTranslation, WithTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-interface GameModePickerCardProps {
+interface IGameModePickerCardInnerProps extends WithTranslation {}
+
+interface IGameModePickerCardOutterProps {
   gameDef: IGameDef;
   info: IGameModeInfo;
   playOnlineGameCallback: (info: IGameModeInfo, numPlayers: number) => () => void;
@@ -24,11 +29,13 @@ interface GameModePickerCardProps {
   playButtonDisabled: boolean;
 }
 
-interface GameModePickerCardState {
+interface IGameModePickerCardProps extends IGameModePickerCardInnerProps, IGameModePickerCardOutterProps {}
+
+interface IGameModePickerCardState {
   numPlayers: number;
 }
 
-export class GameModePickerCard extends React.Component<GameModePickerCardProps, GameModePickerCardState> {
+export class GameModePickerCardInternal extends React.Component<IGameModePickerCardProps, IGameModePickerCardState> {
   state = {
     numPlayers: this.props.gameDef.minPlayers,
   };
@@ -39,18 +46,18 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
     let icon;
     switch (this.props.info.mode) {
       case GameMode.AI:
-        title = 'Computer (AI)';
-        description = 'Play against the computer in your browser.';
+        title = this.props.t('computer_ai_title');
+        description = this.props.t('computer_ai_description');
         icon = <AndroidIcon />;
         break;
       case GameMode.LocalFriend:
-        title = 'Local Friend';
-        description = 'Share your device and play with a friend locally.';
+        title = this.props.t('local_friend_title');
+        description = this.props.t('local_friend_description');
         icon = <GroupIcon />;
         break;
       case GameMode.OnlineFriend:
-        title = 'Online Friend';
-        description = 'Share a link and play with a friend online.';
+        title = this.props.t('online_friend_title');
+        description = this.props.t('online_friend_description');
         icon = <WifiIcon />;
         break;
     }
@@ -70,13 +77,12 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
     );
   }
   private renderButton() {
-    let btnText = 'Play';
+    let btnText = this.props.t('play');
     let color = 'primary'; // FIXME: couldn't find the type
     if (this.props.playButtonError) {
-      btnText = 'Error';
-      color = 'secondary';
+      (btnText = this.props.t('error')), (color = 'secondary');
     } else if (this.props.playButtonDisabled) {
-      btnText = 'Loading';
+      btnText = this.props.t('loading');
     }
     if (this.props.info.mode === GameMode.OnlineFriend) {
       return (
@@ -92,11 +98,8 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
         </Button>
       );
     } else {
-      const linkInfo = this.getLink();
-      const linkHref = linkInfo[0],
-        linkAs = linkInfo[1];
       return (
-        <Link href={linkHref} as={linkAs}>
+        <Link href={this.getLink()}>
           <Button
             data-testid={`playbutton-${this.props.gameDef.code}-${this.props.info.mode}`}
             component={'a'}
@@ -104,7 +107,7 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
             color="primary"
             style={{ marginLeft: 'auto' }}
           >
-            Play
+            {this.props.t('play')}
           </Button>
         </Link>
       );
@@ -138,23 +141,22 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
   }
 
   private getLink() {
-    const mode = this.props.info.mode;
-    let hrefAndAs: string[];
-    switch (mode) {
+    const { info, gameDef } = this.props;
+    let link: LanguagePathResolver;
+
+    switch (info.mode) {
       case GameMode.AI:
-        hrefAndAs = ['/play/[gameCode]/[mode]', `/play/${this.props.gameDef.code}/AI`];
+        link = play(gameDef, GameMode.AI);
         break;
       case GameMode.LocalFriend:
-        hrefAndAs = ['/play/[gameCode]/[mode]', `/play/${this.props.gameDef.code}/local`];
+        link = play(gameDef, GameMode.LocalFriend);
         break;
       case GameMode.OnlineFriend:
-        hrefAndAs = [
-          '/room/new/[gameCode]/[numPlayers]',
-          `/room/new/${this.props.gameDef.code}/${this.state.numPlayers}`,
-        ];
+        link = room('new', gameDef, this.state.numPlayers);
         break;
     }
-    return hrefAndAs;
+
+    return link;
   }
 
   _handleNumPlayersSelect = (event: ChangeEvent<{ value: number }>) => {
@@ -162,3 +164,9 @@ export class GameModePickerCard extends React.Component<GameModePickerCardProps,
     this.setState({ numPlayers });
   };
 }
+
+const enhance = compose<IGameModePickerCardInnerProps, IGameModePickerCardOutterProps>(
+  withTranslation('GameModePickerCard'),
+);
+
+export const GameModePickerCard = enhance(GameModePickerCardInternal);
