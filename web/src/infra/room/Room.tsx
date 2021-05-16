@@ -252,7 +252,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
           this.setState({ loading: false, roomMetadata: roomMetadata, userId: roomMetadata.userId });
         }
       },
-      (e) => {
+      () => {
         this.setState({ error: t('failed_to_fetch_room_metadata') });
       },
     );
