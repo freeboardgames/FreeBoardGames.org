@@ -126,6 +126,7 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
         'GameInfo',
         'GameModePicker',
         'GameModePickerCard',
+        'GameContributors',
         getGameCodeNamespace(gameCode),
       ],
     };
