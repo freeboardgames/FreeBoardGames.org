@@ -4,8 +4,6 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Game Customization 
 
-**This is still in development**
-
 The game personalization framework in FBG intends to allow game developers 
 to give user options on rules or AI behavior variations for any game. This enables 
 experimentating with game rules, regional variations of classic
@@ -52,11 +50,11 @@ export interface QuickCustomizationState {
 export const DEFAULT_QUICK_CUSTOMIZATION = { difficulty: 1 };
 
 const customization: GameCustomization = {
-  renderQuick: ({ mode, currentState, onChange }: GameCustomizationProps) => {
+  renderQuick: ({ mode, currentValue, onChange }: GameCustomizationProps) => {
     if (mode != GameMode.AI) {
       return null;
     }
-    const state = (currentState as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
+    const state = (currentValue as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
     return <AReactComponent difficulty={state.difficulty} callback={onChange} />
   },
 
