@@ -31,7 +31,7 @@ spec:
           value: {{ .Release.Name }}-redis-master-0.{{ .Release.Name }}-redis-headless.{{ .Release.Namespace }}.svc.{{ .Values.redis.clusterDomain }}
         - name: FBG_REDIS_PORT
           value: {{ .Values.redis.master.service.port | quote }}
-       - name: FBG_REDIS_PASSWORD
+        - name: FBG_REDIS_PASSWORD
           value: {{ .Values.redis.auth.password }}
         image: {{ .Values.images.web }} 
         imagePullPolicy: {{ .Values.images.imagePullPolicy }}
