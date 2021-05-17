@@ -1,4 +1,8 @@
 {
+  "board": {
+    "show_logs": "Show logs",
+    "hide_logs": "Hide logs"
+  },
   "bscore": {
     "score": "Score {{ score }}"
   },
