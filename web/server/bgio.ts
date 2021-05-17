@@ -7,7 +7,7 @@ import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
 import { Server, SocketIO } from 'boardgame.io/server';
 import { PostgresStore } from 'bgio-postgres';
-import { createAdapter } from '@socket.io/redis-adapter';
+import { createAdapter } from 'socket.io-redis';
 import { RedisClient } from 'redis';
 
 const PORT = parseInt(process.env.BGIO_PORT || '8001', 10);
