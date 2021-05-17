@@ -5,28 +5,31 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FreeBoardGamesBar from '../base/FreeBoardGamesBar';
 import SvgError from './media/SvgError';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'infra/i18n';
+import { Link, withTranslation, WithTranslation } from 'infra/i18n';
 import { home } from 'infra/navigation';
+import { compose } from 'recompose';
 
 interface IMessageState {
   linkHidden: boolean;
   startTime: number;
 }
 
-interface IMessageProps {
+interface IMessageInnerProps extends WithTranslation {}
+
+interface IMessageOutterProps {
   type: 'loading' | 'error';
   message: string;
   skipFbgBar?: boolean;
   actionComponent?: JSX.Element;
 }
 
-export class MessagePage extends React.Component<IMessageProps, IMessageState> {
+export class MessagePageInternal extends React.Component<IMessageInnerProps & IMessageOutterProps, IMessageState> {
   requestID: number = null;
   state = {
     linkHidden: this.props.type !== 'error',
     startTime: Date.now(),
   };
-  constructor(props: IMessageProps) {
+  constructor(props: IMessageInnerProps & IMessageOutterProps) {
     super(props);
     if (typeof window !== 'undefined' && props.type !== 'error') {
       this.requestID = window.requestAnimationFrame(this._animate(Date.now()));
@@ -63,7 +66,7 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
       icon = <CircularProgress />;
     }
     if (!this.state.linkHidden) {
-      const goHomeText = 'Go Home';
+      const goHomeText = this.props.t('go_home');
       linkHome = (
         <Link href={() => home()}>
           <a style={{ textDecoration: 'none' }}>
@@ -95,4 +98,6 @@ export class MessagePage extends React.Component<IMessageProps, IMessageState> {
   }
 }
 
-export default MessagePage;
+const enhance = compose<IMessageInnerProps, IMessageOutterProps>(withTranslation('MessagePage'));
+
+export default enhance(MessagePageInternal);
