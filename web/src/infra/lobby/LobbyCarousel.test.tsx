@@ -1,7 +1,6 @@
 import React from 'react';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { render, waitFor, cleanup } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { MockedProvider } from '@apollo/react-testing';

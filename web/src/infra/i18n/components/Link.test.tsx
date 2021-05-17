@@ -1,5 +1,4 @@
 import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
 import * as RTL from '@testing-library/react';
 import { screen, waitFor } from '@testing-library/react';
 import mockedEnv from 'mocked-env';

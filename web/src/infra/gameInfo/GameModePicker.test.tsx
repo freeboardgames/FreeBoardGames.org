@@ -5,7 +5,6 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { render, RenderResult, cleanup } from '@testing-library/react';
 import { I18n } from 'next-i18next';
 import { mock } from 'jest-mock-extended';
-require('@testing-library/jest-dom/extend-expect');
 
 const i18n = mock<I18n>({ language: 'en' });
 
