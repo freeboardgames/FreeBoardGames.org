@@ -16,8 +16,12 @@ import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
 import CloseIcon from '@material-ui/icons/Close';
 import Badge from '@material-ui/core/Badge';
+import { withTranslation, WithTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-export interface ChatProps {
+interface ChatInnerProps extends WithTranslation {}
+
+export interface ChatOutterProps {
   channelType: 'room' | 'match';
   channelId: string;
   dispatch: Dispatch;
@@ -29,12 +33,16 @@ export interface ChatState {
   unseenMessages: number;
 }
 
-const INITIAL_MESSAGE: Message = {
+interface InitialMessageResolver {
+  (t: WithTranslation['t']): Message;
+}
+
+const INITIAL_MESSAGE: InitialMessageResolver = (t) => ({
   userId: 0,
-  userNickname: '*** NOTICE ***',
-  message: 'Messages will be lost after reloading. Do not provide any personal information here.',
+  userNickname: t('notice.title'),
+  message: t('notice.message'),
   isoTimestamp: '',
-};
+});
 
 const isMobile = isMobileFromReq();
 export const CHAT_SUBSCRIPTION = gql`
@@ -48,11 +56,11 @@ export const CHAT_SUBSCRIPTION = gql`
   }
 `;
 
-export class Chat extends React.Component<ChatProps, ChatState> {
+class ChatInternal extends React.Component<ChatInnerProps & ChatOutterProps, ChatState> {
   private messagesRef = React.createRef<HTMLDivElement>();
 
   state = {
-    messageHistory: [INITIAL_MESSAGE],
+    messageHistory: [INITIAL_MESSAGE(this.props.t)],
     isOpen: !isMobile,
     unseenMessages: 0,
   };
@@ -139,7 +147,7 @@ export class Chat extends React.Component<ChatProps, ChatState> {
           <CloseIcon />
         </IconButton>
         <Typography variant="h6" component="span" className={css.ChatTitle}>
-          Chat
+          {this.props.t('chat')}
         </Typography>
       </div>
     );
@@ -191,3 +199,7 @@ export class Chat extends React.Component<ChatProps, ChatState> {
     this.setState({ isOpen, unseenMessages });
   };
 }
+
+const enhance = compose<ChatInnerProps, ChatOutterProps>(withTranslation('Chat'));
+
+export const Chat = enhance(ChatInternal);
