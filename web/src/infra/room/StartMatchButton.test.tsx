@@ -2,6 +2,7 @@ import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 import { StartMatchButton } from './StartMatchButton';
 import { mount } from 'enzyme';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 describe('Room Start Match Button', () => {
   it('should show disabled button if not enough people joined', async () => {
@@ -22,6 +23,8 @@ describe('Room Start Match Button', () => {
     };
     const wrapper = mount(<StartMatchButton roomMetadata={metadata} userId={1} startMatch={() => {}} />);
     expect(wrapper.find(Button).getDOMNode()).toBeDisabled();
+    expect(wrapper.find(Button).text()).toBe('Start match');
+    expect(wrapper.find(Tooltip).prop('title')).toBe('Not enough players.');
   });
 
   it('should show disabled button if not the creator', async () => {
@@ -47,6 +50,8 @@ describe('Room Start Match Button', () => {
     };
     const wrapper = mount(<StartMatchButton roomMetadata={metadata} userId={2} startMatch={() => {}} />);
     expect(wrapper.find(Button).getDOMNode()).toBeDisabled();
+    expect(wrapper.find(Button).text()).toBe('Start match');
+    expect(wrapper.find(Tooltip).prop('title')).toBe('Only foo can start.');
   });
 
   it('should show enabled button if creator and full', async () => {
@@ -72,5 +77,6 @@ describe('Room Start Match Button', () => {
     };
     const wrapper = mount(<StartMatchButton roomMetadata={metadata} userId={1} startMatch={() => {}} />);
     expect(wrapper.find(Button).getDOMNode()).toBeEnabled();
+    expect(wrapper.find(Button).text()).toBe('Start match');
   });
 });
