@@ -15,11 +15,16 @@ import css from './CustomizationBar.module.css';
 import Typography from '@material-ui/core/Typography';
 import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
 import { IGameDef } from 'gamesShared/definitions/game';
+import { compose } from 'recompose';
+import { withTranslation, WithTranslation } from 'infra/i18n';
 
-interface CustomizationBarProps {
+interface CustomizationBarInnerProps extends WithTranslation {
+  settingsService: SettingsService;
+}
+
+interface CustomizationBarOutterProps {
   gameDef: IGameDef;
   info: IGameModeInfo;
-  settingsService: SettingsService;
 }
 
 interface CustomizationBarState {
@@ -28,7 +33,10 @@ interface CustomizationBarState {
   showCustomizationDialog: boolean;
 }
 
-export class CustomizationBarInternal extends React.Component<CustomizationBarProps, CustomizationBarState> {
+export class CustomizationBarInternal extends React.Component<
+  CustomizationBarInnerProps & CustomizationBarOutterProps,
+  CustomizationBarState
+> {
   state = {
     showCustomizationDialog: false,
     customization: null,
@@ -131,7 +139,7 @@ export class CustomizationBarInternal extends React.Component<CustomizationBarPr
           <CloseIcon />
         </IconButton>
         <Typography variant="h6" component="span" className={css.DialogTitle}>
-          Customization
+          {this.props.t('customization')}
         </Typography>
       </div>
     );
@@ -158,4 +166,9 @@ export class CustomizationBarInternal extends React.Component<CustomizationBarPr
   };
 }
 
-export const CustomizationBar = withSettingsService(CustomizationBarInternal);
+const enhance = compose<CustomizationBarInnerProps, CustomizationBarOutterProps>(
+  withSettingsService,
+  withTranslation('CustomizationBar'),
+);
+
+export const CustomizationBar = enhance(CustomizationBarInternal);
