@@ -5,10 +5,10 @@
 import { GAMES_LIST } from 'games';
 import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
+const redis = require('redis');
+const redisAdapter = require('socket.io-redis');
 import { Server, SocketIO } from 'boardgame.io/server';
 import { PostgresStore } from 'bgio-postgres';
-import { createAdapter } from 'socket.io-redis';
-import { RedisClient } from 'redis';
 
 const PORT = parseInt(process.env.BGIO_PORT || '8001', 10);
 
@@ -23,14 +23,13 @@ function getDb() {
 function getTransport() {
   const host = process.env.FBG_REDIS_HOST;
   const port = process.env.FBG_REDIS_PORT;
-  const user = process.env.FBG_REDIS_USER;
   const password = process.env.FBG_REDIS_PASSWORD;
-  if (!host || !port || !password || !user) {
+  if (!host || !port || !password) {
     return;
   }
-  const pubClient = new RedisClient({ host, port, user, password });
-  const subClient = pubClient.duplicate();
-  return new SocketIO({ socketAdapter: createAdapter(pubClient, subClient) });
+  const pub = redis.createClient(port, host, { auth_pass: password });
+  const sub = redis.createClient(port, host, { auth_pass: password });
+  return new SocketIO({ socketAdapter: redisAdapter({ pubClient: pub, subClient: sub }) });
 }
 
 const startServer = async () => {
