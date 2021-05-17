@@ -1,3 +1,4 @@
+import { useCurrentGameTranslation } from 'infra/i18n';
 import React from 'react';
 import { ICard } from '../interfaces';
 import css from './bscore.module.css';
@@ -6,10 +7,10 @@ interface ScoreProps {
   piles: ICard[][];
 }
 
-export class BScore extends React.Component<ScoreProps, {}> {
-  render() {
-    let score = this.props.piles.map((pile) => pile.filter((card) => card !== null).length).reduce((a, b) => a + b, 0);
+export function BScore({ piles }: ScoreProps) {
+  const { translate } = useCurrentGameTranslation();
 
-    return <h3 className={css.text}>Score: {score}</h3>;
-  }
+  const score = piles.map((pile) => pile.filter((card) => card !== null).length).reduce((a, b) => a + b, 0);
+
+  return <h3 className={css.text}>{translate('bscore.score', { score })}</h3>;
 }

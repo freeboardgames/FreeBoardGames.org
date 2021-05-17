@@ -43,7 +43,7 @@
     "combine:reports": "nyc merge reports && move-cli coverage.json .nyc_output/out.json",
     "prereport:combined": "yarn run combine:reports",
     "report:combined": "nyc report --reporter lcov --report-dir coverage",
-    "storybook": "cross-env NODE_PATH=src/ NODE_OPTIONS='--max-old-space-size=4096' start-storybook -p 6006",
+    "storybook": "cross-env NODE_PATH=src/ NODE_OPTIONS='--max-old-space-size=4096' start-storybook -p 6006 -s ./public",
     "prepare": "cd .. && husky install web/.husky",
     "gen:games": "cd .. && yarn run gen:games",
     "i18n:copy": "cross-env TS_NODE_PROJECT=tsconfig.server.json ts-node server/config/i18n/sync/copyOnce.ts",

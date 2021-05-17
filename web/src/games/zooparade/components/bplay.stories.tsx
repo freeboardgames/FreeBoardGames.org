@@ -1,7 +1,9 @@
 import { BPlay } from './bplay';
+import { gameDecorator } from '../decorators/game';
 
 export default {
   title: 'Games/Zoo Parade/Components/Play',
+  decorators: [gameDecorator],
 };
 
 const onPlay = () => {

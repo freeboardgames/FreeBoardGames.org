@@ -1,9 +1,11 @@
-import { BLog } from './blog';
-import { Log, Moves } from '../interfaces';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
+import { gameDecorator } from '../decorators/game';
+import { Log, Moves } from '../interfaces';
+import { BLog } from './blog';
 
 export default {
   title: 'Games/Zoo Parade/Components/BLog',
+  decorators: [gameDecorator],
 };
 
 const log: Log[] = [
@@ -15,4 +17,4 @@ const players: IPlayerInRoom[] = [{ name: 'Foo', playerID: 0 }];
 
 export const Example = () => <BLog log={log} players={players} keyPropagation={'foo'} />;
 
-export const LastOnly = () => <BLog log={log} players={players} keyPropagation={'foo'} />;
+export const LastOnly = () => <BLog lastOnly log={log} players={players} keyPropagation={'foo'} />;
