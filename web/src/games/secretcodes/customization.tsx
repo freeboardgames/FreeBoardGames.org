@@ -83,25 +83,27 @@ const renderPredefinedWordsSelect = (
   );
 };
 
+const FullCustomization = ({ currentValue, onChange }: GameCustomizationProps) => {
+  const state = (currentValue as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
+  return (
+    <div>
+      {renderPredefinedWordsSelect(onChange, state)}
+      <div style={{ height: '32px' }}></div>
+      <TextField
+        label={`Words (${state.words.length})`}
+        multiline
+        style={{ width: '250px' }}
+        rows={15}
+        value={stateToText(state)}
+        variant="outlined"
+        onChange={changeTextValue(onChange)}
+      />
+    </div>
+  );
+};
+
 const customization: GameCustomization = {
-  renderFull: ({ currentValue, onChange }: GameCustomizationProps) => {
-    const state = (currentValue as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
-    return (
-      <div>
-        {renderPredefinedWordsSelect(onChange, state)}
-        <div style={{ height: '32px' }}></div>
-        <TextField
-          label={`Words (${state.words.length})`}
-          multiline
-          style={{ width: '250px' }}
-          rows={15}
-          value={stateToText(state)}
-          variant="outlined"
-          onChange={changeTextValue(onChange)}
-        />
-      </div>
-    );
-  },
+  FullCustomization,
 };
 
 export default customization;
