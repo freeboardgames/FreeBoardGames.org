@@ -1,5 +1,5 @@
 import React from 'react';
-import { Board } from './board';
+import Board from './board';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from 'enzyme';
 import { GameMode } from 'gamesShared/definitions/mode';
