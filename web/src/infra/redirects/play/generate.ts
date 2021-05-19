@@ -17,7 +17,7 @@ export function generate() {
     (wrapper, game) => {
       if (!game.codes) return wrapper;
 
-      const codes = Object.entries(game.codes);
+      const codes = [...Object.entries(game.codes), ['en', game.code]];
       const pathsByLocale: PathsByLocale = {};
 
       codes.forEach(([language, code]) => {
