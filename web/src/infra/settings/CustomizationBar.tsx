@@ -37,7 +37,7 @@ export class CustomizationBarInternal extends React.Component<
   CustomizationBarInnerProps & CustomizationBarOutterProps,
   CustomizationBarState
 > {
-  state = {
+  state: CustomizationBarState = {
     showCustomizationDialog: false,
     customization: null,
     customizationState: {} as FullGameCustomizationState,
@@ -67,29 +67,37 @@ export class CustomizationBarInternal extends React.Component<
 
   private renderQuickCustomization() {
     const custom = this.state.customization;
-    if (!custom || !custom.renderQuick) {
+
+    if (!custom?.QuickCustomization && /** @deprecated */ !custom?.renderQuick) {
       return null;
     }
+
+    const { QuickCustomization } = custom;
     const mode = this.props.info.mode;
-    return custom.renderQuick({
+
+    const props = {
       mode,
       currentValue: (this.state.customizationState || {})[mode]?.quick,
       onChange: this._changeCustomValue(CustomizationType.QUICK),
-    });
+    };
+
+    return QuickCustomization ? <QuickCustomization {...props} /> : custom.renderQuick(props);
   }
 
   private hasFullCustomization() {
     const mode = this.props.info.mode;
     const custom = this.state.customization;
-    if (!custom?.renderFull) {
+    if (!custom?.FullCustomization && /** @deprecated */ !custom?.renderFull) {
       return false;
     }
-    const fullCustom = custom.renderFull({
+
+    const props = {
       mode: this.props.info.mode,
       currentValue: this.state.customizationState[mode]?.quick,
       onChange: () => {},
-    });
-    return fullCustom !== null;
+    };
+
+    return custom.FullCustomization || custom.renderFull(props) !== null;
   }
 
   private renderFullCustomizationButton() {
@@ -124,12 +132,14 @@ export class CustomizationBarInternal extends React.Component<
 
   private renderCustomizationDialogContent() {
     const custom = this.state.customization;
+    const { FullCustomization } = custom;
     const mode = this.props.info.mode;
-    return custom.renderFull({
+    const props = {
       mode: this.props.info.mode,
       currentValue: this.state.customizationState[mode]?.full,
       onChange: this._changeCustomValue(CustomizationType.FULL),
-    });
+    };
+    return FullCustomization ? <FullCustomization {...props} /> : custom.renderFull(props);
   }
 
   private renderCustomizationDialogHeader() {
