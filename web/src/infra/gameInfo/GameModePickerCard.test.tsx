@@ -55,12 +55,14 @@ export interface QuickCustomizationState {
 export const DEFAULT_QUICK_CUSTOMIZATION = { difficulty: ExampleDifficulty.EASY };
 
 function getWrapper() {
-  const renderQuick = () => {
+  const QuickCustomization = () => {
     return <div>Game-specific widget</div>;
   };
+
   const custom: GameCustomization = {
-    renderQuick,
+    QuickCustomization,
   };
+
   const customization = () => Promise.resolve({ default: custom });
   const playOnlineGameCallback = jest.fn();
   const wrapper = render(
@@ -72,5 +74,6 @@ function getWrapper() {
       playOnlineGameCallback={playOnlineGameCallback}
     />,
   );
+
   return { wrapper, playOnlineGameCallback };
 }
