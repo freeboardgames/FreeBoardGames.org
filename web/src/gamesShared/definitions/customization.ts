@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react';
+import { ComponentType } from 'react';
 import { GameMode } from './mode';
 
 export enum CustomizationType {
@@ -27,11 +27,6 @@ export interface GameCustomization<
   TQuickCustomizationProps extends GameCustomizationProps = GameCustomizationProps,
   TFullCustomizationProps extends GameCustomizationProps = GameCustomizationProps
 > {
-  /** @deprecated */
-  renderQuick?: (args: GameCustomizationProps) => React.ReactNode;
-  /** @deprecated */
-  renderFull?: (args: GameCustomizationProps) => React.ReactNode;
-
   QuickCustomization?: ComponentType<TQuickCustomizationProps>;
   FullCustomization?: ComponentType<TFullCustomizationProps>;
 }
