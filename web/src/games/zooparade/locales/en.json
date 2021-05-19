@@ -1,4 +1,11 @@
 {
+  "name": "Zoo Parade",
+  "description": "A cooperative game where the Team wins!",
+  "descriptionTag": "Tag for Zoo Parade TODO",
+  "instructions": {
+    "videoId": "LQ8iwNjBW_s",
+    "text": "Zoo Parade is a cooperative game for two to five players. This game perfectly combines the concepts of cooperation and partial information. The unique point: You know all cards, buy your own!\n\nThe game gets more difficult the more players you have - but at the same time this is when it is the most fun!\n\nThank you for the [Art](https://www.freepik.com/free-vector/cute-zoo-animals-card-set_4855079.htm).\n"
+  },
   "board": {
     "show_logs": "Show logs",
     "hide_logs": "Hide logs"
