@@ -14,22 +14,24 @@ export interface QuickCustomizationState {
 
 export const DEFAULT_QUICK_CUSTOMIZATION = { difficulty: TicTacToePlusDifficulty.EASY };
 
+const QuickCustomization = ({ mode, currentValue, onChange }: GameCustomizationProps) => {
+  if (mode != GameMode.AI) {
+    return null;
+  }
+  const state = (currentValue as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
+  return (
+    <Dropdown
+      options={['Easy', 'Hard']}
+      selectedIdx={state.difficulty}
+      callback={(difficulty) => {
+        onChange({ difficulty });
+      }}
+    />
+  );
+};
+
 const customization: GameCustomization = {
-  renderQuick: ({ mode, currentValue, onChange }: GameCustomizationProps) => {
-    if (mode != GameMode.AI) {
-      return null;
-    }
-    const state = (currentValue as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
-    return (
-      <Dropdown
-        options={['Easy', 'Hard']}
-        selectedIdx={state.difficulty}
-        callback={(difficulty) => {
-          onChange({ difficulty });
-        }}
-      />
-    );
-  },
+  QuickCustomization,
 };
 
 export default customization;
