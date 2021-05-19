@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentType } from 'react';
 import { GameMode } from './mode';
 
 export enum CustomizationType {
@@ -23,7 +23,15 @@ export interface GameCustomizationProps {
   onChange: (result: unknown) => void;
 }
 
-export interface GameCustomization {
+export interface GameCustomization<
+  TQuickCustomizationProps extends GameCustomizationProps = GameCustomizationProps,
+  TFullCustomizationProps extends GameCustomizationProps = GameCustomizationProps
+> {
+  /** @deprecated */
   renderQuick?: (args: GameCustomizationProps) => React.ReactNode;
+  /** @deprecated */
   renderFull?: (args: GameCustomizationProps) => React.ReactNode;
+
+  QuickCustomization?: ComponentType<TQuickCustomizationProps>;
+  FullCustomization?: ComponentType<TFullCustomizationProps>;
 }
