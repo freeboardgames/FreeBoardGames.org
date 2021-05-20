@@ -49,25 +49,28 @@ export interface QuickCustomizationState {
 
 export const DEFAULT_QUICK_CUSTOMIZATION = { difficulty: 1 };
 
-const customization: GameCustomization = {
-  renderQuick: ({ mode, currentValue, onChange }: GameCustomizationProps) => {
-    if (mode != GameMode.AI) {
-      return null;
-    }
-    const state = (currentValue as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
-    return <AReactComponent difficulty={state.difficulty} callback={onChange} />
-  },
-
-  renderFull: ({ mode, currentState, onChange }: GameCustomizationProps) => {
-      (...)
+const QuickCustomization = ({ mode, currentValue, onChange }: GameCustomizationProps) => {
+  if (mode != GameMode.AI) {
+    return null;
   }
+  const state = (currentValue as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
+  return <AReactComponent difficulty={state.difficulty} callback={onChange} />
+};
+
+const FullCustomization = ({ mode, currentState, onChange }: GameCustomizationProps) => {
+    (...)
+};
+
+const customization: GameCustomization = {
+  QuickCustomization,
+  FullCustomization, 
 };
 
 export default customization;
 ```
 
 There are some important takeaways from the code above:
-- `renderQuick` is used for Quick Customization, and `renderFull` is used for Full Customization.
+- `QuickCustomization` is used for Quick Customization, and `FullCustomization` is used for Full Customization.
 - `mode` allows you to avoid the widget/dialog for a given game mode by returning `null` in these cases.
 - You should have a interface(s) for defining the shape of the customization data, one for each type of customization (`QuickCustomizationState` in this case). This will allow for strong typing in parts reading the customization options.
 - `onChange` should be called by your React Component when the user changes some option. The first parameter should be of the type of your customization state (`QuickCustomizationState` in this case). This will trigger a re-render of your component with `currentValue` with the new state.

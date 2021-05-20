@@ -13,8 +13,12 @@ import { Circle, Cross, Lines, WildCardChar } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 import { isLocalGame } from '../../gamesShared/helpers/gameMode';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-interface IBoardProps {
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
+interface IBoardOutterProps {
   G: any;
   ctx: any;
   moves: any;
@@ -24,12 +28,12 @@ interface IBoardProps {
   step?: any;
 }
 
-const localPlayerNames = {
-  '0': 'Red',
-  '1': 'Green',
-};
+export class Board extends React.Component<IBoardInnerProps & IBoardOutterProps, {}> {
+  localPlayerNames = {
+    '0': this.props.translate('red'),
+    '1': this.props.translate('green'),
+  };
 
-export class Board extends React.Component<IBoardProps, {}> {
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
       this.props.moves.clickCell(id);
@@ -43,21 +47,21 @@ export class Board extends React.Component<IBoardProps, {}> {
   _getPlayerName = (playerID = null) => {
     const pID = playerID === null ? this.props.ctx.currentPlayer : playerID;
     if (isLocalGame(this.props.gameArgs)) {
-      return localPlayerNames[pID];
+      return this.localPlayerNames[pID];
     } else {
-      return this.props.gameArgs.players ? this.props.gameArgs.players[pID].name : 'Unknown';
+      return this.props.gameArgs.players ? this.props.gameArgs.players[pID].name : this.props.translate('unknown');
     }
   };
 
   _getStatus() {
     if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'YOUR TURN';
+        return this.props.translate('your_turn');
       } else {
-        return `Waiting for ${this._getPlayerName()}...`;
+        return this.props.translate('waiting_for_player', { name: this._getPlayerName() });
       }
     } else {
-      return `${this._getPlayerName()}'s turn`;
+      return this.props.translate('player_s_turn', { name: this._getPlayerName() });
     }
   }
 
@@ -65,9 +69,9 @@ export class Board extends React.Component<IBoardProps, {}> {
     if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.props.ctx.gameover.winner !== undefined) {
         if (this.props.ctx.gameover.winner === this.props.playerID) {
-          return 'you won';
+          return this.props.translate('you_won');
         } else {
-          return 'you lost';
+          return this.props.translate('you_lost');
         }
       }
     } else {
@@ -75,7 +79,7 @@ export class Board extends React.Component<IBoardProps, {}> {
         return `${this._getPlayerName(this.props.ctx.gameover.winner)} won`;
       }
     }
-    return 'draw';
+    return this.props.translate('draw');
   }
 
   render() {
@@ -139,4 +143,6 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 }
 
-export default Board;
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
+
+export default enhance(Board);

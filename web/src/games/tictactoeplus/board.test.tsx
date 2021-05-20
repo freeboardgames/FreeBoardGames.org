@@ -1,5 +1,5 @@
 import React from 'react';
-import { Board } from './board';
+import Board from './board';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from 'enzyme';
 import { GameMode } from 'gamesShared/definitions/mode';
@@ -75,7 +75,7 @@ test('render board - one X and one O - local friend', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain("Red's turn");
+  expect(comp.html()).toContain('player_s_turn');
   expect(comp.find('rect').length).toEqual(16); // 16 rectangles
   expect(comp.find('.cross').length + comp.find('circle').length + comp.find('.wild').length).toEqual(2); // total 2 items
 });
@@ -99,7 +99,7 @@ test("render board - O's turn - local friend", () => {
       }}
     />,
   );
-  expect(comp.html()).toContain("Green's turn");
+  expect(comp.html()).toContain('player_s_turn');
 });
 
 test('render board - X wins - local friend', () => {
@@ -121,7 +121,7 @@ test('render board - X wins - local friend', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('Red won');
+  expect(comp.html()).toContain('red won');
 });
 
 test('render board - O wins - local friend', () => {
@@ -143,7 +143,7 @@ test('render board - O wins - local friend', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('Green won');
+  expect(comp.html()).toContain('green won');
 });
 
 test('render board - X wins - AI', () => {
@@ -165,7 +165,7 @@ test('render board - X wins - AI', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('you won');
+  expect(comp.html()).toContain('you_won');
 });
 
 test('render board - O wins - AI', () => {
@@ -187,7 +187,7 @@ test('render board - O wins - AI', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('you lost');
+  expect(comp.html()).toContain('you_lost');
 });
 
 test('render board - O wins - draw', () => {
@@ -254,7 +254,7 @@ test('render board - our turn - online', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('YOUR TURN');
+  expect(comp.html()).toContain('your_turn');
 });
 
 test('render board - their turn - online', () => {
@@ -277,7 +277,7 @@ test('render board - their turn - online', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('Waiting for');
+  expect(comp.html()).toContain('waiting');
 });
 
 test('render board - one X and one O - online', () => {
@@ -323,7 +323,7 @@ test('render board - we win - online', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('you won');
+  expect(comp.html()).toContain('you_won');
 });
 
 test('render board - we lose - online', () => {
@@ -345,7 +345,7 @@ test('render board - we lose - online', () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('you lost');
+  expect(comp.html()).toContain('you_lost');
 });
 
 test('render board - draw - online', () => {
@@ -389,5 +389,5 @@ test('render board - AI', () => {
     />,
   );
   comp.find('rect').at(0).simulate('click');
-  expect(comp.html()).toContain('YOUR TURN');
+  expect(comp.html()).toContain('your_turn');
 });

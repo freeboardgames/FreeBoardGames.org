@@ -43,10 +43,10 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
     const { name, instructions, description, descriptionTag } = gameDef;
 
     const videoInstructions = translate('instructions.videoId', instructions.videoId);
-    const gameVideoInstructions = videoInstructions ? <GameInstructionsVideo videoId={videoInstructions} /> : null;
+    const gameVideoInstructions = instructions.videoId ? <GameInstructionsVideo videoId={videoInstructions} /> : null;
 
     const textInstructions = translate('instructions.text', instructions.text);
-    const gameTextInstructions = textInstructions ? <GameInstructionsText text={textInstructions} /> : null;
+    const gameTextInstructions = instructions.text ? <GameInstructionsText text={textInstructions} /> : null;
 
     const isFullyTranslated = makeTranslationStatusComparator(i18n.language);
 

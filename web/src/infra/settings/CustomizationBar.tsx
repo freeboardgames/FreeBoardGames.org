@@ -68,7 +68,7 @@ export class CustomizationBarInternal extends React.Component<
   private renderQuickCustomization() {
     const custom = this.state.customization;
 
-    if (!custom?.QuickCustomization && /** @deprecated */ !custom?.renderQuick) {
+    if (!custom?.QuickCustomization) {
       return null;
     }
 
@@ -81,23 +81,12 @@ export class CustomizationBarInternal extends React.Component<
       onChange: this._changeCustomValue(CustomizationType.QUICK),
     };
 
-    return QuickCustomization ? <QuickCustomization {...props} /> : custom.renderQuick(props);
+    return <QuickCustomization {...props} />;
   }
 
   private hasFullCustomization() {
-    const mode = this.props.info.mode;
     const custom = this.state.customization;
-    if (!custom?.FullCustomization && /** @deprecated */ !custom?.renderFull) {
-      return false;
-    }
-
-    const props = {
-      mode: this.props.info.mode,
-      currentValue: this.state.customizationState[mode]?.quick,
-      onChange: () => {},
-    };
-
-    return custom.FullCustomization || custom.renderFull(props) !== null;
+    return custom?.FullCustomization;
   }
 
   private renderFullCustomizationButton() {
@@ -139,7 +128,7 @@ export class CustomizationBarInternal extends React.Component<
       currentValue: this.state.customizationState[mode]?.full,
       onChange: this._changeCustomValue(CustomizationType.FULL),
     };
-    return FullCustomization ? <FullCustomization {...props} /> : custom.renderFull(props);
+    return FullCustomization ? <FullCustomization {...props} /> : null;
   }
 
   private renderCustomizationDialogHeader() {
