@@ -1,34 +1,42 @@
 import React from 'react';
-import Board from './board';
+import { Board } from './board';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from 'enzyme';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { TictactoePlusGame } from './game';
 import { Client } from 'boardgame.io/client';
+import { Provider } from 'react-redux';
+import { mockStore } from 'test/utils/rtl';
+import { GameProvider } from 'infra/game/GameProvider';
 
 Enzyme.configure({ adapter: new Adapter() });
+
+const players = [
+  { playerID: 0, name: 'foo', roomID: '' },
+  { playerID: 1, name: 'bar', roomID: '' },
+];
+
+const getTestBoard = (mode: GameMode) => (props: any) => (
+  <Provider store={mockStore({})}>
+    <GameProvider gameCode="tictactoeplus">
+      <Board {...props} gameArgs={{ gameCode: 'tictactoeplus', mode, players }} />
+    </GameProvider>
+  </Provider>
+);
 
 test('clicking a cell on the board', () => {
   const client = Client({
     game: TictactoePlusGame,
   });
-  client.moves.clickCell = jest.fn();
+  const clickCellMock = jest.fn();
+  client.moves.clickCell = clickCellMock;
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
-    <Board
-      G={state0.G}
-      ctx={state0.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.LocalFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.LocalFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state0.G} ctx={state0.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  comp.find('rect').at(0).simulate('click');
-  expect(client.moves.clickCell.mock.calls.length).toEqual(1);
+  board.find('rect').at(0).simulate('click');
+  expect(clickCellMock.mock.calls.length).toEqual(1);
 });
 
 test('click a cell that has already been played', () => {
@@ -36,23 +44,15 @@ test('click a cell that has already been played', () => {
     game: TictactoePlusGame,
   });
   client.moves.clickCell(0); // X on the top left cell
-  client.moves.clickCell = jest.fn();
+  const clickCellMock = jest.fn();
+  client.moves.clickCell = clickCellMock;
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
-    <Board
-      G={state0.G}
-      ctx={state0.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.LocalFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.LocalFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state0.G} ctx={state0.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  comp.find('rect').at(0).simulate('click');
-  expect(client.moves.clickCell.mock.calls.length).toEqual(0);
+  board.find('rect').at(0).simulate('click');
+  expect(clickCellMock.mock.calls.length).toEqual(0);
 });
 
 test('render board - one X and one O - local friend', () => {
@@ -62,22 +62,13 @@ test('render board - one X and one O - local friend', () => {
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
-    <Board
-      G={state0.G}
-      ctx={state0.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.LocalFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.LocalFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state0.G} ctx={state0.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('player_s_turn');
-  expect(comp.find('rect').length).toEqual(16); // 16 rectangles
-  expect(comp.find('.cross').length + comp.find('circle').length + comp.find('.wild').length).toEqual(2); // total 2 items
+  expect(board.find('[data-testid="status"]')).toContainText("Red's turn");
+  expect(board.find('rect').length).toEqual(16); // 16 rectangles
+  expect(board.find('.cross').length + board.find('circle').length + board.find('.wild').length).toEqual(2); // total 2 items
 });
 
 test("render board - O's turn - local friend", () => {
@@ -86,8 +77,9 @@ test("render board - O's turn - local friend", () => {
   });
   client.moves.clickCell(0); // X on the top left cell
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
-    <Board
+  const TestBoard = getTestBoard(GameMode.LocalFriend);
+  const board = Enzyme.mount(
+    <TestBoard
       G={state0.G}
       ctx={state0.ctx}
       moves={client.moves}
@@ -99,7 +91,7 @@ test("render board - O's turn - local friend", () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('player_s_turn');
+  expect(board.find('[data-testid="status"]')).toContainText("Green's turn");
 });
 
 test('render board - X wins - local friend', () => {
@@ -108,20 +100,11 @@ test('render board - X wins - local friend', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
-  const comp = Enzyme.mount(
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.LocalFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.LocalFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state1.G} ctx={state1.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('red won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('Red won');
 });
 
 test('render board - O wins - local friend', () => {
@@ -130,20 +113,11 @@ test('render board - O wins - local friend', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
-  const comp = Enzyme.mount(
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.LocalFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.LocalFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state1.G} ctx={state1.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('green won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('Green won');
 });
 
 test('render board - X wins - AI', () => {
@@ -152,20 +126,11 @@ test('render board - X wins - AI', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
-  const comp = Enzyme.mount(
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.AI,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.AI);
+  const board = Enzyme.mount(
+    <TestBoard G={state1.G} ctx={state1.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('you_won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you won');
 });
 
 test('render board - O wins - AI', () => {
@@ -174,20 +139,11 @@ test('render board - O wins - AI', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
-  const comp = Enzyme.mount(
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.AI,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.AI);
+  const board = Enzyme.mount(
+    <TestBoard G={state1.G} ctx={state1.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('you_lost');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you lost');
 });
 
 test('render board - O wins - draw', () => {
@@ -196,20 +152,11 @@ test('render board - O wins - draw', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
-  const comp = Enzyme.mount(
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.AI,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.AI);
+  const board = Enzyme.mount(
+    <TestBoard G={state1.G} ctx={state1.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('draw');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('draw');
 });
 
 test('render board - draw - local friend', () => {
@@ -218,20 +165,11 @@ test('render board - draw - local friend', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
-  const comp = Enzyme.mount(
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.LocalFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.LocalFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state1.G} ctx={state1.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('draw');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('draw');
 });
 
 test('render board - our turn - online', () => {
@@ -241,20 +179,11 @@ test('render board - our turn - online', () => {
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
-    <Board
-      G={state0.G}
-      ctx={state0.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.OnlineFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.OnlineFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state0.G} ctx={state0.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('your_turn');
+  expect(board.find('[data-testid="status"]')).toContainText('YOUR TURN');
 });
 
 test('render board - their turn - online', () => {
@@ -263,21 +192,13 @@ test('render board - their turn - online', () => {
   });
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
+
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
-    <Board
-      G={state0.G}
-      ctx={state0.ctx}
-      moves={client.moves}
-      playerID={'1'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.OnlineFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.OnlineFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state0.G} ctx={state0.ctx} moves={client.moves} playerID={'1'} isActive={true} />,
   );
-  expect(comp.html()).toContain('waiting');
+  expect(board.find('[data-testid="status"]')).toContainText('Waiting');
 });
 
 test('render board - one X and one O - online', () => {
@@ -287,21 +208,12 @@ test('render board - one X and one O - online', () => {
   client.moves.clickCell(0); // X on the top left cell
   client.moves.clickCell(4); // O on the middle cell
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
-    <Board
-      G={state0.G}
-      ctx={state0.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.OnlineFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.OnlineFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state0.G} ctx={state0.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.find('.cross').length + comp.find('.wild').length).toBeGreaterThanOrEqual(1); // one X
-  expect(comp.find('circle').length + comp.find('.wild').length).toBeGreaterThanOrEqual(1); // one O
+  expect(board.find('.cross').length + board.find('.wild').length).toBeGreaterThanOrEqual(1); // one X
+  expect(board.find('circle').length + board.find('.wild').length).toBeGreaterThanOrEqual(1); // one O
 });
 
 test('render board - we win - online', () => {
@@ -310,20 +222,11 @@ test('render board - we win - online', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
-  const comp = Enzyme.mount(
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.OnlineFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.OnlineFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state1.G} ctx={state1.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('you_won');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you won');
 });
 
 test('render board - we lose - online', () => {
@@ -332,20 +235,11 @@ test('render board - we lose - online', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
-  const comp = Enzyme.mount(
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.OnlineFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.OnlineFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state1.G} ctx={state1.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('you_lost');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('you lost');
 });
 
 test('render board - draw - online', () => {
@@ -354,20 +248,11 @@ test('render board - draw - online', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
-  const comp = Enzyme.mount(
-    <Board
-      G={state1.G}
-      ctx={state1.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.OnlineFriend,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.OnlineFriend);
+  const board = Enzyme.mount(
+    <TestBoard G={state1.G} ctx={state1.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  expect(comp.html()).toContain('draw');
+  expect(board.find('[data-testid="gameOverText"]')).toContainText('draw');
 });
 
 test('render board - AI', () => {
@@ -375,19 +260,10 @@ test('render board - AI', () => {
     game: TictactoePlusGame,
   });
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
-    <Board
-      G={state0.G}
-      ctx={state0.ctx}
-      moves={client.moves}
-      playerID={'0'}
-      isActive={true}
-      gameArgs={{
-        gameCode: 'tictactoeplus',
-        mode: GameMode.AI,
-      }}
-    />,
+  const TestBoard = getTestBoard(GameMode.AI);
+  const board = Enzyme.mount(
+    <TestBoard G={state0.G} ctx={state0.ctx} moves={client.moves} playerID={'0'} isActive={true} />,
   );
-  comp.find('rect').at(0).simulate('click');
-  expect(comp.html()).toContain('your_turn');
+  board.find('rect').at(0).simulate('click');
+  expect(board.find('[data-testid="status"]')).toContainText('YOUR TURN');
 });
