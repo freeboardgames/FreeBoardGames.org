@@ -28,7 +28,7 @@ interface IBoardOutterProps {
   step?: any;
 }
 
-export class Board extends React.Component<IBoardInnerProps & IBoardOutterProps, {}> {
+export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, {}> {
   localPlayerNames = {
     '0': this.props.translate('red'),
     '1': this.props.translate('green'),
@@ -120,7 +120,11 @@ export class Board extends React.Component<IBoardInnerProps & IBoardOutterProps,
   _getBoard() {
     return (
       <div>
-        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+        <Typography
+          variant="h5"
+          data-testid="status"
+          style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}
+        >
           {this._getStatus()}
         </Typography>
         <svg width="100%" height="100%" viewBox="0 0 4 4">
@@ -145,4 +149,4 @@ export class Board extends React.Component<IBoardInnerProps & IBoardOutterProps,
 
 const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
 
-export default enhance(Board);
+export const Board = enhance(BoardInternal);
