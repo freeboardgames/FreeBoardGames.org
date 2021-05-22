@@ -1,12 +1,9 @@
 jest.mock('./stockfish8.worker');
 jest.mock('react-ga');
 
-import Enzyme from 'enzyme';
 import { GameMode } from 'gamesShared/definitions/mode';
-import { GameProvider } from 'infra/game/GameProvider';
 import React from 'react';
-import { Provider } from 'react-redux';
-import { mockStore } from 'test/utils/rtl';
+import { makeMount } from 'test/utils/enzyme';
 import { Board, BoardInternal } from './board';
 
 const players = [
@@ -14,18 +11,16 @@ const players = [
   { playerID: 1, name: 'bar', roomID: '' },
 ];
 
+const mount = makeMount({ gameCode: 'chess' });
+
 const getTestBoard = (mode: GameMode) => (props: any) => (
-  <Provider store={mockStore({})}>
-    <GameProvider gameCode="chess">
-      <Board {...props} gameArgs={{ gameCode: 'chess', mode, players }} />
-    </GameProvider>
-  </Provider>
+  <Board {...props} gameArgs={{ gameCode: 'chess', mode, players }} />
 );
 
 test('render board - all states - local friend', () => {
   const moveMock = jest.fn();
   const TestBoard = getTestBoard(GameMode.LocalFriend);
-  const board = Enzyme.mount(
+  const board = mount(
     <TestBoard
       G={{ pgn: '' }}
       ctx={{
@@ -105,7 +100,7 @@ test('render board - all states - local friend', () => {
 test('render board - all states - online friend', () => {
   const moveMock = jest.fn();
   const TestBoard = getTestBoard(GameMode.OnlineFriend);
-  const board = Enzyme.mount(
+  const board = mount(
     <TestBoard
       G={{ pgn: '' }}
       ctx={{
@@ -179,7 +174,7 @@ function rowColAt(row: number, col: number) {
 test('little game', () => {
   const moveMock = jest.fn();
   const TestBoard = getTestBoard(GameMode.OnlineFriend);
-  const board = Enzyme.mount(
+  const board = mount(
     <TestBoard
       G={{ pgn: '' }}
       ctx={{
@@ -257,7 +252,7 @@ test('little game', () => {
 test('little AI game', () => {
   const moveMock = jest.fn();
   const TestBoard = getTestBoard(GameMode.AI);
-  const board = Enzyme.mount(
+  const board = mount(
     <TestBoard
       G={{ pgn: '' }}
       ctx={{
@@ -284,7 +279,7 @@ test('AI gameover - all cases', () => {
   const moveMock = jest.fn();
   const stepMock = jest.fn();
   const TestBoard = getTestBoard(GameMode.AI);
-  const board = Enzyme.mount(
+  const board = mount(
     <TestBoard
       G={{ pgn: '' }}
       ctx={{
@@ -328,7 +323,7 @@ test('AI gameover - all cases', () => {
 
 test('castling fix', () => {
   const TestBoard = getTestBoard(GameMode.LocalFriend);
-  const board = Enzyme.mount(
+  const board = mount(
     <TestBoard
       G={{ pgn: '' }}
       ctx={{
@@ -368,7 +363,7 @@ describe('drag and drop', () => {
   beforeEach(() => {
     const TestBoard = getTestBoard(GameMode.LocalFriend);
     moveMock = jest.fn();
-    board = Enzyme.mount(
+    board = mount(
       <TestBoard
         G={{ pgn: '' }}
         ctx={{
@@ -420,7 +415,7 @@ describe('sound toggle', () => {
   beforeEach(() => {
     moveMock = jest.fn();
     const TestBoard = getTestBoard(GameMode.LocalFriend);
-    board = Enzyme.mount(
+    board = mount(
       <TestBoard
         G={{ pgn: '' }}
         ctx={{
