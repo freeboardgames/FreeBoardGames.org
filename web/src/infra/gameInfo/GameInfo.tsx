@@ -84,7 +84,19 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
               <div style={{ marginTop: '16px' }}>
                 {!isFullyTranslated(gameDef) && (
                   <Alert severity="warning">
-                    <Trans t={t} i18nKey="missing_translation_warning" components={{ docs: <a href="/docs" /> }} />
+                    <Trans
+                      t={t}
+                      i18nKey="missing_translation_warning"
+                      components={{
+                        docs: (
+                          <a
+                            aria-label="translation docs"
+                            target="_blank"
+                            href="/docs?path=/story/documentation-game-translation--page"
+                          />
+                        ),
+                      }}
+                    />
                   </Alert>
                 )}
                 <Typography variant="body1" component="p">

@@ -51,7 +51,12 @@ export function GameCardInternal({
 
         {!isFullyTranslated(game) && (
           <Tooltip title={t('missing_translation_warning')} placement="top">
-            <a href="/docs" aria-label="Translation docs" target="_blank" onClick={(e) => e.stopPropagation()}>
+            <a
+              href="/docs?path=/story/documentation-game-translation--page"
+              aria-label="translation docs"
+              target="_blank"
+              onClick={(e) => e.stopPropagation()}
+            >
               <Warning />
             </a>
           </Tooltip>
