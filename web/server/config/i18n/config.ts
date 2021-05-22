@@ -8,5 +8,5 @@ export function getI18n() {
 }
 
 function otherLanguages() {
-  return process.env.NEXT_PUBLIC_I18N_ENABLED === 'true' ? ['pt'] : [];
+  return ['pt'];
 }

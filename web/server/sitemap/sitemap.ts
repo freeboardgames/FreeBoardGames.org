@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { GAMES_LIST } from 'games';
 import { IGameStatus } from 'gamesShared/definitions/game';
+import { getAllGames } from 'infra/game';
+import { i18n } from 'server/config/i18n';
 import { template } from './sitemap.template';
 import { Manifest, Url } from './types';
 
@@ -23,7 +24,9 @@ function getManifestPaths(manifest: Manifest): string[] {
   const pathsFromManifest = Object.keys(manifest).reverse();
   for (const path of pathsFromManifest) {
     if (!isExcludedPath(path)) {
-      paths.push(path);
+      i18n.locales.forEach((language) => {
+        paths.push(`/${language}${path}`);
+      });
     }
   }
   return paths;
@@ -35,20 +38,24 @@ function isExcludedPath(path) {
 }
 
 function getGamesPaths(): string[] {
-  const paths = [];
-  for (const game of GAMES_LIST) {
+  const paths = new Set<string>();
+  const games = getAllGames();
+  for (const game of games) {
     if (game.status === IGameStatus.IN_DEVELOPMENT) {
       continue;
     }
-    paths.push(`/play/${game.code}`);
+
+    i18n.locales.forEach((language) => {
+      paths.add(`/${language}/play/${game.codes?.[language] || game.code}`);
+    });
   }
-  return paths;
+  return Array.from(paths);
 }
 
 function createUrlTags(host: string, paths: string[]): Url[] {
   const urls: Url[] = [];
   for (const path of paths) {
-    urls.push({ host, path, ...(process.env.NEXT_PUBLIC_I18N_ENABLED === 'true' && { language: '/en' }) });
+    urls.push({ host, path });
   }
   return urls;
 }
