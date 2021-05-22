@@ -33,7 +33,7 @@ Create a `locales` folder inside the game folder. Also add a JSON file named wit
 
 Now you should use the translation you create inside your components. In order to allow that we provided a hook function that should be used along with a functional component. We highly recommend this method as it is less verbose than using an approach with a high order component.
 
-```jsx
+```tsx
 import { useCurrentGameTranslate } from 'infra/i18n';
 interface IBoardProps {
   gameArgs?: IGameArgs;
@@ -57,20 +57,16 @@ export function Board({ gameArgs }: IBoardProps) {
 
 If a functional component is not available, we provide a high order component to use. The following example shows a complete code snippet using Typescript.
 
-```jsx
+```tsx
 import { withCurrentGameTranslate, WithCurrentGameTranslate } from 'infra/i18n';
-import { compose } from 'recompose'
+import { compose } from 'recompose';
 interface IBoardInnerProps extends WithCurrentGameTranslate {}
 interface IBoardOutterProps {
   gameArgs?: IGameArgs;
 }
 export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, {}> {
   render() {
-    return (
-      <GameLayout gameArgs={this.props.gameArgs}>
-        {this.props.translate("title")}
-      </GameLayout>
-    );
+    return <GameLayout gameArgs={this.props.gameArgs}>{this.props.translate('title')}</GameLayout>;
   }
 }
 const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslate);
@@ -78,3 +74,19 @@ export const Board = enhance(BoardInternal);
 ```
 
 Now your game is available on the language you translated. Congratulations!
+
+## Testing
+
+Your tests should always consider the game will be translate to English. We recommend you to use React Testing Library to write your tests.
+
+```tsx
+import { makeRender, screen } from 'test/utils/rtl';
+import { Board } from '.';
+
+const render = makeRender({ gameCode: 'your-game-code' });
+
+test('renders title', () => {
+  render(<Board {...props} />);
+  expect(screen.getByText('Game title')).toBeInTheDocument();
+});
+```
