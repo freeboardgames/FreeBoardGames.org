@@ -11,11 +11,11 @@ export function createProvider(options: ProvidersOptions) {
   const store = buildStore(options);
   store.dispatch = options?.dispatch || store.dispatch;
 
-  return ({ children }) => {
+  return ({ children, ...props }) => {
     return (
       <Provider store={store || mockStore({})}>
         <GameProvider gameCode={gameCode}>
-          <>{children}</>
+          <>{React.cloneElement(children, props)}</>
         </GameProvider>
       </Provider>
     );

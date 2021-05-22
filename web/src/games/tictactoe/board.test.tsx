@@ -2,7 +2,7 @@ import { Client } from 'boardgame.io/client';
 import { GameMode } from 'gamesShared/definitions/mode';
 import React from 'react';
 import { makeMount } from 'test/utils/enzyme';
-import Board from './board';
+import { Board } from './board';
 import { TictactoeGame } from './game';
 
 const mount = makeMount({ gameCode: 'tictactoe' });
