@@ -4,7 +4,7 @@ import { isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { Button } from '@material-ui/core';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 
-import { IBoardProps, IBoardState, INumberState } from './definitions';
+import { IBoardOutterProps, IBoardState, INumberState, IBoardInnerProps } from './definitions';
 import {
   GRID_SIZE,
   CALL_BOX_SIZE,
@@ -19,8 +19,10 @@ import PlayCard from './components/playCard';
 import CallCard from './components/callCard';
 import Countdown from './components/countDown';
 import CallTable from './components/callTable';
+import { withCurrentGameTranslation, Trans } from 'infra/i18n';
+import { compose } from 'recompose';
 
-export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
+export class BingoBoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, IBoardState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,24 +71,24 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     if (isOnlineGame(this.props.gameArgs)) {
       return this.props.gameArgs.players[playerID === null ? this.props.ctx.currentPlayer : playerID].name;
     }
-    return 'Player ' + this.props.ctx.currentPlayer;
+    return this.props.translate('player', { name: this.props.ctx.currentPlayer });
   };
 
   _gameOverStatus = () => {
     if (this.props.ctx.gameover.draw) {
-      return 'draw';
+      return this.props.translate('draw');
     }
     if (isOnlineGame(this.props.gameArgs)) {
       if (!this._isFirstPerson()) {
-        return `winner: ${this._getPlayerName(this.props.ctx.gameover.winner)}`;
+        return this.props.translate('winner', { name: this._getPlayerName(this.props.ctx.gameover.winner) });
       }
       if (this.props.ctx.gameover.winner === this.props.playerID) {
-        return 'you won';
+        return this.props.translate('you_won');
       } else {
-        return `you lost (winner: ${this._getPlayerName(this.props.ctx.gameover.winner)})`;
+        return this.props.translate('you_lost', { name: this._getPlayerName(this.props.ctx.gameover.winner) });
       }
     } else {
-      return `Player ${this.props.ctx.gameover.winner} won`;
+      return this.props.translate('player_won', { name: this.props.ctx.gameover.winner });
     }
   };
 
@@ -117,7 +119,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
           }}
           onClick={() => this.setState({ showCallTable: !this.state.showCallTable })}
         >
-          Table
+          {this.props.translate('table')}
         </Button>
         <Button
           key="bi_shout_btn"
@@ -131,7 +133,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
           }}
           onClick={this._shoutBingo}
         >
-          Bingo! {stars.join('')}
+          {this.props.translate('bingo', { stars: stars.join('') })}
         </Button>
       </div>
     );
@@ -157,15 +159,15 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
           textAnchor="middle"
           fontSize={msgLineHeight * 0.8}
         >
-          <tspan x="50%" dy="0">
-            Sorry, you used up
-          </tspan>
-          <tspan x="50%" dy={msgLineHeight}>
-            all your Bingo! calls ☹️
-          </tspan>
-          <tspan x="50%" dy={msgLineHeight * 2}>
-            Better luck next time !
-          </tspan>
+          <Trans
+            t={this.props.translate}
+            i18nKey="sorry_you_used_up"
+            components={{
+              0: <tspan x="50%" dy="0" />,
+              1: <tspan x="50%" dy={msgLineHeight} />,
+              2: <tspan x="50%" dy={msgLineHeight * 2} />,
+            }}
+          />
         </text>
       );
     }
@@ -224,3 +226,7 @@ export class BingoBoard extends React.Component<IBoardProps, IBoardState> {
     );
   }
 }
+
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
+
+export const BingoBoard = enhance(BingoBoardInternal);

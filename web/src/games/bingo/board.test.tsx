@@ -1,11 +1,14 @@
-import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
 import { BingoGame } from './game';
-import { BingoBoard } from './board';
+import { BingoBoard, BingoBoardInternal } from './board';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { INITIAL_WAIT_REF_NUM, WILDCARD_NUM, MAX_BINGO_CALLS } from './constants';
+import { makeMount } from 'test/utils/enzyme';
+import { ReactWrapper } from 'enzyme';
 
-let wrapper: Enzyme.ReactWrapper;
+const mount = makeMount({ gameCode: 'bingo' });
+
+let wrapper: ReactWrapper;
 let client;
 let state0: any;
 
@@ -20,7 +23,7 @@ describe('Bingo UI', () => {
       game: BingoGame,
     });
     state0 = client.store.getState();
-    wrapper = Enzyme.mount(
+    wrapper = mount(
       <BingoBoard
         G={state0.G}
         ctx={state0.ctx}
@@ -60,7 +63,7 @@ describe('Bingo UI', () => {
     const callRef = 5;
     wrapper.setProps({ G: { ...state0.G, callRef } });
     wrapper.find(`[data-testid="bingo-shout-btn"]`).at(0).simulate('click');
-    wrapper.setState({ showCallTable: true });
+    wrapper.find(BingoBoardInternal).setState({ showCallTable: true });
     for (let i = 1; i < callRef + 1; i++) {
       expect(wrapper.text()).toContain(state0.G.callQueue[i]);
     }

@@ -1,3 +1,4 @@
+import { Trans, useCurrentGameTranslation } from 'infra/i18n';
 import * as React from 'react';
 
 import { GRID_SIZE, CALL_BOX_SIZE, STROKE_WIDTH, INITIAL_WAIT_REF_NUM } from '../constants';
@@ -12,6 +13,8 @@ interface ICallCardProps {
 }
 
 export default function CallCard(props: ICallCardProps) {
+  const { translate } = useCurrentGameTranslation();
+
   const scale = props.isSpectator ? 1.7 : 1;
   const boxSize = CALL_BOX_SIZE * scale;
   const xPos = GRID_SIZE / 2 - boxSize / 2;
@@ -39,14 +42,14 @@ export default function CallCard(props: ICallCardProps) {
         style={{ ...animationStyle }}
       >
         {number === INITIAL_WAIT_REF_NUM ? (
-          <>
-            <tspan x="50%" dy="0">
-              Starting
-            </tspan>
-            <tspan x="50%" dy={fontSize * 2 * scale}>
-              in ...
-            </tspan>
-          </>
+          <Trans
+            t={translate}
+            i18nKey="starting_in"
+            components={{
+              0: <tspan x="50%" dy="0"></tspan>,
+              1: <tspan x="50%" dy={fontSize * 2 * scale}></tspan>,
+            }}
+          />
         ) : (
           number
         )}

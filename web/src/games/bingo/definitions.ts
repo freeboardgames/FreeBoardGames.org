@@ -1,5 +1,6 @@
 import { Ctx } from 'boardgame.io';
 import { IGameArgs } from 'gamesShared/definitions/game';
+import { WithCurrentGameTranslation } from 'infra/i18n';
 
 export interface INumberState {
   id: number;
@@ -30,7 +31,9 @@ export interface IBoardState {
   idNumbersSelected: number[];
 }
 
-export interface IBoardProps {
+export interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
+export interface IBoardOutterProps {
   G: IGameState;
   ctx: Ctx;
   moves: any;

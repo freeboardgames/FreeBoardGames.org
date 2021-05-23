@@ -1,0 +1,19 @@
+{
+  "name": "Bingo",
+  "description": "Try your luck at Bingo!",
+  "descriptionTag": "Play Bingo for free online with upto 30 persons.",
+  "instructions": {
+    "videoId": "dJ4YDTqmhJk",
+    "text": "The objective of the game is to be the first player to get 5 in a row horizontally, vertically, or diagonally. Each player gets a card with numbers arranged in a 5x5 table, and is required to marker the announced number. The computer then calls out a number and each player then marks the called letter on their card if it is present. If a player has 5 in a row they call out “BINGO” (by pressing the shout button). \n\nImage credits [Freepik](http://www.freepik.com)"
+  },
+  "player": "Player {{ name }}",
+  "draw": "draw",
+  "winner": "winner: {{ name }}",
+  "you_won": "you won",
+  "you_lost": "you lost (winner: {{ name }})",
+  "player_won": "Player {{ name }} won",
+  "table": "Table",
+  "bingo": "Bingo! {{ stars }}",
+  "sorry_you_used_up": "<0>Sorry, you used up</0><1>all your Bingo! calls ☹️</1><2>Better luck next time !</2>",
+  "starting_in": "<0>Starting</0> <1>in...</1>"
+}
