@@ -3,13 +3,17 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
 import { IG, getScoreBoard, isAllowedDeck } from './game';
-import { Decks } from './Decks';
-import { PlayerHand } from './PlayerHand';
+import { Decks } from './components/Decks';
+import { PlayerHand } from './components/PlayerHand';
 import { Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import Typography from '@material-ui/core/Typography';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-interface IBoardProps {
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
+interface IBoardOutterProps {
   G: IG;
   ctx: Ctx;
   moves: any;
@@ -22,7 +26,7 @@ interface IBoardState {
   aiSecondDeck: boolean;
 }
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
+export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, IBoardState> {
   _selectCard = async (id: number) => {
     if (!this._canPlay() || this.props.ctx.phase !== 'CARD_SELECT') {
       return;
@@ -46,12 +50,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       return;
     }
     if (!this._canPlay()) {
-      return 'Waiting for opponent...';
+      return this.props.translate('waiting_for_opponent');
     }
     if (this.props.ctx.phase === 'CARD_SELECT') {
-      return 'SELECT CARD';
+      return this.props.translate('select_card');
     } else {
-      return 'SELECT BOARD';
+      return this.props.translate('select_board');
     }
   }
 
@@ -69,12 +73,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _getGameOver() {
     if (this.props.ctx.gameover.winner !== undefined) {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
-        return 'you won';
+        return this.props.translate('you_won');
       } else {
-        return 'you lost';
+        return this.props.translate('you_lost');
       }
     } else {
-      return 'draw';
+      return this.props.translate('draw');
     }
   }
 
@@ -84,7 +88,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         scoreboard={getScoreBoard(this.props.G)}
         playerID={this.props.playerID}
         players={this.props.gameArgs.players}
-        scoreName="Penalty points"
+        scoreName={this.props.translate('penalty_points')}
       />
     );
   }
@@ -131,4 +135,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 }
 
-export default Board;
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
+
+export const Board = enhance(BoardInternal);

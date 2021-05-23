@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import CardProps from './card';
+import CardProps from '../definitions/card';
 import css from './CardComponent.module.css';
 import { CardBackgroundAsset, CardValueAsset } from './CardAssets';
 

@@ -1,32 +1,21 @@
-import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { Ctx } from 'boardgame.io';
 import { Client } from 'boardgame.io/client';
 import { Client as ReactClient } from 'boardgame.io/react';
-import { TakeSixGame, TakeSixGameForTest } from './game';
-
-import { Board } from './board';
 import { GameMode } from 'gamesShared/definitions/mode';
-import { Ctx } from 'boardgame.io';
-
-Enzyme.configure({ adapter: new Adapter() });
+import React from 'react';
+import { makeMount } from 'test/utils/enzyme';
+import { Board } from './board';
+import { TakeSixGame, TakeSixGameForTest } from './game';
 
 const players = [
   { playerID: 0, name: 'foo', roomID: '' },
   { playerID: 1, name: 'bar', roomID: '' },
 ];
 
+const mount = makeMount({ gameCode: 'takesix' });
+
 const BoardTest = (props: any) => (
-  <Board
-    {...{
-      ...props,
-      gameArgs: {
-        gameCode: 'takesix',
-        mode: GameMode.OnlineFriend,
-        players,
-      },
-    }}
-  />
+  <Board {...props} gameArgs={{ gameCode: 'takesix', mode: GameMode.OnlineFriend, players }} />
 );
 
 const TakeSixGameConstSeed = TakeSixGameForTest({ seed: 0 });
@@ -47,7 +36,7 @@ test('select a card', () => {
     debug: false,
     board: BoardTest,
   }) as any;
-  const comp = Enzyme.mount(<App playerID={'0'} />);
+  const comp = mount(<App playerID={'0'} />);
 
   expect(comp.find('PlayerHand CardComponent').length).toEqual(10);
   comp.find('PlayerHand CardComponent').at(0).simulate('click');
@@ -60,7 +49,7 @@ test('second player', () => {
     debug: false,
     board: BoardTest,
   }) as any;
-  const comp = Enzyme.mount(<App playerID={'0'} />);
+  const comp = mount(<App playerID={'0'} />);
 
   comp
     .find('PlayerHand CardComponent')
@@ -84,7 +73,7 @@ test('win', () => {
   });
   const state0 = client.store.getState();
   (state0.ctx as Ctx).gameover = { winner: '0' };
-  const comp = Enzyme.mount(
+  const comp = mount(
     <Board
       G={state0.G}
       ctx={state0.ctx}
@@ -107,7 +96,7 @@ test('loss', () => {
   });
   const state0 = client.store.getState();
   (state0.ctx as Ctx).gameover = { winner: '1' };
-  const comp = Enzyme.mount(
+  const comp = mount(
     <Board
       G={state0.G}
       ctx={state0.ctx}
@@ -130,7 +119,7 @@ test('draw', () => {
   });
   const state0 = client.store.getState();
   (state0.ctx as Ctx).gameover = { draw: true };
-  const comp = Enzyme.mount(
+  const comp = mount(
     <Board
       G={state0.G}
       ctx={state0.ctx}
