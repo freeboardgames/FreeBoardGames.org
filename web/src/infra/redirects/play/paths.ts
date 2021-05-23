@@ -1,12 +1,18 @@
-import { TranslatedPath } from 'infra/i18n/types';
+import { Language, TranslatedPath } from 'infra/i18n/types';
 import { buildRewrite } from 'infra/i18n/utils/url';
 import omit from 'lodash.omit';
 import { generate } from './generate';
+import { playDictionary } from '../../navigation/dictionary';
 
-const fallbackPathsByLocale = {
-  en: ['en', 'play', ':rest+'],
-  pt: ['pt', 'jogar', ':rest+'],
-};
+type FallbackPathsByLocale = Partial<Record<Language, string[]>>;
+
+const fallbackPathsByLocale = Object.entries(playDictionary).reduce<FallbackPathsByLocale>(
+  (fallback, [language, translation]) => {
+    fallback[language] = [language, translation, ':rest+'];
+    return fallback;
+  },
+  {},
+);
 
 const { rewrites: gameRewrites, redirects: gameRedirects } = generate();
 
