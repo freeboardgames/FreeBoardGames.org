@@ -64,7 +64,7 @@ describe('ReplayIcon', () => {
 
     wrapper.find(ReplayIcon).simulate('click');
     await p;
-    expect(Router.push).toHaveBeenCalledWith('/room/fooNextRoom');
+    expect(Router.push).toHaveBeenCalledWith('/en/room/fooNextRoom');
   });
 
   it('should call Router.push with window.location.pathname', () => {

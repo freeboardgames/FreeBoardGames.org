@@ -1,1 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://www.freeboardgames.org/en/path3</loc></url><url><loc>https://www.freeboardgames.org/en/path2</loc></url><url><loc>https://www.freeboardgames.org/en/path1</loc></url><url><loc>https://www.freeboardgames.org/en/play/bingo</loc></url></urlset>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://www.freeboardgames.org/en/path3</loc>
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/pt/path3</loc>
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/en/path2</loc>
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/pt/path2</loc>
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/en/path1</loc>
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/pt/path1</loc>
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/en/play/bingo</loc>
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/pt/play/bingo</loc>
+    </url>
+</urlset>

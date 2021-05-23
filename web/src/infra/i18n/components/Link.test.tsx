@@ -1,20 +1,14 @@
-import React from 'react';
 import * as RTL from '@testing-library/react';
 import { screen, waitFor } from '@testing-library/react';
-import mockedEnv from 'mocked-env';
-import NextI18Next from 'next-i18next';
-import { LinkProps } from '../types';
 import { GAMES_MAP } from 'games';
+import NextI18Next from 'next-i18next';
+import React from 'react';
+import { LinkProps } from '../types';
 
 describe('Link', () => {
   let nextI18Next: NextI18Next;
   let Link;
   let play;
-
-  beforeEach(() => {
-    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'true' });
-    afterEach(restore);
-  });
 
   beforeEach(async () => {
     nextI18Next = require('../config').nextI18Next;

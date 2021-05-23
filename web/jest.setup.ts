@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import 'jest-extended';
+import 'jest-xml-matcher';
 import 'test/setup/enzyme';
 import 'test/setup/mockCopy';
 import 'test/setup/mockFetch';

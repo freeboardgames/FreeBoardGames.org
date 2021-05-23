@@ -9,7 +9,6 @@ import { generateSiteMapXML } from './sitemap';
 import mockedEnv from 'mocked-env';
 
 const sitemapI18nFixture = fs.readFileSync(path.resolve(__dirname, './__fixtures__/sitemap_i18n.xml'), 'utf-8');
-const sitemapFixture = fs.readFileSync(path.resolve(__dirname, './__fixtures__/sitemap.xml'), 'utf-8');
 
 jest.mock('fs', () => ({
   readFileSync: jest.requireActual('fs').readFileSync,
@@ -28,26 +27,14 @@ describe('generateSiteMapXML', () => {
     writeFileSync.mockClear();
   });
 
-  it('should generate sitemap with i18n disabled', () => {
-    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'false' });
+  it('should generate sitemap', () => {
     generateSiteMapXML({
       manifest: manifestFixture(),
       staticDir: staticDirFixture(),
       host: hostFixture(),
     });
-    expect(writeFileSync).toHaveBeenCalledWith(expect.any(String), sitemapFixture);
-    restore();
-  });
-
-  it('should generate sitemap with i18n enabled', () => {
-    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'true' });
-    generateSiteMapXML({
-      manifest: manifestFixture(),
-      staticDir: staticDirFixture(),
-      host: hostFixture(),
-    });
-    expect(writeFileSync).toHaveBeenCalledWith(expect.any(String), sitemapI18nFixture);
-    restore();
+    const xml = writeFileSync.mock.calls[0][1];
+    expect(xml).toEqualXML(sitemapI18nFixture);
   });
 });
 

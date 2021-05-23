@@ -1,9 +1,8 @@
 import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
-import mockedEnv from 'mocked-env';
 import React from 'react';
 import { GameSharing } from './GameSharing';
 
-const GAME_LINK = 'http://localhost/room/fooroom';
+const GAME_LINK = 'http://localhost/en/room/fooroom';
 
 afterEach(cleanup);
 
@@ -41,25 +40,12 @@ describe('GameSharing', () => {
     expect(window.open as any).toHaveBeenCalled();
   });
 
-  it('should copy link when i18n is disabled', () => {
-    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'false' });
+  it('should copy link with i18n language', () => {
     jest.useFakeTimers();
     const button = wrapper.getByLabelText('Copy');
     fireEvent.click(button);
     expect(wrapper.getByText('Copied!')).toBeInTheDocument();
     jest.runAllTimers();
     expect((window as any).copyClipboardMock).toHaveBeenCalledWith(GAME_LINK);
-    restore();
-  });
-
-  it('should copy link when i18n is enabled', () => {
-    const restore = mockedEnv({ NEXT_PUBLIC_I18N_ENABLED: 'true' });
-    jest.useFakeTimers();
-    const button = wrapper.getByLabelText('Copy');
-    fireEvent.click(button);
-    expect(wrapper.getByText('Copied!')).toBeInTheDocument();
-    jest.runAllTimers();
-    expect((window as any).copyClipboardMock).toHaveBeenCalledWith(GAME_LINK);
-    restore();
   });
 });
