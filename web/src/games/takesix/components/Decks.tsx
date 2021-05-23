@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Ctx } from 'boardgame.io';
-import { IG, isAllowedDeck } from './game';
+import { IG, isAllowedDeck } from '../game';
 import { CardComponent } from './CardComponent';
 
 interface IDecksProps {

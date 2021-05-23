@@ -2,7 +2,7 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer';
 import { TakeSixGame, IG, selectCard, selectDeck } from './game';
-import Card from './card';
+import Card from './definitions/card';
 
 // https://github.com/nicolodavis/boardgame.io/blob/master/docs/testing.md
 it("should move player's card from his hand to selectedCard", () => {
