@@ -1,0 +1,92 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import Alert from '@material-ui/lab/Alert';
+
+<Meta title="Documentation/Game Translation" />
+
+# Game translation
+
+We recommend every game to be translate to all languages available. The following tutorial teaches how to add translations to a game.
+
+## Available languages
+
+The following table describe all languages acceptable:
+
+| Language | Description        |
+| -------- | ------------------ |
+| en       | English            |
+| pt       | Português (Brasil) |
+
+If you want to translate to another language, you should request the language addition before by opening a pull request.
+
+## Defining a file with translations
+
+Create a `locales` folder inside the game folder. Also add a JSON file named with the language you want to translate the game.
+
+```json
+// path: ./games/<gameCode>/locales/<language>.json
+{
+  "title": "Game title"
+}
+```
+
+## Using a function component and a hook
+
+Now you should use the translation you create inside your components. In order to allow that we provided a hook function that should be used along with a functional component. We highly recommend this method as it is less verbose than using an approach with a high order component.
+
+```tsx
+import { useCurrentGameTranslate } from 'infra/i18n';
+interface IBoardProps {
+  gameArgs?: IGameArgs;
+}
+export function Board({ gameArgs }: IBoardProps) {
+    const { translate } = useCurrentGameTranslate();
+    return (
+      <GameLayout gameArgs={gameArgs}>
+        {translate("title")}
+      </GameLayout>
+    );
+  }
+}
+```
+
+## Using a class component and a high order component
+
+<Alert severity="warning">
+  Deprecated: we do not recommend using this method as we recommend writing functional components.
+</Alert>
+
+If a functional component is not available, we provide a high order component to use. The following example shows a complete code snippet using Typescript.
+
+```tsx
+import { withCurrentGameTranslate, WithCurrentGameTranslate } from 'infra/i18n';
+import { compose } from 'recompose';
+interface IBoardInnerProps extends WithCurrentGameTranslate {}
+interface IBoardOutterProps {
+  gameArgs?: IGameArgs;
+}
+export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, {}> {
+  render() {
+    return <GameLayout gameArgs={this.props.gameArgs}>{this.props.translate('title')}</GameLayout>;
+  }
+}
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslate);
+export const Board = enhance(BoardInternal);
+```
+
+Now your game is available on the language you translated. Congratulations!
+
+## Testing
+
+Your tests should always consider the game will be translate to English. We recommend you to use React Testing Library to write your tests.
+
+```tsx
+import { makeRender, screen } from 'test/utils/rtl';
+import { Board } from '.';
+
+const render = makeRender({ gameCode: 'your-game-code' });
+
+test('renders title', () => {
+  render(<Board {...props} />);
+  expect(screen.getByText('Game title')).toBeInTheDocument();
+});
+```
