@@ -1,7 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import Alert from '@material-ui/lab/Alert';
+import LinkTo from '@storybook/addon-links/react';
 
-<Meta title="Documentation/Game Translation" />
+<Meta title="Documentation/Translation/Game Translation" />
 
 # Game translation
 
@@ -16,7 +17,7 @@ The following table describe all languages acceptable:
 | en       | English            |
 | pt       | Português (Brasil) |
 
-If you want to translate to another language, you should request the language addition before by opening a pull request.
+If you want to add a new language, you should [read our documentation](docs/?path=/story/documentation-translation-adding-a-new-language--page) and then opening a pull request.
 
 ## Defining a file with translations
 
@@ -25,8 +26,31 @@ Create a `locales` folder inside the game folder. Also add a JSON file named wit
 ```json
 // path: ./games/<gameCode>/locales/<language>.json
 {
-  "title": "Game title"
+  "game_title": "Game title"
 }
+```
+
+## Game definition
+
+You need to change the game definition to indiciate it is translated to a specific language:
+
+```tsx
+import { IGameDef, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json'; // game definition always rely on English translations
+
+export const chessGameDef: IGameDef = {
+  code: 'chess',
+  codes: { pt: 'xadrez' }, // add here if the game has a special name for that language you're translating
+  translationStatus: { pt: IGameTranslationStatus.DONE }, // also accept PARTIAL
+  name: translation.name,
+  //...
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
+  //...
+};
+
+export default chessGameDef;
 ```
 
 ## Using a function component and a hook
@@ -42,7 +66,7 @@ export function Board({ gameArgs }: IBoardProps) {
     const { translate } = useCurrentGameTranslation();
     return (
       <GameLayout gameArgs={gameArgs}>
-        {translate("title")}
+        {translate("game_title")}
       </GameLayout>
     );
   }
@@ -66,7 +90,7 @@ interface IBoardOutterProps {
 }
 export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, {}> {
   render() {
-    return <GameLayout gameArgs={this.props.gameArgs}>{this.props.translate('title')}</GameLayout>;
+    return <GameLayout gameArgs={this.props.gameArgs}>{this.props.translate('game_title')}</GameLayout>;
   }
 }
 const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
