@@ -34,12 +34,12 @@ Create a `locales` folder inside the game folder. Also add a JSON file named wit
 Now you should use the translation you create inside your components. In order to allow that we provided a hook function that should be used along with a functional component. We highly recommend this method as it is less verbose than using an approach with a high order component.
 
 ```tsx
-import { useCurrentGameTranslate } from 'infra/i18n';
+import { useCurrentGameTranslation } from 'infra/i18n';
 interface IBoardProps {
   gameArgs?: IGameArgs;
 }
 export function Board({ gameArgs }: IBoardProps) {
-    const { translate } = useCurrentGameTranslate();
+    const { translate } = useCurrentGameTranslation();
     return (
       <GameLayout gameArgs={gameArgs}>
         {translate("title")}
@@ -58,9 +58,9 @@ export function Board({ gameArgs }: IBoardProps) {
 If a functional component is not available, we provide a high order component to use. The following example shows a complete code snippet using Typescript.
 
 ```tsx
-import { withCurrentGameTranslate, WithCurrentGameTranslate } from 'infra/i18n';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
-interface IBoardInnerProps extends WithCurrentGameTranslate {}
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
 interface IBoardOutterProps {
   gameArgs?: IGameArgs;
 }
@@ -69,7 +69,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
     return <GameLayout gameArgs={this.props.gameArgs}>{this.props.translate('title')}</GameLayout>;
   }
 }
-const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslate);
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
 export const Board = enhance(BoardInternal);
 ```
 
