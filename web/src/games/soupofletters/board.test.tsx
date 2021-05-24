@@ -1,8 +1,9 @@
-import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
-import { SoupOfLettersGame } from './game';
-import { Board } from './board';
+import Enzyme from 'enzyme';
 import { GameMode } from 'gamesShared/definitions/mode';
+import { makeMount } from 'test/utils/enzyme';
+import { Board, BoardInternal } from './board';
+import { SoupOfLettersGame } from './game';
 
 let wrapper: Enzyme.ReactWrapper;
 let client;
@@ -14,13 +15,15 @@ const updateGameProps = () => {
   wrapper.setProps({ G: state.G, ctx: state.ctx, moves: client.moves });
 };
 
+const mount = makeMount({ gameCode: 'soupofletters' });
+
 describe('SoupOfLetters UI', () => {
   beforeEach(() => {
     client = Client({
       game: SoupOfLettersGame,
     });
     state0 = client.store.getState();
-    wrapper = Enzyme.mount(
+    wrapper = mount(
       <Board
         G={state0.G}
         ctx={state0.ctx}
@@ -36,7 +39,7 @@ describe('SoupOfLetters UI', () => {
         }}
       />,
     );
-    instance = wrapper.instance();
+    instance = wrapper.find(BoardInternal).instance();
   });
 
   it('should show all the characters mentioned in the puzzel', () => {

@@ -1,0 +1,21 @@
+{
+  "name": "Soup of Letters",
+  "description": "Crosswords with friends.",
+  "descriptionTag": "Soup of letters, Alphabet soup, Crosswords. Find words in puzzle game.",
+  "instructions": {
+    "text": "Soup of letter is a typical games that has so-far always been played \"alone\" (i.e. single-player) on Newspapers. But we have changed this classic game into a multiplayer game. \n\nAs in the classic version, here you will have a set of words, which will be embedded into a soup of letters. In a given turn, the player is required to find one word in a limited amount of time (20 sec). If the time limit is exceeded or if the player finds a word, the turn is passed on to the next player. The game ends if all players cannot find new words in two subsequent turn or if all the words are found. The player who finds most words wins the game. "
+  },
+  "red": "red",
+  "green": "green",
+  "online_game": "Online Game",
+  "spectator_view": "Spectator View",
+  "turn_player": "Turn Player {{ player }}",
+  "you_have_seconds": "You have {{ time }} seconds.",
+  "player_has_seconds": "{{ name }} has {{ time }} seconds.",
+  "words": "Words",
+  "draw": "draw",
+  "you_won": "you won",
+  "see_scoreboard": "see scoreboard",
+  "you_lost": "you lost",
+  "player_won": "Player {{ player }} ({{ name }}) won"
+}
