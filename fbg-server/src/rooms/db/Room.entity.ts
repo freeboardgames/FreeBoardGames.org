@@ -6,6 +6,7 @@ import {
   OneToOne,
   JoinColumn,
   PrimaryColumn,
+  Index,
 } from 'typeorm';
 import { RoomMembershipEntity } from './RoomMembership.entity';
 import { MatchEntity } from '../../match/db/Match.entity';
@@ -21,6 +22,7 @@ export class RoomEntity extends BaseEntity {
   @Column()
   gameCode!: string;
 
+  @Index()
   @Column()
   isPublic!: boolean;
 

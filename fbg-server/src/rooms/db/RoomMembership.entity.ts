@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Index,
 } from 'typeorm';
 import { UserEntity } from '../../users/db/User.entity';
 import { RoomEntity } from './Room.entity';
@@ -13,6 +14,7 @@ export class RoomMembershipEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id!: number;
 
+  @Index()
   @Column({ type: 'double precision' })
   public lastSeen!: number;
 
