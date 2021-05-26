@@ -31,7 +31,7 @@ const isProd = process.env.NODE_ENV === 'production';
     TypeOrmModule.forRoot({
       ...CONNECTION,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: !isProd,
       logging: false,
     }),
     GraphQLModule.forRoot({
@@ -46,7 +46,7 @@ const isProd = process.env.NODE_ENV === 'production';
     MatchModule,
     ChatModule,
     HttpModule.register({
-      timeout: 5000,
+      timeout: 2000,
       maxRedirects: 5,
     }),
   ],
