@@ -42,11 +42,11 @@ spec:
         name: {{ .Release.Name }}-web
         resources:
           limits:
-            cpu: 750m
-            memory: 512Mi
+            cpu: "1" 
+            memory: 1024Mi
           requests:
-            cpu: 500m
-            memory: 256Mi
+            cpu: 100m
+            memory: 128Mi
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
