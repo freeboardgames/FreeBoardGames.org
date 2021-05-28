@@ -27,7 +27,7 @@ export class HealthzController {
     const postData = {
       query: LOBBY_QUERY
     };
-    await this.httpService.post(`http://localhost:${PORT}/graphql`, postData).toPromise();
+    await this.httpService.post(`http://localhost:${PORT}/graphql`, postData, { timeout: 5e3 }).toPromise();
     return 'OK';
   }
 }
