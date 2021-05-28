@@ -1,26 +1,23 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import translation from './locales/en.json';
 
 export const secretDraculaGameDef: IGameDef = {
   code: 'secretDracula',
-  name: 'Secret Dracula',
+  name: translation.name,
   contributors: ['Spooky-0'],
   imageURL: Thumbnail,
   modes: [
     { mode: GameMode.OnlineFriend },
     // Local mode is quite helpful during development
-    // { mode: GameMode.LocalFriend }
+    { mode: GameMode.LocalFriend },
   ],
   minPlayers: 5,
   maxPlayers: 10,
-  description: 'Similar to Secret Hitler',
-  descriptionTag: 'Secret Dracula',
-  instructions: {
-    videoId: 'mbGXIDYdtas',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
