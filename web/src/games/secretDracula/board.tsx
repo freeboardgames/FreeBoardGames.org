@@ -12,6 +12,7 @@ import { PlayerInfo, IPlayerInfo } from './svgComponents/playerInfo';
 import PlayStatus from './svgComponents/playStatus';
 import { WithCurrentGameTranslation, withCurrentGameTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
+import { snakeCase } from 'lodash';
 
 interface IBoardInnerProps extends WithCurrentGameTranslation {}
 interface IBoardOutterProps {
@@ -154,7 +155,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
         style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}
       >
         {!this._isFirstPerson() ? translate('spectator') : null}
-        {translate(`phase.${ctx.phase}`, translate('play'))}
+        {translate(`phase.${snakeCase(ctx.phase)}`, translate('play'))}
       </Typography>
     );
   };
