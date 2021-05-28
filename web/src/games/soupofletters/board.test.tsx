@@ -1,7 +1,7 @@
 import { Client } from 'boardgame.io/client';
 import Enzyme from 'enzyme';
 import { GameMode } from 'gamesShared/definitions/mode';
-import { makeMount } from 'test/utils/enzyme';
+import { makeMount } from 'test/utils/enzymeUtil';
 import { Board, BoardInternal } from './board';
 import { SoupOfLettersGame } from './game';
 

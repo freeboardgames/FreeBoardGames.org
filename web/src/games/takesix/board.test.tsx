@@ -3,7 +3,7 @@ import { Client } from 'boardgame.io/client';
 import { Client as ReactClient } from 'boardgame.io/react';
 import { GameMode } from 'gamesShared/definitions/mode';
 import React from 'react';
-import { makeMount } from 'test/utils/enzyme';
+import { makeMount } from 'test/utils/enzymeUtil';
 import { Board } from './board';
 import { TakeSixGame, TakeSixGameForTest } from './game';
 

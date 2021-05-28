@@ -14,6 +14,7 @@ function testAll() {
   );
   genGames();
   test();
+  checkCircularDependencies();
   lintAll();
 }
 
@@ -24,6 +25,13 @@ function test() {
   fbgRun(cmd, "Tests failed (web).");
   cd("fbg-server");
   fbgRun(cmd, "Tests failed (fbg-server).");
+}
+
+function checkCircularDependencies() {
+  cd("web");
+  shell.env["FORCE_COLOR"] = "true";
+  let cmd = "yarn madge --circular --extensions ts,tsx ./";
+  fbgRun(cmd, "Circular dependencies detected (web).");
 }
 
 module.exports = { testAll };

@@ -3,7 +3,7 @@ import { BingoGame } from './game';
 import { BingoBoard, BingoBoardInternal } from './board';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { INITIAL_WAIT_REF_NUM, WILDCARD_NUM, MAX_BINGO_CALLS } from './constants';
-import { makeMount } from 'test/utils/enzyme';
+import { makeMount } from 'test/utils/enzymeUtil';
 import { ReactWrapper } from 'enzyme';
 
 const mount = makeMount({ gameCode: 'bingo' });
