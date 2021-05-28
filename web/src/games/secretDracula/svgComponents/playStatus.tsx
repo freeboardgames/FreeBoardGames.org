@@ -3,6 +3,7 @@ import { blue } from '@material-ui/core/colors';
 
 import textCSS from './textStyles.module.css';
 import * as CNST from '../constants';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 const boxWidth = CNST.B_WIDTH * 0.09;
 const strokeWidth = 0.035 / boxWidth;
@@ -123,6 +124,8 @@ interface IPlayStatus {
 }
 
 export default function PlayStatus(props: IPlayStatus) {
+  const { translate } = useCurrentGameTranslation();
+
   // render vampire status
   const vmPhases = getVampirePolicyExtras(props.playerCount);
   const vmPlayed = new Array(6).fill(0).map((_, idx) => idx < props.vampiresPlayed);
@@ -193,7 +196,7 @@ export default function PlayStatus(props: IPlayStatus) {
       idx={0}
       xOffset={-4 * margin}
       yOffset={boxWidth * 0.5}
-      text={[CNST.N_VETO + '☑️']}
+      text={[translate('veto_check')]}
       fontSize={[0.4]}
       noRect={true}
       textAnchor="left"
@@ -210,7 +213,7 @@ export default function PlayStatus(props: IPlayStatus) {
       idx={0}
       xOffset={-4 * margin}
       yOffset={boxWidth * 1.3}
-      text={[CNST.N_VAMPIRE + '💪🏻']}
+      text={[translate('vampire_strong')]}
       fontSize={[0.4]}
       noRect={true}
       textAnchor="left"
