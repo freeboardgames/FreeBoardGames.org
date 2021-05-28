@@ -81,6 +81,10 @@
 
   "dracula_strong": "$t(cname.vampires) are now strong 💪🏻.\nHere on, electing Electing $t(cname.dracula) as $t(cname.priest) ends the game in favor of the $t(cname.vampires)",
 
+  "vampire_strong": "$t(cname.vampire) 💪🏻",
+
+  "veto_check": "$t(cname.veto) ☑️",
+
   "is_dead": "You have been executed $t(symbol.dead).\nBut, you can still stay around to see how the game ends!",
 
   "phase_chose_priest": {
