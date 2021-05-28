@@ -8,11 +8,7 @@ export const secretDraculaGameDef: IGameDef = {
   name: translation.name,
   contributors: ['Spooky-0'],
   imageURL: Thumbnail,
-  modes: [
-    { mode: GameMode.OnlineFriend },
-    // Local mode is quite helpful during development
-    { mode: GameMode.LocalFriend },
-  ],
+  modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 5,
   maxPlayers: 10,
   description: translation.description,

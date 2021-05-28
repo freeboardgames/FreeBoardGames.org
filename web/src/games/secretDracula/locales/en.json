@@ -34,6 +34,7 @@
     "vampire": "Vampire $t(symbol.vampire)",
     "vampires": "Vampires $t(symbol.vampire)$t(symbol.vampire)$t(symbol.vampire)",
     "sample": "Sample",
+    "samples": "Samples",
     "veto": "Veto ✋",
     "agree_veto": "Agree Veto $t(symbol.tup)",
     "reject_veto": "Reject Veto $t(symbol.tdown)",
@@ -71,7 +72,7 @@
   "okay": "Okay",
   "hide_info": "Hide Info",
 
-  "vampire_policy": "The 7 boxes show the number of $t(ccname.vampires) $t(cname.samples) ($t(symbol.bad_po)) passed.\nCurrent value: {{ value }}\n$t(symbol.peek) - allows $t(cname.mayor) to see upcoming cards.\n$t(symbol.investg) - allows $t(cname.mayor) to investigate a player.\n$t(symbol.elect) - a new $t(cname.mayor) gets elected.\n$t(symbol.execute) - requires $t(cname.mayor) to a player to execute.\n$t(symbol.coffin) - $t(cname.vampires) win the game.",
+  "vampire_policy": "The 7 boxes show the number of $t(cname.vampires) $t(cname.samples) ($t(symbol.bad_po)) passed.\nCurrent value: {{ value }}\n$t(symbol.peek) - allows $t(cname.mayor) to see upcoming cards.\n$t(symbol.investg) - allows $t(cname.mayor) to investigate a player.\n$t(symbol.elect) - a new $t(cname.mayor) gets elected.\n$t(symbol.execute) - requires $t(cname.mayor) to a player to execute.\n$t(symbol.coffin) - $t(cname.vampires) win the game.",
 
   "villager_policy": "The 6 boxes show the number of $t(cname.villager) $t(cname.samples) ($t(symbol.good_po)) passed.\nCurrent value: {{ value }}",
 
