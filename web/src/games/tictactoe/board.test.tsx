@@ -1,7 +1,7 @@
 import { Client } from 'boardgame.io/client';
 import { GameMode } from 'gamesShared/definitions/mode';
 import React from 'react';
-import { makeMount } from 'test/utils/enzyme';
+import { makeMount } from 'test/utils/enzymeUtil';
 import { Board } from './board';
 import { TictactoeGame } from './game';
 

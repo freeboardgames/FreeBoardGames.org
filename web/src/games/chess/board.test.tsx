@@ -3,7 +3,7 @@ jest.mock('react-ga');
 
 import { GameMode } from 'gamesShared/definitions/mode';
 import React from 'react';
-import { makeMount } from 'test/utils/enzyme';
+import { makeMount } from 'test/utils/enzymeUtil';
 import { Board, BoardInternal } from './board';
 
 const players = [
