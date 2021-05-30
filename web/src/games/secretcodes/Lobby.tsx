@@ -8,6 +8,7 @@ import { Ctx } from 'boardgame.io';
 import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 import Button from '@material-ui/core/Button';
 import { getPlayerTeam, gameCanStart } from './util';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 interface ILobbyProps {
   G: IG;
@@ -19,89 +20,77 @@ interface ILobbyProps {
   isHost: boolean;
 }
 
-interface ILobbyState {}
+export function Lobby({ G, ctx, moves, playerID, gameArgs, isHost }: ILobbyProps) {
+  const { translate } = useCurrentGameTranslation();
 
-export class Lobby extends React.Component<ILobbyProps, ILobbyState> {
-  componentDidMount() {
-    if (isLocalGame(this.props.gameArgs) && gameCanStart(this.props.G, this.props.ctx)) {
-      this._startGame();
-    }
-  }
-
-  _startGame = () => {
-    this.props.moves.startGame();
+  const startGame = () => {
+    moves.startGame();
   };
 
-  render() {
-    const teams = {
-      [TeamColor.Blue]: [],
-      [TeamColor.Red]: [],
-      unassigned: [],
-    };
-    const { players } = this.props.gameArgs;
-
-    for (const playerID in players) {
-      const item = (
-        <LobbyPlayer
-          key={playerID}
-          G={this.props.G}
-          moves={this.props.moves}
-          playerID={playerID}
-          players={players}
-          isHost={this.props.isHost}
-        />
-      );
-
-      teams[getPlayerTeam(this.props.G, playerID)?.color || 'unassigned'].push(item);
+  React.useEffect(() => {
+    if (isLocalGame(gameArgs) && gameCanStart(G, ctx)) {
+      startGame();
     }
+  }, []);
 
-    return (
-      <div className={css.wrapper}>
-        <h1 className={css.title}>Select teams</h1>
+  const teams = {
+    [TeamColor.Blue]: [],
+    [TeamColor.Red]: [],
+    unassigned: [],
+  };
 
-        <div className={css.teamsContainer}>
-          <LobbyTeam
-            moves={this.props.moves}
-            G={this.props.G}
-            playerID={this.props.playerID}
-            classes={[css.team, css.teamBlue].join(' ')}
-            teamName={'Blue Team'}
-            teamPlayers={teams[TeamColor.Blue]}
-            teamColor={TeamColor.Blue}
-          />
-          <LobbyTeam
-            moves={this.props.moves}
-            G={this.props.G}
-            playerID={this.props.playerID}
-            classes={[css.team, css.teamRed].join(' ')}
-            teamName={'Red Team'}
-            teamPlayers={teams[TeamColor.Red]}
-            teamColor={TeamColor.Red}
-          />
-          <div className={[css.team, css.unassigned].join(' ')}>
-            <h3>Unassigned</h3>
-            <ul>{teams.unassigned}</ul>
-          </div>
-        </div>
+  const { players } = gameArgs;
 
-        {!gameCanStart(this.props.G, this.props.ctx) ? (
-          <p className={css.text}>
-            In order to start the game all players need to join a team and each team must have a spymaster.
-          </p>
-        ) : null}
-
-        {this.props.isHost ? (
-          <Button
-            style={{ float: 'right' }}
-            variant="contained"
-            onClick={this._startGame}
-            color="primary"
-            disabled={!gameCanStart(this.props.G, this.props.ctx)}
-          >
-            Done, play!
-          </Button>
-        ) : null}
-      </div>
+  for (const playerID in players) {
+    const item = (
+      <LobbyPlayer key={playerID} G={G} moves={moves} playerID={playerID} players={players} isHost={isHost} />
     );
+
+    teams[getPlayerTeam(G, playerID)?.color || 'unassigned'].push(item);
   }
+
+  return (
+    <div className={css.wrapper}>
+      <h1 className={css.title}>{translate('select_teams')}</h1>
+
+      <div className={css.teamsContainer}>
+        <LobbyTeam
+          moves={moves}
+          G={G}
+          playerID={playerID}
+          classes={[css.team, css.teamBlue].join(' ')}
+          teamName={translate('blue_team')}
+          teamPlayers={teams[TeamColor.Blue]}
+          teamColor={TeamColor.Blue}
+        />
+        <LobbyTeam
+          moves={moves}
+          G={G}
+          playerID={playerID}
+          classes={[css.team, css.teamRed].join(' ')}
+          teamName={translate('red_team')}
+          teamPlayers={teams[TeamColor.Red]}
+          teamColor={TeamColor.Red}
+        />
+        <div className={[css.team, css.unassigned].join(' ')}>
+          <h3>{translate('unassigned')}</h3>
+          <ul>{teams.unassigned}</ul>
+        </div>
+      </div>
+
+      {!gameCanStart(G, ctx) ? <p className={css.text}>{translate('in_order_to_start')}</p> : null}
+
+      {isHost ? (
+        <Button
+          style={{ float: 'right' }}
+          variant="contained"
+          onClick={startGame}
+          color="primary"
+          disabled={!gameCanStart(G, ctx)}
+        >
+          {translate('play')}
+        </Button>
+      ) : null}
+    </div>
+  );
 }

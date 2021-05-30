@@ -2,6 +2,7 @@ import * as React from 'react';
 import css from './Lobby.module.css';
 import { getPlayerTeam, isPlayerSpymaster } from './util';
 import { IG } from './definitions';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 interface ILobbyPlayerProps {
   G: IG;
@@ -11,33 +12,28 @@ interface ILobbyPlayerProps {
   isHost: boolean;
 }
 
-interface ILobbyPlayerState {}
+export function LobbyPlayer({ G, moves, playerID, players, isHost }: ILobbyPlayerProps) {
+  const { translate } = useCurrentGameTranslation();
 
-export class LobbyPlayer extends React.Component<ILobbyPlayerProps, ILobbyPlayerState> {
-  _makeSpymaster = (playerID: string) => {
-    this.props.moves.makeSpymaster(playerID);
+  const makeSpymaster = (playerID: string) => {
+    moves.makeSpymaster(playerID);
   };
 
-  _isPlayerInTeam = (): boolean => {
-    return getPlayerTeam(this.props.G, this.props.playerID) !== undefined;
+  const isPlayerInTeam = (): boolean => {
+    return getPlayerTeam(G, playerID) !== undefined;
   };
 
-  render() {
-    return (
-      <li>
-        {isPlayerSpymaster(this.props.G, this.props.playerID) ? <span>[S] </span> : ''}
-        {this.props.players[this.props.playerID].name}
-        {!isPlayerSpymaster(this.props.G, this.props.playerID) && this.props.isHost && this._isPlayerInTeam() ? (
-          <button
-            className={[css.btn, css.btnSpymaster].join(' ')}
-            onClick={() => this._makeSpymaster(this.props.playerID)}
-          >
-            Make Spymaster
-          </button>
-        ) : (
-          ''
-        )}
-      </li>
-    );
-  }
+  return (
+    <li>
+      {isPlayerSpymaster(G, playerID) ? <span>{translate('s')}</span> : ''}
+      {players[playerID].name}
+      {!isPlayerSpymaster(G, playerID) && isHost && isPlayerInTeam() ? (
+        <button className={[css.btn, css.btnSpymaster].join(' ')} onClick={() => makeSpymaster(playerID)}>
+          {translate('make_spymaster')}
+        </button>
+      ) : (
+        ''
+      )}
+    </li>
+  );
 }

@@ -4,6 +4,7 @@ import { PREDEFINED_WORDS } from './constants';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 export interface FullCustomizationState {
   words: string[];
@@ -56,8 +57,9 @@ const handlePredefinedWordChange = (onChange: (state?: FullCustomizationState) =
 };
 
 const renderSelectValue = (index: number | null) => {
+  const { translate } = useCurrentGameTranslation();
   if (index === null) {
-    return 'Custom';
+    return translate('custom');
   }
   return PREDEFINED_WORDS[index].label;
 };
@@ -84,13 +86,14 @@ const renderPredefinedWordsSelect = (
 };
 
 const FullCustomization = ({ currentValue, onChange }: GameCustomizationProps) => {
+  const { translate } = useCurrentGameTranslation();
   const state = (currentValue as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
   return (
     <div>
       {renderPredefinedWordsSelect(onChange, state)}
       <div style={{ height: '32px' }}></div>
       <TextField
-        label={`Words (${state.words.length})`}
+        label={translate('words', { size: state.words.length })}
         multiline
         style={{ width: '250px' }}
         rows={15}
