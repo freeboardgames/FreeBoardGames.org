@@ -60,9 +60,9 @@ class BoardInternal extends React.Component<InnerProps & OutterProps, {}> {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
         if (this.props.ctx.gameover.winner === this.props.playerID) {
-          return this.props.translate('you won');
+          return this.props.translate('you_won');
         } else {
-          return this.props.translate('you lost');
+          return this.props.translate('you_lost');
         }
       } else {
         return 'draw';
@@ -71,9 +71,9 @@ class BoardInternal extends React.Component<InnerProps & OutterProps, {}> {
       // Local game
       switch (this.props.ctx.gameover.winner) {
         case '0':
-          return this.props.translate('red won');
+          return this.props.translate('red_won');
         case '1':
-          return this.props.translate('green won');
+          return this.props.translate('green_won');
         case undefined:
           return this.props.translate('draw');
       }

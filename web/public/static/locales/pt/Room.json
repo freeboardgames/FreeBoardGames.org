@@ -1,0 +1,11 @@
+{
+  "you_were_removed_from_the_room": "Você foi removido da sala.",
+  "try_again": "Tentar denovo",
+  "ok": "OK",
+  "change_game": "Mudar Jogo",
+  "failed_to_fetch_room_metadata": "Erro ao baixar dados da sala.",
+  "leave_room": "Sair da sala",
+  "max_players": "{{ name }} pode jogar até {{ max }} jogadores, mas a sala tem {{ current }} jogadores.",
+  "failed_to_set_nickname": "Erro ao trocar de apelido.",
+  "failed_to_start_match": "Erro ao iniciar a partida"
+}
