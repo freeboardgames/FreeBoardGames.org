@@ -1,9 +1,10 @@
 import fs from 'fs';
-import { IGameStatus } from 'gamesShared/definitions/game';
+import { IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
 import { getAllGames } from 'infra/game';
 import { i18n } from 'server/config/i18n';
 import { template } from './sitemap.template';
 import { Manifest, Url } from './types';
+import { playDictionary } from 'infra/navigation/dictionary';
 
 export const generateSiteMapXML = (options: { manifest: Manifest; staticDir: string; host: string }) => {
   if (isDevelopment()) return;
@@ -46,7 +47,12 @@ function getGamesPaths(): string[] {
     }
 
     i18n.locales.forEach((language) => {
-      paths.add(`/${language}/play/${game.codes?.[language] || game.code}`);
+      const translationStatus = (game.translationStatus || {})[language];
+      if (language != 'en' && translationStatus != IGameTranslationStatus.DONE) {
+        return;
+      }
+      const playVerb = playDictionary[language];
+      paths.add(`/${language}/${playVerb}/${game.codes?.[language] || game.code}`);
     });
   }
   return Array.from(paths);
