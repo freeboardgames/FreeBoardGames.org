@@ -90,8 +90,8 @@ export function placePiece(G: IG, ctx: Ctx, position: number): IG | string {
 
 export function movePiece(G: IG, ctx: Ctx, position: number, newPosition: number): IG | string {
   if (
-    G.points[position].piece === null ||
-    G.points[position].piece.player !== ctx.playerID || // Check if player owns this piece // Check if piece exists
+    G.points[position].piece === null || // Check if piece exists
+    G.points[position].piece.player !== ctx.playerID || // Check if player owns this piece
     G.points[newPosition].piece !== null || // Check if point isn't already occupied
     G.haveToRemovePiece || // Check if player has to remove piece
     (!G.points[position].connections.includes(newPosition) && // Check if connection exists
@@ -134,8 +134,8 @@ export function removePiece(G: IG, ctx: Ctx, position: number) {
     (G.mills
       .map((mill, index) => ({ owner: mill, index }))
       .filter((mill) => mill.owner !== null && mill.owner !== ctx.playerID)
-      .some((mill) => millsPositions[mill.index].includes(position)) &&
-      isTherePieceOutsideMill(G, ctx))
+      .some((mill) => millsPositions[mill.index].includes(position)) && // Check if piece is in opponent's mill
+      isTherePieceOutsideMill(G, ctx)) // Ignore the check if all of opponent's pieces are in mills
   ) {
     return INVALID_MOVE;
   }
