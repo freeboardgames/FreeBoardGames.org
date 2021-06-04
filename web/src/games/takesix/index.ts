@@ -6,7 +6,8 @@ import translation from './locales/en.json';
 export const takesixGameDef: IGameDef = {
   code: 'takesix',
   name: translation.name,
-  translationStatus: { pt: IGameTranslationStatus.PARTIAL },
+  translationStatus: { pt: IGameTranslationStatus.DONE },
+  codes: { pt: 'pegue-seis' },
   contributors: ['JosefKuchar'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }],

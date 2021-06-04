@@ -1,11 +1,15 @@
 const Thumbnail = require('./media/thumbnail.png');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
 import translation from './locales/en.json';
 
 export const soupOfLettersGameDef: IGameDef = {
   code: 'soupofletters',
   name: translation.name,
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+  },
+  codes: { pt: 'sopa-de-letras' },
   contributors: ['gk-patel'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],

@@ -1,11 +1,15 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
 import translation from './locales/en.json';
 
 export const zooParadeGameDef: IGameDef = {
   code: 'zooparade',
   name: translation.name,
+  codes: { pt: 'desfile-do-zoo' },
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+  },
   contributors: ['Spooky-0', 'DanielSherlock'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
