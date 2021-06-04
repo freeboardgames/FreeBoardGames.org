@@ -178,7 +178,7 @@ const GameConfig: Game<IG> = {
     Place: {
       moves: { placePiece, removePiece },
       next: Phase.Move,
-      endIf: (G: IG) => G.piecesPlaced === 18,
+      endIf: (G: IG) => G.piecesPlaced === 18 && !G.haveToRemovePiece,
       start: true,
     },
     Move: {
