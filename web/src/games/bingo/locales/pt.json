@@ -1,0 +1,19 @@
+{
+  "name": "Bingo",
+  "description": "Teste sua sorte no Bingo!",
+  "descriptionTag": "Jogue Bingo gratuitamente online com até 30 pessoas.",
+  "instructions": {
+    "videoId": "dJ4YDTqmhJk",
+    "text": "O objetivo do jogo é ser o primeiro jogador a conseguir 5 números em sequência horizontalmente, verticalmente, ou na diagonal. Cada jogador recebe um cartão com números organizados em uma tabela 5x5, e cada jogador deve marcar o número sorteado. O computador então chama um número e cada jogador tem que marcar o número correspondente em sua cartela se presente. Se um jogador conseguir 5 em sequência, deve clicar no botão BINGO. \n\nCréditos de imagem [Freepik](http://www.freepik.com)"
+  },
+  "player": "Jogador {{ name }}",
+  "draw": "empate",
+  "winner": "ganhador: {{ name }}",
+  "you_won": "você ganhou",
+  "you_lost": "você perdeu (ganhador: {{ name }})",
+  "player_won": "Jogador {{ name }} ganhou",
+  "table": "Tabela",
+  "bingo": "Bingo! {{ stars }}",
+  "sorry_you_used_up": "<0>Desculpe, você usou </0><1>todas as suas chances de chamar Bingo ☹️</1><2>Mais sorte na próxima vez !</2>",
+  "starting_in": "<0>Começando</0> <1>em...</1>"
+}

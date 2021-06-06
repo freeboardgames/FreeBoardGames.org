@@ -1,0 +1,147 @@
+{
+  "name": "Drácula Secreto",
+  "description": "Similar a Secret Hitler",
+  "descriptionTag": "Jogue Drácula Secreto, um jogo online similar a Secret Hitler",
+  "instructions": {
+    "videoId": "mbGXIDYdtas",
+    "text": "Obrigado ao https://www.secrethitler.com ! \n\nEsse jogo 'Drácula Secreto' é inspirado em 'Secret Hitler'. Veja\nhttps://www.secrethitler.com/assets/Secret_Hitler_Rules.pdf para as regras. A diferença entre 'Secret Hitler' e 'Drácula Secreto' é principalmente cosmética, como as regras do jogo são as mesmas.\n\nUM JOGO DE BLEFE, MENTIRAS E VAMPIROS!\n\nEm Drácula Secreto, existe dois grupos de jogadores, os vampiros e o resto da vila. Um dos vampiros é o Drácula. Apesar dos vampiros serem a minoria, eles conhecem a si mesmos, enquanto os cidadões comuns não sabem quem eles são.\n\nEm cada turno, um jogador é o candidato a prefeito e escolhe outro jogador para ser o padre. Depois disso, o prefeito eleito decide uma das três cartas que podem ser de sangue (bom para os vampiros) ou uma carta dos cidadões. O padre eleito então seleciona uma das duas cartas que sobraram para virar lei \n\nOs cidadões ganham se passarem 5 leis cidadãs, ou matando o Drácula. Vampiros ganham passando 6 leis vampiras, ou passando 3 leis e elegendo o Drácula como prefeito. "
+  },
+
+  "symbol": {
+    "priest": "✝️",
+    "mayor": "🏅",
+    "candidate": "❓",
+    "vampire": "🧛",
+    "dracula": "👑",
+    "good_po": "💧",
+    "bad_po": "🩸",
+    "tup": "👍",
+    "tdown": "👎",
+    "peek": "👀",
+    "investg": "🕵️‍♂️",
+    "search": "🔍",
+    "execute": "🗡️",
+    "elect": "🗳️",
+    "coffin": "⚰️",
+    "dead": "🥀"
+  },
+
+  "cname": {
+    "priest": "Padre $t(symbol.priest)",
+    "mayor": "Prefeito $t(symbol.mayor)",
+    "villager": "Cidadão 🧑‍🤝‍🧑",
+    "villagers": "Cidadões 🧑‍🤝‍🧑🧑‍🤝‍🧑🧑‍🤝‍🧑",
+    "vampire": "Vampiro $t(symbol.vampire)",
+    "vampires": "Vampiros $t(symbol.vampire)$t(symbol.vampire)$t(symbol.vampire)",
+    "sample": "Lei",
+    "samples": "Leis",
+    "veto": "Vetar ✋",
+    "agree_veto": "Concordar com Veto $t(symbol.tup)",
+    "reject_veto": "Rejeitar Veto $t(symbol.tdown)",
+    "execute": "Assassinando $t(symbol.execute)",
+    "dracula": "Drácula"
+  },
+
+  "phase": {
+    "chose_priest": "$t(cname.mayor) está Nominando",
+    "vote_priest": "$t(symbol.elect) Vota $t(symbol.elect)",
+    "end_vote_priest": "$t(symbol.elect) Votando $t(symbol.elect) Resultados",
+    "discard_mayor": "$t(cname.mayor) descarta uma $t(cname.sample)",
+    "discard_priest": "$t(symbol.priest) descarta uma $t(cname.sample)",
+    "discard_priest_veto": "$t(symbol.priest) pode $t(cname.veto)",
+    "veto_mayor": "$t(cname.mayor) revisa $t(cname.veto)",
+    "check_election_counter": "Contando Votos",
+    "special": "Fase Especial",
+    "no_special": "Terminando Eleição Especial",
+    "execution": "$t(symbol.execute) Assassinando Jogador $t(symbol.execute)",
+    "special_election": "$t(symbol.elect) Eleição Especial $t(symbol.elect)",
+    "investigate1": "Investigar$t(symbol.peek)",
+    "investigate2": "Investigar$t(symbol.peek)",
+    "peek_policy": "Olhar $t(symbol.peek) Próxima $t(cname.samples)"
+  },
+
+  "player": "Jogador {{ id }}",
+  "vampires_win": "$t(cname.vampires) ganharam",
+  "villagers_in": "$t(cname.villagers) ganharam",
+  "info": "Info: ",
+  "spectator": "[ESPECTADOR] ",
+  "play": "Jogar",
+  "ok_to_continue": "Clique em Ok para continuar...",
+  "yes": "Sim 👍",
+  "no": "Não 👎",
+  "okay": "Ok",
+  "hide_info": "Esconder Info",
+
+  "vampire_policy": "As 7 caixas mostram o número de $t(cname.samples) $t(cname.vampires) ($t(symbol.bad_po)) passaram.\nValor atual: {{ value }}\n$t(symbol.peek) - permite $t(cname.mayor) ver próximas cartas.\n$t(symbol.investg) - permite $t(cname.mayor) investigar um jogador.\n$t(symbol.elect) - um novo $t(cname.mayor) é eleito.\n$t(symbol.execute) - precisa $t(cname.mayor) nominar jogador para assassinar.\n$t(symbol.coffin) - $t(cname.vampires) ganham o jogo.",
+
+  "villager_policy": "As 6 caixas mostram o numero de $t(cname.samples) $t(cname.villager) ($t(symbol.good_po)) passaram.\nValor atual: {{ value }}",
+
+  "election_counter": "$t(symbol.elect) $t(symbol.elect) $t(symbol.elect) é o Contador da Eleição.\nSe três Eleições consecutivas falharem (❌) por causa de muitos votos 'Não' 👎, a primeira $t(cname.sample) é jgoada automaticamente. Nenhuma ação especial como $t(symbol.peek), $t(symbol.investg), $t(symbol.execute), etc. é acionada",
+
+  "veto_enabled": "Poder de $t(cname.veto) está agora abilitado☑️.\nO $t(cname.priest) pode propor um Veto, e se o $t(cname.mayor) concordar, nenhuma $t(cname.sample) é jogada. Se o $t(cname.mayor) discordar do Veto, o $t(cname.priest) tem que escolher uma $t(cname.sample).",
+
+  "dracula_strong": "$t(cname.vampires) estão fortes 💪🏻.\nA partir de agora, Elegendo $t(cname.dracula) como $t(cname.priest) acaba o jogo em favor dos $t(cname.vampires)",
+
+  "vampire_strong": "$t(cname.vampire) 💪🏻",
+
+  "veto_check": "$t(cname.veto) ☑️",
+
+  "is_dead": "Você foi assassinado $t(symbol.dead).\nMas você ainda pode ficar assistindo para ver como o jogo termina!",
+
+  "phase_chose_priest": {
+    "nominate_a_priest": "Como $t(cname.mayor), você tem que nominar um $t(cname.priest).\nVocê pode fazer isso clicando em um dos jogadores com a tag $t(symbol.candidate) em cima.",
+    "wait_to_nominate_priest": "Espere pelo $t(cname.mayor) nominar um $t(cname.priest) para votação...",
+    "possible_nominees": "A tag $t(symbol.candidate) representa possiveis candidatos a $t(cname.priest)."
+  },
+
+  "phase_vote_priest": {
+    "new_priest_election": "Você gostaria de eleger {{ name }} como novo $t(cname.priest) $t(symbol.candidate)",
+    "wait_others_to_vote": "Aguardando outros jogadores votarem..."
+  },
+
+  "phase_end_vote_priest": {
+    "election_results": "Resultados das eleições: {{ yes }} Sim 👍 e {{ no }} Não 👎",
+    "waiting_for_other_players_to_click_okay": "Aguardando outros jogadores clicarem Ok.."
+  },
+
+  "phase_discard": {
+    "you_must_discard_one_sample": "Como {{ playerTag }}, você tem que descartar uma $t(cname.sample).",
+    "click_to_discard": "$t(symbol.bad_po) é para $t(cname.vampires) e $t(symbol.good_po) é para $t(cname.villagers).\nClique na $t(cname.sample) que você deseja descartar,",
+    "priest_veto_proposal": "Você também pode propor um Veto.",
+    "wait_to_discard_a_sample": "Espere pelo ${playerTag} descartar uma $t(cname.sample)..."
+  },
+
+  "phase_veto_mayor": {
+    "reject_or_agree": "Como $t(cname.mayor), você pode\nou Rejeitar $t(symbol.tdown) ou Concordar $t(symbol.tup) com o Veto",
+    "policy_already_given_to_the_priest": "Anteriormente, {{ text }} foi dado ao $t(cname.priest).",
+    "priest_called_a_veto": "O $t(cname.priest) pediu um Veto, e o $t(cname.mayor) está o considerando !\nSe o Veto for rejeitado, o $t(cname.priest) será forćado a jogar uma $t(cname.sample). Se não, um novo turno começará."
+  },
+
+  "phase_peek_policy": {
+    "upcoming_sample": "Voc&e pode ver as próximas $t(cname.sample)s\nPróximas leis são: {{ text }}",
+    "mayor_is_looking": "O $t(cname.mayor) está olhando nas próximas três leis."
+  },
+
+  "phase_investigate1": {
+    "you_are_the_mayor": "Você é o $t(cname.mayor).\nVocê pode investigar qualquer jogador com o símbolo $t(symbol.search).\nClique no jogador que você gostaria de investigar...",
+    "mayor_is_investigating": "O $t(cname.mayor) está investigando $t(symbol.peek) um jogador..."
+  },
+
+  "phase_investigate2": {
+    "player_is_a_vampire": "{{ name }} é um $t(cname.vampire)",
+    "player_is_a_villager": "{{ name }} é um $t(cname.villager)",
+    "player_is_being_investigated": "{{ name }} está sendo investigado."
+  },
+
+  "phase_special_election": {
+    "current_mayor": "Você é o $t(cname.mayor) atual, por favor escolha o próximo $t(cname.mayor)",
+    "click_on_candidate": "Você pode fazer isso clicando em um dos jogadores com o símbolo $t(symbol.candidate).",
+    "next_mayor": "O atual $t(cname.mayor) está escolhendo o próximo $t(cname.mayor)."
+  },
+
+  "phase_execution": {
+    "you_are_the_mayor": "Você é o $t(cname.mayor), você tem que $t(cname.execute) um Jogador!",
+    "click_on_candidate": "Você pode fazer isso clicando no nome de um jogador com o simbolo $t(symbol.candidate).",
+    "mayor_will_execute_a_player": "O $t(cname.mayor) irá $t(cname.execute) um Jogador!!."
+  }
+}

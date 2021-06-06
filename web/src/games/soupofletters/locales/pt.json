@@ -1,0 +1,21 @@
+{
+  "name": "Sopa de Letras",
+  "description": "Palavras Cruzadas com amigos.",
+  "descriptionTag": "Sopa de letras, Palavras Cruzadas. Ache palavras num jogo com amigos.",
+  "instructions": {
+    "text": "Sopa de letras é um jogo tipicamente jogado \"sozinho\" (um jogador) em Jornais. Mas modificamos esse jogo clássico em um jogo multi-jogadores. \n\nComo na versão clássica, aqui você terá algumas palavras, que estará numa sopa de letras. Em cada turno, o jogador precisa achar uma palavra em um tempo restrito (20 sec). Se o tempo é excedido ou se o jogador achar uma palavra, o turno é passado pro próximo jogador. O jogo termina se ninguém conseguir descobrir novas palavras em dois turnos consecutivos ou se todas as palavras forem descobertas. O jogador que descobrir mais palavras ganha o jogo. "
+  },
+  "red": "vermelho",
+  "green": "verde",
+  "online_game": "Jogo Online",
+  "spectator_view": "Vista de Espectador",
+  "turn_player": "Turno do Jogador {{ player }}",
+  "you_have_seconds": "Você tem {{ time }} segundos.",
+  "player_has_seconds": "{{ name }} tem {{ time }} segundos.",
+  "words": "Palavras",
+  "draw": "empate",
+  "you_won": "você ganhou",
+  "see_scoreboard": "ver placar",
+  "you_lost": "você perdeu",
+  "player_won": "Jogador {{ player }} ({{ name }}) ganhou"
+}
