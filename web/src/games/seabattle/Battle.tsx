@@ -5,7 +5,12 @@ import { ISeabattleState, IShip, ISalvo, ICell } from './game';
 import { playSeabattleSound } from './sound';
 import Typography from '@material-ui/core/Typography';
 
-interface IBattleProps {
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
+
+interface IBattleInnerProps extends WithCurrentGameTranslation {}
+
+interface IBattleOutterProps {
   G: ISeabattleState;
   ctx: any;
   moves: any;
@@ -26,8 +31,8 @@ interface IBattleState {
   aiPlaying?: boolean;
 }
 
-export class Battle extends React.Component<IBattleProps, IBattleState> {
-  constructor(props: IBattleProps) {
+export class BattleInternal extends React.Component<IBattleInnerProps & IBattleOutterProps, IBattleState> {
+  constructor(props: IBattleInnerProps & IBattleOutterProps) {
     super(props);
     this.state = {
       G: props.G,
@@ -58,7 +63,7 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     }
   };
 
-  componentDidUpdate(prevProps: IBattleProps) {
+  componentDidUpdate(prevProps: IBattleInnerProps & IBattleOutterProps) {
     if (prevProps.currentPlayer !== this.props.currentPlayer) {
       this.setState({
         G: this.props.G,
@@ -83,7 +88,11 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     }
     return (
       <div>
-        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+        <Typography
+          data-testid="message"
+          variant="h5"
+          style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}
+        >
           {message}
         </Typography>
         <Radar
@@ -100,11 +109,11 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
 
   _getMessage() {
     if (this.state.showSalvo) {
-      return this.state.salvo.hit ? 'HIT' : 'MISS';
+      return this.state.salvo.hit ? this.props.translate('hit') : this.props.translate('miss');
     } else if (this.state.playerID === this.state.currentPlayer) {
-      return 'CLICK TO SHOOT';
+      return this.props.translate('click_to_shoot');
     } else {
-      return 'Waiting for opponent...';
+      return this.props.translate('waiting_for_opponent');
     }
   }
 
@@ -122,3 +131,6 @@ export class Battle extends React.Component<IBattleProps, IBattleState> {
     }).bind(this);
   }
 }
+
+const enhance = compose<IBattleInnerProps, IBattleOutterProps>(withCurrentGameTranslation);
+export const Battle = enhance(BattleInternal);
