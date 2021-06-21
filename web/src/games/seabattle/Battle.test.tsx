@@ -5,6 +5,21 @@ import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 import { Client } from 'boardgame.io/client';
 import { makeMount } from 'test/utils/enzymeUtil';
 
+// mock functions for HTMLMediaElement
+// https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395
+(window as any).HTMLMediaElement.prototype.load = () => {
+  /* do nothing */
+};
+(window as any).HTMLMediaElement.prototype.play = () => {
+  /* do nothing */
+};
+(window as any).HTMLMediaElement.prototype.pause = () => {
+  /* do nothing */
+};
+(window as any).HTMLMediaElement.prototype.addTextTrack = () => {
+  /* do nothing */
+};
+
 const mount = makeMount({ gameCode: 'seabattle' });
 
 test('one phase - hit', () => {
