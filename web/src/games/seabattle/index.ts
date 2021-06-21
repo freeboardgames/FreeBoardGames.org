@@ -1,24 +1,19 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import translation from './locales/en.json';
 
 export const seabattleGameDef: IGameDef = {
   code: 'seabattle',
-  name: 'Sea Battle',
+  name: translation.name,
   contributors: ['flamecoals'],
   imageURL: Thumbnail,
   minPlayers: 2,
   maxPlayers: 2,
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }],
-  description: 'Similar to Battleship',
-  descriptionTag: `Play Sea Battle, a free online game similar\
- to Battleship. You can play single-player against the computer\
- or multi-player against a friend online.`,
-  instructions: {
-    videoId: 'q0qpQ8doUp8',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),

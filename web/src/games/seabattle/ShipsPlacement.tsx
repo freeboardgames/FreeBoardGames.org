@@ -1,11 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { IShip, generateRandomShips, validateShips } from './game';
-import { Radar } from './Radar';
 import Typography from '@material-ui/core/Typography';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import React from 'react';
+import { compose } from 'recompose';
+import { generateRandomShips, IShip, validateShips } from './game';
+import { Radar } from './Radar';
 
-interface IShipsPlacementProps {
+interface IShipsPlacementInnerProps extends WithCurrentGameTranslation {}
+
+interface IShipsPlacementOutterProps {
   playerID: string;
   setShips: (ships: IShip[]) => void;
 }
@@ -14,21 +17,20 @@ interface IShipsPlacementState {
   ships: IShip[];
 }
 
-export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShipsPlacementState> {
-  static propTypes = {
-    playerID: PropTypes.string,
-    setShips: PropTypes.any,
-  };
-  constructor(props: IShipsPlacementProps) {
+export class ShipsPlacementInternal extends React.Component<
+  IShipsPlacementInnerProps & IShipsPlacementOutterProps,
+  IShipsPlacementState
+> {
+  constructor(props: IShipsPlacementInnerProps & IShipsPlacementOutterProps) {
     super(props);
     this.state = { ships: generateRandomShips(Number(props.playerID)) };
   }
 
   render() {
-    let message = 'Drag & drop, click to rotate';
+    let message = this.props.translate('drag_drop_click_to_rotate');
     const validShips = validateShips(this.state.ships).valid;
     if (!validShips) {
-      message = 'INVALID POSITIONING';
+      message = this.props.translate('invalid_positioning');
     }
     return (
       <div>
@@ -43,7 +45,7 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
           onClick={this.done}
           disabled={!validShips}
         >
-          Done
+          {this.props.translate('done')}
         </Button>
       </div>
     );
@@ -59,3 +61,6 @@ export class ShipsPlacement extends React.Component<IShipsPlacementProps, IShips
     this.props.setShips(this.state.ships);
   };
 }
+
+const enhance = compose<IShipsPlacementInnerProps, IShipsPlacementOutterProps>(withCurrentGameTranslation);
+export const ShipsPlacement = enhance(ShipsPlacementInternal);

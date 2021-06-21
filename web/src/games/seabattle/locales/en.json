@@ -1,0 +1,21 @@
+{
+  "name": "Sea Battle",
+  "description": "Similar to Battleship",
+  "descriptionTag": "Play Sea Battle, a free online game similar\\\n to Battleship. You can play single-player against the computer\\\n or multi-player against a friend online.",
+  "instructions": {
+    "videoId": "q0qpQ8doUp8",
+    "text": "Sea Battle is primarily a guessing game for two players.  It is played on ruled grids on which each player's convoy of ships are concealed from the other player.  Players alternate turns firing servos at the other player's ships, and the objective of the game is to destroy the opposing player's entire fleet.\n"
+  },
+  "hit": "HIT",
+  "miss": "MISS",
+  "click_to_shoot": "CLICK TO SHOOT",
+  "waiting_for_opponent": "Waiting for opponent...",
+  "you_won": "you won",
+  "you_lost": "you lost",
+  "your_opponent_s_board": "Your Opponent&apos;s Board",
+  "enable_sound": "Enable sound",
+  "disable_sound": "Disable sound",
+  "drag_drop_click_to_rotate": "Drag & drop, click to rotate",
+  "invalid_positioning": "INVALID POSITIONING",
+  "done": "Done"
+}
