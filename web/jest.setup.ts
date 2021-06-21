@@ -7,7 +7,6 @@ import 'test/setup/mockFetch';
 import 'test/setup/mockGa';
 import 'test/setup/mockGameDarkSublayout';
 import 'test/setup/mockI18next';
-import 'test/setup/mockMedia';
 import 'test/setup/mockPlay';
 import 'test/setup/mockRouter';
 import 'test/setup/mockScrollTo';
