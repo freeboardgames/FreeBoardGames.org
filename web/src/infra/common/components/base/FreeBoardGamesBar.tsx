@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -20,10 +19,6 @@ type FBGBarProps = {
 const handleLanguageChange = (event) => {
   window.location.href = `/${event.target.value}`;
 };
-
-function renderValue() {
-  return <LanguageIcon />;
-}
 
 function renderLanguageSelect() {
   const { i18n } = nextI18Next.useTranslation();
@@ -51,7 +46,7 @@ function renderLanguageSelect() {
           },
         }}
         onChange={handleLanguageChange}
-        renderValue={renderValue}
+        renderValue={() => <LanguageIcon />}
       >
         <MenuItem value="en">English</MenuItem>
         <MenuItem value="pt">Português</MenuItem>
