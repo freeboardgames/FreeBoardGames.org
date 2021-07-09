@@ -1,0 +1,6 @@
+{
+  "public_rooms": "Öffentliche Räume",
+  "new_room": "Neuer Raum",
+  "error": "Beim Laden der Lobby ist ein Fehler aufgetreten. Versuche die Seite neu zu laden.",
+  "no_public_room_available": "Es ist kein öffentlicher Raum verfügbar. Klicke auf \"<b>Neuer Raum</b>\" und erstelle einen Neuen!"
+}
