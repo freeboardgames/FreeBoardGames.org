@@ -8,8 +8,9 @@ export const soupOfLettersGameDef: IGameDef = {
   name: translation.name,
   translationStatus: {
     pt: IGameTranslationStatus.DONE,
+    de: IGameTranslationStatus.DONE,
   },
-  codes: { pt: 'sopa-de-letras' },
+  codes: { pt: 'sopa-de-letras', de: 'worter-suppe' },
   contributors: ['gk-patel'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.LocalFriend }, { mode: GameMode.OnlineFriend }],

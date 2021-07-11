@@ -1,0 +1,26 @@
+{
+  "name": "Zoo Parade",
+  "description": "Ein kooperatives Spiel wo das Team gewinnt!",
+  "descriptionTag": "Tag for Zoo Parade TODO",
+  "instructions": {
+    "videoId": "LQ8iwNjBW_s",
+    "text": "Zoo Parade is a cooperative game for two to five players. This game perfectly combines the concepts of cooperation and partial information. The unique point: You know all cards, buy your own!\n\nThe game gets more difficult the more players you have - but at the same time this is when it is the most fun!\n\nThank you for the [Art](https://www.freepik.com/free-vector/cute-zoo-animals-card-set_4855079.htm).\n"
+  },
+  "board": {
+    "show_logs": "Zeige Logs",
+    "hide_logs": "Verstecke Logs"
+  },
+  "bscore": {
+    "score": "Punktzahl {{ score }}"
+  },
+  "blog": {
+    "success": "✅ ERFOLG",
+    "fail": "❌ FEHLER",
+    "status_player_played_card": "<b>{{ status }}: {{ player }}</b> spielte\n<card></card>",
+    "status_player_played_color_value": "<b>{{ status }}: {{ player }}</b> spielte\n<color></color> <value></value> card.",
+    "player_discarded_card": "<b>{{ player }} verwarf\n<card></card></b>",
+    "player_discarded_color_value": "<b>{{ player }}</b> verwarf <color></color> <value></value> card.",
+    "player_gave_a_color_hint": "<b>{{ player }}</> gab {{ receiver }} einen Farb Hinweis: <color></color>",
+    "player_gave_a_value_hint": "<b>{{ player }}</> gab {{ receiver }} einen Wert Hinweis: <value></value>"
+  }
+}

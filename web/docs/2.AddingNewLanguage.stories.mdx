@@ -12,19 +12,31 @@ New languages are welcome here. The following instrcutions will guide you on how
 We are using `next-i18next` as our main translation framework. Adding a new language code here will recognize it as a valid language.
 
 ```tsx
-// server/config/i18n/config.ts
+// web/server/config/i18n/config.ts
 
 function otherLanguages() {
-  return ['pt', '<language code>'];
+  return ['pt', '[LANGUAGE CODE]'];
 }
 ```
 
 ## Typescript
 
 ```tsx
-// src/infra/i18n/types/Language.ts
+// web/src/infra/i18n/types/Language.ts
 
-export type Language = 'pt' | 'en' | '<language code>';
+export type Language = 'pt' | 'en' | '[LANGUAGE CODE]';
+```
+
+## Dropdown
+
+```tsx
+// web/src/infra/common/components/base/FreeBoardGamesBar.tsx
+
+
+        <MenuItem value="en">English</MenuItem>
+        <MenuItem value="pt">Português</MenuItem>
+        <MenuItem value="[LANGUAGE CODE]">[LANGUAGE NAME]</MenuItem>
+      </Select>
 ```
 
 ## Translated routes
@@ -37,7 +49,7 @@ Some of our routes are translated (e.g. /en/play, /pt/jogar). If you want a tran
 export const playDictionary = {
   en: 'play',
   pt: 'jogar',
-  '<language code>': '<play translation>',
+  '[LANGUAGE CODE]': '[PLAY TRANSLATION]',
 };
 ```
 
@@ -54,11 +66,11 @@ export const gameDef: IGameDef = {
   code: 'chess',
   codes: {
     pt: 'xadrez',
-    '<language code>': '<game name translation>',
+    '[LANGUAGE CODE]': '<game name translation>',
   },
   translationStatus: {
     pt: IGameTranslationStatus.DONE,
-    '<language code>': IGameTranslationStatus.PARTIAL, // or DONE
+    '[LANGUAGE CODE]': IGameTranslationStatus.PARTIAL, // or DONE
   },
   //...
 };
