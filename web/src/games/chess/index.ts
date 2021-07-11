@@ -5,8 +5,8 @@ import translation from './locales/en.json';
 
 export const chessGameDef: IGameDef = {
   code: 'chess',
-  codes: { pt: 'xadrez' },
-  translationStatus: { pt: IGameTranslationStatus.DONE },
+  codes: { pt: 'xadrez', de: 'scach' },
+  translationStatus: { pt: IGameTranslationStatus.DONE, de: IGameTranslationStatus.DONE },
   name: translation.name,
   contributors: ['flamecoals'],
   imageURL: Thumbnail,

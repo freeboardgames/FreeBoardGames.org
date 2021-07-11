@@ -6,7 +6,7 @@ import translation from './locales/en.json';
 export const tictactoeplusGameDef: IGameDef = {
   code: 'tictactoeplus',
   name: translation.name,
-  translationStatus: { pt: IGameTranslationStatus.DONE },
+  translationStatus: { pt: IGameTranslationStatus.DONE, de: IGameTranslationStatus.DONE },
   contributors: ['gk-patel'],
   minPlayers: 2,
   maxPlayers: 2,

@@ -5,7 +5,7 @@ import instructions from './instructions.md';
 
 export const checkersGameDef: IGameDef = {
   code: 'checkers',
-  codes: { en: 'checkers', pt: 'damas' },
+  codes: { en: 'checkers', pt: 'damas', de: 'dame' },
   name: 'Checkers',
   contributors: ['JosefKuchar'],
   imageURL: Thumbnail,

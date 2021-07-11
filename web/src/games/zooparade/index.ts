@@ -6,9 +6,10 @@ import translation from './locales/en.json';
 export const zooParadeGameDef: IGameDef = {
   code: 'zooparade',
   name: translation.name,
-  codes: { pt: 'desfile-do-zoo' },
+  codes: { pt: 'desfile-do-zoo', de: 'zooparade' },
   translationStatus: {
     pt: IGameTranslationStatus.DONE,
+    de: IGameTranslationStatus.DONE,
   },
   contributors: ['Spooky-0', 'DanielSherlock'],
   imageURL: Thumbnail,
