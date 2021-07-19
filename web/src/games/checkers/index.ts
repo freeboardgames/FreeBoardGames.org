@@ -16,7 +16,7 @@ export const checkersGameDef: IGameDef = {
   descriptionTag: `Play Checkers (also known as Draughts) locally
   or online against friends!`,
   instructions: {
-    videoId: 'yFrAN-LFZRU',
+    videoId: 'ScKIdStgAfU',
     text: instructions,
   },
   status: IGameStatus.PUBLISHED,
