@@ -81,7 +81,31 @@ it('Setup Game', () => {
   clients[0].moves.movePay([0]); //underpay again! --> INVALID_MOVE
   clients[0].moves.movePay([3]); // ok
 
-  // var { G, ctx } = clients[0].getState();
-  // console.log(ctx)
-  // console.log(G)
+
+  for (let i = 0; i < 4; i++){
+	  clients[0].moves.moveChoseAuction();
+	  clients[0].moves.moveGoing();
+	  clients[0].moves.moveGoing();
+	  clients[0].moves.moveGoing();
+	  clients[1].moves.moveChoseAuction();
+	  clients[1].moves.moveGoing();
+	  clients[1].moves.moveGoing();
+	  clients[1].moves.moveGoing();
+	  clients[2].moves.moveChoseAuction();
+	  clients[2].moves.moveGoing();
+	  clients[2].moves.moveGoing();
+	  clients[2].moves.moveGoing();
+  }
+
+  var { G, ctx } = clients[0].getState();
+  console.log(ctx)
+  console.log(G)
+
+  return
+  clients[0].moves.moveChoseTrade();
+  // clients[0].moves.moveChoseAnimalAndMoney();
+
+  var { G, ctx } = clients[0].getState();
+  console.log(ctx)
+  console.log(G)
 });

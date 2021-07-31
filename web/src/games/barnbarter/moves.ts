@@ -7,9 +7,7 @@ export function moveChoseAuction(G: IG): IG {
 }
 
 export function moveChoseTrade(G: IG, ctx: Ctx): IG {
-  ctx;
-  throw new Error('Not Implemented');
-  return G;
+  return { ...G, moveToPhase: 'phaseTradeFirst' };
 }
 
 export function moveGoing(G: IG): IG {
@@ -125,4 +123,37 @@ export function movePay(G: IG, ctx: Ctx, moneyIDs: number[]): IG | 'INVALID_MOVE
         ? [...G.log, 'payed failed']
         : [...G.log, 'payed'],
   };
+}
+
+
+export function moveChoseAnimalAndMoney(G: IG, 
+										ctx: Ctx, 
+										counterPlayer: number,
+										animalCardId: number,
+										bid: number[],
+									   ): IG | 'INVALID_MOVE'
+
+{
+	//Invalid Player
+	if ((counterPlayer == Number(ctx.playerID)) ||  (counterPlayer < 0 ) || (counterPlayer > ctx.numPlayers)){
+		return INVALID_MOVE;
+	}
+	//Invalid Animal
+	var cardName = G.players[counterPlayer].cards.name
+	if ((G.players[counterPlayer].cards.length <= animalCardId)  // other guy not enough cards
+		// i don't have this card
+		||  (G.players.[Number(ctx.playerID)].cards.reduce((accum, current) => { return accum && cardName == current.name }, true))
+	   )
+	   {
+		return INVALID_MOVE;
+	}
+
+	//TODO: Check if `bid` has unique values, and i even have these cards.
+
+	return {...G,
+		trade: {counterPlayerId: counterPlayer,
+			animalId: animalCardId,
+			bid: bid},
+		log: [...G.log, "trade offer sent"],
+	}
 }

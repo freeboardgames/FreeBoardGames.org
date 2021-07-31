@@ -1,6 +1,6 @@
 import { IG } from './definitions';
 import { Ctx } from 'boardgame.io';
-import { moveChoseAuction, moveChoseTrade, moveGoing, moveBid, movePay } from './moves';
+import { moveChoseAuction, moveChoseTrade, moveGoing, moveBid, movePay, moveChoseAnimalAndMoney } from './moves';
 
 export let phaseNone = {};
 
@@ -50,8 +50,13 @@ export let phaseStart = {
       }
       ctx.events.setActivePlayers(activePlayers);
     } else {
-      throw new Error('Not Implemented');
-      ctx.events.setPhase('phaseTrade');
+      let activePlayers = { value: {} };
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.playerTurnId == i) {
+          activePlayers.value[i] = { stage: 'phaseTradeFirst' };
+        }
+      }
+      ctx.events.setActivePlayers(activePlayers);
     }
 
     G.moveToPhase = '';
@@ -200,3 +205,25 @@ export let phaseAuctionPay = {
     }
   },
 };
+
+
+export let phaseTradeFirst = {
+	onBegin: (G: IG, ctx: Ctx) => {
+		G.log.push('onBegin phaseTradeFirst');
+		return G
+	},
+	moves: {
+		moveChoseAnimalAndMoney: {
+			move: moveChoseAnimalAndMoney,
+			client: false,
+		},
+	},
+	endIf: (G: IG, ctx: Ctx) => {
+		return false
+	},
+	onEnd: (G: IG, ctx: Ctx) => {
+	},
+}
+
+
+

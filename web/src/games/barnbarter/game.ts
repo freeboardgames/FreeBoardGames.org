@@ -1,5 +1,5 @@
 import { Ctx } from 'boardgame.io';
-import { IG, ICard, IMoney, IAuction } from './definitions';
+import { IG, ICard, IMoney, IAuction, ITrade } from './definitions';
 
 import { phaseNone, phaseStart, phaseAuction, phaseAuctionPay } from './phases';
 
@@ -72,6 +72,8 @@ function _setup(ctx: Ctx, timeoutMS: number): IG {
     playerTurnId: 0,
     moveToPhase: '',
     timeoutMS: timeoutMS,
+	trade : <ITrade> {counterPlayerId: -1, animalId: -1, bid: null},
+
   };
 
   ctx.events.setPhase('phaseStart');

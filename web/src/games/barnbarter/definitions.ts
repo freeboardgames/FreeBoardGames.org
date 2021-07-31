@@ -40,6 +40,12 @@ export interface IAuction {
   payMoneyIDs: number[];
 }
 
+export interface ITrade {
+	counterPlayerId: number;
+	animalId: number; // Id in counterplayer hand
+	bid: number[]; // Id's of bid of self	
+}
+
 export interface IG {
   log: string[];
   players: IPlayer[];
@@ -50,4 +56,6 @@ export interface IG {
 
   moveToPhase: string;
   timeoutMS: number;
+
+  trade: ITrade;
 }
