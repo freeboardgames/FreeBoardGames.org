@@ -41,9 +41,10 @@ export interface IAuction {
 }
 
 export interface ITrade {
-	counterPlayerId: number;
-	animalId: number; // Id in counterplayer hand
-	bid: number[]; // Id's of bid of self	
+  counterPlayerId: number;
+  animalIdDefender: number[]; // Id in counterplayer hand
+  animalIdAttacker: number[];
+  bid: number[]; // Id's of bid of self
 }
 
 export interface IG {

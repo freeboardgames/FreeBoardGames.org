@@ -64,6 +64,7 @@ it('Setup Game', () => {
   clients[1].moves.movePay([3]);
 
   clients[1].moves.moveChoseAuction();
+
   clients[1].moves.moveGoing();
   clients[1].moves.moveGoing();
   clients[1].moves.moveGoing();
@@ -81,31 +82,36 @@ it('Setup Game', () => {
   clients[0].moves.movePay([0]); //underpay again! --> INVALID_MOVE
   clients[0].moves.movePay([3]); // ok
 
-
-  for (let i = 0; i < 4; i++){
-	  clients[0].moves.moveChoseAuction();
-	  clients[0].moves.moveGoing();
-	  clients[0].moves.moveGoing();
-	  clients[0].moves.moveGoing();
-	  clients[1].moves.moveChoseAuction();
-	  clients[1].moves.moveGoing();
-	  clients[1].moves.moveGoing();
-	  clients[1].moves.moveGoing();
-	  clients[2].moves.moveChoseAuction();
-	  clients[2].moves.moveGoing();
-	  clients[2].moves.moveGoing();
-	  clients[2].moves.moveGoing();
+  for (let i = 0; i < 4; i++) {
+    clients[0].moves.moveChoseAuction();
+    clients[0].moves.moveGoing();
+    clients[0].moves.moveGoing();
+    clients[0].moves.moveGoing();
+    clients[1].moves.moveChoseAuction();
+    clients[1].moves.moveGoing();
+    clients[1].moves.moveGoing();
+    clients[1].moves.moveGoing();
+    clients[2].moves.moveChoseAuction();
+    clients[2].moves.moveGoing();
+    clients[2].moves.moveGoing();
+    clients[2].moves.moveGoing();
   }
 
-  var { G, ctx } = clients[0].getState();
-  console.log(ctx)
-  console.log(G)
-
-  return
   clients[0].moves.moveChoseTrade();
-  // clients[0].moves.moveChoseAnimalAndMoney();
 
-  var { G, ctx } = clients[0].getState();
-  console.log(ctx)
-  console.log(G)
+  clients[0].moves.moveTradeBack();
+
+  clients[0].moves.moveChoseTrade();
+
+  //var { G, ctx } = clients[0].getState();
+  //console.log(G.players[0].cards)
+  //console.log(G.players[1].cards)
+
+  clients[0].moves.moveChoseAnimalAndMoney(1, 0, [0, 1, 2]);
+
+  clients[1].moves.moveAnswerTrade([0, 1, 2, 3]);
+
+  //var { G, ctx } = clients[0].getState();
+  //console.log(G.players[0].cards)
+  //console.log(G.players[1].cards)
 });

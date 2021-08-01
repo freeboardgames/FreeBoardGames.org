@@ -1,9 +1,9 @@
 import { Ctx } from 'boardgame.io';
 import { IG, ICard, IMoney, IAuction, ITrade } from './definitions';
 
-import { phaseNone, phaseStart, phaseAuction, phaseAuctionPay } from './phases';
+import { phaseNone, phaseStart, phaseAuction, phaseAuctionPay, phaseTradeFirst, phaseTradeSecond } from './phases';
 
-function _setup(ctx: Ctx, timeoutMS: number): IG {
+function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
   // All available Animals
   var cards = <ICard[]>(
     [].concat(
@@ -21,7 +21,10 @@ function _setup(ctx: Ctx, timeoutMS: number): IG {
       ],
     )
   );
-  cards = ctx.random.Shuffle(cards);
+  //
+  if (shuffle) {
+    cards = ctx.random.Shuffle(cards);
+  }
 
   // Money in the Bank
   var moneys = [].concat(
@@ -36,31 +39,31 @@ function _setup(ctx: Ctx, timeoutMS: number): IG {
   var players = Array(ctx.numPlayers);
 
   for (var i = 0; i < ctx.numPlayers; i++) {
-    players[i] = { moneys: [], cards: [], currentBid: -1, moneyRevealed: false };
+    players[i] = { money: [], cards: [], currentBid: -1, moneyRevealed: false };
   }
 
   // starting money
   // 2x 0, 4x10, 1x50
   players.forEach((player) => {
-    player.moneys.push(<IMoney>{ value: 0 });
+    player.money.push(<IMoney>{ value: 0 });
   });
   players.forEach((player) => {
-    player.moneys.push(<IMoney>{ value: 0 });
+    player.money.push(<IMoney>{ value: 0 });
   });
   players.forEach((player) => {
-    player.moneys.push(<IMoney>{ value: 10 });
+    player.money.push(<IMoney>{ value: 10 });
   });
   players.forEach((player) => {
-    player.moneys.push(<IMoney>{ value: 10 });
+    player.money.push(<IMoney>{ value: 10 });
   });
   players.forEach((player) => {
-    player.moneys.push(<IMoney>{ value: 10 });
+    player.money.push(<IMoney>{ value: 10 });
   });
   players.forEach((player) => {
-    player.moneys.push(<IMoney>{ value: 10 });
+    player.money.push(<IMoney>{ value: 10 });
   });
   players.forEach((player) => {
-    player.moneys.push(<IMoney>{ value: 50 });
+    player.money.push(<IMoney>{ value: 50 });
   });
 
   var G = <IG>{
@@ -69,11 +72,10 @@ function _setup(ctx: Ctx, timeoutMS: number): IG {
     cards: cards,
     money: moneys,
     auction: <IAuction>{ counter: 0, timeLastHit: 0, card: null, payingPlayerID: -1, payMoneyIDs: null },
-    playerTurnId: 0,
+    playerTurnId: -1, //Gets autoincremented to 0 by onBegin of startPhase
     moveToPhase: '',
     timeoutMS: timeoutMS,
-	trade : <ITrade> {counterPlayerId: -1, animalId: -1, bid: null},
-
+    trade: <ITrade>{ counterPlayerId: -1, animalIdAttacker: null, animalIdDefender: null, bid: null },
   };
 
   ctx.events.setPhase('phaseStart');
@@ -84,13 +86,15 @@ function _setup(ctx: Ctx, timeoutMS: number): IG {
 export const BarnBarterGame = {
   name: 'barnbarter',
   setup: (ctx: Ctx): IG => {
-    return _setup(ctx, 0);
+    return _setup(ctx, false, 0);
   },
   phases: {
     phaseNone: phaseNone,
     phaseStart: phaseStart,
     phaseAuction: phaseAuction,
     phaseAuctionPay: phaseAuctionPay,
+    phaseTradeFirst: phaseTradeFirst,
+    phaseTradeSecond: phaseTradeSecond,
   },
   // playerView: (G: IG, ctx: Ctx, playerID: string) => { return G },
   endIf: (G: IG, ctx: Ctx) => {

@@ -6,32 +6,33 @@ export function moveChoseAuction(G: IG): IG {
   return { ...G, moveToPhase: 'phaseAuction' };
 }
 
-export function moveChoseTrade(G: IG, ctx: Ctx): IG {
+export function moveChoseTrade(G: IG): IG {
   return { ...G, moveToPhase: 'phaseTradeFirst' };
 }
 
 export function moveGoing(G: IG): IG {
   if (G.auction.timeLastHit + G.timeoutMS > Date.now()) {
-    // console.log("NOT ENOUGH TIME HAS PASSED")
-    return { ...G, log: [...G.log, 'Not enough timepassed for moveGoing'] };
+    return { ...G, log: ['Not enough timepassed for moveGoing', ...G.log] };
   }
 
   return {
     ...G,
-    log: [...G.log, 'Successfully played moveGoing'],
+    log: ['Successfully played moveGoing', ...G.log],
     auction: { ...G.auction, counter: G.auction.counter + 1, timeLastHit: Date.now() },
   };
 }
 
 export function moveBid(G: IG, ctx: Ctx, amount: number): IG {
   var playerId = Number(ctx.playerID);
+
+  // Only false if player is revelead, and bids over own wealth.
   var canBid = G.players[playerId].moneyRevealed
     ? // money revealed
       // enough money for current bid
       G.players[playerId].currentBid == -1
       ? amount
       : G.players[playerId].currentBid + amount <=
-        G.players[playerId].moneys.reduce((accum, money) => {
+        G.players[playerId].money.reduce((accum, money) => {
           return money.value + accum;
         }, 0)
       ? // yes
@@ -54,14 +55,14 @@ export function moveBid(G: IG, ctx: Ctx, amount: number): IG {
       },
     ),
     auction: canBid ? { ...G.auction, counter: 0, timeLastHit: Date.now() } : { ...G.auction },
-    log: [...G.log, 'Successfully bid'],
+    log: canBid ? ['Successfully bid', ...G.log] : ['CanBid == False', ...G.log],
   };
 }
 
 export function movePay(G: IG, ctx: Ctx, moneyIDs: number[]): IG | 'INVALID_MOVE' {
   if (
     moneyIDs.reduce((accum, moneyID): number => {
-      return G.players[G.auction.payingPlayerID].moneys[moneyID].value + accum;
+      return G.players[G.auction.payingPlayerID].money[moneyID].value + accum;
     }, 0) < G.players[G.auction.payingPlayerID].currentBid &&
     G.players[G.auction.payingPlayerID].moneyRevealed
   ) {
@@ -73,7 +74,7 @@ export function movePay(G: IG, ctx: Ctx, moneyIDs: number[]): IG | 'INVALID_MOVE
     players:
       //suggestedPrice < price
       moneyIDs.reduce((accum, moneyID): number => {
-        return G.players[G.auction.payingPlayerID].moneys[moneyID].value + accum;
+        return G.players[G.auction.payingPlayerID].money[moneyID].value + accum;
       }, 0) < G.players[G.auction.payingPlayerID].currentBid
         ? //can not Pay
           G.players.map((player, id) => {
@@ -87,9 +88,9 @@ export function movePay(G: IG, ctx: Ctx, moneyIDs: number[]): IG | 'INVALID_MOVE
               ? // This is the auctioneer player
                 {
                   ...player,
-                  moneys: player.moneys.concat(
+                  money: player.money.concat(
                     moneyIDs.map((moneyID) => {
-                      return G.players[G.auction.payingPlayerID].moneys[moneyID];
+                      return G.players[G.auction.payingPlayerID].money[moneyID];
                     }),
                   ),
                 }
@@ -97,7 +98,7 @@ export function movePay(G: IG, ctx: Ctx, moneyIDs: number[]): IG | 'INVALID_MOVE
               ? // Payin player
                 {
                   ...player,
-                  moneys: player.moneys.filter((moneycard, id) => {
+                  money: player.money.filter((moneycard, id) => {
                     return moneyIDs.indexOf(id) == -1;
                   }),
                   cards: [...player.cards, G.auction.card],
@@ -109,51 +110,160 @@ export function movePay(G: IG, ctx: Ctx, moneyIDs: number[]): IG | 'INVALID_MOVE
           }),
     auction:
       moneyIDs.reduce((accum, moneyID): number => {
-        return G.players[G.auction.payingPlayerID].moneys[moneyID].value + accum;
+        return G.players[G.auction.payingPlayerID].money[moneyID].value + accum;
       }, 0) < G.players[G.auction.payingPlayerID].currentBid
         ? //can not pay
           { ...G.auction, counter: 0, timeLastHit: Date.now(), payingPlayerID: -1, payMoneyIDs: null }
         : // can pay
-          { ...G.auction, counter: 0, timeLastHit: -1, payingPlayerID: -1, payMoneyIDs: null, card: null },
+          { ...G.auction, counter: 0, timeLastHit: -1, payMoneyIDs: null, card: null },
 
     log:
       moneyIDs.reduce((accum, moneyID): number => {
-        return G.players[G.auction.payingPlayerID].moneys[moneyID].value + accum;
+        return G.players[G.auction.payingPlayerID].money[moneyID].value + accum;
       }, 0) < G.players[G.auction.payingPlayerID].currentBid
-        ? [...G.log, 'payed failed']
-        : [...G.log, 'payed'],
+        ? ['payed failed', ...G.log]
+        : ['payed', ...G.log],
   };
 }
 
+export function moveTradeBack(G: IG) {
+  return { ...G, trade: null, log: ['undo Trade Offer', ...G.log] };
+}
 
-export function moveChoseAnimalAndMoney(G: IG, 
-										ctx: Ctx, 
-										counterPlayer: number,
-										animalCardId: number,
-										bid: number[],
-									   ): IG | 'INVALID_MOVE'
+export function moveChoseAnimalAndMoney(
+  G: IG,
+  ctx: Ctx,
+  counterPlayer: number,
+  animalCardId: number,
+  bid: number[],
+): IG | 'INVALID_MOVE' {
+  //Invalid Player
+  if (counterPlayer == Number(ctx.playerID) || counterPlayer < 0 || counterPlayer > ctx.numPlayers) {
+    return INVALID_MOVE;
+  }
+  //Invalid Animal
+  var cardName = G.players[counterPlayer].cards[animalCardId].name;
+  if (
+    G.players[counterPlayer].cards.length <= animalCardId || // other guy not enough cards
+    // i don't have this card
+    G.players[Number(ctx.playerID)].cards.reduce((accum, current) => {
+      return accum && cardName == current.name;
+    }, true)
+  ) {
+    return INVALID_MOVE;
+  }
 
-{
-	//Invalid Player
-	if ((counterPlayer == Number(ctx.playerID)) ||  (counterPlayer < 0 ) || (counterPlayer > ctx.numPlayers)){
-		return INVALID_MOVE;
-	}
-	//Invalid Animal
-	var cardName = G.players[counterPlayer].cards.name
-	if ((G.players[counterPlayer].cards.length <= animalCardId)  // other guy not enough cards
-		// i don't have this card
-		||  (G.players.[Number(ctx.playerID)].cards.reduce((accum, current) => { return accum && cardName == current.name }, true))
-	   )
-	   {
-		return INVALID_MOVE;
-	}
+  //TODO: Check if `bid` has unique values, and i even have these cards.
 
-	//TODO: Check if `bid` has unique values, and i even have these cards.
+  // Chose 1 or 2 animals for trade
+  var animalIdDefender = G.players[counterPlayer].cards
+    .map((card, index) => {
+      return card.name == G.players[counterPlayer].cards[animalCardId].name ? index : -1;
+    })
+    .filter((value) => {
+      return value > -1;
+    });
 
-	return {...G,
-		trade: {counterPlayerId: counterPlayer,
-			animalId: animalCardId,
-			bid: bid},
-		log: [...G.log, "trade offer sent"],
-	}
+  var animalIdAttacker = G.players[G.playerTurnId].cards
+    .map((card, index) => {
+      return card.name == G.players[G.playerTurnId].cards[animalCardId].name ? index : -1;
+    })
+    .filter((value) => {
+      return value > -1;
+    });
+
+  if (!(animalIdDefender.length == animalIdAttacker.length && animalIdAttacker.length == 2)) {
+    animalIdDefender = [animalIdDefender[0]];
+    animalIdAttacker = [animalIdAttacker[0]];
+  }
+
+  return {
+    ...G,
+    trade: {
+      counterPlayerId: counterPlayer,
+      animalIdDefender: animalIdDefender,
+      animalIdAttacker: animalIdAttacker,
+      bid: bid,
+    },
+    log: ['trade offer sent', ...G.log],
+  };
+}
+
+export function moveAnswerTrade(G: IG, ctx: Ctx, counterBid: number[]): IG | 'INVALID_MOVE' {
+  //TODO: Check if `bid` has unique values, and i even have these cards.
+
+  var valueAttacker = G.players[G.playerTurnId].money.reduce((accum, card, index) => {
+    return G.trade.bid.indexOf(index) > -1 ? accum + card.value : accum;
+  }, 0);
+
+  var valueDefender = G.players[G.trade.counterPlayerId].money.reduce((accum, card, index) => {
+    return counterBid.indexOf(index) > -1 ? accum + card.value : accum;
+  }, 0);
+
+  var attackerWin = valueAttacker >= valueDefender;
+  return {
+    ...G,
+    players: G.players.map((player, index) => {
+      return index == G.playerTurnId || index == G.trade.counterPlayerId
+        ? index == G.playerTurnId
+          ? // Attacker
+            {
+              ...player,
+              cards: attackerWin
+                ? // Win cards
+                  player.cards.concat(
+                    G.players[G.trade.counterPlayer].cards.filter((card, index) => {
+                      return G.trade.animalIdDefender.indexOf(index) >= 0;
+                    }),
+                  )
+                : // Lose Cards
+                  player.cards.filter((card, index) => {
+                    return G.trade.animalIdAttacker.indexOf(index) == -1;
+                  }),
+              money: player.money
+                .filter(
+                  (card, index) => {
+                    return G.trade.bid.indexOf(index) == -1;
+                  }, //keep non-bid
+                )
+                .concat(
+                  G.players[G.trade.counterPlayerId].money.filter(
+                    (card, index) => {
+                      return counterBid.indexOf(index) >= 0;
+                    }, //keep non-bid
+                  ),
+                ),
+            }
+          : //Defender
+            {
+              ...player,
+              cards: attackerWin
+                ? // Lose cards
+                  player.cards.filter((card, index) => {
+                    return G.trade.animalIdDefender.indexOf(index) == -1;
+                  })
+                : // Win Cards
+                  player.cards.concat(
+                    G.players[G.playerTurnId].cards.filter((card, index) => {
+                      return G.trade.animalIdAttacker.indexOf(index) >= 0;
+                    }),
+                  ),
+              money: player.money
+                .filter((card, index) => {
+                  return G.trade.bid.indexOf(index) >= 0;
+                })
+                .concat(
+                  G.players[G.trade.counterPlayerId].money.filter(
+                    (card, index) => {
+                      return counterBid.indexOf(index) == -1;
+                    }, //keep non-bid
+                  ),
+                ),
+            }
+        : // Uninvolved Player
+          player;
+    }),
+    trade: { counterPlayerId: -2, animalIdAttacker: null, animalIdDefender: null, bid: null },
+    log: attackerWin ? ['attacker win trade', ...G.log] : ['defender win trade', ...G.log],
+  };
 }
