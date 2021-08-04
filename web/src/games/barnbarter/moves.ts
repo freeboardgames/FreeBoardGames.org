@@ -60,7 +60,19 @@ export function moveBid(G: IG, ctx: Ctx, amount: number): IG {
 }
 
 export function movePay(G: IG, ctx: Ctx, moneyIDs: number[]): IG | 'INVALID_MOVE' {
+  // Validate moneyIDs indices:
   if (
+    Math.min(moneyIDs) < 0 ||
+    Math.max(moneyIDs) >= G.players[G.auction.payingPlayerID].money.length ||
+    moneyIDs.filter((id, index) => {
+      return index == moneyIDs.indexOf(id);
+    }).length !== moneyIDs.length // not all unique
+  ) {
+    return INVALID_MOVE;
+  }
+
+  if (
+    // If your money is revealed, you need to pay!
     moneyIDs.reduce((accum, moneyID): number => {
       return G.players[G.auction.payingPlayerID].money[moneyID].value + accum;
     }, 0) < G.players[G.auction.payingPlayerID].currentBid &&
@@ -138,22 +150,27 @@ export function moveChoseAnimalAndMoney(
   bid: number[],
 ): IG | 'INVALID_MOVE' {
   //Invalid Player
-  if (counterPlayer == Number(ctx.playerID) || counterPlayer < 0 || counterPlayer > ctx.numPlayers) {
+  if (counterPlayer == Number(ctx.playerID) || counterPlayer < 0 || counterPlayer >= ctx.numPlayers) {
     return INVALID_MOVE;
   }
   //Invalid Animal
-  var cardName = G.players[counterPlayer].cards[animalCardId].name;
   if (
     G.players[counterPlayer].cards.length <= animalCardId || // other guy not enough cards
-    // i don't have this card
-    G.players[Number(ctx.playerID)].cards.reduce((accum, current) => {
-      return accum && cardName == current.name;
-    }, true)
+    0 > animalCardId // other guy not enough cards
   ) {
     return INVALID_MOVE;
   }
 
-  //TODO: Check if `bid` has unique values, and i even have these cards.
+  if (
+    // (bid.length == 0) ||   I think you should be allowed to offer for nothing.
+    Math.min(bid) < 0 ||
+    Math.max(bid) >= G.players[G.playerTurnId].money.length ||
+    bid.filter((id, index) => {
+      return index == bid.indexOf(id);
+    }).length !== bid.length // not all unique
+  ) {
+    return INVALID_MOVE;
+  }
 
   // Chose 1 or 2 animals for trade
   var animalIdDefender = G.players[counterPlayer].cards
@@ -171,6 +188,10 @@ export function moveChoseAnimalAndMoney(
     .filter((value) => {
       return value > -1;
     });
+
+  if (animalIdAttacker.length == 0) {
+    return INVALID_MOVE;
+  }
 
   if (!(animalIdDefender.length == animalIdAttacker.length && animalIdAttacker.length == 2)) {
     animalIdDefender = [animalIdDefender[0]];
@@ -190,7 +211,15 @@ export function moveChoseAnimalAndMoney(
 }
 
 export function moveAnswerTrade(G: IG, ctx: Ctx, counterBid: number[]): IG | 'INVALID_MOVE' {
-  //TODO: Check if `bid` has unique values, and i even have these cards.
+  if (
+    Math.min(counterBid) < 0 ||
+    Math.max(counterBid) >= G.players[G.trade.counterPlayerId].money.length ||
+    counterBid.filter((id, index) => {
+      return index == counterBid.indexOf(id);
+    }).length !== counterBid.length // not all unique
+  ) {
+    return INVALID_MOVE;
+  }
 
   var valueAttacker = G.players[G.playerTurnId].money.reduce((accum, card, index) => {
     return G.trade.bid.indexOf(index) > -1 ? accum + card.value : accum;

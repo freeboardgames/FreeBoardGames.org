@@ -4,7 +4,7 @@ import { IG, ICard, IMoney, IAuction, ITrade } from './definitions';
 import { phaseNone, phaseStart, phaseAuction, phaseAuctionPay, phaseTradeFirst, phaseTradeSecond } from './phases';
 import { finished, score } from './helpers';
 
-function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
+export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
   // All available Animals
   var cards = <ICard[]>(
     [].concat(
@@ -87,7 +87,7 @@ function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
 export const BarnBarterGame = {
   name: 'barnbarter',
   setup: (ctx: Ctx): IG => {
-    return _setup(ctx, false, 0);
+    return _setup(ctx, true, 1000);
   },
   phases: {
     phaseNone: phaseNone,
