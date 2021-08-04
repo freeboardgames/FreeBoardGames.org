@@ -1,4 +1,4 @@
-import { IG, IAuction } from './definitions';
+import { IG, IAuction, ITrade } from './definitions';
 import { Ctx } from 'boardgame.io';
 import {
   moveChoseAuction,
@@ -11,6 +11,8 @@ import {
   moveAnswerTrade,
 } from './moves';
 
+import { canMakeNoMoves } from './helpers';
+
 export let phaseNone = {};
 
 export let phaseStart = {
@@ -22,6 +24,10 @@ export let phaseStart = {
       //Game Init
       G.playerTurnId += 1;
       G.playerTurnId = G.playerTurnId % ctx.numPlayers;
+    } else if (G.auction.counter == 4) {
+      // coming back from auction because there is no cards left for auction
+      G.auction.counter = 0;
+      G.log = ['back in start', ...G.log];
     } else if (G.auction.counter == 3) {
       // If coming from a Auction with no bids:
       G.log = ['onEnd phaseAuction no bids', ...G.log];
@@ -50,12 +56,25 @@ export let phaseStart = {
 
     G.log = ['onBegin phaseStart', ...G.log];
 
+    // skip current player, if can't move
+    var cantMove = 0;
+    while (canMakeNoMoves(G, ctx)) {
+      G.log = ['player can not make a move', ...G.log];
+      G.playerTurnId += 1;
+      G.playerTurnId = G.playerTurnId % ctx.numPlayers;
+      cantMove += 1;
+      if (cantMove == ctx.numPlayers) {
+        break;
+      }
+    }
+
     let activePlayers = { value: {} };
     for (let i = 0; i < ctx.numPlayers; i++) {
       if (G.playerTurnId == i) {
         activePlayers.value[i] = 'phaseStart';
       }
     }
+
     ctx.events.setActivePlayers(activePlayers);
 
     return G;
@@ -82,6 +101,12 @@ export let phaseStart = {
 export let phaseAuction = {
   onBegin: (G: IG, ctx: Ctx) => {
     if (G.moveToPhase == 'phaseAuction') {
+      if (G.cards.length == 0) {
+        G.log = ['no more cards for auction, going back', ...G.log];
+        G.moveToPhase = '';
+        G.auction.counter = 4;
+        return G;
+      }
       G.log = ['onEnd phaseStart', ...G.log];
       let activePlayers = { value: {} };
       for (let i = 0; i < ctx.numPlayers; i++) {
@@ -98,6 +123,7 @@ export let phaseAuction = {
       G.auction.card = G.cards.pop();
       if (G.auction.card.name == 'Donkey') {
         G.log = ['Auctioning Donkey, gives money!', ...G.log];
+
         G.players.forEach((player) => {
           player.money.push(G.money.pop());
         });
@@ -144,6 +170,9 @@ export let phaseAuction = {
   },
 
   endIf: (G: IG, ctx: Ctx) => {
+    if (G.auction.counter == 4) {
+      return { next: 'phaseStart' };
+    }
     if (G.auction.counter == 3) {
       //onEND
       let maxPrice = -1;
@@ -159,10 +188,6 @@ export let phaseAuction = {
     }
     return false;
   },
-
-  //onEnd: (G: IG, ctx: Ctx) => {
-  //	return
-  //},
 };
 
 export let phaseAuctionPay = {
@@ -256,8 +281,15 @@ export let phaseTradeFirst = {
 };
 
 export let phaseTradeSecond = {
-  onBegin: (G: IG) => {
+  onBegin: (G: IG, ctx: Ctx) => {
     G.log = ['onBegin phaseTradeSecond', ...G.log];
+    let activePlayers = { value: {} };
+    for (let i = 0; i < ctx.numPlayers; i++) {
+      if (G.trade.counterPlayerId == i) {
+        activePlayers.value[i] = { stage: 'phaseTradeSecond' };
+      }
+    }
+    ctx.events.setActivePlayers(activePlayers);
     return G;
   },
 

@@ -2,6 +2,7 @@ import { Ctx } from 'boardgame.io';
 import { IG, ICard, IMoney, IAuction, ITrade } from './definitions';
 
 import { phaseNone, phaseStart, phaseAuction, phaseAuctionPay, phaseTradeFirst, phaseTradeSecond } from './phases';
+import { finished, score } from './helpers';
 
 function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
   // All available Animals
@@ -29,10 +30,10 @@ function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
   // Money in the Bank
   var moneys = [].concat(
     ...[
-      <ICard[]>Array(5).fill(<ICard>{ value: 500 }),
-      <ICard[]>Array(5).fill(<ICard>{ value: 200 }),
-      <ICard[]>Array(5).fill(<ICard>{ value: 100 }),
-      <ICard[]>Array(5).fill(<ICard>{ value: 50 }),
+      <ICard[]>Array(ctx.numPlayers).fill(<ICard>{ value: 500 }),
+      <ICard[]>Array(ctx.numPlayers).fill(<ICard>{ value: 200 }),
+      <ICard[]>Array(ctx.numPlayers).fill(<ICard>{ value: 100 }),
+      <ICard[]>Array(ctx.numPlayers).fill(<ICard>{ value: 50 }),
     ],
   );
 
@@ -98,8 +99,9 @@ export const BarnBarterGame = {
   },
   // playerView: (G: IG, ctx: Ctx, playerID: string) => { return G },
   endIf: (G: IG, ctx: Ctx) => {
-    G;
-    ctx;
-    return false;
+    if (finished(G, ctx)) {
+      var scoreId = score(G, ctx);
+      return { winner: scoreId };
+    }
   },
 };

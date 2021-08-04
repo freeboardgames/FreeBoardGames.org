@@ -134,7 +134,7 @@ export function moveChoseAnimalAndMoney(
   G: IG,
   ctx: Ctx,
   counterPlayer: number,
-  animalCardId: number,
+  animalCardId: number, //of defender
   bid: number[],
 ): IG | 'INVALID_MOVE' {
   //Invalid Player
@@ -166,7 +166,7 @@ export function moveChoseAnimalAndMoney(
 
   var animalIdAttacker = G.players[G.playerTurnId].cards
     .map((card, index) => {
-      return card.name == G.players[G.playerTurnId].cards[animalCardId].name ? index : -1;
+      return card.name == G.players[counterPlayer].cards[animalCardId].name ? index : -1;
     })
     .filter((value) => {
       return value > -1;
@@ -212,7 +212,7 @@ export function moveAnswerTrade(G: IG, ctx: Ctx, counterBid: number[]): IG | 'IN
               cards: attackerWin
                 ? // Win cards
                   player.cards.concat(
-                    G.players[G.trade.counterPlayer].cards.filter((card, index) => {
+                    G.players[G.trade.counterPlayerId].cards.filter((card, index) => {
                       return G.trade.animalIdDefender.indexOf(index) >= 0;
                     }),
                   )
