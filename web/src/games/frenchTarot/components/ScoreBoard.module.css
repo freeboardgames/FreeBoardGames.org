@@ -1,0 +1,45 @@
+.scoreBoard {
+  position: absolute;
+  width: 630px; height: 250px;
+  z-index: 1000;
+  top: 110px; left: 50%; transform: translate(-50%, 0);
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  padding: 1em;
+}
+.scoreBoard:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.scoreBoard table {
+  width: 100%;
+  color: #000;
+  font-size: 15px;
+  table-layout: fixed;
+}
+
+.scoreBoard table td:not(:first-child) {
+  width: 60px;
+  overflow: hidden;
+}
+
+.scoreBoard table tr:first-child td:first-child {
+  border: 0;
+  background-color: transparent;
+}
+
+.scoreBoard table tr:first-child,
+.scoreBoard table tr:last-child {
+  font-weight: bold;
+}
+
+.scoreBoard table td:first-child {
+  width: 140px;
+  text-align: right;
+}
+
+.scoreBoard table td {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px rgba(0, 0, 0, 0.01) solid;
+  padding: 3px;
+}
