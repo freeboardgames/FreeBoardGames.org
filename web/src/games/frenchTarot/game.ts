@@ -13,7 +13,7 @@ export const FrenchTarotGame: Game<IG> = {
 
   setup: (ctx: Ctx): IG => {
     const game = { ...DefaultIG };
-    game.players = [...Array(ctx.numPlayers).keys()].map((i) => ({
+    game.players = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
       ...DefaultIPlayer,
       id: i.toString(),
       isDealer: i == 0,

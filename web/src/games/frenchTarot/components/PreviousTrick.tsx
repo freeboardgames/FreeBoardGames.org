@@ -39,7 +39,7 @@ export class PreviousTrick extends React.Component<
     return (
       <div className={css.prevTrick}>
         <span>Previous trick</span>
-        {[...Array(this.props.numPlayers).keys()].map((i) => this.renderPrevTrickCard(i))}
+        {new Array(this.props.numPlayers).fill(0).map((_, i) => this.renderPrevTrickCard(i))}
       </div>
     );
   }
