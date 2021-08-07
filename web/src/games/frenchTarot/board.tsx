@@ -7,7 +7,7 @@ import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 
 import { Board } from './components/GameBoard';
 
-import { Phases, IGameMoves, IG, IPlayer, IRoundSummary } from './engine/types';
+import { Phases, Stages, IGameMoves, IG, IPlayer, IRoundSummary } from './engine/types';
 import * as util from './engine/util';
 
 export class BgioBoard extends React.Component<
@@ -56,7 +56,7 @@ export class BgioBoard extends React.Component<
           selectBid={canBid(ctx, player) ? moves.MakeBid : null}
           callCard={this.playerPhase() == Phases.calling ? moves.Call : null}
           announceSlam={canAnnounceSlam(ctx, player) ? moves.AnnounceSlam : null}
-          declarePoignee={this.playerStage() == 'declare_poignee' ? moves.DeclarePoignee : null}
+          declarePoignee={this.playerStage() == Stages.declare_poignee ? moves.DeclarePoignee : null}
           discard={canDiscard(ctx, player) ? moves.Discard : null}
           endGame={moves.Finish}
         />
@@ -105,7 +105,7 @@ function selectableCards(G: IG, ctx: Ctx, playerId: string): boolean[] {
   const player = util.getPlayerById(G, playerId);
   const stage = ctx.activePlayers && ctx.activePlayers[parseInt(playerId)];
   if (ctx.currentPlayer == playerId) {
-    if (stage == 'declare_poignee') {
+    if (stage == Stages.declare_poignee) {
       return util.Poignee.selectableCards(G, playerId);
     } else if (ctx.phase == Phases.discard) {
       return util.Discard.selectableCards(G, playerId);

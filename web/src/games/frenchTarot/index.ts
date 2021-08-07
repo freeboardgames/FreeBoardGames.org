@@ -17,7 +17,7 @@ export const frenchTarotDef: IGameDef = {
     videoId: 'zo9pLf5Mai4',
     text: instructions,
   },
-  status: IGameStatus.PUBLISHED,
+  status: IGameStatus.IN_DEVELOPMENT,
   config: () => import('./config'),
 };
 

@@ -9,6 +9,12 @@ export enum Phases {
   result = 'result',
 }
 
+export enum Stages {
+  declare_poignee = 'declare_poignee',
+  place_card = 'place_card',
+  get_ready = 'get_ready',
+}
+
 export interface IGameMoves {
   MakeBid(value: number): void;
   Discard(): void;

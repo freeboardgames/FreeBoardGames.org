@@ -1,6 +1,6 @@
 import { Ctx, Game } from 'boardgame.io';
 
-import { Phases, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './engine/types';
+import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './engine/types';
 import * as util from './engine/util';
 import { Moves } from './engine/moves';
 
@@ -217,17 +217,17 @@ export const FrenchTarotGame: Game<IG> = {
           const num_players = ctx.numPlayers;
           if (G.resolvedTricks.length == 1 && util.Poignee.maxPoigneeLevel(hand, num_players) > 0) {
             util.Poignee.preselectPoignee(G, ctx);
-            ctx.events.setActivePlayers({ currentPlayer: 'declare_poignee' });
+            ctx.events.setActivePlayers({ currentPlayer: Stages.declare_poignee });
           } else {
             ctx.events.setActivePlayers({
-              currentPlayer: 'place_card',
+              currentPlayer: Stages.place_card,
               moveLimit: 1,
             });
           }
         },
         stages: {
           declare_poignee: {
-            next: 'place_card',
+            next: Stages.place_card,
             moves: {
               SelectCards: Moves.SelectCards,
               DeclarePoignee: Moves.DeclarePoignee,
@@ -276,7 +276,7 @@ export const FrenchTarotGame: Game<IG> = {
       next: Phases.dealing,
       turn: {
         stages: { get_ready: { moves: { Finish: Moves.Finish } } },
-        activePlayers: { all: 'get_ready', moveLimit: 1 },
+        activePlayers: { all: Stages.get_ready, moveLimit: 1 },
       },
       endIf: (G: IG) => G.players.every((P) => P.isReady),
       onEnd: (G: IG, ctx: Ctx) => {

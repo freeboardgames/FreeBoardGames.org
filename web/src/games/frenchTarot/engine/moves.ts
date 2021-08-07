@@ -1,7 +1,7 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
 
-import { Phases, IG, ICard } from './types';
+import { Phases, Stages, IG, ICard } from './types';
 import * as util from './util';
 
 export const Moves = {
@@ -65,7 +65,7 @@ export const Moves = {
   SelectCards(G: IG, ctx: Ctx, handIndex: number[]) {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     const stage = ctx.activePlayers && ctx.activePlayers[parseInt(player.id)];
-    if (stage == 'declare_poignee') {
+    if (stage == Stages.declare_poignee) {
       player.discardSelection = [...handIndex];
     } else if (ctx.phase == Phases.discard) {
       const discard_num = ctx.numPlayers == 5 ? 3 : 6;
@@ -73,7 +73,7 @@ export const Moves = {
         return INVALID_MOVE;
       }
       player.discardSelection = [...handIndex];
-    } else if (stage == 'place_card') {
+    } else if (stage == Stages.place_card) {
       if (handIndex.length == 0) {
         return INVALID_MOVE;
       }

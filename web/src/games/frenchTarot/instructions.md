@@ -1,3 +1,7 @@
+
+The following description is a shortened version of the text on John McLeod's
+wonderful web site on card games: https://www.pagat.com/tarot/frtarot.html
+
 French Tarot is a trick-taking game in which the partnerships vary from hand to
 hand.
 
@@ -22,3 +26,7 @@ you must if possible play a trump which is higher than the highest trump so far
 played to the trick. If you are unable to do this, you are free to play any
 trump, but you must still play a trump, even though you cannot win the trick
 with it. 
+
+All the card artwork used in this implementation is due to B. P. Grimaud,
+France (1898) and available in the public domain:
+https://commons.wikimedia.org/wiki/Category:Tarot_nouveau_-_Grimaud_-_1898
