@@ -1,0 +1,14 @@
+.trick {
+  position: absolute;
+  height: 200px;
+  width: 100px;
+  left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.cardContainer {
+  transform-origin: 0 0;
+  transform: scale(0.3);
+  float: left;
+  width: 0;
+}
