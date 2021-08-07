@@ -22,18 +22,24 @@ export class PlayerHand extends React.Component<
   renderCards() {
     if (this.props.hand.length == 0) return;
 
-    const w: number = this.props.hand.length * 25 + 80;
+    const nCards = this.props.hand.length;
+    const card_scale = Math.min(20, Math.max(0, nCards - 10)) / 20;
+    const w = card_scale * (nCards * 24 + 80) + (1 - card_scale) * (nCards * 42 + 140);
 
     return (
       <div className={css.cards} style={{ width: w }}>
-        {this.props.hand.map((C, i) => this.renderCard(C, i))}
+        {this.props.hand.map((C, i) => this.renderCard(C, i, card_scale))}
       </div>
     );
   }
 
-  renderCard(card: ICard, i: number) {
+  renderCard(card: ICard, i: number, scale: number) {
+    const style = {
+      width: `${scale * 24 + (1 - scale) * 42}px`,
+      transform: `scale(${scale * 0.24 + (1 - scale) * 0.42})`,
+    };
     return (
-      <div className={css.cardContainer} key={i}>
+      <div className={css.cardContainer} style={style} key={i}>
         <Card
           type={card}
           selected={this.props.selection.indexOf(i) != -1}

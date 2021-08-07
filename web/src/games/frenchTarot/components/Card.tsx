@@ -30,13 +30,13 @@ export class Card extends React.Component<
           this.props.click ? css.selectable : '',
           this.props.selected ? css.selected : '',
         ].join(' ')}
-        style={{ 'background-position': `-${col * 320}px -${row * 596}px` }}
+        style={{ backgroundPosition: `-${col * 320}px -${row * 596}px` }}
         onClick={this.props.click}
       ></div>
     );
   }
 
-  getCardBgPos(): number[2] {
+  getCardBgPos(): number[] {
     const C = this.props.type;
     if (!C) return [8, 5];
     if (C.color == CardColor.Excuse) return [7, 5];

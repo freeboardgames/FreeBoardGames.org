@@ -23,35 +23,9 @@
 
 .playerHand .cardContainer {
   float: left;
-  width: 25px;
+  width: 34px;
   text-align: center;
   transform-origin: 0 0;
   transform: scale(0.34);
   padding: 0;
-}
-
-@media only screen and (max-width: 500px) {
-  .playerHand .cards {
-    padding-left: 5%;
-    margin: 0 auto;
-    height: 100%;
-  }
-
-  .playerHand .cardContainer {
-    width: 40px;
-    transform: scale(0.22);
-  }
-}
-
-@media only screen and (max-width: 400px) {
-  .playerHand .cards {
-    padding-left: 6%;
-    margin: 0 auto;
-    height: 100%;
-  }
-
-  .playerHand .cardContainer {
-    width: 35px;
-    transform: scale(0.18);
-  }
 }

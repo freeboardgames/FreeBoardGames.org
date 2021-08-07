@@ -8,7 +8,14 @@ import { Moves } from './engine/moves';
 
 /*
 TODO:
-- unit-tests?
+- display number of rounds
+- display current bids of players during bidding phase
+- display more clearly who's turn it is, esp. if it's the curr. player
+- remove cards from trick (with delay) when resolved
+- possibility to review all past round scores (in scoreboard, or in general)
+- add short game description in own words
+- adapt layout for mobile devices
+- unit-tests
 */
 export const FrenchTarotGame: Game<IG> = {
   name: 'frenchTarot',
