@@ -7,10 +7,11 @@ import * as summary from './engine/summary';
 import { Moves } from './engine/moves';
 
 /*
-TODO:
-- add short game description in own words
-- adapt layout for mobile devices
+TODO before publishing:
+- adapt layout for mobile devices (e.g. left-right scrollable and hideable hand)
 - unit-tests
+- add short game description in own words
+- translations
 */
 export const FrenchTarotGame: Game<IG> = {
   name: 'frenchTarot',
