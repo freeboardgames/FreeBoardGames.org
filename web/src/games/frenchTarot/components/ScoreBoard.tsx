@@ -26,16 +26,15 @@ interface ScoreBoardProps {
 export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: ScoreBoardProps) => {
   const numSummaries = props.roundSummaries.length;
   const [hoverSummary, setHoverSummary] = React.useState(-1);
-  const showSummary =
-    hoverSummary == -1 && props.showRoundSummary && numSummaries > 0 ? numSummaries - 1 : hoverSummary;
+  const showSummary = hoverSummary == -1 && numSummaries > 0 ? numSummaries - 1 : hoverSummary;
 
   function renderPreviousRounds() {
     const numPlayers = props.playerNames.length;
     return (
       <>
-        <div className={css.showPreviousRounds}>
-          <input type="checkbox" id="togglePrevRounds" />
-          <label htmlFor="togglePrevRounds">Previous scores</label>
+        <input type="checkbox" id="togglePrevRounds" checked={props.showRoundSummary ? true : null} />
+        <label htmlFor="togglePrevRounds">Previous scores</label>
+        <div>
           <div className={`${css.previousRounds} ${css.board}`} style={{ width: `${23 + numPlayers * 84}px` }}>
             <table>
               <tbody>
@@ -56,6 +55,7 @@ export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: Scor
                   const iRound = props.roundSummaries.length - i;
                   return (
                     <tr
+                      className={showSummary == iRound - 1 ? css.hover : ''}
                       key={iRound}
                       onMouseOver={() => setHoverSummary(iRound - 1)}
                       onMouseOut={() => setHoverSummary(-1)}
@@ -70,6 +70,7 @@ export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: Scor
               </tbody>
             </table>
           </div>
+          {renderRoundSummary()}
         </div>
       </>
     );
@@ -83,7 +84,7 @@ export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: Scor
       .concat(playerKeys.filter((i) => !props.playerRoles[i]));
     return (
       <div
-        className={[css.scoreBoard, css.board, ,].join(' ')}
+        className={[css.scoreBoard, css.board].join(' ')}
         style={{
           width: `${150 + playerKeys.length * 76}px`,
           display: showSummary == -1 ? 'none' : 'block',
@@ -155,10 +156,5 @@ export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: Scor
     );
   }
 
-  return (
-    <>
-      {renderPreviousRounds()}
-      {renderRoundSummary()}
-    </>
-  );
+  return <div className={css.showPreviousRounds}>{renderPreviousRounds()}</div>;
 };
