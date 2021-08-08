@@ -100,6 +100,8 @@ export interface ITrick {
 }
 
 export interface IRoundSummary {
+  takerId: string;
+  calledTakerId?: string;
   takerPointsRequired: number;
   takerPoints: number;
   petitAuBout: number;

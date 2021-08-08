@@ -1,6 +1,6 @@
 .prevTrick {
   position: absolute;
-  top: 1em; right: 1em;
+  top: 50px; right: 15px;
   width: 150px; height: 100px;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;

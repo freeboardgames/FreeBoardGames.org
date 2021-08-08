@@ -4,9 +4,11 @@ import * as util from './util';
 export function getRoundSummary(G: IG): IRoundSummary {
   if (G.calledCard) findCalledTaker(G);
 
-  const takerPointsRequired = util.pointsRequiredToWin(countTakerBouts(G.resolvedTricks, G.takerId));
+  const takers = G.calledTakerId ? [G.takerId, G.calledTakerId] : [G.takerId];
 
-  const takerPoints = countTakerPoints(G.resolvedTricks, G.players.find((p) => p.isTaker).id);
+  const takerPointsRequired = util.pointsRequiredToWin(countTakerBouts(G.resolvedTricks, takers));
+
+  const takerPoints = countTakerPoints(G.resolvedTricks, takers);
 
   const isSlam = G.resolvedTricks.every((T) => T.winner.isTaker);
   const petitAuBout = isPetitAuBout(G.resolvedTricks, isSlam);
@@ -23,6 +25,8 @@ export function getRoundSummary(G: IG): IRoundSummary {
   const scoring = G.players.map((p) => (p.isTaker ? takerFactor : -1) * roundValue);
 
   return {
+    takerId: G.takerId,
+    calledTakerId: G.calledTakerId,
     takerPointsRequired: takerPointsRequired,
     takerPoints: takerPoints,
     petitAuBout: petitAuBout,
@@ -73,9 +77,9 @@ function trickHasPetit(T: ITrick): number {
   return T_petitPos == -1 ? 0 : T.winner.isTaker ? 10 : -10;
 }
 
-function countTakerBouts(tricks: ITrick[], takerId: string): number {
+function countTakerBouts(tricks: ITrick[], takers: string[]): number {
   return (
-    (excusePoints(tricks, takerId) > 0.5 ? 1 : 0) +
+    (excusePoints(tricks, takers) > 0.5 ? 1 : 0) +
     tricks
       .filter((T) => T.winner.isTaker)
       .reduce((a, b) => a.concat(b.cards), [])
@@ -84,34 +88,34 @@ function countTakerBouts(tricks: ITrick[], takerId: string): number {
   );
 }
 
-function excusePoints(tricks: ITrick[], takerId: string): number {
+function excusePoints(tricks: ITrick[], takers: string[]): number {
   // check how many points the taker obtains for the Excuse
-  const takerPos: number = parseInt(takerId);
+  const takerPos: number[] = takers.map(parseInt);
   let T: ITrick;
   let T_excusePos: number;
-  let T_takerPos: number;
+  let T_takerPos: number[];
   for (let i = 0; i < tricks.length; i++) {
     T = tricks[i];
     T_excusePos = T.cards.findIndex((c) => c.color == CardColor.Excuse);
     if (T_excusePos == -1) continue;
     // full 4.5 points if Excuse is in the kitty
     if (i == 0) return 4.5;
-    T_takerPos = util.mod(takerPos - parseInt(T.leader.id), T.cards.length);
+    T_takerPos = takerPos.map((p) => util.mod(p - parseInt(T.leader.id), T.cards.length));
     // regular case: before last trick
     if (i < tricks.length - 1) {
-      return T.winner.isTaker ? 0.5 : T_excusePos == T_takerPos ? 4 : 0;
+      return T.winner.isTaker ? 0.5 : T_takerPos.indexOf(T_excusePos) != -1 ? 4 : 0;
     }
     // rare case: Excuse in last trick
-    return T.winner.isTaker ? 4.5 : T_excusePos == T_takerPos ? 0 : 4;
+    return T.winner.isTaker ? 4.5 : T_takerPos.indexOf(T_excusePos) != -1 ? 0 : 4;
   }
   // this should never happen, but in test runs, we might play with
   // an incomplete deck (without Excuse)
   return 0;
 }
 
-function countTakerPoints(tricks: ITrick[], takerId: string): number {
+function countTakerPoints(tricks: ITrick[], takers: string[]): number {
   return (
-    excusePoints(tricks, takerId) +
+    excusePoints(tricks, takers) +
     tricks
       .filter((T) => T.winner.isTaker)
       .reduce((a, b) => a.concat(b.cards), [])

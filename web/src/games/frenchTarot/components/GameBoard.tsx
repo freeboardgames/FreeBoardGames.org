@@ -14,8 +14,6 @@ import { IPlayer, ICard, CardColor, ITrick, IRoundSummary } from '../engine/type
 import * as util from '../engine/util';
 import * as poignee from '../engine/poignee';
 
-const poignee_names = ['Single', 'Double', 'Triple'];
-
 export class Board extends React.Component<
   {
     player: IPlayer;
@@ -35,7 +33,8 @@ export class Board extends React.Component<
 
     selectableCards: boolean[];
 
-    roundSummary?: IRoundSummary;
+    roundSummaries: IRoundSummary[];
+    showRoundSummary: boolean;
 
     selectCards?: (handIndex: number[]) => void;
     selectBid?: (value: number) => void;
@@ -56,9 +55,9 @@ export class Board extends React.Component<
         {this.renderPrevTrick()}
         {this.renderKitty()}
         <PlayerZones
-          currentPlayerId={this.props.roundSummary ? null : this.props.currentPlayerId}
+          currentPlayerId={this.props.showRoundSummary ? null : this.props.currentPlayerId}
           perspectivePlayerId={this.props.player.id}
-          currentLeaderId={this.props.roundSummary ? '' : this.props.trick.leader.id}
+          currentLeaderId={this.props.showRoundSummary ? '' : this.props.trick.leader.id}
           players={this.props.players}
           playerNames={this.props.playerNames}
           slam={this.props.slam}
@@ -77,12 +76,12 @@ export class Board extends React.Component<
   }
 
   renderScoreBoard() {
-    if (!this.props.roundSummary) return;
     return (
       <ScoreBoard
         playerNames={this.props.playerNames}
         playerRoles={this.props.players.map((p) => p.isTaker)}
-        roundSummary={this.props.roundSummary}
+        roundSummaries={this.props.roundSummaries}
+        showRoundSummary={this.props.showRoundSummary}
         playerScores={this.props.players.map((p) => p.score)}
       />
     );
@@ -125,7 +124,7 @@ export class Board extends React.Component<
       for (; lvl < thresh.length && thresh[lvl] <= kitty_size; lvl++);
       kitty_descr = (
         <>
-          <b>{name}</b> declares a <b>{poignee_names[lvl - 1]} Poignée</b>:
+          <b>{name}</b> declares a <b>{util.getPoigneeName(lvl - 1)} Poignée</b>:
         </>
       );
     }
@@ -150,7 +149,7 @@ export class Board extends React.Component<
       <div
         className={[
           css.buttonBar,
-          this.props.roundSummary ? css.below : '',
+          this.props.showRoundSummary ? css.below : '',
           this.props.callCard ? css.callCards : '',
         ].join(' ')}
       >
@@ -167,15 +166,17 @@ export class Board extends React.Component<
   renderButtonsBid() {
     if (!this.props.selectBid) return;
     const highest_bid = Math.max(...this.props.players.map((p) => p.bid));
-    return ['Pass', 'Small', 'Guard', 'Guard without', 'Guard against'].map((t, i) => (
-      <Button
-        key={i}
-        text={t}
-        red={i == 0}
-        dirleft={i <= 2}
-        click={this.props.selectBid && (i == 0 || highest_bid < i) ? () => this.props.selectBid(i) : null}
-      />
-    ));
+    return [0, 1, 2, 3, 4]
+      .map(util.getBidName)
+      .map((name, i) => (
+        <Button
+          key={i}
+          text={name}
+          red={i == 0}
+          dirleft={i <= 2}
+          click={this.props.selectBid && (i == 0 || highest_bid < i) ? () => this.props.selectBid(i) : null}
+        />
+      ));
   }
 
   renderButtonsCall() {
@@ -236,22 +237,23 @@ export class Board extends React.Component<
       text =
         `Select ${missing_num}${sel_size == 0 ? '' : ' more'}` +
         ` card${missing_num == 1 ? '' : 's'}` +
-        ` for a ${poignee_names[0]} Poignée`;
+        ` for a ${util.getPoigneeName(0)} Poignée`;
     } else if (curr_level == max_level) {
-      text = `${poignee_names[curr_level - 1]} Poignée`;
+      text = `${util.getPoigneeName(curr_level - 1)} Poignée`;
       if (curr_level > 1) {
         missing_num = sel_size - thresh[curr_level - 2];
         smallText =
           `(deselect ${missing_num}` +
           ` card${missing_num == 1 ? '' : 's'}` +
-          ` for a ${poignee_names[curr_level - 2]} Poignée)`;
+          ` for a ${util.getPoigneeName(curr_level - 2)} Poignée)`;
       }
     } else if (curr_level < max_level) {
       missing_num = thresh[curr_level] - sel_size;
-      text = `${missing_num} more card${missing_num == 1 ? '' : 's'}` + ` for a ${poignee_names[curr_level]} Poignée`;
+      text =
+        `${missing_num} more card${missing_num == 1 ? '' : 's'}` + ` for a ${util.getPoigneeName(curr_level)} Poignée`;
       if (thresh[curr_level - 1] == sel_size) {
         smallText = `(select ${text})`;
-        text = `${poignee_names[curr_level - 1]} Poignée`;
+        text = `${util.getPoigneeName(curr_level - 1)} Poignée`;
       } else {
         text = `Select ${text}`;
       }

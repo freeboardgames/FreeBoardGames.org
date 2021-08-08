@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import css from './PlayerZone.module.css';
 import { IPlayer } from '../engine/types';
+import * as util from '../engine/util';
 
 const ZonePositions = [
   [
@@ -41,11 +42,15 @@ export class PlayerZone extends React.Component<
   render() {
     const positions = ZonePositions[Math.max(0, this.props.numPlayers - 3)];
     const position = positions[this.props.positionIndex];
-
+    const markActive = this.props.biddingEnded && !this.props.roundEnded && this.props.active;
     return (
       <div
-        className={css.playerZone}
-        style={{ position: 'absolute', inset: position.inset, transform: position.transform }}
+        className={[
+          css.playerZone,
+          markActive ? css.active : '',
+          this.props.positionIndex == 0 ? css.thisPlayer : '',
+        ].join(' ')}
+        style={{ inset: position.inset, transform: position.transform }}
       >
         {this.renderZoneContent()}
       </div>
@@ -53,9 +58,15 @@ export class PlayerZone extends React.Component<
   }
 
   renderZoneContent() {
+    const P = this.props.player;
+    const slam = P.isTaker && this.props.slam;
+    const playerBidStr = P.bid >= 0 ? `«${util.getBidName(P.bid)}»` : '';
     return (
       <div>
-        <div className={[css.statuses, this.props.player.isTaker && this.props.slam ? css.slam : ''].join(' ')}>
+        <div className={[css.bidStatus, slam ? css.slam : '', P.bid == 0 ? css.pass : ''].join(' ')}>
+          {slam ? 'Announced slam!' : playerBidStr}
+        </div>
+        <div className={css.statuses}>
           <div className={css.playerName}>{this.props.playerName}</div>
           {this.renderStatuses()}
         </div>
@@ -114,7 +125,7 @@ export class PlayerZone extends React.Component<
     }
     if (this.props.active) {
       statuses.push(
-        <span key="Active" title="Active">
+        <span key="Active" title="Active" className={css.active}>
           &#x1F552;
         </span>,
       );

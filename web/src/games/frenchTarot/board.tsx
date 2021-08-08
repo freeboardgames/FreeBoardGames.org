@@ -7,7 +7,7 @@ import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 
 import { Board } from './components/GameBoard';
 
-import { Phases, Stages, IGameMoves, IG, IPlayer, IRoundSummary } from './engine/types';
+import { Phases, Stages, IGameMoves, IG, IPlayer } from './engine/types';
 import * as util from './engine/util';
 import * as poignee from './engine/poignee';
 import * as discard from './engine/discard';
@@ -35,11 +35,6 @@ export class BgioBoard extends React.Component<
     const player = G.players.find((P) => P.id === playerID);
     const prevTrick = G.resolvedTricks.length > 1 ? G.resolvedTricks[G.resolvedTricks.length - 1] : G.trick;
 
-    const roundSummary: IRoundSummary =
-      ctx.phase == Phases.round_end && G.roundSummaries.length > 0
-        ? G.roundSummaries[G.roundSummaries.length - 1]
-        : null;
-
     return (
       <GameLayout gameArgs={this.props.gameArgs} maxWidth="1000px">
         <Board
@@ -54,7 +49,8 @@ export class BgioBoard extends React.Component<
           prevTrick={prevTrick}
           calledCard={G.calledCard}
           selectableCards={selectableCards(G, ctx, playerID)}
-          roundSummary={roundSummary}
+          roundSummaries={G.roundSummaries}
+          showRoundSummary={ctx.phase == Phases.round_end && G.roundSummaries.length > 0}
           selectCards={canSelectCards(ctx, player) ? moves.SelectCards : null}
           selectBid={canBid(ctx, player) ? moves.MakeBid : null}
           callCard={this.playerPhase() == Phases.calling ? moves.Call : null}

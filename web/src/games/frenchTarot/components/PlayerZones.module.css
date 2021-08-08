@@ -1,8 +1,7 @@
 .playerZonesContainer {
-  height: 450px;
-  width: 100%;
   position: relative;
-  display: inline-block;
+  height: 450px;
+  margin: 15px;
 }
 
 .playerZones {

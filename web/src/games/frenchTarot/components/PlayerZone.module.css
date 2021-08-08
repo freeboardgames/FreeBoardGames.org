@@ -1,16 +1,22 @@
-.slam:before {
-  content: 'ANNOUNCED SLAM!';
-  display: block;
+
+.playerZone {
   position: absolute;
-  top: 0; left: 0;
-  transform: translate(0, -100%);
-  width: 100%; height: 14px;
-  background-color: #a00;
-  color: #fff;
-  font-weight: bold;
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-align: center;
+}
+
+@keyframes pulse {
+  0% {box-shadow: rgb(255, 255, 255) 0px 0px 20px;}
+  50% {box-shadow: rgb(255, 255, 255) 0px 0px 40px;}
+  100% {box-shadow: rgb(255, 255, 255) 0px 0px 20px;}
+}
+
+.playerZone.active .statuses {
+  animation: pulse 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+}
+
+.playerZone.active.thisPlayer .statuses {
+  animation: none;
 }
 
 .playerZone .playerName {
@@ -23,7 +29,7 @@
   cursor: default;
   background-color: rgb(0 0 0 / 50%);
   padding: 5px;
-  width: 140px;
+  width: 160px;
   height: 40px;
 }
 
@@ -38,4 +44,40 @@
                "EmojiOne Mozilla";
   margin-right: 0.2em;
   float: left;
+}
+
+@keyframes pulse_round {
+  0% {background-size: 100% 100%;}
+  50% {background-size: 120% 120%;}
+  100% {background-size: 100% 100%;}
+}
+
+.playerZone.thisPlayer.active .statuses span.active {
+  display: block;
+  position: absolute;
+  right: 0; top: 50%;
+  transform-origin: 100% center;
+  transform: translate(0, -50%) scale(4) translate(120%, 0);
+  padding: 3px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: radial-gradient(#fff, transparent 70%);
+  animation: pulse_round 2s;
+  animation-iteration-count: infinite;
+}
+
+.playerZone .bidStatus {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  transform: translate(0, -100%);
+  background-color: #0a0;
+  color: #fff;
+}
+
+.playerZone .bidStatus.pass {
+  background-color: #a55;
+}
+
+.playerZone .bidStatus.slam {
+  background-color: #a00;
 }

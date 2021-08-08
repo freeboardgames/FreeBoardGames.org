@@ -1,45 +1,118 @@
-.scoreBoard {
+.board table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  color: #fff;
+}
+
+.board td {
+  padding: 0.2em;
+}
+
+.board tr:first-child td {
+  background-color: rgba(80, 80, 80, 0.5);
+  font-weight: bold;
+}
+
+.showPreviousRounds {
   position: absolute;
-  width: 630px; height: 250px;
-  z-index: 1000;
-  top: 110px; left: 50%; transform: translate(-50%, 0);
+  top: 15px; right: 15px;
+  z-index: 2000;
+  width: 160px; height: 30px;
+  line-height: 28px;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
-  padding: 1em;
-}
-.scoreBoard:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.scoreBoard table {
-  width: 100%;
-  color: #000;
   font-size: 15px;
-  table-layout: fixed;
 }
 
-.scoreBoard table td:not(:first-child) {
-  width: 60px;
+.showPreviousRounds input {
+  display: none;
+}
+
+.showPreviousRounds input + label {
+  font-weight: bold;
+}
+
+.showPreviousRounds input + label + div {
+  display: none;
+}
+
+.showPreviousRounds input + label:before {
+  content: "« ";
+}
+
+.showPreviousRounds input:checked + label:before {
+  content: "» ";
+}
+
+.showPreviousRounds input:checked + label + div {
+  display: block;
+}
+
+.previousRounds {
+  position: absolute;
+  top: 0; left: 0;
+  transform: translate(-100%, 0);
+  font-size: 13px;
+  line-height: 13px;
+  height: 150px;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #fff;
+}
+
+.previousRounds td {
+  padding: 4px 1px;
+  border: 0;
+  width: 80px;
+}
+
+.previousRounds tr td:first-child:not([colspan]) {
+  font-weight: bold;
+  width: 10px;
+}
+
+.previousRounds table td:not(:first-child) {
+  width: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.previousRounds table tr:hover:not(:first-child) td:not([colspan]) {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.scoreBoard {
+  position: absolute;
+  height: 150px;
+  z-index: 1000;
+  top: 15px; right: 400px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 0;
+  font-size: 10px;
   overflow: hidden;
 }
 
 .scoreBoard table tr:first-child td:first-child {
-  border: 0;
-  background-color: transparent;
+  text-align: left;
+  padding-left: 1em;
+}
+
+.scoreBoard table td:not(:first-child) {
+  width: 70px;
+  overflow: hidden;
 }
 
 .scoreBoard table tr:first-child,
-.scoreBoard table tr:last-child {
+.scoreBoard table tr:nth-last-child(2) {
   font-weight: bold;
+  font-size: 15px;
+}
+
+.scoreBoard table tr:nth-last-child(2) td {
+  padding: 0.1em;
 }
 
 .scoreBoard table td:first-child {
-  width: 140px;
   text-align: right;
-}
-
-.scoreBoard table td {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 2px rgba(0, 0, 0, 0.01) solid;
-  padding: 3px;
 }
