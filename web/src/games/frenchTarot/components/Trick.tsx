@@ -76,7 +76,7 @@ export class Trick extends React.Component<
   render() {
     if (this.props.winnerPos != -1) {
       const [x, y] = VanishPositions[Math.max(0, this.props.numPlayers - 3)][this.relativePos(this.props.winnerPos)];
-      getKeyframeRule('vanish', '100%').setProperty(
+      getKeyframeRule('vanish', '100%').style.setProperty(
         'transform',
         `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(0.0)`,
       );

@@ -94,8 +94,8 @@ export class Board extends React.Component<
     return (
       <PreviousTrick
         trick={this.props.prevTrick.cards}
-        leaderPos={parseInt(this.props.prevTrick.leader.id)}
-        currPos={parseInt(this.props.player.id)}
+        leaderPos={+this.props.prevTrick.leader.id}
+        currPos={+this.props.player.id}
         numPlayers={this.props.players.length}
       />
     );
@@ -120,8 +120,8 @@ export class Board extends React.Component<
     const kitty_size = this.props.kitty.length;
     var kitty_descr: JSX.Element = null;
     if (this.props.kittyRevealed && kitty_size > 6) {
-      const name = this.props.playerNames[parseInt(this.props.currentPlayerId)];
-      const thresh = poignee.getPoigneeThresholds(this.props.players.length);
+      const name = this.props.playerNames[+this.props.currentPlayerId];
+      const thresh = util.Poignee.getPoigneeThresholds(this.props.players.length);
       let lvl = 0;
       for (; lvl < thresh.length && thresh[lvl] <= kitty_size; lvl++);
       kitty_descr = (
@@ -139,9 +139,9 @@ export class Board extends React.Component<
     return (
       <Trick
         trick={trick ? trick.cards : []}
-        leaderPos={trick ? parseInt(trick.leader.id) : 0}
-        winnerPos={trick && trick.winner ? parseInt(trick.winner.id) : -1}
-        currPos={parseInt(this.props.player.id)}
+        leaderPos={trick ? +trick.leader.id : 0}
+        winnerPos={trick && trick.winner ? +trick.winner.id : -1}
+        currPos={+this.props.player.id}
         numPlayers={this.props.players.length}
       />
     );

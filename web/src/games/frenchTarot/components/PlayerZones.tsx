@@ -28,9 +28,10 @@ export class PlayerZones extends React.Component<
   }
 
   renderZone(index: number) {
-    const perspectiveIndex = parseInt(this.props.perspectivePlayerId);
+    const perspectiveIndex = +this.props.perspectivePlayerId;
     const numPlayers = this.props.players.length;
     const player = this.props.players[index];
+    const active = (!this.props.currentPlayerId && !player.isReady) || player.id === this.props.currentPlayerId;
     return (
       <div key={index} className={css.zone}>
         <PlayerZone
@@ -40,7 +41,7 @@ export class PlayerZones extends React.Component<
           roundEnded={this.props.currentLeaderId == ''}
           player={player}
           playerName={this.props.playerNames[index]}
-          active={(!this.props.currentPlayerId && !player.isReady) || player.id === this.props.currentPlayerId}
+          active={active}
           leader={player.id === this.props.currentLeaderId}
           slam={this.props.slam}
           positionIndex={util.mod(index - perspectiveIndex, numPlayers)}

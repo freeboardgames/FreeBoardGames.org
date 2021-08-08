@@ -62,15 +62,15 @@ export const FrenchTarotGame: Game<IG> = {
 
       onEnd: (G: IG, ctx: Ctx) => {
         const handSize = util.handSize(ctx.numPlayers);
-        const dealerId = G.players.findIndex((p) => p.isDealer);
+        const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, ctx.numPlayers)];
         G.deck = getSortedDeck();
         G.deck = ctx.random.Shuffle(G.deck);
-        G.players.forEach((p, i) => {
-          p.bid = -1;
-          p.isTaker = false;
-          p.isReady = true;
-          p.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
+        G.players.forEach((P, i) => {
+          P.bid = -1;
+          P.isTaker = false;
+          P.isReady = true;
+          P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
         });
         G.takerId = '';
         G.calledCard = null;
@@ -106,13 +106,13 @@ export const FrenchTarotGame: Game<IG> = {
       },
 
       endIf: (G: IG) => {
-        if (G.players.some((p) => p.bid == 4)) {
+        if (G.players.some((P) => P.bid == 4)) {
           return { next: Phases.calling };
         }
-        if (G.players.some((p) => p.bid == -1)) return;
-        if (G.players.every((p) => p.bid == 0)) {
+        if (G.players.some((P) => P.bid == -1)) return;
+        if (G.players.every((P) => P.bid == 0)) {
           return { next: Phases.dealing };
-        } else if (G.players.filter((p) => p.bid > 0).length == 1) {
+        } else if (G.players.filter((P) => P.bid > 0).length == 1) {
           return { next: Phases.calling };
         }
       },
@@ -144,8 +144,8 @@ export const FrenchTarotGame: Game<IG> = {
       turn: {
         moveLimit: 1,
         order: {
-          first: (G) => parseInt(G.takerId),
-          next: (G) => parseInt(G.takerId),
+          first: (G) => +G.takerId,
+          next: (G) => +G.takerId,
         },
       },
 
@@ -169,7 +169,7 @@ export const FrenchTarotGame: Game<IG> = {
         } else if (G.contract == 4) {
           G.resolvedTricks.push({
             cards: G.kitty.splice(0, G.kitty.length),
-            winner: G.players.find((p) => !p.isTaker),
+            winner: G.players.find((P) => !P.isTaker),
           });
         }
       },
@@ -180,8 +180,8 @@ export const FrenchTarotGame: Game<IG> = {
       turn: {
         moveLimit: 1,
         order: {
-          first: (G) => parseInt(G.takerId),
-          next: (G) => parseInt(G.takerId),
+          first: (G) => +G.takerId,
+          next: (G) => +G.takerId,
         },
       },
 
@@ -193,7 +193,7 @@ export const FrenchTarotGame: Game<IG> = {
       endIf: (G) => G.resolvedTricks.length > 0,
 
       onEnd: (G: IG) => {
-        const taker = G.players[parseInt(G.takerId)];
+        const taker = G.players[+G.takerId];
         delete taker.discardSelection;
         taker.isReady = false;
         G.kittyRevealed = false;
@@ -206,12 +206,12 @@ export const FrenchTarotGame: Game<IG> = {
       turn: {
         moveLimit: 1,
         order: {
-          first: (G) => parseInt(G.takerId),
-          next: (G) => parseInt(G.takerId),
+          first: (G) => +G.takerId,
+          next: (G) => +G.takerId,
         },
       },
       moves: { AnnounceSlam: Moves.AnnounceSlam },
-      endIf: (G) => G.players[parseInt(G.takerId)].isReady,
+      endIf: (G) => G.players[+G.takerId].isReady,
     },
 
     placement: {
@@ -240,7 +240,7 @@ export const FrenchTarotGame: Game<IG> = {
           place_card: { moves: { SelectCards: Moves.SelectCards } },
         },
         order: {
-          first: (G) => parseInt(G.trick.leader.id),
+          first: (G) => +G.trick.leader.id,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
         },
       },
@@ -266,9 +266,9 @@ export const FrenchTarotGame: Game<IG> = {
         if (isRoundOver) {
           const roundSummary = summary.getRoundSummary(G);
           G.roundSummaries.push(roundSummary);
-          G.players.forEach((p, i) => {
-            p.score += roundSummary.scoring[i];
-            p.isReady = false;
+          G.players.forEach((P, i) => {
+            P.score += roundSummary.scoring[i];
+            P.isReady = false;
           });
           G.kitty = G.resolvedTricks[0].cards;
           G.kittyRevealed = true;
@@ -288,8 +288,8 @@ export const FrenchTarotGame: Game<IG> = {
         G.resolvedTricks = [];
         const dealerPos = G.players.findIndex((P) => P.isDealer);
         const newDealerPos = util.mod(dealerPos + 1, ctx.numPlayers);
-        G.players.forEach((p, i) => {
-          p.isDealer = i == newDealerPos;
+        G.players.forEach((P, i) => {
+          P.isDealer = i == newDealerPos;
         });
       },
     },
@@ -297,20 +297,20 @@ export const FrenchTarotGame: Game<IG> = {
 };
 
 function getTrickWinnerId(T: ITrick): string {
-  const leaderId: number = parseInt(T.leader.id);
-  const max_trump = Math.max(...T.cards.map((c) => (c.color == CardColor.Trumps ? c.value : 0)));
+  const leaderId = +T.leader.id;
+  const max_trump = Math.max(...T.cards.map((C) => (C.color == CardColor.Trumps ? C.value : 0)));
   if (max_trump > 0) {
     return util
-      .mod(leaderId + T.cards.findIndex((c) => c.color == CardColor.Trumps && c.value == max_trump), T.cards.length)
+      .mod(leaderId + T.cards.findIndex((C) => C.color == CardColor.Trumps && C.value == max_trump), T.cards.length)
       .toString();
   }
   var lead_color = T.cards[0].color;
   if (lead_color == CardColor.Excuse) {
     lead_color = T.cards[1].color;
   }
-  const max_value = Math.max(...T.cards.map((c) => (c.color == lead_color ? c.value : 0)));
+  const max_value = Math.max(...T.cards.map((C) => (C.color == lead_color ? C.value : 0)));
   return util
-    .mod(leaderId + T.cards.findIndex((c) => c.color == lead_color && c.value == max_value), T.cards.length)
+    .mod(leaderId + T.cards.findIndex((C) => C.color == lead_color && C.value == max_value), T.cards.length)
     .toString();
 }
 

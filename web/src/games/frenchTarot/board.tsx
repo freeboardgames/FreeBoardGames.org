@@ -103,7 +103,7 @@ export class BgioBoard extends React.Component<
 
 function selectableCards(G: IG, ctx: Ctx, playerId: string): boolean[] {
   const player = util.getPlayerById(G, playerId);
-  const stage = ctx.activePlayers && ctx.activePlayers[parseInt(playerId)];
+  const stage = ctx.activePlayers && ctx.activePlayers[+playerId];
   if (ctx.currentPlayer == playerId) {
     if (stage == Stages.declare_poignee) {
       return poignee.selectableCards(G, playerId);
