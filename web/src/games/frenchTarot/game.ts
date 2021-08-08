@@ -8,7 +8,6 @@ import { Moves } from './engine/moves';
 
 /*
 TODO:
-- remove cards from trick (with delay) when resolved
 - add short game description in own words
 - adapt layout for mobile devices
 - unit-tests

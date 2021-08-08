@@ -13,6 +13,7 @@ export class PlayerZones extends React.Component<
     currentLeaderId: string;
     players: IPlayer[];
     playerNames: string[];
+    contract: number;
     slam: boolean;
   },
   {}
@@ -34,6 +35,7 @@ export class PlayerZones extends React.Component<
       <div key={index} className={css.zone}>
         <PlayerZone
           numPlayers={numPlayers}
+          contract={this.props.contract}
           biddingEnded={this.props.players.some((p) => p.isTaker)}
           roundEnded={this.props.currentLeaderId == ''}
           player={player}

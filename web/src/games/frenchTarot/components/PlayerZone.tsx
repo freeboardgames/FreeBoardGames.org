@@ -12,9 +12,9 @@ const ZonePositions = [
   ],
   [
     { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 0 55% auto', transform: 'translate(0,50%)' },
+    { inset: 'auto 0 50% auto', transform: 'translate(0,50%)' },
     { inset: '0 auto auto 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto auto 55% 0', transform: 'translate(0,50%)' },
+    { inset: 'auto auto 50% 0', transform: 'translate(0,50%)' },
   ],
   [
     { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
@@ -28,6 +28,7 @@ const ZonePositions = [
 export class PlayerZone extends React.Component<
   {
     numPlayers: number;
+    contract: number;
     biddingEnded: boolean;
     roundEnded: boolean;
     player: IPlayer;
@@ -60,11 +61,13 @@ export class PlayerZone extends React.Component<
   renderZoneContent() {
     const P = this.props.player;
     const slam = P.isTaker && this.props.slam;
-    const playerBidStr = P.bid >= 0 ? `«${util.getBidName(P.bid)}»` : '';
+    const bid = P.isTaker ? this.props.contract : P.bid;
+    const playerBidStr = bid >= 0 ? `«${util.getBidName(bid)}»` : '';
     return (
       <div>
-        <div className={[css.bidStatus, slam ? css.slam : '', P.bid == 0 ? css.pass : ''].join(' ')}>
-          {slam ? 'Announced slam!' : playerBidStr}
+        <div className={css.bidStatus}>
+          {slam ? <div className={css.slam}>Announced slam!</div> : null}
+          <div className={bid == 0 ? css.pass : ''}>{playerBidStr}</div>
         </div>
         <div className={css.statuses}>
           <div className={css.playerName}>{this.props.playerName}</div>

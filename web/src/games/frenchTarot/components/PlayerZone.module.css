@@ -70,14 +70,22 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   transform: translate(0, -100%);
+}
+
+.playerZone.thisPlayer .bidStatus {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.playerZone .bidStatus div {
   background-color: #0a0;
   color: #fff;
 }
 
-.playerZone .bidStatus.pass {
+.playerZone .bidStatus .pass {
   background-color: #a55;
 }
 
-.playerZone .bidStatus.slam {
+.playerZone .bidStatus .slam {
   background-color: #a00;
 }

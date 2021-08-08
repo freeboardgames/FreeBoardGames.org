@@ -19,6 +19,7 @@ export class Board extends React.Component<
     player: IPlayer;
     players: IPlayer[];
     playerNames: string[];
+    contract: number;
     slam: boolean;
 
     currentPlayerId: string;
@@ -60,6 +61,7 @@ export class Board extends React.Component<
           currentLeaderId={this.props.showRoundSummary ? '' : this.props.trick.leader.id}
           players={this.props.players}
           playerNames={this.props.playerNames}
+          contract={this.props.contract}
           slam={this.props.slam}
         />
         {this.renderTrick()}
@@ -138,6 +140,7 @@ export class Board extends React.Component<
       <Trick
         trick={trick ? trick.cards : []}
         leaderPos={trick ? parseInt(trick.leader.id) : 0}
+        winnerPos={trick && trick.winner ? parseInt(trick.winner.id) : -1}
         currPos={parseInt(this.props.player.id)}
         numPlayers={this.props.players.length}
       />

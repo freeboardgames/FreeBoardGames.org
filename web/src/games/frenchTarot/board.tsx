@@ -41,6 +41,7 @@ export class BgioBoard extends React.Component<
           player={player}
           players={G.players}
           playerNames={G.players.map((P) => this.playerName(P.id))}
+          contract={G.contract}
           slam={G.announcedSlam}
           currentPlayerId={ctx.currentPlayer}
           kitty={G.kitty}

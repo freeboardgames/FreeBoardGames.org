@@ -12,3 +12,16 @@
   float: left;
   width: 0;
 }
+
+@keyframes vanish {
+  0% {transform: translate(-50%,-50%) scale(1.0);}
+  66% {transform: translate(-50%,-50%) scale(1.0);}
+  100% {transform: translate(-50%, -50%) scale(0.0);}
+}
+
+.trick.full {
+  animation: vanish 1.5s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  transform: scale(0);
+}
