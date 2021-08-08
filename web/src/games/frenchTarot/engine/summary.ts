@@ -2,7 +2,15 @@ import { IG, ICard, CardColor, ITrick, IRoundSummary } from './types';
 import * as util from './util';
 
 export function getRoundSummary(G: IG): IRoundSummary {
-  if (G.calledCard) findCalledTaker(G);
+  if (G.calledCard) {
+    // called player counts as taker (this is secret during the game)
+    G.players[+G.calledTakerId].isTaker = true;
+    G.resolvedTricks
+      .filter((T) => T.winner.id == G.calledTakerId)
+      .forEach((T) => {
+        T.winner.isTaker = true;
+      });
+  }
 
   const takers = G.calledTakerId ? [G.takerId, G.calledTakerId] : [G.takerId];
 
@@ -35,32 +43,6 @@ export function getRoundSummary(G: IG): IRoundSummary {
     slam: slam,
     scoring: scoring,
   };
-}
-
-function findCalledTaker(G: IG) {
-  var callTrickId = 0;
-  var callT: ITrick = null;
-  var T_calledTakerPos = -1;
-  for (; callTrickId < G.resolvedTricks.length; callTrickId++) {
-    callT = G.resolvedTricks[callTrickId];
-    T_calledTakerPos = callT.cards.findIndex((C) => C.color == G.calledCard.color && C.value == G.calledCard.value);
-    if (T_calledTakerPos != -1) break;
-  }
-  const T_takerPos = relativePos(G.takerId, callT.leader.id, callT.cards.length);
-  if (callTrickId == 0 || T_calledTakerPos == T_takerPos) {
-    // the called card was in the discard
-    G.calledTakerId = G.takerId;
-    return;
-  }
-  G.calledTakerId = relativePos(callT.leader.id, -T_calledTakerPos, callT.cards.length).toString();
-  const calledTaker = G.players[+G.calledTakerId];
-  calledTaker.isTaker = true;
-  // correct winner objects to be takers
-  G.resolvedTricks
-    .filter((T) => T.winner.id == calledTaker.id)
-    .forEach((T) => {
-      T.winner.isTaker = true;
-    });
 }
 
 function isPetitAuBout(tricks: ITrick[], isSlam: boolean): number {
@@ -103,10 +85,17 @@ function excusePoints(tricks: ITrick[], takers: string[]): number {
     const T_takerPos = takerPos.map((pos) => relativePos(pos, T.leader.id, T.cards.length));
     // regular case: before last trick
     if (i < tricks.length - 1) {
-      return T.winner.isTaker ? 0.5 : T_takerPos.indexOf(T_excusePos) != -1 ? 4 : 0;
+      if (T_takerPos.indexOf(T_excusePos) != -1) {
+        return T.winner.isTaker ? 4.5 : 4;
+      }
+      return T.winner.isTaker ? 0.5 : 0;
     }
     // rare case: Excuse in last trick
-    return T.winner.isTaker ? 4.5 : T_takerPos.indexOf(T_excusePos) != -1 ? 0 : 4;
+    if (T_takerPos.indexOf(T_excusePos) == -1) {
+      return T.winner.isTaker ? 4.5 : 4;
+    }
+    // slam with Excuse leading in last trick
+    return T_excusePos == 0 && T.winner.id == T.leader.id ? 4.5 : T.winner.isTaker ? 0.5 : 0;
   });
   return points;
 }

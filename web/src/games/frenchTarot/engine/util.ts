@@ -26,12 +26,6 @@ export function pointsRequiredToWin(numBouts: number): number {
   return [56, 51, 41, 36][numBouts];
 }
 
-export function isCalledTaker(player: IPlayer, G: IG): boolean {
-  if (!G.calledCard) return false;
-  if (G.calledTakerId) return player.id == G.calledTakerId;
-  return player.hand.some((C) => C.color == G.calledCard.color && C.value == G.calledCard.value);
-}
-
 export function isColorCard(card: ICard): boolean {
   return card.color != CardColor.Excuse && card.color != CardColor.Trumps;
 }

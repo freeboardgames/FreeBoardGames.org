@@ -53,7 +53,7 @@ export const Moves = {
       const poignee_thresholds = poignee.getPoigneeThresholds(ctx.numPlayers);
       const poignee_level = poignee_thresholds.indexOf(player.discardSelection.length);
       if (poignee_level == -1) return INVALID_MOVE;
-      const isTaker = player.isTaker || util.isCalledTaker(player, G);
+      const isTaker = player.isTaker || player.id == G.calledTakerId;
       G.poignee += (isTaker ? 1 : -1) * [20, 30, 40][poignee_level];
       G.kitty = player.discardSelection.sort((a, b) => a - b).map((i) => player.hand[i]);
       G.kittyRevealed = true;
