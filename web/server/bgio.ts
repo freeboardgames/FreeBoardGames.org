@@ -15,12 +15,11 @@ const startServer = async () => {
   const games = (await configs).map((config) => config.default.bgioGame);
   const pgUrl = process.env.POSTGRES_URL;
   const db = pgUrl ? new PostgresStore(pgUrl) : undefined;
-  const server = Server({ games, db });
+  const origins = process.env.BGIO_PUBLIC_SERVERS || 'http://localhost';
+  const server = Server({ games, db, origins });
   server.app.use(noCache({ global: true }));
   server.app.use(cors());
-  server.run(PORT, () => {
-    console.log(`Serving boardgame.io at: http://0.0.0.0:${PORT}/`); // tslint:disable-line
-  });
+  server.run(PORT);
 };
 
 startServer();
