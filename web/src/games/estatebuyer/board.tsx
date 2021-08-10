@@ -52,7 +52,7 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared: numb
     }
 
     return (
-      <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
+      <GameLayout gameArgs={this.props.gameArgs} maxWidth="1000px">
         <div className={css.board}>
           <PlayerBadges
             players={this.props.G.players}
