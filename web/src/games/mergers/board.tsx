@@ -175,7 +175,7 @@ export class Board extends React.Component<BoardProps, BoardState> {
   render() {
     const hotels = new Hotels(this.props.G.hotels);
     return (
-      <GameLayout allowWiderScreen={true} gameArgs={this.props.gameArgs}>
+      <GameLayout maxWidth="1000px" gameArgs={this.props.gameArgs}>
         <ThemeProvider theme={createMuiTheme({ palette: { type: 'dark' } })}>
           <MergersGameStatus
             hotels={hotels}
