@@ -46,12 +46,6 @@
   float: left;
 }
 
-@keyframes pulse_round {
-  0% {background-size: 100% 100%;}
-  50% {background-size: 120% 120%;}
-  100% {background-size: 100% 100%;}
-}
-
 .playerZone.thisPlayer.active .statuses span.active {
   display: block;
   position: absolute;
@@ -61,9 +55,7 @@
   padding: 3px;
   background-position: center center;
   background-repeat: no-repeat;
-  background-image: radial-gradient(#fff, transparent 70%);
-  animation: pulse_round 2s;
-  animation-iteration-count: infinite;
+  background-image: radial-gradient(#fff, transparent 80%);
 }
 
 .playerZone .bidStatus {

@@ -51,28 +51,32 @@ export class Board extends React.Component<
     const selectedCards = this.props.declarePoignee || this.props.discard ? this.props.player.discardSelection : [];
     return (
       <div className={css.board}>
-        {this.renderScoreBoard()}
-        {this.renderCalledCard()}
-        {this.renderPrevTrick()}
-        {this.renderKitty()}
-        <PlayerZones
-          currentPlayerId={this.props.showRoundSummary ? null : this.props.currentPlayerId}
-          perspectivePlayerId={this.props.player.id}
-          currentLeaderId={this.props.showRoundSummary ? '' : this.props.trick.leader.id}
-          players={this.props.players}
-          playerNames={this.props.playerNames}
-          contract={this.props.contract}
-          slam={this.props.slam}
-        />
-        {this.renderTrick()}
-        {this.renderButtonBar()}
-        <PlayerHand
-          playerId={this.props.player.id}
-          hand={this.props.player.hand}
-          selectable={this.props.selectableCards}
-          selection={selectedCards || []}
-          selectCards={this.props.selectCards}
-        />
+        <div className={css.upperBoard}>
+          {this.renderScoreBoard()}
+          {this.renderCalledCard()}
+          {this.renderPrevTrick()}
+          {this.renderKitty()}
+          <PlayerZones
+            currentPlayerId={this.props.showRoundSummary ? null : this.props.currentPlayerId}
+            perspectivePlayerId={this.props.player.id}
+            currentLeaderId={this.props.showRoundSummary ? '' : this.props.trick.leader.id}
+            players={this.props.players}
+            playerNames={this.props.playerNames}
+            contract={this.props.contract}
+            slam={this.props.slam}
+          />
+          {this.renderTrick()}
+          {this.renderButtonBar()}
+        </div>
+        <div className={css.lowerBoard}>
+          <PlayerHand
+            playerId={this.props.player.id}
+            hand={this.props.player.hand}
+            selectable={this.props.selectableCards}
+            selection={selectedCards || []}
+            selectCards={this.props.selectCards}
+          />
+        </div>
       </div>
     );
   }
@@ -148,6 +152,15 @@ export class Board extends React.Component<
   }
 
   renderButtonBar() {
+    const buttons = [
+      this.renderButtonsBid(),
+      this.renderButtonsCall(),
+      this.renderButtonsDiscard(),
+      this.renderButtonsSlam(),
+      this.renderButtonsPoignee(),
+      this.renderButtonsFinish(),
+    ];
+    if (!buttons.some((b) => b)) return;
     return (
       <div
         className={[
@@ -156,12 +169,7 @@ export class Board extends React.Component<
           this.props.callCard ? css.callCards : '',
         ].join(' ')}
       >
-        {this.renderButtonsBid()}
-        {this.renderButtonsCall()}
-        {this.renderButtonsDiscard()}
-        {this.renderButtonsSlam()}
-        {this.renderButtonsPoignee()}
-        {this.renderButtonsFinish()}
+        {buttons}
       </div>
     );
   }
@@ -218,8 +226,10 @@ export class Board extends React.Component<
     return (
       <>
         <div className={css.question}>Would you like to announce a slam?</div>
-        <Button text={'No, thanks.'} red={true} dirleft={true} click={() => this.props.announceSlam(false)} />
-        <Button text={'Yes!'} click={() => this.props.announceSlam(true)} />
+        <div style={{ whiteSpace: 'nowrap' }}>
+          <Button text={'No, thanks.'} red={true} dirleft={true} click={() => this.props.announceSlam(false)} />
+          <Button text={'Yes!'} click={() => this.props.announceSlam(true)} />
+        </div>
       </>
     );
   }
@@ -264,17 +274,19 @@ export class Board extends React.Component<
     return (
       <>
         <div className={css.question}>Would you like to declare a Poigneé?</div>
-        <Button text={'No, thanks.'} red={true} dirleft={true} click={() => this.props.declarePoignee(false)} />
-        <Button
-          text={
-            <>
-              {text}
-              <br />
-              <small>{smallText}</small>
-            </>
-          }
-          click={clickable ? () => this.props.declarePoignee(true) : null}
-        />
+        <div style={{ whiteSpace: 'nowrap' }}>
+          <Button text={'No, thanks.'} red={true} dirleft={true} click={() => this.props.declarePoignee(false)} />
+          <Button
+            text={
+              <>
+                {text}
+                <br />
+                <small>{smallText}</small>
+              </>
+            }
+            click={clickable ? () => this.props.declarePoignee(true) : null}
+          />
+        </div>
       </>
     );
   }
@@ -282,10 +294,10 @@ export class Board extends React.Component<
   renderButtonsFinish() {
     if (this.props.announceSlam || !this.props.endGame || this.props.player.isReady) return;
     return (
-      <>
+      <div style={{ whiteSpace: 'nowrap' }}>
         <Button text={'Next round!'} below={true} click={() => this.props.endGame(false)} />
         <Button text={'Quit game.'} red={true} dirleft={true} below={true} click={() => this.props.endGame(true)} />
-      </>
+      </div>
     );
   }
 }

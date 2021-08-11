@@ -1,10 +1,33 @@
 .board {
+  position: relative;
+  overflow: auto;
+  height: calc(100vh - 49px);
+  max-height: 800px;
   font-family: sans-serif;
-  padding-top: 10px;
   border-radius: 20px;
   text-align: center;
   background-color: #795f5e;
   background-image: url("../media/wood-pattern.png");
+}
+
+.upperBoard {
+  position: relative;
+  height: calc(100% - 180px);
+}
+
+.lowerBoard {
+  position: relative;
+  height: 180px;
+}
+
+@media only screen and (max-height: 600px) {
+.upperBoard { height: calc(100% - 130px); }
+.lowerBoard { height: 130px; }
+}
+
+@media only screen and (min-height: 700px) {
+.upperBoard { height: calc(100% - 280px); }
+.lowerBoard { height: 280px; }
 }
 
 .calledCard {
@@ -33,9 +56,26 @@
 
 .buttonBar {
   position: absolute;
-  width: 100%; height: 60px;
-  bottom: 160px;
-  left: 0;
+  bottom: 95px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  max-width: 350px;
+  line-height: 40px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 20;
+}
+
+.buttonBar:after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: calc(50% - 10px);
+  width: 0; height: 0;
+  border: 20px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.5);
+  border-bottom: 0;
+  margin-bottom: -20px;
 }
 
 .buttonBar.callCards {
@@ -43,7 +83,15 @@
 }
 
 .buttonBar.below {
-  bottom: 5px;
+  bottom: -95px;
+}
+
+.buttonBar.below:after {
+  bottom: auto; top: 0;
+  border: 20px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.5);
+  border-top: 0;
+  margin: -20px auto 0 auto;
 }
 
 .buttonBar .cardContainer {
@@ -64,6 +112,7 @@
   top: 0; left: 50%;
   transform: translate(-50%, -150%);
   width: 450px; height: 25px;
+  line-height: 25px;
   font-size: 20px;
   font-weight: bold;
   color: #fff;

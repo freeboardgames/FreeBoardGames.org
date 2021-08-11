@@ -7,21 +7,21 @@ import * as util from '../engine/util';
 const ZonePositions = [
   [
     { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 0 50% auto', transform: 'translate(0,50%)' },
-    { inset: 'auto auto 50% 0', transform: 'translate(0,50%)' },
+    { inset: 'auto 20px 50% auto', transform: 'translate(50%, 100%) rotate(-90deg)' },
+    { inset: 'auto auto 50% 20px', transform: 'translate(-50%, 100%) rotate(90deg)' },
   ],
   [
     { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 0 50% auto', transform: 'translate(0,50%)' },
+    { inset: 'auto 20px 50% auto', transform: 'translate(50%, 100%) rotate(-90deg)' },
     { inset: '0 auto auto 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto auto 50% 0', transform: 'translate(0,50%)' },
+    { inset: 'auto auto 50% 20px', transform: 'translate(-50%, 100%) rotate(90deg)' },
   ],
   [
     { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 0 50% auto', transform: 'translate(0,50%)' },
+    { inset: 'auto 20px 50% auto', transform: 'translate(50%, 100%) rotate(-90deg)' },
     { inset: '0 auto auto 70%', transform: 'translate(-50%,0)' },
     { inset: '0 auto auto 30%', transform: 'translate(-50%,0)' },
-    { inset: 'auto auto 50% 0', transform: 'translate(0,50%)' },
+    { inset: 'auto auto 50% 20px', transform: 'translate(-50%, 100%) rotate(90deg)' },
   ],
 ];
 

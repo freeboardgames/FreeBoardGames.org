@@ -36,7 +36,7 @@ export class BgioBoard extends React.Component<
     const prevTrick = G.resolvedTricks.length > 1 ? G.resolvedTricks[G.resolvedTricks.length - 1] : G.trick;
 
     return (
-      <GameLayout gameArgs={this.props.gameArgs} maxWidth="1000px">
+      <GameLayout gameArgs={this.props.gameArgs} maxWidth="1500px">
         <Board
           player={player}
           players={G.players}

@@ -5,6 +5,7 @@
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
   font-size: 15px;
+  z-index: 5;
 }
 
 .prevTrick span:first-child {

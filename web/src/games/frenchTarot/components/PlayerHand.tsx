@@ -5,6 +5,9 @@ import { Card } from './Card';
 
 import { ICard } from '../engine/types';
 
+const CARD_WIDTH_MIN = 35;
+const CARD_WIDTH_MAX = 75;
+
 export class PlayerHand extends React.Component<
   {
     playerId: string;
@@ -16,27 +19,18 @@ export class PlayerHand extends React.Component<
   {}
 > {
   render() {
-    return <div className={css.playerHand}>{this.renderCards()}</div>;
-  }
-
-  renderCards() {
-    if (this.props.hand.length == 0) return;
+    if (this.props.hand.length == 0) return null;
 
     const nCards = this.props.hand.length;
     const card_scale = Math.min(20, Math.max(0, nCards - 10)) / 20;
-    const w = card_scale * (nCards * 24 + 80) + (1 - card_scale) * (nCards * 42 + 140);
 
-    return (
-      <div className={css.cards} style={{ width: w }}>
-        {this.props.hand.map((C, i) => this.renderCard(C, i, card_scale))}
-      </div>
-    );
+    return <div className={css.playerHand}>{this.props.hand.map((C, i) => this.renderCard(C, i, card_scale))}</div>;
   }
 
   renderCard(card: ICard, i: number, scale: number) {
     const style = {
-      width: `${scale * 24 + (1 - scale) * 42}px`,
-      transform: `scale(${scale * 0.24 + (1 - scale) * 0.42})`,
+      width: `${scale * CARD_WIDTH_MIN + (1 - scale) * CARD_WIDTH_MAX}px`,
+      transform: `scale(${(scale * CARD_WIDTH_MIN) / 120 + ((1 - scale) * CARD_WIDTH_MAX) / 140})`,
     };
     return (
       <div className={css.cardContainer} style={style} key={i}>
