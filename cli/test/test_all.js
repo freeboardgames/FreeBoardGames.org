@@ -30,7 +30,7 @@ function test() {
 function checkCircularDependencies() {
   cd("web");
   shell.env["FORCE_COLOR"] = "true";
-  let cmd = "yarn madge --circular --extensions ts,tsx ./";
+  let cmd = "yarn madge --circular --extensions ts,tsx ./src";
   fbgRun(cmd, "Circular dependencies detected (web).");
 }
 
