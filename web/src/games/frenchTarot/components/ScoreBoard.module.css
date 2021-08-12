@@ -59,6 +59,7 @@
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
   color: #fff;
+  width: 50%;
 }
 
 .previousRounds td {
@@ -69,11 +70,11 @@
 
 .previousRounds tr td:first-child:not([colspan]) {
   font-weight: bold;
-  width: 10px;
+  width: 20px;
 }
 
 .previousRounds table td:not(:first-child) {
-  width: 20px;
+  width: 50px;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -94,13 +95,14 @@
   overflow-x: auto;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1100px) {
 .scoreBoard {
   float: none;
   position: absolute;
   left: 50%; top: 100%;
   transform: translate(-50%, 5px);
-  max-width: 300px;
+  max-width: 470px;
+  width: 80%;
 }
 }
 
@@ -111,6 +113,11 @@
 .scoreBoard table tr:first-child td:first-child {
   text-align: left;
   padding-left: 1em;
+}
+
+.scoreBoard table td:first-child {
+  text-align: right;
+  width: 110px;
 }
 
 .scoreBoard table td:not(:first-child) {
@@ -126,8 +133,4 @@
 
 .scoreBoard table tr:nth-last-child(2) td {
   padding: 0.1em;
-}
-
-.scoreBoard table td:first-child {
-  text-align: right;
 }

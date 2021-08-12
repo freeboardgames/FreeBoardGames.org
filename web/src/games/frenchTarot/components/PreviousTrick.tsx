@@ -5,18 +5,6 @@ import css from './PreviousTrick.module.css';
 import { ICard, CardColor } from '../engine/types';
 import * as util from '../engine/util';
 
-const CardPositions = [
-  ['translate(0, 20px)', 'translate(55%, -10px)', 'translate(-55%, -10px)'],
-  ['translate(0, 30px)', 'translate(102%, 6px)', 'translate(0, -16px)', 'translate(-102%, 6px)'],
-  [
-    'translate(0, 30px)',
-    'translate(104%, 13px)',
-    'translate(55%, -12px)',
-    'translate(-55%, -12px)',
-    'translate(-104%, 13px)',
-  ],
-];
-
 const ColorSymbols = {
   Spades: <>&#x2660;&#xFE0F;</>,
   Hearts: <>&#x2665;&#xFE0F;</>,
@@ -58,12 +46,14 @@ export class PreviousTrick extends React.Component<
       }
       symbol = ColorSymbols[CardColor[card.color]];
     }
-    const position_id = Math.max(0, this.props.numPlayers - 3);
-    const position = CardPositions[position_id][index];
     return (
       <span
-        className={[css.prevCard, card ? '' : css.emptyCard].join(' ')}
-        style={{ transform: `translate(-50%, -50%) ${position}` }}
+        className={[
+          css.prevCard,
+          card ? '' : css.emptyCard,
+          css[`p${Math.max(3, this.props.numPlayers)}`],
+          css[`i${index + 1}`],
+        ].join(' ')}
         key={index}
       >
         {symbol} {text}

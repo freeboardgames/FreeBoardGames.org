@@ -4,27 +4,6 @@ import css from './PlayerZone.module.css';
 import { IPlayer } from '../engine/types';
 import * as util from '../engine/util';
 
-const ZonePositions = [
-  [
-    { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 20px 50% auto', transform: 'translate(50%, 100%) rotate(-90deg)' },
-    { inset: 'auto auto 50% 20px', transform: 'translate(-50%, 100%) rotate(90deg)' },
-  ],
-  [
-    { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 20px 50% auto', transform: 'translate(50%, 100%) rotate(-90deg)' },
-    { inset: '0 auto auto 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto auto 50% 20px', transform: 'translate(-50%, 100%) rotate(90deg)' },
-  ],
-  [
-    { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 20px 50% auto', transform: 'translate(50%, 100%) rotate(-90deg)' },
-    { inset: '0 auto auto 70%', transform: 'translate(-50%,0)' },
-    { inset: '0 auto auto 30%', transform: 'translate(-50%,0)' },
-    { inset: 'auto auto 50% 20px', transform: 'translate(-50%, 100%) rotate(90deg)' },
-  ],
-];
-
 export class PlayerZone extends React.Component<
   {
     numPlayers: number;
@@ -41,8 +20,6 @@ export class PlayerZone extends React.Component<
   {}
 > {
   render() {
-    const positions = ZonePositions[Math.max(0, this.props.numPlayers - 3)];
-    const position = positions[this.props.positionIndex];
     const markActive = this.props.biddingEnded && !this.props.roundEnded && this.props.active;
     return (
       <div
@@ -50,8 +27,9 @@ export class PlayerZone extends React.Component<
           css.playerZone,
           markActive ? css.active : '',
           this.props.positionIndex == 0 ? css.thisPlayer : '',
+          css[`p${Math.max(3, this.props.numPlayers)}`],
+          css[`i${this.props.positionIndex + 1}`],
         ].join(' ')}
-        style={{ inset: position.inset, transform: position.transform }}
       >
         {this.renderZoneContent()}
       </div>

@@ -32,6 +32,9 @@ export class PlayerHand extends React.Component<
       width: `${scale * CARD_WIDTH_MIN + (1 - scale) * CARD_WIDTH_MAX}px`,
       transform: `scale(${(scale * CARD_WIDTH_MIN) / 120 + ((1 - scale) * CARD_WIDTH_MAX) / 140})`,
     };
+    if (i == this.props.hand.length - 1) {
+      style.width = `${2.3 * (scale * CARD_WIDTH_MIN + (1 - scale) * CARD_WIDTH_MAX)}px`;
+    }
     return (
       <div className={css.cardContainer} style={style} key={i}>
         <Card

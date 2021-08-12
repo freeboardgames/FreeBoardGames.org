@@ -35,7 +35,7 @@ export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: Scor
         <input type="checkbox" id="togglePrevRounds" checked={props.showRoundSummary ? true : null} />
         <label htmlFor="togglePrevRounds">Previous scores</label>
         <div>
-          <div className={`${css.previousRounds} ${css.board}`} style={{ width: `${23 + numPlayers * 84}px` }}>
+          <div className={`${css.previousRounds} ${css.board}`} style={{ maxWidth: `${23 + numPlayers * 53}px` }}>
             <table>
               <tbody>
                 <tr>

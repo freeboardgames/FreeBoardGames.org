@@ -39,6 +39,16 @@
   font-size: 15px;
 }
 
+@media only screen and (max-width: 850px) {
+  .calledCard {
+    top: auto; bottom: -1em;
+    left: 10px;
+  }
+  .calledCard .cardContainer {
+    transform: translate(-50%, 0) scale(0.2) rotate(-90deg);
+  }
+}
+
 .calledCard span:first-child {
   position: absolute;
   top: 3px; left:0; right: 0;
@@ -79,7 +89,8 @@
 }
 
 .buttonBar.callCards {
-  height: 180px;
+  height: 130px;
+  min-width: 300px;
 }
 
 .buttonBar.below {
