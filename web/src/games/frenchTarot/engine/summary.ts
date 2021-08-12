@@ -86,16 +86,20 @@ function excusePoints(tricks: ITrick[], takers: string[]): number {
     // regular case: before last trick
     if (i < tricks.length - 1) {
       if (T_takerPos.indexOf(T_excusePos) != -1) {
-        return T.winner.isTaker ? 4.5 : 4;
+        points = T.winner.isTaker ? 4.5 : 4;
+      } else {
+        points = T.winner.isTaker ? 0.5 : 0;
       }
-      return T.winner.isTaker ? 0.5 : 0;
+      return true;
     }
     // rare case: Excuse in last trick
     if (T_takerPos.indexOf(T_excusePos) == -1) {
-      return T.winner.isTaker ? 4.5 : 4;
+      points = T.winner.isTaker ? 4.5 : 4;
+    } else {
+      // slam with Excuse leading in last trick
+      points = T_excusePos == 0 && T.winner.id == T.leader.id ? 4.5 : T.winner.isTaker ? 0.5 : 0;
     }
-    // slam with Excuse leading in last trick
-    return T_excusePos == 0 && T.winner.id == T.leader.id ? 4.5 : T.winner.isTaker ? 0.5 : 0;
+    return true;
   });
   return points;
 }
