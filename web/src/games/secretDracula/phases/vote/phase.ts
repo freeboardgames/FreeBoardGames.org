@@ -35,26 +35,29 @@ export let phaseVotePriest = {
       client: false,
     },
   },
-  endIf: (G: IG, ctx: Ctx) => {
-    let activePlayers = { value: {} };
-    let count = 0;
-    for (let i = 0; i < ctx.numPlayers; i++) {
-      if (G.deadIDs.includes(i)) {
-        continue;
-      } else if (G.votesYes[i] || G.votesNo[i]) {
-        // already voted
-        continue;
-      } else {
-        count += 1;
-        activePlayers.value[i] = 'phaseVotePriest';
+  turn: {
+    onMove: (G: IG, ctx: Ctx) => {
+      let activePlayers = { value: {} };
+      let count = 0;
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.deadIDs.includes(i)) {
+          continue;
+        } else if (G.votesYes[i] || G.votesNo[i]) {
+          // already voted
+          continue;
+        } else {
+          count += 1;
+          activePlayers.value[i] = 'phaseVotePriest';
+        }
       }
-    }
 
-    if (count > 0) {
-      // fix for not running into Issue with no active players
-      ctx.events.setActivePlayers(activePlayers);
-    }
-
+      if (count > 0) {
+        // fix for not running into Issue with no active players
+        ctx.events.setActivePlayers(activePlayers);
+      }
+    },
+  },
+  endIf: (G: IG, ctx: Ctx) => {
     let yesVotes = G.votesYes.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
