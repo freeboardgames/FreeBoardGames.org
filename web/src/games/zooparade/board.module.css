@@ -25,11 +25,10 @@
 }
 
 .wrapper {
-  max-height: 100vh;
+  max-height: calc(100vh - 49px);
   overflow-y: auto;
   --info-height: 0;
   box-sizing: border-box;
-  padding: 50px 0;
 }
 
 .wrapper * {

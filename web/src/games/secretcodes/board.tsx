@@ -78,7 +78,7 @@ export function Board({ G, ctx, moves, events, playerID, gameArgs, isActive }: I
     content = _renderPlayBoard();
   }
   return (
-    <GameLayout gameArgs={gameArgs} allowWiderScreen={true}>
+    <GameLayout gameArgs={gameArgs} maxWidth="1000px">
       {content}
     </GameLayout>
   );

@@ -38,7 +38,7 @@ export class BgioBoard extends React.Component<
         : null;
 
     return (
-      <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
+      <GameLayout gameArgs={this.props.gameArgs} maxWidth="1000px">
         <Board
           player={player}
           players={G.players}
