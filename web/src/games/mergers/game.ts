@@ -487,6 +487,10 @@ export const MergersGame: Game<IG> = {
 
   phases: {
     buildingPhase: {
+      onBegin: (G: IG) => {
+        G.isFirstTurnInPhase = true;
+        return G;
+      },
       turn: {
         order: {
           first: firstBuildTurn,
@@ -514,14 +518,15 @@ export const MergersGame: Game<IG> = {
             moves: { drawHotels },
           },
         },
-      },
-
-      onBegin: (G: IG, ctx: Ctx) => {
-        if (G.lastPlacedHotel) {
-          // if returning from a merger phase, we're now in the buy stock stage
-          const hotel = getHotels(G).getHotel(G.lastPlacedHotel);
-          ctx.events.setActivePlayers({ value: { [hotel.drawnByPlayer]: 'buyStockStage' } });
-        }
+        onBegin: (G: IG, ctx: Ctx) => {
+          if (G.lastPlacedHotel && G.isFirstTurnInPhase) {
+            // if returning from a merger phase, we're now in the buy stock stage
+            const hotel = getHotels(G).getHotel(G.lastPlacedHotel);
+            ctx.events.setActivePlayers({ value: { [hotel.drawnByPlayer]: 'buyStockStage' } });
+          }
+          G.isFirstTurnInPhase = false;
+          return G;
+        },
       },
     },
 

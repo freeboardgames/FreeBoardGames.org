@@ -6,6 +6,8 @@ export interface IG {
   lastPlacedHotel?: string;
   lastMove?: string;
   merger?: Merger;
+  // See https://github.com/boardgameio/boardgame.io/issues/979
+  isFirstTurnInPhase?: boolean;
 }
 
 export enum Chain {
