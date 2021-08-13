@@ -2,6 +2,8 @@ import { Ctx, Game } from 'boardgame.io';
 
 import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './engine/types';
 import * as util from './engine/util';
+import * as poignee from './engine/poignee';
+import * as summary from './engine/summary';
 import { Moves } from './engine/moves';
 
 /*
@@ -215,8 +217,8 @@ export const FrenchTarotGame: Game<IG> = {
         onBegin: (G: IG, ctx: Ctx) => {
           const hand = util.getPlayerById(G, ctx.currentPlayer).hand;
           const num_players = ctx.numPlayers;
-          if (G.resolvedTricks.length == 1 && util.Poignee.maxPoigneeLevel(hand, num_players) > 0) {
-            util.Poignee.preselectPoignee(G, ctx);
+          if (G.resolvedTricks.length == 1 && poignee.maxPoigneeLevel(hand, num_players) > 0) {
+            poignee.preselectPoignee(G, ctx);
             ctx.events.setActivePlayers({ currentPlayer: Stages.declare_poignee });
           } else {
             ctx.events.setActivePlayers({
@@ -260,7 +262,7 @@ export const FrenchTarotGame: Game<IG> = {
         G.trick = { cards: [], leader: G.trick.winner };
 
         if (isRoundOver) {
-          const roundSummary = util.Summary.getRoundSummary(G);
+          const roundSummary = summary.getRoundSummary(G);
           G.roundSummaries.push(roundSummary);
           G.players.forEach((p, i) => {
             p.score += roundSummary.scoring[i];
