@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "codegen": "node ../cli/codegen/cli.js",
     "test": "node ../cli/test/test.js",
     "lint": "node ../cli/lint/lint.js",
     "fix": "node ../cli/fix/fix.js",
@@ -18,7 +19,6 @@
     "start:prod": "cross-env NODE_ENV=production node dist/main",
     "rimraf": "./node_modules/rimraf/bin.js",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "test:ci": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",

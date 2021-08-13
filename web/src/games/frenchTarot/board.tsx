@@ -9,6 +9,9 @@ import { Board } from './components/GameBoard';
 
 import { Phases, Stages, IGameMoves, IG, IPlayer, IRoundSummary } from './engine/types';
 import * as util from './engine/util';
+import * as poignee from './engine/poignee';
+import * as discard from './engine/discard';
+import * as placement from './engine/placement';
 
 export class BgioBoard extends React.Component<
   {
@@ -106,11 +109,11 @@ function selectableCards(G: IG, ctx: Ctx, playerId: string): boolean[] {
   const stage = ctx.activePlayers && ctx.activePlayers[parseInt(playerId)];
   if (ctx.currentPlayer == playerId) {
     if (stage == Stages.declare_poignee) {
-      return util.Poignee.selectableCards(G, playerId);
+      return poignee.selectableCards(G, playerId);
     } else if (ctx.phase == Phases.discard) {
-      return util.Discard.selectableCards(G, playerId);
+      return discard.selectableCards(G, playerId);
     } else if (ctx.phase == Phases.placement) {
-      return util.Placement.selectableCards(G, playerId);
+      return placement.selectableCards(G, playerId);
     }
   }
   return player.hand.map(() => false);
