@@ -1,11 +1,5 @@
 import { IG, IPlayer, ICard, CardColor } from './types';
 
-import * as Placement from './placement';
-import * as Discard from './discard';
-import * as Poignee from './poignee';
-import * as Summary from './summary';
-export { Placement, Discard, Poignee, Summary };
-
 export function kittySize(numPlayers: number): number {
   return [6, 6, 3][Math.max(0, numPlayers - 3)];
 }
