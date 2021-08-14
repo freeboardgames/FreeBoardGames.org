@@ -436,12 +436,6 @@ export function mergerPhaseNextTurn(G: IG, ctx: Ctx, isFirst: boolean = false) {
     }
   }
 
-  if (G.merger.mergingChains.length === 1) {
-    ctx.events.setPhase('buildingPhase');
-  } else {
-    ctx.events.setPhase('chooseChainToMergePhase');
-  }
-
   // return a value to avoid from ending the phase that way, which preempts the setPhase call
   // we also want to set the merging player as the next turn regardless
   return mergingPlayerPos;
@@ -479,8 +473,6 @@ export const MergersGame: Game<IG> = {
     const G: IG = setupInitialState(ctx.numPlayers);
 
     setupInitialDrawing(G, ctx);
-
-    ctx.events.setPhase('buildingPhase');
 
     return G;
   },
@@ -528,6 +520,7 @@ export const MergersGame: Game<IG> = {
           return G;
         },
       },
+      start: true,
     },
 
     chooseSurvivingChainPhase: {
@@ -577,6 +570,13 @@ export const MergersGame: Game<IG> = {
 
     mergerPhase: {
       turn: {
+        onBegin: (G: IG, ctx: Ctx) => {
+          if (G.merger.mergingChains.length === 1) {
+            ctx.events.setPhase('buildingPhase');
+          } else {
+            ctx.events.setPhase('chooseChainToMergePhase');
+          }
+        },
         order: {
           first: mergerPhaseFirstTurn,
           next: mergerPhaseNextTurn,
