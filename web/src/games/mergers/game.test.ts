@@ -760,7 +760,6 @@ describe('mergerPhaseNextTurn', () => {
       events: eventsSpy,
     };
     expect(mergerPhaseNextTurn(G, ctx)).not.toBeUndefined();
-    expect(eventsSpy.setPhase.mock.calls[0]).toEqual(['buildingPhase']);
   });
 
   it('returns undefined if no one else has any stock', () => {
@@ -789,7 +788,6 @@ describe('mergerPhaseNextTurn', () => {
       events: eventsSpy,
     };
     expect(mergerPhaseNextTurn(G, ctx)).not.toBeUndefined();
-    expect(eventsSpy.setPhase.mock.calls[0]).toEqual(['buildingPhase']);
   });
 
   it('returns chooseNextMergerPhase if there are more chains to merge', () => {
@@ -818,7 +816,6 @@ describe('mergerPhaseNextTurn', () => {
       events: eventsSpy,
     };
     expect(mergerPhaseNextTurn(G, ctx)).not.toBeUndefined();
-    expect(eventsSpy.setPhase.mock.calls[0]).toEqual(['chooseChainToMergePhase']);
   });
 });
 
