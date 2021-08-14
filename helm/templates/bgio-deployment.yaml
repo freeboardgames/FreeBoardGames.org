@@ -27,6 +27,8 @@ spec:
           value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.postgresqlDatabase }}
         - name: BGIO_PORT
           value: "8001"
+        - name: BGIO_PUBLIC_SERVERS
+          value: https://{{ .Values.domain }}
         image: {{ .Values.images.web }} 
         imagePullPolicy: {{ .Values.images.imagePullPolicy }}
         livenessProbe:
