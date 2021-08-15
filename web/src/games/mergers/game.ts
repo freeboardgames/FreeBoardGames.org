@@ -570,13 +570,6 @@ export const MergersGame: Game<IG> = {
 
     mergerPhase: {
       turn: {
-        onBegin: (G: IG, ctx: Ctx) => {
-          if (G.merger.mergingChains.length === 1) {
-            ctx.events.setPhase('buildingPhase');
-          } else {
-            ctx.events.setPhase('chooseChainToMergePhase');
-          }
-        },
         order: {
           first: mergerPhaseFirstTurn,
           next: mergerPhaseNextTurn,
