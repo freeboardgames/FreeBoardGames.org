@@ -6694,10 +6694,10 @@ bn.js@^5.1.1:
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.1.3.tgz#beca005408f642ebebea80b042b4d18d2ac0ee6b"
   integrity sha512-GkTiFpjFtUzU9CbMeJ5iazkCzGL3jrhzerzZIuqLABjbwRaFt33I9tUdSNryIptM+RxDet6OKm2WnLXzW51KsQ==
 
-boardgame.io@0.47.1:
-  version "0.47.1"
-  resolved "https://registry.yarnpkg.com/boardgame.io/-/boardgame.io-0.47.1.tgz#ec32a1109994e40f70a7a5b771bbedfb36148b81"
-  integrity sha512-tRYdal2i30D5iMGBm4jIoAUTuAD/kPY/8NWfQb7R7aTbtSTflzXuELSljpQgygquAM+0hTV900FMVK4FMiFP/w==
+boardgame.io@0.47.2:
+  version "0.47.2"
+  resolved "https://registry.yarnpkg.com/boardgame.io/-/boardgame.io-0.47.2.tgz#2345e43edfc11d7d508a652eab337adc3d99291f"
+  integrity sha512-I6qWoRgZipqwM6njioZz6Fv9WvFrkp65u8wQ6OYCBKbjNrcydaEPU9Seuy5NP8Apdou9X75BkykgjC6JhiwmYQ==
   dependencies:
     "@koa/cors" "^3.1.0"
     "@types/koa" "^2.11.3"

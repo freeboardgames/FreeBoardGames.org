@@ -983,7 +983,6 @@ describe('mergerPhase', () => {
           G.players['0'].stocks[Chain.Continuum] = 2;
           G.players['1'].stocks[Chain.Amore] = 1;
           G.players['1'].stocks[Chain.Continuum] = 1;
-          ctx.events.setPhase('buildingPhase');
           return G;
         },
       };
@@ -1077,7 +1076,6 @@ describe('mergerPhase', () => {
           const G = setupInitialState(ctx.numPlayers);
           G.hotels = originalBoard;
           G.players['1'].stocks[Chain.Toro] = 1;
-          ctx.events.setPhase('buildingPhase');
           return G;
         },
       };
@@ -1163,11 +1161,11 @@ describe('mergers', () => {
       setup: (ctx: Ctx) => {
         const G = setupInitialState(ctx.numPlayers);
         G.hotels = hotels;
-        ctx.events.setPhase('buildingPhase');
         return G;
       },
     };
-
+    MergersCustomScenario.phases.buildingPhase.start = false;
+    MergersCustomScenario.phases.mergerPhase.start = true;
     const clients = getMultiplayerTestClients(3, MergersCustomScenario);
 
     p0 = clients[0];
