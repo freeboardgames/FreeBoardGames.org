@@ -10,9 +10,9 @@ import { PreviousTrick } from './PreviousTrick';
 import { ScoreBoard } from './ScoreBoard';
 import { Trick } from './Trick';
 
-import { IPlayer, ICard, CardColor, ITrick, IRoundSummary } from '../engine/types';
-import * as util from '../engine/util';
-import * as poignee from '../engine/poignee';
+import { IPlayer, ICard, CardColor, ITrick, IRoundSummary } from '../types';
+import * as util from '../util/misc';
+import * as u_poignee from '../util/poignee';
 
 export class Board extends React.Component<
   {
@@ -125,7 +125,7 @@ export class Board extends React.Component<
     var kitty_descr: JSX.Element = null;
     if (this.props.kittyRevealed && kitty_size > 6) {
       const name = this.props.playerNames[+this.props.currentPlayerId];
-      const thresh = util.Poignee.getPoigneeThresholds(this.props.players.length);
+      const thresh = u_poignee.getPoigneeThresholds(this.props.players.length);
       let lvl = 0;
       for (; lvl < thresh.length && thresh[lvl] <= kitty_size; lvl++);
       kitty_descr = (
@@ -237,8 +237,8 @@ export class Board extends React.Component<
   renderButtonsPoignee() {
     if (!this.props.declarePoignee) return;
     const numPlayers = this.props.players.length;
-    const thresh = poignee.getPoigneeThresholds(numPlayers);
-    const max_level = poignee.maxPoigneeLevel(this.props.player.hand, numPlayers);
+    const thresh = u_poignee.getPoigneeThresholds(numPlayers);
+    const max_level = u_poignee.maxPoigneeLevel(this.props.player.hand, numPlayers);
     const sel_size = this.props.player.discardSelection.length;
     let curr_level = 0;
     for (; curr_level < thresh.length && thresh[curr_level] <= sel_size; curr_level++);

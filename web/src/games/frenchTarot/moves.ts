@@ -2,8 +2,8 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
 
 import { Phases, Stages, IG, ICard } from './types';
-import * as util from './util';
-import * as poignee from './poignee';
+import * as util from './util/misc';
+import * as u_poignee from './util/poignee';
 
 export const Moves = {
   MakeBid(G: IG, ctx: Ctx, value: number) {
@@ -50,7 +50,7 @@ export const Moves = {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     if (declare) {
       if (!player.discardSelection) return INVALID_MOVE;
-      const poignee_thresholds = poignee.getPoigneeThresholds(ctx.numPlayers);
+      const poignee_thresholds = u_poignee.getPoigneeThresholds(ctx.numPlayers);
       const poignee_level = poignee_thresholds.indexOf(player.discardSelection.length);
       if (poignee_level == -1) return INVALID_MOVE;
       const isTaker = player.isTaker || player.id == G.calledTakerId;

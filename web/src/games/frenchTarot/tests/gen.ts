@@ -1,7 +1,7 @@
-import { IGame } from '../engine/types';
+import { IG } from '../types';
 import { resolveTrick, getSortedDeck, cmpCards } from '../game';
-import * as placement from '../engine/placement';
-import * as util from '../engine/util';
+import * as util from '../util/misc';
+import * as u_placement from '../util/placement';
 
 // helper functions to generate (random) test cases
 /* Example:
@@ -20,14 +20,14 @@ import { playRandomTricks, dealCards } from './gen';
   }
 */
 
-export function playRandomTricks(G: IGame) {
+export function playRandomTricks(G: IG) {
   const numTricks = G.players[0].hand.length;
   const numPlayers = G.players.length;
   for (let i = 0; i < numTricks; i++) {
     const leader = G.trick.leader;
     for (let j = 0; j < numPlayers; j++) {
       const player = G.players[util.mod(+leader.id + j, numPlayers)];
-      const sel_bool = placement.selectableCards(G, player.id);
+      const sel_bool = u_placement.selectableCards(G, player.id);
       const sel_id = sel_bool.map((_, i) => i).filter((i) => sel_bool[i]);
       const i_card = sel_id[(sel_id.length * Math.random()) | 0];
       G.trick.cards.push(player.hand.splice(i_card, 1)[0]);
@@ -43,7 +43,7 @@ export function shuffleArray(array: any[]) {
   }
 }
 
-export function dealCards(G: IGame) {
+export function dealCards(G: IG) {
   const handSize = util.handSize(G.players.length);
   G.deck = getSortedDeck();
   shuffleArray(G.deck);

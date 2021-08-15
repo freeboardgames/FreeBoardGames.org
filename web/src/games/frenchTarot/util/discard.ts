@@ -1,5 +1,5 @@
-import { IG, IPlayer, CardColor } from './types';
-import * as util from './util';
+import { IG, IPlayer, CardColor } from '../types';
+import * as util from './misc';
 
 export function selectableCards(G: IG, playerId: string): boolean[] {
   const player = util.getPlayerById(G, playerId);

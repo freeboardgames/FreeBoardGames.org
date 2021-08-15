@@ -7,11 +7,11 @@ import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 
 import { Board } from './components/GameBoard';
 
-import { Phases, Stages, IGameMoves, IG, IPlayer } from './engine/types';
-import * as util from './engine/util';
-import * as poignee from './engine/poignee';
-import * as discard from './engine/discard';
-import * as placement from './engine/placement';
+import { Phases, Stages, IGameMoves, IG, IPlayer } from './types';
+import * as util from './util/misc';
+import * as u_poignee from './util/poignee';
+import * as u_discard from './util/discard';
+import * as u_placement from './util/placement';
 
 export class BgioBoard extends React.Component<
   {
@@ -106,11 +106,11 @@ function selectableCards(G: IG, ctx: Ctx, playerId: string): boolean[] {
   const stage = ctx.activePlayers && ctx.activePlayers[+playerId];
   if (ctx.currentPlayer == playerId) {
     if (stage == Stages.declare_poignee) {
-      return poignee.selectableCards(G, playerId);
+      return u_poignee.selectableCards(G, playerId);
     } else if (ctx.phase == Phases.discard) {
-      return discard.selectableCards(G, playerId);
+      return u_discard.selectableCards(G, playerId);
     } else if (ctx.phase == Phases.placement) {
-      return placement.selectableCards(G, playerId);
+      return u_placement.selectableCards(G, playerId);
     }
   }
   return player.hand.map(() => false);

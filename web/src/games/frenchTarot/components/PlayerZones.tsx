@@ -3,8 +3,8 @@ import * as React from 'react';
 import css from './PlayerZones.module.css';
 import { PlayerZone } from './PlayerZone';
 
-import { IPlayer } from '../engine/types';
-import * as util from '../engine/util';
+import { IPlayer } from '../types';
+import * as util from '../util/misc';
 
 export class PlayerZones extends React.Component<
   {

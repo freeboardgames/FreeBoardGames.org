@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import css from './PlayerZone.module.css';
-import { IPlayer } from '../engine/types';
-import * as util from '../engine/util';
+import { IPlayer } from '../types';
+import * as util from '../util/misc';
 
 export class PlayerZone extends React.Component<
   {

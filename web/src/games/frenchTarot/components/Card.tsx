@@ -1,7 +1,7 @@
 import * as React from 'react';
 import css from './Card.module.css';
 
-import { ICard, CardColor } from '../engine/types';
+import { ICard, CardColor } from '../types';
 
 const ColorBgRow = {
   Clubs: 0,

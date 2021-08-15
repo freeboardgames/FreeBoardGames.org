@@ -1,4 +1,4 @@
-import { IG, IPlayer, ICard, CardColor } from './types';
+import { IG, IPlayer, ICard, CardColor } from '../types';
 
 import * as Placement from './placement';
 import * as Discard from './discard';

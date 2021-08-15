@@ -3,7 +3,7 @@ import * as React from 'react';
 import css from './Kitty.module.css';
 import { Card } from './Card';
 
-import { ICard } from '../engine/types';
+import { ICard } from '../types';
 
 export class Kitty extends React.Component<
   {

@@ -3,7 +3,7 @@ import * as React from 'react';
 import css from './PlayerHand.module.css';
 import { Card } from './Card';
 
-import { ICard } from '../engine/types';
+import { ICard } from '../types';
 
 const CARD_WIDTH_MIN = 35;
 const CARD_WIDTH_MAX = 75;

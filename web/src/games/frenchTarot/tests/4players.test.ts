@@ -1,4 +1,4 @@
-import { getRoundSummary } from '../engine/summary';
+import { getRoundSummary } from '../util/summary';
 import { playTricks, setup_4players } from './util';
 
 it('correctly evaluates a round where taker wins', () => {
@@ -25,6 +25,7 @@ it('correctly evaluates a round where taker wins', () => {
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '0',
+    calledTakerId: '',
     takerPointsRequired: 51,
     takerPoints: 56,
     petitAuBout: 10,
@@ -59,6 +60,7 @@ it('correctly evaluates a round where taker loses but gets petit au bout', () =>
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '0',
+    calledTakerId: '',
     takerPointsRequired: 51,
     takerPoints: 44,
     petitAuBout: 10,

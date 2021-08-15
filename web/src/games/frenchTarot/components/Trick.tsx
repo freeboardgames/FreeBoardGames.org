@@ -3,8 +3,8 @@ import * as React from 'react';
 import css from './Trick.module.css';
 import { Card } from './Card';
 
-import { ICard } from '../engine/types';
-import * as util from '../engine/util';
+import { ICard } from '../types';
+import * as util from '../util/misc';
 
 const CardPositions = [
   [

@@ -1,10 +1,10 @@
 import { Ctx, Game } from 'boardgame.io';
 
-import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './engine/types';
-import * as util from './engine/util';
-import * as poignee from './engine/poignee';
-import * as summary from './engine/summary';
-import { Moves } from './engine/moves';
+import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './types';
+import * as util from './util/misc';
+import * as u_poignee from './util/poignee';
+import * as u_summary from './util/summary';
+import { Moves } from './moves';
 
 /*
 TODO before publishing:
@@ -221,8 +221,8 @@ export const FrenchTarotGame: Game<IG> = {
         onBegin: (G: IG, ctx: Ctx) => {
           const hand = util.getPlayerById(G, ctx.currentPlayer).hand;
           const num_players = ctx.numPlayers;
-          if (G.resolvedTricks.length == 1 && poignee.maxPoigneeLevel(hand, num_players) > 0) {
-            poignee.preselectPoignee(G, ctx);
+          if (G.resolvedTricks.length == 1 && u_poignee.maxPoigneeLevel(hand, num_players) > 0) {
+            u_poignee.preselectPoignee(G, ctx);
             ctx.events.setActivePlayers({ currentPlayer: Stages.declare_poignee });
           } else {
             ctx.events.setActivePlayers({
@@ -258,7 +258,7 @@ export const FrenchTarotGame: Game<IG> = {
 
       onEnd: (G: IG) => {
         if (resolveTrick(G)) {
-          const roundSummary = summary.getRoundSummary(G);
+          const roundSummary = u_summary.getRoundSummary(G);
           G.roundSummaries.push(roundSummary);
           G.players.forEach((P, i) => {
             P.score += roundSummary.scoring[i];
@@ -290,7 +290,7 @@ export const FrenchTarotGame: Game<IG> = {
   },
 };
 
-export function resolveTrick(G: IGame): boolean {
+export function resolveTrick(G: IG): boolean {
   // returns true if this was the last trick in the game
   const isRoundOver = G.players.every((P) => P.hand.length == 0);
   const isAlmostSlam =

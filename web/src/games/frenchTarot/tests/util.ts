@@ -1,6 +1,6 @@
-import { ICard, CardColor, ITrick, IPlayer, DefaultIPlayer, IGame, DefaultIGame } from '../engine/types';
+import { ICard, CardColor, ITrick, IPlayer, DefaultIPlayer, IG, DefaultIG } from '../types';
 import { resolveTrick } from '../game';
-import * as util from '../engine/util';
+import * as util from '../util/misc';
 
 export function str2card(s: string): ICard {
   const color = {
@@ -60,7 +60,7 @@ export function trick2str(T: ITrick): string {
     .join(' ');
 }
 
-export function playTricks(G: IGame, tricks: string[]) {
+export function playTricks(G: IG, tricks: string[]) {
   tricks.forEach((s_trick) => {
     G.trick = str2trick(s_trick, G.players);
     G.players.forEach((P, i) => {
@@ -72,7 +72,7 @@ export function playTricks(G: IGame, tricks: string[]) {
   });
 }
 
-export function setup_4players(): IGame {
+export function setup_4players(): IG {
   const players = [
     {
       ...DefaultIPlayer,
@@ -87,7 +87,7 @@ export function setup_4players(): IGame {
   const ecarte = str2trick('D2 S1 S6 SV H1 H7');
   ecarte.winner = players[0];
   return {
-    ...DefaultIGame,
+    ...DefaultIG,
     players: players,
     takerId: '0',
     trick: { cards: [], leader: players[1] },
@@ -97,7 +97,7 @@ export function setup_4players(): IGame {
   };
 }
 
-export function setup_5players(): IGame {
+export function setup_5players(): IG {
   const players = [
     { ...DefaultIPlayer, id: '0', hand: str2cards('C1 C5 C10 CC D4 D9 S3 S7 SC HC HR T2 T6 T7 T12') },
     { ...DefaultIPlayer, id: '1', hand: str2cards('C2 C4 CR D1 D5 D10 DV S2 S4 H2 T1 T9 T16 T18 T20') },
@@ -108,7 +108,7 @@ export function setup_5players(): IGame {
   const ecarte = str2trick('H3 H6 H8');
   ecarte.winner = players[3];
   return {
-    ...DefaultIGame,
+    ...DefaultIG,
     players: players,
     takerId: '3',
     trick: { cards: [], leader: players[2] },

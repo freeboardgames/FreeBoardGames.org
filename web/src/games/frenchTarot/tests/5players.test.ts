@@ -1,5 +1,5 @@
 import { getCalledTakerId } from '../game';
-import { getRoundSummary } from '../engine/summary';
+import { getRoundSummary } from '../util/summary';
 import { str2card, playTricks, setup_5players } from './util';
 
 it('finds the called taker in a 5-player game', () => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import css from './ScoreBoard.module.css';
 
-import { IRoundSummary } from '../engine/types';
+import { IRoundSummary } from '../types';
 
 const EmptyRoundSummary: IRoundSummary = {
   takerId: '',

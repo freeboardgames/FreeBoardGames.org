@@ -1,5 +1,5 @@
-import { IG, ICard, CardColor, ITrick, IRoundSummary } from './types';
-import * as util from './util';
+import { IG, ICard, CardColor, ITrick, IRoundSummary } from '../types';
+import * as util from './misc';
 
 export function getRoundSummary(G: IG): IRoundSummary {
   if (G.calledCard) {

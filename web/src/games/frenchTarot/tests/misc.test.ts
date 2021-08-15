@@ -1,4 +1,4 @@
-import { CardColor } from '../engine/types';
+import { CardColor } from '../types';
 import { getTrickWinnerId, resolveTrick } from '../game';
 import { str2card, card2str, str2trick, setup_4players, setup_5players } from './util';
 

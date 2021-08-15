@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import css from './PreviousTrick.module.css';
 
-import { ICard, CardColor } from '../engine/types';
-import * as util from '../engine/util';
+import { ICard, CardColor } from '../types';
+import * as util from '../util/misc';
 
 const ColorSymbols = {
   Spades: <>&#x2660;&#xFE0F;</>,
