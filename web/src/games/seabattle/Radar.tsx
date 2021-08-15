@@ -10,11 +10,16 @@ import SvgBackground from './media/SvgBackground';
 import SvgHit from './media/SvgHit';
 import SvgMiss from './media/SvgMiss';
 import { Blink } from 'gamesShared/components/animation/Blink';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
 export interface IColorMap {
   [key: string]: string;
 }
-interface IRadarProps {
+
+interface IRadarInnerProps extends WithCurrentGameTranslation {}
+
+interface IRadarOutterProps {
   player?: number;
   ships: IShip[];
   salvos?: ISalvo[];
@@ -24,8 +29,8 @@ interface IRadarProps {
   onClick?: (cell: ICell) => void;
 }
 
-export class Radar extends React.Component<IRadarProps, {}> {
-  constructor(props: IRadarProps) {
+export class RadarInternal extends React.Component<IRadarInnerProps & IRadarOutterProps, {}> {
+  constructor(props: IRadarInnerProps & IRadarOutterProps) {
     super(props);
   }
 
@@ -178,3 +183,6 @@ export class Radar extends React.Component<IRadarProps, {}> {
     return result;
   }
 }
+
+const enhance = compose<IRadarInnerProps, IRadarOutterProps>(withCurrentGameTranslation);
+export const Radar = enhance(RadarInternal);

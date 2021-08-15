@@ -94,7 +94,7 @@ export default withWorkers(
 
       return config;
     },
-    ...(process.env.NEXT_PUBLIC_I18N_ENABLED === 'true' && { i18n }),
+    i18n,
     rewrites: () => [...i18nRewrites()],
     redirects: () => [...i18nRedirects()],
   }),

@@ -1,10 +1,9 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import { Battle } from './Battle';
+import { Battle, BattleInternal } from './Battle';
 import { SeabattleGame } from './game';
 import { VALID_SETUP_FIRST_PLAYER, VALID_SETUP_SECOND_PLAYER } from './mocks';
 import { Client } from 'boardgame.io/client';
+import { makeMount } from 'test/utils/enzymeUtil';
 
 // mock functions for HTMLMediaElement
 // https://github.com/jsdom/jsdom/issues/2155#issuecomment-366703395
@@ -21,7 +20,7 @@ import { Client } from 'boardgame.io/client';
   /* do nothing */
 };
 
-Enzyme.configure({ adapter: new Adapter() });
+const mount = makeMount({ gameCode: 'seabattle' });
 
 test('one phase - hit', () => {
   const client = Client({
@@ -37,7 +36,7 @@ test('one phase - hit', () => {
   client.moves.salvo(1, 1);
   client.updatePlayerID('1');
 
-  const grid = Enzyme.mount(
+  const grid = mount(
     <Battle
       ctx={store.getState().ctx}
       G={store.getState().G}
@@ -47,23 +46,24 @@ test('one phase - hit', () => {
       getSoundPref={jest.fn(() => true)}
     />,
   );
+  const internal = grid.find(BattleInternal);
   // should be ignored
   grid.find({ x: 0, y: 0 }).find('Square').at(0).simulate('click');
   grid.find({ x: 0, y: 9 }).find('Square').at(0).simulate('click');
-  expect(grid.html()).toContain('CLICK TO SHOOT');
+  expect(grid.find('[data-testid="message"]')).toContainText('CLICK TO SHOOT');
 
   grid.setProps({
     ...grid.props(),
     G: store.getState().G,
     currentPlayer: store.getState().ctx.currentPlayer,
   });
-  expect(grid.html()).toContain('HIT');
+  expect(grid.find('[data-testid="message"]')).toContainText('HIT');
 
   // End Animation...
-  (grid.instance() as Battle)._animate(grid.state('startTime'))();
-  (grid.instance() as Battle)._animate((grid.state('startTime') as number) + 1e4)();
+  (internal.instance() as BattleInternal)._animate(internal.state('startTime'))();
+  (internal.instance() as BattleInternal)._animate((internal.state('startTime') as number) + 1e4)();
 
-  expect(grid.html()).toContain('Waiting for opponent...');
+  expect(grid.find('[data-testid="message"]')).toContainText('Waiting for opponent...');
 });
 
 test('one phase - miss', () => {
@@ -77,7 +77,7 @@ test('one phase - miss', () => {
 
   client.moves.salvo(9, 9);
 
-  const grid = Enzyme.mount(
+  const grid = mount(
     <Battle
       ctx={store.getState().ctx}
       G={store.getState().G}
@@ -86,12 +86,12 @@ test('one phase - miss', () => {
       currentPlayer={store.getState().ctx.currentPlayer}
       getSoundPref={jest.fn(() => true)}
     />,
-  );
+  ).find(BattleInternal);
   grid.setState({
     ...grid.state(),
     startTime: Date.now(),
     salvo: { hit: false },
     showSalvo: true,
   });
-  expect(grid.html()).toContain('MISS');
+  expect(grid.find('[data-testid="message"]')).toContainText('MISS');
 });

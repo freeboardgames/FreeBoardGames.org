@@ -46,15 +46,15 @@ spec:
           initialDelaySeconds: 180
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 2
+          timeoutSeconds: 5
         name: {{ .Release.Name }}-fbg-server
         resources:
           limits:
             cpu: "1"
-            memory: 512Mi
+            memory: 1024Mi
           requests:
-            cpu: 350m
-            memory: 384Mi
+            cpu: 100m
+            memory: 128Mi
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

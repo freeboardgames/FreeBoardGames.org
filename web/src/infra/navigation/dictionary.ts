@@ -1,1 +1,1 @@
-export const playDictionary = { en: 'play', pt: 'jogar' };
+export const playDictionary = { en: 'play', pt: 'jogar', de: 'spielen' };

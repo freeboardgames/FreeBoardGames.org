@@ -12,8 +12,12 @@ import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Circle, Cross, Lines } from './Shapes';
 import Typography from '@material-ui/core/Typography';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
+import { compose } from 'recompose';
+import { WithCurrentGameTranslation, withCurrentGameTranslation } from 'infra/i18n';
 
-interface IBoardProps {
+interface InnerProps extends WithCurrentGameTranslation {}
+
+interface OutterProps {
   G: any;
   ctx: any;
   moves: any;
@@ -23,7 +27,7 @@ interface IBoardProps {
   step?: any;
 }
 
-export class Board extends React.Component<IBoardProps, {}> {
+class BoardInternal extends React.Component<InnerProps & OutterProps, {}> {
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
       this.props.moves.clickCell(id);
@@ -37,16 +41,16 @@ export class Board extends React.Component<IBoardProps, {}> {
   _getStatus() {
     if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'YOUR TURN';
+        return this.props.translate('your_turn');
       } else {
-        return 'Waiting for opponent...';
+        return this.props.translate('waiting_for_opponent');
       }
     } else {
       switch (this.props.ctx.currentPlayer) {
         case '0':
-          return "Red's turn";
+          return this.props.translate('red_s_turn');
         case '1':
-          return "Green's turn";
+          return this.props.translate('green_s_turn');
       }
     }
   }
@@ -56,9 +60,9 @@ export class Board extends React.Component<IBoardProps, {}> {
       // Online game
       if (this.props.ctx.gameover.winner !== undefined) {
         if (this.props.ctx.gameover.winner === this.props.playerID) {
-          return 'you won';
+          return this.props.translate('you_won');
         } else {
-          return 'you lost';
+          return this.props.translate('you_lost');
         }
       } else {
         return 'draw';
@@ -67,11 +71,11 @@ export class Board extends React.Component<IBoardProps, {}> {
       // Local game
       switch (this.props.ctx.gameover.winner) {
         case '0':
-          return 'red won';
+          return this.props.translate('red_won');
         case '1':
-          return 'green won';
+          return this.props.translate('green_won');
         case undefined:
-          return 'draw';
+          return this.props.translate('draw');
       }
     }
   }
@@ -134,4 +138,6 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 }
 
-export default Board;
+const enhance = compose<InnerProps, OutterProps>(withCurrentGameTranslation);
+
+export const Board = enhance(BoardInternal);

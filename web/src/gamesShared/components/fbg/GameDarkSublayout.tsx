@@ -26,7 +26,7 @@ interface IGameDarkSublayoutInnerProps {
 interface IGameDarkSublayoutOutterProps {
   children: React.ReactNode;
   optionsMenuItems?: () => IOptionsItems[];
-  allowWiderScreen?: boolean;
+  maxWidth?: string;
   gameArgs: IGameArgs;
   avoidOverscrollReload?: boolean;
 }
@@ -41,11 +41,11 @@ interface IGameDarkSublayoutState {
 const isJest = process.env.JEST_WORKER_ID !== undefined;
 
 export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
-  constructor(props: IGameDarkSublayoutProps) {
-    super(props);
-    this.state = { menuAnchorEl: null, prevBgColor: document.body.style.backgroundColor };
+  state = { menuAnchorEl: null, prevBgColor: document.body.style.backgroundColor };
+
+  componentDidMount() {
     document.body.style.backgroundColor = 'black';
-    if (props.avoidOverscrollReload) {
+    if (this.props.avoidOverscrollReload) {
       document.body.style.overscrollBehavior = 'none';
     }
   }
@@ -74,7 +74,13 @@ export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayou
         <Typography
           variant="h6"
           gutterBottom={true}
-          style={{ float: 'left', marginTop: '10px', backgroundColor: 'red', color: 'white' }}
+          style={{
+            float: 'left',
+            marginTop: '10px',
+            backgroundColor: 'red',
+            color: 'white',
+            whiteSpace: 'nowrap',
+          }}
         >
           &nbsp;{gameName}&nbsp;
         </Typography>
@@ -86,7 +92,7 @@ export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayou
         <div
           style={{
             display: 'flex',
-            maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
+            maxWidth: this.props.maxWidth || '500px',
             marginLeft: 'auto',
             marginRight: 'auto',
           }}
@@ -106,14 +112,24 @@ export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayou
           style={{
             position: 'relative',
             width: '100%',
-            maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
-            color: 'white',
-            top: 'calc(50vh - 49px)',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            height: 'calc(100vh - 49px)',
+            textAlign: 'center',
+            lineHeight: 'calc(100vh - 49px)',
           }}
         >
-          {this.props.children}
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: this.props.maxWidth || '500px',
+              color: 'white',
+              display: 'inline-block',
+              verticalAlign: 'middle',
+              lineHeight: 'normal',
+            }}
+          >
+            {this.props.children}
+          </div>
         </div>
       </>
     );

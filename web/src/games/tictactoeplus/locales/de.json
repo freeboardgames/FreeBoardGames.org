@@ -1,0 +1,19 @@
+{
+  "name": "Tic-Tac-Toe-Plus",
+  "description": "Eine neue Spielweise mit einem Plus",
+  "descriptionTag": "Spiele Tic-Tac-Toe-Plus \\\ngratis online. Du kannst entweder alleine gegen den Computer spielen,\\\noder gegen einen Freund, online oder auf deinem Gerät.",
+  "instructions": {
+    "text": "Tic-Tac-Toe Plus (ttt+) is a 4x4 variant of the classic two-player Tic-Tac-Toe game.  While the 4x4 variant of Tic-Tac-Toe is considered to be biased and frequently lead to a draw, Tic-Tac-Toe **Plus** introduces a wildcard symbol (namely the *plus* symbol), which represents both a circle **and** a cross.\n\nEach time a player takes their turn, there is a 1-in-6 chance of a wildcard symbol being placed.  \n\nNote: The wildcard (the plus) can appear up to a maximum of three times per game.\n\n\n"
+  },
+  "red": "Rot",
+  "green": "Grün",
+  "unknown": "Unbekannt",
+  "your_turn": "DEIN ZUG",
+  "waiting_for_player": "Warte auf {{ name }}...",
+  "player_s_turn": "{{ name }} is am Zug",
+  "you_won": "du hast gewonnen",
+  "you_lost": "du hast verloren",
+  "draw": "Unentschieden",
+  "easy": "Einfach",
+  "hard": "Schwer"
+}

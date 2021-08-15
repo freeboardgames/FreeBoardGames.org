@@ -1,0 +1,61 @@
+.speechBubble {
+  cursor: pointer;
+  box-shadow: rgb(197, 255, 5) 0px 0px 10px;
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 0 5px;
+	position: relative;
+	background: #fefefe;
+  border-radius: 5px;
+  color: #000;
+  font-size: 16px;
+  line-height: 14px;
+}
+
+.speechBubble small {
+  line-height: 14px;
+  font-size: 11px;
+  width: 160px;
+}
+
+.speechBubble.inactive {
+  cursor: default;
+  box-shadow: rgb(0, 0, 0) 0px 0px 10px;
+  color: #aaa;
+}
+
+.speechBubble.red {
+  box-shadow: rgb(255, 197, 5) 0px 0px 10px;
+}
+
+.speechBubble:after {
+	content: '';
+	position: absolute;
+	bottom: 0; left: 50%;
+	width: 0; height: 0;
+	border: 20px solid transparent;
+	border-top-color: #fefefe;
+	border-bottom: 0;
+	margin-bottom: -20px;
+}
+
+.speechBubble.below:after {
+  bottom: auto; top: 0;
+  left: auto; right: 50%;
+	margin: -20px 0 0 0;
+	border: 20px solid transparent;
+	border-bottom-color: #fefefe;
+	border-top: 0;
+}
+
+.speechBubble:not(.inactive):hover { background-color: #efe; }
+.speechBubble.red:not(.inactive):hover { background-color: #fee; }
+.speechBubble:not(.inactive):hover:after { border-top-color: #efe; }
+.speechBubble.red:not(.inactive):hover:after {border-top-color: #fee; }
+.speechBubble.below:not(.inactive):hover:after { border-bottom-color: #efe; }
+.speechBubble.below.red:not(.inactive):not(.inactive):hover { background-color: #efe; }
+
+.speechBubble.right:after { border-width: 20px 20px 0 0; }
+.speechBubble.left:after { border-width: 20px 0 0 20px; }
+.speechBubble.below.right:after { border-width: 0 0 20px 20px; }
+.speechBubble.below.left:after { border-width: 0 20px 20px 0; }

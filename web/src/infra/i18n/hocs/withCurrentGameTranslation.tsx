@@ -1,8 +1,6 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { getGameCodeNamespace } from 'infra/game';
-import { useCurrentGame } from 'infra/game/GameProvider';
 import React, { PropsWithChildren } from 'react';
-import { useTranslation } from '../hooks';
+import { useCurrentGameTranslation } from '../hooks';
 import { WithCurrentGameTranslation as TWithCurrentGameTranslation } from '../types';
 
 export const withCurrentGameTranslation = <
@@ -10,15 +8,13 @@ export const withCurrentGameTranslation = <
   C extends React.ComponentType<P & TWithCurrentGameTranslation>
 >(
   Component: C,
-  componentName: string,
+  componentName?: string,
 ) => {
   type Props = JSX.LibraryManagedAttributes<C, PropsWithChildren<P & TWithCurrentGameTranslation>>;
 
   const WithNamespace: React.ComponentType<Props> = (props) => {
-    const { game } = useCurrentGame();
-    const namespace = game?.code;
-    const { t } = useTranslation(getGameCodeNamespace(namespace));
-    return <Component {...props} translate={t} />;
+    const { translate } = useCurrentGameTranslation();
+    return <Component {...props} translate={translate} />;
   };
 
   WithNamespace.displayName = `withCurrentGameTranslation(${componentName ?? Component.displayName ?? Component.name})`;

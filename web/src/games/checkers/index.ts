@@ -5,7 +5,7 @@ import instructions from './instructions.md';
 
 export const checkersGameDef: IGameDef = {
   code: 'checkers',
-  codes: { en: 'checkers', pt: 'damas' },
+  codes: { en: 'checkers', pt: 'damas', de: 'dame' },
   name: 'Checkers',
   contributors: ['JosefKuchar'],
   imageURL: Thumbnail,
@@ -16,7 +16,7 @@ export const checkersGameDef: IGameDef = {
   descriptionTag: `Play Checkers (also known as Draughts) locally
   or online against friends!`,
   instructions: {
-    videoId: 'yFrAN-LFZRU',
+    videoId: 'ScKIdStgAfU',
     text: instructions,
   },
   status: IGameStatus.PUBLISHED,

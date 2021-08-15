@@ -1,0 +1,11 @@
+{
+  "computer": "Computer",
+  "you": "Du",
+  "player_1": "Spieler 1",
+  "player_2": "Spieler 2",
+  "game_not_found": "Spiel nicht gefunden",
+  "invalid_game_mode": "Ungültiger Spielmodus",
+  "connecting": "Verbinde...",
+  "downloading": "Downloade {{ name }}",
+  "failed_to_download": "Fehler beim Download von {{ name }}"
+}

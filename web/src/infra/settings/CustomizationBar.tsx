@@ -37,7 +37,7 @@ export class CustomizationBarInternal extends React.Component<
   CustomizationBarInnerProps & CustomizationBarOutterProps,
   CustomizationBarState
 > {
-  state = {
+  state: CustomizationBarState = {
     showCustomizationDialog: false,
     customization: null,
     customizationState: {} as FullGameCustomizationState,
@@ -67,29 +67,26 @@ export class CustomizationBarInternal extends React.Component<
 
   private renderQuickCustomization() {
     const custom = this.state.customization;
-    if (!custom || !custom.renderQuick) {
+
+    if (!custom?.QuickCustomization) {
       return null;
     }
+
+    const { QuickCustomization } = custom;
     const mode = this.props.info.mode;
-    return custom.renderQuick({
+
+    const props = {
       mode,
       currentValue: (this.state.customizationState || {})[mode]?.quick,
       onChange: this._changeCustomValue(CustomizationType.QUICK),
-    });
+    };
+
+    return <QuickCustomization {...props} />;
   }
 
   private hasFullCustomization() {
-    const mode = this.props.info.mode;
     const custom = this.state.customization;
-    if (!custom?.renderFull) {
-      return false;
-    }
-    const fullCustom = custom.renderFull({
-      mode: this.props.info.mode,
-      currentValue: this.state.customizationState[mode]?.quick,
-      onChange: () => {},
-    });
-    return fullCustom !== null;
+    return custom?.FullCustomization;
   }
 
   private renderFullCustomizationButton() {
@@ -124,12 +121,14 @@ export class CustomizationBarInternal extends React.Component<
 
   private renderCustomizationDialogContent() {
     const custom = this.state.customization;
+    const { FullCustomization } = custom;
     const mode = this.props.info.mode;
-    return custom.renderFull({
+    const props = {
       mode: this.props.info.mode,
       currentValue: this.state.customizationState[mode]?.full,
       onChange: this._changeCustomValue(CustomizationType.FULL),
-    });
+    };
+    return FullCustomization ? <FullCustomization {...props} /> : null;
   }
 
   private renderCustomizationDialogHeader() {

@@ -1,27 +1,29 @@
 import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
 import { SecretcodesGame } from './game';
-import Board from './board';
+import { Board } from './board';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { Phases, TeamColor } from './definitions';
+import { makeMount } from 'test/utils/enzymeUtil';
+import { PlayBoard } from './PlayBoard';
 
-jest.mock('./LobbyPlayer');
-jest.mock('./Lobby');
-
-let wrapper: Enzyme.ShallowWrapper;
+let wrapper: Enzyme.ReactWrapper;
 let client;
+
+const mount = makeMount({ gameCode: 'secretcodes' });
 
 describe('Secretcodes UI', () => {
   beforeEach(() => {
     client = Client({
       game: SecretcodesGame,
     });
-    const state0 = client.store.getState();
-    wrapper = Enzyme.shallow(
+
+    const state = client.store.getState();
+    wrapper = mount(
       <Board
-        G={state0.G}
-        ctx={state0.ctx}
-        events={state0.events}
+        G={state.G}
+        ctx={state.ctx}
+        events={state.events}
         moves={client.moves}
         playerID={'0'}
         isActive={true}
@@ -44,10 +46,10 @@ describe('Secretcodes UI', () => {
   });
 
   it('should render PlayBoard', () => {
-    wrapper.setProps({ ctx: { phase: Phases.giveClue } });
+    wrapper.setProps({ ctx: { activePlayers: { '1': {} }, currentPlayer: '1', phase: Phases.guess } });
 
     expect(wrapper.find('GameLayout').exists()).toBeTruthy();
-    expect(wrapper.find('PlayBoard').exists()).toBeTruthy();
+    expect(wrapper.find(PlayBoard).exists()).toBeTruthy();
   });
 
   it('should show gameover, red team wins', () => {

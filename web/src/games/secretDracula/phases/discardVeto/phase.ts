@@ -7,21 +7,23 @@ import { moveWantVetoPriest } from './moves';
 import { moveWantVetoMayor } from './moves';
 
 export let phaseDiscardMayor = {
-  onBegin: (G: IG, ctx: Ctx) => {
-    //- console.log('starting phaseDiscardMayor');
-    let p = G.mayorID;
-    let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phaseDiscardMayor';
-    ctx.events.setActivePlayers(activePlayers);
-    if (G.policyDraw.length < 3) {
-      G.policyDraw.push(...G.policyDiscard);
-      G.policyDiscard = <IPolicy[]>Array(0);
-    }
-    G.policyHand.push(G.policyDraw.pop());
-    G.policyHand.push(G.policyDraw.pop());
-    G.policyHand.push(G.policyDraw.pop());
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      //- console.log('starting phaseDiscardMayor');
+      let p = G.mayorID;
+      let activePlayers = { value: {} };
+      activePlayers.value[p] = 'phaseDiscardMayor';
+      ctx.events.setActivePlayers(activePlayers);
+      if (G.policyDraw.length < 3) {
+        G.policyDraw.push(...G.policyDiscard);
+        G.policyDiscard = <IPolicy[]>Array(0);
+      }
+      G.policyHand.push(G.policyDraw.pop());
+      G.policyHand.push(G.policyDraw.pop());
+      G.policyHand.push(G.policyDraw.pop());
 
-    return G;
+      return G;
+    },
   },
   moves: {
     moveDiscardMayor: {
@@ -48,13 +50,15 @@ export let phaseDiscardMayor = {
   },
 };
 export let phaseDiscardPriest = {
-  onBegin: (G: IG, ctx: Ctx) => {
-    //- console.log('starting phaseDiscardPriest');
-    let p = G.priestID;
-    let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phaseDiscardPriest';
-    ctx.events.setActivePlayers(activePlayers);
-    return G;
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      //- console.log('starting phaseDiscardPriest');
+      let p = G.priestID;
+      let activePlayers = { value: {} };
+      activePlayers.value[p] = 'phaseDiscardPriest';
+      ctx.events.setActivePlayers(activePlayers);
+      return G;
+    },
   },
   moves: {
     moveDiscardPriest: {
@@ -87,13 +91,15 @@ export let phaseDiscardPriest = {
 };
 
 export let phaseDiscardPriestVeto = {
-  onBegin: (G: IG, ctx: Ctx) => {
-    let p = G.priestID;
-    let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phaseDiscardPriestVeto';
-    ctx.events.setActivePlayers(activePlayers);
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      let p = G.priestID;
+      let activePlayers = { value: {} };
+      activePlayers.value[p] = 'phaseDiscardPriestVeto';
+      ctx.events.setActivePlayers(activePlayers);
 
-    return G;
+      return G;
+    },
   },
   moves: {
     moveDiscardPriest: {
@@ -135,13 +141,15 @@ export let phaseDiscardPriestVeto = {
 };
 
 export let phaseVetoMayor = {
-  onBegin: (G: IG, ctx: Ctx) => {
-    let p = G.mayorID;
-    let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phaseVetoMayor';
-    ctx.events.setActivePlayers(activePlayers);
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      let p = G.mayorID;
+      let activePlayers = { value: {} };
+      activePlayers.value[p] = 'phaseVetoMayor';
+      ctx.events.setActivePlayers(activePlayers);
 
-    return G;
+      return G;
+    },
   },
   endIf: (G: IG) => {
     if (G.ok) {

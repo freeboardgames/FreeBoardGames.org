@@ -1,0 +1,17 @@
+{
+  "name": "Take 6!",
+  "description": "Similar To 6 Nimmt!",
+  "descriptionTag": "Play Take 6!, a free online game similar\\\nto 6 Nimmt. You can play multi-player from two and up to\\\nten players online!",
+  "instructions": {
+    "videoId": "fF0lnDygoes",
+    "text": "Take 6! is a game that can play from two to ten players. The objective of the game is to score as few penalty points as possible.\n\nThe board starts with one card in each of the four rows. Then, at the beginning of each turn, all players choose the card they wish to play from their hand at the same time. These cards must be placed in the row that ends with the highest number that is still below each card number.\n\nHowever, if this row already has five cards, the player has to take all 6 cards (hence \"Take 6!\"). Taking these cards adds their penalty points to the player's score. A player must also take cards if the selected card is lower than the last cards in all rows. The game ends when all players have played their cards.\n"
+  },
+  "waiting_for_opponent": "Waiting for opponent...",
+  "select_card": "SELECT CARD",
+  "select_board": "SELECT BOARD",
+  "you_won": "you won",
+  "you_lost": "you lost",
+  "draw": "draw",
+  "penalty_points": "Penalty points",
+  "your_hand": "Your hand"
+}

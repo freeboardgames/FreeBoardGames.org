@@ -1,4 +1,5 @@
 import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameMode } from 'gamesShared/definitions/mode';
 import React from 'react';
 import { ConnectionLost } from './ConnectionLost';
 
@@ -16,7 +17,7 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
       };
       const child = React.createElement(args.board, props);
       let alert;
-      if (!this.props.isConnected) {
+      if (!this.props.isConnected && args.gameArgs.mode !== GameMode.LocalFriend) {
         alert = <ConnectionLost />;
       }
       if (!alert) {

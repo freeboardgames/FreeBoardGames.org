@@ -1,0 +1,22 @@
+.kitty {
+  position: absolute;
+  height: 200px;
+  left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.kittyDescr {
+  position: absolute;
+  top: 0; left: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 6px;
+  width: 400px;
+  transform: translate(-50%, -110%);
+  text-align: center;
+}
+
+.cardContainer {
+  transform-origin: 0 0;
+  transform: scale(0.3);
+  float: left;
+}

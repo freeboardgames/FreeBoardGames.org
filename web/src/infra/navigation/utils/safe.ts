@@ -3,8 +3,7 @@ import { Language } from 'infra/i18n';
 import { getI18n } from 'server/config/i18n';
 
 export const getLanguagePrefix = (language: Language) => {
-  const isEnabled = process.env.NEXT_PUBLIC_I18N_ENABLED === 'true';
-  return isEnabled ? getLanguage(language) : null;
+  return getLanguage(language);
 };
 
 export const getSafeGameCode = (game: IGameDef, language: Language) => {

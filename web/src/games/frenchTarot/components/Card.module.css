@@ -1,0 +1,129 @@
+.card {
+  color: black;
+  border: 3px #aaa solid;
+  box-sizing: border-box;
+  background-origin: border-box;
+  background-color: white;
+  height: 596px;
+  width: 320px;
+  background-size: 320px 596px;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  border-radius: 45px;
+  margin: 0 auto;
+  box-shadow: 3px 3px 8px #000000;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -10px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.card.inactive {
+  filter: brightness(0.7);
+}
+
+.card.selectable.selected {
+  transform: translate(0, -30px);
+  box-shadow: 0px 0px 40px #090;
+}
+
+.card.selectable {
+  cursor: pointer;
+  box-shadow: 0px 10px 20px #555;
+}
+
+.card.selectable:not(.selected):hover {
+  animation: pulse 1s;
+  animation-iteration-count: infinite;
+}
+
+.faceDownCard {
+  background-image: url("../media/Back_side.jpg");
+}
+
+.Clubs1 { background-image: url("../media/Clubs_01.jpg"); }
+.Clubs2 { background-image: url("../media/Clubs_02.jpg"); }
+.Clubs3 { background-image: url("../media/Clubs_03.jpg"); }
+.Clubs4 { background-image: url("../media/Clubs_04.jpg"); }
+.Clubs5 { background-image: url("../media/Clubs_05.jpg"); }
+.Clubs6 { background-image: url("../media/Clubs_06.jpg"); }
+.Clubs7 { background-image: url("../media/Clubs_07.jpg"); }
+.Clubs8 { background-image: url("../media/Clubs_08.jpg"); }
+.Clubs9 { background-image: url("../media/Clubs_09.jpg"); }
+.Clubs10 { background-image: url("../media/Clubs_10.jpg"); }
+.Clubs11 { background-image: url("../media/Clubs_Jack.jpg"); }
+.Clubs12 { background-image: url("../media/Clubs_Knight.jpg"); }
+.Clubs13 { background-image: url("../media/Clubs_Queen.jpg"); }
+.Clubs14 { background-image: url("../media/Clubs_King.jpg"); }
+.Spades1 { background-image: url("../media/Spades_01.jpg"); }
+.Spades2 { background-image: url("../media/Spades_02.jpg"); }
+.Spades3 { background-image: url("../media/Spades_03.jpg"); }
+.Spades4 { background-image: url("../media/Spades_04.jpg"); }
+.Spades5 { background-image: url("../media/Spades_05.jpg"); }
+.Spades6 { background-image: url("../media/Spades_06.jpg"); }
+.Spades7 { background-image: url("../media/Spades_07.jpg"); }
+.Spades8 { background-image: url("../media/Spades_08.jpg"); }
+.Spades9 { background-image: url("../media/Spades_09.jpg"); }
+.Spades10 { background-image: url("../media/Spades_10.jpg"); }
+.Spades11 { background-image: url("../media/Spades_Jack.jpg"); }
+.Spades12 { background-image: url("../media/Spades_Knight.jpg"); }
+.Spades13 { background-image: url("../media/Spades_Queen.jpg"); }
+.Spades14 { background-image: url("../media/Spades_King.jpg"); }
+.Diamonds1 { background-image: url("../media/Diamonds_01.jpg"); }
+.Diamonds2 { background-image: url("../media/Diamonds_02.jpg"); }
+.Diamonds3 { background-image: url("../media/Diamonds_03.jpg"); }
+.Diamonds4 { background-image: url("../media/Diamonds_04.jpg"); }
+.Diamonds5 { background-image: url("../media/Diamonds_05.jpg"); }
+.Diamonds6 { background-image: url("../media/Diamonds_06.jpg"); }
+.Diamonds7 { background-image: url("../media/Diamonds_07.jpg"); }
+.Diamonds8 { background-image: url("../media/Diamonds_08.jpg"); }
+.Diamonds9 { background-image: url("../media/Diamonds_09.jpg"); }
+.Diamonds10 { background-image: url("../media/Diamonds_10.jpg"); }
+.Diamonds11 { background-image: url("../media/Diamonds_Jack.jpg"); }
+.Diamonds12 { background-image: url("../media/Diamonds_Knight.jpg"); }
+.Diamonds13 { background-image: url("../media/Diamonds_Queen.jpg"); }
+.Diamonds14 { background-image: url("../media/Diamonds_King.jpg"); }
+.Hearts1 { background-image: url("../media/Hearts_01.jpg"); }
+.Hearts2 { background-image: url("../media/Hearts_02.jpg"); }
+.Hearts3 { background-image: url("../media/Hearts_03.jpg"); }
+.Hearts4 { background-image: url("../media/Hearts_04.jpg"); }
+.Hearts5 { background-image: url("../media/Hearts_05.jpg"); }
+.Hearts6 { background-image: url("../media/Hearts_06.jpg"); }
+.Hearts7 { background-image: url("../media/Hearts_07.jpg"); }
+.Hearts8 { background-image: url("../media/Hearts_08.jpg"); }
+.Hearts9 { background-image: url("../media/Hearts_09.jpg"); }
+.Hearts10 { background-image: url("../media/Hearts_10.jpg"); }
+.Hearts11 { background-image: url("../media/Hearts_Jack.jpg"); }
+.Hearts12 { background-image: url("../media/Hearts_Knight.jpg"); }
+.Hearts13 { background-image: url("../media/Hearts_Queen.jpg"); }
+.Hearts14 { background-image: url("../media/Hearts_King.jpg"); }
+.Trumps1 { background-image: url("../media/Trumps_01.jpg"); }
+.Trumps2 { background-image: url("../media/Trumps_02.jpg"); }
+.Trumps3 { background-image: url("../media/Trumps_03.jpg"); }
+.Trumps4 { background-image: url("../media/Trumps_04.jpg"); }
+.Trumps5 { background-image: url("../media/Trumps_05.jpg"); }
+.Trumps6 { background-image: url("../media/Trumps_06.jpg"); }
+.Trumps7 { background-image: url("../media/Trumps_07.jpg"); }
+.Trumps8 { background-image: url("../media/Trumps_08.jpg"); }
+.Trumps9 { background-image: url("../media/Trumps_09.jpg"); }
+.Trumps10 { background-image: url("../media/Trumps_10.jpg"); }
+.Trumps11 { background-image: url("../media/Trumps_11.jpg"); }
+.Trumps12 { background-image: url("../media/Trumps_12.jpg"); }
+.Trumps13 { background-image: url("../media/Trumps_13.jpg"); }
+.Trumps14 { background-image: url("../media/Trumps_14.jpg"); }
+.Trumps15 { background-image: url("../media/Trumps_15.jpg"); }
+.Trumps16 { background-image: url("../media/Trumps_16.jpg"); }
+.Trumps17 { background-image: url("../media/Trumps_17.jpg"); }
+.Trumps18 { background-image: url("../media/Trumps_18.jpg"); }
+.Trumps19 { background-image: url("../media/Trumps_19.jpg"); }
+.Trumps20 { background-image: url("../media/Trumps_20.jpg"); }
+.Trumps21 { background-image: url("../media/Trumps_21.jpg"); }
+.Excuse0 { background-image: url("../media/Trumps_Excuse.jpg"); }

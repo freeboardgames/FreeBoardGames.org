@@ -1,0 +1,73 @@
+.board {
+  font-family: sans-serif;
+  padding-top: 10px;
+  border-radius: 20px;
+  text-align: center;
+  background-color: #795f5e;
+  background-image: url("../media/wood-pattern.png");
+}
+
+.calledCard {
+  position: absolute;
+  top: 1em; left: 1em;
+  width: 110px; height: 160px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 15px;
+}
+
+.calledCard span:first-child {
+  position: absolute;
+  top: 3px; left:0; right: 0;
+  text-align: center;
+}
+
+.calledCard .cardContainer {
+  position: absolute;
+  left: 50%; top: 25px;
+  transform-origin: 0 0;
+  transform: translate(-50%, 0) scale(0.2);
+  width: 70px;
+  box-shadow: rgb(0, 0, 0) 0px 0px 50px;
+}
+
+.buttonBar {
+  position: absolute;
+  width: 100%; height: 60px;
+  bottom: 140px;
+  left: 0;
+}
+
+.buttonBar.callCards {
+  height: 180px;
+}
+
+.buttonBar.below {
+  bottom: 5px;
+}
+
+.buttonBar .cardContainer {
+  cursor: pointer;
+  display: inline-block;
+  transform-origin: 0 0;
+  transform: scale(0.2);
+  width: 70px;
+  box-shadow: rgb(0, 0, 0) 0px 0px 50px;
+}
+
+.buttonBar .cardContainer:hover {
+  box-shadow: rgb(197, 255, 5) 0px 0px 50px;
+}
+
+.buttonBar .question {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translate(-50%, -150%);
+  width: 450px; height: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px;
+  margin: 10px auto;
+}

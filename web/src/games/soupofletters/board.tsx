@@ -13,8 +13,12 @@ import { TIME_OUT, TIME_BUFF, playerColors } from './constants';
 import { IG, ISolvedWord } from './game';
 import { Soup } from './soup';
 import soupCSS from './soup.module.css';
+import { WithCurrentGameTranslation, withCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-interface IBoardProps {
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
+interface IBoardOutterProps {
   G: IG;
   ctx: Ctx;
   moves: any;
@@ -26,9 +30,12 @@ interface IBoardState {
   showWords: boolean;
 }
 
-export const localPlayerNames = { '0': 'red', '1': 'blue' };
+export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, IBoardState> {
+  localPlayerNames = {
+    '0': this.props.translate('red'),
+    '1': this.props.translate('green'),
+  };
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
   constructor(props) {
     super(props);
     // initialize state
@@ -61,12 +68,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     if (isOnlineGame(this.props.gameArgs)) {
       if (this._isFirstPerson()) {
-        return 'Online Game';
+        return this.props.translate('online_game');
       } else {
-        return 'Spectator View';
+        return this.props.translate('spectator_view');
       }
     }
-    return `Turn Player ${parseInt(this.props.ctx.currentPlayer) + 1}`;
+    return this.props.translate('turn_player', { player: parseInt(this.props.ctx.currentPlayer) + 1 });
   }
 
   _getTimeRemaining = (considerBuffer: boolean = false) => {
@@ -103,8 +110,11 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         <Timer.Seconds
           formatValue={() =>
             this._isAllowedToMakeMove()
-              ? `You have ${this._getTimeRemaining(false)} seconds.`
-              : `${this._playerInRoom().name} has ${this._getTimeRemaining(false)} seconds.`
+              ? this.props.translate('you_have_seconds', { time: this._getTimeRemaining(false) })
+              : this.props.translate('player_has_seconds', {
+                  name: this._playerInRoom().name,
+                  time: this._getTimeRemaining(false),
+                })
           }
         />
       </Timer>
@@ -131,7 +141,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         >
           <div>
             <Typography style={{ padding: '10px' }} variant="h5">
-              Words
+              {this.props.translate('words')}
             </Typography>
             <List style={{ maxHeight: '382px', overflow: 'auto' }}>
               {this.props.G.solution.map((s) => (
@@ -185,7 +195,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           }}
           style={{ float: 'right', marginRight: '4px' }}
         >
-          Words
+          {this.props.translate('words')}
         </Button>
       </>
     );
@@ -193,22 +203,23 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getGameOver() {
     if (this.props.ctx.gameover.draw) {
-      return 'draw';
+      return this.props.translate('draw');
     }
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
-        return 'you won';
+        return this.props.translate('you_won');
       } else {
         if (!this._isFirstPerson()) {
-          return 'see scoreboard';
+          return this.props.translate('see_scoreboard');
         }
-        return 'you lost';
+        return this.props.translate('you_lost');
       }
     } else {
       if (this.props.ctx.gameover.winner) {
-        return `Player ${parseInt(this.props.ctx.currentPlayer) + 1} (${
-          localPlayerNames[this.props.ctx.gameover.winner]
-        }) won`;
+        return this.props.translate('player_won', {
+          player: parseInt(this.props.ctx.currentPlayer) + 1,
+          name: this.localPlayerNames[this.props.ctx.gameover.winner],
+        });
       }
     }
   }
@@ -259,3 +270,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   }
 }
+
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
+export const Board = enhance(BoardInternal);

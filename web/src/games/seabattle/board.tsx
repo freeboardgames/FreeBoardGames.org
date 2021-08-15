@@ -9,8 +9,12 @@ import { Radar } from './Radar';
 import Typography from '@material-ui/core/Typography';
 import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
 import { isAIGame } from 'gamesShared/helpers/gameMode';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-interface IBoardProps {
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
+interface IBoardOutterProps {
   G: any;
   ctx: any;
   moves: any;
@@ -25,8 +29,8 @@ interface IBoardState {
   soundEnabled: boolean;
 }
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
-  constructor(props: IBoardProps, state: IBoardState) {
+export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, IBoardState> {
+  constructor(props: IBoardInnerProps & IBoardOutterProps, state: IBoardState) {
     super(props, state);
     this.state = {
       soundEnabled: true,
@@ -36,7 +40,10 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   render() {
     const ctx = this.props.ctx;
     if (ctx.gameover) {
-      const result = ctx.gameover.winner === this.props.playerID ? 'you won' : 'you lost';
+      const result =
+        ctx.gameover.winner === this.props.playerID
+          ? this.props.translate('you_won')
+          : this.props.translate('you_lost');
       const player = Number(this.props.playerID);
       const otherPlayer = player === 0 ? 1 : 0;
       const salvos: ISalvo[] = this.props.G.salvos.filter((salvo: ISalvo) => salvo.player === player);
@@ -44,7 +51,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       const extraCardContent = (
         <div>
           <Typography variant="h6" align="center" style={{ marginTop: '0px', marginBottom: '16px' }}>
-            Your Opponent&apos;s Board
+            {this.props.translate('your_opponent_s_board')}
           </Typography>
           <Radar player={player} ships={ships} salvos={salvos} editable={false} />
         </div>
@@ -62,7 +69,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     } else if (ctx.phase === 'setup') {
       child = (
         <Typography variant="h4" style={{ color: 'white' }}>
-          Waiting for opponent...
+          {this.props.translate('waiting_for_opponent')}
         </Typography>
       );
     } else {
@@ -104,7 +111,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const newSoundPref = !curSoundPref;
     const option: IOptionsItems = {
       onClick: this._toggleSoundPref,
-      text: `${newSoundPref ? 'Enable' : 'Disable'} sound`,
+      text: newSoundPref ? this.props.translate('enable_sound') : this.props.translate('disable_sound'),
     };
     const options = [option];
     return options;
@@ -114,3 +121,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     this.props.moves.setShips(ships);
   };
 }
+
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
+export const Board = enhance(BoardInternal);

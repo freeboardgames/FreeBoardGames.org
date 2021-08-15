@@ -5,8 +5,10 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import { ReduxState, ReduxUserState } from 'infra/common/redux/definitions';
+import { compose } from 'recompose';
+import { WithTranslation, withTranslation } from 'infra/i18n';
 
-interface InnerProps {
+interface InnerProps extends WithTranslation {
   dispatch: Dispatch;
   user: ReduxUserState;
 }
@@ -62,7 +64,7 @@ export class NicknameRequired extends React.Component<InnerProps & OutterProps, 
       await LobbyService.newUser(nickname);
       this.props.dispatch(LobbyService.getSyncUserAction());
     } catch (e) {
-      const errorText = e.response?.body?.message || 'Unknown error';
+      const errorText = e.response?.body?.message || this.props.t('unknown_error');
       this.setState({ errorText });
     }
     if (this.props.onSuccess) this.props.onSuccess();
@@ -76,4 +78,6 @@ const mapStateToProps = function (state: ReduxState) {
   };
 };
 
-export default connect(mapStateToProps)(NicknameRequired);
+const enhance = compose<InnerProps, OutterProps>(connect(mapStateToProps), withTranslation('NicknameRequired'));
+
+export default enhance(NicknameRequired);

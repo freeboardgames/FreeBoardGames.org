@@ -22,6 +22,10 @@ postgresql:
     port: 5432
   volumePermissions:
     enabled: true
+  resources:
+    limits:
+      cpu: "2"
+      memory: 2048Mi
 
 redis:
   auth:

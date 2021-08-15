@@ -5,8 +5,7 @@
 import { GAMES_LIST } from 'games';
 import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
-const redis = require('redis');
-const redisAdapter = require('socket.io-redis');
+//const redis = require('redis');
 import { Server, SocketIO } from 'boardgame.io/server';
 import { PostgresStore } from 'bgio-postgres';
 
@@ -27,21 +26,22 @@ function getTransport() {
   if (!host || !port || !password) {
     return;
   }
+  /*
   const pub = redis.createClient(port, host, { auth_pass: password });
   const sub = redis.createClient(port, host, { auth_pass: password });
-  return new SocketIO({ socketAdapter: redisAdapter({ pubClient: pub, subClient: sub }) });
+  */
+  return new SocketIO();
 }
 
 const startServer = async () => {
   const configs = Promise.all(GAMES_LIST.map((gameDef) => gameDef.config()));
   const games = (await configs).map((config) => config.default.bgioGame);
-  const server = Server({ games, db: getDb(), transport: getTransport() });
+  const db = getDb();
+  const origins = process.env.BGIO_PUBLIC_SERVERS || 'http://localhost';
+  const server = Server({ games, db, origins, transport: getTransport() });
   server.app.use(noCache({ global: true }));
   server.app.use(cors());
-  server.run(PORT, () => {
-    // eslint-disable-next-line
-    console.log(`Serving boardgame.io at: http://0.0.0.0:${PORT}/`); // tslint:disable-line
-  });
+  server.run(PORT);
 };
 
 startServer();

@@ -6,6 +6,7 @@ import css from './board.module.css';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Lobby } from './Lobby';
 import { PlayBoard } from './PlayBoard';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 interface IBoardProps {
   G: IG;
@@ -19,84 +20,66 @@ interface IBoardProps {
   isMultiplayer: boolean;
 }
 
-interface IBoardState {}
+export function Board({ G, ctx, moves, events, playerID, gameArgs, isActive }: IBoardProps) {
+  const { translate } = useCurrentGameTranslation();
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
-  isHost = () => this.props.playerID === '0';
+  const isHost = () => playerID === '0';
 
-  _renderLobby = () => {
+  const _renderLobby = () => {
     return (
-      <Lobby
-        G={this.props.G}
-        ctx={this.props.ctx}
-        moves={this.props.moves}
-        events={this.props.events}
-        playerID={this.props.playerID}
-        gameArgs={this.props.gameArgs}
-        isHost={this.isHost()}
-      />
+      <Lobby G={G} ctx={ctx} moves={moves} events={events} playerID={playerID} gameArgs={gameArgs} isHost={isHost()} />
     );
   };
 
-  _renderPlayBoard = (isGameOver?: boolean) => {
+  const _renderPlayBoard = (isGameOver?: boolean) => {
     return (
       <PlayBoard
-        G={this.props.G}
-        ctx={this.props.ctx}
-        moves={this.props.moves}
-        events={this.props.events}
-        playerID={this.props.playerID}
-        gameArgs={this.props.gameArgs}
-        isActive={this.props.isActive}
-        isHost={this.isHost()}
+        G={G}
+        ctx={ctx}
+        moves={moves}
+        events={events}
+        playerID={playerID}
+        gameArgs={gameArgs}
+        isActive={isActive}
+        isHost={isHost()}
         isGameOver={isGameOver}
       />
     );
   };
 
-  _getScoreBoard = () => {
+  const _getScoreBoard = () => {
     return (
       <div className={[css.winners].join(' ')}>
-        <h3>Winners</h3>
-        {this.props.ctx.gameover.winner.playersID.map((id) => {
-          return <p key={id}>{this.props.gameArgs.players[id].name}</p>;
+        <h3>{translate('winners')}</h3>
+        {ctx.gameover.winner.playersID.map((id) => {
+          return <p key={id}>{gameArgs.players[id].name}</p>;
         })}
         <br />
-        {this._renderPlayBoard(true)}
+        {_renderPlayBoard(true)}
       </div>
     );
   };
 
-  _getGameOverText = (): string => {
-    if (this.props.ctx.gameover.winner.color === TeamColor.Blue) {
-      return 'Blue Team wins';
+  const _getGameOverText = (): string => {
+    if (ctx.gameover.winner.color === TeamColor.Blue) {
+      return translate('blue_team_wins');
     }
 
-    return 'Red Team wins';
+    return translate('red_team_wins');
   };
 
-  render() {
-    if (this.props.ctx.gameover)
-      return (
-        <GameLayout
-          gameOver={this._getGameOverText()}
-          extraCardContent={this._getScoreBoard()}
-          gameArgs={this.props.gameArgs}
-        />
-      );
+  if (ctx.gameover)
+    return <GameLayout gameOver={_getGameOverText()} extraCardContent={_getScoreBoard()} gameArgs={gameArgs} />;
 
-    let content;
-    if (this.props.ctx.phase === Phases.lobby) {
-      content = this._renderLobby();
-    } else {
-      content = this._renderPlayBoard();
-    }
-    return (
-      <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
-        {content}
-      </GameLayout>
-    );
+  let content;
+  if (ctx.phase === Phases.lobby) {
+    content = _renderLobby();
+  } else {
+    content = _renderPlayBoard();
   }
+  return (
+    <GameLayout gameArgs={gameArgs} maxWidth="1000px">
+      {content}
+    </GameLayout>
+  );
 }
-
-export default Board;

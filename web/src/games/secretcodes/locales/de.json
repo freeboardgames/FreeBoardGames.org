@@ -1,0 +1,29 @@
+{
+  "name": "Secret Codes",
+  "description": "Ähnlich wie Codenames",
+  "descriptionTag": "Spiele Secret Codes, ein gratis online Spiel\\\nähnlich wie das Brettspiel Codenames! Du kannst mit\\\n4 bis 20 Freunden online spielen!",
+  "instructions": {
+    "videoId": "zQVHkl8oQEU",
+    "text": "Secret codes is a game similar to codenames. The game has two teams, blue and red, and within each team there is a leader.\n\nOnly the leaders know which cards need to be selected by their teammates. However, leaders can only give a word and a number as a clue to their team\n\nThe objective is for the rest of the team to figure out all their secret words before the competing team does. And they need to be careful, choosing a black card will lead to immediately losing the game!"
+  },
+  "select_teams": "Wähle Teams",
+  "winners": "Gewinner",
+  "red_team_select_cards": "<strong>Rotes Team</strong> wählt Karten!",
+  "blue_team_select_cards": "<strong>Blaues Team</strong> wählt Karten!",
+  "blue_team_wins": "Blaues Team hat gewonnen",
+  "red_team_wins": "Rotes Team hat gewonnen",
+  "custom": "Benutzerdefiniert",
+  "words": "Wörter ({{ size }})",
+  "blue_team": "Blaues Team",
+  "red_team": "Rotes Team",
+  "unassigned": "Nicht zugewiesen",
+  "in_order_to_start": "Um zu Starten muss jeder Spieler einem Team zugewiesen sein und jedes Team braucht einen Spymaster.",
+  "play": "Fertig, spielen!",
+  "s": "[S] ",
+  "make_spymaster": "Mache zum Spymaster",
+  "select": "Auswählen",
+  "toggle_view_spymaster": "Sicht ändern: Spymaster",
+  "toggle_view_normal": "Sicht ändern: Normal",
+  "pass": "Pass",
+  "spymaster_give_clue": "<strong>{{ name }}</strong> gib einen Hinweis, "
+}

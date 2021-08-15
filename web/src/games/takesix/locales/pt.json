@@ -1,0 +1,17 @@
+{
+  "name": "Pegue 6!",
+  "description": "Similar a 6 Nimmt!",
+  "descriptionTag": "Jogue Pegue 6!, um jogo gratuíto onlinea similar\\\nao 6 Nimmt. Você pode jogar multi-jogadores desde dois até\\\ndez jogadores online!",
+  "instructions": {
+    "videoId": "fF0lnDygoes",
+    "text": "Pegue 6! é um jogo que pode jogar de dois a dez jogadores. O objetivo é levar o menor número de pontos de penalidade possível.\n\nO tabuleiro inicia com uma carta em cada uma das quatro linhas. Então, no início de cada turno, cada jogador escolhe uma carta que querem jogar de sua mão simultaneamente. Essas cartas têm que ser colocadas na linha com o maior número que ainda é menor que a carta escolhida.\n\nEntretanto, se essa linha já tem cinco cartas, o jogador tem que pegar todas as  6 cartas (por isso \"Pegue 6!\"). Pegar essas cartas adiciona pontos de penalidade para o placar do jogador. Um jogador também tem que pegar cartas se a carta é menor que todas as últimas cartas de cada linha. O jogo termina quando todos os jogadores usarem todas suas cartas.\n"
+  },
+  "waiting_for_opponent": "Aguardando por oponente...",
+  "select_card": "SELECIONE CARTA",
+  "select_board": "SELECIONE LINHA",
+  "you_won": "você ganhou",
+  "you_lost": "você perdeu",
+  "draw": "empate",
+  "penalty_points": "Pontos de penalidade",
+  "your_hand": "Sua mão"
+}

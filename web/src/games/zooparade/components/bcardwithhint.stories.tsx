@@ -1,8 +1,10 @@
 import { IHintMask } from '../interfaces';
 import { BCardWithHint } from './bcardwithhint';
+import { gameDecorator } from '../decorators/game';
 
 export default {
   title: 'Games/Zoo Parade/Components/Hand With Hint',
+  decorators: [gameDecorator],
   parameters: {
     backgrounds: [{ name: 'dark background', value: '#000', default: true }],
   },

@@ -1,3 +1,4 @@
 User-agent: *
 Disallow: /docs
-Disallow: /pt
+Disallow: */room/*
+Disallow: */match/*

@@ -60,14 +60,14 @@ describe('Nickname Prompt', () => {
 
   it('should not call this.props.togglePrompt on click away without nickname', () => {
     wrapper.setProps({ nickname: '' }); // we can't click away without a nickname
-    const instance = wrapper.instance() as any;
+    const instance = wrapper.childAt(0).instance() as any;
     instance._handleClickaway();
     expect(closePromptMock).not.toHaveBeenCalled();
   });
 
   it('should call this.props.togglePrompt on click away', () => {
     wrapper.setProps({ nickname: 'foo' }); // we can't click away without a nickname
-    const instance = wrapper.instance() as any;
+    const instance = wrapper.childAt(0).instance() as any;
     instance._handleClickaway();
     expect(closePromptMock).toHaveBeenCalled();
   });

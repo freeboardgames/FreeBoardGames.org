@@ -1,7 +1,9 @@
 import { BCard } from './bcard';
+import { gameDecorator } from '../decorators/game';
 
 export default {
   title: 'Games/Zoo Parade/Components/Card',
+  decorators: [gameDecorator],
   parameters: {
     backgrounds: [{ name: 'dark background', value: '#000', default: true }],
   },

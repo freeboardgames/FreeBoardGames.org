@@ -1,7 +1,7 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-import { NextPage } from 'next';
 import { LoadingMessage } from 'infra/common/components/alert/LoadingMessage';
+import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+import React from 'react';
 
 const DynamicRoom = dynamic(() => import('infra/room/Room'), {
   ssr: false,
@@ -14,7 +14,23 @@ const Room: NextPage = () => {
 
 Room.getInitialProps = () => {
   return {
-    namespacesRequired: [],
+    namespacesRequired: [
+      'Chat',
+      'ChatInput',
+      'CustomizationBar',
+      'GameCard',
+      'GameCardWithOverlay',
+      'GameSharing',
+      'ListPlayers',
+      'LoadingMessage',
+      'MessagePage',
+      'NicknamePrompt',
+      'NicknameRequired',
+      'QrCodePopup',
+      'Room',
+      'SearchBox',
+      'StartMatchButton',
+    ],
   };
 };
 

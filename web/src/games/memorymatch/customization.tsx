@@ -21,24 +21,28 @@ const changeStayInTurnOnMatch = (
   }
 };
 
+type Props = GameCustomizationProps;
+
+const FullCustomization = ({ currentValue, onChange }: Props) => {
+  const state = (currentValue as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
+  return (
+    <div style={{ padding: '16px' }}>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={state.stayInTurnOnMatch}
+            onChange={changeStayInTurnOnMatch(onChange, state)}
+            color="primary"
+          />
+        }
+        label="Stay In Turn On Match"
+      />
+    </div>
+  );
+};
+
 const customization: GameCustomization = {
-  renderFull: ({ currentValue, onChange }: GameCustomizationProps) => {
-    const state = (currentValue as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
-    return (
-      <div style={{ padding: '16px' }}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={state.stayInTurnOnMatch}
-              onChange={changeStayInTurnOnMatch(onChange, state)}
-              color="primary"
-            />
-          }
-          label="Stay In Turn On Match"
-        />
-      </div>
-    );
-  },
+  FullCustomization,
 };
 
 export default customization;

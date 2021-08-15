@@ -43,10 +43,10 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
     const { name, instructions, description, descriptionTag } = gameDef;
 
     const videoInstructions = translate('instructions.videoId', instructions.videoId);
-    const gameVideoInstructions = videoInstructions ? <GameInstructionsVideo videoId={videoInstructions} /> : null;
+    const gameVideoInstructions = instructions.videoId ? <GameInstructionsVideo videoId={videoInstructions} /> : null;
 
     const textInstructions = translate('instructions.text', instructions.text);
-    const gameTextInstructions = textInstructions ? <GameInstructionsText text={textInstructions} /> : null;
+    const gameTextInstructions = instructions.text ? <GameInstructionsText text={textInstructions} /> : null;
 
     const isFullyTranslated = makeTranslationStatusComparator(i18n.language);
 
@@ -84,7 +84,19 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
               <div style={{ marginTop: '16px' }}>
                 {!isFullyTranslated(gameDef) && (
                   <Alert severity="warning">
-                    <Trans t={t} i18nKey="missing_translation_warning" components={{ docs: <a href="/docs" /> }} />
+                    <Trans
+                      t={t}
+                      i18nKey="missing_translation_warning"
+                      components={{
+                        docs: (
+                          <a
+                            aria-label="translation docs"
+                            target="_blank"
+                            href="/docs?path=/story/documentation-game-translation--page"
+                          />
+                        ),
+                      }}
+                    />
                   </Alert>
                 )}
                 <Typography variant="body1" component="p">
@@ -122,11 +134,15 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
     return {
       gameCode,
       namespacesRequired: [
-        'common',
+        'CustomizationBar',
+        'GameCard',
+        'GameContributors',
         'GameInfo',
         'GameModePicker',
         'GameModePickerCard',
-        'GameContributors',
+        'NicknamePrompt',
+        'NicknameRequired',
+        'OccupancySelect',
         getGameCodeNamespace(gameCode),
       ],
     };

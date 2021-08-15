@@ -1,7 +1,9 @@
 import { BButtons } from './bbuttons';
+import { gameDecorator } from '../decorators/game';
 
 export default {
   title: 'Games/Zoo Parade/Components/Buttons',
+  decorators: [gameDecorator],
   parameters: {
     backgrounds: [{ name: 'dark background', value: '#000', default: true }],
   },

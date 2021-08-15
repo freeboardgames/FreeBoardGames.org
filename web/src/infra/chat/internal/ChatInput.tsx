@@ -1,10 +1,14 @@
-import React from 'react';
-import css from './ChatInput.module.css';
-import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
+import { WithTranslation, withTranslation } from 'infra/i18n';
+import React from 'react';
+import { compose } from 'recompose';
+import css from './ChatInput.module.css';
 
-interface ChatInputProps {
+interface ChatInputInnerProps extends WithTranslation {}
+
+interface ChatInputOutterProps {
   sendMessage: (msg: string) => void;
   className?: string;
 }
@@ -13,7 +17,7 @@ interface ChatInputState {
   inputText: string;
 }
 
-export default class ChatInput extends React.Component<ChatInputProps, ChatInputState> {
+class ChatInput extends React.Component<ChatInputInnerProps & ChatInputOutterProps, ChatInputState> {
   state = {
     inputText: '',
   };
@@ -24,7 +28,7 @@ export default class ChatInput extends React.Component<ChatInputProps, ChatInput
       <form onSubmit={this._handleSubmit} autoComplete="off" noValidate>
         <div className={`${css.InputWrapper} ${this.props.className}`}>
           <TextField
-            label="Message"
+            label={this.props.t('message')}
             variant="outlined"
             color="secondary"
             onChange={this._onChange}
@@ -59,3 +63,7 @@ export default class ChatInput extends React.Component<ChatInputProps, ChatInput
     this.setState({ inputText: e.target.value });
   };
 }
+
+const enhance = compose<ChatInputInnerProps, ChatInputOutterProps>(withTranslation('ChatInput'));
+
+export default enhance(ChatInput);

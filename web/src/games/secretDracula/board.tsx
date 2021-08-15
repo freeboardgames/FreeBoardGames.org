@@ -10,8 +10,12 @@ import { IG } from './interfaces';
 import * as CNST from './constants';
 import { PlayerInfo, IPlayerInfo } from './svgComponents/playerInfo';
 import PlayStatus from './svgComponents/playStatus';
+import { WithCurrentGameTranslation, withCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
+import { snakeCase } from 'lodash';
 
-interface IBoardProps {
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+interface IBoardOutterProps {
   G: IG;
   ctx: Ctx;
   moves: any;
@@ -23,7 +27,7 @@ interface IBoardState {
   hintKey: string | null;
 }
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
+export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, IBoardState> {
   constructor(props) {
     super(props);
     this.state = { hintKey: null };
@@ -44,70 +48,70 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   };
 
   _getPlayerName = (playerID = null) => {
+    const { translate } = this.props;
     const pID = playerID === null ? parseInt(this._getPlayerID()) : playerID;
-    return (this.props.gameArgs.players[pID] || { name: `Player ${pID + 1}` }).name;
+    return (this.props.gameArgs.players[pID] || { name: translate('player', { id: pID + 1 }) }).name;
   };
 
   _getPolicyText = (peek = false) => {
+    const { translate } = this.props;
     if (peek) {
-      return this.props.G.policyPeek.map((p) => (p.garlic ? CNST.SY_GOOD_PO : CNST.SY_BAD_PO)).join(' ');
+      return this.props.G.policyPeek
+        .map((p) => (p.garlic ? translate('symbol.good_po') : translate('symbol.bad_po')))
+        .join(' ');
     } else {
-      return this.props.G.policyHand.map((p) => (p.garlic ? CNST.SY_GOOD_PO : CNST.SY_BAD_PO)).join(' ');
+      return this.props.G.policyHand
+        .map((p) => (p.garlic ? translate('symbol.good_po') : translate('symbol.bad_po')))
+        .join(' ');
     }
   };
 
   _getGameOver = () => {
+    const { translate } = this.props;
     if (!this.props.ctx.gameover) {
       return null;
     }
     if (this.props.ctx.gameover.win == true) {
-      return `${CNST.N_VILLAGERS} win`;
+      return translate('villagers_win');
     } else {
-      return `${CNST.N_VAMPIRES} win`;
+      return translate('vampires_win');
     }
   };
 
   _getItemInfoText = () => {
-    const hintText = ['Info: '];
+    const { translate } = this.props;
+    const hintText = [translate('info')];
     switch (this.state.hintKey) {
       case 'vampirePolicy':
         hintText.push(
-          `The 7 boxes show the number of ${CNST.N_VAMPIRE} ${CNST.N_SAMPLE}s (${CNST.SY_BAD_PO}) passed. `,
+          ...this.props
+            .translate('vampire_policy', {
+              value: this.props.G.policyBoardVampire.length,
+            })
+            .split('\n'),
         );
-        hintText.push(`Current value: ${this.props.G.policyBoardVampire.length}`);
-        hintText.push(`${CNST.SY_PEEK} - allows ${CNST.N_MAYOR} to see upcoming cards.`);
-        hintText.push(`${CNST.SY_INVESTG} - allows ${CNST.N_MAYOR} to investigate a player.`);
-        hintText.push(`${CNST.SY_ELECT} - a new ${CNST.N_MAYOR} gets elected.`);
-        hintText.push(`${CNST.SY_EXECUTE} - requires ${CNST.N_MAYOR} to a player to execute.`);
-        hintText.push(`${CNST.SY_COFFIN} - ${CNST.N_VAMPIRES} win the game.`);
         break;
 
       case 'villagerPolicy':
         hintText.push(
-          `The 6 boxes show the number of ${CNST.N_VILLAGER} ${CNST.N_SAMPLE}s (${CNST.SY_GOOD_PO}) passed. `,
+          ...this.props
+            .translate('villager_policy', {
+              value: this.props.G.policyBoardHuman.length,
+            })
+            .split('\n'),
         );
-        hintText.push(`Current value: ${this.props.G.policyBoardHuman.length}`);
         break;
 
       case 'electionCounter':
-        hintText.push(`${CNST.SY_ELECT} ${CNST.SY_ELECT} ${CNST.SY_ELECT} is the Election Tracker.`);
-        hintText.push(
-          `If three consecutive elections fail (❌) because of too many No 👎 votes, the topmost ${CNST.N_SAMPLE} is played automatically. No special actions like ${CNST.SY_PEEK}, ${CNST.SY_INVESTG}, ${CNST.SY_EXECUTE}, etc. get triggerd.`,
-        );
+        hintText.push(...translate('election_counter').split('\n'));
         break;
 
       case 'vetoEnabled':
-        hintText.push(`${CNST.N_VETO} power is now enabled ☑️.`);
-        hintText.push(
-          `The ${CNST.N_PRIEST} may propose a Veto, and if the ${CNST.N_MAYOR} agrees to the Veto no ${CNST.N_SAMPLE} is played. If the ${CNST.N_MAYOR} disagrees to the Veto, the ${CNST.N_PRIEST} must play a ${CNST.N_SAMPLE}.`,
-        );
+        hintText.push(...translate('veto_enabled').split('\n'));
         break;
 
       case 'draculaStrong':
-        hintText.push(`${CNST.N_VAMPIRES} are now strong 💪🏻.`);
-        hintText.push(
-          `Here on, electing Electing ${CNST.N_DRACULA} as ${CNST.N_PRIEST} ends the game in favor of the ${CNST.N_VAMPIRES}`,
-        );
+        hintText.push(...translate('dracula_strong').split('\n'));
         break;
     }
     return hintText;
@@ -143,14 +147,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 
   _renderCommonTitle = () => {
+    const { ctx, translate } = this.props;
     return (
       <Typography
         key="sd_common_title"
         variant="h5"
         style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}
       >
-        {!this._isFirstPerson() ? '[SPECTATOR] ' : null}
-        {CNST.PHASE_TITLES[this.props.ctx.phase] || 'Play'}
+        {!this._isFirstPerson() ? translate('spectator') : null}
+        {translate(`phase.${snakeCase(ctx.phase)}`, translate('play'))}
       </Typography>
     );
   };
@@ -282,38 +287,33 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _renderPhaseReleatedMessage = () => {
     let message: any = { error: [], success: [] };
+    const { translate } = this.props;
     const intPlayerID = parseInt(this._getPlayerID());
     const { mayorID, priestID } = this.props.G;
     const phaseName = this.state.hintKey ? 'user-info' : this.props.ctx.phase;
     const isDead = this.props.G.deadIDs.includes(intPlayerID);
 
     if (isDead) {
-      message.error.push(`You have been executed ${CNST.SY_DEAD}.`);
-      message.error.push('But, you can still stay around to see how the game ends!');
+      message.error.push(...translate('is_dead').split('\n'));
     }
 
     switch (phaseName) {
       case 'phaseChosePriest':
         if (this._isActivePlayer()) {
-          message.primary = [
-            `As the ${CNST.N_MAYOR}, you are required to nominate a ${CNST.N_PRIEST}.`,
-            `You can do this by clicking on one of the players with ${CNST.SY_CANDIDATE} tag above.`,
-          ];
+          message.primary = translate('phase_chose_priest.nominate_a_priest').split('\n');
         } else {
-          message.info = [`Wait for the ${CNST.N_MAYOR} to nominate a ${CNST.N_PRIEST} for voting ...`];
-          message.text = [`${CNST.SY_CANDIDATE} tag represents possible nominees for priest.`];
+          message.info = translate('phase_chose_priest.wait_to_nominate_priest').split('\n');
+          message.text = translate('phase_chose_priest.possible_nominees').split('\n');
         }
         break;
 
       case 'phaseVotePriest':
         if (this._isActivePlayer() && !isDead) {
-          message.primary = [
-            `Would your like to elect ${this._getPlayerName(priestID)} as the new ${CNST.N_PRIEST} ${
-              CNST.SY_CANDIDATE
-            }`,
-          ];
+          message.primary = this.props
+            .translate('phase_vote_priest.new_priest_election', { name: this._getPlayerName(priestID) })
+            .split('\n');
         } else {
-          message.text = ['Waiting for other players to vote...'];
+          message.text = translate('phase_vote_priest.wait_others_to_vote').split('\n');
         }
         break;
 
@@ -321,10 +321,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         if (this._isActivePlayer() && !isDead) {
           const yes = this.props.G.voteCountYes;
           const no = this.props.G.voteCountNo;
-          message[yes > no ? 'success' : 'error'].push(`Election Results: ${yes} Yes 👍 and ${no} No 👎`);
-          message.text = ['Click Okay to continue...'];
+          message[yes > no ? 'success' : 'error'].push(
+            ...translate('phase_end_vote_priest.election_results', { yes, no }).split('\n'),
+          );
+          message.text = translate('ok_to_continue').split('\n');
         } else {
-          message.text = ['Waiting for other players to click Okay...'];
+          message.text = translate('waiting_for_other_players_to_click_okay.').split('\n');
         }
         break;
 
@@ -332,59 +334,47 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       case 'phaseDiscardPriest':
       case 'phaseDiscardPriestVeto':
         const priestPhase = phaseName !== 'phaseDiscardMayor';
-        const playerTag = priestPhase ? CNST.N_PRIEST : CNST.N_MAYOR;
+        const playerTag = priestPhase ? translate('cname.priest') : translate('cname.mayor');
         if (this._isActivePlayer() && intPlayerID === (priestPhase ? priestID : mayorID)) {
-          message.warning = [`As the ${playerTag}, you must discard one  ${CNST.N_SAMPLE}.`];
-          message.text = [
-            `${CNST.SY_BAD_PO} is for ${CNST.N_VAMPIRES} and ${CNST.SY_GOOD_PO} is for ${CNST.N_VILLAGERS}.`,
-            `Click on the ${CNST.N_SAMPLE} you want to discard,`,
-          ];
+          message.warning = this.props
+            .translate('phase_discard.you_must_discard_one_sample', { playerTag })
+            .split('\n');
+          message.text = translate('phase_discard.click_to_discard', { playerTag }).split('\n');
           // special actions related to priest Veto
           if (phaseName === 'phaseDiscardPriestVeto' && this.props.G.vetoPower) {
-            message.secondary = ['You may also propse a Veto.'];
+            message.secondary = translate('phase_discard.priest_veto_proposal', { playerTag }).split('\n');
           }
         } else {
-          message.text = [`Wait for the ${playerTag} to discard a ${CNST.N_SAMPLE}...`];
+          message.text = translate('phase_discard.wait_to_discard_a_sample').split('\n');
         }
 
         break;
 
       case 'phaseVetoMayor':
         if (this._isActivePlayer()) {
-          message.warning = [
-            `As the ${CNST.N_MAYOR}, you can`,
-            `either Reject ${CNST.SY_TDOWN} or Agree ${CNST.SY_TUP} with the ${CNST.N_VETO}`,
-          ];
-          message.text = [`Previously, ${this._getPolicyText()} was given to the ${CNST.N_PRIEST}.`];
+          message.warning = translate('phase_veto_mayor.reject_or_agree').split('\n');
+          message.text = this.props
+            .translate('phase_veto_mayor.policy_already_given_to_the_priest', { text: this._getPolicyText() })
+            .split('\n');
         } else {
-          message.warning = [
-            `The ${CNST.N_PRIEST} called for a ${CNST.N_VETO}, and the ${CNST.N_MAYOR} is considering it !`,
-            `If the Veto is rejected, the ${CNST.N_PRIEST} will be forced to play a ${CNST.N_SAMPLE}. Otherwise a new round will start.`,
-          ];
+          message.warning = translate('phase_veto_mayor.priest_called_a_veto').split('\n');
         }
         break;
 
       case 'phasePeekPolicy':
         if (this._isActivePlayer() && intPlayerID === mayorID) {
-          message.warning = [
-            `You can see the upcoming ${CNST.N_SAMPLE}s`,
-            `Upcoming sample are:  ${this._getPolicyText(true)}`,
-          ];
-          message.text = ['Click Okay to continue...'];
+          message.warning = translate('phase_peek_policy.upcoming_sample').split('\n');
+          message.text = translate('ok_to_continue').split('\n');
         } else {
-          message.text = [`The ${CNST.N_MAYOR} is looking at te next three samples.`];
+          message.text = translate('phase_peek_policy.mayor_is_looking').split('\n');
         }
         break;
 
       case 'phaseInvestigate1':
         if (this._isActivePlayer()) {
-          message.warning = [
-            `You are the ${CNST.N_MAYOR}.`,
-            `You can investigate any player with the ${CNST.SY_SEARCH} symbol.`,
-            `Click on the player you would like to investigate...`,
-          ];
+          message.warning = translate('phase_investigate1.you_are_the_mayor').split('\n');
         } else {
-          message.text = [`The ${CNST.N_MAYOR} is Investigating ${CNST.SY_PEEK} a Player...`];
+          message.text = translate('phase_investigate1.mayor_is_investigating').split('\n');
         }
         break;
 
@@ -392,28 +382,32 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         const pi2PlayerName = this._getPlayerName(this.props.G.investigateID);
         if (this._isActivePlayer()) {
           const isVampire = this.props.G.investigate == 1;
-          message.primary = [`${pi2PlayerName} is a ${isVampire ? CNST.N_VAMPIRE : CNST.N_VILLAGER}`];
-          message.text = ['Click Okay to continue...'];
+          message.primary = isVampire
+            ? translate('phase_investigate2.player_is_a_vampire', { name: pi2PlayerName })
+            : translate('phase_investigate2.player_is_a_villager', { name: pi2PlayerName });
+          message.text = translate('ok_to_continue').split('\n');
         } else {
-          message.info = [`${pi2PlayerName} is being investigated.`];
+          message.info = this.props
+            .translate('phase_investigate2.player_is_being_investigated', { name: pi2PlayerName })
+            .split('\n');
         }
         break;
 
       case 'phaseSpecialElection':
         if (this._isActivePlayer()) {
-          message.warning = [`You are the current ${CNST.N_MAYOR}, please choose the next ${CNST.N_MAYOR}`];
-          message.text = [`You can do this by clicking on one of the player with the ${CNST.SY_CANDIDATE} symbol.`];
+          message.warning = translate('phase_special_election.current_mayor').split('\n');
+          message.text = translate('phase_special_election.click_on_candidate').split('\n');
         } else {
-          message.info = [`Current ${CNST.N_MAYOR} is selecting the next ${CNST.N_MAYOR}.`];
+          message.info = translate('phase_special_election.next_mayor').split('\n');
         }
         break;
 
       case 'phaseExecution':
         if (this._isActivePlayer()) {
-          message.warning = [`You are the ${CNST.N_MAYOR}, you must ${CNST.N_EXECUTE} one Player!`];
-          message.text = [`You can do this by clicking on one of the player with the ${CNST.SY_CANDIDATE} symbol.`];
+          message.warning = translate('phase_execution.you_are_the_mayor').split('\n');
+          message.text = translate('phase_execution.click_on_candidate').split('\n');
         } else {
-          message.error.push(`The ${CNST.N_MAYOR} will ${CNST.N_EXECUTE} a Player!.`);
+          message.error.push(...translate('phase_execution.mayor_will_execute_a_player').split('\n'));
         }
         break;
 
@@ -456,6 +450,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _renderPhaseRelatedInteractions = () => {
     const interactions: any = [];
+    const { translate } = this.props;
     const playerID = this._getPlayerID();
     const intPlayerID = parseInt(playerID);
     const { mayorID, priestID } = this.props.G;
@@ -474,13 +469,13 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       case 'phaseVotePriest':
         if (this._isActivePlayer()) {
           interactions.push({
-            text: 'Yes 👍',
+            text: translate('yes'),
             onClick: () => {
               this.props.moves.moveVoteYes(parseInt(playerID));
             },
           });
           interactions.push({
-            text: 'No 👎',
+            text: translate('no'),
             onClick: () => {
               this.props.moves.moveVoteNo(parseInt(playerID));
             },
@@ -491,7 +486,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       case 'phaseEndVotePriest':
         if (this._isActivePlayer()) {
           interactions.push({
-            text: 'Okay',
+            text: translate('okay'),
             onClick: () => {
               this.props.moves.moveOKVote(intPlayerID);
             },
@@ -506,7 +501,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         if (this._isActivePlayer() && intPlayerID === (priestPhase ? priestID : mayorID)) {
           this.props.G.policyHand.forEach((p, idx) => {
             interactions.push({
-              text: p.garlic ? CNST.SY_GOOD_PO : CNST.SY_BAD_PO,
+              text: p.garlic ? translate('symbol.good_po') : translate('symbol.bad_po'),
               onClick: () => {
                 if (priestPhase) {
                   this.props.moves.moveDiscardPriest(idx, intPlayerID);
@@ -518,7 +513,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           });
           if (phaseName === 'phaseDiscardPriestVeto' && this.props.G.vetoPower) {
             interactions.push({
-              text: `${CNST.N_VETO}`,
+              text: translate('cname.veto'),
               color: 'secondary',
               onClick: () => {
                 this.props.moves.moveWantVetoPriest(intPlayerID);
@@ -531,14 +526,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       case 'phaseVetoMayor':
         if (this._isActivePlayer()) {
           interactions.push({
-            text: CNST.N_AGREE_VETO,
+            text: translate('cname.agree_veto'),
             color: 'primary',
             onClick: () => {
               this.props.moves.moveWantVetoMayor(true, intPlayerID);
             },
           });
           interactions.push({
-            text: CNST.N_REJECT_VETO,
+            text: translate('cname.reject_veto'),
             color: 'secondary',
             onClick: () => {
               this.props.moves.moveWantVetoMayor(false, intPlayerID);
@@ -550,7 +545,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       case 'phasePeekPolicy':
         if (this._isActivePlayer() && intPlayerID === mayorID) {
           interactions.push({
-            text: 'Okay',
+            text: translate('okay'),
             onClick: () => {
               this.props.moves.moveOK(intPlayerID);
             },
@@ -561,7 +556,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       case 'phaseInvestigate2':
         if (this._isActivePlayer()) {
           interactions.push({
-            text: 'Okay',
+            text: translate('okay'),
             onClick: () => {
               this.props.moves.moveInvestigateEnd(intPlayerID);
             },
@@ -571,7 +566,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
       case 'user-info':
         interactions.push({
-          text: 'Hide Info',
+          text: translate('hide_info'),
           onClick: () => {
             this.setState({ hintKey: null });
           },
@@ -600,3 +595,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     );
   };
 }
+
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
+export const Board = enhance(BoardInternal);

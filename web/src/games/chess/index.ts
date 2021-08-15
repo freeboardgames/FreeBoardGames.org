@@ -1,13 +1,13 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import translation from './locales/en.json';
 
 export const chessGameDef: IGameDef = {
   code: 'chess',
-  codes: { en: 'chess', pt: 'xadrez' },
-  translationStatus: { pt: IGameTranslationStatus.PARTIAL },
-  name: 'Chess',
+  codes: { pt: 'xadrez', de: 'scach' },
+  translationStatus: { pt: IGameTranslationStatus.DONE, de: IGameTranslationStatus.DONE },
+  name: translation.name,
   contributors: ['flamecoals'],
   imageURL: Thumbnail,
   minPlayers: 2,
@@ -19,16 +19,9 @@ export const chessGameDef: IGameDef = {
     { mode: GameMode.OnlineFriend },
     { mode: GameMode.LocalFriend },
   ],
-  description: 'International Rules',
-  descriptionTag: `Play an online Chess game in your browser against a\
- top chess computer. You can set the computer level from 1 to 8,\
- from easy to grandmaster. You can also easily share a link and play\
- chess with a friend online, or you can share your device and play\
- with a friend locally !`,
-  instructions: {
-    videoId: 'fKxG8KjH1Qg',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
