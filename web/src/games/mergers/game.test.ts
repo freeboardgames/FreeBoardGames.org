@@ -1164,8 +1164,6 @@ describe('mergers', () => {
         return G;
       },
     };
-    MergersCustomScenario.phases.buildingPhase.start = false;
-    MergersCustomScenario.phases.mergerPhase.start = true;
     const clients = getMultiplayerTestClients(3, MergersCustomScenario);
 
     p0 = clients[0];
