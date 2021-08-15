@@ -5,7 +5,8 @@
 import { GAMES_LIST } from 'games';
 import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
-//const redis = require('redis');
+import redis from 'redis';
+import redisPubSub from 'bgio-redis-pubsub';
 import { Server, SocketIO } from 'boardgame.io/server';
 import { PostgresStore } from 'bgio-postgres';
 
@@ -26,11 +27,9 @@ function getTransport() {
   if (!host || !port || !password) {
     return;
   }
-  /*
   const pub = redis.createClient(port, host, { auth_pass: password });
   const sub = redis.createClient(port, host, { auth_pass: password });
-  */
-  return new SocketIO();
+  return new SocketIO({ pubSub: new redisPubSub.RedisPubSub(pub, sub) });
 }
 
 const startServer = async () => {
