@@ -112,7 +112,7 @@
     "qrcode.react": "^1.0.0",
     "raw-loader": "^4.0.2",
     "react": "16.14.0",
-    "bgio-redis-pubsub": "git+https://github.com/boardgameio/bgio-redis-pubsub.git#semver:v0.0.1delta",
+    "bgio-redis-pubsub-temp": "0.0.1",
     "react-compound-timer": "^1.2.0",
     "react-dom": "16.14.0",
     "react-ga": "^3.2.0",

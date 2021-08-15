@@ -6559,9 +6559,10 @@ bgio-postgres@^1.0.9:
     pg-hstore "^2.3.3"
     sequelize "^5.21.12"
 
-"bgio-redis-pubsub@git+https://github.com/boardgameio/bgio-redis-pubsub.git#semver:v0.0.1delta":
+bgio-redis-pubsub-temp@0.0.1:
   version "0.0.1"
-  resolved "git+https://github.com/boardgameio/bgio-redis-pubsub.git#1bae0588be244c700d34b629752558f40d25932e"
+  resolved "https://registry.yarnpkg.com/bgio-redis-pubsub-temp/-/bgio-redis-pubsub-temp-0.0.1.tgz#eee3b0c352130c665a422f78ebdd5271a0f8bf2c"
+  integrity sha512-t+E1BWcL8So5Ot4osHiom1R00V/P4NRo6hkHU70Qw3H5ZiKdMwePbhySFfOp82eVHWqLQzQqlvDlELb1HsjWIQ==
   dependencies:
     "@types/koa-router" "^7.4.4"
     boardgame.io "^0.47.0"
