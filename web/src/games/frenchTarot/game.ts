@@ -8,8 +8,6 @@ import { Moves } from './engine/moves';
 
 /*
 TODO before publishing:
-- adapt layout for mobile devices (e.g. left-right scrollable and hideable hand)
-- unit-tests
 - add short game description in own words
 - translations
 */
@@ -158,10 +156,7 @@ export const FrenchTarotGame: Game<IG> = {
 
       onEnd: (G: IG) => {
         if (G.calledCard) {
-          const calledTaker = G.players.find((P) => {
-            return P.hand.some((C) => C.color == G.calledCard.color && C.value == G.calledCard.value);
-          });
-          G.calledTakerId = calledTaker ? calledTaker.id : G.takerId;
+          G.calledTakerId = getCalledTakerId(G.players, G.calledCard);
         }
         const taker = G.players.find((P) => P.isTaker);
         if (G.contract < 3) {
@@ -262,19 +257,7 @@ export const FrenchTarotGame: Game<IG> = {
       },
 
       onEnd: (G: IG) => {
-        const isRoundOver = G.players.every((P) => P.hand.length == 0);
-        const isAlmostSlam =
-          isRoundOver &&
-          G.resolvedTricks.every((T) => {
-            return T.winner.id == G.takerId || T.winner.id == G.calledTakerId;
-          });
-        const excuseLeads = G.trick.cards[0].color == CardColor.Excuse;
-        const winnerId = isAlmostSlam && excuseLeads ? G.trick.leader.id : getTrickWinnerId(G.trick);
-        G.trick.winner = util.getPlayerById(G, winnerId);
-        G.resolvedTricks.push(G.trick);
-        G.trick = { cards: [], leader: G.trick.winner };
-
-        if (isRoundOver) {
+        if (resolveTrick(G)) {
           const roundSummary = summary.getRoundSummary(G);
           G.roundSummaries.push(roundSummary);
           G.players.forEach((P, i) => {
@@ -307,7 +290,31 @@ export const FrenchTarotGame: Game<IG> = {
   },
 };
 
-function getTrickWinnerId(T: ITrick): string {
+export function resolveTrick(G: IGame): boolean {
+  // returns true if this was the last trick in the game
+  const isRoundOver = G.players.every((P) => P.hand.length == 0);
+  const isAlmostSlam =
+    isRoundOver &&
+    G.resolvedTricks.every((T) => {
+      return T.winner.id == G.takerId || T.winner.id == G.calledTakerId;
+    });
+  const excuseLeads = G.trick.cards[0].color == CardColor.Excuse;
+  const winnerId = isAlmostSlam && excuseLeads ? G.trick.leader.id : getTrickWinnerId(G.trick);
+  G.trick.winner = util.getPlayerById(G, winnerId);
+  G.resolvedTricks.push(G.trick);
+  G.trick = { cards: [], leader: G.trick.winner };
+  return isRoundOver;
+}
+
+export function getCalledTakerId(players: IPlayer[], card: ICard): string {
+  const takerId = players.find((P) => P.isTaker).id;
+  const calledTaker = players.find((P) => {
+    return P.hand.some((C) => C.color == card.color && C.value == card.value);
+  });
+  return calledTaker ? calledTaker.id : takerId;
+}
+
+export function getTrickWinnerId(T: ITrick): string {
   const leaderId = +T.leader.id;
   const max_trump = Math.max(...T.cards.map((C) => (C.color == CardColor.Trumps ? C.value : 0)));
   if (max_trump > 0) {
@@ -325,7 +332,7 @@ function getTrickWinnerId(T: ITrick): string {
     .toString();
 }
 
-function getSortedDeck(): ICard[] {
+export function getSortedDeck(): ICard[] {
   var deck: ICard[] = [{ color: CardColor.Excuse, value: 0 }];
   for (let col of ['Hearts', 'Diamonds', 'Spades', 'Clubs']) {
     deck = deck.concat(
@@ -346,6 +353,6 @@ function getSortedDeck(): ICard[] {
   return deck;
 }
 
-function cmpCards(a: ICard, b: ICard): number {
+export function cmpCards(a: ICard, b: ICard): number {
   return (a.color - b.color) * 100 + (a.value - b.value);
 }
