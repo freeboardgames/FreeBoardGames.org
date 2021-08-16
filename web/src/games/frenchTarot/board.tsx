@@ -4,6 +4,7 @@ import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { isLocalGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
 import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import { Board } from './components/GameBoard';
 
@@ -13,34 +14,25 @@ import * as u_poignee from './util/poignee';
 import * as u_discard from './util/discard';
 import * as u_placement from './util/placement';
 
-export class BgioBoard extends React.Component<
-  {
-    G: IG;
-    ctx: Ctx;
-    moves: IGameMoves;
-    playerID: string;
-    gameArgs?: IGameArgs;
-  },
-  {}
-> {
-  render() {
-    return this.props.ctx.gameover ? this.renderGameOver() : this.renderBoard();
-  }
+export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID: string; gameArgs?: IGameArgs }) {
+  const { translate } = useCurrentGameTranslation();
+  const playerID = isLocalGame(props.gameArgs) ? props.ctx.currentPlayer : props.playerID;
+  const playerPhase = props.ctx.currentPlayer === playerID && props.ctx.phase;
+  const playerStage = props.ctx.activePlayers && props.ctx.activePlayers[playerIndex()];
 
-  renderBoard() {
-    const G = this.props.G;
-    const ctx = this.props.ctx;
-    const moves = this.props.moves;
-    const playerID = this.playerID();
+  function renderBoard() {
+    const G = props.G;
+    const ctx = props.ctx;
+    const moves = props.moves;
     const player = G.players.find((P) => P.id === playerID);
     const prevTrick = G.resolvedTricks.length > 1 ? G.resolvedTricks[G.resolvedTricks.length - 1] : G.trick;
 
     return (
-      <GameLayout gameArgs={this.props.gameArgs} maxWidth="1500px">
+      <GameLayout gameArgs={props.gameArgs} maxWidth="1500px">
         <Board
           player={player}
           players={G.players}
-          playerNames={G.players.map((P) => this.playerName(P.id))}
+          playerNames={G.players.map((P) => playerName(P.id))}
           contract={G.contract}
           slam={G.announcedSlam}
           currentPlayerId={ctx.currentPlayer}
@@ -54,9 +46,9 @@ export class BgioBoard extends React.Component<
           showRoundSummary={ctx.phase == Phases.round_end && G.roundSummaries.length > 0}
           selectCards={canSelectCards(ctx, player) ? moves.SelectCards : null}
           selectBid={canBid(ctx, player) ? moves.MakeBid : null}
-          callCard={this.playerPhase() == Phases.calling ? moves.Call : null}
+          callCard={playerPhase == Phases.calling ? moves.Call : null}
           announceSlam={canAnnounceSlam(ctx, player) ? moves.AnnounceSlam : null}
-          declarePoignee={this.playerStage() == Stages.declare_poignee ? moves.DeclarePoignee : null}
+          declarePoignee={playerStage == Stages.declare_poignee ? moves.DeclarePoignee : null}
           discard={canDiscard(ctx, player) ? moves.Discard : null}
           endGame={moves.Finish}
         />
@@ -64,41 +56,31 @@ export class BgioBoard extends React.Component<
     );
   }
 
-  renderGameOver() {
-    const scores: IScore[] = this.props.G.players.map((P) => ({ playerID: P.id, score: P.score }));
+  function renderGameOver() {
+    const scores: IScore[] = props.G.players.map((P) => ({ playerID: P.id, score: P.score }));
     scores.sort((a, b) => b.score - a.score);
-    const player = this.props.G.players.find((P) => P.id === this.playerID());
+    const player = props.G.players.find((P) => P.id === playerID);
     const scoreboard = (
-      <Scoreboard scoreboard={scores} players={this.props.gameArgs.players} playerID={this.props.ctx.playerID} />
+      <Scoreboard scoreboard={scores} players={props.gameArgs.players} playerID={props.ctx.playerID} />
     );
     return (
       <GameLayout
-        gameOver={player.score > scores[0].score ? 'you won' : 'you lost'}
+        gameOver={player.score > scores[0].score ? translate('gameover_you_won') : translate('gameover_you_lost')}
         extraCardContent={scoreboard}
-        gameArgs={this.props.gameArgs}
+        gameArgs={props.gameArgs}
       />
     );
   }
 
-  playerID(): string {
-    return isLocalGame(this.props.gameArgs) ? this.props.ctx.currentPlayer : this.props.playerID;
+  function playerIndex(id: string = playerID): number {
+    return props.ctx.playOrder.indexOf(id);
   }
 
-  playerIndex(id: string = this.playerID()): number {
-    return this.props.ctx.playOrder.indexOf(id);
+  function playerName(id: string = playerID): string {
+    return props.gameArgs ? props.gameArgs.players[playerIndex(id)].name : translate('player_n', { n: id });
   }
 
-  playerName(id: string = this.playerID()): string {
-    return this.props.gameArgs ? this.props.gameArgs.players[this.playerIndex(id)].name : `Player ${id}`;
-  }
-
-  playerPhase(): string {
-    return this.props.ctx.currentPlayer === this.playerID() && this.props.ctx.phase;
-  }
-
-  playerStage(): string {
-    return this.props.ctx.activePlayers && this.props.ctx.activePlayers[this.playerIndex()];
-  }
+  return props.ctx.gameover ? renderGameOver() : renderBoard();
 }
 
 function selectableCards(G: IG, ctx: Ctx, playerId: string): boolean[] {

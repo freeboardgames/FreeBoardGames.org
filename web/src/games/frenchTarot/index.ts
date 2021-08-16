@@ -1,22 +1,21 @@
-const Thumbnail = require('./media/thumbnail.png?lqip-colors');
+const Thumbnail = require('./media/thumbnail.png');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json';
 
 export const frenchTarotDef: IGameDef = {
   code: 'frenchTarot',
-  name: 'French Tarot',
+  name: translation.name,
   contributors: ['tuxor1337'],
+  translationStatus: { de: IGameTranslationStatus.PARTIAL, fr: IGameTranslationStatus.PARTIAL },
+  codes: { de: 'franz-tarot', fr: 'tarot-francais' },
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 5,
-  description: 'Classical French card game',
-  descriptionTag: `Play French Tarot and have lots of fun!`,
-  instructions: {
-    videoId: 'zo9pLf5Mai4',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.IN_DEVELOPMENT,
   config: () => import('./config'),
 };

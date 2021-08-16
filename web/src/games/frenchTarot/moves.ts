@@ -67,7 +67,7 @@ export const Moves = {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     const stage = ctx.activePlayers && ctx.activePlayers[+player.id];
     if (stage == Stages.declare_poignee) {
-      player.discardSelection = [...handIndex];
+      player.discardSelection = [...u_poignee.autoDeselectExcuse(G, ctx, handIndex)];
     } else if (ctx.phase == Phases.discard) {
       const discard_num = ctx.numPlayers == 5 ? 3 : 6;
       if (handIndex.length > discard_num) {

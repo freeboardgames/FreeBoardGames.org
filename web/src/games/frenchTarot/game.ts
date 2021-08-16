@@ -6,11 +6,6 @@ import * as u_poignee from './util/poignee';
 import * as u_summary from './util/summary';
 import { Moves } from './moves';
 
-/*
-TODO before publishing:
-- add short game description in own words
-- translations
-*/
 export const FrenchTarotGame: Game<IG> = {
   name: 'frenchTarot',
 

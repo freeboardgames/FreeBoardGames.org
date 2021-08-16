@@ -63,31 +63,21 @@ function getKeyframeRule(ruleName: string, key: string): CSSKeyframeRule {
   return null;
 }
 
-export class Trick extends React.Component<
-  {
-    trick: ICard[];
-    leaderPos: number;
-    winnerPos: number;
-    currPos: number;
-    numPlayers: number;
-  },
-  {}
-> {
-  render() {
-    if (this.props.winnerPos != -1) {
-      const [x, y] = VanishPositions[Math.max(0, this.props.numPlayers - 3)][this.relativePos(this.props.winnerPos)];
-      getKeyframeRule('vanish', '100%').style.setProperty('transform', `translate(${x}px, ${y}px) scale(0.1)`);
-    }
-    return (
-      <div className={[css.trick, this.props.trick.length == this.props.numPlayers ? css.full : ''].join(' ')}>
-        {this.props.trick.map((C, i) => this.arrangeTrickCard(i, C))}
-      </div>
-    );
+export function Trick(props: {
+  trick: ICard[];
+  leaderPos: number;
+  winnerPos: number;
+  currPos: number;
+  numPlayers: number;
+}) {
+  if (props.winnerPos != -1) {
+    const [x, y] = VanishPositions[Math.max(0, props.numPlayers - 3)][relativePos(props.winnerPos)];
+    getKeyframeRule('vanish', '100%').style.setProperty('transform', `translate(${x}px, ${y}px) scale(0.1)`);
   }
 
-  arrangeTrickCard(i: number, card: ICard) {
-    const index = this.relativePos(this.props.leaderPos + i);
-    const [x, y] = CardPositions[Math.max(0, this.props.numPlayers - 3)][index];
+  function arrangeTrickCard(i: number, card: ICard) {
+    const index = relativePos(props.leaderPos + i);
+    const [x, y] = CardPositions[Math.max(0, props.numPlayers - 3)][index];
     return (
       <div key={index} className={css.cardContainer}>
         <div style={{ transform: `translate(${x}px, ${y}px)` }}>
@@ -97,7 +87,13 @@ export class Trick extends React.Component<
     );
   }
 
-  relativePos(pos: number): number {
-    return util.mod(pos - this.props.currPos, this.props.numPlayers);
+  function relativePos(pos: number): number {
+    return util.mod(pos - props.currPos, props.numPlayers);
   }
+
+  return (
+    <div className={[css.trick, props.trick.length == props.numPlayers ? css.full : ''].join(' ')}>
+      {props.trick.map((C, i) => arrangeTrickCard(i, C))}
+    </div>
+  );
 }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import css from './PreviousTrick.module.css';
 
@@ -14,27 +15,12 @@ const ColorSymbols = {
   Trumps: <>&#x1F482;</>,
 };
 
-export class PreviousTrick extends React.Component<
-  {
-    trick: ICard[];
-    leaderPos: number;
-    currPos: number;
-    numPlayers: number;
-  },
-  {}
-> {
-  render() {
-    return (
-      <div className={css.prevTrick}>
-        <span>Previous trick</span>
-        {new Array(this.props.numPlayers).fill(0).map((_, i) => this.renderPrevTrickCard(i))}
-      </div>
-    );
-  }
+export function PreviousTrick(props: { trick: ICard[]; leaderPos: number; currPos: number; numPlayers: number }) {
+  const { translate } = useCurrentGameTranslation();
 
-  renderPrevTrickCard(i: number) {
-    const card = this.props.trick[i];
-    const index = util.mod(this.props.leaderPos + i - this.props.currPos, this.props.numPlayers);
+  function renderPrevTrickCard(i: number) {
+    const card = props.trick[i];
+    const index = util.mod(props.leaderPos + i - props.currPos, props.numPlayers);
     var text = '';
     var symbol = <></>;
     if (card) {
@@ -51,7 +37,7 @@ export class PreviousTrick extends React.Component<
         className={[
           css.prevCard,
           card ? '' : css.emptyCard,
-          css[`p${Math.max(3, this.props.numPlayers)}`],
+          css[`p${Math.max(3, props.numPlayers)}`],
           css[`i${index + 1}`],
         ].join(' ')}
         key={index}
@@ -60,4 +46,11 @@ export class PreviousTrick extends React.Component<
       </span>
     );
   }
+
+  return (
+    <div className={css.prevTrick}>
+      <span>{translate('prev_trick')}</span>
+      {new Array(props.numPlayers).fill(0).map((_, i) => renderPrevTrickCard(i))}
+    </div>
+  );
 }

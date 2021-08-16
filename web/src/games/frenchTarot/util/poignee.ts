@@ -31,6 +31,19 @@ export function preselectPoignee(G: IG, ctx: Ctx) {
   player.discardSelection = trumps_pos.length >= thresh ? trumps_pos.slice(0, thresh) : trumps_pos.concat([excuse_pos]);
 }
 
+export function autoDeselectExcuse(G: IG, ctx: Ctx, sel: number[]): number[] {
+  const player = util.getPlayerById(G, ctx.currentPlayer);
+  const max_poignee_level = maxPoigneeLevel(player.hand, ctx.numPlayers);
+  if (max_poignee_level == 0) return [];
+  const thresh = getPoigneeThresholds(ctx.numPlayers)[max_poignee_level - 1];
+  const excuse_pos = player.hand.findIndex((C) => C.color == CardColor.Excuse);
+  const excuse_selpos = sel.indexOf(excuse_pos);
+  if (excuse_selpos != -1 && sel.length < thresh) {
+    sel.splice(excuse_selpos, 1);
+  }
+  return sel;
+}
+
 export function maxPoigneeLevel(hand: ICard[], numPlayers: number) {
   const num_trumps_in_hand = hand.filter((C) => [CardColor.Trumps, CardColor.Excuse].indexOf(C.color) != -1).length;
   const thresh = getPoigneeThresholds(numPlayers);

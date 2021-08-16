@@ -5,36 +5,27 @@ import { Card } from './Card';
 
 import { ICard } from '../types';
 
-export class Kitty extends React.Component<
-  {
-    kitty: ICard[];
-    revealed: boolean;
-    descr: JSX.Element | string;
-  },
-  {}
-> {
-  render() {
+export function Kitty(props: { kitty: ICard[]; revealed: boolean; descr: JSX.Element | string }) {
+  function arrangeKittyCard(index: number, card: ICard) {
     return (
-      <div className={css.kitty}>
-        <div>
-          <div>
-            {!this.props.descr ? null : <div className={css.kittyDescr}>{this.props.descr}</div>}
-            {this.props.kitty.map((card, i) => this.arrangeKittyCard(i, card))}
+      <div className={css.arrangeCard}>
+        <div key={index} className={css.cropCard}>
+          <div className={css.scaleCard}>
+            <Card type={props.revealed ? card : null} />
           </div>
         </div>
       </div>
     );
   }
 
-  arrangeKittyCard(index: number, card: ICard) {
-    return (
-      <div className={css.arrangeCard}>
-        <div key={index} className={css.cropCard}>
-          <div className={css.scaleCard}>
-            <Card type={this.props.revealed ? card : null} />
-          </div>
+  return (
+    <div className={css.kitty}>
+      <div>
+        <div>
+          {!props.descr ? null : <div className={css.kittyDescr}>{props.descr}</div>}
+          {props.kitty.map((card, i) => arrangeKittyCard(i, card))}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }

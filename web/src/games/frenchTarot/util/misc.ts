@@ -7,11 +7,7 @@ import * as Summary from './summary';
 export { Placement, Discard, Poignee, Summary };
 
 export function getBidName(bid: number): string {
-  return ['Pass', 'Small', 'Guard', 'Guard without', 'Guard against'][bid];
-}
-
-export function getPoigneeName(level: number): string {
-  return ['Single', 'Double', 'Triple'][level];
+  return `bid_${['pass', 'small', 'guard', 'guard_without', 'guard_against'][bid]}`;
 }
 
 export function kittySize(numPlayers: number): number {

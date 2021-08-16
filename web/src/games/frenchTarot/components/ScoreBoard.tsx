@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import css from './ScoreBoard.module.css';
 
@@ -15,15 +16,14 @@ const EmptyRoundSummary: IRoundSummary = {
   scoring: [0, 0, 0, 0, 0],
 };
 
-interface ScoreBoardProps {
+export function ScoreBoard(props: {
   playerNames: string[];
   playerRoles: boolean[];
   roundSummaries: IRoundSummary[];
   showRoundSummary: boolean;
   playerScores: number[];
-}
-
-export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: ScoreBoardProps) => {
+}) {
+  const { translate } = useCurrentGameTranslation();
   const numSummaries = props.roundSummaries.length;
   const [hoverSummary, setHoverSummary] = React.useState(-1);
   const showSummary = hoverSummary == -1 && numSummaries > 0 ? numSummaries - 1 : hoverSummary;
@@ -33,7 +33,7 @@ export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: Scor
     return (
       <>
         <input type="checkbox" id="togglePrevRounds" checked={props.showRoundSummary ? true : null} />
-        <label htmlFor="togglePrevRounds">Previous scores</label>
+        <label htmlFor="togglePrevRounds">{translate('prev_scores')}</label>
         <div>
           <div className={`${css.previousRounds} ${css.board}`} style={{ maxWidth: `${23 + numPlayers * 53}px` }}>
             <table>
@@ -47,7 +47,7 @@ export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: Scor
                 {props.roundSummaries.length > 0 ? null : (
                   <tr>
                     <td colSpan={numPlayers + 1}>
-                      <i>This is the first round.</i>
+                      <i>{translate('scoreboard_firstround')}</i>
                     </td>
                   </tr>
                 )}
@@ -93,47 +93,47 @@ export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: Scor
         <table>
           <tbody>
             <tr>
-              <td>Round {showSummary + 1}</td>
+              <td>{translate('scoreboard_round_n', { n: showSummary + 1 })}</td>
               {orderTakersFirst.map((i) => (
                 <td key={i}>{props.playerNames[i]}</td>
               ))}
             </tr>
             <tr>
-              <td>Points(required)</td>
+              <td>{translate('scoreboard_points')}</td>
               {orderTakersFirst.map((i) => renderPoints(summary, i))}
             </tr>
             <tr>
-              <td>Petit au bout</td>
+              <td>{translate('scoreboard_petit_au_bout')}</td>
               {orderTakersFirst.map((i) => (
                 <td key={i}>{props.playerRoles[i] ? `${summary.petitAuBout}` : '-'}</td>
               ))}
             </tr>
             <tr>
-              <td>Multiplier</td>
+              <td>{translate('scoreboard_multiplier')}</td>
               {orderTakersFirst.map((i) => (
                 <td key={i}>{props.playerRoles[i] ? `×${summary.multiplier}` : '-'}</td>
               ))}
             </tr>
             <tr>
-              <td>Poignée</td>
+              <td>{translate('scoreboard_poignee')}</td>
               {orderTakersFirst.map((i) => (
                 <td key={i}>{props.playerRoles[i] ? `${summary.poignee}` : '-'}</td>
               ))}
             </tr>
             <tr>
-              <td>Slam</td>
+              <td>{translate('scoreboard_slam')}</td>
               {orderTakersFirst.map((i) => (
                 <td key={i}>{props.playerRoles[i] ? `${summary.slam}` : '-'}</td>
               ))}
             </tr>
             <tr>
-              <td>Round score</td>
+              <td>{translate('scoreboard_round_score')}</td>
               {orderTakersFirst.map((i) => (
                 <td key={i}>{summary.scoring[i]}</td>
               ))}
             </tr>
             <tr>
-              <td>Total score</td>
+              <td>{translate('scoreboard_total_score')}</td>
               {orderTakersFirst.map((i) => (
                 <td key={i}>{props.playerScores[i]}</td>
               ))}
@@ -157,4 +157,4 @@ export const ScoreBoard: React.FunctionComponent<ScoreBoardProps> = (props: Scor
   }
 
   return <div className={css.showPreviousRounds}>{renderPreviousRounds()}</div>;
-};
+}

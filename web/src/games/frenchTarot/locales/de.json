@@ -1,0 +1,9 @@
+{
+  "name": "Franz. Tarot",
+  "description": "Französisches Kartenspiel",
+  "descriptionTag": "Spiele französisches Tarot online mit 3 bis 5 Spieler*innen!",
+  "instructions": {
+    "videoId": "zo9pLf5Mai4",
+    "text": "Eine ausführliche Spielbeschreibung findet sich auf der Webseite von John McLeod: https://www.pagat.com/de/tarot/frtarot.html\n\nDas Kartendesign in dieser Implementierung geht auf B. P. Grimaud, France (1898) zurück und ist damit gemeinfrei: https://commons.wikimedia.org/wiki/Category:Tarot_nouveau_-_Grimaud_-_1898"
+  }
+}
