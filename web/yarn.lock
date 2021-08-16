@@ -1740,6 +1740,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@boardgame.io/redis-pubsub@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@boardgame.io/redis-pubsub/-/redis-pubsub-0.0.1.tgz#6f32425558fc885bd352f22d84376df4d2b2b085"
+  integrity sha512-Io3AG0YIQrulVnx6S2fnDu64BA+dekAWxb/Mnk8Vls5tRPM11rh03wCXmmBxn5uniJxjnTklXSOKGH6+27HOzQ==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -4486,13 +4491,6 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa-router@^7.4.4":
-  version "7.4.4"
-  resolved "https://registry.yarnpkg.com/@types/koa-router/-/koa-router-7.4.4.tgz#db72bde3616365d74f00178d5f243c4fce7da572"
-  integrity sha512-3dHlZ6CkhgcWeF6wafEUvyyqjWYfKmev3vy1PtOmr0mBc3wpXPU5E8fBBd4YQo5bRpHPfmwC5yDaX7s4jhIN6A==
-  dependencies:
-    "@types/koa" "*"
-
 "@types/koa@*", "@types/koa@^2.11.3":
   version "2.11.5"
   resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.11.5.tgz#a2b81382bf65d72bdc3bd906abdee259fefdebc2"
@@ -6559,15 +6557,6 @@ bgio-postgres@^1.0.9:
     pg-hstore "^2.3.3"
     sequelize "^5.21.12"
 
-bgio-redis-pubsub-temp@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/bgio-redis-pubsub-temp/-/bgio-redis-pubsub-temp-0.0.1.tgz#eee3b0c352130c665a422f78ebdd5271a0f8bf2c"
-  integrity sha512-t+E1BWcL8So5Ot4osHiom1R00V/P4NRo6hkHU70Qw3H5ZiKdMwePbhySFfOp82eVHWqLQzQqlvDlELb1HsjWIQ==
-  dependencies:
-    "@types/koa-router" "^7.4.4"
-    boardgame.io "^0.47.0"
-    redis "^3.1.2"
-
 big.js@^3.1.3:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-3.2.0.tgz#a5fc298b81b9e0dca2e458824784b65c52ba588e"
@@ -6714,32 +6703,6 @@ boardgame.io@0.47.0:
   version "0.47.0"
   resolved "https://registry.yarnpkg.com/boardgame.io/-/boardgame.io-0.47.0.tgz#919af70b10de365017905284c32970706e174071"
   integrity sha512-k946o4i42YMY9uVjuU2YRVVCg7GpSnlRzOz3uA3GI6OrJtg5F4XhCqTEXFN/aWScc+YmaSBFsb+fUugj9rsoUA==
-  dependencies:
-    "@koa/cors" "^3.1.0"
-    "@types/koa" "^2.11.3"
-    flatted "^3.2.1"
-    immer "^9.0.5"
-    koa "^2.7.0"
-    koa-body "^4.1.0"
-    koa-router "^7.2.1"
-    koa-socket-2 "^2.0.0"
-    lodash.isplainobject "^4.0.6"
-    nanoid "^3.1.23"
-    p-queue "^6.6.2"
-    prop-types "^15.5.10"
-    react-cookies "^0.1.0"
-    redux "^4.1.0"
-    rfc6902 "^4.0.2"
-    socket.io "^4.1.3"
-    socket.io-client "^4.1.3"
-    svelte "^3.41.0"
-    svelte-json-tree-auto "^0.1.0"
-    ts-toolbelt "^6.3.6"
-
-boardgame.io@^0.47.0:
-  version "0.47.1"
-  resolved "https://registry.yarnpkg.com/boardgame.io/-/boardgame.io-0.47.1.tgz#ec32a1109994e40f70a7a5b771bbedfb36148b81"
-  integrity sha512-tRYdal2i30D5iMGBm4jIoAUTuAD/kPY/8NWfQb7R7aTbtSTflzXuELSljpQgygquAM+0hTV900FMVK4FMiFP/w==
   dependencies:
     "@koa/cors" "^3.1.0"
     "@types/koa" "^2.11.3"

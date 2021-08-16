@@ -6,7 +6,7 @@ import { GAMES_LIST } from 'games';
 import noCache from 'koa-no-cache';
 const cors = require('@koa/cors'); // tslint:disable-line
 import redis from 'redis';
-import { RedisPubSub } from 'bgio-redis-pubsub-temp';
+import { RedisPubSub } from '@boardgame.io/redis-pubsub';
 import { Server, SocketIO } from 'boardgame.io/server';
 import { PostgresStore } from 'bgio-postgres';
 
