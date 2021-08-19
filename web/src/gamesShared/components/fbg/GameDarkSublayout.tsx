@@ -35,13 +35,12 @@ interface IGameDarkSublayoutProps extends IGameDarkSublayoutInnerProps, IGameDar
 
 interface IGameDarkSublayoutState {
   menuAnchorEl: any;
-  prevBgColor: string;
 }
 
 const isJest = process.env.JEST_WORKER_ID !== undefined;
 
 export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
-  state = { menuAnchorEl: null, prevBgColor: document.body.style.backgroundColor };
+  state = { menuAnchorEl: null };
 
   componentDidMount() {
     document.body.style.backgroundColor = 'black';
@@ -54,7 +53,6 @@ export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayou
     if (this.props.avoidOverscrollReload) {
       document.body.style.overscrollBehavior = 'auto';
     }
-    document.body.style.backgroundColor = this.state.prevBgColor;
   }
 
   render() {
