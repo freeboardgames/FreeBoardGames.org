@@ -7,7 +7,7 @@ export const frenchTarotDef: IGameDef = {
   code: 'frenchTarot',
   name: translation.name,
   contributors: ['tuxor1337'],
-  translationStatus: { de: IGameTranslationStatus.PARTIAL, fr: IGameTranslationStatus.PARTIAL },
+  translationStatus: { de: IGameTranslationStatus.DONE, fr: IGameTranslationStatus.DONE },
   codes: { de: 'franz-tarot', fr: 'tarot-francais' },
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],

@@ -45,6 +45,13 @@
 .p5.i4 { transform: translate(-50%, -50%) translate(-55%, -12px); }
 .p5.i5 { transform: translate(-50%, -50%) translate(-104%, 13px); }
 
+.kitty.i1 { transform: translate(-50%, -50%) translate(-104%, -12px); }
+.kitty.i2 { transform: translate(-50%, -50%) translate(0, -12px); }
+.kitty.i3 { transform: translate(-50%, -50%) translate(104%, -12px); }
+.kitty.i4 { transform: translate(-50%, -50%) translate(-104%, 13px); }
+.kitty.i5 { transform: translate(-50%, -50%) translate(0%, 13px); }
+.kitty.i6 { transform: translate(-50%, -50%) translate(104%, 13px); }
+
 .prevTrick .prevCard.emptyCard {
   border-color: rgba(255, 255, 255, 0.5);
   background-color: transparent;

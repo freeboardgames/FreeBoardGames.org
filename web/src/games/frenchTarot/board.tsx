@@ -38,6 +38,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           currentPlayerId={ctx.currentPlayer}
           kitty={G.kitty}
           kittyRevealed={G.kittyRevealed}
+          kittyPrev={G.kittyPrev}
           trick={G.trick}
           prevTrick={prevTrick}
           calledCard={G.calledCard}

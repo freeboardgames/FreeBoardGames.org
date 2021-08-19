@@ -15,7 +15,13 @@ const ColorSymbols = {
   Trumps: <>&#x1F482;</>,
 };
 
-export function PreviousTrick(props: { trick: ICard[]; leaderPos: number; currPos: number; numPlayers: number }) {
+export function PreviousTrick(props: {
+  trick: ICard[];
+  leaderPos: number;
+  currPos: number;
+  numPlayers: number;
+  isKitty?: boolean;
+}) {
   const { translate } = useCurrentGameTranslation();
 
   function renderPrevTrickCard(i: number) {
@@ -37,7 +43,7 @@ export function PreviousTrick(props: { trick: ICard[]; leaderPos: number; currPo
         className={[
           css.prevCard,
           card ? '' : css.emptyCard,
-          css[`p${Math.max(3, props.numPlayers)}`],
+          props.isKitty ? css.kitty : css[`p${Math.max(3, props.numPlayers)}`],
           css[`i${index + 1}`],
         ].join(' ')}
         key={index}
@@ -49,7 +55,7 @@ export function PreviousTrick(props: { trick: ICard[]; leaderPos: number; currPo
 
   return (
     <div className={css.prevTrick}>
-      <span>{translate('prev_trick')}</span>
+      <span>{props.isKitty ? translate('prev_kitty') : translate('prev_trick')}</span>
       {new Array(props.numPlayers).fill(0).map((_, i) => renderPrevTrickCard(i))}
     </div>
   );

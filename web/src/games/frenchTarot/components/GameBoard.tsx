@@ -26,6 +26,7 @@ export function Board(props: {
 
   kitty: ICard[];
   kittyRevealed: boolean;
+  kittyPrev: ICard[];
 
   trick: ITrick;
   prevTrick: ITrick;
@@ -61,6 +62,17 @@ export function Board(props: {
   }
 
   function renderPrevTrick() {
+    if (props.kittyPrev.length > 0) {
+      return (
+        <PreviousTrick
+          trick={props.kittyPrev}
+          leaderPos={0}
+          currPos={0}
+          numPlayers={props.kittyPrev.length}
+          isKitty={true}
+        />
+      );
+    }
     if (!props.players.some((P) => P.isTaker) || props.prevTrick.cards.length == 0) return;
     return (
       <PreviousTrick

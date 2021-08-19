@@ -28,7 +28,7 @@ export function PlayerZone(props: {
     return (
       <div>
         <div className={css.bidStatus}>
-          {slam ? <div className={css.slam}>Announced slam!</div> : null}
+          {slam ? <div className={css.slam}>{translate('slam_announced')}</div> : null}
           <div className={bid == 0 ? css.pass : ''}>{playerBidStr}</div>
         </div>
         <div className={css.statuses}>

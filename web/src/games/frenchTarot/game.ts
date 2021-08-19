@@ -125,8 +125,10 @@ export const FrenchTarotGame: Game<IG> = {
           const dealerPos = G.players.findIndex((P) => P.isDealer);
           G.players[dealerPos].isDealer = false;
           G.players[util.mod(dealerPos + 1, ctx.numPlayers)].isDealer = true;
+          G.kittyPrev = G.kitty;
           return;
         }
+        G.kittyPrev = [];
         G.takerId = taker.id;
         G.contract = highestBid;
         taker.isTaker = true;

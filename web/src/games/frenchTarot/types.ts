@@ -30,6 +30,7 @@ export interface IG {
   deck: ICard[];
   kitty: ICard[];
   kittyRevealed: boolean;
+  kittyPrev: ICard[];
   takerId: string;
   calledTakerId?: string;
   calledCard?: ICard;
@@ -46,6 +47,7 @@ export const DefaultIG: IG = {
   deck: [],
   kitty: [],
   kittyRevealed: false,
+  kittyPrev: [],
   takerId: '',
   calledTakerId: '',
   contract: 0,

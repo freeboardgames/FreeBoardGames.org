@@ -28,7 +28,8 @@
   display: block;
   float: right;
   font-weight: bold;
-  width: 160px; height: 30px;
+  height: 30px;
+  padding: 0 5px;
   line-height: 28px;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
