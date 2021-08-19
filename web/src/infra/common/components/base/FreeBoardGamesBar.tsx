@@ -60,7 +60,7 @@ const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
   const maxWidth = props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
   useEffect(() => {
     document.body.style.backgroundColor = 'white';
-  });
+  }, []);
   return (
     <>
       <div
