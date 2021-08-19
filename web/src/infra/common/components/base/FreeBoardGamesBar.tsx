@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import AppBar from '@material-ui/core/AppBar';
@@ -58,7 +58,9 @@ function renderLanguageSelect() {
 
 const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
   const maxWidth = props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
-
+  useEffect(() => {
+    document.body.style.backgroundColor = 'white';
+  }, []);
   return (
     <>
       <div
