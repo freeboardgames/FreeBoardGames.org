@@ -1,4 +1,4 @@
-import { GAMES_LIST } from 'games';
+import { GAMES_LIST } from '../../../games';
 
 const gameDictionaryByCodes = GAMES_LIST.reduce((games, game) => {
   games[game.code] = game;

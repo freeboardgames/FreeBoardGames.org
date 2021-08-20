@@ -6,7 +6,6 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import csurf from 'csurf';
 import cookieParser from 'cookie-parser';
 import { setupLogging } from './logging';
-import { generateSiteMapXML } from './sitemap';
 
 const INTERNAL_BACKEND_TARGET = process.env.FBG_BACKEND_TARGET || 'http://localhost:3001';
 const dev = process.env.NODE_ENV !== 'production';
@@ -22,13 +21,6 @@ const handle = app.getRequestHandler();
 const csrfProtection = csurf({ cookie: true });
 
 const DOMAIN = 'www.freeboardgames.org';
-const URL = 'https://' + DOMAIN;
-
-generateSiteMapXML({
-  manifest: app.pagesManifest,
-  host: URL,
-  staticDir: STATIC_DIR,
-});
 
 app
   .prepare()

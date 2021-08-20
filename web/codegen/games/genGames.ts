@@ -1,10 +1,10 @@
-const shell = require("shelljs");
-const { cd, checkGameExists } = require("../util");
-const fs = require("fs");
-const path = require("path");
+import shell from 'shelljs';
+import { cd, checkGameExists, decodeCsv } from '../../../cli/util';
+import fs from 'fs';
+import path from 'path';
 
 function genGames(games = []) {
-  cd("web/src/games");
+  cd('web/src/games');
   games.forEach((g) => checkGameExists(g));
   const finalGames = orderGames(games.length > 0 ? games : getAllGames());
   const fileContent = genFileContent(finalGames);
@@ -12,7 +12,7 @@ function genGames(games = []) {
 }
 
 function orderGames(games) {
-  const config = JSON.parse(shell.cat("config.json"));
+  const config = JSON.parse(shell.cat('config.json'));
   const order = config.order;
   const result = [...games].sort((a, b) => {
     let aIndex = order.indexOf(a);
@@ -30,7 +30,7 @@ function orderGames(games) {
 
 function getAllGames() {
   return shell
-    .ls("-Al")
+    .ls('-Al')
     .filter((f) => f.isDirectory())
     .map((f) => f.name);
 }
@@ -48,24 +48,27 @@ function genFileContent(games) {
 
   const result = `/** AUTO-GENERATED FILE, DO NOT EDIT MANUALLY. */
 import { IGameDef, IGameDefMap } from 'gamesShared/definitions/game';
-${importGen.join("\n")}
+${importGen.join('\n')}
 
 export const GAMES_MAP: IGameDefMap = {
-${mapGen.join("\n")}
+${mapGen.join('\n')}
 };
 
 export const GAMES_LIST: IGameDef[] = [
-${listGen.join("\n")}
+${listGen.join('\n')}
 ];
 `;
   return result;
 }
 
 function writeFile(fileContent) {
-  const filePath = path.resolve(`${shell.pwd()}`, "index.ts");
+  const filePath = path.resolve(`${shell.pwd()}`, 'index.ts');
   fs.writeFileSync(filePath, fileContent);
 }
 
-module.exports = {
-  genGames,
-};
+const argv = process.argv;
+if (argv.length <= 2) {
+  genGames();
+} else {
+  genGames(decodeCsv(argv[2]));
+}

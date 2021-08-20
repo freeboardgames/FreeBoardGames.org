@@ -1,19 +1,14 @@
 const shell = require("shelljs");
-const { decodeCsv, printErr, checkEnvironment } = require("../util");
-const { codegen } = require("./codegen");
-
-const USAGE = "Usage: yarn run codegen game1,game2";
+const { print, checkEnvironment, cd, fbgRun } = require("../util");
 
 function start() {
   const argv = process.argv;
   checkEnvironment();
-  if (argv.length === 2) {
-    codegen();
-  } else if (argv.length === 3) {
-    codegen(decodeCsv(argv[2]));
-  } else {
-    printErr(USAGE);
-    shell.exit(1);
-  }
+  print("Generating required code...");
+  cd("web");
+  fbgRun(`yarn run codegen:games ${argv[2]}`);
+  cd("web");
+  fbgRun("yarn run codegen:i18n");
+  fbgRun("yarn run codegen:apollo"); 
 }
 start();
