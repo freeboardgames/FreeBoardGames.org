@@ -3,7 +3,19 @@ import { IG } from './types';
 import { defaultDeck } from './cards';
 
 export function setupRound(g: IG, ctx: Ctx): IG {
-  let deck = ctx.random.Shuffle(defaultDeck);
+  let dessertsPlayed = 0;
+
+  for (let i = 0; i < ctx.numPlayers; i++) {
+    g.players[i].playedCards = [];
+    dessertsPlayed += g.players[i].dessertsCount;
+  }
+
+  let unshuffledDeck = defaultDeck;
+  for (let i = 0; i < dessertsPlayed; i++) {
+    unshuffledDeck.splice(unshuffledDeck.findIndex((e) => e === 'cake'));
+  }
+
+  let deck = ctx.random.Shuffle(unshuffledDeck);
 
   let hands = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
     currentOwner: i,
@@ -12,10 +24,6 @@ export function setupRound(g: IG, ctx: Ctx): IG {
       return card;
     }),
   }));
-
-  for (let i = 0; i < ctx.numPlayers; i++) {
-    g.players[i].playedCards = [];
-  }
 
   return {
     deck,
