@@ -1,4 +1,5 @@
 import { Ctx } from 'boardgame.io';
+import { ActivePlayers } from 'boardgame.io/core';
 import { IG } from './types';
 import { defaultDeck } from './cards';
 
@@ -29,6 +30,7 @@ export function setupRound(g: IG, ctx: Ctx): IG {
       const card = deck.pop();
       return card;
     }),
+    selected: null,
   }));
 
   let round = g.round + 1;
@@ -55,16 +57,31 @@ export const PicnicGoGame = {
         unusedMayo: 0,
         unusedForks: 0,
       }),
-      hands: [{ currentOwner: 0, hand: [] }],
+      hands: [{ currentOwner: 0, hand: [], selected: null }],
       round: 0,
     };
 
     return setupRound(baseState, ctx);
   },
 
-  moves: {},
-
-  flow: {
-    movesPerTurn: 1,
+  phases: {
+    round: {
+      moves: {
+        selectCard: (g, ctx, index) => {
+          g.hands[ctx.playerID].selected = index;
+          return g;
+        },
+      },
+      next: 'round',
+      start: true,
+      turn: {
+        activePlayers: ActivePlayers.ALL_ONCE,
+        onMove: (_, ctx) => {
+          if (ctx.activePlayers === null) {
+            ctx.events.endPhase();
+          }
+        },
+      },
+    },
   },
 };
