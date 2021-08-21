@@ -1,6 +1,6 @@
 export interface IG {
   deck: string[];
-  player: IPlayer[];
+  players: IPlayer[];
   hands: IHand[];
 }
 
