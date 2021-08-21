@@ -2,7 +2,7 @@ import * as React from 'react';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
-import { IG } from './game';
+import { IG } from './types';
 
 interface IBoardProps {
   G: IG;
