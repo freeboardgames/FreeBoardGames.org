@@ -32,4 +32,5 @@ export interface IPlayer {
 export interface IHand {
   currentOwner: number;
   hand: string[];
+  selected: number | null;
 }
