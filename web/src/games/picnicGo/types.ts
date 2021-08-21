@@ -2,6 +2,7 @@ export interface IG {
   deck: string[];
   players: IPlayer[];
   hands: IHand[];
+  round: number;
 }
 
 export const enum cardTypes {

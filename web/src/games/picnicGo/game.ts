@@ -31,10 +31,13 @@ export function setupRound(g: IG, ctx: Ctx): IG {
     }),
   }));
 
+  let round = g.round + 1;
+
   return {
     deck,
     players: g.players,
     hands,
+    round,
   };
 }
 
@@ -53,6 +56,7 @@ export const PicnicGoGame = {
         unusedForks: 0,
       }),
       hands: [{ currentOwner: 0, hand: [] }],
+      round: 0,
     };
 
     return setupRound(baseState, ctx);
