@@ -7,6 +7,9 @@ export function setupRound(g: IG, ctx: Ctx): IG {
 
   for (let i = 0; i < ctx.numPlayers; i++) {
     g.players[i].playedCards = [];
+    g.players[i].chipsCount = 0;
+    g.players[i].unusedMayo = 0;
+    g.players[i].unusedForks = 0;
     dessertsPlayed += g.players[i].dessertsCount;
   }
 
