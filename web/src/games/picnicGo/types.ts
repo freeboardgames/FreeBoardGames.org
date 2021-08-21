@@ -24,6 +24,8 @@ export interface IPlayer {
   score: number;
   dessertsPlayed: number;
   chipsCount: number;
+  unusedMayo: number;
+  unusedForks: number;
 }
 
 export interface IHand {
