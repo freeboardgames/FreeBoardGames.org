@@ -1,19 +1,11 @@
-// import { Ctx } from 'boardgame.io';
-
-export interface IG {
-  count: number;
-}
+// import { IG } from './types'
 
 export const PicnicGoGame = {
   name: 'foobar',
 
   setup: () => ({ count: 0 }),
 
-  moves: {
-    plusone(G: IG) {
-      return { count: G.count + 1 };
-    },
-  },
+  moves: {},
 
   flow: {
     movesPerTurn: 1,
