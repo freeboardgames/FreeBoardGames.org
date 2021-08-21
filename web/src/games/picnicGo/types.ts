@@ -7,7 +7,7 @@ export interface IG {
 export const enum cardTypes {
   sandwich,
   chips,
-  meals,
+  meal,
   special,
   dessert,
 }
@@ -22,7 +22,7 @@ export interface ICardDefinition {
 export interface IPlayer {
   playedCards: string[];
   score: number;
-  dessertsPlayed: number;
+  dessertsCount: number;
   chipsCount: number;
   unusedMayo: number;
   unusedForks: number;
