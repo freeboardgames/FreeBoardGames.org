@@ -13,6 +13,7 @@ export const enum cardTypes {
 }
 
 export interface ICardDefinition {
+  id: string;
   name: string;
   cardType: cardTypes;
   scoreFunc(p: IPlayer): IPlayer;
