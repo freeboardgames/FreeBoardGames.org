@@ -128,3 +128,18 @@ export const cardDefinitions: ICardDefinition[] = [
     },
   },
 ];
+
+export const defaultDeck = new Array(108).fill('').map((_, i) => {
+  if (i < 5) return 'sandwichChicken';
+  else if (i >= 5 && i < 15) return 'sandwichPork';
+  else if (i >= 15 && i < 20) return 'sandwichBeef';
+  else if (i >= 20 && i < 26) return 'chipsPotato1';
+  else if (i >= 26 && i < 38) return 'chipsPotato2';
+  else if (i >= 38 && i < 46) return 'chipsPotato3';
+  else if (i >= 46 && i < 60) return 'deviledEggs';
+  else if (i >= 60 && i < 74) return 'friedChicken';
+  else if (i >= 74 && i < 88) return 'pizza';
+  else if (i >= 88 && i < 98) return 'cake';
+  else if (i >= 98 && i < 104) return 'mayo';
+  else return 'fork';
+});
