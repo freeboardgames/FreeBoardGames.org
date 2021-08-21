@@ -4,7 +4,7 @@ export interface IG {
   count: number;
 }
 
-export const FooBarGame = {
+export const PicnicGoGame = {
   name: 'foobar',
 
   setup: () => ({ count: 0 }),
