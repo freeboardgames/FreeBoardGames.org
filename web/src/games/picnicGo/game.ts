@@ -12,7 +12,10 @@ export function setupRound(g: IG, ctx: Ctx): IG {
 
   let unshuffledDeck = defaultDeck;
   for (let i = 0; i < dessertsPlayed; i++) {
-    unshuffledDeck.splice(unshuffledDeck.findIndex((e) => e === 'cake'));
+    unshuffledDeck.splice(
+      unshuffledDeck.findIndex((e) => e === 'cake'),
+      1,
+    );
   }
 
   let deck = ctx.random.Shuffle(unshuffledDeck);
