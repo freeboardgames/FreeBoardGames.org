@@ -5,7 +5,7 @@ export interface IG {
   round: number;
 }
 
-export const enum cardTypes {
+export enum cardTypes {
   sandwich,
   chips,
   meal,
