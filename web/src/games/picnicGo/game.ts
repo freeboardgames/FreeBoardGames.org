@@ -55,6 +55,7 @@ export const PicnicGoGame = {
       }),
       hands: [{ currentOwner: 0, hand: [], selected: null }],
       round: 0,
+      gameOver: false,
     };
 
     return setupRound(baseState, ctx);
@@ -163,12 +164,13 @@ export const PicnicGoGame = {
         }
 
         if (g.round < 3) setupRound(g, ctx);
+        else g.gameOver = true;
       }
     },
   },
 
   endIf: (g, ctx) => {
-    if (g.round === 3 && g.hands[0].hand.length === 0) {
+    if (g.gameOver) {
       let winner = '0';
       let winningScore = 0;
 

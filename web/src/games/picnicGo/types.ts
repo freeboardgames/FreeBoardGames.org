@@ -3,6 +3,7 @@ export interface IG {
   players: IPlayer[];
   hands: IHand[];
   round: number;
+  gameOver: boolean;
 }
 
 export enum cardTypes {
