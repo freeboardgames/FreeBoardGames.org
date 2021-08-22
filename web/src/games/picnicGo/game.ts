@@ -62,6 +62,7 @@ export const PicnicGoGame = {
 
   moves: {
     selectCard: (g, ctx, index) => {
+      if (index === undefined) return INVALID_MOVE;
       const idx = g.hands.findIndex((e) => e.currentOwner === parseInt(ctx.playerID, 10));
       if (index < 0 || index >= g.hands[idx].hand.length) return INVALID_MOVE;
       g.hands[idx].selected = index;
@@ -152,9 +153,11 @@ export const PicnicGoGame = {
               g.players[mostCakes[i]].score += scrPlus;
             }
 
-            const scrMinus = Math.floor(6 / leastCakes.length);
-            for (let i = 0; i < leastCakes.length; i++) {
-              g.players[leastCakes[i]].score -= scrMinus;
+            if (ctx.numPlayers > 2) {
+              const scrMinus = Math.floor(6 / leastCakes.length);
+              for (let i = 0; i < leastCakes.length; i++) {
+                g.players[leastCakes[i]].score -= scrMinus;
+              }
             }
           }
         }
@@ -166,12 +169,12 @@ export const PicnicGoGame = {
 
   endIf: (g, ctx) => {
     if (g.round === 3 && g.hands[0].hand.length === 0) {
-      let winner = 0;
+      let winner = '0';
       let winningScore = 0;
 
       for (let i = 0; i < ctx.numPlayers; i++) {
         if (g.players[i].score > winningScore) {
-          winner = i;
+          winner = i.toString();
           winningScore = g.players[i].score;
         }
       }
