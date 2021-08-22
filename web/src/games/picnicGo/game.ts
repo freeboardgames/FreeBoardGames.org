@@ -4,6 +4,8 @@ import { IG } from './types';
 import { defaultDeck, cardDefinitions } from './cards';
 
 export function setupRound(g: IG, ctx: Ctx): IG {
+  let round = g.round + 1;
+
   let dessertsPlayed = 0;
 
   for (let i = 0; i < ctx.numPlayers; i++) {
@@ -32,8 +34,6 @@ export function setupRound(g: IG, ctx: Ctx): IG {
     }),
     selected: null,
   }));
-
-  let round = g.round + 1;
 
   return {
     deck,
@@ -85,6 +85,26 @@ export const PicnicGoGame = {
         g.hands[i].selected = null;
         g.hands[i].currentOwner = (h.currentOwner + 1) % ctx.numPlayers;
       }
+
+      if (g.hands[0].hand.length === 0) {
+        g = setupRound(g, ctx);
+      }
     },
+  },
+
+  endIf: (g, ctx) => {
+    if (g.round > 3) {
+      let winner = 0;
+      let winningScore = 0;
+
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (g.players[i].score > winningScore) {
+          winner = i;
+          winningScore = g.players[i].score;
+        }
+      }
+
+      return { winner };
+    }
   },
 };
