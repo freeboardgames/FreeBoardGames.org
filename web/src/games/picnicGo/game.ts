@@ -1,10 +1,10 @@
 import { Ctx } from 'boardgame.io';
-import { ActivePlayers } from 'boardgame.io/core';
+import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
 import { IG } from './types';
 import { defaultDeck, cardDefinitions } from './cards';
 
-export function setupRound(g: IG, ctx: Ctx): IG {
-  let round = g.round + 1;
+export function setupRound(g: IG, ctx: Ctx) {
+  g.round++;
 
   let dessertsPlayed = 0;
 
@@ -25,8 +25,9 @@ export function setupRound(g: IG, ctx: Ctx): IG {
   }
 
   let deck = ctx.random.Shuffle(unshuffledDeck);
+  g.deck = deck;
 
-  let hands = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
+  g.hands = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
     currentOwner: i,
     hand: new Array(12 - ctx.numPlayers).fill(0).map(() => {
       const card = deck.pop();
@@ -35,12 +36,7 @@ export function setupRound(g: IG, ctx: Ctx): IG {
     selected: null,
   }));
 
-  return {
-    deck,
-    players: g.players,
-    hands,
-    round,
-  };
+  return g;
 }
 
 export const PicnicGoGame = {
@@ -67,6 +63,7 @@ export const PicnicGoGame = {
   moves: {
     selectCard: (g, ctx, index) => {
       const idx = g.hands.findIndex((e) => e.currentOwner === parseInt(ctx.playerID, 10));
+      if (index < 0 || index >= g.hands[idx].hand.length) return INVALID_MOVE;
       g.hands[idx].selected = index;
     },
   },
@@ -88,7 +85,7 @@ export const PicnicGoGame = {
       }
 
       if (g.hands[0].hand.length === 0) {
-        g = setupRound(g, ctx);
+        setupRound(g, ctx);
       }
     },
   },
