@@ -1,7 +1,7 @@
 import { Ctx } from 'boardgame.io';
 import { ActivePlayers } from 'boardgame.io/core';
 import { IG } from './types';
-import { defaultDeck } from './cards';
+import { defaultDeck, cardDefinitions } from './cards';
 
 export function setupRound(g: IG, ctx: Ctx): IG {
   let dessertsPlayed = 0;
@@ -81,6 +81,19 @@ export const PicnicGoGame = {
             ctx.events.endPhase();
           }
         },
+      },
+      onEnd: (g, ctx) => {
+        for (let i = 0; i < ctx.numPlayers; i++) {
+          const h = g.hands[i];
+          g.players[h.currentOwner].playedCards.push(h.hand[h.selected]);
+
+          const cdef = cardDefinitions.find((e) => e.id === h.hand[h.selected]);
+          g.players[h.currentOwner] = cdef.scoreFunc(g.players[h.currentOwner]);
+
+          g.hands[i].hand.splice(h.selected, 1);
+          g.hands[i].selected = null;
+          g.hands[i].currentOwner = (h.currentOwner + 1) % ctx.numPlayers;
+        }
       },
     },
   },
