@@ -72,6 +72,7 @@ export const PicnicGoGame = {
 
   turn: {
     activePlayers: ActivePlayers.ALL_ONCE,
+    endIf: (_, ctx) => ctx.activePlayers === null,
     onEnd: (g, ctx) => {
       for (let i = 0; i < ctx.numPlayers; i++) {
         const h = g.hands[i];
