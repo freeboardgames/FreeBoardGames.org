@@ -109,22 +109,16 @@ export const PicnicGoGame = {
 
         if (chipsWinner.length === 1) {
           g.players[chipsWinner[0]].score += 6;
-          if (chipsSecondPlace.length === 1) {
-            g.players[chipsSecondPlace[0]].score += 3;
-          } else if (chipsSecondPlace.length > 1) {
-            const scr = Math.floor(3 / chipsSecondPlace.length);
-            if (scr > 0) {
-              for (let i = 0; i < chipsSecondPlace.length; i++) {
-                g.players[chipsSecondPlace[i]].score += scr;
-              }
+          const scr = Math.floor(3 / chipsSecondPlace.length);
+          if (scr > 0) {
+            for (let i = 0; i < chipsSecondPlace.length; i++) {
+              g.players[chipsSecondPlace[i]].score += scr;
             }
           }
         } else if (chipsWinner.length > 1) {
           const scr = Math.floor(6 / chipsWinner.length);
-          if (scr > 0) {
-            for (let i = 0; i < chipsWinner.length; i++) {
-              g.players[chipsWinner[i]].score += scr;
-            }
+          for (let i = 0; i < chipsWinner.length; i++) {
+            g.players[chipsWinner[i]].score += scr;
           }
         }
 
@@ -157,7 +151,7 @@ export const PicnicGoGame = {
               g.players[mostCakes[i]].score += scrPlus;
             }
 
-            const scrMinus = Math.ceil(6 / leastCakes.length);
+            const scrMinus = Math.floor(6 / leastCakes.length);
             for (let i = 0; i < leastCakes.length; i++) {
               g.players[leastCakes[i]].score -= scrMinus;
             }
