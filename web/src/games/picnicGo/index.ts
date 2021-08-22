@@ -3,12 +3,12 @@ import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
 
-export const fooBarGameDef: IGameDef = {
+export const picnicGoGameDef: IGameDef = {
   code: 'picnicGo',
   name: 'Picnic Go',
   contributors: ['ProspectPyxis'],
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
+  modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 2,
   maxPlayers: 5,
   description: 'Similar to Sushi Go',
@@ -21,4 +21,4 @@ export const fooBarGameDef: IGameDef = {
   config: () => import('./config'),
 };
 
-export default fooBarGameDef;
+export default picnicGoGameDef;
