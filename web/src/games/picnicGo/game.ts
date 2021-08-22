@@ -84,6 +84,7 @@ export const PicnicGoGame = {
         g.hands[i].currentOwner = (h.currentOwner + 1) % ctx.numPlayers;
       }
 
+      // Hands are empty, end of round
       if (g.hands[0].hand.length === 0) {
         // Score the chips
         let chipsWinner = [];
@@ -158,13 +159,13 @@ export const PicnicGoGame = {
           }
         }
 
-        setupRound(g, ctx);
+        if (g.round < 3) setupRound(g, ctx);
       }
     },
   },
 
   endIf: (g, ctx) => {
-    if (g.round > 3) {
+    if (g.round === 3 && g.hands[0].hand.length === 0) {
       let winner = 0;
       let winningScore = 0;
 
