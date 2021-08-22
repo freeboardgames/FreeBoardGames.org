@@ -64,37 +64,26 @@ export const PicnicGoGame = {
     return setupRound(baseState, ctx);
   },
 
-  phases: {
-    round: {
-      moves: {
-        selectCard: (g, ctx, index) => {
-          g.hands[ctx.playerID].selected = index;
-          return g;
-        },
-      },
-      next: 'round',
-      start: true,
-      turn: {
-        activePlayers: ActivePlayers.ALL_ONCE,
-        onMove: (_, ctx) => {
-          if (ctx.activePlayers === null) {
-            ctx.events.endPhase();
-          }
-        },
-      },
-      onEnd: (g, ctx) => {
-        for (let i = 0; i < ctx.numPlayers; i++) {
-          const h = g.hands[i];
-          g.players[h.currentOwner].playedCards.push(h.hand[h.selected]);
+  moves: {
+    selectCard: (g, ctx, index) => {
+      g.hands[ctx.playerID].selected = index;
+    },
+  },
 
-          const cdef = cardDefinitions.find((e) => e.id === h.hand[h.selected]);
-          g.players[h.currentOwner] = cdef.scoreFunc(g.players[h.currentOwner]);
+  turn: {
+    activePlayers: ActivePlayers.ALL_ONCE,
+    onEnd: (g, ctx) => {
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        const h = g.hands[i];
+        g.players[h.currentOwner].playedCards.push(h.hand[h.selected]);
 
-          g.hands[i].hand.splice(h.selected, 1);
-          g.hands[i].selected = null;
-          g.hands[i].currentOwner = (h.currentOwner + 1) % ctx.numPlayers;
-        }
-      },
+        const cdef = cardDefinitions.find((e) => e.id === h.hand[h.selected]);
+        g.players[h.currentOwner] = cdef.scoreFunc(g.players[h.currentOwner]);
+
+        g.hands[i].hand.splice(h.selected, 1);
+        g.hands[i].selected = null;
+        g.hands[i].currentOwner = (h.currentOwner + 1) % ctx.numPlayers;
+      }
     },
   },
 };
