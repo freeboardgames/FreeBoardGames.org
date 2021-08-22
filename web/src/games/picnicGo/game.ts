@@ -99,6 +99,9 @@ export const PicnicGoGame = {
             chipsWinnerScore = g.players[i].chipsCount;
           } else if (g.players[i].chipsCount === chipsWinnerScore) {
             chipsWinner.push(i);
+          } else if (g.players[i].chipsCount > chipsSecondScore) {
+            chipsSecondPlace = [i];
+            chipsSecondScore = g.players[i].chipsCount;
           } else if (g.players[i].chipsCount === chipsSecondScore) {
             chipsSecondPlace.push(i);
           }
@@ -110,14 +113,18 @@ export const PicnicGoGame = {
             g.players[chipsSecondPlace[0]].score += 3;
           } else if (chipsSecondPlace.length > 1) {
             const scr = Math.floor(3 / chipsSecondPlace.length);
-            for (let i = 0; i < chipsSecondPlace.length; i++) {
-              g.players[chipsSecondPlace[0]].score += scr;
+            if (scr > 0) {
+              for (let i = 0; i < chipsSecondPlace.length; i++) {
+                g.players[chipsSecondPlace[i]].score += scr;
+              }
             }
           }
         } else if (chipsWinner.length > 1) {
           const scr = Math.floor(6 / chipsWinner.length);
-          for (let i = 0; i < chipsWinner.length; i++) {
-            g.players[chipsWinner[i]].score += scr;
+          if (scr > 0) {
+            for (let i = 0; i < chipsWinner.length; i++) {
+              g.players[chipsWinner[i]].score += scr;
+            }
           }
         }
 
