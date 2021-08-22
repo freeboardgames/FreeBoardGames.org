@@ -66,7 +66,7 @@ export const PicnicGoGame = {
 
   moves: {
     selectCard: (g, ctx, index) => {
-      const idx = g.hands.findIndex((e) => e.currentOwner === ctx.playerID);
+      const idx = g.hands.findIndex((e) => e.currentOwner === parseInt(ctx.playerID, 10));
       g.hands[idx].selected = index;
     },
   },
