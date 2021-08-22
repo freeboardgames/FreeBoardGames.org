@@ -128,6 +128,42 @@ export const PicnicGoGame = {
           }
         }
 
+        // If it's round 3, score the dessert/cake
+        if (g.round === 3) {
+          let mostCakes = [];
+          let mostCakesCount = 0;
+          let leastCakes = [];
+          let leastCakesCount = 10;
+
+          for (let i = 0; i < ctx.numPlayers; i++) {
+            if (g.players[i].dessertsCount > mostCakesCount) {
+              mostCakes = [i];
+              mostCakesCount = g.players[i].dessertsCount;
+            } else if (g.players[i].dessertsCount === mostCakesCount) {
+              mostCakes.push(i);
+            }
+
+            if (g.players[i].dessertsCount < leastCakesCount) {
+              leastCakes = [i];
+              leastCakesCount = g.players[i].dessertsCount;
+            } else if (g.players[i].dessertsCount === leastCakesCount) {
+              leastCakes.push(i);
+            }
+          }
+
+          if (mostCakesCount !== leastCakesCount) {
+            const scrPlus = Math.floor(6 / mostCakes.length);
+            for (let i = 0; i < mostCakes.length; i++) {
+              g.players[mostCakes[i]].score += scrPlus;
+            }
+
+            const scrMinus = Math.ceil(6 / leastCakes.length);
+            for (let i = 0; i < leastCakes.length; i++) {
+              g.players[leastCakes[i]].score -= scrMinus;
+            }
+          }
+        }
+
         setupRound(g, ctx);
       }
     },
