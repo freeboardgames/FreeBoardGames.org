@@ -27,6 +27,7 @@ export interface IPlayer {
   chipsCount: number;
   unusedMayo: number;
   unusedForks: number;
+  forkUsed: boolean;
 }
 
 export interface IHand {

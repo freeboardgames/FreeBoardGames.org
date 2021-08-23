@@ -1,5 +1,5 @@
 import { Ctx } from 'boardgame.io';
-import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
+import { ActivePlayers, INVALID_MOVE, Stage } from 'boardgame.io/core';
 import { IG, cardEnum } from './types';
 import { defaultDeck, cardFunctions } from './cards';
 
@@ -127,6 +127,7 @@ export const PicnicGoGame = {
         chipsCount: 0,
         unusedMayo: 0,
         unusedForks: 0,
+        forkUsed: false,
       }),
       hands: [{ currentOwner: 0, hand: [], selected: null }],
       round: 0,
@@ -143,6 +144,13 @@ export const PicnicGoGame = {
       if (index < 0 || index >= g.hands[idx].hand.length) return INVALID_MOVE;
       g.hands[idx].selected = index;
     },
+    useFork: (g, ctx) => {
+      if (g.player[ctx.playerID].forkUsed || g.player[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
+      g.player[ctx.playerID].forkUsed = true;
+      g.player[ctx.playerID].unusedForks--;
+
+      ctx.events.setStage({ stage: Stage.NULL, moveLimit: 2 });
+    },
   },
 
   turn: {
@@ -158,6 +166,11 @@ export const PicnicGoGame = {
         g.hands[i].hand.splice(h.selected, 1);
         g.hands[i].selected = null;
         g.hands[i].currentOwner = (h.currentOwner + 1) % ctx.numPlayers;
+
+        if (g.players[h.currentOwner].forkUsed) {
+          g.hands[i].push(cardEnum.fork);
+          g.players[h.currentOwner].forkUsed = false;
+        }
       }
 
       // Hands are empty, end of round
