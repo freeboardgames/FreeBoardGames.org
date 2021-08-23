@@ -1,28 +1,14 @@
+import { cardEnum } from './cards';
+
 export interface IG {
-  deck: string[];
   players: IPlayer[];
   hands: IHand[];
   round: number;
   gameOver: boolean;
 }
 
-export enum cardTypes {
-  sandwich,
-  chips,
-  meal,
-  special,
-  dessert,
-}
-
-export interface ICardDefinition {
-  id: string;
-  name: string;
-  cardType: cardTypes;
-  scoreFunc(p: IPlayer): IPlayer;
-}
-
 export interface IPlayer {
-  playedCards: string[];
+  playedCards: cardEnum[];
   score: number;
   dessertsCount: number;
   chipsCount: number;
@@ -32,6 +18,6 @@ export interface IPlayer {
 
 export interface IHand {
   currentOwner: number;
-  hand: string[];
+  hand: cardEnum[];
   selected: number | null;
 }

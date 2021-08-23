@@ -1,7 +1,7 @@
 import { Ctx } from 'boardgame.io';
 import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
 import { IG } from './types';
-import { defaultDeck, cardDefinitions } from './cards';
+import { defaultDeck, cardEnum, cardFunctions } from './cards';
 
 export function setupRound(g: IG, ctx: Ctx) {
   g.round++;
@@ -19,13 +19,12 @@ export function setupRound(g: IG, ctx: Ctx) {
   let unshuffledDeck = defaultDeck;
   for (let i = 0; i < dessertsPlayed; i++) {
     unshuffledDeck.splice(
-      unshuffledDeck.findIndex((e) => e === 'cake'),
+      unshuffledDeck.findIndex((e) => e === cardEnum.cake),
       1,
     );
   }
 
   let deck = ctx.random.Shuffle(unshuffledDeck);
-  g.deck = deck;
 
   g.hands = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
     currentOwner: i,
@@ -44,7 +43,6 @@ export const PicnicGoGame = {
 
   setup: (ctx) => {
     const baseState = {
-      deck: defaultDeck,
       players: new Array(ctx.numPlayers).fill({
         playedCards: [],
         score: 0,
@@ -78,8 +76,7 @@ export const PicnicGoGame = {
         const h = g.hands[i];
         g.players[h.currentOwner].playedCards.push(h.hand[h.selected]);
 
-        const cdef = cardDefinitions.find((e) => e.id === h.hand[h.selected]);
-        g.players[h.currentOwner] = cdef.scoreFunc(g.players[h.currentOwner]);
+        g.players[h.currentOwner] = cardFunctions[h.hand[h.selected]](g.players[h.currentOwner]);
 
         g.hands[i].hand.splice(h.selected, 1);
         g.hands[i].selected = null;
