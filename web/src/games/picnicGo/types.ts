@@ -27,10 +27,11 @@ export interface IPlayer {
   chipsCount: number;
   unusedMayo: number;
   unusedForks: number;
+  forkUsed: boolean;
 }
 
 export interface IHand {
-  currentOwner: number;
+  currentOwner: string;
   hand: cardEnum[];
-  selected: number | null;
+  selected: number[] | null;
 }
