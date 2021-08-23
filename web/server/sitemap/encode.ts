@@ -1,7 +1,7 @@
 import { UrlTag, AlternateLink } from './types';
 
 export const encodeSitemap = (urls: UrlTag[], host: string) => {
-  return buildTemplateWith(urls, host);
+  return sanitize(buildTemplateWith(urls, host));
 };
 
 const buildAlternateLinkWith = (host: string) => (alternateLink: AlternateLink) => {
@@ -22,4 +22,12 @@ function buildTemplateWith(urls: UrlTag[], host: string): string {
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     ${urls.map(buildUrlWith(host)).join('\n')}
   </urlset>\n`;
+}
+
+function sanitize(xml: string) {
+  return xml
+    .replace(/(\r\n|\n|\r)/gm, '')
+    .replace(/>\s*/g, '>')
+    .replace(/\s*</g, '<')
+    .trim();
 }
