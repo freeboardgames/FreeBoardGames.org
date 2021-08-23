@@ -1,19 +1,4 @@
-import { IPlayer } from './types';
-
-export enum cardEnum {
-  sandwichChicken,
-  sandwichPork,
-  sandwichBeef,
-  chipsPotato1,
-  chipsPotato2,
-  chipsPotato3,
-  deviledEggs,
-  friedChicken,
-  pizza,
-  fork,
-  mayo,
-  cake,
-}
+import { IPlayer, cardEnum } from './types';
 
 export function getCardName(c: cardEnum): string {
   // TODO: Refactor this for localization

@@ -1,7 +1,7 @@
 import { Ctx } from 'boardgame.io';
 import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
-import { IG } from './types';
-import { defaultDeck, cardEnum, cardFunctions } from './cards';
+import { IG, cardEnum } from './types';
+import { defaultDeck, cardFunctions } from './cards';
 
 export function setupRound(g: IG, ctx: Ctx) {
   g.round++;

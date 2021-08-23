@@ -1,4 +1,17 @@
-import { cardEnum } from './cards';
+export enum cardEnum {
+  sandwichChicken,
+  sandwichPork,
+  sandwichBeef,
+  chipsPotato1,
+  chipsPotato2,
+  chipsPotato3,
+  deviledEggs,
+  friedChicken,
+  pizza,
+  fork,
+  mayo,
+  cake,
+}
 
 export interface IG {
   players: IPlayer[];
