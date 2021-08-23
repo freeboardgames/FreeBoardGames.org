@@ -38,6 +38,83 @@ export function setupRound(g: IG, ctx: Ctx) {
   return g;
 }
 
+export function scoreRoundEnd(g: IG, ctx: Ctx) {
+  let chipsWinner = [];
+  let chipsSecondPlace = [];
+  let chipsWinnerScore = 0;
+  let chipsSecondScore = 0;
+  for (let i = 0; i < ctx.numPlayers; i++) {
+    if (g.players[i].chipsCount === 0) continue;
+    if (g.players[i].chipsCount > chipsWinnerScore) {
+      chipsSecondPlace = chipsWinner;
+      chipsWinner = [i];
+      chipsSecondScore = chipsWinnerScore;
+      chipsWinnerScore = g.players[i].chipsCount;
+    } else if (g.players[i].chipsCount === chipsWinnerScore) {
+      chipsWinner.push(i);
+    } else if (g.players[i].chipsCount > chipsSecondScore) {
+      chipsSecondPlace = [i];
+      chipsSecondScore = g.players[i].chipsCount;
+    } else if (g.players[i].chipsCount === chipsSecondScore) {
+      chipsSecondPlace.push(i);
+    }
+  }
+
+  if (chipsWinner.length === 1) {
+    g.players[chipsWinner[0]].score += 6;
+    const scr = Math.floor(3 / chipsSecondPlace.length);
+    if (scr > 0) {
+      for (let i = 0; i < chipsSecondPlace.length; i++) {
+        g.players[chipsSecondPlace[i]].score += scr;
+      }
+    }
+  } else if (chipsWinner.length > 1) {
+    const scr = Math.floor(6 / chipsWinner.length);
+    for (let i = 0; i < chipsWinner.length; i++) {
+      g.players[chipsWinner[i]].score += scr;
+    }
+  }
+
+  if (g.round === 3) scoreGameEnd(g, ctx);
+}
+
+export function scoreGameEnd(g: IG, ctx: Ctx) {
+  let mostCakes = [];
+  let mostCakesCount = 0;
+  let leastCakes = [];
+  let leastCakesCount = 10;
+
+  for (let i = 0; i < ctx.numPlayers; i++) {
+    if (g.players[i].dessertsCount > mostCakesCount) {
+      mostCakes = [i];
+      mostCakesCount = g.players[i].dessertsCount;
+    } else if (g.players[i].dessertsCount === mostCakesCount) {
+      mostCakes.push(i);
+    }
+
+    if (g.players[i].dessertsCount < leastCakesCount) {
+      leastCakes = [i];
+      leastCakesCount = g.players[i].dessertsCount;
+    } else if (g.players[i].dessertsCount === leastCakesCount) {
+      leastCakes.push(i);
+    }
+  }
+
+  if (mostCakesCount !== leastCakesCount) {
+    const scrPlus = Math.floor(6 / mostCakes.length);
+    for (let i = 0; i < mostCakes.length; i++) {
+      g.players[mostCakes[i]].score += scrPlus;
+    }
+
+    if (ctx.numPlayers > 2) {
+      const scrMinus = Math.floor(6 / leastCakes.length);
+      for (let i = 0; i < leastCakes.length; i++) {
+        g.players[leastCakes[i]].score -= scrMinus;
+      }
+    }
+  }
+}
+
 export const PicnicGoGame = {
   name: 'picnicGo',
 
@@ -85,80 +162,7 @@ export const PicnicGoGame = {
 
       // Hands are empty, end of round
       if (g.hands[0].hand.length === 0) {
-        // Score the chips
-        let chipsWinner = [];
-        let chipsSecondPlace = [];
-        let chipsWinnerScore = 0;
-        let chipsSecondScore = 0;
-        for (let i = 0; i < ctx.numPlayers; i++) {
-          if (g.players[i].chipsCount === 0) continue;
-          if (g.players[i].chipsCount > chipsWinnerScore) {
-            chipsSecondPlace = chipsWinner;
-            chipsWinner = [i];
-            chipsSecondScore = chipsWinnerScore;
-            chipsWinnerScore = g.players[i].chipsCount;
-          } else if (g.players[i].chipsCount === chipsWinnerScore) {
-            chipsWinner.push(i);
-          } else if (g.players[i].chipsCount > chipsSecondScore) {
-            chipsSecondPlace = [i];
-            chipsSecondScore = g.players[i].chipsCount;
-          } else if (g.players[i].chipsCount === chipsSecondScore) {
-            chipsSecondPlace.push(i);
-          }
-        }
-
-        if (chipsWinner.length === 1) {
-          g.players[chipsWinner[0]].score += 6;
-          const scr = Math.floor(3 / chipsSecondPlace.length);
-          if (scr > 0) {
-            for (let i = 0; i < chipsSecondPlace.length; i++) {
-              g.players[chipsSecondPlace[i]].score += scr;
-            }
-          }
-        } else if (chipsWinner.length > 1) {
-          const scr = Math.floor(6 / chipsWinner.length);
-          for (let i = 0; i < chipsWinner.length; i++) {
-            g.players[chipsWinner[i]].score += scr;
-          }
-        }
-
-        // If it's round 3, score the dessert/cake
-        if (g.round === 3) {
-          let mostCakes = [];
-          let mostCakesCount = 0;
-          let leastCakes = [];
-          let leastCakesCount = 10;
-
-          for (let i = 0; i < ctx.numPlayers; i++) {
-            if (g.players[i].dessertsCount > mostCakesCount) {
-              mostCakes = [i];
-              mostCakesCount = g.players[i].dessertsCount;
-            } else if (g.players[i].dessertsCount === mostCakesCount) {
-              mostCakes.push(i);
-            }
-
-            if (g.players[i].dessertsCount < leastCakesCount) {
-              leastCakes = [i];
-              leastCakesCount = g.players[i].dessertsCount;
-            } else if (g.players[i].dessertsCount === leastCakesCount) {
-              leastCakes.push(i);
-            }
-          }
-
-          if (mostCakesCount !== leastCakesCount) {
-            const scrPlus = Math.floor(6 / mostCakes.length);
-            for (let i = 0; i < mostCakes.length; i++) {
-              g.players[mostCakes[i]].score += scrPlus;
-            }
-
-            if (ctx.numPlayers > 2) {
-              const scrMinus = Math.floor(6 / leastCakes.length);
-              for (let i = 0; i < leastCakes.length; i++) {
-                g.players[leastCakes[i]].score -= scrMinus;
-              }
-            }
-          }
-        }
+        scoreRoundEnd(g, ctx);
 
         if (g.round < 3) setupRound(g, ctx);
         else g.gameOver = true;
