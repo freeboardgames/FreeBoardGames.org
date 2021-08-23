@@ -1,33 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
-        <loc>https://www.freeboardgames.org/en/path3</loc>
+        <loc>https://www.freeboardgames.org/en/</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/" />
     </url>
     <url>
-        <loc>https://www.freeboardgames.org/pt/path3</loc>
+        <loc>https://www.freeboardgames.org/pt/</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/" />
     </url>
     <url>
-        <loc>https://www.freeboardgames.org/de/path3</loc>
+        <loc>https://www.freeboardgames.org/de/</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/" />
     </url>
     <url>
-        <loc>https://www.freeboardgames.org/en/path2</loc>
+        <loc>https://www.freeboardgames.org/en/about</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/about" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/about" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/about" />
     </url>
     <url>
-        <loc>https://www.freeboardgames.org/pt/path2</loc>
+        <loc>https://www.freeboardgames.org/pt/about</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/about" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/about" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/about" />
     </url>
     <url>
-        <loc>https://www.freeboardgames.org/de/path2</loc>
+        <loc>https://www.freeboardgames.org/de/about</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/about" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/about" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/about" />
     </url>
     <url>
-        <loc>https://www.freeboardgames.org/en/path1</loc>
+        <loc>https://www.freeboardgames.org/en/play/tictactoe</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/play/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
     </url>
     <url>
-        <loc>https://www.freeboardgames.org/pt/path1</loc>
+        <loc>https://www.freeboardgames.org/pt/jogar/jogo-da-velha</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/play/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
     </url>
     <url>
-        <loc>https://www.freeboardgames.org/de/path1</loc>
-    </url>
-    <url>
-        <loc>https://www.freeboardgames.org/en/play/bingo</loc>
+        <loc>https://www.freeboardgames.org/de/spiele/tictactoe</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/play/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
     </url>
 </urlset>
