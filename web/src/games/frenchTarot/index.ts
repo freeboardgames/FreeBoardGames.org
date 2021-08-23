@@ -16,7 +16,7 @@ export const frenchTarotDef: IGameDef = {
   description: translation.description,
   descriptionTag: translation.descriptionTag,
   instructions: translation.instructions,
-  status: IGameStatus.IN_DEVELOPMENT,
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
 
