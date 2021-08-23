@@ -27,7 +27,7 @@ export function setupRound(g: IG, ctx: Ctx) {
   let deck = ctx.random.Shuffle(unshuffledDeck);
 
   g.hands = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
-    currentOwner: i,
+    currentOwner: i.toString(),
     hand: new Array(12 - ctx.numPlayers).fill(0).map(() => {
       const card = deck.pop();
       return card;
@@ -129,7 +129,7 @@ export const PicnicGoGame = {
         unusedForks: 0,
         forkUsed: false,
       }),
-      hands: [{ currentOwner: 0, hand: [], selected: null }],
+      hands: [{ currentOwner: '0', hand: [], selected: null }],
       round: 0,
       gameOver: false,
     };
@@ -140,14 +140,15 @@ export const PicnicGoGame = {
   moves: {
     selectCard: (g, ctx, index) => {
       if (index === undefined) return INVALID_MOVE;
-      const idx = g.hands.findIndex((e) => e.currentOwner === parseInt(ctx.playerID, 10));
+      const idx = g.hands.findIndex((e) => e.currentOwner === ctx.playerID);
       if (index < 0 || index >= g.hands[idx].hand.length) return INVALID_MOVE;
-      g.hands[idx].selected = index;
+      if (g.hands[idx].selected === null) g.hands[idx].selected = [];
+      g.hands[idx].selected.push(index);
     },
     useFork: (g, ctx) => {
-      if (g.player[ctx.playerID].forkUsed || g.player[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
-      g.player[ctx.playerID].forkUsed = true;
-      g.player[ctx.playerID].unusedForks--;
+      if (g.players[ctx.playerID].forkUsed || g.players[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
+      g.players[ctx.playerID].forkUsed = true;
+      g.players[ctx.playerID].unusedForks--;
 
       ctx.events.setStage({ stage: Stage.NULL, moveLimit: 2 });
     },
@@ -159,18 +160,29 @@ export const PicnicGoGame = {
     onEnd: (g, ctx) => {
       for (let i = 0; i < ctx.numPlayers; i++) {
         const h = g.hands[i];
-        g.players[h.currentOwner].playedCards.push(h.hand[h.selected]);
+        const ho = parseInt(h.currentOwner, 10);
 
-        g.players[h.currentOwner] = cardFunctions[h.hand[h.selected]](g.players[h.currentOwner]);
+        for (let j = 0; j < h.selected.length; j++) {
+          g.players[ho].playedCards.push(h.hand[h.selected[j]]);
 
-        g.hands[i].hand.splice(h.selected, 1);
-        g.hands[i].selected = null;
-        g.hands[i].currentOwner = (h.currentOwner + 1) % ctx.numPlayers;
+          g.players[ho] = cardFunctions[h.hand[h.selected[j]]](g.players[ho]);
+        }
+
+        for (let j = 0; j < h.selected.length; j++) {
+          g.hands[i].hand.splice(h.selected[j], 1);
+        }
 
         if (g.players[h.currentOwner].forkUsed) {
-          g.hands[i].push(cardEnum.fork);
+          g.hands[i].hand.push(cardEnum.fork);
+          g.players[h.currentOwner].playedCards.splice(
+            g.players[h.currentOwner].playedCards.findIndex((e) => e === cardEnum.fork),
+            1,
+          );
           g.players[h.currentOwner].forkUsed = false;
         }
+
+        g.hands[i].selected = null;
+        g.hands[i].currentOwner = ((ho + 1) % ctx.numPlayers).toString();
       }
 
       // Hands are empty, end of round

@@ -31,7 +31,7 @@ export interface IPlayer {
 }
 
 export interface IHand {
-  currentOwner: number;
+  currentOwner: string;
   hand: cardEnum[];
-  selected: number | null;
+  selected: number[] | null;
 }
