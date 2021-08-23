@@ -115,6 +115,15 @@ export function scoreGameEnd(g: IG, ctx: Ctx) {
   }
 }
 
+export function getScoreboard(g: IG) {
+  return g.players
+    .map((e, i) => ({
+      playerID: i.toString(),
+      score: e.score,
+    }))
+    .sort((a, b) => b.score - a.score);
+}
+
 export const PicnicGoGame = {
   name: 'picnicGo',
 
@@ -195,19 +204,9 @@ export const PicnicGoGame = {
     },
   },
 
-  endIf: (g, ctx) => {
+  endIf: (g) => {
     if (g.gameOver) {
-      let winner = '0';
-      let winningScore = 0;
-
-      for (let i = 0; i < ctx.numPlayers; i++) {
-        if (g.players[i].score > winningScore) {
-          winner = i.toString();
-          winningScore = g.players[i].score;
-        }
-      }
-
-      return { winner };
+      return { scoreboard: getScoreboard(g) };
     }
   },
 };
