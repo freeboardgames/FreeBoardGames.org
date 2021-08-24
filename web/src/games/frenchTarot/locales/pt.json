@@ -40,7 +40,7 @@
   "poignee_declares_1": "<b>{{ name }}</b> declara uma <b>Poignée Única</b>",
   "poignee_declares_2": "<b>{{ name }}</b> declara uma <b>Poignée Dupla</b>",
   "poignee_declares_3": "<b>{{ name }}</b> declara uma <b>Poignée tripla</b>",
-  "scoreboard_firstround": "Esse é a primeira rodada.",
+  "scoreboard_firstround": "Essa é a primeira rodada.",
   "scoreboard_round_n": "Rodada {{ n }}",
   "scoreboard_points": "Pontos(requirido)",
   "scoreboard_petit_au_bout": "Petit au bout",
