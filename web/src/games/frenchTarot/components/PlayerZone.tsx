@@ -1,124 +1,114 @@
 import * as React from 'react';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import css from './PlayerZone.module.css';
-import { IPlayer } from '../engine/types';
+import { IPlayer } from '../types';
+import * as util from '../util/misc';
 
-const ZonePositions = [
-  [
-    { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 0 50% auto', transform: 'translate(0,50%)' },
-    { inset: 'auto auto 50% 0', transform: 'translate(0,50%)' },
-  ],
-  [
-    { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 0 55% auto', transform: 'translate(0,50%)' },
-    { inset: '0 auto auto 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto auto 55% 0', transform: 'translate(0,50%)' },
-  ],
-  [
-    { inset: 'auto auto 0 50%', transform: 'translate(-50%,0)' },
-    { inset: 'auto 0 50% auto', transform: 'translate(0,50%)' },
-    { inset: '0 auto auto 70%', transform: 'translate(-50%,0)' },
-    { inset: '0 auto auto 30%', transform: 'translate(-50%,0)' },
-    { inset: 'auto auto 50% 0', transform: 'translate(0,50%)' },
-  ],
-];
+export function PlayerZone(props: {
+  numPlayers: number;
+  contract: number;
+  biddingEnded: boolean;
+  roundEnded: boolean;
+  player: IPlayer;
+  playerName: string;
+  active: boolean;
+  leader: boolean;
+  slam: boolean;
+  positionIndex: number;
+}) {
+  const { translate } = useCurrentGameTranslation();
+  const markActive = props.biddingEnded && !props.roundEnded && props.active;
 
-export class PlayerZone extends React.Component<
-  {
-    numPlayers: number;
-    biddingEnded: boolean;
-    roundEnded: boolean;
-    player: IPlayer;
-    playerName: string;
-    active: boolean;
-    leader: boolean;
-    slam: boolean;
-    positionIndex: number;
-  },
-  {}
-> {
-  render() {
-    const positions = ZonePositions[Math.max(0, this.props.numPlayers - 3)];
-    const position = positions[this.props.positionIndex];
-
-    return (
-      <div
-        className={css.playerZone}
-        style={{ position: 'absolute', inset: position.inset, transform: position.transform }}
-      >
-        {this.renderZoneContent()}
-      </div>
-    );
-  }
-
-  renderZoneContent() {
+  function renderZoneContent() {
+    const P = props.player;
+    const slam = P.isTaker && props.slam;
+    const bid = P.isTaker ? props.contract : P.bid;
+    const playerBidStr = bid >= 0 ? `«${translate(util.getBidName(bid))}»` : '';
     return (
       <div>
-        <div className={[css.statuses, this.props.player.isTaker && this.props.slam ? css.slam : ''].join(' ')}>
-          <div className={css.playerName}>{this.props.playerName}</div>
-          {this.renderStatuses()}
+        <div className={css.bidStatus}>
+          {slam ? <div className={css.slam}>{translate('slam_announced')}</div> : null}
+          <div className={bid == 0 ? css.pass : ''}>{playerBidStr}</div>
+        </div>
+        <div className={css.statuses}>
+          <div className={css.playerName}>{props.playerName}</div>
+          {renderStatuses()}
         </div>
       </div>
     );
   }
 
-  renderStatuses() {
+  function renderStatuses() {
     var statuses = [
-      <span key="Score" className={css.score} title="Score">
-        &#x1F4B0; {this.props.player.score}
+      <span key="score" className={css.score} title={translate('status_score')}>
+        &#x1F4B0; {props.player.score}
       </span>,
     ];
-    if (!this.props.roundEnded && this.props.player.isDealer) {
+    if (!props.roundEnded && props.player.isDealer) {
       statuses.push(
-        <span key="Dealer" title="Dealer">
+        <span key="dealer" title={translate('status_dealer')}>
           &#x25B6;&#xFE0F;
         </span>,
       );
     }
-    if (this.props.player.bid == 0) {
+    if (props.player.bid == 0) {
       statuses.push(
-        <span key="Passing" title="Passing">
+        <span key="passing" title={translate('status_passing')}>
           &#x1F44E;
         </span>,
       );
     }
-    if (this.props.player.bid > 0) {
+    if (props.player.bid > 0) {
       statuses.push(
-        <span key="Bidding" title="Bidding">
+        <span key="bidding" title={translate('status_bidding')}>
           &#x1F44D;
         </span>,
       );
     }
-    if (this.props.biddingEnded) {
-      if (this.props.player.isTaker) {
+    if (props.biddingEnded) {
+      if (props.player.isTaker) {
         statuses.push(
-          <span key="Taker" title="Taker">
+          <span key="taker" title={translate('status_taker')}>
             &#x2694;&#xFE0F;
           </span>,
         );
-      } else if (this.props.biddingEnded && this.props.numPlayers < 5) {
+      } else if (props.biddingEnded && props.numPlayers < 5) {
         statuses.push(
-          <span key="Opponent" title="Opponent">
+          <span key="opponent" title={translate('status_opponent')}>
             &#x1F6E1;&#xFE0F;
           </span>,
         );
       }
-      if (!this.props.roundEnded && this.props.leader) {
+      if (!props.roundEnded && props.leader) {
         statuses.push(
-          <span key="Leader" title="Leader">
+          <span key="leader" title={translate('status_leader')}>
             &#x1F6A9;
           </span>,
         );
       }
     }
-    if (this.props.active) {
+    if (props.active) {
       statuses.push(
-        <span key="Active" title="Active">
+        <span key="active" title={translate('status_active')} className={css.active}>
           &#x1F552;
         </span>,
       );
     }
     return statuses;
   }
+
+  return (
+    <div
+      className={[
+        css.playerZone,
+        markActive ? css.active : '',
+        props.positionIndex == 0 ? css.thisPlayer : '',
+        css[`p${Math.max(3, props.numPlayers)}`],
+        css[`i${props.positionIndex + 1}`],
+      ].join(' ')}
+    >
+      {renderZoneContent()}
+    </div>
+  );
 }

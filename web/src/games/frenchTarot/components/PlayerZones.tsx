@@ -3,47 +3,45 @@ import * as React from 'react';
 import css from './PlayerZones.module.css';
 import { PlayerZone } from './PlayerZone';
 
-import { IPlayer } from '../engine/types';
-import * as util from '../engine/util';
+import { IPlayer } from '../types';
+import * as util from '../util/misc';
 
-export class PlayerZones extends React.Component<
-  {
-    currentPlayerId: string;
-    perspectivePlayerId: string;
-    currentLeaderId: string;
-    players: IPlayer[];
-    playerNames: string[];
-    slam: boolean;
-  },
-  {}
-> {
-  render() {
-    return (
-      <div className={css.playerZonesContainer}>
-        <div className={css.playerZones}>{this.props.players.map((_, i) => this.renderZone(i))}</div>
-        <div className={css.centerDisplay}></div>
-      </div>
-    );
-  }
-
-  renderZone(index: number) {
-    const perspectiveIndex = parseInt(this.props.perspectivePlayerId);
-    const numPlayers = this.props.players.length;
-    const player = this.props.players[index];
+export function PlayerZones(props: {
+  currentPlayerId: string;
+  perspectivePlayerId: string;
+  currentLeaderId: string;
+  players: IPlayer[];
+  playerNames: string[];
+  contract: number;
+  slam: boolean;
+}) {
+  function renderZone(index: number) {
+    const perspectiveIndex = +props.perspectivePlayerId;
+    const numPlayers = props.players.length;
+    const player = props.players[index];
+    const active = (!props.currentPlayerId && !player.isReady) || player.id === props.currentPlayerId;
     return (
       <div key={index} className={css.zone}>
         <PlayerZone
           numPlayers={numPlayers}
-          biddingEnded={this.props.players.some((p) => p.isTaker)}
-          roundEnded={this.props.currentLeaderId == ''}
+          contract={props.contract}
+          biddingEnded={props.players.some((p) => p.isTaker)}
+          roundEnded={props.currentLeaderId == ''}
           player={player}
-          playerName={this.props.playerNames[index]}
-          active={(!this.props.currentPlayerId && !player.isReady) || player.id === this.props.currentPlayerId}
-          leader={player.id === this.props.currentLeaderId}
-          slam={this.props.slam}
+          playerName={props.playerNames[index]}
+          active={active}
+          leader={player.id === props.currentLeaderId}
+          slam={props.slam}
           positionIndex={util.mod(index - perspectiveIndex, numPlayers)}
         />
       </div>
     );
   }
+
+  return (
+    <div className={css.playerZonesContainer}>
+      <div className={css.playerZones}>{props.players.map((_, i) => renderZone(i))}</div>
+      <div className={css.centerDisplay}></div>
+    </div>
+  );
 }
