@@ -12,7 +12,7 @@ export const frenchTarotDef: IGameDef = {
     pt: IGameTranslationStatus.DONE,
     fr: IGameTranslationStatus.DONE,
   },
-  codes: { de: 'franz-tarot', fr: 'tarot-francais' },
+  codes: { de: 'franz-tarot', pt: 'taro-frances', fr: 'tarot-francais' },
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
