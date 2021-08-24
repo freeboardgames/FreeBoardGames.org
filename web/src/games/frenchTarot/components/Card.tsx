@@ -1,34 +1,38 @@
 import * as React from 'react';
 import css from './Card.module.css';
 
-import { ICard, CardColor } from '../engine/types';
+import { ICard, CardColor } from '../types';
 
-export class Card extends React.Component<
-  {
-    type?: ICard;
-    selected?: boolean;
-    inactive?: boolean;
-    click?: () => void;
-  },
-  {}
-> {
-  render() {
-    return (
-      <div
-        className={[
-          css.card,
-          this.props.inactive ? css.inactive : '',
-          this.props.click ? css.selectable : '',
-          this.props.selected ? css.selected : '',
-          css[this.getCardClassName()],
-        ].join(' ')}
-        onClick={this.props.click}
-      ></div>
-    );
+const ColorBgRow = {
+  Clubs: 0,
+  Diamonds: 1,
+  Spades: 2,
+  Hearts: 3,
+  Trumps: 4,
+};
+
+export function Card(props: { type?: ICard; selected?: boolean; inactive?: boolean; click?: () => void }) {
+  const [col, row] = getCardBgPos();
+
+  function getCardBgPos(): number[] {
+    const C = props.type;
+    if (!C) return [8, 5];
+    if (C.color == CardColor.Excuse) return [7, 5];
+    const color_name = CardColor[C.color];
+    const x_pos = C.value - 1;
+    return [x_pos % 14, ColorBgRow[color_name] + Math.floor(x_pos / 14)];
   }
 
-  getCardClassName(): string {
-    if (!this.props.type) return 'faceDownCard';
-    return CardColor[this.props.type.color] + this.props.type.value;
-  }
+  return (
+    <div
+      className={[
+        css.card,
+        props.inactive ? css.inactive : '',
+        props.click ? css.selectable : '',
+        props.selected ? css.selected : '',
+      ].join(' ')}
+      style={{ backgroundPosition: `-${col * 320}px -${row * 596}px` }}
+      onClick={props.click}
+    ></div>
+  );
 }

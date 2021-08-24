@@ -1,15 +1,11 @@
 import { Ctx, Game } from 'boardgame.io';
 
-import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './engine/types';
-import * as util from './engine/util';
-import * as poignee from './engine/poignee';
-import * as summary from './engine/summary';
-import { Moves } from './engine/moves';
+import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './types';
+import * as util from './util/misc';
+import * as u_poignee from './util/poignee';
+import * as u_summary from './util/summary';
+import { Moves } from './moves';
 
-/*
-TODO:
-- unit-tests?
-*/
 export const FrenchTarotGame: Game<IG> = {
   name: 'frenchTarot',
 
@@ -60,15 +56,15 @@ export const FrenchTarotGame: Game<IG> = {
 
       onEnd: (G: IG, ctx: Ctx) => {
         const handSize = util.handSize(ctx.numPlayers);
-        const dealerId = G.players.findIndex((p) => p.isDealer);
+        const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, ctx.numPlayers)];
         G.deck = getSortedDeck();
         G.deck = ctx.random.Shuffle(G.deck);
-        G.players.forEach((p, i) => {
-          p.bid = -1;
-          p.isTaker = false;
-          p.isReady = true;
-          p.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
+        G.players.forEach((P, i) => {
+          P.bid = -1;
+          P.isTaker = false;
+          P.isReady = true;
+          P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
         });
         G.takerId = '';
         G.calledCard = null;
@@ -104,13 +100,13 @@ export const FrenchTarotGame: Game<IG> = {
       },
 
       endIf: (G: IG) => {
-        if (G.players.some((p) => p.bid == 4)) {
+        if (G.players.some((P) => P.bid == 4)) {
           return { next: Phases.calling };
         }
-        if (G.players.some((p) => p.bid == -1)) return;
-        if (G.players.every((p) => p.bid == 0)) {
+        if (G.players.some((P) => P.bid == -1)) return;
+        if (G.players.every((P) => P.bid == 0)) {
           return { next: Phases.dealing };
-        } else if (G.players.filter((p) => p.bid > 0).length == 1) {
+        } else if (G.players.filter((P) => P.bid > 0).length == 1) {
           return { next: Phases.calling };
         }
       },
@@ -129,8 +125,10 @@ export const FrenchTarotGame: Game<IG> = {
           const dealerPos = G.players.findIndex((P) => P.isDealer);
           G.players[dealerPos].isDealer = false;
           G.players[util.mod(dealerPos + 1, ctx.numPlayers)].isDealer = true;
+          G.kittyPrev = G.kitty;
           return;
         }
+        G.kittyPrev = [];
         G.takerId = taker.id;
         G.contract = highestBid;
         taker.isTaker = true;
@@ -142,8 +140,8 @@ export const FrenchTarotGame: Game<IG> = {
       turn: {
         moveLimit: 1,
         order: {
-          first: (G) => parseInt(G.takerId),
-          next: (G) => parseInt(G.takerId),
+          first: (G) => +G.takerId,
+          next: (G) => +G.takerId,
         },
       },
 
@@ -154,6 +152,9 @@ export const FrenchTarotGame: Game<IG> = {
       endIf: (G, ctx) => ctx.numPlayers < 5 || !!G.calledCard,
 
       onEnd: (G: IG) => {
+        if (G.calledCard) {
+          G.calledTakerId = getCalledTakerId(G.players, G.calledCard);
+        }
         const taker = G.players.find((P) => P.isTaker);
         if (G.contract < 3) {
           taker.discardSelection = [];
@@ -167,7 +168,7 @@ export const FrenchTarotGame: Game<IG> = {
         } else if (G.contract == 4) {
           G.resolvedTricks.push({
             cards: G.kitty.splice(0, G.kitty.length),
-            winner: G.players.find((p) => !p.isTaker),
+            winner: G.players.find((P) => !P.isTaker),
           });
         }
       },
@@ -178,8 +179,8 @@ export const FrenchTarotGame: Game<IG> = {
       turn: {
         moveLimit: 1,
         order: {
-          first: (G) => parseInt(G.takerId),
-          next: (G) => parseInt(G.takerId),
+          first: (G) => +G.takerId,
+          next: (G) => +G.takerId,
         },
       },
 
@@ -191,7 +192,7 @@ export const FrenchTarotGame: Game<IG> = {
       endIf: (G) => G.resolvedTricks.length > 0,
 
       onEnd: (G: IG) => {
-        const taker = G.players[parseInt(G.takerId)];
+        const taker = G.players[+G.takerId];
         delete taker.discardSelection;
         taker.isReady = false;
         G.kittyRevealed = false;
@@ -204,12 +205,12 @@ export const FrenchTarotGame: Game<IG> = {
       turn: {
         moveLimit: 1,
         order: {
-          first: (G) => parseInt(G.takerId),
-          next: (G) => parseInt(G.takerId),
+          first: (G) => +G.takerId,
+          next: (G) => +G.takerId,
         },
       },
       moves: { AnnounceSlam: Moves.AnnounceSlam },
-      endIf: (G) => G.players[parseInt(G.takerId)].isReady,
+      endIf: (G) => G.players[+G.takerId].isReady,
     },
 
     placement: {
@@ -217,8 +218,8 @@ export const FrenchTarotGame: Game<IG> = {
         onBegin: (G: IG, ctx: Ctx) => {
           const hand = util.getPlayerById(G, ctx.currentPlayer).hand;
           const num_players = ctx.numPlayers;
-          if (G.resolvedTricks.length == 1 && poignee.maxPoigneeLevel(hand, num_players) > 0) {
-            poignee.preselectPoignee(G, ctx);
+          if (G.resolvedTricks.length == 1 && u_poignee.maxPoigneeLevel(hand, num_players) > 0) {
+            u_poignee.preselectPoignee(G, ctx);
             ctx.events.setActivePlayers({ currentPlayer: Stages.declare_poignee });
           } else {
             ctx.events.setActivePlayers({
@@ -238,7 +239,7 @@ export const FrenchTarotGame: Game<IG> = {
           place_card: { moves: { SelectCards: Moves.SelectCards } },
         },
         order: {
-          first: (G) => parseInt(G.trick.leader.id),
+          first: (G) => +G.trick.leader.id,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
         },
       },
@@ -253,20 +254,12 @@ export const FrenchTarotGame: Game<IG> = {
       },
 
       onEnd: (G: IG) => {
-        const isRoundOver = G.players.every((P) => P.hand.length == 0);
-        const isAlmostSlam = G.resolvedTricks.every((T) => T.winner.id == G.takerId);
-        const excuseLeads = G.trick.cards[0].color == CardColor.Excuse;
-        const winnerId = isRoundOver && isAlmostSlam && excuseLeads ? G.takerId : getTrickWinnerId(G.trick);
-        G.trick.winner = util.getPlayerById(G, winnerId);
-        G.resolvedTricks.push(G.trick);
-        G.trick = { cards: [], leader: G.trick.winner };
-
-        if (isRoundOver) {
-          const roundSummary = summary.getRoundSummary(G);
+        if (resolveTrick(G)) {
+          const roundSummary = u_summary.getRoundSummary(G);
           G.roundSummaries.push(roundSummary);
-          G.players.forEach((p, i) => {
-            p.score += roundSummary.scoring[i];
-            p.isReady = false;
+          G.players.forEach((P, i) => {
+            P.score += roundSummary.scoring[i];
+            P.isReady = false;
           });
           G.kitty = G.resolvedTricks[0].cards;
           G.kittyRevealed = true;
@@ -286,33 +279,57 @@ export const FrenchTarotGame: Game<IG> = {
         G.resolvedTricks = [];
         const dealerPos = G.players.findIndex((P) => P.isDealer);
         const newDealerPos = util.mod(dealerPos + 1, ctx.numPlayers);
-        G.players.forEach((p, i) => {
-          p.isDealer = i == newDealerPos;
+        G.players.forEach((P, i) => {
+          P.isDealer = i == newDealerPos;
         });
       },
     },
   },
 };
 
-function getTrickWinnerId(T: ITrick): string {
-  const leaderId: number = parseInt(T.leader.id);
-  const max_trump = Math.max(...T.cards.map((c) => (c.color == CardColor.Trumps ? c.value : 0)));
+export function resolveTrick(G: IG): boolean {
+  // returns true if this was the last trick in the game
+  const isRoundOver = G.players.every((P) => P.hand.length == 0);
+  const isAlmostSlam =
+    isRoundOver &&
+    G.resolvedTricks.every((T) => {
+      return T.winner.id == G.takerId || T.winner.id == G.calledTakerId;
+    });
+  const excuseLeads = G.trick.cards[0].color == CardColor.Excuse;
+  const winnerId = isAlmostSlam && excuseLeads ? G.trick.leader.id : getTrickWinnerId(G.trick);
+  G.trick.winner = util.getPlayerById(G, winnerId);
+  G.resolvedTricks.push(G.trick);
+  G.trick = { cards: [], leader: G.trick.winner };
+  return isRoundOver;
+}
+
+export function getCalledTakerId(players: IPlayer[], card: ICard): string {
+  const takerId = players.find((P) => P.isTaker).id;
+  const calledTaker = players.find((P) => {
+    return P.hand.some((C) => C.color == card.color && C.value == card.value);
+  });
+  return calledTaker ? calledTaker.id : takerId;
+}
+
+export function getTrickWinnerId(T: ITrick): string {
+  const leaderId = +T.leader.id;
+  const max_trump = Math.max(...T.cards.map((C) => (C.color == CardColor.Trumps ? C.value : 0)));
   if (max_trump > 0) {
     return util
-      .mod(leaderId + T.cards.findIndex((c) => c.color == CardColor.Trumps && c.value == max_trump), T.cards.length)
+      .mod(leaderId + T.cards.findIndex((C) => C.color == CardColor.Trumps && C.value == max_trump), T.cards.length)
       .toString();
   }
   var lead_color = T.cards[0].color;
   if (lead_color == CardColor.Excuse) {
     lead_color = T.cards[1].color;
   }
-  const max_value = Math.max(...T.cards.map((c) => (c.color == lead_color ? c.value : 0)));
+  const max_value = Math.max(...T.cards.map((C) => (C.color == lead_color ? C.value : 0)));
   return util
-    .mod(leaderId + T.cards.findIndex((c) => c.color == lead_color && c.value == max_value), T.cards.length)
+    .mod(leaderId + T.cards.findIndex((C) => C.color == lead_color && C.value == max_value), T.cards.length)
     .toString();
 }
 
-function getSortedDeck(): ICard[] {
+export function getSortedDeck(): ICard[] {
   var deck: ICard[] = [{ color: CardColor.Excuse, value: 0 }];
   for (let col of ['Hearts', 'Diamonds', 'Spades', 'Clubs']) {
     deck = deck.concat(
@@ -333,6 +350,6 @@ function getSortedDeck(): ICard[] {
   return deck;
 }
 
-function cmpCards(a: ICard, b: ICard): number {
+export function cmpCards(a: ICard, b: ICard): number {
   return (a.color - b.color) * 100 + (a.value - b.value);
 }

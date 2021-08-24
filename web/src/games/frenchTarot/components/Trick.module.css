@@ -1,14 +1,26 @@
 .trick {
   position: absolute;
-  height: 200px;
-  width: 100px;
-  left: 50%; top: 50%;
-  transform: translate(-50%,-50%);
+  left: 0; right: 0;
+  top: 0; bottom: 0;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .cardContainer {
-  transform-origin: 0 0;
-  transform: scale(0.3);
-  float: left;
-  width: 0;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.3);
+}
+
+@keyframes vanish {
+  0% {transform: scale(1.0);}
+  66% {transform: scale(1.0);}
+  100% {transform: scale(0.0);}
+}
+
+.trick.full {
+  animation: vanish 1.5s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  transform: scale(0);
 }

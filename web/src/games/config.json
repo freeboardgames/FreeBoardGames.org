@@ -1,5 +1,6 @@
 {
   "order": [
+    "frenchTarot",
     "bullsAndCows",
     "bingo",
     "memorymatch",
@@ -22,7 +23,6 @@
     "zooparade",
     "rota",
     "reversi",
-    "ninemensmorris",
-    "frenchTarot"
+    "ninemensmorris"
   ]
 }
