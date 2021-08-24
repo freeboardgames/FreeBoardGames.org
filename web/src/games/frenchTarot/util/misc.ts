@@ -1,11 +1,5 @@
 import { IG, IPlayer, ICard, CardColor } from '../types';
 
-import * as Placement from './placement';
-import * as Discard from './discard';
-import * as Poignee from './poignee';
-import * as Summary from './summary';
-export { Placement, Discard, Poignee, Summary };
-
 export function getBidName(bid: number): string {
   return `bid_${['pass', 'small', 'guard', 'guard_without', 'guard_against'][bid]}`;
 }
