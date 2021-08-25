@@ -1,0 +1,49 @@
+.kitty {
+  position: absolute;
+  left: 0; right: 0;
+  top: 190px; bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  z-index: 1;
+}
+
+.kitty > div {
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 710px;
+  padding: 0 90px 0 20px;
+}
+
+.kitty > div > div {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.kittyDescr {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 6px;
+  width: 400px;
+  transform: translate(30px, -120%);
+  text-align: center;
+}
+
+.arrangeCard {
+  display: inline-block;
+  width: 30px;
+}
+
+.cropCard {
+  height: 180px;
+  width: 100px;
+  overflow: hidden;
+}
+
+.scaleCard {
+  transform-origin: 0 0;
+  transform: scale(0.3);
+}

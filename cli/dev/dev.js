@@ -1,10 +1,9 @@
-const { genGames } = require("../genGames/genGames");
+const { codegen } = require("../codegen/codegen");
 const { cd, print, fbgRun } = require("../util");
 const chalk = require("chalk");
 const shell = require("shelljs");
 
 function dev(games) {
-  genGames();
   if (games.length === 0) {
     print(
       `Running development environment for ${chalk.bold(
@@ -13,11 +12,12 @@ function dev(games) {
         "yarn run dev GAME1,GAME2"
       )}`
     );
+    codegen();
   } else {
     const formattedGames = games.map((g) => chalk.inverse(g)).join(", ");
     print(`Running development environment for ${formattedGames} ...`);
+    codegen(games);
   }
-  genGames(games);
   print(
     `Visit ${chalk.inverse(
       "http://localhost:3000"

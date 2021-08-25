@@ -1,5 +1,11 @@
 jest.mock('games', () => ({
-  GAMES_LIST: [{ code: 'bingo' }],
+  GAMES_LIST: [
+    {
+      code: 'tictactoe',
+      codes: { pt: 'jogo-da-velha', de: 'tictactoe' },
+      translationStatus: { pt: 1, de: 1 },
+    },
+  ],
 }));
 
 import fs from 'fs';
@@ -29,7 +35,6 @@ describe('generateSiteMapXML', () => {
 
   it('should generate sitemap', () => {
     generateSiteMapXML({
-      manifest: manifestFixture(),
       staticDir: staticDirFixture(),
       host: hostFixture(),
     });
@@ -37,14 +42,6 @@ describe('generateSiteMapXML', () => {
     expect(xml).toEqualXML(sitemapI18nFixture);
   });
 });
-
-function manifestFixture(): { [x: string]: unknown } {
-  return {
-    '/path1': '/path1',
-    '/path2': '/path2',
-    '/path3': '/path3',
-  };
-}
 
 function staticDirFixture(): string {
   return '/';
