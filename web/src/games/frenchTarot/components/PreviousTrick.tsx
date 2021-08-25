@@ -27,8 +27,8 @@ export function PreviousTrick(props: {
   function renderPrevTrickCard(i: number) {
     const card = props.trick[i];
     const index = util.mod(props.leaderPos + i - props.currPos, props.numPlayers);
-    var text = '';
-    var symbol = <></>;
+    let text = '';
+    let symbol = <></>;
     if (card) {
       text = card.value.toString();
       if (card.color == CardColor.Excuse) {

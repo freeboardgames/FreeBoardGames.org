@@ -40,7 +40,7 @@ export function PlayerZone(props: {
   }
 
   function renderStatuses() {
-    var statuses = [
+    let statuses = [
       <span key="score" className={css.score} title={translate('status_score')}>
         &#x1F4B0; {props.player.score}
       </span>,
