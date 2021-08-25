@@ -11,7 +11,7 @@ interface IGameInstructionsProps {
 export const GameInstructionsVideo = (props: IGameInstructionsProps) => {
   const { t } = useTranslation('GameInfo');
   return (
-    <Card style={{ marginBottom: 16, maxWidth: '1200px' }} data-testid={'gameinstructionsvideo'}>
+    <Card data-testid={'gameinstructionsvideo'}>
       <LiteYouTubeEmbed
         id={props.videoId}
         announce={t('watch')}
