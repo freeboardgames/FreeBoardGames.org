@@ -72,6 +72,20 @@ export function movePay(G: IG, ctx: Ctx, moneyIDs: number[]): IG | 'INVALID_MOVE
   }
 
   if (
+    // If can pay, you must pay!
+    // -- otherwise your money will be revealed, and you may not overbid again!
+    // not paying enough
+    moneyIDs.reduce((accum, moneyID): number => {
+      return G.players[G.auction.payingPlayerID].money[moneyID].value + accum;
+    }, 0) < G.players[G.auction.payingPlayerID].currentBid &&
+    // but could pay enough
+    G.players[G.auction.payingPlayerID].money.reduce((accum, card): number => {
+      return card.value + accum;
+    }, 0) >= G.players[G.auction.payingPlayerID].currentBid
+  ) {
+    return INVALID_MOVE;
+  }
+  if (
     // If your money is revealed, you need to pay!
     moneyIDs.reduce((accum, moneyID): number => {
       return G.players[G.auction.payingPlayerID].money[moneyID].value + accum;
