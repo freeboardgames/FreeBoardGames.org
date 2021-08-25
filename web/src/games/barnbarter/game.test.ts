@@ -1,3 +1,4 @@
+import { IG } from 'definitions';
 import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer';
 import { BarnBarterGame, _setup } from './game';
@@ -29,21 +30,39 @@ it('Whole Game', () => {
 
   clients.map((p) => p.start());
 
-  // let { G, ctx } =  clients[0].getState();
+  var {G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseStart');
 
-  // get the latest game state
   clients[0].moves.moveChoseAuction();
+  var {G :IG, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseAuction');
 
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
+  var {G, ctx } = clients[0].getState();
+  expect(G.auction.counter).toEqual(2)
 
   clients[2].moves.moveBid(10);
+  var {G, ctx } = clients[0].getState();
+  expect(G.auction.counter).toEqual(0)
+  expect(G.players[0].currentBid).toEqual(0)
+  expect(G.players[1].currentBid).toEqual(0)
+  expect(G.players[2].currentBid).toEqual(10)
+
+
 
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
 
-  clients[2].moves.movePay([0]); // not enough
+  var {G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseAuctionPay')
+
+  clients[2].moves.movePay([0]); // not enough, so going back to auction
+  var {G :IG, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseAuction');
+  // TODO: If a player CAN pay, the player must!
+  // fix in rules! then tests will fail (which is good), then fix test here!
 
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
@@ -53,6 +72,7 @@ it('Whole Game', () => {
 
   clients[0].moves.moveGoing();
 
+  
   clients[2].moves.moveBid(90); //overbidding not allowed
   // should still be on bid = 10
   clients[1].moves.moveBid(100);
@@ -223,7 +243,7 @@ it('Whole Game', () => {
   clients[1].moves.moveChoseAnimalAndMoney(2, 3, [0]);
   clients[2].moves.moveAnswerTrade([4, 5]);
 
-  let { ctx } = clients[0].getState();
+  var { G, ctx } = clients[0].getState();
   //console.log(ctx)
 
   expect(ctx.gameover).toEqual({ winner: 1 });
