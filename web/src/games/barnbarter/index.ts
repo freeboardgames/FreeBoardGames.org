@@ -7,10 +7,10 @@ export const BarnBarterDef: IGameDef = {
   code: 'barnbarter',
   name: 'Barn Barter',
   contributors: ['Spooky-O'],
-  minPlayers: 3,
+  minPlayers: 1, // TODO: Min is 3
   maxPlayers: 5,
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.OnlineFriend }],
+  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }], // TODO : no Local
   description: 'Haggle for Animals!',
   descriptionTag: 'Similar to Kuh Handel.',
   instructions: {
