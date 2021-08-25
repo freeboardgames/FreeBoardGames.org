@@ -23,6 +23,10 @@ export function moveGoing(G: IG): IG {
 }
 
 export function moveBid(G: IG, ctx: Ctx, amount: number): IG {
+  //TODO: if first bet is betting 0, i don't think it updates from -1 -> 0
+  //TODO: Betting 0 resets the counter, should only reset on first 0 bet
+  //TODO: Who wins when ppl bet the same value?
+
   let playerId = Number(ctx.playerID);
 
   // Only false if player is revelead, and bids over own wealth.
