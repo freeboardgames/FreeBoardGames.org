@@ -1,7 +1,7 @@
 import { Ctx } from 'boardgame.io';
 import { IG, ICard, IMoney, IAuction, ITrade } from './definitions';
 
-import { phaseNone, phaseStart, phaseAuction, phaseAuctionPay, phaseTradeFirst, phaseTradeSecond } from './phases';
+import { phaseStart, phaseAuction, phaseAuctionPay, phaseTradeFirst, phaseTradeSecond } from './phases';
 import { finished, score } from './helpers';
 
 export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
@@ -90,7 +90,6 @@ export const BarnBarterGame = {
     return _setup(ctx, true, 1000);
   },
   phases: {
-    phaseNone: phaseNone,
     phaseStart: phaseStart,
     phaseAuction: phaseAuction,
     phaseAuctionPay: phaseAuctionPay,
