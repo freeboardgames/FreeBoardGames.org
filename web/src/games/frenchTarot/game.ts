@@ -112,8 +112,8 @@ export const FrenchTarotGame: Game<IG> = {
       },
 
       onEnd: (G: IG, ctx: Ctx) => {
-        var taker: IPlayer;
-        var highestBid: number = 0;
+        let taker: IPlayer;
+        let highestBid: number = 0;
         G.players.forEach((P) => {
           if (P.bid > highestBid) {
             highestBid = P.bid;
@@ -319,7 +319,7 @@ export function getTrickWinnerId(T: ITrick): string {
       .mod(leaderId + T.cards.findIndex((C) => C.color == CardColor.Trumps && C.value == max_trump), T.cards.length)
       .toString();
   }
-  var lead_color = T.cards[0].color;
+  let lead_color = T.cards[0].color;
   if (lead_color == CardColor.Excuse) {
     lead_color = T.cards[1].color;
   }
@@ -330,7 +330,7 @@ export function getTrickWinnerId(T: ITrick): string {
 }
 
 export function getSortedDeck(): ICard[] {
-  var deck: ICard[] = [{ color: CardColor.Excuse, value: 0 }];
+  let deck: ICard[] = [{ color: CardColor.Excuse, value: 0 }];
   for (let col of ['Hearts', 'Diamonds', 'Spades', 'Clubs']) {
     deck = deck.concat(
       Array(14)

@@ -12,7 +12,7 @@ export function str2card(s: string): ICard {
     E: CardColor.Excuse,
   }[s[0]];
   const special_values = ['V', 'C', 'D', 'R'];
-  var value = 0;
+  let value = 0;
   if (color != CardColor.Excuse) {
     const i = special_values.indexOf(s.substr(1));
     value = i == -1 ? +s.substr(1) : 11 + i;
@@ -36,7 +36,7 @@ export function str2trick(s: string, players: IPlayer[]): ITrick {
   if (s.indexOf('!') == -1) {
     return { cards: str2cards(s) };
   }
-  var leaderId = 0;
+  let leaderId = 0;
   const cards = s.split(' ').map((card_s, i) => {
     if (card_s[0] == '!') {
       leaderId = i;

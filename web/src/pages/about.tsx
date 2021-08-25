@@ -128,49 +128,49 @@ function Credits() {
 
         <List>
           <ListItem>
-            <ListItemText primary={t('chess_move_sound_by_splice_sound')} />
+            <ListItemText primary={t('credits.chess_move_sound_by_splice_sound')} />
             <Button size="small" color="primary" href="https://freesound.org/people/SpliceSound/sounds/218333/">
               freesound.org
             </Button>
           </ListItem>
 
           <ListItem>
-            <ListItemText primary={t('seabattle_hit_sound_by_fridobeck')} />
+            <ListItemText primary={t('credits.seabattle_hit_sound_by_fridobeck')} />
             <Button size="small" color="primary" href="https://freesound.org/people/fridobeck/sounds/191694/">
               freesound.org
             </Button>
           </ListItem>
 
           <ListItem>
-            <ListItemText primary={t('seabattle_hit_sound_by_qubodup')} />
+            <ListItemText primary={t('credits.seabattle_hit_sound_by_qubodup')} />
             <Button size="small" color="primary" href="https://freesound.org/people/qubodup/sounds/182429/">
               freesound.org
             </Button>
           </ListItem>
 
           <ListItem>
-            <ListItemText primary={t('seabattle_miss_sound_by_inspector_j')} />
+            <ListItemText primary={t('credits.seabattle_miss_sound_by_inspector_j')} />
             <Button size="small" color="primary" href="https://freesound.org/people/InspectorJ/sounds/352103/">
               freesound.org
             </Button>
           </ListItem>
 
           <ListItem>
-            <ListItemText primary={t('seabattle_miss_sound_by_cg_effex')} />
+            <ListItemText primary={t('credits.seabattle_miss_sound_by_cg_effex')} />
             <Button size="small" color="primary" href="https://freesound.org/people/CGEffex/sounds/98335/">
               freesound.org
             </Button>
           </ListItem>
 
           <ListItem>
-            <ListItemText primary={t('blox_font_used_in_logo_by_brian_kent')} />
+            <ListItemText primary={t('credits.blox_font_used_in_logo_by_brian_kent')} />
             <Button size="small" color="primary" href="https://www.dafont.com/blox.font">
               dafont.com
             </Button>
           </ListItem>
 
           <ListItem>
-            <ListItemText primary={t('bingo_thumbnail_image')} />
+            <ListItemText primary={t('credits.bingo_thumbnail_image')} />
             <Button size="small" color="primary" href="http://www.freepik.com">
               freepik.com
             </Button>
