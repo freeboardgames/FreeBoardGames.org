@@ -23,10 +23,10 @@ export function moveGoing(G: IG): IG {
 }
 
 export function moveBid(G: IG, ctx: Ctx, amount: number): IG {
-  var playerId = Number(ctx.playerID);
+  let playerId = Number(ctx.playerID);
 
   // Only false if player is revelead, and bids over own wealth.
-  var canBid = G.players[playerId].moneyRevealed
+  let canBid = G.players[playerId].moneyRevealed
     ? // money revealed
       // enough money for current bid
       G.players[playerId].currentBid == -1
@@ -62,8 +62,8 @@ export function moveBid(G: IG, ctx: Ctx, amount: number): IG {
 export function movePay(G: IG, ctx: Ctx, moneyIDs: number[]): IG | 'INVALID_MOVE' {
   // Validate moneyIDs indices:
   if (
-    Math.min(moneyIDs) < 0 ||
-    Math.max(moneyIDs) >= G.players[G.auction.payingPlayerID].money.length ||
+    Math.min(...moneyIDs) < 0 ||
+    Math.max(...moneyIDs) >= G.players[G.auction.payingPlayerID].money.length ||
     moneyIDs.filter((id, index) => {
       return index == moneyIDs.indexOf(id);
     }).length !== moneyIDs.length // not all unique
@@ -163,8 +163,8 @@ export function moveChoseAnimalAndMoney(
 
   if (
     // (bid.length == 0) ||   I think you should be allowed to offer for nothing.
-    Math.min(bid) < 0 ||
-    Math.max(bid) >= G.players[G.playerTurnId].money.length ||
+    Math.min(...bid) < 0 ||
+    Math.max(...bid) >= G.players[G.playerTurnId].money.length ||
     bid.filter((id, index) => {
       return index == bid.indexOf(id);
     }).length !== bid.length // not all unique
@@ -173,7 +173,7 @@ export function moveChoseAnimalAndMoney(
   }
 
   // Chose 1 or 2 animals for trade
-  var animalIdDefender = G.players[counterPlayer].cards
+  let animalIdDefender = G.players[counterPlayer].cards
     .map((card, index) => {
       return card.name == G.players[counterPlayer].cards[animalCardId].name ? index : -1;
     })
@@ -181,7 +181,7 @@ export function moveChoseAnimalAndMoney(
       return value > -1;
     });
 
-  var animalIdAttacker = G.players[G.playerTurnId].cards
+  let animalIdAttacker = G.players[G.playerTurnId].cards
     .map((card, index) => {
       return card.name == G.players[counterPlayer].cards[animalCardId].name ? index : -1;
     })
@@ -212,8 +212,8 @@ export function moveChoseAnimalAndMoney(
 
 export function moveAnswerTrade(G: IG, ctx: Ctx, counterBid: number[]): IG | 'INVALID_MOVE' {
   if (
-    Math.min(counterBid) < 0 ||
-    Math.max(counterBid) >= G.players[G.trade.counterPlayerId].money.length ||
+    Math.min(...counterBid) < 0 ||
+    Math.max(...counterBid) >= G.players[G.trade.counterPlayerId].money.length ||
     counterBid.filter((id, index) => {
       return index == counterBid.indexOf(id);
     }).length !== counterBid.length // not all unique
@@ -221,15 +221,15 @@ export function moveAnswerTrade(G: IG, ctx: Ctx, counterBid: number[]): IG | 'IN
     return INVALID_MOVE;
   }
 
-  var valueAttacker = G.players[G.playerTurnId].money.reduce((accum, card, index) => {
+  let valueAttacker = G.players[G.playerTurnId].money.reduce((accum, card, index) => {
     return G.trade.bid.indexOf(index) > -1 ? accum + card.value : accum;
   }, 0);
 
-  var valueDefender = G.players[G.trade.counterPlayerId].money.reduce((accum, card, index) => {
+  let valueDefender = G.players[G.trade.counterPlayerId].money.reduce((accum, card, index) => {
     return counterBid.indexOf(index) > -1 ? accum + card.value : accum;
   }, 0);
 
-  var attackerWin = valueAttacker >= valueDefender;
+  let attackerWin = valueAttacker >= valueDefender;
   return {
     ...G,
     players: G.players.map((player, index) => {

@@ -6,8 +6,8 @@ export function finished(G: IG, ctx: Ctx) {
     return false;
   }
 
-  for (var i = 0; i < ctx.numPlayers; i++) {
-    var animals = G.players[i].cards.map((card) => {
+  for (let i = 0; i < ctx.numPlayers; i++) {
+    let animals = G.players[i].cards.map((card) => {
       return card.name;
     });
 
@@ -16,7 +16,7 @@ export function finished(G: IG, ctx: Ctx) {
     });
 
     for (const j in animals) {
-      var len = G.players[i].cards.filter((card) => {
+      let len = G.players[i].cards.filter((card) => {
         return card.name == animals[j];
       }).length;
       if (len < 4) {
@@ -29,11 +29,11 @@ export function finished(G: IG, ctx: Ctx) {
 }
 
 export function score(G: IG, ctx: Ctx) {
-  var maxScore = 0;
-  var maxScoreId = -1;
+  let maxScore = 0;
+  let maxScoreId = -1;
 
-  for (var i = 0; i < ctx.numPlayers; i++) {
-    var animals = G.players[i].cards.map((card) => {
+  for (let i = 0; i < ctx.numPlayers; i++) {
+    let animals = G.players[i].cards.map((card) => {
       return card.value;
     });
 
@@ -41,7 +41,7 @@ export function score(G: IG, ctx: Ctx) {
       return animals.indexOf(value) == ind ? true : false;
     });
 
-    var score =
+    let score =
       animals.length *
       animals.reduce((accum, value) => {
         return value + accum;
@@ -60,8 +60,8 @@ export function canMakeNoMoves(G: IG) {
     return false;
   }
 
-  var i = G.playerTurnId;
-  var animals = G.players[i].cards.map((card) => {
+  let i = G.playerTurnId;
+  let animals = G.players[i].cards.map((card) => {
     return card.name;
   });
 
@@ -70,7 +70,7 @@ export function canMakeNoMoves(G: IG) {
   });
 
   for (const j in animals) {
-    var len = G.players[i].cards.filter((card) => {
+    let len = G.players[i].cards.filter((card) => {
       return card.name == animals[j];
     }).length;
     if (len < 4) {

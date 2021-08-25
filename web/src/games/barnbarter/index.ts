@@ -7,7 +7,7 @@ export const BarnBarterDef: IGameDef = {
   code: 'barnbarter',
   name: 'Barn Barter',
   contributors: ['Spooky-O'],
-  minPlayers: 1,
+  minPlayers: 3,
   maxPlayers: 5,
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],

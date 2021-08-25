@@ -57,8 +57,8 @@ export let phaseStart = {
     G.log = ['onBegin phaseStart', ...G.log];
 
     // skip current player, if can't move
-    var cantMove = 0;
-    while (canMakeNoMoves(G, ctx)) {
+    let cantMove = 0;
+    while (canMakeNoMoves(G)) {
       G.log = ['player can not make a move', ...G.log];
       G.playerTurnId += 1;
       G.playerTurnId = G.playerTurnId % ctx.numPlayers;

@@ -29,7 +29,7 @@ it('Whole Game', () => {
 
   clients.map((p) => p.start());
 
-  // var { G, ctx } =  clients[0].getState();
+  // let { G, ctx } =  clients[0].getState();
 
   // get the latest game state
   clients[0].moves.moveChoseAuction();
@@ -223,7 +223,7 @@ it('Whole Game', () => {
   clients[1].moves.moveChoseAnimalAndMoney(2, 3, [0]);
   clients[2].moves.moveAnswerTrade([4, 5]);
 
-  var { ctx } = clients[0].getState();
+  let { ctx } = clients[0].getState();
   //console.log(ctx)
 
   expect(ctx.gameover).toEqual({ winner: 1 });
@@ -310,7 +310,7 @@ it('Bad user input testing', () => {
   clients[1].moves.moveChoseAnimalAndMoney(-1, 1, [0, 1, 2]); //trade with invlaid player
   clients[1].moves.moveChoseAnimalAndMoney(clients.length, 1, [0, 1, 2]); //trade with invlaid player
 
-  // var { G, ctx } =  clients[0].getState();
+  // let { G, ctx } =  clients[0].getState();
 
   // console.log(G.players[0].cards)
   // console.log(G.players[1].cards)
@@ -335,6 +335,6 @@ it('Bad user input testing', () => {
   //valid
   clients[0].moves.moveAnswerTrade([]);
 
-  var { ctx } = clients[0].getState();
+  let { ctx } = clients[0].getState();
   expect(ctx.phase).toEqual('phaseStart');
 });

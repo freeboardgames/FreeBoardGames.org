@@ -19,7 +19,6 @@ interface IBoardState {
 export class Board extends React.Component<IBoardProps, IBoardState> {
   constructor(props) {
     super(props);
-    // this.state = { hintKey: null };
   }
   render() {
     return (

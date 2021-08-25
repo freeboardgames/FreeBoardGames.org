@@ -6,7 +6,7 @@ import { finished, score } from './helpers';
 
 export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
   // All available Animals
-  var cards = <ICard[]>(
+  let cards = <ICard[]>(
     [].concat(
       ...[
         <ICard[]>Array(4).fill(<ICard>{ name: 'Chicken', value: 10 }),
@@ -28,7 +28,7 @@ export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
   }
 
   // Money in the Bank
-  var moneys = [].concat(
+  let moneys = [].concat(
     ...[
       <ICard[]>Array(ctx.numPlayers).fill(<ICard>{ value: 500 }),
       <ICard[]>Array(ctx.numPlayers).fill(<ICard>{ value: 200 }),
@@ -37,9 +37,9 @@ export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
     ],
   );
 
-  var players = Array(ctx.numPlayers);
+  let players = Array(ctx.numPlayers);
 
-  for (var i = 0; i < ctx.numPlayers; i++) {
+  for (let i = 0; i < ctx.numPlayers; i++) {
     players[i] = { money: [], cards: [], currentBid: -1, moneyRevealed: false };
   }
 
@@ -67,7 +67,7 @@ export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
     player.money.push(<IMoney>{ value: 50 });
   });
 
-  var G = <IG>{
+  let G = <IG>{
     log: [],
     players: players,
     cards: cards,
@@ -100,7 +100,7 @@ export const BarnBarterGame = {
   // playerView: (G: IG, ctx: Ctx, playerID: string) => { return G },
   endIf: (G: IG, ctx: Ctx) => {
     if (finished(G, ctx)) {
-      var scoreId = score(G, ctx);
+      let scoreId = score(G, ctx);
       return { winner: scoreId };
     }
   },
