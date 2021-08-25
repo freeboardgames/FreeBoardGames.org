@@ -1,4 +1,3 @@
-import { IG } from 'definitions';
 import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer';
 import { BarnBarterGame, _setup } from './game';
@@ -30,54 +29,60 @@ it('Whole Game', () => {
 
   clients.map((p) => p.start());
 
-  var {G, ctx } = clients[0].getState();
+  var { G, ctx } = clients[0].getState();
   expect(ctx.phase).toEqual('phaseStart');
 
   clients[0].moves.moveChoseAuction();
-  var {G :IG, ctx } = clients[0].getState();
+  var { G, ctx } = clients[0].getState();
   expect(ctx.phase).toEqual('phaseAuction');
 
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
-  var {G, ctx } = clients[0].getState();
-  expect(G.auction.counter).toEqual(2)
+  var { G, ctx } = clients[0].getState();
+  expect(G.auction.counter).toEqual(2);
 
-  clients[2].moves.moveBid(10);
-  var {G, ctx } = clients[0].getState();
-  expect(G.auction.counter).toEqual(0)
-  expect(G.players[0].currentBid).toEqual(-1)
-  expect(G.players[1].currentBid).toEqual(-1)
-  expect(G.players[2].currentBid).toEqual(10)
-
-
+  clients[2].moves.moveBid(100);
+  var { G, ctx } = clients[0].getState();
+  expect(G.auction.counter).toEqual(0);
+  expect(G.players[0].currentBid).toEqual(-1);
+  expect(G.players[1].currentBid).toEqual(-1);
+  expect(G.players[2].currentBid).toEqual(100);
 
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
-
-  var {G, ctx } = clients[0].getState();
-  expect(ctx.phase).toEqual('phaseAuctionPay')
-
-  return
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseAuctionPay');
 
   clients[2].moves.movePay([0]); // not enough, so going back to auction
-  var {G :IG, ctx } = clients[0].getState();
+  var { G, ctx } = clients[0].getState();
   expect(ctx.phase).toEqual('phaseAuction');
-  // TODO: If a player CAN pay, the player must!
-  // fix in rules! then tests will fail (which is good), then fix test here!
 
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
+  var { G, ctx } = clients[0].getState();
+  expect(G.auction.counter).toEqual(2);
 
   clients[2].moves.moveBid(10);
   clients[1].moves.moveBid(10);
 
+  var { G, ctx } = clients[0].getState();
+  expect(G.auction.counter).toEqual(0);
+  expect(G.players[0].currentBid).toEqual(-1);
+  expect(G.players[1].currentBid).toEqual(10);
+  expect(G.players[2].currentBid).toEqual(10);
+
   clients[0].moves.moveGoing();
 
-  
   clients[2].moves.moveBid(90); //overbidding not allowed
-  // should still be on bid = 10
+  var { G, ctx } = clients[0].getState();
+  expect(G.players[1].currentBid).toEqual(10);
+  expect(G.players[2].currentBid).toEqual(10);
+
   clients[1].moves.moveBid(100);
+  var { G, ctx } = clients[0].getState();
+  expect(G.players[1].currentBid).toEqual(110); // <- still allowed to overbid
+  expect(G.players[2].currentBid).toEqual(10);
 
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
@@ -92,6 +97,8 @@ it('Whole Game', () => {
   clients[0].moves.moveGoing();
 
   clients[1].moves.movePay([3]);
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseStart');
 
   clients[1].moves.moveChoseAuction();
 
@@ -104,13 +111,12 @@ it('Whole Game', () => {
   clients[2].moves.moveGoing();
   clients[2].moves.moveGoing();
   clients[2].moves.moveGoing();
-  clients[0].moves.movePay([0]); //underpay
-  clients[0].moves.moveBid(10);
-  clients[2].moves.moveGoing();
-  clients[2].moves.moveGoing();
-  clients[2].moves.moveGoing();
-  clients[0].moves.movePay([0]); //underpay again! --> INVALID_MOVE
+  clients[0].moves.movePay([0]); //underpay, but you can pay
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseAuctionPay');
   clients[0].moves.movePay([3]); // ok
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseStart');
 
   for (let i = 0; i < 4; i++) {
     clients[0].moves.moveChoseAuction();
@@ -127,30 +133,92 @@ it('Whole Game', () => {
     clients[2].moves.moveGoing();
   }
 
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseStart');
+  expect(G.players[0].cards).toEqual([
+    { name: 'Horse', value: 1000 },
+    { name: 'Horse', value: 1000 },
+    { name: 'Cow', value: 800 },
+    { name: 'Pig', value: 650 },
+    { name: 'Donkey', value: 500 },
+  ]);
+  expect(G.players[1].cards).toEqual([
+    { name: 'Horse', value: 1000 },
+    { name: 'Horse', value: 1000 },
+    { name: 'Cow', value: 800 },
+    { name: 'Cow', value: 800 },
+    { name: 'Pig', value: 650 },
+    { name: 'Donkey', value: 500 },
+  ]);
+  expect(G.players[2].cards).toEqual([
+    { name: 'Cow', value: 800 },
+    { name: 'Pig', value: 650 },
+    { name: 'Pig', value: 650 },
+    { name: 'Donkey', value: 500 },
+  ]);
+
   clients[0].moves.moveChoseTrade();
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseTradeFirst');
 
   clients[0].moves.moveTradeBack();
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseStart');
 
   clients[0].moves.moveChoseTrade();
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseTradeFirst');
 
   clients[0].moves.moveChoseAnimalAndMoney(1, 0, [0, 1, 2]); //trade 2 horses
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseTradeSecond');
+  expect(G.trade.animalIdDefender).toEqual([0, 1]);
+  expect(G.trade.animalIdAttacker).toEqual([0, 1]);
 
   clients[1].moves.moveAnswerTrade([0, 1, 2, 3]);
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseStart');
+  expect(G.players[0].money).toEqual([
+    { value: 10 },
+    { value: 10 },
+    { value: 50 },
+    { value: 10 },
+    { value: 50 },
+    { value: 100 },
+    { value: 200 },
+    { value: 0 },
+    { value: 0 },
+    { value: 10 },
+    { value: 10 },
+  ]);
+  expect(G.players[1].money).toEqual([
+    { value: 0 },
+    { value: 0 },
+    { value: 10 },
+    { value: 10 },
+    { value: 50 },
+    { value: 50 },
+    { value: 100 },
+    { value: 200 },
+  ]);
+  expect(G.players[0].cards).toEqual([
+    { name: 'Cow', value: 800 },
+    { name: 'Pig', value: 650 },
+    { name: 'Donkey', value: 500 },
+  ]);
+  expect(G.players[1].cards).toEqual([
+    { name: 'Horse', value: 1000 },
+    { name: 'Horse', value: 1000 },
+    { name: 'Cow', value: 800 },
+    { name: 'Cow', value: 800 },
+    { name: 'Pig', value: 650 },
+    { name: 'Donkey', value: 500 },
+    { name: 'Horse', value: 1000 },
+    { name: 'Horse', value: 1000 },
+  ]);
 
-  clients[1].moves.moveChoseAuction();
-  clients[1].moves.moveGoing();
-  clients[1].moves.moveGoing();
-  clients[1].moves.moveGoing();
-  clients[2].moves.moveChoseAuction();
-  clients[2].moves.moveGoing();
-  clients[2].moves.moveGoing();
-  clients[2].moves.moveGoing();
-
-  for (let i = 0; i < 7; i++) {
-    clients[0].moves.moveChoseAuction();
-    clients[0].moves.moveGoing();
-    clients[0].moves.moveGoing();
-    clients[0].moves.moveGoing();
+  // finish all auctions:
+  for (let i = 0; i < 8; i++) {
     clients[1].moves.moveChoseAuction();
     clients[1].moves.moveGoing();
     clients[1].moves.moveGoing();
@@ -159,22 +227,29 @@ it('Whole Game', () => {
     clients[2].moves.moveGoing();
     clients[2].moves.moveGoing();
     clients[2].moves.moveGoing();
+    clients[0].moves.moveChoseAuction();
+    clients[0].moves.moveGoing();
+    clients[0].moves.moveGoing();
+    clients[0].moves.moveGoing();
   }
-
-  clients[0].moves.moveChoseAuction();
-  clients[0].moves.moveGoing();
-  clients[0].moves.moveGoing();
-  clients[0].moves.moveGoing();
   clients[1].moves.moveChoseAuction();
   clients[1].moves.moveGoing();
   clients[1].moves.moveGoing();
   clients[1].moves.moveGoing();
+  // now all cards have been played
 
   clients[2].moves.moveChoseAuction(); //no more cards, going back
-  clients[2].moves.moveChoseTrade();
+  var { G, ctx } = clients[0].getState();
+  expect(ctx.phase).toEqual('phaseStart');
 
+  // win trade
+  clients[2].moves.moveChoseTrade();
   clients[2].moves.moveChoseAnimalAndMoney(1, 4, [0]);
+  var { G, ctx } = clients[0].getState();
+  expect(G.players[1].cards[4]).toEqual({ name: 'Pig', value: 650 });
   clients[1].moves.moveAnswerTrade([]);
+  var { G, ctx } = clients[0].getState();
+  expect(G.players[2].cards[G.players[2].cards.length - 1]).toEqual({ name: 'Pig', value: 650 });
 
   clients[0].moves.moveChoseTrade();
   clients[0].moves.moveChoseAnimalAndMoney(1, 13, [0]);
@@ -186,7 +261,14 @@ it('Whole Game', () => {
 
   clients[2].moves.moveChoseTrade();
   clients[2].moves.moveChoseAnimalAndMoney(0, 10, [0]);
+  var { G, ctx } = clients[0].getState();
+  expect(G.players[0].cards[10]).toEqual({ name: 'Duck', value: 40 }); // both players have duck in 10th
+  expect(G.players[2].cards[10]).toEqual({ name: 'Duck', value: 40 });
   clients[0].moves.moveAnswerTrade([5]);
+  var { G, ctx } = clients[0].getState();
+  expect(G.players[0].cards[10]).toEqual({ name: 'Duck', value: 40 }); // keep the duck
+  expect(G.players[2].cards[10]).toEqual({ name: 'Chicken', value: 10 }); // lost the duck - now chicken moved up
+  expect(G.players[0].cards[G.players[0].cards.length - 1]).toEqual({ name: 'Duck', value: 40 }); // got new duck
 
   clients[0].moves.moveChoseTrade();
   clients[0].moves.moveChoseAnimalAndMoney(1, 9, [0]);
@@ -252,7 +334,6 @@ it('Whole Game', () => {
 });
 
 it('Bad user input testing', () => {
-  return
   // set up a specific board scenario
   const BarnBarterCustomScenario = {
     ...BarnBarterGame,
@@ -274,7 +355,6 @@ it('Bad user input testing', () => {
   const clients = [0, 1, 2].map((value) => {
     return Client({ ...spec, playerID: value.toString() } as any);
   });
-
   clients.map((p) => p.start());
 
   clients[0].moves.moveChoseAuction();
@@ -332,12 +412,6 @@ it('Bad user input testing', () => {
   clients[1].moves.moveChoseAnimalAndMoney(1, 1, [0, 1, 2]); //trade with self
   clients[1].moves.moveChoseAnimalAndMoney(-1, 1, [0, 1, 2]); //trade with invlaid player
   clients[1].moves.moveChoseAnimalAndMoney(clients.length, 1, [0, 1, 2]); //trade with invlaid player
-
-  // let { G, ctx } =  clients[0].getState();
-
-  // console.log(G.players[0].cards)
-  // console.log(G.players[1].cards)
-  // console.log(G.players[2].cards)
 
   clients[1].moves.moveChoseAnimalAndMoney(0, -1, [0, 1, 2]); //trade for non-existing card
   clients[1].moves.moveChoseAnimalAndMoney(0, 2, [0, 1, 2]); //trade for non-existing card
