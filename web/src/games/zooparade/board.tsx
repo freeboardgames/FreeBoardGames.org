@@ -46,7 +46,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
     return (
       <>
         {this.renderNotification()}
-        <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true} optionsMenuItems={this._getOptionsMenuItems}>
+        <GameLayout gameArgs={this.props.gameArgs} maxWidth="1000px" optionsMenuItems={this._getOptionsMenuItems}>
           {this.renderBoard()}
         </GameLayout>
       </>

@@ -25,7 +25,6 @@ const DOMAIN = 'www.freeboardgames.org';
 const URL = 'https://' + DOMAIN;
 
 generateSiteMapXML({
-  manifest: app.pagesManifest,
   host: URL,
   staticDir: STATIC_DIR,
 });
@@ -48,12 +47,8 @@ app
     });
 
     server.get('/sitemap.xml', (req, res) => {
-      if (isProdChannel && isOfficialSite(req.hostname)) {
-        const filePath = `${STATIC_DIR}/sitemap.xml`;
-        app.serveStatic(req, res, filePath);
-      } else {
-        res.sendStatus(404);
-      }
+      const filePath = `${STATIC_DIR}/sitemap.xml`;
+      app.serveStatic(req, res, filePath);
     });
 
     server.get('/robots.txt', (req, res) => {
@@ -85,11 +80,6 @@ app
     });
 
     server.use('/docs', express.static(`${STATIC_DIR}/docs`));
-
-    server.use(
-      '/api',
-      createProxyMiddleware({ target: INTERNAL_BACKEND_TARGET, changeOrigin: true, pathRewrite: { '^/api': '' } }),
-    );
 
     server.use('/graphql', createProxyMiddleware({ target: INTERNAL_BACKEND_TARGET, changeOrigin: true }));
 

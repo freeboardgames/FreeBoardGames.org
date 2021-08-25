@@ -1,0 +1,63 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Documentation/Deploying/Running with Nginx" />
+
+
+You might want to run your dev instance in a different domain than `localhost`. However, you will run into errors if you try to do so directly, as browsers don't allow web sockets over plain HTTP.
+In order to fix this issue, we need to install nginx as a reverse proxy and use let's encrypt to get us valid SSL certificates.
+
+
+# Dependencies 
+
+In a fresh VM with Ubuntu, install all our dependencies:
+
+- NVM: https://github.com/nvm-sh/nvm and use Node LTS
+- Yarn: `npm install --global yarn`
+- Autoconf and build essentials: `sudo apt install autoconf build-essential`
+- Nginx: `sudo apt install nginx`
+
+Make sure your domain is pointing to your VM and the VM has no firewall protecting port 80 and 443.
+Then, check that the nginx is working by using `curl http://your.domain` on another computer
+
+Now, we need to enable HTTPS. Follow the tutorial here to use Let's Encrypt:
+https://www.nginx.com/blog/using-free-ssltls-certificates-from-lets-encrypt-with-nginx/
+
+Check that it worked by using a browser and navigatting to http**s**://your.domain
+
+Change `/etc/nginx/sites-enabled/default` and only use these `location`s on the https server configuration:
+
+```
+location / {
+    proxy_pass http://localhost:3000/;
+}
+location /graphql {
+    proxy_pass http://localhost:3001/graphql;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "Upgrade";
+    proxy_set_header Host $host;
+}
+location /socket.io {
+    proxy_pass http://localhost:8001/socket.io;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "Upgrade";
+    proxy_set_header Host $host;
+}
+```
+
+Dont forget to restart nginx after: `sudo service nginx restart`
+
+Now, we need to run FBG. Clone our repo:
+
+`git clone https://github.com/freeboardgames/FreeBoardGames.org.git`
+
+Install node modules:
+
+`cd FreeBoardgames.org && yarn install`
+
+Run dev:
+
+`BGIO_PUBLIC_SERVERS=https://your.domain yarn run dev checkers`
+
+Now you should be able to access FBG at https://your.domain !

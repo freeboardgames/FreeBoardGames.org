@@ -105,7 +105,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
     }
 
     return (
-      <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
+      <GameLayout gameArgs={this.props.gameArgs} maxWidth="1000px">
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
           {this._getStatus()}
         </Typography>
