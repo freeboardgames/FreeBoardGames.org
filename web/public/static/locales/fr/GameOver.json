@@ -1,0 +1,4 @@
+{
+  "play_again": "Jouer à nouveau",
+  "game_over": "La partie est terminée, {{ result }}!"
+}
