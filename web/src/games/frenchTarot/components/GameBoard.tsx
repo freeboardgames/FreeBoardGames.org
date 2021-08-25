@@ -101,7 +101,7 @@ export function Board(props: {
 
   function renderKitty() {
     const kitty_size = props.kitty.length;
-    var kitty_descr: JSX.Element = null;
+    let kitty_descr: JSX.Element = null;
     if (props.kittyRevealed && kitty_size > 6) {
       const name = props.playerNames[+props.currentPlayerId];
       const thresh = u_poignee.getPoigneeThresholds(props.players.length);
