@@ -38,6 +38,7 @@ it('Whole Game', () => {
 
   clients[0].moves.moveGoing();
   clients[0].moves.moveGoing();
+
   var { G, ctx } = clients[0].getState();
   expect(G.auction.counter).toEqual(2);
 
@@ -191,15 +192,18 @@ it('Whole Game', () => {
     { value: 10 },
     { value: 10 },
   ]);
+  // actually there are numbers in here. But due to the bug, that
+  // during testing the playerView function doesn't get a playerID
+  // we fake it s.t. during testing every player only sees player 0's playerView.
   expect(G.players[1].money).toEqual([
-    { value: 0 },
-    { value: 0 },
-    { value: 10 },
-    { value: 10 },
-    { value: 50 },
-    { value: 50 },
-    { value: 100 },
-    { value: 200 },
+    { value: -1 },
+    { value: -1 },
+    { value: -1 },
+    { value: -1 },
+    { value: -1 },
+    { value: -1 },
+    { value: -1 },
+    { value: -1 },
   ]);
   expect(G.players[0].cards).toEqual([
     { name: 'Cow', value: 800 },
@@ -328,7 +332,6 @@ it('Whole Game', () => {
   clients[2].moves.moveAnswerTrade([4, 5]);
 
   var { G, ctx } = clients[0].getState();
-  //console.log(ctx)
 
   expect(ctx.gameover).toEqual({ winner: 1 });
 });

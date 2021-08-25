@@ -96,7 +96,56 @@ export const BarnBarterGame = {
     phaseTradeFirst: phaseTradeFirst,
     phaseTradeSecond: phaseTradeSecond,
   },
-  // playerView: (G: IG, ctx: Ctx, playerID: string) => { return G },
+  playerView: (G: IG, playerID: string) => {
+    // TODO: This still needs to be done
+    // probably will introduce bugs on testing
+    // --> Should also be tested itself.
+
+    if (isNaN(parseInt(playerID))) {
+      // this is an issue in Testing, where no playerID is passed.
+      // so we fake it to "0" for all players.
+      playerID = '0';
+    }
+
+    return {
+      ...G,
+      log: [],
+      players: G.players.map((player, index) => {
+        return parseInt(playerID) == index
+          ? player
+          : {
+              ...player,
+              money: player.moneyRevealed
+                ? player.money
+                : player.money.map(
+                    () => {
+                      return <IMoney>{ value: -1 };
+                    }, // hide money
+                  ),
+            };
+      }),
+      cards: G.cards.map(() => {
+        return <ICard>{ name: 'hidden', value: 0 };
+      }),
+      auction: {
+        ...G.auction,
+        payMoneyIDs: null, //never visualized by any player. Fully internal, but confidential.
+      },
+      trade: {
+        ...G.trade,
+        bid:
+          parseInt(playerID) == G.trade.counterPlayerId || parseInt(playerID) == G.playerTurnId
+            ? G.trade.bid
+            : G.trade.bid === null
+            ? null
+            : G.trade.bid.map(
+                (moneyId) => {
+                  return moneyId;
+                }, // hide money
+              ),
+      },
+    };
+  },
   endIf: (G: IG, ctx: Ctx) => {
     if (finished(G, ctx)) {
       let scoreId = score(G, ctx);
