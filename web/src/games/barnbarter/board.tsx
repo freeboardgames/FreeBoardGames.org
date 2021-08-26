@@ -17,12 +17,29 @@ interface IBoardProps {
 
 interface IBoardState {
   hintKey: string | null;
+  //  selectedCardId: number;   // Card for Trade
+  //  selectedPlayerId: number; // Id of player to trade with
+  //  selectedMoney: number[];  // the money that I will trade or pay
 }
 
 export class Board extends React.Component<IBoardProps, IBoardState> {
+  //  state = {
+  //        hintKey: null,
+  //        selectedCardId: -1,
+  //        selectedPlayerId: -1,
+  //        selectedMoney: null,
+  //  }
+
   constructor(props) {
     super(props);
+    //    this.setState({
+    //        hintKey: null,
+    //        selectedCardId: -1,
+    //        selectedPlayerId: -1,
+    //        selectedMoney: null,
+    //    })
   }
+
   render() {
     return (
       <GameLayout gameArgs={this.props.gameArgs} gameOver={null}>
@@ -30,10 +47,19 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
           return (
             <BPlayer
               player={player}
+              playerId={index}
               name={this.props.gameArgs.players[index].name}
-              turn={true}
+              turn={
+                true //TODO: Pass if actually has turn!
+              }
               clickPay={this.props.moves.movePay}
+              clickChoseAnimal={() => {
+                this._choseAnimal;
+              }}
+              //highlightCard={this.state.selectedPlayerId === index ? this.state.selectedCardId : -1}
+              highlightCard={index}
               key={'root_' + index}
+              _key={'root_' + index}
             ></BPlayer>
           );
         })}
@@ -41,12 +67,32 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         <BCenter numberCards={this.props.G.cards.length} auction={this.props.G.auction}></BCenter>
 
         <BControl
+          phase={this.props.ctx.phase}
           clickAuction={this.props.moves.moveChoseAuction}
           clickTrade={this.props.moves.moveChoseTrade}
+          clickTradeBack={this.props.moves.moveTradeBack}
+          clickTradeOffer={this.props.moves.moveChoseAnimalAndMoney}
+          clickTradeCounter={this.props.moves.moveAnswerTrade}
           clickBid={this.props.moves.moveBid}
+          clickPay={this._chosePay}
           clickGoing={this.props.moves.moveGoing}
         ></BControl>
+
+        {this.state}
       </GameLayout>
     );
   }
+
+  _choseAnimal(playerId: number, cardId: number) {
+    playerId;
+    cardId;
+    //    this.setState({
+    //        hintKey: this.state.hintKey,
+    //        selectedCardId: cardId,
+    //        selectedPlayerId: playerId,
+    //        selectedMoney: this.state.selectedMoney,
+    //    })
+  }
+
+  _chosePay() {}
 }

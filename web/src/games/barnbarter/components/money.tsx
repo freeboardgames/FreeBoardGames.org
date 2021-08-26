@@ -2,9 +2,8 @@ import * as React from 'react';
 import { IMoney } from '../definitions';
 
 interface InnerWrapper {
-  clickPay: any;
   moneys: IMoney[];
-  key: string;
+  _key: string;
 }
 
 export class BMoney extends React.Component<InnerWrapper, {}> {
@@ -19,7 +18,7 @@ export class BMoney extends React.Component<InnerWrapper, {}> {
           <tr>
             {this.props.moneys.map((money, index) => {
               return (
-                <td key={this.props.key + '_' + index}>
+                <td key={this.props._key + '_' + index}>
                   <div
                     style={this.state.selected[index] == 0 ? { color: 'white' } : { color: 'red' }}
                     onClick={() => {
@@ -31,13 +30,6 @@ export class BMoney extends React.Component<InnerWrapper, {}> {
                 </td>
               );
             })}
-            <td
-              onClick={() => {
-                this.props.clickPay(getAllIndexes(this.state.selected, 1));
-              }}
-            >
-              |PAY|
-            </td>
           </tr>
         </tbody>
       </table>
@@ -54,11 +46,11 @@ export class BMoney extends React.Component<InnerWrapper, {}> {
     return;
   }
 }
-function getAllIndexes(arr, val) {
-  var indexes = [],
-    i = -1;
-  while ((i = arr.indexOf(val, i + 1)) != -1) {
-    indexes.push(i);
-  }
-  return indexes;
-}
+// function getAllIndexes(arr, val) {
+//   var indexes = [],
+//     i = -1;
+//   while ((i = arr.indexOf(val, i + 1)) != -1) {
+//     indexes.push(i);
+//   }
+//   return indexes;
+// }

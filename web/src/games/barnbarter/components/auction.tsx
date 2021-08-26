@@ -10,8 +10,19 @@ export class BAuction extends React.Component<InnerWrapper, {}> {
   render() {
     return (
       <div>
-        <BCard cards={this.props.auction.card === null ? [] : [this.props.auction.card]}></BCard>
-        {this.props.auction.counter == 0 ? ' ' : this.props.auction.counter == 1 ? '⏰' : '⏰⏰'}
+        <BCard
+          cards={this.props.auction.card === null ? [] : [this.props.auction.card]}
+          _key="auction"
+          onClick={() => {}}
+          ownerID={-1}
+        ></BCard>
+        {this.props.auction.counter == 0
+          ? ' '
+          : this.props.auction.counter == 1
+          ? '⏰'
+          : this.props.auction.counter == 2
+          ? '⏰⏰'
+          : '⏰⏰⏰'}
       </div>
     );
   }

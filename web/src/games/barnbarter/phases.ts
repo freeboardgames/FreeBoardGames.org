@@ -17,6 +17,10 @@ export let phaseStart = {
   onBegin: (G: IG, ctx: Ctx) => {
     G.log = ['onbegin phaseStart', ...G.log];
 
+    // TODO: Sort all money in players hands.
+    // -> Will break tests i think, but thats fine!
+    // just fix tests.
+
     if (G.playerTurnId == -1) {
       G.log = ['init game', ...G.log];
       //Game Init
