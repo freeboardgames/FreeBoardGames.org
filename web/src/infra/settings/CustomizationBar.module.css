@@ -28,7 +28,13 @@
   padding-bottom: 8px;
 }
 
+.BarWrapperWrapper {
+  height: 48px;
+  position: relative;
+}
+
 .BarWrapper {
-  display: flex;
-  flex-grow: 1;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }

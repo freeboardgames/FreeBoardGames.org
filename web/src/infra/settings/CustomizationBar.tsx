@@ -57,10 +57,12 @@ export class CustomizationBarInternal extends React.Component<
 
   render() {
     return (
-      <div className={css.BarWrapper}>
-        {this.renderCustomizationDialog()}
-        {this.renderQuickCustomization()}
-        {this.renderFullCustomizationButton()}
+      <div className={css.BarWrapperWrapper}>
+        <div className={css.BarWrapper}>
+          {this.renderCustomizationDialog()}
+          {this.renderQuickCustomization()}
+          {this.renderFullCustomizationButton()}
+        </div>
       </div>
     );
   }
