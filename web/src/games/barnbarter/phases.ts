@@ -66,18 +66,20 @@ export let phaseStart = {
       }
     }
 
-    let activePlayers = { value: {} };
-    for (let i = 0; i < ctx.numPlayers; i++) {
-      if (G.playerTurnId == i) {
-        activePlayers.value[i] = 'phaseStart';
-      }
-    }
-
-    ctx.events.setActivePlayers(activePlayers);
-
     return G;
   },
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      let activePlayers = { value: {} };
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.playerTurnId == i) {
+          activePlayers.value[i] = { stage: 'phaseStart' };
+        }
+      }
 
+      ctx.events.setActivePlayers(activePlayers);
+    },
+  },
   moves: {
     moveChoseAuction: {
       move: moveChoseAuction,
@@ -97,7 +99,7 @@ export let phaseStart = {
 };
 
 export let phaseAuction = {
-  onBegin: (G: IG, ctx: Ctx) => {
+  onBegin: (G: IG) => {
     if (G.moveToPhase == 'phaseAuction') {
       if (G.cards.length == 0) {
         G.log = ['no more cards for auction, going back', ...G.log];
@@ -106,15 +108,6 @@ export let phaseAuction = {
         return G;
       }
       G.log = ['onEnd phaseStart', ...G.log];
-      let activePlayers = { value: {} };
-      for (let i = 0; i < ctx.numPlayers; i++) {
-        if (G.playerTurnId == i) {
-          activePlayers.value[i] = { stage: 'stageAuctionSell' };
-        } else {
-          activePlayers.value[i] = { stage: 'stageAuctionBid' };
-        }
-      }
-      ctx.events.setActivePlayers(activePlayers);
       G.moveToPhase = '';
 
       G.log = ['onBegin phaseAuction', ...G.log];
@@ -131,22 +124,35 @@ export let phaseAuction = {
     } else {
       // COMING FROM FAILED PAY
       G.log = ['onEnd phaseAuctionPay failed pay', ...G.log];
-
-      let activePlayers = { value: {} };
-      for (let i = 0; i < ctx.numPlayers; i++) {
-        if (G.playerTurnId == i) {
-          activePlayers.value[i] = { stage: 'stageAuctionSell' };
-        } else {
-          activePlayers.value[i] = { stage: 'stageAuctionBid' };
-        }
-      }
-      ctx.events.setActivePlayers(activePlayers);
     }
 
     return G;
   },
 
   turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      if (G.moveToPhase == 'phaseAuction') {
+        let activePlayers = { value: {} };
+        for (let i = 0; i < ctx.numPlayers; i++) {
+          if (G.playerTurnId == i) {
+            activePlayers.value[i] = { stage: 'stageAuctionSell' };
+          } else {
+            activePlayers.value[i] = { stage: 'stageAuctionBid' };
+          }
+        }
+        ctx.events.setActivePlayers(activePlayers);
+      } else {
+        let activePlayers = { value: {} };
+        for (let i = 0; i < ctx.numPlayers; i++) {
+          if (G.playerTurnId == i) {
+            activePlayers.value[i] = { stage: 'stageAuctionSell' };
+          } else {
+            activePlayers.value[i] = { stage: 'stageAuctionBid' };
+          }
+        }
+        ctx.events.setActivePlayers(activePlayers);
+      }
+    },
     stages: {
       stageAuctionSell: {
         moves: {
@@ -214,17 +220,20 @@ export let phaseAuctionPay = {
 
     G.log = ['onBegin phaseAuctionPay', ...G.log];
 
-    let activePlayers = { value: {} };
-    for (let i = 0; i < ctx.numPlayers; i++) {
-      if (G.auction.payingPlayerID == i) {
-        activePlayers.value[i] = 'phaseAuctionPay';
-      }
-    }
-    ctx.events.setActivePlayers(activePlayers);
-
     return G;
   },
 
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      let activePlayers = { value: {} };
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.auction.payingPlayerID == i) {
+          activePlayers.value[i] = 'phaseAuctionPay';
+        }
+      }
+      ctx.events.setActivePlayers(activePlayers);
+    },
+  },
   moves: {
     movePay: {
       move: movePay,
@@ -245,18 +254,22 @@ export let phaseAuctionPay = {
 };
 
 export let phaseTradeFirst = {
-  onBegin: (G: IG, ctx: Ctx) => {
+  onBegin: (G: IG) => {
     G.log = ['onBegin phaseTradeFirst', ...G.log];
-    let activePlayers = { value: {} };
-    for (let i = 0; i < ctx.numPlayers; i++) {
-      if (G.playerTurnId == i) {
-        activePlayers.value[i] = { stage: 'phaseTradeFirst' };
-      }
-    }
-    ctx.events.setActivePlayers(activePlayers);
 
     G.moveToPhase = '';
     return G;
+  },
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      let activePlayers = { value: {} };
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.playerTurnId == i) {
+          activePlayers.value[i] = { stage: 'phaseTradeFirst' };
+        }
+      }
+      ctx.events.setActivePlayers(activePlayers);
+    },
   },
   moves: {
     moveChoseAnimalAndMoney: {
@@ -279,18 +292,22 @@ export let phaseTradeFirst = {
 };
 
 export let phaseTradeSecond = {
-  onBegin: (G: IG, ctx: Ctx) => {
+  onBegin: (G: IG) => {
     G.log = ['onBegin phaseTradeSecond', ...G.log];
-    let activePlayers = { value: {} };
-    for (let i = 0; i < ctx.numPlayers; i++) {
-      if (G.trade.counterPlayerId == i) {
-        activePlayers.value[i] = { stage: 'phaseTradeSecond' };
-      }
-    }
-    ctx.events.setActivePlayers(activePlayers);
     return G;
   },
 
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      let activePlayers = { value: {} };
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.trade.counterPlayerId == i) {
+          activePlayers.value[i] = { stage: 'phaseTradeSecond' };
+        }
+      }
+      ctx.events.setActivePlayers(activePlayers);
+    },
+  },
   moves: {
     moveAnswerTrade: {
       move: moveAnswerTrade,
