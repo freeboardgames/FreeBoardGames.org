@@ -1,0 +1,21 @@
+{
+  "title": "À propos",
+  "description": "À propos de FreeBoardGames.org, une application web libre à code source ouvert.",
+  "card": {
+    "title": "À propos de FreeBoardGames.org",
+    "description": "FreeBoardGames.org est une plateforme de jeux de société libre, orientée vers le mobile. L'objectif, c'est de populariser les jeux de société et de les rendre faciles à jouer entre amis, même à distance."
+  },
+  "contributors": {
+    "title": "Contributeurs"
+  },
+  "credits": {
+    "title": "Crédits",
+    "chess_move_sound_by_splice_sound": "Son du mouvement d'échecs par SpliceSound",
+    "seabattle_hit_sound_by_fridobeck": "Son de toucher de Seabattle par fridobeck",
+    "seabattle_hit_sound_by_qubodup": "Son de toucher de Seabattle par qubodup",
+    "seabattle_miss_sound_by_inspector_j": "Son de manquer de Seabattle par InspectorJ",
+    "seabattle_miss_sound_by_cg_effex": "Son de manquer de Seabattle par CGEffex",
+    "blox_font_used_in_logo_by_brian_kent": "Police utilisée dans le logo (Blox) par Brian Kent",
+    "bingo_thumbnail_image": "Image miniature de Bingo"
+  }
+}

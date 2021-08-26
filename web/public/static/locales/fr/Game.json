@@ -1,0 +1,11 @@
+{
+  "computer": "Ordinateur",
+  "you": "Toi",
+  "player_1": "Joueur 1",
+  "player_2": "Joueur 2",
+  "game_not_found": "Jeu introuvable",
+  "invalid_game_mode": "Mode de jeu invalide",
+  "connecting": "Connecter...",
+  "downloading": "Télécharger {{ name }}",
+  "failed_to_download": "Échec du téléchargement de {{ name }}"
+}
