@@ -41,9 +41,6 @@ spec:
           timeoutSeconds: 1
         name: {{ .Release.Name }}-web
         resources:
-          limits:
-            cpu: "1" 
-            memory: 1024Mi
           requests:
             cpu: 100m
             memory: 128Mi
