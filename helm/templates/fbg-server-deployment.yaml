@@ -49,9 +49,6 @@ spec:
           timeoutSeconds: 5
         name: {{ .Release.Name }}-fbg-server
         resources:
-          limits:
-            cpu: "1"
-            memory: 1024Mi
           requests:
             cpu: 100m
             memory: 128Mi
