@@ -14,7 +14,7 @@ export function getCardName(c: cardEnum): string {
     'Pizza',
     'Fork',
     'Mayonnaise',
-    'Cake',
+    'Cupcake',
   ];
 
   return cardNames[c];
