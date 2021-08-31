@@ -149,9 +149,10 @@ export const PicnicGoGame = {
   moves: {
     selectCard: (g, ctx, index) => {
       if (index === undefined) return INVALID_MOVE;
+      if (index < 0 || index >= g.hands[0].hand.length) return INVALID_MOVE;
       const idx = g.hands.findIndex((e) => e.currentOwner === ctx.playerID);
-      if (index < 0 || index >= g.hands[idx].hand.length) return INVALID_MOVE;
       if (g.hands[idx].selected === null) g.hands[idx].selected = [];
+      if (g.hands[idx].selected.includes(index)) return INVALID_MOVE;
       g.hands[idx].selected.push(index);
     },
     useFork: (g, ctx) => {
