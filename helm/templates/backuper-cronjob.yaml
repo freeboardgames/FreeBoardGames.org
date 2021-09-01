@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-fbg-backuper
+spec:
+  schedule: "0 5 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - env: 
+            - name: POSTGRES_URL
+              value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.postgresqlDatabase }}
+            - name: GCP_CREDS_BASE64
+              value: {{ .Values.secrets.gcpCredsBase64 }}
+            name: {{ .Release.Name }}-fbg-backuper
+            image: {{ .Values.images.fbgBackuper }}
+            imagePullPolicy: {{ .Values.images.imagePullPolicy }}
+          restartPolicy: Never
