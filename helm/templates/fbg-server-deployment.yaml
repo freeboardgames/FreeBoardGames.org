@@ -35,6 +35,8 @@ spec:
           value: {{ .Values.redis.master.service.port | quote }}
         - name: FBG_REDIS_PASSWORD
           value: {{ .Values.redis.auth.password }}
+        - name: FORCE_DB_SYNC
+          value: {{ .Values.fbgServer.forceDbSync | quote }}
         image: {{ .Values.images.fbgServer }}
         imagePullPolicy: {{ .Values.images.imagePullPolicy }}
         livenessProbe:
