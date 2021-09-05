@@ -3,6 +3,7 @@
 SCRIPT=$(readlink -f "$0")
 DIR=$(dirname "$SCRIPT")
 BUILD_FBG="$DIR/fbg-server"
+BUILD_BACKUPER="$DIR/fbg-server"
 EXPORT_FILE="freeboardgames.tar"
 
 ## read docker build paths and image names from env file
@@ -58,12 +59,14 @@ build_docker() {
     docker build -t "$BUILD_IMAGE_COMMON" "$BUILD_DIR_COMMON" || exit 1
     docker build -t "fbg-web" -t "$BUILD_IMAGE_WEB" "$BUILD_DIR_WEB" || exit 1
     docker build -t "fbg-server" -t "$BUILD_IMAGE_FBG" "$BUILD_DIR_FBG" || exit 1
+    docker build -t "fbg-backuper" -t "$BUILD_IMAGE_BACKUPER" "$BUILD_DIR_BACKUPER" || exit 1
 }
 
 push_docker() {
     cd "$DIR"
     docker push "$BUILD_IMAGE_WEB" || exit 1
     docker push "$BUILD_IMAGE_FBG" || exit 1
+    docker push "$BUILD_IMAGE_BACKUPER" || exit 1
 }
 
 prune_docker_images() {
@@ -74,13 +77,16 @@ prune_docker_images() {
     fi
 }
 
+minikube_cache() {
+  echo -e "Uploading $1..."
+  minikube image rm $1
+  minikube image load $1 || exit 1
+}
+
 upload_minikube() {
-    echo -e "Uploading fbg-web..."
-    minikube cache delete fbg-web
-    minikube cache add fbg-web || exit 1
-    echo -e "Uploading fbg-server..."
-    minikube cache delete fbg-server
-    minikube cache add fbg-server || exit 1
+    minikube_cache fbg-web
+    minikube_cache fbg-server
+    minikube_cache fbg-backuper
 }
 
 exportdocker() {
