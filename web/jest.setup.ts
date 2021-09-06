@@ -4,7 +4,6 @@ import 'jest-xml-matcher';
 import 'test/setup/enzymeSetup';
 import 'test/setup/mockCopy';
 import 'test/setup/mockFetch';
-import 'test/setup/mockGa';
 import 'test/setup/mockGameDarkSublayout';
 import 'test/setup/mockI18next';
 import 'test/setup/mockPlay';

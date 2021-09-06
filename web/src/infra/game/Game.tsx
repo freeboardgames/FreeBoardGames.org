@@ -8,7 +8,6 @@ import MessagePage from '../common/components/alert/MessagePage';
 import { applyMiddleware } from 'redux';
 import DEFAULT_ENHANCERS from '../common/enhancers';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
-import ReactGA from 'react-ga';
 import { SocketIO, Local } from 'boardgame.io/multiplayer';
 import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { Debug } from 'boardgame.io/debug';
@@ -163,11 +162,6 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
         clientConfig.multiplayer = SocketIO({ server: this.serverUrl });
       }
       const App = Client(clientConfig) as any;
-      ReactGA.event({
-        category: 'Game',
-        label: gameArgs.gameCode,
-        action: `Started ${this.mode} game`,
-      });
       if (this.mode === GameMode.OnlineFriend) {
         return <App matchID={matchCode} playerID={playerID} credentials={credentials} />;
       } else {
