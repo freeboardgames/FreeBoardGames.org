@@ -4,7 +4,7 @@ import { GameCardWithOverlay } from './GameCardWithOverlay';
 import { gql } from 'apollo-boost';
 import { GetLobby, GetLobby_lobby } from 'gqlTypes/GetLobby';
 import { Typography, CircularProgress } from '@material-ui/core';
-import { getGroupedRoomsDisplay } from './LobbyUtil';
+import { getGroupedRoomsDisplay, orderCurrentGameFirst } from './LobbyUtil';
 import { NewRoomModal } from './NewRoomModal';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { Subscription } from '@apollo/react-components';
@@ -106,7 +106,7 @@ class LobbyCarousel extends React.Component<Props, State> {
   renderCards(lobby: GetLobby_lobby) {
     const grouped = getGroupedRoomsDisplay(lobby);
     const result = [];
-    const roomsEntries = Object.entries(grouped);
+    const roomsEntries = orderCurrentGameFirst(grouped, this.props.game?.code);
 
     for (const [gameCode, rooms] of roomsEntries) {
       result.push(
