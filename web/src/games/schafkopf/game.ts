@@ -35,7 +35,7 @@ export const SchafkopfGame: Game<IG> = {
       ...G,
       players: G.players.map(stripSecrets),
       deck: G.deck.map(() => dummyCard),
-      kitty: G.kittyRevealed ? G.kitty : G.kitty.map(() => dummyCard),
+      kitty: G.kittyRevealed || playerID == G.takerId ? G.kitty : G.kitty.map(() => dummyCard),
       calledTakerId: null,
       resolvedTricks: G.resolvedTricks.map((T, i) =>
         i > 0 && i == G.resolvedTricks.length - 1
