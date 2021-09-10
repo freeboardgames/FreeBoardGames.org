@@ -2,6 +2,8 @@ import { ICard, Contract, CardColor, ITrick, IPlayer, DefaultIPlayer, IG, Defaul
 import { resolveTrick } from '../game';
 import * as util from '../util/misc';
 
+const special_card_values = ['U', 'O', 'K', 'A'];
+
 export function str2card(s: string): ICard {
   const color = {
     S: CardColor.Schell,
@@ -9,18 +11,14 @@ export function str2card(s: string): ICard {
     G: CardColor.Gras,
     E: CardColor.Eichel,
   }[s[0]];
-  const special_values = ['U', 'O', 'K', 'A'];
-  let value = 0;
-  if (color != CardColor.Excuse) {
-    const i = special_values.indexOf(s.substr(1));
-    value = i == -1 ? +s.substr(1) : 11 + i;
-  }
+  const i = special_card_values.indexOf(s.substr(1));
+  const value = i == -1 ? +s.substr(1) : 11 + i;
   return { color: color, value: value };
 }
 
 export function card2str(C: ICard): string {
   const col = ['S', 'H', 'G', 'E'][C.color];
-  const val = C.value > 10 ? ['U', 'O', 'K', 'A'][C.value - 11] : C.value.toString();
+  const val = C.value > 10 ? special_card_values[C.value - 11] : C.value.toString();
   return `${col}${val}`;
 }
 
