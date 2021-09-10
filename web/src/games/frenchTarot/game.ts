@@ -168,7 +168,7 @@ export const FrenchTarotGame: Game<IG> = {
         } else if (G.contract == 4) {
           G.resolvedTricks.push({
             cards: G.kitty.splice(0, G.kitty.length),
-            winner: G.players.find((P) => !P.isTaker),
+            winner: G.players.find((P) => P.id != G.calledTakerId && !P.isTaker),
           });
         }
       },
