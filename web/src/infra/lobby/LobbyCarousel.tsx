@@ -90,7 +90,7 @@ class LobbyCarousel extends React.Component<Props, State> {
       return <CircularProgress className={css.carouselCenter} />;
     } else if (this.state.error) {
       return (
-        <Typography component="h2" variant="body2" className={css.messag}>
+        <Typography component="h2" variant="body2" className={css.message}>
           {t('error')}
         </Typography>
       );
