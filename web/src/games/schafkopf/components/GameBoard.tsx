@@ -82,7 +82,7 @@ export function Board(props: {
 
   function renderCalledCard() {
     if (!props.calledCard) return;
-    const heading = props.contract == Contract.Ace ? 'callcard_player_called' : 'callcard_is_trumpsuite';
+    const heading = props.contract == Contract.Ace ? 'callcard_player_called' : 'callcard_is_trumpsuit';
     return (
       <div className={css.calledCard}>
         <span>{translate(heading)}</span>
@@ -156,7 +156,7 @@ export function Board(props: {
   function renderButtonsCall() {
     if (!props.callCard) return;
     let question =
-      props.contract == Contract.Ace ? translate('callcard_select_ace') : translate('callcard_select_trumpsuite');
+      props.contract == Contract.Ace ? translate('callcard_select_ace') : translate('callcard_select_trumpsuit');
     return (
       <>
         <div className={css.question}>{question}:</div>

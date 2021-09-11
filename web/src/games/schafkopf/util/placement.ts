@@ -27,5 +27,5 @@ export function isTrump(G: IG, C: ICard): boolean {
   if (G.contract == Contract.Bettel) {
     return false;
   }
-  return C.value == 11 || C.value == 12 || C.color == G.trumpSuite;
+  return C.value == 11 || C.value == 12 || C.color == G.trumpSuit;
 }

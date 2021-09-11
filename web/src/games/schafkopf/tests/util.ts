@@ -81,7 +81,7 @@ export function setup_3players(): IG {
     trick: { cards: [], leader: players[1] },
     resolvedTricks: [ecarte],
     contract: Contract.Solo,
-    trumpSuite: CardColor.Eichel,
+    trumpSuit: CardColor.Eichel,
     calledCard: str2card('EA'),
   };
 }
@@ -120,7 +120,7 @@ export function setup_4players(): IG {
     resolvedTricks: [],
     calledCard: str2card('GA'),
     contract: Contract.Ace,
-    trumpSuite: CardColor.Herz,
+    trumpSuit: CardColor.Herz,
   };
 }
 

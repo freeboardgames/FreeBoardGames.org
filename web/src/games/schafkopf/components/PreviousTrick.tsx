@@ -7,10 +7,10 @@ import { ICard, CardColor } from '../types';
 import * as util from '../util/misc';
 
 const ColorSymbols = {
-  Schell: <span className={`${css.suite} ${css.schell}`}></span>,
-  Herz: <span className={`${css.suite} ${css.herz}`}></span>,
-  Gras: <span className={`${css.suite} ${css.gras}`}></span>,
-  Eichel: <span className={`${css.suite} ${css.eichel}`}></span>,
+  Schell: <span className={`${css.suit} ${css.schell}`}></span>,
+  Herz: <span className={`${css.suit} ${css.herz}`}></span>,
+  Gras: <span className={`${css.suit} ${css.gras}`}></span>,
+  Eichel: <span className={`${css.suit} ${css.eichel}`}></span>,
 };
 
 export function PreviousTrick(props: {

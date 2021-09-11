@@ -70,7 +70,7 @@ export const SchafkopfGame: Game<IG> = {
         G.takerId = '';
         G.calledCard = null;
         G.calledTakerId = null;
-        G.trumpSuite = CardColor.Herz;
+        G.trumpSuit = CardColor.Herz;
         G.contract = Contract.None;
         G.kitty = kittySize == 0 ? [] : G.deck.slice(-kittySize).sort(cmpCards);
         G.kittyRevealed = false;
@@ -135,7 +135,7 @@ export const SchafkopfGame: Game<IG> = {
         taker.isTaker = true;
         if (util.kittySize(ctx.numPlayers) > 0) {
           taker.discardSelection = [];
-          taker.hand = taker.hand.concat(G.kitty).sort(get_cmpCards(G.contract, G.trumpSuite));
+          taker.hand = taker.hand.concat(G.kitty).sort(get_cmpCards(G.contract, G.trumpSuit));
           G.kittyRevealed = false;
         }
       },
@@ -186,12 +186,12 @@ export const SchafkopfGame: Game<IG> = {
       onEnd: (G: IG) => {
         if (G.calledCard) {
           if (G.contract == Contract.Solo) {
-            G.trumpSuite = G.calledCard.color;
+            G.trumpSuit = G.calledCard.color;
           } else {
             G.calledTakerId = getCalledTakerId(G.players, G.calledCard);
           }
         }
-        const cmpCards = get_cmpCards(G.contract, G.trumpSuite);
+        const cmpCards = get_cmpCards(G.contract, G.trumpSuit);
         G.players.forEach((P) => {
           P.hand = P.hand.sort(cmpCards);
         });
@@ -264,7 +264,7 @@ export const SchafkopfGame: Game<IG> = {
 
 export function resolveTrick(G: IG): boolean {
   // returns true if this was the last trick in the game
-  const winnerId = getTrickWinnerId(G.contract, G.trumpSuite, G.trick);
+  const winnerId = getTrickWinnerId(G.contract, G.trumpSuit, G.trick);
   const winner = util.getPlayerById(G, winnerId);
   G.trick.winner = winner;
   G.resolvedTricks.push(G.trick);
@@ -283,9 +283,9 @@ export function getCalledTakerId(players: IPlayer[], card: ICard): string {
   return calledTaker ? calledTaker.id : takerId;
 }
 
-export function getTrickWinnerId(contract: Contract, trumpSuite: CardColor, T: ITrick): string {
+export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: ITrick): string {
   const leaderId = +T.leader.id;
-  let ranks = T.cards.map((C) => cardRank(contract, trumpSuite, C));
+  let ranks = T.cards.map((C) => cardRank(contract, trumpSuit, C));
   if (ranks.every((R) => R < 500)) {
     const lead_color = T.cards[0].color;
     ranks = ranks.map((R, i) => (T.cards[i].color == lead_color ? R : -1));
@@ -308,7 +308,7 @@ export function getSortedDeck(): ICard[] {
   return deck;
 }
 
-export function cardRank(contract: Contract, trumpSuite: CardColor, card: ICard): number {
+export function cardRank(contract: Contract, trumpSuit: CardColor, card: ICard): number {
   if (contract == Contract.Bettel) {
     return 100 * card.color + card.value;
   }
@@ -318,13 +318,13 @@ export function cardRank(contract: Contract, trumpSuite: CardColor, card: ICard)
   if (contract != Contract.Wenz && card.value == 12) {
     return 10000 + card.color;
   }
-  let color_rank: number = contract != Contract.Wenz && card.color == trumpSuite ? 5 : card.color;
+  let color_rank: number = contract != Contract.Wenz && card.color == trumpSuit ? 5 : card.color;
   let val_order: number[] = contract == Contract.Wenz ? [7, 8, 9, 12, 13, 10, 14] : [7, 8, 9, 13, 10, 14];
   return 100 * color_rank + val_order.indexOf(card.value);
 }
 
-export function get_cmpCards(contract: Contract, trumpSuite: CardColor) {
+export function get_cmpCards(contract: Contract, trumpSuit: CardColor) {
   return function (a: ICard, b: ICard): number {
-    return cardRank(contract, trumpSuite, a) - cardRank(contract, trumpSuite, b);
+    return cardRank(contract, trumpSuit, a) - cardRank(contract, trumpSuit, b);
   };
 }

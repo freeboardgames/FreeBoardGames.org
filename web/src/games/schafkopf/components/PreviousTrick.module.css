@@ -48,17 +48,17 @@
   background-color: transparent;
 }
 
-.suite {
+.suit {
   background-repeat: no-repeat;
   background-size: 41px 16px;
-  background-image: url("../media/suite_small.png");
+  background-image: url("../media/suit_small.png");
   height: 16px;
   width: 10px;
   display: inline-block;
   vertical-align: middle;
 }
 
-.suite.schell { background-position: -31px 0; }
-.suite.herz { background-position: -21px 0; }
-.suite.gras { background-position: -11px 0; }
-.suite.eichel { background-position: 0 0; width: 11px; }
+.suit.schell { background-position: -31px 0; }
+.suit.herz { background-position: -21px 0; }
+.suit.gras { background-position: -11px 0; }
+.suit.eichel { background-position: 0 0; width: 11px; }
