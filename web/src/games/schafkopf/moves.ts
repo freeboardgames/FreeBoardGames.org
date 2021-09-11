@@ -40,7 +40,7 @@ export const Moves = {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     const stage = ctx.activePlayers && ctx.activePlayers[+player.id];
     if (ctx.phase == Phases.discard) {
-      const discard_num = ctx.numPlayers == 5 ? 3 : 6;
+      const discard_num = util.kittySize(ctx.numPlayers);
       if (handIndex.length > discard_num) {
         return INVALID_MOVE;
       }
