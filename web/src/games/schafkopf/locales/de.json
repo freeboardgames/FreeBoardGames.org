@@ -1,7 +1,7 @@
 {
   "name": "Schafkopf",
   "description": "Bayrisches Kartenspiel",
-  "descriptionTag": "Spiele Schafkopf online mit 3 bis 5 Spieler*innen!",
+  "descriptionTag": "Spiele Schafkopf online mit 3 oder 4 Spieler*innen!",
   "instructions": {
     "videoId": "SotVIeY2vOo",
     "text": "Eine ausführliche Spielbeschreibung findet sich auf der Webseite der Schafkopfschule: https://schafkopfschule.de/regeln.html\n\nDas Kartendesign in dieser Implementierung geht auf das Fränkische Blatt (19. Jh.) zurück und ist damit gemeinfrei: https://commons.wikimedia.org/wiki/File:Franconian_pattern.jpg"
