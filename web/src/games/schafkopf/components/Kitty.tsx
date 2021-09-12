@@ -5,7 +5,7 @@ import { Card } from './Card';
 
 import { ICard } from '../types';
 
-export function Kitty(props: { kitty: ICard[]; revealed: boolean; descr: JSX.Element | string }) {
+export function Kitty(props: { kitty: ICard[]; revealed: boolean; descr?: JSX.Element | string }) {
   function arrangeKittyCard(index: number, card: ICard) {
     return (
       <div key={index} className={css.arrangeCard}>
