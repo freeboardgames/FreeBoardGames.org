@@ -23,7 +23,10 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     const ctx = props.ctx;
     const moves = props.moves;
     const player = G.players.find((P) => P.id === playerID);
-    const prevTrick = G.resolvedTricks.length > 1 ? G.resolvedTricks[G.resolvedTricks.length - 1] : G.trick;
+    let prevTrick = G.trick;
+    if (G.resolvedTricks.length > (util.kittySize(ctx.numPlayers) > 0 ? 1 : 0)) {
+      prevTrick = G.resolvedTricks[G.resolvedTricks.length - 1];
+    }
 
     return (
       <GameLayout gameArgs={props.gameArgs} maxWidth="1500px">
