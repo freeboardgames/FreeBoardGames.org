@@ -130,11 +130,11 @@ export function Board(props: {
     if (!props.selectBid) return;
     const highest_bid = Math.max(...props.players.map((p) => p.bid));
     const allowed_bids = props.players.length == 4 ? [0, 1, 2, 3, 4] : [0, 2, 3, 4];
+    const num_aces = props.player.hand.filter((C) => C.color != CardColor.Herz && C.value == 14).length;
     return allowed_bids.map(util.getBidName).map((name, i) => {
       const text: string = translate(name);
       let selectable = false;
       if (props.selectBid) {
-        let num_aces = props.player.hand.filter((C) => C.color != CardColor.Herz && C.value == 14).length;
         if (allowed_bids[i] == 1 && num_aces == 3) {
           selectable = false;
         } else {
@@ -165,7 +165,11 @@ export function Board(props: {
             if (col == 'Herz') {
               return null;
             }
-            if (props.player.hand.find((C) => C.color == CardColor[col] && C.value == 14)) {
+            const color_in_hand = props.player.hand.filter((C) => C.color == CardColor[col]);
+            if (color_in_hand.some((C) => C.value == 14)) {
+              return null;
+            }
+            if (!color_in_hand.some((C) => C.value != 11 && C.value != 12)) {
               return null;
             }
           }
