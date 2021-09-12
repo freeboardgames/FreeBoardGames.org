@@ -1,5 +1,5 @@
 import { IG, CardColor } from '../types';
-import { resolveTrick, getSortedDeck, get_cmpCards } from '../game';
+import { resolveTrick, getSortedDeck } from '../game';
 import * as util from '../util/misc';
 import * as u_placement from '../util/placement';
 
@@ -47,12 +47,12 @@ export function shuffleArray(array: any[]) {
 export function dealCards(G: IG) {
   const handSize = 10;
   const kittySize = 2;
-  const cmpCards = get_cmpCards(G.contract, CardColor.Hearts);
+  const cmpCards = util.get_cmpCards(G.contract, CardColor.Hearts);
   G.deck = getSortedDeck();
   shuffleArray(G.deck);
   G.players.forEach((P, i) => {
     P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
   });
   G.kitty = G.deck.slice(-kittySize).sort(cmpCards);
-  G.takerCards = ecarte.winner.hand.concat(G.kitty);
+  G.takerCards = util.getPlayerById(G, G.takerId).hand.concat(G.kitty);
 }
