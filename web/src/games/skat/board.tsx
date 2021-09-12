@@ -8,24 +8,28 @@ import { useCurrentGameTranslation } from 'infra/i18n';
 
 import { Board } from './components/GameBoard';
 
-import { Phases, IGameMoves, IG, IPlayer } from './types';
+import { Announcement, Phases, Stages, IGameMoves, IG, IPlayer } from './types';
 import * as util from './util/misc';
 import * as u_discard from './util/discard';
 import * as u_placement from './util/placement';
 
 export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID: string; gameArgs?: IGameArgs }) {
   const { translate } = useCurrentGameTranslation();
-  const playerID = isLocalGame(props.gameArgs) ? props.ctx.currentPlayer : props.playerID;
-  const playerPhase = props.ctx.currentPlayer === playerID && props.ctx.phase;
+  const ctx = props.ctx;
+  const G = props.G;
+  const playerID = isLocalGame(props.gameArgs) ? ctx.currentPlayer : props.playerID;
+  const playerStage = ctx.activePlayers && ctx.activePlayers[playerIndex()];
 
   function renderBoard() {
-    const G = props.G;
-    const ctx = props.ctx;
     const moves = props.moves;
-    const player = G.players.find((P) => P.id === playerID);
-    let prevTrick = G.trick;
-    if (G.resolvedTricks.length > (util.kittySize(ctx.numPlayers) > 0 ? 1 : 0)) {
-      prevTrick = G.resolvedTricks[G.resolvedTricks.length - 1];
+    const player = util.getPlayerById(G, playerID);
+    const prevTrick = G.resolvedTricks.length > 1 ? G.resolvedTricks[G.resolvedTricks.length - 1] : G.trick;
+
+    let cardsOuvert = [];
+    if (ctx.phase == Phases.round_end) {
+      cardsOuvert = G.takerCards.slice(0, 10);
+    } else if (G.announcement == Announcement.Ouvert && !player.isTaker) {
+      cardsOuvert = util.getPlayerById(G, G.takerId).hand;
     }
 
     return (
@@ -34,20 +38,27 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           player={player}
           players={G.players}
           playerNames={G.players.map((P) => playerName(P.id))}
+          holderId={G.holderId}
           contract={G.contract}
+          announcement={G.announcement}
+          handGame={G.hand}
           currentPlayerId={ctx.currentPlayer}
           kitty={G.kitty}
-          kittyRevealed={G.kittyRevealed || player.isTaker}
+          kittyRevealed={G.kittyRevealed || (player.isTaker && G.hand === false)}
           kittyPrev={G.kittyPrev}
+          cardsOuvert={cardsOuvert}
           trick={G.trick}
           prevTrick={prevTrick}
-          calledCard={G.calledCard}
+          trumpSuit={G.trumpSuit}
           selectableCards={selectableCards(G, ctx, playerID)}
           roundSummaries={G.roundSummaries}
           showRoundSummary={ctx.phase == Phases.round_end && G.roundSummaries.length > 0}
           selectCards={canSelectCards(ctx, player) ? moves.SelectCards : null}
           selectBid={canBid(ctx, player) ? moves.MakeBid : null}
-          callCard={playerPhase == Phases.calling ? moves.Call : null}
+          declareHand={playerStage == Stages.declare_hand ? moves.DeclareHand : null}
+          selectContract={playerStage == Stages.select_contract ? moves.SelectContract : null}
+          selectTrump={playerStage == Stages.select_trump ? moves.SelectTrumpSuit : null}
+          announce={playerStage == Stages.announce ? moves.Announce : null}
           discard={canDiscard(ctx, player) ? moves.Discard : null}
           endGame={moves.Finish}
         />
@@ -56,12 +67,10 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   }
 
   function renderGameOver() {
-    const scores: IScore[] = props.G.players.map((P) => ({ playerID: P.id, score: P.score }));
+    const scores: IScore[] = G.players.map((P) => ({ playerID: P.id, score: P.score }));
     scores.sort((a, b) => b.score - a.score);
-    const player = props.G.players.find((P) => P.id === playerID);
-    const scoreboard = (
-      <Scoreboard scoreboard={scores} players={props.gameArgs.players} playerID={props.ctx.playerID} />
-    );
+    const player = G.players.find((P) => P.id === playerID);
+    const scoreboard = <Scoreboard scoreboard={scores} players={props.gameArgs.players} playerID={ctx.playerID} />;
     return (
       <GameLayout
         gameOver={player.score > scores[0].score ? translate('gameover_you_won') : translate('gameover_you_lost')}
@@ -72,14 +81,14 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   }
 
   function playerIndex(id: string = playerID): number {
-    return props.ctx.playOrder.indexOf(id);
+    return ctx.playOrder.indexOf(id);
   }
 
   function playerName(id: string = playerID): string {
     return props.gameArgs ? props.gameArgs.players[playerIndex(id)].name : translate('player_n', { n: id });
   }
 
-  return props.ctx.gameover ? renderGameOver() : renderBoard();
+  return ctx.gameover ? renderGameOver() : renderBoard();
 }
 
 function selectableCards(G: IG, ctx: Ctx, playerId: string): boolean[] {
