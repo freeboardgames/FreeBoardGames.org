@@ -10,6 +10,7 @@ export const skatDef: IGameDef = {
   translationStatus: {
     de: IGameTranslationStatus.DONE,
     fr: IGameTranslationStatus.DONE,
+    pt: IGameTranslationStatus.DONE,
   },
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
