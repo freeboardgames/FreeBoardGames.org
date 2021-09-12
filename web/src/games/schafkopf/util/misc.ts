@@ -1,4 +1,14 @@
-import { IG, IPlayer } from '../types';
+import { Contract, IG, IPlayer, ICard } from '../types';
+
+export function isTrump(G: IG, C: ICard): boolean {
+  if (G.contract == Contract.Wenz) {
+    return C.value == 11;
+  }
+  if (G.contract == Contract.Bettel) {
+    return false;
+  }
+  return C.value == 11 || C.value == 12 || C.color == G.trumpSuit;
+}
 
 export function getBidName(bid: number): string {
   return `bid_${['pass', 'ace', 'bettel', 'wenz', 'solo'][bid]}`;

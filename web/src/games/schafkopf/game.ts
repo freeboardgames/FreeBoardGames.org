@@ -37,8 +37,9 @@ export const SchafkopfGame: Game<IG> = {
       deck: G.deck.map(() => dummyCard),
       kitty: G.kittyRevealed || playerID == G.takerId ? G.kitty : G.kitty.map(() => dummyCard),
       calledTakerId: null,
+      calledMayRun: G.calledTakerId == playerID ? G.calledMayRun : null,
       resolvedTricks: G.resolvedTricks.map((T, i) =>
-        i > 0 && i == G.resolvedTricks.length - 1
+        (G.players.length == 4 || i > 0) && i == G.resolvedTricks.length - 1
           ? { ...T, winner: stripSecrets(T.winner), leader: stripSecrets(T.leader) }
           : dummyTrick,
       ),
@@ -59,22 +60,20 @@ export const SchafkopfGame: Game<IG> = {
         const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, ctx.numPlayers)];
         const cmpCards = get_cmpCards(Contract.None, CardColor.Herz);
-        G.deck = getSortedDeck();
-        G.deck = ctx.random.Shuffle(G.deck);
+        Object.assign(G, {
+          ...DefaultIG,
+          players: G.players,
+          deck: ctx.random.Shuffle(getSortedDeck()),
+          trick: { cards: [], leader: leader },
+          roundSummaries: G.roundSummaries,
+        });
         G.players.forEach((P, i) => {
           P.bid = Contract.None;
           P.isTaker = false;
           P.isReady = true;
           P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
         });
-        G.takerId = '';
-        G.calledCard = null;
-        G.calledTakerId = null;
-        G.trumpSuit = CardColor.Herz;
-        G.contract = Contract.None;
         G.kitty = kittySize == 0 ? [] : G.deck.slice(-kittySize).sort(cmpCards);
-        G.kittyRevealed = false;
-        G.trick = { cards: [], leader: leader };
       },
     },
 
@@ -189,6 +188,9 @@ export const SchafkopfGame: Game<IG> = {
             G.trumpSuit = G.calledCard.color;
           } else {
             G.calledTakerId = getCalledTakerId(G.players, G.calledCard);
+            const calledTaker = util.getPlayerById(G, G.calledTakerId);
+            G.calledMayRun =
+              calledTaker.hand.filter((C) => C.color == G.calledCard.color && !util.isTrump(G, C)).length >= 4 ? 1 : 0;
           }
         }
         const cmpCards = get_cmpCards(G.contract, G.trumpSuit);
@@ -264,6 +266,11 @@ export const SchafkopfGame: Game<IG> = {
 
 export function resolveTrick(G: IG): boolean {
   // returns true if this was the last trick in the game
+  const lead_color = G.trick.cards[0].color;
+  const lead_color_is_called = G.contract == Contract.Ace && G.calledCard.color == lead_color;
+  if (lead_color_is_called && G.calledMayRun == 1) {
+    G.calledMayRun = -1;
+  }
   const winnerId = getTrickWinnerId(G.contract, G.trumpSuit, G.trick);
   const winner = util.getPlayerById(G, winnerId);
   G.trick.winner = winner;

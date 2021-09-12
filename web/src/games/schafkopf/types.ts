@@ -45,8 +45,9 @@ export interface IG {
   kittyPrev: ICard[];
   takerId: string;
   calledTakerId?: string;
-  trumpSuit: CardColor;
+  calledMayRun: number;
   calledCard?: ICard;
+  trumpSuit: CardColor;
   contract: Contract;
   trick: ITrick;
   resolvedTricks: ITrick[];
@@ -61,6 +62,8 @@ export const DefaultIG: IG = {
   kittyPrev: [],
   takerId: '',
   calledTakerId: '',
+  calledMayRun: null,
+  calledCard: null,
   trumpSuit: CardColor.Herz,
   contract: Contract.None,
   trick: { cards: [] },

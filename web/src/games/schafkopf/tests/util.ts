@@ -119,6 +119,7 @@ export function setup_4players(): IG {
     trick: { cards: [], leader: players[2] },
     resolvedTricks: [],
     calledCard: str2card('GA'),
+    calledMayRun: 0,
     contract: Contract.Ace,
     trumpSuit: CardColor.Herz,
   };
