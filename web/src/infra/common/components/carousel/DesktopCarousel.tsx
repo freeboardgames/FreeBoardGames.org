@@ -60,17 +60,16 @@ export class DesktopCarousel extends React.Component<DesktopCarouselProps, Deskt
   renderButtons() {
     return (
       <>
-        <Fab className={css.leftButton} onClick={this._leftClick} disabled={this.state.scrollLeft <= 0}>
-          <NavigateBeforeIcon />
-        </Fab>
-        <Fab
-          className={css.rightButton}
-          data-testid={'rightButton'}
-          onClick={this._rightClick}
-          disabled={this.state.scrollLeft >= this.maxScroll()}
-        >
-          <NavigateNextIcon />
-        </Fab>
+        {this.state.scrollLeft > 0 ? (
+          <Fab className={css.leftButton} onClick={this._leftClick}>
+            <NavigateBeforeIcon />
+          </Fab>
+        ) : null}
+        {this.state.scrollLeft < this.maxScroll() ? (
+          <Fab className={css.rightButton} data-testid={'rightButton'} onClick={this._rightClick}>
+            <NavigateNextIcon />
+          </Fab>
+        ) : null}
       </>
     );
   }
