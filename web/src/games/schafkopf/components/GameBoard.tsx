@@ -104,7 +104,7 @@ export function Board(props: {
     return (
       <Trick
         trick={trick ? trick.cards : []}
-        leaderPos={trick ? +trick.leader.id : 0}
+        leaderPos={trick && trick.leader ? +trick.leader.id : 0}
         winnerPos={trick && trick.winner ? +trick.winner.id : -1}
         currPos={+props.player.id}
         numPlayers={props.players.length}

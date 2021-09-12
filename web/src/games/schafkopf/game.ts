@@ -38,7 +38,7 @@ export const SchafkopfGame: Game<IG> = {
       kitty: G.kittyRevealed || playerID == G.takerId ? G.kitty : G.kitty.map(() => dummyCard),
       calledTakerId: null,
       resolvedTricks: G.resolvedTricks.map((T, i) =>
-        i > 0 && i == G.resolvedTricks.length - 1
+        (G.players.length == 4 || i > 0) && i == G.resolvedTricks.length - 1
           ? { ...T, winner: stripSecrets(T.winner), leader: stripSecrets(T.leader) }
           : dummyTrick,
       ),
