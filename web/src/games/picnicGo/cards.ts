@@ -83,7 +83,7 @@ export const cardFunctions: ((p: IPlayer) => IPlayer)[] = [
   },
 ];
 
-export const defaultDeck = new Array(108).fill(0).map((_, i) => {
+export function getCardTypeFromNumber(i: number): cardEnum {
   if (i < 5) return cardEnum.sandwichChicken;
   else if (i >= 5 && i < 15) return cardEnum.sandwichPork;
   else if (i >= 15 && i < 20) return cardEnum.sandwichBeef;
@@ -96,4 +96,6 @@ export const defaultDeck = new Array(108).fill(0).map((_, i) => {
   else if (i >= 88 && i < 98) return cardEnum.cake;
   else if (i >= 98 && i < 104) return cardEnum.mayo;
   else return cardEnum.fork;
-});
+}
+
+export const defaultDeck = new Array(108).fill(0).map((_, i) => i);

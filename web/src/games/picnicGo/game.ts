@@ -1,7 +1,7 @@
 import { Ctx } from 'boardgame.io';
 import { ActivePlayers, INVALID_MOVE, Stage } from 'boardgame.io/core';
 import { IG, cardEnum } from './types';
-import { defaultDeck, cardFunctions } from './cards';
+import { defaultDeck, cardFunctions, getCardTypeFromNumber } from './cards';
 
 export function setupRound(g: IG, ctx: Ctx) {
   g.round++;
@@ -175,19 +175,20 @@ export const PicnicGoGame = {
         for (let j = 0; j < h.selected.length; j++) {
           g.players[ho].playedCards.push(h.hand[h.selected[j]]);
 
-          g.players[ho] = cardFunctions[h.hand[h.selected[j]]](g.players[ho]);
+          g.players[ho] = cardFunctions[getCardTypeFromNumber(h.hand[h.selected[j]])](g.players[ho]);
         }
 
         for (let j = 0; j < h.selected.length; j++) {
           g.hands[i].hand.splice(h.selected[j], 1);
         }
 
+        // Remove fork from hand if fork used
         if (g.players[h.currentOwner].forkUsed) {
-          g.hands[i].hand.push(cardEnum.fork);
-          g.players[h.currentOwner].playedCards.splice(
-            g.players[h.currentOwner].playedCards.findIndex((e) => e === cardEnum.fork),
-            1,
+          const forkIndex = g.players[h.currentOwner].playedCards.findIndex(
+            (e) => getCardTypeFromNumber(e) === cardEnum.fork,
           );
+          g.hands[i].hand.push(g.players[h.currentOwner].playedCards[forkIndex]);
+          g.players[h.currentOwner].playedCards.splice(forkIndex, 1);
           g.players[h.currentOwner].forkUsed = false;
         }
 
