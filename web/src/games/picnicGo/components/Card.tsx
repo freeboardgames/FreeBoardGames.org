@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cardEnum } from '../types';
+import css from './stylesheet.module.css';
 
 import cardSandwichChicken from './media/cardSandwichChicken.png';
 import cardSandwichPork from './media/cardSandwichPork.png';
@@ -66,7 +67,7 @@ export class Card extends React.Component<InnerWrapper, {}> {
     let cardImage: any = getCardImage(this.props.id);
 
     return (
-      <div>
+      <div className={css.Card}>
         <img src={cardImage} />
       </div>
     );
