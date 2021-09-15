@@ -10,7 +10,6 @@ import FacebookIcon from './icons/FacebookIcon';
 import WhatsAppIcon from './icons/WhatsAppIcon';
 import QrCodeIcon from './icons/QrCodeIcon';
 import copy from 'copy-to-clipboard';
-import ReactGA from 'react-ga';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import AlertLayer from '../common/components/alert/AlertLayer';
@@ -127,40 +126,20 @@ export class GameSharingInternal extends React.Component<
   }
 
   _shareFacebook = () => {
-    ReactGA.event({
-      category: 'GameSharing',
-      action: 'shareFacebook',
-      label: this.props.gameCode,
-    });
     window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURI(this._getLink()));
   };
 
   _shareWhatsApp = () => {
-    ReactGA.event({
-      category: 'GameSharing',
-      action: 'shareWhatsApp',
-      label: this.props.gameCode,
-    });
     window.open('https://api.whatsapp.com/send?text=' + encodeURI(this._getLink()));
   };
 
   _copyClipboard = () => {
-    ReactGA.event({
-      category: 'GameSharing',
-      action: 'copyClipboard',
-      label: this.props.gameCode,
-    });
     copy(this._getLink());
     setTimeout(() => this.setState({ copyButtonRecentlyPressed: false }), 3000);
     this.setState({ copyButtonRecentlyPressed: true });
   };
 
   _showQrCode = () => {
-    ReactGA.event({
-      category: 'GameSharing',
-      action: 'showQrCode',
-      label: this.props.gameCode,
-    });
     this._toggleShowingQrCode();
   };
 

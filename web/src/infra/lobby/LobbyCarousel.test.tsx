@@ -17,15 +17,6 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe('Room Lobby', () => {
-  it('should show error page when initial fetch fails', async () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <LobbyCarousel />
-      </Provider>,
-    );
-    await waitFor(() => expect(getByText(/error/)).toBeTruthy());
-  });
-
   it('should display rooms', async () => {
     jest.useFakeTimers();
     const result: GetLobby_lobby = {

@@ -105,9 +105,18 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     await this.props.moves.move(this.state.selected, coords);
     this.setState({
       ...this.state,
-      selected: null,
+      selected: this._getPreselectedMove(),
     });
   };
+
+  private _getPreselectedMove(): ICartesianCoords {
+    const validMoves = this.state.validMoves;
+    if (validMoves.length === 1) {
+      const from = validMoves[0].from;
+      return { x: from.x, y: from.y };
+    }
+    return null;
+  }
 
   _getHighlightedSquares() {
     const result = {} as IColorMap;

@@ -31,7 +31,7 @@ test('highlighting', async () => {
     game: CheckersGame,
     debug: false,
     board: BoardTest,
-  }) as any;
+  });
   const comp = Enzyme.mount(<App playerID={'0'} />);
 
   await comp.find('rect').at(getPosition(0, 5)).simulate('click');
@@ -42,10 +42,37 @@ test('highlighting', async () => {
   await comp.find('rect').at(getPosition(2, 3)).simulate('click');
   comp.setProps({ playerID: '0' });
   comp.update();
-  await comp.find('rect').at(getPosition(1, 4)).simulate('click');
+  // Position 1,4 is already pre-selected
   await comp.find('rect').at(getPosition(3, 2)).simulate('click');
 
   expect(comp.find('Token').length).toEqual(46); // 2 tokens per piece, 23 pieces.
+
+  comp.unmount();
+});
+
+test('highlighting the only valid move', async () => {
+  const App = ReactClient({
+    game: CheckersGame,
+    debug: false,
+    board: BoardTest,
+  });
+  const comp = Enzyme.mount(<App playerID={'0'} />);
+
+  await comp.find('rect').at(getPosition(0, 5)).simulate('click');
+  await comp.find('rect').at(getPosition(1, 4)).simulate('click');
+  comp.setProps({ playerID: '1' });
+  comp.update();
+  await comp.find('rect').at(getPosition(1, 2)).simulate('click');
+  await comp.find('rect').at(getPosition(0, 3)).simulate('click');
+  comp.setProps({ playerID: '0' });
+  comp.update();
+  await comp.find('rect').at(getPosition(2, 5)).simulate('click');
+  await comp.find('rect').at(getPosition(3, 4)).simulate('click');
+  comp.setProps({ playerID: '1' });
+  comp.update();
+
+  expect(comp.find(Board).state('selected')).toEqual({ x: 0, y: 3 });
+  comp.unmount();
 });
 
 test('gameover - won', () => {

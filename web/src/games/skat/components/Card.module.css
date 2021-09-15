@@ -1,0 +1,34 @@
+.card {
+  color: black;
+  border: 3px #aaa solid;
+  box-sizing: border-box;
+  background-origin: border-box;
+  background-color: white;
+  height: 483px;
+  width: 314px;
+  background-repeat: no-repeat;
+  background-size: 2826px 1932px;
+  background-image: url("../media/cards_tiled.jpg");
+  border-radius: 25px;
+  margin: 0 auto;
+  box-shadow: 3px 3px 8px #000000;
+}
+
+.card.inactive {
+  filter: brightness(0.7);
+}
+
+.card.selectable.selected {
+  transform: translate(0, -30px);
+  box-shadow: 0px 0px 40px #090;
+}
+
+.card.selectable {
+  cursor: pointer;
+  box-shadow: 0px 10px 20px #555;
+}
+
+.card.selectable:not(.selected):hover {
+  box-shadow: 0px 0px 40px #000;
+}
+

@@ -20,9 +20,9 @@ export class HomeInternal extends React.Component<HomeInternalInnerProps & HomeI
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <SEO title={t('title')} description={t('description')} />
         <Header />
-        <LobbyCarousel />
         <GamesList />
         {this.maybeRenderGamesInDevelopment()}
+        <LobbyCarousel />
         <p style={{ fontSize: '14px', textAlign: 'center' }}>
           <Link href={() => about()}>
             <a>{t('about')}</a>

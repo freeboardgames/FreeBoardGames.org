@@ -25,6 +25,8 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { compose } from 'recompose';
 import { GameContributors } from './GameContributors';
+import LobbyCarousel from 'infra/lobby/LobbyCarousel';
+import css from './GameInfo.module.css';
 
 interface GameInfoInnerProps extends Pick<WithTranslation, 't' | 'i18n'>, WithCurrentGameTranslation {}
 
@@ -71,15 +73,16 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
           ]}
         />
         <DesktopView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
-          <div style={{ padding: '18px 8px', display: 'flex' }} data-testid={'TabletViewDiv'}>
-            <div style={{ flex: '60%', paddingRight: '32px' }}>
+          <div className={css.RootWrapper} data-testid={'TabletViewDiv'}>
+            <div className={css.LeftCol}>
               <Typography variant="h4" component="h1">
                 {t('play', name, { name: translate('name', name) })}
               </Typography>
               <GameContributors game={gameDef} />
               <GameModePicker gameDef={gameDef} />
+              <LobbyCarousel game={gameDef} />
             </div>
-            <div style={{ flex: '55%', padding: '8px' }}>
+            <div className={css.RightCol}>
               <GameCard game={gameDef} />
               <div style={{ marginTop: '16px' }}>
                 {!isFullyTranslated(gameDef) && (
@@ -99,9 +102,11 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
                     />
                   </Alert>
                 )}
-                <Typography variant="body1" component="p">
-                  <ReactMarkdown linkTarget="_blank" source={textInstructions} />
-                </Typography>
+                <div className={css.InstructionsWrapper}>
+                  <Typography variant="body1" component="p">
+                    <ReactMarkdown linkTarget="_blank" source={textInstructions} />
+                  </Typography>
+                </div>
               </div>
               <div style={{ marginTop: '32px' }}>{gameVideoInstructions}</div>
             </div>
@@ -115,6 +120,7 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
             </Typography>
             <GameContributors game={gameDef} />
             <GameModePicker gameDef={gameDef} />
+            <LobbyCarousel game={gameDef} />
             {gameVideoInstructions}
             {gameTextInstructions}
           </div>
@@ -143,6 +149,7 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
         'NicknamePrompt',
         'NicknameRequired',
         'OccupancySelect',
+        'LobbyCarousel',
         getGameCodeNamespace(gameCode),
       ],
     };

@@ -8,8 +8,8 @@ import { ICard } from '../types';
 export function Kitty(props: { kitty: ICard[]; revealed: boolean; descr: JSX.Element | string }) {
   function arrangeKittyCard(index: number, card: ICard) {
     return (
-      <div className={css.arrangeCard}>
-        <div key={index} className={css.cropCard}>
+      <div key={index} className={css.arrangeCard}>
+        <div className={css.cropCard}>
           <div className={css.scaleCard}>
             <Card type={props.revealed ? card : null} />
           </div>

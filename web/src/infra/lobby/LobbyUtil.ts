@@ -34,6 +34,15 @@ export interface GroupedRoomDisplay {
   [gameCode: string]: RoomDisplay[];
 }
 
+export function orderCurrentGameFirst(grouped: GroupedRoomDisplay, gameCode?: string): [string, RoomDisplay[]][] {
+  const entries = Object.entries(grouped);
+  if (!gameCode || !(gameCode in grouped)) {
+    return entries;
+  }
+  const filteredEntries = entries.filter((entry) => entry[0] !== gameCode);
+  return [[gameCode, grouped[gameCode]], ...filteredEntries];
+}
+
 export function getGroupedRoomsDisplay(lobby: GetLobby_lobby): GroupedRoomDisplay {
   const result: GroupedRoomDisplay = {};
   for (const room of lobby.rooms) {
