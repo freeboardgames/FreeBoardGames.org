@@ -58,14 +58,10 @@ export const SkatGame: Game<IG> = {
   },
 
   phases: {
-    dealing: {
+    bidding: {
       start: true,
-      next: Phases.bidding,
 
-      // this phase doesn't have any user interaction, but ends immediately
-      endIf: () => true,
-
-      onEnd: (G: IG, ctx: Ctx) => {
+      onBegin: (G: IG, ctx: Ctx) => {
         const handSize = 10;
         const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, ctx.numPlayers)];
@@ -87,14 +83,12 @@ export const SkatGame: Game<IG> = {
         });
         G.kitty = G.deck.slice(-2).sort(cmpCards);
       },
-    },
 
-    bidding: {
       turn: {
         moveLimit: 1,
         order: {
           first: (G: IG) => +G.bidderId,
-          next: (G: IG, ctx: Ctx) => (ctx.playOrderPos == +G.holderId ? +G.bidderId : +G.holderId),
+          next: (G: IG, ctx: Ctx) => (ctx.playOrderPos != +G.bidderId ? +G.bidderId : +G.holderId),
         },
       },
 
@@ -103,25 +97,18 @@ export const SkatGame: Game<IG> = {
       },
 
       endIf: (G: IG) => {
+        if (G.players[0].hand.length == 0) return;
         const bidder = util.getPlayerById(G, G.bidderId);
         const holder = util.getPlayerById(G, G.holderId);
-        if (bidder.bid != 0 && holder.bid != 0) {
-          return false;
-        }
+        if (bidder.bid != 0 && holder.bid != 0) return;
         if (bidder.isDealer) {
-          return { next: bidder.bid == 0 && holder.bid == 0 ? Phases.dealing : Phases.discard };
+          return { next: bidder.bid == 0 && holder.bid == 0 ? Phases.bidding : Phases.discard };
         }
-        return { next: Phases.bidding };
       },
 
       onEnd: (G: IG, ctx: Ctx) => {
         const bidder = util.getPlayerById(G, G.bidderId);
         const holder = util.getPlayerById(G, G.holderId);
-        if (!bidder.isDealer) {
-          G.holderId = bidder.bid == 0 ? holder.id : bidder.id;
-          G.bidderId = G.players.findIndex((P) => P.isDealer).toString();
-          return;
-        }
         const taker = bidder.bid == 0 ? holder : bidder;
         if (taker.bid == 0) {
           const dealerPos = G.players.findIndex((P) => P.isDealer);
@@ -202,7 +189,7 @@ export const SkatGame: Game<IG> = {
     },
 
     round_end: {
-      next: Phases.dealing,
+      next: Phases.bidding,
       turn: {
         stages: { get_ready: { moves: { Finish: Moves.Finish } } },
         activePlayers: { all: Stages.get_ready, moveLimit: 1 },

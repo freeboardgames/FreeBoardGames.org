@@ -1,15 +1,13 @@
 export enum Phases {
-  dealing = 'dealing',
   bidding = 'bidding',
   discard = 'discard',
-  calling = 'calling',
   placement = 'placement',
   round_end = 'round_end',
-  result = 'result',
 }
 
 export enum Stages {
-  place_card = 'place_card',
+  call_card = 'call_card',
+  select_trump = 'select_trump',
   get_ready = 'get_ready',
 }
 
@@ -17,6 +15,7 @@ export interface IGameMoves {
   MakeBid(value: number): void;
   Discard(): void;
   Call(card: ICard): void;
+  SelectTrumpSuit(suit: CardColor): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
 }
@@ -64,7 +63,7 @@ export const DefaultIG: IG = {
   calledTakerId: '',
   calledMayRun: null,
   calledCard: null,
-  trumpSuit: CardColor.Herz,
+  trumpSuit: null,
   contract: Contract.None,
   trick: { cards: [] },
   resolvedTricks: [],

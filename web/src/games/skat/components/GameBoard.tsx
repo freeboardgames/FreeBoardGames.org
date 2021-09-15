@@ -90,7 +90,7 @@ export function Board(props: {
   }
 
   function renderTrumpSuit() {
-    if (!props.trumpSuit) return;
+    if (props.trumpSuit === null) return;
     return (
       <div className={css.trumpSuit}>
         <span>{translate('trumpsuit')}</span>

@@ -82,7 +82,6 @@ export function setup_3players(): IG {
     resolvedTricks: [ecarte],
     contract: Contract.Solo,
     trumpSuit: CardColor.Eichel,
-    calledCard: str2card('EA'),
   };
 }
 
