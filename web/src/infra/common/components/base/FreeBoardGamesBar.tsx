@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import AppBar from '@material-ui/core/AppBar';
@@ -51,6 +51,7 @@ function renderLanguageSelect() {
         <MenuItem value="en">English</MenuItem>
         <MenuItem value="pt">Português</MenuItem>
         <MenuItem value="de">Deutsch</MenuItem>
+        <MenuItem value="fr">Français</MenuItem>
       </Select>
     </div>
   );
@@ -58,7 +59,9 @@ function renderLanguageSelect() {
 
 const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
   const maxWidth = props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
-
+  useEffect(() => {
+    document.body.style.backgroundColor = 'white';
+  }, []);
   return (
     <>
       <div
@@ -71,7 +74,7 @@ const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
           <Toolbar>
             <Link href={() => home()}>
               <a style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-                <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
+                <img style={{ marginRight: '8px' }} width="48" height="48" src={FbgLogo} alt="FbG" />
                 <Typography component="h1" variant="h6" style={{ color: 'white' }}>
                   FreeBoardGames.org
                 </Typography>

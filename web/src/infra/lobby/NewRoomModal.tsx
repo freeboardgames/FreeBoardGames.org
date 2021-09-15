@@ -7,19 +7,18 @@ import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { Router, Trans, withTranslation, WithTranslation } from 'infra/i18n';
 import getMessagePage from 'infra/common/factories/MessagePage';
-import { IGameDef } from 'gamesShared/definitions/game';
-import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
 import { room } from 'infra/navigation';
 import { compose } from 'recompose';
+import { IGameDef } from 'gamesShared/definitions/game';
 
 interface NewRoomModalInnerProps extends WithTranslation {}
 
 interface NewRoomModalOutterProps {
+  game: IGameDef;
   handleClickaway: () => void;
 }
 
 interface NewRoomModalState {
-  game?: IGameDef;
   occupancy?: number;
   loading: boolean;
   error: boolean;
@@ -29,29 +28,17 @@ export class NewRoomModalInternal extends React.Component<
   NewRoomModalInnerProps & NewRoomModalOutterProps,
   NewRoomModalState
 > {
-  state = { game: undefined, occupancy: undefined, loading: false, error: false };
+  state = { occupancy: undefined, loading: false, error: false };
 
   render() {
-    if (this.state.game) {
-      return (
-        <NicknameRequired skipFbgBar={true}>
-          <AlertLayer onClickaway={this.props.handleClickaway}>
-            <Card className={css.Card}>{this.renderCardContent()}</Card>
-          </AlertLayer>
-        </NicknameRequired>
-      );
-    } else {
-      return <GamePickerModal gamePickedCallback={this._changeGame} />;
-    }
+    return (
+      <NicknameRequired skipFbgBar={true}>
+        <AlertLayer onClickaway={this.props.handleClickaway}>
+          <Card className={css.Card}>{this.renderCardContent()}</Card>
+        </AlertLayer>
+      </NicknameRequired>
+    );
   }
-
-  _changeGame = (game?: IGameDef) => {
-    if (game) {
-      this.setState({ game, occupancy: undefined });
-    } else {
-      this.props.handleClickaway();
-    }
-  };
 
   renderCardContent() {
     const { t } = this.props;
@@ -75,8 +62,7 @@ export class NewRoomModalInternal extends React.Component<
   }
 
   renderGameSelect() {
-    const { t } = this.props;
-    const { game } = this.state;
+    const { t, game } = this.props;
 
     return (
       <div>
@@ -90,10 +76,7 @@ export class NewRoomModalInternal extends React.Component<
   };
 
   renderOccupancySelect() {
-    if (!this.state.game) {
-      return;
-    }
-    const game = this.state.game;
+    const game = this.props.game;
     if (game.minPlayers === game.maxPlayers) {
       return;
     }
@@ -117,13 +100,7 @@ export class NewRoomModalInternal extends React.Component<
           {t('cancel')}
         </Button>
         <div className={css.buttonsSeparator}></div>
-        <Button
-          variant="contained"
-          color="primary"
-          className={css.Button}
-          disabled={!this.state.game}
-          onClick={this._createRoom}
-        >
+        <Button variant="contained" color="primary" className={css.Button} onClick={this._createRoom}>
           {t('create')}
         </Button>
       </div>
@@ -133,8 +110,8 @@ export class NewRoomModalInternal extends React.Component<
   _createRoom = () => {
     const { i18n } = this.props;
     this.setState({ loading: true });
-    const occupancy = this.state.occupancy || this.state.game.minPlayers;
-    LobbyService.newRoom((this.props as any).dispatch, this.state.game.code, occupancy, true).then(
+    const occupancy = this.state.occupancy || this.props.game.minPlayers;
+    LobbyService.newRoom((this.props as any).dispatch, this.props.game.code, occupancy, true).then(
       (response) => {
         // we use .replace instead of .push so that the browser back button works correctly
         Router.replace(room(response.newRoom.roomId)(i18n.language));

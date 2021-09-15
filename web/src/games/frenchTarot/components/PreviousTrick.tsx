@@ -1,21 +1,10 @@
 import * as React from 'react';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import css from './PreviousTrick.module.css';
 
-import { ICard, CardColor } from '../engine/types';
-import * as util from '../engine/util';
-
-const CardPositions = [
-  ['translate(0, 20px)', 'translate(55%, -10px)', 'translate(-55%, -10px)'],
-  ['translate(0, 30px)', 'translate(102%, 6px)', 'translate(0, -16px)', 'translate(-102%, 6px)'],
-  [
-    'translate(0, 30px)',
-    'translate(104%, 13px)',
-    'translate(55%, -12px)',
-    'translate(-55%, -12px)',
-    'translate(-104%, 13px)',
-  ],
-];
+import { ICard, CardColor } from '../types';
+import * as util from '../util/misc';
 
 const ColorSymbols = {
   Spades: <>&#x2660;&#xFE0F;</>,
@@ -26,29 +15,20 @@ const ColorSymbols = {
   Trumps: <>&#x1F482;</>,
 };
 
-export class PreviousTrick extends React.Component<
-  {
-    trick: ICard[];
-    leaderPos: number;
-    currPos: number;
-    numPlayers: number;
-  },
-  {}
-> {
-  render() {
-    return (
-      <div className={css.prevTrick}>
-        <span>Previous trick</span>
-        {new Array(this.props.numPlayers).fill(0).map((_, i) => this.renderPrevTrickCard(i))}
-      </div>
-    );
-  }
+export function PreviousTrick(props: {
+  trick: ICard[];
+  leaderPos: number;
+  currPos: number;
+  numPlayers: number;
+  isKitty?: boolean;
+}) {
+  const { translate } = useCurrentGameTranslation();
 
-  renderPrevTrickCard(i: number) {
-    const card = this.props.trick[i];
-    const index = util.mod(this.props.leaderPos + i - this.props.currPos, this.props.numPlayers);
-    var text = '';
-    var symbol = <></>;
+  function renderPrevTrickCard(i: number) {
+    const card = props.trick[i];
+    const index = util.mod(props.leaderPos + i - props.currPos, props.numPlayers);
+    let text = '';
+    let symbol = <></>;
     if (card) {
       text = card.value.toString();
       if (card.color == CardColor.Excuse) {
@@ -58,16 +38,25 @@ export class PreviousTrick extends React.Component<
       }
       symbol = ColorSymbols[CardColor[card.color]];
     }
-    const position_id = Math.max(0, this.props.numPlayers - 3);
-    const position = CardPositions[position_id][index];
     return (
       <span
-        className={[css.prevCard, card ? '' : css.emptyCard].join(' ')}
-        style={{ transform: `translate(-50%, -50%) ${position}` }}
+        className={[
+          css.prevCard,
+          card ? '' : css.emptyCard,
+          props.isKitty ? css.kitty : css[`p${Math.max(3, props.numPlayers)}`],
+          css[`i${index + 1}`],
+        ].join(' ')}
         key={index}
       >
         {symbol} {text}
       </span>
     );
   }
+
+  return (
+    <div className={css.prevTrick}>
+      <span>{props.isKitty ? translate('prev_kitty') : translate('prev_trick')}</span>
+      {new Array(props.numPlayers).fill(0).map((_, i) => renderPrevTrickCard(i))}
+    </div>
+  );
 }

@@ -1,5 +1,4 @@
 jest.mock('./stockfish8.worker');
-jest.mock('react-ga');
 
 import { GameMode } from 'gamesShared/definitions/mode';
 import React from 'react';

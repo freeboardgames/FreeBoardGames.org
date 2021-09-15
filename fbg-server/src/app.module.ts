@@ -24,6 +24,7 @@ const CONNECTION: any = process.env.POSTGRES_URL
     };
 
 const isProd = process.env.NODE_ENV === 'production';
+const forceDbSync = process.env.FORCE_DB_SYNC === 'true';
 
 @Module({
   providers: [ComplexityPlugin],
@@ -31,7 +32,7 @@ const isProd = process.env.NODE_ENV === 'production';
     TypeOrmModule.forRoot({
       ...CONNECTION,
       autoLoadEntities: true,
-      synchronize: !isProd,
+      synchronize: !isProd || forceDbSync,
       logging: false,
     }),
     GraphQLModule.forRoot({

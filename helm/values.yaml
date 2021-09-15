@@ -4,14 +4,19 @@ images:
   imagePullPolicy: Never    # For prod, use Always
   web: fbg-web              # For prod, use freeboardgames/web
   fbgServer: fbg-server     # For prod, use freeboardgames/fbg-server
+  fbgBackuper: fbg-backuper # For prod, use freeboardgames/fbg-backuper
+
+secrets:
+  gcpCredsBase64: null      # Fill base64 encoded Google cloud credentials file.
 
 replicas:
   web: 2
   fbgServer: 2
-  bgio: 1
+  bgio: 2
 
 fbgServer:
   jwtSecret: SECRET_TO_SIGN_JWT
+  forceDbSync: true       # For prod, use false
 
 postgresql:
   postgresqlPostgresPassword: PG_ROOT_PASSWORD
@@ -22,10 +27,6 @@ postgresql:
     port: 5432
   volumePermissions:
     enabled: true
-  resources:
-    limits:
-      cpu: "2"
-      memory: 2048Mi
 
 redis:
   auth:

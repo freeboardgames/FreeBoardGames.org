@@ -1,0 +1,9 @@
+{
+  "copied": "Copié!",
+  "copy_link": "Copier le lien",
+  "invite_your_friends": "Inviter ses amis",
+  "room": "Salle: {{ name }}",
+  "share_on_facebook": "Partager en Facebook",
+  "share_on_whats_app": "Partager en WhatsApp",
+  "show_qr_code": "Afficher le code QR"
+}

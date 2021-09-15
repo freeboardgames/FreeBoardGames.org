@@ -1,22 +1,49 @@
 .kitty {
   position: absolute;
-  height: 200px;
-  left: 50%; top: 50%;
-  transform: translate(-50%,-50%);
+  left: 0; right: 0;
+  top: 190px; bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  z-index: 1;
+}
+
+.kitty > div {
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 710px;
+  padding: 0 90px 0 20px;
+}
+
+.kitty > div > div {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .kittyDescr {
   position: absolute;
-  top: 0; left: 50%;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 6px;
   width: 400px;
-  transform: translate(-50%, -110%);
+  transform: translate(30px, -120%);
   text-align: center;
 }
 
-.cardContainer {
+.arrangeCard {
+  display: inline-block;
+  width: 30px;
+}
+
+.cropCard {
+  height: 180px;
+  width: 100px;
+  overflow: hidden;
+}
+
+.scaleCard {
   transform-origin: 0 0;
   transform: scale(0.3);
-  float: left;
 }

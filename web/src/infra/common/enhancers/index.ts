@@ -1,5 +1,3 @@
-import ReactGAEnhancer from './ReactGAEnhancer';
-
-const defaultEnhancers = [ReactGAEnhancer];
+const defaultEnhancers = [];
 
 export default defaultEnhancers;
