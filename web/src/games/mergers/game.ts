@@ -367,6 +367,7 @@ export function getBonuses(G: IG, chain: Chain): Record<string, number> {
 }
 
 export function awardMoneyToPlayers(G: IG, awards: Record<string, number>) {
+  debugger;
   for (const playerID of Object.keys(awards)) {
     G.players[playerID].money += awards[playerID];
   }
@@ -420,6 +421,7 @@ export function mergerPhaseFirstTurn(G: IG, ctx: Ctx) {
 }
 
 export function mergerPhaseNextTurn(G: IG, ctx: Ctx, isFirst: boolean = false) {
+  debugger;
   const mergingPlayerID = getHotels(G).getHotel(G.lastPlacedHotel).drawnByPlayer;
   const mergingPlayerPos = ctx.playOrder.indexOf(mergingPlayerID);
 
@@ -575,11 +577,20 @@ export const MergersGame: Game<IG> = {
           next: mergerPhaseNextTurn,
         },
         moveLimit: 1,
+        onEnd: (G: IG, ctx: Ctx) => {
+          debugger;
+          if (G.merger.mergingChains.length === 1) {
+            ctx.events.setPhase('buildingPhase');
+          } else {
+            ctx.events.setPhase('chooseChainToMergePhase');
+          }
+        },
       },
 
       moves: { swapAndSellStock },
 
       onBegin: (G: IG) => {
+        debugger;
         // now that we now which chain is being merged, fill in the rest of the merger info
         const mergerResults: Merger = getMergerResults(G, G.merger.chainToMerge);
         G.merger = {
@@ -587,6 +598,7 @@ export const MergersGame: Game<IG> = {
           ...mergerResults,
         };
         awardMoneyToPlayers(G, G.merger.bonuses);
+        return G;
       },
 
       onEnd: (G: IG) => {

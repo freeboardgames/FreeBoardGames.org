@@ -993,7 +993,8 @@ describe('mergerPhase', () => {
       p1 = clients[1];
     });
 
-    it('completes the merger process twice', () => {
+    it.only('completes the merger process twice', () => {
+      // DO NOT SUBMIT: DELETE it.only BEFORE MERGING!
       expect(p0.store.getState().G.players['0'].money).toEqual(6000);
       expect(p1.store.getState().G.players['1'].money).toEqual(6000);
       expect(p0.store.getState().G.players['0'].stocks[Chain.Toro]).toEqual(1);
@@ -1020,6 +1021,7 @@ describe('mergerPhase', () => {
       expect(p0.store.getState().G.players['0'].money).toEqual(9000);
       expect(p0.store.getState().G.players['1'].money).toEqual(6000);
       // p0 swaps and sells stock
+      debugger;
       p0.moves.swapAndSellStock(0, 1); // swap 0, sell 1
       expect(p0.store.getState().G.players['0'].stocks[Chain.Toro]).toEqual(0);
       // skips p1
