@@ -157,6 +157,7 @@ export const PicnicGoGame = {
     },
     useFork: (g, ctx) => {
       if (g.players[ctx.playerID].forkUsed || g.players[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
+      if (g.hands[0].hand.length < 2) return INVALID_MOVE;
       g.players[ctx.playerID].forkUsed = true;
       g.players[ctx.playerID].unusedForks--;
 
