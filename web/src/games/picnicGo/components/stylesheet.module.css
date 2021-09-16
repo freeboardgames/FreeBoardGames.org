@@ -54,12 +54,12 @@
 }
 
 .HandTopBar {
-  clear: 'both', 
-  margin: '8px',
-  display: 'flex', 
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  minHeight: '30px'
+  clear: 'both'; 
+  margin: '8px';
+  display: 'flex'; 
+  align-items: 'center';
+  justify-content: 'space-between';
+  min-height: '30px'
 }
 
 .PlayedCards {
