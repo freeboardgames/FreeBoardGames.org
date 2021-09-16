@@ -57,9 +57,9 @@ export class CustomizationBarInternal extends React.Component<
 
   render() {
     return (
-      <div className={css.BarWrapper}>
+      <div className={css.BarWrapperWrapper}>
         {this.renderCustomizationDialog()}
-        {this.renderQuickCustomization()}
+        <div className={css.BarWrapper}>{this.renderQuickCustomization()}</div>
         {this.renderFullCustomizationButton()}
       </div>
     );
@@ -98,7 +98,7 @@ export class CustomizationBarInternal extends React.Component<
       <IconButton
         aria-label="Customize game"
         onClick={this.toggleFullCustomizationDialog}
-        style={{ height: '36px', width: '36px', marginLeft: 'auto' }}
+        style={{ height: '48px', width: '48px', marginLeft: 'auto' }}
       >
         <SettingsIcon style={{ color: this.state.customizationState[mode]?.full ? '#3f51b5' : undefined }} />
       </IconButton>

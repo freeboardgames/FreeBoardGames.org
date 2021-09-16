@@ -1,25 +1,23 @@
 .wrapper {
-  padding: 0 33px;
   position: relative;
 }
 
 .carousel {
   overflow: hidden;
-  width: 100%;
   display: flex; 
   flex-wrap: nowrap;
 }
 
 .leftButton {
   position: absolute !important;
-  left: 5px;
+  left: -28px;
   top: 50%;
   transform: translate(0, -50%);
 }
 
 .rightButton {
   position: absolute !important;
-  right: 5px;
+  right: -28px;
   top: 50%;
   transform: translate(0, -50%);
 }

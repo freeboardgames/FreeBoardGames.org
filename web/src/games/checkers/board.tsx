@@ -103,11 +103,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     await this.props.moves.move(this.state.selected, coords);
-    this.setState({
-      ...this.state,
-      selected: null,
-    });
   };
+
+  private _getPreselectedMove(validMoves: IMove[]): ICartesianCoords {
+    if (validMoves.length === 1) {
+      const from = validMoves[0].from;
+      return { x: from.x, y: from.y };
+    }
+    return null;
+  }
 
   _getHighlightedSquares() {
     const result = {} as IColorMap;
@@ -190,12 +194,15 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   componentDidUpdate(prevProps: IBoardProps) {
     if (prevProps.ctx.turn !== this.props.ctx.turn) {
+      const validMoves =
+        this.props.G.jumping === null
+          ? getValidMoves(this.props.G, this.props.ctx.currentPlayer)
+          : getValidMoves(this.props.G, this.props.ctx.currentPlayer, this.props.G.jumping);
+
       this.setState({
         ...this.state,
-        validMoves:
-          this.props.G.jumping === null
-            ? getValidMoves(this.props.G, this.props.ctx.currentPlayer)
-            : getValidMoves(this.props.G, this.props.ctx.currentPlayer, this.props.G.jumping),
+        validMoves,
+        selected: this._getPreselectedMove(validMoves),
       });
     }
   }

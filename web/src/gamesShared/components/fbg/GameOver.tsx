@@ -6,7 +6,6 @@ import FreeBoardGamesBar from 'infra/common/components/base/FreeBoardGamesBar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ReplayIcon from '@material-ui/icons/Replay';
-import ReactGA from 'react-ga';
 import getMessagePage from 'infra/common/factories/MessagePage';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { Router, WithTranslation, withTranslation } from 'infra/i18n';
@@ -33,10 +32,8 @@ export class GameOverInternal extends React.Component<IGameOverInnerProps & IGam
       return <Page />;
     }
     let playAgain;
-    let gameCode = null;
     const extraCardContent = this._getExtraCardContent();
     if (this.props.gameArgs) {
-      gameCode = this.props.gameArgs.gameCode;
       playAgain = (
         <div style={{ textAlign: 'center' }}>
           <Button
@@ -50,11 +47,6 @@ export class GameOverInternal extends React.Component<IGameOverInnerProps & IGam
         </div>
       );
     }
-    ReactGA.event({
-      category: 'Game',
-      label: gameCode,
-      action: 'Game over',
-    });
     return (
       <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView>
         <Typography
@@ -85,11 +77,6 @@ export class GameOverInternal extends React.Component<IGameOverInnerProps & IGam
   _playAgainHandle = async () => {
     const { i18n } = this.props;
     const args = this.props.gameArgs;
-    ReactGA.event({
-      category: 'GameOver',
-      action: 'Clicked play again',
-      label: args.gameCode,
-    });
 
     if (args.mode === GameMode.AI || args.mode === GameMode.LocalFriend) {
       Router.push(window.location.pathname);

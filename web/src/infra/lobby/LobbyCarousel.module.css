@@ -1,5 +1,5 @@
 .wrapper {
-  padding-bottom: 16px;
+  margin: 16px 0;
 }
 
 .carouselCenter {
@@ -9,4 +9,16 @@
 .message {
   padding-top: 16px;
   padding-left: 12px;
+}
+
+.title {
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+.cardWrapper {
+  text-decoration: none;
+  min-width: 225px;
+  width: 225px;
+  margin-right: 16px;
 }
