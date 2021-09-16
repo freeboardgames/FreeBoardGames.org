@@ -17,6 +17,9 @@ import cardCupcake from './media/cardCupcake.png';
 
 interface InnerWrapper {
   id: cardEnum;
+  active: boolean;
+  selected: boolean;
+  isTurn: boolean;
 }
 
 export function getCardImage(id: cardEnum) {
@@ -67,9 +70,20 @@ export class Card extends React.Component<InnerWrapper, {}> {
     let cardImage: any = getCardImage(this.props.id);
 
     return (
-      <div className={css.Card}>
-        <img src={cardImage} />
+      <div className={this.props.active ? css.Card : css.CardSmall}>
+        <img
+          src={cardImage}
+          style={{
+            opacity: this._getOpacity(),
+            transform: !this.props.active || this.props.selected ? 'none' : 'scale(0.85)',
+          }}
+        />
       </div>
     );
+  }
+
+  _getOpacity() {
+    if (!this.props.active || this.props.isTurn || this.props.selected) return 1.0;
+    else return 0.75;
   }
 }
