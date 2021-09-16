@@ -179,9 +179,7 @@ export const PicnicGoGame = {
           g.players[ho] = cardFunctions[getCardTypeFromNumber(h.hand[h.selected[j]])](g.players[ho]);
         }
 
-        for (let j = 0; j < h.selected.length; j++) {
-          g.hands[i].hand.splice(h.selected[j], 1);
-        }
+        g.hands[i].hand = g.hands[i].hand.filter((_, i) => !h.selected.includes(i));
 
         // Remove fork from hand if fork used
         if (g.players[h.currentOwner].forkUsed) {
