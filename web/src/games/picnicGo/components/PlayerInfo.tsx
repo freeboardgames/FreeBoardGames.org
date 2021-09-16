@@ -7,9 +7,10 @@ import { getCardTypeFromNumber } from '../cards';
 interface InnerWrapper {
   G: IG;
   playerID: string;
+  playerName: string;
 }
 
-export class PlayedCards extends React.Component<InnerWrapper, {}> {
+export class PlayerInfo extends React.Component<InnerWrapper, {}> {
   render() {
     return (
       <div className={css.PlayedCards}>
@@ -18,5 +19,9 @@ export class PlayedCards extends React.Component<InnerWrapper, {}> {
         ))}
       </div>
     );
+  }
+
+  _getTopBar() {
+    return <div style={{ display: 'flex', justifyContent: 'space-between' }}></div>;
   }
 }
