@@ -162,17 +162,6 @@ export function getScoreboard(g: IG) {
     .sort((a, b) => b.score - a.score);
 }
 
-export const basePlayer = {
-  playedCards: [],
-  score: 0,
-  dessertsCount: 0,
-  chipsCount: 0,
-  unusedMayo: 0,
-  unusedForks: 0,
-  forkUsed: false,
-  turnsLeft: 1,
-};
-
 // Moves
 export function selectCard(g: IG, ctx: Ctx, index: number) {
   if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
@@ -213,7 +202,16 @@ export const PicnicGoGame = {
 
   setup: (ctx) => {
     const baseState = {
-      players: new Array(ctx.numPlayers).fill(basePlayer),
+      players: new Array(ctx.numPlayers).fill({
+        playedCards: [],
+        score: 0,
+        dessertsCount: 0,
+        chipsCount: 0,
+        unusedMayo: 0,
+        unusedForks: 0,
+        forkUsed: false,
+        turnsLeft: 1,
+      }),
       hands: [],
       round: 0,
       gameOver: false,
