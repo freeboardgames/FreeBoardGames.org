@@ -184,9 +184,9 @@ export const PicnicGoGame = {
     play: {
       start: true,
       next: 'score',
-      endIf: (g) => g.hands[0].hand.length === 0,
+      endIf: (g: IG) => g.hands[0].hand.length === 0,
       moves: {
-        selectCard: (g, ctx, index) => {
+        selectCard: (g: IG, ctx: Ctx, index: number) => {
           if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
           if (index === undefined) return INVALID_MOVE;
           if (index < 0 || index >= g.hands[0].hand.length) return INVALID_MOVE;
@@ -198,7 +198,7 @@ export const PicnicGoGame = {
 
           g.players[ctx.playerID].turnsLeft--;
         },
-        useFork: (g, ctx) => {
+        useFork: (g: IG, ctx: Ctx) => {
           if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
           if (g.players[ctx.playerID].forkUsed || g.players[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
           if (g.hands[0].hand.length < 2) return INVALID_MOVE;
@@ -210,7 +210,7 @@ export const PicnicGoGame = {
       },
       turn: {
         activePlayers: ActivePlayers.ALL,
-        onMove: (g, ctx) => {
+        onMove: (g: IG, ctx: Ctx) => {
           const unfinishedPlayers = g.players.filter((e) => e.turnsLeft > 0);
 
           if (unfinishedPlayers.length === 0) {
@@ -221,7 +221,7 @@ export const PicnicGoGame = {
     },
     score: {
       next: 'play',
-      onEnd: (g, ctx) => {
+      onEnd: (g: IG, ctx: Ctx) => {
         scoreRoundEnd(g, ctx);
         if (g.round === 3) {
           scoreGameEnd(g, ctx);
@@ -243,7 +243,7 @@ export const PicnicGoGame = {
     },
   },
 
-  endIf: (g) => {
+  endIf: (g: IG) => {
     if (g.gameOver) {
       return { scoreboard: getScoreboard(g) };
     }
