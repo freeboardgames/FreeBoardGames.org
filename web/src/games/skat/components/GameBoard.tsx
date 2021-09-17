@@ -94,9 +94,11 @@ export function Board(props: {
     return (
       <div className={css.trumpSuit}>
         <span>{translate('trumpsuit')}</span>
-        <div className={css.cardContainer}>
-          <div>
-            <Card type={{ color: props.trumpSuit, value: 14 }} />
+        <div className={css.arrangeCard}>
+          <div className={css.cropCard}>
+            <div className={css.scaleCard}>
+              <Card type={{ color: props.trumpSuit, value: 14 }} />
+            </div>
           </div>
         </div>
       </div>
@@ -108,9 +110,13 @@ export function Board(props: {
   }
 
   function renderOuvert() {
-    if (!props.cardsOuvert) return;
+    if (!props.cardsOuvert || props.cardsOuvert.length == 0) return;
+    const playerPos: number = +props.player.id;
+    const taker = props.players.find((P) => P.isTaker);
+    const takerPosRel: number = util.mod(+taker.id - playerPos, props.players.length);
+    const takerIsLeft = takerPosRel == 1;
     return (
-      <div className={css.cardsOuvert}>
+      <div className={`${css.cardsOuvert} ${takerIsLeft ? css.left : ''}`}>
         {props.cardsOuvert.map((C, i) => {
           return (
             <div key={i} className={css.cardContainer}>
