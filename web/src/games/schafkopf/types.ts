@@ -30,10 +30,11 @@ export enum CardColor {
 export enum Contract {
   None = -1,
   Pass = 0,
-  Ace = 1,
-  Bettel = 2,
-  Wenz = 3,
-  Solo = 4,
+  Some = 1,
+  Ace = 2,
+  Bettel = 3,
+  Wenz = 4,
+  Solo = 5,
 }
 
 export interface IG {

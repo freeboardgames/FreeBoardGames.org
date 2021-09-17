@@ -32,7 +32,7 @@ export function get_cmpCards(contract: Contract, trumpSuit: CardColor) {
 }
 
 export function getBidName(bid: number): string {
-  return `bid_${['pass', 'ace', 'bettel', 'wenz', 'solo'][bid]}`;
+  return `bid_${['pass', 'some', 'ace', 'bettel', 'wenz', 'solo'][bid]}`;
 }
 
 export function kittySize(numPlayers: number): number {
@@ -41,6 +41,15 @@ export function kittySize(numPlayers: number): number {
 
 export function handSize(numPlayers: number): number {
   return [10, 8][Math.max(0, numPlayers - 3)];
+}
+
+export function allowedBids(numPlayer: number, is_first_bidround: boolean): Contract[] {
+  if (is_first_bidround) return [Contract.Pass, Contract.Some];
+  if (numPlayer == 4) {
+    return [Contract.Pass, Contract.Ace, Contract.Bettel, Contract.Wenz, Contract.Solo];
+  } else {
+    return [Contract.Pass, Contract.Bettel, Contract.Wenz, Contract.Solo];
+  }
 }
 
 export function getPlayerById(G: IG, playerId: string): IPlayer {

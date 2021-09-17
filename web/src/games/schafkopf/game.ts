@@ -98,10 +98,10 @@ export const SchafkopfGame: Game<IG> = {
         if (G.players.some((P) => P.bid == Contract.Solo)) {
           return { next: Phases.discard };
         }
-        if (G.players.some((P) => P.bid == Contract.None)) return;
+        if (G.players.some((P) => P.bid == Contract.None || P.bid == Contract.Some)) return;
         if (G.players.every((P) => P.bid == Contract.Pass)) {
           return { next: Phases.bidding };
-        } else if (G.players.filter((P) => P.bid > Contract.Pass).length == 1) {
+        } else if (G.players.filter((P) => P.bid > Contract.Some).length == 1) {
           return { next: Phases.discard };
         }
       },
@@ -116,7 +116,7 @@ export const SchafkopfGame: Game<IG> = {
           }
           P.bid = Contract.None;
         });
-        if (highestBid == 0) {
+        if (highestBid == Contract.Pass) {
           const dealerPos = G.players.findIndex((P) => P.isDealer);
           G.players[dealerPos].isDealer = false;
           G.players[util.mod(dealerPos + 1, ctx.numPlayers)].isDealer = true;

@@ -153,17 +153,14 @@ export function Board(props: {
   function renderButtonsBid() {
     if (!props.selectBid) return;
     const highest_bid = Math.max(...props.players.map((p) => p.bid));
-    const allowed_bids = props.players.length == 4 ? [0, 1, 2, 3, 4] : [0, 2, 3, 4];
+    const is_first_bidround = props.player.bid == Contract.None;
+    const allowed_bids = util.allowedBids(props.players.length, is_first_bidround);
     const num_aces = props.player.hand.filter((C) => C.color != CardColor.Herz && C.value == 14).length;
     return allowed_bids.map(util.getBidName).map((name, i) => {
       const text: string = translate(name);
-      let selectable = false;
-      if (props.selectBid) {
-        if (allowed_bids[i] == 1 && num_aces == 3) {
-          selectable = false;
-        } else {
-          selectable = allowed_bids[i] == 0 || highest_bid < allowed_bids[i];
-        }
+      let selectable = allowed_bids[i] <= Contract.Some || highest_bid < allowed_bids[i];
+      if (allowed_bids[i] == Contract.Ace && num_aces == 3) {
+        selectable = false;
       }
       return (
         <Button
@@ -196,6 +193,8 @@ export function Board(props: {
         <div className={css.question}>{question}:</div>
         {['Schell', 'Herz', 'Gras', 'Eichel'].map((col) => {
           const card: ICard = { color: CardColor[col], value: 10 };
+          const colorInHand = props.player.hand.filter((C) => C.color == card.color);
+          if (colorInHand.every((C) => C.value == 11 || C.value == 12)) return null;
           return (
             <div key={col} className={css.cardContainer} onClick={() => props.selectTrump(card.color)}>
               <div>
