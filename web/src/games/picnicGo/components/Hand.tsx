@@ -29,7 +29,7 @@ export class Hand extends React.Component<InnerWrapper, {}> {
               id={getCardTypeFromNumber(c)}
               active={true}
               selected={h.selected && h.selected.includes(i)}
-              isTurn={this.props.ctx.activePlayers && this.props.ctx.activePlayers.hasOwnProperty(this.props.playerID)}
+              isTurn={this.props.G.players[this.props.playerID].turnsLeft > 0}
             />
           ))}
         </div>

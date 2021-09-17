@@ -18,6 +18,7 @@ export interface IG {
   hands: IHand[];
   round: number;
   gameOver: boolean;
+  confirmed: string[];
 }
 
 export interface IPlayer {

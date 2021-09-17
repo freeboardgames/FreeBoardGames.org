@@ -8,6 +8,7 @@ import { defaultDeck, cardFunctions, getCardTypeFromNumber } from './cards';
 
 export function setupRound(g: IG, ctx: Ctx) {
   g.round++;
+  g.confirmed = [];
 
   let dessertsPlayed = 0;
 
@@ -22,7 +23,7 @@ export function setupRound(g: IG, ctx: Ctx) {
   let unshuffledDeck = defaultDeck;
   for (let i = 0; i < dessertsPlayed; i++) {
     unshuffledDeck.splice(
-      unshuffledDeck.findIndex((e) => e === cardEnum.cake),
+      unshuffledDeck.findIndex((e) => getCardTypeFromNumber(e) === cardEnum.cake),
       1,
     );
   }
@@ -77,6 +78,8 @@ export function scoreRoundEnd(g: IG, ctx: Ctx) {
       g.players[chipsWinner[i]].score += scr;
     }
   }
+
+  return g;
 }
 
 export function scoreGameEnd(g: IG, ctx: Ctx) {
@@ -114,6 +117,8 @@ export function scoreGameEnd(g: IG, ctx: Ctx) {
       }
     }
   }
+
+  return g;
 }
 
 export function rotateAndScoreCards(g: IG, ctx: Ctx) {
@@ -144,6 +149,8 @@ export function rotateAndScoreCards(g: IG, ctx: Ctx) {
 
     g.players[h.currentOwner].turnsLeft = 1;
   }
+
+  return g;
 }
 
 export function getScoreboard(g: IG) {
@@ -153,6 +160,41 @@ export function getScoreboard(g: IG) {
       score: e.score,
     }))
     .sort((a, b) => b.score - a.score);
+}
+
+// Moves
+export function selectCard(g: IG, ctx: Ctx, index: number) {
+  if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
+  if (index === undefined) return INVALID_MOVE;
+  if (index < 0 || index >= g.hands[0].hand.length) return INVALID_MOVE;
+
+  const idx = g.hands.findIndex((e) => e.currentOwner === ctx.playerID);
+  if (g.hands[idx].selected === null) g.hands[idx].selected = [];
+  if (g.hands[idx].selected.includes(index)) return INVALID_MOVE;
+  g.hands[idx].selected.push(index);
+
+  g.players[ctx.playerID].turnsLeft--;
+
+  return g;
+}
+
+export function useFork(g: IG, ctx: Ctx) {
+  if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
+  if (g.players[ctx.playerID].forkUsed || g.players[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
+  if (g.hands[0].hand.length < 2) return INVALID_MOVE;
+
+  g.players[ctx.playerID].forkUsed = true;
+  g.players[ctx.playerID].unusedForks--;
+  g.players[ctx.playerID].turnsLeft = 2;
+
+  return g;
+}
+
+export function confirmScore(g: IG, ctx: Ctx) {
+  if (g.confirmed.includes(ctx.playerID)) return INVALID_MOVE;
+  g.confirmed.push(ctx.playerID);
+
+  return g;
 }
 
 export const PicnicGoGame = {
@@ -170,9 +212,10 @@ export const PicnicGoGame = {
         forkUsed: false,
         turnsLeft: 1,
       }),
-      hands: [{ currentOwner: '0', hand: [], selected: null }],
+      hands: [],
       round: 0,
       gameOver: false,
+      confirmed: [],
     };
 
     return setupRound(baseState, ctx);
@@ -182,36 +225,14 @@ export const PicnicGoGame = {
     play: {
       start: true,
       next: 'score',
-      onBegin: (g, ctx) => {
-        if (g.round !== 1) setupRound(g, ctx);
-      },
-      endIf: (g) => g.hands[0].hand.length === 0,
+      endIf: (g: IG) => g.hands[0].hand.length === 0,
       moves: {
-        selectCard: (g, ctx, index) => {
-          if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
-          if (index === undefined) return INVALID_MOVE;
-          if (index < 0 || index >= g.hands[0].hand.length) return INVALID_MOVE;
-
-          const idx = g.hands.findIndex((e) => e.currentOwner === ctx.playerID);
-          if (g.hands[idx].selected === null) g.hands[idx].selected = [];
-          if (g.hands[idx].selected.includes(index)) return INVALID_MOVE;
-          g.hands[idx].selected.push(index);
-
-          g.players[ctx.playerID].turnsLeft--;
-        },
-        useFork: (g, ctx) => {
-          if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
-          if (g.players[ctx.playerID].forkUsed || g.players[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
-          if (g.hands[0].hand.length < 2) return INVALID_MOVE;
-
-          g.players[ctx.playerID].forkUsed = true;
-          g.players[ctx.playerID].unusedForks--;
-          g.players[ctx.playerID].turnsLeft = 2;
-        },
+        selectCard,
+        useFork,
       },
       turn: {
         activePlayers: ActivePlayers.ALL,
-        onMove: (g, ctx) => {
+        onMove: (g: IG, ctx: Ctx) => {
           const unfinishedPlayers = g.players.filter((e) => e.turnsLeft > 0);
 
           if (unfinishedPlayers.length === 0) {
@@ -222,28 +243,24 @@ export const PicnicGoGame = {
     },
     score: {
       next: 'play',
-      onBegin: (_, ctx) => ctx.events.setActivePlayers({ all: 'confirm' }),
-      onEnd: (g, ctx) => {
+      onEnd: (g: IG, ctx: Ctx) => {
         scoreRoundEnd(g, ctx);
         if (g.round === 3) {
           scoreGameEnd(g, ctx);
           g.gameOver = true;
-        } else g.round++;
+        } else {
+          setupRound(g, ctx);
+        }
       },
-      endIf: (g, ctx) => ctx.numMoves > 0 && ctx.activePlayers === null,
+      endIf: (g: IG, ctx: Ctx) => g.confirmed.length === ctx.numPlayers,
+      moves: { confirmScore },
       turn: {
-        stages: {
-          confirm: {
-            moves: {
-              confirmScores: (g, ctx) => ctx.events.endStage(),
-            },
-          },
-        },
+        activePlayers: ActivePlayers.ALL_ONCE,
       },
     },
   },
 
-  endIf: (g) => {
+  endIf: (g: IG) => {
     if (g.gameOver) {
       return { scoreboard: getScoreboard(g) };
     }
