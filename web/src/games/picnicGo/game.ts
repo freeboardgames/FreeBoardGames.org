@@ -23,7 +23,7 @@ export function setupRound(g: IG, ctx: Ctx) {
   let unshuffledDeck = defaultDeck;
   for (let i = 0; i < dessertsPlayed; i++) {
     unshuffledDeck.splice(
-      unshuffledDeck.findIndex((e) => e === cardEnum.cake),
+      unshuffledDeck.findIndex((e) => getCardTypeFromNumber(e) === cardEnum.cake),
       1,
     );
   }
@@ -156,6 +156,17 @@ export function getScoreboard(g: IG) {
     .sort((a, b) => b.score - a.score);
 }
 
+export const basePlayer = {
+  playedCards: [],
+  score: 0,
+  dessertsCount: 0,
+  chipsCount: 0,
+  unusedMayo: 0,
+  unusedForks: 0,
+  forkUsed: false,
+  turnsLeft: 1,
+};
+
 // Moves
 export function selectCard(g: IG, ctx: Ctx, index: number) {
   if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
@@ -190,17 +201,8 @@ export const PicnicGoGame = {
 
   setup: (ctx) => {
     const baseState = {
-      players: new Array(ctx.numPlayers).fill({
-        playedCards: [],
-        score: 0,
-        dessertsCount: 0,
-        chipsCount: 0,
-        unusedMayo: 0,
-        unusedForks: 0,
-        forkUsed: false,
-        turnsLeft: 1,
-      }),
-      hands: [{ currentOwner: '0', hand: [], selected: null }],
+      players: new Array(ctx.numPlayers).fill(basePlayer),
+      hands: [],
       round: 0,
       gameOver: false,
       confirmed: [],
