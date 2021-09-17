@@ -8,6 +8,7 @@ import { defaultDeck, cardFunctions, getCardTypeFromNumber } from './cards';
 
 export function setupRound(g: IG, ctx: Ctx) {
   g.round++;
+  g.confirmed = [];
 
   let dessertsPlayed = 0;
 
@@ -173,6 +174,7 @@ export const PicnicGoGame = {
       hands: [{ currentOwner: '0', hand: [], selected: null }],
       round: 0,
       gameOver: false,
+      confirmed: [],
     };
 
     return setupRound(baseState, ctx);
@@ -182,9 +184,6 @@ export const PicnicGoGame = {
     play: {
       start: true,
       next: 'score',
-      onBegin: (g, ctx) => {
-        if (g.round !== 1) setupRound(g, ctx);
-      },
       endIf: (g) => g.hands[0].hand.length === 0,
       moves: {
         selectCard: (g, ctx, index) => {
@@ -222,23 +221,24 @@ export const PicnicGoGame = {
     },
     score: {
       next: 'play',
-      onBegin: (_, ctx) => ctx.events.setActivePlayers({ all: 'confirm' }),
       onEnd: (g, ctx) => {
         scoreRoundEnd(g, ctx);
         if (g.round === 3) {
           scoreGameEnd(g, ctx);
           g.gameOver = true;
-        } else g.round++;
+        } else {
+          setupRound(g, ctx);
+        }
       },
-      endIf: (g, ctx) => ctx.numMoves > 0 && ctx.activePlayers === null,
-      turn: {
-        stages: {
-          confirm: {
-            moves: {
-              confirmScores: (g, ctx) => ctx.events.endStage(),
-            },
-          },
+      endIf: (g: IG, ctx: Ctx) => g.confirmed.length === ctx.numPlayers,
+      moves: {
+        confirmScore: (g: IG, ctx: Ctx) => {
+          if (g.confirmed.includes(ctx.playerID)) return INVALID_MOVE;
+          g.confirmed.push(ctx.playerID);
         },
+      },
+      turn: {
+        activePlayers: ActivePlayers.ALL_ONCE,
       },
     },
   },
