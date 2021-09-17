@@ -78,6 +78,8 @@ export function scoreRoundEnd(g: IG, ctx: Ctx) {
       g.players[chipsWinner[i]].score += scr;
     }
   }
+
+  return g;
 }
 
 export function scoreGameEnd(g: IG, ctx: Ctx) {
@@ -115,6 +117,8 @@ export function scoreGameEnd(g: IG, ctx: Ctx) {
       }
     }
   }
+
+  return g;
 }
 
 export function rotateAndScoreCards(g: IG, ctx: Ctx) {
@@ -145,6 +149,8 @@ export function rotateAndScoreCards(g: IG, ctx: Ctx) {
 
     g.players[h.currentOwner].turnsLeft = 1;
   }
+
+  return g;
 }
 
 export function getScoreboard(g: IG) {
@@ -179,6 +185,8 @@ export function selectCard(g: IG, ctx: Ctx, index: number) {
   g.hands[idx].selected.push(index);
 
   g.players[ctx.playerID].turnsLeft--;
+
+  return g;
 }
 
 export function useFork(g: IG, ctx: Ctx) {
@@ -189,11 +197,15 @@ export function useFork(g: IG, ctx: Ctx) {
   g.players[ctx.playerID].forkUsed = true;
   g.players[ctx.playerID].unusedForks--;
   g.players[ctx.playerID].turnsLeft = 2;
+
+  return g;
 }
 
 export function confirmScore(g: IG, ctx: Ctx) {
   if (g.confirmed.includes(ctx.playerID)) return INVALID_MOVE;
   g.confirmed.push(ctx.playerID);
+
+  return g;
 }
 
 export const PicnicGoGame = {
