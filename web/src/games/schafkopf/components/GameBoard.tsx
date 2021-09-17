@@ -19,6 +19,7 @@ export function Board(props: {
   players: IPlayer[];
   playerNames: string[];
   contract: Contract;
+  tout: boolean;
 
   currentPlayerId: string;
 
@@ -41,6 +42,7 @@ export function Board(props: {
   selectBid?: (value: number) => void;
   callCard?: (card: ICard) => void;
   selectTrump?: (suit: CardColor) => void;
+  announceTout?: (announce: boolean) => void;
   discard?: () => void;
   endGame?: (quit: boolean) => void;
 }) {
@@ -134,6 +136,7 @@ export function Board(props: {
       renderButtonsDiscard(),
       renderButtonsCall(),
       renderButtonsTrump(),
+      renderButtonsTout(),
       renderButtonsFinish(),
     ];
     if (!buttons.some((b) => b)) return;
@@ -237,6 +240,24 @@ export function Board(props: {
     );
   }
 
+  function renderButtonsTout() {
+    if (!props.announceTout) return;
+    return (
+      <>
+        <div className={css.question}>{translate('tout_announce_q')}</div>
+        <div style={{ whiteSpace: 'nowrap' }}>
+          <Button
+            text={translate('tout_announce_no')}
+            red={true}
+            dirleft={true}
+            click={() => props.announceTout(false)}
+          />
+          <Button text={translate('tout_announce_yes')} click={() => props.announceTout(true)} />
+        </div>
+      </>
+    );
+  }
+
   function renderButtonsFinish() {
     if (!props.endGame || props.player.isReady) return;
     return (
@@ -268,6 +289,7 @@ export function Board(props: {
           players={props.players}
           playerNames={props.playerNames}
           contract={props.contract}
+          tout={props.tout}
         />
         {renderTrick()}
         {renderButtonBar()}

@@ -19,6 +19,7 @@ it('correctly evaluates a round where takers win schneider', () => {
     takerPointsRequired: 61,
     takerPoints: 101,
     schneider: 1,
+    tout: 0,
     scoring: [-2, 2, -2, 2],
   });
 });
@@ -41,6 +42,7 @@ it('correctly evaluates a round where takers lose (not schneider)', () => {
     takerPointsRequired: 61,
     takerPoints: 57,
     schneider: 0,
+    tout: 0,
     scoring: [1, -1, 1, -1],
   });
 });
@@ -63,6 +65,7 @@ it('correctly evaluates a round where takers lose schneider', () => {
     takerPointsRequired: 61,
     takerPoints: 29,
     schneider: -1,
+    tout: 0,
     scoring: [2, -2, 2, -2],
   });
 });
@@ -85,6 +88,7 @@ it('correctly evaluates a Wenz round where taker wins', () => {
     takerPointsRequired: 61,
     takerPoints: 64,
     schneider: 0,
+    tout: 0,
     scoring: [-5, -5, 15, -5],
   });
 });

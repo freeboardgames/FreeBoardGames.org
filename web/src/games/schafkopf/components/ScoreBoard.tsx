@@ -10,6 +10,7 @@ const EmptyRoundSummary: IRoundSummary = {
   takerPointsRequired: 0,
   takerPoints: 0,
   schneider: 0,
+  tout: 0,
   scoring: [0, 0, 0, 0, 0],
 };
 
@@ -103,6 +104,12 @@ export function ScoreBoard(props: {
               <td>{translate('scoreboard_schneider')}</td>
               {orderTakersFirst.map((i) => (
                 <td key={i}>{props.playerRoles[i] ? `${summary.schneider}` : '-'}</td>
+              ))}
+            </tr>
+            <tr>
+              <td>{translate('scoreboard_tout')}</td>
+              {orderTakersFirst.map((i) => (
+                <td key={i}>{props.playerRoles[i] ? `${summary.tout}` : '-'}</td>
               ))}
             </tr>
             <tr>

@@ -35,6 +35,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           players={G.players}
           playerNames={G.players.map((P) => playerName(P.id))}
           contract={G.contract}
+          tout={G.announcedTout}
           currentPlayerId={ctx.currentPlayer}
           kitty={G.kitty}
           kittyRevealed={G.kittyRevealed || player.isTaker}
@@ -50,6 +51,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           selectBid={canBid(ctx, player) ? moves.MakeBid : null}
           callCard={playerStage == Stages.call_card ? moves.Call : null}
           selectTrump={playerStage == Stages.select_trump ? moves.SelectTrumpSuit : null}
+          announceTout={playerStage == Stages.announce_tout ? moves.AnnounceTout : null}
           discard={canDiscard(ctx, player) ? moves.Discard : null}
           endGame={moves.Finish}
         />

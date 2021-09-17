@@ -8,6 +8,7 @@ export enum Phases {
 export enum Stages {
   call_card = 'call_card',
   select_trump = 'select_trump',
+  announce_tout = 'announce_tout',
   get_ready = 'get_ready',
 }
 
@@ -16,6 +17,7 @@ export interface IGameMoves {
   Discard(): void;
   Call(card: ICard): void;
   SelectTrumpSuit(suit: CardColor): void;
+  AnnounceTout(announce: boolean): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
 }
@@ -49,6 +51,7 @@ export interface IG {
   calledCard?: ICard;
   trumpSuit: CardColor;
   contract: Contract;
+  announcedTout: boolean;
   trick: ITrick;
   resolvedTricks: ITrick[];
   roundSummaries: IRoundSummary[];
@@ -66,6 +69,7 @@ export const DefaultIG: IG = {
   calledCard: null,
   trumpSuit: null,
   contract: Contract.None,
+  announcedTout: null,
   trick: { cards: [] },
   resolvedTricks: [],
   roundSummaries: [],
@@ -111,5 +115,6 @@ export interface IRoundSummary {
   takerPointsRequired: number;
   takerPoints: number;
   schneider: number;
+  tout: number;
   scoring: number[];
 }

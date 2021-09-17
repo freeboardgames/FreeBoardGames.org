@@ -15,6 +15,7 @@ export function getRoundSummary(G: IG): IRoundSummary {
   let takerPointsRequired = 61;
   let roundValue = 0;
   let schneider = 0;
+  let tout = 0;
   let takerPoints = 0;
   if (G.contract == Contract.Bettel) {
     takerPointsRequired = 0;
@@ -23,8 +24,15 @@ export function getRoundSummary(G: IG): IRoundSummary {
     takerPoints = countTakerPoints(G.resolvedTricks);
     const sign = takerPoints >= takerPointsRequired ? 1 : -1;
     roundValue = sign * (G.contract == Contract.Ace ? 1 : 5);
-    schneider = takerPoints <= 30 ? -1 : takerPoints > 90 ? 1 : 0;
-    roundValue += schneider;
+    if (G.announcedTout) {
+      tout = takerPoints == 120 ? 5 : -5;
+    } else {
+      tout = takerPoints == 0 ? -2 : takerPoints == 120 ? 2 : 0;
+    }
+    if (tout == 0) {
+      schneider = takerPoints <= 30 ? -1 : takerPoints > 90 ? 1 : 0;
+    }
+    roundValue += schneider + tout;
   }
 
   const takerFactor = (G.players.length - takers.length) / takers.length;
@@ -36,6 +44,7 @@ export function getRoundSummary(G: IG): IRoundSummary {
     takerPointsRequired: takerPointsRequired,
     takerPoints: takerPoints,
     schneider: schneider,
+    tout: tout,
     scoring: scoring,
   };
 }

@@ -152,13 +152,14 @@ export const SchafkopfGame: Game<IG> = {
             } else if (G.contract == Contract.Ace) {
               ctx.events.setActivePlayers({ currentPlayer: Stages.call_card });
             } else {
-              ctx.events.endPhase();
+              ctx.events.setActivePlayers({ currentPlayer: Stages.announce_tout });
             }
           }
         },
         stages: {
           select_trump: { moves: { SelectTrumpSuit: Moves.SelectTrumpSuit } },
           call_card: { moves: { Call: Moves.Call } },
+          announce_tout: { moves: { AnnounceTout: Moves.AnnounceTout } },
         },
         order: {
           first: (G) => +G.takerId,

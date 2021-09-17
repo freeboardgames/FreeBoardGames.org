@@ -37,7 +37,7 @@ export const Moves = {
     } else if (G.contract == Contract.Ace) {
       ctx.events.setStage(Stages.call_card);
     } else {
-      ctx.events.endPhase();
+      ctx.events.setStage(Stages.announce_tout);
     }
 
     return G;
@@ -52,6 +52,13 @@ export const Moves = {
 
   SelectTrumpSuit(G: IG, ctx: Ctx, suit: CardColor) {
     G.trumpSuit = suit;
+    ctx.events.endStage();
+    ctx.events.setStage(Stages.announce_tout);
+    return G;
+  },
+
+  AnnounceTout(G: IG, ctx: Ctx, announce: boolean) {
+    G.announcedTout = announce;
     ctx.events.endStage();
     ctx.events.endPhase();
     return G;
