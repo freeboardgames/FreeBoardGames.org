@@ -51,15 +51,24 @@
   align-items: flex-start;
   overflow-x: auto;
   width: 100%;
+  min-height: 105px;
 }
 
 .HandTopBar {
-  clear: 'both'; 
-  margin: '8px';
-  display: 'flex'; 
-  align-items: 'center';
-  justify-content: 'space-between';
-  min-height: '30px'
+  clear: both; 
+  margin: 4px 8px;
+  display: flex; 
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+}
+
+.PlayerInfoTopBar {
+  clear: both;
+  margin: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .PlayedCards {
