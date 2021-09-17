@@ -35,6 +35,7 @@
   "scoreboard_round_n": "Donne № {{ n }}",
   "scoreboard_points": "Points(requis)",
   "scoreboard_basic": "Valeur de base",
+  "scoreboard_running": "Atouts courants",
   "scoreboard_schneider": "Schneider",
   "scoreboard_schwarz": "Schwarz",
   "scoreboard_multiplier": "Contre/Re",

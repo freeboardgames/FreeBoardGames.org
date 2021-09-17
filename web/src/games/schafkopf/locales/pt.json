@@ -35,6 +35,7 @@
   "scoreboard_round_n": "Rodada {{ n }}",
   "scoreboard_points": "Pontos(requerido)",
   "scoreboard_basic": "Valor base",
+  "scoreboard_running": "Trunfos sequenciais",
   "scoreboard_schneider": "Cortador",
   "scoreboard_schwarz": "Toma",
   "scoreboard_multiplier": "Contra/Re",

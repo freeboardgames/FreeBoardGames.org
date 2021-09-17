@@ -35,6 +35,7 @@
   "scoreboard_round_n": "Round {{ n }}",
   "scoreboard_points": "Points(required)",
   "scoreboard_basic": "Basic value",
+  "scoreboard_running": "Running trumps",
   "scoreboard_schneider": "Schneider",
   "scoreboard_schwarz": "Schwarz",
   "scoreboard_multiplier": "Contra/Re",

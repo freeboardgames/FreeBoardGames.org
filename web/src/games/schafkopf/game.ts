@@ -151,8 +151,10 @@ export const SchafkopfGame: Game<IG> = {
               ctx.events.setActivePlayers({ currentPlayer: Stages.select_trump });
             } else if (G.contract == Contract.Ace) {
               ctx.events.setActivePlayers({ currentPlayer: Stages.call_card });
-            } else {
+            } else if (G.contract != Contract.Bettel) {
               ctx.events.setActivePlayers({ currentPlayer: Stages.announce_tout });
+            } else {
+              ctx.events.endPhase();
             }
           }
         },

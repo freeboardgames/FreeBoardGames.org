@@ -36,8 +36,10 @@ export const Moves = {
       ctx.events.setStage(Stages.select_trump);
     } else if (G.contract == Contract.Ace) {
       ctx.events.setStage(Stages.call_card);
-    } else {
+    } else if (G.contract != Contract.Bettel) {
       ctx.events.setStage(Stages.announce_tout);
+    } else {
+      ctx.events.endPhase();
     }
 
     return G;

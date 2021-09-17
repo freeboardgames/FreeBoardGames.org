@@ -119,6 +119,7 @@ export interface IRoundSummary {
   takerPointsRequired: number;
   takerPoints: number;
   basic: number;
+  running: number;
   schneider: number;
   schwarz: number;
   multiplier: number;

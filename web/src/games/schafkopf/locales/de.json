@@ -36,6 +36,7 @@
   "scoreboard_round_n": "Runde {{ n }}",
   "scoreboard_points": "Punkte(benötigt)",
   "scoreboard_basic": "Grundwert",
+  "scoreboard_running": "Laufende",
   "scoreboard_schneider": "Schneider",
   "scoreboard_schwarz": "Schwarz",
   "scoreboard_multiplier": "Stoss/Re",
