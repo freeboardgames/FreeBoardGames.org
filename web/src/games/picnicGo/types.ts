@@ -28,6 +28,7 @@ export interface IPlayer {
   unusedMayo: number;
   unusedForks: number;
   forkUsed: boolean;
+  turnsLeft: number;
 }
 
 export interface IHand {
