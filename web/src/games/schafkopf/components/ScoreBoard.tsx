@@ -9,8 +9,10 @@ const EmptyRoundSummary: IRoundSummary = {
   takerId: '',
   takerPointsRequired: 0,
   takerPoints: 0,
+  basic: 0,
   schneider: 0,
-  tout: 0,
+  schwarz: 0,
+  multiplier: 0,
   scoring: [0, 0, 0, 0, 0],
 };
 
@@ -80,6 +82,7 @@ export function ScoreBoard(props: {
     const orderTakersFirst = playerKeys
       .filter((i) => props.playerRoles[i])
       .concat(playerKeys.filter((i) => !props.playerRoles[i]));
+    const is_tout = Math.abs(summary.basic) == 10;
     return (
       <div
         className={[css.scoreBoard, css.board].join(' ')}
@@ -101,15 +104,27 @@ export function ScoreBoard(props: {
               {orderTakersFirst.map((i) => renderPoints(summary, i))}
             </tr>
             <tr>
-              <td>{translate('scoreboard_schneider')}</td>
+              <td>{translate('scoreboard_basic')}</td>
               {orderTakersFirst.map((i) => (
-                <td key={i}>{props.playerRoles[i] ? `${summary.schneider}` : '-'}</td>
+                <td key={i}>{props.playerRoles[i] ? `${summary.basic}` : '-'}</td>
               ))}
             </tr>
             <tr>
-              <td>{translate('scoreboard_tout')}</td>
+              <td>{translate('scoreboard_schneider')}</td>
               {orderTakersFirst.map((i) => (
-                <td key={i}>{props.playerRoles[i] ? `${summary.tout}` : '-'}</td>
+                <td key={i}>{props.playerRoles[i] && !is_tout ? `${summary.schneider}` : '-'}</td>
+              ))}
+            </tr>
+            <tr>
+              <td>{translate('scoreboard_schwarz')}</td>
+              {orderTakersFirst.map((i) => (
+                <td key={i}>{props.playerRoles[i] && !is_tout ? `${summary.schwarz}` : '-'}</td>
+              ))}
+            </tr>
+            <tr>
+              <td>{translate('scoreboard_multiplier')}</td>
+              {orderTakersFirst.map((i) => (
+                <td key={i}>{props.playerRoles[i] ? `×${summary.multiplier}` : '-'}</td>
               ))}
             </tr>
             <tr>

@@ -15,6 +15,7 @@ export function PlayerZone(props: {
   active: boolean;
   leader: boolean;
   tout: boolean;
+  contra: number;
   positionIndex: number;
 }) {
   const { translate } = useCurrentGameTranslation();
@@ -22,13 +23,22 @@ export function PlayerZone(props: {
 
   function renderZoneContent() {
     const P = props.player;
-    const tout = P.isTaker && props.tout;
     const bid = P.isTaker ? props.contract : P.bid;
     const playerBidStr = bid >= 0 ? `«${translate(util.getBidName(bid))}»` : '';
+    let announcements: string = null;
+    if (P.isTaker) {
+      if (props.tout || props.contra > 1) {
+        announcements = props.tout ? translate('tout_announced') : '';
+        if (props.contra > 1) {
+          announcements += props.tout ? ' ' : '';
+          announcements += translate(`contra_announced_${props.contra == 2 ? 'contra' : 'retour'}`);
+        }
+      }
+    }
     return (
       <div>
         <div className={css.bidStatus}>
-          {tout ? <div className={css.tout}>{translate('tout_announced')}</div> : null}
+          {announcements !== null ? <div className={css.tout}>{announcements}</div> : null}
           <div className={bid == 0 ? css.pass : ''}>{playerBidStr}</div>
         </div>
         <div className={css.statuses}>

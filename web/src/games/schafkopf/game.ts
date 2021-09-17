@@ -55,7 +55,7 @@ export const SchafkopfGame: Game<IG> = {
         const kittySize = util.kittySize(ctx.numPlayers);
         const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, ctx.numPlayers)];
-        const cmpCards = util.get_cmpCards(Contract.None, CardColor.Herz);
+        const cmpCards = util.get_cmpCards(Contract.None, ctx.numPlayers == 4 ? CardColor.Herz : null);
         Object.assign(G, {
           ...DefaultIG,
           players: G.players,
@@ -189,7 +189,21 @@ export const SchafkopfGame: Game<IG> = {
 
     placement: {
       turn: {
-        moveLimit: 1,
+        onBegin: (G: IG, ctx: Ctx) => {
+          const player = util.getPlayerById(G, ctx.currentPlayer);
+          const max_tricks = util.kittySize(ctx.numPlayers) > 0 ? 1 : 0;
+          if (
+            G.resolvedTricks.length <= max_tricks &&
+            G.contra == 1 &&
+            !player.isTaker &&
+            player.id != G.calledTakerId
+          ) {
+            ctx.events.setActivePlayers({ currentPlayer: Stages.give_contra });
+          }
+        },
+        stages: {
+          give_contra: { moves: { GiveContra: Moves.GiveContra } },
+        },
         order: {
           first: (G) => +G.trick.leader.id,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),

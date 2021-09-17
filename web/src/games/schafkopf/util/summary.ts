@@ -12,29 +12,27 @@ export function getRoundSummary(G: IG): IRoundSummary {
   }
 
   const takers = G.calledTakerId ? [G.takerId, G.calledTakerId] : [G.takerId];
-  let takerPointsRequired = 61;
-  let roundValue = 0;
+  let takerPointsRequired = G.announcedTout ? 120 : 61;
+  let basic = 0;
   let schneider = 0;
-  let tout = 0;
+  let schwarz = 0;
   let takerPoints = 0;
   if (G.contract == Contract.Bettel) {
     takerPointsRequired = 0;
-    roundValue = G.resolvedTricks.some((T) => T.winner.isTaker) ? -3 : 3;
+    basic = G.resolvedTricks.some((T) => T.winner.isTaker) ? -3 : 3;
   } else {
     takerPoints = countTakerPoints(G.resolvedTricks);
     const sign = takerPoints >= takerPointsRequired ? 1 : -1;
-    roundValue = sign * (G.contract == Contract.Ace ? 1 : 5);
-    if (G.announcedTout) {
-      tout = takerPoints == 120 ? 5 : -5;
-    } else {
-      tout = takerPoints == 0 ? -2 : takerPoints == 120 ? 2 : 0;
+    basic = sign * (G.contract == Contract.Ace ? 1 : G.announcedTout ? 10 : 5);
+    if (!G.announcedTout) {
+      schwarz = takerPoints == 0 ? -2 : takerPoints == 120 ? 2 : 0;
+      if (schwarz == 0) {
+        schneider = takerPoints <= 30 ? -1 : takerPoints > 90 ? 1 : 0;
+      }
     }
-    if (tout == 0) {
-      schneider = takerPoints <= 30 ? -1 : takerPoints > 90 ? 1 : 0;
-    }
-    roundValue += schneider + tout;
   }
 
+  const roundValue = G.contra * (basic + schneider + schwarz);
   const takerFactor = (G.players.length - takers.length) / takers.length;
   const scoring = G.players.map((p) => (p.isTaker ? takerFactor : -1) * roundValue);
 
@@ -43,8 +41,10 @@ export function getRoundSummary(G: IG): IRoundSummary {
     calledTakerId: G.calledTakerId,
     takerPointsRequired: takerPointsRequired,
     takerPoints: takerPoints,
+    basic: basic,
     schneider: schneider,
-    tout: tout,
+    schwarz: schwarz,
+    multiplier: G.contra,
     scoring: scoring,
   };
 }

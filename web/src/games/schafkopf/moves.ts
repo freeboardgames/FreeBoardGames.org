@@ -64,10 +64,24 @@ export const Moves = {
     return G;
   },
 
+  GiveContra(G: IG, ctx: Ctx, give: boolean) {
+    const player = util.getPlayerById(G, ctx.currentPlayer);
+    if (give) {
+      G.contra *= 2;
+      if (!player.isTaker) {
+        let value = {};
+        value[G.takerId] = Stages.give_contra;
+        ctx.events.setActivePlayers({ value: value });
+      }
+    }
+    ctx.events.endStage();
+    return G;
+  },
+
   SelectCards(G: IG, ctx: Ctx, handIndex: number[]) {
     const player = util.getPlayerById(G, ctx.currentPlayer);
+    const discard_num = util.kittySize(ctx.numPlayers);
     if (ctx.phase == Phases.discard) {
-      const discard_num = util.kittySize(ctx.numPlayers);
       if (handIndex.length > discard_num) {
         return INVALID_MOVE;
       }
@@ -77,6 +91,7 @@ export const Moves = {
         return INVALID_MOVE;
       }
       G.trick.cards.push(player.hand.splice(handIndex[0], 1)[0]);
+      ctx.events.endTurn();
     }
     return G;
   },

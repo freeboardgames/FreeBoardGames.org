@@ -14,6 +14,7 @@ export function PlayerZones(props: {
   playerNames: string[];
   contract: number;
   tout: boolean;
+  contra: number;
 }) {
   function renderZone(index: number) {
     const perspectiveIndex = +props.perspectivePlayerId;
@@ -32,6 +33,7 @@ export function PlayerZones(props: {
           active={active}
           leader={player.id === props.currentLeaderId}
           tout={props.tout}
+          contra={props.contra}
           positionIndex={util.mod(index - perspectiveIndex, numPlayers)}
         />
       </div>

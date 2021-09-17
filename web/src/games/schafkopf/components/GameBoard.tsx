@@ -20,6 +20,7 @@ export function Board(props: {
   playerNames: string[];
   contract: Contract;
   tout: boolean;
+  contra: number;
 
   currentPlayerId: string;
 
@@ -43,6 +44,7 @@ export function Board(props: {
   callCard?: (card: ICard) => void;
   selectTrump?: (suit: CardColor) => void;
   announceTout?: (announce: boolean) => void;
+  giveContra?: (give: boolean) => void;
   discard?: () => void;
   endGame?: (quit: boolean) => void;
 }) {
@@ -137,6 +139,7 @@ export function Board(props: {
       renderButtonsCall(),
       renderButtonsTrump(),
       renderButtonsTout(),
+      renderButtonsContra(),
       renderButtonsFinish(),
     ];
     if (!buttons.some((b) => b)) return;
@@ -258,6 +261,25 @@ export function Board(props: {
     );
   }
 
+  function renderButtonsContra() {
+    if (!props.giveContra) return;
+    const contraType = props.player.isTaker ? 'retour' : 'contra';
+    return (
+      <>
+        <div className={css.question}>{translate(`contra_announce_${contraType}_q`)}</div>
+        <div style={{ whiteSpace: 'nowrap' }}>
+          <Button
+            text={translate('contra_announce_no')}
+            red={true}
+            dirleft={true}
+            click={() => props.giveContra(false)}
+          />
+          <Button text={translate('contra_announce_yes')} click={() => props.giveContra(true)} />
+        </div>
+      </>
+    );
+  }
+
   function renderButtonsFinish() {
     if (!props.endGame || props.player.isReady) return;
     return (
@@ -290,6 +312,7 @@ export function Board(props: {
           playerNames={props.playerNames}
           contract={props.contract}
           tout={props.tout}
+          contra={props.contra}
         />
         {renderTrick()}
         {renderButtonBar()}
