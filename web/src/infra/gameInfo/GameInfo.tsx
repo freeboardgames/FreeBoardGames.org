@@ -36,8 +36,6 @@ interface GameInfoOutterProps {
   userAgent?: string;
 }
 
-const DESKTOP_MOBILE_THRESHOLD = 768;
-
 class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps, {}> {
   render() {
     const { gameCode, t, translate, i18n } = this.props;
@@ -72,7 +70,7 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
             },
           ]}
         />
-        <DesktopView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
+        <DesktopView>
           <div className={css.RootWrapper} data-testid={'TabletViewDiv'}>
             <div className={css.LeftCol}>
               <Typography variant="h4" component="h1">
@@ -112,7 +110,7 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
             </div>
           </div>
         </DesktopView>
-        <MobileView thresholdWidth={DESKTOP_MOBILE_THRESHOLD}>
+        <MobileView>
           <GameCard game={gameDef} />
           <div style={{ padding: '8px' }} data-testid={'MobileViewDiv'}>
             <Typography variant="h5" component="h1">
