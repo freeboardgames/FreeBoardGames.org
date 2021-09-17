@@ -156,6 +156,35 @@ export function getScoreboard(g: IG) {
     .sort((a, b) => b.score - a.score);
 }
 
+// Moves
+export function selectCard(g: IG, ctx: Ctx, index: number) {
+  if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
+  if (index === undefined) return INVALID_MOVE;
+  if (index < 0 || index >= g.hands[0].hand.length) return INVALID_MOVE;
+
+  const idx = g.hands.findIndex((e) => e.currentOwner === ctx.playerID);
+  if (g.hands[idx].selected === null) g.hands[idx].selected = [];
+  if (g.hands[idx].selected.includes(index)) return INVALID_MOVE;
+  g.hands[idx].selected.push(index);
+
+  g.players[ctx.playerID].turnsLeft--;
+}
+
+export function useFork(g: IG, ctx: Ctx) {
+  if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
+  if (g.players[ctx.playerID].forkUsed || g.players[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
+  if (g.hands[0].hand.length < 2) return INVALID_MOVE;
+
+  g.players[ctx.playerID].forkUsed = true;
+  g.players[ctx.playerID].unusedForks--;
+  g.players[ctx.playerID].turnsLeft = 2;
+}
+
+export function confirmScore(g: IG, ctx: Ctx) {
+  if (g.confirmed.includes(ctx.playerID)) return INVALID_MOVE;
+  g.confirmed.push(ctx.playerID);
+}
+
 export const PicnicGoGame = {
   name: 'picnicGo',
 
@@ -186,27 +215,8 @@ export const PicnicGoGame = {
       next: 'score',
       endIf: (g: IG) => g.hands[0].hand.length === 0,
       moves: {
-        selectCard: (g: IG, ctx: Ctx, index: number) => {
-          if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
-          if (index === undefined) return INVALID_MOVE;
-          if (index < 0 || index >= g.hands[0].hand.length) return INVALID_MOVE;
-
-          const idx = g.hands.findIndex((e) => e.currentOwner === ctx.playerID);
-          if (g.hands[idx].selected === null) g.hands[idx].selected = [];
-          if (g.hands[idx].selected.includes(index)) return INVALID_MOVE;
-          g.hands[idx].selected.push(index);
-
-          g.players[ctx.playerID].turnsLeft--;
-        },
-        useFork: (g: IG, ctx: Ctx) => {
-          if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
-          if (g.players[ctx.playerID].forkUsed || g.players[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
-          if (g.hands[0].hand.length < 2) return INVALID_MOVE;
-
-          g.players[ctx.playerID].forkUsed = true;
-          g.players[ctx.playerID].unusedForks--;
-          g.players[ctx.playerID].turnsLeft = 2;
-        },
+        selectCard,
+        useFork,
       },
       turn: {
         activePlayers: ActivePlayers.ALL,
@@ -231,12 +241,7 @@ export const PicnicGoGame = {
         }
       },
       endIf: (g: IG, ctx: Ctx) => g.confirmed.length === ctx.numPlayers,
-      moves: {
-        confirmScore: (g: IG, ctx: Ctx) => {
-          if (g.confirmed.includes(ctx.playerID)) return INVALID_MOVE;
-          g.confirmed.push(ctx.playerID);
-        },
-      },
+      moves: { confirmScore },
       turn: {
         activePlayers: ActivePlayers.ALL_ONCE,
       },
