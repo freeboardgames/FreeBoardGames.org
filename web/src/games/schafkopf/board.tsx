@@ -33,8 +33,21 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     let selectableCards: boolean[] = player.hand.map(() => false);
     if (playerPhase == Phases.discard) {
       selectableCards = u_discard.selectableCards(G, playerID);
-    } else if (playerPhase == Phases.placement && playerStage != Stages.give_contra) {
+    } else if (playerPhase == Phases.placement) {
       selectableCards = u_placement.selectableCards(G, playerID);
+    }
+
+    let canGiveContra = false;
+    if (ctx.phase == Phases.placement) {
+      const max_tricks = util.kittySize(ctx.numPlayers) > 0 ? 1 : 0;
+      if (G.resolvedTricks.length <= max_tricks && G.trick.cards.length <= 1) {
+        const isTaker = player.isTaker || player.id == G.calledTakerId;
+        if (isTaker) {
+          canGiveContra = G.contra == 2;
+        } else {
+          canGiveContra = G.contra == 1;
+        }
+      }
     }
 
     return (
@@ -46,6 +59,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           contract={G.contract}
           tout={G.announcedTout}
           contra={G.contra}
+          calledTakerId={G.calledTakerId}
           currentPlayerId={ctx.currentPlayer}
           kitty={G.kitty}
           kittyRevealed={G.kittyRevealed || player.isTaker}
@@ -62,7 +76,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           callCard={playerStage == Stages.call_card ? moves.Call : null}
           selectTrump={playerStage == Stages.select_trump ? moves.SelectTrumpSuit : null}
           announceTout={playerStage == Stages.announce_tout ? moves.AnnounceTout : null}
-          giveContra={playerStage == Stages.give_contra ? moves.GiveContra : null}
+          giveContra={canGiveContra ? moves.GiveContra : null}
           discard={canDiscard(ctx, player) ? moves.Discard : null}
           endGame={moves.Finish}
         />

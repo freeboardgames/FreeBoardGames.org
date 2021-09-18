@@ -32,11 +32,12 @@ export const Moves = {
       G.kitty = [];
     }
 
+    const has_highest_trump = player.hand.some((C) => C.color == CardColor.Eichel && C.value == 12);
     if (G.contract == Contract.Solo) {
       ctx.events.setStage(Stages.select_trump);
     } else if (G.contract == Contract.Ace) {
       ctx.events.setStage(Stages.call_card);
-    } else if (G.contract != Contract.Bettel) {
+    } else if (G.contract != Contract.Bettel && has_highest_trump) {
       ctx.events.setStage(Stages.announce_tout);
     } else {
       ctx.events.endPhase();
@@ -53,9 +54,14 @@ export const Moves = {
   },
 
   SelectTrumpSuit(G: IG, ctx: Ctx, suit: CardColor) {
+    const player = util.getPlayerById(G, ctx.currentPlayer);
     G.trumpSuit = suit;
     ctx.events.endStage();
-    ctx.events.setStage(Stages.announce_tout);
+    if (player.hand.some((C) => C.color == CardColor.Eichel && C.value == 12)) {
+      ctx.events.setStage(Stages.announce_tout);
+    } else {
+      ctx.events.endPhase();
+    }
     return G;
   },
 
@@ -66,17 +72,20 @@ export const Moves = {
     return G;
   },
 
-  GiveContra(G: IG, ctx: Ctx, give: boolean) {
-    const player = util.getPlayerById(G, ctx.currentPlayer);
-    if (give) {
-      G.contra *= 2;
-      if (!player.isTaker) {
-        let value = {};
-        value[G.takerId] = Stages.give_contra;
-        ctx.events.setActivePlayers({ value: value });
-      }
+  GiveContra(G: IG, ctx: Ctx) {
+    const player = util.getPlayerById(G, ctx.playerID);
+    const max_tricks = util.kittySize(ctx.numPlayers) > 0 ? 1 : 0;
+    const isTaker = player.isTaker || player.id == G.calledTakerId;
+    if (G.resolvedTricks.length > max_tricks || G.trick.cards.length > 1) {
+      return INVALID_MOVE;
     }
-    ctx.events.endStage();
+    if ((G.contra == 1 && isTaker) || (G.contra == 2 && !isTaker) || G.contra == 4) {
+      return INVALID_MOVE;
+    }
+    G.contra *= 2;
+    if (player.id == G.calledTakerId) {
+      player.isTaker = true;
+    }
     return G;
   },
 

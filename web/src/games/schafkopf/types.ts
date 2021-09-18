@@ -9,7 +9,6 @@ export enum Stages {
   call_card = 'call_card',
   select_trump = 'select_trump',
   announce_tout = 'announce_tout',
-  give_contra = 'give_contra',
   get_ready = 'get_ready',
 }
 
@@ -19,7 +18,7 @@ export interface IGameMoves {
   Call(card: ICard): void;
   SelectTrumpSuit(suit: CardColor): void;
   AnnounceTout(announce: boolean): void;
-  GiveContra(give: boolean): void;
+  GiveContra(): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
 }

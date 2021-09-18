@@ -1,4 +1,5 @@
 import { Ctx, Game } from 'boardgame.io';
+import { Stage } from 'boardgame.io/core';
 
 import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './types';
 import * as util from './util/misc';
@@ -36,7 +37,7 @@ export const SchafkopfGame: Game<IG> = {
       players: G.players.map(stripSecrets),
       deck: G.deck.map(() => dummyCard),
       kitty: G.kittyRevealed || playerID == G.takerId ? G.kitty : G.kitty.map(() => dummyCard),
-      calledTakerId: null,
+      calledTakerId: G.calledTakerId == playerID ? G.calledTakerId : null,
       calledMayRun: G.calledTakerId == playerID ? G.calledMayRun : null,
       resolvedTricks: G.resolvedTricks.map((T, i) =>
         (G.players.length == 4 || i > 0) && i == G.resolvedTricks.length - 1
@@ -147,11 +148,13 @@ export const SchafkopfGame: Game<IG> = {
       turn: {
         onBegin: (G: IG, ctx: Ctx) => {
           if (util.kittySize(ctx.numPlayers) == 0) {
+            const taker = util.getPlayerById(G, G.takerId);
+            const has_highest_trump = taker.hand.some((C) => C.color == CardColor.Eichel && C.value == 12);
             if (G.contract == Contract.Solo) {
               ctx.events.setActivePlayers({ currentPlayer: Stages.select_trump });
             } else if (G.contract == Contract.Ace) {
               ctx.events.setActivePlayers({ currentPlayer: Stages.call_card });
-            } else if (G.contract != Contract.Bettel) {
+            } else if (G.contract != Contract.Bettel && has_highest_trump) {
               ctx.events.setActivePlayers({ currentPlayer: Stages.announce_tout });
             } else {
               ctx.events.endPhase();
@@ -191,21 +194,7 @@ export const SchafkopfGame: Game<IG> = {
 
     placement: {
       turn: {
-        onBegin: (G: IG, ctx: Ctx) => {
-          const player = util.getPlayerById(G, ctx.currentPlayer);
-          const max_tricks = util.kittySize(ctx.numPlayers) > 0 ? 1 : 0;
-          if (
-            G.resolvedTricks.length <= max_tricks &&
-            G.contra == 1 &&
-            !player.isTaker &&
-            player.id != G.calledTakerId
-          ) {
-            ctx.events.setActivePlayers({ currentPlayer: Stages.give_contra });
-          }
-        },
-        stages: {
-          give_contra: { moves: { GiveContra: Moves.GiveContra } },
-        },
+        activePlayers: { all: Stage.NULL },
         order: {
           first: (G) => +G.trick.leader.id,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
@@ -214,6 +203,7 @@ export const SchafkopfGame: Game<IG> = {
 
       moves: {
         SelectCards: Moves.SelectCards,
+        GiveContra: Moves.GiveContra,
       },
 
       next: (G: IG) => {

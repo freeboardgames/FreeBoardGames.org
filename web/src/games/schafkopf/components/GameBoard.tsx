@@ -21,6 +21,7 @@ export function Board(props: {
   contract: Contract;
   tout: boolean;
   contra: number;
+  calledTakerId: string;
 
   currentPlayerId: string;
 
@@ -44,12 +45,13 @@ export function Board(props: {
   callCard?: (card: ICard) => void;
   selectTrump?: (suit: CardColor) => void;
   announceTout?: (announce: boolean) => void;
-  giveContra?: (give: boolean) => void;
+  giveContra?: () => void;
   discard?: () => void;
   endGame?: (quit: boolean) => void;
 }) {
   const { translate } = useCurrentGameTranslation();
   const selectedCards = props.discard ? props.player.discardSelection : [];
+  const [declinedContra, setDeclinedContra] = React.useState(false);
 
   function renderScoreBoard() {
     return (
@@ -161,11 +163,17 @@ export function Board(props: {
     const highest_bid = Math.max(...props.players.map((p) => p.bid));
     const is_first_bidround = props.player.bid == Contract.None;
     const allowed_bids = util.allowedBids(props.players.length, is_first_bidround);
-    const num_aces = props.player.hand.filter((C) => C.color != CardColor.Herz && C.value == 14).length;
+    const canCallAce = ['Schell', 'Gras', 'Eichel'].some((colName) => {
+      const colorInHand = props.player.hand.filter((C) => C.color == CardColor[colName]);
+      if (colorInHand.some((C) => C.value == 14)) {
+        return false;
+      }
+      return !colorInHand.every((C) => [11, 12].indexOf(C.value) >= 0);
+    });
     return allowed_bids.map(util.getBidName).map((name, i) => {
       const text: string = translate(name);
       let selectable = allowed_bids[i] <= Contract.Some || highest_bid < allowed_bids[i];
-      if (allowed_bids[i] == Contract.Ace && num_aces == 3) {
+      if (allowed_bids[i] == Contract.Ace && !canCallAce) {
         selectable = false;
       }
       return (
@@ -200,7 +208,7 @@ export function Board(props: {
         {['Schell', 'Herz', 'Gras', 'Eichel'].map((col) => {
           const card: ICard = { color: CardColor[col], value: 10 };
           const colorInHand = props.player.hand.filter((C) => C.color == card.color);
-          if (colorInHand.every((C) => C.value == 11 || C.value == 12)) return null;
+          if (colorInHand.every((C) => [11, 12].indexOf(C.value) >= 0)) return null;
           return (
             <div key={col} className={css.cardContainer} onClick={() => props.selectTrump(card.color)}>
               <div>
@@ -219,15 +227,12 @@ export function Board(props: {
     return (
       <>
         <div className={css.question}>{question}:</div>
-        {['Schell', 'Herz', 'Gras', 'Eichel'].map((col) => {
-          if (col == 'Herz') {
+        {['Schell', 'Gras', 'Eichel'].map((col) => {
+          const colorInHand = props.player.hand.filter((C) => C.color == CardColor[col]);
+          if (colorInHand.some((C) => C.value == 14)) {
             return null;
           }
-          const color_in_hand = props.player.hand.filter((C) => C.color == CardColor[col]);
-          if (color_in_hand.some((C) => C.value == 14)) {
-            return null;
-          }
-          if (!color_in_hand.some((C) => C.value != 11 && C.value != 12)) {
+          if (colorInHand.every((C) => [11, 12].indexOf(C.value) >= 0)) {
             return null;
           }
           const card: ICard = { color: CardColor[col], value: 14 };
@@ -262,8 +267,8 @@ export function Board(props: {
   }
 
   function renderButtonsContra() {
-    if (!props.giveContra) return;
-    const contraType = props.player.isTaker ? 'retour' : 'contra';
+    if (!props.giveContra || declinedContra) return;
+    const contraType = props.player.isTaker || props.player.id == props.calledTakerId ? 'retour' : 'contra';
     return (
       <>
         <div className={css.question}>{translate(`contra_announce_${contraType}_q`)}</div>
@@ -272,9 +277,9 @@ export function Board(props: {
             text={translate('contra_announce_no')}
             red={true}
             dirleft={true}
-            click={() => props.giveContra(false)}
+            click={() => setDeclinedContra(true)}
           />
-          <Button text={translate('contra_announce_yes')} click={() => props.giveContra(true)} />
+          <Button text={translate('contra_announce_yes')} click={() => props.giveContra()} />
         </div>
       </>
     );
@@ -284,7 +289,16 @@ export function Board(props: {
     if (!props.endGame || props.player.isReady) return;
     return (
       <div style={{ whiteSpace: 'nowrap' }}>
-        <Button text={translate('roundend_next')} below={true} click={() => props.endGame(false)} />
+        <Button
+          text={translate('roundend_next')}
+          below={true}
+          click={() => {
+            if (declinedContra) {
+              setDeclinedContra(false);
+            }
+            props.endGame(false);
+          }}
+        />
         <Button
           text={translate('roundend_quit')}
           red={true}
