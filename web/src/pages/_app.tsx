@@ -8,8 +8,6 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import * as Sentry from '@sentry/browser';
 import { ThemeProvider } from 'infra/common';
 import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
-import UaContext from 'infra/common/device/IsMobileContext';
-import { isMobileFromReq } from 'infra/common/device/UaHelper';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
 import { wrapper } from 'infra/common/redux/store';
 import { GameProvider } from 'infra/game/GameProvider';
@@ -77,7 +75,7 @@ class DefaultApp extends App {
   }
 
   render() {
-    const { Component, pageProps, isMobile } = this.props as any;
+    const { Component, pageProps } = this.props as any;
     return (
       <>
         <Head>
@@ -94,13 +92,11 @@ class DefaultApp extends App {
         </Head>
         <ThemeProvider>
           <SelfXSSWarning />
-          <UaContext.Provider value={isMobile}>
-            <ApolloProvider client={client}>
-              <GameProvider {...pageProps}>
-                <Component {...pageProps} />
-              </GameProvider>
-            </ApolloProvider>
-          </UaContext.Provider>
+          <ApolloProvider client={client}>
+            <GameProvider {...pageProps}>
+              <Component {...pageProps} />
+            </GameProvider>
+          </ApolloProvider>
         </ThemeProvider>
       </>
     );
@@ -113,8 +109,7 @@ class DefaultApp extends App {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    const isMobile = isMobileFromReq(ctx.req);
-    return { pageProps, isMobile };
+    return { pageProps };
   }
 }
 

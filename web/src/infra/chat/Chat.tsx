@@ -6,7 +6,7 @@ import ChatInput from './internal/ChatInput';
 import ChatMessageHistory from './internal/ChatMessageHistory';
 import { Dispatch } from 'redux';
 import { LobbyService } from 'infra/common/services/LobbyService';
-import { isMobileFromReq } from 'infra/common/device/UaHelper';
+import { detectIsMobile } from 'infra/common/device/detectIsMobile';
 import IconButton from '@material-ui/core/IconButton';
 import ChatIcon from '@material-ui/icons/Chat';
 import css from './Chat.module.css';
@@ -44,7 +44,7 @@ const INITIAL_MESSAGE: InitialMessageResolver = (t) => ({
   isoTimestamp: '',
 });
 
-const isMobile = isMobileFromReq();
+const isMobile = detectIsMobile();
 export const CHAT_SUBSCRIPTION = gql`
   subscription ChatMutated($channelType: String!, $channelId: String!) {
     chatMutated(channelType: $channelType, channelId: $channelId) {
@@ -169,7 +169,7 @@ class ChatInternal extends React.Component<ChatInnerProps & ChatOutterProps, Cha
 
   private updateBodyRightMargin(forceClose?: boolean) {
     let newPadding;
-    if (forceClose || typeof window === 'undefined' || !this.state.isOpen || isMobileFromReq()) {
+    if (forceClose || typeof window === 'undefined' || !this.state.isOpen || detectIsMobile()) {
       newPadding = '0px';
     } else {
       newPadding = '250px';
