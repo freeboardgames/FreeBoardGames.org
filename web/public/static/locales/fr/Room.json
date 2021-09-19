@@ -7,5 +7,6 @@
   "leave_room": "Laisser la salle",
   "max_players": "{{ name }} peut être joué par {{ max }} joueurs au maximum, mais la salle compte {{ current }} joueurs.",
   "failed_to_set_nickname": "Échec de la définition du pseudo.",
-  "failed_to_start_match": "Échec du démarrage du match"
+  "failed_to_start_match": "Échec du démarrage du match",
+  "discord_link": "Vous cherchez plus de joueurs ? Voir <l>#lets-play</l> dans notre Discord!" 
 }

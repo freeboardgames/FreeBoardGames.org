@@ -189,6 +189,28 @@ describe('RoomsService', () => {
     expect(args[1].roomMutated.gameCode).toEqual(newGameCode);
   });
 
+  it('should notify about new room capacity and game', async () => {
+    const room: NewRoomInput = {
+      capacity: 2,
+      gameCode: 'checkers',
+      isPublic: true,
+    };
+    const bobId = await usersService.newUser({ nickname: 'bob' });
+    jest.clearAllMocks();
+    const post = jest.spyOn(httpService, 'post').mockImplementation(() => Promise.resolve() as any);
+    const webhookUrl = "https://foo";
+    process.env.DISCORD_LETS_PLAY_WEBHOOK = webhookUrl;
+    
+    await service.newRoom(room, bobId);
+    
+    delete process.env.DISCORD_LETS_PLAY_WEBHOOK;
+
+    const args = post.mock.calls[0];
+    expect(args[0]).toEqual(webhookUrl);
+    expect(args[1].embeds[0].title).toContain('bob');
+    expect(args[1].embeds[0].description).toContain('bob');
+  });
+
   it('should notify that about a user update succesfully', async () => {
     const bobId = await usersService.newUser({ nickname: 'bob' });
     const room = await service.newRoom(

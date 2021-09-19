@@ -7,5 +7,6 @@
   "leave_room": "Raum verlassen",
   "max_players": "{{ name }} können bis zu {{ max }} Spieler spielen, aber der Raum hat {{ current }} Spieler.",
   "failed_to_set_nickname": "Fehler beim Setzen des Nicknames",
-  "failed_to_start_match": "Fehler beim Starten der Partie."
+  "failed_to_start_match": "Fehler beim Starten der Partie.",
+  "discord_link": "Auf der Suche nach mehr Spielern? Check <l>#lets-play</l> auf unserem Discord!" 
 }
