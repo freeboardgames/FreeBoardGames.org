@@ -19,58 +19,47 @@ interface InnerWrapper {
   isActive: boolean;
 }
 
-export class PlayerInfo extends React.Component<InnerWrapper, {}> {
-  render() {
-    return (
-      <div>
-        {this._getTopBar()}
-        <div className={css.PlayedCards}>
-          {this.props.G.players[this.props.playerID].playedCards.map((c) => (
-            <Card key={c} id={getCardTypeFromNumber(c)} active={false} selected={false} isTurn={false} />
-          ))}
-        </div>
-      </div>
-    );
-  }
+export function PlayerInfo(props: InnerWrapper) {
+  const players = props.G.players;
 
-  _getTopBar() {
+  function _getTopBar() {
     return (
       <div className={css.PlayerInfoTopBar}>
         <Typography style={{ color: 'white' }} variant="body1">
-          {this.props.isActive && this.props.G.players[this.props.playerID].turnsLeft > 0 ? '🕒 ' : '✅ '}
+          {props.isActive && players[props.playerID].turnsLeft > 0 ? '🕒 ' : '✅ '}
           <Box component="span" fontWeight="bold">
-            {this.props.playerName}
+            {props.playerName}
           </Box>
-          {this.props.isSelf ? ' (you)' : ''}
+          {props.isSelf ? ' (you)' : ''}
         </Typography>
         <div style={{ display: 'flex', columnGap: '8px', textAlign: 'start' }}>
-          {this.props.G.players[this.props.playerID].forkUsed && (
+          {players[props.playerID].forkUsed && (
             <Typography style={{ color: blue[400], fontWeight: 'bold' }} variant="button">
               Using fork!
             </Typography>
           )}
-          <Typography style={{ color: this._getCupcakeDisplayColor(), minWidth: '3.3em' }} variant="body1">
-            🧁 {this.props.G.players[this.props.playerID].dessertsCount.toString()}
+          <Typography style={{ color: _getCupcakeDisplayColor(), minWidth: '3.3em' }} variant="body1">
+            🧁 {players[props.playerID].dessertsCount.toString()}
           </Typography>
-          <Typography style={{ color: this._getChipsDisplayColor(), minWidth: '3.3em' }} variant="body1">
-            🥔 {this.props.G.players[this.props.playerID].chipsCount.toString()}
+          <Typography style={{ color: _getChipsDisplayColor(), minWidth: '3.3em' }} variant="body1">
+            🥔 {players[props.playerID].chipsCount.toString()}
           </Typography>
           <Typography style={{ color: 'white', marginLeft: '10px', minWidth: '5em' }} variant="body1">
             <Box component="span" fontWeight="bold">
               Score:{' '}
             </Box>
-            {this.props.G.players[this.props.playerID].score.toString()}
+            {players[props.playerID].score.toString()}
           </Typography>
         </div>
       </div>
     );
   }
 
-  _getCupcakeDisplayColor() {
+  function _getCupcakeDisplayColor() {
     let playerDesserts = [];
 
-    for (let i = 0; i < this.props.G.players.length; i++) {
-      playerDesserts.push(this.props.G.players[i].dessertsCount);
+    for (let i = 0; i < players.length; i++) {
+      playerDesserts.push(players[i].dessertsCount);
     }
 
     const mostDesserts = Math.max(...playerDesserts);
@@ -78,22 +67,22 @@ export class PlayerInfo extends React.Component<InnerWrapper, {}> {
 
     if (mostDesserts === leastDesserts) return 'white';
 
-    const thisDessert = this.props.G.players[this.props.playerID].dessertsCount;
+    const thisDessert = players[props.playerID].dessertsCount;
     if (thisDessert === leastDesserts) return red[500];
     else if (thisDessert === mostDesserts) return green[500];
     else return 'white';
   }
 
-  _getChipsDisplayColor() {
-    if (this.props.G.players[this.props.playerID].chipsCount === 0) return 'white';
+  function _getChipsDisplayColor() {
+    if (players[props.playerID].chipsCount === 0) return 'white';
 
     let playerChips = [];
 
-    for (let i = 0; i < this.props.G.players.length; i++) {
-      playerChips.push(this.props.G.players[i].chipsCount);
+    for (let i = 0; i < players.length; i++) {
+      playerChips.push(players[i].chipsCount);
     }
 
-    const thisChips = this.props.G.players[this.props.playerID].chipsCount;
+    const thisChips = players[props.playerID].chipsCount;
 
     const mostChips = Math.max(...playerChips);
     if (thisChips === mostChips) return green[500];
@@ -107,4 +96,15 @@ export class PlayerInfo extends React.Component<InnerWrapper, {}> {
 
     return 'white';
   }
+
+  return (
+    <div>
+      {_getTopBar()}
+      <div className={css.PlayedCards}>
+        {players[props.playerID].playedCards.map((c) => (
+          <Card key={c} id={getCardTypeFromNumber(c)} active={false} selected={false} isTurn={false} />
+        ))}
+      </div>
+    </div>
+  );
 }

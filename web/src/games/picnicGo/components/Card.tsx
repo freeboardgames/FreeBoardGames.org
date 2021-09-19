@@ -66,25 +66,23 @@ export function getCardImage(id: cardEnum) {
   return image;
 }
 
-export class Card extends React.Component<InnerWrapper, {}> {
-  render() {
-    let cardImage: any = getCardImage(this.props.id);
+export function Card(props: InnerWrapper) {
+  const cardImage: any = getCardImage(props.id);
 
-    return (
-      <div className={this.props.active ? css.Card : css.CardSmall} onClick={this.props.click}>
-        <img
-          src={cardImage}
-          style={{
-            opacity: this._getOpacity(),
-            transform: !this.props.active || this.props.selected ? 'none' : 'scale(0.85)',
-          }}
-        />
-      </div>
-    );
-  }
-
-  _getOpacity() {
-    if (!this.props.active || this.props.isTurn || this.props.selected) return 1.0;
+  function _getOpacity() {
+    if (!props.active || props.isTurn || props.selected) return 1.0;
     else return 0.75;
   }
+
+  return (
+    <div className={props.active ? css.Card : css.CardSmall} onClick={props.click}>
+      <img
+        src={cardImage}
+        style={{
+          opacity: _getOpacity(),
+          transform: !props.active || props.selected ? 'none' : 'scale(0.85)',
+        }}
+      />
+    </div>
+  );
 }

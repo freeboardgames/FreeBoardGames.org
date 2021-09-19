@@ -18,18 +18,9 @@ interface InnerWrapper {
   confirmScore: () => void;
 }
 
-export class BottomInfo extends React.Component<InnerWrapper, {}> {
-  render() {
-    return (
-      <div>
-        {this._getTopBar()}
-        {this.props.ctx.phase === 'play' ? this._getHand() : this._getRoundEndDisplay()}
-      </div>
-    );
-  }
-
-  _getHand() {
-    const h = this.props.G.hands.find((e) => e.currentOwner === this.props.playerID);
+export function BottomInfo(props: InnerWrapper) {
+  function _getHand() {
+    const h = props.G.hands.find((e) => e.currentOwner === props.playerID);
 
     return (
       <div className={css.BottomInfoCardDisplay}>
@@ -39,60 +30,60 @@ export class BottomInfo extends React.Component<InnerWrapper, {}> {
             id={getCardTypeFromNumber(c)}
             active={true}
             selected={h.selected && h.selected.includes(i)}
-            isTurn={this.props.G.players[this.props.playerID].turnsLeft > 0}
-            click={() => this.props.selectCard(i)}
+            isTurn={props.G.players[props.playerID].turnsLeft > 0}
+            click={() => props.selectCard(i)}
           />
         ))}
       </div>
     );
   }
 
-  _getRoundEndDisplay() {
+  function _getRoundEndDisplay() {
     return (
       <div className={css.BottomInfoEndRound}>
         <Typography variant="h6" style={{ color: 'white', textAlign: 'center' }}>
-          Round {this.props.G.round} over - {this.props.G.round === 3 ? 'game over!' : 'ready for next round?'}
+          Round {props.G.round} over - {props.G.round === 3 ? 'game over!' : 'ready for next round?'}
         </Typography>
-        {this._getRoundEndButton()}
+        {_getRoundEndButton()}
         <Typography variant="body2" style={{ color: 'white', textAlign: 'center' }}>
-          {'(chips ' + (this.props.G.round === 3 ? 'and cupcakes ' : '') + 'are scored after all players are ready)'}
+          {'(chips ' + (props.G.round === 3 ? 'and cupcakes ' : '') + 'are scored after all players are ready)'}
         </Typography>
       </div>
     );
   }
 
-  _getRoundEndButton() {
-    const isActive = this.props.ctx.activePlayers.hasOwnProperty(this.props.playerID);
+  function _getRoundEndButton() {
+    const isActive = props.ctx.activePlayers.hasOwnProperty(props.playerID);
 
     return (
       <Button
         variant={isActive ? 'contained' : 'text'}
-        color={this.props.G.round === 3 ? 'secondary' : 'primary'}
+        color={props.G.round === 3 ? 'secondary' : 'primary'}
         disableRipple={!isActive}
         disableFocusRipple={!isActive}
         style={{ cursor: isActive ? 'pointer' : 'auto' }}
-        onClick={isActive ? () => this.props.confirmScore() : null}
+        onClick={isActive ? () => props.confirmScore() : null}
       >
-        {this.props.G.round === 3 ? 'End Game' : 'Ready'}
+        {props.G.round === 3 ? 'End Game' : 'Ready'}
       </Button>
     );
   }
 
-  _getTopBar() {
+  function _getTopBar() {
     return (
       <div className={css.BottomInfoTopBar}>
         <Typography style={{ color: 'white' }} variant="body1">
           <Box component="span" fontWeight="bold">
             Your hand
           </Box>
-          {' - ' + this._getHandStatus()}
+          {' - ' + _getHandStatus()}
         </Typography>
         <Button
           variant="contained"
           size="small"
           color="primary"
-          onClick={() => this.props.useFork()}
-          disabled={!this._canPlayerUseFork()}
+          onClick={() => props.useFork()}
+          disabled={!_canPlayerUseFork()}
         >
           Use Fork
         </Button>
@@ -100,20 +91,27 @@ export class BottomInfo extends React.Component<InnerWrapper, {}> {
     );
   }
 
-  _getHandStatus() {
-    if (this.props.ctx.phase === 'score') return 'Waiting for next round';
+  function _getHandStatus() {
+    if (props.ctx.phase === 'score') return 'Waiting for next round';
     else {
-      const t = this.props.G.players[this.props.playerID].turnsLeft;
+      const t = props.G.players[props.playerID].turnsLeft;
       if (t > 0) return 'Select ' + t + ' more card' + (t > 1 ? 's' : '');
       else return 'Waiting for other players';
     }
   }
 
-  _canPlayerUseFork() {
-    if (this.props.ctx.phase !== 'play') return false;
-    if (this.props.G.hands[0].hand.length < 2) return false;
-    if (this.props.G.players[this.props.playerID].unusedForks < 1) return false;
-    if (this.props.G.players[this.props.playerID].forkUsed) return false;
+  function _canPlayerUseFork() {
+    if (props.ctx.phase !== 'play') return false;
+    if (props.G.hands[0].hand.length < 2) return false;
+    if (props.G.players[props.playerID].unusedForks < 1) return false;
+    if (props.G.players[props.playerID].forkUsed) return false;
     return true;
   }
+
+  return (
+    <div>
+      {_getTopBar()}
+      {props.ctx.phase === 'play' ? _getHand() : _getRoundEndDisplay()}
+    </div>
+  );
 }
