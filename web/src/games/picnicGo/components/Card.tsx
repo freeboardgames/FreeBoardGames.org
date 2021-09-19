@@ -20,6 +20,7 @@ interface InnerWrapper {
   active: boolean;
   selected: boolean;
   isTurn: boolean;
+  click?: () => void;
 }
 
 export function getCardImage(id: cardEnum) {
@@ -70,7 +71,7 @@ export class Card extends React.Component<InnerWrapper, {}> {
     let cardImage: any = getCardImage(this.props.id);
 
     return (
-      <div className={this.props.active ? css.Card : css.CardSmall}>
+      <div className={this.props.active ? css.Card : css.CardSmall} onClick={this.props.click}>
         <img
           src={cardImage}
           style={{

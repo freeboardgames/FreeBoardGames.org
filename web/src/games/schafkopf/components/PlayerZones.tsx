@@ -13,6 +13,8 @@ export function PlayerZones(props: {
   players: IPlayer[];
   playerNames: string[];
   contract: number;
+  tout: boolean;
+  contra: number;
 }) {
   function renderZone(index: number) {
     const perspectiveIndex = +props.perspectivePlayerId;
@@ -30,6 +32,8 @@ export function PlayerZones(props: {
           playerName={props.playerNames[index]}
           active={active}
           leader={player.id === props.currentLeaderId}
+          tout={props.tout}
+          contra={props.contra}
           positionIndex={util.mod(index - perspectiveIndex, numPlayers)}
         />
       </div>

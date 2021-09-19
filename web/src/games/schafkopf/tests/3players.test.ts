@@ -20,8 +20,12 @@ it('correctly evaluates a 3p round where taker wins', () => {
     calledTakerId: '',
     takerPointsRequired: 61,
     takerPoints: 71,
+    basic: 5,
+    running: -3,
     schneider: 0,
-    scoring: [10, -5, -5],
+    schwarz: 0,
+    multiplier: 1,
+    scoring: [16, -8, -8],
   });
 });
 
@@ -44,8 +48,12 @@ it('correctly evaluates a 3p round where taker loses', () => {
     calledTakerId: '',
     takerPointsRequired: 61,
     takerPoints: 26,
+    basic: -5,
+    running: -3,
     schneider: -1,
-    scoring: [-12, 6, 6],
+    schwarz: 0,
+    multiplier: 1,
+    scoring: [-18, 9, 9],
   });
 });
 
@@ -68,7 +76,11 @@ it('correctly evaluates a 3p Bettel round where taker wins', () => {
     calledTakerId: '',
     takerPointsRequired: 0,
     takerPoints: 0,
-    schneider: 0,
+    basic: 3,
+    running: NaN,
+    schneider: NaN,
+    schwarz: NaN,
+    multiplier: 1,
     scoring: [-3, -3, 6],
   });
 });
@@ -87,7 +99,11 @@ it('correctly evaluates a 3p Bettel round where taker loses', () => {
     calledTakerId: '',
     takerPointsRequired: 0,
     takerPoints: 0,
-    schneider: 0,
+    basic: -3,
+    running: NaN,
+    schneider: NaN,
+    schwarz: NaN,
+    multiplier: 1,
     scoring: [3, 3, -6],
   });
 });

@@ -99,3 +99,7 @@
 .playerZone .bidStatus .pass {
   background-color: #a55;
 }
+
+.playerZone .bidStatus .tout {
+  background-color: #a00;
+}

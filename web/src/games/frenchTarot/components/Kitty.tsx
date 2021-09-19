@@ -19,7 +19,7 @@ export function Kitty(props: { kitty: ICard[]; revealed: boolean; descr: JSX.Ele
   }
 
   return (
-    <div className={css.kitty}>
+    <div className={`${css.kitty} ${props.kitty.length < 6 ? css.small : ''}`}>
       <div>
         <div>
           {!props.descr ? null : <div className={css.kittyDescr}>{props.descr}</div>}
