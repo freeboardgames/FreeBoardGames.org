@@ -19,6 +19,9 @@ export function Board(props: {
   players: IPlayer[];
   playerNames: string[];
   contract: Contract;
+  tout: boolean;
+  contra: number;
+  calledTakerId: string;
 
   currentPlayerId: string;
 
@@ -30,6 +33,7 @@ export function Board(props: {
   prevTrick: ITrick;
 
   calledCard?: ICard;
+  trumpSuit?: CardColor;
 
   selectableCards: boolean[];
 
@@ -39,11 +43,15 @@ export function Board(props: {
   selectCards?: (handIndex: number[]) => void;
   selectBid?: (value: number) => void;
   callCard?: (card: ICard) => void;
+  selectTrump?: (suit: CardColor) => void;
+  announceTout?: (announce: boolean) => void;
+  giveContra?: () => void;
   discard?: () => void;
   endGame?: (quit: boolean) => void;
 }) {
   const { translate } = useCurrentGameTranslation();
   const selectedCards = props.discard ? props.player.discardSelection : [];
+  const [declinedContra, setDeclinedContra] = React.useState(false);
 
   function renderScoreBoard() {
     return (
@@ -82,13 +90,27 @@ export function Board(props: {
 
   function renderCalledCard() {
     if (!props.calledCard) return;
-    const heading = props.contract == Contract.Ace ? 'callcard_player_called' : 'callcard_is_trumpsuit';
     return (
       <div className={css.calledCard}>
-        <span>{translate(heading)}</span>
+        <span>{translate('callcard_player_called')}</span>
         <div className={css.cardContainer}>
           <div>
             <Card type={props.calledCard} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function renderTrumpSuit() {
+    if (props.trumpSuit === null || props.contract != Contract.Solo) return;
+    const trumpCard: ICard = { color: props.trumpSuit, value: 10 };
+    return (
+      <div className={css.calledCard}>
+        <span>{translate('callcard_is_trumpsuit')}</span>
+        <div className={css.cardContainer}>
+          <div>
+            <Card type={trumpCard} />
           </div>
         </div>
       </div>
@@ -113,13 +135,23 @@ export function Board(props: {
   }
 
   function renderButtonBar() {
-    const buttons = [renderButtonsBid(), renderButtonsCall(), renderButtonsDiscard(), renderButtonsFinish()];
+    const buttons = [
+      renderButtonsBid(),
+      renderButtonsDiscard(),
+      renderButtonsCall(),
+      renderButtonsTrump(),
+      renderButtonsTout(),
+      renderButtonsContra(),
+      renderButtonsFinish(),
+    ];
     if (!buttons.some((b) => b)) return;
     return (
       <div
-        className={[css.buttonBar, props.showRoundSummary ? css.below : '', props.callCard ? css.callCards : ''].join(
-          ' ',
-        )}
+        className={[
+          css.buttonBar,
+          props.showRoundSummary ? css.below : '',
+          props.callCard || props.selectTrump ? css.callCards : '',
+        ].join(' ')}
       >
         {buttons}
       </div>
@@ -129,17 +161,20 @@ export function Board(props: {
   function renderButtonsBid() {
     if (!props.selectBid) return;
     const highest_bid = Math.max(...props.players.map((p) => p.bid));
-    const allowed_bids = props.players.length == 4 ? [0, 1, 2, 3, 4] : [0, 2, 3, 4];
-    const num_aces = props.player.hand.filter((C) => C.color != CardColor.Herz && C.value == 14).length;
+    const is_first_bidround = props.player.bid == Contract.None;
+    const allowed_bids = util.allowedBids(props.players.length, is_first_bidround);
+    const canCallAce = ['Schell', 'Gras', 'Eichel'].some((colName) => {
+      const colorInHand = props.player.hand.filter((C) => C.color == CardColor[colName]);
+      if (colorInHand.some((C) => C.value == 14)) {
+        return false;
+      }
+      return !colorInHand.every((C) => [11, 12].indexOf(C.value) >= 0);
+    });
     return allowed_bids.map(util.getBidName).map((name, i) => {
       const text: string = translate(name);
-      let selectable = false;
-      if (props.selectBid) {
-        if (allowed_bids[i] == 1 && num_aces == 3) {
-          selectable = false;
-        } else {
-          selectable = allowed_bids[i] == 0 || highest_bid < allowed_bids[i];
-        }
+      let selectable = allowed_bids[i] <= Contract.Some || highest_bid < allowed_bids[i];
+      if (allowed_bids[i] == Contract.Ace && !canCallAce) {
+        selectable = false;
       }
       return (
         <Button
@@ -153,25 +188,52 @@ export function Board(props: {
     });
   }
 
-  function renderButtonsCall() {
-    if (!props.callCard) return;
-    let question =
-      props.contract == Contract.Ace ? translate('callcard_select_ace') : translate('callcard_select_trumpsuit');
+  function renderButtonsDiscard() {
+    if (!props.discard || !props.player.discardSelection) return;
+    const discard_num = util.kittySize(props.players.length);
+    const missing_num = discard_num - props.player.discardSelection.length;
+    const clickable = missing_num == 0;
+    const text = translate(clickable ? 'discard_confirm' : `discard_select_${missing_num == 1 ? '1' : 'n'}_more`, {
+      n: missing_num,
+    });
+    return <Button text={text} dirleft={true} click={clickable ? () => props.discard() : null} />;
+  }
+
+  function renderButtonsTrump() {
+    if (!props.selectTrump) return;
+    let question = translate('callcard_select_trumpsuit');
     return (
       <>
         <div className={css.question}>{question}:</div>
         {['Schell', 'Herz', 'Gras', 'Eichel'].map((col) => {
-          if (props.contract == Contract.Ace) {
-            if (col == 'Herz') {
-              return null;
-            }
-            const color_in_hand = props.player.hand.filter((C) => C.color == CardColor[col]);
-            if (color_in_hand.some((C) => C.value == 14)) {
-              return null;
-            }
-            if (!color_in_hand.some((C) => C.value != 11 && C.value != 12)) {
-              return null;
-            }
+          const card: ICard = { color: CardColor[col], value: 10 };
+          const colorInHand = props.player.hand.filter((C) => C.color == card.color);
+          if (colorInHand.every((C) => [11, 12].indexOf(C.value) >= 0)) return null;
+          return (
+            <div key={col} className={css.cardContainer} onClick={() => props.selectTrump(card.color)}>
+              <div>
+                <Card type={card} />
+              </div>
+            </div>
+          );
+        })}
+      </>
+    );
+  }
+
+  function renderButtonsCall() {
+    if (!props.callCard) return;
+    let question = translate('callcard_select_ace');
+    return (
+      <>
+        <div className={css.question}>{question}:</div>
+        {['Schell', 'Gras', 'Eichel'].map((col) => {
+          const colorInHand = props.player.hand.filter((C) => C.color == CardColor[col]);
+          if (colorInHand.some((C) => C.value == 14)) {
+            return null;
+          }
+          if (colorInHand.every((C) => [11, 12].indexOf(C.value) >= 0)) {
+            return null;
           }
           const card: ICard = { color: CardColor[col], value: 14 };
           return (
@@ -186,22 +248,57 @@ export function Board(props: {
     );
   }
 
-  function renderButtonsDiscard() {
-    if (!props.discard || !props.player.discardSelection) return;
-    const discard_num = util.kittySize(props.players.length);
-    const missing_num = discard_num - props.player.discardSelection.length;
-    const clickable = missing_num == 0;
-    const text = translate(clickable ? 'discard_confirm' : `discard_select_${missing_num == 1 ? '1' : 'n'}_more`, {
-      n: missing_num,
-    });
-    return <Button text={text} dirleft={true} click={clickable ? () => props.discard() : null} />;
+  function renderButtonsTout() {
+    if (!props.announceTout) return;
+    return (
+      <>
+        <div className={css.question}>{translate('tout_announce_q')}</div>
+        <div style={{ whiteSpace: 'nowrap' }}>
+          <Button
+            text={translate('tout_announce_no')}
+            red={true}
+            dirleft={true}
+            click={() => props.announceTout(false)}
+          />
+          <Button text={translate('tout_announce_yes')} click={() => props.announceTout(true)} />
+        </div>
+      </>
+    );
+  }
+
+  function renderButtonsContra() {
+    if (!props.giveContra || declinedContra) return;
+    const contraType = props.player.isTaker || props.player.id == props.calledTakerId ? 'retour' : 'contra';
+    return (
+      <>
+        <div className={css.question}>{translate(`contra_announce_${contraType}_q`)}</div>
+        <div style={{ whiteSpace: 'nowrap' }}>
+          <Button
+            text={translate('contra_announce_no')}
+            red={true}
+            dirleft={true}
+            click={() => setDeclinedContra(true)}
+          />
+          <Button text={translate('contra_announce_yes')} click={() => props.giveContra()} />
+        </div>
+      </>
+    );
   }
 
   function renderButtonsFinish() {
     if (!props.endGame || props.player.isReady) return;
     return (
       <div style={{ whiteSpace: 'nowrap' }}>
-        <Button text={translate('roundend_next')} below={true} click={() => props.endGame(false)} />
+        <Button
+          text={translate('roundend_next')}
+          below={true}
+          click={() => {
+            if (declinedContra) {
+              setDeclinedContra(false);
+            }
+            props.endGame(false);
+          }}
+        />
         <Button
           text={translate('roundend_quit')}
           red={true}
@@ -217,6 +314,7 @@ export function Board(props: {
     <div className={css.board}>
       <div className={css.upperBoard}>
         {renderScoreBoard()}
+        {renderTrumpSuit()}
         {renderCalledCard()}
         {renderPrevTrick()}
         {renderKitty()}
@@ -227,6 +325,8 @@ export function Board(props: {
           players={props.players}
           playerNames={props.playerNames}
           contract={props.contract}
+          tout={props.tout}
+          contra={props.contra}
         />
         {renderTrick()}
         {renderButtonBar()}

@@ -9,7 +9,11 @@ const EmptyRoundSummary: IRoundSummary = {
   takerId: '',
   takerPointsRequired: 0,
   takerPoints: 0,
+  basic: 0,
+  running: 0,
   schneider: 0,
+  schwarz: 0,
+  multiplier: 0,
   scoring: [0, 0, 0, 0, 0],
 };
 
@@ -79,6 +83,7 @@ export function ScoreBoard(props: {
     const orderTakersFirst = playerKeys
       .filter((i) => props.playerRoles[i])
       .concat(playerKeys.filter((i) => !props.playerRoles[i]));
+    const running = summary.running >= 3 ? `${summary.running}` : `(${summary.running})`;
     return (
       <div
         className={[css.scoreBoard, css.board].join(' ')}
@@ -100,9 +105,33 @@ export function ScoreBoard(props: {
               {orderTakersFirst.map((i) => renderPoints(summary, i))}
             </tr>
             <tr>
+              <td>{translate('scoreboard_basic')}</td>
+              {orderTakersFirst.map((i) => (
+                <td key={i}>{props.playerRoles[i] ? `${summary.basic}` : '-'}</td>
+              ))}
+            </tr>
+            <tr>
+              <td>{translate('scoreboard_running')}</td>
+              {orderTakersFirst.map((i) => (
+                <td key={i}>{props.playerRoles[i] && !isNone(summary.running) ? running : '-'}</td>
+              ))}
+            </tr>
+            <tr>
               <td>{translate('scoreboard_schneider')}</td>
               {orderTakersFirst.map((i) => (
-                <td key={i}>{props.playerRoles[i] ? `${summary.schneider}` : '-'}</td>
+                <td key={i}>{props.playerRoles[i] && !isNone(summary.schneider) ? `${summary.schneider}` : '-'}</td>
+              ))}
+            </tr>
+            <tr>
+              <td>{translate('scoreboard_schwarz')}</td>
+              {orderTakersFirst.map((i) => (
+                <td key={i}>{props.playerRoles[i] && !isNone(summary.schwarz) ? `${summary.schwarz}` : '-'}</td>
+              ))}
+            </tr>
+            <tr>
+              <td>{translate('scoreboard_multiplier')}</td>
+              {orderTakersFirst.map((i) => (
+                <td key={i}>{props.playerRoles[i] ? `×${summary.multiplier}` : '-'}</td>
               ))}
             </tr>
             <tr>
@@ -136,4 +165,8 @@ export function ScoreBoard(props: {
   }
 
   return <div className={css.showPreviousRounds}>{renderPreviousRounds()}</div>;
+}
+
+function isNone(value: number): boolean {
+  return isNaN(value) || value === null;
 }

@@ -8,24 +8,46 @@ import { useCurrentGameTranslation } from 'infra/i18n';
 
 import { Board } from './components/GameBoard';
 
-import { Phases, IGameMoves, IG, IPlayer } from './types';
+import { Phases, Stages, IGameMoves, IG, IPlayer } from './types';
 import * as util from './util/misc';
 import * as u_discard from './util/discard';
 import * as u_placement from './util/placement';
 
 export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID: string; gameArgs?: IGameArgs }) {
   const { translate } = useCurrentGameTranslation();
+  const G = props.G;
+  const ctx = props.ctx;
   const playerID = isLocalGame(props.gameArgs) ? props.ctx.currentPlayer : props.playerID;
-  const playerPhase = props.ctx.currentPlayer === playerID && props.ctx.phase;
+  const playerPhase = ctx.currentPlayer === playerID && ctx.phase;
+  const playerStage = ctx.activePlayers && ctx.activePlayers[playerIndex()];
 
   function renderBoard() {
-    const G = props.G;
-    const ctx = props.ctx;
     const moves = props.moves;
     const player = G.players.find((P) => P.id === playerID);
+
     let prevTrick = G.trick;
     if (G.resolvedTricks.length > (util.kittySize(ctx.numPlayers) > 0 ? 1 : 0)) {
       prevTrick = G.resolvedTricks[G.resolvedTricks.length - 1];
+    }
+
+    let selectableCards: boolean[] = player.hand.map(() => false);
+    if (playerPhase == Phases.discard) {
+      selectableCards = u_discard.selectableCards(G, playerID);
+    } else if (playerPhase == Phases.placement) {
+      selectableCards = u_placement.selectableCards(G, playerID);
+    }
+
+    let canGiveContra = false;
+    if (ctx.phase == Phases.placement) {
+      const max_tricks = util.kittySize(ctx.numPlayers) > 0 ? 1 : 0;
+      if (G.resolvedTricks.length <= max_tricks && G.trick.cards.length <= 1) {
+        const isTaker = player.isTaker || player.id == G.calledTakerId;
+        if (isTaker) {
+          canGiveContra = G.contra == 2;
+        } else {
+          canGiveContra = G.contra == 1;
+        }
+      }
     }
 
     return (
@@ -35,6 +57,9 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           players={G.players}
           playerNames={G.players.map((P) => playerName(P.id))}
           contract={G.contract}
+          tout={G.announcedTout}
+          contra={G.contra}
+          calledTakerId={G.calledTakerId}
           currentPlayerId={ctx.currentPlayer}
           kitty={G.kitty}
           kittyRevealed={G.kittyRevealed || player.isTaker}
@@ -42,12 +67,16 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           trick={G.trick}
           prevTrick={prevTrick}
           calledCard={G.calledCard}
-          selectableCards={selectableCards(G, ctx, playerID)}
+          trumpSuit={G.trumpSuit}
+          selectableCards={selectableCards}
           roundSummaries={G.roundSummaries}
           showRoundSummary={ctx.phase == Phases.round_end && G.roundSummaries.length > 0}
           selectCards={canSelectCards(ctx, player) ? moves.SelectCards : null}
           selectBid={canBid(ctx, player) ? moves.MakeBid : null}
-          callCard={playerPhase == Phases.calling ? moves.Call : null}
+          callCard={playerStage == Stages.call_card ? moves.Call : null}
+          selectTrump={playerStage == Stages.select_trump ? moves.SelectTrumpSuit : null}
+          announceTout={playerStage == Stages.announce_tout ? moves.AnnounceTout : null}
+          giveContra={canGiveContra ? moves.GiveContra : null}
           discard={canDiscard(ctx, player) ? moves.Discard : null}
           endGame={moves.Finish}
         />
@@ -56,12 +85,10 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   }
 
   function renderGameOver() {
-    const scores: IScore[] = props.G.players.map((P) => ({ playerID: P.id, score: P.score }));
+    const scores: IScore[] = G.players.map((P) => ({ playerID: P.id, score: P.score }));
     scores.sort((a, b) => b.score - a.score);
-    const player = props.G.players.find((P) => P.id === playerID);
-    const scoreboard = (
-      <Scoreboard scoreboard={scores} players={props.gameArgs.players} playerID={props.ctx.playerID} />
-    );
+    const player = G.players.find((P) => P.id === playerID);
+    const scoreboard = <Scoreboard scoreboard={scores} players={props.gameArgs.players} playerID={ctx.playerID} />;
     return (
       <GameLayout
         gameOver={player.score > scores[0].score ? translate('gameover_you_won') : translate('gameover_you_lost')}
@@ -72,26 +99,14 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   }
 
   function playerIndex(id: string = playerID): number {
-    return props.ctx.playOrder.indexOf(id);
+    return ctx.playOrder.indexOf(id);
   }
 
   function playerName(id: string = playerID): string {
     return props.gameArgs ? props.gameArgs.players[playerIndex(id)].name : translate('player_n', { n: id });
   }
 
-  return props.ctx.gameover ? renderGameOver() : renderBoard();
-}
-
-function selectableCards(G: IG, ctx: Ctx, playerId: string): boolean[] {
-  const player = util.getPlayerById(G, playerId);
-  if (ctx.currentPlayer == playerId) {
-    if (ctx.phase == Phases.discard) {
-      return u_discard.selectableCards(G, playerId);
-    } else if (ctx.phase == Phases.placement) {
-      return u_placement.selectableCards(G, playerId);
-    }
-  }
-  return player.hand.map(() => false);
+  return ctx.gameover ? renderGameOver() : renderBoard();
 }
 
 function canSelectCards(ctx: Ctx, player: IPlayer): boolean {

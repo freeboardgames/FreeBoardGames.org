@@ -8,6 +8,14 @@ export const Moves = {
   MakeBid(G: IG, ctx: Ctx, value: number) {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     player.bid = value;
+    if (value == 0) {
+      const bidder = util.getPlayerById(G, G.bidderId);
+      const holder = util.getPlayerById(G, G.holderId);
+      if (!bidder.isDealer) {
+        G.holderId = bidder.bid == 0 ? holder.id : bidder.id;
+        G.bidderId = G.players.findIndex((P) => P.isDealer).toString();
+      }
+    }
     return G;
   },
 
@@ -105,8 +113,6 @@ export const Moves = {
         return INVALID_MOVE;
       }
       G.trick.cards.push(player.hand.splice(handIndex[0], 1)[0]);
-      G.kitty = [];
-      G.kittyRevealed = false;
     }
     return G;
   },

@@ -2,6 +2,7 @@ import { Ctx, Game } from 'boardgame.io';
 
 import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './types';
 import * as util from './util/misc';
+import * as u_discard from './util/discard';
 import * as u_poignee from './util/poignee';
 import * as u_summary from './util/summary';
 import { Moves } from './moves';
@@ -47,14 +48,10 @@ export const FrenchTarotGame: Game<IG> = {
   },
 
   phases: {
-    dealing: {
+    bidding: {
       start: true,
-      next: Phases.bidding,
 
-      // this phase doesn't have any user interaction, but ends immediately
-      endIf: () => true,
-
-      onEnd: (G: IG, ctx: Ctx) => {
+      onBegin: (G: IG, ctx: Ctx) => {
         const handSize = util.handSize(ctx.numPlayers);
         const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, ctx.numPlayers)];
@@ -64,20 +61,18 @@ export const FrenchTarotGame: Game<IG> = {
           P.bid = -1;
           P.isTaker = false;
           P.isReady = true;
-          P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
+          P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(util.cmpCards);
         });
         G.takerId = '';
         G.calledCard = null;
         G.calledTakerId = null;
-        G.kitty = G.deck.slice(-util.kittySize(ctx.numPlayers)).sort(cmpCards);
+        G.kitty = G.deck.slice(-util.kittySize(ctx.numPlayers)).sort(util.cmpCards);
         G.kittyRevealed = false;
         G.announcedSlam = false;
         G.poignee = 0;
         G.trick = { cards: [], leader: leader };
       },
-    },
 
-    bidding: {
       turn: {
         moveLimit: 1,
         order: {
@@ -100,14 +95,15 @@ export const FrenchTarotGame: Game<IG> = {
       },
 
       endIf: (G: IG) => {
+        if (G.players[0].hand.length == 0) return;
         if (G.players.some((P) => P.bid == 4)) {
-          return { next: Phases.calling };
+          return { next: Phases.discard };
         }
         if (G.players.some((P) => P.bid == -1)) return;
         if (G.players.every((P) => P.bid == 0)) {
-          return { next: Phases.dealing };
+          return { next: Phases.bidding };
         } else if (G.players.filter((P) => P.bid > 0).length == 1) {
-          return { next: Phases.calling };
+          return { next: Phases.discard };
         }
       },
 
@@ -135,52 +131,23 @@ export const FrenchTarotGame: Game<IG> = {
       },
     },
 
-    calling: {
-      next: Phases.discard,
+    discard: {
+      next: Phases.placement,
       turn: {
-        moveLimit: 1,
+        onBegin: (G: IG, ctx: Ctx) => {
+          if (ctx.numPlayers == 5) {
+            ctx.events.setActivePlayers({ currentPlayer: Stages.call_card });
+          } else if (!u_discard.prepareDiscard(G)) {
+            ctx.events.setActivePlayers({ currentPlayer: Stages.announce_slam });
+          }
+        },
         order: {
           first: (G) => +G.takerId,
           next: (G) => +G.takerId,
         },
-      },
-
-      moves: {
-        Call: Moves.Call,
-      },
-
-      endIf: (G, ctx) => ctx.numPlayers < 5 || !!G.calledCard,
-
-      onEnd: (G: IG) => {
-        if (G.calledCard) {
-          G.calledTakerId = getCalledTakerId(G.players, G.calledCard);
-        }
-        const taker = G.players.find((P) => P.isTaker);
-        if (G.contract < 3) {
-          taker.discardSelection = [];
-          taker.hand = taker.hand.concat(G.kitty).sort(cmpCards);
-          G.kittyRevealed = true;
-        } else if (G.contract == 3) {
-          G.resolvedTricks.push({
-            cards: G.kitty.splice(0, G.kitty.length),
-            winner: taker,
-          });
-        } else if (G.contract == 4) {
-          G.resolvedTricks.push({
-            cards: G.kitty.splice(0, G.kitty.length),
-            winner: G.players.find((P) => P.id != G.calledTakerId && !P.isTaker),
-          });
-        }
-      },
-    },
-
-    discard: {
-      next: Phases.announce_slam,
-      turn: {
-        moveLimit: 1,
-        order: {
-          first: (G) => +G.takerId,
-          next: (G) => +G.takerId,
+        stages: {
+          call_card: { moves: { Call: Moves.Call } },
+          announce_slam: { moves: { AnnounceSlam: Moves.AnnounceSlam } },
         },
       },
 
@@ -189,28 +156,11 @@ export const FrenchTarotGame: Game<IG> = {
         Discard: Moves.Discard,
       },
 
-      endIf: (G) => G.resolvedTricks.length > 0,
-
       onEnd: (G: IG) => {
-        const taker = G.players[+G.takerId];
-        delete taker.discardSelection;
-        taker.isReady = false;
-        G.kittyRevealed = false;
-        G.kitty = [];
+        if (G.calledCard) {
+          G.calledTakerId = getCalledTakerId(G.players, G.calledCard);
+        }
       },
-    },
-
-    announce_slam: {
-      next: Phases.placement,
-      turn: {
-        moveLimit: 1,
-        order: {
-          first: (G) => +G.takerId,
-          next: (G) => +G.takerId,
-        },
-      },
-      moves: { AnnounceSlam: Moves.AnnounceSlam },
-      endIf: (G) => G.players[+G.takerId].isReady,
     },
 
     placement: {
@@ -221,28 +171,23 @@ export const FrenchTarotGame: Game<IG> = {
           if (G.resolvedTricks.length == 1 && u_poignee.maxPoigneeLevel(hand, num_players) > 0) {
             u_poignee.preselectPoignee(G, ctx);
             ctx.events.setActivePlayers({ currentPlayer: Stages.declare_poignee });
-          } else {
-            ctx.events.setActivePlayers({
-              currentPlayer: Stages.place_card,
-              moveLimit: 1,
-            });
           }
         },
         stages: {
           declare_poignee: {
-            next: Stages.place_card,
             moves: {
               SelectCards: Moves.SelectCards,
               DeclarePoignee: Moves.DeclarePoignee,
             },
           },
-          place_card: { moves: { SelectCards: Moves.SelectCards } },
         },
         order: {
           first: (G) => +G.trick.leader.id,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
         },
       },
+
+      moves: { SelectCards: Moves.SelectCards },
 
       endIf: (G: IG, ctx: Ctx) => {
         if (G.trick.cards.length != ctx.numPlayers) return;
@@ -268,7 +213,7 @@ export const FrenchTarotGame: Game<IG> = {
     },
 
     round_end: {
-      next: Phases.dealing,
+      next: Phases.bidding,
       turn: {
         stages: { get_ready: { moves: { Finish: Moves.Finish } } },
         activePlayers: { all: Stages.get_ready, moveLimit: 1 },
@@ -348,8 +293,4 @@ export function getSortedDeck(): ICard[] {
       }),
   );
   return deck;
-}
-
-export function cmpCards(a: ICard, b: ICard): number {
-  return (a.color - b.color) * 100 + (a.value - b.value);
 }

@@ -198,7 +198,7 @@ export function Board(props: {
   }
 
   function renderButtonsSlam() {
-    if (!props.announceSlam || props.player.isReady) return;
+    if (!props.announceSlam) return;
     return (
       <>
         <div className={css.question}>{translate('slam_announce_q')}</div>

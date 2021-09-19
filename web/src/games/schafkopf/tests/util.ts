@@ -78,11 +78,11 @@ export function setup_3players(): IG {
     ...DefaultIG,
     players: players,
     takerId: '0',
+    deck: Array.prototype.concat(...players.map((P) => P.hand), ecarte.cards),
     trick: { cards: [], leader: players[1] },
     resolvedTricks: [ecarte],
     contract: Contract.Solo,
     trumpSuit: CardColor.Eichel,
-    calledCard: str2card('EA'),
   };
 }
 
@@ -98,6 +98,7 @@ export function setup_3players_bettel(): IG {
     ...DefaultIG,
     players: players,
     takerId: '2',
+    deck: Array.prototype.concat(...players.map((P) => P.hand), ecarte.cards),
     trick: { cards: [], leader: players[1] },
     resolvedTricks: [ecarte],
     contract: Contract.Bettel,
@@ -115,6 +116,7 @@ export function setup_4players(): IG {
     ...DefaultIG,
     players: players,
     takerId: '3',
+    deck: Array.prototype.concat(...players.map((P) => P.hand)),
     calledTakerId: '1',
     trick: { cards: [], leader: players[2] },
     resolvedTricks: [],
@@ -136,6 +138,7 @@ export function setup_4players_wenz(): IG {
     ...DefaultIG,
     players: players,
     takerId: '2',
+    deck: Array.prototype.concat(...players.map((P) => P.hand)),
     trick: { cards: [], leader: players[0] },
     resolvedTricks: [],
     contract: Contract.Wenz,

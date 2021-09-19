@@ -1,10 +1,8 @@
 export enum Phases {
-  dealing = 'dealing',
   bidding = 'bidding',
   discard = 'discard',
   placement = 'placement',
   round_end = 'round_end',
-  result = 'result',
 }
 
 export enum Stages {
