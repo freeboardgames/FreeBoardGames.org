@@ -18,6 +18,35 @@ interface IBoardProps {
 }
 
 export class Board extends React.Component<IBoardProps, {}> {
+  _canPlay() {
+    if (this.props.ctx.phase === 'play') {
+      return this.props.G.players[this.props.playerID].turnsLeft > 0;
+    } else {
+      return this.props.ctx.activePlayers !== null && this.props.ctx.activePlayers.hasOwnProperty(this.props.playerID);
+    }
+  }
+
+  _selectCard = (id: number) => {
+    if (!this._canPlay() || this.props.ctx.phase !== 'play') {
+      return;
+    }
+    this.props.moves.selectCard(id);
+  };
+
+  _useFork = () => {
+    if (!this._canPlay() || this.props.ctx.phase !== 'play') {
+      return;
+    }
+    this.props.moves.useFork();
+  };
+
+  _confirmScore = () => {
+    if (!this._canPlay() || this.props.ctx.phase !== 'score') {
+      return;
+    }
+    this.props.moves.confirmScore();
+  };
+
   render() {
     if (this.props.ctx.gameover) {
       return (
@@ -35,7 +64,14 @@ export class Board extends React.Component<IBoardProps, {}> {
           ROUND {this.props.G.round}
         </Typography>
         {this._getPlayersInfo()}
-        <BottomInfo playerID={this.props.playerID} G={this.props.G} ctx={this.props.ctx} />
+        <BottomInfo
+          playerID={this.props.playerID}
+          G={this.props.G}
+          ctx={this.props.ctx}
+          selectCard={this._selectCard}
+          useFork={this._useFork}
+          confirmScore={this._confirmScore}
+        />
       </GameLayout>
     );
   }

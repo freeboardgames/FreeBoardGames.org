@@ -13,6 +13,9 @@ interface InnerWrapper {
   playerID: string;
   G: IG;
   ctx: Ctx;
+  selectCard: (id: number) => void;
+  useFork: () => void;
+  confirmScore: () => void;
 }
 
 export class BottomInfo extends React.Component<InnerWrapper, {}> {
@@ -37,6 +40,7 @@ export class BottomInfo extends React.Component<InnerWrapper, {}> {
             active={true}
             selected={h.selected && h.selected.includes(i)}
             isTurn={this.props.G.players[this.props.playerID].turnsLeft > 0}
+            click={() => this.props.selectCard(i)}
           />
         ))}
       </div>
@@ -67,6 +71,7 @@ export class BottomInfo extends React.Component<InnerWrapper, {}> {
         disableRipple={!isActive}
         disableFocusRipple={!isActive}
         style={{ cursor: isActive ? 'pointer' : 'auto' }}
+        onClick={isActive ? () => this.props.confirmScore() : null}
       >
         {this.props.G.round === 3 ? 'End Game' : 'Ready'}
       </Button>
@@ -82,7 +87,13 @@ export class BottomInfo extends React.Component<InnerWrapper, {}> {
           </Box>
           {' - ' + this._getHandStatus()}
         </Typography>
-        <Button variant="contained" size="small" color="primary" disabled={!this._canPlayerUseFork()}>
+        <Button
+          variant="contained"
+          size="small"
+          color="primary"
+          onClick={() => this.props.useFork()}
+          disabled={!this._canPlayerUseFork()}
+        >
           Use Fork
         </Button>
       </div>
