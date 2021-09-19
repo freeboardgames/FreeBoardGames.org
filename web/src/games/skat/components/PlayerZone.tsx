@@ -103,7 +103,7 @@ export function PlayerZone(props: {
     if (props.active) {
       statuses.push(
         <span key="active" title={translate('status_active')} className={css.active}>
-          &#x1F552;
+          &#x1F4A1;
         </span>,
       );
     }

@@ -4,6 +4,7 @@
   height: calc(100vh - 49px);
   max-height: 800px;
   font-family: sans-serif;
+  font-size: 2vh;
   border-radius: 20px;
   text-align: center;
   background-color: #795f5e;
@@ -32,46 +33,47 @@
 
 .trumpSuit {
   position: absolute;
-  top: 1em; left: 1em;
-  width: 100px; height: 150px;
+  bottom: -1em; left: 0.9em;
+  width: 100px;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
-  font-size: 15px;
+  font-size: 0.9em;
   overflow: hidden;
 }
 
-@media only screen and (max-width: 850px) {
-  .trumpSuit {
-    top: auto; bottom: -1em;
-    left: 10px;
-  }
-  .trumpSuit .cardContainer {
-    transform: translate(-50%, 0) scale(0.2) rotate(-90deg);
-  }
-}
-
 .trumpSuit span:first-child {
-  position: absolute;
-  top: 3px; left:0; right: 0;
+  display: block;
+  padding-top: 3px;
   text-align: center;
   white-space: nowrap;
 }
 
-.trumpSuit .cardContainer {
-  position: absolute;
-  left: 50%; top: 25px;
-  transform-origin: 0 0;
-  transform: translate(-50%, 0) scale(0.22);
+.trumpSuit .arrangeCard {
+  margin: 0.5em auto;
   width: 70px;
   box-shadow: rgb(0, 0, 0) 0px 0px 50px;
+}
+
+.trumpSuit .cropCard {
+  height: 107px;
+  width: 70px;
+  overflow: hidden;
+}
+
+.trumpSuit .scaleCard {
+  transform-origin: 0 0;
+  transform: scale(0.22);
 }
 
 .cardsOuvert {
   position: absolute;
   top: 1em;
-  left: 50%;
+  right: 50px;
   white-space: nowrap;
-  transform: translate(-50%, 0);
+}
+
+.cardsOuvert.left {
+  right: auto; left: 10px;
 }
 
 .cardsOuvert .cardContainer {
@@ -143,12 +145,12 @@
   position: absolute;
   top: 0; left: 50%;
   transform: translate(-50%, -150%);
-  width: 450px; height: 25px;
-  line-height: 25px;
-  font-size: 20px;
+  width: 22em; height: 1.25em;
+  line-height: 1.25em;
+  font-size: 1.4em;
   font-weight: bold;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.6);
-  padding: 5px;
-  margin: 10px auto;
+  padding: 0.25em;
+  margin: 0.5em auto;
 }

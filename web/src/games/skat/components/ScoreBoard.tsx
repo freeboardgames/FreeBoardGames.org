@@ -35,7 +35,7 @@ export function ScoreBoard(props: {
         <input type="checkbox" id="togglePrevRounds" checked={props.showRoundSummary ? true : null} />
         <label htmlFor="togglePrevRounds">{translate('prev_scores')}</label>
         <div>
-          <div className={`${css.previousRounds} ${css.board}`} style={{ maxWidth: `${23 + numPlayers * 53}px` }}>
+          <div className={`${css.previousRounds} ${css.board}`}>
             <table>
               <tbody>
                 <tr>
@@ -86,7 +86,6 @@ export function ScoreBoard(props: {
       <div
         className={[css.scoreBoard, css.board, props.showRoundSummary ? css.toggleHover : ''].join(' ')}
         style={{
-          width: `${150 + playerKeys.length * 76}px`,
           display: showSummary == -1 ? 'none' : 'block',
         }}
       >

@@ -17,7 +17,6 @@ import * as u_placement from './util/placement';
 export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID: string; gameArgs?: IGameArgs }) {
   const { translate } = useCurrentGameTranslation();
   const playerID = isLocalGame(props.gameArgs) ? props.ctx.currentPlayer : props.playerID;
-  const playerPhase = props.ctx.currentPlayer === playerID && props.ctx.phase;
   const playerStage = props.ctx.activePlayers && props.ctx.activePlayers[playerIndex()];
 
   function renderBoard() {
@@ -47,8 +46,8 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           showRoundSummary={ctx.phase == Phases.round_end && G.roundSummaries.length > 0}
           selectCards={canSelectCards(ctx, player) ? moves.SelectCards : null}
           selectBid={canBid(ctx, player) ? moves.MakeBid : null}
-          callCard={playerPhase == Phases.calling ? moves.Call : null}
-          announceSlam={canAnnounceSlam(ctx, player) ? moves.AnnounceSlam : null}
+          callCard={playerStage == Stages.call_card ? moves.Call : null}
+          announceSlam={playerStage == Stages.announce_slam ? moves.AnnounceSlam : null}
           declarePoignee={playerStage == Stages.declare_poignee ? moves.DeclarePoignee : null}
           discard={canDiscard(ctx, player) ? moves.Discard : null}
           endGame={moves.Finish}
@@ -114,9 +113,4 @@ function canBid(ctx: Ctx, player: IPlayer): boolean {
 function canDiscard(ctx: Ctx, player: IPlayer): boolean {
   if (ctx.currentPlayer != player.id) return false;
   return player.isTaker && ctx.phase == Phases.discard;
-}
-
-function canAnnounceSlam(ctx: Ctx, player: IPlayer): boolean {
-  if (ctx.currentPlayer != player.id) return false;
-  return player.isTaker && ctx.phase == Phases.announce_slam;
 }

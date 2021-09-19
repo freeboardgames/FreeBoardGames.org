@@ -1,5 +1,5 @@
 import { IG } from '../types';
-import { resolveTrick, getSortedDeck, cmpCards } from '../game';
+import { resolveTrick, getSortedDeck } from '../game';
 import * as util from '../util/misc';
 import * as u_placement from '../util/placement';
 
@@ -48,7 +48,7 @@ export function dealCards(G: IG) {
   G.deck = getSortedDeck();
   shuffleArray(G.deck);
   G.players.forEach((P, i) => {
-    P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
+    P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(util.cmpCards);
   });
-  G.kitty = G.deck.slice(-util.kittySize(G.players.length)).sort(cmpCards);
+  G.kitty = G.deck.slice(-util.kittySize(G.players.length)).sort(util.cmpCards);
 }

@@ -1,5 +1,5 @@
 import { IG, Contract, CardColor } from '../types';
-import { resolveTrick, getSortedDeck, get_cmpCards, getCalledTakerId } from '../game';
+import { resolveTrick, getSortedDeck, getCalledTakerId } from '../game';
 import * as util from '../util/misc';
 import * as u_placement from '../util/placement';
 
@@ -46,7 +46,7 @@ export function shuffleArray(array: any[]) {
 export function dealCards(G: IG) {
   const handSize = util.handSize(G.players.length);
   const kittySize = util.kittySize(G.players.length);
-  const cmpCards = get_cmpCards(G.contract, CardColor.Herz);
+  const cmpCards = util.get_cmpCards(G.contract, CardColor.Herz);
   G.deck = getSortedDeck();
   shuffleArray(G.deck);
   G.players.forEach((P, i) => {
