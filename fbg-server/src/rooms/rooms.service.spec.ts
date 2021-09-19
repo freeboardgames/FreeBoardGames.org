@@ -197,7 +197,7 @@ describe('RoomsService', () => {
     };
     const bobId = await usersService.newUser({ nickname: 'bob' });
     jest.clearAllMocks();
-    const post = jest.spyOn(httpService, 'post').mockImplementation(() => Promise.resolve() as any);
+    const post = jest.spyOn(httpService, 'post').mockImplementation(() => ({ toPromise: () => Promise.resolve() }) as any);
     const webhookUrl = "https://foo";
     process.env.DISCORD_LETS_PLAY_WEBHOOK = webhookUrl;
     
