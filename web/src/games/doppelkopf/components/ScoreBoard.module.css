@@ -17,8 +17,7 @@
 
 .showPreviousRounds {
   position: absolute;
-  top: 1em; left: 50%;
-  transform: translate(-50%, 0);
+  top: 1em; right: 1em;
   z-index: 19;
   text-align: right;
 }
