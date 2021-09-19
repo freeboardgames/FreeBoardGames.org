@@ -1,5 +1,5 @@
 import MobileDetect from 'mobile-detect';
-import { uaIsMobile } from './UaHelper';
+import { detectIsMobile } from './detectIsMobile';
 
 jest.mock('mobile-detect');
 
@@ -17,7 +17,7 @@ describe('UaHelper', () => {
   it('should return true if mobile and not tablet', () => {
     mockMobile.mockReturnValue(true);
     mockTablet.mockReturnValue(false);
-    const result = uaIsMobile('foouseragent');
+    const result = detectIsMobile();
     expect(result).toBeTruthy();
   });
 });
