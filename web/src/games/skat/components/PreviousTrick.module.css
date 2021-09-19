@@ -1,19 +1,11 @@
 .prevTrick {
   position: absolute;
-  top: 50px; right: 15px;
+  bottom: 0; right: 1em;
   width: 10em; height: 7em;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
-  font-size: 15px;
+  font-size: 1em;
   z-index: 5;
-}
-
-@media only screen and (max-width: 850px) {
-  .prevTrick {
-    top: auto; bottom: 0;
-    right: 10px;
-    font-size: 12px;
-  }
 }
 
 .prevTrick > span:first-child {

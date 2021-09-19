@@ -1,17 +1,14 @@
 export enum Phases {
-  dealing = 'dealing',
   bidding = 'bidding',
-  calling = 'calling',
   discard = 'discard',
-  announce_slam = 'announce_slam',
   placement = 'placement',
   round_end = 'round_end',
-  result = 'result',
 }
 
 export enum Stages {
+  call_card = 'call_card',
+  announce_slam = 'announce_slam',
   declare_poignee = 'declare_poignee',
-  place_card = 'place_card',
   get_ready = 'get_ready',
 }
 

@@ -1,6 +1,29 @@
 import { IG, IPlayer, CardColor } from '../types';
 import * as util from './misc';
 
+export function prepareDiscard(G: IG): boolean {
+  // returns false if no discard is done in this contract
+  const taker = G.players.find((P) => P.isTaker);
+  if (G.contract < 3) {
+    taker.discardSelection = [];
+    taker.hand = taker.hand.concat(G.kitty).sort(util.cmpCards);
+    G.kittyRevealed = true;
+    return true;
+  } else if (G.contract == 3) {
+    G.resolvedTricks.push({
+      cards: G.kitty.splice(0, G.kitty.length),
+      winner: taker,
+    });
+    return false;
+  } else if (G.contract == 4) {
+    G.resolvedTricks.push({
+      cards: G.kitty.splice(0, G.kitty.length),
+      winner: G.players.find((P) => P.id != G.calledTakerId && !P.isTaker),
+    });
+    return false;
+  }
+}
+
 export function selectableCards(G: IG, playerId: string): boolean[] {
   const player = util.getPlayerById(G, playerId);
   const discard_num = util.kittySize(G.players.length);

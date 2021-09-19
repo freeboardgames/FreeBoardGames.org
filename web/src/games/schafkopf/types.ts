@@ -1,15 +1,14 @@
 export enum Phases {
-  dealing = 'dealing',
   bidding = 'bidding',
   discard = 'discard',
-  calling = 'calling',
   placement = 'placement',
   round_end = 'round_end',
-  result = 'result',
 }
 
 export enum Stages {
-  place_card = 'place_card',
+  call_card = 'call_card',
+  select_trump = 'select_trump',
+  announce_tout = 'announce_tout',
   get_ready = 'get_ready',
 }
 
@@ -17,6 +16,9 @@ export interface IGameMoves {
   MakeBid(value: number): void;
   Discard(): void;
   Call(card: ICard): void;
+  SelectTrumpSuit(suit: CardColor): void;
+  AnnounceTout(announce: boolean): void;
+  GiveContra(): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
 }
@@ -31,10 +33,11 @@ export enum CardColor {
 export enum Contract {
   None = -1,
   Pass = 0,
-  Ace = 1,
-  Bettel = 2,
-  Wenz = 3,
-  Solo = 4,
+  Some = 1,
+  Ace = 2,
+  Bettel = 3,
+  Wenz = 4,
+  Solo = 5,
 }
 
 export interface IG {
@@ -49,6 +52,8 @@ export interface IG {
   calledCard?: ICard;
   trumpSuit: CardColor;
   contract: Contract;
+  announcedTout: boolean;
+  contra: number;
   trick: ITrick;
   resolvedTricks: ITrick[];
   roundSummaries: IRoundSummary[];
@@ -64,8 +69,10 @@ export const DefaultIG: IG = {
   calledTakerId: '',
   calledMayRun: null,
   calledCard: null,
-  trumpSuit: CardColor.Herz,
+  trumpSuit: null,
   contract: Contract.None,
+  announcedTout: null,
+  contra: 1,
   trick: { cards: [] },
   resolvedTricks: [],
   roundSummaries: [],
@@ -110,6 +117,10 @@ export interface IRoundSummary {
   calledTakerId?: string;
   takerPointsRequired: number;
   takerPoints: number;
+  basic: number;
+  running: number;
   schneider: number;
+  schwarz: number;
+  multiplier: number;
   scoring: number[];
 }

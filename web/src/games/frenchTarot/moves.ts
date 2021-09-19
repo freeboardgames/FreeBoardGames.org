@@ -3,6 +3,7 @@ import { Ctx } from 'boardgame.io';
 
 import { Phases, Stages, IG, ICard } from './types';
 import * as util from './util/misc';
+import * as u_discard from './util/discard';
 import * as u_poignee from './util/poignee';
 
 export const Moves = {
@@ -14,6 +15,10 @@ export const Moves = {
 
   Call(G: IG, ctx: Ctx, card: ICard) {
     G.calledCard = card;
+    ctx.events.endStage();
+    if (!u_discard.prepareDiscard(G)) {
+      ctx.events.setActivePlayers({ currentPlayer: Stages.announce_slam });
+    }
     return G;
   },
 
@@ -33,6 +38,10 @@ export const Moves = {
         .reverse(),
       winner: player,
     });
+    delete player.discardSelection;
+    G.kittyRevealed = false;
+    G.kitty = [];
+    ctx.events.setStage(Stages.announce_slam);
 
     return G;
   },
@@ -43,6 +52,8 @@ export const Moves = {
     G.announcedSlam = announce;
     if (announce) G.trick.leader = player;
     player.isReady = true;
+    ctx.events.endStage();
+    ctx.events.endPhase();
     return G;
   },
 
@@ -74,7 +85,7 @@ export const Moves = {
         return INVALID_MOVE;
       }
       player.discardSelection = [...handIndex];
-    } else if (stage == Stages.place_card) {
+    } else {
       if (handIndex.length == 0) {
         return INVALID_MOVE;
       }
