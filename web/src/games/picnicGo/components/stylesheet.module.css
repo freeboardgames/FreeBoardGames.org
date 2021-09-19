@@ -46,15 +46,25 @@
   max-width: 50px;
 }
 
-.Hand {
+.BottomInfoCardDisplay {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   overflow-x: auto;
   width: 100%;
-  min-height: 105px;
+  min-height: 110px;
 }
 
-.HandTopBar {
+.BottomInfoEndRound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 4px;
+  width: 100%;
+  min-height: 110px;
+}
+
+.BottomInfoTopBar {
   clear: both; 
   margin: 4px 8px;
   display: flex; 
@@ -76,5 +86,5 @@
   align-items: flex-start;
   overflow-x: auto;
   width: 100%;
-  min-height: 70px;
+  min-height: 75px;
 }
