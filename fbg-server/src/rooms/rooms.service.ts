@@ -45,7 +45,9 @@ export class RoomsService {
       if (room.isPublic) {
         // Cant do this inside a transaction as we need the new room in the notification.
         await this.lobbyService.notifyLobbyUpdate();
-        this.maybeNotifyDiscord(user, roomEntity); // Fire and forget
+        this.maybeNotifyDiscord(user, roomEntity).catch((err) => {
+          console.error(err);
+        }); // Fire and forget
       }
     } else {
       await this.saveNewRoom(queryRunner, user, roomEntity);
