@@ -5,5 +5,40 @@
   "instructions": {
     "videoID": "-WO1cP9wzrw",
     "text": "TODO"
-  }
+  },
+
+  "round": "ROUND {{ r }}",
+
+  "symbols": {
+    "waiting": "🕒",
+    "done": "✅",
+    "cupcake": "🧁",
+    "chips": "🥔"
+  },
+
+  "game_over": {
+    "win": "you win",
+    "lose": "you lose",
+    "draw": "draw",
+    "spectator": "see scoreboard"
+  },
+
+  "is_you": "(you)",
+  "using_fork": "Using fork!",
+  "score": "Score:",
+
+  "your_hand": "Your hand",
+  "select_card": "Select {{ count }} more card",
+  "select_card_plural": "Select {{ count }} more cards",
+  "wait_other_players": "Waiting for other players",
+  "wait_next_round": "Waiting for next round",
+  "use_fork": "Use fork",
+
+  "round_over_next": "Round {{ r }} over - ready for next round?",
+  "round_over_end": "Round {{ r }} over - game over!",
+  "button_ready": "Ready",
+  "button_end_game": "End game",
+
+  "scoring_end_round": "(chips are scored after all players are ready)",
+  "scoring_end_game": "(chips and cupcakes are scored after all players are ready)"
 }

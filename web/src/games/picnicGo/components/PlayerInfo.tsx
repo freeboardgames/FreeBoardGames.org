@@ -3,6 +3,7 @@ import { Card } from './Card';
 import css from './stylesheet.module.css';
 import { IG } from '../types';
 import { getCardTypeFromNumber } from '../cards';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -20,35 +21,38 @@ interface InnerWrapper {
 }
 
 export function PlayerInfo(props: InnerWrapper) {
+  const { translate } = useCurrentGameTranslation();
   const players = props.G.players;
 
   function _getTopBar() {
     return (
       <div className={css.PlayerInfoTopBar}>
         <Typography style={{ color: 'white' }} variant="body1">
-          {props.isActive && players[props.playerID].turnsLeft > 0 ? '🕒 ' : '✅ '}
+          {(props.isActive && players[props.playerID].turnsLeft > 0
+            ? translate('symbols.waiting')
+            : translate('symbols.done')) + ' '}
           <Box component="span" fontWeight="bold">
             {props.playerName}
           </Box>
-          {props.isSelf ? ' (you)' : ''}
+          {props.isSelf ? ' ' + translate('is_you') : ''}
         </Typography>
         <div style={{ display: 'flex', columnGap: '8px', textAlign: 'start' }}>
           {players[props.playerID].forkUsed && (
             <Typography style={{ color: blue[400], fontWeight: 'bold' }} variant="button">
-              Using fork!
+              {translate('using_fork')}
             </Typography>
           )}
           <Typography style={{ color: _getCupcakeDisplayColor(), minWidth: '3.3em' }} variant="body1">
-            🧁 {players[props.playerID].dessertsCount.toString()}
+            {translate('symbols.cupcake') + ' ' + players[props.playerID].dessertsCount}
           </Typography>
           <Typography style={{ color: _getChipsDisplayColor(), minWidth: '3.3em' }} variant="body1">
-            🥔 {players[props.playerID].chipsCount.toString()}
+            {translate('symbols.chips') + ' ' + players[props.playerID].chipsCount}
           </Typography>
           <Typography style={{ color: 'white', marginLeft: '10px', minWidth: '5em' }} variant="body1">
             <Box component="span" fontWeight="bold">
-              Score:{' '}
+              {translate('score') + ' '}
             </Box>
-            {players[props.playerID].score.toString()}
+            {players[props.playerID].score}
           </Typography>
         </div>
       </div>

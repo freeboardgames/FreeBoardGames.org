@@ -8,6 +8,7 @@ import { IG } from './types';
 import { BottomInfo } from './components/BottomInfo';
 import { PlayerInfo } from './components/PlayerInfo';
 import Typography from '@material-ui/core/Typography';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 interface IBoardProps {
   G: IG;
@@ -18,6 +19,8 @@ interface IBoardProps {
 }
 
 export function Board(props: IBoardProps) {
+  const { translate } = useCurrentGameTranslation();
+
   function _canPlay() {
     if (props.ctx.phase === 'play') {
       return props.G.players[props.playerID].turnsLeft > 0;
@@ -51,7 +54,7 @@ export function Board(props: IBoardProps) {
     return (
       <GameLayout gameArgs={props.gameArgs} maxWidth="750px">
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '8px' }}>
-          ROUND {props.G.round}
+          {translate('round', { r: props.G.round })}
         </Typography>
         {_getPlayersInfo()}
         <BottomInfo
@@ -73,15 +76,15 @@ export function Board(props: IBoardProps) {
   function _getGameOver() {
     const scoreboard: IScore[] = props.ctx.gameover.scoreboard;
     if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
-      return 'draw';
+      return translate('game_over.draw');
     } else {
       if (isSpectator(props.playerID)) {
-        return 'see scoreboard';
+        return translate('game_over.spectator');
       }
       if (scoreboard[0].score === scoreboard.find((e) => e.playerID === props.playerID).score) {
-        return 'you won';
+        return translate('game_over.win');
       } else {
-        return 'you lost';
+        return translate('game_over.lose');
       }
     }
   }
