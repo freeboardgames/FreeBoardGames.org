@@ -17,19 +17,30 @@ import { GamePickerModal } from 'infra/common/components/game/GamePickerModal';
 import { ReduxUserState } from 'infra/common/redux/definitions';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import { getGameDefinition } from 'infra/game';
-import { Link, NextRouter, Router, withRouter, withTranslation, WithTranslation } from 'infra/i18n';
+import {
+  Link,
+  NextRouter,
+  Router,
+  useTranslation,
+  withRouter,
+  withTranslation,
+  WithTranslation,
+  Trans,
+} from 'infra/i18n';
 import { home, match } from 'infra/navigation';
 import { GameSharing } from 'infra/room/GameSharing';
 import { ListPlayers } from 'infra/room/ListPlayers';
 import { CustomizationBar } from 'infra/settings/CustomizationBar';
 import { SettingsService, withSettingsService } from 'infra/settings/SettingsService';
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { Dispatch } from 'redux';
 import { Chat } from '../chat/Chat';
 import { getPlayerIds, getPlayerNicknames, isCreator } from './RoomMetadataHelper';
 import { StartMatchButton } from './StartMatchButton';
+import Alert from '@material-ui/lab/Alert';
+import css from './Room.module.css';
 
 export const ROOM_SUBSCRIPTION = gql`
   subscription RoomMutated($roomId: String!) {
@@ -70,6 +81,34 @@ interface State {
   editingName: boolean;
   changingGame: boolean;
 }
+
+const LetsPlayDiscordLink = () => {
+  const { t } = useTranslation('Room');
+  const [closed, setClosed] = useState(false);
+  if (closed) return null;
+  const l = (
+    <a href="https://discord.gg/VQeCtYbBmA" target="_blank" rel="noreferrer">
+      #lets-play
+    </a>
+  );
+  return (
+    <Alert
+      severity="info"
+      className={css.DiscordAlert}
+      onClose={() => {
+        setClosed(true);
+      }}
+    >
+      <Trans
+        t={t}
+        i18nKey="discord_link"
+        components={{
+          l,
+        }}
+      />
+    </Alert>
+  );
+};
 
 class Room extends React.Component<InnerProps & OutterProps, State> {
   state: State = {
@@ -136,6 +175,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
               <React.Fragment>
                 {this.renderGameCard(room, gameDef)}
                 {this._getGameSharing()}
+                <LetsPlayDiscordLink />
                 <ListPlayers
                   roomMetadata={room}
                   editNickname={this._toggleEditingName}

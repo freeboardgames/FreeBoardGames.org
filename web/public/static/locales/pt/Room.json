@@ -7,5 +7,6 @@
   "leave_room": "Sair da sala",
   "max_players": "{{ name }} pode jogar até {{ max }} jogadores, mas a sala tem {{ current }} jogadores.",
   "failed_to_set_nickname": "Erro ao trocar de apelido.",
-  "failed_to_start_match": "Erro ao iniciar a partida"
+  "failed_to_start_match": "Erro ao iniciar a partida",
+  "discord_link": "Precisando de mais jogadores? Veja <l>#lets-play</l> no nosso Discord!"
 }

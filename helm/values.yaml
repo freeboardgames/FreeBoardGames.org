@@ -16,6 +16,7 @@ replicas:
 
 fbgServer:
   jwtSecret: SECRET_TO_SIGN_JWT
+  discordLetsPlayWebhook: https://www.freeboardgames.org # For prod, use valid webhook
   forceDbSync: true       # For prod, use false
 
 postgresql:
