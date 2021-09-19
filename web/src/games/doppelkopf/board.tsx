@@ -40,12 +40,14 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     let canAnnounce = false;
     if (ctx.phase == Phases.placement && G.contract != Contract.Marriage) {
       const announcement = isTaker ? G.announcementRe : G.announcementContra;
-      const otherAnnouncement = isTaker ? G.announcementContra : G.announcementRe;
-      let announceRank = util.announceRank(announcement);
-      if (announcement == Announcement.None && otherAnnouncement > Announcement.None) {
-        announceRank = util.announceRank(otherAnnouncement) + 1;
+      if (announcement < Announcement.Schwarz) {
+        const otherAnnouncement = isTaker ? G.announcementContra : G.announcementRe;
+        let announceRank = util.announceRank(announcement);
+        if (announcement == Announcement.None && otherAnnouncement > Announcement.None) {
+          announceRank = util.announceRank(otherAnnouncement) + 1;
+        }
+        canAnnounce = player.hand.length >= 11 - announceRank - G.marriageShift;
       }
-      canAnnounce = player.hand.length >= 11 - announceRank - G.marriageShift;
     }
 
     return (

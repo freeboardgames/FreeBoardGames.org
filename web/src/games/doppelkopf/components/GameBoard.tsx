@@ -147,6 +147,7 @@ export function Board(props: {
   function renderButtonsAnnounce() {
     if (!props.announce) return;
     const currentAnnouncement = props.player.isTaker ? props.announcementRe : props.announcementContra;
+    if (currentAnnouncement == Announcement.Schwarz) return;
     const newAnnouncement = [
       Announcement.Win,
       Announcement.No90,
