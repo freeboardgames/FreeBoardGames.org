@@ -63,7 +63,7 @@ export class BottomInfo extends React.Component<InnerWrapper, {}> {
     return (
       <Button
         variant={isActive ? 'contained' : 'text'}
-        color="primary"
+        color={this.props.G.round === 3 ? 'secondary' : 'primary'}
         disableRipple={!isActive}
         disableFocusRipple={!isActive}
         style={{ cursor: isActive ? 'pointer' : 'auto' }}

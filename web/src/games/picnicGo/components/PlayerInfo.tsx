@@ -46,7 +46,7 @@ export class PlayerInfo extends React.Component<InnerWrapper, {}> {
         <div style={{ display: 'flex', columnGap: '8px', textAlign: 'start' }}>
           {this.props.G.players[this.props.playerID].forkUsed && (
             <Typography style={{ color: blue[400], fontWeight: 'bold' }} variant="button">
-              Fork used!
+              Using fork!
             </Typography>
           )}
           <Typography style={{ color: this._getCupcakeDisplayColor(), minWidth: '3.3em' }} variant="body1">
