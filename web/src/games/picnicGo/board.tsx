@@ -2,10 +2,10 @@ import * as React from 'react';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
-import { IG /* cardEnum */ } from './types';
-// import { Card } from './components/Card';
-import { Hand } from './components/Hand';
+import { IG } from './types';
+import { BottomInfo } from './components/BottomInfo';
 import { PlayerInfo } from './components/PlayerInfo';
+import Typography from '@material-ui/core/Typography';
 
 interface IBoardProps {
   G: IG;
@@ -19,8 +19,11 @@ export class Board extends React.Component<IBoardProps, {}> {
   render() {
     return (
       <GameLayout gameArgs={this.props.gameArgs} maxWidth="750px">
+        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '8px' }}>
+          ROUND {this.props.G.round}
+        </Typography>
         {this._getPlayersInfo()}
-        <Hand playerID={this.props.playerID} G={this.props.G} ctx={this.props.ctx} />
+        <BottomInfo playerID={this.props.playerID} G={this.props.G} ctx={this.props.ctx} />
       </GameLayout>
     );
   }

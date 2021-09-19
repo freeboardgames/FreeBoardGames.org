@@ -7,8 +7,9 @@ import { getCardTypeFromNumber } from '../cards';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import red from '@material-ui/core/colors/red';
-import green from '@material-ui/core/colors/green';
 import yellow from '@material-ui/core/colors/yellow';
+import green from '@material-ui/core/colors/green';
+import blue from '@material-ui/core/colors/blue';
 
 interface InnerWrapper {
   G: IG;
@@ -42,15 +43,23 @@ export class PlayerInfo extends React.Component<InnerWrapper, {}> {
           </Box>
           {this.props.isSelf ? ' (you)' : ''}
         </Typography>
-        <div style={{ display: 'flex', columnGap: '10px' }}>
-          <Typography style={{ color: this._getCupcakeDisplayColor() }} variant="body1">
+        <div style={{ display: 'flex', columnGap: '8px', textAlign: 'start' }}>
+          {this.props.G.players[this.props.playerID].forkUsed && (
+            <Typography style={{ color: blue[400], fontWeight: 'bold' }} variant="button">
+              Fork used!
+            </Typography>
+          )}
+          <Typography style={{ color: this._getCupcakeDisplayColor(), minWidth: '3.3em' }} variant="body1">
             🧁 {this.props.G.players[this.props.playerID].dessertsCount.toString()}
           </Typography>
-          <Typography style={{ color: this._getChipsDisplayColor() }} variant="body1">
+          <Typography style={{ color: this._getChipsDisplayColor(), minWidth: '3.3em' }} variant="body1">
             🥔 {this.props.G.players[this.props.playerID].chipsCount.toString()}
           </Typography>
-          <Typography style={{ color: 'white', marginLeft: '10px' }} variant="body1">
-            Score: {this.props.G.players[this.props.playerID].score.toString()}
+          <Typography style={{ color: 'white', marginLeft: '10px', minWidth: '5em' }} variant="body1">
+            <Box component="span" fontWeight="bold">
+              Score:{' '}
+            </Box>
+            {this.props.G.players[this.props.playerID].score.toString()}
           </Typography>
         </div>
       </div>
