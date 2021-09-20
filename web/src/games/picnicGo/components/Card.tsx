@@ -15,12 +15,15 @@ import cardFork from './media/cardFork.png';
 import cardMayo from './media/cardMayo.png';
 import cardCupcake from './media/cardCupcake.png';
 
-interface InnerWrapper {
+interface ICardProps {
   id: cardEnum;
-  active: boolean;
   selected: boolean;
   isTurn: boolean;
   click?: () => void;
+}
+
+interface ICardSmallProps {
+  id: cardEnum;
 }
 
 export function getCardImage(id: cardEnum) {
@@ -66,23 +69,28 @@ export function getCardImage(id: cardEnum) {
   return image;
 }
 
-export function Card(props: InnerWrapper) {
+export function Card(props: ICardProps) {
   const cardImage: any = getCardImage(props.id);
 
-  function _getOpacity() {
-    if (!props.active || props.isTurn || props.selected) return 1.0;
-    else return 0.75;
-  }
-
   return (
-    <div className={props.active ? css.Card : css.CardSmall} onClick={props.click}>
+    <div className={css.Card} onClick={props.click}>
       <img
         src={cardImage}
         style={{
-          opacity: _getOpacity(),
-          transform: !props.active || props.selected ? 'none' : 'scale(0.85)',
+          opacity: props.isTurn || props.selected ? 1.0 : 0.75,
+          transform: props.selected ? 'none' : 'scale(0.85)',
         }}
       />
+    </div>
+  );
+}
+
+export function CardSmall(props: ICardSmallProps) {
+  const cardImage: any = getCardImage(props.id);
+
+  return (
+    <div className={css.CardSmall}>
+      <img src={cardImage} />
     </div>
   );
 }

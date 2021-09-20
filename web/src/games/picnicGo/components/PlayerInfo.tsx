@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Card } from './Card';
+import { CardSmall } from './Card';
 import css from './stylesheet.module.css';
-import { IG } from '../types';
+import { IG, cardEnum } from '../types';
 import { getCardTypeFromNumber } from '../cards';
 import { useCurrentGameTranslation } from 'infra/i18n';
 
@@ -17,6 +17,7 @@ interface InnerWrapper {
   playerID: string;
   playerName: string;
   isSelf: boolean;
+  isNext: boolean;
   isActive: boolean;
 }
 
@@ -34,6 +35,7 @@ export function PlayerInfo(props: InnerWrapper) {
           <Box component="span" fontWeight="bold">
             {props.playerName}
           </Box>
+          {props.isNext ? ' ' + translate('is_next') : ''}
           {props.isSelf ? ' ' + translate('is_you') : ''}
         </Typography>
         <div style={{ display: 'flex', columnGap: '8px', textAlign: 'start' }}>
@@ -101,14 +103,72 @@ export function PlayerInfo(props: InnerWrapper) {
     return 'white';
   }
 
+  function _getCardsList() {
+    let mayoAndSandwiches = [];
+    let chips = [];
+    let deviledEggs = [];
+    let friedChickens = [];
+    let pizzas = [];
+    let cupcakes = [];
+    let forks = [];
+
+    for (let i = 0; i < players[props.playerID].playedCards.length; i++) {
+      const c = players[props.playerID].playedCards[i];
+
+      switch (getCardTypeFromNumber(c)) {
+        case cardEnum.sandwichChicken:
+        case cardEnum.sandwichPork:
+        case cardEnum.sandwichBeef:
+        case cardEnum.mayo:
+          mayoAndSandwiches.push(c);
+          break;
+        case cardEnum.chipsPotato1:
+        case cardEnum.chipsPotato2:
+        case cardEnum.chipsPotato3:
+          chips.push(c);
+          break;
+        case cardEnum.deviledEggs:
+          deviledEggs.push(c);
+          break;
+        case cardEnum.friedChicken:
+          friedChickens.push(c);
+          break;
+        case cardEnum.pizza:
+          pizzas.push(c);
+          break;
+        case cardEnum.cake:
+          cupcakes.push(c);
+          break;
+        case cardEnum.fork:
+          forks.push(c);
+          break;
+      }
+    }
+
+    chips.sort((a, b) => a - b);
+
+    let combinedArray = [mayoAndSandwiches, chips, deviledEggs, friedChickens, pizzas, cupcakes, forks];
+
+    return (
+      <div className={css.PlayedCards}>
+        {combinedArray.map((e, i) => {
+          if (e.length === 0) return;
+          return (
+            <div key={i}>
+              {combinedArray[i].map((c) => (
+                <CardSmall key={c} id={getCardTypeFromNumber(c)} />
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <div>
       {_getTopBar()}
-      <div className={css.PlayedCards}>
-        {players[props.playerID].playedCards.map((c) => (
-          <Card key={c} id={getCardTypeFromNumber(c)} active={false} selected={false} isTurn={false} />
-        ))}
-      </div>
+      {_getCardsList()}
     </div>
   );
 }

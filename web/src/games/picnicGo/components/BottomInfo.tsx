@@ -31,7 +31,6 @@ export function BottomInfo(props: InnerWrapper) {
           <Card
             key={c}
             id={getCardTypeFromNumber(c)}
-            active={true}
             selected={h.selected && h.selected.includes(i)}
             isTurn={props.G.players[props.playerID].turnsLeft > 0}
             click={() => props.selectCard(i)}

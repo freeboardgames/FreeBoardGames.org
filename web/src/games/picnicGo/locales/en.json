@@ -23,6 +23,7 @@
     "spectator": "see scoreboard"
   },
 
+  "is_next": "(next)",
   "is_you": "(you)",
   "using_fork": "Using fork!",
   "score": "Score:",

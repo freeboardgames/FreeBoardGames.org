@@ -113,6 +113,7 @@ export function Board(props: IBoardProps) {
           playerName={playerName}
           playerID={p.toString()}
           isSelf={i === props.ctx.numPlayers - 1}
+          isNext={i === 0}
           isActive={props.ctx.activePlayers && props.ctx.activePlayers.hasOwnProperty(p)}
         />,
       );
