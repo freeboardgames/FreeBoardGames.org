@@ -17,8 +17,8 @@
   },
 
   "game_over": {
-    "win": "you win",
-    "lose": "you lose",
+    "win": "you won",
+    "lose": "you lost",
     "draw": "draw",
     "spectator": "see scoreboard"
   },

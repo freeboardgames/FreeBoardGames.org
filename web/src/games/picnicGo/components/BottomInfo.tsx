@@ -61,6 +61,7 @@ export function BottomInfo(props: InnerWrapper) {
 
     return (
       <Button
+        className="end"
         variant={isActive ? 'contained' : 'text'}
         color={props.G.round === 3 ? 'secondary' : 'primary'}
         disableRipple={!isActive}
@@ -83,6 +84,7 @@ export function BottomInfo(props: InnerWrapper) {
           {' - ' + _getHandStatus()}
         </Typography>
         <Button
+          className="useFork"
           variant="contained"
           size="small"
           color="primary"
