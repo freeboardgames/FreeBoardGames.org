@@ -263,10 +263,12 @@ it('full game test - should declare player 1 as winner', () => {
       {
         playerID: '0',
         score: 57,
+        extraData: [2],
       },
       {
         playerID: '1',
         score: 51,
+        extraData: [5],
       },
     ],
   });
