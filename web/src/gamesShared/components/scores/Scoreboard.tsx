@@ -50,7 +50,7 @@ export function Scoreboard(props: IScoreboardProps) {
                 <TableCell>#{i + 1}</TableCell>
                 <TableCell>{name}</TableCell>
                 {score.extraData &&
-                  score.extraData.map((val) => <TableCell key={props.extraColumns[i]}>{val}</TableCell>)}
+                  score.extraData.map((val) => <TableCell key={props.extraColumns[i] + i}>{val}</TableCell>)}
                 <TableCell>{score.score}</TableCell>
               </TableRow>
             );
