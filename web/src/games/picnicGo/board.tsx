@@ -75,7 +75,10 @@ export function Board(props: IBoardProps) {
 
   function _getGameOver() {
     const scoreboard: IScore[] = props.ctx.gameover.scoreboard;
-    if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
+    if (
+      scoreboard[0].score === scoreboard[scoreboard.length - 1].score &&
+      scoreboard[0].extraData[0] === scoreboard[scoreboard.length - 1].extraData[0]
+    ) {
       return translate('game_over.draw');
     } else {
       if (isSpectator(props.playerID)) {
