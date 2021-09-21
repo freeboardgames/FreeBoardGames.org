@@ -23,6 +23,8 @@
     "spectator": "see scoreboard"
   },
 
+  "score_cupcakes": "Cupcakes",
+
   "is_next": "(next)",
   "is_you": "(you)",
   "using_fork": "Using fork!",
