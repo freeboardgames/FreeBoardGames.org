@@ -11,6 +11,7 @@ import React from 'react';
 export interface IScore {
   playerID: string;
   score: number;
+  extraData?: any[];
 }
 
 interface IScoreboardProps {
@@ -18,6 +19,7 @@ interface IScoreboardProps {
   players: IPlayerInRoom[];
   playerID: string;
   scoreName?: string;
+  extraColumns?: string[];
 }
 
 export function Scoreboard(props: IScoreboardProps) {
@@ -30,6 +32,7 @@ export function Scoreboard(props: IScoreboardProps) {
           <TableRow>
             <TableCell>{t('rank')}</TableCell>
             <TableCell>{t('player')}</TableCell>
+            {props.extraColumns && props.extraColumns.map((text) => <TableCell key={text}>{text}</TableCell>)}
             <TableCell>{props.scoreName || t('score')}</TableCell>
           </TableRow>
         </TableHead>
@@ -46,6 +49,8 @@ export function Scoreboard(props: IScoreboardProps) {
               <TableRow key={score.playerID} style={style}>
                 <TableCell>#{i + 1}</TableCell>
                 <TableCell>{name}</TableCell>
+                {score.extraData &&
+                  score.extraData.map((val) => <TableCell key={props.extraColumns[i]}>{val}</TableCell>)}
                 <TableCell>{score.score}</TableCell>
               </TableRow>
             );
