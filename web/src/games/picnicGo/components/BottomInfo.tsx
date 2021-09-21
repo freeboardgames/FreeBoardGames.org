@@ -61,7 +61,7 @@ export function BottomInfo(props: InnerWrapper) {
 
     return (
       <Button
-        className="end"
+        className="endButton"
         variant={isActive ? 'contained' : 'text'}
         color={props.G.round === 3 ? 'secondary' : 'primary'}
         disableRipple={!isActive}

@@ -90,6 +90,28 @@ test('fork related tests', () => {
   expect(comp.find('BottomInfo Card img').at(1).prop('style').transform).toEqual('none');
 });
 
+test('round end button', () => {
+  const App = ReactClient({
+    game: PicnicGoConstSeed,
+    debug: false,
+    board: BoardTest,
+  }) as any;
+  const comp = mount(<App playerID={'0'} />);
+
+  for (let i = 0; i < 10; i++) {
+    comp.find('BottomInfo Card').at(0).simulate('click');
+    comp.setProps({ playerID: '1' });
+    comp.update();
+    comp.find('BottomInfo Card').at(0).simulate('click');
+    comp.setProps({ playerID: '0' });
+    comp.update();
+  }
+
+  expect(comp.find('BottomInfo .endButton').at(0).prop('variant')).toEqual('contained');
+  comp.find('BottomInfo .endButton').at(0).simulate('click');
+  expect(comp.find('BottomInfo .endButton').at(0).prop('variant')).toEqual('text');
+});
+
 test('game over - win', () => {
   const client = Client({
     game: PicnicGoGame,
