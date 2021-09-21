@@ -98,7 +98,7 @@ export function Board(props: IBoardProps) {
         scoreboard={props.ctx.gameover.scoreboard}
         playerID={props.playerID}
         players={props.gameArgs.players}
-        extraColumns={translate('score_cupcakes')}
+        extraColumns={[translate('score_cupcakes')]}
       />
     );
   }
