@@ -79,6 +79,7 @@ export function Card(props: ICardProps) {
         style={{
           opacity: props.isTurn || props.selected ? 1.0 : 0.75,
           transform: props.selected ? 'none' : 'scale(0.85)',
+          cursor: props.isTurn ? 'pointer' : 'auto',
         }}
       />
     </div>
