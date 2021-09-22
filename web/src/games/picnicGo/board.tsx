@@ -29,21 +29,21 @@ export function Board(props: IBoardProps) {
     }
   }
 
-  const _selectCard = (id: number) => {
+  const _selectCard = async (id: number) => {
     if (!_canPlay() || props.ctx.phase !== 'play') {
       return;
     }
     props.moves.selectCard(id);
   };
 
-  const _useFork = () => {
+  const _useFork = async () => {
     if (!_canPlay() || props.ctx.phase !== 'play') {
       return;
     }
     props.moves.useFork();
   };
 
-  const _confirmScore = () => {
+  const _confirmScore = async () => {
     if (!_canPlay() || props.ctx.phase !== 'score') {
       return;
     }
