@@ -22,7 +22,7 @@ export interface IG {
 }
 
 export interface IPlayer {
-  playedCards: cardEnum[];
+  playedCards: number[];
   score: number;
   dessertsCount: number;
   chipsCount: number;
@@ -34,6 +34,6 @@ export interface IPlayer {
 
 export interface IHand {
   currentOwner: string;
-  hand: cardEnum[];
+  hand: number[];
   selected: number[] | null;
 }

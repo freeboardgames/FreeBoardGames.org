@@ -4,6 +4,7 @@ import css from './stylesheet.module.css';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import { IG } from '../types';
 import { Ctx } from 'boardgame.io';
@@ -18,18 +19,11 @@ interface InnerWrapper {
   confirmScore: () => void;
 }
 
-export class BottomInfo extends React.Component<InnerWrapper, {}> {
-  render() {
-    return (
-      <div>
-        {this._getTopBar()}
-        {this.props.ctx.phase === 'play' ? this._getHand() : this._getRoundEndDisplay()}
-      </div>
-    );
-  }
+export function BottomInfo(props: InnerWrapper) {
+  const { translate } = useCurrentGameTranslation();
 
-  _getHand() {
-    const h = this.props.G.hands.find((e) => e.currentOwner === this.props.playerID);
+  function _getHand() {
+    const h = props.G.hands.find((e) => e.currentOwner === props.playerID);
 
     return (
       <div className={css.BottomInfoCardDisplay}>
@@ -37,83 +31,93 @@ export class BottomInfo extends React.Component<InnerWrapper, {}> {
           <Card
             key={c}
             id={getCardTypeFromNumber(c)}
-            active={true}
             selected={h.selected && h.selected.includes(i)}
-            isTurn={this.props.G.players[this.props.playerID].turnsLeft > 0}
-            click={() => this.props.selectCard(i)}
+            isTurn={props.G.players[props.playerID].turnsLeft > 0}
+            click={() => props.selectCard(i)}
           />
         ))}
       </div>
     );
   }
 
-  _getRoundEndDisplay() {
+  function _getRoundEndDisplay() {
     return (
       <div className={css.BottomInfoEndRound}>
         <Typography variant="h6" style={{ color: 'white', textAlign: 'center' }}>
-          Round {this.props.G.round} over - {this.props.G.round === 3 ? 'game over!' : 'ready for next round?'}
+          {props.G.round === 3
+            ? translate('round_over_end', { r: props.G.round })
+            : translate('round_over_next', { r: props.G.round })}
         </Typography>
-        {this._getRoundEndButton()}
+        {_getRoundEndButton()}
         <Typography variant="body2" style={{ color: 'white', textAlign: 'center' }}>
-          {'(chips ' + (this.props.G.round === 3 ? 'and cupcakes ' : '') + 'are scored after all players are ready)'}
+          {props.G.round === 3 ? translate('scoring_end_game') : translate('scoring_end_round')}
         </Typography>
       </div>
     );
   }
 
-  _getRoundEndButton() {
-    const isActive = this.props.ctx.activePlayers.hasOwnProperty(this.props.playerID);
+  function _getRoundEndButton() {
+    const isActive = props.ctx.activePlayers.hasOwnProperty(props.playerID);
 
     return (
       <Button
+        className="endButton"
         variant={isActive ? 'contained' : 'text'}
-        color={this.props.G.round === 3 ? 'secondary' : 'primary'}
+        color={props.G.round === 3 ? 'secondary' : 'primary'}
         disableRipple={!isActive}
         disableFocusRipple={!isActive}
         style={{ cursor: isActive ? 'pointer' : 'auto' }}
-        onClick={isActive ? () => this.props.confirmScore() : null}
+        onClick={isActive ? () => props.confirmScore() : null}
       >
-        {this.props.G.round === 3 ? 'End Game' : 'Ready'}
+        {props.G.round === 3 ? translate('button_end_game') : translate('button_ready')}
       </Button>
     );
   }
 
-  _getTopBar() {
+  function _getTopBar() {
     return (
       <div className={css.BottomInfoTopBar}>
         <Typography style={{ color: 'white' }} variant="body1">
           <Box component="span" fontWeight="bold">
-            Your hand
+            {translate('your_hand')}
           </Box>
-          {' - ' + this._getHandStatus()}
+          {' - ' + _getHandStatus()}
         </Typography>
         <Button
+          className="useFork"
           variant="contained"
           size="small"
           color="primary"
-          onClick={() => this.props.useFork()}
-          disabled={!this._canPlayerUseFork()}
+          onClick={() => props.useFork()}
+          disabled={!_canPlayerUseFork()}
         >
-          Use Fork
+          {translate('use_fork')}
         </Button>
       </div>
     );
   }
 
-  _getHandStatus() {
-    if (this.props.ctx.phase === 'score') return 'Waiting for next round';
+  function _getHandStatus() {
+    if (props.ctx.phase === 'score') return translate('wait_next_round');
     else {
-      const t = this.props.G.players[this.props.playerID].turnsLeft;
-      if (t > 0) return 'Select ' + t + ' more card' + (t > 1 ? 's' : '');
-      else return 'Waiting for other players';
+      const t = props.G.players[props.playerID].turnsLeft;
+      if (t > 0) return translate('select_card', { count: t });
+      else return translate('wait_other_players');
     }
   }
 
-  _canPlayerUseFork() {
-    if (this.props.ctx.phase !== 'play') return false;
-    if (this.props.G.hands[0].hand.length < 2) return false;
-    if (this.props.G.players[this.props.playerID].unusedForks < 1) return false;
-    if (this.props.G.players[this.props.playerID].forkUsed) return false;
+  function _canPlayerUseFork() {
+    if (props.ctx.phase !== 'play') return false;
+    if (props.G.hands[0].hand.length < 2) return false;
+    if (props.G.players[props.playerID].unusedForks < 1) return false;
+    if (props.G.players[props.playerID].forkUsed) return false;
     return true;
   }
+
+  return (
+    <div>
+      {_getTopBar()}
+      {props.ctx.phase === 'play' ? _getHand() : _getRoundEndDisplay()}
+    </div>
+  );
 }
