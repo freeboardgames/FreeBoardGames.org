@@ -158,8 +158,9 @@ export function getScoreboard(g: IG) {
     .map((e, i) => ({
       playerID: i.toString(),
       score: e.score,
+      extraData: [e.dessertsCount],
     }))
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) => (b.score - a.score === 0 ? b.extraData[0] - a.extraData[0] : b.score - a.score));
 }
 
 // Moves

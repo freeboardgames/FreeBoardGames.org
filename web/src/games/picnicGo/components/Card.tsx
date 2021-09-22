@@ -15,12 +15,15 @@ import cardFork from './media/cardFork.png';
 import cardMayo from './media/cardMayo.png';
 import cardCupcake from './media/cardCupcake.png';
 
-interface InnerWrapper {
+interface ICardProps {
   id: cardEnum;
-  active: boolean;
   selected: boolean;
   isTurn: boolean;
   click?: () => void;
+}
+
+interface ICardSmallProps {
+  id: cardEnum;
 }
 
 export function getCardImage(id: cardEnum) {
@@ -66,25 +69,29 @@ export function getCardImage(id: cardEnum) {
   return image;
 }
 
-export class Card extends React.Component<InnerWrapper, {}> {
-  render() {
-    let cardImage: any = getCardImage(this.props.id);
+export function Card(props: ICardProps) {
+  const cardImage: any = getCardImage(props.id);
 
-    return (
-      <div className={this.props.active ? css.Card : css.CardSmall} onClick={this.props.click}>
-        <img
-          src={cardImage}
-          style={{
-            opacity: this._getOpacity(),
-            transform: !this.props.active || this.props.selected ? 'none' : 'scale(0.85)',
-          }}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className={css.Card} onClick={props.click}>
+      <img
+        src={cardImage}
+        style={{
+          opacity: props.isTurn || props.selected ? 1.0 : 0.75,
+          transform: props.selected ? 'none' : 'scale(0.85)',
+          cursor: props.isTurn ? 'pointer' : 'auto',
+        }}
+      />
+    </div>
+  );
+}
 
-  _getOpacity() {
-    if (!this.props.active || this.props.isTurn || this.props.selected) return 1.0;
-    else return 0.75;
-  }
+export function CardSmall(props: ICardSmallProps) {
+  const cardImage: any = getCardImage(props.id);
+
+  return (
+    <div className={css.CardSmall}>
+      <img src={cardImage} />
+    </div>
+  );
 }
