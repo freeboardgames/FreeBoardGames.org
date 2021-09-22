@@ -1,6 +1,14 @@
 import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer';
-import { PicnicGoGame, selectCard, useFork, rotateAndScoreCards, scoreRoundEnd, scoreGameEnd } from './game';
+import {
+  PicnicGoGame,
+  selectCard,
+  useFork,
+  rotateAndScoreCards,
+  scoreRoundEnd,
+  scoreGameEnd,
+  getScoreboard,
+} from './game';
 
 const basePlayer = {
   playedCards: [],
@@ -56,7 +64,7 @@ it('should have 2 selected cards via fork', () => {
   expect(g.hands[0].selected).toHaveLength(2);
 });
 
-it('test normal beef sandwich scoring', () => {
+test('normal beef sandwich scoring', () => {
   let g = {
     players: [
       {
@@ -80,7 +88,7 @@ it('test normal beef sandwich scoring', () => {
   expect(g.players[0].score).toEqual(3);
 });
 
-it('test mayonnaise scoring', () => {
+test('mayonnaise scoring', () => {
   let g = {
     players: [
       {
@@ -106,7 +114,7 @@ it('test mayonnaise scoring', () => {
   expect(g.players[0].score).toEqual(9);
 });
 
-it('test chips scoring', () => {
+test('chips scoring', () => {
   let g = {
     players: [
       {
@@ -131,7 +139,7 @@ it('test chips scoring', () => {
   expect(g.players[2].score).toEqual(6);
 });
 
-it('test cupcakes scoring', () => {
+test('cupcakes scoring', () => {
   let g = {
     players: [
       {
@@ -165,7 +173,60 @@ it('test cupcakes scoring', () => {
   expect(g.players[3].score).toEqual(13);
 });
 
-it('full game test - should declare player 1 as winner', () => {
+test('win by score', () => {
+  let g = {
+    players: [
+      {
+        ...basePlayer,
+        score: 15,
+      },
+      {
+        ...basePlayer,
+        score: 10,
+      },
+      {
+        ...basePlayer,
+        score: 20,
+      },
+    ],
+  } as any;
+
+  const scoreboard = getScoreboard(g);
+
+  expect(scoreboard[0].playerID).toEqual('2');
+  expect(scoreboard[1].playerID).toEqual('0');
+  expect(scoreboard[2].playerID).toEqual('1');
+});
+
+test('win by cupcakes', () => {
+  let g = {
+    players: [
+      {
+        ...basePlayer,
+        dessertsCount: 3,
+        score: 10,
+      },
+      {
+        ...basePlayer,
+        dessertsCount: 1,
+        score: 10,
+      },
+      {
+        ...basePlayer,
+        dessertsCount: 2,
+        score: 10,
+      },
+    ],
+  } as any;
+
+  const scoreboard = getScoreboard(g);
+
+  expect(scoreboard[0].playerID).toEqual('0');
+  expect(scoreboard[1].playerID).toEqual('2');
+  expect(scoreboard[2].playerID).toEqual('1');
+});
+
+test('full game - should declare player 1 as winner', () => {
   const PicnicGoCustomScenario = {
     ...PicnicGoGame,
     seed: 'test',
@@ -263,10 +324,12 @@ it('full game test - should declare player 1 as winner', () => {
       {
         playerID: '0',
         score: 57,
+        extraData: [2],
       },
       {
         playerID: '1',
         score: 51,
+        extraData: [5],
       },
     ],
   });

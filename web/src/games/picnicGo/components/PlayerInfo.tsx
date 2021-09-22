@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Card } from './Card';
+import { CardSmall } from './Card';
 import css from './stylesheet.module.css';
-import { IG } from '../types';
+import { IG, cardEnum } from '../types';
 import { getCardTypeFromNumber } from '../cards';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -16,61 +17,55 @@ interface InnerWrapper {
   playerID: string;
   playerName: string;
   isSelf: boolean;
+  isNext: boolean;
   isActive: boolean;
 }
 
-export class PlayerInfo extends React.Component<InnerWrapper, {}> {
-  render() {
-    return (
-      <div>
-        {this._getTopBar()}
-        <div className={css.PlayedCards}>
-          {this.props.G.players[this.props.playerID].playedCards.map((c) => (
-            <Card key={c} id={getCardTypeFromNumber(c)} active={false} selected={false} isTurn={false} />
-          ))}
-        </div>
-      </div>
-    );
-  }
+export function PlayerInfo(props: InnerWrapper) {
+  const { translate } = useCurrentGameTranslation();
+  const players = props.G.players;
 
-  _getTopBar() {
+  function _getTopBar() {
     return (
       <div className={css.PlayerInfoTopBar}>
         <Typography style={{ color: 'white' }} variant="body1">
-          {this.props.isActive && this.props.G.players[this.props.playerID].turnsLeft > 0 ? '🕒 ' : '✅ '}
+          {(props.isActive && players[props.playerID].turnsLeft > 0
+            ? translate('symbols.waiting')
+            : translate('symbols.done')) + ' '}
           <Box component="span" fontWeight="bold">
-            {this.props.playerName}
+            {props.playerName}
           </Box>
-          {this.props.isSelf ? ' (you)' : ''}
+          {props.isNext ? ' ' + translate('is_next') : ''}
+          {props.isSelf ? ' ' + translate('is_you') : ''}
         </Typography>
         <div style={{ display: 'flex', columnGap: '8px', textAlign: 'start' }}>
-          {this.props.G.players[this.props.playerID].forkUsed && (
+          {players[props.playerID].forkUsed && (
             <Typography style={{ color: blue[400], fontWeight: 'bold' }} variant="button">
-              Using fork!
+              {translate('using_fork')}
             </Typography>
           )}
-          <Typography style={{ color: this._getCupcakeDisplayColor(), minWidth: '3.3em' }} variant="body1">
-            🧁 {this.props.G.players[this.props.playerID].dessertsCount.toString()}
+          <Typography style={{ color: _getCupcakeDisplayColor(), minWidth: '3.3em' }} variant="body1">
+            {translate('symbols.cupcake') + ' ' + players[props.playerID].dessertsCount}
           </Typography>
-          <Typography style={{ color: this._getChipsDisplayColor(), minWidth: '3.3em' }} variant="body1">
-            🥔 {this.props.G.players[this.props.playerID].chipsCount.toString()}
+          <Typography style={{ color: _getChipsDisplayColor(), minWidth: '3.3em' }} variant="body1">
+            {translate('symbols.chips') + ' ' + players[props.playerID].chipsCount}
           </Typography>
           <Typography style={{ color: 'white', marginLeft: '10px', minWidth: '5em' }} variant="body1">
             <Box component="span" fontWeight="bold">
-              Score:{' '}
+              {translate('score') + ' '}
             </Box>
-            {this.props.G.players[this.props.playerID].score.toString()}
+            {players[props.playerID].score}
           </Typography>
         </div>
       </div>
     );
   }
 
-  _getCupcakeDisplayColor() {
+  function _getCupcakeDisplayColor() {
     let playerDesserts = [];
 
-    for (let i = 0; i < this.props.G.players.length; i++) {
-      playerDesserts.push(this.props.G.players[i].dessertsCount);
+    for (let i = 0; i < players.length; i++) {
+      playerDesserts.push(players[i].dessertsCount);
     }
 
     const mostDesserts = Math.max(...playerDesserts);
@@ -78,22 +73,22 @@ export class PlayerInfo extends React.Component<InnerWrapper, {}> {
 
     if (mostDesserts === leastDesserts) return 'white';
 
-    const thisDessert = this.props.G.players[this.props.playerID].dessertsCount;
+    const thisDessert = players[props.playerID].dessertsCount;
     if (thisDessert === leastDesserts) return red[500];
     else if (thisDessert === mostDesserts) return green[500];
     else return 'white';
   }
 
-  _getChipsDisplayColor() {
-    if (this.props.G.players[this.props.playerID].chipsCount === 0) return 'white';
+  function _getChipsDisplayColor() {
+    if (players[props.playerID].chipsCount === 0) return 'white';
 
     let playerChips = [];
 
-    for (let i = 0; i < this.props.G.players.length; i++) {
-      playerChips.push(this.props.G.players[i].chipsCount);
+    for (let i = 0; i < players.length; i++) {
+      playerChips.push(players[i].chipsCount);
     }
 
-    const thisChips = this.props.G.players[this.props.playerID].chipsCount;
+    const thisChips = players[props.playerID].chipsCount;
 
     const mostChips = Math.max(...playerChips);
     if (thisChips === mostChips) return green[500];
@@ -107,4 +102,73 @@ export class PlayerInfo extends React.Component<InnerWrapper, {}> {
 
     return 'white';
   }
+
+  function _getCardsList() {
+    let mayoAndSandwiches = [];
+    let chips = [];
+    let deviledEggs = [];
+    let friedChickens = [];
+    let pizzas = [];
+    let cupcakes = [];
+    let forks = [];
+
+    for (let i = 0; i < players[props.playerID].playedCards.length; i++) {
+      const c = players[props.playerID].playedCards[i];
+
+      switch (getCardTypeFromNumber(c)) {
+        case cardEnum.sandwichChicken:
+        case cardEnum.sandwichPork:
+        case cardEnum.sandwichBeef:
+        case cardEnum.mayo:
+          mayoAndSandwiches.push(c);
+          break;
+        case cardEnum.chipsPotato1:
+        case cardEnum.chipsPotato2:
+        case cardEnum.chipsPotato3:
+          chips.push(c);
+          break;
+        case cardEnum.deviledEggs:
+          deviledEggs.push(c);
+          break;
+        case cardEnum.friedChicken:
+          friedChickens.push(c);
+          break;
+        case cardEnum.pizza:
+          pizzas.push(c);
+          break;
+        case cardEnum.cake:
+          cupcakes.push(c);
+          break;
+        case cardEnum.fork:
+          forks.push(c);
+          break;
+      }
+    }
+
+    chips.sort((a, b) => a - b);
+
+    let combinedArray = [mayoAndSandwiches, chips, deviledEggs, friedChickens, pizzas, cupcakes, forks];
+
+    return (
+      <div className={css.PlayedCards}>
+        {combinedArray.map((e, i) => {
+          if (e.length === 0) return;
+          return (
+            <div key={i}>
+              {combinedArray[i].map((c) => (
+                <CardSmall key={c} id={getCardTypeFromNumber(c)} />
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {_getTopBar()}
+      {_getCardsList()}
+    </div>
+  );
 }

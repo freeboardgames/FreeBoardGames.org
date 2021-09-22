@@ -1,0 +1,47 @@
+{
+  "name": "Picnic Go",
+  "description": "Similar to Sushi Go",
+  "descriptionTag": "Play Picnic Go and build the best picnic meal that you can!",
+  "instructions": {
+    "videoId": "-WO1cP9wzrw",
+    "text": "**Picnic Go** is a simple deckbuilding game, where the goal is to build the most delicious meal you can! Everyone picks a card from their hand, and reveals their selected card at the same time. Then, the cards are passed clockwise (or, in the case of this implementation, from top to bottom), and play continues until every card is exhausted. After three rounds, whoever has the highest score wins! (In case of ties, compare amount of cupcakes.)\n\nThe cards available for you to pick from are:\n- **Sandwiches** - *Chicken Sandwiches* (triangle) are worth *1 point*. *Pork Sandwiches* (square) are worth *2 points*. *Beef Sandwiches* (circle) are worth *3 points*.\n- **Mayonnaise** - *Triples* the *next* sandwich you pick. You can have multiple unused mayonnaise played, but they cannot stack - only one mayonnaise allowed per sandwich.\n- **Potato Chips** - Gives 1, 2, or 3 chips, according to the number shown on the card. At the end of a round, the player with the most chips scores *6 points*, and the player with the second most chips scores *3 points*. If there's a tie, split the score evenly, rounded down.\n- **Deviled Eggs** - Each set of 2 is worth *5 points.* Otherwise, worth no points. You can score multiple sets of deviled eggs in one round.\n- **Fried Chicken** - Each set of 3 is worth *10 points.* Otherwise, worth no points. You can score multiple sets of fried chicken in one round.\n- **Pizza** - A set of 1, 2, 3, 4, and 5 or more is worth *1*, *3*, *6*, *10*, and *15 points*, respectively. You *cannot* score multiple sets of pizza in one round - any pizza you get past the fifth has no effect.\n- **Cupcake** - Keep until the end of the game. After all 3 rounds have passed, the player with the most cupcakes scores *6 points*. If playing with more than 2 players, the player with the least cupcakes *loses 6 points.* If there's a tie, split the score evenly, rounded down.\n- **Fork** - Scores nothing, but can be used at a later turn. On use, you're allowed to pick 2 cards this turn, before returning the fork to your hand - swapping the fork for an extra card that turn.\n\nAll card art were made by ProspectPyxis, and are licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)."
+  },
+
+  "round": "ROUND {{ r }}",
+
+  "symbols": {
+    "waiting": "🕒",
+    "done": "✅",
+    "cupcake": "🧁",
+    "chips": "🥔"
+  },
+
+  "game_over": {
+    "win": "you won",
+    "lose": "you lost",
+    "draw": "draw",
+    "spectator": "see scoreboard"
+  },
+
+  "score_cupcakes": "Cupcakes",
+
+  "is_next": "(next)",
+  "is_you": "(you)",
+  "using_fork": "Using fork!",
+  "score": "Score:",
+
+  "your_hand": "Your hand",
+  "select_card": "Select {{ count }} more card",
+  "select_card_plural": "Select {{ count }} more cards",
+  "wait_other_players": "Waiting for other players",
+  "wait_next_round": "Waiting for next round",
+  "use_fork": "Use fork",
+
+  "round_over_next": "Round {{ r }} over - ready for next round?",
+  "round_over_end": "Round {{ r }} over - game over!",
+  "button_ready": "Ready",
+  "button_end_game": "End game",
+
+  "scoring_end_round": "(chips are scored after all players are ready)",
+  "scoring_end_game": "(chips and cupcakes are scored after all players are ready)"
+}

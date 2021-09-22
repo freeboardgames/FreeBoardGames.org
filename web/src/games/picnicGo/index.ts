@@ -1,23 +1,20 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import translation from './locales/en.json';
 
 export const picnicGoGameDef: IGameDef = {
   code: 'picnicGo',
-  name: 'Picnic Go',
+  name: translation.name,
   contributors: ['ProspectPyxis'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 2,
   maxPlayers: 5,
-  description: 'Similar to Sushi Go',
-  descriptionTag: `Play Picnic Go and grab the best picnic meal that you can!`,
-  instructions: {
-    videoId: '-WO1cP9wzrw',
-    text: instructions,
-  },
-  status: IGameStatus.IN_DEVELOPMENT,
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
 
