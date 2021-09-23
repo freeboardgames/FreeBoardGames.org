@@ -25,6 +25,7 @@ it('should declare player 1 as the winner', () => {
       config: {
         ...DEFAULT_FULL_CUSTOMIZATION,
         flyingKings: true,
+        stopJumpOnKing: false,
       },
     }),
   };
