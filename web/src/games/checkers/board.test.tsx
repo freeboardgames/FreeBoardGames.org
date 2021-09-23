@@ -5,6 +5,8 @@ import { Client } from 'boardgame.io/client';
 import { Client as ReactClient } from 'boardgame.io/react';
 import { CheckersGame } from './game';
 
+import blue from '@material-ui/core/colors/blue';
+
 import { Board } from './board';
 import { GameMode } from 'gamesShared/definitions/mode';
 
@@ -71,7 +73,7 @@ test('highlighting the only valid move', async () => {
   comp.setProps({ playerID: '1' });
   comp.update();
 
-  expect(comp.find(Board).state('selected')).toEqual({ x: 0, y: 3 });
+  expect(comp.find('rect').at(getPosition(0, 3)).prop('style').fill).toEqual(blue[700]);
   comp.unmount();
 });
 
