@@ -22,6 +22,7 @@ export const checkersGameDef: IGameDef = {
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
+  customization: () => import('./customization'),
 };
 
 export default checkersGameDef;

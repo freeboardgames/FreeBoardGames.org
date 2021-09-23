@@ -2,11 +2,13 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
 import { CheckersGame, IG, move, INITIAL_BOARD } from './game';
 import { Local } from 'boardgame.io/multiplayer';
+import { DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
 test('invalid moves', () => {
   let G: IG = {
-    board: INITIAL_BOARD,
+    board: INITIAL_BOARD[0],
     jumping: null,
+    config: DEFAULT_FULL_CUSTOMIZATION,
   };
 
   const ctx: any = { playerID: '1' };
@@ -15,8 +17,19 @@ test('invalid moves', () => {
 });
 
 it('should declare player 1 as the winner', () => {
+  const CheckersGameWithSetup = {
+    ...CheckersGame,
+    setup: () => ({
+      board: INITIAL_BOARD[0],
+      jumping: null,
+      config: {
+        flyingKings: true,
+      },
+    }),
+  };
+
   const spec = {
-    game: CheckersGame,
+    game: CheckersGameWithSetup,
     multiplayer: Local(),
   };
 
