@@ -42,6 +42,16 @@ export const INITIAL_BOARD: Piece[][] = [
     piece(12, 0),         null, piece(13, 0),         null, piece(14, 0),         null, piece(15, 0),         null,
             null, piece(16, 0),         null, piece(17, 0),         null, piece(18, 0),         null, piece(19, 0),
     piece(20, 0),         null, piece(21, 0),         null, piece(22, 0),         null, piece(23, 0),         null,
+  ],
+  [
+            null,  piece(0, 1),         null,  piece(1, 1),         null,  piece(2, 1),         null,  piece(3, 1),
+     piece(4, 1),         null,  piece(5, 1),         null,  piece(6, 1),         null,  piece(7, 1),         null,
+            null,         null,         null,         null,         null,         null,         null,         null,
+            null,         null,         null,         null,         null,         null,         null,         null,
+            null,         null,         null,         null,         null,         null,         null,         null,
+            null,         null,         null,         null,         null,         null,         null,         null,
+            null,  piece(8, 0),         null,  piece(9, 0),         null, piece(10, 0),         null, piece(11, 0),
+    piece(12, 0),         null, piece(13, 0),         null, piece(14, 0),         null, piece(15, 0),         null,
   ]
 ];
 
@@ -201,7 +211,7 @@ export const CheckersGame: Game<IG> = {
   setup: (_, customData: GameCustomizationState): IG => {
     const fullCustomization = (customData?.full as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
     return {
-      board: INITIAL_BOARD[0],
+      board: INITIAL_BOARD[fullCustomization.piecesPerPlayer],
       jumping: null,
       config: fullCustomization,
     };
