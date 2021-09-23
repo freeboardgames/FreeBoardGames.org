@@ -186,6 +186,9 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
   if (move.jumped === null) {
     return newG;
   }
+  if (G.config.stopJumpOnKing && !piece.isKing && to.y === crownhead) {
+    return newG;
+  }
 
   const jumping = {
     data: {
