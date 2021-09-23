@@ -26,6 +26,7 @@ type Piece = ICheckerPiece | null;
 export interface IG {
   board: Piece[];
   jumping: ICheckerPieceWithCoord;
+  moveCount: number;
   config: FullCustomizationState;
 }
 
@@ -163,6 +164,8 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
   const jumped = move.jumped !== null ? toIndex(move.jumped) : -1;
   const isKing = piece.isKing || to.y === crownhead;
 
+  const moveCount = G.config.nMoveRule === -1 || move.jumped !== null || !piece.isKing ? 0 : G.moveCount + 1;
+
   const newG: IG = {
     ...G,
     board: G.board.map((square, i) => {
@@ -181,6 +184,7 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
       }
     }),
     jumping: null,
+    moveCount,
   };
 
   if (move.jumped === null) {
@@ -216,6 +220,7 @@ export const CheckersGame: Game<IG> = {
     return {
       board: INITIAL_BOARD[fullCustomization.piecesPerPlayer],
       jumping: null,
+      moveCount: 0,
       config: fullCustomization,
     };
   },
@@ -232,6 +237,8 @@ export const CheckersGame: Game<IG> = {
   endIf: (G: IG, ctx) => {
     if (getValidMoves(G, ctx.currentPlayer === '0' ? '1' : '0').length === 0) {
       return { winner: ctx.currentPlayer };
+    } else if (G.config.nMoveRule !== -1 && G.moveCount >= G.config.nMoveRule * 2) {
+      return { winner: 'draw' };
     }
   },
 };

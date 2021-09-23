@@ -173,12 +173,16 @@ export function Board(props: IBoardProps) {
       if (isFirstPersonView(props.gameArgs, props.playerID)) {
         if (winner === props.playerID) {
           return 'you won';
+        } else if (winner === 'draw') {
+          return 'draw';
         } else {
           return 'you lost';
         }
       } else {
         if (winner === '0') {
           return 'white won';
+        } else if (winner === 'draw') {
+          return 'draw';
         } else {
           return 'black won';
         }

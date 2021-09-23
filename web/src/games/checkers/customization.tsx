@@ -15,6 +15,7 @@ export interface FullCustomizationState {
   forcedCapture: boolean;
   flyingKings: boolean;
   stopJumpOnKing: boolean;
+  nMoveRule: number;
 }
 
 export const DEFAULT_FULL_CUSTOMIZATION: FullCustomizationState = {
@@ -22,6 +23,7 @@ export const DEFAULT_FULL_CUSTOMIZATION: FullCustomizationState = {
   forcedCapture: true,
   flyingKings: false,
   stopJumpOnKing: true,
+  nMoveRule: 40,
 };
 
 const changePiecesPerPlayer = (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => (
@@ -65,6 +67,17 @@ const changeStopJumpOnKing = (
   onChange(newState);
 };
 
+const changeNMoveRule = (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => (
+  event: React.ChangeEvent<{ value: number }>,
+) => {
+  const index = event.target.value;
+  const newState: FullCustomizationState = {
+    ...state,
+    nMoveRule: index,
+  };
+  onChange(newState);
+};
+
 const FullCustomization = ({ currentValue, onChange }: GameCustomizationProps) => {
   const state = (currentValue as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
   const style = {
@@ -89,6 +102,13 @@ const FullCustomization = ({ currentValue, onChange }: GameCustomizationProps) =
       <Switch checked={state.flyingKings} onChange={changeFlyingKings(onChange, state)} color="primary" />
       <Typography align="right">Stop Jumping If Piece Kinged</Typography>
       <Switch checked={state.stopJumpOnKing} onChange={changeStopJumpOnKing(onChange, state)} color="primary" />
+      <Typography align="right">n-move Rule</Typography>
+      <Select value={state.nMoveRule} onChange={changeNMoveRule(onChange, state)} style={{ width: '100%' }}>
+        <MenuItem value={-1}>Off</MenuItem>
+        <MenuItem value={15}>15</MenuItem>
+        <MenuItem value={30}>30</MenuItem>
+        <MenuItem value={40}>40</MenuItem>
+      </Select>
     </div>
   );
 };

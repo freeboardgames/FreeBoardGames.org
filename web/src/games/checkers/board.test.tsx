@@ -125,6 +125,30 @@ test('gameover - lost', () => {
   expect(comp.html()).toContain('black');
 });
 
+test('gameover - draw', () => {
+  const client = Client({
+    game: CheckersGame,
+  });
+  const state0 = client.store.getState();
+  const state1 = {
+    ...state0,
+    ctx: { ...state0.ctx, gameover: { winner: 'draw' } },
+  };
+  const comp = Enzyme.mount(
+    <Board
+      G={state1.G}
+      ctx={state1.ctx}
+      moves={client.moves}
+      playerID={'0'}
+      gameArgs={{
+        gameCode: 'checkers',
+        mode: GameMode.LocalFriend,
+      }}
+    />,
+  );
+  expect(comp.html()).toContain('draw');
+});
+
 test('gameover - won online', () => {
   const client = Client({
     game: CheckersGame,
