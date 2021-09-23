@@ -136,7 +136,7 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
     jumpedTotal = jumped;
   }
 
-  if (jumpedTotal) {
+  if ((jumpedTotal && G.config.forcedCapture) || jumping) {
     return movesTotal.filter((move) => move.jumped);
   } else {
     return movesTotal;

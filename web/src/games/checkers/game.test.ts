@@ -23,6 +23,7 @@ it('should declare player 1 as the winner', () => {
       board: INITIAL_BOARD[0],
       jumping: null,
       config: {
+        ...DEFAULT_FULL_CUSTOMIZATION,
         flyingKings: true,
       },
     }),

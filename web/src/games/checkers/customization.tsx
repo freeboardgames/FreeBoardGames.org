@@ -12,12 +12,14 @@ export enum piecesPerPlayer {
 
 export interface FullCustomizationState {
   piecesPerPlayer: piecesPerPlayer;
+  forcedCapture: boolean;
   flyingKings: boolean;
   stopJumpOnKing: boolean;
 }
 
 export const DEFAULT_FULL_CUSTOMIZATION: FullCustomizationState = {
   piecesPerPlayer: piecesPerPlayer.TWELVE,
+  forcedCapture: true,
   flyingKings: false,
   stopJumpOnKing: true,
 };
@@ -29,6 +31,17 @@ const changePiecesPerPlayer = (onChange: (state?: FullCustomizationState) => voi
   const newState: FullCustomizationState = {
     ...state,
     piecesPerPlayer: index,
+  };
+  onChange(newState);
+};
+
+const changeForcedCapture = (
+  onChange: (state?: FullCustomizationState) => void,
+  state: FullCustomizationState,
+) => () => {
+  const newState: FullCustomizationState = {
+    ...state,
+    forcedCapture: !state.forcedCapture,
   };
   onChange(newState);
 };
@@ -70,6 +83,8 @@ const FullCustomization = ({ currentValue, onChange }: GameCustomizationProps) =
         <MenuItem value={piecesPerPlayer.TWELVE}>12</MenuItem>
         <MenuItem value={piecesPerPlayer.EIGHT}>8</MenuItem>
       </Select>
+      <Typography align="right">Forced Capture</Typography>
+      <Switch checked={state.forcedCapture} onChange={changeForcedCapture(onChange, state)} color="primary" />
       <Typography align="right">Flying Kings</Typography>
       <Switch checked={state.flyingKings} onChange={changeFlyingKings(onChange, state)} color="primary" />
       <Typography align="right">Stop Jumping If Piece Kinged</Typography>
