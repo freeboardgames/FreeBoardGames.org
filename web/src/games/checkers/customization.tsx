@@ -6,13 +6,13 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useCurrentGameTranslation } from 'infra/i18n';
 
-export enum piecesPerPlayer {
+export enum PiecesPerPlayer {
   TWELVE,
   EIGHT,
 }
 
 export interface FullCustomizationState {
-  piecesPerPlayer: piecesPerPlayer;
+  piecesPerPlayer: PiecesPerPlayer;
   forcedCapture: boolean;
   flyingKings: boolean;
   stopJumpOnKing: boolean;
@@ -20,7 +20,7 @@ export interface FullCustomizationState {
 }
 
 export const DEFAULT_FULL_CUSTOMIZATION: FullCustomizationState = {
-  piecesPerPlayer: piecesPerPlayer.TWELVE,
+  piecesPerPlayer: PiecesPerPlayer.TWELVE,
   forcedCapture: true,
   flyingKings: false,
   stopJumpOnKing: true,
@@ -28,7 +28,7 @@ export const DEFAULT_FULL_CUSTOMIZATION: FullCustomizationState = {
 };
 
 const changePiecesPerPlayer = (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => (
-  event: React.ChangeEvent<{ value: piecesPerPlayer }>,
+  event: React.ChangeEvent<{ value: PiecesPerPlayer }>,
 ) => {
   const index = event.target.value;
   const newState: FullCustomizationState = {
@@ -95,8 +95,8 @@ const FullCustomization = ({ currentValue, onChange }: GameCustomizationProps) =
     <div style={style}>
       <Typography align="right">{translate('customization.pieces_per_player')}</Typography>
       <Select value={state.piecesPerPlayer} onChange={changePiecesPerPlayer(onChange, state)} style={{ width: '100%' }}>
-        <MenuItem value={piecesPerPlayer.TWELVE}>12</MenuItem>
-        <MenuItem value={piecesPerPlayer.EIGHT}>8</MenuItem>
+        <MenuItem value={PiecesPerPlayer.TWELVE}>12</MenuItem>
+        <MenuItem value={PiecesPerPlayer.EIGHT}>8</MenuItem>
       </Select>
       <Typography align="right">{translate('customization.forced_capture')}</Typography>
       <Switch checked={state.forcedCapture} onChange={changeForcedCapture(onChange, state)} color="primary" />
