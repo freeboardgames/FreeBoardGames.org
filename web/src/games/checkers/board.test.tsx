@@ -6,6 +6,7 @@ import { Client as ReactClient } from 'boardgame.io/react';
 import { CheckersGame } from './game';
 
 import blue from '@material-ui/core/colors/blue';
+import cyan from '@material-ui/core/colors/cyan';
 
 import { Board } from './board';
 import { GameMode } from 'gamesShared/definitions/mode';
@@ -75,6 +76,31 @@ test('highlighting the only valid move', async () => {
 
   expect(comp.find('rect').at(getPosition(0, 3)).prop('style').fill).toEqual(blue[700]);
   comp.unmount();
+});
+
+test('highlighting selectable pieces with forced capture', async () => {
+  const App = ReactClient({
+    game: CheckersGame,
+    debug: false,
+    board: BoardTest,
+  });
+  const comp = Enzyme.mount(<App playerID={'0'} />);
+
+  await comp.find('rect').at(getPosition(4, 5)).simulate('click');
+  await comp.find('rect').at(getPosition(3, 4)).simulate('click');
+  comp.setProps({ playerID: '1' });
+  comp.update();
+  await comp.find('rect').at(getPosition(1, 2)).simulate('click');
+  await comp.find('rect').at(getPosition(0, 3)).simulate('click');
+  comp.setProps({ playerID: '0' });
+  comp.update();
+  await comp.find('rect').at(getPosition(3, 4)).simulate('click');
+  await comp.find('rect').at(getPosition(4, 3)).simulate('click');
+  comp.setProps({ playerID: '1' });
+  comp.update();
+
+  expect(comp.find('rect').at(getPosition(3, 2)).prop('style').fill).toEqual(cyan[500]);
+  expect(comp.find('rect').at(getPosition(5, 2)).prop('style').fill).toEqual(cyan[500]);
 });
 
 test('gameover - won', () => {
