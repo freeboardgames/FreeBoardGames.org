@@ -18,6 +18,7 @@ import { Token } from 'deprecated-bgio-ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
+import cyan from '@material-ui/core/colors/cyan';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 import { useCurrentGameTranslation } from 'infra/i18n';
@@ -120,6 +121,10 @@ export function Board(props: IBoardProps) {
         .forEach((move) => {
           result[cartesianToAlgebraic(move.to.x, move.to.y, false)] = blue[500];
         });
+    } else if (props.G.config.forcedCapture && validMoves.some((move) => move.jumped)) {
+      validMoves.forEach((move) => {
+        result[cartesianToAlgebraic(move.from.x, move.from.y, false)] = cyan[500];
+      });
     }
 
     return result;
