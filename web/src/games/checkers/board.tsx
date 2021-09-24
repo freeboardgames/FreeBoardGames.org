@@ -20,6 +20,7 @@ import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 interface IBoardProps {
   G: IG;
@@ -35,6 +36,8 @@ function roundCoords(coords: ICartesianCoords) {
 }
 
 export function Board(props: IBoardProps) {
+  const { translate } = useCurrentGameTranslation();
+
   const [selected, setSelected] = React.useState(null);
   const [validMoves, setValidMoves] = React.useState(getValidMoves(props.G, props.ctx.currentPlayer));
 
@@ -153,16 +156,16 @@ export function Board(props: IBoardProps) {
   function _getStatus() {
     if (isFirstPersonView(props.gameArgs, props.playerID)) {
       if (props.ctx.currentPlayer === props.playerID) {
-        return 'Move piece';
+        return translate('move_piece');
       } else {
-        return 'Waiting for opponent...';
+        return translate('waiting_for_opponent');
       }
     } else {
       switch (props.ctx.currentPlayer) {
         case '0':
-          return "White's turn";
+          return translate('white_turn');
         case '1':
-          return "Black's turn";
+          return translate('black_turn');
       }
     }
   }
@@ -172,19 +175,19 @@ export function Board(props: IBoardProps) {
     if (winner) {
       if (isFirstPersonView(props.gameArgs, props.playerID)) {
         if (winner === props.playerID) {
-          return 'you won';
+          return translate('game_over.you_won');
         } else if (winner === 'draw') {
-          return 'draw';
+          return translate('game_over.draw');
         } else {
-          return 'you lost';
+          return translate('game_over.you_lost');
         }
       } else {
         if (winner === '0') {
-          return 'white won';
+          return translate('game_over.white_won');
         } else if (winner === 'draw') {
-          return 'draw';
+          return translate('game_over.draw');
         } else {
-          return 'black won';
+          return translate('game_over.black_won');
         }
       }
     }
