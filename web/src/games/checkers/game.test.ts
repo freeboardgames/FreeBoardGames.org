@@ -1,12 +1,12 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
-import { CheckersGame, IG, move, INITIAL_BOARD } from './game';
+import { CheckersGame, IG, move, INITIAL_BOARD, convertStringToBoard } from './game';
 import { Local } from 'boardgame.io/multiplayer';
 import { DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
 test('invalid moves', () => {
   let G: IG = {
-    board: INITIAL_BOARD[0],
+    board: convertStringToBoard(INITIAL_BOARD[0]),
     jumping: null,
     moveCount: 0,
     config: DEFAULT_FULL_CUSTOMIZATION,
@@ -21,7 +21,7 @@ it('should declare player 1 as the winner', () => {
   const CheckersGameWithSetup = {
     ...CheckersGame,
     setup: () => ({
-      board: INITIAL_BOARD[0],
+      board: convertStringToBoard(INITIAL_BOARD[0]),
       jumping: null,
       config: {
         ...DEFAULT_FULL_CUSTOMIZATION,
@@ -106,7 +106,7 @@ it('should declare a draw', () => {
   const CheckersGameWithSetup = {
     ...CheckersGame,
     setup: () => ({
-      board: INITIAL_BOARD[1],
+      board: convertStringToBoard(INITIAL_BOARD[1]),
       jumping: null,
       config: {
         ...DEFAULT_FULL_CUSTOMIZATION,

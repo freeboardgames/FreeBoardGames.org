@@ -131,31 +131,28 @@ export function Board(props: IBoardProps) {
   }
 
   const getPieces = () => {
-    return props.G.board
-      .map((piece, index) => ({ data: piece, index }))
-      .filter((piece) => piece.data !== null)
-      .map((piece) => {
-        const { x, y } = fromPosition(piece.index);
-        return (
-          <Token
-            x={x}
-            y={y}
-            draggable={true}
-            shouldDrag={_shouldDrag}
-            onDrop={_onDrop}
-            onDrag={_onDrag}
-            animate={true}
-            key={piece.data.id}
-          >
-            <g>
-              <circle r="0.4" fill={piece.data.playerID === '0' ? grey[50] : grey[900]} cx="0.5" cy="0.5" />
-              {piece.data.isKing ? (
-                <circle r="0.2" cx="0.5" cy="0.5" fill={piece.data.playerID === '1' ? grey[800] : grey[400]} />
-              ) : null}
-            </g>
-          </Token>
-        );
-      });
+    return props.G.board.map((piece) => {
+      const { x, y } = fromPosition(piece.pos);
+      return (
+        <Token
+          x={x}
+          y={y}
+          draggable={true}
+          shouldDrag={_shouldDrag}
+          onDrop={_onDrop}
+          onDrag={_onDrag}
+          animate={true}
+          key={piece.id}
+        >
+          <g>
+            <circle r="0.4" fill={piece.playerID === '0' ? grey[50] : grey[900]} cx="0.5" cy="0.5" />
+            {piece.isKing ? (
+              <circle r="0.2" cx="0.5" cy="0.5" fill={piece.playerID === '1' ? grey[800] : grey[400]} />
+            ) : null}
+          </g>
+        </Token>
+      );
+    });
   };
 
   function _getStatus() {

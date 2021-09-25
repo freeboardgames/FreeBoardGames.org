@@ -8,11 +8,7 @@ interface ICheckerPiece {
   id: number;
   playerID: string;
   isKing: boolean;
-}
-
-interface ICheckerPieceWithCoord {
-  data: ICheckerPiece;
-  coord: ICoord;
+  pos: number;
 }
 
 export interface IMove {
@@ -24,37 +20,45 @@ export interface IMove {
 type Piece = ICheckerPiece | null;
 
 export interface IG {
-  board: Piece[];
-  jumping: ICheckerPieceWithCoord;
+  board: ICheckerPiece[];
+  jumping: Piece;
   moveCount: number;
   config: FullCustomizationState;
 }
 
-const piece = (id: number, player: number): ICheckerPiece => ({ id, playerID: player.toString(), isKing: false });
+const piece = (id: number, player: number, pos: number): ICheckerPiece => ({
+  id,
+  playerID: player.toString(),
+  isKing: false,
+  pos,
+});
 
-// prettier-ignore
-export const INITIAL_BOARD: Piece[][] = [
-  [
-            null,  piece(0, 1),         null,  piece(1, 1),         null,  piece(2, 1),         null,  piece(3, 1),
-     piece(4, 1),         null,  piece(5, 1),         null,  piece(6, 1),         null,  piece(7, 1),         null,
-            null,  piece(8, 1),         null,  piece(9, 1),         null, piece(10, 1),         null, piece(11, 1),
-            null,         null,         null,         null,         null,         null,         null,         null,
-            null,         null,         null,         null,         null,         null,         null,         null,
-    piece(12, 0),         null, piece(13, 0),         null, piece(14, 0),         null, piece(15, 0),         null,
-            null, piece(16, 0),         null, piece(17, 0),         null, piece(18, 0),         null, piece(19, 0),
-    piece(20, 0),         null, piece(21, 0),         null, piece(22, 0),         null, piece(23, 0),         null,
-  ],
-  [
-            null,  piece(0, 1),         null,  piece(1, 1),         null,  piece(2, 1),         null,  piece(3, 1),
-     piece(4, 1),         null,  piece(5, 1),         null,  piece(6, 1),         null,  piece(7, 1),         null,
-            null,         null,         null,         null,         null,         null,         null,         null,
-            null,         null,         null,         null,         null,         null,         null,         null,
-            null,         null,         null,         null,         null,         null,         null,         null,
-            null,         null,         null,         null,         null,         null,         null,         null,
-            null,  piece(8, 0),         null,  piece(9, 0),         null, piece(10, 0),         null, piece(11, 0),
-    piece(12, 0),         null, piece(13, 0),         null, piece(14, 0),         null, piece(15, 0),         null,
-  ]
+export const INITIAL_BOARD: string[] = [
+  '1p1p1p1pp1p1p1p11p1p1p1p88P1P1P1P11P1P1P1PP1P1P1P1',
+  '1p1p1p1pp1p1p1p188881P1P1P1PP1P1P1P1',
 ];
+
+// Inspired by chess FEN notation
+export function convertStringToBoard(str: string): ICheckerPiece[] {
+  let index = 0;
+  let board: Piece[] = [];
+  let position = 0;
+  for (let i = 0; i < str.length; i++) {
+    if (isNaN(parseInt(str[i], 10))) {
+      if (str[i] === 'p') {
+        board.push(piece(index, 1, position));
+        index++;
+      } else if (str[i] === 'P') {
+        board.push(piece(index, 0, position));
+        index++;
+      }
+      position++;
+    } else {
+      position += parseInt(str[i], 10);
+    }
+  }
+  return board;
+}
 
 const MAN_DIRS: ICoord[][] = [
   [createCoord(-1, -1), createCoord(1, -1)],
@@ -63,16 +67,25 @@ const MAN_DIRS: ICoord[][] = [
 
 const KING_DIRS: ICoord[] = [createCoord(-1, 1), createCoord(1, 1), createCoord(-1, -1), createCoord(1, -1)];
 
-export function checkPosition(
-  G: IG,
-  playerID: string,
-  piece: ICheckerPiece,
-  coord: ICoord,
-): { moves: IMove[]; jumped: boolean } {
+export function getPieceFromPos(board: Piece[], pos: number): Piece {
+  const piece = board.find((p) => p.pos === pos);
+  if (typeof piece === 'undefined') {
+    return null;
+  } else {
+    return piece;
+  }
+}
+
+export function getPieceIndex(board: Piece[], pos: number): number {
+  return board.findIndex((p) => p.pos === pos);
+}
+
+export function checkPosition(G: IG, playerID: string, piece: ICheckerPiece): { moves: IMove[]; jumped: boolean } {
   const dirs = piece.isKing ? KING_DIRS : MAN_DIRS[playerID as any];
   let moves: IMove[] = [];
   let jumped = false;
   const infiniteDistance: boolean = piece.isKing && G.config.flyingKings;
+  const coord = fromPosition(piece.pos);
 
   for (const dir of dirs) {
     // Look into all valid directions
@@ -85,7 +98,7 @@ export function checkPosition(
         break;
       }
 
-      const moveTo = G.board[toIndex(final)];
+      const moveTo = getPieceFromPos(G.board, toIndex(final));
 
       // Break if we encounter our piece
       if (moveTo !== null && moveTo.playerID === playerID) {
@@ -118,21 +131,20 @@ export function checkPosition(
   return { moves, jumped };
 }
 
-export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWithCoord) {
+export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPiece) {
   let movesTotal: IMove[] = [];
   let jumpedTotal = false;
 
   if (typeof jumping === 'undefined') {
-    G.board.forEach((piece, index) => {
-      if (piece !== null && piece.playerID === playerID) {
-        const coord = fromPosition(index);
-        const { moves, jumped } = checkPosition(G, playerID, piece, coord);
+    G.board.forEach((piece) => {
+      if (piece.playerID === playerID) {
+        const { moves, jumped } = checkPosition(G, playerID, piece);
         movesTotal.push(...moves);
         jumpedTotal = jumpedTotal || jumped;
       }
     });
   } else {
-    const { moves, jumped } = checkPosition(G, playerID, jumping.data, jumping.coord);
+    const { moves, jumped } = checkPosition(G, playerID, jumping);
     movesTotal = moves;
     jumpedTotal = jumped;
   }
@@ -147,10 +159,10 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
 export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
   const indexFrom = toIndex(from);
   const indexTo = toIndex(to);
-  const piece = G.board[indexFrom];
+  const piece = getPieceFromPos(G.board, indexFrom);
   const crownhead = ctx.playerID === '0' ? 0 : 7;
 
-  if (piece === null || piece.playerID !== ctx.playerID || G.board[indexTo] !== null) {
+  if (piece === null || piece.playerID !== ctx.playerID || getPieceFromPos(G.board, indexTo) !== null) {
     return INVALID_MOVE;
   }
 
@@ -165,24 +177,23 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
   const isKing = piece.isKing || to.y === crownhead;
 
   const moveCount = G.config.nMoveRule === -1 || move.jumped !== null || !piece.isKing ? 0 : G.moveCount + 1;
+  const newPiece = {
+    ...piece,
+    isKing,
+    pos: indexTo,
+  };
 
   const newG: IG = {
     ...G,
-    board: G.board.map((square, i) => {
-      switch (i) {
-        case indexFrom:
-          return null;
-        case indexTo:
-          return {
-            ...piece,
-            isKing,
-          };
-        case jumped:
-          return null;
-        default:
-          return square;
-      }
-    }),
+    board: G.board
+      .filter((piece) => piece.pos !== jumped)
+      .map((piece) => {
+        if (piece.pos === indexFrom) {
+          return newPiece;
+        } else {
+          return piece;
+        }
+      }),
     jumping: null,
     moveCount,
   };
@@ -194,19 +205,12 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
     return newG;
   }
 
-  const jumping = {
-    data: {
-      ...piece,
-      isKing,
-    },
-    coord: to,
-  };
-  const postMoves = getValidMoves(newG, ctx.playerID, jumping);
+  const postMoves = getValidMoves(newG, ctx.playerID, newPiece);
 
   if (postMoves.length > 0 && postMoves[0].jumped !== null) {
     return {
       ...newG,
-      jumping,
+      jumping: newPiece,
     };
   }
 
@@ -218,7 +222,7 @@ export const CheckersGame: Game<IG> = {
   setup: (_, customData: GameCustomizationState): IG => {
     const fullCustomization = (customData?.full as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
     return {
-      board: INITIAL_BOARD[fullCustomization.piecesPerPlayer],
+      board: convertStringToBoard(INITIAL_BOARD[fullCustomization.piecesPerPlayer]),
       jumping: null,
       moveCount: 0,
       config: fullCustomization,
