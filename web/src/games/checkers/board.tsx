@@ -18,8 +18,10 @@ import { Token } from 'deprecated-bgio-ui';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
+import cyan from '@material-ui/core/colors/cyan';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 interface IBoardProps {
   G: IG;
@@ -30,82 +32,68 @@ interface IBoardProps {
   gameArgs?: IGameArgs;
 }
 
-interface IBoardState {
-  selected: ICartesianCoords;
-  validMoves: IMove[];
-}
-
 function roundCoords(coords: ICartesianCoords) {
   return { x: Math.round(coords.x), y: Math.round(coords.y) };
 }
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
-  state: IBoardState = {
-    selected: null,
-    validMoves: getValidMoves(this.props.G, this.props.ctx.currentPlayer),
-  };
+export function Board(props: IBoardProps) {
+  const { translate } = useCurrentGameTranslation();
 
-  isInverted() {
-    return (isAIGame(this.props.gameArgs) || isOnlineGame(this.props.gameArgs)) && this.props.playerID === '1';
+  const [selected, setSelected] = React.useState(null);
+  const [validMoves, setValidMoves] = React.useState(getValidMoves(props.G, props.ctx.currentPlayer));
+
+  function isInverted() {
+    return (isAIGame(props.gameArgs) || isOnlineGame(props.gameArgs)) && props.playerID === '1';
   }
 
-  _isSelectable = (coords: ICartesianCoords) => {
-    if (isOnlineGame(this.props.gameArgs) && this.props.playerID !== this.props.ctx.currentPlayer) {
+  const _isSelectable = (coords: ICartesianCoords) => {
+    if (isOnlineGame(props.gameArgs) && props.playerID !== props.ctx.currentPlayer) {
       return false;
     }
 
-    return this.state.validMoves.some((move) => equals(move.from, coords));
+    return validMoves.some((move) => equals(move.from, coords));
   };
 
-  _onClick = (coords: IAlgebraicCoords) => {
+  const _onClick = (coords: IAlgebraicCoords) => {
     const position = algebraicToCartesian(coords.square);
-    if (this.state.selected === null && this._isSelectable(position)) {
-      this.setState({
-        ...this.state,
-        selected: position,
-      });
+    if (selected === null && _isSelectable(position)) {
+      setSelected(position);
     } else {
-      this._move(position);
+      _move(position);
     }
   };
 
-  _shouldDrag = (coords: ICartesianCoords) => {
-    return this._isSelectable(applyInvertion(coords, this.isInverted()));
+  const _shouldDrag = (coords: ICartesianCoords) => {
+    return _isSelectable(applyInvertion(coords, isInverted()));
   };
 
-  _onDrag = (coords: IOnDragData) => {
+  const _onDrag = (coords: IOnDragData) => {
     const x = coords.x;
     const y = coords.y;
     const originalX = coords.originalX;
     const originalY = coords.originalY;
     if (Math.sqrt((x - originalX) ** 2 + (y - originalY) ** 2) > 0.2) {
-      this.setState({
-        ...this.state,
-        selected: applyInvertion({ x: originalX, y: originalY }, this.isInverted()),
-      });
+      setSelected(applyInvertion({ x: originalX, y: originalY }, isInverted()));
     } else {
-      this.setState({
-        ...this.state,
-        selected: null,
-      });
+      setSelected(null);
     }
   };
 
-  _onDrop = async (coords: ICartesianCoords) => {
-    if (this.state.selected) {
-      this._move(applyInvertion(roundCoords(coords), this.isInverted()));
+  const _onDrop = async (coords: ICartesianCoords) => {
+    if (selected) {
+      _move(applyInvertion(roundCoords(coords), isInverted()));
     }
   };
 
-  _move = async (coords: ICartesianCoords) => {
-    if (this.state.selected === null || coords === null) {
+  const _move = async (coords: ICartesianCoords) => {
+    if (selected === null || coords === null) {
       return;
     }
 
-    await this.props.moves.move(this.state.selected, coords);
+    await props.moves.move(selected, coords);
   };
 
-  private _getPreselectedMove(validMoves: IMove[]): ICartesianCoords {
+  function _getPreselectedMove(validMoves: IMove[]): ICartesianCoords {
     if (validMoves.length === 1) {
       const from = validMoves[0].from;
       return { x: from.x, y: from.y };
@@ -113,23 +101,37 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return null;
   }
 
-  _getHighlightedSquares() {
+  React.useEffect(() => {
+    const newValidMoves =
+      props.G.jumping === null
+        ? getValidMoves(props.G, props.ctx.currentPlayer)
+        : getValidMoves(props.G, props.ctx.currentPlayer, props.G.jumping);
+
+    setValidMoves(newValidMoves);
+    setSelected(_getPreselectedMove(newValidMoves));
+  }, [props.ctx.turn]);
+
+  function _getHighlightedSquares() {
     const result = {} as IColorMap;
 
-    if (this.state.selected !== null) {
-      result[cartesianToAlgebraic(this.state.selected.x, this.state.selected.y, false)] = blue[700];
-      this.state.validMoves
-        .filter((move) => equals(move.from, this.state.selected))
+    if (selected !== null) {
+      result[cartesianToAlgebraic(selected.x, selected.y, false)] = blue[700];
+      validMoves
+        .filter((move) => equals(move.from, selected))
         .forEach((move) => {
           result[cartesianToAlgebraic(move.to.x, move.to.y, false)] = blue[500];
         });
+    } else if (props.G.config.forcedCapture && validMoves.some((move) => move.jumped)) {
+      validMoves.forEach((move) => {
+        result[cartesianToAlgebraic(move.from.x, move.from.y, false)] = cyan[500];
+      });
     }
 
     return result;
   }
 
-  getPieces = () => {
-    return this.props.G.board
+  const getPieces = () => {
+    return props.G.board
       .map((piece, index) => ({ data: piece, index }))
       .filter((piece) => piece.data !== null)
       .map((piece) => {
@@ -139,9 +141,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
             x={x}
             y={y}
             draggable={true}
-            shouldDrag={this._shouldDrag}
-            onDrop={this._onDrop}
-            onDrag={this._onDrag}
+            shouldDrag={_shouldDrag}
+            onDrop={_onDrop}
+            onDrag={_onDrag}
             animate={true}
             key={piece.data.id}
           >
@@ -156,75 +158,62 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       });
   };
 
-  _getStatus() {
-    if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
-      if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'Move piece';
+  function _getStatus() {
+    if (isFirstPersonView(props.gameArgs, props.playerID)) {
+      if (props.ctx.currentPlayer === props.playerID) {
+        return translate('move_piece');
       } else {
-        return 'Waiting for opponent...';
+        return translate('waiting_for_opponent');
       }
     } else {
-      switch (this.props.ctx.currentPlayer) {
+      switch (props.ctx.currentPlayer) {
         case '0':
-          return "White's turn";
+          return translate('white_turn');
         case '1':
-          return "Black's turn";
+          return translate('black_turn');
       }
     }
   }
 
-  _getGameOver() {
-    const winner = this.props.ctx.gameover.winner;
+  function _getGameOver() {
+    const winner = props.ctx.gameover.winner;
     if (winner) {
-      if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
-        if (winner === this.props.playerID) {
-          return 'you won';
+      if (isFirstPersonView(props.gameArgs, props.playerID)) {
+        if (winner === props.playerID) {
+          return translate('game_over.you_won');
+        } else if (winner === 'draw') {
+          return translate('game_over.draw');
         } else {
-          return 'you lost';
+          return translate('game_over.you_lost');
         }
       } else {
         if (winner === '0') {
-          return 'white won';
+          return translate('game_over.white_won');
+        } else if (winner === 'draw') {
+          return translate('game_over.draw');
         } else {
-          return 'black won';
+          return translate('game_over.black_won');
         }
       }
     }
   }
 
-  componentDidUpdate(prevProps: IBoardProps) {
-    if (prevProps.ctx.turn !== this.props.ctx.turn) {
-      const validMoves =
-        this.props.G.jumping === null
-          ? getValidMoves(this.props.G, this.props.ctx.currentPlayer)
-          : getValidMoves(this.props.G, this.props.ctx.currentPlayer, this.props.G.jumping);
-
-      this.setState({
-        ...this.state,
-        validMoves,
-        selected: this._getPreselectedMove(validMoves),
-      });
-    }
-  }
-
-  render() {
-    if (this.props.ctx.gameover) {
-      return <GameLayout gameOver={this._getGameOver()} gameArgs={this.props.gameArgs} />;
+  function render() {
+    if (props.ctx.gameover) {
+      return <GameLayout gameOver={_getGameOver()} gameArgs={props.gameArgs} />;
     }
 
     return (
-      <GameLayout gameArgs={this.props.gameArgs}>
+      <GameLayout gameArgs={props.gameArgs}>
         <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
-          {this._getStatus()}
+          {_getStatus()}
         </Typography>
-        <Checkerboard
-          onClick={this._onClick}
-          invert={this.isInverted()}
-          highlightedSquares={this._getHighlightedSquares()}
-        >
-          {this.getPieces()}
+        <Checkerboard onClick={_onClick} invert={isInverted()} highlightedSquares={_getHighlightedSquares()}>
+          {getPieces()}
         </Checkerboard>
       </GameLayout>
     );
   }
+
+  return render();
 }

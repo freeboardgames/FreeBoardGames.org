@@ -1,6 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx, Game } from 'boardgame.io';
 import { ICoord, sum, multiply, inBounds, toIndex, fromPosition, createCoord, equals } from './coord';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
+import { FullCustomizationState, DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
 interface ICheckerPiece {
   id: number;
@@ -20,23 +22,38 @@ export interface IMove {
 }
 
 type Piece = ICheckerPiece | null;
+
 export interface IG {
   board: Piece[];
   jumping: ICheckerPieceWithCoord;
+  moveCount: number;
+  config: FullCustomizationState;
 }
 
 const piece = (id: number, player: number): ICheckerPiece => ({ id, playerID: player.toString(), isKing: false });
 
 // prettier-ignore
-export const INITIAL_BOARD: Piece[] = [
-          null,  piece(0, 1),         null,  piece(1, 1),         null,  piece(2, 1),         null,  piece(3, 1),
-   piece(4, 1),         null,  piece(5, 1),         null,  piece(6, 1),         null,  piece(7, 1),         null,
-          null,  piece(8, 1),         null,  piece(9, 1),         null, piece(10, 1),         null, piece(11, 1),
-          null,         null,         null,         null,         null,         null,         null,         null,
-          null,         null,         null,         null,         null,         null,         null,         null,
-  piece(12, 0),         null, piece(13, 0),         null, piece(14, 0),         null, piece(15, 0),         null,
-          null, piece(16, 0),         null, piece(17, 0),         null, piece(18, 0),         null, piece(19, 0),
-  piece(20, 0),         null, piece(21, 0),         null, piece(22, 0),         null, piece(23, 0),         null,
+export const INITIAL_BOARD: Piece[][] = [
+  [
+            null,  piece(0, 1),         null,  piece(1, 1),         null,  piece(2, 1),         null,  piece(3, 1),
+     piece(4, 1),         null,  piece(5, 1),         null,  piece(6, 1),         null,  piece(7, 1),         null,
+            null,  piece(8, 1),         null,  piece(9, 1),         null, piece(10, 1),         null, piece(11, 1),
+            null,         null,         null,         null,         null,         null,         null,         null,
+            null,         null,         null,         null,         null,         null,         null,         null,
+    piece(12, 0),         null, piece(13, 0),         null, piece(14, 0),         null, piece(15, 0),         null,
+            null, piece(16, 0),         null, piece(17, 0),         null, piece(18, 0),         null, piece(19, 0),
+    piece(20, 0),         null, piece(21, 0),         null, piece(22, 0),         null, piece(23, 0),         null,
+  ],
+  [
+            null,  piece(0, 1),         null,  piece(1, 1),         null,  piece(2, 1),         null,  piece(3, 1),
+     piece(4, 1),         null,  piece(5, 1),         null,  piece(6, 1),         null,  piece(7, 1),         null,
+            null,         null,         null,         null,         null,         null,         null,         null,
+            null,         null,         null,         null,         null,         null,         null,         null,
+            null,         null,         null,         null,         null,         null,         null,         null,
+            null,         null,         null,         null,         null,         null,         null,         null,
+            null,  piece(8, 0),         null,  piece(9, 0),         null, piece(10, 0),         null, piece(11, 0),
+    piece(12, 0),         null, piece(13, 0),         null, piece(14, 0),         null, piece(15, 0),         null,
+  ]
 ];
 
 const MAN_DIRS: ICoord[][] = [
@@ -55,11 +72,12 @@ export function checkPosition(
   const dirs = piece.isKing ? KING_DIRS : MAN_DIRS[playerID as any];
   let moves: IMove[] = [];
   let jumped = false;
+  const infiniteDistance: boolean = piece.isKing && G.config.flyingKings;
 
   for (const dir of dirs) {
     // Look into all valid directions
     let opponentBefore = null;
-    for (let i = 1; piece.isKing ? true : i < 3; i++) {
+    for (let i = 1; infiniteDistance ? true : i < 3; i++) {
       const final = sum(coord, multiply(dir, i));
 
       // Break if move is out of bounds
@@ -89,8 +107,8 @@ export function checkPosition(
           break;
         }
 
-        // If there is nothing and the piece isn't king there is no need to continue
-        if (!piece.isKing) {
+        // If there is nothing and the piece can't move infinitely there is no need to continue
+        if (!infiniteDistance) {
           break;
         }
       }
@@ -119,7 +137,7 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPieceWi
     jumpedTotal = jumped;
   }
 
-  if (jumpedTotal) {
+  if ((jumpedTotal && G.config.forcedCapture) || jumping) {
     return movesTotal.filter((move) => move.jumped);
   } else {
     return movesTotal;
@@ -146,6 +164,8 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
   const jumped = move.jumped !== null ? toIndex(move.jumped) : -1;
   const isKing = piece.isKing || to.y === crownhead;
 
+  const moveCount = G.config.nMoveRule === -1 || move.jumped !== null || !piece.isKing ? 0 : G.moveCount + 1;
+
   const newG: IG = {
     ...G,
     board: G.board.map((square, i) => {
@@ -164,9 +184,13 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
       }
     }),
     jumping: null,
+    moveCount,
   };
 
   if (move.jumped === null) {
+    return newG;
+  }
+  if (G.config.stopJumpOnKing && !piece.isKing && to.y === crownhead) {
     return newG;
   }
 
@@ -191,7 +215,15 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
 
 export const CheckersGame: Game<IG> = {
   name: 'checkers',
-  setup: (): IG => ({ board: INITIAL_BOARD, jumping: null }),
+  setup: (_, customData: GameCustomizationState): IG => {
+    const fullCustomization = (customData?.full as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
+    return {
+      board: INITIAL_BOARD[fullCustomization.piecesPerPlayer],
+      jumping: null,
+      moveCount: 0,
+      config: fullCustomization,
+    };
+  },
   moves: {
     move,
   },
@@ -205,6 +237,8 @@ export const CheckersGame: Game<IG> = {
   endIf: (G: IG, ctx) => {
     if (getValidMoves(G, ctx.currentPlayer === '0' ? '1' : '0').length === 0) {
       return { winner: ctx.currentPlayer };
+    } else if (G.config.nMoveRule !== -1 && G.moveCount >= G.config.nMoveRule * 2) {
+      return { winner: 'draw' };
     }
   },
 };
