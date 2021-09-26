@@ -577,17 +577,17 @@ export const MergersGame: Game<IG> = {
           next: mergerPhaseNextTurn,
         },
         moveLimit: 1,
-        onEnd: (G: IG, ctx: Ctx) => {
-          debugger;
-          if (G.merger.mergingChains.length === 1) {
-            ctx.events.setPhase('buildingPhase');
-          } else {
-            ctx.events.setPhase('chooseChainToMergePhase');
-          }
-        },
       },
 
       moves: { swapAndSellStock },
+
+      next: (G: IG) => {
+        if (G.merger.mergingChains.length === 1) {
+          return 'buildingPhase';
+        } else {
+          return 'chooseChainToMergePhase';
+        }
+      },
 
       onBegin: (G: IG) => {
         debugger;
