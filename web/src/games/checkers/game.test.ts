@@ -17,6 +17,60 @@ test('invalid moves', () => {
   expect(move(G, ctx, { x: 1, y: 0 }, { x: 4, y: 4 })).toEqual(INVALID_MOVE);
 });
 
+test('move validity with flying kings off/on', () => {
+  let G: IG = {
+    board: convertStringToBoard('82p584K38888'),
+    jumping: null,
+    moveCount: 0,
+    config: { ...DEFAULT_FULL_CUSTOMIZATION },
+  };
+
+  const ctx: any = { playerID: '0' };
+  // Flying kings is off here
+  expect(move(G, ctx, { x: 4, y: 3 }, { x: 1, y: 0 })).toEqual(INVALID_MOVE);
+  // Now turn it on
+  G.config.flyingKings = true;
+  expect(move(G, ctx, { x: 4, y: 3 }, { x: 1, y: 0 })).not.toEqual(INVALID_MOVE);
+});
+
+test('forced capture on/off', () => {
+  let G: IG = {
+    board: convertStringToBoard('8884p33P4888'),
+    jumping: null,
+    moveCount: 0,
+    config: { ...DEFAULT_FULL_CUSTOMIZATION },
+  };
+  const ctx: any = { playerID: '0' };
+
+  // Forced capture is on
+  expect(move(G, ctx, { x: 3, y: 4 }, { x: 2, y: 3 })).toEqual(INVALID_MOVE);
+  // Now turn it off
+  G.config.forcedCapture = false;
+  expect(move(G, ctx, { x: 3, y: 4 }, { x: 2, y: 3 })).not.toEqual(INVALID_MOVE);
+});
+
+test('stop jumping on king on/off', () => {
+  const posString = '82p1p31P688888';
+
+  let G: IG = {
+    board: convertStringToBoard(posString),
+    jumping: null,
+    moveCount: 0,
+    config: { ...DEFAULT_FULL_CUSTOMIZATION },
+  };
+  const ctx: any = { playerID: '0' };
+
+  G = move(G, ctx, { x: 1, y: 2 }, { x: 3, y: 0 }) as IG;
+  // Stop jumping is on
+  expect(G.jumping).toEqual(null);
+  // Rewind the board
+  G.board = convertStringToBoard(posString);
+  G.config.stopJumpOnKing = false;
+  G = move(G, ctx, { x: 1, y: 2 }, { x: 3, y: 0 }) as IG;
+  // Stop jumping is off
+  expect(G.jumping).not.toEqual(null);
+});
+
 it('should declare player 1 as the winner', () => {
   const CheckersGameWithSetup = {
     ...CheckersGame,

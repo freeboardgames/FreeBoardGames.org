@@ -4,7 +4,7 @@ import { ICoord, sum, multiply, inBounds, toIndex, fromPosition, createCoord, eq
 import { GameCustomizationState } from 'gamesShared/definitions/customization';
 import { FullCustomizationState, DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
-interface ICheckerPiece {
+export interface ICheckerPiece {
   id: number;
   playerID: string;
   isKing: boolean;
@@ -26,10 +26,10 @@ export interface IG {
   config: FullCustomizationState;
 }
 
-const piece = (id: number, player: number, pos: number): ICheckerPiece => ({
+const piece = (id: number, player: number, pos: number, isKing?: boolean): ICheckerPiece => ({
   id,
   playerID: player.toString(),
-  isKing: false,
+  isKing: typeof isKing === 'undefined' ? false : isKing,
   pos,
 });
 
@@ -45,12 +45,22 @@ export function convertStringToBoard(str: string): ICheckerPiece[] {
   let position = 0;
   for (let i = 0; i < str.length; i++) {
     if (isNaN(parseInt(str[i], 10))) {
-      if (str[i] === 'p') {
-        board.push(piece(index, 1, position));
-        index++;
-      } else if (str[i] === 'P') {
-        board.push(piece(index, 0, position));
-        index++;
+      index++;
+      switch (str[i]) {
+        case 'p':
+          board.push(piece(index, 1, position));
+          break;
+        case 'P':
+          board.push(piece(index, 0, position));
+          break;
+        case 'k':
+          board.push(piece(index, 1, position, true));
+          break;
+        case 'K':
+          board.push(piece(index, 0, position, true));
+          break;
+        default:
+          index--;
       }
       position++;
     } else {
@@ -74,10 +84,6 @@ export function getPieceFromPos(board: Piece[], pos: number): Piece {
   } else {
     return piece;
   }
-}
-
-export function getPieceIndex(board: Piece[], pos: number): number {
-  return board.findIndex((p) => p.pos === pos);
 }
 
 export function checkPosition(G: IG, playerID: string, piece: ICheckerPiece): { moves: IMove[]; jumped: boolean } {
