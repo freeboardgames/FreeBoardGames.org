@@ -4,7 +4,7 @@ import { ICoord, sum, multiply, inBounds, toIndex, fromPosition, createCoord, eq
 import { GameCustomizationState } from 'gamesShared/definitions/customization';
 import { FullCustomizationState, DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
-export interface ICheckerPiece {
+interface ICheckerPiece {
   id: number;
   playerID: string;
   isKing: boolean;
