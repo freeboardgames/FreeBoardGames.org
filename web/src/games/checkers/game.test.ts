@@ -71,12 +71,44 @@ test('stop jumping on king on/off', () => {
   expect(G.jumping).not.toEqual(null);
 });
 
+it("shouldn't end the game after one move", () => {
+  const CheckersGameWithSetup = {
+    ...CheckersGame,
+    setup: () => ({
+      board: convertStringToBoard('5p26p186p15P2888'),
+      jumping: null,
+      moveCount: 0,
+      config: {
+        ...DEFAULT_FULL_CUSTOMIZATION,
+      },
+    }),
+  };
+
+  const spec = {
+    game: CheckersGameWithSetup,
+    multiplayer: Local(),
+  };
+
+  const p0 = Client({ ...spec, playerID: '0' } as any) as any;
+  const p1 = Client({ ...spec, playerID: '1' } as any) as any;
+
+  p0.start();
+  p1.start();
+
+  p0.moves.move({ x: 5, y: 4 }, { x: 7, y: 2 });
+
+  // Even though white has no moves in this position, it's black to move
+  // The game should not be over yet
+  expect(p1.getState().ctx.gameover).toBeFalsy();
+});
+
 it('should declare player 1 as the winner', () => {
   const CheckersGameWithSetup = {
     ...CheckersGame,
     setup: () => ({
       board: convertStringToBoard(INITIAL_BOARD[0]),
       jumping: null,
+      moveCount: 0,
       config: {
         ...DEFAULT_FULL_CUSTOMIZATION,
         flyingKings: true,
@@ -162,6 +194,7 @@ it('should declare a draw', () => {
     setup: () => ({
       board: convertStringToBoard(INITIAL_BOARD[1]),
       jumping: null,
+      moveCount: 0,
       config: {
         ...DEFAULT_FULL_CUSTOMIZATION,
         forcedCapture: false,

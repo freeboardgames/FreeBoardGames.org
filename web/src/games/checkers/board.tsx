@@ -59,7 +59,11 @@ export function Board(props: IBoardProps) {
     if (selected === null && _isSelectable(position)) {
       setSelected(position);
     } else {
-      _move(position);
+      if (validMoves.some((move) => equals(move.to, position))) {
+        _move(position);
+      } else {
+        setSelected(_isSelectable(position) ? position : null);
+      }
     }
   };
 
@@ -106,6 +110,8 @@ export function Board(props: IBoardProps) {
       props.G.jumping === null
         ? getValidMoves(props.G, props.ctx.currentPlayer)
         : getValidMoves(props.G, props.ctx.currentPlayer, props.G.jumping);
+
+    if (newValidMoves.length === 0) return;
 
     setValidMoves(newValidMoves);
     setSelected(_getPreselectedMove(newValidMoves));
