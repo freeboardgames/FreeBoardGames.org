@@ -243,11 +243,14 @@ export const CheckersGame: Game<IG> = {
       first: () => 0,
       next: (G: IG, ctx) => (G.jumping === null ? (ctx.playOrderPos + 1) % ctx.numPlayers : ctx.playOrderPos),
     },
+    onBegin: (G: IG, ctx) => {
+      if (getValidMoves(G, ctx.currentPlayer).length === 0) {
+        ctx.events.endGame({ winner: ctx.currentPlayer === '0' ? '1' : '0' });
+      }
+    },
   },
-  endIf: (G: IG, ctx) => {
-    if (getValidMoves(G, ctx.currentPlayer === '0' ? '1' : '0').length === 0) {
-      return { winner: ctx.currentPlayer };
-    } else if (G.config.nMoveRule !== -1 && G.moveCount >= G.config.nMoveRule * 2) {
+  endIf: (G: IG) => {
+    if (G.config.nMoveRule !== -1 && G.moveCount >= G.config.nMoveRule * 2) {
       return { winner: 'draw' };
     }
   },
