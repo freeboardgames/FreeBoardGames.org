@@ -1,4 +1,4 @@
-const Thumbnail = require('./media/thumbnail.jpg');
+const Thumbnail = require('./media/thumbnail.png');
 import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
 import translation from './locales/en.json';
@@ -8,14 +8,14 @@ export const bashniGameDef: IGameDef = {
   name: translation.name,
   contributors: ['ProspectPyxis', 'JosefKuchar', 'mateusazis'],
   imageURL: Thumbnail,
-  translationStatus: { pt: IGameTranslationStatus.PARTIAL, de: IGameTranslationStatus.PARTIAL },
+  translationStatus: { pt: IGameTranslationStatus.PARTIAL },
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
   description: translation.description,
   descriptionTag: translation.descriptionTag,
   instructions: translation.instructions,
-  status: IGameStatus.IN_DEVELOPMENT,
+  status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
   customization: () => import('./customization'),

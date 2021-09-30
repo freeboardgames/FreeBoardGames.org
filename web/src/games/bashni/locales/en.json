@@ -7,14 +7,7 @@
   },
 
   "customization": {
-    "pieces_per_player": "Pieces Per Player",
-    "forced_capture": "Forced Capture",
-    "flying_kings": "Kings Can Move Any Distance",
-    "stop_jump_on_king": "Stop Jumping If Piece Kinged",
-    "n_move_rule": {
-      "label": "Draw After n Moves Without Progress",
-      "off": "Off"
-    }
+    "forced_capture": "Forced Capture"
   },
 
   "move_piece": "Move piece",
