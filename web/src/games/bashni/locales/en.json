@@ -27,6 +27,7 @@
     "you_lost": "you lost",
     "white_won": "white won",
     "black_won": "black won",
-    "draw": "draw"
+    "draw": "draw",
+    "threefold_repetition": "draw by threefold repetition"
   }
 }

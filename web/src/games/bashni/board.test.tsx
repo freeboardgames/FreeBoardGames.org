@@ -175,6 +175,30 @@ test('gameover - draw', () => {
   expect(comp.html()).toContain('draw');
 });
 
+test('gameover - draw by repetition', () => {
+  const client = Client({
+    game: BashniGame,
+  });
+  const state0 = client.store.getState();
+  const state1 = {
+    ...state0,
+    ctx: { ...state0.ctx, gameover: { winner: 'repetition' } },
+  };
+  const comp = Enzyme.mount(
+    <Board
+      G={state1.G}
+      ctx={state1.ctx}
+      moves={client.moves}
+      playerID={'0'}
+      gameArgs={{
+        gameCode: 'bashni',
+        mode: GameMode.LocalFriend,
+      }}
+    />,
+  );
+  expect(comp.html()).toContain('repetition');
+});
+
 test('gameover - won online', () => {
   const client = Client({
     game: BashniGame,

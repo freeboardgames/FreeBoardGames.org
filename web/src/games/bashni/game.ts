@@ -8,40 +8,51 @@ interface ICheckerPiece {
   id: number;
   playerID: string;
   isKing: boolean;
+}
+
+interface IPieceStack {
+  id: number;
+  pieces: ICheckerPiece[];
   pos: number;
 }
 
 export interface IMove {
   from: ICoord;
   to: ICoord;
+  dir: number;
   jumped: ICoord;
 }
 
-type Piece = ICheckerPiece | null;
+type PieceStack = IPieceStack | null;
 
 export interface IG {
-  board: ICheckerPiece[];
-  jumping: Piece;
+  board: IPieceStack[];
+  jumping: PieceStack;
   moveCount: number;
-  config: FullCustomizationState;
+  capturingDir: number | null;
+  captured: number[];
+  repetition: { [key: string]: number };
+  forcedCapture: boolean;
 }
 
-const piece = (id: number, player: number, pos: number, isKing?: boolean): ICheckerPiece => ({
+const piece = (id: number, player: number, pos: number, isKing?: boolean): IPieceStack => ({
   id,
-  playerID: player.toString(),
-  isKing: typeof isKing === 'undefined' ? false : isKing,
+  pieces: [
+    {
+      id,
+      playerID: player.toString(),
+      isKing: typeof isKing === 'undefined' ? false : isKing,
+    },
+  ],
   pos,
 });
 
-export const INITIAL_BOARD: string[] = [
-  '1p1p1p1pp1p1p1p11p1p1p1p88P1P1P1P11P1P1P1PP1P1P1P1',
-  '1p1p1p1pp1p1p1p188881P1P1P1PP1P1P1P1',
-];
+export const INITIAL_BOARD: string = '1p1p1p1pp1p1p1p11p1p1p1p88P1P1P1P11P1P1P1PP1P1P1P1';
 
 // Inspired by chess FEN notation
-export function convertStringToBoard(str: string): ICheckerPiece[] {
+export function convertStringToBoard(str: string): IPieceStack[] {
   let index = 0;
-  let board: Piece[] = [];
+  let board: IPieceStack[] = [];
   let position = 0;
   for (let i = 0; i < str.length; i++) {
     if (isNaN(parseInt(str[i], 10))) {
@@ -70,14 +81,35 @@ export function convertStringToBoard(str: string): ICheckerPiece[] {
   return board;
 }
 
-const MAN_DIRS: ICoord[][] = [
-  [createCoord(-1, -1), createCoord(1, -1)],
-  [createCoord(-1, 1), createCoord(1, 1)],
-];
+// For checking threefold repetition
+function convertBoardToString(board: IPieceStack[]) {
+  board.sort((a, b) => a.pos - b.pos);
+  let boardstr = '';
+  for (const stack of board) {
+    for (const piece of stack.pieces) {
+      if (piece.playerID === '1') {
+        if (piece.isKing) {
+          boardstr += 'k';
+        } else {
+          boardstr += 'p';
+        }
+      } else {
+        if (piece.isKing) {
+          boardstr += 'K';
+        } else {
+          boardstr += 'P';
+        }
+      }
+    }
+    boardstr += stack.pos;
+  }
+  return boardstr;
+}
 
-const KING_DIRS: ICoord[] = [createCoord(-1, 1), createCoord(1, 1), createCoord(-1, -1), createCoord(1, -1)];
+// 0: SW, 1: SE, 2: NE, 3: NW
+const DIRS: ICoord[] = [createCoord(-1, 1), createCoord(1, 1), createCoord(1, -1), createCoord(-1, -1)];
 
-export function getPieceFromPos(board: Piece[], pos: number): Piece {
+export function getStackFromPos(board: IPieceStack[], pos: number): PieceStack {
   const piece = board.find((p) => p.pos === pos);
   if (typeof piece === 'undefined') {
     return null;
@@ -86,65 +118,74 @@ export function getPieceFromPos(board: Piece[], pos: number): Piece {
   }
 }
 
-export function checkPosition(G: IG, playerID: string, piece: ICheckerPiece): { moves: IMove[]; jumped: boolean } {
-  const dirs = piece.isKing ? KING_DIRS : MAN_DIRS[playerID as any];
+export function checkPosition(G: IG, playerID: string, stack: IPieceStack): { moves: IMove[]; jumped: boolean } {
   let moves: IMove[] = [];
   let jumped = false;
-  const infiniteDistance: boolean = piece.isKing && G.config.flyingKings;
-  const coord = fromPosition(piece.pos);
+  const coord = fromPosition(stack.pos);
 
-  for (const dir of dirs) {
+  for (let dir = 0; dir < DIRS.length; dir++) {
+    // Skip if it's a 180 degree turn compared to previous capture
+    if (G.capturingDir !== null && dir === (G.capturingDir + 2) % 4) {
+      continue;
+    }
+
     // Look into all valid directions
     let opponentBefore = null;
-    for (let i = 1; infiniteDistance ? true : i < 3; i++) {
-      const final = sum(coord, multiply(dir, i));
+    for (let i = 1; stack.pieces[stack.pieces.length - 1].isKing ? true : i < 3; i++) {
+      const final = sum(coord, multiply(DIRS[dir], i));
 
       // Break if move is out of bounds
       if (!inBounds(final)) {
         break;
       }
 
-      const moveTo = getPieceFromPos(G.board, toIndex(final));
+      const moveTo = getStackFromPos(G.board, toIndex(final));
 
       // Break if we encounter our piece
-      if (moveTo !== null && moveTo.playerID === playerID) {
+      if (moveTo !== null && moveTo.pieces[moveTo.pieces.length - 1].playerID === playerID) {
         break;
       }
 
-      if (moveTo !== null && moveTo.playerID !== playerID) {
+      if (moveTo !== null && moveTo.pieces[moveTo.pieces.length - 1].playerID !== playerID) {
         // If we already encountered opponent the directions is blocked
-        if (opponentBefore) {
+        if (opponentBefore || G.captured.includes(moveTo.pos)) {
           break;
         }
+
         opponentBefore = final;
       }
 
       if (moveTo === null) {
-        moves.push({ from: coord, to: final, jumped: opponentBefore });
+        moves.push({ from: coord, to: final, dir, jumped: opponentBefore });
         if (opponentBefore) {
           jumped = true;
-          break;
         }
 
-        // If there is nothing and the piece can't move infinitely there is no need to continue
-        if (!infiniteDistance) {
+        // If there is nothing and the piece isn't a king there is no need to continue
+        if (!stack.pieces[stack.pieces.length - 1].isKing) {
           break;
         }
       }
     }
   }
 
+  if (!stack.pieces[stack.pieces.length - 1].isKing) {
+    const lowerRange = playerID === '0' ? 2 : 0;
+    const upperRange = playerID === '0' ? 4 : 2;
+    moves = moves.filter((move) => move.jumped || (move.dir >= lowerRange && move.dir < upperRange));
+  }
+
   return { moves, jumped };
 }
 
-export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPiece) {
+export function getValidMoves(G: IG, playerID: string, jumping?: IPieceStack): IMove[] {
   let movesTotal: IMove[] = [];
   let jumpedTotal = false;
 
   if (typeof jumping === 'undefined') {
-    G.board.forEach((piece) => {
-      if (piece.playerID === playerID) {
-        const { moves, jumped } = checkPosition(G, playerID, piece);
+    G.board.forEach((stack) => {
+      if (stack.pieces[stack.pieces.length - 1].playerID === playerID) {
+        const { moves, jumped } = checkPosition(G, playerID, stack);
         movesTotal.push(...moves);
         jumpedTotal = jumpedTotal || jumped;
       }
@@ -155,7 +196,7 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPiece) 
     jumpedTotal = jumped;
   }
 
-  if ((jumpedTotal && G.config.forcedCapture) || jumping) {
+  if ((jumpedTotal && G.forcedCapture) || jumping) {
     return movesTotal.filter((move) => move.jumped);
   } else {
     return movesTotal;
@@ -165,10 +206,14 @@ export function getValidMoves(G: IG, playerID: string, jumping?: ICheckerPiece) 
 export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
   const indexFrom = toIndex(from);
   const indexTo = toIndex(to);
-  const piece = getPieceFromPos(G.board, indexFrom);
+  const stack = getStackFromPos(G.board, indexFrom);
   const crownhead = ctx.playerID === '0' ? 0 : 7;
 
-  if (piece === null || piece.playerID !== ctx.playerID || getPieceFromPos(G.board, indexTo) !== null) {
+  if (
+    stack === null ||
+    stack.pieces[stack.pieces.length - 1].playerID !== ctx.playerID ||
+    getStackFromPos(G.board, indexTo) !== null
+  ) {
     return INVALID_MOVE;
   }
 
@@ -180,58 +225,97 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
   }
 
   const jumped = move.jumped !== null ? toIndex(move.jumped) : -1;
-  const isKing = piece.isKing || to.y === crownhead;
+  const isKing = stack.pieces[stack.pieces.length - 1].isKing || to.y === crownhead;
+  const irreversible = move.jumped !== null || !stack.pieces[stack.pieces.length - 1].isKing;
 
-  const moveCount = G.config.nMoveRule === -1 || move.jumped !== null || !piece.isKing ? 0 : G.moveCount + 1;
-  const newPiece = {
-    ...piece,
-    isKing,
+  G.moveCount = irreversible ? 0 : G.moveCount + 1;
+
+  let newStack = {
+    ...stack,
     pos: indexTo,
   };
 
-  const newG: IG = {
-    ...G,
-    board: G.board
-      .filter((piece) => piece.pos !== jumped)
-      .map((piece) => {
-        if (piece.pos === indexFrom) {
-          return newPiece;
-        } else {
-          return piece;
-        }
-      }),
-    jumping: null,
-    moveCount,
-  };
+  newStack.pieces[newStack.pieces.length - 1].isKing = isKing;
+
+  if (jumped !== -1) {
+    G.captured.push(jumped);
+    newStack.pieces.unshift(getStackFromPos(G.board, jumped).pieces.slice(-1)[0]);
+  }
+
+  G.board = G.board.map((stack) => {
+    if (stack.pos === indexFrom) {
+      return newStack;
+    } else {
+      return stack;
+    }
+  });
+  G.jumping = null;
 
   if (move.jumped === null) {
-    return newG;
-  }
-  if (G.config.stopJumpOnKing && !piece.isKing && to.y === crownhead) {
-    return newG;
+    G.captured = [];
+    G.capturingDir = null;
+    if (irreversible) {
+      G.repetition = {};
+      G.repetition[convertBoardToString(G.board)] = 1;
+    } else {
+      const boardstr = convertBoardToString(G.board);
+      if (typeof G.repetition[boardstr] === 'undefined') {
+        G.repetition[boardstr] = 1;
+      } else {
+        G.repetition[boardstr]++;
+      }
+    }
+    return G;
   }
 
-  const postMoves = getValidMoves(newG, ctx.playerID, newPiece);
+  G.capturingDir = move.dir;
+
+  const postMoves = getValidMoves(G, ctx.playerID, newStack);
 
   if (postMoves.length > 0 && postMoves[0].jumped !== null) {
-    return {
-      ...newG,
-      jumping: newPiece,
-    };
+    G.jumping = newStack;
+    return G;
   }
 
-  return newG;
+  const originalLength = G.board.length;
+  G.board = G.board
+    .map((stack) => {
+      if (G.captured.includes(stack.pos)) {
+        stack.pieces.pop();
+      }
+      return stack;
+    })
+    .filter((stack) => stack.pieces.length !== 0);
+
+  if (originalLength > G.board.length) {
+    G.repetition = {};
+    G.repetition[convertBoardToString(G.board)] = 1;
+  } else {
+    const boardstr = convertBoardToString(G.board);
+    if (typeof G.repetition[boardstr] === 'undefined') {
+      G.repetition[boardstr] = 1;
+    } else {
+      G.repetition[boardstr]++;
+    }
+  }
+
+  G.captured = [];
+  G.capturingDir = null;
+  return G;
 }
 
 export const BashniGame: Game<IG> = {
-  name: 'checkers',
+  name: 'bashni',
   setup: (_, customData: GameCustomizationState): IG => {
     const fullCustomization = (customData?.full as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
     return {
-      board: convertStringToBoard(INITIAL_BOARD[fullCustomization.piecesPerPlayer]),
+      board: convertStringToBoard(INITIAL_BOARD),
       jumping: null,
       moveCount: 0,
-      config: fullCustomization,
+      capturingDir: null,
+      captured: [],
+      repetition: {},
+      forcedCapture: fullCustomization.forcedCapture,
     };
   },
   moves: {
@@ -250,8 +334,13 @@ export const BashniGame: Game<IG> = {
     },
   },
   endIf: (G: IG) => {
-    if (G.config.nMoveRule !== -1 && G.moveCount >= G.config.nMoveRule * 2) {
+    if (G.moveCount >= 30) {
       return { winner: 'draw' };
+    }
+    for (const k in G.repetition) {
+      if (G.repetition[k] >= 3) {
+        return { winner: 'repetition' };
+      }
     }
   },
 };

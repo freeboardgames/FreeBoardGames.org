@@ -1,13 +1,7 @@
 {
+  "name": "Bashni",
   "customization": {
-    "pieces_per_player": "Peças por jogador",
-    "forced_capture": "Captura forçada",
-    "flying_kings": "Damas podem mover qualquer distância",
-    "stop_jump_on_king": "Parar de comer se a peça virou dama",
-    "n_move_rule": {
-      "label": "Empate após n movimentos sem progresso",
-      "off": "Desligado"
-    }
+    "forced_capture": "Captura forçada"
   },
 
   "move_piece": "Mover peça",

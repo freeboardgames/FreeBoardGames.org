@@ -2,19 +2,66 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { Client } from 'boardgame.io/client';
 import { BashniGame, IG, move, INITIAL_BOARD, convertStringToBoard } from './game';
 import { Local } from 'boardgame.io/multiplayer';
-import { DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
 test('invalid moves', () => {
   let G: IG = {
-    board: convertStringToBoard(INITIAL_BOARD[0]),
+    board: convertStringToBoard(INITIAL_BOARD),
     jumping: null,
     moveCount: 0,
-    config: DEFAULT_FULL_CUSTOMIZATION,
+    capturingDir: null,
+    captured: [],
+    repetition: {},
+    forcedCapture: true,
   };
 
   const ctx: any = { playerID: '1' };
   expect(move(G, ctx, { x: 4, y: 4 }, { x: 4, y: 5 })).toEqual(INVALID_MOVE);
   expect(move(G, ctx, { x: 1, y: 0 }, { x: 4, y: 4 })).toEqual(INVALID_MOVE);
+});
+
+test('stack captures', () => {
+  let G: IG = {
+    board: [
+      {
+        id: 0,
+        pieces: [
+          {
+            id: 0,
+            playerID: '0',
+            isKing: false,
+          },
+        ],
+        pos: 35,
+      },
+      {
+        id: 1,
+        pieces: [
+          {
+            id: 1,
+            playerID: '1',
+            isKing: false,
+          },
+          {
+            id: 2,
+            playerID: '1',
+            isKing: false,
+          },
+        ],
+        pos: 28,
+      },
+    ],
+    jumping: null,
+    moveCount: 0,
+    capturingDir: null,
+    captured: [],
+    repetition: {},
+    forcedCapture: true,
+  };
+
+  G = move(G, { playerID: '0' } as any, { x: 3, y: 4 }, { x: 5, y: 2 }) as IG;
+  expect(G.board[0].pieces.length).toEqual(2);
+  expect(G.board[1].pieces.length).toEqual(1);
+  expect(move(G, { playerID: '1' } as any, { x: 4, y: 3 }, { x: 6, y: 1 })).not.toEqual(INVALID_MOVE);
 });
 
 it("shouldn't end the game after one move", () => {
@@ -24,9 +71,10 @@ it("shouldn't end the game after one move", () => {
       board: convertStringToBoard('5p26p186p15P2888'),
       jumping: null,
       moveCount: 0,
-      config: {
-        ...DEFAULT_FULL_CUSTOMIZATION,
-      },
+      capturingDir: null,
+      captured: [],
+      repetition: {},
+      forcedCapture: true,
     }),
   };
 
@@ -49,22 +97,8 @@ it("shouldn't end the game after one move", () => {
 });
 
 it('should declare player 1 as the winner', () => {
-  const BashniGameWithSetup = {
-    ...BashniGame,
-    setup: () => ({
-      board: convertStringToBoard(INITIAL_BOARD[0]),
-      jumping: null,
-      moveCount: 0,
-      config: {
-        ...DEFAULT_FULL_CUSTOMIZATION,
-        flyingKings: true,
-        stopJumpOnKing: false,
-      },
-    }),
-  };
-
   const spec = {
-    game: BashniGameWithSetup,
+    game: BashniGame,
     multiplayer: Local(),
   };
 
@@ -74,60 +108,48 @@ it('should declare player 1 as the winner', () => {
   p0.start();
   p1.start();
 
-  p0.moves.move({ x: 4, y: 5 }, { x: 5, y: 4 });
-  p1.moves.move({ x: 5, y: 2 }, { x: 4, y: 3 });
-  p0.moves.move({ x: 3, y: 6 }, { x: 4, y: 5 });
-  p1.moves.move({ x: 4, y: 1 }, { x: 5, y: 2 });
-  p0.moves.move({ x: 4, y: 5 }, { x: 3, y: 4 });
-  p1.moves.move({ x: 3, y: 2 }, { x: 2, y: 3 });
-  p0.moves.move({ x: 5, y: 4 }, { x: 3, y: 2 });
-  p1.moves.move({ x: 2, y: 1 }, { x: 4, y: 3 });
-  p0.moves.move({ x: 5, y: 6 }, { x: 4, y: 5 });
-  p1.moves.move({ x: 3, y: 0 }, { x: 2, y: 1 });
-  p0.moves.move({ x: 6, y: 5 }, { x: 7, y: 4 });
-  p1.moves.move({ x: 7, y: 2 }, { x: 6, y: 3 });
-  p0.moves.move({ x: 4, y: 7 }, { x: 5, y: 6 });
-  p1.moves.move({ x: 5, y: 0 }, { x: 4, y: 1 });
-  p0.moves.move({ x: 2, y: 7 }, { x: 3, y: 6 });
-  p1.moves.move({ x: 4, y: 1 }, { x: 3, y: 2 });
-  p0.moves.move({ x: 5, y: 6 }, { x: 6, y: 5 });
-  p1.moves.move({ x: 6, y: 1 }, { x: 7, y: 2 });
-  p0.moves.move({ x: 6, y: 7 }, { x: 5, y: 6 });
-  p1.moves.move({ x: 7, y: 0 }, { x: 6, y: 1 });
-  p0.moves.move({ x: 4, y: 5 }, { x: 5, y: 4 });
-  p1.moves.move({ x: 6, y: 3 }, { x: 4, y: 5 });
-  p1.moves.move({ x: 4, y: 5 }, { x: 6, y: 7 });
-  p0.moves.move({ x: 3, y: 6 }, { x: 4, y: 5 });
-  p1.moves.move({ x: 7, y: 2 }, { x: 6, y: 3 });
-  p0.moves.move({ x: 4, y: 5 }, { x: 5, y: 4 });
-  p1.moves.move({ x: 6, y: 3 }, { x: 4, y: 5 });
-  p0.moves.move({ x: 2, y: 5 }, { x: 1, y: 4 });
-  p1.moves.move({ x: 4, y: 3 }, { x: 2, y: 5 });
-  p0.moves.move({ x: 1, y: 6 }, { x: 3, y: 4 });
-  p1.moves.move({ x: 4, y: 5 }, { x: 3, y: 6 });
-  p0.moves.move({ x: 1, y: 4 }, { x: 0, y: 3 });
-  p1.moves.move({ x: 2, y: 3 }, { x: 4, y: 5 });
-  p0.moves.move({ x: 6, y: 5 }, { x: 5, y: 4 });
-  p1.moves.move({ x: 3, y: 6 }, { x: 2, y: 7 });
-  p0.moves.move({ x: 5, y: 4 }, { x: 6, y: 3 });
-  p1.moves.move({ x: 5, y: 2 }, { x: 4, y: 3 });
-  p0.moves.move({ x: 6, y: 3 }, { x: 7, y: 2 });
-  p1.moves.move({ x: 4, y: 5 }, { x: 5, y: 6 });
-  p0.moves.move({ x: 7, y: 2 }, { x: 5, y: 0 });
-  p0.moves.move({ x: 5, y: 0 }, { x: 2, y: 3 });
-  p1.moves.move({ x: 1, y: 2 }, { x: 3, y: 4 });
-  p0.moves.move({ x: 0, y: 3 }, { x: 1, y: 2 });
-  p1.moves.move({ x: 2, y: 1 }, { x: 0, y: 3 });
+  p0.moves.move({ x: 2, y: 5 }, { x: 3, y: 4 });
+  p1.moves.move({ x: 3, y: 2 }, { x: 4, y: 3 });
   p0.moves.move({ x: 0, y: 5 }, { x: 1, y: 4 });
-  p1.moves.move({ x: 0, y: 3 }, { x: 2, y: 5 });
-  p0.moves.move({ x: 0, y: 7 }, { x: 1, y: 6 });
-  p1.moves.move({ x: 2, y: 5 }, { x: 0, y: 7 });
-  p0.moves.move({ x: 7, y: 4 }, { x: 6, y: 3 });
-  p1.moves.move({ x: 2, y: 7 }, { x: 7, y: 2 });
-  p0.moves.move({ x: 7, y: 6 }, { x: 6, y: 5 });
-  p1.moves.move({ x: 1, y: 0 }, { x: 2, y: 1 });
+  p1.moves.move({ x: 4, y: 3 }, { x: 2, y: 5 });
+  p1.moves.move({ x: 2, y: 5 }, { x: 0, y: 3 });
   p0.moves.move({ x: 6, y: 5 }, { x: 5, y: 4 });
-  p1.moves.move({ x: 7, y: 2 }, { x: 4, y: 5 });
+  p1.moves.move({ x: 5, y: 2 }, { x: 6, y: 3 });
+  p0.moves.move({ x: 1, y: 6 }, { x: 0, y: 5 });
+  p1.moves.move({ x: 6, y: 1 }, { x: 5, y: 2 });
+  p0.moves.move({ x: 3, y: 6 }, { x: 2, y: 5 });
+  p1.moves.move({ x: 4, y: 1 }, { x: 3, y: 2 });
+  p0.moves.move({ x: 4, y: 7 }, { x: 3, y: 6 });
+  p1.moves.move({ x: 1, y: 2 }, { x: 2, y: 3 });
+  p0.moves.move({ x: 5, y: 4 }, { x: 4, y: 3 });
+  p1.moves.move({ x: 3, y: 2 }, { x: 5, y: 4 });
+  p0.moves.move({ x: 5, y: 6 }, { x: 6, y: 5 });
+  p1.moves.move({ x: 5, y: 2 }, { x: 4, y: 3 });
+  p0.moves.move({ x: 6, y: 5 }, { x: 7, y: 4 });
+  p1.moves.move({ x: 5, y: 4 }, { x: 6, y: 5 });
+  p0.moves.move({ x: 7, y: 4 }, { x: 5, y: 2 });
+  p0.moves.move({ x: 5, y: 2 }, { x: 3, y: 4 });
+  p0.moves.move({ x: 3, y: 4 }, { x: 1, y: 2 });
+  p1.moves.move({ x: 0, y: 1 }, { x: 2, y: 3 });
+  p0.moves.move({ x: 7, y: 6 }, { x: 5, y: 4 });
+  p1.moves.move({ x: 2, y: 1 }, { x: 3, y: 2 });
+  p0.moves.move({ x: 2, y: 5 }, { x: 1, y: 4 });
+  p1.moves.move({ x: 0, y: 3 }, { x: 2, y: 5 });
+  p1.moves.move({ x: 2, y: 5 }, { x: 4, y: 7 });
+  p1.moves.move({ x: 4, y: 7 }, { x: 7, y: 4 });
+  p0.moves.move({ x: 5, y: 4 }, { x: 6, y: 3 });
+  p1.moves.move({ x: 7, y: 4 }, { x: 5, y: 2 });
+  p0.moves.move({ x: 4, y: 5 }, { x: 5, y: 4 });
+  p1.moves.move({ x: 6, y: 3 }, { x: 4, y: 5 });
+  p0.moves.move({ x: 6, y: 7 }, { x: 5, y: 6 });
+  p1.moves.move({ x: 4, y: 5 }, { x: 6, y: 7 });
+  p0.moves.move({ x: 0, y: 5 }, { x: 1, y: 4 });
+  p1.moves.move({ x: 2, y: 3 }, { x: 0, y: 5 });
+  p0.moves.move({ x: 2, y: 7 }, { x: 3, y: 6 });
+  p1.moves.move({ x: 5, y: 2 }, { x: 6, y: 3 });
+  p0.moves.move({ x: 0, y: 7 }, { x: 1, y: 6 });
+  p1.moves.move({ x: 0, y: 5 }, { x: 2, y: 7 });
+  p1.moves.move({ x: 2, y: 7 }, { x: 5, y: 4 });
 
   // player '1' should be declared the winner
   const { ctx } = p0.getState();
@@ -138,13 +160,13 @@ it('should declare a draw', () => {
   const BashniGameWithSetup = {
     ...BashniGame,
     setup: () => ({
-      board: convertStringToBoard(INITIAL_BOARD[1]),
+      board: convertStringToBoard('8P788887p8'),
       jumping: null,
       moveCount: 0,
-      config: {
-        ...DEFAULT_FULL_CUSTOMIZATION,
-        forcedCapture: false,
-      },
+      capturingDir: null,
+      captured: [],
+      repetition: {},
+      forcedCapture: true,
     }),
   };
 
@@ -159,28 +181,18 @@ it('should declare a draw', () => {
   p0.start();
   p1.start();
 
-  p0.moves.move({ x: 5, y: 6 }, { x: 4, y: 5 });
-  p1.moves.move({ x: 2, y: 1 }, { x: 3, y: 2 });
-  p0.moves.move({ x: 4, y: 5 }, { x: 3, y: 4 });
-  p1.moves.move({ x: 3, y: 2 }, { x: 4, y: 3 });
-  p0.moves.move({ x: 3, y: 4 }, { x: 2, y: 3 });
-  p1.moves.move({ x: 4, y: 3 }, { x: 5, y: 4 });
-  p0.moves.move({ x: 2, y: 3 }, { x: 1, y: 2 });
-  p1.moves.move({ x: 5, y: 4 }, { x: 6, y: 5 });
-  p0.moves.move({ x: 4, y: 7 }, { x: 5, y: 6 });
-  p1.moves.move({ x: 3, y: 0 }, { x: 2, y: 1 });
-  p0.moves.move({ x: 1, y: 2 }, { x: 3, y: 0 });
-  p1.moves.move({ x: 6, y: 5 }, { x: 4, y: 7 });
+  p0.moves.move({ x: 0, y: 1 }, { x: 1, y: 0 });
+  p1.moves.move({ x: 7, y: 6 }, { x: 6, y: 7 });
 
   expect(p0.getState().G.moveCount).toEqual(0);
 
-  for (let i = 0; i < 20; i++) {
-    p0.moves.move({ x: 3, y: 0 }, { x: 2, y: 1 });
-    p1.moves.move({ x: 4, y: 7 }, { x: 5, y: 6 });
-    p0.moves.move({ x: 2, y: 1 }, { x: 3, y: 0 });
-    p1.moves.move({ x: 5, y: 6 }, { x: 4, y: 7 });
+  for (let i = 0; i < 2; i++) {
+    p0.moves.move({ x: 1, y: 0 }, { x: 0, y: 1 });
+    p1.moves.move({ x: 6, y: 7 }, { x: 7, y: 6 });
+    p0.moves.move({ x: 0, y: 1 }, { x: 1, y: 0 });
+    p1.moves.move({ x: 7, y: 6 }, { x: 6, y: 7 });
   }
 
-  expect(p0.getState().G.moveCount).toEqual(80);
-  expect(p0.getState().ctx.gameover).toEqual({ winner: 'draw' });
+  // Should draw by threefold repetition now
+  expect(p0.getState().ctx.gameover).toEqual({ winner: 'repetition' });
 });
