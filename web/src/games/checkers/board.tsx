@@ -98,7 +98,7 @@ export function Board(props: IBoardProps) {
   };
 
   function _getPreselectedMove(validMoves: IMove[]): ICartesianCoords {
-    if (validMoves.length === 1) {
+    if (validMoves.length === 1 || validMoves.every((move) => equals(move.from, validMoves[0].from))) {
       const from = validMoves[0].from;
       return { x: from.x, y: from.y };
     }
