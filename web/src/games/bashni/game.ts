@@ -82,9 +82,9 @@ export function convertStringToBoard(str: string): IPieceStack[] {
 }
 
 // For checking threefold repetition
-function convertBoardToString(board: IPieceStack[]) {
+function convertBoardToString(board: IPieceStack[], currentPlayer: string) {
   board.sort((a, b) => a.pos - b.pos);
-  let boardstr = '';
+  let boardstr = currentPlayer;
   for (const stack of board) {
     for (const piece of stack.pieces) {
       if (piece.playerID === '1') {
@@ -256,9 +256,9 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
     G.capturingDir = null;
     if (irreversible) {
       G.repetition = {};
-      G.repetition[convertBoardToString(G.board)] = 1;
+      G.repetition[convertBoardToString(G.board, ctx.playerID)] = 1;
     } else {
-      const boardstr = convertBoardToString(G.board);
+      const boardstr = convertBoardToString(G.board, ctx.playerID);
       if (typeof G.repetition[boardstr] === 'undefined') {
         G.repetition[boardstr] = 1;
       } else {
@@ -289,9 +289,9 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
 
   if (originalLength > G.board.length) {
     G.repetition = {};
-    G.repetition[convertBoardToString(G.board)] = 1;
+    G.repetition[convertBoardToString(G.board, ctx.playerID)] = 1;
   } else {
-    const boardstr = convertBoardToString(G.board);
+    const boardstr = convertBoardToString(G.board, ctx.playerID);
     if (typeof G.repetition[boardstr] === 'undefined') {
       G.repetition[boardstr] = 1;
     } else {
