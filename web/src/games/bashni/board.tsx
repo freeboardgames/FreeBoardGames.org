@@ -19,6 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
 import cyan from '@material-ui/core/colors/cyan';
+import green from '@material-ui/core/colors/green';
 import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
 import { useCurrentGameTranslation } from 'infra/i18n';
@@ -127,7 +128,7 @@ export function Board(props: IBoardProps) {
         .forEach((move) => {
           result[cartesianToAlgebraic(move.to.x, move.to.y, false)] = blue[500];
         });
-    } else if (props.G.config.forcedCapture && validMoves.some((move) => move.jumped)) {
+    } else if (props.G.forcedCapture && validMoves.some((move) => move.jumped)) {
       validMoves.forEach((move) => {
         result[cartesianToAlgebraic(move.from.x, move.from.y, false)] = cyan[500];
       });
@@ -137,8 +138,8 @@ export function Board(props: IBoardProps) {
   }
 
   const getPieces = () => {
-    return props.G.board.map((piece) => {
-      const { x, y } = fromPosition(piece.pos);
+    return props.G.board.map((stack) => {
+      const { x, y } = fromPosition(stack.pos);
       return (
         <Token
           x={x}
@@ -148,17 +149,60 @@ export function Board(props: IBoardProps) {
           onDrop={_onDrop}
           onDrag={_onDrag}
           animate={true}
-          key={piece.id}
+          key={stack.id}
         >
-          <g>
-            <circle r="0.4" fill={piece.playerID === '0' ? grey[50] : grey[900]} cx="0.5" cy="0.5" />
-            {piece.isKing ? (
-              <circle r="0.2" cx="0.5" cy="0.5" fill={piece.playerID === '1' ? grey[800] : grey[400]} />
-            ) : null}
-          </g>
+          {stack.pieces.length === 1 ? (
+            <g opacity={props.G.captured.includes(stack.pos) ? 0.3 : 1}>
+              <circle r="0.4" fill={stack.pieces[0].playerID === '0' ? grey[50] : grey[900]} cx="0.5" cy="0.5" />
+              {stack.pieces[0].isKing ? (
+                <circle r="0.2" cx="0.5" cy="0.5" fill={stack.pieces[0].playerID === '1' ? grey[800] : grey[400]} />
+              ) : null}
+            </g>
+          ) : (
+            renderPieceStack(stack)
+          )}
         </Token>
       );
     });
+  };
+
+  const renderPieceStack = (stack) => {
+    let pieces = stack.pieces.slice();
+    const maxHeight = Math.floor((isInverted() ? 63 - stack.pos : stack.pos) / 8) === 0 ? 4 : 9;
+    const stackTooBig = stack.pieces.length > maxHeight;
+    let yoff = 0.7;
+    if (stackTooBig) {
+      pieces = pieces.slice(-maxHeight + 1);
+      yoff = 0.5;
+    }
+    const renderStack = pieces.map((piece, i) => (
+      <g key={piece.id + 'p'}>
+        <rect
+          x="0.1"
+          y={yoff - i * 0.2}
+          width="0.8"
+          height="0.2"
+          rx="0.1"
+          fill={piece.playerID === '0' ? grey[50] : grey[900]}
+        />
+        {piece.isKing ? (
+          <rect
+            x="0.3"
+            y={yoff - i * 0.2}
+            width="0.4"
+            height="0.2"
+            rx="0.1"
+            fill={piece.playerID === '1' ? grey[800] : grey[400]}
+          />
+        ) : null}
+      </g>
+    ));
+    return (
+      <g opacity={props.G.captured.includes(stack.pos) ? 0.3 : 1}>
+        {renderStack}
+        {stackTooBig && <polygon points="0.35,0.75 0.65,0.75 0.5,0.9" fill={green[500]} />}
+      </g>
+    );
   };
 
   function _getStatus() {
@@ -186,6 +230,8 @@ export function Board(props: IBoardProps) {
           return translate('game_over.you_won');
         } else if (winner === 'draw') {
           return translate('game_over.draw');
+        } else if (winner === 'repetition') {
+          return translate('game_over.threefold_repetition');
         } else {
           return translate('game_over.you_lost');
         }
@@ -194,6 +240,8 @@ export function Board(props: IBoardProps) {
           return translate('game_over.white_won');
         } else if (winner === 'draw') {
           return translate('game_over.draw');
+        } else if (winner === 'repetition') {
+          return translate('game_over.threefold_repetition');
         } else {
           return translate('game_over.black_won');
         }
