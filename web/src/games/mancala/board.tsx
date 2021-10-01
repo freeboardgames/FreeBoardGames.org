@@ -4,7 +4,7 @@ import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
 import { IG } from './game';
 import { Hole, Store, BoardBackground } from './Shapes';
-import { isOnlineGame, isAIGame, isLocalGame } from '../../gamesShared/helpers/gameMode';
+import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
 import { localPlayerNames, numOfHoles } from './constants';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 
@@ -29,8 +29,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   _renderHoles(playerId: string) {
     const holes = [];
     const startX = 1;
-    const invert = isOnlineGame(this.props.gameArgs) && this.props.playerID !== '0';
-    const y = playerId === '1' ? (invert ? 1 : 0) : invert ? 0 : 1;
+    const y = playerId === '1' ? 0 : 1;
     for (let i = 0; i < this.props.G.playerHoles[playerId].length; i++) {
       let x = i;
       if (!y) {
@@ -50,10 +49,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _renderStore(playerId: string) {
-    if (
-      (isOnlineGame(this.props.gameArgs) && this.props.playerID === playerId) ||
-      (isLocalGame(this.props.gameArgs) && playerId === '0')
-    ) {
+    if (playerId === '0') {
       return (
         <Store
           x={numOfHoles + 1}
