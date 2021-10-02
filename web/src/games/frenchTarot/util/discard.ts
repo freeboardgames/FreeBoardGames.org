@@ -1,4 +1,6 @@
-import { IG, IPlayer, CardColor } from '../types';
+import { CardColor } from 'gamesShared/definitions/cards';
+
+import { IG, IPlayer } from '../types';
 import * as util from './misc';
 
 export function prepareDiscard(G: IG): boolean {
@@ -12,13 +14,13 @@ export function prepareDiscard(G: IG): boolean {
   } else if (G.contract == 3) {
     G.resolvedTricks.push({
       cards: G.kitty.splice(0, G.kitty.length),
-      winner: taker,
+      winnerId: taker.id,
     });
     return false;
   } else if (G.contract == 4) {
     G.resolvedTricks.push({
       cards: G.kitty.splice(0, G.kitty.length),
-      winner: G.players.find((P) => P.id != G.calledTakerId && !P.isTaker),
+      winnerId: G.players.find((P) => P.id != G.calledTakerId && !P.isTaker).id,
     });
     return false;
   }

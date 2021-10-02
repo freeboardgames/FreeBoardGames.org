@@ -1,6 +1,7 @@
 import { Ctx, Game } from 'boardgame.io';
+import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
 
-import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './types';
+import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
 import * as u_discard from './util/discard';
 import * as u_poignee from './util/poignee';
@@ -17,7 +18,7 @@ export const FrenchTarotGame: Game<IG> = {
       id: i.toString(),
       isDealer: i == 0,
     }));
-    game.trick = { cards: [], leader: game.players[1] };
+    game.trick = { cards: [], leaderId: game.players[1].id };
     return game;
   },
 
@@ -39,11 +40,7 @@ export const FrenchTarotGame: Game<IG> = {
       deck: G.deck.map(() => dummyCard),
       kitty: G.kittyRevealed ? G.kitty : G.kitty.map(() => dummyCard),
       calledTakerId: null,
-      resolvedTricks: G.resolvedTricks.map((T, i) =>
-        i > 0 && i == G.resolvedTricks.length - 1
-          ? { ...T, winner: stripSecrets(T.winner), leader: stripSecrets(T.leader) }
-          : dummyTrick,
-      ),
+      resolvedTricks: G.resolvedTricks.map((T, i) => (i > 0 && i == G.resolvedTricks.length - 1 ? T : dummyTrick)),
     };
   },
 
@@ -70,7 +67,7 @@ export const FrenchTarotGame: Game<IG> = {
         G.kittyRevealed = false;
         G.announcedSlam = false;
         G.poignee = 0;
-        G.trick = { cards: [], leader: leader };
+        G.trick = { cards: [], leaderId: leader.id };
       },
 
       turn: {
@@ -182,7 +179,7 @@ export const FrenchTarotGame: Game<IG> = {
           },
         },
         order: {
-          first: (G) => +G.trick.leader.id,
+          first: (G) => +G.trick.leaderId,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
         },
       },
@@ -238,13 +235,12 @@ export function resolveTrick(G: IG): boolean {
   const isAlmostSlam =
     isRoundOver &&
     G.resolvedTricks.every((T) => {
-      return T.winner.id == G.takerId || T.winner.id == G.calledTakerId;
+      return T.winnerId == G.takerId || T.winnerId == G.calledTakerId;
     });
   const excuseLeads = G.trick.cards[0].color == CardColor.Excuse;
-  const winnerId = isAlmostSlam && excuseLeads ? G.trick.leader.id : getTrickWinnerId(G.trick);
-  G.trick.winner = util.getPlayerById(G, winnerId);
+  G.trick.winnerId = isAlmostSlam && excuseLeads ? G.trick.leaderId : getTrickWinnerId(G.trick);
   G.resolvedTricks.push(G.trick);
-  G.trick = { cards: [], leader: G.trick.winner };
+  G.trick = { cards: [], leaderId: G.trick.winnerId };
   return isRoundOver;
 }
 
@@ -257,7 +253,7 @@ export function getCalledTakerId(players: IPlayer[], card: ICard): string {
 }
 
 export function getTrickWinnerId(T: ITrick): string {
-  const leaderId = +T.leader.id;
+  const leaderId = +T.leaderId;
   const max_trump = Math.max(...T.cards.map((C) => (C.color == CardColor.Trumps ? C.value : 0)));
   if (max_trump > 0) {
     return util

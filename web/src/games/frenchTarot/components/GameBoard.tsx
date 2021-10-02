@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Trans, useCurrentGameTranslation } from 'infra/i18n';
+import { Pattern, CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
+import { Card } from 'gamesShared/components/cards/Card';
 
 import css from './GameBoard.module.css';
 import { Button } from './Button';
-import { Card } from './Card';
 import { Kitty } from './Kitty';
 import { PlayerHand } from './PlayerHand';
 import { PlayerZones } from './PlayerZones';
@@ -11,7 +12,7 @@ import { PreviousTrick } from './PreviousTrick';
 import { ScoreBoard } from './ScoreBoard';
 import { Trick } from './Trick';
 
-import { IPlayer, ICard, CardColor, ITrick, IRoundSummary } from '../types';
+import { IPlayer, IRoundSummary } from '../types';
 import * as util from '../util/misc';
 import * as u_poignee from '../util/poignee';
 
@@ -77,7 +78,7 @@ export function Board(props: {
     return (
       <PreviousTrick
         trick={props.prevTrick.cards}
-        leaderPos={+props.prevTrick.leader.id}
+        leaderPos={+props.prevTrick.leaderId}
         currPos={+props.player.id}
         numPlayers={props.players.length}
       />
@@ -92,7 +93,7 @@ export function Board(props: {
         <span>{translate('callcard_player_called', { name: props.playerNames[takerId] })}</span>
         <div className={css.cardContainer}>
           <div>
-            <Card type={props.calledCard} />
+            <Card pattern={Pattern.Tarot} type={props.calledCard} />
           </div>
         </div>
       </div>
@@ -119,8 +120,8 @@ export function Board(props: {
     return (
       <Trick
         trick={trick ? trick.cards : []}
-        leaderPos={trick ? +trick.leader.id : 0}
-        winnerPos={trick && trick.winner ? +trick.winner.id : -1}
+        leaderPos={trick ? +trick.leaderId : 0}
+        winnerPos={trick && trick.winnerId ? +trick.winnerId : -1}
         currPos={+props.player.id}
         numPlayers={props.players.length}
       />
@@ -177,7 +178,7 @@ export function Board(props: {
           return (
             <div key={col} className={css.cardContainer} onClick={() => props.callCard(card)}>
               <div>
-                <Card type={card} />
+                <Card pattern={Pattern.Tarot} type={card} />
               </div>
             </div>
           );
@@ -300,7 +301,7 @@ export function Board(props: {
         <PlayerZones
           currentPlayerId={props.showRoundSummary ? null : props.currentPlayerId}
           perspectivePlayerId={props.player.id}
-          currentLeaderId={props.showRoundSummary ? '' : props.trick.leader.id}
+          currentLeaderId={props.showRoundSummary ? '' : props.trick.leaderId}
           players={props.players}
           playerNames={props.playerNames}
           contract={props.contract}

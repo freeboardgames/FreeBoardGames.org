@@ -1,9 +1,8 @@
 import * as React from 'react';
+import { Pattern, ICard } from 'gamesShared/definitions/cards';
+import { Card } from 'gamesShared/components/cards/Card';
 
 import css from './PlayerHand.module.css';
-import { Card } from './Card';
-
-import { ICard } from '../types';
 
 const CARD_WIDTH_MIN = 35;
 const CARD_WIDTH_MAX = 75;
@@ -31,6 +30,7 @@ export function PlayerHand(props: {
     return (
       <div className={css.cardContainer} style={style} key={i}>
         <Card
+          pattern={Pattern.Tarot}
           type={card}
           selected={props.selection.indexOf(i) != -1}
           inactive={!props.selectable[i]}

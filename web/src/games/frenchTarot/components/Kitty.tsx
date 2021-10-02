@@ -1,9 +1,8 @@
 import * as React from 'react';
+import { Pattern, ICard } from 'gamesShared/definitions/cards';
+import { Card } from 'gamesShared/components/cards/Card';
 
 import css from './Kitty.module.css';
-import { Card } from './Card';
-
-import { ICard } from '../types';
 
 export function Kitty(props: { kitty: ICard[]; revealed: boolean; descr: JSX.Element | string }) {
   function arrangeKittyCard(index: number, card: ICard) {
@@ -11,7 +10,7 @@ export function Kitty(props: { kitty: ICard[]; revealed: boolean; descr: JSX.Ele
       <div key={index} className={css.arrangeCard}>
         <div className={css.cropCard}>
           <div className={css.scaleCard}>
-            <Card type={props.revealed ? card : null} />
+            <Card pattern={Pattern.Tarot} type={props.revealed ? card : null} />
           </div>
         </div>
       </div>

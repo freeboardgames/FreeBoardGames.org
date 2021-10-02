@@ -1,4 +1,6 @@
-import { IG, IPlayer, ICard, CardColor } from '../types';
+import { CardColor, ICard } from 'gamesShared/definitions/cards';
+
+import { IG, IPlayer } from '../types';
 
 export function cmpCards(a: ICard, b: ICard): number {
   return (a.color - b.color) * 100 + (a.value - b.value);

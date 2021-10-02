@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useCurrentGameTranslation } from 'infra/i18n';
+import { CardColor, ICard } from 'gamesShared/definitions/cards';
 
 import css from './PreviousTrick.module.css';
 
-import { ICard, CardColor } from '../types';
 import * as util from '../util/misc';
 
 const ColorSymbols = {

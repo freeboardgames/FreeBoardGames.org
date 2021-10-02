@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { Pattern, ICard } from 'gamesShared/definitions/cards';
+import { Card } from 'gamesShared/components/cards/Card';
 
 import css from './Trick.module.css';
-import { Card } from './Card';
 
-import { ICard } from '../types';
 import * as util from '../util/misc';
 
 const CardPositions = [
@@ -81,7 +81,7 @@ export function Trick(props: {
     return (
       <div key={index} className={css.cardContainer}>
         <div style={{ transform: `translate(${x}px, ${y}px)` }}>
-          <Card type={card} />
+          <Card pattern={Pattern.Tarot} type={card} />
         </div>
       </div>
     );

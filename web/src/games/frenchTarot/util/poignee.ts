@@ -1,6 +1,7 @@
 import { Ctx } from 'boardgame.io';
+import { CardColor, ICard } from 'gamesShared/definitions/cards';
 
-import { IG, ICard, CardColor } from '../types';
+import { IG } from '../types';
 import * as util from './misc';
 
 export function selectableCards(G: IG, playerId: string): boolean[] {
