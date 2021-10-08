@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Trans, useCurrentGameTranslation } from 'infra/i18n';
 import { Pattern, CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
-import { Card } from 'gamesShared/components/cards/Card';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
+import { CalledCard } from 'gamesShared/components/cards/CalledCard';
 import { Trick } from 'gamesShared/components/cards/Trick';
 import { Kitty } from 'gamesShared/components/cards/Kitty';
 import { ButtonBar } from 'gamesShared/components/cards/ButtonBar';
@@ -119,14 +119,11 @@ export function Board(props: {
     if (!props.calledCard) return;
     const takerId = props.players.findIndex((P) => P.isTaker);
     return (
-      <div className={css.calledCard}>
-        <span>{translate('callcard_player_called', { name: props.playerNames[takerId] })}</span>
-        <div className={css.cardContainer}>
-          <div>
-            <Card pattern={Pattern.Tarot} type={props.calledCard} />
-          </div>
-        </div>
-      </div>
+      <CalledCard
+        description={translate('callcard_player_called', { name: props.playerNames[takerId] })}
+        card={props.calledCard}
+        pattern={Pattern.Tarot}
+      />
     );
   }
 
