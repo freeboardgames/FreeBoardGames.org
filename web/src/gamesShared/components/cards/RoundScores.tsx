@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCurrentGameTranslation } from 'infra/i18n';
 
-import css from './ScoreBoard.module.css';
+import css from './RoundScores.module.css';
 
 export interface IRoundDetail {
   description: string;
@@ -20,7 +20,7 @@ const EmptyRoundSummary: IRoundSummary = {
   details: [{ description: '', values: ['', '', ''] }],
 };
 
-export function ScoreBoard(props: {
+export function RoundScores(props: {
   playerNames: string[];
   roundSummaries: IRoundSummary[];
   showRoundSummary: boolean;

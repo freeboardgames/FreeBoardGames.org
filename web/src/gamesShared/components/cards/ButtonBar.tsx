@@ -14,10 +14,10 @@ export function ButtonBar(props: {
   red?: boolean[];
   pattern?: Pattern;
 }) {
-  function renderButton(text: JSX.Element | string, red: boolean, click: () => void) {
+  function renderButton(key: number, text: JSX.Element | string, red: boolean, click: () => void) {
     return (
       <div
-        key={text}
+        key={key}
         className={[css.button, red ? css.red : '', click ? '' : css.inactive].join(' ')}
         onClick={click ? () => click() : null}
       >
@@ -26,9 +26,9 @@ export function ButtonBar(props: {
     );
   }
 
-  function renderCard(card: ICard, click: () => void) {
+  function renderCard(key: number, card: ICard, click: () => void) {
     return (
-      <div key={card} className={css.cardContainer} onClick={click ? () => click() : null}>
+      <div key={key} className={css.cardContainer} onClick={click ? () => click() : null}>
         <div>
           <Card pattern={props.pattern} type={card} />
         </div>
@@ -39,10 +39,10 @@ export function ButtonBar(props: {
   let buttons = null;
   if (props.texts) {
     buttons = props.texts.map((text, i) => {
-      return renderButton(text, props.red ? props.red[i] : false, props.click[i]);
+      return renderButton(i, text, props.red ? props.red[i] : false, props.click[i]);
     });
   } else if (props.cards) {
-    buttons = props.cards.map((C, i) => renderCard(C, props.click[i]));
+    buttons = props.cards.map((C, i) => renderCard(i, C, props.click[i]));
   }
 
   return (

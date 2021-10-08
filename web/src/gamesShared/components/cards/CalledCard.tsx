@@ -4,7 +4,7 @@ import { Card } from 'gamesShared/components/cards/Card';
 
 import css from './CalledCard.module.css';
 
-export function Card(props: { description: JSX.Element | string; card: ICard; pattern: Pattern }) {
+export function CalledCard(props: { description: JSX.Element | string; card: ICard; pattern: Pattern }) {
   return (
     <div className={css.calledCard}>
       <span>{props.description}</span>

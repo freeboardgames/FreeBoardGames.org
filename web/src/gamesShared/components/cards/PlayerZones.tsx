@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useCurrentGameTranslation } from 'infra/i18n';
 
+import css from './PlayerZones.module.css';
+
 function mod(n: number, m: number): number {
   return ((n % m) + m) % m;
 }
