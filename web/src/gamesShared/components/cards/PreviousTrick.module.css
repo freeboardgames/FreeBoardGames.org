@@ -1,18 +1,19 @@
 .prevTrick {
   position: absolute;
-  top: 50px; right: 15px;
+  bottom: 0; right: 1em;
   width: 10em; height: 7em;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
-  font-size: 15px;
+  font-size: 0.9em;
   z-index: 5;
 }
 
-@media only screen and (max-width: 850px) {
+@media only screen and (min-width: 850px) {
   .prevTrick {
-    top: auto; bottom: 0;
-    right: 10px;
-    font-size: 12px;
+    font-size: 1em;
+  }
+  .prevTrick.p4, .prevTrick.p5 {
+    bottom: auto; top: 3.33em; right: 1em;
   }
 }
 
@@ -56,3 +57,18 @@
   border-color: rgba(255, 255, 255, 0.5);
   background-color: transparent;
 }
+
+.suit {
+  background-repeat: no-repeat;
+  background-size: 41px 16px;
+  background-image: url("media/suit_small.png");
+  height: 16px;
+  width: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.suit.schell { background-position: -31px 0; }
+.suit.herz { background-position: -21px 0; }
+.suit.gras { background-position: -11px 0; }
+.suit.eichel { background-position: 0 0; width: 11px; }

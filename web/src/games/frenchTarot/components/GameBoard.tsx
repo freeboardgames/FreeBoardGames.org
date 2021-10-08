@@ -3,12 +3,12 @@ import { Trans, useCurrentGameTranslation } from 'infra/i18n';
 import { Pattern, CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
 import { Card } from 'gamesShared/components/cards/Card';
 import { Hand } from 'gamesShared/components/cards/Hand';
+import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
 
 import css from './GameBoard.module.css';
 import { Button } from './Button';
 import { Kitty } from './Kitty';
 import { PlayerZones } from './PlayerZones';
-import { PreviousTrick } from './PreviousTrick';
 import { ScoreBoard } from './ScoreBoard';
 import { Trick } from './Trick';
 
@@ -63,24 +63,17 @@ export function Board(props: {
   }
 
   function renderPrevTrick() {
-    if (props.kittyPrev.length > 0) {
-      return (
-        <PreviousTrick
-          trick={props.kittyPrev}
-          leaderPos={0}
-          currPos={0}
-          numPlayers={props.kittyPrev.length}
-          isKitty={true}
-        />
-      );
-    }
-    if (!props.players.some((P) => P.isTaker) || props.prevTrick.cards.length == 0) return;
+    const isKitty = props.kittyPrev.length > 0;
+    const inGame = props.players.some((P) => P.isTaker) && props.prevTrick.cards.length > 0;
+    if (!isKitty && !inGame) return;
     return (
       <PreviousTrick
-        trick={props.prevTrick.cards}
-        leaderPos={+props.prevTrick.leaderId}
-        currPos={+props.player.id}
-        numPlayers={props.players.length}
+        trick={isKitty ? props.kittyPrev : props.prevTrick.cards}
+        pattern={Pattern.Tarot}
+        leaderPos={isKitty ? 0 : +props.prevTrick.leaderId}
+        currPos={isKitty ? 0 : +props.player.id}
+        numPlayers={isKitty ? props.kittyPrev.length : props.players.length}
+        isKitty={isKitty}
       />
     );
   }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useCurrentGameTranslation } from 'infra/i18n';
-import { CardColor, ICard } from 'gamesShared/definitions/cards';
+import { CardColor, ICard, Pattern } from 'gamesShared/definitions/cards';
 
 import css from './PreviousTrick.module.css';
 
@@ -13,10 +13,15 @@ const ColorSymbols = {
   Clubs: <>&#x2663;&#xFE0F;</>,
   Excuse: <>&#x1F0CF;</>,
   Trumps: <>&#x1F482;</>,
+  Schell: <span className={`${css.suit} ${css.schell}`}></span>,
+  Herz: <span className={`${css.suit} ${css.herz}`}></span>,
+  Gras: <span className={`${css.suit} ${css.gras}`}></span>,
+  Eichel: <span className={`${css.suit} ${css.eichel}`}></span>,
 };
 
 export function PreviousTrick(props: {
   trick: ICard[];
+  pattern: Pattern;
   leaderPos: number;
   currPos: number;
   numPlayers: number;
@@ -34,7 +39,13 @@ export function PreviousTrick(props: {
       if (card.color == CardColor.Excuse) {
         text = '★';
       } else if (card.color != CardColor.Trumps && card.value > 10) {
-        text = ['V', 'C', 'D', 'R'][card.value - 11];
+        if (props.pattern == Pattern.Franconian) {
+          text = ['U', 'O', 'K', 'A'][card.value - 11];
+        } else if (props.pattern == Pattern.Tarot) {
+          text = ['V', 'C', 'D', 'R'][card.value - 11];
+        } else if (props.pattern == Pattern.Skat) {
+          text = ['J', 'Q', 'K', 'A'][card.value - 11];
+        }
       }
       symbol = ColorSymbols[CardColor[card.color]];
     }
@@ -54,7 +65,7 @@ export function PreviousTrick(props: {
   }
 
   return (
-    <div className={css.prevTrick}>
+    <div className={[css.prevTrick, css[`p${Math.max(3, props.numPlayers)}`]].join(' ')}>
       <span>{props.isKitty ? translate('prev_kitty') : translate('prev_trick')}</span>
       {new Array(props.numPlayers).fill(0).map((_, i) => renderPrevTrickCard(i))}
     </div>
