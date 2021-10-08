@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Trans, useCurrentGameTranslation } from 'infra/i18n';
 import { Pattern, CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
 import { Card } from 'gamesShared/components/cards/Card';
+import { Hand } from 'gamesShared/components/cards/Hand';
 
 import css from './GameBoard.module.css';
 import { Button } from './Button';
 import { Kitty } from './Kitty';
-import { PlayerHand } from './PlayerHand';
 import { PlayerZones } from './PlayerZones';
 import { PreviousTrick } from './PreviousTrick';
 import { ScoreBoard } from './ScoreBoard';
@@ -311,9 +311,10 @@ export function Board(props: {
         {renderButtonBar()}
       </div>
       <div className={css.lowerBoard}>
-        <PlayerHand
+        <Hand
           playerId={props.player.id}
           hand={props.player.hand}
+          pattern={Pattern.Tarot}
           selectable={props.selectableCards}
           selection={selectedCards || []}
           selectCards={props.selectCards}

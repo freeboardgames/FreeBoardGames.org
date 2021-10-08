@@ -2,14 +2,15 @@ import * as React from 'react';
 import { Pattern, ICard } from 'gamesShared/definitions/cards';
 import { Card } from 'gamesShared/components/cards/Card';
 
-import css from './PlayerHand.module.css';
+import css from './Hand.module.css';
 
 const CARD_WIDTH_MIN = 35;
 const CARD_WIDTH_MAX = 75;
 
-export function PlayerHand(props: {
+export function Hand(props: {
   playerId: string;
   hand: ICard[];
+  pattern: Pattern;
   selection: number[];
   selectable: boolean[];
   selectCards?: (handIndex: number[]) => void;
@@ -30,7 +31,7 @@ export function PlayerHand(props: {
     return (
       <div className={css.cardContainer} style={style} key={i}>
         <Card
-          pattern={Pattern.Tarot}
+          pattern={props.pattern}
           type={card}
           selected={props.selection.indexOf(i) != -1}
           inactive={!props.selectable[i]}
@@ -51,5 +52,5 @@ export function PlayerHand(props: {
     props.selectCards(new_selection);
   }
 
-  return <div className={css.playerHand}>{props.hand.map((C, i) => renderCard(C, i, card_scale))}</div>;
+  return <div className={css.hand}>{props.hand.map((C, i) => renderCard(C, i, card_scale))}</div>;
 }

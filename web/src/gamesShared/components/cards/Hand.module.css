@@ -1,4 +1,4 @@
-.playerHand {
+.hand {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -14,7 +14,7 @@
   white-space: nowrap;
 }
 
-.playerHand .cardContainer {
+.hand .cardContainer {
   display: inline-block;
   width: 34px;
   text-align: center;
