@@ -6,9 +6,9 @@ import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
 import { Trick } from 'gamesShared/components/cards/Trick';
 import { Kitty } from 'gamesShared/components/cards/Kitty';
+import { Button } from 'gamesShared/components/cards/Button';
 
 import css from './GameBoard.module.css';
-import { Button } from './Button';
 import { PlayerZones } from './PlayerZones';
 import { ScoreBoard } from './ScoreBoard';
 
