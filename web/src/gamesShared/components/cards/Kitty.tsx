@@ -4,13 +4,13 @@ import { Card } from 'gamesShared/components/cards/Card';
 
 import css from './Kitty.module.css';
 
-export function Kitty(props: { kitty: ICard[]; revealed: boolean; descr: JSX.Element | string }) {
+export function Kitty(props: { kitty: ICard[]; pattern: Pattern; revealed: boolean; descr?: JSX.Element | string }) {
   function arrangeKittyCard(index: number, card: ICard) {
     return (
       <div key={index} className={css.arrangeCard}>
         <div className={css.cropCard}>
           <div className={css.scaleCard}>
-            <Card pattern={Pattern.Tarot} type={props.revealed ? card : null} />
+            <Card pattern={props.pattern} type={props.revealed ? card : null} />
           </div>
         </div>
       </div>

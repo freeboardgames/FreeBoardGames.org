@@ -5,10 +5,10 @@ import { Card } from 'gamesShared/components/cards/Card';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
 import { Trick } from 'gamesShared/components/cards/Trick';
+import { Kitty } from 'gamesShared/components/cards/Kitty';
 
 import css from './GameBoard.module.css';
 import { Button } from './Button';
-import { Kitty } from './Kitty';
 import { PlayerZones } from './PlayerZones';
 import { ScoreBoard } from './ScoreBoard';
 
@@ -105,7 +105,7 @@ export function Board(props: {
         <Trans t={translate} i18nKey={`poignee_declares_${lvl}`} values={{ name: name }} components={{ b: <b /> }} />
       );
     }
-    return <Kitty kitty={props.kitty} revealed={props.kittyRevealed} descr={kitty_descr} />;
+    return <Kitty kitty={props.kitty} pattern={Pattern.Tarot} revealed={props.kittyRevealed} descr={kitty_descr} />;
   }
 
   function renderTrick() {
