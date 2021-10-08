@@ -8,9 +8,9 @@ import { Trick } from 'gamesShared/components/cards/Trick';
 import { Kitty } from 'gamesShared/components/cards/Kitty';
 import { Button } from 'gamesShared/components/cards/Button';
 import { PlayerZones } from 'gamesShared/components/cards/PlayerZones';
+import { ScoreBoard } from 'gamesShared/components/cards/ScoreBoard';
 
 import css from './GameBoard.module.css';
-import { ScoreBoard } from './ScoreBoard';
 
 import { IPlayer, IRoundSummary } from '../types';
 import * as util from '../util/misc';
@@ -51,11 +51,48 @@ export function Board(props: {
   const selectedCards = props.declarePoignee || props.discard ? props.player.discardSelection : [];
 
   function renderScoreBoard() {
+    const roundSummaries = props.roundSummaries.map((summary) => {
+      const playerRoles = props.players.map((P) => {
+        return P.id == summary.takerId || P.id == summary.calledTakerId;
+      });
+      const playerKeys = props.playerNames.map((_, i) => i);
+      const players = playerKeys.filter((i) => playerRoles[i]).concat(playerKeys.filter((i) => !playerRoles[i]));
+      const points = players.map((i) => {
+        const takerPoints = summary.takerPoints;
+        const requiredPoints = playerRoles[i] ? `(${summary.takerPointsRequired})` : '';
+        return `${playerRoles[i] ? takerPoints : 91 - takerPoints}${requiredPoints}`;
+      });
+      return {
+        players: players,
+        scoring: players.map((i) => summary.scoring[i]),
+        details: [
+          {
+            description: translate('scoreboard_points'),
+            values: points,
+          },
+          {
+            description: translate('scoreboard_petit_au_bout'),
+            values: players.map((i) => (playerRoles[i] ? `${summary.petitAuBout}` : '-')),
+          },
+          {
+            description: translate('scoreboard_multiplier'),
+            values: players.map((i) => (playerRoles[i] ? `×${summary.multiplier}` : '-')),
+          },
+          {
+            description: translate('scoreboard_poignee'),
+            values: players.map((i) => (playerRoles[i] ? `${summary.poignee}` : '-')),
+          },
+          {
+            description: translate('scoreboard_slam'),
+            values: players.map((i) => (playerRoles[i] ? `${summary.slam}` : '-')),
+          },
+        ],
+      };
+    });
     return (
       <ScoreBoard
         playerNames={props.playerNames}
-        playerRoles={props.players.map((p) => p.isTaker)}
-        roundSummaries={props.roundSummaries}
+        roundSummaries={roundSummaries}
         showRoundSummary={props.showRoundSummary}
         playerScores={props.players.map((p) => p.score)}
       />

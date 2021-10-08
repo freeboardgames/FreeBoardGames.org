@@ -3,22 +3,25 @@ import { useCurrentGameTranslation } from 'infra/i18n';
 
 import css from './ScoreBoard.module.css';
 
-import { IRoundSummary } from '../types';
+export interface IRoundDetail {
+  description: string;
+  values: string[];
+}
+
+export interface IRoundSummary {
+  players: number[];
+  scoring: string[];
+  details: IRoundDetail[];
+}
 
 const EmptyRoundSummary: IRoundSummary = {
-  takerId: '',
-  takerPointsRequired: 0,
-  takerPoints: 0,
-  petitAuBout: 0,
-  multiplier: 0,
-  poignee: 0,
-  slam: 0,
-  scoring: [0, 0, 0, 0, 0],
+  players: [0, 0, 0],
+  scoring: ['', '', ''],
+  details: [{ description: '', values: ['', '', ''] }],
 };
 
 export function ScoreBoard(props: {
   playerNames: string[];
-  playerRoles: boolean[];
   roundSummaries: IRoundSummary[];
   showRoundSummary: boolean;
   playerScores: number[];
@@ -78,15 +81,11 @@ export function ScoreBoard(props: {
 
   function renderRoundSummary() {
     const summary = showSummary == -1 ? EmptyRoundSummary : props.roundSummaries[showSummary];
-    const playerKeys = props.playerNames.map((_, i) => i);
-    const orderTakersFirst = playerKeys
-      .filter((i) => props.playerRoles[i])
-      .concat(playerKeys.filter((i) => !props.playerRoles[i]));
     return (
       <div
         className={[css.scoreBoard, css.board].join(' ')}
         style={{
-          width: `${150 + playerKeys.length * 76}px`,
+          width: `${150 + summary.players.length * 76}px`,
           display: showSummary == -1 ? 'none' : 'block',
         }}
       >
@@ -94,65 +93,33 @@ export function ScoreBoard(props: {
           <tbody>
             <tr>
               <td>{translate('scoreboard_round_n', { n: showSummary + 1 })}</td>
-              {orderTakersFirst.map((i) => (
+              {summary.players.map((i) => (
                 <td key={i}>{props.playerNames[i]}</td>
               ))}
             </tr>
-            <tr>
-              <td>{translate('scoreboard_points')}</td>
-              {orderTakersFirst.map((i) => renderPoints(summary, i))}
-            </tr>
-            <tr>
-              <td>{translate('scoreboard_petit_au_bout')}</td>
-              {orderTakersFirst.map((i) => (
-                <td key={i}>{props.playerRoles[i] ? `${summary.petitAuBout}` : '-'}</td>
-              ))}
-            </tr>
-            <tr>
-              <td>{translate('scoreboard_multiplier')}</td>
-              {orderTakersFirst.map((i) => (
-                <td key={i}>{props.playerRoles[i] ? `×${summary.multiplier}` : '-'}</td>
-              ))}
-            </tr>
-            <tr>
-              <td>{translate('scoreboard_poignee')}</td>
-              {orderTakersFirst.map((i) => (
-                <td key={i}>{props.playerRoles[i] ? `${summary.poignee}` : '-'}</td>
-              ))}
-            </tr>
-            <tr>
-              <td>{translate('scoreboard_slam')}</td>
-              {orderTakersFirst.map((i) => (
-                <td key={i}>{props.playerRoles[i] ? `${summary.slam}` : '-'}</td>
-              ))}
-            </tr>
+            {summary.details.map((detail, iDetail) => {
+              <tr key={iDetail}>
+                <td>{detail.description}</td>
+                {detail.values.map((value, iValue) => (
+                  <td key={iValue}>{value}</td>
+                ))}
+              </tr>;
+            })}
             <tr>
               <td>{translate('scoreboard_round_score')}</td>
-              {orderTakersFirst.map((i) => (
-                <td key={i}>{summary.scoring[i]}</td>
+              {summary.scoring.map((score, iScore) => (
+                <td key={iScore}>{score}</td>
               ))}
             </tr>
             <tr>
               <td>{translate('scoreboard_total_score')}</td>
-              {orderTakersFirst.map((i) => (
+              {summary.players.map((i) => (
                 <td key={i}>{props.playerScores[i]}</td>
               ))}
             </tr>
           </tbody>
         </table>
       </div>
-    );
-  }
-
-  function renderPoints(summary: IRoundSummary, i: number) {
-    const takerPoints = summary.takerPoints;
-    const isTaker = props.playerRoles[i];
-    const requiredPoints = isTaker ? `(${summary.takerPointsRequired})` : '';
-    return (
-      <td key={i}>
-        {isTaker ? takerPoints : 91 - takerPoints}
-        {requiredPoints}
-      </td>
     );
   }
 
