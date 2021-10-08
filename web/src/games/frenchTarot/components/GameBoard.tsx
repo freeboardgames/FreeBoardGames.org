@@ -6,7 +6,7 @@ import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
 import { Trick } from 'gamesShared/components/cards/Trick';
 import { Kitty } from 'gamesShared/components/cards/Kitty';
-import { Button } from 'gamesShared/components/cards/Button';
+import { ButtonBar } from 'gamesShared/components/cards/ButtonBar';
 import { PlayerZones } from 'gamesShared/components/cards/PlayerZones';
 import { ScoreBoard } from 'gamesShared/components/cards/ScoreBoard';
 
@@ -167,54 +167,41 @@ export function Board(props: {
       renderButtonsSlam(),
       renderButtonsPoignee(),
       renderButtonsFinish(),
-    ];
-    if (!buttons.some((b) => b)) return;
-    return (
-      <div
-        className={[css.buttonBar, props.showRoundSummary ? css.below : '', props.callCard ? css.callCards : ''].join(
-          ' ',
-        )}
-      >
-        {buttons}
-      </div>
-    );
+    ].filter((b) => b);
+    return buttons.length > 0 ? buttons[0] : null;
   }
 
   function renderButtonsBid() {
     if (!props.selectBid) return;
-    const highest_bid = Math.max(...props.players.map((p) => p.bid));
-    return [0, 1, 2, 3, 4].map(util.getBidName).map((name, i) => {
-      const text: string = translate(name);
-      return (
-        <Button
-          key={i}
-          text={text}
-          red={i == 0}
-          dirleft={i <= 2}
-          click={props.selectBid && (i == 0 || highest_bid < i) ? () => props.selectBid(i) : null}
-        />
-      );
+    const highest_bid = Math.max(...props.players.map((P) => P.bid));
+    const all_bids = [0, 1, 2, 3, 4];
+    const click = all_bids.map((bid) => {
+      if (!props.selectBid || (bid != 0 && highest_bid >= bid)) return null;
+      return () => props.selectBid(bid);
     });
+    return (
+      <ButtonBar
+        click={click}
+        texts={all_bids.map((bid) => translate(util.getBidName(bid)))}
+        red={all_bids.map((_, i) => i == 0)}
+      />
+    );
   }
 
   function renderButtonsCall() {
     if (!props.callCard) return;
     let val = 14;
     for (; props.player.hand.filter((C) => util.isColorCard(C) && C.value == val).length == 4; val--);
+    const all_cards: ICard[] = ['Clubs', 'Diamonds', 'Spades', 'Hearts'].map((col) => {
+      return { color: CardColor[col], value: val };
+    });
     return (
-      <>
-        <div className={css.question}>{translate('callcard_select')}:</div>
-        {['Clubs', 'Diamonds', 'Spades', 'Hearts'].map((col) => {
-          const card: ICard = { color: CardColor[col], value: val };
-          return (
-            <div key={col} className={css.cardContainer} onClick={() => props.callCard(card)}>
-              <div>
-                <Card pattern={Pattern.Tarot} type={card} />
-              </div>
-            </div>
-          );
-        })}
-      </>
+      <ButtonBar
+        click={all_cards.map((C) => () => props.callCard(C))}
+        question={translate('callcard_select')}
+        cards={all_cards}
+        pattern={Pattern.Tarot}
+      />
     );
   }
 
@@ -226,24 +213,19 @@ export function Board(props: {
     const text = translate(clickable ? 'discard_confirm' : `discard_select_${missing_num == 1 ? '1' : 'n'}_more`, {
       n: missing_num,
     });
-    return <Button text={text} dirleft={true} click={clickable ? () => props.discard() : null} />;
+    return <ButtonBar click={[clickable ? () => props.discard() : null]} texts={[text]} />;
   }
 
   function renderButtonsSlam() {
     if (!props.announceSlam) return;
     return (
-      <>
-        <div className={css.question}>{translate('slam_announce_q')}</div>
-        <div style={{ whiteSpace: 'nowrap' }}>
-          <Button
-            text={translate('slam_announce_no')}
-            red={true}
-            dirleft={true}
-            click={() => props.announceSlam(false)}
-          />
-          <Button text={translate('slam_announce_yes')} click={() => props.announceSlam(true)} />
-        </div>
-      </>
+      <ButtonBar
+        click={[() => props.announceSlam(false), () => props.announceSlam(true)]}
+        question={translate('slam_announce_q')}
+        texts={[translate('slam_announce_no'), translate('slam_announce_yes')]}
+        red={[true, false]}
+        noWrap={true}
+      />
     );
   }
 
@@ -287,38 +269,33 @@ export function Board(props: {
       }
     }
     return (
-      <>
-        <div className={css.question}>{translate('poignee_q')}</div>
-        <div style={{ whiteSpace: 'nowrap' }}>
-          <Button text={translate('poignee_no')} red={true} dirleft={true} click={() => props.declarePoignee(false)} />
-          <Button
-            text={
-              <>
-                {text}
-                <br />
-                <small>{smallText}</small>
-              </>
-            }
-            click={clickable ? () => props.declarePoignee(true) : null}
-          />
-        </div>
-      </>
+      <ButtonBar
+        click={[() => props.declarePoignee(false), clickable ? () => props.declarePoignee(true) : null]}
+        question={translate('poignee_q')}
+        texts={[
+          translate('poignee_no'),
+          <>
+            {text}
+            <br />
+            <small>{smallText}</small>
+          </>,
+        ]}
+        red={[true, false]}
+        noWrap={true}
+      />
     );
   }
 
   function renderButtonsFinish() {
     if (props.announceSlam || !props.endGame || props.player.isReady) return;
     return (
-      <div style={{ whiteSpace: 'nowrap' }}>
-        <Button text={translate('roundend_next')} below={true} click={() => props.endGame(false)} />
-        <Button
-          text={translate('roundend_quit')}
-          red={true}
-          dirleft={true}
-          below={true}
-          click={() => props.endGame(true)}
-        />
-      </div>
+      <ButtonBar
+        click={[() => props.endGame(false), () => props.endGame(true)]}
+        texts={[translate('roundend_next'), translate('roundend_quit')]}
+        red={[false, true]}
+        below={true}
+        noWrap={true}
+      />
     );
   }
 

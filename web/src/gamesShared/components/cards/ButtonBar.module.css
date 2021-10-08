@@ -1,0 +1,99 @@
+.buttonBar {
+  position: absolute;
+  bottom: 95px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  line-height: 40px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 20;
+}
+
+.buttonBar:after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: calc(50% - 10px);
+  width: 0; height: 0;
+  border: 20px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.5);
+  border-bottom: 0;
+  margin-bottom: -20px;
+}
+
+.buttonBar.cards {
+  height: 130px;
+  min-width: 300px;
+}
+
+.buttonBar.below {
+  bottom: -95px;
+}
+
+.buttonBar.below:after {
+  bottom: auto; top: 0;
+  border: 20px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.5);
+  border-top: 0;
+  margin: -20px auto 0 auto;
+}
+
+.question {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translate(-50%, -150%);
+  width: 450px; height: 25px;
+  line-height: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px;
+  margin: 10px auto;
+}
+
+.button {
+  display: inline-block;
+  cursor: pointer;
+  box-shadow: rgb(197, 255, 5) 0px 0px 10px;
+  padding: 10px 20px;
+  margin: 0 5px;
+	position: relative;
+	background: #fefefe;
+  border-radius: 5px;
+  color: #000;
+  font-size: 16px;
+  line-height: 14px;
+}
+
+.button small {
+  line-height: 14px;
+  font-size: 11px;
+  width: 160px;
+}
+
+.button.inactive {
+  cursor: default;
+  box-shadow: rgb(0, 0, 0) 0px 0px 10px;
+  color: #aaa;
+}
+
+.button.red {
+  box-shadow: rgb(255, 197, 5) 0px 0px 10px;
+}
+
+.button:not(.inactive):hover { background-color: #efe; }
+.button.red:not(.inactive):hover { background-color: #fee; }
+
+.cardContainer {
+  cursor: pointer;
+  display: inline-block;
+  transform-origin: 0 0;
+  transform: scale(0.2);
+  width: 70px;
+  box-shadow: rgb(0, 0, 0) 0px 0px 50px;
+}
+
+.cardContainer:hover {
+  box-shadow: rgb(197, 255, 5) 0px 0px 50px;
+}

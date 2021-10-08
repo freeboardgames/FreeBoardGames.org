@@ -1,7 +1,7 @@
 import * as React from 'react';
-import css from './Card.module.css';
-
 import { ICard, CardColor, Pattern } from 'gamesShared/definitions/cards';
+
+import css from './Card.module.css';
 
 export function Card(props: {
   pattern: Pattern;
