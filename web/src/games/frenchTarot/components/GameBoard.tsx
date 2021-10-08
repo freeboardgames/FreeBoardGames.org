@@ -7,9 +7,9 @@ import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
 import { Trick } from 'gamesShared/components/cards/Trick';
 import { Kitty } from 'gamesShared/components/cards/Kitty';
 import { Button } from 'gamesShared/components/cards/Button';
+import { PlayerZones } from 'gamesShared/components/cards/PlayerZones';
 
 import css from './GameBoard.module.css';
-import { PlayerZones } from './PlayerZones';
 import { ScoreBoard } from './ScoreBoard';
 
 import { IPlayer, IRoundSummary } from '../types';
@@ -285,6 +285,40 @@ export function Board(props: {
     );
   }
 
+  function renderPlayerZones() {
+    const numPlayers = props.players.length;
+    const currentPlayerId = props.showRoundSummary ? null : props.currentPlayerId;
+    const currentLeaderId = props.showRoundSummary ? '' : props.trick.leaderId;
+    const isActive = props.players.map((P) => {
+      return (!currentPlayerId && !P.isReady) || P.id === currentPlayerId;
+    });
+    const bids = props.players.map((P) => (P.isTaker ? props.contract : P.bid));
+    const bidStrings = bids.map((bid) => (bid >= 0 ? `«${translate(util.getBidName(bid))}»` : ''));
+    const biddingEnded = props.players.some((P) => P.isTaker);
+    const roundEnded = props.currentLeaderId == '';
+    const announcements = props.players.map((P) => {
+      return P.isTaker && props.slam ? translate('slam_announced') : null;
+    });
+    return (
+      <PlayerZones
+        currentPlayerId={currentPlayerId}
+        perspectivePlayerId={props.player.id}
+        currentLeaderId={currentLeaderId}
+        bids={bidStrings}
+        bidPass={bids.map((bid) => bid == 0)}
+        announcements={announcements}
+        names={props.playerNames}
+        isActive={isActive}
+        markActive={isActive.map((active) => biddingEnded && !roundEnded && active)}
+        isDealer={props.players.map((P) => !roundEnded && P.isDealer)}
+        isTaker={props.players.map((P) => biddingEnded && P.isTaker)}
+        isOpponent={props.players.map((P) => biddingEnded && numPlayers < 5 && !P.isTaker)}
+        isLeader={props.players.map((P) => !roundEnded && biddingEnded && P.id === currentLeaderId)}
+        scores={props.players.map((P) => P.score.toString())}
+      />
+    );
+  }
+
   return (
     <div className={css.board}>
       <div className={css.upperBoard}>
@@ -292,15 +326,7 @@ export function Board(props: {
         {renderCalledCard()}
         {renderPrevTrick()}
         {renderKitty()}
-        <PlayerZones
-          currentPlayerId={props.showRoundSummary ? null : props.currentPlayerId}
-          perspectivePlayerId={props.player.id}
-          currentLeaderId={props.showRoundSummary ? '' : props.trick.leaderId}
-          players={props.players}
-          playerNames={props.playerNames}
-          contract={props.contract}
-          slam={props.slam}
-        />
+        {renderPlayerZones()}
         {renderTrick()}
         {renderButtonBar()}
       </div>
