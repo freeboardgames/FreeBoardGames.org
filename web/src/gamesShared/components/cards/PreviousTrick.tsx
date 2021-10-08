@@ -4,7 +4,9 @@ import { CardColor, ICard, Pattern } from 'gamesShared/definitions/cards';
 
 import css from './PreviousTrick.module.css';
 
-import * as util from '../util/misc';
+function mod(n: number, m: number): number {
+  return ((n % m) + m) % m;
+}
 
 const ColorSymbols = {
   Spades: <>&#x2660;&#xFE0F;</>,
@@ -31,7 +33,7 @@ export function PreviousTrick(props: {
 
   function renderPrevTrickCard(i: number) {
     const card = props.trick[i];
-    const index = util.mod(props.leaderPos + i - props.currPos, props.numPlayers);
+    const index = mod(props.leaderPos + i - props.currPos, props.numPlayers);
     let text = '';
     let symbol = <></>;
     if (card) {

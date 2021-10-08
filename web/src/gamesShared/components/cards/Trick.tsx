@@ -4,7 +4,9 @@ import { Card } from 'gamesShared/components/cards/Card';
 
 import css from './Trick.module.css';
 
-import * as util from '../util/misc';
+function mod(n: number, m: number): number {
+  return ((n % m) + m) % m;
+}
 
 const CardPositions = [
   [
@@ -65,30 +67,36 @@ function getKeyframeRule(ruleName: string, key: string): CSSKeyframeRule {
 
 export function Trick(props: {
   trick: ICard[];
+  pattern: Pattern;
   leaderPos: number;
   winnerPos: number;
   currPos: number;
   numPlayers: number;
 }) {
+  const clockwise = props.pattern != Pattern.Tarot;
+  let inumPlayers = Math.max(0, props.numPlayers - 3);
+  if (!clockwise) {
+    inumPlayers = mod(props.numPlayers - inumPlayers, props.numPlayers);
+  }
   if (props.winnerPos != -1) {
-    const [x, y] = VanishPositions[Math.max(0, props.numPlayers - 3)][relativePos(props.winnerPos)];
+    const [x, y] = VanishPositions[inumPlayers][relativePos(props.winnerPos)];
     getKeyframeRule('vanish', '100%').style.setProperty('transform', `translate(${x}px, ${y}px) scale(0.1)`);
   }
 
   function arrangeTrickCard(i: number, card: ICard) {
     const index = relativePos(props.leaderPos + i);
-    const [x, y] = CardPositions[Math.max(0, props.numPlayers - 3)][index];
+    const [x, y] = CardPositions[inumPlayers][index];
     return (
       <div key={index} className={css.cardContainer}>
         <div style={{ transform: `translate(${x}px, ${y}px)` }}>
-          <Card pattern={Pattern.Tarot} type={card} />
+          <Card pattern={props.pattern} type={card} />
         </div>
       </div>
     );
   }
 
   function relativePos(pos: number): number {
-    return util.mod(pos - props.currPos, props.numPlayers);
+    return mod(pos - props.currPos, props.numPlayers);
   }
 
   return (

@@ -4,13 +4,13 @@ import { Pattern, CardColor, ICard, ITrick } from 'gamesShared/definitions/cards
 import { Card } from 'gamesShared/components/cards/Card';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
+import { Trick } from 'gamesShared/components/cards/Trick';
 
 import css from './GameBoard.module.css';
 import { Button } from './Button';
 import { Kitty } from './Kitty';
 import { PlayerZones } from './PlayerZones';
 import { ScoreBoard } from './ScoreBoard';
-import { Trick } from './Trick';
 
 import { IPlayer, IRoundSummary } from '../types';
 import * as util from '../util/misc';
@@ -113,6 +113,7 @@ export function Board(props: {
     return (
       <Trick
         trick={trick ? trick.cards : []}
+        pattern={Pattern.Tarot}
         leaderPos={trick ? +trick.leaderId : 0}
         winnerPos={trick && trick.winnerId ? +trick.winnerId : -1}
         currPos={+props.player.id}
