@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import css from './PlayerZones.module.css';
 import { PlayerZone } from './PlayerZone';
@@ -15,11 +16,14 @@ export function PlayerZones(props: {
   contract: number;
   slam: boolean;
 }) {
+  const { translate } = useCurrentGameTranslation();
+
   function renderZone(index: number) {
     const perspectiveIndex = +props.perspectivePlayerId;
     const numPlayers = props.players.length;
     const player = props.players[index];
     const active = (!props.currentPlayerId && !player.isReady) || player.id === props.currentPlayerId;
+    const bid = player.isTaker ? props.contract : player.bid;
     return (
       <div key={index} className={css.zone}>
         <PlayerZone
@@ -27,11 +31,15 @@ export function PlayerZones(props: {
           contract={props.contract}
           biddingEnded={props.players.some((p) => p.isTaker)}
           roundEnded={props.currentLeaderId == ''}
-          player={player}
-          playerName={props.playerNames[index]}
+          bid={bid >= 0 ? `«${translate(util.getBidName(bid))}»` : ''}
+          bidPass={bid == 0}
+          announcement={player.isTaker && props.slam ? translate('slam_announced') : null}
+          name={props.playerNames[index]}
           active={active}
+          dealer={player.isDealer}
+          taker={player.isTaker}
           leader={player.id === props.currentLeaderId}
-          slam={props.slam}
+          score={player.score.toString()}
           positionIndex={util.mod(index - perspectiveIndex, numPlayers)}
         />
       </div>
