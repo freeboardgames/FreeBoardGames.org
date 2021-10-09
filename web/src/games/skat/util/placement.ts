@@ -1,4 +1,6 @@
-import { Contract, IG, ICard } from '../types';
+import { ICard } from 'gamesShared/definitions/cards';
+
+import { Contract, IG } from '../types';
 import * as util from './misc';
 
 export function selectableCards(G: IG, playerId: string): boolean[] {

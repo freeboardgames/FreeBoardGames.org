@@ -13,13 +13,18 @@ export function isTrump(G: IG, C: ICard): boolean {
   return (C.color == CardColor.Hearts && C.value == 10) || C.value == 11 || C.value == 12 || C.color == G.trumpSuit;
 }
 
+export function colorRank(color: CardColor): number {
+  return [CardColor.Diamonds, CardColor.Hearts, CardColor.Spades, CardColor.Clubs].indexOf(color);
+}
+
 export function cardRank(contract: Contract, trumpSuit: CardColor, card: ICard): number {
+  let color_rank = colorRank(card.color);
   if (contract != Contract.SoloAce) {
     if (contract != Contract.SoloQueen && card.value == 11) {
-      return 1000 + card.color;
+      return 1000 + color_rank;
     }
     if (contract != Contract.SoloJack && card.value == 12) {
-      return 10000 + card.color;
+      return 10000 + color_rank;
     }
     if (
       contract != Contract.SoloJack &&
@@ -30,7 +35,9 @@ export function cardRank(contract: Contract, trumpSuit: CardColor, card: ICard):
       return 100000;
     }
   }
-  const color_rank: number = card.color == trumpSuit ? 5 : card.color;
+  if (card.color == trumpSuit) {
+    color_rank = 5;
+  }
   let val_order: number[] = [9, 13, 10, 14];
   if (contract == Contract.SoloJack) {
     val_order = [9, 12, 13, 10, 14];

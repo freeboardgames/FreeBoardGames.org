@@ -1,4 +1,6 @@
-import { IG, CardColor } from '../types';
+import { CardColor } from 'gamesShared/definitions/cards';
+
+import { IG } from '../types';
 import { resolveTrick, getSortedDeck } from '../game';
 import * as util from '../util/misc';
 import * as u_placement from '../util/placement';
@@ -6,7 +8,7 @@ import * as u_placement from '../util/placement';
 // helper functions to generate (random) test cases
 /* Example:
 import { playRandomTricks, dealCards } from './gen';
-import { trick2str, card2str } from './util';
+import { trick2str, card2str } from 'gamesShared/helpers/cards';
   for (let N = 0; N < 1000; N++) {
     const G = setup_3players();
     dealCards(G);

@@ -1,4 +1,6 @@
-import { IG, Contract, CardColor } from '../types';
+import { CardColor } from 'gamesShared/definitions/cards';
+
+import { IG, Contract } from '../types';
 import { resolveTrick, getSortedDeck, getCalledTakerId } from '../game';
 import * as util from '../util/misc';
 import * as u_placement from '../util/placement';

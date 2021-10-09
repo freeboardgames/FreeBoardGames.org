@@ -64,4 +64,12 @@ it('translates strings into tricks', () => {
     ],
     leaderId: players[1],
   });
+  expect(str2trick('D8 DK !D10', players)).toEqual({
+    cards: [
+      { color: CardColor.Diamonds, value: 10 },
+      { color: CardColor.Diamonds, value: 8 },
+      { color: CardColor.Diamonds, value: 13 },
+    ],
+    leaderId: players[2],
+  });
 });

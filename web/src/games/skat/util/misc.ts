@@ -1,4 +1,6 @@
-import { IG, IPlayer, Contract, CardColor, ICard } from '../types';
+import { CardColor, ICard } from 'gamesShared/definitions/cards';
+
+import { IG, IPlayer, Contract } from '../types';
 
 export function getBidName(bid: number): string {
   return `bid_${['suit', 'null', 'grand'][bid]}`;
@@ -12,14 +14,21 @@ export function mod(n: number, m: number): number {
   return ((n % m) + m) % m;
 }
 
+export function colorRank(color: CardColor): number {
+  return [CardColor.Diamonds, CardColor.Hearts, CardColor.Spades, CardColor.Clubs].indexOf(color);
+}
+
 export function cardRank(contract: Contract, trumpSuit: CardColor, card: ICard): number {
+  let color_rank = colorRank(card.color);
   if (contract == Contract.Null) {
-    return 100 * card.color + card.value;
+    return 100 * color_rank + card.value;
   }
   if (card.value == 11) {
-    return 1000 + card.color;
+    return 1000 + color_rank;
   }
-  let color_rank: number = contract != Contract.Grand && card.color == trumpSuit ? 5 : card.color;
+  if (contract != Contract.Grand && card.color == trumpSuit) {
+    color_rank = 5;
+  }
   return 100 * color_rank + [7, 8, 9, 12, 13, 10, 14].indexOf(card.value);
 }
 
