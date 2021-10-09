@@ -87,7 +87,7 @@ export const SkatGame: Game<IG> = {
         const holder = util.getPlayerById(G, G.holderId);
         if (bidder.bid != 0 && holder.bid != 0) return;
         if (bidder.isDealer) {
-          return { next: bidder.bid == 0 && holder.bid == 0 ? Phases.bidding : Phases.discard };
+          return { next: bidder.bid <= 1 && holder.bid <= 1 ? Phases.bidding : Phases.discard };
         }
       },
 
@@ -95,7 +95,7 @@ export const SkatGame: Game<IG> = {
         const bidder = util.getPlayerById(G, G.bidderId);
         const holder = util.getPlayerById(G, G.holderId);
         const taker = bidder.bid == 0 ? holder : bidder;
-        if (taker.bid == 0) {
+        if (taker.bid <= 1) {
           const dealer = G.players.find((P) => P.isDealer);
           dealer.isDealer = false;
           G.players[util.mod(+dealer.id + 1, ctx.numPlayers)].isDealer = true;

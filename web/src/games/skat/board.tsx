@@ -354,7 +354,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         currentLeaderId={currentLeaderId}
         bids={bidStrings}
         bidPass={bids.map((bid) => bid == 0)}
-        bidding={bids.map((bid) => (biddingEnded || bid < 0 ? -1 : bid == 0 ? 0 : 1))}
+        bidding={bids.map((bid) => (biddingEnded || bid == 1 ? -1 : bid == 0 ? 0 : 1))}
         announcements={G.players.map(() => null)}
         names={playerNames}
         isActive={isActive}
