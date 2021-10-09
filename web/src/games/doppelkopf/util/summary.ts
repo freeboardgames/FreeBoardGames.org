@@ -1,4 +1,6 @@
-import { Contract, Announcement, CardColor, IG, ICard, ITrick, IRoundSummary } from '../types';
+import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
+
+import { Contract, Announcement, IG, IRoundSummary } from '../types';
 import * as util from './misc';
 
 export function getRoundSummary(G: IG): IRoundSummary {
@@ -6,17 +8,9 @@ export function getRoundSummary(G: IG): IRoundSummary {
   if (G.contract == Contract.Normal) {
     G.players[+G.partnerId].isTaker = true;
   }
-  G.resolvedTricks.forEach((T) => {
-    if (G.contract == Contract.Normal) {
-      if (T.winner.id == G.partnerId) T.winner.isTaker = true;
-      if (T.leader.id == G.partnerId) T.leader.isTaker = true;
-    }
-    if (T.winner.id == G.takerId) T.winner.isTaker = true;
-    if (T.leader.id == G.takerId) T.leader.isTaker = true;
-  });
 
   const takers = G.partnerId ? [G.takerId, G.partnerId] : [G.takerId];
-  const rePoints = countTakerPoints(G.resolvedTricks);
+  const rePoints = countTakerPoints(G.resolvedTricks, takers);
   const contraPoints = 240 - rePoints;
   const [rePointsReq, contraPointsReq] = pointsRequired(G.announcementRe, G.announcementContra);
 
@@ -54,8 +48,8 @@ export function getRoundSummary(G: IG): IRoundSummary {
   let doppelkopf = NaN;
   let fox = NaN;
   if (G.contract == Contract.Normal) {
-    charlie = charliePoint(G.resolvedTricks[G.resolvedTricks.length - 1]);
-    doppelkopf = countDoppelkopf(G.resolvedTricks);
+    charlie = charliePoint(G.resolvedTricks[G.resolvedTricks.length - 1], takers);
+    doppelkopf = countDoppelkopf(G.resolvedTricks, takers);
     fox = countFoxes(G.resolvedTricks, takers);
     roundValue += charlie + doppelkopf + fox;
   }
@@ -82,34 +76,34 @@ export function getRoundSummary(G: IG): IRoundSummary {
 function countFoxes(tricks: ITrick[], takers: string[]): number {
   return tricks
     .map((T) => {
-      const takerPos = takers.map((i) => util.mod(+i - +T.leader.id, 4));
+      const takerPos = takers.map((i) => util.mod(+i - +T.leaderId, 4));
       return T.cards
         .map((C, i) => {
           if (C.color != CardColor.Diamonds || C.value != 14) return 0;
           const ownerIsTaker = takerPos.indexOf(i) > 0;
-          if (ownerIsTaker == T.winner.isTaker) return 0;
-          return T.winner.isTaker ? 1 : -1;
+          if (ownerIsTaker == idIsTaker(T.winnerId, takers)) return 0;
+          return idIsTaker(T.winnerId, takers) ? 1 : -1;
         })
         .reduce((a, b) => a + b, 0);
     })
     .reduce((a, b) => a + b, 0);
 }
 
-function countDoppelkopf(tricks: ITrick[]): number {
+function countDoppelkopf(tricks: ITrick[], takers: string[]): number {
   return tricks
     .map((T) => {
       const points = T.cards.map(cardPoints).reduce((a, b) => a + b, 0);
       if (points < 40) return 0;
-      return T.winner.isTaker ? 1 : -1;
+      return idIsTaker(T.winnerId, takers) ? 1 : -1;
     })
     .reduce((a, b) => a + b, 0);
 }
 
-function charliePoint(lastTrick: ITrick): number {
-  const winnerPos = util.mod(+lastTrick.winner.id - +lastTrick.leader.id, 4);
+function charliePoint(lastTrick: ITrick, takers: string[]): number {
+  const winnerPos = util.mod(+lastTrick.winnerId - +lastTrick.leaderId, 4);
   const winningCard = lastTrick.cards[winnerPos];
   if (winningCard.color != CardColor.Clubs || winningCard.value != 11) return 0;
-  return lastTrick.winner.isTaker ? 1 : -1;
+  return idIsTaker(lastTrick.winnerId, takers) ? 1 : -1;
 }
 
 function pointsRequired(announcementRe: Announcement, announcementContra: Announcement): number[] {
@@ -128,9 +122,9 @@ function pointsRequired(announcementRe: Announcement, announcementContra: Announ
   return [pointsRe, pointsContra];
 }
 
-function countTakerPoints(tricks: ITrick[]): number {
+function countTakerPoints(tricks: ITrick[], takers: string[]): number {
   return tricks
-    .filter((T) => T.winner.isTaker)
+    .filter((T) => idIsTaker(T.winnerId, takers))
     .reduce((a, b) => a.concat(b.cards), [])
     .map(cardPoints)
     .reduce((a, b) => a + b, 0);
@@ -138,4 +132,8 @@ function countTakerPoints(tricks: ITrick[]): number {
 
 function cardPoints(card: ICard): number {
   return [0, 10, 2, 3, 4, 11][Math.max(0, card.value - 9)];
+}
+
+function idIsTaker(playerId: string, takers: string[]): boolean {
+  return takers.indexOf(playerId) >= 0;
 }

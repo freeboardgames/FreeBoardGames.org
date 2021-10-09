@@ -1,4 +1,6 @@
-import { Contract, Announcement, IG, IPlayer, ICard, CardColor } from '../types';
+import { CardColor, ICard } from 'gamesShared/definitions/cards';
+
+import { Contract, Announcement, IG, IPlayer } from '../types';
 
 export function isTrump(G: IG, C: ICard): boolean {
   if (G.contract == Contract.SoloAce) return false;

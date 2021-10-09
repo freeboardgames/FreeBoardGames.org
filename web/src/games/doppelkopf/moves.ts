@@ -1,7 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
+import { CardColor } from 'gamesShared/definitions/cards';
 
-import { Stages, Contract, Announcement, IG, CardColor } from './types';
+import { Stages, Contract, Announcement, IG } from './types';
 import * as util from './util/misc';
 
 export const Moves = {

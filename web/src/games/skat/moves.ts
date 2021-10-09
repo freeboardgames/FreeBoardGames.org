@@ -10,10 +10,10 @@ export const Moves = {
     player.bid = value;
     if (value == 0) {
       const bidder = util.getPlayerById(G, G.bidderId);
-      const holder = util.getPlayerById(G, G.holderId);
       if (!bidder.isDealer) {
+        const holder = util.getPlayerById(G, G.holderId);
         G.holderId = bidder.bid == 0 ? holder.id : bidder.id;
-        G.bidderId = G.players.findIndex((P) => P.isDealer).toString();
+        G.bidderId = G.players.find((P) => P.isDealer).id;
       }
     }
     return G;

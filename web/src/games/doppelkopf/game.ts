@@ -1,7 +1,8 @@
 import { Ctx, Game } from 'boardgame.io';
 import { Stage } from 'boardgame.io/core';
+import { ITrick, CardColor, ICard } from 'gamesShared/definitions/cards';
 
-import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './types';
+import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
 import * as u_summary from './util/summary';
 import { Moves } from './moves';
@@ -16,7 +17,7 @@ export const DoppelkopfGame: Game<IG> = {
       id: i.toString(),
       isDealer: i == 0,
     }));
-    game.trick = { cards: [], leader: game.players[1] };
+    game.trick = { cards: [], leaderId: game.players[1].id };
     return game;
   },
 
@@ -38,11 +39,7 @@ export const DoppelkopfGame: Game<IG> = {
       deck: G.deck.map(() => dummyCard),
       takerId: G.takerId == playerID || takersRevealed >= 1 ? G.takerId : null,
       partnerId: G.partnerId == playerID || takersRevealed == 2 ? G.partnerId : null,
-      resolvedTricks: G.resolvedTricks.map((T, i) =>
-        (G.players.length == 4 || i > 0) && i == G.resolvedTricks.length - 1
-          ? { ...T, winner: stripSecrets(T.winner), leader: stripSecrets(T.leader) }
-          : dummyTrick,
-      ),
+      resolvedTricks: G.resolvedTricks.map((T, i) => (i == G.resolvedTricks.length - 1 ? T : dummyTrick)),
     };
   },
 
@@ -60,7 +57,7 @@ export const DoppelkopfGame: Game<IG> = {
           ...DefaultIG,
           players: G.players,
           deck: ctx.random.Shuffle(getSortedDeck()),
-          trick: { cards: [], leader: leader },
+          trick: { cards: [], leaderId: leader.id },
           roundSummaries: G.roundSummaries,
         });
         G.players.forEach((P, i) => {
@@ -122,7 +119,7 @@ export const DoppelkopfGame: Game<IG> = {
       turn: {
         activePlayers: { all: Stage.NULL },
         order: {
-          first: (G) => +G.trick.leader.id,
+          first: (G) => +G.trick.leaderId,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
         },
       },
@@ -177,10 +174,10 @@ export function resolveTrick(G: IG): boolean {
   // returns true if this was the last trick in the game
   const winnerId = getTrickWinnerId(G.contract, G.trumpSuit, G.trick);
   const winner = util.getPlayerById(G, winnerId);
-  G.trick.winner = winner;
+  G.trick.winnerId = winnerId;
   G.resolvedTricks.push(G.trick);
   if (G.contract == Contract.Marriage) {
-    if (G.trick.winner.id != G.takerId) {
+    if (G.trick.winnerId != G.takerId) {
       G.contract = Contract.Normal;
       winner.isTaker = true;
       G.partnerId = winner.id;
@@ -190,12 +187,12 @@ export function resolveTrick(G: IG): boolean {
       G.marriageShift = 2;
     }
   }
-  G.trick = { cards: [], leader: winner };
+  G.trick = { cards: [], leaderId: winner.id };
   return G.players.every((P) => P.hand.length == 0);
 }
 
 export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: ITrick): string {
-  const leaderId = +T.leader.id;
+  const leaderId = +T.leaderId;
   let ranks = T.cards.map((C) => util.cardRank(contract, trumpSuit, C));
   if (ranks.every((R) => R < 500)) {
     const lead_color = T.cards[0].color;

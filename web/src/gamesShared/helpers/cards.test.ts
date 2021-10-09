@@ -3,6 +3,11 @@ import { CardColor, Pattern } from 'gamesShared/definitions/cards';
 import { str2card, card2str, str2trick } from 'gamesShared/helpers/cards';
 
 it('translates strings into cards', () => {
+  expect(str2card('D7')).toEqual({ color: CardColor.Diamonds, value: 7 });
+  expect(str2card('C10')).toEqual({ color: CardColor.Clubs, value: 10 });
+  expect(str2card('S11')).toEqual({ color: CardColor.Spades, value: 11 });
+  expect(str2card('SJ')).toEqual({ color: CardColor.Spades, value: 11 });
+  expect(str2card('HQ')).toEqual({ color: CardColor.Hearts, value: 12 });
   expect(str2card('S2')).toEqual({ color: CardColor.Spades, value: 2 });
   expect(str2card('C10')).toEqual({ color: CardColor.Clubs, value: 10 });
   expect(str2card('D11')).toEqual({ color: CardColor.Diamonds, value: 11 });
@@ -25,6 +30,9 @@ it('translates strings into cards', () => {
     // the franconian pattern is automatically recognized and doesn't need to be specified
     expect(card2str(str2card(s))).toEqual(s);
   });
+  ['D8', 'C10', 'SJ', 'HQ', 'CA'].forEach((s) => {
+    expect(card2str(str2card(s), Pattern.Skat)).toEqual(s);
+  });
 });
 
 it('translates strings into tricks', () => {
@@ -45,6 +53,15 @@ it('translates strings into tricks', () => {
       { color: CardColor.Schell, value: 8 },
       { color: CardColor.Schell, value: 13 },
     ],
-    leaderId: G.players[2].id,
+    leaderId: players[2],
+  });
+  expect(str2trick('D8 !D10 DK D9', players)).toEqual({
+    cards: [
+      { color: CardColor.Diamonds, value: 10 },
+      { color: CardColor.Diamonds, value: 13 },
+      { color: CardColor.Diamonds, value: 9 },
+      { color: CardColor.Diamonds, value: 8 },
+    ],
+    leaderId: players[1],
   });
 });

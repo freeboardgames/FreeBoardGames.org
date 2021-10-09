@@ -111,9 +111,9 @@ export const SkatGame: Game<IG> = {
         const holder = util.getPlayerById(G, G.holderId);
         const taker = bidder.bid == 0 ? holder : bidder;
         if (taker.bid == 0) {
-          const dealerPos = G.players.findIndex((P) => P.isDealer);
-          G.players[dealerPos].isDealer = false;
-          G.players[util.mod(dealerPos + 1, ctx.numPlayers)].isDealer = true;
+          const dealer = G.players.find((P) => P.isDealer);
+          dealer.isDealer = false;
+          G.players[util.mod(+dealer.id + 1, ctx.numPlayers)].isDealer = true;
           G.kittyPrev = G.kitty;
           return;
         }
