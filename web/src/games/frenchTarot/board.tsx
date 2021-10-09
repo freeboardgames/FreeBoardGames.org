@@ -25,6 +25,7 @@ import * as u_placement from './util/placement';
 
 export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID: string; gameArgs?: IGameArgs }) {
   const { translate } = useCurrentGameTranslation();
+
   const G = props.G;
   const ctx = props.ctx;
   const moves = props.moves;
@@ -72,7 +73,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
               hand={player.hand}
               pattern={Pattern.Tarot}
               selectable={selectableCards}
-              selection={selectedCards}
+              selection={selectedCards || []}
               selectCards={canSelectCards ? moves.SelectCards : null}
             />
           </div>
@@ -125,7 +126,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         playerNames={playerNames}
         roundSummaries={roundSummaries}
         showRoundSummary={showRoundSummary}
-        playerScores={G.players.map((p) => p.score)}
+        playerScores={G.players.map((P) => P.score)}
       />
     );
   }
@@ -179,7 +180,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
       <Trick
         trick={trick ? trick.cards : []}
         pattern={Pattern.Tarot}
-        leaderPos={trick ? +trick.leaderId : 0}
+        leaderPos={trick && trick.leaderId ? +trick.leaderId : 0}
         winnerPos={trick && trick.winnerId ? +trick.winnerId : -1}
         currPos={+player.id}
         numPlayers={G.players.length}
@@ -200,8 +201,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   }
 
   function renderButtonsBid() {
-    const canBid = ctx.currentPlayer == playerID && ctx.phase == Phases.bidding && player.bid != 0;
-    if (!canBid) return;
+    if (playerPhase != Phases.bidding || player.bid == 0) return;
     const highest_bid = Math.max(...G.players.map((P) => P.bid));
     const all_bids = [0, 1, 2, 3, 4];
     const click = all_bids.map((bid) => {
@@ -348,6 +348,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         currentLeaderId={currentLeaderId}
         bids={bidStrings}
         bidPass={bids.map((bid) => bid == 0)}
+        bidding={bids.map((bid) => (biddingEnded || bid < 0 ? -1 : bid == 0 ? 0 : 1))}
         announcements={announcements}
         names={playerNames}
         isActive={isActive}
@@ -368,7 +369,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     const scoreboard = <Scoreboard scoreboard={scores} players={props.gameArgs.players} playerID={ctx.playerID} />;
     return (
       <GameLayout
-        gameOver={player.score > scores[0].score ? translate('gameover_you_won') : translate('gameover_you_lost')}
+        gameOver={player.score >= scores[0].score ? translate('gameover_you_won') : translate('gameover_you_lost')}
         extraCardContent={scoreboard}
         gameArgs={props.gameArgs}
       />

@@ -84,7 +84,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     const scoreboard = <Scoreboard scoreboard={scores} players={props.gameArgs.players} playerID={ctx.playerID} />;
     return (
       <GameLayout
-        gameOver={player.score > scores[0].score ? translate('gameover_you_won') : translate('gameover_you_lost')}
+        gameOver={player.score >= scores[0].score ? translate('gameover_you_won') : translate('gameover_you_lost')}
         extraCardContent={scoreboard}
         gameArgs={props.gameArgs}
       />

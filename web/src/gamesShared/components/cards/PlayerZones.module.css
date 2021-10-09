@@ -13,11 +13,11 @@
 }
 
 .i1 { bottom: 0; left: 50%; transform: translate(-50%,0); }
-.i2 { bottom: 50%; right: 20px; transform: translate(0, 50%); }
-.p3.i3, .p4.i4, .p5.i5 { bottom: 50%; left: 20px; transform: translate(0, 50%); }
-.p4.i3 { top: 15px; left: 50%; transform: translate(-50%,0); }
-.p5.i3 { top: 15px; left: 70%; transform: translate(-50%,0); }
-.p5.i4 { top: 15px; left: 30%; transform: translate(-50%,0); }
+.i2 { top: 40%; right: 20px; transform: translate(0, 50%); }
+.p3.i3, .p4.i4, .p5.i5 { top: 40%; left: 20px; transform: translate(0, 50%); }
+.p4.i3 { top: 3em; left: 50%; transform: translate(-50%,0); }
+.p5.i3 { top: 0.5em; left: 70%; transform: translate(-50%,0); }
+.p5.i4 { top: 0.5em; left: 30%; transform: translate(-50%,0); }
 
 @media only screen and (max-height: 600px) {
 .i2, .p3.i3, .p4.i4, .p5.i5 { bottom: 30%; }
@@ -46,7 +46,7 @@
   animation: none;
 }
 
-.playerZone .playerName {
+.playerZone .name {
   text-align: center;
 }
 
@@ -100,8 +100,7 @@
 }
 
 .playerZone.thisPlayer .bidStatus {
-  font-size: 10px;
-  letter-spacing: 1px;
+  font-size: 0.9em;
 }
 
 .playerZone .bidStatus div {

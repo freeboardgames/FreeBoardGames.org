@@ -166,6 +166,7 @@ export const DoppelkopfGame: Game<IG> = {
         const newDealerPos = util.mod(dealerPos + 1, 4);
         G.players.forEach((P, i) => {
           P.isDealer = i == newDealerPos;
+          P.hand = [];
         });
       },
     },

@@ -8,9 +8,11 @@ export function CalledCard(props: { description: JSX.Element | string; card: ICa
   return (
     <div className={css.calledCard}>
       <span>{props.description}</span>
-      <div className={css.cardContainer}>
-        <div>
-          <Card pattern={props.pattern} type={props.card} />
+      <div className={css.arrangeCard}>
+        <div className={css.cropCard}>
+          <div className={css.scaleCard}>
+            <Card pattern={props.pattern} type={props.card} />
+          </div>
         </div>
       </div>
     </div>

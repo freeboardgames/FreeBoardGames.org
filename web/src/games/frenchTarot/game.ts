@@ -223,6 +223,7 @@ export const FrenchTarotGame: Game<IG> = {
         const newDealerPos = util.mod(dealerPos + 1, ctx.numPlayers);
         G.players.forEach((P, i) => {
           P.isDealer = i == newDealerPos;
+          P.hand = [];
         });
       },
     },

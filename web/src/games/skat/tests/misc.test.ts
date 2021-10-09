@@ -15,7 +15,12 @@ it('translates strings into cards', () => {
 
 it('translates strings into tricks', () => {
   const G = setup_3players();
-  expect(str2trick('D8 DK !D10', G.players)).toEqual({
+  expect(
+    str2trick(
+      'D8 DK !D10',
+      G.players.map((P) => P.id),
+    ),
+  ).toEqual({
     cards: [
       { color: CardColor.Diamonds, value: 10 },
       { color: CardColor.Diamonds, value: 8 },
@@ -34,13 +39,25 @@ it('finds the winner of a given trick', () => {
     ['C9 DB !C7', '1'],
   ].forEach((args) => {
     const [s_trick, winnerId] = args;
-    expect(getTrickWinnerId(Contract.Suit, CardColor.Clubs, str2trick(s_trick, G.players))).toEqual(winnerId);
+    expect(
+      getTrickWinnerId(
+        Contract.Suit,
+        CardColor.Clubs,
+        str2trick(
+          s_trick,
+          G.players.map((P) => P.id),
+        ),
+      ),
+    ).toEqual(winnerId);
   });
 });
 
 it('correctly resolves a trick', () => {
   const G = setup_3players();
-  G.trick = str2trick('SK S7 !S10', G.players);
+  G.trick = str2trick(
+    'SK S7 !S10',
+    G.players.map((P) => P.id),
+  );
   const isRoundOver = resolveTrick(G);
   expect(isRoundOver).toEqual(false);
   expect(G.resolvedTricks.length).toEqual(2);

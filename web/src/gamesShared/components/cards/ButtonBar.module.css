@@ -62,13 +62,13 @@
 	background: #fefefe;
   border-radius: 5px;
   color: #000;
-  font-size: 16px;
+  font-size: 1em;
   line-height: 14px;
 }
 
 .button small {
   line-height: 14px;
-  font-size: 11px;
+  font-size: 0.8em;
   width: 160px;
 }
 

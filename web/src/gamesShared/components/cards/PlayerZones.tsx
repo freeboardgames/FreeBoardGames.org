@@ -13,6 +13,7 @@ export function PlayerZones(props: {
   currentLeaderId: string;
   bids: string[];
   bidPass: boolean[];
+  bidding: number[];
   announcements: string[];
   names: string[];
   isActive: boolean[];
@@ -22,13 +23,17 @@ export function PlayerZones(props: {
   isOpponent: boolean[];
   isLeader: boolean[];
   scores: string[];
+  clockwise?: boolean;
 }) {
   const { translate } = useCurrentGameTranslation();
   const numPlayers = props.names.length;
 
   function renderZone(index: number) {
     const perspectiveIndex = +props.perspectivePlayerId;
-    const positionIndex = mod(index - perspectiveIndex, numPlayers);
+    let positionIndex = mod(index - perspectiveIndex, numPlayers);
+    if (props.clockwise) {
+      positionIndex = mod(numPlayers - positionIndex, numPlayers);
+    }
     return (
       <div key={index} className={css.zone}>
         <div
@@ -43,7 +48,7 @@ export function PlayerZones(props: {
           <div>
             <div className={css.bidStatus}>
               <div className={css.announcement}>{props.announcements[index]}</div>
-              <div className={props.bidPass ? css.pass : ''}>{props.bids[index]}</div>
+              <div className={props.bidPass[index] ? css.pass : ''}>{props.bids[index]}</div>
             </div>
             <div className={css.statuses}>
               <div className={css.name}>{props.names[index]}</div>
@@ -68,13 +73,13 @@ export function PlayerZones(props: {
         </span>,
       );
     }
-    if (props.bidPass[index]) {
+    if (props.bidding[index] == 0) {
       statuses.push(
         <span key="passing" title={translate('status_passing')}>
           &#x1F44E;
         </span>,
       );
-    } else if (props.bids[index]) {
+    } else if (props.bidding[index] == 1) {
       statuses.push(
         <span key="bidding" title={translate('status_bidding')}>
           &#x1F44D;

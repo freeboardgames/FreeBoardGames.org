@@ -56,7 +56,10 @@ export function trick2str(T: ITrick): string {
 
 export function playTricks(G: IG, tricks: string[]) {
   tricks.forEach((s_trick) => {
-    G.trick = str2trick(s_trick, G.players);
+    G.trick = str2trick(
+      s_trick,
+      G.players.map((P) => P.id),
+    );
     G.players.forEach((P, i) => {
       const pos = util.mod(i - +G.trick.leader.id, G.players.length);
       const i_card = P.hand.findIndex((C) => C == G.trick.cards[pos]);

@@ -38,7 +38,7 @@ export function RoundScores(props: {
         <input type="checkbox" id="togglePrevRounds" checked={props.showRoundSummary ? true : null} />
         <label htmlFor="togglePrevRounds">{translate('prev_scores')}</label>
         <div>
-          <div className={`${css.previousRounds} ${css.board}`} style={{ maxWidth: `${23 + numPlayers * 53}px` }}>
+          <div className={`${css.previousRounds} ${css.board}`}>
             <table>
               <tbody>
                 <tr>
@@ -54,8 +54,8 @@ export function RoundScores(props: {
                     </td>
                   </tr>
                 )}
-                {[...props.roundSummaries].reverse().map((S, i) => {
-                  const iRound = props.roundSummaries.length - i;
+                {[...props.roundSummaries].reverse().map((S, iSummary) => {
+                  const iRound = props.roundSummaries.length - iSummary;
                   return (
                     <tr
                       className={showSummary == iRound - 1 ? css.hover : ''}
@@ -85,7 +85,6 @@ export function RoundScores(props: {
       <div
         className={[css.scoreBoard, css.board].join(' ')}
         style={{
-          width: `${150 + summary.players.length * 76}px`,
           display: showSummary == -1 ? 'none' : 'block',
         }}
       >
@@ -93,18 +92,18 @@ export function RoundScores(props: {
           <tbody>
             <tr>
               <td>{translate('scoreboard_round_n', { n: showSummary + 1 })}</td>
-              {summary.players.map((i) => (
-                <td key={i}>{props.playerNames[i]}</td>
+              {summary.players.map((pos, iPlayer) => (
+                <td key={iPlayer}>{props.playerNames[pos]}</td>
               ))}
             </tr>
-            {summary.details.map((detail, iDetail) => {
+            {summary.details.map((detail, iDetail) => (
               <tr key={iDetail}>
                 <td>{detail.description}</td>
                 {detail.values.map((value, iValue) => (
                   <td key={iValue}>{value}</td>
                 ))}
-              </tr>;
-            })}
+              </tr>
+            ))}
             <tr>
               <td>{translate('scoreboard_round_score')}</td>
               {summary.scoring.map((score, iScore) => (
@@ -113,8 +112,8 @@ export function RoundScores(props: {
             </tr>
             <tr>
               <td>{translate('scoreboard_total_score')}</td>
-              {summary.players.map((i) => (
-                <td key={i}>{props.playerScores[i]}</td>
+              {summary.players.map((pos, iPlayer) => (
+                <td key={iPlayer}>{props.playerScores[pos]}</td>
               ))}
             </tr>
           </tbody>

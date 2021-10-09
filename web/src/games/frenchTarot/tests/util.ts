@@ -6,7 +6,10 @@ import * as util from '../util/misc';
 
 export function playTricks(G: IG, tricks: string[]) {
   tricks.forEach((s_trick) => {
-    G.trick = str2trick(s_trick, G.players);
+    G.trick = str2trick(
+      s_trick,
+      G.players.map((P) => P.id),
+    );
     G.players.forEach((P, i) => {
       const pos = util.mod(i - +G.trick.leaderId, G.players.length);
       const i_card = P.hand.findIndex((C) => C == G.trick.cards[pos]);
@@ -28,7 +31,10 @@ export function setup_4players(): IG {
     { ...DefaultIPlayer, id: '2', hand: str2cards('C4 CR D1 D10 DC S4 S7 S10 SC SR HV T6 T7 T9 T13 T17 T20 E') },
     { ...DefaultIPlayer, id: '3', hand: str2cards('C2 C6 C8 C10 D3 D9 DV S5 S8 S9 H6 H8 HD T2 T14 T15 T19 T21') },
   ];
-  const ecarte = str2trick('D2 S1 S6 SV H1 H7', players);
+  const ecarte = str2trick(
+    'D2 S1 S6 SV H1 H7',
+    players.map((P) => P.id),
+  );
   ecarte.winnerId = players[0].id;
   return {
     ...DefaultIG,
@@ -49,7 +55,10 @@ export function setup_5players(): IG {
     { ...DefaultIPlayer, id: '3', hand: str2cards('C6 CD S9 S10 SV SD SR T4 T5 T11 T13 T17 T19 T21 E'), isTaker: true },
     { ...DefaultIPlayer, id: '4', hand: str2cards('C3 C9 CV D8 DR S8 H1 H5 H7 H9 H10 HD T8 T14 T15') },
   ];
-  const ecarte = str2trick('H3 H6 H8', players);
+  const ecarte = str2trick(
+    'H3 H6 H8',
+    players.map((P) => P.id),
+  );
   ecarte.winnerId = players[3].id;
   return {
     ...DefaultIG,

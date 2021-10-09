@@ -1,7 +1,7 @@
 export enum Pattern {
-  Tarot,
-  Franconian,
-  Skat,
+  Tarot = 'tarot',
+  Franconian = 'franconian',
+  Skat = 'skat',
 }
 
 export enum CardColor {

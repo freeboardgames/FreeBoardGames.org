@@ -12,13 +12,23 @@ it('finds the winner of a given trick', () => {
     ['C10 CR CD !Ex', '1'],
   ].forEach((args) => {
     const [s_trick, winnerId] = args;
-    expect(getTrickWinnerId(str2trick(s_trick, G.players))).toEqual(winnerId);
+    expect(
+      getTrickWinnerId(
+        str2trick(
+          s_trick,
+          G.players.map((P) => P.id),
+        ),
+      ),
+    ).toEqual(winnerId);
   });
 });
 
 it('correctly resolves a trick', () => {
   const G = setup_5players();
-  G.trick = str2trick('D4 D1 !D7 Tr4 D8', G.players);
+  G.trick = str2trick(
+    'D4 D1 !D7 Tr4 D8',
+    G.players.map((P) => P.id),
+  );
   const isRoundOver = resolveTrick(G);
   expect(isRoundOver).toEqual(false);
   expect(G.resolvedTricks.length).toEqual(2);

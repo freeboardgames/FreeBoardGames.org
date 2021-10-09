@@ -4,16 +4,16 @@ import { playTricks, setup_3players, setup_3players_bettel } from './util';
 it('correctly evaluates a 3p round where taker wins', () => {
   const G = setup_3players();
   playTricks(G, [
-    'GA !G10 GK', // taker wins
-    '!S7 S10 SK',
-    'H9 !HK H10',
-    'S8 EU !S9',
-    'GU !SU E9', // taker wins
-    '!G9 G7 HA', // taker wins
-    '!E10 GO HO',
-    'EA !EK E8', // taker wins
-    '!H8 E7 EO',
-    'SO HU !SA', // taker wins
+    'GrA !Gr10 GrK', // taker wins
+    '!Sc7 Sc10 ScK',
+    'Hz9 !HzK Hz10',
+    'Sc8 EiU !Sc9',
+    'GrU !ScU Ei9', // taker wins
+    '!Gr9 Gr7 HzA', // taker wins
+    '!Ei10 GrO HzO',
+    'EiA !EiK Ei8', // taker wins
+    '!Hz8 Ei7 EiO',
+    'ScO HzU !ScA', // taker wins
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '0',
@@ -32,16 +32,16 @@ it('correctly evaluates a 3p round where taker wins', () => {
 it('correctly evaluates a 3p round where taker loses', () => {
   const G = setup_3players();
   playTricks(G, [
-    'S8 !S10 S9',
-    'G9 !G10 GK',
-    'E10 !HU EO',
-    'H9 HK !HA',
-    'EA E7 !HO',
-    'SO SU !E8', // taker wins
-    '!GU GO E9',
-    'GA !G7 H10', // taker wins
-    '!S7 EU SK',
-    'H8 !EK SA',
+    'Sc8 !Sc10 Sc9',
+    'Gr9 !Gr10 GrK',
+    'Ei10 !HzU EiO',
+    'Hz9 HzK !HzA',
+    'EiA Ei7 !HzO',
+    'ScO ScU !Ei8', // taker wins
+    '!GrU GrO Ei9',
+    'GrA !Gr7 Hz10', // taker wins
+    '!Sc7 EiU ScK',
+    'Hz8 !EiK ScA',
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '0',
@@ -60,16 +60,16 @@ it('correctly evaluates a 3p round where taker loses', () => {
 it('correctly evaluates a 3p Bettel round where taker wins', () => {
   const G = setup_3players_bettel();
   playTricks(G, [
-    'S10 !SK SO',
-    'H10 !HA H8',
-    'HK !H9 H7',
-    '!SA S8 S7',
-    '!GU G9 G8',
-    '!EK E7 EO',
-    '!E8 EA GK',
-    'E10 !HO GA',
-    'GO !SU S9',
-    'E9 !G10 G7',
+    'Sc10 !ScK ScO',
+    'Hz10 !HzA Hz8',
+    'HzK !Hz9 Hz7',
+    '!ScA Sc8 Sc7',
+    '!GrU Gr9 Gr8',
+    '!EiK Ei7 EiO',
+    '!Ei8 EiA GrK',
+    'Ei10 !HzO GrA',
+    'GrO !ScU Sc9',
+    'Ei9 !Gr10 Gr7',
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '2',
@@ -88,11 +88,11 @@ it('correctly evaluates a 3p Bettel round where taker wins', () => {
 it('correctly evaluates a 3p Bettel round where taker loses', () => {
   const G = setup_3players_bettel();
   playTricks(G, [
-    'S10 !SK SO',
-    'H10 !HA H8',
-    'HK !H9 H7',
-    '!SA S8 S7',
-    '!GU G9 GA', // taker wins
+    'Sc10 !ScK ScO',
+    'Hz10 !HzA Hz8',
+    'HzK !Hz9 Hz7',
+    '!ScA Sc8 Sc7',
+    '!GrU Gr9 GrA', // taker wins
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '2',

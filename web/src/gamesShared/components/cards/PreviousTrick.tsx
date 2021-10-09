@@ -33,7 +33,11 @@ export function PreviousTrick(props: {
 
   function renderPrevTrickCard(i: number) {
     const card = props.trick[i];
-    const index = mod(props.leaderPos + i - props.currPos, props.numPlayers);
+    const clockwise = props.pattern != Pattern.Tarot;
+    let index = mod(props.leaderPos + i - props.currPos, props.numPlayers);
+    if (clockwise) {
+      index = mod(props.numPlayers - index, props.numPlayers);
+    }
     let text = '';
     let symbol = <></>;
     if (card) {

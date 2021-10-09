@@ -1,7 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
+import { ICard, CardColor } from 'gamesShared/definitions/cards';
 
-import { Contract, Phases, Stages, IG, ICard, CardColor } from './types';
+import { Contract, Phases, Stages, IG } from './types';
 import * as util from './util/misc';
 
 export const Moves = {
@@ -26,7 +27,7 @@ export const Moves = {
           .sort((a, b) => b - a)
           .map((i) => player.hand.splice(i, 1)[0])
           .reverse(),
-        winner: player,
+        winnerId: player.id,
       });
       delete player.discardSelection;
       G.kitty = [];

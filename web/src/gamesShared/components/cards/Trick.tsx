@@ -75,9 +75,6 @@ export function Trick(props: {
 }) {
   const clockwise = props.pattern != Pattern.Tarot;
   let inumPlayers = Math.max(0, props.numPlayers - 3);
-  if (!clockwise) {
-    inumPlayers = mod(props.numPlayers - inumPlayers, props.numPlayers);
-  }
   if (props.winnerPos != -1) {
     const [x, y] = VanishPositions[inumPlayers][relativePos(props.winnerPos)];
     getKeyframeRule('vanish', '100%').style.setProperty('transform', `translate(${x}px, ${y}px) scale(0.1)`);
@@ -96,7 +93,8 @@ export function Trick(props: {
   }
 
   function relativePos(pos: number): number {
-    return mod(pos - props.currPos, props.numPlayers);
+    pos = mod(pos - props.currPos, props.numPlayers);
+    return clockwise ? mod(props.numPlayers - pos, props.numPlayers) : pos;
   }
 
   return (
