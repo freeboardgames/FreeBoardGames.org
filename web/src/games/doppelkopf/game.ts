@@ -93,7 +93,7 @@ export const DoppelkopfGame: Game<IG> = {
 
       endIf: (G: IG) => {
         if (G.players[0].hand.length == 0) return;
-        return G.contract > Contract.None;
+        return G.contract > Contract.None && G.contract != Contract.SoloTrump;
       },
 
       onEnd: (G: IG) => {

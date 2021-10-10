@@ -14,7 +14,9 @@ export const Moves = {
     } else if (G.players.every((P) => P.bid == Contract.Pass)) {
       G.contract = Contract.Normal;
       ctx.events.endPhase();
-    } else if (contract > Contract.Some) {
+    } else if (contract < Contract.Some) {
+      ctx.events.endTurn();
+    } else {
       G.contract = contract;
       G.takerId = player.id;
       player.isTaker = true;

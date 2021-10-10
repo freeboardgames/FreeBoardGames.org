@@ -183,7 +183,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   }
 
   function renderButtonsBid() {
-    if (playerPhase != Phases.bidding || player.bid == Contract.Pass) return;
+    if (playerPhase != Phases.bidding || player.bid == Contract.Pass || player.bid > Contract.Some) return;
     const numBidders = players.filter((P) => P.bid == Contract.Some).length;
     const allowed_bids = util.allowedBids(player, numBidders);
     return (
@@ -279,7 +279,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     const biddingEnded = G.contract > Contract.None;
     const roundEnded = currentLeaderId == '';
     const announcements = G.players.map((P) => {
-      const announce = player.isTaker ? G.announcementRe : G.announcementContra;
+      const announce = P.isTaker ? G.announcementRe : G.announcementContra;
       let announceStr: string = null;
       if (announce !== null && announce >= Announcement.Win) {
         announceStr = translate(util.getAnnounceName(announce, P.isTaker));
