@@ -6,9 +6,10 @@ import css from './Card.module.css';
 export function Card(props: {
   pattern: Pattern;
   type?: ICard;
-  selected?: boolean;
   inactive?: boolean;
   click?: () => void;
+  width?: number;
+  height?: number;
 }) {
   let cardBack: number[];
   let colors: CardColor[];
@@ -64,19 +65,26 @@ export function Card(props: {
     }
   }
 
+  const scale = props.width ? props.width / cardSize[0] : props.height ? props.height / cardSize[1] : 1.0;
+  const scaledSize = [cardSize[0] * scale, cardSize[1] * scale];
+
   return (
     <div
-      className={[
-        css.card,
-        props.inactive ? css.inactive : '',
-        props.click ? css.selectable : '',
-        props.selected ? css.selected : '',
-        bgClass,
-      ].join(' ')}
+      className={[css.cropCard, props.click ? css.selectable : ''].join(' ')}
       style={{
-        backgroundPosition: `-${col * cardSize[0]}px -${row * cardSize[1]}px`,
+        width: `${scaledSize[0]}px`,
+        height: `${scaledSize[1]}px`,
       }}
-      onClick={props.click}
-    ></div>
+    >
+      <div className={css.scaleCard} style={{ transform: `scale(${scale})` }}>
+        <div
+          className={[css.card, props.inactive ? css.inactive : '', bgClass].join(' ')}
+          style={{
+            backgroundPosition: `-${col * cardSize[0]}px -${row * cardSize[1]}px`,
+          }}
+          onClick={props.click}
+        ></div>
+      </div>
+    </div>
   );
 }

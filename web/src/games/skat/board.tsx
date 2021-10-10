@@ -3,10 +3,9 @@ import { Ctx } from 'boardgame.io';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { Pattern, CardColor, ICard } from 'gamesShared/definitions/cards';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
-import { Card } from 'gamesShared/components/cards/Card';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
-import { CalledCard } from 'gamesShared/components/cards/CalledCard';
+import { DisplayCard } from 'gamesShared/components/cards/DisplayCard';
 import { Trick } from 'gamesShared/components/cards/Trick';
 import { Kitty } from 'gamesShared/components/cards/Kitty';
 import { ButtonBar } from 'gamesShared/components/cards/ButtonBar';
@@ -40,6 +39,18 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
 
   const prevTrick = G.resolvedTricks.length > 1 ? G.resolvedTricks[G.resolvedTricks.length - 1] : G.trick;
 
+  const handSize = 10;
+  const cmpCards = util.get_cmpCards(G.contract, G.trumpSuit);
+  const playerHands = G.players.map((P, i) => {
+    if (ctx.phase == Phases.round_end) {
+      return G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
+    } else if (P.isTaker && G.announcement == Announcement.Ouvert) {
+      return P.hand;
+    } else {
+      return P.hand.map(() => null);
+    }
+  });
+
   function renderBoard() {
     let selectableCards: boolean[] = player.hand.map(() => false);
     let canSelectCards = false;
@@ -58,7 +69,6 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
             {renderRoundScores()}
             {renderTrumpSuit()}
             {renderPrevTrick()}
-            {renderOuvert()}
             {renderKitty()}
             {renderPlayerZones()}
             {renderTrick()}
@@ -67,7 +77,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           <div className={css.lowerBoard}>
             <Hand
               playerId={player.id}
-              hand={player.hand}
+              hand={ctx.phase == Phases.round_end ? playerHands[+player.id] : player.hand}
               pattern={Pattern.Skat}
               selectable={selectableCards}
               selection={selectedCards || []}
@@ -147,7 +157,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   function renderTrumpSuit() {
     if (G.trumpSuit === null) return;
     const trumpCard: ICard = { color: G.trumpSuit, value: 14 };
-    return <CalledCard description={translate('trumpsuit')} card={trumpCard} pattern={Pattern.Skat} />;
+    return <DisplayCard description={translate('trumpsuit')} card={trumpCard} pattern={Pattern.Skat} />;
   }
 
   function renderKitty() {
@@ -157,33 +167,6 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         pattern={Pattern.Skat}
         revealed={G.kittyRevealed || (player.isTaker && G.hand === false)}
       />
-    );
-  }
-
-  function renderOuvert() {
-    let cardsOuvert = [];
-    if (ctx.phase == Phases.round_end) {
-      cardsOuvert = G.takerCards.slice(0, 10);
-    } else if (G.announcement == Announcement.Ouvert && !player.isTaker) {
-      cardsOuvert = util.getPlayerById(G, G.takerId).hand;
-    }
-    if (!cardsOuvert || cardsOuvert.length == 0) return;
-    const playerPos: number = +player.id;
-    const taker = G.players.find((P) => P.isTaker);
-    const takerPosRel: number = util.mod(+taker.id - playerPos, G.players.length);
-    const takerIsLeft = takerPosRel == 1;
-    return (
-      <div className={`${css.cardsOuvert} ${takerIsLeft ? css.left : ''}`}>
-        {cardsOuvert.map((C, i) => {
-          return (
-            <div key={i} className={css.cardContainer}>
-              <div>
-                <Card pattern={Pattern.Skat} type={C} />
-              </div>
-            </div>
-          );
-        })}
-      </div>
     );
   }
 
@@ -357,6 +340,8 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         bidding={bids.map((bid) => (biddingEnded || bid == 1 ? -1 : bid == 0 ? 0 : 1))}
         announcements={G.players.map(() => null)}
         names={playerNames}
+        hands={playerHands}
+        pattern={Pattern.Skat}
         isActive={isActive}
         markActive={isActive.map((active) => biddingEnded && !roundEnded && active)}
         isDealer={G.players.map((P) => !roundEnded && P.isDealer)}

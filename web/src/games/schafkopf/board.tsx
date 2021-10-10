@@ -5,7 +5,7 @@ import { Pattern, CardColor, ICard } from 'gamesShared/definitions/cards';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
-import { CalledCard } from 'gamesShared/components/cards/CalledCard';
+import { DisplayCard } from 'gamesShared/components/cards/DisplayCard';
 import { Trick } from 'gamesShared/components/cards/Trick';
 import { Kitty } from 'gamesShared/components/cards/Kitty';
 import { ButtonBar } from 'gamesShared/components/cards/ButtonBar';
@@ -42,6 +42,16 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     prevTrick = G.resolvedTricks[G.resolvedTricks.length - 1];
   }
 
+  const handSize = util.handSize(G.players.length);
+  const cmpCards = util.get_cmpCards(G.contract, G.trumpSuit);
+  const playerHands = G.players.map((P, i) => {
+    if (ctx.phase == Phases.round_end) {
+      return G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
+    } else {
+      return P.hand.map(() => null);
+    }
+  });
+
   function renderBoard() {
     let selectableCards: boolean[] = player.hand.map(() => false);
     let canSelectCards = false;
@@ -69,7 +79,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           <div className={css.lowerBoard}>
             <Hand
               playerId={player.id}
-              hand={player.hand}
+              hand={ctx.phase == Phases.round_end ? playerHands[+player.id] : player.hand}
               pattern={Pattern.Franconian}
               selectable={selectableCards}
               selection={selectedCards || []}
@@ -155,7 +165,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     if (!G.calledCard) return;
     const takerId = G.players.findIndex((P) => P.isTaker);
     return (
-      <CalledCard
+      <DisplayCard
         description={translate('callcard_player_called', { name: playerNames[takerId] })}
         card={G.calledCard}
         pattern={Pattern.Franconian}
@@ -167,7 +177,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     if (G.trumpSuit === null || G.contract != Contract.Solo) return;
     const trumpCard: ICard = { color: G.trumpSuit, value: 10 };
     return (
-      <CalledCard description={translate('callcard_is_trumpsuit')} card={trumpCard} pattern={Pattern.Franconian} />
+      <DisplayCard description={translate('callcard_is_trumpsuit')} card={trumpCard} pattern={Pattern.Franconian} />
     );
   }
 
@@ -212,7 +222,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
       if (colorInHand.some((C) => C.value == 14)) {
         return false;
       }
-      return !colorInHand.every((C) => [11, 12].indexOf(C.value) >= 0);
+      return !colorInHand.every((C) => [11, 12].includes(C.value));
     });
     const click = allowed_bids.map((bid) => {
       let selectable = bid <= Contract.Some || highest_bid < bid;
@@ -249,7 +259,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         if (colorInHand.some((C) => C.value == 14)) {
           return false;
         }
-        if (colorInHand.every((C) => [11, 12].indexOf(C.value) >= 0)) {
+        if (colorInHand.every((C) => [11, 12].includes(C.value))) {
           return false;
         }
         return true;
@@ -272,7 +282,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     const all_cards: ICard[] = ['Schell', 'Herz', 'Gras', 'Eichel']
       .filter((col) => {
         const colorInHand = player.hand.filter((C) => C.color == CardColor[col]);
-        return colorInHand.some((C) => [11, 12].indexOf(C.value) == -1);
+        return !colorInHand.every((C) => [11, 12].includes(C.value));
       })
       .map((col) => {
         return { color: CardColor[col], value: 10 };
@@ -380,6 +390,8 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         bidding={bids.map((bid) => (biddingEnded || bid < 0 ? -1 : bid == 0 ? 0 : 1))}
         announcements={announcements}
         names={playerNames}
+        hands={playerHands}
+        pattern={Pattern.Franconian}
         isActive={isActive}
         markActive={isActive.map((active) => biddingEnded && !roundEnded && active)}
         isDealer={G.players.map((P) => !roundEnded && P.isDealer)}

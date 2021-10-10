@@ -5,7 +5,7 @@ import { Pattern, CardColor, ICard } from 'gamesShared/definitions/cards';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
-import { CalledCard } from 'gamesShared/components/cards/CalledCard';
+import { DisplayCard } from 'gamesShared/components/cards/DisplayCard';
 import { Trick } from 'gamesShared/components/cards/Trick';
 import { Kitty } from 'gamesShared/components/cards/Kitty';
 import { ButtonBar } from 'gamesShared/components/cards/ButtonBar';
@@ -37,6 +37,15 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   const showRoundSummary = ctx.phase == Phases.round_end && G.roundSummaries.length > 0;
   const prevTrick = G.resolvedTricks.length > 1 ? G.resolvedTricks[G.resolvedTricks.length - 1] : G.trick;
   const canDiscard = player.isTaker && playerPhase == Phases.discard;
+
+  const handSize = util.handSize(G.players.length);
+  const playerHands = G.players.map((P, i) => {
+    if (ctx.phase == Phases.round_end) {
+      return G.deck.slice(i * handSize, (i + 1) * handSize).sort(util.cmpCards);
+    } else {
+      return P.hand.map(() => null);
+    }
+  });
 
   function renderBoard() {
     let selectableCards = player.hand.map(() => false);
@@ -70,7 +79,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
           <div className={css.lowerBoard}>
             <Hand
               playerId={player.id}
-              hand={player.hand}
+              hand={ctx.phase == Phases.round_end ? playerHands[+player.id] : player.hand}
               pattern={Pattern.Tarot}
               selectable={selectableCards}
               selection={selectedCards || []}
@@ -151,7 +160,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     if (!G.calledCard) return;
     const takerId = G.players.findIndex((P) => P.isTaker);
     return (
-      <CalledCard
+      <DisplayCard
         description={translate('callcard_player_called', { name: playerNames[takerId] })}
         card={G.calledCard}
         pattern={Pattern.Tarot}
@@ -351,6 +360,8 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         bidding={bids.map((bid) => (biddingEnded || bid < 0 ? -1 : bid == 0 ? 0 : 1))}
         announcements={announcements}
         names={playerNames}
+        hands={playerHands}
+        pattern={Pattern.Tarot}
         isActive={isActive}
         markActive={isActive.map((active) => biddingEnded && !roundEnded && active)}
         isDealer={G.players.map((P) => !roundEnded && P.isDealer)}

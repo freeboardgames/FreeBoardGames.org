@@ -35,12 +35,12 @@ export function selectableCards(G: IG, playerId: string): boolean[] {
   const trump_allowed = canDiscardTrump(G, player);
   return player.hand.map((c, i) => {
     if (player.discardSelection.length == discard_num) {
-      return player.discardSelection.indexOf(i) != -1;
+      return player.discardSelection.includes(i);
     }
     if (c.color == CardColor.Excuse) return false;
     if (c.color == CardColor.Trumps) {
-      if ([1, 21].indexOf(c.value) != -1) return false;
-      return player.discardSelection.indexOf(i) != -1 || trump_allowed;
+      if ([1, 21].includes(c.value)) return false;
+      return player.discardSelection.includes(i) || trump_allowed;
     } else {
       return c.value < 14;
     }

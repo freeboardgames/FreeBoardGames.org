@@ -63,7 +63,7 @@ function countTakerBouts(tricks: ITrick[], takers: string[]): number {
       .filter((T) => winnerIsTaker(T, takers))
       .reduce((a, b) => a.concat(b.cards), [])
       .filter((C) => C.color == CardColor.Trumps)
-      .filter((C) => [1, 21].indexOf(C.value) != -1).length
+      .filter((C) => [1, 21].includes(C.value)).length
   );
 }
 
@@ -82,7 +82,7 @@ function excusePoints(tricks: ITrick[], takers: string[]): number {
     const T_takerPos = takerPos.map((pos) => relativePos(pos, T.leaderId, T.cards.length));
     // regular case: before last trick
     if (i < tricks.length - 1) {
-      if (T_takerPos.indexOf(T_excusePos) != -1) {
+      if (T_takerPos.includes(T_excusePos)) {
         points = winnerIsTaker(T, takers) ? 4.5 : 4;
       } else {
         points = winnerIsTaker(T, takers) ? 0.5 : 0;
@@ -90,7 +90,7 @@ function excusePoints(tricks: ITrick[], takers: string[]): number {
       return true;
     }
     // rare case: Excuse in last trick
-    if (T_takerPos.indexOf(T_excusePos) == -1) {
+    if (!T_takerPos.includes(T_excusePos)) {
       points = winnerIsTaker(T, takers) ? 4.5 : 4;
     } else {
       // slam with Excuse leading in last trick
@@ -116,7 +116,7 @@ function cardPoints(card: ICard): number {
   // the Excuse is counted as 0 (it depends on the situation in the game)
   if (card.color == CardColor.Excuse) return 0;
   if (card.color == CardColor.Trumps) {
-    return [1, 21].indexOf(card.value) == -1 ? 0.5 : 4.5;
+    return [1, 21].includes(card.value) ? 4.5 : 0.5;
   }
   return 0.5 + Math.max(0, card.value - 10);
 }
@@ -132,5 +132,5 @@ function roundAwayFrom0(x: number): number {
 }
 
 function winnerIsTaker(T: ITrick, takers: string[]): boolean {
-  return takers.indexOf(T.winnerId) >= 0;
+  return takers.includes(T.winnerId);
 }

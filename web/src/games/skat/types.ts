@@ -50,7 +50,6 @@ export interface IG {
   holderId: string;
   bidderId: string;
   takerId: string;
-  takerCards: ICard[];
   contract: Contract;
   trumpSuit: CardColor;
   hand: boolean;
@@ -69,7 +68,6 @@ export const DefaultIG: IG = {
   holderId: null,
   bidderId: null,
   takerId: '',
-  takerCards: [],
   contract: Contract.None,
   trumpSuit: null,
   hand: null,
@@ -83,7 +81,7 @@ export interface IPlayer {
   id: string;
   name: string;
   score: number;
-  bid: Contract;
+  bid: number;
   isDealer: boolean;
   isTaker: boolean;
   isReady: boolean;
@@ -95,7 +93,7 @@ export const DefaultIPlayer: IPlayer = {
   id: '',
   name: '',
   score: 0,
-  bid: Contract.None,
+  bid: 1,
   isDealer: false,
   isTaker: false,
   isReady: true,

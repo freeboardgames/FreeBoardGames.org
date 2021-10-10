@@ -12,9 +12,6 @@
   .prevTrick {
     font-size: 1em;
   }
-  .prevTrick.p4, .prevTrick.p5 {
-    bottom: auto; top: 3.33em; right: 1em;
-  }
 }
 
 .prevTrick span:first-child {

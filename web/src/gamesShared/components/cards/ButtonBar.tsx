@@ -28,9 +28,9 @@ export function ButtonBar(props: {
 
   function renderCard(key: number, card: ICard, click: () => void) {
     return (
-      <div key={key} className={css.cardContainer} onClick={click ? () => click() : null}>
+      <div key={key} className={css.arrangeCard} onClick={click ? () => click() : null}>
         <div>
-          <Card pattern={props.pattern} type={card} />
+          <Card pattern={props.pattern} type={card} width={70} />
         </div>
       </div>
     );
@@ -46,7 +46,14 @@ export function ButtonBar(props: {
   }
 
   return (
-    <div className={[css.buttonBar, props.below ? css.below : '', props.cards ? css.cards : ''].join(' ')}>
+    <div
+      className={[
+        css.buttonBar,
+        props.below ? css.below : '',
+        props.cards ? css.cards : '',
+        props.noWrap ? css.nowrap : '',
+      ].join(' ')}
+    >
       {props.question ? <div className={css.question}>{props.question}</div> : null}
       {buttons}
     </div>

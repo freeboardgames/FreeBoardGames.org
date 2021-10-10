@@ -4,7 +4,7 @@
   height: calc(100vh - 49px);
   max-height: 800px;
   font-family: sans-serif;
-  font-size: 2vh;
+  font-size: max(0.8em, 2vh);
   border-radius: 20px;
   text-align: center;
   background-color: #795f5e;
@@ -29,27 +29,4 @@
 @media only screen and (min-height: 700px) {
 .upperBoard { height: calc(100% - 280px); }
 .lowerBoard { height: 280px; }
-}
-
-.cardsOuvert {
-  position: absolute;
-  top: 1em;
-  right: 50px;
-  white-space: nowrap;
-}
-
-.cardsOuvert.left {
-  right: auto; left: 10px;
-}
-
-.cardsOuvert .cardContainer {
-  display: inline-block;
-  transform-origin: 0 0;
-  transform: scale(0.2);
-  width: 20px;
-  box-shadow: rgb(0, 0, 0) 0px 0px 10px;
-}
-
-.cardsOuvert:hover {
-  z-index: 10000;
 }

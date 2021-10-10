@@ -94,5 +94,5 @@ function cardPoints(card: ICard): number {
 }
 
 function winnerIsTaker(T: ITrick, takers: string[]): boolean {
-  return takers.indexOf(T.winnerId) >= 0;
+  return takers.includes(T.winnerId);
 }

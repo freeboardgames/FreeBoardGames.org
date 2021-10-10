@@ -3,8 +3,8 @@ import { CardColor, ICard, ITrick, Pattern } from 'gamesShared/definitions/cards
 export function getPattern(col: CardColor): Pattern {
   const tarot = [CardColor.Excuse, CardColor.Trumps];
   const franconian = [CardColor.Schell, CardColor.Herz, CardColor.Gras, CardColor.Eichel];
-  if (tarot.indexOf(col) >= 0) return Pattern.Tarot;
-  if (franconian.indexOf(col) >= 0) return Pattern.Franconian;
+  if (tarot.includes(col)) return Pattern.Tarot;
+  if (franconian.includes(col)) return Pattern.Franconian;
   return Pattern.Skat;
 }
 
@@ -70,7 +70,7 @@ export function str2cards(s: string): ICard[] {
 }
 
 export function str2trick(s: string, players: string[]): ITrick {
-  if (s.indexOf('!') == -1) {
+  if (!s.includes('!')) {
     return { cards: str2cards(s) };
   }
   let leaderPos = 0;

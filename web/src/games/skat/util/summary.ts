@@ -57,7 +57,11 @@ function getRoundSummaryNull(G: IG): IRoundSummary {
 }
 
 function countTops(G: IG) {
-  const ranks = G.takerCards.map((C) => util.cardRank(G.contract, G.trumpSuit, C)).sort((a, b) => b - a);
+  const handSize = 10;
+  const kittySize = 2;
+  const playerHands = G.players.map((_, i) => G.deck.slice(i * handSize, (i + 1) * handSize));
+  const takerCards = G.deck.slice(-kittySize).concat(playerHands[+G.takerId]);
+  const ranks = takerCards.map((C) => util.cardRank(G.contract, G.trumpSuit, C)).sort((a, b) => b - a);
   let all_trumps = [1003, 1002, 1001, 1000, 506, 505, 504, 503, 502, 501, 500];
   if (G.contract == Contract.Grand) {
     all_trumps = all_trumps.slice(0, 4);

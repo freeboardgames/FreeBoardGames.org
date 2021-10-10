@@ -135,5 +135,5 @@ function cardPoints(card: ICard): number {
 }
 
 function idIsTaker(playerId: string, takers: string[]): boolean {
-  return takers.indexOf(playerId) >= 0;
+  return takers.includes(playerId);
 }

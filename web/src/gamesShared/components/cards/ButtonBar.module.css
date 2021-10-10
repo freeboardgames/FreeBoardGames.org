@@ -22,7 +22,6 @@
 }
 
 .buttonBar.cards {
-  height: 130px;
   min-width: 300px;
 }
 
@@ -36,6 +35,10 @@
   border-bottom-color: rgba(0, 0, 0, 0.5);
   border-top: 0;
   margin: -20px auto 0 auto;
+}
+
+.buttonBar.nowrap {
+  white-space: nowrap;
 }
 
 .question {
@@ -85,15 +88,17 @@
 .button:not(.inactive):hover { background-color: #efe; }
 .button.red:not(.inactive):hover { background-color: #fee; }
 
-.cardContainer {
+.arrangeCard {
   cursor: pointer;
   display: inline-block;
-  transform-origin: 0 0;
-  transform: scale(0.2);
+  vertical-align: middle;
   width: 70px;
-  box-shadow: rgb(0, 0, 0) 0px 0px 50px;
+  margin: 0 0.2em;
+  box-shadow: rgb(150, 150, 150) 0px 0px 10px;
+  background-color: rgba(150, 150, 150, 0.3);
 }
 
-.cardContainer:hover {
-  box-shadow: rgb(197, 255, 5) 0px 0px 50px;
+.arrangeCard:hover {
+  box-shadow: rgb(197, 255, 5) 0px 0px 10px;
+  background-color: rgba(197, 255, 5, 0.3);
 }

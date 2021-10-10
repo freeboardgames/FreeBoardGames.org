@@ -10,43 +10,43 @@ function mod(n: number, m: number): number {
 
 const CardPositions = [
   [
-    [0, 50],
-    [100, -50],
-    [-100, -80],
+    [0, 20],
+    [40, -20],
+    [-40, -30],
   ],
   [
-    [0, 50],
-    [100, -50],
-    [20, -100],
-    [-100, -30],
+    [0, 20],
+    [40, -20],
+    [8, -40],
+    [-20, -12],
   ],
   [
-    [0, 50],
-    [120, -50],
-    [50, -100],
-    [-50, -120],
-    [-120, -30],
+    [0, 20],
+    [50, -20],
+    [20, -40],
+    [-20, -50],
+    [-50, -12],
   ],
 ];
 
 const VanishPositions = [
   [
     [0, 130],
-    [300, -20],
-    [-300, -20],
+    [300, 20],
+    [-300, 20],
   ],
   [
     [0, 130],
-    [300, -20],
+    [300, 20],
     [0, -200],
-    [-300, -20],
+    [-300, 20],
   ],
   [
     [0, 130],
-    [300, -20],
+    [300, 20],
     [150, -200],
     [-150, -200],
-    [-300, -20],
+    [-300, 20],
   ],
 ];
 
@@ -84,9 +84,9 @@ export function Trick(props: {
     const index = relativePos(props.leaderPos + i);
     const [x, y] = CardPositions[inumPlayers][index];
     return (
-      <div key={index} className={css.cardContainer}>
+      <div key={index} className={css.arrangeCard}>
         <div style={{ transform: `translate(${x}px, ${y}px)` }}>
-          <Card pattern={props.pattern} type={card} />
+          <Card pattern={props.pattern} type={card} width={105} />
         </div>
       </div>
     );

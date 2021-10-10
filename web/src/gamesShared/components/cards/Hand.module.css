@@ -14,11 +14,14 @@
   white-space: nowrap;
 }
 
-.hand .cardContainer {
+.hand .arrangeCard {
   display: inline-block;
   width: 34px;
-  text-align: center;
-  transform-origin: 0 0;
-  transform: scale(0.34);
-  padding: 0;
+  transform: translate(0, 1px);
+}
+
+.hand .arrangeCard.selected {
+  transform: translate(0, -30px);
+  background-color: rgba(0, 144, 0, 0.3);
+  box-shadow: 0px 0px 40px #090;
 }

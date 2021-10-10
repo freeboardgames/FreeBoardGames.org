@@ -29,7 +29,7 @@ export function RoundScores(props: {
   const { translate } = useCurrentGameTranslation();
   const numSummaries = props.roundSummaries.length;
   const [hoverSummary, setHoverSummary] = React.useState(-1);
-  const showSummary = hoverSummary == -1 && numSummaries > 0 ? numSummaries - 1 : hoverSummary;
+  const showSummaryId = hoverSummary == -1 && numSummaries > 0 ? numSummaries - 1 : hoverSummary;
 
   function renderPreviousRounds() {
     const numPlayers = props.playerNames.length;
@@ -56,16 +56,17 @@ export function RoundScores(props: {
                 )}
                 {[...props.roundSummaries].reverse().map((S, iSummary) => {
                   const iRound = props.roundSummaries.length - iSummary;
+                  const roundPlayers = props.playerNames.map((_, i) => S.players.indexOf(i));
                   return (
                     <tr
-                      className={showSummary == iRound - 1 ? css.hover : ''}
+                      className={showSummaryId == iRound - 1 ? css.hover : ''}
                       key={iRound}
                       onMouseOver={() => setHoverSummary(iRound - 1)}
                       onMouseOut={() => setHoverSummary(-1)}
                     >
                       <td>{iRound}</td>
-                      {S.scoring.map((score, iScore) => {
-                        return <td key={iScore}>{score}</td>;
+                      {roundPlayers.map((iPlayer) => {
+                        return <td key={iPlayer}>{S.scoring[iPlayer]}</td>;
                       })}
                     </tr>
                   );
@@ -80,18 +81,18 @@ export function RoundScores(props: {
   }
 
   function renderRoundSummary() {
-    const summary = showSummary == -1 ? EmptyRoundSummary : props.roundSummaries[showSummary];
+    const summary = showSummaryId == -1 ? EmptyRoundSummary : props.roundSummaries[showSummaryId];
     return (
       <div
         className={[css.scoreBoard, css.board].join(' ')}
         style={{
-          display: showSummary == -1 ? 'none' : 'block',
+          display: showSummaryId == -1 ? 'none' : 'block',
         }}
       >
         <table>
           <tbody>
             <tr>
-              <td>{translate('scoreboard_round_n', { n: showSummary + 1 })}</td>
+              <td>{translate('scoreboard_round_n', { n: showSummaryId + 1 })}</td>
               {summary.players.map((pos, iPlayer) => (
                 <td key={iPlayer}>{props.playerNames[pos]}</td>
               ))}

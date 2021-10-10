@@ -56,5 +56,4 @@ export function dealCards(G: IG) {
     P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
   });
   G.kitty = G.deck.slice(-kittySize).sort(cmpCards);
-  G.takerCards = util.getPlayerById(G, G.takerId).hand.concat(G.kitty);
 }

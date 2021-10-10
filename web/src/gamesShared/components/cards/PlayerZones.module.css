@@ -13,19 +13,22 @@
 }
 
 .i1 { bottom: 0; left: 50%; transform: translate(-50%,0); }
-.i2 { top: 40%; right: 20px; transform: translate(0, 50%); }
-.p3.i3, .p4.i4, .p5.i5 { top: 40%; left: 20px; transform: translate(0, 50%); }
+.i2 { bottom: 12em; right: 20px; transform: translate(0, 50%); }
+.p3.i3, .p4.i4, .p5.i5 { bottom: 12em; left: 20px; transform: translate(0, 50%); }
 .p4.i3 { top: 3em; left: 50%; transform: translate(-50%,0); }
 .p5.i3 { top: 0.5em; left: 70%; transform: translate(-50%,0); }
 .p5.i4 { top: 0.5em; left: 30%; transform: translate(-50%,0); }
 
-@media only screen and (max-height: 600px) {
-.i2, .p3.i3, .p4.i4, .p5.i5 { bottom: 30%; }
-}
 @media only screen and (max-width: 850px) {
-  .playerZone.i2 { bottom: 60%; right: 20px; transform: translate(50%, 100%) rotate(-90deg); }
-  .p3.i3, .p4.i4, .p5.i5 { bottom: 60%; left: 20px; transform: translate(-50%, 100%) rotate(90deg); }
-  .p4.i3 { top: 40px; left: 50%; transform: translate(-50%,0); }
+  .i2 { bottom: 20em; right: 2em; transform: translate(40%, 100%) rotate(-90deg); }
+  .p3.i3, .p4.i4, .p5.i5 { bottom: 20em; left: 2em; transform: translate(-40%, 100%) rotate(90deg); }
+}
+
+@media only screen and (max-width: 650px) and (max-height: 700px) {
+  .p5.i2, .p5.i5 { bottom: 50%; }
+}
+
+@media only screen and (max-width: 650px) {
   .p5.i3 { top: 40px; left: 75%; transform: translate(-50%,0); }
   .p5.i4 { top: 40px; left: 25%; transform: translate(-50%,0); }
 }
@@ -114,4 +117,24 @@
 
 .playerZone .bidStatus .announcement {
   background-color: #a00;
+}
+
+.hand {
+  margin-top: 0.2em;
+  width: 170px;
+  height: 50px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.hand .arrangeCard {
+  display: inline-block;
+  width: 20px;
+  box-shadow: rgb(0, 0, 0) 0px 0px 10px;
+}
+
+.hand:hover {
+  z-index: 10000;
 }

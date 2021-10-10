@@ -34,7 +34,6 @@ export const SkatGame: Game<IG> = {
     };
     return {
       ...G,
-      takerCards: G.takerCards.map(() => dummyCard),
       players: G.players.map(stripSecrets),
       deck: G.deck.map(() => dummyCard),
       kitty: G.kittyRevealed || (playerID == G.takerId && G.hand === false) ? G.kitty : G.kitty.map(() => dummyCard),
@@ -106,7 +105,6 @@ export const SkatGame: Game<IG> = {
         G.bidderId = null;
         G.holderId = null;
         G.takerId = taker.id;
-        G.takerCards = taker.hand.concat(G.kitty);
         taker.isTaker = true;
       },
     },
@@ -167,7 +165,7 @@ export const SkatGame: Game<IG> = {
             P.score += roundSummary.scoring[i];
             P.isReady = false;
           });
-          G.kitty = G.resolvedTricks[0].cards;
+          G.kitty = G.deck.slice(-2);
           G.kittyRevealed = true;
         }
       },

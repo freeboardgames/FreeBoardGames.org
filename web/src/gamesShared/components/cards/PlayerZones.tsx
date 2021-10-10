@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useCurrentGameTranslation } from 'infra/i18n';
+import { ICard, Pattern } from 'gamesShared/definitions/cards';
+import { Card } from 'gamesShared/components/cards/Card';
 
 import css from './PlayerZones.module.css';
 
@@ -16,6 +18,8 @@ export function PlayerZones(props: {
   bidding: number[];
   announcements: string[];
   names: string[];
+  hands: ICard[][];
+  pattern: Pattern;
   isActive: boolean[];
   markActive: boolean[];
   isDealer: boolean[];
@@ -54,6 +58,17 @@ export function PlayerZones(props: {
               <div className={css.name}>{props.names[index]}</div>
               {renderStatuses(index)}
             </div>
+            {positionIndex == 0 ? null : (
+              <div className={css.hand}>
+                {props.hands[index].map((C, i) => {
+                  return (
+                    <div key={i} className={css.arrangeCard}>
+                      <Card pattern={props.pattern} type={C} width={70} />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>
