@@ -91,8 +91,12 @@ export function trick2str(T: ITrick): string {
   const numPlayers = T.cards.length;
   return new Array(numPlayers)
     .fill(0)
-    .map((_, i) => util.mod(i - +T.leaderId, numPlayers))
+    .map((_, i) => mod(i - +T.leaderId, numPlayers))
     .map((pos) => card2str(T.cards[pos]))
     .map((s, i) => (i == +T.leaderId ? `!${s}` : s))
     .join(' ');
+}
+
+function mod(n: number, m: number): number {
+  return ((n % m) + m) % m;
 }
