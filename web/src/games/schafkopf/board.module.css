@@ -29,3 +29,12 @@
 .upperBoard { height: calc(100% - 280px); }
 .lowerBoard { height: 280px; }
 }
+
+.lowerBoard .spectatorMsg {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 0, 0, 0.5);
+  border-radius: 0.5em;
+  padding: 0.5em;
+}

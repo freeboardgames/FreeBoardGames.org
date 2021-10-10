@@ -25,11 +25,12 @@ import * as u_placement from './util/placement';
 export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID: string; gameArgs?: IGameArgs }) {
   const { translate } = useCurrentGameTranslation();
   const [declinedContra, setDeclinedContra] = React.useState(false);
+  const spectatorMode = !props.playerID && !isLocalGame(props.gameArgs);
 
   const G = props.G;
   const ctx = props.ctx;
   const moves = props.moves;
-  const playerID = isLocalGame(props.gameArgs) ? props.ctx.currentPlayer : props.playerID;
+  const playerID = isLocalGame(props.gameArgs) ? ctx.currentPlayer : props.playerID || G.players[0].id;
   const player = util.getPlayerById(G, playerID);
   const playerPhase = ctx.currentPlayer === playerID && ctx.phase;
   const playerStage = ctx.activePlayers && ctx.activePlayers[playerIndex()];
@@ -53,16 +54,6 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   });
 
   function renderBoard() {
-    let selectableCards: boolean[] = player.hand.map(() => false);
-    let canSelectCards = false;
-    if (playerPhase == Phases.discard) {
-      selectableCards = u_discard.selectableCards(G, playerID);
-      canSelectCards = player.isTaker;
-    } else if (playerPhase == Phases.placement) {
-      selectableCards = u_placement.selectableCards(G, playerID);
-      canSelectCards = true;
-    }
-    const selectedCards = canDiscard ? player.discardSelection : [];
     return (
       <GameLayout gameArgs={props.gameArgs} maxWidth="1500px">
         <div className={css.board}>
@@ -76,18 +67,39 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
             {renderTrick()}
             {renderButtonBar()}
           </div>
-          <div className={css.lowerBoard}>
-            <Hand
-              playerId={player.id}
-              hand={ctx.phase == Phases.round_end ? playerHands[+player.id] : player.hand}
-              pattern={Pattern.Franconian}
-              selectable={selectableCards}
-              selection={selectedCards || []}
-              selectCards={canSelectCards ? moves.SelectCards : null}
-            />
-          </div>
+          <div className={css.lowerBoard}>{renderHand()}</div>
         </div>
       </GameLayout>
+    );
+  }
+
+  function renderHand() {
+    if (spectatorMode) {
+      return (
+        <div className={css.spectatorMsg}>
+          <span>You are in spectator mode.</span>
+        </div>
+      );
+    }
+    let selectableCards: boolean[] = player.hand.map(() => false);
+    let canSelectCards = false;
+    if (playerPhase == Phases.discard) {
+      selectableCards = u_discard.selectableCards(G, playerID);
+      canSelectCards = player.isTaker;
+    } else if (playerPhase == Phases.placement) {
+      selectableCards = u_placement.selectableCards(G, playerID);
+      canSelectCards = true;
+    }
+    const selectedCards = canDiscard ? player.discardSelection : [];
+    return (
+      <Hand
+        playerId={player.id}
+        hand={ctx.phase == Phases.round_end ? playerHands[+player.id] : player.hand}
+        pattern={Pattern.Franconian}
+        selectable={selectableCards}
+        selection={selectedCards || []}
+        selectCards={canSelectCards ? moves.SelectCards : null}
+      />
     );
   }
 
@@ -200,6 +212,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   }
 
   function renderButtonBar() {
+    if (spectatorMode) return;
     const buttons = [
       renderButtonsBid(),
       renderButtonsDiscard(),
@@ -390,7 +403,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         bidding={bids.map((bid) => (biddingEnded || bid < 0 ? -1 : bid == 0 ? 0 : 1))}
         announcements={announcements}
         names={playerNames}
-        hands={playerHands}
+        hands={playerHands.map((H, i) => (G.players[i].id == playerID && !spectatorMode ? null : H))}
         pattern={Pattern.Franconian}
         isActive={isActive}
         markActive={isActive.map((active) => biddingEnded && !roundEnded && active)}

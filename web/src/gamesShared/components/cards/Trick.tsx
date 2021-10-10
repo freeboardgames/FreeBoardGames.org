@@ -77,7 +77,10 @@ export function Trick(props: {
   let inumPlayers = Math.max(0, props.numPlayers - 3);
   if (props.winnerPos != -1) {
     const [x, y] = VanishPositions[inumPlayers][relativePos(props.winnerPos)];
-    getKeyframeRule('vanish', '100%').style.setProperty('transform', `translate(${x}px, ${y}px) scale(0.1)`);
+    const rule = getKeyframeRule('vanish', '100%');
+    if (rule !== null) {
+      rule.style.setProperty('transform', `translate(${x}px, ${y}px) scale(0.1)`);
+    }
   }
 
   function arrangeTrickCard(i: number, card: ICard) {

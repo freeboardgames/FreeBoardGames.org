@@ -58,7 +58,7 @@ export function PlayerZones(props: {
               <div className={css.name}>{props.names[index]}</div>
               {renderStatuses(index)}
             </div>
-            {positionIndex == 0 ? null : (
+            {!props.hands[index] ? null : (
               <div className={css.hand}>
                 {props.hands[index].map((C, i) => {
                   return (
