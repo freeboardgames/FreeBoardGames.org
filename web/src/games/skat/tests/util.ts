@@ -37,6 +37,7 @@ export function setup_3players(): IG {
   return {
     ...DefaultIG,
     players: players,
+    deck: Array.prototype.concat(...players.map((P) => P.hand), ecarte.cards),
     takerId: taker.id,
     trick: { cards: [], leaderId: players[1].id },
     resolvedTricks: [ecarte],
@@ -64,6 +65,7 @@ export function setup_3players_null(): IG {
   return {
     ...DefaultIG,
     players: players,
+    deck: Array.prototype.concat(...players.map((P) => P.hand), ecarte.cards),
     takerId: taker.id,
     trick: { cards: [], leaderId: players[1].id },
     resolvedTricks: [ecarte],
