@@ -14,7 +14,6 @@ export const mergersGameDef: IGameDef = {
   description: 'Similar to Acquire',
   descriptionTag: 'Invest in hotels and dominate the market!',
   instructions: {
-    videoId: 'AVoUPu5O1os',
     text: instructions,
   },
   status: IGameStatus.PUBLISHED,
