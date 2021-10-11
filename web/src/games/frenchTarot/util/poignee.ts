@@ -1,6 +1,7 @@
 import { Ctx } from 'boardgame.io';
+import { CardColor, ICard } from 'gamesShared/definitions/cards';
 
-import { IG, ICard, CardColor } from '../types';
+import { IG } from '../types';
 import * as util from './misc';
 
 export function selectableCards(G: IG, playerId: string): boolean[] {
@@ -10,7 +11,7 @@ export function selectableCards(G: IG, playerId: string): boolean[] {
   const thresh = getPoigneeThresholds(G.players.length);
   const max_thresh = thresh[max_poignee_level - 1];
   if (player.discardSelection.length == max_thresh) {
-    return player.hand.map((C, i) => player.discardSelection.indexOf(i) != -1);
+    return player.hand.map((C, i) => player.discardSelection.includes(i));
   }
   const num_trumps = player.hand.filter((C) => C.color == CardColor.Trumps).length;
   return player.hand.map((C) => {
@@ -45,7 +46,7 @@ export function autoDeselectExcuse(G: IG, ctx: Ctx, sel: number[]): number[] {
 }
 
 export function maxPoigneeLevel(hand: ICard[], numPlayers: number) {
-  const num_trumps_in_hand = hand.filter((C) => [CardColor.Trumps, CardColor.Excuse].indexOf(C.color) != -1).length;
+  const num_trumps_in_hand = hand.filter((C) => [CardColor.Trumps, CardColor.Excuse].includes(C.color)).length;
   const thresh = getPoigneeThresholds(numPlayers);
   let i = 0;
   for (; i < thresh.length && thresh[i] <= num_trumps_in_hand; i++);

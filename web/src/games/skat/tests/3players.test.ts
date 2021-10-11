@@ -5,16 +5,16 @@ import * as util from '../util/misc';
 it('correctly evaluates a 3p round where taker wins', () => {
   const G = setup_3players();
   playTricks(G, [
-    'C10 !HD CB',
+    'C10 !HQ CJ',
     'SA S7 !S10', // taker wins
     '!H9 HA H8',
     'DK !D10 D7',
-    'SB !CD CK', // taker wins
-    '!C7 CA HB',
-    'C8 DD !SD', // taker wins
+    'SJ !CQ CK', // taker wins
+    '!C7 CA HJ',
+    'C8 DQ !SQ', // taker wins
     '!HK DA SK', // taker wins
     '!H10 D8 S8', // taker wins
-    '!DB D9 S9', // taker wins
+    '!DJ D9 S9', // taker wins
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '0',
@@ -33,16 +33,16 @@ it('correctly evaluates a 3p round where taker overbids', () => {
   const taker = util.getPlayerById(G, G.takerId);
   taker.bid = 26;
   playTricks(G, [
-    'C10 !HD CB',
+    'C10 !HQ CJ',
     'SA S7 !S10', // taker wins
     '!H9 HA H8',
     'DK !D10 D7',
-    'SB !CD CK', // taker wins
-    '!C7 CA HB',
-    'C8 DD !SD', // taker wins
+    'SJ !CQ CK', // taker wins
+    '!C7 CA HJ',
+    'C8 DQ !SQ', // taker wins
     '!HK DA SK', // taker wins
     '!H10 D8 S8', // taker wins
-    '!DB D9 S9', // taker wins
+    '!DJ D9 S9', // taker wins
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '0',
@@ -62,16 +62,16 @@ it('correctly evaluates a 3p round where taker wins hand', () => {
   const taker = util.getPlayerById(G, G.takerId);
   taker.bid = 26;
   playTricks(G, [
-    'C10 !HD CB',
+    'C10 !HQ CJ',
     'SA S7 !S10', // taker wins
     '!H9 HA H8',
     'DK !D10 D7',
-    'SB !CD CK', // taker wins
-    '!C7 CA HB',
-    'C8 DD !SD', // taker wins
+    'SJ !CQ CK', // taker wins
+    '!C7 CA HJ',
+    'C8 DQ !SQ', // taker wins
     '!HK DA SK', // taker wins
     '!H10 D8 S8', // taker wins
-    '!DB D9 S9', // taker wins
+    '!DJ D9 S9', // taker wins
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '0',
@@ -88,15 +88,15 @@ it('correctly evaluates a 3p round where taker wins hand', () => {
 it('correctly evaluates a 3p round where taker wins Schneider', () => {
   const G = setup_3players();
   playTricks(G, [
-    'C10 !CD SD', // taker wins
+    'C10 !CQ SQ', // taker wins
     '!DK D9 D7', // taker wins
     '!SA S7 S10', // taker wins
-    '!C8 DD CB',
-    'SB HD !HB', // taker wins
+    '!C8 DQ CJ',
+    'SJ HQ !HJ', // taker wins
     '!H10 HA H8',
     'C7 !D10 S9', // taker wins
     '!HK D8 SK', // taker wins
-    '!DB CA CK', // taker wins
+    '!DJ CA CK', // taker wins
     '!H9 DA S8', // taker wins
   ]);
   expect(getRoundSummary(G)).toEqual({
@@ -116,13 +116,13 @@ it('correctly evaluates a 3p round where taker loses', () => {
   playTricks(G, [
     'H9 !HA H8',
     'DK !DA D7',
-    'SB !DD CB',
+    'SJ !DQ CJ',
     'SA S7 !SK', // taker wins
-    '!C10 CD HB',
+    '!C10 CQ HJ',
     'C7 D8 !S8', // taker wins
     '!C8 CA CK',
     'H10 !D10 S10',
-    'DB !HD SD', // taker wins
+    'DJ !HQ SQ', // taker wins
     '!HK D9 S9', // taker wins
   ]);
   expect(getRoundSummary(G)).toEqual({
@@ -142,14 +142,14 @@ it('correctly evaluates a 3p Null round where taker wins', () => {
   playTricks(G, [
     'C9 !CA CK',
     'HA !H10 H7',
-    '!DB DA DK',
-    'HD !HB H8',
-    '!DD SK D7',
-    '!C7 CB C10',
-    'SB !S7 S9',
+    '!DJ DA DK',
+    'HQ !HJ H8',
+    '!DQ SK D7',
+    '!C7 CJ C10',
+    'SJ !S7 S9',
     '!D8 C8 HK',
     '!D10 H9 SA',
-    '!S8 S10 CD',
+    '!S8 S10 CQ',
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '2',
@@ -168,7 +168,7 @@ it('correctly evaluates a 3p Null round where taker loses', () => {
   playTricks(G, [
     'HA !H9 H7',
     '!C7 CA CK',
-    'C9 !CB CD', // taker wins
+    'C9 !CJ CQ', // taker wins
   ]);
   expect(getRoundSummary(G)).toEqual({
     takerId: '2',

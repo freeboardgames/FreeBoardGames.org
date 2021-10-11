@@ -1,3 +1,5 @@
+import { ICard, ITrick } from 'gamesShared/definitions/cards';
+
 export enum Phases {
   bidding = 'bidding',
   discard = 'discard',
@@ -77,26 +79,6 @@ export const DefaultIPlayer: IPlayer = {
   isReady: true,
   hand: [],
 };
-
-export interface ICard {
-  color: CardColor;
-  value: number;
-}
-
-export enum CardColor {
-  Clubs,
-  Diamonds,
-  Spades,
-  Hearts,
-  Trumps,
-  Excuse,
-}
-
-export interface ITrick {
-  cards: ICard[];
-  leader?: IPlayer;
-  winner?: IPlayer;
-}
 
 export interface IRoundSummary {
   takerId: string;

@@ -1,3 +1,5 @@
+import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
+
 export enum Phases {
   bidding = 'bidding',
   discard = 'discard',
@@ -16,13 +18,6 @@ export interface IGameMoves {
   Announce(announcement: Announcement): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
-}
-
-export enum CardColor {
-  Diamonds,
-  Hearts,
-  Spades,
-  Clubs,
 }
 
 // not allowed at the end of the game: Pass, Some, Marriage, Solo
@@ -99,17 +94,6 @@ export const DefaultIPlayer: IPlayer = {
   isReady: true,
   hand: [],
 };
-
-export interface ICard {
-  color: CardColor;
-  value: number;
-}
-
-export interface ITrick {
-  cards: ICard[];
-  leader?: IPlayer;
-  winner?: IPlayer;
-}
 
 export interface IRoundSummary {
   takerId: string;

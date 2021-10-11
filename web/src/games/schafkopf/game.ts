@@ -1,7 +1,8 @@
 import { Ctx, Game } from 'boardgame.io';
 import { Stage } from 'boardgame.io/core';
+import { ICard, CardColor, ITrick } from 'gamesShared/definitions/cards';
 
-import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './types';
+import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
 import * as u_summary from './util/summary';
 import { Moves } from './moves';
@@ -16,7 +17,7 @@ export const SchafkopfGame: Game<IG> = {
       id: i.toString(),
       isDealer: i == 0,
     }));
-    game.trick = { cards: [], leader: game.players[1] };
+    game.trick = { cards: [], leaderId: game.players[1].id };
     return game;
   },
 
@@ -40,9 +41,7 @@ export const SchafkopfGame: Game<IG> = {
       calledTakerId: G.calledTakerId == playerID ? G.calledTakerId : null,
       calledMayRun: G.calledTakerId == playerID ? G.calledMayRun : null,
       resolvedTricks: G.resolvedTricks.map((T, i) =>
-        (G.players.length == 4 || i > 0) && i == G.resolvedTricks.length - 1
-          ? { ...T, winner: stripSecrets(T.winner), leader: stripSecrets(T.leader) }
-          : dummyTrick,
+        (G.players.length == 4 || i > 0) && i == G.resolvedTricks.length - 1 ? T : dummyTrick,
       ),
     };
   },
@@ -61,7 +60,7 @@ export const SchafkopfGame: Game<IG> = {
           ...DefaultIG,
           players: G.players,
           deck: ctx.random.Shuffle(getSortedDeck()),
-          trick: { cards: [], leader: leader },
+          trick: { cards: [], leaderId: leader.id },
           roundSummaries: G.roundSummaries,
         });
         G.players.forEach((P, i) => {
@@ -196,7 +195,7 @@ export const SchafkopfGame: Game<IG> = {
       turn: {
         activePlayers: { all: Stage.NULL },
         order: {
-          first: (G) => +G.trick.leader.id,
+          first: (G) => +G.trick.leaderId,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
         },
       },
@@ -247,6 +246,7 @@ export const SchafkopfGame: Game<IG> = {
         const newDealerPos = util.mod(dealerPos + 1, ctx.numPlayers);
         G.players.forEach((P, i) => {
           P.isDealer = i == newDealerPos;
+          P.hand = [];
         });
       },
     },
@@ -262,9 +262,9 @@ export function resolveTrick(G: IG): boolean {
   }
   const winnerId = getTrickWinnerId(G.contract, G.trumpSuit, G.trick);
   const winner = util.getPlayerById(G, winnerId);
-  G.trick.winner = winner;
+  G.trick.winnerId = winner.id;
   G.resolvedTricks.push(G.trick);
-  G.trick = { cards: [], leader: winner };
+  G.trick = { cards: [], leaderId: winner.id };
   if (G.contract == Contract.Bettel && winner.isTaker) {
     return true;
   }
@@ -280,7 +280,7 @@ export function getCalledTakerId(players: IPlayer[], card: ICard): string {
 }
 
 export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: ITrick): string {
-  const leaderId = +T.leader.id;
+  const leaderId = +T.leaderId;
   let ranks = T.cards.map((C) => util.cardRank(contract, trumpSuit, C));
   if (ranks.every((R) => R < 500)) {
     const lead_color = T.cards[0].color;

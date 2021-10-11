@@ -24,9 +24,9 @@ import { playRandomTricks, dealCards } from './gen';
 export function playRandomTricks(G: IG) {
   const numTricks = G.players[0].hand.length;
   for (let i = 0; i < numTricks; i++) {
-    const leader = G.trick.leader;
+    const leaderId = G.trick.leaderId;
     for (let j = 0; j < 4; j++) {
-      const player = G.players[util.mod(+leader.id + j, 4)];
+      const player = G.players[util.mod(+leaderId + j, 4)];
       const sel_bool = u_placement.selectableCards(G, player.id);
       const sel_id = sel_bool.map((_, i) => i).filter((i) => sel_bool[i]);
       const i_card = sel_id[(sel_id.length * Math.random()) | 0];

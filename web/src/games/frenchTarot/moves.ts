@@ -1,7 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
+import { ICard } from 'gamesShared/definitions/cards';
 
-import { Phases, Stages, IG, ICard } from './types';
+import { Phases, Stages, IG } from './types';
 import * as util from './util/misc';
 import * as u_discard from './util/discard';
 import * as u_poignee from './util/poignee';
@@ -36,7 +37,7 @@ export const Moves = {
         .sort((a, b) => b - a)
         .map((i) => player.hand.splice(i, 1)[0])
         .reverse(),
-      winner: player,
+      winnerId: player.id,
     });
     delete player.discardSelection;
     G.kittyRevealed = false;
@@ -50,7 +51,7 @@ export const Moves = {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     if (!player.isTaker) return INVALID_MOVE;
     G.announcedSlam = announce;
-    if (announce) G.trick.leader = player;
+    if (announce) G.trick.leaderId = player.id;
     player.isReady = true;
     ctx.events.endStage();
     ctx.events.endPhase();

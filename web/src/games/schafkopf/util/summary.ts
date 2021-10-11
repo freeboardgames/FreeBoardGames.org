@@ -1,15 +1,11 @@
-import { Contract, IG, ICard, ITrick, IRoundSummary } from '../types';
+import { ICard, ITrick } from 'gamesShared/definitions/cards';
+import { Contract, IG, IRoundSummary } from '../types';
 import * as util from './misc';
 
 export function getRoundSummary(G: IG): IRoundSummary {
   if (G.contract == Contract.Ace) {
     // called player counts as taker (this is secret during the game)
     G.players[+G.calledTakerId].isTaker = true;
-    G.resolvedTricks
-      .filter((T) => T.winner.id == G.calledTakerId)
-      .forEach((T) => {
-        T.winner.isTaker = true;
-      });
   }
 
   const takers = G.calledTakerId ? [G.takerId, G.calledTakerId] : [G.takerId];
@@ -22,10 +18,10 @@ export function getRoundSummary(G: IG): IRoundSummary {
   let roundValue = 0;
   if (G.contract == Contract.Bettel) {
     takerPointsRequired = 0;
-    basic = G.resolvedTricks.some((T) => T.winner.isTaker) ? -3 : 3;
+    basic = G.resolvedTricks.some((T) => winnerIsTaker(T, takers)) ? -3 : 3;
     roundValue = G.contra * basic;
   } else {
-    takerPoints = countTakerPoints(G.resolvedTricks);
+    takerPoints = countTakerPoints(G.resolvedTricks, takers);
     const sign = takerPoints >= takerPointsRequired ? 1 : -1;
     basic = sign * (G.contract == Contract.Ace ? 1 : G.announcedTout ? 10 : 5);
     running = countRunning(G, takers);
@@ -85,9 +81,9 @@ function countRunning(G: IG, takers: string[]) {
   return sign * n_tops;
 }
 
-function countTakerPoints(tricks: ITrick[]): number {
+function countTakerPoints(tricks: ITrick[], takers: string[]): number {
   return tricks
-    .filter((T) => T.winner.isTaker)
+    .filter((T) => winnerIsTaker(T, takers))
     .reduce((a, b) => a.concat(b.cards), [])
     .map(cardPoints)
     .reduce((a, b) => a + b, 0);
@@ -95,4 +91,8 @@ function countTakerPoints(tricks: ITrick[]): number {
 
 function cardPoints(card: ICard): number {
   return [0, 10, 2, 3, 4, 11][Math.max(0, card.value - 9)];
+}
+
+function winnerIsTaker(T: ITrick, takers: string[]): boolean {
+  return takers.includes(T.winnerId);
 }

@@ -1,7 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
+import { CardColor } from 'gamesShared/definitions/cards';
 
-import { Stages, Contract, Announcement, IG, CardColor } from './types';
+import { Stages, Contract, Announcement, IG } from './types';
 import * as util from './util/misc';
 
 export const Moves = {
@@ -13,7 +14,9 @@ export const Moves = {
     } else if (G.players.every((P) => P.bid == Contract.Pass)) {
       G.contract = Contract.Normal;
       ctx.events.endPhase();
-    } else if (contract > Contract.Some) {
+    } else if (contract < Contract.Some) {
+      ctx.events.endTurn();
+    } else {
       G.contract = contract;
       G.takerId = player.id;
       player.isTaker = true;
