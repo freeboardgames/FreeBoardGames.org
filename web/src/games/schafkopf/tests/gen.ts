@@ -46,15 +46,13 @@ export function shuffleArray(array: any[]) {
 }
 
 export function dealCards(G: IG) {
-  const handSize = util.handSize(G.players.length);
-  const kittySize = util.kittySize(G.players.length);
+  const handSize = 8;
   const cmpCards = util.get_cmpCards(G.contract, CardColor.Herz);
   G.deck = getSortedDeck();
   shuffleArray(G.deck);
   G.players.forEach((P, i) => {
     P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
   });
-  G.kitty = kittySize > 0 ? G.deck.slice(-kittySize).sort(cmpCards) : [];
   if (G.calledCard && G.contract == Contract.Ace) {
     G.calledTakerId = getCalledTakerId(G.players, G.calledCard);
     if (G.calledTakerId == G.takerId) {

@@ -43,14 +43,6 @@ export function getBidName(bid: number): string {
   return `bid_${['pass', 'some', 'ace', 'bettel', 'wenz', 'solo'][bid]}`;
 }
 
-export function kittySize(numPlayers: number): number {
-  return [2, 0][Math.max(0, numPlayers - 3)];
-}
-
-export function handSize(numPlayers: number): number {
-  return [10, 8][Math.max(0, numPlayers - 3)];
-}
-
 export function allowedBids(numPlayer: number, is_first_bidround: boolean): Contract[] {
   if (is_first_bidround) return [Contract.Pass, Contract.Some];
   if (numPlayer == 4) {

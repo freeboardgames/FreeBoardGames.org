@@ -57,16 +57,13 @@ export function getRoundSummary(G: IG): IRoundSummary {
 }
 
 function countRunning(G: IG, takers: string[]) {
-  const numPlayers = G.players.length;
-  const handSize = util.handSize(numPlayers);
-  const kittySize = util.kittySize(numPlayers);
+  const handSize = 8;
   const all_trumps = G.contract == Contract.Wenz ? [1003, 1002, 1001, 1000] : [10003, 10002, 10001, 10000];
   const opponents = G.players.filter((P) => !P.isTaker).map((P) => P.id);
   const playerHands = G.players.map((_, i) => G.deck.slice(i * handSize, (i + 1) * handSize));
-  const kitty = kittySize == 0 ? [] : G.deck.slice(-kittySize);
   const takerHands = takers.map((i) => playerHands[+i]);
   const opponentHands = opponents.map((i) => playerHands[+i]);
-  const takerCards = Array.prototype.concat(kitty, ...takerHands);
+  const takerCards = Array.prototype.concat(...takerHands);
   const opponentCards = Array.prototype.concat(...opponentHands);
 
   let ranks = takerCards.map((C) => util.cardRank(G.contract, G.trumpSuit, C)).sort((a, b) => b - a);

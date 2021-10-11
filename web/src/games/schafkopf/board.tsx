@@ -7,7 +7,6 @@ import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
 import { DisplayCard } from 'gamesShared/components/cards/DisplayCard';
 import { Trick } from 'gamesShared/components/cards/Trick';
-import { Kitty } from 'gamesShared/components/cards/Kitty';
 import { ButtonBar } from 'gamesShared/components/cards/ButtonBar';
 import { PlayerZones } from 'gamesShared/components/cards/PlayerZones';
 import { RoundScores } from 'gamesShared/components/cards/RoundScores';
@@ -19,7 +18,6 @@ import css from './board.module.css';
 
 import { Phases, Stages, IGameMoves, IG, Contract } from './types';
 import * as util from './util/misc';
-import * as u_discard from './util/discard';
 import * as u_placement from './util/placement';
 
 export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID: string; gameArgs?: IGameArgs }) {
@@ -36,14 +34,13 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   const playerStage = ctx.activePlayers && ctx.activePlayers[playerIndex()];
   const playerNames = G.players.map((P) => playerName(P.id));
   const showRoundSummary = ctx.phase == Phases.round_end && G.roundSummaries.length > 0;
-  const canDiscard = player.isTaker && playerPhase == Phases.discard;
 
   let prevTrick = G.trick;
-  if (G.resolvedTricks.length > (util.kittySize(ctx.numPlayers) > 0 ? 1 : 0)) {
+  if (G.resolvedTricks.length > 0) {
     prevTrick = G.resolvedTricks[G.resolvedTricks.length - 1];
   }
 
-  const handSize = util.handSize(G.players.length);
+  const handSize = 8;
   const cmpCards = util.get_cmpCards(G.contract, G.trumpSuit);
   const playerHands = G.players.map((P, i) => {
     if (ctx.phase == Phases.round_end) {
@@ -62,7 +59,6 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
             {renderTrumpSuit()}
             {renderCalledCard()}
             {renderPrevTrick()}
-            {renderKitty()}
             {renderPlayerZones()}
             {renderTrick()}
             {renderButtonBar()}
@@ -83,21 +79,17 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     }
     let selectableCards: boolean[] = player.hand.map(() => false);
     let canSelectCards = false;
-    if (playerPhase == Phases.discard) {
-      selectableCards = u_discard.selectableCards(G, playerID);
-      canSelectCards = player.isTaker;
-    } else if (playerPhase == Phases.placement) {
+    if (playerPhase == Phases.placement) {
       selectableCards = u_placement.selectableCards(G, playerID);
       canSelectCards = true;
     }
-    const selectedCards = canDiscard ? player.discardSelection : [];
     return (
       <Hand
         playerId={player.id}
         hand={ctx.phase == Phases.round_end ? playerHands[+player.id] : player.hand}
         pattern={Pattern.Franconian}
         selectable={selectableCards}
-        selection={selectedCards || []}
+        selection={[]}
         selectCards={canSelectCards ? moves.SelectCards : null}
       />
     );
@@ -158,17 +150,14 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   }
 
   function renderPrevTrick() {
-    const isKitty = G.kittyPrev.length > 0;
-    const inGame = G.players.some((P) => P.isTaker) && prevTrick.cards.length > 0;
-    if (!isKitty && !inGame) return;
+    if (!G.players.some((P) => P.isTaker) || prevTrick.cards.length == 0) return;
     return (
       <PreviousTrick
-        trick={isKitty ? G.kittyPrev : prevTrick.cards}
+        trick={prevTrick.cards}
         pattern={Pattern.Franconian}
-        leaderPos={isKitty ? 0 : +prevTrick.leaderId}
-        currPos={isKitty ? 0 : +player.id}
-        numPlayers={isKitty ? G.kittyPrev.length : G.players.length}
-        isKitty={isKitty}
+        leaderPos={+prevTrick.leaderId}
+        currPos={+player.id}
+        numPlayers={G.players.length}
       />
     );
   }
@@ -193,12 +182,8 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     );
   }
 
-  function renderKitty() {
-    return <Kitty kitty={G.kitty} pattern={Pattern.Franconian} revealed={G.kittyRevealed || player.isTaker} />;
-  }
-
   function renderTrick() {
-    const trick = G.kitty.length > 0 ? null : G.trick.cards.length > 0 ? G.trick : prevTrick;
+    const trick = G.trick.cards.length > 0 ? G.trick : prevTrick;
     return (
       <Trick
         trick={trick ? trick.cards : []}
@@ -215,7 +200,6 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     if (spectatorMode) return;
     const buttons = [
       renderButtonsBid(),
-      renderButtonsDiscard(),
       renderButtonsCall(),
       renderButtonsTrump(),
       renderButtonsTout(),
@@ -251,17 +235,6 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         red={allowed_bids.map((bid) => bid == 0)}
       />
     );
-  }
-
-  function renderButtonsDiscard() {
-    if (!canDiscard || !player.discardSelection) return;
-    const discard_num = util.kittySize(G.players.length);
-    const missing_num = discard_num - player.discardSelection.length;
-    const clickable = missing_num == 0;
-    const text = translate(clickable ? 'discard_confirm' : `discard_select_${missing_num == 1 ? '1' : 'n'}_more`, {
-      n: missing_num,
-    });
-    return <ButtonBar click={[clickable ? () => moves.Discard() : null]} texts={[text]} />;
   }
 
   function renderButtonsCall() {
@@ -326,8 +299,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   function renderButtonsContra() {
     let canGiveContra = false;
     if (ctx.phase == Phases.placement) {
-      const max_tricks = util.kittySize(ctx.numPlayers) > 0 ? 1 : 0;
-      if (G.resolvedTricks.length <= max_tricks && G.trick.cards.length <= 1) {
+      if (G.resolvedTricks.length == 0 && G.trick.cards.length <= 1) {
         const isTaker = player.isTaker || player.id == G.calledTakerId;
         if (isTaker) {
           canGiveContra = G.contra == 2;
