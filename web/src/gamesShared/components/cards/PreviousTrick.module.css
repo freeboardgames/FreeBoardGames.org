@@ -58,7 +58,7 @@
 .suit {
   background-repeat: no-repeat;
   background-size: 41px 16px;
-  background-image: url("media/suit_small.png");
+  background-image: url("./media/suit_small.png");
   height: 16px;
   width: 10px;
   display: inline-block;
