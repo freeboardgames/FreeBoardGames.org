@@ -16,7 +16,7 @@
 .card.tarot {
   width: 320px;
   height: 596px;
-  background-image: url("media/cards_tarot.jpg");
+  background-image: url("./media/cards_tarot.jpg");
   background-size: 4480px 3576px;
   border-radius: 45px;
 }
@@ -24,7 +24,7 @@
 .card.skat {
   width: 314px;
   height: 483px;
-  background-image: url("media/cards_skat.jpg");
+  background-image: url("./media/cards_skat.jpg");
   background-size: 2826px 1932px;
   border-radius: 25px;
 }
@@ -32,7 +32,7 @@
 .card.franconian {
   width: 320px;
   height: 596px;
-  background-image: url("media/cards_franconian.jpg");
+  background-image: url("./media/cards_franconian.jpg");
   background-size: 3200px 2384px;
   border-radius: 45px;
 }
