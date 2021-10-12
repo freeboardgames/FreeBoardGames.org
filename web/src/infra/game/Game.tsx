@@ -161,12 +161,15 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
       if (this.mode === GameMode.OnlineFriend) {
         clientConfig.multiplayer = SocketIO({ server: this.serverUrl });
       }
-      const App = Client(clientConfig) as any;
-      if (this.mode === GameMode.OnlineFriend) {
-        return <App matchID={matchCode} playerID={playerID} credentials={credentials} />;
-      } else {
-        return <App matchID={matchCode} playerID={playerID} />;
-      }
+      return (
+        <AppWrapper
+          config={clientConfig}
+          mode={this.mode}
+          matchCode={matchCode}
+          playerID={playerID}
+          credentials={credentials}
+        />
+      );
     } else if (this.state.loading) {
       const LoadingPage = getMessagePage('loading', t('downloading', { name: this.gameDef.name }));
       return <LoadingPage />;
@@ -212,6 +215,13 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
         ];
     }
   }
+}
+
+function AppWrapper({ config, mode, matchCode, playerID, credentials }) {
+  const App = Client(config);
+  return (
+    <App matchID={matchCode} playerID={playerID} credentials={mode === GameMode.OnlineFriend ? credentials : null} />
+  );
 }
 
 const enhance = compose<IGameInnerProps, IGameOutterProps>(withSettingsService, withTranslation('Game'));
