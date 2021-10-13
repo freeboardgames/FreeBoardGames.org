@@ -15,6 +15,7 @@ import { withSettingsService, SettingsService } from 'infra/settings/SettingsSer
 import { getGameDefinition } from './utils';
 import { compose } from 'recompose';
 import { withTranslation, WithTranslation } from 'infra/i18n';
+import { useNotificationsConfigModifier } from 'infra/notification/config';
 
 export interface IGameOutterProps {
   gameCode?: string;
@@ -218,7 +219,8 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
 }
 
 function AppWrapper({ config, mode, matchCode, playerID, credentials }) {
-  const App = Client(config);
+  const modifiedConfig = useNotificationsConfigModifier({ config, mode, playerID });
+  const App = Client(modifiedConfig);
   return (
     <App matchID={matchCode} playerID={playerID} credentials={mode === GameMode.OnlineFriend ? credentials : null} />
   );
