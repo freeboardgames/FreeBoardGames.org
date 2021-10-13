@@ -60,9 +60,7 @@ function notifyOnBeginTurn(params: {
   playerID: string;
   mode: GameMode;
 }) {
-  const { turn, notify, mode } = params;
-
-  if (mode !== GameMode.OnlineFriend) return;
+  const { turn, notify } = params;
 
   const firstTurn = turn === 1;
   if (firstTurn) resetNotifications(params);
@@ -85,11 +83,14 @@ function canBeNotified(params: {
   turn: number;
   currentPlayer: string;
   playerID: string;
+  mode: GameMode;
 }) {
-  const { currentPlayer, playerID } = params;
+  const { mode, currentPlayer, playerID } = params;
   const isYourTurn = playerID === currentPlayer;
   const isNotAlreadyNotified = notifications[getTurnKey(params)] == null;
-  return isNotAlreadyNotified && isYourTurn;
+  const isScreenActive = !document.hasFocus();
+  const isAllowedGameMode = [GameMode.OnlineFriend, GameMode.AI].includes(mode);
+  return isNotAlreadyNotified && isYourTurn && isScreenActive && isAllowedGameMode;
 }
 
 function markAsNotified(params: { gameName: string; matchID: string; turn: number }) {
