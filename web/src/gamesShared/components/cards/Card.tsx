@@ -16,6 +16,7 @@ export function Card(props: {
   let numCols: number;
   let colOffset: number;
   let cardSize: number[];
+  let borderRadius: number;
   let bgClass = css.tarot;
   switch (props.pattern) {
     case Pattern.Skat:
@@ -25,6 +26,7 @@ export function Card(props: {
       colOffset = 7;
       cardSize = [314, 483];
       bgClass = css.skat;
+      borderRadius = 25;
       break;
     case Pattern.Tarot:
       cardBack = [8, 5];
@@ -40,6 +42,7 @@ export function Card(props: {
       colOffset = 1;
       cardSize = [320, 596];
       bgClass = css.tarot;
+      borderRadius = 55;
       break;
     case Pattern.Franconian:
       cardBack = [9, 3];
@@ -48,6 +51,7 @@ export function Card(props: {
       colOffset = 6;
       cardSize = [320, 596];
       bgClass = css.franconian;
+      borderRadius = 45;
       break;
     default:
       throw `Card component not implemented for pattern: ${Pattern[props.pattern]}`;
@@ -74,6 +78,8 @@ export function Card(props: {
       style={{
         width: `${scaledSize[0]}px`,
         height: `${scaledSize[1]}px`,
+        borderRadius: `${scale * borderRadius}px`,
+        boxShadow: `${scale * 3}px ${scale * 3}px ${scale * 8}px #000000`,
       }}
     >
       <div className={css.scaleCard} style={{ transform: `scale(${scale})` }}>

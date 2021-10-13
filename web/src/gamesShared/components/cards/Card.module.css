@@ -1,12 +1,10 @@
 .card {
   color: black;
-  border: 1px #aaa solid;
   box-sizing: border-box;
   background-origin: border-box;
   background-color: white;
   background-repeat: no-repeat;
   margin: 0 auto;
-  box-shadow: 3px 3px 8px #000000;
 }
 
 .card.inactive {
@@ -18,7 +16,6 @@
   height: 596px;
   background-image: url("./media/cards_tarot.jpg");
   background-size: 4480px 3576px;
-  border-radius: 45px;
 }
 
 .card.skat {
@@ -26,7 +23,6 @@
   height: 483px;
   background-image: url("./media/cards_skat.jpg");
   background-size: 2826px 1932px;
-  border-radius: 25px;
 }
 
 .card.franconian {
@@ -34,11 +30,11 @@
   height: 596px;
   background-image: url("./media/cards_franconian.jpg");
   background-size: 3200px 2384px;
-  border-radius: 45px;
 }
 
 .cropCard {
   overflow: hidden;
+  border: 1px #aaa solid;
 }
 
 .cropCard.selectable {
