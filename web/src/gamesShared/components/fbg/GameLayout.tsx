@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { VFC } from 'react';
 import { GameOver } from './GameOver';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameDarkSublayout } from './GameDarkSublayout';
@@ -14,27 +14,19 @@ interface IGameLayoutProps {
   extraCardContent?: React.ReactNode;
 }
 
-export class GameLayout extends React.Component<IGameLayoutProps, {}> {
-  render() {
-    if (this.props.gameOver) {
-      return (
-        <GameOver
-          result={this.props.gameOver}
-          gameArgs={this.props.gameArgs}
-          extraCardContent={this.props.extraCardContent}
-        />
-      );
-    } else {
-      return (
-        <GameDarkSublayout
-          optionsMenuItems={this.props.optionsMenuItems}
-          maxWidth={this.props.maxWidth}
-          avoidOverscrollReload={this.props.avoidOverscrollReload}
-          gameArgs={this.props.gameArgs}
-        >
-          {this.props.children}
-        </GameDarkSublayout>
-      );
-    }
+export const GameLayout: VFC<IGameLayoutProps> = (props) => {
+  if (props.gameOver) {
+    return <GameOver result={props.gameOver} gameArgs={props.gameArgs} extraCardContent={props.extraCardContent} />;
+  } else {
+    return (
+      <GameDarkSublayout
+        optionsMenuItems={props.optionsMenuItems}
+        maxWidth={props.maxWidth}
+        avoidOverscrollReload={props.avoidOverscrollReload}
+        gameArgs={props.gameArgs}
+      >
+        {props.children}
+      </GameDarkSublayout>
+    );
   }
-}
+};
