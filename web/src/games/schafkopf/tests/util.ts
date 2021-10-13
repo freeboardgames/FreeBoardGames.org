@@ -22,22 +22,17 @@ export function playTricks(G: IG, tricks: string[]) {
 
 export function setup_3players(): IG {
   const players = [
-    { ...DefaultIPlayer, id: '0', hand: str2cards('Hz8 GrA EiA Sc7 Hz9 Ei10 GrU Sc8 Gr9 ScO'), isTaker: true },
-    { ...DefaultIPlayer, id: '1', hand: str2cards('Gr7 Sc10 GrO ScU EiU EiK HzK Gr10 HzU Ei7') },
-    { ...DefaultIPlayer, id: '2', hand: str2cards('GrK ScK HzO Ei8 Ei9 HzA Sc9 EiO ScA Hz10') },
+    { ...DefaultIPlayer, id: '0', hand: str2cards('GrA EiA Hz9 Ei10 GrU EiO HzU Sc10'), isTaker: true },
+    { ...DefaultIPlayer, id: '1', hand: str2cards('GrO ScU EiU EiK HzK Gr10 ScO ScA') },
+    { ...DefaultIPlayer, id: '2', hand: str2cards('GrK ScK HzO Ei9 HzA Sc9 Gr9 Hz10') },
   ];
-  const ecarte = str2trick(
-    'Gr8 Hz7',
-    players.map((P) => P.id),
-  );
-  ecarte.winnerId = players[0].id;
   return {
     ...DefaultIG,
     players: players,
     takerId: '0',
-    deck: Array.prototype.concat(...players.map((P) => P.hand), ecarte.cards),
+    deck: Array.prototype.concat(...players.map((P) => P.hand)),
     trick: { cards: [], leaderId: players[1].id },
-    resolvedTricks: [ecarte],
+    resolvedTricks: [],
     contract: Contract.Solo,
     trumpSuit: CardColor.Eichel,
   };
@@ -45,22 +40,17 @@ export function setup_3players(): IG {
 
 export function setup_3players_bettel(): IG {
   const players = [
-    { ...DefaultIPlayer, id: '0', hand: str2cards('HzK Ei10 Sc10 GrU ScA Hz10 GrO EiK Ei9 Ei8') },
-    { ...DefaultIPlayer, id: '1', hand: str2cards('Sc8 HzA Hz9 ScU ScK EiA HzO Ei7 Gr9 Gr10') },
-    { ...DefaultIPlayer, id: '2', hand: str2cards('Gr7 Sc7 GrA EiO Sc9 Gr8 ScO Hz8 GrK Hz7'), isTaker: true },
+    { ...DefaultIPlayer, id: '0', hand: str2cards('HzK Ei10 Sc10 GrU ScA Hz10 GrO EiK') },
+    { ...DefaultIPlayer, id: '1', hand: str2cards('HzA Hz9 ScU ScK EiA HzO Gr10 EiU') },
+    { ...DefaultIPlayer, id: '2', hand: str2cards('GrA EiO Sc9 ScO GrK Ei9 Gr9 HzU'), isTaker: true },
   ];
-  const ecarte = str2trick(
-    'HzU EiU',
-    players.map((P) => P.id),
-  );
-  ecarte.winnerId = players[0].id;
   return {
     ...DefaultIG,
     players: players,
     takerId: '2',
-    deck: Array.prototype.concat(...players.map((P) => P.hand), ecarte.cards),
+    deck: Array.prototype.concat(...players.map((P) => P.hand)),
     trick: { cards: [], leaderId: players[1].id },
-    resolvedTricks: [ecarte],
+    resolvedTricks: [],
     contract: Contract.Bettel,
   };
 }
