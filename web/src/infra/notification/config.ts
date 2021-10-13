@@ -43,6 +43,10 @@ function useNotify() {
   return async () => {
     const title = t('your_turn', { name: translate('name') });
     const notification = await notify(title, {});
+
+    const sound = new Audio(require('./notification.mp3'));
+    sound.play();
+
     notification.onclick = function focusBrowserTab() {
       parent.focus();
       window.focus();
