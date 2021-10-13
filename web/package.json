@@ -147,6 +147,7 @@
     "@storybook/addon-storysource": "^6.0.26",
     "@storybook/addon-controls": "^6.0.26",
     "@storybook/addon-viewport": "^6.0.26",
+    "@storybook/addon-toolbars": "^6.0.26",
     "@storybook/addons": "^6.0.26",
     "@storybook/react": "^6.0.26",
     "@storybook/source-loader": "^6.0.26",
