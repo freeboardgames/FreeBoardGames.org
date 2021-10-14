@@ -218,13 +218,13 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
   }
 }
 
-function AppWrapper({ config, mode, matchCode, playerID, credentials }) {
+const AppWrapper = ({ config, mode, matchCode, playerID, credentials }) => {
   const modifiedConfig = useNotificationsConfigModifier({ config, mode, playerID });
   const App = Client(modifiedConfig);
   return (
     <App matchID={matchCode} playerID={playerID} credentials={mode === GameMode.OnlineFriend ? credentials : null} />
   );
-}
+};
 
 const enhance = compose<IGameInnerProps, IGameOutterProps>(withSettingsService, withTranslation('Game'));
 

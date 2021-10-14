@@ -4,6 +4,7 @@ import { GameMode } from 'gamesShared/definitions/mode';
 import { useCurrentGameTranslation, useTranslation } from 'infra/i18n';
 import { set, unset } from 'lodash';
 import { notify } from './notify';
+import { staticContext } from './Provider';
 
 const notifications = {};
 
@@ -19,14 +20,13 @@ export const useNotificationsConfigModifier = (params: { config: Config; playerI
   const handleBeginTurn = (G: any, ctx: Ctx) => {
     config.game.turn?.onBegin?.(G, ctx);
 
-    notifyOnBeginTurn({
-      ...params,
-      notify,
-      gameName,
-      matchID: config.matchID,
-      turn: ctx.turn,
-      currentPlayer: ctx.currentPlayer,
-    });
+    const firstTurn = ctx.turn === 1;
+    if (firstTurn) resetNotifications({ gameName });
+
+    if (canBeNotified({ ...params, ...ctx, ...config, gameName, muted: staticContext.muted })) {
+      notify();
+      markAsNotified({ ...ctx, ...config, gameName });
+    }
   };
 
   const turn = { ...config.game.turn, onBegin: handleBeginTurn };
@@ -55,26 +55,6 @@ function useNotify() {
   };
 }
 
-function notifyOnBeginTurn(params: {
-  notify: () => void;
-  gameName: string;
-  matchID: string;
-  turn: number;
-  currentPlayer: string;
-  playerID: string;
-  mode: GameMode;
-}) {
-  const { turn, notify } = params;
-
-  const firstTurn = turn === 1;
-  if (firstTurn) resetNotifications(params);
-
-  if (canBeNotified(params)) {
-    notify();
-    markAsNotified(params);
-  }
-}
-
 function resetNotifications({ gameName }: { gameName: string }) {
   // Considering the user plays a single game per browser tab,
   // we mark all notifications as unread
@@ -83,30 +63,31 @@ function resetNotifications({ gameName }: { gameName: string }) {
 
 function canBeNotified(params: {
   gameName: string;
-  matchID: string;
+  matchID?: string;
   turn: number;
   currentPlayer: string;
   playerID: string;
   mode: GameMode;
+  muted: boolean;
 }) {
-  const { mode, currentPlayer, playerID } = params;
+  const { mode, currentPlayer, playerID, muted } = params;
   const isYourTurn = playerID === currentPlayer;
   const isNotAlreadyNotified = notifications[getTurnKey(params)] == null;
   const isScreenActive = !document.hasFocus();
   const isAllowedGameMode = [GameMode.OnlineFriend, GameMode.AI].includes(mode);
-  return isNotAlreadyNotified && isYourTurn && isScreenActive && isAllowedGameMode;
+  return isNotAlreadyNotified && isYourTurn && isScreenActive && isAllowedGameMode && !muted;
 }
 
-function markAsNotified(params: { gameName: string; matchID: string; turn: number }) {
+function markAsNotified(params: { gameName: string; matchID?: string; turn: number }) {
   set(notifications, getTurnKey(params), true);
 }
 
-function getTurnKey(params: { gameName: string; matchID: string; turn: number }) {
+function getTurnKey(params: { gameName: string; matchID?: string; turn: number }) {
   const { turn } = params;
   return `${getMatchKey(params)}."${turn}"`;
 }
 
-function getMatchKey(params: { gameName: string; matchID: string }) {
+function getMatchKey(params: { gameName: string; matchID?: string }) {
   const { gameName, matchID } = params;
   return `${gameName}.${matchID}`;
 }

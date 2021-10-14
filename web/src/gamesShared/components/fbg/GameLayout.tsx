@@ -3,6 +3,8 @@ import { GameOver } from './GameOver';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameDarkSublayout } from './GameDarkSublayout';
 import { IOptionsItems } from './GameDarkSublayout';
+import { useNotificationMenuItems } from 'infra/notification/menu';
+import { withNotificationsUiProvider } from 'infra/notification/Provider';
 
 interface IGameLayoutProps {
   gameArgs: IGameArgs;
@@ -14,19 +16,21 @@ interface IGameLayoutProps {
   extraCardContent?: React.ReactNode;
 }
 
-export const GameLayout: VFC<IGameLayoutProps> = (props) => {
-  if (props.gameOver) {
-    return <GameOver result={props.gameOver} gameArgs={props.gameArgs} extraCardContent={props.extraCardContent} />;
-  } else {
-    return (
-      <GameDarkSublayout
-        optionsMenuItems={props.optionsMenuItems}
-        maxWidth={props.maxWidth}
-        avoidOverscrollReload={props.avoidOverscrollReload}
-        gameArgs={props.gameArgs}
-      >
-        {props.children}
-      </GameDarkSublayout>
-    );
-  }
+const GameLayoutInternal: VFC<IGameLayoutProps> = (props) => {
+  const notificationMenuItems = useNotificationMenuItems();
+  const modifiedOptionsMenuItems = () => [...(props.optionsMenuItems?.() ?? []), ...notificationMenuItems];
+  return props.gameOver ? (
+    <GameOver result={props.gameOver} gameArgs={props.gameArgs} extraCardContent={props.extraCardContent} />
+  ) : (
+    <GameDarkSublayout
+      optionsMenuItems={modifiedOptionsMenuItems}
+      maxWidth={props.maxWidth}
+      avoidOverscrollReload={props.avoidOverscrollReload}
+      gameArgs={props.gameArgs}
+    >
+      {props.children}
+    </GameDarkSublayout>
+  );
 };
+
+export const GameLayout = withNotificationsUiProvider(GameLayoutInternal);
