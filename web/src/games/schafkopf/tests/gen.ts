@@ -48,7 +48,7 @@ export function shuffleArray(array: any[]) {
 export function dealCards(G: IG) {
   const handSize = 8;
   const cmpCards = util.get_cmpCards(G.contract, CardColor.Herz);
-  G.deck = getSortedDeck();
+  G.deck = getSortedDeck(G.players.length);
   shuffleArray(G.deck);
   G.players.forEach((P, i) => {
     P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);

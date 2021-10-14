@@ -70,23 +70,25 @@ export function Card(props: {
   }
 
   const scale = props.width ? props.width / cardSize[0] : props.height ? props.height / cardSize[1] : 1.0;
-  const scaledSize = [cardSize[0] * scale, cardSize[1] * scale];
+  const scaledSize = [(cardSize[0] - 2) * scale, (cardSize[1] - 2) * scale];
 
   return (
     <div
       className={[css.cropCard, props.click ? css.selectable : ''].join(' ')}
       style={{
+        fontSize: `${scale * 10}px`,
         width: `${scaledSize[0]}px`,
         height: `${scaledSize[1]}px`,
         borderRadius: `${scale * borderRadius}px`,
-        boxShadow: `${scale * 3}px ${scale * 3}px ${scale * 8}px #000000`,
       }}
     >
       <div className={css.scaleCard} style={{ transform: `scale(${scale})` }}>
         <div
           className={[css.card, props.inactive ? css.inactive : '', bgClass].join(' ')}
           style={{
-            backgroundPosition: `-${col * cardSize[0]}px -${row * cardSize[1]}px`,
+            backgroundPosition: `-${col * cardSize[0] + 1}px -${row * cardSize[1] + 1}px`,
+            width: `${cardSize[0] - 2}px`,
+            height: `${cardSize[1] - 2}px`,
           }}
           onClick={props.click}
         ></div>

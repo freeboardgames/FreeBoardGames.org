@@ -212,8 +212,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   function renderButtonsBid() {
     if (playerPhase != Phases.bidding || player.bid == 0) return;
     const highest_bid = Math.max(...G.players.map((P) => P.bid));
-    const is_first_bidround = player.bid == Contract.None;
-    const allowed_bids = util.allowedBids(G.players.length, is_first_bidround);
+    const allowed_bids = util.allowedBids(G);
     const canCallAce = ['Schell', 'Gras', 'Eichel'].some((colName) => {
       const colorInHand = player.hand.filter((C) => C.color == CardColor[colName]);
       if (colorInHand.some((C) => C.value == 14)) {

@@ -12,39 +12,34 @@
 }
 
 .card.tarot {
-  width: 320px;
-  height: 596px;
   background-image: url("./media/cards_tarot.jpg");
   background-size: 4480px 3576px;
 }
 
 .card.skat {
-  width: 314px;
-  height: 483px;
   background-image: url("./media/cards_skat.jpg");
   background-size: 2826px 1932px;
 }
 
 .card.franconian {
-  width: 320px;
-  height: 596px;
   background-image: url("./media/cards_franconian.jpg");
   background-size: 3200px 2384px;
 }
 
 .cropCard {
   overflow: hidden;
-  border: 1px #aaa solid;
+  box-shadow: #000 0 0 0.8em;
+  border: 0.2em #333 solid;
 }
 
 .cropCard.selectable {
   cursor: pointer;
-  box-shadow: 0px 10px 20px #555;
+  box-shadow: #555 0 0 2em;
   background-color: rgba(80, 80, 80, 0.15);
 }
 
 .cropCard.selectable:hover {
-  box-shadow: 0px 0px 40px #000;
+  box-shadow: #000 0px 0px 4em;
   background-color: rgba(0, 0, 0, 0.3);
 }
 

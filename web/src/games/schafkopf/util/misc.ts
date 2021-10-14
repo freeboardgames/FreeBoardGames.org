@@ -43,13 +43,15 @@ export function getBidName(bid: number): string {
   return `bid_${['pass', 'some', 'ace', 'bettel', 'wenz', 'solo'][bid]}`;
 }
 
-export function allowedBids(numPlayer: number, is_first_bidround: boolean): Contract[] {
+export function allowedBids(G: IG): Contract[] {
+  const is_first_bidround = G.players.some((P) => P.bid == Contract.None);
   if (is_first_bidround) return [Contract.Pass, Contract.Some];
-  if (numPlayer == 4) {
-    return [Contract.Pass, Contract.Ace, Contract.Bettel, Contract.Wenz, Contract.Solo];
-  } else {
-    return [Contract.Pass, Contract.Bettel, Contract.Wenz, Contract.Solo];
+  const numBidders = G.players.filter((P) => P.bid >= Contract.Some).length;
+  let allowed = [Contract.Ace, Contract.Bettel, Contract.Wenz, Contract.Solo];
+  if (G.players.length == 3) {
+    allowed = allowed.slice(1);
   }
+  return numBidders == 1 ? allowed : [Contract.Pass].concat(allowed);
 }
 
 export function getPlayerById(G: IG, playerId: string): IPlayer {
