@@ -8,24 +8,27 @@ import { staticContext } from './Provider';
 
 const notifications = {};
 
-type Config = Parameters<typeof Client>[0] & { matchID?: string };
+type IConfig = Parameters<typeof Client>[0] & { matchID?: string };
 
-export const useNotificationsConfigModifier = (params: { config: Config; playerID: string; mode: GameMode }) => {
-  const { config } = params;
-
+export const useNotificationsConfigModifier = ({
+  config,
+  playerID,
+  mode,
+}: {
+  config: IConfig;
+  playerID: string;
+  mode: GameMode;
+}) => {
   const notify = useNotify();
-
-  const gameName = config.game.name;
 
   const handleBeginTurn = (G: any, ctx: Ctx) => {
     config.game.turn?.onBegin?.(G, ctx);
 
-    const firstTurn = ctx.turn === 1;
-    if (firstTurn) resetNotifications({ gameName });
-
-    if (canBeNotified({ ...params, ...ctx, ...config, gameName, muted: staticContext.muted })) {
+    const notifications = new Notifications(ctx, config, playerID, mode);
+    notifications.reset();
+    if (notifications.canBeNotified()) {
       notify();
-      markAsNotified({ ...ctx, ...config, gameName });
+      notifications.markAsNotified();
     }
   };
 
@@ -47,6 +50,8 @@ function useNotify() {
     const sound = new Audio(require('./notification.mp3'));
     sound.play();
 
+    if (!notification) return;
+
     notification.onclick = function focusBrowserTab() {
       parent.focus();
       window.focus();
@@ -55,39 +60,45 @@ function useNotify() {
   };
 }
 
-function resetNotifications({ gameName }: { gameName: string }) {
-  // Considering the user plays a single game per browser tab,
-  // we mark all notifications as unread
-  unset(notifications, gameName);
-}
+class Notifications {
+  private gameName: string;
+  private matchID?: string;
+  private currentPlayer: string;
+  private muted: boolean;
+  private turn: number;
 
-function canBeNotified(params: {
-  gameName: string;
-  matchID?: string;
-  turn: number;
-  currentPlayer: string;
-  playerID: string;
-  mode: GameMode;
-  muted: boolean;
-}) {
-  const { mode, currentPlayer, playerID, muted } = params;
-  const isYourTurn = playerID === currentPlayer;
-  const isNotAlreadyNotified = notifications[getTurnKey(params)] == null;
-  const isScreenActive = !document.hasFocus();
-  const isAllowedGameMode = [GameMode.OnlineFriend, GameMode.AI].includes(mode);
-  return isNotAlreadyNotified && isYourTurn && isScreenActive && isAllowedGameMode && !muted;
-}
+  constructor(ctx: Ctx, config: IConfig, private playerID: string, private mode: GameMode) {
+    this.gameName = config.game.name;
+    this.matchID = config.matchID;
+    this.currentPlayer = ctx.currentPlayer;
+    this.muted = staticContext.muted;
+    this.turn = ctx.turn;
+  }
 
-function markAsNotified(params: { gameName: string; matchID?: string; turn: number }) {
-  set(notifications, getTurnKey(params), true);
-}
+  reset() {
+    // Considering the user plays a single game per browser tab,
+    // we mark all notifications as unread
+    const firstTurn = this.turn === 1;
+    if (firstTurn) unset(notifications, this.gameName);
+  }
 
-function getTurnKey(params: { gameName: string; matchID?: string; turn: number }) {
-  const { turn } = params;
-  return `${getMatchKey(params)}."${turn}"`;
-}
+  canBeNotified() {
+    const isYourTurn = this.playerID === this.currentPlayer;
+    const isNotAlreadyNotified = notifications[this.getTurnKey()] == null;
+    const isScreenActive = !document.hasFocus();
+    const isAllowedGameMode = [GameMode.OnlineFriend, GameMode.AI].includes(this.mode);
+    return isNotAlreadyNotified && isYourTurn && isScreenActive && isAllowedGameMode && !this.muted;
+  }
 
-function getMatchKey(params: { gameName: string; matchID?: string }) {
-  const { gameName, matchID } = params;
-  return `${gameName}.${matchID}`;
+  markAsNotified() {
+    set(notifications, this.getTurnKey(), true);
+  }
+
+  getTurnKey() {
+    return `${this.getMatchKey()}."${this.turn}"`;
+  }
+
+  getMatchKey() {
+    return `${this.gameName}.${this.matchID}`;
+  }
 }
