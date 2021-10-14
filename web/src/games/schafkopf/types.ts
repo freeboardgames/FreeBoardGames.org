@@ -16,7 +16,6 @@ export enum Stages {
 
 export interface IGameMoves {
   MakeBid(value: number): void;
-  Discard(): void;
   Call(card: ICard): void;
   SelectTrumpSuit(suit: CardColor): void;
   AnnounceTout(announce: boolean): void;
@@ -38,9 +37,6 @@ export enum Contract {
 export interface IG {
   players: IPlayer[];
   deck: ICard[];
-  kitty: ICard[];
-  kittyRevealed: boolean;
-  kittyPrev: ICard[];
   takerId: string;
   calledTakerId?: string;
   calledMayRun: number;
@@ -57,9 +53,6 @@ export interface IG {
 export const DefaultIG: IG = {
   players: [],
   deck: [],
-  kitty: [],
-  kittyRevealed: false,
-  kittyPrev: [],
   takerId: '',
   calledTakerId: '',
   calledMayRun: null,
@@ -81,7 +74,6 @@ export interface IPlayer {
   isDealer: boolean;
   isTaker: boolean;
   isReady: boolean;
-  discardSelection?: number[];
   hand: ICard[];
 }
 

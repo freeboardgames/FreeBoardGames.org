@@ -30,12 +30,12 @@ it('finds the winner of a given trick', () => {
 it('correctly resolves a trick', () => {
   const G = setup_3players();
   G.trick = str2trick(
-    'GrK Gr7 !Gr10',
+    'GrK Gr9 !Gr10',
     G.players.map((P) => P.id),
   );
   const isRoundOver = resolveTrick(G);
   expect(isRoundOver).toEqual(false);
-  expect(G.resolvedTricks.length).toEqual(2);
+  expect(G.resolvedTricks.length).toEqual(1);
   expect(G.trick.cards.length).toEqual(0);
   const trick = G.resolvedTricks[G.resolvedTricks.length - 1];
   expect(G.trick.leaderId).toEqual(trick.winnerId);

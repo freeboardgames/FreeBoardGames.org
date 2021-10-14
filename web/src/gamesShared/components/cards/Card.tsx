@@ -16,6 +16,7 @@ export function Card(props: {
   let numCols: number;
   let colOffset: number;
   let cardSize: number[];
+  let borderRadius: number;
   let bgClass = css.tarot;
   switch (props.pattern) {
     case Pattern.Skat:
@@ -25,6 +26,7 @@ export function Card(props: {
       colOffset = 7;
       cardSize = [314, 483];
       bgClass = css.skat;
+      borderRadius = 25;
       break;
     case Pattern.Tarot:
       cardBack = [8, 5];
@@ -40,6 +42,7 @@ export function Card(props: {
       colOffset = 1;
       cardSize = [320, 596];
       bgClass = css.tarot;
+      borderRadius = 55;
       break;
     case Pattern.Franconian:
       cardBack = [9, 3];
@@ -48,6 +51,7 @@ export function Card(props: {
       colOffset = 6;
       cardSize = [320, 596];
       bgClass = css.franconian;
+      borderRadius = 45;
       break;
     default:
       throw `Card component not implemented for pattern: ${Pattern[props.pattern]}`;
@@ -66,21 +70,25 @@ export function Card(props: {
   }
 
   const scale = props.width ? props.width / cardSize[0] : props.height ? props.height / cardSize[1] : 1.0;
-  const scaledSize = [cardSize[0] * scale, cardSize[1] * scale];
+  const scaledSize = [(cardSize[0] - 2) * scale, (cardSize[1] - 2) * scale];
 
   return (
     <div
       className={[css.cropCard, props.click ? css.selectable : ''].join(' ')}
       style={{
+        fontSize: `${scale * 10}px`,
         width: `${scaledSize[0]}px`,
         height: `${scaledSize[1]}px`,
+        borderRadius: `${scale * borderRadius}px`,
       }}
     >
       <div className={css.scaleCard} style={{ transform: `scale(${scale})` }}>
         <div
           className={[css.card, props.inactive ? css.inactive : '', bgClass].join(' ')}
           style={{
-            backgroundPosition: `-${col * cardSize[0]}px -${row * cardSize[1]}px`,
+            backgroundPosition: `-${col * cardSize[0] + 1}px -${row * cardSize[1] + 1}px`,
+            width: `${cardSize[0] - 2}px`,
+            height: `${cardSize[1] - 2}px`,
           }}
           onClick={props.click}
         ></div>
