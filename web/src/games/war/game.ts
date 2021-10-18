@@ -86,8 +86,20 @@ const GameConfig = {
     battle: {
       moves: {
         battle: (G, ctx) => {
+          if (G.players[0].hand[0].value === G.players[1].hand[0].value) {
+            // TODO: War
+          }
+          let winner = G.players.reduce(
+            (a, b) => {
+              if (a.hand.length === 0 || b.hand[0].value > a.hand[0].value) {
+                a = b;
+              }
+              return a;
+            },
+            { hand: [], value: -1 },
+          );
           G.players.forEach((h, i) => {
-            G.players[i].discardPile.push(G.players[i].hand.pop());
+            G.players[winner.id == 0 ? 1 : 0].discardPile.push(G.players[i].hand.pop());
             ctx.events.endPhase();
           });
         },
@@ -95,7 +107,11 @@ const GameConfig = {
       endIf: () => false,
       next: 'draw',
     },
-    war: {},
+    war: {
+      moves: {},
+      endIf: () => false,
+      next: 'draw',
+    },
   },
 
   moves: {

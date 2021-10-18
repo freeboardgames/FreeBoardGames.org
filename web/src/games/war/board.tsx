@@ -35,37 +35,62 @@ export class Board extends React.Component<IBoardProps, {}> {
       width: '140px',
       height: '190px',
     };
-    const messageStyle = {};
+
+    const messageRowStyle = {};
+
+    const cardStyle = {
+      width: '100px',
+      height: 'auto',
+    };
+    const rowStyle = {
+      align: 'left',
+    };
+
+    const boardStyle = {
+      width: '60%',
+    };
     let tbody = [];
     tbody.push(
-      <table id="board">
-        <tr>
-          <td style={messageStyle} key="message">
-            <button onClick={() => this.triggerBattle()}> Next Phase </button>
-          </td>
-        </tr>
-        <tr>
-          <td style={cellStyle} key="p1DrawPile" onClick={() => this.drawCard(0)}>
-            {' '}
-            <img src={cards.cardBack_blue1}></img>
-          </td>
-          <td style={cellStyle} key="p1">
-            <img src={cards[this.getCard(0)]}></img>
-          </td>
-        </tr>
-      </table>,
-    );
-    tbody.push(
-      <tr>
-        <td style={cellStyle} key="p2DrawPile" onClick={() => this.drawCard(1)}>
-          {' '}
-          <img src={cards.cardBack_blue1}></img>
-        </td>
-        <td style={cellStyle} key="p2">
-          <img src={cards[this.getCard(1)]}></img>
+      <tr style={messageRowStyle}>
+        <td key="message">
+          <button onClick={() => this.triggerBattle()}> Next Phase </button>
         </td>
       </tr>,
     );
-    return <GameLayout gameArgs={this.props.gameArgs}>{tbody}</GameLayout>;
+    tbody.push(
+      <tr style={rowStyle} id="p1Row">
+        <td style={cellStyle} key="p1DrawPile" onClick={() => this.drawCard(0)}>
+          {' '}
+          <img style={cardStyle} src={cards.cardBack_blue1}></img>
+        </td>
+        <td style={cellStyle} key="p1">
+          <img style={cardStyle} src={cards[this.getCard(0)]}></img>
+        </td>
+        <td style={cellStyle} key="p1Draw2"></td>
+        <td style={cellStyle} key="p1Draw3"></td>
+        <td style={cellStyle} key="p1Draw4"></td>
+      </tr>,
+    );
+    tbody.push(
+      <tr style={rowStyle} id="p2Row">
+        <td style={cellStyle} key="p2DrawPile" onClick={() => this.drawCard(1)}>
+          {' '}
+          <img style={cardStyle} src={cards.cardBack_blue1}></img>
+        </td>
+        <td style={cellStyle} key="p2">
+          <img style={cardStyle} src={cards[this.getCard(1)]}></img>
+        </td>
+        <td style={cellStyle} key="p2Draw2"></td>
+        <td style={cellStyle} key="p2Draw3"></td>
+        <td style={cellStyle} key="p2Draw4"></td>
+      </tr>,
+    );
+    return (
+      <GameLayout gameArgs={this.props.gameArgs}>
+        <table style={boardStyle} id="board">
+          <tbody id="body">{tbody}</tbody>
+        </table>
+      </GameLayout>
+    );
   }
 }
