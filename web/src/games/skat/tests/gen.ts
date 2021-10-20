@@ -1,4 +1,6 @@
-import { IG, CardColor } from '../types';
+import { CardColor } from 'gamesShared/definitions/cards';
+
+import { IG } from '../types';
 import { resolveTrick, getSortedDeck } from '../game';
 import * as util from '../util/misc';
 import * as u_placement from '../util/placement';
@@ -6,7 +8,7 @@ import * as u_placement from '../util/placement';
 // helper functions to generate (random) test cases
 /* Example:
 import { playRandomTricks, dealCards } from './gen';
-import { trick2str, card2str } from './util';
+import { trick2str, card2str } from 'gamesShared/helpers/cards';
   for (let N = 0; N < 1000; N++) {
     const G = setup_3players();
     dealCards(G);
@@ -25,9 +27,9 @@ export function playRandomTricks(G: IG) {
   const numTricks = G.players[0].hand.length;
   const numPlayers = G.players.length;
   for (let i = 0; i < numTricks; i++) {
-    const leader = G.trick.leader;
+    const leaderId = G.trick.leaderId;
     for (let j = 0; j < numPlayers; j++) {
-      const player = G.players[util.mod(+leader.id + j, numPlayers)];
+      const player = G.players[util.mod(+leaderId + j, numPlayers)];
       const sel_bool = u_placement.selectableCards(G, player.id);
       const sel_id = sel_bool.map((_, i) => i).filter((i) => sel_bool[i]);
       const i_card = sel_id[(sel_id.length * Math.random()) | 0];
@@ -54,5 +56,4 @@ export function dealCards(G: IG) {
     P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
   });
   G.kitty = G.deck.slice(-kittySize).sort(cmpCards);
-  G.takerCards = util.getPlayerById(G, G.takerId).hand.concat(G.kitty);
 }

@@ -1,4 +1,6 @@
-import { IG, IPlayer, CardColor } from '../types';
+import { CardColor } from 'gamesShared/definitions/cards';
+
+import { IG, IPlayer } from '../types';
 import * as util from './misc';
 
 export function prepareDiscard(G: IG): boolean {
@@ -12,13 +14,13 @@ export function prepareDiscard(G: IG): boolean {
   } else if (G.contract == 3) {
     G.resolvedTricks.push({
       cards: G.kitty.splice(0, G.kitty.length),
-      winner: taker,
+      winnerId: taker.id,
     });
     return false;
   } else if (G.contract == 4) {
     G.resolvedTricks.push({
       cards: G.kitty.splice(0, G.kitty.length),
-      winner: G.players.find((P) => P.id != G.calledTakerId && !P.isTaker),
+      winnerId: G.players.find((P) => P.id != G.calledTakerId && !P.isTaker).id,
     });
     return false;
   }
@@ -33,12 +35,12 @@ export function selectableCards(G: IG, playerId: string): boolean[] {
   const trump_allowed = canDiscardTrump(G, player);
   return player.hand.map((c, i) => {
     if (player.discardSelection.length == discard_num) {
-      return player.discardSelection.indexOf(i) != -1;
+      return player.discardSelection.includes(i);
     }
     if (c.color == CardColor.Excuse) return false;
     if (c.color == CardColor.Trumps) {
-      if ([1, 21].indexOf(c.value) != -1) return false;
-      return player.discardSelection.indexOf(i) != -1 || trump_allowed;
+      if ([1, 21].includes(c.value)) return false;
+      return player.discardSelection.includes(i) || trump_allowed;
     } else {
       return c.value < 14;
     }

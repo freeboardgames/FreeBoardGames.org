@@ -1,7 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
+import { CardColor } from 'gamesShared/definitions/cards';
 
-import { Announcement, Contract, Phases, Stages, IG, CardColor } from './types';
+import { Announcement, Contract, Phases, Stages, IG } from './types';
 import * as util from './util/misc';
 
 export const Moves = {
@@ -10,10 +11,10 @@ export const Moves = {
     player.bid = value;
     if (value == 0) {
       const bidder = util.getPlayerById(G, G.bidderId);
-      const holder = util.getPlayerById(G, G.holderId);
       if (!bidder.isDealer) {
+        const holder = util.getPlayerById(G, G.holderId);
         G.holderId = bidder.bid == 0 ? holder.id : bidder.id;
-        G.bidderId = G.players.findIndex((P) => P.isDealer).toString();
+        G.bidderId = G.players.find((P) => P.isDealer).id;
       }
     }
     return G;
@@ -27,7 +28,7 @@ export const Moves = {
       player.discardSelection = [];
       player.hand = player.hand.concat(G.kitty).sort(util.get_cmpCards(Contract.None, null));
     } else {
-      G.resolvedTricks.push({ cards: G.kitty, winner: player });
+      G.resolvedTricks.push({ cards: G.kitty, winnerId: player.id });
       G.kitty = [];
       ctx.events.setStage(Stages.select_contract);
     }
@@ -48,7 +49,7 @@ export const Moves = {
         .sort((a, b) => b - a)
         .map((i) => player.hand.splice(i, 1)[0])
         .reverse(),
-      winner: player,
+      winnerId: player.id,
     });
     G.kitty = [];
     delete player.discardSelection;

@@ -1,3 +1,5 @@
+import { ICard, CardColor, ITrick } from 'gamesShared/definitions/cards';
+
 export enum Phases {
   bidding = 'bidding',
   discard = 'discard',
@@ -14,20 +16,12 @@ export enum Stages {
 
 export interface IGameMoves {
   MakeBid(value: number): void;
-  Discard(): void;
   Call(card: ICard): void;
   SelectTrumpSuit(suit: CardColor): void;
   AnnounceTout(announce: boolean): void;
   GiveContra(): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
-}
-
-export enum CardColor {
-  Schell,
-  Herz,
-  Gras,
-  Eichel,
 }
 
 export enum Contract {
@@ -43,9 +37,6 @@ export enum Contract {
 export interface IG {
   players: IPlayer[];
   deck: ICard[];
-  kitty: ICard[];
-  kittyRevealed: boolean;
-  kittyPrev: ICard[];
   takerId: string;
   calledTakerId?: string;
   calledMayRun: number;
@@ -62,9 +53,6 @@ export interface IG {
 export const DefaultIG: IG = {
   players: [],
   deck: [],
-  kitty: [],
-  kittyRevealed: false,
-  kittyPrev: [],
   takerId: '',
   calledTakerId: '',
   calledMayRun: null,
@@ -86,7 +74,6 @@ export interface IPlayer {
   isDealer: boolean;
   isTaker: boolean;
   isReady: boolean;
-  discardSelection?: number[];
   hand: ICard[];
 }
 
@@ -100,17 +87,6 @@ export const DefaultIPlayer: IPlayer = {
   isReady: true,
   hand: [],
 };
-
-export interface ICard {
-  color: CardColor;
-  value: number;
-}
-
-export interface ITrick {
-  cards: ICard[];
-  leader?: IPlayer;
-  winner?: IPlayer;
-}
 
 export interface IRoundSummary {
   takerId: string;

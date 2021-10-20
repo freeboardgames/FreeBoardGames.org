@@ -1,7 +1,8 @@
 import { Ctx, Game } from 'boardgame.io';
 import { Stage } from 'boardgame.io/core';
+import { ICard, CardColor, ITrick } from 'gamesShared/definitions/cards';
 
-import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer, ICard, CardColor, ITrick } from './types';
+import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
 import * as u_summary from './util/summary';
 import { Moves } from './moves';
@@ -16,7 +17,7 @@ export const SchafkopfGame: Game<IG> = {
       id: i.toString(),
       isDealer: i == 0,
     }));
-    game.trick = { cards: [], leader: game.players[1] };
+    game.trick = { cards: [], leaderId: game.players[1].id };
     return game;
   },
 
@@ -28,7 +29,6 @@ export const SchafkopfGame: Game<IG> = {
       if (P.id == playerID) return P;
       return <IPlayer>{
         ...P,
-        discardSelection: null,
         hand: P.hand.map(() => dummyCard),
       };
     };
@@ -36,14 +36,9 @@ export const SchafkopfGame: Game<IG> = {
       ...G,
       players: G.players.map(stripSecrets),
       deck: G.deck.map(() => dummyCard),
-      kitty: G.kittyRevealed || playerID == G.takerId ? G.kitty : G.kitty.map(() => dummyCard),
       calledTakerId: G.calledTakerId == playerID ? G.calledTakerId : null,
       calledMayRun: G.calledTakerId == playerID ? G.calledMayRun : null,
-      resolvedTricks: G.resolvedTricks.map((T, i) =>
-        (G.players.length == 4 || i > 0) && i == G.resolvedTricks.length - 1
-          ? { ...T, winner: stripSecrets(T.winner), leader: stripSecrets(T.leader) }
-          : dummyTrick,
-      ),
+      resolvedTricks: G.resolvedTricks.map((T, i) => (i == G.resolvedTricks.length - 1 ? T : dummyTrick)),
     };
   },
 
@@ -52,16 +47,15 @@ export const SchafkopfGame: Game<IG> = {
       start: true,
 
       onBegin: (G: IG, ctx: Ctx) => {
-        const handSize = util.handSize(ctx.numPlayers);
-        const kittySize = util.kittySize(ctx.numPlayers);
+        const handSize = 8;
         const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, ctx.numPlayers)];
         const cmpCards = util.get_cmpCards(Contract.None, ctx.numPlayers == 4 ? CardColor.Herz : null);
         Object.assign(G, {
           ...DefaultIG,
           players: G.players,
-          deck: ctx.random.Shuffle(getSortedDeck()),
-          trick: { cards: [], leader: leader },
+          deck: ctx.random.Shuffle(getSortedDeck(ctx.numPlayers)),
+          trick: { cards: [], leaderId: leader.id },
           roundSummaries: G.roundSummaries,
         });
         G.players.forEach((P, i) => {
@@ -70,7 +64,6 @@ export const SchafkopfGame: Game<IG> = {
           P.isReady = true;
           P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
         });
-        G.kitty = kittySize == 0 ? [] : G.deck.slice(-kittySize).sort(cmpCards);
       },
 
       turn: {
@@ -121,18 +114,11 @@ export const SchafkopfGame: Game<IG> = {
           const dealerPos = G.players.findIndex((P) => P.isDealer);
           G.players[dealerPos].isDealer = false;
           G.players[util.mod(dealerPos + 1, ctx.numPlayers)].isDealer = true;
-          G.kittyPrev = G.kitty;
           return;
         }
-        G.kittyPrev = [];
         G.takerId = taker.id;
         G.contract = highestBid;
         taker.isTaker = true;
-        if (util.kittySize(ctx.numPlayers) > 0) {
-          taker.discardSelection = [];
-          taker.hand = taker.hand.concat(G.kitty);
-          G.kittyRevealed = false;
-        }
         if (G.contract == Contract.Ace) {
           G.trumpSuit = CardColor.Herz;
         }
@@ -147,18 +133,16 @@ export const SchafkopfGame: Game<IG> = {
       next: Phases.placement,
       turn: {
         onBegin: (G: IG, ctx: Ctx) => {
-          if (util.kittySize(ctx.numPlayers) == 0) {
-            const taker = util.getPlayerById(G, G.takerId);
-            const has_highest_trump = taker.hand.some((C) => C.color == CardColor.Eichel && C.value == 12);
-            if (G.contract == Contract.Solo) {
-              ctx.events.setActivePlayers({ currentPlayer: Stages.select_trump });
-            } else if (G.contract == Contract.Ace) {
-              ctx.events.setActivePlayers({ currentPlayer: Stages.call_card });
-            } else if (G.contract != Contract.Bettel && has_highest_trump) {
-              ctx.events.setActivePlayers({ currentPlayer: Stages.announce_tout });
-            } else {
-              ctx.events.endPhase();
-            }
+          const taker = util.getPlayerById(G, G.takerId);
+          const has_highest_trump = taker.hand.some((C) => C.color == CardColor.Eichel && C.value == 12);
+          if (G.contract == Contract.Solo) {
+            ctx.events.setActivePlayers({ currentPlayer: Stages.select_trump });
+          } else if (G.contract == Contract.Ace) {
+            ctx.events.setActivePlayers({ currentPlayer: Stages.call_card });
+          } else if (G.contract != Contract.Bettel && has_highest_trump) {
+            ctx.events.setActivePlayers({ currentPlayer: Stages.announce_tout });
+          } else {
+            ctx.events.endPhase();
           }
         },
         stages: {
@@ -174,7 +158,6 @@ export const SchafkopfGame: Game<IG> = {
 
       moves: {
         SelectCards: Moves.SelectCards,
-        Discard: Moves.Discard,
       },
 
       onEnd: (G: IG) => {
@@ -196,7 +179,7 @@ export const SchafkopfGame: Game<IG> = {
       turn: {
         activePlayers: { all: Stage.NULL },
         order: {
-          first: (G) => +G.trick.leader.id,
+          first: (G) => +G.trick.leaderId,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
         },
       },
@@ -217,7 +200,7 @@ export const SchafkopfGame: Game<IG> = {
         return G.trick.cards.length == ctx.numPlayers;
       },
 
-      onEnd: (G: IG, ctx: Ctx) => {
+      onEnd: (G: IG) => {
         if (resolveTrick(G)) {
           const roundSummary = u_summary.getRoundSummary(G);
           G.roundSummaries.push(roundSummary);
@@ -225,10 +208,6 @@ export const SchafkopfGame: Game<IG> = {
             P.score += roundSummary.scoring[i];
             P.isReady = false;
           });
-          if (util.kittySize(ctx.numPlayers) > 0) {
-            G.kitty = G.resolvedTricks[0].cards;
-            G.kittyRevealed = true;
-          }
         }
       },
     },
@@ -241,12 +220,12 @@ export const SchafkopfGame: Game<IG> = {
       },
       endIf: (G: IG) => G.players.every((P) => P.isReady),
       onEnd: (G: IG, ctx: Ctx) => {
-        G.kitty = [];
         G.resolvedTricks = [];
         const dealerPos = G.players.findIndex((P) => P.isDealer);
         const newDealerPos = util.mod(dealerPos + 1, ctx.numPlayers);
         G.players.forEach((P, i) => {
           P.isDealer = i == newDealerPos;
+          P.hand = [];
         });
       },
     },
@@ -262,9 +241,9 @@ export function resolveTrick(G: IG): boolean {
   }
   const winnerId = getTrickWinnerId(G.contract, G.trumpSuit, G.trick);
   const winner = util.getPlayerById(G, winnerId);
-  G.trick.winner = winner;
+  G.trick.winnerId = winner.id;
   G.resolvedTricks.push(G.trick);
-  G.trick = { cards: [], leader: winner };
+  G.trick = { cards: [], leaderId: winner.id };
   if (G.contract == Contract.Bettel && winner.isTaker) {
     return true;
   }
@@ -280,7 +259,7 @@ export function getCalledTakerId(players: IPlayer[], card: ICard): string {
 }
 
 export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: ITrick): string {
-  const leaderId = +T.leader.id;
+  const leaderId = +T.leaderId;
   let ranks = T.cards.map((C) => util.cardRank(contract, trumpSuit, C));
   if (ranks.every((R) => R < 500)) {
     const lead_color = T.cards[0].color;
@@ -290,14 +269,14 @@ export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: IT
   return util.mod(leaderId + ranks.findIndex((R) => R == max_rank), T.cards.length).toString();
 }
 
-export function getSortedDeck(): ICard[] {
+export function getSortedDeck(numPlayers: number): ICard[] {
   let deck: ICard[] = [];
   for (let col of ['Schell', 'Herz', 'Gras', 'Eichel']) {
     deck = deck.concat(
-      Array(8)
+      Array(numPlayers == 3 ? 6 : 8)
         .fill(0)
         .map((_, i) => {
-          return { color: CardColor[col], value: i + 7 };
+          return { color: CardColor[col], value: i + (numPlayers == 3 ? 9 : 7) };
         }),
     );
   }

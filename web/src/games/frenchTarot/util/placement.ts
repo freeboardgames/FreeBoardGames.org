@@ -1,4 +1,6 @@
-import { IG, CardColor } from '../types';
+import { CardColor } from 'gamesShared/definitions/cards';
+
+import { IG } from '../types';
 import * as util from './misc';
 
 export function selectableCards(G: IG, playerId: string): boolean[] {

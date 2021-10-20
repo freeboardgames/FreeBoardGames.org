@@ -9,7 +9,7 @@ export function selectableCards(G: IG, playerId: string): boolean[] {
   }
   return player.hand.map((c, i) => {
     if (player.discardSelection.length == discard_num) {
-      return player.discardSelection.indexOf(i) != -1;
+      return player.discardSelection.includes(i);
     }
     return true;
   });

@@ -1,0 +1,30 @@
+.displayCard {
+  position: absolute;
+  bottom: 0; left: 0.9em;
+  width: 110px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 0.9em;
+  overflow: hidden;
+}
+
+@media only screen and (min-width: 850px) {
+  .displayCard {
+    font-size: 1em;
+  }
+}
+
+.displayCard span:first-child {
+  display: block;
+  padding-top: 3px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.displayCard .arrangeCard {
+  margin: 0.5em auto;
+  width: 84px;
+  height: 80px;
+  overflow: hidden;
+  box-shadow: 0px 0px 20px #888;
+}

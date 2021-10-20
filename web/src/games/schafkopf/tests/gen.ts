@@ -1,4 +1,6 @@
-import { IG, Contract, CardColor } from '../types';
+import { CardColor } from 'gamesShared/definitions/cards';
+
+import { IG, Contract } from '../types';
 import { resolveTrick, getSortedDeck, getCalledTakerId } from '../game';
 import * as util from '../util/misc';
 import * as u_placement from '../util/placement';
@@ -24,9 +26,9 @@ export function playRandomTricks(G: IG) {
   const numTricks = G.players[0].hand.length;
   const numPlayers = G.players.length;
   for (let i = 0; i < numTricks; i++) {
-    const leader = G.trick.leader;
+    const leaderId = G.trick.leaderId;
     for (let j = 0; j < numPlayers; j++) {
-      const player = G.players[util.mod(+leader.id + j, numPlayers)];
+      const player = G.players[util.mod(+leaderId + j, numPlayers)];
       const sel_bool = u_placement.selectableCards(G, player.id);
       const sel_id = sel_bool.map((_, i) => i).filter((i) => sel_bool[i]);
       const i_card = sel_id[(sel_id.length * Math.random()) | 0];
@@ -44,15 +46,13 @@ export function shuffleArray(array: any[]) {
 }
 
 export function dealCards(G: IG) {
-  const handSize = util.handSize(G.players.length);
-  const kittySize = util.kittySize(G.players.length);
+  const handSize = 8;
   const cmpCards = util.get_cmpCards(G.contract, CardColor.Herz);
-  G.deck = getSortedDeck();
+  G.deck = getSortedDeck(G.players.length);
   shuffleArray(G.deck);
   G.players.forEach((P, i) => {
     P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
   });
-  G.kitty = kittySize > 0 ? G.deck.slice(-kittySize).sort(cmpCards) : [];
   if (G.calledCard && G.contract == Contract.Ace) {
     G.calledTakerId = getCalledTakerId(G.players, G.calledCard);
     if (G.calledTakerId == G.takerId) {

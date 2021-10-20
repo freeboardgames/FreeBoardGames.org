@@ -1,4 +1,5 @@
-import { Contract, IG, IPlayer, ICard, CardColor } from '../types';
+import { ICard, CardColor } from 'gamesShared/definitions/cards';
+import { Contract, IG, IPlayer } from '../types';
 
 export function isTrump(G: IG, C: ICard): boolean {
   if (G.contract == Contract.Wenz) {
@@ -10,17 +11,24 @@ export function isTrump(G: IG, C: ICard): boolean {
   return C.value == 11 || C.value == 12 || C.color == G.trumpSuit;
 }
 
+export function colorRank(color: CardColor): number {
+  return [CardColor.Schell, CardColor.Herz, CardColor.Gras, CardColor.Eichel].indexOf(color);
+}
+
 export function cardRank(contract: Contract, trumpSuit: CardColor, card: ICard): number {
+  let color_rank = colorRank(card.color);
   if (contract == Contract.Bettel) {
-    return 100 * card.color + card.value;
+    return 100 * color_rank + card.value;
   }
   if (card.value == 11) {
-    return 1000 + card.color;
+    return 1000 + color_rank;
   }
   if (contract != Contract.Wenz && card.value == 12) {
-    return 10000 + card.color;
+    return 10000 + color_rank;
   }
-  let color_rank: number = contract != Contract.Wenz && card.color == trumpSuit ? 5 : card.color;
+  if (contract != Contract.Wenz && card.color == trumpSuit) {
+    color_rank = 5;
+  }
   let val_order: number[] = contract == Contract.Wenz ? [7, 8, 9, 12, 13, 10, 14] : [7, 8, 9, 13, 10, 14];
   return 100 * color_rank + val_order.indexOf(card.value);
 }
@@ -35,21 +43,15 @@ export function getBidName(bid: number): string {
   return `bid_${['pass', 'some', 'ace', 'bettel', 'wenz', 'solo'][bid]}`;
 }
 
-export function kittySize(numPlayers: number): number {
-  return [2, 0][Math.max(0, numPlayers - 3)];
-}
-
-export function handSize(numPlayers: number): number {
-  return [10, 8][Math.max(0, numPlayers - 3)];
-}
-
-export function allowedBids(numPlayer: number, is_first_bidround: boolean): Contract[] {
+export function allowedBids(G: IG): Contract[] {
+  const is_first_bidround = G.players.some((P) => P.bid == Contract.None);
   if (is_first_bidround) return [Contract.Pass, Contract.Some];
-  if (numPlayer == 4) {
-    return [Contract.Pass, Contract.Ace, Contract.Bettel, Contract.Wenz, Contract.Solo];
-  } else {
-    return [Contract.Pass, Contract.Bettel, Contract.Wenz, Contract.Solo];
+  const numBidders = G.players.filter((P) => P.bid >= Contract.Some).length;
+  let allowed = [Contract.Ace, Contract.Bettel, Contract.Wenz, Contract.Solo];
+  if (G.players.length == 3) {
+    allowed = allowed.slice(1);
   }
+  return numBidders == 1 ? allowed : [Contract.Pass].concat(allowed);
 }
 
 export function getPlayerById(G: IG, playerId: string): IPlayer {
