@@ -21,6 +21,7 @@ export interface IG {
   hand: Array<Card>;
   discard: Array<Card>;
   players: Array<Player>;
+  war: false;
 }
 
 let deck: Array<Card> = initDeck();
@@ -79,6 +80,18 @@ const GameConfig = {
 
   phases: {
     draw: {
+      onBegin: (G) => {
+        G.players.forEach((player, i) => {
+          if (player.drawPile.length === 0) {
+            let drawPileSize = player.discardPile.length;
+            for (let j = 0; j < drawPileSize; j++) {
+              let draw = drawCard(G.players[i].discardPile);
+              G.players[i].discardPile = draw.deck;
+              G.players[i].drawPile.push(draw.card[0]);
+            }
+          }
+        });
+      },
       start: true,
       endIf: (G) => G.players[0].hand.length === 1 && G.players[1].hand.length === 1,
       next: 'battle',
@@ -86,29 +99,32 @@ const GameConfig = {
     battle: {
       moves: {
         battle: (G, ctx) => {
-          if (G.players[0].hand[0].value === G.players[1].hand[0].value) {
-            // TODO: War
-          }
-          let winner = G.players.reduce(
-            (a, b) => {
-              if (a.hand.length === 0 || b.hand[0].value > a.hand[0].value) {
-                a = b;
-              }
-              return a;
-            },
-            { hand: [], value: -1 },
-          );
-          G.players.forEach((h, i) => {
-            G.players[winner.id == 0 ? 1 : 0].discardPile.push(G.players[i].hand.pop());
+          if (G.players[0].hand[0].value !== G.players[1].hand[0].value) {
+            let winner = G.players.reduce(
+              (a, b) => {
+                if (a.hand.length === 0 || b.hand[0].value > a.hand[0].value) {
+                  a = b;
+                }
+                return a;
+              },
+              { hand: [], value: -1 },
+            );
+            G.players.forEach((h, i) => {
+              G.players[winner.id].discardPile.push(G.players[i].hand.pop());
+              ctx.events.endPhase();
+            });
+          } else {
+            G.war = true;
             ctx.events.endPhase();
-          });
+          }
         },
       },
       endIf: () => false,
-      next: 'draw',
+      next: (G) => {
+        return G.war === true ? 'war' : 'draw';
+      },
     },
     war: {
-      moves: {},
       endIf: () => false,
       next: 'draw',
     },
@@ -117,6 +133,13 @@ const GameConfig = {
   moves: {
     clickCell: (G, ctx, id) => {
       if (id == ctx.currentPlayer) {
+        if (G.war === true) {
+          for (let i = 0; i <= 2; i++) {
+            let draw = drawCard(G.players[ctx.currentPlayer].drawPile);
+            G.players[ctx.currentPlayer].drawPile = draw.deck;
+            G.players[ctx.currentPlayer].hand.push(draw.card[0]);
+          }
+        }
         let draw = drawCard(G.players[ctx.currentPlayer].drawPile);
         G.players[ctx.currentPlayer].drawPile = draw.deck;
         G.players[ctx.currentPlayer].hand.push(draw.card[0]);

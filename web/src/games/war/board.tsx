@@ -24,8 +24,14 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   getCard(id: number) {
-    if (this.props.G.players[id].hand.length === HAND_SIZE) {
+    if (this.props.G.players[id].hand.length >= HAND_SIZE) {
       return this.props.G.players[id].hand[0].image;
+    }
+    return null;
+  }
+  getWarCard(id: number, card: number) {
+    if (this.props.G.players[id].hand.length > HAND_SIZE) {
+      return this.props.G.players[id].hand[card].image;
     }
     return null;
   }
@@ -66,9 +72,12 @@ export class Board extends React.Component<IBoardProps, {}> {
         <td style={cellStyle} key="p1">
           <img style={cardStyle} src={cards[this.getCard(0)]}></img>
         </td>
-        <td style={cellStyle} key="p1Draw2"></td>
-        <td style={cellStyle} key="p1Draw3"></td>
-        <td style={cellStyle} key="p1Draw4"></td>
+        <td style={cellStyle} key="p1war1">
+          <img style={cardStyle} src={cards[this.getWarCard(0, 1)]}></img>
+        </td>
+        <td style={cellStyle} key="p1war2">
+          <img style={cardStyle} src={cards[this.getWarCard(0, 2)]}></img>
+        </td>
       </tr>,
     );
     tbody.push(
@@ -80,9 +89,12 @@ export class Board extends React.Component<IBoardProps, {}> {
         <td style={cellStyle} key="p2">
           <img style={cardStyle} src={cards[this.getCard(1)]}></img>
         </td>
-        <td style={cellStyle} key="p2Draw2"></td>
-        <td style={cellStyle} key="p2Draw3"></td>
-        <td style={cellStyle} key="p2Draw4"></td>
+        <td style={cellStyle} key="p2war1">
+          <img style={cardStyle} src={cards[this.getWarCard(1, 1)]}></img>
+        </td>
+        <td style={cellStyle} key="p2war2">
+          <img style={cardStyle} src={cards[this.getWarCard(1, 2)]}></img>
+        </td>
       </tr>,
     );
     return (
