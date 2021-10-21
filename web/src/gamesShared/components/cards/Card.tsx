@@ -11,6 +11,7 @@ export function Card(props: {
   width?: number;
   height?: number;
 }) {
+  const C = props.type;
   let cardBack: number[];
   let colors: CardColor[];
   let numCols: number;
@@ -44,6 +45,22 @@ export function Card(props: {
       bgClass = css.tarot;
       borderRadius = 55;
       break;
+    case Pattern.Tarock:
+      cardBack = [6, 6];
+      colors = [
+        CardColor.Clubs,
+        CardColor.Spades,
+        CardColor.Diamonds,
+        CardColor.Hearts,
+        CardColor.Trumps,
+        CardColor.Excuse,
+      ];
+      numCols = 8;
+      colOffset = C && C.color == CardColor.Trumps ? 1 : 7;
+      cardSize = [236, 424];
+      bgClass = css.tarock;
+      borderRadius = 35;
+      break;
     case Pattern.Franconian:
       cardBack = [9, 3];
       colors = [CardColor.Schell, CardColor.Herz, CardColor.Gras, CardColor.Eichel];
@@ -57,11 +74,13 @@ export function Card(props: {
       throw `Card component not implemented for pattern: ${Pattern[props.pattern]}`;
   }
   let [col, row] = cardBack;
-  const C = props.type;
   if (C) {
     if (props.pattern == Pattern.Tarot && C.color == CardColor.Excuse) {
       col = 7;
       row = 5;
+    } else if (props.pattern == Pattern.Tarock && C.color == CardColor.Excuse) {
+      col = 5;
+      row = 6;
     } else {
       col = C.value - colOffset;
       row = colors.indexOf(C.color) + Math.floor(col / numCols);

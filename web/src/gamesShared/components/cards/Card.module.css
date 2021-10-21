@@ -16,6 +16,11 @@
   background-size: 4480px 3576px;
 }
 
+.card.tarock {
+  background-image: url("./media/cards_tarock.jpg");
+  background-size: 1888px 2968px;
+}
+
 .card.skat {
   background-image: url("./media/cards_skat.jpg");
   background-size: 2826px 1932px;

@@ -34,7 +34,7 @@
 
 @keyframes vanish_4_2 {
   0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
-  100% {transform: translate(300px 20px) scale(0.1);}
+  100% {transform: translate(300px, 20px) scale(0.1);}
 }
 
 @keyframes vanish_4_3 {
