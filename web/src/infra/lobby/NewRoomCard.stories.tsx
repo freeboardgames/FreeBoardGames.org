@@ -1,5 +1,4 @@
 import { NewRoomCard } from './NewRoomCard';
-
 export default {
   title: 'Infrastructure/Lobby/NewRoomCard',
 };

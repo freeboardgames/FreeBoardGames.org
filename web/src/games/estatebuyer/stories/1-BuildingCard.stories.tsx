@@ -1,17 +1,14 @@
 import React from 'react';
 import { BuildingCardComponent } from '../CardComponent';
-
 export default {
   title: 'Games/EstateBuyer/Cards/BuildingCard',
   component: BuildingCardComponent,
 };
-
 const cardData = {
   value: 1,
   number: 1,
   showing: true,
 };
-
 export const Hidden = () => <BuildingCardComponent card={{ ...cardData, showing: false }} />;
 export const Showing1 = () => <BuildingCardComponent card={cardData} />;
 export const Showing2 = () => <BuildingCardComponent card={{ ...cardData, value: 2 }} />;
