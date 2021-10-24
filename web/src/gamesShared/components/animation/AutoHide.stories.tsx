@@ -1,9 +1,7 @@
 import { AutoHide } from './AutoHide';
-
 export default {
   title: 'Games (shared)/Components/Animation/AutoHide',
 };
-
 export const Short = () => (
   <AutoHide>
     <h1>Hiding in 2 seconds</h1>

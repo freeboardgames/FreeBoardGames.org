@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { BetPanel } from '../components/BetPanel';
-
 export default {
   title: 'Games/Bombs & Bunnies/BetPanel',
   component: BetPanel,
