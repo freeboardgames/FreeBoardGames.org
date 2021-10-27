@@ -105,25 +105,26 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
     this.clear();
   }
 
-  render() {
+  getMatchCode() {
+    return this.props.match ? this.props.match.bgioMatchId : this.props.matchCode;
+  }
+
+  getCredentials() {
+    return this.props.match?.bgioSecret;
+  }
+
+  getPlayerID() {
+    if (this.props.match) return this.props.match.bgioPlayerId;
+    if (this.mode === GameMode.AI) return '1';
+    return this.props.playerID;
+  }
+
+  buildConfig() {
     const { t } = this.props;
 
-    let matchCode, playerID, credentials;
-    if (this.props.match) {
-      credentials = this.props.match.bgioSecret;
-      matchCode = this.props.match.bgioMatchId;
-      playerID = this.props.match.bgioPlayerId;
-    } else {
-      matchCode = this.props.matchCode;
-      playerID = this.mode === GameMode.AI ? '1' : this.props.playerID;
-    }
-    if (!this.gameDef) {
-      return <MessagePage type={'error'} message={t('game_not_found')} />;
-    }
-    const validGameModes = this.gameDef.modes.map((mode) => mode.mode.toLowerCase());
-    if (!validGameModes.includes(this.mode.toLowerCase())) {
-      return <MessagePage type={'error'} message={t('invalid_game_mode')} />;
-    }
+    const matchCode = this.getMatchCode();
+    const credentials = this.getCredentials();
+
     if (!this.state.loading && this.state.config) {
       const gameArgs = {
         gameCode: this.gameCode,
@@ -162,9 +163,30 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
       if (this.mode === GameMode.OnlineFriend) {
         clientConfig.multiplayer = SocketIO({ server: this.serverUrl });
       }
+      return clientConfig;
+    }
+  }
+
+  render() {
+    const { t } = this.props;
+
+    const matchCode = this.getMatchCode();
+    const credentials = this.getCredentials();
+    const playerID = this.getPlayerID();
+
+    if (!this.gameDef) {
+      return <MessagePage type={'error'} message={t('game_not_found')} />;
+    }
+
+    const validGameModes = this.gameDef.modes.map((mode) => mode.mode.toLowerCase());
+    if (!validGameModes.includes(this.mode.toLowerCase())) {
+      return <MessagePage type={'error'} message={t('invalid_game_mode')} />;
+    }
+
+    if (!this.state.loading && this.state.config) {
       return (
         <AppWrapper
-          config={clientConfig}
+          config={this.buildConfig()}
           mode={this.mode}
           matchCode={matchCode}
           playerID={playerID}

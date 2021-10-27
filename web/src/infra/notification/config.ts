@@ -5,6 +5,7 @@ import { useCurrentGameTranslation, useTranslation } from 'infra/i18n';
 import { set, unset } from 'lodash';
 import { notify } from './notify';
 import { staticContext } from './Provider';
+import sound from './notification.mp3';
 
 const notifications = {};
 
@@ -24,12 +25,14 @@ export const useNotificationsConfigModifier = ({
   const handleBeginTurn = (G: any, ctx: Ctx) => {
     config.game.turn?.onBegin?.(G, ctx);
 
-    const notifications = new Notifications(ctx, config, playerID, mode);
+    const notifications = new Notifications(ctx, game, config.matchID, playerID, mode);
     notifications.reset();
     if (notifications.canBeNotified()) {
       notify();
       notifications.markAsNotified();
     }
+
+    return G;
   };
 
   const turn = { ...config.game.turn, onBegin: handleBeginTurn };
@@ -49,8 +52,8 @@ function useNotify() {
 
     if (!notification) return;
 
-    const sound = new Audio(require('./notification.mp3'));
-    sound.play();
+    const audio = new Audio(sound);
+    audio.play();
 
     notification.onclick = function focusBrowserTab() {
       parent.focus();
@@ -62,14 +65,12 @@ function useNotify() {
 
 class Notifications {
   private gameName: string;
-  private matchID?: string;
   private currentPlayer: string;
   private muted: boolean;
   private turn: number;
 
-  constructor(ctx: Ctx, config: IConfig, private playerID: string, private mode: GameMode) {
-    this.gameName = config.game.name;
-    this.matchID = config.matchID;
+  constructor(ctx: Ctx, game: any, private matchID: string, private playerID: string, private mode: GameMode) {
+    this.gameName = game.name;
     this.currentPlayer = ctx.currentPlayer;
     this.muted = staticContext.muted;
     this.turn = ctx.turn;
