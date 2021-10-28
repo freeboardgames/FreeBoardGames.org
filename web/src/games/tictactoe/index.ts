@@ -2,6 +2,7 @@ const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
 import translation from './locales/en.json';
+import { Notification } from 'infra/notification/enum';
 
 export const tictactoeGameDef: IGameDef = {
   code: 'tictactoe',
@@ -26,6 +27,7 @@ export const tictactoeGameDef: IGameDef = {
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
   customization: () => import('./customization'),
+  notifications: new Set([Notification.TurnChanged]),
 };
 
 export default tictactoeGameDef;

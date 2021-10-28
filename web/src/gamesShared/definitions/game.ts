@@ -3,6 +3,7 @@ import { GameMode } from './mode';
 import { IPlayerInRoom } from './player';
 import { GameCustomizationState } from 'gamesShared/definitions/customization';
 import { Language } from 'infra/i18n/types';
+import { Notification } from 'infra/notification/enum';
 
 export interface IGameArgs {
   gameCode: string;
@@ -47,6 +48,7 @@ export interface IGameDef {
   config: () => Promise<any>;
   aiConfig?: () => Promise<any>;
   customization?: () => Promise<any>;
+  notifications?: Set<Notification>;
 }
 
 export interface IGameDefMap {
