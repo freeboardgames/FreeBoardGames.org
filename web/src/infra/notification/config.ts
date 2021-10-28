@@ -1,45 +1,35 @@
 import { Ctx } from 'boardgame.io';
-import { Client } from 'boardgame.io/react';
+import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
+import { isPlayersTurn } from 'gamesShared/helpers/GameUtil';
 import { useCurrentGameTranslation, useTranslation } from 'infra/i18n';
 import { set, unset } from 'lodash';
+import sound from './notification.mp3';
 import { notify } from './notify';
 import { staticContext } from './Provider';
-import sound from './notification.mp3';
 
 const notifications = {};
 
-type IConfig = Parameters<typeof Client>[0] & { matchID?: string };
-
-export const useNotificationsConfigModifier = ({
-  config,
-  playerID,
-  mode,
-}: {
-  config: IConfig;
+type UseNotificationsHandlerNamedArgs = {
+  matchID: string;
   playerID: string;
   mode: GameMode;
-}) => {
+  game: IGameDef;
+};
+
+export const useNotificationsHandler = ({ matchID, playerID, mode, game }: UseNotificationsHandlerNamedArgs) => {
   const notify = useNotify();
 
   const handleBeginTurn = (G: any, ctx: Ctx) => {
-    config.game.turn?.onBegin?.(G, ctx);
-
-    const notifications = new Notifications(ctx, game, config.matchID, playerID, mode);
+    const notifications = new Notifications(ctx, game, matchID, playerID, mode);
     notifications.reset();
     if (notifications.canBeNotified()) {
       notify();
       notifications.markAsNotified();
     }
-
-    return G;
   };
 
-  const turn = { ...config.game.turn, onBegin: handleBeginTurn };
-  const game = { ...config.game, turn };
-  const extendedConfig = { ...config, game };
-
-  return extendedConfig;
+  return { handleBeginTurn };
 };
 
 function useNotify() {
@@ -65,13 +55,13 @@ function useNotify() {
 
 class Notifications {
   private gameName: string;
-  private currentPlayer: string;
+  private isYourTurn: boolean;
   private muted: boolean;
   private turn: number;
 
-  constructor(ctx: Ctx, game: any, private matchID: string, private playerID: string, private mode: GameMode) {
+  constructor(ctx: Ctx, game: any, private matchID: string, playerID: string, private mode: GameMode) {
     this.gameName = game.name;
-    this.currentPlayer = ctx.currentPlayer;
+    this.isYourTurn = isPlayersTurn(playerID, ctx);
     this.muted = staticContext.muted;
     this.turn = ctx.turn;
   }
@@ -84,11 +74,10 @@ class Notifications {
   }
 
   canBeNotified() {
-    const isYourTurn = this.playerID === this.currentPlayer;
     const isNotAlreadyNotified = notifications[this.getTurnKey()] == null;
     const isScreenActive = !document.hasFocus();
     const isAllowedGameMode = [GameMode.OnlineFriend, GameMode.AI].includes(this.mode);
-    return isNotAlreadyNotified && isYourTurn && isScreenActive && isAllowedGameMode && !this.muted;
+    return isNotAlreadyNotified && this.isYourTurn && isScreenActive && isAllowedGameMode && !this.muted;
   }
 
   markAsNotified() {

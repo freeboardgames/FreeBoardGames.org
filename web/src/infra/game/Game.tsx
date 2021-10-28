@@ -1,21 +1,20 @@
-import React from 'react';
-import { Client } from 'boardgame.io/react';
-import { IGameDef, IGameConfig, IAIConfig, IGameArgs } from 'gamesShared/definitions/game';
-import { gameBoardWrapper } from './GameBoardWrapper';
-import { GameMode } from 'gamesShared/definitions/mode';
-import getMessagePage from '../common/factories/MessagePage';
-import MessagePage from '../common/components/alert/MessagePage';
-import { applyMiddleware } from 'redux';
-import DEFAULT_ENHANCERS from '../common/enhancers';
-import { IPlayerInRoom } from 'gamesShared/definitions/player';
-import { SocketIO, Local } from 'boardgame.io/multiplayer';
-import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { Debug } from 'boardgame.io/debug';
-import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
-import { getGameDefinition } from './utils';
-import { compose } from 'recompose';
+import { Local, SocketIO } from 'boardgame.io/multiplayer';
+import { Client } from 'boardgame.io/react';
+import { IAIConfig, IGameArgs, IGameConfig, IGameDef } from 'gamesShared/definitions/game';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { IPlayerInRoom } from 'gamesShared/definitions/player';
+import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { withTranslation, WithTranslation } from 'infra/i18n';
-import { useNotificationsConfigModifier } from 'infra/notification/config';
+import { SettingsService, withSettingsService } from 'infra/settings/SettingsService';
+import React from 'react';
+import { compose } from 'recompose';
+import { applyMiddleware } from 'redux';
+import MessagePage from '../common/components/alert/MessagePage';
+import DEFAULT_ENHANCERS from '../common/enhancers';
+import getMessagePage from '../common/factories/MessagePage';
+import { gameBoardWrapper } from './GameBoardWrapper';
+import { getGameDefinition } from './utils';
 
 export interface IGameOutterProps {
   gameCode?: string;
@@ -184,13 +183,12 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
     }
 
     if (!this.state.loading && this.state.config) {
+      const App = Client(this.buildConfig());
       return (
-        <AppWrapper
-          config={this.buildConfig()}
-          mode={this.mode}
-          matchCode={matchCode}
+        <App
+          matchID={matchCode}
           playerID={playerID}
-          credentials={credentials}
+          credentials={this.mode === GameMode.OnlineFriend ? credentials : null}
         />
       );
     } else if (this.state.loading) {
@@ -239,14 +237,6 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
     }
   }
 }
-
-const AppWrapper = ({ config, mode, matchCode, playerID, credentials }) => {
-  const modifiedConfig = useNotificationsConfigModifier({ config, mode, playerID });
-  const App = Client(modifiedConfig);
-  return (
-    <App matchID={matchCode} playerID={playerID} credentials={mode === GameMode.OnlineFriend ? credentials : null} />
-  );
-};
 
 const enhance = compose<IGameInnerProps, IGameOutterProps>(withSettingsService, withTranslation('Game'));
 
