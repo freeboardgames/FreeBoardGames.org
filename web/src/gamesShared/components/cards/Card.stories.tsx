@@ -10,7 +10,7 @@ export default {
       control: { type: 'select' },
     },
     color: {
-      options: Object.keys(CardColor).filter(isNaN),
+      options: Object.keys(CardColor).filter((c) => isNaN(+c)),
       mapping: CardColor,
       control: { type: 'select' },
     },
@@ -30,8 +30,8 @@ export default {
     },
   },
 };
-const Template = ({ color, value, ...rest }) => {
-  return <Card type={{ color: color, value: value }} {...rest} />;
+const Template = ({ color, value, pattern, ...rest }) => {
+  return <Card pattern={pattern} type={{ color: color, value: value }} {...rest} />;
 };
 export const Selectable = Template.bind({});
 Selectable.args = {
