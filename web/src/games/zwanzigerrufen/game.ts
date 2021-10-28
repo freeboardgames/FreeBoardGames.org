@@ -63,6 +63,8 @@ export const ZwanzigerrufenGame: Game<IG> = {
           });
           G.players.forEach((P, i) => {
             P.bid = Contract.None;
+            P.announcementsRe = { ...DefaultIAnnouncements, Game: 0 };
+            P.announcementsContra = { ...DefaultIAnnouncements, Game: 0 };
             P.isTaker = false;
             P.isReady = true;
             P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(util.cmpCards);
@@ -117,6 +119,7 @@ export const ZwanzigerrufenGame: Game<IG> = {
         });
         G.takerId = taker.id;
         taker.isTaker = true;
+        taker.announcementsRe.Game = 1;
         if (G.contract == Contract.Normal) {
           G.partnerId = G.players.find((P) => {
             return P.hand.some((C) => C.color == G.calledCard.color && C.value == G.calledCard.value);

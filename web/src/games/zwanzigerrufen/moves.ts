@@ -24,8 +24,10 @@ export const Moves = {
     player.bid = Contract.None;
     const name = Announcement[announcement];
     const announcements = isTaker != contra ? G.announcementsRe : G.announcementsContra;
+    const playerAnnouncements = isTaker != contra ? player.announcementsRe : player.announcementsContra;
     const level = announcements[name];
     announcements[name] = level == 0 ? 1 : 2 * level;
+    playerAnnouncements[name] = level == 0 ? 1 : 2 * level;
     if (G.contract == Contract.Normal && isTaker) {
       player.isTaker = true;
     }
@@ -34,6 +36,12 @@ export const Moves = {
       G.announcementsRe.Pagat = 0;
       G.announcementsContra.Absolut = 0;
       G.announcementsContra.Pagat = 0;
+      G.players.forEach((P) => {
+        P.announcementsRe.Absolut = 0;
+        P.announcementsRe.Pagat = 0;
+        P.announcementsContra.Absolut = 0;
+        P.announcementsContra.Pagat = 0;
+      });
     }
     return G;
   },

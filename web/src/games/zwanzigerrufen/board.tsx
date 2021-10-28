@@ -171,10 +171,10 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
 
   function renderCalledCard() {
     if (!G.calledCard) return;
-    const takerId = G.players.findIndex((P) => P.isTaker || P.bid == Contract.Normal);
+    const takerId = G.takerId || G.players.find((P) => P.bid == Contract.Normal).id;
     return (
       <DisplayCard
-        description={translate('callcard_player_called', { name: playerNames[takerId] })}
+        description={translate('callcard_player_called', { name: playerNames[+takerId] })}
         card={G.calledCard}
         pattern={Pattern.Tarock}
       />
@@ -236,11 +236,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
       let announceStr = translate(util.getAnnouncementName(A[0]));
       if (level > 0) {
         const levelStr = translate(util.getAnnounceLevelName(2 * level));
-        if (A[1]) {
-          announceStr = `${levelStr} ${announceStr}`;
-        } else {
-          announceStr = `${announceStr} (${levelStr})`;
-        }
+        announceStr = A[1] ? `${levelStr} ${announceStr}` : `${announceStr} (${levelStr})`;
       }
       return announceStr;
     });
@@ -281,11 +277,12 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
       return (!currentPlayerId && !P.isReady) || P.id === currentPlayerId;
     });
     const bids = players.map((P) => (P.isTaker ? G.contract : P.bid));
-    const bidStrings = bids.map((bid) => {
+    const bidStrings = bids.map((bid, i) => {
+      const P = players[i];
       let s = '';
       if (bid == Contract.None || (bid == Contract.Pass && ctx.phase != Phases.bidding)) {
-        const announceLevel = G.announcementsRe.Game;
-        if (G.contract == null || announceLevel == 1) return '';
+        const announceLevel = P.announcementsRe.Game;
+        if (G.contract == null || announceLevel <= 1) return '';
         s = translate(util.getAnnounceLevelName(announceLevel));
       } else {
         s = translate(util.getBidName(bid));
@@ -294,16 +291,22 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
       return `«${s}»`;
     });
     const announcements = players.map((P) => {
-      const announcements = P.isTaker ? G.announcementsRe : G.announcementsContra;
-      return ['Absolut', 'Pagat', 'Valat']
-        .filter((A) => announcements[A] > 0)
-        .map((A) => {
-          const announceStr = translate(util.getAnnouncementName(Announcement[A]));
-          if (announcements[A] == 1) return announceStr;
-          const levelStr = translate(util.getAnnounceLevelName(announcements[A]));
-          return `${announceStr} (${levelStr})`;
-        })
-        .join(', ');
+      let allAnnouncements = [P.announcementsRe, P.announcementsContra].map((announcements, i) => {
+        const contra = P.isTaker == (i == 1);
+        return ['Absolut', 'Pagat', 'Valat']
+          .filter((A) => announcements[A] > 0)
+          .map((A) => {
+            const announceStr = translate(util.getAnnouncementName(Announcement[A]));
+            if (announcements[A] == 1) return announceStr;
+            const levelStr = translate(util.getAnnounceLevelName(announcements[A]));
+            return contra ? `${levelStr} ${announceStr}` : `${announceStr} (${levelStr})`;
+          });
+      });
+      if (P.isTaker && P.announcementsRe.Game > 1) {
+        const announceStr = translate(util.getAnnounceLevelName(P.announcementsRe.Game));
+        allAnnouncements = [[announceStr], ...allAnnouncements];
+      }
+      return [].concat(...allAnnouncements).join(', ');
     });
     const biddingEnded = G.contract > Contract.None;
     const roundEnded = currentLeaderId == '';

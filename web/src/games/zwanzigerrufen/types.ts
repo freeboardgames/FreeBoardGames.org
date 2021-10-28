@@ -81,6 +81,8 @@ export interface IPlayer {
   name: string;
   score: number;
   bid: Contract;
+  announcementsRe: IAnnouncements;
+  announcementsContra: IAnnouncements;
   isDealer: boolean;
   isTaker: boolean;
   isReady: boolean;
@@ -92,6 +94,8 @@ export const DefaultIPlayer: IPlayer = {
   name: '',
   score: 0,
   bid: Contract.None,
+  announcementsRe: null,
+  announcementsContra: null,
   isDealer: false,
   isTaker: false,
   isReady: true,
