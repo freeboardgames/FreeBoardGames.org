@@ -14,19 +14,24 @@ type Props = {
   G: any;
 };
 
-export const notifyOnTurnChange = (gameArgs: IGameArgs) => (Component: ComponentType<Props>) => (props: Props) => {
-  const game: IGameDef = getGameDefinition(gameArgs.gameCode);
+export const notifyOnTurnChange = (gameArgs: IGameArgs) => (Component: ComponentType<Props>) => {
+  const WrappedComponent = (props: Props) => {
+    const game: IGameDef = getGameDefinition(gameArgs.gameCode);
 
-  const { handleBeginTurn } = useNotificationsHandler({
-    playerID: props.playerID,
-    matchID: props.matchID,
-    mode: gameArgs.mode,
-    game,
-  });
+    const { handleBeginTurn } = useNotificationsHandler({
+      playerID: props.playerID,
+      matchID: props.matchID,
+      mode: gameArgs.mode,
+      game,
+    });
 
-  useEffect(() => {
-    handleBeginTurn(props.G, props.ctx);
-  }, [props.ctx.currentPlayer]);
+    useEffect(() => {
+      handleBeginTurn(props.G, props.ctx);
+    }, [props.ctx.currentPlayer]);
 
-  return <Component {...props} />;
+    return <Component {...props} />;
+  };
+
+  WrappedComponent.displayName = `withNotificationOnTurnChange(${Component.displayName ?? Component.name})`;
+  return WrappedComponent;
 };

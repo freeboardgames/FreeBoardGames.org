@@ -9,11 +9,15 @@ interface NotificationsUiContext {
 
 const Context = createSafeContext<NotificationsUiContext>('NotificationsUi');
 
-export const withNotificationsUiProvider = (Component) => (props) => (
-  <NotificationsUiProvider>
-    <Component {...props} />
-  </NotificationsUiProvider>
-);
+export const withNotificationsUiProvider = (Component) => {
+  const WrappedComponent = (props) => (
+    <NotificationsUiProvider>
+      <Component {...props} />
+    </NotificationsUiProvider>
+  );
+  WrappedComponent.displayName = `withNotificationsUiProvider(${Component.displayName ?? Component.name})`;
+  return WrappedComponent;
+};
 
 export const NotificationsUiProvider: FC = ({ children }) => {
   const [muted, toggleMuted] = useToggleState(false);
