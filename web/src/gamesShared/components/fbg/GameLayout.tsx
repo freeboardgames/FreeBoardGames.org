@@ -1,10 +1,10 @@
-import React, { VFC } from 'react';
-import { GameOver } from './GameOver';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { GameDarkSublayout } from './GameDarkSublayout';
-import { IOptionsItems } from './GameDarkSublayout';
 import { useNotificationMenuItems } from 'infra/notification/menu';
 import { withNotificationsUiProvider } from 'infra/notification/Provider';
+import React, { VFC } from 'react';
+import { compose, setDisplayName } from 'recompose';
+import { GameDarkSublayout, IOptionsItems } from './GameDarkSublayout';
+import { GameOver } from './GameOver';
 
 interface IGameLayoutProps {
   gameArgs: IGameArgs;
@@ -15,6 +15,8 @@ interface IGameLayoutProps {
   optionsMenuItems?: () => IOptionsItems[];
   extraCardContent?: React.ReactNode;
 }
+
+const enhance = compose(withNotificationsUiProvider, setDisplayName('GameLayout'));
 
 const GameLayoutInternal: VFC<IGameLayoutProps> = (props) => {
   const notificationMenuItems = useNotificationMenuItems();
@@ -33,4 +35,4 @@ const GameLayoutInternal: VFC<IGameLayoutProps> = (props) => {
   );
 };
 
-export const GameLayout = withNotificationsUiProvider(GameLayoutInternal);
+export const GameLayout = enhance(GameLayoutInternal);
