@@ -80,9 +80,9 @@ class Notifications {
 
   canBeNotified() {
     const isNotAlreadyNotified = notifications[this.getTurnKey()] == null;
-    const isScreenActive = !document.hasFocus();
+    const isScreenInactive = !document.hasFocus();
     const isAllowedGameMode = [GameMode.OnlineFriend, GameMode.AI].includes(this.mode);
-    return isNotAlreadyNotified && this.isYourTurn && isScreenActive && isAllowedGameMode && !this.muted;
+    return isNotAlreadyNotified && this.isYourTurn && isScreenInactive && isAllowedGameMode && !this.muted;
   }
 
   markAsNotified() {
