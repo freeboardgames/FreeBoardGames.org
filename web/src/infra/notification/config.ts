@@ -4,8 +4,9 @@ import { GameMode } from 'gamesShared/definitions/mode';
 import { isPlayersTurn } from 'gamesShared/helpers/GameUtil';
 import { useCurrentGameTranslation, useTranslation } from 'infra/i18n';
 import { set, unset } from 'lodash';
+import { useEffect } from 'react';
 import sound from './notification.mp3';
-import { notify } from './notify';
+import { notify, requestPermission } from './notify';
 import { staticContext } from './Provider';
 
 const notifications = {};
@@ -19,6 +20,10 @@ type UseNotificationsHandlerNamedArgs = {
 
 export const useNotificationsHandler = ({ matchID, playerID, mode, game }: UseNotificationsHandlerNamedArgs) => {
   const notify = useNotify();
+
+  useEffect(() => {
+    requestPermission();
+  }, []);
 
   const handleBeginTurn = (G: any, ctx: Ctx) => {
     const notifications = new Notifications(ctx, game, matchID, playerID, mode);

@@ -6,7 +6,7 @@ export const notify = async (title: string, options?: Options) => {
   } else if (Notification.permission === 'granted') {
     return buildNotification(Notification.permission, title, options);
   } else if (Notification.permission !== 'denied') {
-    const permission = await Notification.requestPermission();
+    const permission = await requestPermission();
     return buildNotification(permission, title, options);
   }
 };
@@ -17,3 +17,9 @@ function buildNotification(permission: string, title: string, options?: Notifica
     return notification;
   }
 }
+
+export const requestPermission = async () => {
+  if ('Notification' in window && Notification.permission !== 'denied') {
+    return await Notification.requestPermission();
+  }
+};
