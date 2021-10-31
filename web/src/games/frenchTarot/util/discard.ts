@@ -1,4 +1,4 @@
-import { CardColor } from 'gamesShared/definitions/cards';
+import { Suit } from 'gamesShared/definitions/cards';
 
 import { Contract, IG, IPlayer } from '../types';
 import * as util from './misc';
@@ -33,23 +33,23 @@ export function selectableCards(G: IG, playerId: string): boolean[] {
     return player.hand.map(() => false);
   }
   const trump_allowed = canDiscardTrump(G, player);
-  return player.hand.map((c, i) => {
+  return player.hand.map((C, i) => {
     if (player.discardSelection.length == discard_num) {
       return player.discardSelection.includes(i);
     }
-    if (c.color == CardColor.Excuse) return false;
-    if (c.color == CardColor.Trumps) {
-      if ([1, 21].includes(c.value)) return false;
+    if (C.suit == Suit.Excuse) return false;
+    if (C.suit == Suit.Trumps) {
+      if ([1, 21].includes(C.value)) return false;
       return player.discardSelection.includes(i) || trump_allowed;
     } else {
-      return c.value < 14;
+      return C.value < 14;
     }
   });
 }
 
 function canDiscardTrump(G: IG, player: IPlayer): boolean {
   const discard_num = util.kittySize(G.players.length);
-  const num_color_cards = player.hand.filter(util.isColorCard).filter((C) => C.value < 14).length;
-  const num_discarded_trumps = player.discardSelection.filter((i) => !util.isColorCard(player.hand[i])).length;
-  return num_discarded_trumps < discard_num - num_color_cards;
+  const num_suit_cards = player.hand.filter(util.isSuitCard).filter((C) => C.value < 14).length;
+  const num_discarded_trumps = player.discardSelection.filter((i) => !util.isSuitCard(player.hand[i])).length;
+  return num_discarded_trumps < discard_num - num_suit_cards;
 }

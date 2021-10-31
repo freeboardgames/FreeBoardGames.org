@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Ctx } from 'boardgame.io';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { Pattern, CardColor, ICard } from 'gamesShared/definitions/cards';
+import { Pattern, Suit, ICard } from 'gamesShared/definitions/cards';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
@@ -176,7 +176,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
 
   function renderTrumpSuit() {
     if (G.trumpSuit === null || G.contract != Contract.Solo) return;
-    const trumpCard: ICard = { color: G.trumpSuit, value: 10 };
+    const trumpCard: ICard = { suit: G.trumpSuit, value: 10 };
     return (
       <DisplayCard description={translate('callcard_is_trumpsuit')} card={trumpCard} pattern={Pattern.Franconian} />
     );
@@ -213,12 +213,12 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     if (playerPhase != Phases.bidding || player.bid == 0) return;
     const highest_bid = Math.max(...G.players.map((P) => P.bid));
     const allowed_bids = util.allowedBids(G);
-    const canCallAce = ['Schell', 'Gras', 'Eichel'].some((colName) => {
-      const colorInHand = player.hand.filter((C) => C.color == CardColor[colName]);
-      if (colorInHand.some((C) => C.value == 14)) {
+    const canCallAce = ['Schell', 'Gras', 'Eichel'].some((suitName) => {
+      const suitInHand = player.hand.filter((C) => C.suit == Suit[suitName]);
+      if (suitInHand.some((C) => C.value == 14)) {
         return false;
       }
-      return !colorInHand.every((C) => [11, 12].includes(C.value));
+      return !suitInHand.every((C) => [11, 12].includes(C.value));
     });
     const click = allowed_bids.map((bid) => {
       let selectable = bid <= Contract.Some || highest_bid < bid;
@@ -239,18 +239,18 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   function renderButtonsCall() {
     if (playerStage != Stages.call_card) return;
     const all_cards: ICard[] = ['Schell', 'Gras', 'Eichel']
-      .filter((col) => {
-        const colorInHand = player.hand.filter((C) => C.color == CardColor[col]);
-        if (colorInHand.some((C) => C.value == 14)) {
+      .filter((suit) => {
+        const suitInHand = player.hand.filter((C) => C.suit == Suit[suit]);
+        if (suitInHand.some((C) => C.value == 14)) {
           return false;
         }
-        if (colorInHand.every((C) => [11, 12].includes(C.value))) {
+        if (suitInHand.every((C) => [11, 12].includes(C.value))) {
           return false;
         }
         return true;
       })
-      .map((col) => {
-        return { color: CardColor[col], value: 14 };
+      .map((suit) => {
+        return { suit: Suit[suit], value: 14 };
       });
     return (
       <ButtonBar
@@ -265,16 +265,16 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   function renderButtonsTrump() {
     if (playerStage != Stages.select_trump) return;
     const all_cards: ICard[] = ['Schell', 'Herz', 'Gras', 'Eichel']
-      .filter((col) => {
-        const colorInHand = player.hand.filter((C) => C.color == CardColor[col]);
-        return !colorInHand.every((C) => [11, 12].includes(C.value));
+      .filter((suit) => {
+        const suitInHand = player.hand.filter((C) => C.suit == Suit[suit]);
+        return !suitInHand.every((C) => [11, 12].includes(C.value));
       })
-      .map((col) => {
-        return { color: CardColor[col], value: 10 };
+      .map((suit) => {
+        return { suit: Suit[suit], value: 10 };
       });
     return (
       <ButtonBar
-        click={all_cards.map((C) => () => moves.SelectTrumpSuit(C.color))}
+        click={all_cards.map((C) => () => moves.SelectTrumpSuit(C.suit))}
         question={translate('callcard_select_trumpsuit')}
         cards={all_cards}
         pattern={Pattern.Franconian}

@@ -5,7 +5,7 @@ export enum Pattern {
   Skat = 'skat',
 }
 
-export enum CardColor {
+export enum Suit {
   Diamonds,
   Hearts,
   Spades,
@@ -19,7 +19,7 @@ export enum CardColor {
 }
 
 export interface ICard {
-  color: CardColor;
+  suit: Suit;
   value: number;
 }
 

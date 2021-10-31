@@ -1,4 +1,4 @@
-import { CardColor } from 'gamesShared/definitions/cards';
+import { Suit } from 'gamesShared/definitions/cards';
 import { str2cards, str2trick } from 'gamesShared/helpers/cards';
 
 import { Contract, DefaultIPlayer, IG, DefaultIG } from '../types';
@@ -38,7 +38,7 @@ export function setup_normal(): IG {
     trick: { cards: [], leaderId: players[2].id },
     resolvedTricks: [],
     contract: Contract.Normal,
-    trumpSuit: CardColor.Diamonds,
+    trumpSuit: Suit.Diamonds,
   };
 }
 
@@ -59,6 +59,6 @@ export function setup_solo_trump(): IG {
     trick: { cards: [], leaderId: players[0].id },
     resolvedTricks: [],
     contract: Contract.SoloTrump,
-    trumpSuit: CardColor.Spades,
+    trumpSuit: Suit.Spades,
   };
 }

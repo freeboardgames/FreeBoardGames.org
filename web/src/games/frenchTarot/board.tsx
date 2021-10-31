@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Ctx } from 'boardgame.io';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { Pattern, CardColor, ICard } from 'gamesShared/definitions/cards';
+import { Pattern, Suit, ICard } from 'gamesShared/definitions/cards';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
@@ -239,9 +239,9 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   function renderButtonsCall() {
     if (playerStage != Stages.call_card) return;
     let val = 14;
-    for (; player.hand.filter((C) => util.isColorCard(C) && C.value == val).length == 4; val--);
-    const all_cards: ICard[] = ['Clubs', 'Diamonds', 'Spades', 'Hearts'].map((col) => {
-      return { color: CardColor[col], value: val };
+    for (; player.hand.filter((C) => util.isSuitCard(C) && C.value == val).length == 4; val--);
+    const all_cards: ICard[] = ['Clubs', 'Diamonds', 'Spades', 'Hearts'].map((suit) => {
+      return { suit: Suit[suit], value: val };
     });
     return (
       <ButtonBar

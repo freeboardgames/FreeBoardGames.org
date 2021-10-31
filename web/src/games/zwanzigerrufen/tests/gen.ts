@@ -63,7 +63,7 @@ export function dealCards(G: IG) {
       return dealCards(G);
     }
     G.partnerId = G.players.find((P) =>
-      P.hand.some((C) => C.color == G.calledCard.color && C.value == G.calledCard.value),
+      P.hand.some((C) => C.suit == G.calledCard.suit && C.value == G.calledCard.value),
     ).id;
   }
 }

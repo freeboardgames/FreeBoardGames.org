@@ -1,4 +1,4 @@
-import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
+import { Suit, ICard, ITrick } from 'gamesShared/definitions/cards';
 
 import { Contract, IG, IRoundSummary } from '../types';
 import * as util from './misc';
@@ -105,7 +105,7 @@ function kingsPoints(deck: ICard[], takers: string[]): number {
 function isPagatUltimo(lastTrick: ITrick, takers: string[]): number {
   const winnerPos = util.mod(+lastTrick.winnerId - +lastTrick.leaderId, 4);
   const winningCard = lastTrick.cards[winnerPos];
-  if (winningCard.color != CardColor.Trumps || winningCard.value != 1) return 0;
+  if (winningCard.suit != Suit.Trumps || winningCard.value != 1) return 0;
   return winnerIsTaker(lastTrick, takers) ? 1 : -1;
 }
 
@@ -127,7 +127,7 @@ function trullPoints(deck: ICard[], takers: string[]): number {
 function mondPoints(tricks: ITrick[], takers: string[]): number {
   const T = tricks.filter((T) => T.cards.some((C) => C.value == 21))[0];
   const winnerPos = util.mod(+T.winnerId - +T.leaderId, 4);
-  const isCaught = T.cards[winnerPos].color == CardColor.Excuse;
+  const isCaught = T.cards[winnerPos].suit == Suit.Excuse;
   if (!isCaught) return 0;
   return winnerIsTaker(T, takers) ? 1 : -1;
 }
@@ -151,8 +151,8 @@ function countTakerPoints(tricks: ITrick[], takers: string[]): number {
 }
 
 function cardPoints(card: ICard): number {
-  if (card.color == CardColor.Excuse) return 5;
-  if (card.color == CardColor.Trumps) {
+  if (card.suit == Suit.Excuse) return 5;
+  if (card.suit == Suit.Trumps) {
     return [1, 21].includes(card.value) ? 5 : 1;
   }
   return [0, 2, 3, 4, 5][Math.max(0, card.value - 10)];

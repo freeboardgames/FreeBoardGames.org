@@ -1,28 +1,21 @@
-import { CardColor, ICard } from 'gamesShared/definitions/cards';
+import { Suit, ICard } from 'gamesShared/definitions/cards';
 
 import { Contract, Announcement, IG, IPlayer } from '../types';
 
 export function isTrump(C: ICard): boolean {
-  return C.color == CardColor.Excuse || C.color == CardColor.Trumps;
+  return C.suit == Suit.Excuse || C.suit == Suit.Trumps;
 }
 
 export function isTrull(C: ICard): boolean {
-  return C.color == CardColor.Excuse || (C.color == CardColor.Trumps && [1, 21].includes(C.value));
+  return C.suit == Suit.Excuse || (C.suit == Suit.Trumps && [1, 21].includes(C.value));
 }
 
-export function colorRank(color: CardColor): number {
-  return [
-    CardColor.Diamonds,
-    CardColor.Spades,
-    CardColor.Hearts,
-    CardColor.Clubs,
-    CardColor.Trumps,
-    CardColor.Excuse,
-  ].indexOf(color);
+export function suitRank(suit: Suit): number {
+  return [Suit.Diamonds, Suit.Spades, Suit.Hearts, Suit.Clubs, Suit.Trumps, Suit.Excuse].indexOf(suit);
 }
 
 export function cmpCards(a: ICard, b: ICard): number {
-  return (colorRank(a.color) - colorRank(b.color)) * 100 + (a.value - b.value);
+  return (suitRank(a.suit) - suitRank(b.suit)) * 100 + (a.value - b.value);
 }
 
 export function getBidName(bid: Contract): string {
@@ -34,11 +27,11 @@ export function getCalledNo(card: ICard): string {
 }
 
 export function getCallCard(hand: ICard[]): ICard {
-  const trumps = hand.filter((C) => C.color == CardColor.Trumps && C.value >= 16 && C.value <= 20);
+  const trumps = hand.filter((C) => C.suit == Suit.Trumps && C.value >= 16 && C.value <= 20);
   if (trumps.length == 5) return null;
   let val = 20;
   for (; trumps.some((C) => C.value == val); val--);
-  return { color: CardColor.Trumps, value: val };
+  return { suit: Suit.Trumps, value: val };
 }
 
 export function allowedBids(players: IPlayer[], playerId: string): Contract[] {
@@ -77,7 +70,7 @@ export function allowedAnnouncements(G: IG, playerId: string): [Announcement, bo
       result.push([Announcement.Valat, true]);
     }
   } else {
-    const has_pagat = player.hand.some((C) => C.value == 1 && C.color == CardColor.Trumps);
+    const has_pagat = player.hand.some((C) => C.value == 1 && C.suit == Suit.Trumps);
     ['Absolut', 'Pagat', 'Valat'].forEach((A) => {
       if (A == 'Pagat' && own[A] == 0 && !has_pagat) return;
       if ([0, 2, 8].includes(own[A])) {

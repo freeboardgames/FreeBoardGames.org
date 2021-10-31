@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
-import { CardColor } from 'gamesShared/definitions/cards';
+import { Suit } from 'gamesShared/definitions/cards';
 
 import { Stages, Contract, Announcement, IG } from './types';
 import * as util from './util/misc';
@@ -29,7 +29,7 @@ export const Moves = {
     return G;
   },
 
-  SelectTrumpSuit(G: IG, ctx: Ctx, suit: CardColor) {
+  SelectTrumpSuit(G: IG, ctx: Ctx, suit: Suit) {
     G.trumpSuit = suit;
     ctx.events.endStage();
     ctx.events.endPhase();

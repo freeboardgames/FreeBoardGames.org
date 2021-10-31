@@ -1,4 +1,4 @@
-import { ICard, CardColor } from 'gamesShared/definitions/cards';
+import { ICard, Suit } from 'gamesShared/definitions/cards';
 import { Contract, IG, IPlayer } from '../types';
 
 export function isTrump(G: IG, C: ICard): boolean {
@@ -8,32 +8,32 @@ export function isTrump(G: IG, C: ICard): boolean {
   if (G.contract == Contract.Bettel) {
     return false;
   }
-  return C.value == 11 || C.value == 12 || C.color == G.trumpSuit;
+  return C.value == 11 || C.value == 12 || C.suit == G.trumpSuit;
 }
 
-export function colorRank(color: CardColor): number {
-  return [CardColor.Schell, CardColor.Herz, CardColor.Gras, CardColor.Eichel].indexOf(color);
+export function suitRank(suit: Suit): number {
+  return [Suit.Schell, Suit.Herz, Suit.Gras, Suit.Eichel].indexOf(suit);
 }
 
-export function cardRank(contract: Contract, trumpSuit: CardColor, card: ICard): number {
-  let color_rank = colorRank(card.color);
+export function cardRank(contract: Contract, trumpSuit: Suit, card: ICard): number {
+  let suit_rank = suitRank(card.suit);
   if (contract == Contract.Bettel) {
-    return 100 * color_rank + card.value;
+    return 100 * suit_rank + card.value;
   }
   if (card.value == 11) {
-    return 1000 + color_rank;
+    return 1000 + suit_rank;
   }
   if (contract != Contract.Wenz && card.value == 12) {
-    return 10000 + color_rank;
+    return 10000 + suit_rank;
   }
-  if (contract != Contract.Wenz && card.color == trumpSuit) {
-    color_rank = 5;
+  if (contract != Contract.Wenz && card.suit == trumpSuit) {
+    suit_rank = 5;
   }
   let val_order: number[] = contract == Contract.Wenz ? [7, 8, 9, 12, 13, 10, 14] : [7, 8, 9, 13, 10, 14];
-  return 100 * color_rank + val_order.indexOf(card.value);
+  return 100 * suit_rank + val_order.indexOf(card.value);
 }
 
-export function get_cmpCards(contract: Contract, trumpSuit: CardColor) {
+export function get_cmpCards(contract: Contract, trumpSuit: Suit) {
   return function (a: ICard, b: ICard): number {
     return cardRank(contract, trumpSuit, a) - cardRank(contract, trumpSuit, b);
   };

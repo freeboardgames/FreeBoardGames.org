@@ -1,4 +1,4 @@
-import { ITrick, CardColor, ICard } from 'gamesShared/definitions/cards';
+import { ITrick, Suit, ICard } from 'gamesShared/definitions/cards';
 
 import { Announcement, Contract, IG, IRoundSummary } from '../types';
 import * as util from './misc';
@@ -93,13 +93,13 @@ function getWinLevel(G: IG, takerPoints: number) {
   return is_schneider ? 3 : 2;
 }
 
-function getBasicValue(trumpSuit: CardColor) {
+function getBasicValue(trumpSuit: Suit) {
   return {
     Diamonds: 9,
     Hearts: 10,
     Spades: 11,
     Clubs: 12,
-  }[CardColor[trumpSuit]];
+  }[Suit[trumpSuit]];
 }
 
 function countTakerPoints(tricks: ITrick[], takerId: string): number {

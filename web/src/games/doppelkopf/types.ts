@@ -1,4 +1,4 @@
-import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
+import { Suit, ICard, ITrick } from 'gamesShared/definitions/cards';
 
 export enum Phases {
   bidding = 'bidding',
@@ -14,7 +14,7 @@ export enum Stages {
 
 export interface IGameMoves {
   MakeBid(contract: Contract): void;
-  SelectTrumpSuit(suit: CardColor): void;
+  SelectTrumpSuit(suit: Suit): void;
   Announce(announcement: Announcement): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
@@ -48,7 +48,7 @@ export interface IG {
   deck: ICard[];
   takerId: string;
   partnerId?: string;
-  trumpSuit: CardColor;
+  trumpSuit: Suit;
   contract: Contract;
   marriageShift: number;
   announcementRe: Announcement;

@@ -1,4 +1,4 @@
-import { CardColor } from 'gamesShared/definitions/cards';
+import { Suit } from 'gamesShared/definitions/cards';
 import { str2trick } from 'gamesShared/helpers/cards';
 
 import { Contract } from '../types';
@@ -8,7 +8,7 @@ import { setup_normal } from './util';
 it('finds the winner of a given trick', () => {
   const G = setup_normal();
   const contracts = [Contract.Normal, Contract.SoloTrump, Contract.SoloQueen, Contract.SoloJack, Contract.SoloAce];
-  const trumpSuits: CardColor[] = [CardColor.Diamonds, CardColor.Clubs, null, null, null];
+  const trumpSuits: Suit[] = [Suit.Diamonds, Suit.Clubs, null, null, null];
   [
     ['S7 S10 !SK S8', ['1', '1', '1', '1', '1']],
     ['S7 S10 !SK S10', ['3', '3', '3', '3', '3']],

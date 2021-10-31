@@ -1,5 +1,5 @@
 import { Ctx, Game } from 'boardgame.io';
-import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
+import { Suit, ICard, ITrick } from 'gamesShared/definitions/cards';
 
 import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
@@ -24,7 +24,7 @@ export const FrenchTarotGame: Game<IG> = {
 
   playerView: (G: IG, ctx: Ctx, playerID: string): IG => {
     if (ctx.gameover || playerID === null || ctx.phase == Phases.round_end) return G;
-    const dummyCard: ICard = { color: CardColor.Excuse, value: 0 };
+    const dummyCard: ICard = { suit: Suit.Excuse, value: 0 };
     const dummyTrick: ITrick = { cards: [] };
     const stripSecrets: (IPlayer) => IPlayer = (P) => {
       if (P.id == playerID) return P;
@@ -238,7 +238,7 @@ export function resolveTrick(G: IG): boolean {
     G.resolvedTricks.every((T) => {
       return T.winnerId == G.takerId || T.winnerId == G.calledTakerId;
     });
-  const excuseLeads = G.trick.cards[0].color == CardColor.Excuse;
+  const excuseLeads = G.trick.cards[0].suit == Suit.Excuse;
   G.trick.winnerId = isAlmostSlam && excuseLeads ? G.trick.leaderId : getTrickWinnerId(G.trick);
   G.resolvedTricks.push(G.trick);
   G.trick = { cards: [], leaderId: G.trick.winnerId };
@@ -248,37 +248,37 @@ export function resolveTrick(G: IG): boolean {
 export function getCalledTakerId(players: IPlayer[], card: ICard): string {
   const takerId = players.find((P) => P.isTaker).id;
   const calledTaker = players.find((P) => {
-    return P.hand.some((C) => C.color == card.color && C.value == card.value);
+    return P.hand.some((C) => C.suit == card.suit && C.value == card.value);
   });
   return calledTaker ? calledTaker.id : takerId;
 }
 
 export function getTrickWinnerId(T: ITrick): string {
   const leaderId = +T.leaderId;
-  const max_trump = Math.max(...T.cards.map((C) => (C.color == CardColor.Trumps ? C.value : 0)));
+  const max_trump = Math.max(...T.cards.map((C) => (C.suit == Suit.Trumps ? C.value : 0)));
   if (max_trump > 0) {
     return util
-      .mod(leaderId + T.cards.findIndex((C) => C.color == CardColor.Trumps && C.value == max_trump), T.cards.length)
+      .mod(leaderId + T.cards.findIndex((C) => C.suit == Suit.Trumps && C.value == max_trump), T.cards.length)
       .toString();
   }
-  let lead_color = T.cards[0].color;
-  if (lead_color == CardColor.Excuse) {
-    lead_color = T.cards[1].color;
+  let lead_suit = T.cards[0].suit;
+  if (lead_suit == Suit.Excuse) {
+    lead_suit = T.cards[1].suit;
   }
-  const max_value = Math.max(...T.cards.map((C) => (C.color == lead_color ? C.value : 0)));
+  const max_value = Math.max(...T.cards.map((C) => (C.suit == lead_suit ? C.value : 0)));
   return util
-    .mod(leaderId + T.cards.findIndex((C) => C.color == lead_color && C.value == max_value), T.cards.length)
+    .mod(leaderId + T.cards.findIndex((C) => C.suit == lead_suit && C.value == max_value), T.cards.length)
     .toString();
 }
 
 export function getSortedDeck(): ICard[] {
-  let deck: ICard[] = [{ color: CardColor.Excuse, value: 0 }];
-  for (let col of ['Hearts', 'Diamonds', 'Spades', 'Clubs']) {
+  let deck: ICard[] = [{ suit: Suit.Excuse, value: 0 }];
+  for (let suit of ['Hearts', 'Diamonds', 'Spades', 'Clubs']) {
     deck = deck.concat(
       Array(14)
         .fill(0)
         .map((_, i) => {
-          return { color: CardColor[col], value: i + 1 };
+          return { suit: Suit[suit], value: i + 1 };
         }),
     );
   }
@@ -286,7 +286,7 @@ export function getSortedDeck(): ICard[] {
     Array(21)
       .fill(0)
       .map((_, i) => {
-        return { color: CardColor.Trumps, value: i + 1 };
+        return { suit: Suit.Trumps, value: i + 1 };
       }),
   );
   return deck;
