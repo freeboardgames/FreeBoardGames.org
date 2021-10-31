@@ -1,4 +1,4 @@
-import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
+import { Suit, ICard, ITrick } from 'gamesShared/definitions/cards';
 
 import { Contract, Announcement, IG, IRoundSummary } from '../types';
 import * as util from './misc';
@@ -79,7 +79,7 @@ function countFoxes(tricks: ITrick[], takers: string[]): number {
       const takerPos = takers.map((i) => util.mod(+i - +T.leaderId, 4));
       return T.cards
         .map((C, i) => {
-          if (C.color != CardColor.Diamonds || C.value != 14) return 0;
+          if (C.suit != Suit.Diamonds || C.value != 14) return 0;
           const ownerIsTaker = takerPos.indexOf(i) > 0;
           if (ownerIsTaker == idIsTaker(T.winnerId, takers)) return 0;
           return idIsTaker(T.winnerId, takers) ? 1 : -1;
@@ -102,7 +102,7 @@ function countDoppelkopf(tricks: ITrick[], takers: string[]): number {
 function charliePoint(lastTrick: ITrick, takers: string[]): number {
   const winnerPos = util.mod(+lastTrick.winnerId - +lastTrick.leaderId, 4);
   const winningCard = lastTrick.cards[winnerPos];
-  if (winningCard.color != CardColor.Clubs || winningCard.value != 11) return 0;
+  if (winningCard.suit != Suit.Clubs || winningCard.value != 11) return 0;
   return idIsTaker(lastTrick.winnerId, takers) ? 1 : -1;
 }
 

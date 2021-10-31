@@ -1,6 +1,6 @@
 import { Ctx, Game } from 'boardgame.io';
 import { Stage } from 'boardgame.io/core';
-import { ICard, CardColor, ITrick } from 'gamesShared/definitions/cards';
+import { ICard, Suit, ITrick } from 'gamesShared/definitions/cards';
 
 import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
@@ -23,7 +23,7 @@ export const SchafkopfGame: Game<IG> = {
 
   playerView: (G: IG, ctx: Ctx, playerID: string): IG => {
     if (ctx.gameover || playerID === null || ctx.phase == Phases.round_end) return G;
-    const dummyCard: ICard = { color: CardColor.Schell, value: 14 };
+    const dummyCard: ICard = { suit: Suit.Schell, value: 14 };
     const dummyTrick: ITrick = { cards: [] };
     const stripSecrets: (IPlayer) => IPlayer = (P) => {
       if (P.id == playerID) return P;
@@ -50,7 +50,7 @@ export const SchafkopfGame: Game<IG> = {
         const handSize = 8;
         const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, ctx.numPlayers)];
-        const cmpCards = util.get_cmpCards(Contract.None, ctx.numPlayers == 4 ? CardColor.Herz : null);
+        const cmpCards = util.get_cmpCards(Contract.None, ctx.numPlayers == 4 ? Suit.Herz : null);
         Object.assign(G, {
           ...DefaultIG,
           players: G.players,
@@ -120,7 +120,7 @@ export const SchafkopfGame: Game<IG> = {
         G.contract = highestBid;
         taker.isTaker = true;
         if (G.contract == Contract.Ace) {
-          G.trumpSuit = CardColor.Herz;
+          G.trumpSuit = Suit.Herz;
         }
         const cmpCards = util.get_cmpCards(G.contract, G.trumpSuit);
         G.players.forEach((P) => {
@@ -134,7 +134,7 @@ export const SchafkopfGame: Game<IG> = {
       turn: {
         onBegin: (G: IG, ctx: Ctx) => {
           const taker = util.getPlayerById(G, G.takerId);
-          const has_highest_trump = taker.hand.some((C) => C.color == CardColor.Eichel && C.value == 12);
+          const has_highest_trump = taker.hand.some((C) => C.suit == Suit.Eichel && C.value == 12);
           if (G.contract == Contract.Solo) {
             ctx.events.setActivePlayers({ currentPlayer: Stages.select_trump });
           } else if (G.contract == Contract.Ace) {
@@ -164,9 +164,9 @@ export const SchafkopfGame: Game<IG> = {
         if (G.calledCard) {
           G.calledTakerId = getCalledTakerId(G.players, G.calledCard);
           const calledTaker = util.getPlayerById(G, G.calledTakerId);
-          const calledColorCards = calledTaker.hand.filter((C) => C.color == G.calledCard.color);
-          const numCalledCol = calledColorCards.filter((C) => !util.isTrump(G, C)).length;
-          G.calledMayRun = numCalledCol >= 4 ? 1 : 0;
+          const CalledSuitCards = calledTaker.hand.filter((C) => C.suit == G.calledCard.suit);
+          const numCalledSuit = CalledSuitCards.filter((C) => !util.isTrump(G, C)).length;
+          G.calledMayRun = numCalledSuit >= 4 ? 1 : 0;
         }
         const cmpCards = util.get_cmpCards(G.contract, G.trumpSuit);
         G.players.forEach((P) => {
@@ -234,9 +234,9 @@ export const SchafkopfGame: Game<IG> = {
 
 export function resolveTrick(G: IG): boolean {
   // returns true if this was the last trick in the game
-  const lead_color = G.trick.cards[0].color;
-  const lead_color_is_called = G.contract == Contract.Ace && G.calledCard.color == lead_color;
-  if (lead_color_is_called && G.calledMayRun == 1) {
+  const lead_suit = G.trick.cards[0].suit;
+  const lead_suit_is_called = G.contract == Contract.Ace && G.calledCard.suit == lead_suit;
+  if (lead_suit_is_called && G.calledMayRun == 1) {
     G.calledMayRun = -1;
   }
   const winnerId = getTrickWinnerId(G.contract, G.trumpSuit, G.trick);
@@ -253,17 +253,17 @@ export function resolveTrick(G: IG): boolean {
 export function getCalledTakerId(players: IPlayer[], card: ICard): string {
   const takerId = players.find((P) => P.isTaker).id;
   const calledTaker = players.find((P) => {
-    return P.hand.some((C) => C.color == card.color && C.value == card.value);
+    return P.hand.some((C) => C.suit == card.suit && C.value == card.value);
   });
   return calledTaker ? calledTaker.id : takerId;
 }
 
-export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: ITrick): string {
+export function getTrickWinnerId(contract: Contract, trumpSuit: Suit, T: ITrick): string {
   const leaderId = +T.leaderId;
   let ranks = T.cards.map((C) => util.cardRank(contract, trumpSuit, C));
   if (ranks.every((R) => R < 500)) {
-    const lead_color = T.cards[0].color;
-    ranks = ranks.map((R, i) => (T.cards[i].color == lead_color ? R : -1));
+    const lead_suit = T.cards[0].suit;
+    ranks = ranks.map((R, i) => (T.cards[i].suit == lead_suit ? R : -1));
   }
   const max_rank = Math.max(...ranks);
   return util.mod(leaderId + ranks.findIndex((R) => R == max_rank), T.cards.length).toString();
@@ -271,12 +271,12 @@ export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: IT
 
 export function getSortedDeck(numPlayers: number): ICard[] {
   let deck: ICard[] = [];
-  for (let col of ['Schell', 'Herz', 'Gras', 'Eichel']) {
+  for (let suit of ['Schell', 'Herz', 'Gras', 'Eichel']) {
     deck = deck.concat(
       Array(numPlayers == 3 ? 6 : 8)
         .fill(0)
         .map((_, i) => {
-          return { color: CardColor[col], value: i + (numPlayers == 3 ? 9 : 7) };
+          return { suit: Suit[suit], value: i + (numPlayers == 3 ? 9 : 7) };
         }),
     );
   }

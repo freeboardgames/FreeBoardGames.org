@@ -1,24 +1,24 @@
-import { CardColor, ICard, ITrick, Pattern } from 'gamesShared/definitions/cards';
+import { Suit, ICard, ITrick, Pattern } from 'gamesShared/definitions/cards';
 
-export function getPattern(col: CardColor): Pattern {
-  const tarot = [CardColor.Excuse, CardColor.Trumps];
-  const franconian = [CardColor.Schell, CardColor.Herz, CardColor.Gras, CardColor.Eichel];
-  if (tarot.includes(col)) return Pattern.Tarot;
-  if (franconian.includes(col)) return Pattern.Franconian;
+export function getPattern(suit: Suit): Pattern {
+  const tarot = [Suit.Excuse, Suit.Trumps];
+  const franconian = [Suit.Schell, Suit.Herz, Suit.Gras, Suit.Eichel];
+  if (tarot.includes(suit)) return Pattern.Tarot;
+  if (franconian.includes(suit)) return Pattern.Franconian;
   return Pattern.Skat;
 }
 
-const oStr2Color = {
-  C: CardColor.Clubs,
-  D: CardColor.Diamonds,
-  S: CardColor.Spades,
-  H: CardColor.Hearts,
-  Tr: CardColor.Trumps,
-  Ex: CardColor.Excuse,
-  Sc: CardColor.Schell,
-  Hz: CardColor.Herz,
-  Gr: CardColor.Gras,
-  Ei: CardColor.Eichel,
+const oStr2Suit = {
+  C: Suit.Clubs,
+  D: Suit.Diamonds,
+  S: Suit.Spades,
+  H: Suit.Hearts,
+  Tr: Suit.Trumps,
+  Ex: Suit.Excuse,
+  Sc: Suit.Schell,
+  Hz: Suit.Herz,
+  Gr: Suit.Gras,
+  Ei: Suit.Eichel,
 };
 
 const oSpecialValues = {
@@ -35,25 +35,25 @@ const oSpecialValues = {
 };
 
 export function str2card(s: string): ICard {
-  const [sColor, sValue] = s.match(/([A-Z][a-z]*)([A-Z0-9]*)/).slice(1);
-  const color = oStr2Color[sColor];
-  let value = color == CardColor.Excuse ? 0 : oSpecialValues[sValue] || +sValue;
-  return { color: color, value: value };
+  const [sSuit, sValue] = s.match(/([A-Z][a-z]*)([A-Z0-9]*)/).slice(1);
+  const suit = oStr2Suit[sSuit];
+  let value = suit == Suit.Excuse ? 0 : oSpecialValues[sValue] || +sValue;
+  return { suit: suit, value: value };
 }
 
 export function card2str(C: ICard, pattern?: Pattern): string {
-  let col = '';
-  for (const sCol in oStr2Color) {
-    if (oStr2Color[sCol] == C.color) {
-      col = sCol;
+  let suit = '';
+  for (const sSuit in oStr2Suit) {
+    if (oStr2Suit[sSuit] == C.suit) {
+      suit = sSuit;
       break;
     }
   }
-  if (C.color == CardColor.Excuse) return col;
-  if (C.color == CardColor.Trumps) return `${col}${C.value}`;
+  if (C.suit == Suit.Excuse) return suit;
+  if (C.suit == Suit.Trumps) return `${suit}${C.value}`;
   let val = C.value.toString();
   if (C.value > 10) {
-    pattern = pattern || getPattern(C.color);
+    pattern = pattern || getPattern(C.suit);
     if (pattern == Pattern.Franconian) {
       val = ['U', 'O', 'K', 'A'][C.value - 11];
     } else if (pattern == Pattern.Tarot) {
@@ -62,7 +62,7 @@ export function card2str(C: ICard, pattern?: Pattern): string {
       val = ['J', 'Q', 'K', 'A'][C.value - 11];
     }
   }
-  return `${col}${val}`;
+  return `${suit}${val}`;
 }
 
 export function str2cards(s: string): ICard[] {

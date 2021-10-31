@@ -53,7 +53,7 @@ export const Moves = {
     }
     const card = player.hand.splice(handIndex[0], 1)[0];
     G.trick.cards.push(card);
-    if (G.contract == Contract.Normal && card.color == G.calledCard.color && card.value == G.calledCard.value) {
+    if (G.contract == Contract.Normal && card.suit == G.calledCard.suit && card.value == G.calledCard.value) {
       player.isTaker = true;
     }
     return G;

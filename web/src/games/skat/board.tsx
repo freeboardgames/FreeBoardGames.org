@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Ctx } from 'boardgame.io';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { Pattern, CardColor, ICard } from 'gamesShared/definitions/cards';
+import { Pattern, Suit, ICard } from 'gamesShared/definitions/cards';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
@@ -169,7 +169,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
 
   function renderTrumpSuit() {
     if (G.trumpSuit === null) return;
-    const trumpCard: ICard = { color: G.trumpSuit, value: 14 };
+    const trumpCard: ICard = { suit: G.trumpSuit, value: 14 };
     return <DisplayCard description={translate('trumpsuit')} card={trumpCard} pattern={Pattern.Skat} />;
   }
 
@@ -263,12 +263,12 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
 
   function renderButtonsTrumpSuit() {
     if (playerStage != Stages.select_trump) return;
-    const all_cards: ICard[] = ['Diamonds', 'Hearts', 'Spades', 'Clubs'].map((col) => {
-      return { color: CardColor[col], value: 14 };
+    const all_cards: ICard[] = ['Diamonds', 'Hearts', 'Spades', 'Clubs'].map((suit) => {
+      return { suit: Suit[suit], value: 14 };
     });
     return (
       <ButtonBar
-        click={all_cards.map((C) => () => moves.SelectTrumpSuit(C.color))}
+        click={all_cards.map((C) => () => moves.SelectTrumpSuit(C.suit))}
         question={translate('select_trumpsuit')}
         cards={all_cards}
         pattern={Pattern.Skat}
@@ -330,7 +330,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
       const P = G.players[i];
       let playerBidStr = '';
       if (G.announcement !== null && P.isTaker) {
-        const contractStr = G.contract != Contract.Suit ? Contract[G.contract] : CardColor[G.trumpSuit];
+        const contractStr = G.contract != Contract.Suit ? Contract[G.contract] : Suit[G.trumpSuit];
         const announceStr = G.announcement != Announcement.None ? Announcement[G.announcement] : '';
         playerBidStr = [
           translate(`bidstr_${contractStr.toLowerCase()}`),

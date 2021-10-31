@@ -15,8 +15,8 @@
 .i2 { bottom: 12em; right: 20px; transform: translate(0, 50%); }
 .p3.i3, .p4.i4, .p5.i5 { bottom: 12em; left: 20px; transform: translate(0, 50%); }
 .p4.i3 { top: 0; left: 50%; transform: translate(-50%, 0); }
-.p5.i3 { top: 0; left: 70%; transform: translate(-50%,0); }
-.p5.i4 { top: 0; left: 30%; transform: translate(-50%,0); }
+.p5.i3 { top: 0; left: 700px; transform: translate(0,0); }
+.p5.i4 { top: 0; left: 180px; transform: translate(0,0); }
 
 @media only screen and (max-width: 850px) {
   .i2 { bottom: 15em; right: 2em; transform: translate(40%, 100%) rotate(-90deg); }
@@ -68,8 +68,8 @@
 
 .playerZone .statuses span {
   font-weight: bold;
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "NotoColorEmoji", 
-               "Segoe UI Symbol", "Android Emoji", "EmojiSymbols", 
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "NotoColorEmoji",
+               "Segoe UI Symbol", "Android Emoji", "EmojiSymbols",
                "EmojiOne Mozilla";
   margin-right: 0.2em;
   float: left;

@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
-import { ICard, CardColor } from 'gamesShared/definitions/cards';
+import { ICard, Suit } from 'gamesShared/definitions/cards';
 
 import { Stages, IG } from './types';
 import * as util from './util/misc';
@@ -19,11 +19,11 @@ export const Moves = {
     return G;
   },
 
-  SelectTrumpSuit(G: IG, ctx: Ctx, suit: CardColor) {
+  SelectTrumpSuit(G: IG, ctx: Ctx, suit: Suit) {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     G.trumpSuit = suit;
     ctx.events.endStage();
-    if (player.hand.some((C) => C.color == CardColor.Eichel && C.value == 12)) {
+    if (player.hand.some((C) => C.suit == Suit.Eichel && C.value == 12)) {
       ctx.events.setStage(Stages.announce_tout);
     } else {
       ctx.events.endPhase();

@@ -1,4 +1,4 @@
-import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
+import { Suit, ICard, ITrick } from 'gamesShared/definitions/cards';
 
 import { IG, IRoundSummary } from '../types';
 import * as util from './misc';
@@ -45,14 +45,14 @@ export function getRoundSummary(G: IG): IRoundSummary {
 function isPetitAuBout(tricks: ITrick[], isSlam: boolean, takers: string[]): number {
   const [T_1, T_0] = tricks.slice(-2);
   let petitAuBout = trickHasPetit(T_0, takers);
-  if (isSlam && petitAuBout == 0 && T_0.cards[0].color == CardColor.Excuse) {
+  if (isSlam && petitAuBout == 0 && T_0.cards[0].suit == Suit.Excuse) {
     petitAuBout = trickHasPetit(T_1, takers);
   }
   return petitAuBout;
 }
 
 function trickHasPetit(T: ITrick, takers: string[]): number {
-  const T_petitPos = T.cards.findIndex((C) => C.color == CardColor.Trumps && C.value == 1);
+  const T_petitPos = T.cards.findIndex((C) => C.suit == Suit.Trumps && C.value == 1);
   return T_petitPos == -1 ? 0 : winnerIsTaker(T, takers) ? 10 : -10;
 }
 
@@ -62,7 +62,7 @@ function countTakerBouts(tricks: ITrick[], takers: string[]): number {
     tricks
       .filter((T) => winnerIsTaker(T, takers))
       .reduce((a, b) => a.concat(b.cards), [])
-      .filter((C) => C.color == CardColor.Trumps)
+      .filter((C) => C.suit == Suit.Trumps)
       .filter((C) => [1, 21].includes(C.value)).length
   );
 }
@@ -72,7 +72,7 @@ function excusePoints(tricks: ITrick[], takers: string[]): number {
   const takerPos = takers.map(Number);
   let points = 0;
   tricks.some((T, i) => {
-    const T_excusePos = T.cards.findIndex((c) => c.color == CardColor.Excuse);
+    const T_excusePos = T.cards.findIndex((C) => C.suit == Suit.Excuse);
     if (T_excusePos == -1) return false;
     // full 4.5 points if Excuse is in the kitty
     if (i == 0) {
@@ -114,8 +114,8 @@ function countTakerPoints(tricks: ITrick[], takers: string[]): number {
 
 function cardPoints(card: ICard): number {
   // the Excuse is counted as 0 (it depends on the situation in the game)
-  if (card.color == CardColor.Excuse) return 0;
-  if (card.color == CardColor.Trumps) {
+  if (card.suit == Suit.Excuse) return 0;
+  if (card.suit == Suit.Trumps) {
     return [1, 21].includes(card.value) ? 4.5 : 0.5;
   }
   return 0.5 + Math.max(0, card.value - 10);

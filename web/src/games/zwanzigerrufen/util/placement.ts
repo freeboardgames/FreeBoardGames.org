@@ -8,14 +8,14 @@ export function selectableCards(G: IG, playerId: string): boolean[] {
   }
   const is_trump = player.hand.map((C) => util.isTrump(C));
   if (G.trick.cards.length == 0) {
-    const has_color = is_trump.some((v) => !v);
-    if (G.contract != Contract.SoloSuit || !has_color) return player.hand.map(() => true);
+    const has_suit = is_trump.some((v) => !v);
+    if (G.contract != Contract.SoloSuit || !has_suit) return player.hand.map(() => true);
     return is_trump.map((v) => !v);
   }
   const has_trump = is_trump.some((v) => v);
   const lead_is_trump = util.isTrump(G.trick.cards[0]);
-  const lead_color = G.trick.cards[0].color;
-  const is_lead_color = lead_is_trump ? is_trump : player.hand.map((C) => C.color == lead_color);
-  const can_follow_suit = is_lead_color.some((v) => v);
-  return can_follow_suit ? is_lead_color : has_trump ? is_trump : player.hand.map(() => true);
+  const lead_suit = G.trick.cards[0].suit;
+  const is_lead_suit = lead_is_trump ? is_trump : player.hand.map((C) => C.suit == lead_suit);
+  const can_follow_suit = is_lead_suit.some((v) => v);
+  return can_follow_suit ? is_lead_suit : has_trump ? is_trump : player.hand.map(() => true);
 }

@@ -1,20 +1,13 @@
-import { CardColor, ICard } from 'gamesShared/definitions/cards';
+import { Suit, ICard } from 'gamesShared/definitions/cards';
 
 import { IG, IPlayer, Contract } from '../types';
 
-export function colorRank(color: CardColor): number {
-  return [
-    CardColor.Diamonds,
-    CardColor.Spades,
-    CardColor.Hearts,
-    CardColor.Clubs,
-    CardColor.Trumps,
-    CardColor.Excuse,
-  ].indexOf(color);
+export function suitRank(suit: Suit): number {
+  return [Suit.Diamonds, Suit.Spades, Suit.Hearts, Suit.Clubs, Suit.Trumps, Suit.Excuse].indexOf(suit);
 }
 
 export function cmpCards(a: ICard, b: ICard): number {
-  return (colorRank(a.color) - colorRank(b.color)) * 100 + (a.value - b.value);
+  return (suitRank(a.suit) - suitRank(b.suit)) * 100 + (a.value - b.value);
 }
 
 export function getBidName(bid: Contract): string {
@@ -33,8 +26,8 @@ export function pointsRequiredToWin(numBouts: number): number {
   return [56, 51, 41, 36][numBouts];
 }
 
-export function isColorCard(card: ICard): boolean {
-  return card.color != CardColor.Excuse && card.color != CardColor.Trumps;
+export function isSuitCard(card: ICard): boolean {
+  return card.suit != Suit.Excuse && card.suit != Suit.Trumps;
 }
 
 export function getPlayerById(G: IG, playerId: string): IPlayer {

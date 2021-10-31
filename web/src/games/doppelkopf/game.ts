@@ -1,6 +1,6 @@
 import { Ctx, Game } from 'boardgame.io';
 import { Stage } from 'boardgame.io/core';
-import { ITrick, CardColor, ICard } from 'gamesShared/definitions/cards';
+import { ITrick, Suit, ICard } from 'gamesShared/definitions/cards';
 
 import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
@@ -23,7 +23,7 @@ export const DoppelkopfGame: Game<IG> = {
 
   playerView: (G: IG, ctx: Ctx, playerID: string): IG => {
     if (ctx.gameover || playerID === null || ctx.phase == Phases.round_end) return G;
-    const dummyCard: ICard = { color: CardColor.Diamonds, value: 14 };
+    const dummyCard: ICard = { suit: Suit.Diamonds, value: 14 };
     const dummyTrick: ITrick = { cards: [] };
     const takersRevealed = G.players.filter((P) => P.isTaker).length;
     const stripSecrets: (IPlayer) => IPlayer = (P) => {
@@ -52,7 +52,7 @@ export const DoppelkopfGame: Game<IG> = {
         const handSize = 12;
         const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, 4)];
-        const cmpCards = util.get_cmpCards(Contract.None, CardColor.Diamonds);
+        const cmpCards = util.get_cmpCards(Contract.None, Suit.Diamonds);
         Object.assign(G, {
           ...DefaultIG,
           players: G.players,
@@ -106,7 +106,7 @@ export const DoppelkopfGame: Game<IG> = {
           G.partnerId = takers.length > 1 ? takers[1].id : '';
         }
         if (G.contract < Contract.Solo) {
-          G.trumpSuit = CardColor.Diamonds;
+          G.trumpSuit = Suit.Diamonds;
         }
         const cmpCards = util.get_cmpCards(G.contract, G.trumpSuit);
         G.players.forEach((P) => {
@@ -191,12 +191,12 @@ export function resolveTrick(G: IG): boolean {
   return G.players.every((P) => P.hand.length == 0);
 }
 
-export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: ITrick): string {
+export function getTrickWinnerId(contract: Contract, trumpSuit: Suit, T: ITrick): string {
   const leaderId = +T.leaderId;
   let ranks = T.cards.map((C) => util.cardRank(contract, trumpSuit, C));
   if (ranks.every((R) => R < 500)) {
-    const lead_color = T.cards[0].color;
-    ranks = ranks.map((R, i) => (T.cards[i].color == lead_color ? R : -1));
+    const lead_suit = T.cards[0].suit;
+    ranks = ranks.map((R, i) => (T.cards[i].suit == lead_suit ? R : -1));
   }
   const max_rank = Math.max(...ranks);
   return util.mod(leaderId + ranks.findIndex((R) => R == max_rank), T.cards.length).toString();
@@ -204,12 +204,12 @@ export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: IT
 
 export function getSortedDeck(): ICard[] {
   let deck: ICard[] = [];
-  for (let col of ['Diamonds', 'Hearts', 'Spades', 'Clubs']) {
+  for (let suit of ['Diamonds', 'Hearts', 'Spades', 'Clubs']) {
     deck = deck.concat(
       Array(6)
         .fill(0)
         .map((_, i) => {
-          return { color: CardColor[col], value: i + 9 };
+          return { suit: Suit[suit], value: i + 9 };
         }),
     );
   }

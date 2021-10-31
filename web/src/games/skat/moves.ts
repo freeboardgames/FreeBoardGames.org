@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
-import { CardColor } from 'gamesShared/definitions/cards';
+import { Suit } from 'gamesShared/definitions/cards';
 
 import { Announcement, Contract, Phases, Stages, IG } from './types';
 import * as util from './util/misc';
@@ -77,7 +77,7 @@ export const Moves = {
     return G;
   },
 
-  SelectTrumpSuit(G: IG, ctx: Ctx, suit: CardColor) {
+  SelectTrumpSuit(G: IG, ctx: Ctx, suit: Suit) {
     G.trumpSuit = suit;
     const cmpCards = util.get_cmpCards(G.contract, G.trumpSuit);
     G.players.forEach((P) => {

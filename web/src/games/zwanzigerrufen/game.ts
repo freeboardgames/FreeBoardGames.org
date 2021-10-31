@@ -1,5 +1,5 @@
 import { Ctx, Game } from 'boardgame.io';
-import { ITrick, CardColor, ICard } from 'gamesShared/definitions/cards';
+import { ITrick, Suit, ICard } from 'gamesShared/definitions/cards';
 
 import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer, DefaultIAnnouncements } from './types';
 import * as util from './util/misc';
@@ -22,7 +22,7 @@ export const ZwanzigerrufenGame: Game<IG> = {
 
   playerView: (G: IG, ctx: Ctx, playerID: string): IG => {
     if (ctx.gameover || playerID === null || ctx.phase == Phases.round_end) return G;
-    const dummyCard: ICard = { color: CardColor.Diamonds, value: 14 };
+    const dummyCard: ICard = { suit: Suit.Diamonds, value: 14 };
     const dummyTrick: ITrick = { cards: [] };
     const takersRevealed = G.players.filter((P) => P.isTaker).length;
     const stripSecrets: (IPlayer) => IPlayer = (P) => {
@@ -122,7 +122,7 @@ export const ZwanzigerrufenGame: Game<IG> = {
         taker.announcementsRe.Game = 1;
         if (G.contract == Contract.Normal) {
           G.partnerId = G.players.find((P) => {
-            return P.hand.some((C) => C.color == G.calledCard.color && C.value == G.calledCard.value);
+            return P.hand.some((C) => C.suit == G.calledCard.suit && C.value == G.calledCard.value);
           }).id;
         } else {
           G.calledCard = null;
@@ -226,7 +226,7 @@ export function getTrickWinnerId(contract: Contract, T: ITrick): string {
   if (contract == Contract.SoloSuit && !is_trump[0]) {
     is_trump = T.cards.map(() => false);
   }
-  let ranks = T.cards.map((C) => (C.color == CardColor.Excuse ? 22 : C.value));
+  let ranks = T.cards.map((C) => (C.suit == Suit.Excuse ? 22 : C.value));
   if (is_trump.some((v) => v)) {
     const fairytalewinner = isFairyTaleTrick(T);
     if (fairytalewinner >= 0) {
@@ -234,7 +234,7 @@ export function getTrickWinnerId(contract: Contract, T: ITrick): string {
     }
     ranks = ranks.map((R, i) => (is_trump[i] ? R : -1));
   } else {
-    ranks = ranks.map((R, i) => (T.cards[i].color == T.cards[0].color ? R : -1));
+    ranks = ranks.map((R, i) => (T.cards[i].suit == T.cards[0].suit ? R : -1));
   }
   const max_rank = Math.max(...ranks);
   return util.mod(leaderId + ranks.findIndex((R) => R == max_rank), T.cards.length).toString();
@@ -243,17 +243,17 @@ export function getTrickWinnerId(contract: Contract, T: ITrick): string {
 export function isFairyTaleTrick(T: ITrick): number {
   // returns the position of the player with trump 1 (the trick winner)
   if (T.cards.filter(util.isTrull).length < 3) return -1;
-  return T.cards.findIndex((C) => C.color == CardColor.Trumps && C.value == 1);
+  return T.cards.findIndex((C) => C.suit == Suit.Trumps && C.value == 1);
 }
 
 export function getSortedDeck(): ICard[] {
-  let deck: ICard[] = [{ color: CardColor.Excuse, value: 0 }];
-  for (let col of ['Hearts', 'Diamonds', 'Spades', 'Clubs']) {
+  let deck: ICard[] = [{ suit: Suit.Excuse, value: 0 }];
+  for (let suit of ['Hearts', 'Diamonds', 'Spades', 'Clubs']) {
     deck = deck.concat(
       Array(5)
         .fill(0)
         .map((_, i) => i + 10)
-        .map((i) => ({ color: CardColor[col], value: i })),
+        .map((i) => ({ suit: Suit[suit], value: i })),
     );
   }
   return deck.concat(
@@ -261,6 +261,6 @@ export function getSortedDeck(): ICard[] {
       .fill(0)
       .map((_, i) => i + 1)
       .filter((i) => i != 2 && i != 3)
-      .map((i) => ({ color: CardColor.Trumps, value: i })),
+      .map((i) => ({ suit: Suit.Trumps, value: i })),
   );
 }

@@ -1,4 +1,4 @@
-import { CardColor } from 'gamesShared/definitions/cards';
+import { Suit } from 'gamesShared/definitions/cards';
 import { str2cards, str2trick } from 'gamesShared/helpers/cards';
 
 import { Announcement, Contract, DefaultIPlayer, IG, DefaultIG } from '../types';
@@ -44,7 +44,7 @@ export function setup_3players(): IG {
     contract: Contract.Suit,
     hand: false,
     announcement: Announcement.None,
-    trumpSuit: CardColor.Clubs,
+    trumpSuit: Suit.Clubs,
   };
 }
 

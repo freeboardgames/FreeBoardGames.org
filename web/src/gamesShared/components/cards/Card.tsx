@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ICard, CardColor, Pattern } from 'gamesShared/definitions/cards';
+import { ICard, Suit, Pattern } from 'gamesShared/definitions/cards';
 
 import css from './Card.module.css';
 
@@ -16,7 +16,7 @@ export function Card(props: {
   const C = props.type;
   let cardBack: number[];
   let cardBlank: number[];
-  let colors: CardColor[];
+  let suits: Suit[];
   let numCols: number;
   let colOffset: number;
   let cardSize: number[];
@@ -27,14 +27,7 @@ export function Card(props: {
     case Pattern.Tarot:
       cardBack = [8, 5];
       cardBlank = [9, 5];
-      colors = [
-        CardColor.Clubs,
-        CardColor.Diamonds,
-        CardColor.Spades,
-        CardColor.Hearts,
-        CardColor.Trumps,
-        CardColor.Excuse,
-      ];
+      suits = [Suit.Clubs, Suit.Diamonds, Suit.Spades, Suit.Hearts, Suit.Trumps, Suit.Excuse];
       numCols = 14;
       colOffset = 1;
       cardSize = [320, 596];
@@ -45,16 +38,9 @@ export function Card(props: {
     case Pattern.Tarock:
       cardBack = [6, 6];
       cardBlank = [6, 7];
-      colors = [
-        CardColor.Clubs,
-        CardColor.Spades,
-        CardColor.Diamonds,
-        CardColor.Hearts,
-        CardColor.Trumps,
-        CardColor.Excuse,
-      ];
+      suits = [Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts, Suit.Trumps, Suit.Excuse];
       numCols = 8;
-      colOffset = C && C.color == CardColor.Trumps ? 1 : 7;
+      colOffset = C && C.suit == Suit.Trumps ? 1 : 7;
       cardSize = [236, 424];
       backgroundSize = [1888, 2968];
       bgClass = css.tarock;
@@ -63,7 +49,7 @@ export function Card(props: {
     case Pattern.Franconian:
       cardBack = [9, 3];
       cardBlank = [9, 2];
-      colors = [CardColor.Schell, CardColor.Herz, CardColor.Gras, CardColor.Eichel];
+      suits = [Suit.Schell, Suit.Herz, Suit.Gras, Suit.Eichel];
       numCols = 10;
       colOffset = 6;
       cardSize = [320, 596];
@@ -76,7 +62,7 @@ export function Card(props: {
     default:
       cardBack = [8, 3];
       cardBlank = [8, 2];
-      colors = [CardColor.Diamonds, CardColor.Hearts, CardColor.Spades, CardColor.Clubs];
+      suits = [Suit.Diamonds, Suit.Hearts, Suit.Spades, Suit.Clubs];
       numCols = 9;
       colOffset = 7;
       cardSize = [314, 483];
@@ -90,20 +76,20 @@ export function Card(props: {
   let text = '';
 
   if (C) {
-    if (props.pattern == Pattern.Tarot && C.color == CardColor.Excuse) {
+    if (props.pattern == Pattern.Tarot && C.suit == Suit.Excuse) {
       col = 7;
       row = 5;
-    } else if (props.pattern == Pattern.Tarock && C.color == CardColor.Excuse) {
+    } else if (props.pattern == Pattern.Tarock && C.suit == Suit.Excuse) {
       col = 5;
       row = 6;
-    } else if (colors.includes(C.color)) {
+    } else if (suits.includes(C.suit)) {
       col = C.value - colOffset;
-      row = colors.indexOf(C.color) + Math.floor(col / numCols);
+      row = suits.indexOf(C.suit) + Math.floor(col / numCols);
       col = col % numCols;
     } else {
       [col, row] = cardBlank;
-      text = `CardColor.${CardColor[C.color]} is not available with the ${props.pattern} pattern.`;
-      text += ` Supported colors are: ${colors.map((c) => CardColor[c]).join(', ')}.`;
+      text = `Suit.${Suit[C.suit]} is not available with the ${props.pattern} pattern.`;
+      text += ` Supported suits are: ${suits.map((c) => Suit[c]).join(', ')}.`;
     }
   }
 

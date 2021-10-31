@@ -1,5 +1,5 @@
 import { Card } from './Card';
-import { CardColor, Pattern } from 'gamesShared/definitions/cards';
+import { Suit, Pattern } from 'gamesShared/definitions/cards';
 export default {
   component: Card,
   title: 'Games (shared)/Components/Cards/Card',
@@ -9,9 +9,9 @@ export default {
       mapping: Pattern,
       control: { type: 'select' },
     },
-    color: {
-      options: Object.keys(CardColor).filter((c) => isNaN(+c)),
-      mapping: CardColor,
+    suit: {
+      options: Object.keys(Suit).filter((c) => isNaN(+c)),
+      mapping: Suit,
       control: { type: 'select' },
     },
     value: {
@@ -30,19 +30,19 @@ export default {
     },
   },
 };
-const Template = ({ color, value, pattern, ...rest }) => {
-  return <Card pattern={pattern} type={{ color: color, value: value }} {...rest} />;
+const Template = ({ suit, value, pattern, ...rest }) => {
+  return <Card pattern={pattern} type={{ suit: suit, value: value }} {...rest} />;
 };
 export const Selectable = Template.bind({});
 Selectable.args = {
-  color: 'Gras',
+  suit: 'Gras',
   value: 11,
   pattern: 'Franconian',
   width: 104,
 };
 export const NotSelectable = Template.bind({});
 NotSelectable.args = {
-  color: 'Trumps',
+  suit: 'Trumps',
   value: 17,
   pattern: 'Tarot',
   width: 104,
