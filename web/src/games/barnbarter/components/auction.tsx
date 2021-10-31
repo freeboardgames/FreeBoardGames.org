@@ -15,6 +15,7 @@ export class BAuction extends React.Component<InnerWrapper, {}> {
           _key="auction"
           onClick={() => {}}
           ownerID={-1}
+          highlightCard={0}
         ></BCard>
         {this.props.auction.counter == 0
           ? ' '
