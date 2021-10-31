@@ -17,7 +17,7 @@ import { Trans, useCurrentGameTranslation } from 'infra/i18n';
 
 import css from './board.module.css';
 
-import { Phases, Stages, IGameMoves, IG } from './types';
+import { Phases, Stages, Contract, IGameMoves, IG } from './types';
 import * as util from './util/misc';
 import * as u_poignee from './util/poignee';
 import * as u_discard from './util/discard';
@@ -221,17 +221,17 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   }
 
   function renderButtonsBid() {
-    if (playerPhase != Phases.bidding || player.bid == 0) return;
+    if (playerPhase != Phases.bidding || player.bid == Contract.Pass) return;
     const highest_bid = Math.max(...G.players.map((P) => P.bid));
-    const all_bids = [0, 1, 2, 3, 4];
+    const all_bids = [Contract.Pass, Contract.Small, Contract.Guard, Contract.GuardWithout, Contract.GuardAgainst];
     const click = all_bids.map((bid) => {
-      return bid == 0 || highest_bid < bid ? () => moves.MakeBid(bid) : null;
+      return bid == Contract.Pass || highest_bid < bid ? () => moves.MakeBid(bid) : null;
     });
     return (
       <ButtonBar
         click={click}
         texts={all_bids.map((bid) => translate(util.getBidName(bid)))}
-        red={all_bids.map((_, i) => i == 0)}
+        red={all_bids.map((bid) => bid == Contract.Pass)}
       />
     );
   }
@@ -355,7 +355,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
       return (!currentPlayerId && !P.isReady) || P.id === currentPlayerId;
     });
     const bids = G.players.map((P) => (P.isTaker ? G.contract : P.bid));
-    const bidStrings = bids.map((bid) => (bid >= 0 ? `«${translate(util.getBidName(bid))}»` : ''));
+    const bidStrings = bids.map((bid) => (bid >= Contract.Pass ? `«${translate(util.getBidName(bid))}»` : ''));
     const biddingEnded = G.players.some((P) => P.isTaker);
     const roundEnded = currentLeaderId == '';
     const announcements = G.players.map((P) => {
@@ -367,8 +367,8 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         perspectivePlayerId={player.id}
         currentLeaderId={currentLeaderId}
         bids={bidStrings}
-        bidPass={bids.map((bid) => bid == 0)}
-        bidding={bids.map((bid) => (biddingEnded || bid < 0 ? -1 : bid == 0 ? 0 : 1))}
+        bidPass={bids.map((bid) => bid == Contract.Pass)}
+        bidding={bids.map((bid) => (biddingEnded || bid == Contract.None ? -1 : bid == Contract.Pass ? 0 : 1))}
         announcements={announcements}
         names={playerNames}
         hands={playerHands.map((H, i) => (G.players[i].id == playerID && !spectatorMode ? null : H))}

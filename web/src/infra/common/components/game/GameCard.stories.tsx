@@ -1,10 +1,8 @@
 import { GameCard } from './GameCard';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-
 export default {
   title: 'Infrastructure/Common/Game/GameCard',
 };
-
 const GAME_DEF_TEST: IGameDef = {
   code: 'foocode',
   contributors: ['foo'],
@@ -23,6 +21,5 @@ const GAME_DEF_TEST: IGameDef = {
   minPlayers: 2,
   maxPlayers: 3,
 };
-
 export const Example = () => <GameCard game={GAME_DEF_TEST} />;
 export const AsLink = () => <GameCard game={GAME_DEF_TEST} isLink={true} />;

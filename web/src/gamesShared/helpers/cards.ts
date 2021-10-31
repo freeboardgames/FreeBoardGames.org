@@ -87,12 +87,12 @@ export function str2trick(s: string, players: string[]): ITrick {
   };
 }
 
-export function trick2str(T: ITrick): string {
+export function trick2str(T: ITrick, pattern?: Pattern): string {
   const numPlayers = T.cards.length;
   return new Array(numPlayers)
     .fill(0)
     .map((_, i) => mod(i - +T.leaderId, numPlayers))
-    .map((pos) => card2str(T.cards[pos]))
+    .map((pos) => card2str(T.cards[pos], pattern))
     .map((s, i) => (i == +T.leaderId ? `!${s}` : s))
     .join(' ');
 }

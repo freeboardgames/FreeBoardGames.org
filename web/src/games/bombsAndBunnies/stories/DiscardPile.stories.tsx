@@ -1,13 +1,10 @@
 import React from 'react';
 import { CardStyle } from '../components/shared/interfaces';
-
 import { DiscardPile } from '../components/DiscardPile';
-
 export default {
   title: 'Games/Bombs & Bunnies/DiscardPile',
   component: DiscardPile,
 };
-
 export const Empty = () => <DiscardPile cards={[]} />;
 export const SingleCard = () => <DiscardPile cards={[CardStyle.Style1]} />;
 export const DifferentStyledCards2 = () => <DiscardPile cards={[CardStyle.Style1, CardStyle.Style2]} />;

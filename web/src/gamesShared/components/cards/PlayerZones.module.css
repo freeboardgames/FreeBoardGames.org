@@ -4,7 +4,6 @@
   bottom: 0;
   left: 0;
   right: 0;
-  margin: 15px 15px 0;
   z-index: 5;
 }
 
@@ -15,13 +14,13 @@
 .i1 { bottom: 0; left: 50%; transform: translate(-50%,0); }
 .i2 { bottom: 12em; right: 20px; transform: translate(0, 50%); }
 .p3.i3, .p4.i4, .p5.i5 { bottom: 12em; left: 20px; transform: translate(0, 50%); }
-.p4.i3 { top: 3em; left: 50%; transform: translate(-50%,0); }
-.p5.i3 { top: 0.5em; left: 70%; transform: translate(-50%,0); }
-.p5.i4 { top: 0.5em; left: 30%; transform: translate(-50%,0); }
+.p4.i3 { top: 0; left: 50%; transform: translate(-50%, 0); }
+.p5.i3 { top: 0; left: 70%; transform: translate(-50%,0); }
+.p5.i4 { top: 0; left: 30%; transform: translate(-50%,0); }
 
 @media only screen and (max-width: 850px) {
-  .i2 { bottom: 20em; right: 2em; transform: translate(40%, 100%) rotate(-90deg); }
-  .p3.i3, .p4.i4, .p5.i5 { bottom: 20em; left: 2em; transform: translate(-40%, 100%) rotate(90deg); }
+  .i2 { bottom: 15em; right: 2em; transform: translate(40%, 100%) rotate(-90deg); }
+  .p3.i3, .p4.i4, .p5.i5 { bottom: 15em; left: 2em; transform: translate(-40%, 100%) rotate(90deg); }
 }
 
 @media only screen and (max-width: 650px) and (max-height: 700px) {
@@ -96,9 +95,17 @@
   }
 }
 
+.playerZone.p4.i3 .bidStatus,
+.playerZone.p5.i3 .bidStatus,
+.playerZone.p5.i4 .bidStatus,
+.playerZone.i1 .bidStatus {
+  transform: translate(-100%, 0);
+}
+
 .playerZone .bidStatus {
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0; left: 0;
+  width: 170px;
   transform: translate(0, -100%);
 }
 
@@ -119,8 +126,19 @@
   background-color: #a00;
 }
 
+.playerZone.p4.i3 .hand,
+.playerZone.p5.i3 .hand,
+.playerZone.p5.i4 .hand {
+  bottom: auto;
+  top: 0;
+  transform: translate(calc(100% + 0.1em), 0);
+}
+
 .hand {
-  margin-top: 0.2em;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(0, calc(100% + 0.1em));
   width: 170px;
   height: 50px;
   overflow-x: auto;
@@ -132,7 +150,6 @@
 .hand .arrangeCard {
   display: inline-block;
   width: 20px;
-  box-shadow: rgb(0, 0, 0) 0px 0px 10px;
 }
 
 .hand:hover {

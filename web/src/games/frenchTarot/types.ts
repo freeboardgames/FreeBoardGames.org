@@ -15,13 +15,22 @@ export enum Stages {
 }
 
 export interface IGameMoves {
-  MakeBid(value: number): void;
+  MakeBid(contract: Contract): void;
   Discard(): void;
   Call(card: ICard): void;
   AnnounceSlam(announce: boolean): void;
   DeclarePoignee(announce: boolean): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
+}
+
+export enum Contract {
+  None = -1,
+  Pass = 0,
+  Small = 1,
+  Guard = 2,
+  GuardWithout = 3,
+  GuardAgainst = 4,
 }
 
 export interface IG {
@@ -33,7 +42,7 @@ export interface IG {
   takerId: string;
   calledTakerId?: string;
   calledCard?: ICard;
-  contract: number;
+  contract: Contract;
   announcedSlam: boolean;
   poignee: number;
   trick: ITrick;
@@ -49,7 +58,7 @@ export const DefaultIG: IG = {
   kittyPrev: [],
   takerId: '',
   calledTakerId: '',
-  contract: 0,
+  contract: Contract.None,
   announcedSlam: false,
   poignee: 0,
   trick: { cards: [] },
@@ -61,7 +70,7 @@ export interface IPlayer {
   id: string;
   name: string;
   score: number;
-  bid: number;
+  bid: Contract;
   isDealer: boolean;
   isTaker: boolean;
   isReady: boolean;
@@ -73,7 +82,7 @@ export const DefaultIPlayer: IPlayer = {
   id: '',
   name: '',
   score: 0,
-  bid: -1,
+  bid: Contract.None,
   isDealer: false,
   isTaker: false,
   isReady: true,
