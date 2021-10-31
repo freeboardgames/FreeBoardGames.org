@@ -16,7 +16,7 @@ interface IGameLayoutProps {
   extraCardContent?: React.ReactNode;
 }
 
-const enhance = compose(withNotificationsUiProvider, setDisplayName('GameLayout'));
+const enhance = compose<IGameLayoutProps, IGameLayoutProps>(withNotificationsUiProvider, setDisplayName('GameLayout'));
 
 const GameLayoutInternal: VFC<IGameLayoutProps> = (props) => {
   const notificationMenuItems = useNotificationMenuItems();
