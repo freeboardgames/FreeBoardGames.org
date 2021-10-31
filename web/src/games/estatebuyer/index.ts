@@ -11,11 +11,10 @@ export const estateBuyerGameDef: IGameDef = {
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 6,
-  description: 'Similar to For Sale',
-  descriptionTag: `Play Estate Buyer, similar to For Sale, locally
+  description: 'Buy and Sell Buildings',
+  descriptionTag: `Play Estate Buyer locally
   or online against friends!`,
   instructions: {
-    videoId: 'OZ0RLgnBp6o',
     text: instructions,
   },
   status: IGameStatus.PUBLISHED,

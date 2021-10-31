@@ -1,13 +1,10 @@
 import React from 'react';
-
 import { IPlayerZoneProps, PlayerZone } from '../components/PlayerZone';
 import { CardType, CardStyle } from '../components/shared/interfaces';
-
 export default {
   title: 'Games/Bombs & Bunnies/PlayerZone',
   component: PlayerZone,
 };
-
 const defaultData: IPlayerZoneProps = {
   playerId: '0',
   playerName: 'Player 1',
@@ -21,7 +18,6 @@ const defaultData: IPlayerZoneProps = {
   totalPlayerCards: 0,
   playerIsOut: false,
 };
-
 export const Empty = () => <PlayerZone {...defaultData} />;
 export const Stack1 = () => <PlayerZone {...defaultData} stackSize={1} />;
 export const AllRevealedBunny1 = () => <PlayerZone {...defaultData} revealedStack={[CardType.Bunny]} />;

@@ -32,7 +32,7 @@ describe('GamesList', () => {
 });
 
 function type(value: string) {
-  const input = screen.getByRole('textbox', { name: 'search' });
+  const input = screen.getAllByRole('textbox', { name: 'search' })[0];
   act(() => {
     fireEvent.change(input, { target: { value } });
   });

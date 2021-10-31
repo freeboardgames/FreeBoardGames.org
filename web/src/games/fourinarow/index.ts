@@ -16,7 +16,6 @@ export const fourinarowGameDef: IGameDef = {
  a multi-player game against a friend online, or share your device and play\
  locally against a friend.`,
   instructions: {
-    videoId: 'utXzIFEVPjA',
     text: instructions,
   },
   status: IGameStatus.PUBLISHED,

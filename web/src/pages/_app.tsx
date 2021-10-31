@@ -8,21 +8,17 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import * as Sentry from '@sentry/browser';
 import { ThemeProvider } from 'infra/common';
 import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
-import UaContext from 'infra/common/device/IsMobileContext';
-import { isMobileFromReq } from 'infra/common/device/UaHelper';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
 import { wrapper } from 'infra/common/redux/store';
 import { GameProvider } from 'infra/game/GameProvider';
-import { appWithTranslation, Router } from 'infra/i18n';
+import { appWithTranslation } from 'infra/i18n';
 import withError from 'next-with-error';
 import App from 'next/app';
 import Head from 'next/head';
 import React from 'react';
-import ReactGA from 'react-ga';
 import { compose } from 'recompose';
 import ErrorPage from './_error';
 
-const GA_TRACKING_CODE = 'UA-105391878-2';
 const SENTRY_DSN = 'https://5957292e58cf4d2fbb781910e7b26b1f@o397015.ingest.sentry.io/5251165';
 
 const httpLink = createHttpLink({
@@ -61,11 +57,6 @@ const client = new ApolloClient({
 });
 
 class DefaultApp extends App {
-  logPageView(path: string) {
-    ReactGA.set({ page: path });
-    ReactGA.pageview(path);
-  }
-
   componentDidMount() {
     // Remove the server-side injected CSS:
     const jssStyles = document.querySelector('#jss-server-side');
@@ -74,27 +65,17 @@ class DefaultApp extends App {
     }
 
     // Initialize Google Analytics:
-    if (!(window as any).GA_INITIALIZED && isMainDomain) {
-      ReactGA.initialize(GA_TRACKING_CODE);
-      (window as any).GA_INITIALIZED = true;
+    if (isMainDomain) {
       const version = process.env.VERSION;
       const channel = process.env.CHANNEL;
       let release;
       if (version && channel) release = `${version}-${channel}`;
       Sentry.init({ dsn: SENTRY_DSN, release });
     }
-
-    Router.events.on('routeChangeComplete', this.logPageView);
-
-    this.logPageView(window.location.pathname);
-  }
-
-  componentWillUnmount() {
-    Router.events.off('routeChangeComplete', this.logPageView);
   }
 
   render() {
-    const { Component, pageProps, isMobile } = this.props as any;
+    const { Component, pageProps } = this.props as any;
     return (
       <>
         <Head>
@@ -111,13 +92,11 @@ class DefaultApp extends App {
         </Head>
         <ThemeProvider>
           <SelfXSSWarning />
-          <UaContext.Provider value={isMobile}>
-            <ApolloProvider client={client}>
-              <GameProvider {...pageProps}>
-                <Component {...pageProps} />
-              </GameProvider>
-            </ApolloProvider>
-          </UaContext.Provider>
+          <ApolloProvider client={client}>
+            <GameProvider {...pageProps}>
+              <Component {...pageProps} />
+            </GameProvider>
+          </ApolloProvider>
         </ThemeProvider>
       </>
     );
@@ -130,8 +109,7 @@ class DefaultApp extends App {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    const isMobile = isMobileFromReq(ctx.req);
-    return { pageProps, isMobile };
+    return { pageProps };
   }
 }
 

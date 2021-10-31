@@ -1,11 +1,9 @@
 import React from 'react';
 import { IPlayerBidPanelProps, BidPanelComponent } from '../BidPanelComponent';
-
 export default {
   title: 'Games/EstateBuyer/BidPanel',
   component: BidPanelComponent,
 };
-
 const bidPanelData: IPlayerBidPanelProps = {
   players: [
     {
@@ -18,7 +16,6 @@ const bidPanelData: IPlayerBidPanelProps = {
   moves: [],
   playerID: '0',
 };
-
 export const Default = () => <BidPanelComponent {...bidPanelData} />;
 export const NotMyTurn = () => <BidPanelComponent {...{ ...bidPanelData, playerID: '2' }} />;
 export const NotEnoughMoney = () => (

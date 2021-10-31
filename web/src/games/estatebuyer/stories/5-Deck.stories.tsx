@@ -1,27 +1,32 @@
 import React from 'react';
-
 import { DeckComponent } from '../DeckComponent';
-
 export default {
   title: 'Games/EstateBuyer/Decks',
   component: DeckComponent,
-  decorators: [(story) => <div style={{ padding: '20px' }}>{story()}</div>],
+  decorators: [
+    (story) => (
+      <div
+        style={{
+          padding: '20px',
+        }}
+      >
+        {story()}
+      </div>
+    ),
+  ],
 };
-
 const buildingCard = {
   building: true,
   number: 1,
   value: 1,
   showing: false,
 };
-
 const moneyCard = {
   money: true,
   number: 1,
   value: 1,
   showing: false,
 };
-
 export const Empty = () => <DeckComponent cards={[]} />;
 export const OneBuildingCard = () => <DeckComponent cards={[buildingCard]} />;
 export const SixBuildingCard = () => (

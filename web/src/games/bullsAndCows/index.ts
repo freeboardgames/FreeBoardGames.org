@@ -20,7 +20,6 @@ export const bullsAndCowsGameDef: IGameDef = {
   description: 'similar to Mastermind',
   descriptionTag: `Play Bulls and Cows (also known as Mastermind) for free online.`,
   instructions: {
-    videoId: 'dMHxyulGrEk',
     text: instructions,
   },
   status: IGameStatus.PUBLISHED,

@@ -74,7 +74,7 @@ const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
           <Toolbar>
             <Link href={() => home()}>
               <a style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-                <img style={{ marginRight: '8px', height: '48px' }} src={FbgLogo} alt="FbG" />
+                <img style={{ marginRight: '8px' }} width="48" height="48" src={FbgLogo} alt="FbG" />
                 <Typography component="h1" variant="h6" style={{ color: 'white' }}>
                   FreeBoardGames.org
                 </Typography>

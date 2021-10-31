@@ -1,25 +1,5 @@
 import { IPlayer, cardEnum } from './types';
 
-export function getCardName(c: cardEnum): string {
-  // TODO: Refactor this for localization
-  const cardNames = [
-    'Chicken Sandwich',
-    'Pork Sandwich',
-    'Beef Sandwich',
-    'Potato Chips',
-    'Potato Chips',
-    'Potato Chips',
-    'Deviled Eggs',
-    'Fried Chicken',
-    'Pizza',
-    'Fork',
-    'Mayonnaise',
-    'Cake',
-  ];
-
-  return cardNames[c];
-}
-
 export const cardFunctions: ((p: IPlayer) => IPlayer)[] = [
   (p: IPlayer) => {
     if (p.unusedMayo > 0) {
@@ -55,17 +35,17 @@ export const cardFunctions: ((p: IPlayer) => IPlayer)[] = [
     return p;
   },
   (p: IPlayer) => {
-    const count = p.playedCards.filter((e) => e === cardEnum.deviledEggs).length;
+    const count = p.playedCards.filter((e) => getCardTypeFromNumber(e) === cardEnum.deviledEggs).length;
     if (count % 2 === 0) p.score += 5;
     return p;
   },
   (p: IPlayer) => {
-    const count = p.playedCards.filter((e) => e === cardEnum.friedChicken).length;
+    const count = p.playedCards.filter((e) => getCardTypeFromNumber(e) === cardEnum.friedChicken).length;
     if (count % 3 === 0) p.score += 10;
     return p;
   },
   (p: IPlayer) => {
-    const count = p.playedCards.filter((e) => e === cardEnum.pizza).length;
+    const count = p.playedCards.filter((e) => getCardTypeFromNumber(e) === cardEnum.pizza).length;
     if (count <= 5) p.score += count;
     return p;
   },
@@ -83,7 +63,7 @@ export const cardFunctions: ((p: IPlayer) => IPlayer)[] = [
   },
 ];
 
-export const defaultDeck = new Array(108).fill(0).map((_, i) => {
+export function getCardTypeFromNumber(i: number): cardEnum {
   if (i < 5) return cardEnum.sandwichChicken;
   else if (i >= 5 && i < 15) return cardEnum.sandwichPork;
   else if (i >= 15 && i < 20) return cardEnum.sandwichBeef;
@@ -96,4 +76,6 @@ export const defaultDeck = new Array(108).fill(0).map((_, i) => {
   else if (i >= 88 && i < 98) return cardEnum.cake;
   else if (i >= 98 && i < 104) return cardEnum.mayo;
   else return cardEnum.fork;
-});
+}
+
+export const defaultDeck = new Array(108).fill(0).map((_, i) => i);

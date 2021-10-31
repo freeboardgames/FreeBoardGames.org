@@ -1,10 +1,14 @@
 import { Ctx } from 'boardgame.io';
-import { ActivePlayers, INVALID_MOVE, Stage } from 'boardgame.io/core';
+import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
 import { IG, cardEnum } from './types';
-import { defaultDeck, cardFunctions } from './cards';
+import { defaultDeck, cardFunctions, getCardTypeFromNumber } from './cards';
+
+/* Much of this code was refactored based on the code snippet found here:
+ * https://github.com/boardgameio/boardgame.io/issues/591 */
 
 export function setupRound(g: IG, ctx: Ctx) {
   g.round++;
+  g.confirmed = [];
 
   let dessertsPlayed = 0;
 
@@ -19,7 +23,7 @@ export function setupRound(g: IG, ctx: Ctx) {
   let unshuffledDeck = defaultDeck;
   for (let i = 0; i < dessertsPlayed; i++) {
     unshuffledDeck.splice(
-      unshuffledDeck.findIndex((e) => e === cardEnum.cake),
+      unshuffledDeck.findIndex((e) => getCardTypeFromNumber(e) === cardEnum.cake),
       1,
     );
   }
@@ -75,7 +79,7 @@ export function scoreRoundEnd(g: IG, ctx: Ctx) {
     }
   }
 
-  if (g.round === 3) scoreGameEnd(g, ctx);
+  return g;
 }
 
 export function scoreGameEnd(g: IG, ctx: Ctx) {
@@ -113,6 +117,40 @@ export function scoreGameEnd(g: IG, ctx: Ctx) {
       }
     }
   }
+
+  return g;
+}
+
+export function rotateAndScoreCards(g: IG, ctx: Ctx) {
+  for (let i = 0; i < ctx.numPlayers; i++) {
+    const h = g.hands[i];
+    const ho = parseInt(h.currentOwner, 10);
+
+    for (let j = 0; j < h.selected.length; j++) {
+      g.players[ho].playedCards.push(h.hand[h.selected[j]]);
+
+      g.players[ho] = cardFunctions[getCardTypeFromNumber(h.hand[h.selected[j]])](g.players[ho]);
+    }
+
+    g.hands[i].hand = g.hands[i].hand.filter((_, i) => !h.selected.includes(i));
+
+    // Remove fork from hand if fork used
+    if (g.players[h.currentOwner].forkUsed) {
+      const forkIndex = g.players[h.currentOwner].playedCards.findIndex(
+        (e) => getCardTypeFromNumber(e) === cardEnum.fork,
+      );
+      g.hands[i].hand.push(g.players[h.currentOwner].playedCards[forkIndex]);
+      g.players[h.currentOwner].playedCards.splice(forkIndex, 1);
+      g.players[h.currentOwner].forkUsed = false;
+    }
+
+    g.hands[i].selected = null;
+    g.hands[i].currentOwner = ((ho + 1) % ctx.numPlayers).toString();
+
+    g.players[h.currentOwner].turnsLeft = 1;
+  }
+
+  return g;
 }
 
 export function getScoreboard(g: IG) {
@@ -120,8 +158,44 @@ export function getScoreboard(g: IG) {
     .map((e, i) => ({
       playerID: i.toString(),
       score: e.score,
+      extraData: [e.dessertsCount],
     }))
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) => (b.score - a.score === 0 ? b.extraData[0] - a.extraData[0] : b.score - a.score));
+}
+
+// Moves
+export function selectCard(g: IG, ctx: Ctx, index: number) {
+  if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
+  if (index === undefined) return INVALID_MOVE;
+  if (index < 0 || index >= g.hands[0].hand.length) return INVALID_MOVE;
+
+  const idx = g.hands.findIndex((e) => e.currentOwner === ctx.playerID);
+  if (g.hands[idx].selected === null) g.hands[idx].selected = [];
+  if (g.hands[idx].selected.includes(index)) return INVALID_MOVE;
+  g.hands[idx].selected.push(index);
+
+  g.players[ctx.playerID].turnsLeft--;
+
+  return g;
+}
+
+export function useFork(g: IG, ctx: Ctx) {
+  if (g.players[ctx.playerID].turnsLeft === 0) return INVALID_MOVE;
+  if (g.players[ctx.playerID].forkUsed || g.players[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
+  if (g.hands[0].hand.length < 2) return INVALID_MOVE;
+
+  g.players[ctx.playerID].forkUsed = true;
+  g.players[ctx.playerID].unusedForks--;
+  g.players[ctx.playerID].turnsLeft = 2;
+
+  return g;
+}
+
+export function confirmScore(g: IG, ctx: Ctx) {
+  if (g.confirmed.includes(ctx.playerID)) return INVALID_MOVE;
+  g.confirmed.push(ctx.playerID);
+
+  return g;
 }
 
 export const PicnicGoGame = {
@@ -137,74 +211,57 @@ export const PicnicGoGame = {
         unusedMayo: 0,
         unusedForks: 0,
         forkUsed: false,
+        turnsLeft: 1,
       }),
-      hands: [{ currentOwner: '0', hand: [], selected: null }],
+      hands: [],
       round: 0,
       gameOver: false,
+      confirmed: [],
     };
 
     return setupRound(baseState, ctx);
   },
 
-  moves: {
-    selectCard: (g, ctx, index) => {
-      if (index === undefined) return INVALID_MOVE;
-      const idx = g.hands.findIndex((e) => e.currentOwner === ctx.playerID);
-      if (index < 0 || index >= g.hands[idx].hand.length) return INVALID_MOVE;
-      if (g.hands[idx].selected === null) g.hands[idx].selected = [];
-      g.hands[idx].selected.push(index);
+  phases: {
+    play: {
+      start: true,
+      next: 'score',
+      endIf: (g: IG) => g.hands[0].hand.length === 0,
+      moves: {
+        selectCard,
+        useFork,
+      },
+      turn: {
+        activePlayers: ActivePlayers.ALL,
+        onMove: (g: IG, ctx: Ctx) => {
+          const unfinishedPlayers = g.players.filter((e) => e.turnsLeft > 0);
+
+          if (unfinishedPlayers.length === 0) {
+            rotateAndScoreCards(g, ctx);
+          }
+        },
+      },
     },
-    useFork: (g, ctx) => {
-      if (g.players[ctx.playerID].forkUsed || g.players[ctx.playerID].unusedForks === 0) return INVALID_MOVE;
-      g.players[ctx.playerID].forkUsed = true;
-      g.players[ctx.playerID].unusedForks--;
-
-      ctx.events.setStage({ stage: Stage.NULL, moveLimit: 2 });
-    },
-  },
-
-  turn: {
-    activePlayers: ActivePlayers.ALL_ONCE,
-    endIf: (_, ctx) => ctx.activePlayers === null,
-    onEnd: (g, ctx) => {
-      for (let i = 0; i < ctx.numPlayers; i++) {
-        const h = g.hands[i];
-        const ho = parseInt(h.currentOwner, 10);
-
-        for (let j = 0; j < h.selected.length; j++) {
-          g.players[ho].playedCards.push(h.hand[h.selected[j]]);
-
-          g.players[ho] = cardFunctions[h.hand[h.selected[j]]](g.players[ho]);
-        }
-
-        for (let j = 0; j < h.selected.length; j++) {
-          g.hands[i].hand.splice(h.selected[j], 1);
-        }
-
-        if (g.players[h.currentOwner].forkUsed) {
-          g.hands[i].hand.push(cardEnum.fork);
-          g.players[h.currentOwner].playedCards.splice(
-            g.players[h.currentOwner].playedCards.findIndex((e) => e === cardEnum.fork),
-            1,
-          );
-          g.players[h.currentOwner].forkUsed = false;
-        }
-
-        g.hands[i].selected = null;
-        g.hands[i].currentOwner = ((ho + 1) % ctx.numPlayers).toString();
-      }
-
-      // Hands are empty, end of round
-      if (g.hands[0].hand.length === 0) {
+    score: {
+      next: 'play',
+      onEnd: (g: IG, ctx: Ctx) => {
         scoreRoundEnd(g, ctx);
-
-        if (g.round < 3) setupRound(g, ctx);
-        else g.gameOver = true;
-      }
+        if (g.round === 3) {
+          scoreGameEnd(g, ctx);
+          g.gameOver = true;
+        } else {
+          setupRound(g, ctx);
+        }
+      },
+      endIf: (g: IG, ctx: Ctx) => g.confirmed.length === ctx.numPlayers,
+      moves: { confirmScore },
+      turn: {
+        activePlayers: ActivePlayers.ALL_ONCE,
+      },
     },
   },
 
-  endIf: (g) => {
+  endIf: (g: IG) => {
     if (g.gameOver) {
       return { scoreboard: getScoreboard(g) };
     }

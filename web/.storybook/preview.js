@@ -11,3 +11,4 @@ function i18nextDecorator() {
     </I18nextProvider>
   );
 }
+

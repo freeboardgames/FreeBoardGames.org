@@ -18,20 +18,22 @@ export interface IG {
   hands: IHand[];
   round: number;
   gameOver: boolean;
+  confirmed: string[];
 }
 
 export interface IPlayer {
-  playedCards: cardEnum[];
+  playedCards: number[];
   score: number;
   dessertsCount: number;
   chipsCount: number;
   unusedMayo: number;
   unusedForks: number;
   forkUsed: boolean;
+  turnsLeft: number;
 }
 
 export interface IHand {
   currentOwner: string;
-  hand: cardEnum[];
+  hand: number[];
   selected: number[] | null;
 }

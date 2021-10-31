@@ -30,7 +30,7 @@ export function Header({ children, showDevOnly }: { children: ReactNode; showDev
 }
 
 export function Games({ children }: { children: ReactNode }) {
-  return <div style={{ margin: '0 4px', display: 'flex', flexWrap: 'wrap' }}>{children}</div>;
+  return <div style={{ display: 'flex', flexWrap: 'wrap' }}>{children}</div>;
 }
 
 export function Navigable({
@@ -55,7 +55,7 @@ export function Navigable({
 export function Title({ showDevOnly }: { showDevOnly: boolean }) {
   const { t } = useTranslation('GamesList');
   return (
-    <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
+    <Typography component="h2" variant="h6" style={{ marginBottom: '16px' }}>
       {showDevOnly ? t('games_in_development') : t('games')}
     </Typography>
   );

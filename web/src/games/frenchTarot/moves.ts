@@ -1,19 +1,25 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
+import { ICard } from 'gamesShared/definitions/cards';
 
-import { Phases, Stages, IG, ICard } from './types';
+import { Contract, Phases, Stages, IG } from './types';
 import * as util from './util/misc';
+import * as u_discard from './util/discard';
 import * as u_poignee from './util/poignee';
 
 export const Moves = {
-  MakeBid(G: IG, ctx: Ctx, value: number) {
+  MakeBid(G: IG, ctx: Ctx, contract: Contract) {
     const player = util.getPlayerById(G, ctx.currentPlayer);
-    player.bid = value;
+    player.bid = contract;
     return G;
   },
 
   Call(G: IG, ctx: Ctx, card: ICard) {
     G.calledCard = card;
+    ctx.events.endStage();
+    if (!u_discard.prepareDiscard(G)) {
+      ctx.events.setActivePlayers({ currentPlayer: Stages.announce_slam });
+    }
     return G;
   },
 
@@ -31,8 +37,12 @@ export const Moves = {
         .sort((a, b) => b - a)
         .map((i) => player.hand.splice(i, 1)[0])
         .reverse(),
-      winner: player,
+      winnerId: player.id,
     });
+    delete player.discardSelection;
+    G.kittyRevealed = false;
+    G.kitty = [];
+    ctx.events.setStage(Stages.announce_slam);
 
     return G;
   },
@@ -41,8 +51,10 @@ export const Moves = {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     if (!player.isTaker) return INVALID_MOVE;
     G.announcedSlam = announce;
-    if (announce) G.trick.leader = player;
+    if (announce) G.trick.leaderId = player.id;
     player.isReady = true;
+    ctx.events.endStage();
+    ctx.events.endPhase();
     return G;
   },
 
@@ -69,12 +81,12 @@ export const Moves = {
     if (stage == Stages.declare_poignee) {
       player.discardSelection = [...u_poignee.autoDeselectExcuse(G, ctx, handIndex)];
     } else if (ctx.phase == Phases.discard) {
-      const discard_num = ctx.numPlayers == 5 ? 3 : 6;
+      const discard_num = util.kittySize(ctx.numPlayers);
       if (handIndex.length > discard_num) {
         return INVALID_MOVE;
       }
       player.discardSelection = [...handIndex];
-    } else if (stage == Stages.place_card) {
+    } else {
       if (handIndex.length == 0) {
         return INVALID_MOVE;
       }

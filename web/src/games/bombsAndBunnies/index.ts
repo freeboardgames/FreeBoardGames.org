@@ -14,7 +14,6 @@ export const bombsAndBunniesDef: IGameDef = {
   description: 'Similar to Skull',
   descriptionTag: `Play Bombs & Bunnies and have lots of fun!`,
   instructions: {
-    videoId: 'Cv1_6AfbwlQ',
     text: instructions,
   },
   status: IGameStatus.PUBLISHED,

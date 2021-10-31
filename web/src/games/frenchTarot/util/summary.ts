@@ -1,15 +1,12 @@
-import { IG, ICard, CardColor, ITrick, IRoundSummary } from '../types';
+import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
+
+import { IG, IRoundSummary } from '../types';
 import * as util from './misc';
 
 export function getRoundSummary(G: IG): IRoundSummary {
   if (G.calledCard) {
     // called player counts as taker (this is secret during the game)
     G.players[+G.calledTakerId].isTaker = true;
-    G.resolvedTricks
-      .filter((T) => T.winner.id == G.calledTakerId)
-      .forEach((T) => {
-        T.winner.isTaker = true;
-      });
   }
 
   const takers = G.calledTakerId ? [G.takerId, G.calledTakerId] : [G.takerId];
@@ -18,8 +15,8 @@ export function getRoundSummary(G: IG): IRoundSummary {
 
   const takerPoints = countTakerPoints(G.resolvedTricks, takers);
 
-  const isSlam = G.resolvedTricks.every((T) => T.winner.isTaker);
-  const petitAuBout = isPetitAuBout(G.resolvedTricks, isSlam);
+  const isSlam = G.resolvedTricks.every((T) => winnerIsTaker(T, takers));
+  const petitAuBout = isPetitAuBout(G.resolvedTricks, isSlam, takers);
 
   const multiplier = [0, 1, 2, 4, 6][G.contract];
 
@@ -45,28 +42,28 @@ export function getRoundSummary(G: IG): IRoundSummary {
   };
 }
 
-function isPetitAuBout(tricks: ITrick[], isSlam: boolean): number {
+function isPetitAuBout(tricks: ITrick[], isSlam: boolean, takers: string[]): number {
   const [T_1, T_0] = tricks.slice(-2);
-  let petitAuBout = trickHasPetit(T_0);
+  let petitAuBout = trickHasPetit(T_0, takers);
   if (isSlam && petitAuBout == 0 && T_0.cards[0].color == CardColor.Excuse) {
-    petitAuBout = trickHasPetit(T_1);
+    petitAuBout = trickHasPetit(T_1, takers);
   }
   return petitAuBout;
 }
 
-function trickHasPetit(T: ITrick): number {
+function trickHasPetit(T: ITrick, takers: string[]): number {
   const T_petitPos = T.cards.findIndex((C) => C.color == CardColor.Trumps && C.value == 1);
-  return T_petitPos == -1 ? 0 : T.winner.isTaker ? 10 : -10;
+  return T_petitPos == -1 ? 0 : winnerIsTaker(T, takers) ? 10 : -10;
 }
 
 function countTakerBouts(tricks: ITrick[], takers: string[]): number {
   return (
     (excusePoints(tricks, takers) > 0.5 ? 1 : 0) +
     tricks
-      .filter((T) => T.winner.isTaker)
+      .filter((T) => winnerIsTaker(T, takers))
       .reduce((a, b) => a.concat(b.cards), [])
       .filter((C) => C.color == CardColor.Trumps)
-      .filter((C) => [1, 21].indexOf(C.value) != -1).length
+      .filter((C) => [1, 21].includes(C.value)).length
   );
 }
 
@@ -82,22 +79,22 @@ function excusePoints(tricks: ITrick[], takers: string[]): number {
       points = 4.5;
       return true;
     }
-    const T_takerPos = takerPos.map((pos) => relativePos(pos, T.leader.id, T.cards.length));
+    const T_takerPos = takerPos.map((pos) => relativePos(pos, T.leaderId, T.cards.length));
     // regular case: before last trick
     if (i < tricks.length - 1) {
-      if (T_takerPos.indexOf(T_excusePos) != -1) {
-        points = T.winner.isTaker ? 4.5 : 4;
+      if (T_takerPos.includes(T_excusePos)) {
+        points = winnerIsTaker(T, takers) ? 4.5 : 4;
       } else {
-        points = T.winner.isTaker ? 0.5 : 0;
+        points = winnerIsTaker(T, takers) ? 0.5 : 0;
       }
       return true;
     }
     // rare case: Excuse in last trick
-    if (T_takerPos.indexOf(T_excusePos) == -1) {
-      points = T.winner.isTaker ? 4.5 : 4;
+    if (!T_takerPos.includes(T_excusePos)) {
+      points = winnerIsTaker(T, takers) ? 4.5 : 4;
     } else {
       // slam with Excuse leading in last trick
-      points = T_excusePos == 0 && T.winner.id == T.leader.id ? 4.5 : T.winner.isTaker ? 0.5 : 0;
+      points = T_excusePos == 0 && T.winnerId == T.leaderId ? 4.5 : winnerIsTaker(T, takers) ? 0.5 : 0;
     }
     return true;
   });
@@ -108,7 +105,7 @@ function countTakerPoints(tricks: ITrick[], takers: string[]): number {
   return (
     excusePoints(tricks, takers) +
     tricks
-      .filter((T) => T.winner.isTaker)
+      .filter((T) => winnerIsTaker(T, takers))
       .reduce((a, b) => a.concat(b.cards), [])
       .map(cardPoints)
       .reduce((a, b) => a + b, 0)
@@ -119,7 +116,7 @@ function cardPoints(card: ICard): number {
   // the Excuse is counted as 0 (it depends on the situation in the game)
   if (card.color == CardColor.Excuse) return 0;
   if (card.color == CardColor.Trumps) {
-    return [1, 21].indexOf(card.value) == -1 ? 0.5 : 4.5;
+    return [1, 21].includes(card.value) ? 4.5 : 0.5;
   }
   return 0.5 + Math.max(0, card.value - 10);
 }
@@ -132,4 +129,8 @@ function relativePos(pos: string | number, ref: string | number, N: number): num
 
 function roundAwayFrom0(x: number): number {
   return Math.sign(x) * Math.round(Math.abs(x));
+}
+
+function winnerIsTaker(T: ITrick, takers: string[]): boolean {
+  return takers.includes(T.winnerId);
 }

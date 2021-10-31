@@ -1,7 +1,24 @@
-import { IG, IPlayer, ICard, CardColor } from '../types';
+import { CardColor, ICard } from 'gamesShared/definitions/cards';
 
-export function getBidName(bid: number): string {
-  return `bid_${['pass', 'small', 'guard', 'guard_without', 'guard_against'][bid]}`;
+import { IG, IPlayer, Contract } from '../types';
+
+export function colorRank(color: CardColor): number {
+  return [
+    CardColor.Diamonds,
+    CardColor.Spades,
+    CardColor.Hearts,
+    CardColor.Clubs,
+    CardColor.Trumps,
+    CardColor.Excuse,
+  ].indexOf(color);
+}
+
+export function cmpCards(a: ICard, b: ICard): number {
+  return (colorRank(a.color) - colorRank(b.color)) * 100 + (a.value - b.value);
+}
+
+export function getBidName(bid: Contract): string {
+  return `bid_${Contract[bid].toLowerCase()}`;
 }
 
 export function kittySize(numPlayers: number): number {

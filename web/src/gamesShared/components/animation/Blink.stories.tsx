@@ -1,9 +1,7 @@
 import { Blink } from './Blink';
-
 export default {
   title: 'Games (shared)/Components/Animation/Blink',
 };
-
 export const Short = () => (
   <Blink>
     <h1>Some content</h1>

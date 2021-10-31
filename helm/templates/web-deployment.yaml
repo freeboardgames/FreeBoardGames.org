@@ -32,18 +32,15 @@ spec:
         livenessProbe:
           failureThreshold: 3
           httpGet:
-            path: /
+            path: /en
             port: 3000
             scheme: HTTP
-          initialDelaySeconds: 30
+          initialDelaySeconds: 180
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 1
+          timeoutSeconds: 5
         name: {{ .Release.Name }}-web
         resources:
-          limits:
-            cpu: "1" 
-            memory: 1024Mi
           requests:
             cpu: 100m
             memory: 128Mi

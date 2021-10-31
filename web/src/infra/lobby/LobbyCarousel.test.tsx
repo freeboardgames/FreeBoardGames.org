@@ -17,15 +17,6 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe('Room Lobby', () => {
-  it('should show error page when initial fetch fails', async () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <LobbyCarousel />
-      </Provider>,
-    );
-    await waitFor(() => expect(getByText(/error/)).toBeTruthy());
-  });
-
   it('should display rooms', async () => {
     jest.useFakeTimers();
     const result: GetLobby_lobby = {
@@ -48,13 +39,13 @@ describe('Room Lobby', () => {
       },
     };
     LobbyService.getLobby = jest.fn().mockResolvedValue({ lobby: result });
-    const { getByText } = render(
+    const { getAllByText } = render(
       <Provider store={store}>
         <MockedProvider mocks={[subscriptionMock]}>
           <LobbyCarousel />
         </MockedProvider>
       </Provider>,
     );
-    await waitFor(() => expect(getByText(/Chess/)).toBeTruthy());
+    await waitFor(() => expect(getAllByText(/Chess/)[0]).toBeTruthy());
   });
 });

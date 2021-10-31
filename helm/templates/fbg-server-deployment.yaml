@@ -35,6 +35,10 @@ spec:
           value: {{ .Values.redis.master.service.port | quote }}
         - name: FBG_REDIS_PASSWORD
           value: {{ .Values.redis.auth.password }}
+        - name: FORCE_DB_SYNC
+          value: {{ .Values.fbgServer.forceDbSync | quote }}
+        - name: DISCORD_LETS_PLAY_WEBHOOK
+          value: {{ .Values.fbgServer.discordLetsPlayWebhook }}
         image: {{ .Values.images.fbgServer }}
         imagePullPolicy: {{ .Values.images.imagePullPolicy }}
         livenessProbe:
@@ -49,9 +53,6 @@ spec:
           timeoutSeconds: 5
         name: {{ .Release.Name }}-fbg-server
         resources:
-          limits:
-            cpu: "1"
-            memory: 1024Mi
           requests:
             cpu: 100m
             memory: 128Mi
