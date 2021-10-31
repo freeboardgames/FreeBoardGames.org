@@ -51,6 +51,8 @@ export function PreviousTrick(props: {
           text = ['V', 'C', 'D', 'R'][card.value - 11];
         } else if (props.pattern == Pattern.Skat) {
           text = ['J', 'Q', 'K', 'A'][card.value - 11];
+        } else if (props.pattern == Pattern.Tarock) {
+          text = ['J', 'C', 'Q', 'K'][card.value - 11];
         }
       }
       symbol = ColorSymbols[CardColor[card.color]];

@@ -54,10 +54,6 @@ export function PlayerZones(props: {
               <div className={css.announcement}>{props.announcements[index]}</div>
               <div className={props.bidPass[index] ? css.pass : ''}>{props.bids[index]}</div>
             </div>
-            <div className={css.statuses}>
-              <div className={css.name}>{props.names[index]}</div>
-              {renderStatuses(index)}
-            </div>
             {!props.hands[index] ? null : (
               <div className={css.hand}>
                 {props.hands[index].map((C, i) => {
@@ -69,6 +65,10 @@ export function PlayerZones(props: {
                 })}
               </div>
             )}
+            <div className={css.statuses}>
+              <div className={css.name}>{props.names[index]}</div>
+              {renderStatuses(index)}
+            </div>
           </div>
         </div>
       </div>

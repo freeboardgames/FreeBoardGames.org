@@ -1,7 +1,7 @@
 import { Ctx, Game } from 'boardgame.io';
 import { CardColor, ICard, ITrick } from 'gamesShared/definitions/cards';
 
-import { Phases, Stages, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
+import { Phases, Stages, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
 import * as u_discard from './util/discard';
 import * as u_poignee from './util/poignee';
@@ -55,7 +55,7 @@ export const FrenchTarotGame: Game<IG> = {
         G.deck = getSortedDeck();
         G.deck = ctx.random.Shuffle(G.deck);
         G.players.forEach((P, i) => {
-          P.bid = -1;
+          P.bid = Contract.None;
           P.isTaker = false;
           P.isReady = true;
           P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(util.cmpCards);
@@ -81,7 +81,7 @@ export const FrenchTarotGame: Game<IG> = {
             let i = ctx.playOrderPos;
             do {
               i = util.mod(i + 1, ctx.playOrder.length);
-            } while (G.players[i].bid == 0);
+            } while (G.players[i].bid == Contract.Pass);
             return i;
           },
         },
@@ -93,28 +93,28 @@ export const FrenchTarotGame: Game<IG> = {
 
       endIf: (G: IG) => {
         if (G.players[0].hand.length == 0) return;
-        if (G.players.some((P) => P.bid == 4)) {
+        if (G.players.some((P) => P.bid == Contract.GuardAgainst)) {
           return { next: Phases.discard };
         }
-        if (G.players.some((P) => P.bid == -1)) return;
-        if (G.players.every((P) => P.bid == 0)) {
+        if (G.players.some((P) => P.bid == Contract.None)) return;
+        if (G.players.every((P) => P.bid == Contract.Pass)) {
           return { next: Phases.bidding };
-        } else if (G.players.filter((P) => P.bid > 0).length == 1) {
+        } else if (G.players.filter((P) => P.bid > Contract.Pass).length == 1) {
           return { next: Phases.discard };
         }
       },
 
       onEnd: (G: IG, ctx: Ctx) => {
         let taker: IPlayer;
-        let highestBid: number = 0;
+        let highestBid = Contract.Pass;
         G.players.forEach((P) => {
           if (P.bid > highestBid) {
             highestBid = P.bid;
             taker = P;
           }
-          P.bid = -1;
+          P.bid = Contract.None;
         });
-        if (highestBid == 0) {
+        if (highestBid == Contract.Pass) {
           const dealerPos = G.players.findIndex((P) => P.isDealer);
           G.players[dealerPos].isDealer = false;
           G.players[util.mod(dealerPos + 1, ctx.numPlayers)].isDealer = true;

@@ -1,5 +1,6 @@
 export enum Pattern {
   Tarot = 'tarot',
+  Tarock = 'tarock',
   Franconian = 'franconian',
   Skat = 'skat',
 }

@@ -2,15 +2,15 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
 import { ICard } from 'gamesShared/definitions/cards';
 
-import { Phases, Stages, IG } from './types';
+import { Contract, Phases, Stages, IG } from './types';
 import * as util from './util/misc';
 import * as u_discard from './util/discard';
 import * as u_poignee from './util/poignee';
 
 export const Moves = {
-  MakeBid(G: IG, ctx: Ctx, value: number) {
+  MakeBid(G: IG, ctx: Ctx, contract: Contract) {
     const player = util.getPlayerById(G, ctx.currentPlayer);
-    player.bid = value;
+    player.bid = contract;
     return G;
   },
 

@@ -1,6 +1,6 @@
 import { str2card, str2cards, str2trick } from 'gamesShared/helpers/cards';
 
-import { DefaultIPlayer, IG, DefaultIG } from '../types';
+import { Contract, DefaultIPlayer, IG, DefaultIG } from '../types';
 import { resolveTrick } from '../game';
 import * as util from '../util/misc';
 
@@ -43,7 +43,7 @@ export function setup_4players(): IG {
     takerId: '0',
     trick: { cards: [], leaderId: players[1].id },
     resolvedTricks: [ecarte],
-    contract: 1,
+    contract: Contract.Small,
     poignee: 0,
   };
 }
@@ -69,7 +69,7 @@ export function setup_5players(): IG {
     trick: { cards: [], leaderId: players[2].id },
     resolvedTricks: [ecarte],
     calledCard: str2card('CR'),
-    contract: 2,
+    contract: Contract.Guard,
     poignee: 0,
   };
 }

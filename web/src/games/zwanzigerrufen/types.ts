@@ -2,24 +2,26 @@ import { ICard, ITrick } from 'gamesShared/definitions/cards';
 
 export enum Phases {
   bidding = 'bidding',
-  discard = 'discard',
+  announce = 'announce',
   placement = 'placement',
   round_end = 'round_end',
 }
 
 export enum Stages {
-  call_card = 'call_card',
-  announce_slam = 'announce_slam',
-  declare_poignee = 'declare_poignee',
   get_ready = 'get_ready',
+}
+
+export enum Announcement {
+  None,
+  Game,
+  Absolut,
+  Pagat,
+  Valat,
 }
 
 export interface IGameMoves {
   MakeBid(contract: Contract): void;
-  Discard(): void;
-  Call(card: ICard): void;
-  AnnounceSlam(announce: boolean): void;
-  DeclarePoignee(announce: boolean): void;
+  Announce(announcement: Announcement, contra: boolean): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
 }
@@ -27,24 +29,34 @@ export interface IGameMoves {
 export enum Contract {
   None = -1,
   Pass = 0,
-  Small = 1,
-  Guard = 2,
-  GuardWithout = 3,
-  GuardAgainst = 4,
+  Normal = 1,
+  SoloSuit = 2,
+  Solo = 3,
 }
+
+export interface IAnnouncements {
+  Game: number;
+  Absolut: number;
+  Pagat: number;
+  Valat: number;
+}
+
+export const DefaultIAnnouncements: IAnnouncements = {
+  Game: 1,
+  Absolut: 0,
+  Pagat: 0,
+  Valat: 0,
+};
 
 export interface IG {
   players: IPlayer[];
   deck: ICard[];
-  kitty: ICard[];
-  kittyRevealed: boolean;
-  kittyPrev: ICard[];
   takerId: string;
-  calledTakerId?: string;
-  calledCard?: ICard;
+  partnerId: string;
+  calledCard: ICard;
   contract: Contract;
-  announcedSlam: boolean;
-  poignee: number;
+  announcementsRe: IAnnouncements;
+  announcementsContra: IAnnouncements;
   trick: ITrick;
   resolvedTricks: ITrick[];
   roundSummaries: IRoundSummary[];
@@ -53,14 +65,12 @@ export interface IG {
 export const DefaultIG: IG = {
   players: [],
   deck: [],
-  kitty: [],
-  kittyRevealed: false,
-  kittyPrev: [],
   takerId: '',
-  calledTakerId: '',
+  partnerId: '',
+  calledCard: null,
   contract: Contract.None,
-  announcedSlam: false,
-  poignee: 0,
+  announcementsRe: null,
+  announcementsContra: null,
   trick: { cards: [] },
   resolvedTricks: [],
   roundSummaries: [],
@@ -71,10 +81,11 @@ export interface IPlayer {
   name: string;
   score: number;
   bid: Contract;
+  announcementsRe: IAnnouncements;
+  announcementsContra: IAnnouncements;
   isDealer: boolean;
   isTaker: boolean;
   isReady: boolean;
-  discardSelection?: number[];
   hand: ICard[];
 }
 
@@ -83,6 +94,8 @@ export const DefaultIPlayer: IPlayer = {
   name: '',
   score: 0,
   bid: Contract.None,
+  announcementsRe: null,
+  announcementsContra: null,
   isDealer: false,
   isTaker: false,
   isReady: true,
@@ -91,12 +104,16 @@ export const DefaultIPlayer: IPlayer = {
 
 export interface IRoundSummary {
   takerId: string;
-  calledTakerId?: string;
-  takerPointsRequired: number;
-  takerPoints: number;
-  petitAuBout: number;
-  multiplier: number;
-  poignee: number;
-  slam: number;
+  partnerId?: string;
+  rePointsRequired: number;
+  contraPointsRequired: number;
+  rePoints: number;
+  basic: number;
+  valat: number;
+  absolut: number;
+  kings: number;
+  trull: number;
+  pagat: number;
+  mond: number;
   scoring: number[];
 }
