@@ -48,9 +48,6 @@ export class Board extends React.Component<IBoardProps, {}> {
       width: '100px',
       height: 'auto',
     };
-    const rowStyle = {
-      align: 'left',
-    };
 
     const boardStyle = {
       width: '60%',
@@ -64,7 +61,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       </tr>,
     );
     tbody.push(
-      <tr style={rowStyle} id="p1Row">
+      <tr id="p1Row">
         <td style={cellStyle} key="p1DrawPile" onClick={() => this.drawCard(0)}>
           {' '}
           <img style={cardStyle} src={cards.cardBack_blue1}></img>
@@ -81,7 +78,7 @@ export class Board extends React.Component<IBoardProps, {}> {
       </tr>,
     );
     tbody.push(
-      <tr style={rowStyle} id="p2Row">
+      <tr id="p2Row">
         <td style={cellStyle} key="p2DrawPile" onClick={() => this.drawCard(1)}>
           {' '}
           <img style={cardStyle} src={cards.cardBack_blue1}></img>
