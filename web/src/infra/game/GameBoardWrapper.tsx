@@ -1,6 +1,8 @@
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
+import { notifyOnTurnChange } from 'infra/notification/hoc';
 import React from 'react';
+import { compose } from 'recompose';
 import { ConnectionLost } from './ConnectionLost';
 
 export interface IBoardWrapperArgs {
@@ -9,6 +11,8 @@ export interface IBoardWrapperArgs {
 }
 
 export function gameBoardWrapper(args: IBoardWrapperArgs) {
+  const enhance = compose(notifyOnTurnChange(args.gameArgs));
+
   class Board extends React.Component<any, {}> {
     render() {
       const props: any = {
@@ -31,5 +35,6 @@ export function gameBoardWrapper(args: IBoardWrapperArgs) {
       );
     }
   }
-  return Board;
+
+  return enhance(Board);
 }
