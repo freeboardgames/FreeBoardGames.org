@@ -1,5 +1,5 @@
 import { Ctx, Game } from 'boardgame.io';
-import { ITrick, CardColor, ICard } from 'gamesShared/definitions/cards';
+import { ITrick, Suit, ICard } from 'gamesShared/definitions/cards';
 
 import { Phases, Stages, Announcement, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
@@ -22,7 +22,7 @@ export const SkatGame: Game<IG> = {
 
   playerView: (G: IG, ctx: Ctx, playerID: string): IG => {
     if (ctx.gameover || playerID === null || ctx.phase == Phases.round_end) return G;
-    const dummyCard: ICard = { color: CardColor.Diamonds, value: 14 };
+    const dummyCard: ICard = { suit: Suit.Diamonds, value: 14 };
     const dummyTrick: ITrick = { cards: [] };
     const stripSecrets: (IPlayer) => IPlayer = (P) => {
       if (P.id == playerID || (P.isTaker && G.announcement == Announcement.Ouvert)) return P;
@@ -205,12 +205,12 @@ export function resolveTrick(G: IG): boolean {
   return G.players.every((P) => P.hand.length == 0);
 }
 
-export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: ITrick): string {
+export function getTrickWinnerId(contract: Contract, trumpSuit: Suit, T: ITrick): string {
   const leaderId = +T.leaderId;
   let ranks = T.cards.map((C) => util.cardRank(contract, trumpSuit, C));
   if (ranks.every((R) => R < 500)) {
-    const lead_color = T.cards[0].color;
-    ranks = ranks.map((R, i) => (T.cards[i].color == lead_color ? R : -1));
+    const lead_suit = T.cards[0].suit;
+    ranks = ranks.map((R, i) => (T.cards[i].suit == lead_suit ? R : -1));
   }
   const max_rank = Math.max(...ranks);
   return util.mod(leaderId + ranks.findIndex((R) => R == max_rank), T.cards.length).toString();
@@ -218,12 +218,12 @@ export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: IT
 
 export function getSortedDeck(): ICard[] {
   let deck: ICard[] = [];
-  for (let col of ['Diamonds', 'Hearts', 'Spades', 'Clubs']) {
+  for (let suit of ['Diamonds', 'Hearts', 'Spades', 'Clubs']) {
     deck = deck.concat(
       Array(8)
         .fill(0)
         .map((_, i) => {
-          return { color: CardColor[col], value: i + 7 };
+          return { suit: Suit[suit], value: i + 7 };
         }),
     );
   }

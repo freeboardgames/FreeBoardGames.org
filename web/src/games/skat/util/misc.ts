@@ -1,4 +1,4 @@
-import { CardColor, ICard } from 'gamesShared/definitions/cards';
+import { Suit, ICard } from 'gamesShared/definitions/cards';
 
 import { IG, IPlayer, Contract } from '../types';
 
@@ -14,25 +14,25 @@ export function mod(n: number, m: number): number {
   return ((n % m) + m) % m;
 }
 
-export function colorRank(color: CardColor): number {
-  return [CardColor.Diamonds, CardColor.Hearts, CardColor.Spades, CardColor.Clubs].indexOf(color);
+export function suitRank(suit: Suit): number {
+  return [Suit.Diamonds, Suit.Hearts, Suit.Spades, Suit.Clubs].indexOf(suit);
 }
 
-export function cardRank(contract: Contract, trumpSuit: CardColor, card: ICard): number {
-  let color_rank = colorRank(card.color);
+export function cardRank(contract: Contract, trumpSuit: Suit, card: ICard): number {
+  let suit_rank = suitRank(card.suit);
   if (contract == Contract.Null) {
-    return 100 * color_rank + card.value;
+    return 100 * suit_rank + card.value;
   }
   if (card.value == 11) {
-    return 1000 + color_rank;
+    return 1000 + suit_rank;
   }
-  if (contract != Contract.Grand && card.color == trumpSuit) {
-    color_rank = 5;
+  if (contract != Contract.Grand && card.suit == trumpSuit) {
+    suit_rank = 5;
   }
-  return 100 * color_rank + [7, 8, 9, 12, 13, 10, 14].indexOf(card.value);
+  return 100 * suit_rank + [7, 8, 9, 12, 13, 10, 14].indexOf(card.value);
 }
 
-export function get_cmpCards(contract: Contract, trumpSuit: CardColor) {
+export function get_cmpCards(contract: Contract, trumpSuit: Suit) {
   return function (a: ICard, b: ICard): number {
     return cardRank(contract, trumpSuit, a) - cardRank(contract, trumpSuit, b);
   };

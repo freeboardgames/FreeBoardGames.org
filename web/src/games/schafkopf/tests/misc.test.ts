@@ -1,4 +1,4 @@
-import { CardColor } from 'gamesShared/definitions/cards';
+import { Suit } from 'gamesShared/definitions/cards';
 import { str2trick } from 'gamesShared/helpers/cards';
 
 import { Contract } from '../types';
@@ -17,7 +17,7 @@ it('finds the winner of a given trick', () => {
     expect(
       getTrickWinnerId(
         Contract.Ace,
-        CardColor.Eichel,
+        Suit.Eichel,
         str2trick(
           s_trick,
           G.players.map((P) => P.id),

@@ -1,10 +1,11 @@
 export enum Pattern {
   Tarot = 'tarot',
+  Tarock = 'tarock',
   Franconian = 'franconian',
   Skat = 'skat',
 }
 
-export enum CardColor {
+export enum Suit {
   Diamonds,
   Hearts,
   Spades,
@@ -18,7 +19,7 @@ export enum CardColor {
 }
 
 export interface ICard {
-  color: CardColor;
+  suit: Suit;
   value: number;
 }
 

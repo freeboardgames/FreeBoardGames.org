@@ -1,13 +1,17 @@
-import { CardColor, ICard } from 'gamesShared/definitions/cards';
+import { Suit, ICard } from 'gamesShared/definitions/cards';
 
-import { IG, IPlayer } from '../types';
+import { IG, IPlayer, Contract } from '../types';
 
-export function cmpCards(a: ICard, b: ICard): number {
-  return (a.color - b.color) * 100 + (a.value - b.value);
+export function suitRank(suit: Suit): number {
+  return [Suit.Diamonds, Suit.Spades, Suit.Hearts, Suit.Clubs, Suit.Trumps, Suit.Excuse].indexOf(suit);
 }
 
-export function getBidName(bid: number): string {
-  return `bid_${['pass', 'small', 'guard', 'guard_without', 'guard_against'][bid]}`;
+export function cmpCards(a: ICard, b: ICard): number {
+  return (suitRank(a.suit) - suitRank(b.suit)) * 100 + (a.value - b.value);
+}
+
+export function getBidName(bid: Contract): string {
+  return `bid_${Contract[bid].toLowerCase()}`;
 }
 
 export function kittySize(numPlayers: number): number {
@@ -22,8 +26,8 @@ export function pointsRequiredToWin(numBouts: number): number {
   return [56, 51, 41, 36][numBouts];
 }
 
-export function isColorCard(card: ICard): boolean {
-  return card.color != CardColor.Excuse && card.color != CardColor.Trumps;
+export function isSuitCard(card: ICard): boolean {
+  return card.suit != Suit.Excuse && card.suit != Suit.Trumps;
 }
 
 export function getPlayerById(G: IG, playerId: string): IPlayer {

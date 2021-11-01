@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Ctx } from 'boardgame.io';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { Pattern, CardColor, ICard } from 'gamesShared/definitions/cards';
+import { Pattern, Suit, ICard } from 'gamesShared/definitions/cards';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Hand } from 'gamesShared/components/cards/Hand';
 import { PreviousTrick } from 'gamesShared/components/cards/PreviousTrick';
@@ -169,7 +169,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
 
   function renderTrumpSuit() {
     if (G.trumpSuit === null || G.contract < Contract.Solo) return;
-    const trumpCard: ICard = { color: G.trumpSuit, value: 10 };
+    const trumpCard: ICard = { suit: G.trumpSuit, value: 10 };
     return <DisplayCard description={translate('trumpsuit')} card={trumpCard} pattern={Pattern.Skat} />;
   }
 
@@ -211,16 +211,16 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
   function renderButtonsTrump() {
     if (playerStage != Stages.select_trump) return;
     const all_cards: ICard[] = ['Diamonds', 'Hearts', 'Spades', 'Clubs']
-      .filter((col) => {
-        const colorInHand = player.hand.filter((C) => C.color == CardColor[col]);
-        return !colorInHand.every((C) => [11, 12].includes(C.value));
+      .filter((suit) => {
+        const suitInHand = player.hand.filter((C) => C.suit == Suit[suit]);
+        return !suitInHand.every((C) => [11, 12].includes(C.value));
       })
-      .map((col) => {
-        return { color: CardColor[col], value: 10 };
+      .map((suit) => {
+        return { suit: Suit[suit], value: 10 };
       });
     return (
       <ButtonBar
-        click={all_cards.map((C) => () => moves.SelectTrumpSuit(C.color))}
+        click={all_cards.map((C) => () => moves.SelectTrumpSuit(C.suit))}
         question={translate('trumpsuit_select')}
         cards={all_cards}
         pattern={Pattern.Skat}

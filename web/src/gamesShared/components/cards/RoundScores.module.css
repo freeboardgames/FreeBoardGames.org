@@ -1,7 +1,7 @@
 .showPreviousRounds {
   position: absolute;
-  top: 0.5em; left: 50%;
-  transform: translate(-50%, 0);
+  top: 0; left: 0;
+  width: 100%;
   z-index: 2000;
   font-family: sans-serif;
   text-align: center;
@@ -12,6 +12,9 @@
 }
 
 .showPreviousRounds input + label {
+  position: absolute;
+  top: 0;
+  right: 2em;
   display: inline-block;
   margin-bottom: 0.2em;
   font-weight: bold;
@@ -36,6 +39,10 @@
 
 .showPreviousRounds input:checked + label + div {
   display: block;
+  position: absolute;
+  top: max(1em, 8vh);
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 .board table {

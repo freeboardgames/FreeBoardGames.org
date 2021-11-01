@@ -1,4 +1,4 @@
-import { CardColor } from 'gamesShared/definitions/cards';
+import { Suit } from 'gamesShared/definitions/cards';
 import { str2card, str2cards, str2trick } from 'gamesShared/helpers/cards';
 
 import { Contract, DefaultIPlayer, IG, DefaultIG } from '../types';
@@ -34,7 +34,7 @@ export function setup_3players(): IG {
     trick: { cards: [], leaderId: players[1].id },
     resolvedTricks: [],
     contract: Contract.Solo,
-    trumpSuit: CardColor.Eichel,
+    trumpSuit: Suit.Eichel,
   };
 }
 
@@ -73,7 +73,7 @@ export function setup_4players(): IG {
     calledCard: str2card('GrA'),
     calledMayRun: 0,
     contract: Contract.Ace,
-    trumpSuit: CardColor.Herz,
+    trumpSuit: Suit.Herz,
   };
 }
 

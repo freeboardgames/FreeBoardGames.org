@@ -4,9 +4,6 @@ import { Card } from 'gamesShared/components/cards/Card';
 
 import css from './Hand.module.css';
 
-const CARD_WIDTH_MIN = 35;
-const CARD_WIDTH_MAX = 75;
-
 export function Hand(props: {
   playerId: string;
   hand: ICard[];
@@ -21,12 +18,21 @@ export function Hand(props: {
 
   function renderCard(card: ICard, i: number) {
     const scale = Math.min(20, Math.max(0, nCards - 10)) / 20;
-    const style = {
-      width: `${scale * CARD_WIDTH_MIN + (1 - scale) * CARD_WIDTH_MAX}px`,
-    };
-    if (i == props.hand.length - 1) {
-      style.width = `${2.3 * (scale * CARD_WIDTH_MIN + (1 - scale) * CARD_WIDTH_MAX)}px`;
+    let width_min = 35;
+    let width_max = 75;
+    let visible_ratio = 0.33;
+    if (props.pattern == Pattern.Tarock) {
+      width_min = 60;
+      width_max = 90;
+      visible_ratio = 0.6;
     }
+    let width = scale * width_min + (1 - scale) * width_max;
+    if (i == props.hand.length - 1) {
+      width = width / visible_ratio;
+    }
+    const style = {
+      width: `${width}px`,
+    };
     return (
       <div
         className={[css.arrangeCard, props.selection.includes(i) ? css.selected : ''].join(' ')}
@@ -38,7 +44,7 @@ export function Hand(props: {
           type={card}
           inactive={!props.selectable[i]}
           click={props.selectable[i] ? () => toggleSelectCard(i) : null}
-          width={scale * CARD_WIDTH_MIN * 3 + (1 - scale) * CARD_WIDTH_MAX * 2.5}
+          width={(scale * width_min) / visible_ratio + (((1 - scale) * width_max) / visible_ratio) * 0.9}
         />
       </div>
     );

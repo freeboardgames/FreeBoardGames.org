@@ -42,7 +42,12 @@ export function Trick(props: {
 
   function arrangeTrickCard(i: number, card: ICard) {
     const index = relativePos(props.leaderPos + i);
-    const [x, y] = CardPositions[inumPlayers][index];
+    let [x, y] = CardPositions[inumPlayers][index];
+    if (props.pattern == Pattern.Tarock) {
+      x *= 1.5;
+      y *= 1.5;
+      y += 20;
+    }
     return (
       <div key={index} className={css.arrangeCard}>
         <div style={{ transform: `translate(${x}px, ${y}px)` }}>

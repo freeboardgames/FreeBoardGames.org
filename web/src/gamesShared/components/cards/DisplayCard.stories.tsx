@@ -1,7 +1,7 @@
 import { DisplayCard } from './DisplayCard';
-import { ICard, Pattern, CardColor } from 'gamesShared/definitions/cards';
+import { ICard, Pattern, Suit } from 'gamesShared/definitions/cards';
 const card: ICard = {
-  color: CardColor.Spades,
+  suit: Suit.Spades,
   value: 9,
 };
 export default {

@@ -1,4 +1,4 @@
-import { CardColor } from 'gamesShared/definitions/cards';
+import { Suit } from 'gamesShared/definitions/cards';
 
 import { IG, Contract } from '../types';
 import { resolveTrick, getSortedDeck, getCalledTakerId } from '../game';
@@ -47,7 +47,7 @@ export function shuffleArray(array: any[]) {
 
 export function dealCards(G: IG) {
   const handSize = 8;
-  const cmpCards = util.get_cmpCards(G.contract, CardColor.Herz);
+  const cmpCards = util.get_cmpCards(G.contract, Suit.Herz);
   G.deck = getSortedDeck(G.players.length);
   shuffleArray(G.deck);
   G.players.forEach((P, i) => {

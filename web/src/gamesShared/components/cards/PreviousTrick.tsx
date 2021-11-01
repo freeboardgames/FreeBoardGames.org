@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useCurrentGameTranslation } from 'infra/i18n';
-import { CardColor, ICard, Pattern } from 'gamesShared/definitions/cards';
+import { Suit, ICard, Pattern } from 'gamesShared/definitions/cards';
 
 import css from './PreviousTrick.module.css';
 
@@ -8,7 +8,7 @@ function mod(n: number, m: number): number {
   return ((n % m) + m) % m;
 }
 
-const ColorSymbols = {
+const SuitSymbols = {
   Spades: <>&#x2660;&#xFE0F;</>,
   Hearts: <>&#x2665;&#xFE0F;</>,
   Diamonds: <>&#x2666;&#xFE0F;</>,
@@ -42,18 +42,20 @@ export function PreviousTrick(props: {
     let symbol = <></>;
     if (card) {
       text = card.value.toString();
-      if (card.color == CardColor.Excuse) {
+      if (card.suit == Suit.Excuse) {
         text = '★';
-      } else if (card.color != CardColor.Trumps && card.value > 10) {
+      } else if (card.suit != Suit.Trumps && card.value > 10) {
         if (props.pattern == Pattern.Franconian) {
           text = ['U', 'O', 'K', 'A'][card.value - 11];
         } else if (props.pattern == Pattern.Tarot) {
           text = ['V', 'C', 'D', 'R'][card.value - 11];
         } else if (props.pattern == Pattern.Skat) {
           text = ['J', 'Q', 'K', 'A'][card.value - 11];
+        } else if (props.pattern == Pattern.Tarock) {
+          text = ['J', 'C', 'Q', 'K'][card.value - 11];
         }
       }
-      symbol = ColorSymbols[CardColor[card.color]];
+      symbol = SuitSymbols[Suit[card.suit]];
     }
     return (
       <span
