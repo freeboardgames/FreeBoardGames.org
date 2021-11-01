@@ -1,10 +1,8 @@
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
-import { Notification } from 'infra/notification/enum';
 import { notifyOnTurnChange } from 'infra/notification/hoc';
 import React from 'react';
 import { compose } from 'recompose';
-import { getGameDefinition } from '.';
 import { ConnectionLost } from './ConnectionLost';
 
 export interface IBoardWrapperArgs {
@@ -12,13 +10,8 @@ export interface IBoardWrapperArgs {
   board: any;
 }
 
-const orEmpty = <T extends any>(arrayOrNull: T[]) => arrayOrNull ?? [];
-
 export function gameBoardWrapper(args: IBoardWrapperArgs) {
-  const gameDef = getGameDefinition(args.gameArgs.gameCode);
-  const enhance = compose(
-    ...orEmpty(gameDef.notifications?.has(Notification.TurnChanged) && [notifyOnTurnChange(args.gameArgs)]),
-  );
+  const enhance = compose(notifyOnTurnChange(args.gameArgs));
 
   class Board extends React.Component<any, {}> {
     render() {
