@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { forwardRef, HttpModule, Module } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoomMembershipEntity } from './db/RoomMembership.entity';
@@ -17,6 +17,7 @@ import { FbgPubSubModule } from '../internal/FbgPubSubModule';
     forwardRef(() => UsersModule),
     AuthModule,
     FbgPubSubModule,
+    HttpModule,
   ],
   providers: [RoomsResolver, RoomsService, LobbyResolver, LobbyService, PubSub],
   exports: [RoomsService, LobbyService],

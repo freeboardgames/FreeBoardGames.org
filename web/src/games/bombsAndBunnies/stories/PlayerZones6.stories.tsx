@@ -1,13 +1,10 @@
 import React from 'react';
-
 import { IPlayerZonesProps, PlayerZones } from '../components/PlayerZones';
 import { IPlayerProps, CardType, CardStyle } from '../components/shared/interfaces';
-
 export default {
   title: 'Games/Bombs & Bunnies/PlayerZones/6 Players',
   component: PlayerZones,
 };
-
 const defaultPlayer: IPlayerProps = {
   bet: 0,
   betSkipped: false,
@@ -22,9 +19,7 @@ const defaultPlayer: IPlayerProps = {
   isBeingPunished: false,
   isDiscarding: false,
 };
-
 const defaultPlayers = [defaultPlayer, defaultPlayer, defaultPlayer, defaultPlayer, defaultPlayer, defaultPlayer];
-
 const defaultData: IPlayerZonesProps = {
   canRevealTargetStack: () => false,
   currentPlayerId: '0',
@@ -32,5 +27,4 @@ const defaultData: IPlayerZonesProps = {
   currentBet: 0,
   players: defaultPlayers,
 };
-
 export const Empty = () => <PlayerZones {...defaultData} />;

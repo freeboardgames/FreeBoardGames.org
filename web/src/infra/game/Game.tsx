@@ -1,20 +1,20 @@
-import React from 'react';
-import { Client } from 'boardgame.io/react';
-import { IGameDef, IGameConfig, IAIConfig, IGameArgs } from 'gamesShared/definitions/game';
-import { gameBoardWrapper } from './GameBoardWrapper';
-import { GameMode } from 'gamesShared/definitions/mode';
-import getMessagePage from '../common/factories/MessagePage';
-import MessagePage from '../common/components/alert/MessagePage';
-import { applyMiddleware } from 'redux';
-import DEFAULT_ENHANCERS from '../common/enhancers';
-import { IPlayerInRoom } from 'gamesShared/definitions/player';
-import { SocketIO, Local } from 'boardgame.io/multiplayer';
-import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { Debug } from 'boardgame.io/debug';
-import { withSettingsService, SettingsService } from 'infra/settings/SettingsService';
-import { getGameDefinition } from './utils';
-import { compose } from 'recompose';
+import { Local, SocketIO } from 'boardgame.io/multiplayer';
+import { Client } from 'boardgame.io/react';
+import { IAIConfig, IGameArgs, IGameConfig, IGameDef } from 'gamesShared/definitions/game';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { IPlayerInRoom } from 'gamesShared/definitions/player';
+import { GetMatch_match } from 'gqlTypes/GetMatch';
 import { withTranslation, WithTranslation } from 'infra/i18n';
+import { SettingsService, withSettingsService } from 'infra/settings/SettingsService';
+import React from 'react';
+import { compose } from 'recompose';
+import { applyMiddleware } from 'redux';
+import MessagePage from '../common/components/alert/MessagePage';
+import DEFAULT_ENHANCERS from '../common/enhancers';
+import getMessagePage from '../common/factories/MessagePage';
+import { gameBoardWrapper } from './GameBoardWrapper';
+import { getGameDefinition } from './utils';
 
 export interface IGameOutterProps {
   gameCode?: string;
@@ -104,25 +104,26 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
     this.clear();
   }
 
-  render() {
+  getMatchCode() {
+    return this.props.match ? this.props.match.bgioMatchId : this.props.matchCode;
+  }
+
+  getCredentials() {
+    return this.props.match?.bgioSecret;
+  }
+
+  getPlayerID() {
+    if (this.props.match) return this.props.match.bgioPlayerId;
+    if (this.mode === GameMode.AI) return '1';
+    return this.props.playerID;
+  }
+
+  buildConfig() {
     const { t } = this.props;
 
-    let matchCode, playerID, credentials;
-    if (this.props.match) {
-      credentials = this.props.match.bgioSecret;
-      matchCode = this.props.match.bgioMatchId;
-      playerID = this.props.match.bgioPlayerId;
-    } else {
-      matchCode = this.props.matchCode;
-      playerID = this.mode === GameMode.AI ? '1' : this.props.playerID;
-    }
-    if (!this.gameDef) {
-      return <MessagePage type={'error'} message={t('game_not_found')} />;
-    }
-    const validGameModes = this.gameDef.modes.map((mode) => mode.mode.toLowerCase());
-    if (!validGameModes.includes(this.mode.toLowerCase())) {
-      return <MessagePage type={'error'} message={t('invalid_game_mode')} />;
-    }
+    const matchCode = this.getMatchCode();
+    const credentials = this.getCredentials();
+
     if (!this.state.loading && this.state.config) {
       const gameArgs = {
         gameCode: this.gameCode,
@@ -161,12 +162,35 @@ export class GameInternal extends React.Component<IGameInnerProps & IGameOutterP
       if (this.mode === GameMode.OnlineFriend) {
         clientConfig.multiplayer = SocketIO({ server: this.serverUrl });
       }
-      const App = Client(clientConfig) as any;
-      if (this.mode === GameMode.OnlineFriend) {
-        return <App matchID={matchCode} playerID={playerID} credentials={credentials} />;
-      } else {
-        return <App matchID={matchCode} playerID={playerID} />;
-      }
+      return clientConfig;
+    }
+  }
+
+  render() {
+    const { t } = this.props;
+
+    const matchCode = this.getMatchCode();
+    const credentials = this.getCredentials();
+    const playerID = this.getPlayerID();
+
+    if (!this.gameDef) {
+      return <MessagePage type={'error'} message={t('game_not_found')} />;
+    }
+
+    const validGameModes = this.gameDef.modes.map((mode) => mode.mode.toLowerCase());
+    if (!validGameModes.includes(this.mode.toLowerCase())) {
+      return <MessagePage type={'error'} message={t('invalid_game_mode')} />;
+    }
+
+    if (!this.state.loading && this.state.config) {
+      const App = Client(this.buildConfig());
+      return (
+        <App
+          matchID={matchCode}
+          playerID={playerID}
+          credentials={this.mode === GameMode.OnlineFriend ? credentials : null}
+        />
+      );
     } else if (this.state.loading) {
       const LoadingPage = getMessagePage('loading', t('downloading', { name: this.gameDef.name }));
       return <LoadingPage />;

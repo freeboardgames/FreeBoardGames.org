@@ -1,7 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
+import { ICard, Suit } from 'gamesShared/definitions/cards';
 
-import { Phases, Stages, IG, ICard } from './types';
+import { Stages, IG } from './types';
 import * as util from './util/misc';
 
 export const Moves = {
@@ -13,47 +14,53 @@ export const Moves = {
 
   Call(G: IG, ctx: Ctx, card: ICard) {
     G.calledCard = card;
+    ctx.events.endStage();
+    ctx.events.endPhase();
     return G;
   },
 
-  Discard(G: IG, ctx: Ctx) {
+  SelectTrumpSuit(G: IG, ctx: Ctx, suit: Suit) {
     const player = util.getPlayerById(G, ctx.currentPlayer);
-    const discard_num = util.kittySize(ctx.numPlayers);
+    G.trumpSuit = suit;
+    ctx.events.endStage();
+    if (player.hand.some((C) => C.suit == Suit.Eichel && C.value == 12)) {
+      ctx.events.setStage(Stages.announce_tout);
+    } else {
+      ctx.events.endPhase();
+    }
+    return G;
+  },
 
-    if (!player.discardSelection || player.discardSelection.length != discard_num || !player.isTaker) {
+  AnnounceTout(G: IG, ctx: Ctx, announce: boolean) {
+    G.announcedTout = announce;
+    ctx.events.endStage();
+    ctx.events.endPhase();
+    return G;
+  },
+
+  GiveContra(G: IG, ctx: Ctx) {
+    const player = util.getPlayerById(G, ctx.playerID);
+    const isTaker = player.isTaker || player.id == G.calledTakerId;
+    if (G.resolvedTricks.length > 0 || G.trick.cards.length > 1) {
       return INVALID_MOVE;
     }
-
-    G.resolvedTricks.push({
-      // make sure we splice from right to left so that indices remain valid
-      cards: player.discardSelection
-        .sort((a, b) => b - a)
-        .map((i) => player.hand.splice(i, 1)[0])
-        .reverse(),
-      winner: player,
-    });
-
+    if ((G.contra == 1 && isTaker) || (G.contra == 2 && !isTaker) || G.contra == 4) {
+      return INVALID_MOVE;
+    }
+    G.contra *= 2;
+    if (player.id == G.calledTakerId) {
+      player.isTaker = true;
+    }
     return G;
   },
 
   SelectCards(G: IG, ctx: Ctx, handIndex: number[]) {
     const player = util.getPlayerById(G, ctx.currentPlayer);
-    const stage = ctx.activePlayers && ctx.activePlayers[+player.id];
-    if (ctx.phase == Phases.discard) {
-      const discard_num = util.kittySize(ctx.numPlayers);
-      if (handIndex.length > discard_num) {
-        return INVALID_MOVE;
-      }
-      player.discardSelection = [...handIndex];
-    } else if (stage == Stages.place_card) {
-      if (handIndex.length == 0) {
-        return INVALID_MOVE;
-      }
-      G.trick.cards.push(player.hand.splice(handIndex[0], 1)[0]);
-      G.kitty = [];
-      G.kittyRevealed = false;
-      ctx.events.endTurn();
+    if (handIndex.length == 0) {
+      return INVALID_MOVE;
     }
+    G.trick.cards.push(player.hand.splice(handIndex[0], 1)[0]);
+    ctx.events.endTurn();
     return G;
   },
 

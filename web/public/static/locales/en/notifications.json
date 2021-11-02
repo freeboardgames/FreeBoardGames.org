@@ -1,0 +1,5 @@
+{
+  "your_turn": "Your turn on {{ name }}!",
+  "mute_session": "Mute notifications once",
+  "unmute_session": "Unmute notifications"
+}

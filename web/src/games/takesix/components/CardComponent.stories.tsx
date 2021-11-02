@@ -1,15 +1,30 @@
 import { Card, CardComponent } from './CardComponent';
-
 export default {
   title: 'Games/Take 6/Components',
   parameters: {
-    backgrounds: [{ name: 'dark background', value: '#000', default: true }],
+    backgrounds: [
+      {
+        name: 'dark background',
+        value: '#000',
+        default: true,
+      },
+    ],
   },
 };
-
 /* eslint-disable react/prop-types */
+
 const Container = (props) => (
-  <div style={props.style || { height: 500, width: 400, display: 'inline-block' }}>{props.children}</div>
+  <div
+    style={
+      props.style || {
+        height: 500,
+        width: 400,
+        display: 'inline-block',
+      }
+    }
+  >
+    {props.children}
+  </div>
 );
 /* eslint-enable react/prop-types */
 
@@ -17,8 +32,11 @@ const largeCardNumberStyle = {
   fontSize: 200,
   fontWeight: 800,
 };
-
-const card_1 = { number: 1, value: 1, owner: 0 };
+const card_1 = {
+  number: 1,
+  value: 1,
+  owner: 0,
+};
 export const Card_1 = () => {
   return (
     <Container>
@@ -26,8 +44,11 @@ export const Card_1 = () => {
     </Container>
   );
 };
-
-const card_5 = { number: 5, value: 2, owner: 0 };
+const card_5 = {
+  number: 5,
+  value: 2,
+  owner: 0,
+};
 export const Card_5 = () => {
   return (
     <Container>
@@ -35,8 +56,11 @@ export const Card_5 = () => {
     </Container>
   );
 };
-
-const card_10 = { number: 10, value: 3, owner: 0 };
+const card_10 = {
+  number: 10,
+  value: 3,
+  owner: 0,
+};
 export const Card_10 = () => {
   return (
     <Container>
@@ -44,8 +68,11 @@ export const Card_10 = () => {
     </Container>
   );
 };
-
-const card_11 = { number: 11, value: 5, owner: 0 };
+const card_11 = {
+  number: 11,
+  value: 5,
+  owner: 0,
+};
 export const Card_11 = () => {
   return (
     <Container>
@@ -53,8 +80,11 @@ export const Card_11 = () => {
     </Container>
   );
 };
-
-const card_55 = { number: 55, value: 7, owner: 0 };
+const card_55 = {
+  number: 55,
+  value: 7,
+  owner: 0,
+};
 export const Card_55 = () => {
   return (
     <Container>
@@ -62,8 +92,11 @@ export const Card_55 = () => {
     </Container>
   );
 };
-
-const card_104 = { number: 104, value: 1, owner: 0 };
+const card_104 = {
+  number: 104,
+  value: 1,
+  owner: 0,
+};
 export const Hand = () => {
   return (
     <div>

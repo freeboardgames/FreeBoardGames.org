@@ -3,7 +3,6 @@
   "description": "Um jogo cooperativo que o time ganha!",
   "descriptionTag": "Similar ao Hanabi",
   "instructions": {
-    "videoId": "LQ8iwNjBW_s",
     "text": "Desfile do Zoo é um jogo cooperativo de duas a cinco pessoas. Esse jogo combina perfeitamente conceitos de cooperação e informação parcial. Simplesmente: você sabe todas as cartas, menos as suas própias!\n\nO jogo fica mais difícil com mais jogadores - mas ao mesmo tempo é mais divertido!\n\nObrigado pela [Arte](https://www.freepik.com/free-vector/cute-zoo-animals-card-set_4855079.htm).\n"
   },
   "board": {

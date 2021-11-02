@@ -103,7 +103,9 @@ export class Token extends React.Component {
     if (this.state.dragged) {
       e.preventDefault(); // Required for Safari/iOs.
       e = e.touches ? e.touches[0] : e;
-      const ctm = this.props.svgRef.current.getScreenCTM().inverse();
+      const svgEl = this.props.svgRef.current;
+      if (!svgEl) return;
+      const ctm = svgEl.getScreenCTM().inverse();
       const deltaPageX = e.pageX - this.state.dragged.x;
       const deltaPageY = e.pageY - this.state.dragged.y;
       const deltaSvgX = ctm.a * deltaPageX + ctm.b * deltaPageY;

@@ -1,18 +1,7 @@
 import { Ctx, Game } from 'boardgame.io';
+import { ITrick, Suit, ICard } from 'gamesShared/definitions/cards';
 
-import {
-  Phases,
-  Stages,
-  Announcement,
-  Contract,
-  IG,
-  DefaultIG,
-  IPlayer,
-  DefaultIPlayer,
-  ICard,
-  CardColor,
-  ITrick,
-} from './types';
+import { Phases, Stages, Announcement, Contract, IG, DefaultIG, IPlayer, DefaultIPlayer } from './types';
 import * as util from './util/misc';
 import * as u_summary from './util/summary';
 import { Moves } from './moves';
@@ -27,13 +16,13 @@ export const SkatGame: Game<IG> = {
       id: i.toString(),
       isDealer: i == 0,
     }));
-    game.trick = { cards: [], leader: game.players[1] };
+    game.trick = { cards: [], leaderId: game.players[1].id };
     return game;
   },
 
   playerView: (G: IG, ctx: Ctx, playerID: string): IG => {
     if (ctx.gameover || playerID === null || ctx.phase == Phases.round_end) return G;
-    const dummyCard: ICard = { color: CardColor.Diamonds, value: 14 };
+    const dummyCard: ICard = { suit: Suit.Diamonds, value: 14 };
     const dummyTrick: ITrick = { cards: [] };
     const stripSecrets: (IPlayer) => IPlayer = (P) => {
       if (P.id == playerID || (P.isTaker && G.announcement == Announcement.Ouvert)) return P;
@@ -45,27 +34,18 @@ export const SkatGame: Game<IG> = {
     };
     return {
       ...G,
-      takerCards: G.takerCards.map(() => dummyCard),
       players: G.players.map(stripSecrets),
       deck: G.deck.map(() => dummyCard),
       kitty: G.kittyRevealed || (playerID == G.takerId && G.hand === false) ? G.kitty : G.kitty.map(() => dummyCard),
-      resolvedTricks: G.resolvedTricks.map((T, i) =>
-        i > 0 && i == G.resolvedTricks.length - 1
-          ? { ...T, winner: stripSecrets(T.winner), leader: stripSecrets(T.leader) }
-          : dummyTrick,
-      ),
+      resolvedTricks: G.resolvedTricks.map((T, i) => (i > 0 && i == G.resolvedTricks.length - 1 ? T : dummyTrick)),
     };
   },
 
   phases: {
-    dealing: {
+    bidding: {
       start: true,
-      next: Phases.bidding,
 
-      // this phase doesn't have any user interaction, but ends immediately
-      endIf: () => true,
-
-      onEnd: (G: IG, ctx: Ctx) => {
+      onBegin: (G: IG, ctx: Ctx) => {
         const handSize = 10;
         const dealerId = G.players.findIndex((P) => P.isDealer);
         const leader = G.players[util.mod(dealerId + 1, ctx.numPlayers)];
@@ -76,7 +56,7 @@ export const SkatGame: Game<IG> = {
           deck: ctx.random.Shuffle(getSortedDeck()),
           holderId: util.mod(dealerId + 1, G.players.length).toString(),
           bidderId: util.mod(dealerId + 2, G.players.length).toString(),
-          trick: { cards: [], leader: leader },
+          trick: { cards: [], leaderId: leader.id },
           roundSummaries: G.roundSummaries,
         });
         G.players.forEach((P, i) => {
@@ -87,14 +67,12 @@ export const SkatGame: Game<IG> = {
         });
         G.kitty = G.deck.slice(-2).sort(cmpCards);
       },
-    },
 
-    bidding: {
       turn: {
         moveLimit: 1,
         order: {
           first: (G: IG) => +G.bidderId,
-          next: (G: IG, ctx: Ctx) => (ctx.playOrderPos == +G.holderId ? +G.bidderId : +G.holderId),
+          next: (G: IG, ctx: Ctx) => (ctx.playOrderPos != +G.bidderId ? +G.bidderId : +G.holderId),
         },
       },
 
@@ -103,30 +81,23 @@ export const SkatGame: Game<IG> = {
       },
 
       endIf: (G: IG) => {
+        if (G.players[0].hand.length == 0) return;
         const bidder = util.getPlayerById(G, G.bidderId);
         const holder = util.getPlayerById(G, G.holderId);
-        if (bidder.bid != 0 && holder.bid != 0) {
-          return false;
-        }
+        if (bidder.bid != 0 && holder.bid != 0) return;
         if (bidder.isDealer) {
-          return { next: bidder.bid == 0 && holder.bid == 0 ? Phases.dealing : Phases.discard };
+          return { next: bidder.bid <= 1 && holder.bid <= 1 ? Phases.bidding : Phases.discard };
         }
-        return { next: Phases.bidding };
       },
 
       onEnd: (G: IG, ctx: Ctx) => {
         const bidder = util.getPlayerById(G, G.bidderId);
         const holder = util.getPlayerById(G, G.holderId);
-        if (!bidder.isDealer) {
-          G.holderId = bidder.bid == 0 ? holder.id : bidder.id;
-          G.bidderId = G.players.findIndex((P) => P.isDealer).toString();
-          return;
-        }
         const taker = bidder.bid == 0 ? holder : bidder;
-        if (taker.bid == 0) {
-          const dealerPos = G.players.findIndex((P) => P.isDealer);
-          G.players[dealerPos].isDealer = false;
-          G.players[util.mod(dealerPos + 1, ctx.numPlayers)].isDealer = true;
+        if (taker.bid <= 1) {
+          const dealer = G.players.find((P) => P.isDealer);
+          dealer.isDealer = false;
+          G.players[util.mod(+dealer.id + 1, ctx.numPlayers)].isDealer = true;
           G.kittyPrev = G.kitty;
           return;
         }
@@ -134,7 +105,6 @@ export const SkatGame: Game<IG> = {
         G.bidderId = null;
         G.holderId = null;
         G.takerId = taker.id;
-        G.takerCards = taker.hand.concat(G.kitty);
         taker.isTaker = true;
       },
     },
@@ -167,7 +137,7 @@ export const SkatGame: Game<IG> = {
       turn: {
         moveLimit: 1,
         order: {
-          first: (G) => +G.trick.leader.id,
+          first: (G) => +G.trick.leaderId,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
         },
       },
@@ -195,14 +165,14 @@ export const SkatGame: Game<IG> = {
             P.score += roundSummary.scoring[i];
             P.isReady = false;
           });
-          G.kitty = G.resolvedTricks[0].cards;
+          G.kitty = G.deck.slice(-2);
           G.kittyRevealed = true;
         }
       },
     },
 
     round_end: {
-      next: Phases.dealing,
+      next: Phases.bidding,
       turn: {
         stages: { get_ready: { moves: { Finish: Moves.Finish } } },
         activePlayers: { all: Stages.get_ready, moveLimit: 1 },
@@ -215,6 +185,7 @@ export const SkatGame: Game<IG> = {
         const newDealerPos = util.mod(dealerPos + 1, ctx.numPlayers);
         G.players.forEach((P, i) => {
           P.isDealer = i == newDealerPos;
+          P.hand = [];
         });
       },
     },
@@ -225,21 +196,21 @@ export function resolveTrick(G: IG): boolean {
   // returns true if this was the last trick in the game
   const winnerId = getTrickWinnerId(G.contract, G.trumpSuit, G.trick);
   const winner = util.getPlayerById(G, winnerId);
-  G.trick.winner = winner;
+  G.trick.winnerId = winner.id;
   G.resolvedTricks.push(G.trick);
-  G.trick = { cards: [], leader: winner };
+  G.trick = { cards: [], leaderId: winner.id };
   if (G.contract == Contract.Null && winner.isTaker) {
     return true;
   }
   return G.players.every((P) => P.hand.length == 0);
 }
 
-export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: ITrick): string {
-  const leaderId = +T.leader.id;
+export function getTrickWinnerId(contract: Contract, trumpSuit: Suit, T: ITrick): string {
+  const leaderId = +T.leaderId;
   let ranks = T.cards.map((C) => util.cardRank(contract, trumpSuit, C));
   if (ranks.every((R) => R < 500)) {
-    const lead_color = T.cards[0].color;
-    ranks = ranks.map((R, i) => (T.cards[i].color == lead_color ? R : -1));
+    const lead_suit = T.cards[0].suit;
+    ranks = ranks.map((R, i) => (T.cards[i].suit == lead_suit ? R : -1));
   }
   const max_rank = Math.max(...ranks);
   return util.mod(leaderId + ranks.findIndex((R) => R == max_rank), T.cards.length).toString();
@@ -247,12 +218,12 @@ export function getTrickWinnerId(contract: Contract, trumpSuit: CardColor, T: IT
 
 export function getSortedDeck(): ICard[] {
   let deck: ICard[] = [];
-  for (let col of ['Diamonds', 'Hearts', 'Spades', 'Clubs']) {
+  for (let suit of ['Diamonds', 'Hearts', 'Spades', 'Clubs']) {
     deck = deck.concat(
       Array(8)
         .fill(0)
         .map((_, i) => {
-          return { color: CardColor[col], value: i + 7 };
+          return { suit: Suit[suit], value: i + 7 };
         }),
     );
   }

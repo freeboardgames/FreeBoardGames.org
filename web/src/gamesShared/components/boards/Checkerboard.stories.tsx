@@ -1,5 +1,4 @@
 import { Checkerboard } from './Checkerboard';
-
 export default {
   title: 'Games (shared)/Components/Boards/Checkerboard',
 };
@@ -15,28 +14,36 @@ export const simple = () => (
     primaryColor={'#ffce9e'}
     secondaryColor={'#d18b47'}
     highlightedSquares={{}}
-    style={{ maxWidth: '500px' }}
+    style={{
+      maxWidth: '500px',
+    }}
   />
 );
-
 export const highlighted = () => (
   <Checkerboard
     onClick={onClick}
     invert={false}
     primaryColor={'#ffce9e'}
     secondaryColor={'#d18b47'}
-    highlightedSquares={{ b3: 'green' }}
-    style={{ maxWidth: '500px' }}
+    highlightedSquares={{
+      b3: 'green',
+    }}
+    style={{
+      maxWidth: '500px',
+    }}
   />
 );
-
 export const inverted = () => (
   <Checkerboard
     onClick={onClick}
     invert={true}
     primaryColor={'#ffce9e'}
     secondaryColor={'#d18b47'}
-    highlightedSquares={{ b3: 'green' }}
-    style={{ maxWidth: '500px' }}
+    highlightedSquares={{
+      b3: 'green',
+    }}
+    style={{
+      maxWidth: '500px',
+    }}
   />
 );

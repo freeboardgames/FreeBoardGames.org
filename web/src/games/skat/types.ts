@@ -1,10 +1,10 @@
+import { ITrick, Suit, ICard } from 'gamesShared/definitions/cards';
+
 export enum Phases {
-  dealing = 'dealing',
   bidding = 'bidding',
   discard = 'discard',
   placement = 'placement',
   round_end = 'round_end',
-  result = 'result',
 }
 
 export enum Stages {
@@ -23,13 +23,6 @@ export enum Announcement {
   Ouvert,
 }
 
-export enum CardColor {
-  Diamonds,
-  Hearts,
-  Spades,
-  Clubs,
-}
-
 export enum Contract {
   None,
   Suit,
@@ -42,7 +35,7 @@ export interface IGameMoves {
   DeclareHand(declare: boolean): void;
   Discard(): void;
   SelectContract(contract: Contract): void;
-  SelectTrumpSuit(suit: CardColor): void;
+  SelectTrumpSuit(suit: Suit): void;
   Announce(announcement: Announcement): void;
   SelectCards(handIndex: number[]): void;
   Finish(quit: boolean): void;
@@ -57,9 +50,8 @@ export interface IG {
   holderId: string;
   bidderId: string;
   takerId: string;
-  takerCards: ICard[];
   contract: Contract;
-  trumpSuit: CardColor;
+  trumpSuit: Suit;
   hand: boolean;
   announcement: Announcement;
   trick: ITrick;
@@ -76,7 +68,6 @@ export const DefaultIG: IG = {
   holderId: null,
   bidderId: null,
   takerId: '',
-  takerCards: [],
   contract: Contract.None,
   trumpSuit: null,
   hand: null,
@@ -90,7 +81,7 @@ export interface IPlayer {
   id: string;
   name: string;
   score: number;
-  bid: Contract;
+  bid: number;
   isDealer: boolean;
   isTaker: boolean;
   isReady: boolean;
@@ -102,23 +93,12 @@ export const DefaultIPlayer: IPlayer = {
   id: '',
   name: '',
   score: 0,
-  bid: Contract.None,
+  bid: 1,
   isDealer: false,
   isTaker: false,
   isReady: true,
   hand: [],
 };
-
-export interface ICard {
-  color: CardColor;
-  value: number;
-}
-
-export interface ITrick {
-  cards: ICard[];
-  leader?: IPlayer;
-  winner?: IPlayer;
-}
 
 export interface IRoundSummary {
   takerId: string;

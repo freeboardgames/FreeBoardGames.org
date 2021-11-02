@@ -1,0 +1,27 @@
+.hand {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: hidden;
+  overflow-x: auto;
+  z-index: 10;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 40px 0 0;
+  text-align: center;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.hand .arrangeCard {
+  display: inline-block;
+  width: 34px;
+  transform: translate(0, 1px);
+}
+
+.hand .arrangeCard.selected {
+  transform: translate(0, -30px);
+  background-color: rgba(0, 144, 0, 0.3);
+  box-shadow: 0px 0px 40px #090;
+}

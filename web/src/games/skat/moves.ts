@@ -1,13 +1,22 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
+import { Suit } from 'gamesShared/definitions/cards';
 
-import { Announcement, Contract, Phases, Stages, IG, CardColor } from './types';
+import { Announcement, Contract, Phases, Stages, IG } from './types';
 import * as util from './util/misc';
 
 export const Moves = {
   MakeBid(G: IG, ctx: Ctx, value: number) {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     player.bid = value;
+    if (value == 0) {
+      const bidder = util.getPlayerById(G, G.bidderId);
+      if (!bidder.isDealer) {
+        const holder = util.getPlayerById(G, G.holderId);
+        G.holderId = bidder.bid == 0 ? holder.id : bidder.id;
+        G.bidderId = G.players.find((P) => P.isDealer).id;
+      }
+    }
     return G;
   },
 
@@ -19,7 +28,7 @@ export const Moves = {
       player.discardSelection = [];
       player.hand = player.hand.concat(G.kitty).sort(util.get_cmpCards(Contract.None, null));
     } else {
-      G.resolvedTricks.push({ cards: G.kitty, winner: player });
+      G.resolvedTricks.push({ cards: G.kitty, winnerId: player.id });
       G.kitty = [];
       ctx.events.setStage(Stages.select_contract);
     }
@@ -40,7 +49,7 @@ export const Moves = {
         .sort((a, b) => b - a)
         .map((i) => player.hand.splice(i, 1)[0])
         .reverse(),
-      winner: player,
+      winnerId: player.id,
     });
     G.kitty = [];
     delete player.discardSelection;
@@ -68,7 +77,7 @@ export const Moves = {
     return G;
   },
 
-  SelectTrumpSuit(G: IG, ctx: Ctx, suit: CardColor) {
+  SelectTrumpSuit(G: IG, ctx: Ctx, suit: Suit) {
     G.trumpSuit = suit;
     const cmpCards = util.get_cmpCards(G.contract, G.trumpSuit);
     G.players.forEach((P) => {
@@ -105,8 +114,6 @@ export const Moves = {
         return INVALID_MOVE;
       }
       G.trick.cards.push(player.hand.splice(handIndex[0], 1)[0]);
-      G.kitty = [];
-      G.kittyRevealed = false;
     }
     return G;
   },

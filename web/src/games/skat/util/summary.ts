@@ -1,4 +1,6 @@
-import { Announcement, Contract, IG, ICard, CardColor, ITrick, IRoundSummary } from '../types';
+import { ITrick, Suit, ICard } from 'gamesShared/definitions/cards';
+
+import { Announcement, Contract, IG, IRoundSummary } from '../types';
 import * as util from './misc';
 
 export function getRoundSummary(G: IG): IRoundSummary {
@@ -9,7 +11,7 @@ export function getRoundSummary(G: IG): IRoundSummary {
   const taker = util.getPlayerById(G, G.takerId);
   const basicValue = G.contract == Contract.Grand ? 24 : getBasicValue(G.trumpSuit);
   const tops = countTops(G);
-  const takerPoints = countTakerPoints(G.resolvedTricks);
+  const takerPoints = countTakerPoints(G.resolvedTricks, G.takerId);
   const winLevelRequired = Math.max(1, Math.ceil(taker.bid / basicValue - Math.abs(tops)));
   const winLevel = Math.max(winLevelRequired, getWinLevel(G, takerPoints));
   const thresh = G.hand ? [61, 61, 61, 90, 90, 120, 120, 120] : [61, 61, 90, 120];
@@ -37,7 +39,7 @@ function getRoundSummaryNull(G: IG): IRoundSummary {
   } else {
     basicValue = G.hand ? 35 : 23;
   }
-  let takerWins = G.resolvedTricks.slice(1).every((T) => !T.winner.isTaker);
+  let takerWins = G.resolvedTricks.slice(1).every((T) => T.winnerId != G.takerId);
   if (taker.bid > basicValue) {
     takerWins = false;
     basicValue = taker.bid;
@@ -55,7 +57,11 @@ function getRoundSummaryNull(G: IG): IRoundSummary {
 }
 
 function countTops(G: IG) {
-  const ranks = G.takerCards.map((C) => util.cardRank(G.contract, G.trumpSuit, C)).sort((a, b) => b - a);
+  const handSize = 10;
+  const kittySize = 2;
+  const playerHands = G.players.map((_, i) => G.deck.slice(i * handSize, (i + 1) * handSize));
+  const takerCards = G.deck.slice(-kittySize).concat(playerHands[+G.takerId]);
+  const ranks = takerCards.map((C) => util.cardRank(G.contract, G.trumpSuit, C)).sort((a, b) => b - a);
   let all_trumps = [1003, 1002, 1001, 1000, 506, 505, 504, 503, 502, 501, 500];
   if (G.contract == Contract.Grand) {
     all_trumps = all_trumps.slice(0, 4);
@@ -87,18 +93,18 @@ function getWinLevel(G: IG, takerPoints: number) {
   return is_schneider ? 3 : 2;
 }
 
-function getBasicValue(trumpSuit: CardColor) {
+function getBasicValue(trumpSuit: Suit) {
   return {
     Diamonds: 9,
     Hearts: 10,
     Spades: 11,
     Clubs: 12,
-  }[CardColor[trumpSuit]];
+  }[Suit[trumpSuit]];
 }
 
-function countTakerPoints(tricks: ITrick[]): number {
+function countTakerPoints(tricks: ITrick[], takerId: string): number {
   return tricks
-    .filter((T) => T.winner.isTaker)
+    .filter((T) => T.winnerId == takerId)
     .reduce((a, b) => a.concat(b.cards), [])
     .map(cardPoints)
     .reduce((a, b) => a + b, 0);

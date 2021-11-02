@@ -1,4 +1,5 @@
 import { GAMES_LIST } from 'games';
+import { IGameDef } from 'gamesShared/definitions/game';
 
 const gameDictionaryByCodes = GAMES_LIST.reduce((games, game) => {
   games[game.code] = game;
@@ -12,7 +13,7 @@ const gameDictionaryByCodes = GAMES_LIST.reduce((games, game) => {
   return games;
 }, {});
 
-export const getGameDefinition = (gameCode: string) => {
+export const getGameDefinition = (gameCode: string): IGameDef => {
   return gameDictionaryByCodes[gameCode];
 };
 

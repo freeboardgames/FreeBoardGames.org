@@ -1,0 +1,91 @@
+.trick {
+  position: absolute;
+  left: 0; right: 0;
+  top: 0; bottom: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.arrangeCard {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes vanish_3_1 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(0, 130px) scale(0.1);}
+}
+
+@keyframes vanish_3_2 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(300px, 20px) scale(0.1);}
+}
+
+@keyframes vanish_3_3 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(-300px, 20px) scale(0.1);}
+}
+
+@keyframes vanish_4_1 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(0, 130px) scale(0.1);}
+}
+
+@keyframes vanish_4_2 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(300px, 20px) scale(0.1);}
+}
+
+@keyframes vanish_4_3 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(0, -200px) scale(0.1);}
+}
+
+@keyframes vanish_4_4 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(-300px, 20px) scale(0.1);}
+}
+
+@keyframes vanish_5_1 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(0, 130px) scale(0.1);}
+}
+
+@keyframes vanish_5_2 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(300px, 20px) scale(0.1);}
+}
+
+@keyframes vanish_5_3 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(150px, -200px) scale(0.1);}
+}
+
+@keyframes vanish_5_4 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(-150px, -200px) scale(0.1);}
+}
+
+@keyframes vanish_5_5 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(-300px, 20px) scale(0.1);}
+}
+
+.trick.p3.w1.full { animation: vanish_3_1 1.5s; }
+.trick.p3.w2.full { animation: vanish_3_2 1.5s; }
+.trick.p3.w3.full { animation: vanish_3_3 1.5s; }
+.trick.p4.w1.full { animation: vanish_4_1 1.5s; }
+.trick.p4.w2.full { animation: vanish_4_2 1.5s; }
+.trick.p4.w3.full { animation: vanish_4_3 1.5s; }
+.trick.p4.w4.full { animation: vanish_4_4 1.5s; }
+.trick.p5.w1.full { animation: vanish_5_1 1.5s; }
+.trick.p5.w2.full { animation: vanish_5_2 1.5s; }
+.trick.p5.w3.full { animation: vanish_5_3 1.5s; }
+.trick.p5.w4.full { animation: vanish_5_4 1.5s; }
+.trick.p5.w5.full { animation: vanish_5_5 1.5s; }
+.trick.full {
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  transform: scale(0);
+}

@@ -1,11 +1,9 @@
 import React from 'react';
 import { IScoreboardProps, Scoreboard } from '../Scoreboard';
-
 export default {
   title: 'Games/EstateBuyer/Scoreboard',
   component: Scoreboard,
 };
-
 const scoreboardData: IScoreboardProps = {
   scoreboard: [
     {
@@ -37,5 +35,4 @@ const scoreboardData: IScoreboardProps = {
   ],
   playerID: '0',
 };
-
 export const ThreePlayer = () => <Scoreboard {...scoreboardData} />;

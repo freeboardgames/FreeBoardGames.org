@@ -1,4 +1,6 @@
-import { IG, IPlayer, Contract, CardColor, ICard } from '../types';
+import { Suit, ICard } from 'gamesShared/definitions/cards';
+
+import { IG, IPlayer, Contract } from '../types';
 
 export function getBidName(bid: number): string {
   return `bid_${['suit', 'null', 'grand'][bid]}`;
@@ -12,18 +14,25 @@ export function mod(n: number, m: number): number {
   return ((n % m) + m) % m;
 }
 
-export function cardRank(contract: Contract, trumpSuit: CardColor, card: ICard): number {
-  if (contract == Contract.Null) {
-    return 100 * card.color + card.value;
-  }
-  if (card.value == 11) {
-    return 1000 + card.color;
-  }
-  let color_rank: number = contract != Contract.Grand && card.color == trumpSuit ? 5 : card.color;
-  return 100 * color_rank + [7, 8, 9, 12, 13, 10, 14].indexOf(card.value);
+export function suitRank(suit: Suit): number {
+  return [Suit.Diamonds, Suit.Hearts, Suit.Spades, Suit.Clubs].indexOf(suit);
 }
 
-export function get_cmpCards(contract: Contract, trumpSuit: CardColor) {
+export function cardRank(contract: Contract, trumpSuit: Suit, card: ICard): number {
+  let suit_rank = suitRank(card.suit);
+  if (contract == Contract.Null) {
+    return 100 * suit_rank + card.value;
+  }
+  if (card.value == 11) {
+    return 1000 + suit_rank;
+  }
+  if (contract != Contract.Grand && card.suit == trumpSuit) {
+    suit_rank = 5;
+  }
+  return 100 * suit_rank + [7, 8, 9, 12, 13, 10, 14].indexOf(card.value);
+}
+
+export function get_cmpCards(contract: Contract, trumpSuit: Suit) {
   return function (a: ICard, b: ICard): number {
     return cardRank(contract, trumpSuit, a) - cardRank(contract, trumpSuit, b);
   };

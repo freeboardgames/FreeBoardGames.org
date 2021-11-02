@@ -1,5 +1,5 @@
 import { IG } from '../types';
-import { resolveTrick, getSortedDeck, cmpCards } from '../game';
+import { resolveTrick, getSortedDeck } from '../game';
 import * as util from '../util/misc';
 import * as u_placement from '../util/placement';
 
@@ -24,9 +24,9 @@ export function playRandomTricks(G: IG) {
   const numTricks = G.players[0].hand.length;
   const numPlayers = G.players.length;
   for (let i = 0; i < numTricks; i++) {
-    const leader = G.trick.leader;
+    const leaderId = G.trick.leaderId;
     for (let j = 0; j < numPlayers; j++) {
-      const player = G.players[util.mod(+leader.id + j, numPlayers)];
+      const player = G.players[util.mod(+leaderId + j, numPlayers)];
       const sel_bool = u_placement.selectableCards(G, player.id);
       const sel_id = sel_bool.map((_, i) => i).filter((i) => sel_bool[i]);
       const i_card = sel_id[(sel_id.length * Math.random()) | 0];
@@ -48,7 +48,7 @@ export function dealCards(G: IG) {
   G.deck = getSortedDeck();
   shuffleArray(G.deck);
   G.players.forEach((P, i) => {
-    P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
+    P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(util.cmpCards);
   });
-  G.kitty = G.deck.slice(-util.kittySize(G.players.length)).sort(cmpCards);
+  G.kitty = G.deck.slice(-util.kittySize(G.players.length)).sort(util.cmpCards);
 }

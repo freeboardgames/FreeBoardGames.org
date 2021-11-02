@@ -1,0 +1,5 @@
+{
+  "your_turn": "É a sua vez em {{ name }}!",
+  "mute_session": "Desligar notificações agora",
+  "unmute_session": "Ligar notificações"
+}

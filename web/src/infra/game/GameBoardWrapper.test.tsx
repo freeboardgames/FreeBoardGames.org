@@ -2,6 +2,8 @@ import React from 'react';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { gameBoardWrapper } from 'infra/game/GameBoardWrapper';
 import { render as rendr, screen, waitFor } from '@testing-library/react';
+import * as config from 'infra/notification/config';
+import { noop } from 'lodash';
 
 class MockBoard extends React.Component<any, any> {
   render() {
@@ -10,6 +12,9 @@ class MockBoard extends React.Component<any, any> {
 }
 
 describe('GameBoardWrapper', () => {
+  beforeEach(() => {
+    jest.spyOn(config, 'useNotificationsHandler').mockReturnValue({ handleBeginTurn: noop });
+  });
   it('should not show warning', async () => {
     render({ isConnected: true });
     await waitFor(() => expect(screen.queryByText('Connection lost')).not.toBeInTheDocument());

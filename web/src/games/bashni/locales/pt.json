@@ -1,0 +1,19 @@
+{
+  "name": "Bashni",
+  "customization": {
+    "forced_capture": "Captura forçada"
+  },
+
+  "move_piece": "Mover peça",
+  "waiting_for_opponent": "Esperando pelo oponente...",
+  "white_turn": "Turno do Branco",
+  "black_turn": "Turno do Preto",
+
+  "game_over": {
+    "you_won": "você ganhou",
+    "you_lost": "você perdeu",
+    "white_won": "branco ganhou",
+    "black_won": "preto ganhou",
+    "draw": "empate"
+  }
+}
