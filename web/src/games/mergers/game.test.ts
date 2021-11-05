@@ -760,7 +760,6 @@ describe('mergerPhaseNextTurn', () => {
       events: eventsSpy,
     };
     expect(mergerPhaseNextTurn(G, ctx)).not.toBeUndefined();
-    expect(eventsSpy.setPhase.mock.calls[0]).toEqual(['buildingPhase']);
   });
 
   it('returns undefined if no one else has any stock', () => {
@@ -789,7 +788,6 @@ describe('mergerPhaseNextTurn', () => {
       events: eventsSpy,
     };
     expect(mergerPhaseNextTurn(G, ctx)).not.toBeUndefined();
-    expect(eventsSpy.setPhase.mock.calls[0]).toEqual(['buildingPhase']);
   });
 
   it('returns chooseNextMergerPhase if there are more chains to merge', () => {
@@ -818,7 +816,6 @@ describe('mergerPhaseNextTurn', () => {
       events: eventsSpy,
     };
     expect(mergerPhaseNextTurn(G, ctx)).not.toBeUndefined();
-    expect(eventsSpy.setPhase.mock.calls[0]).toEqual(['chooseChainToMergePhase']);
   });
 });
 
@@ -986,7 +983,6 @@ describe('mergerPhase', () => {
           G.players['0'].stocks[Chain.Continuum] = 2;
           G.players['1'].stocks[Chain.Amore] = 1;
           G.players['1'].stocks[Chain.Continuum] = 1;
-          ctx.events.setPhase('buildingPhase');
           return G;
         },
       };
@@ -997,7 +993,8 @@ describe('mergerPhase', () => {
       p1 = clients[1];
     });
 
-    it('completes the merger process twice', () => {
+    it.only('completes the merger process twice', () => {
+      // DO NOT SUBMIT: DELETE it.only BEFORE MERGING!
       expect(p0.store.getState().G.players['0'].money).toEqual(6000);
       expect(p1.store.getState().G.players['1'].money).toEqual(6000);
       expect(p0.store.getState().G.players['0'].stocks[Chain.Toro]).toEqual(1);
@@ -1024,12 +1021,14 @@ describe('mergerPhase', () => {
       expect(p0.store.getState().G.players['0'].money).toEqual(9000);
       expect(p0.store.getState().G.players['1'].money).toEqual(6000);
       // p0 swaps and sells stock
-      p0.moves.swapAndSellStock(0, 1); // swap 0, sell 1
+      p0.moves.swapAndSellStock(0, 1); // swap 0, sell 1 (for 200)
       expect(p0.store.getState().G.players['0'].stocks[Chain.Toro]).toEqual(0);
       // skips p1
-
-      // mergerPhase (merging Continuum)
+      // switches to chooseChainToMergePhase
+      // calls autosetChainToMerge
+      // switches back to mergerPhase
       expect(p0.store.getState().ctx.phase).toEqual('mergerPhase');
+      // merges Continuum
       // awards bonuses (4000 to p0, 2000 to p1)
       expect(p0.store.getState().G.players['0'].money).toEqual(13200);
       expect(p0.store.getState().G.players['1'].money).toEqual(8000);
@@ -1080,7 +1079,6 @@ describe('mergerPhase', () => {
           const G = setupInitialState(ctx.numPlayers);
           G.hotels = originalBoard;
           G.players['1'].stocks[Chain.Toro] = 1;
-          ctx.events.setPhase('buildingPhase');
           return G;
         },
       };
@@ -1166,11 +1164,9 @@ describe('mergers', () => {
       setup: (ctx: Ctx) => {
         const G = setupInitialState(ctx.numPlayers);
         G.hotels = hotels;
-        ctx.events.setPhase('buildingPhase');
         return G;
       },
     };
-
     const clients = getMultiplayerTestClients(3, MergersCustomScenario);
 
     p0 = clients[0];

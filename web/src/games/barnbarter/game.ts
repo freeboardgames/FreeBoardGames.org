@@ -79,8 +79,6 @@ export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
     trade: <ITrade>{ counterPlayerId: -1, animalIdAttacker: null, animalIdDefender: null, bid: null },
   };
 
-  ctx.events.setPhase('phaseStart');
-
   return G;
 }
 
