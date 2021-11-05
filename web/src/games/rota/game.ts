@@ -166,7 +166,7 @@ const GameConfig: Game = {
       moves: { movePiece },
     },
   },
-  turn: { moveLimit: 1 },
+  turn: { minMoves: 1, maxMoves: 1 },
   endIf: (G, ctx) => {
     if (isVictory(G)) {
       return { winner: ctx.currentPlayer };

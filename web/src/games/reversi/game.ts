@@ -150,7 +150,8 @@ export function getScoreBoard(G: IG, ctx: Ctx) {
 const GameConfig: Game<IG> = {
   name: 'reversi',
   turn: {
-    moveLimit: 1,
+    minMoves: 1,
+    maxMoves: 1,
   },
   endIf: (G: IG, ctx: Ctx) => {
     if (!G.points.includes(null)) {

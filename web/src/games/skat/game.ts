@@ -69,7 +69,8 @@ export const SkatGame: Game<IG> = {
       },
 
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
         order: {
           first: (G: IG) => +G.bidderId,
           next: (G: IG, ctx: Ctx) => (ctx.playOrderPos != +G.bidderId ? +G.bidderId : +G.holderId),
@@ -135,7 +136,8 @@ export const SkatGame: Game<IG> = {
 
     placement: {
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
         order: {
           first: (G) => +G.trick.leaderId,
           next: (G, ctx) => util.mod(ctx.playOrderPos + 1, ctx.playOrder.length),
@@ -175,7 +177,7 @@ export const SkatGame: Game<IG> = {
       next: Phases.bidding,
       turn: {
         stages: { get_ready: { moves: { Finish: Moves.Finish } } },
-        activePlayers: { all: Stages.get_ready, moveLimit: 1 },
+        activePlayers: { all: Stages.get_ready, maxMoves: 1 },
       },
       endIf: (G: IG) => G.players.every((P) => P.isReady),
       onEnd: (G: IG, ctx: Ctx) => {

@@ -570,11 +570,12 @@ export const MergersGame: Game<IG> = {
 
     mergerPhase: {
       turn: {
+        minMoves: 1,
+        maxMoves: 1,
         order: {
           first: mergerPhaseFirstTurn,
           next: mergerPhaseNextTurn,
         },
-        moveLimit: 1,
       },
 
       moves: { swapAndSellStock },

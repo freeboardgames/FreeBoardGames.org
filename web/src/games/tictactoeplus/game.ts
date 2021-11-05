@@ -80,7 +80,8 @@ export const TictactoePlusGame: Game = {
   },
 
   turn: {
-    moveLimit: 1,
+    minMoves: 1,
+    maxMoves: 1,
   },
   endIf: (G) => {
     const winner = isVictory(G.cells);

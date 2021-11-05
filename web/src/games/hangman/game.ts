@@ -12,7 +12,8 @@ export const HangmanGame: Game<HangmanState> = {
       moves: { setSecret },
       start: true,
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
       },
       next: 'play',
       endIf: (G: HangmanState) => {
