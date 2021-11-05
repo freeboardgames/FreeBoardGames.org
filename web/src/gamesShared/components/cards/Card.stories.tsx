@@ -1,8 +1,15 @@
 import { Card } from './Card';
 import { Suit, Pattern } from 'gamesShared/definitions/cards';
+
 export default {
   component: Card,
   title: 'Games (shared)/Components/Cards/Card',
+  args: {
+    suit: 'Gras',
+    value: 11,
+    pattern: 'Franconian',
+    width: 104,
+  },
   argTypes: {
     pattern: {
       options: Object.keys(Pattern),
@@ -20,9 +27,7 @@ export default {
     width: {
       control: { type: 'range', min: 20, max: 300, step: 1 },
     },
-    height: {
-      control: { type: 'range', min: 40, max: 500, step: 1 },
-    },
+    height: { control: false },
     type: { table: { disable: true } },
     click: {
       action: 'clicked',
@@ -34,17 +39,13 @@ const Template = ({ suit, value, pattern, ...rest }) => {
   return <Card pattern={pattern} type={{ suit: suit, value: value }} {...rest} />;
 };
 export const Selectable = Template.bind({});
-Selectable.args = {
-  suit: 'Gras',
-  value: 11,
-  pattern: 'Franconian',
-  width: 104,
-};
 export const NotSelectable = Template.bind({});
-NotSelectable.args = {
-  suit: 'Trumps',
-  value: 17,
-  pattern: 'Tarot',
-  width: 104,
-  click: null,
+NotSelectable.args = { click: null };
+export const SetHeight = Template.bind({});
+SetHeight.args = { width: null, height: 200 };
+SetHeight.argTypes = {
+  width: { control: false },
+  height: {
+    control: { type: 'range', min: 40, max: 500, step: 1 },
+  },
 };

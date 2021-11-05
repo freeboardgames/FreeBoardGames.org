@@ -17,6 +17,7 @@ export function Card(props: {
   let cardBack: number[];
   let cardBlank: number[];
   let suits: Suit[];
+  let values: [Suit[], number, number][];
   let numCols: number;
   let colOffset: number;
   let cardSize: number[];
@@ -28,6 +29,10 @@ export function Card(props: {
       cardBack = [8, 5];
       cardBlank = [9, 5];
       suits = [Suit.Clubs, Suit.Diamonds, Suit.Spades, Suit.Hearts, Suit.Trumps, Suit.Excuse];
+      values = [
+        [[Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts], 1, 14],
+        [[Suit.Trumps], 1, 21],
+      ];
       numCols = 14;
       colOffset = 1;
       cardSize = [320, 596];
@@ -39,6 +44,10 @@ export function Card(props: {
       cardBack = [6, 6];
       cardBlank = [6, 7];
       suits = [Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts, Suit.Trumps, Suit.Excuse];
+      values = [
+        [[Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts], 7, 14],
+        [[Suit.Trumps], 1, 21],
+      ];
       numCols = 8;
       colOffset = C && C.suit == Suit.Trumps ? 1 : 7;
       cardSize = [236, 424];
@@ -50,6 +59,7 @@ export function Card(props: {
       cardBack = [9, 3];
       cardBlank = [9, 2];
       suits = [Suit.Schell, Suit.Herz, Suit.Gras, Suit.Eichel];
+      values = [[[], 6, 14]];
       numCols = 10;
       colOffset = 6;
       cardSize = [320, 596];
@@ -63,6 +73,7 @@ export function Card(props: {
       cardBack = [8, 3];
       cardBlank = [8, 2];
       suits = [Suit.Diamonds, Suit.Hearts, Suit.Spades, Suit.Clubs];
+      values = [[[], 7, 14]];
       numCols = 9;
       colOffset = 7;
       cardSize = [314, 483];
@@ -82,14 +93,26 @@ export function Card(props: {
     } else if (props.pattern == Pattern.Tarock && C.suit == Suit.Excuse) {
       col = 5;
       row = 6;
-    } else if (suits.includes(C.suit)) {
-      col = C.value - colOffset;
-      row = suits.indexOf(C.suit) + Math.floor(col / numCols);
-      col = col % numCols;
     } else {
       [col, row] = cardBlank;
-      text = `Suit.${Suit[C.suit]} is not available with the ${props.pattern} pattern.`;
-      text += ` Supported suits are: ${suits.map((c) => Suit[c]).join(', ')}.`;
+      if (!suits.includes(C.suit)) {
+        text = `Suit.${Suit[C.suit]} is not available with the ${props.pattern} pattern.`;
+        text += ` Supported suits are: ${suits.map((c) => Suit[c]).join(', ')}.`;
+      }
+      values.some(([valSuits, minValue, maxValue]) => {
+        if (text != '') return false;
+        if (valSuits.length > 0 && !valSuits.includes(C.suit)) return false;
+        if (minValue <= C.value && C.value <= maxValue) return false;
+        text = valSuits.length > 0 ? `For the suit ${Suit[C.suit]}, the` : 'The';
+        text += ` ${props.pattern} pattern does only include cards`;
+        text += ` with values between ${minValue} and ${maxValue}.`;
+        return true;
+      });
+      if (text == '') {
+        col = C.value - colOffset;
+        row = suits.indexOf(C.suit) + Math.floor(col / numCols);
+        col = col % numCols;
+      }
     }
   }
 
