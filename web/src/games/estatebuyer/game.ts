@@ -182,7 +182,8 @@ export const EstateBuyerGame: Game<IG> = {
     GameStart: Moves.GameStart,
   },
   turn: {
-    moveLimit: 1,
+    minMoves: 1,
+    maxMoves: 1,
     order: {
       first: () => 0,
       next: (G, ctx) => ctx.random.Die(ctx.numPlayers) - 1,
@@ -191,7 +192,8 @@ export const EstateBuyerGame: Game<IG> = {
   phases: {
     auction: {
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
         order: {
           first: (G, ctx) => ctx.playOrderPos,
           next: (G, ctx) => {
@@ -248,7 +250,8 @@ export const EstateBuyerGame: Game<IG> = {
 
     property_selection_hotseat: {
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
         order: TurnOrder.CONTINUE,
       },
       moves: {

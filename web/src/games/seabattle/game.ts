@@ -120,7 +120,8 @@ export const SeabattleGame: Game<ISeabattleState> = {
     }
   },
   turn: {
-    moveLimit: 1,
+    minMoves: 1,
+    maxMoves: 1,
   },
   playerView,
 };

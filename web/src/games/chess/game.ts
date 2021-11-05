@@ -42,7 +42,8 @@ export const ChessGame: Game<IG> = {
     },
   },
   turn: {
-    moveLimit: 1,
+    minMoves: 1,
+    maxMoves: 1,
   },
   endIf: (G: IG) => {
     const chess = Chess();

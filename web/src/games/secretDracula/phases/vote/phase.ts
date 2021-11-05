@@ -4,8 +4,8 @@ import { Ctx } from 'boardgame.io';
 
 /*
 NOTE: The way that players are moved into phases is very bad/confusing.
-The issue is that somehow the endIf function gets called before onBegin, and 
-sometimes I had issues with no active players. Therefore there is a lot 
+The issue is that somehow the endIf function gets called before onBegin, and
+sometimes I had issues with no active players. Therefore there is a lot
 of explicit moving of players into phases.
 */
 
@@ -93,7 +93,7 @@ export let phaseVotePriest = {
 
 export let phaseEndVotePriest = {
   turn: {
-    activePlayers: { all: 'phaseEndVotePriest', moveLimit: 1 },
+    activePlayers: { all: 'phaseEndVotePriest', maxMoves: 1 },
     onBegin: (G, ctx) => {
       let activePlayers = { value: {} };
       for (let i = 0; i < ctx.numPlayers; i++) {

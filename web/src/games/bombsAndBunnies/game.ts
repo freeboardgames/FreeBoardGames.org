@@ -12,7 +12,8 @@ export const BombsAndBunniesGame: Game<IG> = {
       start: true,
 
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
         order: {
           first: (G: IG, ctx: Ctx) => {
             var oldPlayOrder = ctx.playOrder;
@@ -60,7 +61,8 @@ export const BombsAndBunniesGame: Game<IG> = {
 
     place_or_bet: {
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
         order: {
           first: (G: IG, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
           next: (G: IG, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
@@ -88,7 +90,8 @@ export const BombsAndBunniesGame: Game<IG> = {
 
     bet: {
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
         order: {
           first: (G: IG, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
           next: (G: IG, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,

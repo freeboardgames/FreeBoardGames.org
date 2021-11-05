@@ -144,7 +144,8 @@ const GameConfig: Game<IG> = {
         }
       },
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
         order: {
           playOrder: (G: IG) => G.cardOrder,
           first: () => 0,

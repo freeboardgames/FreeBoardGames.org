@@ -154,7 +154,7 @@ export const DoppelkopfGame: Game<IG> = {
       next: Phases.bidding,
       turn: {
         stages: { get_ready: { moves: { Finish: Moves.Finish } } },
-        activePlayers: { all: Stages.get_ready, moveLimit: 1 },
+        activePlayers: { all: Stages.get_ready, maxMoves: 1 },
       },
       endIf: (G: IG) => G.players.every((P) => P.isReady),
       onEnd: (G: IG) => {

@@ -238,7 +238,8 @@ export const CheckersGame: Game<IG> = {
     move,
   },
   turn: {
-    moveLimit: 1,
+    minMoves: 1,
+    maxMoves: 1,
     order: {
       first: () => 0,
       next: (G: IG, ctx) => (G.jumping === null ? (ctx.playOrderPos + 1) % ctx.numPlayers : ctx.playOrderPos),
