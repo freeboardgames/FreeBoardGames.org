@@ -1021,13 +1021,14 @@ describe('mergerPhase', () => {
       expect(p0.store.getState().G.players['0'].money).toEqual(9000);
       expect(p0.store.getState().G.players['1'].money).toEqual(6000);
       // p0 swaps and sells stock
-      debugger;
-      p0.moves.swapAndSellStock(0, 1); // swap 0, sell 1
+      p0.moves.swapAndSellStock(0, 1); // swap 0, sell 1 (for 200)
       expect(p0.store.getState().G.players['0'].stocks[Chain.Toro]).toEqual(0);
       // skips p1
-
-      // mergerPhase (merging Continuum)
+      // switches to chooseChainToMergePhase
+      // calls autosetChainToMerge
+      // switches back to mergerPhase
       expect(p0.store.getState().ctx.phase).toEqual('mergerPhase');
+      // merges Continuum
       // awards bonuses (4000 to p0, 2000 to p1)
       expect(p0.store.getState().G.players['0'].money).toEqual(13200);
       expect(p0.store.getState().G.players['1'].money).toEqual(8000);
