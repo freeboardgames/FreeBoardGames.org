@@ -436,12 +436,6 @@ export function mergerPhaseNextTurn(G: IG, ctx: Ctx, isFirst: boolean = false) {
     }
   }
 
-  if (G.merger.mergingChains.length === 1) {
-    ctx.events.setPhase('buildingPhase');
-  } else {
-    ctx.events.setPhase('chooseChainToMergePhase');
-  }
-
   // return a value to avoid from ending the phase that way, which preempts the setPhase call
   // we also want to set the merging player as the next turn regardless
   return mergingPlayerPos;
@@ -480,13 +474,12 @@ export const MergersGame: Game<IG> = {
 
     setupInitialDrawing(G, ctx);
 
-    ctx.events.setPhase('buildingPhase');
-
     return G;
   },
 
   phases: {
     buildingPhase: {
+      start: true,
       onBegin: (G: IG) => {
         G.isFirstTurnInPhase = true;
         return G;
@@ -586,23 +579,43 @@ export const MergersGame: Game<IG> = {
 
       moves: { swapAndSellStock },
 
+      endIf: (G: IG) => {
+        if (G.merger === undefined || G.merger.swapAndSells === undefined) return false;
+        for (const player of Object.values(G.players)) {
+          if (G.merger.swapAndSells[player.id] === undefined) {
+            return false;
+          }
+        }
+        return true;
+      },
+
+      next: (G: IG) => {
+        if (!G.merger) {
+          return 'buildingPhase';
+        } else {
+          return 'chooseChainToMergePhase';
+        }
+      },
+
       onBegin: (G: IG) => {
-        // now that we now which chain is being merged, fill in the rest of the merger info
+        // now that we know which chain is being merged, fill in the rest of the merger info
         const mergerResults: Merger = getMergerResults(G, G.merger.chainToMerge);
         G.merger = {
           ...G.merger,
           ...mergerResults,
         };
         awardMoneyToPlayers(G, G.merger.bonuses);
+        return G;
       },
 
       onEnd: (G: IG) => {
         // remove the just-merged chain
         G.merger.chainToMerge = undefined;
         G.merger.chainSize = undefined;
+        G.merger.swapAndSells = undefined;
         G.merger.mergingChains.shift();
 
-        // if we're all done, absorb all hotels into the surviving chain and clear the merer
+        // if we're all done, absorb all hotels into the surviving chain and clear the merger
         if (G.merger.mergingChains.length === 0) {
           absorbNewHotels(G, G.merger.survivingChain, G.lastPlacedHotel);
           G.merger = undefined;

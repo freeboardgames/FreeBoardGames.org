@@ -14,6 +14,7 @@ import {
 import { canMakeNoMoves } from './helpers';
 
 export let phaseStart = {
+  start: true,
   onBegin: (G: IG, ctx: Ctx) => {
     G.log = ['onbegin phaseStart', ...G.log];
 
