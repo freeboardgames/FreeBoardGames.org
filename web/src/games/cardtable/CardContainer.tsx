@@ -1,4 +1,6 @@
 import React, { FunctionComponent } from 'react';
+import { Pattern } from 'gamesShared/definitions/cards';
+import { Card } from 'gamesShared/components/cards/Card';
 import { ICard, playerEnum, stageEnum, phaseEnum } from './game';
 import { Dialog, DialogContent, DialogActions, Slider, DialogTitle, Button } from '@material-ui/core';
 import css from './CardContainer.module.css';
@@ -85,9 +87,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     }
   };
 
-  const handleClick = (evt: React.MouseEvent, idx?: number, name?: string) => {
-    evt.preventDefault();
-    evt.stopPropagation();
+  const handleClick = (idx?: number, name?: string) => {
     let allowed: boolean = isClickAllowed(name);
     if (stage && allowed) {
       switch (stage) {
@@ -159,12 +159,12 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   };
 
   let tileList = tileData.map((tile, index) => (
-    <img
+    <Card
       key={tile.id}
-      onClick={(evt) => handleClick(evt, index, name)}
-      className={css.fitpicture}
-      src={view ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
-      alt={`card: ${tile.id}`}
+      click={() => handleClick(index, name)}
+      type={view ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
+      pattern={Pattern.English}
+      height={80}
     />
   ));
   if (props.deck) {
