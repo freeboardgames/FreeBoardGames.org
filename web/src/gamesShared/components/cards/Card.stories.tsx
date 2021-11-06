@@ -36,7 +36,8 @@ export default {
   },
 };
 const Template = ({ suit, value, pattern, ...rest }) => {
-  return <Card pattern={pattern} type={{ suit: suit, value: value }} {...rest} />;
+  const card = suit === null || suit === undefined ? null : { suit: suit, value: value };
+  return <Card pattern={pattern} type={card} {...rest} />;
 };
 export const Selectable = Template.bind({});
 export const NotSelectable = Template.bind({});
@@ -48,4 +49,10 @@ SetHeight.argTypes = {
   height: {
     control: { type: 'range', min: 40, max: 500, step: 1 },
   },
+};
+export const Back = Template.bind({});
+Back.args = { suit: null, value: null };
+Back.argTypes = {
+  suit: { control: false },
+  value: { control: false },
 };
