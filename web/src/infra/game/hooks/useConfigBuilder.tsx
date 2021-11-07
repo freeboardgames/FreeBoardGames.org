@@ -78,7 +78,8 @@ export function useConfigBuilder() {
     const buildEnhancer = (gameArgs: GameArgs) => {
       const allEnhancers = [...(config.enhancers ?? []), ...DEFAULT_ENHANCERS];
       const enhancers = allEnhancers.map((enhancer) => enhancer(gameArgs));
-      return applyMiddleware(...enhancers) as ClientConfig['enhancer'];
+      const middleware = applyMiddleware(...enhancers) as unknown;
+      return middleware as ClientConfig['enhancer'];
     };
 
     const buildAi = () => {
