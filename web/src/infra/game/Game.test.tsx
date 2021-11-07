@@ -1,8 +1,9 @@
-import { TGameCode, TBgioMatchId, TBgioSecret, TBgioPlayerId, TBgioServerUrl } from 'infra/types';
+import { GAMES_MAP } from 'games';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { TGameCode } from 'infra/types';
 import { render, screen } from 'test/utils/rtl';
 import { Game, IGameProps } from './Game';
-import { GameMode } from 'gamesShared/definitions/mode';
-import { GAMES_MAP } from 'games';
+import { Match } from './types';
 
 jest.mock('boardgame.io/multiplayer');
 
@@ -20,18 +21,18 @@ describe('Game', () => {
   it('should render properly for multiplayer', async () => {
     const match = {
       __typename: 'Match' as const,
-      bgioMatchId: 'fooMatch' as TBgioMatchId,
-      bgioServerUrl: 'fooBGIOServer' as TBgioServerUrl,
-      gameCode: 'chess' as TGameCode,
-      bgioPlayerId: '0' as TBgioPlayerId,
-      bgioSecret: 'fooSecret' as TBgioSecret,
+      bgioMatchId: 'fooMatch',
+      bgioServerUrl: 'fooBGIOServer',
+      gameCode: 'chess',
+      bgioPlayerId: '0',
+      bgioSecret: 'fooSecret',
       playerMemberships: [
         {
           __typename: 'MatchMembership' as const,
           user: { nickname: 'fooPlayer', id: 0, __typename: 'User' as const },
         },
       ],
-    };
+    } as Match;
 
     renderGame({ match });
 
