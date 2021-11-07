@@ -1,56 +1,4 @@
-import imgAC from './media/png/AC.png';
-import imgKC from './media/png/KC.png';
-import imgQC from './media/png/QC.png';
-import imgJC from './media/png/JC.png';
-import img10C from './media/png/10C.png';
-import img9C from './media/png/9C.png';
-import img8C from './media/png/8C.png';
-import img7C from './media/png/7C.png';
-import img6C from './media/png/6C.png';
-import img5C from './media/png/5C.png';
-import img4C from './media/png/4C.png';
-import img3C from './media/png/3C.png';
-import img2C from './media/png/2C.png';
-import imgAS from './media/png/AS.png';
-import imgKS from './media/png/KS.png';
-import imgQS from './media/png/QS.png';
-import imgJS from './media/png/JS.png';
-import img10S from './media/png/10S.png';
-import img9S from './media/png/9S.png';
-import img8S from './media/png/8S.png';
-import img7S from './media/png/7S.png';
-import img6S from './media/png/6S.png';
-import img5S from './media/png/5S.png';
-import img4S from './media/png/4S.png';
-import img3S from './media/png/3S.png';
-import img2S from './media/png/2S.png';
-import imgAD from './media/png/AD.png';
-import imgKD from './media/png/KD.png';
-import imgQD from './media/png/QD.png';
-import imgJD from './media/png/JD.png';
-import img10D from './media/png/10D.png';
-import img9D from './media/png/9D.png';
-import img8D from './media/png/8D.png';
-import img7D from './media/png/7D.png';
-import img6D from './media/png/6D.png';
-import img5D from './media/png/5D.png';
-import img4D from './media/png/4D.png';
-import img3D from './media/png/3D.png';
-import img2D from './media/png/2D.png';
-import imgAH from './media/png/AH.png';
-import imgKH from './media/png/KH.png';
-import imgQH from './media/png/QH.png';
-import imgJH from './media/png/JH.png';
-import img10H from './media/png/10H.png';
-import img9H from './media/png/9H.png';
-import img8H from './media/png/8H.png';
-import img7H from './media/png/7H.png';
-import img6H from './media/png/6H.png';
-import img5H from './media/png/5H.png';
-import img4H from './media/png/4H.png';
-import img3H from './media/png/3H.png';
-import img2H from './media/png/2H.png';
-import imgGB from './media/png/gray_back.png';
+import { Suit } from 'gamesShared/definitions/cards';
 
 export enum cardEnum {
   SA,
@@ -109,59 +57,59 @@ export enum cardEnum {
 }
 
 export const deckAssets = {
-  [cardEnum.SA]: imgAS,
-  [cardEnum.S2]: img2S,
-  [cardEnum.S3]: img3S,
-  [cardEnum.S4]: img4S,
-  [cardEnum.S5]: img5S,
-  [cardEnum.S6]: img6S,
-  [cardEnum.S7]: img7S,
-  [cardEnum.S8]: img8S,
-  [cardEnum.S9]: img9S,
-  [cardEnum.S10]: img10S,
-  [cardEnum.SJ]: imgJS,
-  [cardEnum.SQ]: imgQS,
-  [cardEnum.SK]: imgKS,
-  [cardEnum.CA]: imgAC,
-  [cardEnum.C2]: img2C,
-  [cardEnum.C3]: img3C,
-  [cardEnum.C4]: img4C,
-  [cardEnum.C5]: img5C,
-  [cardEnum.C6]: img6C,
-  [cardEnum.C7]: img7C,
-  [cardEnum.C8]: img8C,
-  [cardEnum.C9]: img9C,
-  [cardEnum.C10]: img10C,
-  [cardEnum.CJ]: imgJC,
-  [cardEnum.CQ]: imgQC,
-  [cardEnum.CK]: imgKC,
-  [cardEnum.DA]: imgAD,
-  [cardEnum.D2]: img2D,
-  [cardEnum.D3]: img3D,
-  [cardEnum.D4]: img4D,
-  [cardEnum.D5]: img5D,
-  [cardEnum.D6]: img6D,
-  [cardEnum.D7]: img7D,
-  [cardEnum.D8]: img8D,
-  [cardEnum.D9]: img9D,
-  [cardEnum.D10]: img10D,
-  [cardEnum.DJ]: imgJD,
-  [cardEnum.DQ]: imgQD,
-  [cardEnum.DK]: imgKD,
-  [cardEnum.HA]: imgAH,
-  [cardEnum.H2]: img2H,
-  [cardEnum.H3]: img3H,
-  [cardEnum.H4]: img4H,
-  [cardEnum.H5]: img5H,
-  [cardEnum.H6]: img6H,
-  [cardEnum.H7]: img7H,
-  [cardEnum.H8]: img8H,
-  [cardEnum.H9]: img9H,
-  [cardEnum.H10]: img10H,
-  [cardEnum.HJ]: imgJH,
-  [cardEnum.HQ]: imgQH,
-  [cardEnum.HK]: imgKH,
-  [cardEnum.GB]: imgGB,
+  [cardEnum.SA]: { suit: Suit.Spades, value: 1 },
+  [cardEnum.S2]: { suit: Suit.Spades, value: 2 },
+  [cardEnum.S3]: { suit: Suit.Spades, value: 3 },
+  [cardEnum.S4]: { suit: Suit.Spades, value: 4 },
+  [cardEnum.S5]: { suit: Suit.Spades, value: 5 },
+  [cardEnum.S6]: { suit: Suit.Spades, value: 6 },
+  [cardEnum.S7]: { suit: Suit.Spades, value: 7 },
+  [cardEnum.S8]: { suit: Suit.Spades, value: 8 },
+  [cardEnum.S9]: { suit: Suit.Spades, value: 9 },
+  [cardEnum.S10]: { suit: Suit.Spades, value: 10 },
+  [cardEnum.SJ]: { suit: Suit.Spades, value: 11 },
+  [cardEnum.SQ]: { suit: Suit.Spades, value: 12 },
+  [cardEnum.SK]: { suit: Suit.Spades, value: 13 },
+  [cardEnum.CA]: { suit: Suit.Clubs, value: 1 },
+  [cardEnum.C2]: { suit: Suit.Clubs, value: 2 },
+  [cardEnum.C3]: { suit: Suit.Clubs, value: 3 },
+  [cardEnum.C4]: { suit: Suit.Clubs, value: 4 },
+  [cardEnum.C5]: { suit: Suit.Clubs, value: 5 },
+  [cardEnum.C6]: { suit: Suit.Clubs, value: 6 },
+  [cardEnum.C7]: { suit: Suit.Clubs, value: 7 },
+  [cardEnum.C8]: { suit: Suit.Clubs, value: 8 },
+  [cardEnum.C9]: { suit: Suit.Clubs, value: 9 },
+  [cardEnum.C10]: { suit: Suit.Clubs, value: 10 },
+  [cardEnum.CJ]: { suit: Suit.Clubs, value: 11 },
+  [cardEnum.CQ]: { suit: Suit.Clubs, value: 12 },
+  [cardEnum.CK]: { suit: Suit.Clubs, value: 13 },
+  [cardEnum.DA]: { suit: Suit.Diamonds, value: 1 },
+  [cardEnum.D2]: { suit: Suit.Diamonds, value: 2 },
+  [cardEnum.D3]: { suit: Suit.Diamonds, value: 3 },
+  [cardEnum.D4]: { suit: Suit.Diamonds, value: 4 },
+  [cardEnum.D5]: { suit: Suit.Diamonds, value: 5 },
+  [cardEnum.D6]: { suit: Suit.Diamonds, value: 6 },
+  [cardEnum.D7]: { suit: Suit.Diamonds, value: 7 },
+  [cardEnum.D8]: { suit: Suit.Diamonds, value: 8 },
+  [cardEnum.D9]: { suit: Suit.Diamonds, value: 9 },
+  [cardEnum.D10]: { suit: Suit.Diamonds, value: 10 },
+  [cardEnum.DJ]: { suit: Suit.Diamonds, value: 11 },
+  [cardEnum.DQ]: { suit: Suit.Diamonds, value: 12 },
+  [cardEnum.DK]: { suit: Suit.Diamonds, value: 13 },
+  [cardEnum.HA]: { suit: Suit.Hearts, value: 1 },
+  [cardEnum.H2]: { suit: Suit.Hearts, value: 2 },
+  [cardEnum.H3]: { suit: Suit.Hearts, value: 3 },
+  [cardEnum.H4]: { suit: Suit.Hearts, value: 4 },
+  [cardEnum.H5]: { suit: Suit.Hearts, value: 5 },
+  [cardEnum.H6]: { suit: Suit.Hearts, value: 6 },
+  [cardEnum.H7]: { suit: Suit.Hearts, value: 7 },
+  [cardEnum.H8]: { suit: Suit.Hearts, value: 8 },
+  [cardEnum.H9]: { suit: Suit.Hearts, value: 9 },
+  [cardEnum.H10]: { suit: Suit.Hearts, value: 10 },
+  [cardEnum.HJ]: { suit: Suit.Hearts, value: 11 },
+  [cardEnum.HQ]: { suit: Suit.Hearts, value: 12 },
+  [cardEnum.HK]: { suit: Suit.Hearts, value: 13 },
+  [cardEnum.GB]: null,
 };
 
 const std_crib_deck = [

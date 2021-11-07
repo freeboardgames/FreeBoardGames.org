@@ -2,6 +2,7 @@ import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import CardContainer from './CardContainer';
+import css from './CardContainer.module.css';
 import { CardTableGame, phaseEnum, playerEnum, stageEnum } from './game';
 import { Client } from 'boardgame.io/client';
 import { cardEnum } from './deals';
@@ -46,7 +47,7 @@ test('game state UX no foreign clickers', () => {
   const cards = Enzyme.mount(<CardContainer cards={testCards} name="North Hand" collaborator={collaborator} />);
 
   // UI should not allow clicks from other containers to activate the cut
-  let card = cards.find('img');
+  let card = cards.find(`.${css.grid} > :first-child`);
   card.simulate('click');
 
   //only clicks originating from cards in the deck should invoke hCutForDeal

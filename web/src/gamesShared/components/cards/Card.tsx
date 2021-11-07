@@ -3,7 +3,7 @@ import { ICard, Suit, Pattern } from 'gamesShared/definitions/cards';
 
 import css from './Card.module.css';
 
-const supportedPatterns = [Pattern.Skat, Pattern.Tarot, Pattern.Tarock, Pattern.Franconian];
+const supportedPatterns = [Pattern.English, Pattern.Skat, Pattern.Tarot, Pattern.Tarock, Pattern.Franconian];
 
 export function Card(props: {
   pattern: Pattern;
@@ -68,8 +68,6 @@ export function Card(props: {
       borderRadius = 45;
       break;
     case Pattern.Skat:
-    // Skat is the default (fallback) pattern
-    default:
       cardBack = [8, 3];
       cardBlank = [8, 2];
       suits = [Suit.Diamonds, Suit.Hearts, Suit.Spades, Suit.Clubs];
@@ -80,6 +78,20 @@ export function Card(props: {
       backgroundSize = [2826, 1932];
       bgClass = css.skat;
       borderRadius = 25;
+      break;
+    case Pattern.English:
+    // English is the default (fallback) pattern
+    default:
+      cardBack = [4, 4];
+      cardBlank = [3, 4];
+      suits = [Suit.Spades, Suit.Hearts, Suit.Diamonds, Suit.Clubs];
+      values = [[[], 1, 13]];
+      numCols = 13;
+      colOffset = 1;
+      cardSize = [360, 540];
+      backgroundSize = [4680, 2700];
+      bgClass = css.english;
+      borderRadius = 30;
       break;
   }
 

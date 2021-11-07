@@ -7,18 +7,7 @@
       background-color: rgb(29, 90, 29);
     }
 
-    .fitpicture {
-      height: 80px;
-      object-fit: 'scale-down';
-      border-radius: 3px;
-    }
-
     .grid {
       display: inline-grid;
       grid-template-columns: repeat(6, 14%);
     }
-  
-  
-   
-
-    
