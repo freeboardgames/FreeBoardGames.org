@@ -38,7 +38,7 @@ describe('Game', () => {
 
     await screen.findByText('Downloading Chess');
     await screen.findByRole('heading', { level: 6, name: /chess/i });
-  });
+  }, 10000);
 
   it('should render properly for singleplayer', async () => {
     renderGame({ gameCode: 'tictactoe' as TGameCode, mode: GameMode.LocalFriend });
