@@ -16,10 +16,11 @@ type AIOrLocalGameProps = { gameCode?: TGameCode; mode?: GameMode.AI | GameMode.
 
 export type IGameProps = OnlineGameProps & AIOrLocalGameProps;
 
-const configsRequest = (gameDef: IGameDef) => async (): Promise<[IAIConfig, IGameConfig]> => {
-  return Promise.all([gameDef.aiConfig(), gameDef.config()]).then((configs) => {
+const configsRequest = (gameDef: IGameDef, mode: GameMode) => async (): Promise<[IAIConfig, IGameConfig]> => {
+  const configs = [mode === GameMode.AI ? gameDef.aiConfig() : null, gameDef.config()];
+  return Promise.all(configs).then((configs) => {
     const [aiConfig, gameConfig] = configs;
-    return [aiConfig.default, gameConfig.default];
+    return [aiConfig?.default, gameConfig?.default];
   });
 };
 
@@ -33,7 +34,7 @@ export const Game: VFC<IGameProps> = (props) => {
   const gameCode = props.match?.gameCode ?? props.gameCode;
   const gameDef = getGameDefinition(gameCode);
   const isValidMode = validateMode(gameDef, mode);
-  const { status, data: configs } = useRequest<[IAIConfig, IGameConfig]>(configsRequest(gameDef));
+  const { status, data: configs } = useRequest<[IAIConfig, IGameConfig]>(configsRequest(gameDef, mode));
 
   if (!gameDef) return <GameNotFound />;
   if (!isValidMode) return <InvalidGameMode />;
