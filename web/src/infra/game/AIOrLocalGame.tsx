@@ -2,20 +2,21 @@ import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { LoadingMessage } from 'infra/common/components/alert/LoadingMessage';
 import SEO from 'infra/common/helpers/SEO';
+import { TGameCode } from 'infra/types';
 import dynamic from 'next/dynamic';
 import Error from 'pages/_error';
 import React from 'react';
 import { getGameDefinition } from './utils';
 
-const GameWrapper = dynamic(import('infra/game/Game'), {
+const Game = dynamic(import('infra/game/Game'), {
   ssr: false,
   loading: LoadingMessage,
 });
 
 interface AILocalGameProps {
-  gameCode: string;
+  gameCode: TGameCode;
   gameDef: IGameDef;
-  mode: string;
+  mode: GameMode;
 }
 
 export default class AILocalGame extends React.Component<AILocalGameProps, {}> {
@@ -24,7 +25,7 @@ export default class AILocalGame extends React.Component<AILocalGameProps, {}> {
       return (
         <React.Fragment>
           <SEO noindex={true} />
-          <GameWrapper mode={this.props.mode} gameCode={this.props.gameCode} matchCode={this.props.mode} />
+          <Game mode={this.props.mode} gameCode={this.props.gameCode} />
         </React.Fragment>
       );
     } else {
@@ -33,7 +34,7 @@ export default class AILocalGame extends React.Component<AILocalGameProps, {}> {
   }
 
   static async getInitialProps(router) {
-    const gameCode = router.query.gameCode as string;
+    const gameCode = router.query.gameCode as TGameCode;
     const gameDef: IGameDef = getGameDefinition(gameCode);
     if (!gameDef && router.res) {
       router.res.statusCode = 404;

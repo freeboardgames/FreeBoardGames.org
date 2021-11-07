@@ -2,10 +2,5 @@
   "computer": "Computador",
   "you": "Você",
   "player_1": "Jogador 1",
-  "player_2": "Jogador 2",
-  "game_not_found": "Jogo não encontrado",
-  "invalid_game_mode": "Modo de jogo inválido",
-  "connecting": "Conectando...",
-  "downloading": "Baixando {{ name }}",
-  "failed_to_download": "Erro ao baixar {{ name }}"
+  "player_2": "Jogador 2"
 }
