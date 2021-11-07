@@ -56,7 +56,7 @@ export default withWorkers(
       });
 
       config.module.rules.push({
-        test: /\.(webp|svg|mp3|wav)$/,
+        test: /\.(webp|mp3|wav)$/,
         exclude: /node_modules/,
         use: [
           {

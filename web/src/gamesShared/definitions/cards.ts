@@ -3,6 +3,7 @@ export enum Pattern {
   Tarock = 'tarock',
   Franconian = 'franconian',
   Skat = 'skat',
+  English = 'english',
 }
 
 export enum Suit {

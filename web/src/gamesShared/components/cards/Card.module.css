@@ -34,6 +34,10 @@
   background-image: url("./media/cards_skat.jpg");
 }
 
+.card.english {
+  background-image: url("./media/cards_english.svg");
+}
+
 .card.franconian {
   background-image: url("./media/cards_franconian.jpg");
 }
