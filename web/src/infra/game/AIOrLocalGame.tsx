@@ -16,7 +16,7 @@ const Game = dynamic(import('infra/game/Game'), {
 interface AILocalGameProps {
   gameCode: TGameCode;
   gameDef: IGameDef;
-  mode: GameMode;
+  mode: GameMode.AI | GameMode.LocalFriend;
 }
 
 export default class AILocalGame extends React.Component<AILocalGameProps, {}> {
@@ -34,13 +34,13 @@ export default class AILocalGame extends React.Component<AILocalGameProps, {}> {
   }
 
   static async getInitialProps(router) {
-    const gameCode = router.query.gameCode as TGameCode;
+    const gameCode = router.query.gameCode;
     const gameDef: IGameDef = getGameDefinition(gameCode);
     if (!gameDef && router.res) {
       router.res.statusCode = 404;
       router.res.end();
     }
-    const mode = router.query.mode as GameMode;
+    const mode = router.query.mode;
     return { gameDef, gameCode, mode };
   }
 }
