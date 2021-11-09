@@ -26,3 +26,9 @@ const settingsService = new SettingsService();
 export const withSettingsService = (WrappedComponent: any) => (props) => (
   <WrappedComponent settingsService={settingsService} {...props} />
 );
+
+export const useSettingsService = () => {
+  return {
+    settingsService,
+  };
+};

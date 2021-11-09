@@ -1,4 +1,8 @@
 {
-  "go_home": "Ir a página inicial"
+  "go_home": "Ir a página inicial",
+  "game_not_found": "Jogo não encontrado",
+  "invalid_game_mode": "Modo de jogo inválido",
+  "connecting": "Conectando...",
+  "failed_to_download": "Erro ao baixar {{ name }}",
+  "downloading": "Baixando {{ name }}"
 }
-
