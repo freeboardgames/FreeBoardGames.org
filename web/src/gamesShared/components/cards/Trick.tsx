@@ -10,6 +10,10 @@ function mod(n: number, m: number): number {
 
 const CardPositions = [
   [
+    [0, 15],
+    [40, -15],
+  ],
+  [
     [0, 20],
     [40, -20],
     [-40, -30],
@@ -38,7 +42,7 @@ export function Trick(props: {
   numPlayers: number;
 }) {
   const clockwise = props.pattern != Pattern.Tarot;
-  let inumPlayers = Math.max(0, props.numPlayers - 3);
+  let inumPlayers = Math.max(0, props.numPlayers - 2);
 
   function arrangeTrickCard(i: number, card: ICard) {
     const index = relativePos(props.leaderPos + i);
@@ -62,13 +66,15 @@ export function Trick(props: {
     return clockwise ? mod(props.numPlayers - pos, props.numPlayers) : pos;
   }
 
+  const isFullTrick = props.winnerPos !== null && props.winnerPos >= 0 && props.trick.length == props.numPlayers;
+
   return (
     <div
       className={[
         css.trick,
-        props.trick.length == props.numPlayers ? css.full : '',
-        css[`p${Math.max(3, props.numPlayers)}`],
-        css[`w${relativePos(props.winnerPos) + 1}`],
+        isFullTrick ? css.full : '',
+        css[`p${Math.max(2, props.numPlayers)}`],
+        isFullTrick ? css[`w${relativePos(props.winnerPos) + 1}`] : null,
       ].join(' ')}
     >
       {props.trick.map((C, i) => arrangeTrickCard(i, C))}
