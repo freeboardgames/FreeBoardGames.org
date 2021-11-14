@@ -13,10 +13,10 @@ export function PlayerZones(props: {
   currentPlayerId: string;
   perspectivePlayerId: string;
   currentLeaderId: string;
-  bids: string[];
+  bids: (JSX.Element | string)[];
   bidPass: boolean[];
   bidding: number[];
-  announcements: string[];
+  announcements: (JSX.Element | string)[];
   names: string[];
   hands: ICard[][];
   pattern: Pattern;
@@ -45,7 +45,7 @@ export function PlayerZones(props: {
             css.playerZone,
             props.markActive[index] ? css.active : '',
             positionIndex == 0 ? css.thisPlayer : '',
-            css[`p${Math.max(3, numPlayers)}`],
+            css[`p${Math.max(2, numPlayers)}`],
             css[`i${positionIndex + 1}`],
           ].join(' ')}
         >

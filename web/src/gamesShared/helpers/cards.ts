@@ -5,7 +5,7 @@ export function getPattern(suit: Suit): Pattern {
   const franconian = [Suit.Schell, Suit.Herz, Suit.Gras, Suit.Eichel];
   if (tarot.includes(suit)) return Pattern.Tarot;
   if (franconian.includes(suit)) return Pattern.Franconian;
-  return Pattern.Skat;
+  return Pattern.English;
 }
 
 const oStr2Suit = {
@@ -58,7 +58,7 @@ export function card2str(C: ICard, pattern?: Pattern): string {
       val = ['U', 'O', 'K', 'A'][C.value - 11];
     } else if (pattern == Pattern.Tarot) {
       val = ['V', 'C', 'D', 'R'][C.value - 11];
-    } else if (pattern == Pattern.Skat) {
+    } else if ([Pattern.Skat, Pattern.English].includes(pattern)) {
       val = ['J', 'Q', 'K', 'A'][C.value - 11];
     }
   }

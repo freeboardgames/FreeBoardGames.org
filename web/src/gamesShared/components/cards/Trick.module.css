@@ -12,6 +12,16 @@
   transform: translate(-50%, -50%);
 }
 
+@keyframes vanish_2_1 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(0, 130px) scale(0.1);}
+}
+
+@keyframes vanish_2_2 {
+  0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
+  100% {transform: translate(0, -200px) scale(0.1);}
+}
+
 @keyframes vanish_3_1 {
   0% {transform: scale(1.0);} 66% {transform: scale(1.0);}
   100% {transform: translate(0, 130px) scale(0.1);}
@@ -72,6 +82,8 @@
   100% {transform: translate(-300px, 20px) scale(0.1);}
 }
 
+.trick.p2.w1.full { animation: vanish_2_1 1.5s; }
+.trick.p2.w2.full { animation: vanish_2_2 1.5s; }
 .trick.p3.w1.full { animation: vanish_3_1 1.5s; }
 .trick.p3.w2.full { animation: vanish_3_2 1.5s; }
 .trick.p3.w3.full { animation: vanish_3_3 1.5s; }

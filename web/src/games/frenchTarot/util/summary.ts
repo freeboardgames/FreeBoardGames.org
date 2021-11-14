@@ -24,7 +24,7 @@ export function getRoundSummary(G: IG): IRoundSummary {
 
   const diff = roundAwayFrom0(takerPoints - takerPointsRequired);
   const sign = diff >= 0 ? 1 : -1;
-  const roundValue = multiplier * (sign * 25 + diff + petitAuBout) + G.poignee + slam;
+  const roundValue = multiplier * (sign * 25 + diff + petitAuBout) + sign * Math.abs(G.poignee) + slam;
   const numTakers = G.players.filter((P) => P.isTaker).length;
   const takerFactor = (G.players.length - numTakers) / numTakers;
   const scoring = G.players.map((p) => (p.isTaker ? takerFactor : -1) * roundValue);

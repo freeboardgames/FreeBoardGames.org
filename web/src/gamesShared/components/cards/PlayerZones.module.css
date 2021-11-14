@@ -9,12 +9,13 @@
 
 .playerZone {
   position: absolute;
+  width: 170px;
 }
 
 .i1 { bottom: 0; left: 50%; transform: translate(-50%,0); }
 .i2 { bottom: 12em; right: 20px; transform: translate(0, 50%); }
 .p3.i3, .p4.i4, .p5.i5 { bottom: 12em; left: 20px; transform: translate(0, 50%); }
-.p4.i3 { top: 0; left: 50%; transform: translate(-50%, 0); }
+.p2.i2, .p4.i3 { top: 0; left: 50%; transform: translate(-50%, 0); }
 .p5.i3 { top: 0; left: 700px; transform: translate(0,0); }
 .p5.i4 { top: 0; left: 180px; transform: translate(0,0); }
 
@@ -95,6 +96,7 @@
   }
 }
 
+.playerZone.p2.i2 .bidStatus,
 .playerZone.p4.i3 .bidStatus,
 .playerZone.p5.i3 .bidStatus,
 .playerZone.p5.i4 .bidStatus,
@@ -126,6 +128,7 @@
   background-color: #a00;
 }
 
+.playerZone.p2.i2 .hand,
 .playerZone.p4.i3 .hand,
 .playerZone.p5.i3 .hand,
 .playerZone.p5.i4 .hand {
