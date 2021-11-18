@@ -17,7 +17,7 @@ class Stockfish {
   worker: any;
 
   constructor() {
-    this.worker = new StockfishWorker();
+    this.worker = new (StockfishWorker as any)();
   }
 
   start() {
