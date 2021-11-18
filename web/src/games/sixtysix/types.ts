@@ -26,6 +26,7 @@ export interface IG {
   trumpSuit: Suit;
   trick: ITrick;
   exchanged9: string;
+  lastMeldTime: number;
   out: string;
   closed: boolean;
   resolvedTricks: ITrick[];
@@ -39,6 +40,7 @@ export const DefaultIG: IG = {
   trumpSuit: null,
   trick: { cards: [] },
   exchanged9: null,
+  lastMeldTime: null,
   out: null,
   closed: false,
   resolvedTricks: [],

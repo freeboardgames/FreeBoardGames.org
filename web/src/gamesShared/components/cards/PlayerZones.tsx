@@ -17,6 +17,7 @@ export function PlayerZones(props: {
   bidPass: boolean[];
   bidding: number[];
   announcements: (JSX.Element | string)[];
+  announcementStyles?: React.CSSProperties[];
   names: string[];
   hands: ICard[][];
   pattern: Pattern;
@@ -38,6 +39,10 @@ export function PlayerZones(props: {
     if (props.clockwise) {
       positionIndex = mod(numPlayers - positionIndex, numPlayers);
     }
+    let announceStyle = null;
+    if (props.announcementStyles && props.announcementStyles[index]) {
+      announceStyle = props.announcementStyles[index];
+    }
     return (
       <div key={index} className={css.zone}>
         <div
@@ -51,7 +56,9 @@ export function PlayerZones(props: {
         >
           <div>
             <div className={css.bidStatus}>
-              <div className={css.announcement}>{props.announcements[index]}</div>
+              <div className={css.announcement} style={announceStyle}>
+                {props.announcements[index]}
+              </div>
               <div className={props.bidPass[index] ? css.pass : ''}>{props.bids[index]}</div>
             </div>
             {!props.hands[index] ? null : (

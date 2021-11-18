@@ -63,6 +63,7 @@ export const SixtysixGame: Game<IG> = {
         G.players.forEach((P, i) => {
           P.isReady = true;
           P.hand = G.deck.slice(i * handSize, (i + 1) * handSize).sort(cmpCards);
+          P.melds = [];
         });
       },
 

@@ -228,11 +228,9 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
       if (G.exchanged9 == P.id) {
         return translate('announce_exchanged9');
       }
-      if (G.trick.leaderId != P.id || P.melds.length == 0) return null;
+      const gameTime = util.gameTime(G) + (G.trick.cards.length == 1 ? 1 : 0);
+      if (P.melds.length == 0 || G.lastMeldTime != gameTime) return null;
       const lastMeld = P.melds[P.melds.length - 1];
-      if (!util.meldSuits(P.hand.concat(G.trick.cards)).includes(lastMeld)) {
-        return null;
-      }
       const meldPoints = lastMeld == G.trumpSuit ? '(40)' : '(20)';
       return (
         <>
@@ -249,6 +247,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
         bidPass={G.players.map(() => false)}
         bidding={G.players.map(() => -1)}
         announcements={announcements}
+        announcementStyles={G.players.map(() => ({ color: 'black', backgroundColor: '#eee' }))}
         names={playerNames}
         hands={playerHands.map((H, i) => (G.players[i].id == playerID && !spectatorMode ? null : H))}
         pattern={Pattern.Skat}

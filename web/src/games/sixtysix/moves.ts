@@ -57,6 +57,7 @@ export const Moves = {
       G.exchanged9 = null;
     }
     player.melds.push(suit);
+    G.lastMeldTime = util.gameTime(G);
     return G;
   },
 
