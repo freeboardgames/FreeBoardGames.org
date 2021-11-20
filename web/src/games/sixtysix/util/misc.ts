@@ -10,6 +10,10 @@ export function mod(n: number, m: number): number {
   return ((n % m) + m) % m;
 }
 
+export function gameTime(G: IG): number {
+  return G.stock.length + G.players.map((P) => P.hand.length).reduce((a, b) => a + b, 0);
+}
+
 export function suitRank(suit: Suit): number {
   return [Suit.Diamonds, Suit.Hearts, Suit.Spades, Suit.Clubs].indexOf(suit);
 }
