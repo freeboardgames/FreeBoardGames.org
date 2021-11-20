@@ -89,6 +89,13 @@ class DefaultApp extends App {
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
           <meta name="msapplication-TileColor" content="#ffc40d" />
           <meta name="msapplication-config" content="/static/icons/browserconfig.xml" />
+          {/* @ts-ignore */}
+          <meta name="userreport:mediaId" value="121cd588-61a0-48af-bc02-12aa0db7c0a9" />
+          <script
+            id="userreport-launcher-script"
+            src="https://sak.userreport.com/freeboardgames/launcher.js"
+            async
+          ></script>
         </Head>
         <ThemeProvider>
           <SelfXSSWarning />
