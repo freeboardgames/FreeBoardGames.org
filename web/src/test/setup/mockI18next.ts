@@ -26,7 +26,7 @@ jest.mock('react-i18next/dist/commonjs/context', () => {
   });
 
   return {
-    ...jest.requireActual('react-i18next/dist/commonjs/context'),
+    ...(jest.requireActual('react-i18next/dist/commonjs/context') as object),
     I18nContext: createContext({ i18n: i18next }),
   };
 });
