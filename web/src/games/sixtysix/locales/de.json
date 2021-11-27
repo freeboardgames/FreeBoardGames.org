@@ -14,7 +14,7 @@
   "button_close": "Decken",
   "button_meld": "Melden",
   "announce_meld": "Meldet",
-  "announce_exchanged9": "9 geraubt",
+  "announce_exchanged9": "Trumpf geraubt",
   "scoreboard_firstround": "Dies ist die erste Runde.",
   "scoreboard_round_n": "Runde {{ n }}",
   "scoreboard_points": "Punkte",
