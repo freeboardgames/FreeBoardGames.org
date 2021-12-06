@@ -148,7 +148,7 @@ export class HotelGrid extends React.Component<HotelGridProps, HotelGridState> {
     }
     return (
       <div className={css.HotelGridContainer}>
-        <svg viewBox="0 0 1300 1000" className={css.HotelGrid}>
+        <svg viewBox="0 0 1250 950" className={css.HotelGrid}>
           <g className={css.HotelGrid}>
             {this.renderColumnHeaders()}
             {this.props.hotels.hotelGrid().map(this.renderHotelRow.bind(this, chainTiles))}

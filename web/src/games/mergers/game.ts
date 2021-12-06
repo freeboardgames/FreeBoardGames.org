@@ -1,4 +1,4 @@
-import { INVALID_MOVE } from 'boardgame.io/core';
+import { INVALID_MOVE, PlayerView } from 'boardgame.io/core';
 import { Game, Ctx } from 'boardgame.io';
 import { Chain, Hotel, Player, IG, Merger } from './types';
 import {
@@ -9,6 +9,8 @@ import {
   setupInitialState,
 } from './utils';
 import { Hotels } from './hotels';
+import { QuickCustomizationState, DEFAULT_QUICK_CUSTOMIZATION } from './customization';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
 
 export function getHotels(G: IG): Hotels {
   return new Hotels(G.hotels);
@@ -465,12 +467,16 @@ export function getMergerResults(G: IG, chainToMerge: Chain): Merger {
   };
 }
 
-// TODO: implement playerView
 export const MergersGame: Game<IG> = {
   name: 'mergers',
 
-  setup: (ctx: Ctx) => {
-    const G: IG = setupInitialState(ctx.numPlayers);
+  playerView: (G, ctx, playerID) => {
+    return G.isAllPlayerStateVisible ? G : PlayerView.STRIP_SECRETS(G, ctx, playerID);
+  },
+
+  setup: (ctx: Ctx, customData: GameCustomizationState) => {
+    const quickCustomization = (customData?.quick as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
+    const G: IG = setupInitialState(ctx.numPlayers, quickCustomization.isAllPlayerStateVisible);
 
     setupInitialDrawing(G, ctx);
 

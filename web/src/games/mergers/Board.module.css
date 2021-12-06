@@ -1,5 +1,4 @@
 .Mergers {
-  font-size: 1.25em;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 
   /* Mergers colors */
@@ -17,7 +16,7 @@
   --chain-color-lucius: #f44336; /* material red 500 */
   --chain-color-festivus: #388e3c; /* material green 700 */
   --chain-color-amore: #0277bd; /* material blue 800 */
-  --chain-color-worldywise: #795548; /* material brown 500 */
+  --chain-color-worldlywise: #795548; /* material brown 500 */
   --chain-color-continuum: #0097a7; /* material teal 700 */
   --chain-color-imperative: #ad1457; /* material pink 800 */
 }
@@ -29,39 +28,6 @@
 .Mergers p {
   margin-bottom: 0;
   margin-top: 0;
-}
-
-.MergersContainer {
-  margin: 32px 10px 28px 10px;
-  box-sizing: border-box;
-  color: var(--mergers-color);
-  background-color: var(--mergers-background-color);
-}
-
-.AvailableStockAndPrice {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 0.5em;
-}
-
-.Player {
-  margin-right: 1em;
-  border: 4px solid transparent;
-  border-radius: 0.25em;
-  padding: 0.25em;
-}
-
-.Player.CurrentTurn {
-  border-color: var(--mergers-color);
-}
-
-.Player.YourTurn {
-  border-color: var(--mergers-highlight-green);
-}
-
-.PlayerMoney {
-  margin-right: 1em;
 }
 
 .WrapRow {
@@ -85,19 +51,6 @@
   margin-left: 1em;
 }
 
-.PlayerStock {
-  display: flex;
-  align-items: flex-end;
-  margin-right: 0.5em;
-}
-
-.PlayerStock.HiddenStock {
-  /* hide so height is maintained but width shrinks to 0 */
-  visibility: hidden;
-  width: 0;
-  margin: 0;
-}
-
 .MarginTopBottom {
   margin-bottom: 1em !important;
   margin-top: 1em !important;
@@ -117,4 +70,49 @@
 
 .MarginRight {
   margin-right: 1em;
+}
+
+.BoardContainer {
+  margin: 16px 10px 28px 10px;
+  box-sizing: border-box;
+  color: var(--mergers-color);
+  background-color: var(--mergers-background-color);
+}
+
+.BoardContainer > div {
+  margin: 1em 0;
+}
+
+.PlayerActionsContainer {
+  width: 100%;
+}
+
+.LastMoveAndCurrentTurnContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.LastMoveAndCurrentTurnContainer > div {
+  margin: 0.5em 0;
+}
+
+.Player {
+  margin-right: 0.5em;
+  border: 2px solid transparent;
+  border-radius: 0.25em;
+  padding: 0.25em;
+}
+
+.Player.CurrentTurn {
+  border-color: var(--mergers-color);
+}
+
+.Player.YourTurn {
+  border-color: var(--mergers-highlight-green);
+}
+
+.ShowGuideButtonContainer {
+  display: flex;
+  justify-content: center;
 }

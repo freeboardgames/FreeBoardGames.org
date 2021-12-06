@@ -993,16 +993,15 @@ describe('mergerPhase', () => {
       p1 = clients[1];
     });
 
-    it.only('completes the merger process twice', () => {
-      // DO NOT SUBMIT: DELETE it.only BEFORE MERGING!
+    it('completes the merger process twice', () => {
       expect(p0.store.getState().G.players['0'].money).toEqual(6000);
       expect(p1.store.getState().G.players['1'].money).toEqual(6000);
       expect(p0.store.getState().G.players['0'].stocks[Chain.Toro]).toEqual(1);
       expect(p0.store.getState().G.players['0'].stocks[Chain.Amore]).toEqual(0);
       expect(p0.store.getState().G.players['0'].stocks[Chain.Continuum]).toEqual(2);
-      expect(p0.store.getState().G.players['1'].stocks[Chain.Toro]).toEqual(0);
-      expect(p0.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(1);
-      expect(p0.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(1);
+      expect(p1.store.getState().G.players['1'].stocks[Chain.Toro]).toEqual(0);
+      expect(p1.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(1);
+      expect(p1.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(1);
 
       // place merger tile
       p0.moves.placeHotel('2-B');
@@ -1019,7 +1018,7 @@ describe('mergerPhase', () => {
       expect(p0.store.getState().ctx.phase).toEqual('mergerPhase');
       // awards bonuses (2000, 1000, both to p0)
       expect(p0.store.getState().G.players['0'].money).toEqual(9000);
-      expect(p0.store.getState().G.players['1'].money).toEqual(6000);
+      expect(p1.store.getState().G.players['1'].money).toEqual(6000);
       // p0 swaps and sells stock
       p0.moves.swapAndSellStock(0, 1); // swap 0, sell 1 (for 200)
       expect(p0.store.getState().G.players['0'].stocks[Chain.Toro]).toEqual(0);
@@ -1031,7 +1030,7 @@ describe('mergerPhase', () => {
       // merges Continuum
       // awards bonuses (4000 to p0, 2000 to p1)
       expect(p0.store.getState().G.players['0'].money).toEqual(13200);
-      expect(p0.store.getState().G.players['1'].money).toEqual(8000);
+      expect(p1.store.getState().G.players['1'].money).toEqual(8000);
       // p0 swaps and sells stock
 
       p0.moves.swapAndSellStock(2, 0); // swap 2, sell 0
@@ -1040,8 +1039,8 @@ describe('mergerPhase', () => {
       expect(p0.store.getState().G.players['0'].money).toEqual(13200);
       // p1 swaps and sells stock
       p1.moves.swapAndSellStock(0, 0); // swap 0, sell 0
-      expect(p0.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(1);
-      expect(p0.store.getState().G.players['1'].money).toEqual(8000);
+      expect(p1.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(1);
+      expect(p1.store.getState().G.players['1'].money).toEqual(8000);
 
       // moves on to buildingPhase
       expect(p0.store.getState().ctx.phase).toEqual('buildingPhase');
@@ -1106,12 +1105,12 @@ describe('mergerPhase', () => {
       expect(p0.store.getState().ctx.phase).toEqual('mergerPhase');
       // awards bonuses (2000, 1000, both to p1)
       expect(p0.store.getState().G.players['0'].money).toEqual(6000);
-      expect(p0.store.getState().G.players['1'].money).toEqual(9000);
+      expect(p1.store.getState().G.players['1'].money).toEqual(9000);
 
       // p1 exchanges stock
       p1.moves.swapAndSellStock(0, 1); // swaps 0, sells 1
-      expect(p0.store.getState().G.players['1'].stocks[Chain.Toro]).toEqual(0);
-      expect(p0.store.getState().G.players['1'].money).toEqual(9200);
+      expect(p1.store.getState().G.players['1'].stocks[Chain.Toro]).toEqual(0);
+      expect(p1.store.getState().G.players['1'].money).toEqual(9200);
 
       // moves on to buildingPhase
       expect(p0.store.getState().ctx.phase).toEqual('buildingPhase');
@@ -1166,6 +1165,9 @@ describe('mergers', () => {
         G.hotels = hotels;
         return G;
       },
+
+      // TODO: figure out why p2.moves.declareGameOver(true) fails without this
+      playerView: (G: IG) => G,
     };
     const clients = getMultiplayerTestClients(3, MergersCustomScenario);
 
@@ -1187,16 +1189,16 @@ describe('mergers', () => {
     p1.moves.chooseNewChain(Chain.Amore);
     p1.moves.buyStock({ [Chain.Amore]: 3 });
     p1.moves.drawHotels();
-    expect(p0.store.getState().G.players['1'].money).toEqual(5100);
-    expect(p0.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(4);
+    expect(p1.store.getState().G.players['1'].money).toEqual(5100);
+    expect(p1.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(4);
     expect(p0.store.getState().G.availableStocks[Chain.Amore]).toEqual(21);
 
     p2.moves.placeHotel('1-C');
     p2.moves.chooseNewChain(Chain.Continuum);
     p2.moves.buyStock({ [Chain.Continuum]: 3 });
     p2.moves.drawHotels();
-    expect(p0.store.getState().G.players['2'].money).toEqual(4800);
-    expect(p0.store.getState().G.players['2'].stocks[Chain.Continuum]).toEqual(4);
+    expect(p2.store.getState().G.players['2'].money).toEqual(4800);
+    expect(p2.store.getState().G.players['2'].stocks[Chain.Continuum]).toEqual(4);
     expect(p0.store.getState().G.availableStocks[Chain.Continuum]).toEqual(21);
 
     p0.moves.placeHotel('3-A');
@@ -1213,17 +1215,17 @@ describe('mergers', () => {
     p1.moves.placeHotel('4-D');
     p1.moves.buyStock({ [Chain.Continuum]: 1, [Chain.Amore]: 2 });
     p1.moves.drawHotels();
-    expect(p0.store.getState().G.players['1'].money).toEqual(3500);
-    expect(p0.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(6);
-    expect(p0.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(1);
+    expect(p1.store.getState().G.players['1'].money).toEqual(3500);
+    expect(p1.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(6);
+    expect(p1.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(1);
     expect(p0.store.getState().G.availableStocks[Chain.Amore]).toEqual(15);
     expect(p0.store.getState().G.availableStocks[Chain.Continuum]).toEqual(20);
 
     p2.moves.placeHotel('2-C');
     p2.moves.buyStock({ [Chain.Continuum]: 3 });
     p2.moves.drawHotels();
-    expect(p0.store.getState().G.players['2'].money).toEqual(3300);
-    expect(p0.store.getState().G.players['2'].stocks[Chain.Continuum]).toEqual(7);
+    expect(p2.store.getState().G.players['2'].money).toEqual(3300);
+    expect(p2.store.getState().G.players['2'].stocks[Chain.Continuum]).toEqual(7);
     expect(p0.store.getState().G.availableStocks[Chain.Continuum]).toEqual(17);
 
     p0.moves.placeHotel('4-A');
@@ -1239,28 +1241,28 @@ describe('mergers', () => {
     p1.moves.chooseNewChain(Chain.Toro);
     p1.moves.buyStock({ [Chain.Toro]: 1, [Chain.Amore]: 2 });
     p1.moves.drawHotels();
-    expect(p0.store.getState().G.players['1'].money).toEqual(1900);
-    expect(p0.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(8);
-    expect(p0.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(1);
-    expect(p0.store.getState().G.players['1'].stocks[Chain.Toro]).toEqual(2);
+    expect(p1.store.getState().G.players['1'].money).toEqual(1900);
+    expect(p1.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(8);
+    expect(p1.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(1);
+    expect(p1.store.getState().G.players['1'].stocks[Chain.Toro]).toEqual(2);
     expect(p0.store.getState().G.availableStocks[Chain.Amore]).toEqual(10);
     expect(p0.store.getState().G.availableStocks[Chain.Continuum]).toEqual(17);
     expect(p0.store.getState().G.availableStocks[Chain.Toro]).toEqual(22);
 
     p2.moves.placeHotel('2-B');
-    expect(p0.store.getState().G.players['1'].money).toEqual(4400);
-    expect(p0.store.getState().G.players['2'].money).toEqual(8300);
+    expect(p1.store.getState().G.players['1'].money).toEqual(4400);
+    expect(p2.store.getState().G.players['2'].money).toEqual(8300);
     p2.moves.swapAndSellStock(6, 1);
-    expect(p0.store.getState().G.players['2'].money).toEqual(8800);
-    expect(p0.store.getState().G.players['2'].stocks[Chain.Continuum]).toEqual(0);
-    expect(p0.store.getState().G.players['2'].stocks[Chain.Amore]).toEqual(3);
+    expect(p2.store.getState().G.players['2'].money).toEqual(8800);
+    expect(p2.store.getState().G.players['2'].stocks[Chain.Continuum]).toEqual(0);
+    expect(p2.store.getState().G.players['2'].stocks[Chain.Amore]).toEqual(3);
     p1.moves.swapAndSellStock(0, 1);
-    expect(p0.store.getState().G.players['1'].money).toEqual(4900);
-    expect(p0.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(0);
+    expect(p1.store.getState().G.players['1'].money).toEqual(4900);
+    expect(p1.store.getState().G.players['1'].stocks[Chain.Continuum]).toEqual(0);
     p2.moves.buyStock({ [Chain.Amore]: 3 });
     p2.moves.drawHotels();
-    expect(p0.store.getState().G.players['2'].money).toEqual(6700);
-    expect(p0.store.getState().G.players['2'].stocks[Chain.Amore]).toEqual(6);
+    expect(p2.store.getState().G.players['2'].money).toEqual(6700);
+    expect(p2.store.getState().G.players['2'].stocks[Chain.Amore]).toEqual(6);
     expect(p0.store.getState().G.availableStocks[Chain.Amore]).toEqual(4);
 
     p0.moves.placeHotel('1-B');
@@ -1274,11 +1276,11 @@ describe('mergers', () => {
 
     p1.moves.placeHotel('4-C');
     expect(p0.store.getState().G.players['0'].money).toEqual(3300);
-    expect(p0.store.getState().G.players['1'].money).toEqual(6900);
+    expect(p1.store.getState().G.players['1'].money).toEqual(6900);
     p1.moves.swapAndSellStock(2);
-    expect(p0.store.getState().G.players['1'].money).toEqual(6900);
-    expect(p0.store.getState().G.players['1'].stocks[Chain.Toro]).toEqual(0);
-    expect(p0.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(9);
+    expect(p1.store.getState().G.players['1'].money).toEqual(6900);
+    expect(p1.store.getState().G.players['1'].stocks[Chain.Toro]).toEqual(0);
+    expect(p1.store.getState().G.players['1'].stocks[Chain.Amore]).toEqual(9);
     expect(p0.store.getState().G.availableStocks[Chain.Amore]).toEqual(0);
     p0.moves.swapAndSellStock(0, 1);
     expect(p0.store.getState().G.players['0'].money).toEqual(3500);
@@ -1296,9 +1298,9 @@ describe('mergers', () => {
     // 8000 bonus + 10 * 800 = 16000
     expect(p0.store.getState().G.players['0'].money).toEqual(19500);
     // 4000 bonus + 9 * 800 = 11200
-    expect(p0.store.getState().G.players['1'].money).toEqual(18100);
+    expect(p1.store.getState().G.players['1'].money).toEqual(18100);
     // 6 * 800 = 4800
-    expect(p0.store.getState().G.players['2'].money).toEqual(11500);
+    expect(p2.store.getState().G.players['2'].money).toEqual(11500);
 
     expect(p0.store.getState().ctx.gameover).toEqual({
       declaredBy: '2',

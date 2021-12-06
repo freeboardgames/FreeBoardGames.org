@@ -14,12 +14,18 @@
   border-color: var(--mergers-highlight-green);
 }
 
+.FlexRow {
+  display: flex;
+  align-items: center;
+  margin: 0.25em 0;
+}
+
 .ActionButton {
   min-width: 80px;
 }
 
 .ActionInput {
-  width: 1em;
+  width: 1.25em;
 }
 
 .ErrorText {

@@ -72,7 +72,7 @@ describe('Board', () => {
     it('renders the available stocks', () => {
       expect(comp.find('#available-stock-Toro').at(0).text()).toContain('25');
       expect(comp.find('#available-stock-Lucius').at(0).text()).toContain('25');
-      expect(comp.find('#available-stock-Worldywise').at(0).text()).toContain('25');
+      expect(comp.find('#available-stock-Worldlywise').at(0).text()).toContain('25');
       expect(comp.find('#available-stock-Amore').at(0).text()).toContain('25');
       expect(comp.find('#available-stock-Festivus').at(0).text()).toContain('25');
       expect(comp.find('#available-stock-Continuum').at(0).text()).toContain('25');
@@ -84,7 +84,7 @@ describe('Board', () => {
     });
 
     it('renders your money', () => {
-      expect(comp.find('#player-status').text()).toContain('You have:$6000');
+      expect(comp.find('#cash-0').text()).toContain('60');
     });
 
     it('does not render the merger dialog', () => {

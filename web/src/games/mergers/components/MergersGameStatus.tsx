@@ -1,153 +1,148 @@
 import * as React from 'react';
-import Button from '@material-ui/core/Button';
-
-import css from '../Board.module.css';
-import { StockLabel } from './StockLabel';
 import { Chain, Player } from '../types';
 import { Hotels } from '../hotels';
-import { MergersDialog } from './MergersDialog';
-import { StockGuide } from './StockGuide';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
+
+import css from './MergersGameStatus.module.css';
 
 export interface MergersGameStatusProps {
   hotels: Hotels;
-  player: Player;
+  players: Record<string, Player>;
+  playerID: string;
   availableStocks: Record<Chain, number>;
-  lastMove?: string;
   currentPlayer: string;
-  players?: IPlayerInRoom[];
-  children: React.ReactNode;
+  playersInRoom?: IPlayerInRoom[];
 }
 
-export interface MergersGameStatusState {
-  showPriceCard: boolean;
-}
-
-export class MergersGameStatus extends React.Component<MergersGameStatusProps, MergersGameStatusState> {
+export class MergersGameStatus extends React.Component<MergersGameStatusProps> {
   constructor(props) {
     super(props);
-    this.state = {
-      showPriceCard: false,
-    };
   }
 
-  renderStock(chain: Chain, count: number, hideEmpty?: boolean) {
-    const hiddenClass = hideEmpty && count === 0 ? css.HiddenStock : '';
-    return (
-      <div key={`stock-count-${chain}`} className={`${css.PlayerStock} ${hiddenClass}`}>
-        <StockLabel chain={chain}></StockLabel>
-        <div className={css.PlayerStockCount}>{`/${count}`}</div>
-      </div>
-    );
+  playersInRoom() {
+    const players = this.props.playersInRoom.filter((playerInRoom) => !!this.props.players[playerInRoom.playerID]);
+    return players;
   }
 
-  renderPlayers() {
-    if (!this.props.players) {
-      return null;
+  isAllPlayerStateVisible() {
+    return Object.keys(this.props.players).length > 1;
+  }
+
+  priceOfStockLabel(chain: Chain): string {
+    const price = this.props.hotels.priceOfStock(chain);
+    return price ? `${price / 100}` : '-';
+  }
+
+  getPlayerRowHeaderClass(player: Player) {
+    let rowHeaderClass = `${css.RowHeader} ${css.Player}`;
+    if (this.isAllPlayerStateVisible() && player.id === this.props.currentPlayer) {
+      if (player.id === this.props.playerID) {
+        rowHeaderClass = `${rowHeaderClass} ${css.YourTurn}`;
+      } else {
+        rowHeaderClass = `${rowHeaderClass} ${css.CurrentTurn}`;
+      }
     }
+    return rowHeaderClass;
+  }
 
+  forEachChainRender(renderFn: (Chain) => React.ReactNode) {
+    return Object.keys(Chain).map((key) => renderFn(Chain[key]));
+  }
+
+  renderChainHeader(chain: Chain) {
     return (
-      <div className={css.WrapRow}>
-        <div className={css.MarginRight}>Current turn:</div>
-        {this.props.players.map((player) => {
-          let turnClass = '';
-          if (this.props.currentPlayer === `${player.playerID}`) {
-            if (this.props.currentPlayer === this.props.player.id) {
-              turnClass = css.YourTurn;
-            } else {
-              turnClass = css.CurrentTurn;
-            }
-          }
-          const elementId = `player-label-${player.playerID}`;
-          return (
-            <div id={elementId} key={elementId} className={`${css.Player} ${turnClass}`}>
-              {player.name}
-            </div>
-          );
-        })}
-        <div className={css.Spacer}></div>
-        <Button variant="contained" onClick={() => this.setState({ showPriceCard: true })}>
-          Show Guide
-        </Button>
-      </div>
+      <th key={`chain-header-${chain}`} className={`${css.ChainHeader} ${css[chain]}`}>
+        {chain.substring(0, 1)}
+      </th>
     );
   }
 
-  renderAvailableStock(chain: Chain) {
-    const size = this.props.hotels.sizeOfChain(chain);
-    const stockPrice = Hotels.priceOfStockBySize(chain, size);
-    const stockPriceMessage = stockPrice === undefined ? '--' : `$${stockPrice}`;
-    const hotelSizeMessage = stockPrice === undefined ? '' : ` (${size})`;
-    const elementId = `available-stock-${chain}`;
+  renderHeaderRow() {
     return (
-      <div id={elementId} key={elementId} className={css.AvailableStockAndPrice}>
-        {this.renderStock(chain, this.props.availableStocks[chain])}
-        {stockPriceMessage}
-        {hotelSizeMessage}
-      </div>
+      <tr>
+        {/* Empty cell (this column contains various row headers) */}
+        <th />
+        {/* Chain column headers */}
+        {this.forEachChainRender(this.renderChainHeader)}
+        {/* Cash column header */}
+        <th>
+          Cash,
+          <br />
+          100s
+        </th>
+      </tr>
     );
   }
 
-  renderAvailableStocks() {
+  renderNumberCell(key: string, number: React.ReactNode, className: string = '') {
     return (
-      <div className={css.WrapRow}>
-        <div className={css.MarginRight}>Available stocks:</div>
-        {Object.keys(Chain).map((key) => this.renderAvailableStock(Chain[key]))}
-      </div>
+      <td id={key} key={key} className={`${css.NumberCell} ${className}`}>
+        {number}
+      </td>
     );
   }
 
-  renderPlayerStatus() {
-    const { money, stocks } = this.props.player;
+  renderPlayerRow(playerInRoom: IPlayerInRoom) {
+    const id = playerInRoom.playerID.toString();
+    const player = this.props.players[id];
+    const rowClass = this.isAllPlayerStateVisible() && id === this.props.playerID ? css.PlayerRow : '';
+    const playerLabelId = `player-label-${playerInRoom.playerID}`;
     return (
-      <div id="player-status" className={css.WrapRow}>
-        <div className={css.MarginRight}>You have:</div>
-        <span className={css.PlayerMoney}>${money}</span>
-        {Object.keys(Chain).map((key) => this.renderStock(Chain[key], stocks[Chain[key]], true))}
-      </div>
+      <tr key={`player-row-${playerInRoom.playerID}`} className={rowClass}>
+        {/* Player row header */}
+        <td id={playerLabelId} key={playerLabelId} className={this.getPlayerRowHeaderClass(player)}>
+          {this.isAllPlayerStateVisible() ? playerInRoom.name : 'You have:'}
+        </td>
+        {/* Player's stock count for each chain */}
+        {this.forEachChainRender((chain) => this.renderNumberCell(`stock-${id}-${chain}`, player.stocks[chain]))}
+        {/* Player's cash */}
+        {this.renderNumberCell(`cash-${id}`, player.money / 100)}
+      </tr>
     );
   }
 
-  renderLastMove() {
-    let message: string;
-    message = this.props.lastMove || '';
-    for (const p of this.props.players || []) {
-      message = message.replace(new RegExp(`Player ${p.playerID}`, 'g'), p.name);
-    }
+  renderAvailableStocksRow() {
     return (
-      <div id="last-move" className={css.WrapRow}>
-        <div className={css.MarginRight}>Last move:</div>
-        <div>{message}</div>
-      </div>
+      <tr className={css.ShadedRow}>
+        {/* Row header */}
+        <td className={`${css.BorderTop} ${css.RowHeader}`}>Available</td>
+        {/* Available stock count for each chain */}
+        {this.forEachChainRender((chain) =>
+          this.renderNumberCell(`available-stock-${chain}`, this.props.availableStocks[chain], css.BorderTop),
+        )}
+        {/* Empty cell to continue border to edge of table */}
+        {this.renderNumberCell('available-empty', null, css.BorderTop)}
+      </tr>
     );
   }
 
-  maybeRenderPriceCard() {
-    if (!this.state.showPriceCard) {
-      return null;
-    }
-
+  renderStockPriceRow() {
     return (
-      <MergersDialog
-        dialogId="price-card-dialog"
-        title="Stock Price and Bonus by Number of Stock"
-        onClose={() => this.setState({ showPriceCard: false })}
-        closeButtonText="CLOSE"
-      >
-        <StockGuide></StockGuide>
-      </MergersDialog>
+      <tr className={css.ShadedRow}>
+        {/* Row header */}
+        <td className={css.RowHeader}>Price,100s</td>
+        {/* Price of stock for each chain */}
+        {this.forEachChainRender((chain) => this.renderNumberCell(`price-${chain}`, this.priceOfStockLabel(chain)))}
+        {/* Empty cell placeholder */}
+        {this.renderNumberCell('price-empty', null)}
+      </tr>
     );
   }
 
   render() {
+    if (!this.props.playersInRoom) {
+      return null;
+    }
     return (
-      <div className={`${css.Mergers} ${css.MergersContainer}`}>
-        {this.renderPlayers()}
-        {this.renderAvailableStocks()}
-        {this.renderLastMove()}
-        {this.props.children}
-        {this.renderPlayerStatus()}
-        {this.maybeRenderPriceCard()}
+      <div className={css.AllPlayerStateTable}>
+        <table>
+          <thead>{this.renderHeaderRow()}</thead>
+          <tbody>
+            {this.playersInRoom().map((player) => this.renderPlayerRow(player))}
+            {this.renderAvailableStocksRow()}
+            {this.renderStockPriceRow()}
+          </tbody>
+        </table>
       </div>
     );
   }
