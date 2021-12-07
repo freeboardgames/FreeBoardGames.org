@@ -1,5 +1,4 @@
 export interface IG {
-  // TODO: change this to { 'A1': Hotel } ?
   hotels?: Hotel[][];
   players?: Record<string, Player>;
   availableStocks?: Record<Chain, number>;
@@ -8,12 +7,13 @@ export interface IG {
   merger?: Merger;
   // See https://github.com/boardgameio/boardgame.io/issues/979
   isFirstTurnInPhase?: boolean;
+  isAllPlayerStateVisible?: boolean;
 }
 
 export enum Chain {
   Toro = 'Toro',
   Lucius = 'Lucius',
-  Worldywise = 'Worldywise',
+  Worldlywise = 'Worldlywise',
   Amore = 'Amore',
   Festivus = 'Festivus',
   Continuum = 'Continuum',

@@ -6,7 +6,6 @@
 }
 
 .HotelGrid {
-  margin-top: 0.5em;
   font-size: 40px;
   height: 100%;
   width: 100%;
@@ -78,8 +77,8 @@
   fill: var(--chain-color-amore);
 }
 
-.Hotel.Worldywise {
-  fill: var(--chain-color-worldywise);
+.Hotel.Worldlywise {
+  fill: var(--chain-color-worldlywise);
 }
 
 .Hotel.Continuum {

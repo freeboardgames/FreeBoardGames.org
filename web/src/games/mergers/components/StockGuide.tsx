@@ -34,7 +34,7 @@ export function StockGuide() {
     <th key="Header2">
       Amore
       <br />
-      Worldywise
+      Worldlywise
       <br />
       Festivus
     </th>,

@@ -3,12 +3,13 @@ import { Chain, IG, Player } from './types';
 
 const STOCK_PER_CHAIN = 25;
 
-export function setupInitialState(numPlayers: number): IG {
+export function setupInitialState(numPlayers: number, isAllPlayerStateVisible: boolean = false): IG {
   return {
     hotels: Hotels.buildGrid(),
     players: setupPlayers(numPlayers),
     availableStocks: fillStockMap(STOCK_PER_CHAIN),
     lastMove: '',
+    isAllPlayerStateVisible: isAllPlayerStateVisible,
   };
 }
 
@@ -29,7 +30,7 @@ export function fillStockMap<T>(value: T): Record<Chain, T> {
   return {
     Toro: value,
     Lucius: value,
-    Worldywise: value,
+    Worldlywise: value,
     Amore: value,
     Festivus: value,
     Continuum: value,

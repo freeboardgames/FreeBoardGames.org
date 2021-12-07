@@ -6,13 +6,15 @@ import { Ctx } from 'boardgame.io';
 
 import css from './Board.module.css';
 import { HotelGrid } from './components/HotelGrid';
-import { IG, Merger, Score } from './types';
+import { IG, Merger, Player, Score } from './types';
 import { PlayerActions } from './components/PlayerActions';
 import { MergerDetails } from './components/MergerDetails';
 import { MergersDialog } from './components/MergersDialog';
 import { Hotels } from './hotels';
 import { MergersGameStatus } from './components/MergersGameStatus';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { Button, createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core';
+import { IPlayerInRoom } from 'gamesShared/definitions/player';
+import { StockGuide } from './components/StockGuide';
 
 export interface BoardProps {
   G: IG;
@@ -25,12 +27,12 @@ export interface BoardProps {
 export interface BoardState {
   mergerDetailsDismissed: boolean;
   gameOverDetailsDismissed: boolean;
+  showPriceCard: boolean;
 }
 
 // TODOs:
 //  - animations
 //  - sounds
-//  - add validation to swap/sell stock
 //  - highlight players with stock during a merger
 //  - countdown at the end
 export class Board extends React.Component<BoardProps, BoardState> {
@@ -39,6 +41,7 @@ export class Board extends React.Component<BoardProps, BoardState> {
     this.state = {
       mergerDetailsDismissed: false,
       gameOverDetailsDismissed: false,
+      showPriceCard: false,
     };
   }
 
@@ -51,6 +54,10 @@ export class Board extends React.Component<BoardProps, BoardState> {
 
   playerID(): string {
     return this.props.playerID;
+  }
+
+  player(): Player {
+    return this.props.G.players[this.playerID()];
   }
 
   playerIndex(id: string = this.playerID()): number {
@@ -70,6 +77,18 @@ export class Board extends React.Component<BoardProps, BoardState> {
 
   playerStage(): string {
     return this.props.ctx.activePlayers && this.props.ctx.activePlayers[this.playerIndex()];
+  }
+
+  currentPlayer(): string | undefined {
+    return !this.props.ctx.gameover && this.props.ctx.currentPlayer;
+  }
+
+  playersInRoom(): IPlayerInRoom[] | undefined {
+    return this.props.gameArgs?.players;
+  }
+
+  isAllPlayerStateVisible() {
+    return Object.keys(this.props.G.players).length > 1;
   }
 
   maybeRenderMergerDetails() {
@@ -172,39 +191,111 @@ export class Board extends React.Component<BoardProps, BoardState> {
     );
   }
 
+  maybeRenderPriceCard() {
+    if (!this.state.showPriceCard) {
+      return null;
+    }
+
+    return (
+      <MergersDialog
+        dialogId="price-card-dialog"
+        title="Stock Price and Bonus by Number of Stock"
+        onClose={() => this.setState({ showPriceCard: false })}
+        closeButtonText="Close"
+      >
+        <StockGuide></StockGuide>
+      </MergersDialog>
+    );
+  }
+
+  renderCurrentTurn() {
+    if (!this.playersInRoom()) {
+      return null;
+    }
+
+    return (
+      <div className={css.WrapRow}>
+        <div className={css.MarginRight}>Current turn:</div>
+        {this.playersInRoom().map((player) => {
+          let turnClass = '';
+          if (this.currentPlayer() === `${player.playerID}`) {
+            if (this.currentPlayer() === this.player().id) {
+              turnClass = css.YourTurn;
+            } else {
+              turnClass = css.CurrentTurn;
+            }
+          }
+          const elementId = `player-label-${player.playerID}`;
+          return (
+            <div id={elementId} key={elementId} className={`${css.Player} ${turnClass}`}>
+              {player.name}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  renderLastMove() {
+    let message: string;
+    message = this.props.G.lastMove || '';
+    for (const p of this.playersInRoom() || []) {
+      message = message.replace(new RegExp(`Player ${p.playerID}`, 'g'), p.name);
+    }
+    return (
+      <div id="last-move" className={css.WrapRow}>
+        <div className={css.MarginRight}>Last move:</div>
+        <div>{message}</div>
+      </div>
+    );
+  }
+
   render() {
     const hotels = new Hotels(this.props.G.hotels);
     return (
       <GameLayout maxWidth="1000px" gameArgs={this.props.gameArgs}>
-        <ThemeProvider theme={createMuiTheme({ palette: { type: 'dark' } })}>
-          <MergersGameStatus
-            hotels={hotels}
-            player={this.props.G.players[this.playerID()]}
-            availableStocks={this.props.G.availableStocks}
-            lastMove={this.props.G.lastMove}
-            currentPlayer={!this.props.ctx.gameover && this.props.ctx.currentPlayer}
-            players={this.props.gameArgs?.players}
-          >
+        <ThemeProvider theme={responsiveFontSizes(createMuiTheme({ palette: { type: 'dark' } }))}>
+          <div className={`${css.Mergers} ${css.BoardContainer}`}>
             <HotelGrid
               hotels={hotels}
               lastPlacedHotel={this.props.G.lastPlacedHotel}
               isPlacingHotel={this.playerStage() === 'placeHotelStage'}
-              playerID={this.props.playerID}
+              playerID={this.playerID()}
               onHotelClicked={this.props.moves.placeHotel}
             />
-            <PlayerActions
+            <div className={css.PlayerActionsContainer}>
+              <PlayerActions
+                hotels={hotels}
+                players={this.props.G.players}
+                availableStocks={this.props.G.availableStocks}
+                merger={this.props.G.merger}
+                moves={this.props.moves}
+                playerID={this.playerID()}
+                playerIndex={this.playerIndex()}
+                playerPhase={this.playerPhase()}
+                playerStage={this.playerStage()}
+                gameOverMessage={this.gameOverMessage()}
+              />
+            </div>
+            <div className={css.LastMoveAndCurrentTurnContainer}>
+              {this.renderLastMove()}
+              {this.isAllPlayerStateVisible() ? null : this.renderCurrentTurn()}
+            </div>
+            <MergersGameStatus
               hotels={hotels}
               players={this.props.G.players}
+              playerID={this.playerID()}
               availableStocks={this.props.G.availableStocks}
-              merger={this.props.G.merger}
-              moves={this.props.moves}
-              playerID={this.props.playerID}
-              playerIndex={this.playerIndex()}
-              playerPhase={this.playerPhase()}
-              playerStage={this.playerStage()}
-              gameOverMessage={this.gameOverMessage()}
+              currentPlayer={this.props.ctx.currentPlayer}
+              playersInRoom={this.playersInRoom()}
             />
-          </MergersGameStatus>
+            <div className={css.ShowGuideButtonContainer}>
+              <Button variant="outlined" onClick={() => this.setState({ showPriceCard: true })}>
+                Show Guide
+              </Button>
+            </div>
+          </div>
+          {this.maybeRenderPriceCard()}
           {this.maybeRenderMergerDetails()}
           {this.maybeRenderGameOverDetails()}
         </ThemeProvider>

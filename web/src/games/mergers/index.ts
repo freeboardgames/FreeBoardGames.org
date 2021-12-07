@@ -18,6 +18,7 @@ export const mergersGameDef: IGameDef = {
   },
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
+  customization: () => import('./customization'),
 };
 
 export default mergersGameDef;

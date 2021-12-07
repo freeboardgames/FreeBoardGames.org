@@ -34,7 +34,7 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
       stocksToBuy: {
         Toro: '',
         Lucius: '',
-        Worldywise: '',
+        Worldlywise: '',
         Amore: '',
         Festivus: '',
         Continuum: '',
@@ -133,7 +133,7 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
 
   renderButton(text: string, onClick: () => void) {
     return (
-      <Button className={css.ActionButton} variant="contained" onClick={onClick}>
+      <Button className={css.ActionButton} variant="contained" color="primary" onClick={onClick}>
         {text}
       </Button>
     );
@@ -161,7 +161,7 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
       .map((key) => this.renderChooseChainLabel(Chain[key]));
 
     return (
-      <div className={css.WrapRow}>
+      <div className={css.FlexRow}>
         <div className={css.MarginRight}>Choose the new chain:</div>
         {chainLabels}
       </div>
@@ -212,6 +212,7 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
             className={css.ActionButton}
             disabled={!!errorMsg}
             variant="contained"
+            color="primary"
             onClick={() => {
               if (!!errorMsg) {
                 return;
@@ -253,7 +254,7 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
         <StockLabel key={`stock-${chain}`} chain={chain} onClick={() => this.props.moves[move](chain)} />
       ));
     return (
-      <div id="break-merger-tie" className={css.WrapRow}>
+      <div id="break-merger-tie" className={css.FlexRow}>
         <div className={css.MarginRight}>{message}</div>
         {choices}
       </div>
@@ -309,7 +310,13 @@ export class PlayerActions extends React.Component<PlayerActionsProps, PlayerAct
           <div className={css.WrapRow}>
             {this.renderExchangeStockInput('Swap', setSwap, this.state.stocksToSwap)}
             {this.renderExchangeStockInput('Sell', setSell, this.state.stocksToSell)}
-            <Button className={css.ActionButton} variant="contained" onClick={onClick} disabled={!!errorMsg}>
+            <Button
+              className={css.ActionButton}
+              variant="contained"
+              color="primary"
+              onClick={onClick}
+              disabled={!!errorMsg}
+            >
               {stocksToExchange.swap + stocksToExchange.sell > 0 ? 'Exchange' : 'Keep all'}
             </Button>
           </div>
