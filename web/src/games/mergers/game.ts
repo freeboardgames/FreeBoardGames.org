@@ -511,7 +511,13 @@ export const MergersGame: Game<IG> = {
             moves: { buyStock },
           },
           declareGameOverStage: {
-            moves: { declareGameOver },
+            moves: {
+              declareGameOver: {
+                move: declareGameOver,
+                // Uses all player state, so do not run on the client
+                client: false,
+              },
+            },
           },
           drawHotelsStage: {
             moves: { drawHotels },
