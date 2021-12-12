@@ -1165,9 +1165,6 @@ describe('mergers', () => {
         G.hotels = hotels;
         return G;
       },
-
-      // TODO: figure out why p2.moves.declareGameOver(true) fails without this
-      playerView: (G: IG) => G,
     };
     const clients = getMultiplayerTestClients(3, MergersCustomScenario);
 
