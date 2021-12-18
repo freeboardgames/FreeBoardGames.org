@@ -2,7 +2,7 @@ import React from 'react';
 import countdown1 from './media/countdown1.png';
 import countdown2 from './media/countdown2.png';
 import countdown3 from './media/countdown3.png';
-import css from './btoken.css';
+import css from './btoken.module.css';
 
 interface InnerWrapper {
   countdown: number;

@@ -1,8 +1,8 @@
 import { INVALID_MOVE, ActivePlayers } from 'boardgame.io/core';
 import { Game, Ctx } from 'boardgame.io';
 import { IScore } from 'gamesShared/components/scores/Scoreboard';
-import Card from './card';
-import Player from './player';
+import Card from './definitions/card';
+import Player from './definitions/player';
 
 export interface IG {
   players: Player[];
@@ -125,14 +125,8 @@ const GameConfig: Game<IG> = {
         };
       },
       start: true,
-      turn: {
-        activePlayers: ActivePlayers.ALL_ONCE,
-        onMove: (_, ctx) => {
-          if (ctx.activePlayers === null) {
-            ctx.events.endPhase();
-          }
-        },
-      },
+      turn: { activePlayers: ActivePlayers.ALL_ONCE },
+      endIf: (G, ctx) => G.players.every((player) => player.selectedCard) && ctx.activePlayers === null,
     },
     // Select deck
     DECK_SELECT: {
@@ -142,9 +136,13 @@ const GameConfig: Game<IG> = {
         if (G.players[0].cards.length === 0) {
           G.end = true;
         }
+        G.players.forEach((player) => {
+          player.selectedCard = null;
+        });
       },
       turn: {
-        moveLimit: 1,
+        minMoves: 1,
+        maxMoves: 1,
         order: {
           playOrder: (G: IG) => G.cardOrder,
           first: () => 0,

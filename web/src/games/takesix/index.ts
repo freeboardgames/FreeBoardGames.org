@@ -1,24 +1,24 @@
 const Thumbnail = require('./media/thumbnail.png');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json';
 
 export const takesixGameDef: IGameDef = {
   code: 'takesix',
-  name: 'Take 6!',
+  name: translation.name,
+  translationStatus: { pt: IGameTranslationStatus.DONE, de: IGameTranslationStatus.DONE },
+  codes: { pt: 'pegue-seis', de: 'takesix' },
+  contributors: ['JosefKuchar'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }],
   minPlayers: 2,
   maxPlayers: 10,
-  description: 'Similar To 6 Nimmt!',
-  descriptionTag: `Play Take 6!, a free online game similar\
- to 6 Nimmt. You can play multi-player from two and up to\
- ten players online!`,
-  instructions: {
-    videoId: 'fF0lnDygoes',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
 };
+
+export default takesixGameDef;

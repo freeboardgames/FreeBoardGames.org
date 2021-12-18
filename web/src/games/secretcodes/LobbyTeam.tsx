@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { IG, TeamColor } from './definitions';
-import css from './Lobby.css';
+import css from './Lobby.module.css';
 import Button from '@material-ui/core/Button';
 import { getPlayerTeam } from './util';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 interface ILobbyTeamProps {
   G: IG;
@@ -14,38 +15,36 @@ interface ILobbyTeamProps {
   teamColor: TeamColor;
 }
 
-interface ILobbyTeamState {}
+export function LobbyTeam({ G, playerID, moves, classes, teamPlayers, teamName, teamColor }: ILobbyTeamProps) {
+  const { translate } = useCurrentGameTranslation();
 
-export class LobbyTeam extends React.Component<ILobbyTeamProps, ILobbyTeamState> {
-  _switchTeam = (teamColor: TeamColor) => {
-    if (this.props.playerID === null) return;
-    if (!this.canSwitchToTeam(teamColor)) return;
+  const _switchTeam = (teamColor: TeamColor) => {
+    if (playerID === null) return;
+    if (!canSwitchToTeam(teamColor)) return;
 
-    this.props.moves.switchTeam(teamColor);
+    moves.switchTeam(teamColor);
   };
 
-  canSwitchToTeam = (teamColor: TeamColor): boolean => {
-    if (this.props.playerID === null) return false;
-    const team = getPlayerTeam(this.props.G, this.props.playerID);
+  const canSwitchToTeam = (teamColor: TeamColor): boolean => {
+    if (playerID === null) return false;
+    const team = getPlayerTeam(G, playerID);
 
     return team?.color !== teamColor;
   };
 
-  render() {
-    return (
-      <div className={this.props.classes}>
-        <h3>{this.props.teamName}</h3>
-        <ul>{this.props.teamPlayers}</ul>
-        <Button
-          className={css.selectTeamBtn}
-          variant="contained"
-          onClick={() => this._switchTeam(this.props.teamColor)}
-          color="secondary"
-          disabled={!this.canSwitchToTeam(this.props.teamColor)}
-        >
-          Select
-        </Button>
-      </div>
-    );
-  }
+  return (
+    <div className={classes}>
+      <h3>{teamName}</h3>
+      <ul>{teamPlayers}</ul>
+      <Button
+        className={css.selectTeamBtn}
+        variant="contained"
+        onClick={() => _switchTeam(teamColor)}
+        color="secondary"
+        disabled={!canSwitchToTeam(teamColor)}
+      >
+        {translate('select')}
+      </Button>
+    </div>
+  );
 }

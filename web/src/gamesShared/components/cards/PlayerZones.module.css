@@ -1,0 +1,160 @@
+.playerZonesContainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+}
+
+.playerZone {
+  position: absolute;
+  width: 170px;
+}
+
+.i1 { bottom: 0; left: 50%; transform: translate(-50%,0); }
+.i2 { bottom: 12em; right: 20px; transform: translate(0, 50%); }
+.p3.i3, .p4.i4, .p5.i5 { bottom: 12em; left: 20px; transform: translate(0, 50%); }
+.p2.i2, .p4.i3 { top: 0; left: 50%; transform: translate(-50%, 0); }
+.p5.i3 { top: 0; left: 700px; transform: translate(0,0); }
+.p5.i4 { top: 0; left: 180px; transform: translate(0,0); }
+
+@media only screen and (max-width: 850px) {
+  .i2 { bottom: 15em; right: 2em; transform: translate(40%, 100%) rotate(-90deg); }
+  .p3.i3, .p4.i4, .p5.i5 { bottom: 15em; left: 2em; transform: translate(-40%, 100%) rotate(90deg); }
+}
+
+@media only screen and (max-width: 650px) and (max-height: 700px) {
+  .p5.i2, .p5.i5 { bottom: 50%; }
+}
+
+@media only screen and (max-width: 650px) {
+  .p5.i3 { top: 40px; left: 75%; transform: translate(-50%,0); }
+  .p5.i4 { top: 40px; left: 25%; transform: translate(-50%,0); }
+}
+
+@keyframes pulse {
+  0% {box-shadow: rgb(255, 255, 255) 0px 0px 20px;}
+  50% {box-shadow: rgb(255, 255, 255) 0px 0px 40px;}
+  100% {box-shadow: rgb(255, 255, 255) 0px 0px 20px;}
+}
+
+.playerZone.active .statuses {
+  animation: pulse 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+}
+
+.playerZone.active.thisPlayer .statuses {
+  animation: none;
+}
+
+.playerZone .name {
+  text-align: center;
+}
+
+.playerZone .statuses {
+  color: #fff;
+  text-align: left;
+  cursor: default;
+  background-color: rgb(0 0 0 / 50%);
+  padding: 5px;
+  width: 160px;
+  height: 40px;
+}
+
+.playerZone .statuses span.score {
+  float: right;
+}
+
+.playerZone .statuses span {
+  font-weight: bold;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "NotoColorEmoji",
+               "Segoe UI Symbol", "Android Emoji", "EmojiSymbols",
+               "EmojiOne Mozilla";
+  margin-right: 0.2em;
+  float: left;
+}
+
+.playerZone.thisPlayer.active .statuses span.active {
+  display: block;
+  position: absolute;
+  right: 0; top: 50%;
+  transform-origin: 100% center;
+  transform: translate(0, -50%) scale(4) translate(120%, 0);
+  padding: 3px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: radial-gradient(#fff, transparent 80%);
+}
+
+@media only screen and (max-width: 850px) {
+  .playerZone.thisPlayer.active .statuses span.active {
+    right: 50%; top: 0;
+    transform-origin: 0;
+    transform: translate(-50%, -50%) scale(4) translate(0, -55%);
+  }
+}
+
+.playerZone.p2.i2 .bidStatus,
+.playerZone.p4.i3 .bidStatus,
+.playerZone.p5.i3 .bidStatus,
+.playerZone.p5.i4 .bidStatus,
+.playerZone.i1 .bidStatus {
+  transform: translate(-100%, 0);
+}
+
+.playerZone .bidStatus {
+  position: absolute;
+  top: 0; left: 0;
+  width: 170px;
+  transform: translate(0, -100%);
+}
+
+.playerZone.thisPlayer .bidStatus {
+  font-size: 0.9em;
+}
+
+.playerZone .bidStatus div {
+  background-color: #0a0;
+  color: #fff;
+}
+
+.playerZone .bidStatus .pass {
+  background-color: #a55;
+}
+
+.playerZone .bidStatus .announcement {
+  background-color: #a00;
+}
+
+.playerZone.p2.i2 .hand,
+.playerZone.p4.i3 .hand,
+.playerZone.p5.i3 .hand,
+.playerZone.p5.i4 .hand {
+  bottom: auto;
+  top: 0;
+  transform: translate(calc(100% + 0.1em), 0);
+}
+
+.hand {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(0, calc(100% + 0.1em));
+  width: 170px;
+  height: 50px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.hand .arrangeCard {
+  display: inline-block;
+  width: 20px;
+}
+
+.hand:hover {
+  z-index: 10000;
+}

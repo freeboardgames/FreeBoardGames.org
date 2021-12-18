@@ -1,8 +1,6 @@
 # FreeBoardGames.org
 
-[![Build Status](https://travis-ci.com/freeboardgames/FreeBoardGames.org.svg?branch=master)](https://travis-ci.com/freeboardgames/FreeBoardGames.org)
-
-FOSS platform for publishing your [boardgame.io](https://boardgame.io) games. We curate high quality implementations of board games and optimize your game for delivery so you can quickly reach hundreds of players.
+FOSS platform for publishing your [boardgame.io](https://boardgame.io) games. We curate high quality implementations of board games and optimize your game for delivery so you can quickly reach [thousands of players](https://stats.freeboardgames.org).
 
 Play now at [FreeBoardGames.org](https://FreeBoardGames.org/)
 
@@ -29,7 +27,7 @@ yarn run dev  # runs the webserver and backend (for online multiplayer games)
 
 ## Important commands
 
-`yarn run dev` on root builds and starts the **development** environment.
+`yarn run dev GAME` runs the **development** environment only for a given game.
 
 `yarn run test GAME` runs unit tests and linter for given game.
 
@@ -43,11 +41,4 @@ Omitting the GAME from any command above will run it for all the codebase.
 
 ##  Thanks to
 
-- [JosefKuchar](https://github.com/JosefKuchar) for **Take 6**, **Cornerus**, **Reversi**, **Nine men's Morris** and **Checkers AI**
-- [gk-patel](https://github.com/gk-patel) for **Four in a row**, **Hangman**, **Rota**, **Tic-tac-toe plus**
-- [JvSomeren](https://GitHub.com/JvSomeren) for **Secret Codes**
-- [eemp](https://github.com/eemp) for **Take 6 redesign**
-- [mateusazis](https://github.com/mateusazis) for improving **Secret Codes**
-- [Spooky-0](https://github.com/Spooky-0) and [DanielSherlock](https://github.com/DanielSherlock) for **Zoo Parade**
-- [pestopancake](https://github.com/pestopancake) for **Mancala**
-- [ryandriskel](https://github.com/ryandriskel) for **Estate buyer**
+[**Our amazing contributors**](https://www.FreeBoardGames.org/about)

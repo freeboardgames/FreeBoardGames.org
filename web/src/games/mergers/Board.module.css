@@ -1,0 +1,118 @@
+.Mergers {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+
+  /* Mergers colors */
+  --mergers-background-color: black;
+  --mergers-color: var(--mergers-light-grey);
+  --mergers-light-grey: #e0e0e0; /* material gray 300 */
+  --mergers-medium-grey: #9e9e9e; /* material gray 500 */
+  --mergers-dark-grey: #212121; /* material gray 900 */
+  --mergers-blue-grey: #455a64; /* material blue-gray 700 */
+  --mergers-highlight-green: #76ff03; /* material light green A400 */
+  --mergers-error-red: #f44336; /* material red 500 */
+
+  /* Chain colors */
+  --chain-color-toro: #fbc02d;  /* material yellow 700 */
+  --chain-color-lucius: #f44336; /* material red 500 */
+  --chain-color-festivus: #388e3c; /* material green 700 */
+  --chain-color-amore: #0277bd; /* material blue 800 */
+  --chain-color-worldlywise: #795548; /* material brown 500 */
+  --chain-color-continuum: #0097a7; /* material teal 700 */
+  --chain-color-imperative: #ad1457; /* material pink 800 */
+}
+
+.Mergers div {
+  box-sizing: border-box;
+}
+
+.Mergers p {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.WrapRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0.25em 0;
+}
+
+.Spacer {
+  flex-grow: 1;
+}
+
+.FlexColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.WrapRow button {
+  margin-left: 1em;
+}
+
+.MarginTopBottom {
+  margin-bottom: 1em !important;
+  margin-top: 1em !important;
+}
+
+.MarginBottom {
+  margin-bottom: 1em !important;
+}
+
+.MarginTop {
+  margin-top: 1em !important;
+}
+
+.MarginLeft {
+  margin-left: 1em;
+}
+
+.MarginRight {
+  margin-right: 1em;
+}
+
+.BoardContainer {
+  margin: 16px 10px 28px 10px;
+  box-sizing: border-box;
+  color: var(--mergers-color);
+  background-color: var(--mergers-background-color);
+}
+
+.BoardContainer > div {
+  margin: 1em 0;
+}
+
+.PlayerActionsContainer {
+  width: 100%;
+}
+
+.LastMoveAndCurrentTurnContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.LastMoveAndCurrentTurnContainer > div {
+  margin: 0.5em 0;
+}
+
+.Player {
+  margin-right: 0.5em;
+  border: 2px solid transparent;
+  border-radius: 0.25em;
+  padding: 0.25em;
+}
+
+.Player.CurrentTurn {
+  border-color: var(--mergers-color);
+}
+
+.Player.YourTurn {
+  border-color: var(--mergers-highlight-green);
+}
+
+.ShowGuideButtonContainer {
+  display: flex;
+  justify-content: center;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import Fab from '@material-ui/core/Fab';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import css from './DesktopCarousel.css';
+import css from './DesktopCarousel.module.css';
 
 interface DesktopCarouselProps {
   height?: string;
@@ -60,17 +60,16 @@ export class DesktopCarousel extends React.Component<DesktopCarouselProps, Deskt
   renderButtons() {
     return (
       <>
-        <Fab className={css.leftButton} onClick={this._leftClick} disabled={this.state.scrollLeft <= 0}>
-          <NavigateBeforeIcon />
-        </Fab>
-        <Fab
-          className={css.rightButton}
-          data-testid={'rightButton'}
-          onClick={this._rightClick}
-          disabled={this.state.scrollLeft >= this.maxScroll()}
-        >
-          <NavigateNextIcon />
-        </Fab>
+        {this.state.scrollLeft > 0 ? (
+          <Fab className={css.leftButton} onClick={this._leftClick}>
+            <NavigateBeforeIcon />
+          </Fab>
+        ) : null}
+        {this.state.scrollLeft < this.maxScroll() ? (
+          <Fab className={css.rightButton} data-testid={'rightButton'} onClick={this._rightClick}>
+            <NavigateNextIcon />
+          </Fab>
+        ) : null}
       </>
     );
   }

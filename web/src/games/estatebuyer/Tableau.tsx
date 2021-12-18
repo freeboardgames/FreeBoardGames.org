@@ -3,7 +3,7 @@ import ICard from './card';
 import { MoneyCardComponent, BuildingCardComponent } from './CardComponent';
 import { DeckComponent } from './DeckComponent';
 
-import css from './Tableau.css';
+import css from './Tableau.module.css';
 
 export interface ITableauProps {
   drawFrom: ICard[];

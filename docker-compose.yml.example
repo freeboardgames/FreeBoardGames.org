@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  web:
+    image: '${BUILD_IMAGE_WEB}'
+    build:
+      context: '${BUILD_DIR_WEB}'
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      SERVER_TYPE: 'WEB'
+      FBG_BACKEND_TARGET: 'http://backend:3001'
+  bgio:
+    image: '${BUILD_IMAGE_WEB}'
+    ports:
+      - '8001:8001'
+    environment:
+      SERVER_TYPE: 'BGIO'
+  backend:
+    image: '${BUILD_IMAGE_FBG}'
+    build:
+      context: '${BUILD_DIR_FBG}'
+      dockerfile: Dockerfile
+    ports:
+      - '3001:3001'

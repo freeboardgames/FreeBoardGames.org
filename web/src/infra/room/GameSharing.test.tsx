@@ -1,11 +1,11 @@
+import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react';
 import React from 'react';
 import { GameSharing } from './GameSharing';
-import { render, fireEvent, RenderResult, cleanup } from '@testing-library/react';
-require('@testing-library/jest-dom/extend-expect');
 
-const GAME_LINK = 'http://localhost/room/fooroom';
+const GAME_LINK = 'http://localhost/en/room/fooroom';
 
 afterEach(cleanup);
+
 describe('GameSharing', () => {
   let wrapper: RenderResult;
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe('GameSharing', () => {
     expect(window.open as any).toHaveBeenCalled();
   });
 
-  it('should copy link', () => {
+  it('should copy link with i18n language', () => {
     jest.useFakeTimers();
     const button = wrapper.getByLabelText('Copy');
     fireEvent.click(button);

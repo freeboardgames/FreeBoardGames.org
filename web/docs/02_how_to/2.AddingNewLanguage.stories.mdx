@@ -1,0 +1,99 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import Alert from '@material-ui/lab/Alert';
+
+<Meta title="Documentation/How to/Translation/Adding a new language" />
+
+# Adding a new language
+
+New languages are welcome here. The following instrcutions will guide you on how to add a new language for both infra and game components.
+
+## Server config
+
+We are using `next-i18next` as our main translation framework. Adding a new language code here will recognize it as a valid language.
+
+```tsx
+// web/server/config/i18n/config.ts
+
+function otherLanguages() {
+  return ['pt', '[LANGUAGE CODE]'];
+}
+```
+
+## Typescript
+
+```tsx
+// web/src/infra/i18n/types/Language.ts
+
+export type Language = 'pt' | 'en' | '[LANGUAGE CODE]';
+```
+
+## Dropdown
+
+```tsx
+// web/src/infra/common/components/base/FreeBoardGamesBar.tsx
+
+
+        <MenuItem value="en">English</MenuItem>
+        <MenuItem value="pt">Português</MenuItem>
+        <MenuItem value="[LANGUAGE CODE]">[LANGUAGE NAME]</MenuItem>
+      </Select>
+```
+
+## Translated routes
+
+Some of our routes are translated (e.g. /en/play, /pt/jogar). If you want a translated route to your language you need to add it here, otherwise it will fallback to english (i.e. /language code/play).
+
+```tsx
+// src/infra/navigation/dictionary.ts
+
+export const playDictionary = {
+  en: 'play',
+  pt: 'jogar',
+  '[LANGUAGE CODE]': '[PLAY TRANSLATION]',
+};
+```
+
+## (optional) Game definition
+
+Everygame also has a reference about which languages are available. If you are planning to add a translation for a specific game on a new language you added, you must add it here also:
+
+```tsx
+// src/games/<gameCode>/index.ts
+
+import { IGameDef, IGameTranslationStatus } from 'gamesShared/definitions/game';
+
+export const gameDef: IGameDef = {
+  code: 'chess',
+  codes: {
+    pt: 'xadrez',
+    '[LANGUAGE CODE]': '<game name translation>',
+  },
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+    '[LANGUAGE CODE]': IGameTranslationStatus.PARTIAL, // or DONE
+  },
+  //...
+};
+
+export default gameDef;
+```
+
+Also you will need to create a new locales folder inside the desired game folder:
+
+```tsx
+// src/games/<gameCode>/locales/<language code>.json
+{
+  "camel_case_key": "value"
+}
+```
+
+## (optional) Infra
+
+Our infra components are also translated, if you are aiming to translate one of those components, you should take a look on the following files:
+
+```tsx
+// public/static/locales/<language code>/*.json
+{
+  "camel_case_key": "value"
+}
+```

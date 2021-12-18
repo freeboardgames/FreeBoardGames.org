@@ -12,6 +12,9 @@ sw.js
 blog/
 server/dist/
 .cache/
-static/
-public/
+static/**/*.*
+public/**/*.*
+!public/static/locales/**/*.json
 src/gqlTypes
+*.xml
+.storybook/

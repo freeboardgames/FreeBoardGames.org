@@ -84,7 +84,7 @@ export class MatchService {
   }
 
   /** Starts a new match given a room. */
-  public async startMatch(roomId: string, userId: number): Promise<string> {
+  public async startMatch(roomId: string, userId: number, setupData?: string): Promise<string> {
     return await inTransaction(this.connection, async (queryRunner) => {
       const room = await this.roomsService.getRoomEntity(roomId);
       const userMembership = room.userMemberships.find(
@@ -99,18 +99,20 @@ export class MatchService {
       if (room.capacity !== room.userMemberships.length) {
         throw new HttpException('Room is not full yet', HttpStatus.BAD_REQUEST);
       }
-      return await this.createMatch(queryRunner, room);
+      return await this.createMatch(queryRunner, room, setupData);
     });
   }
 
   private async createMatch(
     queryRunner: QueryRunner,
     room: RoomEntity,
+    setupData?: string
   ): Promise<string> {
     const bgioServerUrl = getBgioServerUrl();
     const bgioMatchId = await this.createBgioMatch(
       bgioServerUrl.internal,
       room,
+      setupData,
     );
     const id = shortid.generate();
     const newMatch = new MatchEntity();
@@ -121,17 +123,17 @@ export class MatchService {
     newMatch.bgioServerExternalUrl = bgioServerUrl.external;
     newMatch.bgioMatchId = bgioMatchId;
     await queryRunner.manager.insert(MatchEntity, newMatch);
-    await Promise.all(
-      room.userMemberships.map((membership, index) =>
-        this.roomToMatchMembership(
-          membership,
-          newMatch,
-          index,
-        ).then((membership) =>
-          queryRunner.manager.insert(MatchMembershipEntity, membership),
-        ),
-      ),
-    );
+    let index = 0;
+    for (const userMembership of room.userMemberships) {
+      // These requests to BGIO server need to be in serial b/c of race condition inside it.
+      const matchMembership = await this.roomToMatchMembership(
+        userMembership,
+        newMatch,
+        index,
+      );
+      await queryRunner.manager.insert(MatchMembershipEntity, matchMembership);
+      index++;
+    }
     room.match = newMatch;
     await queryRunner.manager.save(room);
     await this.roomsService.notifyRoomUpdate(room);
@@ -141,10 +143,13 @@ export class MatchService {
   private async createBgioMatch(
     bgioServerUrl: string,
     room: RoomEntity,
+    rawSetupData?: string,
   ): Promise<string> {
+    const setupData = rawSetupData ? JSON.parse(rawSetupData) : undefined;
     const response = await this.httpService
       .post(`${bgioServerUrl}/games/${room.gameCode}/create`, {
         numPlayers: room.capacity,
+        setupData
       })
       .toPromise();
     return response.data.matchID;

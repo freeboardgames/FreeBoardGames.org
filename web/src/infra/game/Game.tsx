@@ -1,199 +1,66 @@
-import React from 'react';
 import { Client } from 'boardgame.io/react';
-import { GAMES_MAP } from 'games';
-import { IGameDef, IGameConfig, IAIConfig, IGameArgs } from 'gamesShared/definitions/game';
-import { gameBoardWrapper } from './GameBoardWrapper';
+import { IAIConfig, IGameConfig, IGameDef } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
-import getMessagePage from '../common/components/alert/MessagePage';
-import MessagePageClass from '../common/components/alert/MessagePageClass';
-import { applyMiddleware } from 'redux';
-import DEFAULT_ENHANCERS from '../common/enhancers';
-import { IPlayerInRoom } from 'gamesShared/definitions/player';
-import ReactGA from 'react-ga';
-import { SocketIO, Local } from 'boardgame.io/multiplayer';
-import { GetMatch_match } from 'gqlTypes/GetMatch';
-import { Debug } from 'boardgame.io/debug';
+import { Downloading, FailedDownload, GameNotFound, InvalidGameMode } from 'infra/common/factories/MessagePage';
+import { useSettingsService } from 'infra/settings/SettingsService';
+import { TGameCode } from 'infra/types';
+import React, { VFC } from 'react';
+import { getGameDefinition } from '.';
+import { getPlayerID, validateMode } from './helper';
+import { useConfigBuilder } from './hooks/useConfigBuilder';
+import { useRequest } from './hooks/useRequest';
+import { Match } from './types';
 
-interface IGameProps {
-  // FIXME: fix which props are req
-  history?: { push: (url: string) => void };
-  match?: GetMatch_match;
-  matchCode?: string;
-  gameCode?: string;
-  mode?: string;
-  aiLevel?: string;
-  playerID?: string;
-}
+type OnlineGameProps = { match?: Match };
+type AIOrLocalGameProps = { gameCode?: TGameCode; mode?: GameMode.AI | GameMode.LocalFriend };
 
-interface IGameState {
-  loading: boolean;
-  config?: IGameConfig;
-  ai?: IAIConfig;
-}
+export type IGameProps = OnlineGameProps & AIOrLocalGameProps;
 
-export default class Game extends React.Component<IGameProps, IGameState> {
-  mode: GameMode;
-  loadAI: boolean;
-  gameCode: string;
-  serverUrl: string;
-  gameDef: IGameDef;
-  promise: any; // for testing
+const configsRequest = (gameDef: IGameDef, mode: GameMode) => async (): Promise<[IAIConfig, IGameConfig]> => {
+  const configs = [mode === GameMode.AI ? gameDef.aiConfig() : null, gameDef.config()];
+  return Promise.all(configs).then((configs) => {
+    const [aiConfig, gameConfig] = configs;
+    return [aiConfig?.default, gameConfig?.default];
+  });
+};
 
-  constructor(props: IGameProps) {
-    super(props);
-    this.state = {
-      loading: true,
-    };
-    if (this.props.match) {
-      this.mode = GameMode.OnlineFriend;
-      this.gameCode = this.props.match.gameCode;
-      this.serverUrl = this.props.match.bgioServerUrl;
-    } else {
-      this.mode = this.props.mode as GameMode;
-      this.loadAI = this.mode === GameMode.AI && typeof window !== 'undefined';
-      this.gameCode = this.props.gameCode;
-    }
-    this.gameDef = GAMES_MAP[this.gameCode];
-  }
+export type ClientConfig = Parameters<typeof Client>[0];
 
-  clear() {
-    this.setState({
-      loading: true,
-    });
-  }
+export const Game: VFC<IGameProps> = (props) => {
+  const { settingsService } = useSettingsService();
+  const buildConfig = useConfigBuilder();
 
-  load() {
-    if (this.gameDef) {
-      let aiPromise = Promise.resolve({});
-      if (this.loadAI) {
-        aiPromise = this.gameDef.aiConfig();
-      }
-      return Promise.all([this.gameDef.config(), aiPromise]).then(
-        (promises: any) => {
-          this.setState(() => ({
-            config: promises[0].default as IGameConfig,
-            ai: this.loadAI ? (promises[1].default as IAIConfig) : null,
-            loading: false,
-          }));
-        },
-        () => {
-          this.setState({
-            loading: false,
-          });
-          // throw(e);
-        },
-      );
-    } else {
-      this.setState({
-        loading: false,
-      });
-      return Promise.resolve();
-    }
-  }
+  const mode = props.match ? GameMode.OnlineFriend : props.mode;
+  const gameCode = props.match?.gameCode ?? props.gameCode;
+  const gameDef = getGameDefinition(gameCode);
+  const isValidMode = validateMode(gameDef, mode);
+  const { status, data: configs } = useRequest<[IAIConfig, IGameConfig]>(configsRequest(gameDef, mode));
 
-  componentDidMount() {
-    if (this.gameDef) {
-      this.promise = this.load();
-    }
-  }
+  if (!gameDef) return <GameNotFound />;
+  if (!isValidMode) return <InvalidGameMode />;
+  if (status === 'loading' || status === 'idle') return <Downloading name={gameDef.name} />;
+  if (status === 'error') return <FailedDownload name={gameDef.name} />;
 
-  componentWillUnmount() {
-    this.clear();
-  }
+  const [aiConfig, rawConfig] = configs;
+  const matchCode = props.match?.bgioMatchId;
+  const playerID = getPlayerID(props.match, mode);
+  const serverUrl = props.match?.bgioServerUrl;
+  const credentials = mode === GameMode.OnlineFriend ? props.match?.bgioSecret : null;
 
-  render() {
-    let aiLevel, matchCode, playerID, credentials;
-    if (this.props.match) {
-      credentials = this.props.match.bgioSecret;
-      matchCode = this.props.match.bgioMatchId;
-      playerID = this.props.match.bgioPlayerId;
-    } else {
-      aiLevel = this.props.aiLevel;
-      matchCode = this.props.matchCode;
-      playerID = this.mode === GameMode.AI ? '1' : this.props.playerID;
-    }
-    if (!this.gameDef) {
-      return <MessagePageClass type={'error'} message={'Game Not Found'} />;
-    }
-    const validGameModes = this.gameDef.modes.map((mode) => mode.mode.toLowerCase());
-    if (!validGameModes.includes(this.mode.toLowerCase())) {
-      return <MessagePageClass type={'error'} message={'Invalid Game Mode'} />;
-    }
-    if (!this.state.loading && this.state.config) {
-      const gameArgs = {
-        gameCode: this.gameCode,
-        mode: this.mode,
-        credentials,
-        matchCode,
-        players: this._getPlayers(),
-      } as IGameArgs;
-      const clientConfig: any = {
-        game: this.state.config.bgioGame,
-        debug: this.state.config.debug ? { impl: Debug } : false,
-        loading: getMessagePage('loading', 'Connecting...'),
-        board: gameBoardWrapper({
-          board: this.state.config.bgioBoard,
-          gameArgs,
-        }),
-        credentials,
-        machID: matchCode,
-      };
-      const allEnhancers = this.state.config.enhancers
-        ? this.state.config.enhancers.concat(DEFAULT_ENHANCERS)
-        : DEFAULT_ENHANCERS;
-      const enhancers = allEnhancers.map((enhancer: any) => enhancer(gameArgs));
-      clientConfig.enhancer = applyMiddleware(...enhancers);
-      const ai = this.state.ai;
-      if (this.loadAI && ai) {
-        const gameAIConfig = ai.bgioAI(aiLevel);
-        const gameAI = gameAIConfig.ai || gameAIConfig.bot || gameAIConfig;
-        const gameAIType = gameAIConfig.type || gameAI;
+  const config = buildConfig(
+    aiConfig,
+    rawConfig,
+    credentials,
+    gameCode,
+    props.match,
+    matchCode,
+    mode,
+    serverUrl,
+    settingsService,
+  );
 
-        clientConfig.multiplayer = Local({
-          bots: { '0': gameAIType },
-        });
-        clientConfig.game.ai = gameAI;
-      }
-      if (this.mode === GameMode.OnlineFriend) {
-        clientConfig.multiplayer = SocketIO({ server: this.serverUrl });
-      }
-      const App = Client(clientConfig) as any;
-      ReactGA.event({
-        category: 'Game',
-        label: gameArgs.gameCode,
-        action: `Started ${this.mode} game`,
-      });
-      if (this.mode === GameMode.OnlineFriend) {
-        return <App matchID={matchCode} playerID={playerID} credentials={credentials} />;
-      } else {
-        return <App matchID={matchCode} playerID={playerID} />;
-      }
-    } else if (this.state.loading) {
-      const LoadingPage = getMessagePage('loading', `Downloading ${this.gameDef.name}...`);
-      return <LoadingPage />;
-    } else {
-      const ErrorPage = getMessagePage('error', `Failed to download ${this.gameDef.name}.`);
-      return <ErrorPage />;
-    }
-  }
+  const App = Client(config);
+  return <App matchID={matchCode} playerID={playerID} credentials={credentials} />;
+};
 
-  _getPlayers(): IPlayerInRoom[] {
-    switch (this.mode) {
-      case GameMode.OnlineFriend:
-        return this.props.match.playerMemberships.map((membership, index) => ({
-          playerID: index,
-          name: membership.user.nickname,
-        }));
-      case GameMode.AI:
-        return [
-          { playerID: 0, name: 'Computer' },
-          { playerID: 1, name: 'You' },
-        ];
-      case GameMode.LocalFriend:
-        return [
-          { playerID: 0, name: 'Player 1' },
-          { playerID: 1, name: 'Player 2' },
-        ];
-    }
-  }
-}
+export default Game;

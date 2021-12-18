@@ -1,22 +1,23 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json';
 
 export const secretDraculaGameDef: IGameDef = {
-  code: 'secretdracula',
-  name: 'Secret Dracula',
+  code: 'secretDracula',
+  name: translation.name,
+  contributors: ['Spooky-0'],
+  translationStatus: { pt: IGameTranslationStatus.DONE },
+  codes: { pt: 'dracula-secreto' },
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 5,
   maxPlayers: 10,
-  description: 'A game of decite, lies, and Vampires.',
-  descriptionTag: 'Secret Dracula',
-  instructions: {
-    videoId: 'mbGXIDYdtas',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
-  aiConfig: () => import('./ai'),
 };
+
+export default secretDraculaGameDef;

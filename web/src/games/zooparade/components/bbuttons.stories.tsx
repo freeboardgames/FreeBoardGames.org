@@ -1,9 +1,16 @@
 import { BButtons } from './bbuttons';
-
+import { gameDecorator } from '../decorators/game';
 export default {
   title: 'Games/Zoo Parade/Components/Buttons',
+  decorators: [gameDecorator],
   parameters: {
-    backgrounds: [{ name: 'dark background', value: '#000', default: true }],
+    backgrounds: [
+      {
+        name: 'dark background',
+        value: '#000',
+        default: true,
+      },
+    ],
   },
 };
 
@@ -24,7 +31,6 @@ export const NotInYourTurn = () => (
     gotHints={false}
   />
 );
-
 export const InYourTurn = () => (
   <BButtons
     myTurn={true}

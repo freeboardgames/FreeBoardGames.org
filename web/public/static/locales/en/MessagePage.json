@@ -1,0 +1,8 @@
+{
+  "go_home": "Go Home",
+  "game_not_found": "Game Not Found",
+  "invalid_game_mode": "Invalid Game Mode",
+  "connecting": "Connecting...",
+  "downloading": "Downloading {{ name }}",
+  "failed_to_download": "Failed to download {{ name }}"
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Sobre",
+  "description": "Sobre FreeBoardGames.org, um projeto de código livre e aberto.",
+  "card": {
+    "title": "Sobre FreeBoardGames.org",
+    "description": "FreeBoardGames.org é uma plataforma de jogos gratuítos com código livre e aberto. Nosso objetivo é popularizar jogos de tabuleiro tornando-lhes fácil de jogar com amigos, mesmo de longe."
+  },
+  "contributors": {
+    "title": "Contribuidores"
+  },
+  "credits": {
+    "title": "Créditos",
+    "chess_move_sound_by_splice_sound": "Som de movimento de xadrez por SpliceSound",
+    "seabattle_hit_sound_by_fridobeck": "Som da batalha naval por fridobeck",
+    "seabattle_hit_sound_by_qubodup": "Som da batalha naval por qubodup",
+    "seabattle_miss_sound_by_inspector_j": "Som da batalha naval por InspectorJ",
+    "seabattle_miss_sound_by_cg_effex": "Som da batalha naval por CGEffex",
+    "blox_font_used_in_logo_by_brian_kent": "Fonte Blox usada no logo por Brian Kent",
+    "bingo_thumbnail_image": "Imagens do Bingo"
+  }
+}
+

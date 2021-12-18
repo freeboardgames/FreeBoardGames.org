@@ -13,7 +13,7 @@ import { ButtonComponent } from './ButtonComponent';
 import { playSound } from './Sound';
 import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 
-import css from './Board.css';
+import css from './Board.module.css';
 
 interface IBoardProps {
   G: IG;
@@ -52,7 +52,7 @@ export class Board extends React.Component<IBoardProps, { gameOverPrepared: numb
     }
 
     return (
-      <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true}>
+      <GameLayout gameArgs={this.props.gameArgs} maxWidth="1000px">
         <div className={css.board}>
           <PlayerBadges
             players={this.props.G.players}

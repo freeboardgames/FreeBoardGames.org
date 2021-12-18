@@ -1,0 +1,54 @@
+.card {
+  box-sizing: border-box;
+  background-origin: border-box;
+  background-color: white;
+  background-repeat: no-repeat;
+  border: 0.1em #333 solid;
+  box-shadow: #000 0 0 0.8em;
+}
+
+.card.inactive {
+  filter: brightness(0.7);
+}
+
+.card.selectable {
+  cursor: pointer;
+  box-shadow: #555 0 0 2em;
+  background-color: rgba(80, 80, 80, 0.15);
+}
+
+.card.selectable:hover {
+  box-shadow: #000 0px 0px 4em;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.card.tarot {
+  background-image: url("./media/cards_tarot.jpg");
+}
+
+.card.tarock {
+  background-image: url("./media/cards_tarock.jpg");
+}
+
+.card.skat {
+  background-image: url("./media/cards_skat.jpg");
+}
+
+.card.english {
+  background-image: url("./media/cards_english.svg");
+}
+
+.card.franconian {
+  background-image: url("./media/cards_franconian.jpg");
+}
+
+.card div {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  margin: 1em;
+  color: black;
+  font-family: sans-serif;
+  font-size: 3em;
+  text-align: center;
+}

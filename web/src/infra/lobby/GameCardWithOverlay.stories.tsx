@@ -2,14 +2,13 @@ import { GameCardWithOverlay, RoomDisplay } from './GameCardWithOverlay';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import { MobileCarousel } from 'infra/common/components/carousel/MobileCarousel';
 import { DesktopCarousel } from 'infra/common/components/carousel/DesktopCarousel';
-
 export default {
   title: 'Infrastructure/Lobby/GameCardWithOverlay',
 };
-
 const GAME_DEF_TEST: IGameDef = {
   code: 'foocode',
   name: 'foo name',
+  contributors: ['foo'],
   imageURL: 'http://www.biotoday.bio/wp-content/uploads/sites/2/2016/01/500x250.png',
   description: 'foo desc',
   descriptionTag: 'foo tag',
@@ -24,7 +23,6 @@ const GAME_DEF_TEST: IGameDef = {
   minPlayers: 2,
   maxPlayers: 3,
 };
-
 const ROOMS_EXAMPLE: RoomDisplay[] = [
   {
     id: 'foo1',
@@ -69,15 +67,19 @@ const ROOMS_EXAMPLE: RoomDisplay[] = [
     gameCode: 'foocode',
   },
 ];
-
 const example = (
-  <div style={{ textDecoration: 'none', flex: 1, minWidth: '250px', width: '250px', margin: '8px' }}>
+  <div
+    style={{
+      textDecoration: 'none',
+      flex: 1,
+      minWidth: '250px',
+      width: '250px',
+      margin: '8px',
+    }}
+  >
     <GameCardWithOverlay game={GAME_DEF_TEST} rooms={ROOMS_EXAMPLE} />
   </div>
 );
-
 export const Example = () => example;
-
 export const InDesktopCarousel = () => <DesktopCarousel>{[...Array(10)].map(() => example)}</DesktopCarousel>;
-
 export const InMobileCarousel = () => <MobileCarousel>{[...Array(10)].map(() => example)}</MobileCarousel>;

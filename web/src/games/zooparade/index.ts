@@ -1,21 +1,26 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json';
 
 export const zooParadeGameDef: IGameDef = {
   code: 'zooparade',
-  name: 'Zoo Parade',
+  name: translation.name,
+  codes: { pt: 'desfile-do-zoo', de: 'zooparade' },
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+    de: IGameTranslationStatus.DONE,
+  },
+  contributors: ['Spooky-0', 'DanielSherlock'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 2,
   maxPlayers: 5,
-  description: 'A cooperative game where the Team wins!',
-  descriptionTag: `Tag for Zoo Parade TODO`,
-  instructions: {
-    videoId: 'LQ8iwNjBW_s',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default zooParadeGameDef;

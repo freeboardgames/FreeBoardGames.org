@@ -1,0 +1,25 @@
+{
+  "name": "Desfile do Zoo",
+  "description": "Um jogo cooperativo que o time ganha!",
+  "descriptionTag": "Similar ao Hanabi",
+  "instructions": {
+    "text": "Desfile do Zoo é um jogo cooperativo de duas a cinco pessoas. Esse jogo combina perfeitamente conceitos de cooperação e informação parcial. Simplesmente: você sabe todas as cartas, menos as suas própias!\n\nO jogo fica mais difícil com mais jogadores - mas ao mesmo tempo é mais divertido!\n\nObrigado pela [Arte](https://www.freepik.com/free-vector/cute-zoo-animals-card-set_4855079.htm).\n"
+  },
+  "board": {
+    "show_logs": "Mostrar registro",
+    "hide_logs": "Esconde registro"
+  },
+  "bscore": {
+    "score": "Placar {{ score }}"
+  },
+  "blog": {
+    "success": "✅ SUCCESSO",
+    "fail": "❌ FALHOU",
+    "status_player_played_card": "<b>{{ status }}: {{ player }}</b> jogou\n<card></card>",
+    "status_player_played_color_value": "<b>{{ status }}: {{ player }}</b> jogou\nCarta <color></color> <value></value>.",
+    "player_discarded_card": "<b>{{ player }} descartou\n<card></card></b>",
+    "player_discarded_color_value": "<b>{{ player }}</b> descartou Carta <color></color> <value></value>.",
+    "player_gave_a_color_hint": "<b>{{ player }}</> deu {{ receiver }} uma dica de cor: <color></color>",
+    "player_gave_a_value_hint": "<b>{{ player }}</> deu {{ receiver }} uma dica de valor: <value></value>"
+  }
+}

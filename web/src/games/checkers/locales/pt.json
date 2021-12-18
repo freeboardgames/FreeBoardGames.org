@@ -1,0 +1,33 @@
+{
+  "name": "Damas",
+  "description": "Um jogo clássico",
+  "descriptionTag": "Jogue damas com seus amigos localmente ou online !",
+  "instructions": {
+    "videoId": "ScKIdStgAfU",
+    "text": "Damas é um jogo de tabuleiro para duas pessoas, jogado em um tabuleiro quadrado feito de 64 quadrados menores, com 8 quadrados em cada lado.\n\nCada jogador começa com a mesma quantidade de peças e o jogador com peças brancas sempre inicia o jogo. Peças normais podem apenas se mover na diagonal em direção ao lado do oponente, enqunato damas podem se mover em qualquer direção. Um jogador pode comer a peça de um oponente pulando sobre ela.\n\nPara pular, o próximo espaço na diagonal do oponente precisa estar vazio. Se o jogador pode comer mais de um peça, pode o fazer no mesmo turno. Uma peça vira dama se chegar na ultima linha na direção do oponente. O jogo acaba quando não há mais movimentos possiveis para um jogador, por perder todas as peças ou não ter mais movimentos possíveis.\n\nDamas possui muitas variações nas regras, e as configurações por padrão usam as regras Inglesas  - a versão mais popular nos EUA - mas você pode clicar na pequena engrenagem para mudar algumas configurações e personalizar as regras como você está acostumado ou quer jogar!"
+  },
+
+  "customization": {
+    "pieces_per_player": "Peças por jogador",
+    "forced_capture": "Captura forçada",
+    "flying_kings": "Damas podem mover qualquer distância",
+    "stop_jump_on_king": "Parar de comer se a peça virou dama",
+    "n_move_rule": {
+      "label": "Empate após n movimentos sem progresso",
+      "off": "Desligado"
+    }
+  },
+
+  "move_piece": "Mover peça",
+  "waiting_for_opponent": "Esperando pelo oponente...",
+  "white_turn": "Turno do Branco",
+  "black_turn": "Turno do Preto",
+
+  "game_over": {
+    "you_won": "você ganhou",
+    "you_lost": "você perdeu",
+    "white_won": "branco ganhou",
+    "black_won": "preto ganhou",
+    "draw": "empate"
+  }
+}

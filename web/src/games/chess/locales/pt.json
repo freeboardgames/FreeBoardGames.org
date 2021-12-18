@@ -1,0 +1,21 @@
+{
+  "name": "Xadrez",
+  "description": "Regras internacionais",
+  "descriptionTag": "Jogue xadrez online contra o computador no seu navegador\\\n.Você pode definir o nível do computador entre 1 e 8, de fácil até mestre. Você também pode facilmente compartilhar um link e jogar\\\nxadrez com um amigo online, ou você pode compartilhar seu dispostivo e jogar\\\n localmente com um amigo!",
+  "instructions": {
+    "videoId": "fKxG8KjH1Qg",
+    "text": "Xadrez é um jogo de tabuleiro para duas pessoas. É jogado em um tabuleiro quadrado, contendo 64 quadrados menores, com oito quadrados de cada lado.\n\nCada pessoa começa com dezesseis peças: oito peões, dois cavalos, dois bispos, duas torres, uma dama e um rei. A pessoa com as peças brancas sempre faz a primeira jogada.\n\nO objetivo do jogo é que cada pessoa tente e aplique um xeque-mate no rei do oponente.\nO xeque-mate é uma posição de jogo ao qual o rei de um jogador é ameaçado de ser capturado e não existe forma de livrar-se da ameaça. Quem conseguir aplicar um xeque-mate no oponente ganha o jogo.\n\n[Clique aqui para ver os movimentos permitidos para cada peça.](https://www.chessusa.com/chess-rules.html)\n"
+  },
+  "difficulty": "Dificuldade",
+  "your_turn": "SUA VEZ",
+  "waiting_for_opponent": "Esperando pelo oponente...",
+  "white_s_turn": "É a vez das peças brancas",
+  "black_s_turn": "É a vez das peças pretas",
+  "check": "CHEQUE",
+  "you_lost": "você perdeu",
+  "you_won": "você ganhou",
+  "black_won": "as peças pretas ganharam",
+  "white_won": "as peças brancas ganharam",
+  "enable": "Ligado",
+  "disable": "Desligado"
+}

@@ -6,7 +6,7 @@ import { Ctx } from 'boardgame.io';
 import { PlayerBadge } from './PlayerBadge';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 
-import css from './PlayerBadges.css';
+import css from './PlayerBadges.module.css';
 
 export interface IPlayerBadgesProps {
   players: IPlayer[];

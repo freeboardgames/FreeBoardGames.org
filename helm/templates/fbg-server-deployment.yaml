@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-fbg-server
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.replicas.fbgServer }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-fbg-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-fbg-server
+    spec:
+      containers:
+      - env:
+        - name: BGIO_PUBLIC_SERVERS
+          value: https://{{ .Values.domain }}
+        - name: BGIO_PRIVATE_SERVERS
+          value: http://{{ .Release.Name }}-bgio
+        - name: POSTGRES_URL
+          value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.postgresqlDatabase }}
+        - name: JWT_SECRET
+          value: {{ .Values.fbgServer.jwtSecret }}
+        - name: FBG_REDIS_HOST
+          value: {{ .Release.Name }}-redis-master-0.{{ .Release.Name }}-redis-headless.{{ .Release.Namespace }}.svc.{{ .Values.redis.clusterDomain }}
+        - name: FBG_REDIS_PORT
+          value: {{ .Values.redis.master.service.port | quote }}
+        - name: FBG_REDIS_PASSWORD
+          value: {{ .Values.redis.auth.password }}
+        - name: FORCE_DB_SYNC
+          value: {{ .Values.fbgServer.forceDbSync | quote }}
+        - name: DISCORD_LETS_PLAY_WEBHOOK
+          value: {{ .Values.fbgServer.discordLetsPlayWebhook }}
+        image: {{ .Values.images.fbgServer }}
+        imagePullPolicy: {{ .Values.images.imagePullPolicy }}
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 3001
+            scheme: HTTP
+          initialDelaySeconds: 180
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: {{ .Release.Name }}-fbg-server
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 10

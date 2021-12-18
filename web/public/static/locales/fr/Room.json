@@ -1,0 +1,12 @@
+{
+  "you_were_removed_from_the_room": "Vous avez été retiré de la salle.",
+  "try_again": "Essayer à nouveau",
+  "ok": "OK",
+  "change_game": "Changer de jeu",
+  "failed_to_fetch_room_metadata": "Échec de la récupération des métadonnées de la salle.",
+  "leave_room": "Laisser la salle",
+  "max_players": "{{ name }} peut être joué par {{ max }} joueurs au maximum, mais la salle compte {{ current }} joueurs.",
+  "failed_to_set_nickname": "Échec de la définition du pseudo.",
+  "failed_to_start_match": "Échec du démarrage du match",
+  "discord_link": "Vous cherchez plus de joueurs ? Voir <l>#lets-play</l> dans notre Discord!" 
+}

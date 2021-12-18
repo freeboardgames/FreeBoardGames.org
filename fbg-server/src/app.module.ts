@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { RoomsModule } from './rooms/rooms.module';
@@ -6,17 +6,16 @@ import { MatchModule } from './match/match.module';
 import { HealthzController } from './healthz.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { ChatModule } from './chat/chat.module';
+import { ComplexityPlugin } from './complexity.plugin';
 
 const CONNECTION: any = process.env.POSTGRES_URL
   ? {
       type: 'postgres',
       url: process.env.POSTGRES_URL,
-      ssl: true,
+      ssl: false,
       extra: {
         max: 22,
-        ssl: {
-          rejectUnauthorized: false,
-        },
       },
     }
   : {
@@ -25,14 +24,16 @@ const CONNECTION: any = process.env.POSTGRES_URL
     };
 
 const isProd = process.env.NODE_ENV === 'production';
+const forceDbSync = process.env.FORCE_DB_SYNC === 'true';
 
 @Module({
+  providers: [ComplexityPlugin],
   imports: [
     TypeOrmModule.forRoot({
       ...CONNECTION,
       autoLoadEntities: true,
-      synchronize: true,
-      logging: !isProd,
+      synchronize: !isProd || forceDbSync,
+      logging: false,
     }),
     GraphQLModule.forRoot({
       debug: !isProd,
@@ -44,6 +45,11 @@ const isProd = process.env.NODE_ENV === 'production';
     UsersModule,
     RoomsModule,
     MatchModule,
+    ChatModule,
+    HttpModule.register({
+      timeout: 2000,
+      maxRedirects: 5,
+    }),
   ],
   controllers: [HealthzController],
 })

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-bgio
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.replicas.bgio }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-bgio
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-bgio
+    spec:
+      containers:
+      - env:
+        - name: SERVER_TYPE
+          value: BGIO
+        - name: POSTGRES_URL
+          value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.postgresqlDatabase }}
+        - name: BGIO_PORT
+          value: "8001"
+        - name: FBG_REDIS_HOST
+          value: {{ .Release.Name }}-redis-master-0.{{ .Release.Name }}-redis-headless.{{ .Release.Namespace }}.svc.{{ .Values.redis.clusterDomain }}
+        - name: FBG_REDIS_PORT
+          value: {{ .Values.redis.master.service.port | quote }}
+        - name: FBG_REDIS_PASSWORD
+          value: {{ .Values.redis.auth.password }}
+        - name: BGIO_PUBLIC_SERVERS
+          value: https://{{ .Values.domain }}
+        image: {{ .Values.images.web }} 
+        imagePullPolicy: {{ .Values.images.imagePullPolicy }}
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /games
+            port: 8001
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: bgio
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 10

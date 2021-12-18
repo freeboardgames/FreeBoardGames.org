@@ -7,8 +7,14 @@ import Card from '@material-ui/core/Card';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import AlertLayer from '../alert/AlertLayer';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { compose } from 'recompose';
+import { WithTranslation, withTranslation } from 'infra/i18n';
 
-interface Props {
+const VALID_NICKNAME_REGEX = /^[A-Za-z0-9]*$/;
+
+interface InnerProps extends WithTranslation {}
+
+interface OutterProps {
   closePrompt?: () => void;
   setNickname: (nickname: string) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -23,91 +29,106 @@ interface State {
   nameTextField: string;
 }
 
-export class NicknamePrompt extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { nameTextField: '', hasChangedTextSinceError: false };
-  }
+const enhance = compose<InnerProps, OutterProps>(withTranslation('NicknamePrompt'));
 
-  render() {
-    const errorText = this.state.hasChangedTextSinceError ? null : this.props.errorText;
-    let content = (
-      <React.Fragment>
-        <div>
-          <TextField
-            autoFocus={true}
-            type="text"
-            defaultValue={this.props.nickname}
-            onChange={this._onChange}
-            onKeyPress={this._setNicknameOnEnterButton}
-            helperText={errorText}
-            error={!!errorText}
-          />
-        </div>
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ marginTop: '16px' }}
-          onClick={this._onClick}
-          disabled={!this._nicknameIsValid()}
-        >
-          Set Nickname
-        </Button>
-      </React.Fragment>
-    );
-    if (this.props.loading) {
-      content = <CircularProgress />;
+export const NicknamePrompt = enhance(
+  class NicknamePrompt extends React.Component<InnerProps & OutterProps, State> {
+    constructor(props: InnerProps & OutterProps) {
+      super(props);
+      this.state = { nameTextField: '', hasChangedTextSinceError: false };
     }
-    return (
-      <AlertLayer>
-        <ClickAwayListener onClickAway={this._handleClickaway}>
-          <Card
-            style={{
-              marginTop: '16px',
-              whiteSpace: 'nowrap',
-              width: '250px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              textAlign: 'center',
-            }}
+
+    render() {
+      const errorText = this.getError();
+      let content = (
+        <React.Fragment>
+          <div>
+            <TextField
+              autoFocus={true}
+              type="text"
+              defaultValue={this.props.nickname}
+              onChange={this._onChange}
+              onKeyPress={this._setNicknameOnEnterButton}
+              helperText={errorText}
+              error={!!errorText}
+              inputProps={{ maxLength: 15 }}
+            />
+          </div>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginTop: '16px' }}
+            onClick={this._onClick}
+            disabled={!this._nicknameIsValid()}
           >
-            <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
-              Enter Your Nickname
-            </Typography>
-            <CardContent>{content}</CardContent>
-          </Card>
-        </ClickAwayListener>
-      </AlertLayer>
-    );
-  }
-
-  /** Only close the prompt if permitted */
-  _handleClickaway = () => {
-    if (this.props.closePrompt && !!this.props.nickname && !this.props.blockClickaway) {
-      this.props.closePrompt();
+            {this.props.t('set_nickname')}
+          </Button>
+        </React.Fragment>
+      );
+      if (this.props.loading) {
+        content = <CircularProgress />;
+      }
+      return (
+        <AlertLayer>
+          <ClickAwayListener onClickAway={this._handleClickaway}>
+            <Card
+              style={{
+                marginTop: '16px',
+                whiteSpace: 'nowrap',
+                width: '250px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                textAlign: 'center',
+              }}
+            >
+              <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
+                {this.props.t('enter_your_nickname')}
+              </Typography>
+              <CardContent>{content}</CardContent>
+            </Card>
+          </ClickAwayListener>
+        </AlertLayer>
+      );
     }
-  };
 
-  _setNicknameOnEnterButton = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key === 'Enter') {
-      this._onClick();
+    /** Only close the prompt if permitted */
+    _handleClickaway = () => {
+      if (this.props.closePrompt && !!this.props.nickname && !this.props.blockClickaway) {
+        this.props.closePrompt();
+      }
+    };
+
+    _setNicknameOnEnterButton = (event: React.KeyboardEvent<HTMLElement>) => {
+      if (event.key === 'Enter') {
+        this._onClick();
+      }
+    };
+
+    private getError() {
+      let error;
+      if (!this.state.nameTextField.match(VALID_NICKNAME_REGEX)) {
+        error = this.props.t('alphanumerical_characters_only');
+      } else if (!this.state.hasChangedTextSinceError) {
+        error = this.props.errorText;
+      }
+      return error;
     }
-  };
 
-  _nicknameIsValid = () => {
-    const name = this.state.nameTextField;
-    return name && name.length > 0;
-  };
+    _nicknameIsValid = () => {
+      const name = this.state.nameTextField;
+      return name?.length > 0 && name.match(VALID_NICKNAME_REGEX);
+    };
 
-  _onClick = () => {
-    if (this._nicknameIsValid()) {
-      this.props.setNickname(this.state.nameTextField);
-    }
-  };
+    _onClick = () => {
+      if (this._nicknameIsValid()) {
+        this.props.setNickname(this.state.nameTextField);
+      }
+    };
 
-  _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const nameTextField = event.target.value!;
-    this.setState({ nameTextField });
-    if (this.props.onChange) this.props.onChange(event);
-  };
-}
+    _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const nameTextField = event.target.value!;
+      this.setState({ nameTextField });
+      if (this.props.onChange) this.props.onChange(event);
+    };
+  },
+);

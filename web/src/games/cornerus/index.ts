@@ -7,6 +7,7 @@ export const cornerusGameDef: IGameDef = {
   code: 'cornerus',
   name: 'Cornerus',
   imageURL: Thumbnail,
+  contributors: ['JosefKuchar'],
   modes: [
     /*
             {
@@ -23,10 +24,11 @@ export const cornerusGameDef: IGameDef = {
  to Blokus. You can play multi-player online or\
  share your device and play locally against a friend.`,
   instructions: {
-    videoId: 'Yw8pK6Ak5oE',
     text: instructions,
   },
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
 };
+
+export default cornerusGameDef;

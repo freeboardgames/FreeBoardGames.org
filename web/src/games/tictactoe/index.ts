@@ -1,33 +1,31 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameModeExtraInfoDropdown } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json';
 
 export const tictactoeGameDef: IGameDef = {
   code: 'tictactoe',
-  name: 'Tic-Tac-Toe',
+  codes: { pt: 'jogo-da-velha', de: 'tictactoe' },
+  name: translation.name,
+  translationStatus: { pt: IGameTranslationStatus.DONE, de: IGameTranslationStatus.DONE },
+  contributors: ['jasonharrison'],
   minPlayers: 2,
   maxPlayers: 2,
   imageURL: Thumbnail,
   modes: [
     {
       mode: GameMode.AI,
-      extraInfo: { type: 'dropdown', options: ['Easy', 'Hard'] } as IGameModeExtraInfoDropdown,
     },
     { mode: GameMode.OnlineFriend },
     { mode: GameMode.LocalFriend },
   ],
-  description: 'A Classic Game',
-  descriptionTag: `Play Tic-Tac-Toe (also called Noughts and Crosses) for\
- free online. You can either play a single-player game against the computer,\
- a multi-player game against a friend online, or share your device and play\
- locally against a friend.`,
-  instructions: {
-    videoId: 'USEjXNCTvcc',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),
+  customization: () => import('./customization'),
 };
+
+export default tictactoeGameDef;

@@ -1,30 +1,32 @@
 /* eslint-disable react/react-in-jsx-scope */
 
-import Head from 'next/head';
-import App from 'next/app';
-import React from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
-import theme from 'infra/common/components/base/theme';
-import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
-import { isMobileFromReq } from 'infra/common/device/UaHelper';
-import UaContext from 'infra/common/device/IsMobileContext';
-import withError from 'next-with-error';
-import ErrorPage from './_error';
-import ReactGA from 'react-ga';
-import Router from 'next/router';
-import * as Sentry from '@sentry/browser';
-
-import { wrapper } from 'infra/common/redux/store';
-import { ApolloClient, split, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache, split } from '@apollo/client';
 import { createHttpLink } from '@apollo/client/link/http';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { ApolloProvider } from '@apollo/react-hooks';
+import * as Sentry from '@sentry/browser';
+import { ThemeProvider } from 'infra/common';
+import { SelfXSSWarning } from 'infra/common/components/base/SelfXSSWarning';
 import AddressHelper from 'infra/common/helpers/AddressHelper';
+import { wrapper } from 'infra/common/redux/store';
+import { GameProvider } from 'infra/game/GameProvider';
+import { appWithTranslation } from 'infra/i18n';
+import withError from 'next-with-error';
+import App from 'next/app';
+import Head from 'next/head';
+import React from 'react';
+import { compose } from 'recompose';
+import ErrorPage from './_error';
+
+const SENTRY_DSN = 'https://5957292e58cf4d2fbb781910e7b26b1f@o397015.ingest.sentry.io/5251165';
 
 const httpLink = createHttpLink({
   uri: AddressHelper.getGraphQLServerAddress(),
 });
+
+const isMainDomain =
+  typeof window !== 'undefined' && window.location.hostname.toLowerCase() === 'www.freeboardgames.org';
 
 // SSR makes this error
 const wsLink = process.browser
@@ -54,12 +56,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-class defaultApp extends App {
-  logPageView(path: string) {
-    ReactGA.set({ page: path });
-    ReactGA.pageview(path);
-  }
-
+class DefaultApp extends App {
   componentDidMount() {
     // Remove the server-side injected CSS:
     const jssStyles = document.querySelector('#jss-server-side');
@@ -68,26 +65,17 @@ class defaultApp extends App {
     }
 
     // Initialize Google Analytics:
-    if (!(window as any).GA_INITIALIZED) {
-      const GA_TRACKING_CODE = process.env.GA_TRACKING_CODE;
-      ReactGA.initialize(GA_TRACKING_CODE);
-      (window as any).GA_INITIALIZED = true;
-      if (process.env.SENTRY_DSN) {
-        const version = process.env.VERSION;
-        const channel = process.env.CHANNEL;
-        let release;
-        if (version && channel) release = `${version}-${channel}`;
-        Sentry.init({ dsn: process.env.SENTRY_DSN, release });
-      }
+    if (isMainDomain) {
+      const version = process.env.VERSION;
+      const channel = process.env.CHANNEL;
+      let release;
+      if (version && channel) release = `${version}-${channel}`;
+      Sentry.init({ dsn: SENTRY_DSN, release });
     }
-    // https://github.com/sergiodxa/next-ga/blob/32899e9635efe1491a5f47469b0bd2250e496f99/src/index.js#L32
-    (Router as any).onRouteChangeComplete = (path: string) => {
-      this.logPageView(path);
-    };
-    this.logPageView(window.location.pathname);
   }
+
   render() {
-    const { Component, pageProps, isMobile } = this.props as any;
+    const { Component, pageProps } = this.props as any;
     return (
       <>
         <Head>
@@ -102,17 +90,18 @@ class defaultApp extends App {
           <meta name="msapplication-TileColor" content="#ffc40d" />
           <meta name="msapplication-config" content="/static/icons/browserconfig.xml" />
         </Head>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider>
           <SelfXSSWarning />
-          <UaContext.Provider value={isMobile}>
-            <ApolloProvider client={client}>
+          <ApolloProvider client={client}>
+            <GameProvider {...pageProps}>
               <Component {...pageProps} />
-            </ApolloProvider>
-          </UaContext.Provider>
+            </GameProvider>
+          </ApolloProvider>
         </ThemeProvider>
       </>
     );
   }
+
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
 
@@ -120,9 +109,10 @@ class defaultApp extends App {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    const isMobile = isMobileFromReq(ctx.req);
-    return { pageProps, isMobile };
+    return { pageProps };
   }
 }
 
-export default wrapper.withRedux(withError(ErrorPage)(defaultApp));
+const enhance = compose(wrapper.withRedux, appWithTranslation, withError(ErrorPage));
+
+export default enhance(DefaultApp);

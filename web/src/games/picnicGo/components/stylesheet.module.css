@@ -1,0 +1,90 @@
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.85);
+  }
+}
+
+@keyframes bounceInSmall {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.Card {
+  position: relative;
+  display: inline-block;
+  float: left;
+}
+
+.Card img {
+  animation: bounceIn 1.5s;
+  max-width: 75px;
+}
+
+.CardSmall {
+  position: relative;
+  display: inline-block;
+  float: left;
+}
+
+.CardSmall img {
+  animation: bounceInSmall 1s;
+  max-width: 50px;
+}
+
+.BottomInfoCardDisplay {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  width: 100%;
+  min-height: 110px;
+}
+
+.BottomInfoEndRound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 4px;
+  width: 100%;
+  min-height: 110px;
+}
+
+.BottomInfoTopBar {
+  clear: both; 
+  margin: 4px 8px;
+  display: flex; 
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+}
+
+.PlayerInfoTopBar {
+  clear: both;
+  margin: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.PlayedCards {
+  display: flex;
+  column-gap: 12px;
+  align-items: center;
+  overflow-x: auto;
+  width: 100%;
+  min-height: 75px;
+}

@@ -1,15 +1,18 @@
-import React from 'react';
-import Game from 'infra/game/Game';
-import { connect } from 'react-redux';
-import { NextRouter, withRouter } from 'next/router';
-import { Dispatch } from 'redux';
-import NicknameRequired from 'infra/common/components/auth/NicknameRequired';
-import MessagePage from 'infra/common/components/alert/MessagePageClass';
-import { GetMatch_match } from 'gqlTypes/GetMatch';
-import { LobbyService } from 'infra/common/services/LobbyService';
 import * as Sentry from '@sentry/browser';
+import { GetMatch_match } from 'gqlTypes/GetMatch';
+import MessagePage from 'infra/common/components/alert/MessagePage';
+import { withNickNameRequired } from 'infra/common/components/auth/hocs/withNickNameRequired';
+import { LobbyService } from 'infra/common/services/LobbyService';
+import Game from 'infra/game/Game';
+import { NextRouter, withRouter, withTranslation, WithTranslation } from 'infra/i18n';
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { Dispatch } from 'redux';
 
-interface MatchProps {
+interface MatchOutterProps {}
+
+interface MatchInnerProps extends WithTranslation {
   router: NextRouter;
   dispatch: Dispatch;
 }
@@ -20,7 +23,7 @@ interface MatchState {
   error: boolean;
 }
 
-export class Match extends React.Component<MatchProps, MatchState> {
+export class Match extends React.Component<MatchInnerProps & MatchOutterProps, MatchState> {
   state = { loading: true, error: false, match: undefined };
 
   componentDidMount() {
@@ -40,16 +43,13 @@ export class Match extends React.Component<MatchProps, MatchState> {
   }
 
   render() {
+    const { t } = this.props;
     if (this.state.loading) {
-      return (
-        <NicknameRequired>
-          <MessagePage type={'loading'} message={'Loading...'} />
-        </NicknameRequired>
-      );
+      return <MessagePage type={'loading'} message={t('loading')} />;
     } else if (this.state.error) {
-      return <MessagePage type={'error'} message={'Could not load match.'} />;
+      return <MessagePage type={'error'} message={t('could_not_load_match')} />;
     } else if (!this.state.match) {
-      return <MessagePage type={'error'} message={'Match not found.'} />;
+      return <MessagePage type={'error'} message={t('match_not_found')} />;
     }
     return <Game match={this.state.match} />;
   }
@@ -62,4 +62,11 @@ const mapStateToProps = function (state) {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Match));
+const enhance = compose<MatchInnerProps, MatchOutterProps>(
+  withNickNameRequired,
+  withRouter,
+  withTranslation('Match'),
+  connect(mapStateToProps),
+);
+
+export default enhance(Match);

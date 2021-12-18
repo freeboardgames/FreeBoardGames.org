@@ -11,9 +11,14 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Circle, Cross, Lines, WildCardChar } from './Shapes';
 import Typography from '@material-ui/core/Typography';
-import { isOnlineGame, isAIGame } from '../../gamesShared/helpers/gameMode';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
+import { isLocalGame } from '../../gamesShared/helpers/gameMode';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-interface IBoardProps {
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
+interface IBoardOutterProps {
   G: any;
   ctx: any;
   moves: any;
@@ -23,7 +28,12 @@ interface IBoardProps {
   step?: any;
 }
 
-export class Board extends React.Component<IBoardProps, {}> {
+export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, {}> {
+  localPlayerNames = {
+    '0': this.props.translate('red'),
+    '1': this.props.translate('green'),
+  };
+
   onClick = (id: number) => () => {
     if (this.isActive(id)) {
       this.props.moves.clickCell(id);
@@ -34,47 +44,42 @@ export class Board extends React.Component<IBoardProps, {}> {
     return this.props.isActive && this.props.G.cells[id] === null;
   }
 
+  _getPlayerName = (playerID = null) => {
+    const pID = playerID === null ? this.props.ctx.currentPlayer : playerID;
+    if (isLocalGame(this.props.gameArgs)) {
+      return this.localPlayerNames[pID];
+    } else {
+      return this.props.gameArgs.players ? this.props.gameArgs.players[pID].name : this.props.translate('unknown');
+    }
+  };
+
   _getStatus() {
-    if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
+    if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'YOUR TURN';
+        return this.props.translate('your_turn');
       } else {
-        return 'Waiting for opponent...';
+        return this.props.translate('waiting_for_player', { name: this._getPlayerName() });
       }
     } else {
-      // Local or AI game
-      switch (this.props.ctx.currentPlayer) {
-        case '0':
-          return "Red's turn";
-        case '1':
-          return "Green's turn";
-      }
+      return this.props.translate('player_s_turn', { name: this._getPlayerName() });
     }
   }
 
   _getGameOver() {
-    if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
-      // Online game
+    if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
       if (this.props.ctx.gameover.winner !== undefined) {
         if (this.props.ctx.gameover.winner === this.props.playerID) {
-          return 'you won';
+          return this.props.translate('you_won');
         } else {
-          return 'you lost';
+          return this.props.translate('you_lost');
         }
-      } else {
-        return 'draw';
       }
     } else {
-      // Local game
-      switch (this.props.ctx.gameover.winner) {
-        case '0':
-          return 'red won';
-        case '1':
-          return 'green won';
-        case undefined:
-          return 'draw';
+      if (this.props.ctx.gameover.winner) {
+        return `${this._getPlayerName(this.props.ctx.gameover.winner)} won`;
       }
     }
+    return this.props.translate('draw');
   }
 
   render() {
@@ -115,7 +120,11 @@ export class Board extends React.Component<IBoardProps, {}> {
   _getBoard() {
     return (
       <div>
-        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+        <Typography
+          variant="h5"
+          data-testid="status"
+          style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}
+        >
           {this._getStatus()}
         </Typography>
         <svg width="100%" height="100%" viewBox="0 0 4 4">
@@ -138,4 +147,6 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 }
 
-export default Board;
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
+
+export const Board = enhance(BoardInternal);

@@ -41,7 +41,7 @@ describe('UsersController', () => {
   });
 
   it('should create user succesfully', async () => {
-    const nickname = 'foo user';
+    const nickname = 'foo';
     const result = await controller.newUser({ nickname });
     const jwtToken: JwtPayload = jwtService.decode(result.jwtToken) as any;
     const id = jwtToken.userId;

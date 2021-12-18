@@ -6,6 +6,7 @@ import instructions from './instructions.md';
 export const fourinarowGameDef: IGameDef = {
   code: 'fourinarow',
   name: 'Four in a Row',
+  contributors: ['gk-patel'],
   minPlayers: 2,
   maxPlayers: 2,
   imageURL: Thumbnail,
@@ -15,9 +16,10 @@ export const fourinarowGameDef: IGameDef = {
  a multi-player game against a friend online, or share your device and play\
  locally against a friend.`,
   instructions: {
-    videoId: 'utXzIFEVPjA',
     text: instructions,
   },
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
+
+export default fourinarowGameDef;

@@ -1,11 +1,9 @@
 import React from 'react';
 import { IPlayerHandProps, PlayerHand } from '../PlayerHand';
-
 export default {
   title: 'Games/EstateBuyer/PlayerHand',
   component: PlayerHand,
 };
-
 const handData: IPlayerHandProps = {
   playerIndex: 1,
   player: {
@@ -20,11 +18,8 @@ const handData: IPlayerHandProps = {
     ],
   },
 };
-
 export const NoCards = () => <PlayerHand {...{ ...handData, player: { ...handData.player, buildings: [] } }} />;
-
 export const OneCard = () => <PlayerHand {...handData} />;
-
 const hand2Data: IPlayerHandProps = {
   ...handData,
   player: {
@@ -44,9 +39,7 @@ const hand2Data: IPlayerHandProps = {
   },
   selectCard: () => null,
 };
-
 export const TwoCardsSelectable = () => <PlayerHand {...hand2Data} />;
-
 const hand5Data: IPlayerHandProps = {
   ...handData,
   player: {
@@ -81,7 +74,6 @@ const hand5Data: IPlayerHandProps = {
   },
 };
 export const FiveCards = () => <PlayerHand {...hand5Data} />;
-
 const hand5DataWithSelected: IPlayerHandProps = {
   ...hand5Data,
   player: {
@@ -93,5 +85,4 @@ const hand5DataWithSelected: IPlayerHandProps = {
     },
   },
 };
-
 export const FiveCardsOneSelected = () => <PlayerHand {...hand5DataWithSelected} />;

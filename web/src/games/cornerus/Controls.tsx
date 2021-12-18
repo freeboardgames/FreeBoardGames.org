@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Ctx } from 'boardgame.io';
 
-import { IG, rotatePiece, flipPieceY, flipPieceX, getPlayer } from './game';
-import { IPiece } from './board';
+import { rotatePiece, flipPieceY, flipPieceX, getPlayer } from './game';
+import { IG, IPiece } from './types';
 import { pieces } from './pieces';
 
 import Done from '@material-ui/icons/Done';
@@ -14,7 +14,7 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import IconButton from '@material-ui/core/IconButton';
 
-import css from './Controls.css';
+import css from './Controls.module.css';
 
 interface IControlsProps {
   placePiece: () => void;

@@ -96,14 +96,8 @@ export const SeabattleGame: Game<ISeabattleState> = {
       moves: { setShips },
       next: 'play',
       start: true,
-      turn: {
-        activePlayers: ActivePlayers.ALL_ONCE,
-        onMove: (_, ctx) => {
-          if (ctx.activePlayers === null) {
-            ctx.events.endPhase();
-          }
-        },
-      },
+      turn: { activePlayers: ActivePlayers.ALL_ONCE },
+      endIf: (G, ctx) => G.ships.length > 0 && ctx.activePlayers === null,
     },
     play: {
       moves: { salvo },
@@ -120,7 +114,8 @@ export const SeabattleGame: Game<ISeabattleState> = {
     }
   },
   turn: {
-    moveLimit: 1,
+    minMoves: 1,
+    maxMoves: 1,
   },
   playerView,
 };

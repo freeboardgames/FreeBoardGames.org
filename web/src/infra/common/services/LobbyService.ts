@@ -8,6 +8,7 @@ import { ApolloClient, ApolloError, InMemoryCache, createHttpLink } from '@apoll
 import { setContext } from '@apollo/client/link/context';
 import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
 import { NewRoom, NewRoomVariables } from 'gqlTypes/NewRoom';
+import { SendMessage, SendMessageVariables } from 'gqlTypes/SendMessage';
 import { GetMatch, GetMatchVariables } from 'gqlTypes/GetMatch';
 import { GetLobby } from 'gqlTypes/GetLobby';
 import { StartMatch, StartMatchVariables } from 'gqlTypes/StartMatch';
@@ -15,6 +16,7 @@ import { NextRoom, NextRoomVariables } from 'gqlTypes/NextRoom';
 import gql from 'graphql-tag.macro';
 import { JoinRoom, JoinRoomVariables } from 'gqlTypes/JoinRoom';
 import { RemoveUserFromRoom, RemoveUserFromRoomVariables } from 'gqlTypes/RemoveUserFromRoom';
+import { UpdateRoomInput } from 'gqlTypes/globalTypes';
 
 const FBG_NICKNAME_KEY = 'fbgNickname2';
 const FBG_USER_TOKEN_KEY = 'fbgUserToken2';
@@ -88,16 +90,21 @@ export class LobbyService {
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data;
   }
-  public static async startMatch(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<string> {
+  public static async startMatch(
+    dispatch: Dispatch<SyncUserAction>,
+    roomId: string,
+    rawSetupData?: unknown,
+  ): Promise<string> {
     const client = this.getClient();
+    const setupData = rawSetupData ? JSON.stringify(rawSetupData) : '';
     const result = await client
       .mutate<StartMatch, StartMatchVariables>({
         mutation: gql`
-          mutation StartMatch($roomId: String!) {
-            startMatch(roomId: $roomId)
+          mutation StartMatch($roomId: String!, $setupData: String!) {
+            startMatch(roomId: $roomId, setupData: $setupData)
           }
         `,
-        variables: { roomId },
+        variables: { roomId, setupData },
       })
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data.startMatch;
@@ -141,6 +148,20 @@ export class LobbyService {
     const payload: ReduxUserState = { ready: true, loggedIn: true, nickname };
     dispatch({ type: ActionNames.SyncUser, payload });
     localStorage.setItem(FBG_NICKNAME_KEY, nickname);
+  }
+
+  public static async updateRoom(dispatch: Dispatch<SyncUserAction>, room: UpdateRoomInput): Promise<void> {
+    const client = this.getClient();
+    await client
+      .mutate({
+        mutation: gql`
+          mutation UpdateRoom($room: UpdateRoomInput!) {
+            updateRoom(room: $room)
+          }
+        `,
+        variables: { room },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
   }
 
   public static async joinRoom(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<JoinRoom> {
@@ -236,6 +257,26 @@ export class LobbyService {
       `,
     });
     return result.data;
+  }
+
+  public static async sendMessage(
+    dispatch: Dispatch<SyncUserAction>,
+    channelType: 'room' | 'match',
+    channelId: string,
+    message: string,
+  ): Promise<Boolean> {
+    const client = this.getClient();
+    const result = await client
+      .mutate<SendMessage, SendMessageVariables>({
+        mutation: gql`
+          mutation SendMessage($channelType: String!, $channelId: String!, $message: String!) {
+            sendMessage(message: { channelType: $channelType, channelId: $channelId, message: $message })
+          }
+        `,
+        variables: { channelType, channelId, message },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
+    return result.data.sendMessage;
   }
 
   public static getUserToken() {

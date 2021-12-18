@@ -1,0 +1,5 @@
+{
+  "not_enough_players": "Nicht genügend Spieler.",
+  "only_creator_can_start": "Nur {{ name }} kann Starten.",
+  "start_match": "Partie Starten"
+}

@@ -1,7 +1,8 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException, Inject, HttpService } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection, QueryRunner } from 'typeorm';
 import { RoomEntity } from './db/Room.entity';
+import { UserEntity } from '../users/db/User.entity';
 import { RoomMembershipEntity } from './db/RoomMembership.entity';
 import { UsersService } from '../users/users.service';
 import shortid from 'shortid';
@@ -10,6 +11,8 @@ import { NewRoomInput } from './gql/NewRoomInput.gql';
 import { PubSub } from 'graphql-subscriptions';
 import { roomEntityToRoom } from './RoomUtil';
 import { LobbyService } from './lobby.service';
+import { UpdateRoomInput } from './gql/UpdateRoomInput.gql';
+import { FBG_PUB_SUB } from '../internal/FbgPubSubModule';
 
 @Injectable()
 export class RoomsService {
@@ -19,7 +22,8 @@ export class RoomsService {
     private usersService: UsersService,
     private lobbyService: LobbyService,
     private connection: Connection,
-    private pubSub: PubSub,
+    private httpService: HttpService,
+    @Inject(FBG_PUB_SUB) private pubSub: PubSub,
   ) {}
 
   /** Creates a new room. */
@@ -33,37 +37,42 @@ export class RoomsService {
     roomEntity.capacity = room.capacity;
     roomEntity.gameCode = room.gameCode;
     roomEntity.isPublic = room.isPublic;
+    const user = await this.usersService.getUserEntity(userId);
     if (!queryRunner) {
       await inTransaction(this.connection, async (queryRunner) => {
-        await this.saveNewRoom(queryRunner, userId, roomEntity);
+        await this.saveNewRoom(queryRunner, user, roomEntity);
       });
       if (room.isPublic) {
         // Cant do this inside a transaction as we need the new room in the notification.
         await this.lobbyService.notifyLobbyUpdate();
+        this.maybeNotifyDiscord(user, roomEntity).catch((err) => {
+          console.error(err);
+        }); // Fire and forget
       }
     } else {
-      await this.saveNewRoom(queryRunner, userId, roomEntity);
+      await this.saveNewRoom(queryRunner, user, roomEntity);
     }
     return roomEntity;
   }
 
   private async saveNewRoom(
     queryRunner: QueryRunner,
-    userId: number,
+    user: UserEntity,
     roomEntity: RoomEntity,
   ) {
     await queryRunner.manager.save(RoomEntity, roomEntity);
-    await this.addMembership(queryRunner, userId, roomEntity);
+    await this.addMembership(queryRunner, user, roomEntity);
   }
 
   /** Checks-in user and if room gets full starts the match. Returns match id, if any. */
   async joinRoom(userId: number, roomId: string): Promise<RoomEntity> {
     const room = await inTransaction(this.connection, async (queryRunner) => {
+      const user = await this.usersService.getUserEntity(userId);
       const room = await this.getRoomEntity(roomId);
       if (room.match) {
         return room;
       }
-      await this.addMembership(queryRunner, userId, room);
+      await this.addMembership(queryRunner, user, room);
       return room;
     });
     if (room.isPublic) {
@@ -98,21 +107,49 @@ export class RoomsService {
       if (room.match) {
         return room;
       }
-      const userMembership = room.userMemberships.find(
-        (membership) => membership.user.id === userIdOfCaller,
-      );
-      if (!userMembership || !userMembership.isCreator) {
-        throw new HttpException(
-          'You must be the creator of the room',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+      await this.checkIsOwner(userIdOfCaller, room);
       await this.removeMembership(queryRunner, userIdToBeRemoved, room);
       if (room.isPublic) {
         await this.lobbyService.notifyLobbyUpdate();
       }
       return room;
     });
+  }
+
+  /** Updates room metadata (capacity and game). */
+  async updateRoom(
+    userIdOfCaller: number,
+    updateRoomInput: UpdateRoomInput
+  ): Promise<void> {
+    await inTransaction(this.connection, async (queryRunner) => {
+      const room = await this.getRoomEntity(updateRoomInput.roomId);
+      if (room.match) {
+        throw new HttpException(
+          'Game already started for this Room',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      await this.checkIsOwner(userIdOfCaller, room);
+      room.capacity = updateRoomInput.capacity;
+      room.gameCode = updateRoomInput.gameCode;
+      await queryRunner.manager.save(room);
+      await this.notifyRoomUpdate(room);
+      if (room.isPublic) {
+        await this.lobbyService.notifyLobbyUpdate();
+      }
+    });
+  }
+
+  private async checkIsOwner(userId, room: RoomEntity) {
+    const userMembership = room.userMemberships.find(
+        (membership) => membership.user.id === userId,
+    );
+    if (!userMembership?.isCreator) {
+      throw new HttpException(
+        'You must be the creator of the room',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   /** Gets a raw RoomEntity, with user information populated. */
@@ -136,6 +173,14 @@ export class RoomsService {
     return roomEntity;
   }
 
+  /** Notifies all rooms that a given user had their info updated. */
+  async notifyUserUpdated(userId: number): Promise<void> {
+    const rooms = await this.getRoomsUserIsMember(userId);
+    for (const roomId of rooms) {
+      await this.notifyRoomUpdate(await this.getRoomEntity(roomId));
+    }
+  }
+
   async notifyRoomUpdate(room: RoomEntity): Promise<void> {
     await this.pubSub.publish(`room/${room.id}`, {
       roomMutated: roomEntityToRoom(room),
@@ -144,11 +189,11 @@ export class RoomsService {
 
   private async addMembership(
     queryRunner: QueryRunner,
-    userId: number,
+    user: UserEntity,
     room: RoomEntity,
   ) {
     const memberships = room.userMemberships || [];
-    const userMembership = memberships.find((m) => m.user.id === userId);
+    const userMembership = memberships.find((m) => m.user.id === user.id);
     if (userMembership) {
       // user already in room
       userMembership.lastSeen = Date.now();
@@ -160,7 +205,7 @@ export class RoomsService {
       return;
     }
     const membership = new RoomMembershipEntity();
-    membership.user = await this.usersService.getUserEntity(userId);
+    membership.user = user;
     membership.room = room;
     membership.lastSeen = Date.now();
     membership.isCreator = memberships.length === 0;
@@ -193,5 +238,44 @@ export class RoomsService {
       room: { id: room.id },
     });
     await this.notifyRoomUpdate(room);
+  }
+
+  private async getRoomsUserIsMember(userId: number): Promise<string[]> {
+    const rooms = await this.roomRepository
+      .createQueryBuilder('room')
+      .leftJoinAndSelect('room.match', 'match')
+      .leftJoinAndSelect('room.userMemberships', 'userMemberships')
+      .leftJoinAndSelect('userMemberships.user', 'user')
+      .where('user.id = :userId', { userId })
+      .andWhere('room.match IS NULL')
+      .orderBy({
+        'userMemberships.id': 'ASC',
+      })
+      .getMany();
+    return rooms.map(r => r.id);
+  } 
+
+  private async maybeNotifyDiscord(user: UserEntity, roomEntity: RoomEntity) { 
+    const webhookUrl = process.env.DISCORD_LETS_PLAY_WEBHOOK;
+    if (!webhookUrl) {
+      return;
+    }
+    const gameCode = roomEntity.gameCode;
+    const nickname = user.nickname;
+    const gameName = gameCode.charAt(0).toUpperCase() + gameCode.substring(1);
+    await this.httpService.post(
+      webhookUrl,
+      {
+        "content": null,
+        "embeds": [
+          {
+            "title": `Join  \`${nickname}\` on a public **${gameName}** match`,
+            "description": `\`${nickname}\` wants to play **${gameName}**, click on the link above to join and play now!`,
+            "url": `https://www.freeboardgames.org/en/room/${roomEntity.id}`,
+            "color": 65280
+          }
+        ]
+      }
+    ).toPromise();
   }
 }

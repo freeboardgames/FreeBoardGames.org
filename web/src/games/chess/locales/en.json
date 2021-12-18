@@ -1,0 +1,21 @@
+{
+  "name": "Chess",
+  "description": "International Rules",
+  "descriptionTag": "Play an online Chess game in your browser against a\\\n top chess computer. You can set the computer level from 1 to 8,\\\n from easy to grandmaster. You can also easily share a link and play\\\n chess with a friend online, or you can share your device and play\\\n with a friend locally !",
+  "instructions": {
+    "videoId": "fKxG8KjH1Qg",
+    "text": "Chess is a board game for two players. It is played in a square board, made of 64 smaller squares, with eight squares on each side.\n\nEach player starts with sixteen pieces: eight pawns, two knights, two bishops, two rooks, one queen and one king. The player with white pieces always makes the first move.\n\nThe goal of the game is for each player to try and checkmate the king of the opponent.\nCheckmate is a game position in which a player's king is threatened with capture and there is no way to remove the threat. Checkmating the opponent wins the game.\n\n[Click here for the allowed moves of each piece.](https://www.chessusa.com/chess-rules.html)\n"
+  },
+  "difficulty": "Difficulty",
+  "your_turn": "YOUR TURN",
+  "waiting_for_opponent": "Waiting for opponent...",
+  "white_s_turn": "White's turn",
+  "black_s_turn": "Black's turn",
+  "check": "CHECK",
+  "you_lost": "you lost",
+  "you_won": "you won",
+  "black_won": "black won",
+  "white_won": "white won",
+  "enable": "Enable",
+  "disable": "Disable"
+}

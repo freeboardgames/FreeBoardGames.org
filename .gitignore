@@ -1,3 +1,5 @@
+docker-compose.yml
+freeboardgames.tar
 node_modules
 .idea/
 .next/
@@ -7,6 +9,8 @@ server/dist/
 yarn-error.log
 **/.vscode
 # auto generated
-common/gql
 common/internal/*
+web/src/games/index.ts
 !common/internal/empty-file-so-git-commits-directory
+helm/values.staging.yaml
+helm/values.prod.yaml

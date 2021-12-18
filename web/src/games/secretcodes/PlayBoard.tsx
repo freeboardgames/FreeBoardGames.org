@@ -2,15 +2,18 @@ import { IG, CardColor, Team, TeamColor, Phases } from './definitions';
 import { Ctx } from 'boardgame.io';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import * as React from 'react';
-import css from './board.css';
+import css from './board.module.css';
 import { isLocalGame, isOnlineGame } from 'gamesShared/helpers/gameMode';
 import Button from '@material-ui/core/Button';
 import { IPlayerInRoom } from 'gamesShared/definitions/player';
 import { getPlayerTeam, isPlayerSpymaster } from './util';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import { GameMode } from 'gamesShared/definitions/mode';
+import { Trans, WithCurrentGameTranslation, withCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
-interface IPlayBoardProps {
+interface IPlayBoardInnerProps extends WithCurrentGameTranslation {}
+interface IPlayBoardOutterProps {
   G: IG;
   ctx: Ctx;
   moves: any;
@@ -26,7 +29,7 @@ interface IPlayBoardState {
   spymasterView: boolean;
 }
 
-export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState> {
+export class PlayBoardInternal extends React.Component<IPlayBoardInnerProps & IPlayBoardOutterProps, IPlayBoardState> {
   state = {
     spymasterView: false,
   };
@@ -90,23 +93,23 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
 
     const button = this._isActive() ? (
       <Button className={css.playActionBtn} variant="contained" onClick={this._pass}>
-        Pass
+        {this.props.translate('pass')}
       </Button>
     ) : null;
     let spymasterInstructions;
     if (this.props.gameArgs.mode === GameMode.OnlineFriend) {
       const spymasterName = this.props.gameArgs.players[this._currentPlayerTeam().spymasterID].name;
-      spymasterInstructions = (
-        <>
-          <strong>{spymasterName}</strong> give clue,&nbsp;
-        </>
-      );
+      spymasterInstructions = <>{this.props.translate('spymaster_give_clue', { name: spymasterName })}</>;
     }
 
     instruction = (
       <p>
         {spymasterInstructions}
-        <strong>{this._currentPlayerTeam().color === TeamColor.Red ? 'Red' : 'Blue'} Team</strong> select cards!
+        {this._currentPlayerTeam().color === TeamColor.Red ? (
+          <Trans t={this.props.translate} i18nKey="red_team_select_cards" components={{ strong: <strong /> }} />
+        ) : (
+          <Trans t={this.props.translate} i18nKey="blue_team_select_cards" components={{ strong: <strong /> }} />
+        )}
         {button}
       </p>
     );
@@ -114,7 +117,9 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     return (
       <div className={css.header}>
         <h3 className={this._currentPlayerTeam().color === TeamColor.Red ? css.redTitle : css.blueTitle}>
-          {this._currentPlayerTeam().color === TeamColor.Red ? 'Red' : 'Blue'} Team
+          {this._currentPlayerTeam().color === TeamColor.Red
+            ? this.props.translate('red_team')
+            : this.props.translate('blue_team')}
         </h3>
         {instruction}
       </div>
@@ -179,7 +184,9 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     if (isPlayerSpymaster(this.props.G, this._playerID())) {
       return (
         <Button className={css.selectTeamBtn} variant="contained" onClick={this._toggleSpymasterView}>
-          Toggle View: {this.state.spymasterView ? 'Spymaster' : 'Normal'}
+          {this.state.spymasterView
+            ? this.props.translate('toggle_view_spymaster')
+            : this.props.translate('toggle_view_normal')}
         </Button>
       );
     }
@@ -199,4 +206,5 @@ export class PlayBoard extends React.Component<IPlayBoardProps, IPlayBoardState>
     );
   }
 }
-export default PlayBoard;
+const enhance = compose<IPlayBoardInnerProps, IPlayBoardOutterProps>(withCurrentGameTranslation);
+export const PlayBoard = enhance(PlayBoardInternal);

@@ -7,6 +7,7 @@ import instructions from './instructions.md';
 export const cardtableGameDef: IGameDef = {
   code: 'cardtable',
   name: 'Card Table Game',
+  contributors: ['cwatsonc'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
@@ -20,3 +21,5 @@ export const cardtableGameDef: IGameDef = {
   status: IGameStatus.IN_DEVELOPMENT,
   config: () => import('./config'),
 };
+
+export default cardtableGameDef;

@@ -108,7 +108,7 @@ export function _setup(ctx: Ctx, randomPlayers: boolean, randomDeck: boolean): I
 }
 
 export const SecretDraculaGame = {
-  name: 'secretdracula',
+  name: 'secretDracula',
 
   setup: setup,
 
@@ -118,6 +118,10 @@ export const SecretDraculaGame = {
     if (isNaN(playerIDInt)) {
       // However, if this is not a multiplayer then this is NaN.
       //     // For testing only, as this game can only be played Multiplayer.
+      return G;
+    }
+
+    if (ctx.gameover) {
       return G;
     }
 
@@ -137,29 +141,32 @@ export const SecretDraculaGame = {
       }),
       draculaID:
         ctx.numPlayers < 7
-          ? G.draculaID == playerIDInt
-            ? G.draculaID
+          ? // < 7
+            G.vampireIDs.includes(playerIDInt)
+            ? G.draculaID // all vampires get to know ( there are only 2, so you can deduce the other one is dracula)
             : -1 // only dracula knows if <7 players
-          : playerIDInt in G.vampireIDs
-          ? G.draculaID
-          : -1, // all vampires know if >= 7 players
+          : // >= 7
+          G.vampireIDs.includes(playerIDInt)
+          ? G.draculaID // all vampires know who is dracula
+          : -1, // you are not a vampire
 
       vampireIDs:
         ctx.numPlayers < 7
           ? // in <7 player game, all vampires know of all others
             G.vampireIDs.includes(playerIDInt)
-            ? [...G.vampireIDs]
+            ? [...G.vampireIDs] // you are a vampire and know of all vampires
             : [
                 ...G.vampireIDs.map(() => {
                   return -1;
                 }),
-              ]
+              ] // you are not a vampire and don't konw who is a vapmire
           : // in >=7 player game, dracula doesn't know about other vampires
           G.vampireIDs.includes(playerIDInt)
           ? G.draculaID == playerIDInt
-            ? [playerIDInt]
-            : [...G.vampireIDs]
+            ? [playerIDInt] // you are Dracula, and only know about yourself as vampire
+            : [...G.vampireIDs] // you are a vampire, and know all vampires
           : [
+              // you are not a vampire and know nohting
               ...G.vampireIDs.map(() => {
                 return -1;
               }),
@@ -186,6 +193,7 @@ export const SecretDraculaGame = {
       policyPeek: playerIDInt == G.mayorID && G.policyPeek.length == 3 ? G.policyPeek : [],
       investigate: playerIDInt == G.mayorID ? G.investigate : 0,
       // everyone gets investigateID
+      log: null,
     };
   },
 
@@ -222,25 +230,23 @@ export const SecretDraculaGame = {
 
           G.lastMayorID = -1; // any mayor priest combi allowed again.
           G.lastPriestID = -1;
-          if (G.specialElection != -1) {
-            G.mayorID = G.specialElection;
-            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
-            G.specialElection = -1;
-          } else {
-            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
-          }
-          G.priestID = -1; // no active priest
         } else {
           G.electionTracker += 1;
-          if (G.specialElection != -1) {
-            G.mayorID = G.specialElection;
-            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
-            G.specialElection = -1;
-          } else {
-            G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
-          }
-          G.priestID = -1; // no active priest
         }
+
+        if (G.specialElection != -1) {
+          G.mayorID = G.specialElection;
+          G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+          G.specialElection = -1;
+        } else {
+          G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+        }
+
+        while (G.deadIDs.includes(G.mayorID)) {
+          G.mayorID = (G.mayorID + 1) % ctx.numPlayers; // chose next mayor
+        }
+
+        G.priestID = -1; // no active priest
 
         return G;
       },
@@ -269,6 +275,18 @@ export const SecretDraculaGame = {
           //- console.log(' 1 ');
           return { next: 'phaseNoSpecial' };
         }
+
+        // if (ctx.numPlayers < 3) { // ONLY FOR TESTING
+        //   return { next: 'phaseExecution' };
+        //   if (G.justPlayedVampirePolicy == 2) {
+        //     return { next: 'phaseSpecialElection' };
+        //   } else if (G.justPlayedVampirePolicy == 3) {
+        //     return { next: 'phaseSpecialElection' };
+        //   } else if (G.justPlayedVampirePolicy == 4) {
+        //     return { next: 'phaseSpecialElection' };
+        //   }
+        // }
+
         if (ctx.numPlayers < 7) {
           if (G.justPlayedVampirePolicy == 2) {
             //- console.log(' 2 ');
@@ -363,8 +381,8 @@ export const SecretDraculaGame = {
     phasePeekPolicy: phasePeekPolicy,
   },
 
-  endif: (G) => {
-    if (isLose(G)) {
+  endIf: (G: IG, ctx: Ctx) => {
+    if (isLose(G, ctx)) {
       return { lose: true };
     }
     if (isWin(G)) {

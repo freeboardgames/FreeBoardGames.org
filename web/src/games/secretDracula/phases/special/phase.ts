@@ -8,13 +8,8 @@ import { IG, IPolicy } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
 
 export let phasePeekPolicy = {
-  onBegin: (G: IG, ctx: Ctx) => {
+  onBegin: (G: IG) => {
     //- console.log('starting phasePeekPolicy');
-    let p = G.lastMayorID;
-    let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phasePeekPolicy';
-    ctx.events.setActivePlayers(activePlayers);
-
     if (G.policyDraw.length < 3) {
       G.policyDraw.push(...G.policyDiscard);
       G.policyDiscard = <IPolicy[]>Array(0);
@@ -24,6 +19,14 @@ export let phasePeekPolicy = {
     G.policyPeek.push(G.policyDraw.pop());
 
     return G;
+  },
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      let p = G.lastMayorID;
+      let activePlayers = { value: {} };
+      activePlayers.value[p] = 'phasePeekPolicy';
+      ctx.events.setActivePlayers(activePlayers);
+    },
   },
   endIf: (G: IG) => {
     //- console.log('endIf phasePeekPolicy');
@@ -44,12 +47,14 @@ export let phasePeekPolicy = {
 };
 
 export let phaseInvestigate1 = {
-  onBegin: (G: IG, ctx: Ctx) => {
-    //- console.log('starting phaseInvestigate1');
-    let p = G.lastMayorID;
-    let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phaseInvestigate1';
-    ctx.events.setActivePlayers(activePlayers);
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      //- console.log('starting phaseInvestigate1');
+      let p = G.lastMayorID;
+      let activePlayers = { value: {} };
+      activePlayers.value[p] = 'phaseInvestigate1';
+      ctx.events.setActivePlayers(activePlayers);
+    },
   },
   endIf: (G: IG) => {
     //- console.log('endIf phaseInvestigate1');
@@ -70,12 +75,14 @@ export let phaseInvestigate1 = {
 };
 
 export let phaseInvestigate2 = {
-  onBegin: (G: IG, ctx: Ctx) => {
-    //- console.log('starting phaseInvestigate2');
-    let p = G.lastMayorID;
-    let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phaseInvestigate2';
-    ctx.events.setActivePlayers(activePlayers);
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      //- console.log('starting phaseInvestigate2');
+      let p = G.lastMayorID;
+      let activePlayers = { value: {} };
+      activePlayers.value[p] = 'phaseInvestigate2';
+      ctx.events.setActivePlayers(activePlayers);
+    },
   },
   endIf: (G: IG) => {
     //- console.log('endIf phaseInvestigate2');
@@ -96,14 +103,18 @@ export let phaseInvestigate2 = {
 };
 
 export let phaseSpecialElection = {
-  onBegin: (G: IG, ctx: Ctx) => {
-    //- console.log('starting phaseSpecialElection');
-    let p = G.lastMayorID;
-    let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phaseSpecialElection';
-    ctx.events.setActivePlayers(activePlayers);
+  onBegin: (G: IG) => {
     G.specialElection = -1;
     return G;
+  },
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      //- console.log('starting phaseSpecialElection');
+      let p = G.lastMayorID;
+      let activePlayers = { value: {} };
+      activePlayers.value[p] = 'phaseSpecialElection';
+      ctx.events.setActivePlayers(activePlayers);
+    },
   },
   endIf: (G: IG) => {
     //- console.log('endIf phaseSpecialElection');
@@ -127,12 +138,14 @@ export let phaseSpecialElection = {
 };
 
 export let phaseExecution = {
-  onBegin: (G: IG, ctx: Ctx) => {
-    //- console.log('starting phaseExecution');
-    let p = G.lastMayorID;
-    let activePlayers = { value: {} };
-    activePlayers.value[p] = 'phaseExecution';
-    ctx.events.setActivePlayers(activePlayers);
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      //- console.log('starting phaseExecution');
+      let p = G.lastMayorID;
+      let activePlayers = { value: {} };
+      activePlayers.value[p] = 'phaseExecution';
+      ctx.events.setActivePlayers(activePlayers);
+    },
   },
   endIf: (G: IG) => {
     //- console.log('endIf phaseExecution');

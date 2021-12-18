@@ -6,6 +6,7 @@ import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 export const ninemensmorrisGameDef: IGameDef = {
   code: 'ninemensmorris',
   name: 'Nine Mens Morris',
+  contributors: ['JosefKuchar'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
@@ -22,3 +23,5 @@ export const ninemensmorrisGameDef: IGameDef = {
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
 };
+
+export default ninemensmorrisGameDef;

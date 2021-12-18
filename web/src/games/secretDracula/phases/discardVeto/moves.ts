@@ -44,7 +44,7 @@ export function moveDiscardPriest(G: IG, ctx: Ctx, id: number, me: number): IG |
   };
 }
 
-export function moveWantVetoPriest(G: IG, ctx: Ctx, want: boolean, me: number): IG | 'INVALID_MOVE' {
+export function moveWantVetoPriest(G: IG, ctx: Ctx, me: number): IG | 'INVALID_MOVE' {
   return {
     ...G,
     wantVeto: true,

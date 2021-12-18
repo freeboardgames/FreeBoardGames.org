@@ -1,48 +1,63 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import FbgLogo from 'infra/common/components/base/media/fbg_logo_white_48.png';
 import Button from '@material-ui/core/Button';
 import MoreVert from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import FeedbackIcon from '@material-ui/icons/Feedback';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import { GAMES_MAP } from 'games';
-import { DesktopView } from 'infra/common/device/DesktopMobileView';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { Chat } from 'infra/chat/Chat';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { NextRouter, Link, withRouter } from 'infra/i18n';
+import { compose } from 'recompose';
+import { IOptionsItems } from 'gamesShared/definitions/options';
+import { home } from 'infra/navigation';
+import { getGameDefinition } from 'infra/game';
 
-interface IGameDarkSublayoutProps {
+export * from '../../definitions/options';
+
+interface IGameDarkSublayoutInnerProps {
+  dispatch: Dispatch;
+  router: NextRouter;
+}
+
+interface IGameDarkSublayoutOutterProps {
   children: React.ReactNode;
   optionsMenuItems?: () => IOptionsItems[];
-  allowWiderScreen?: boolean;
+  maxWidth?: string;
   gameArgs: IGameArgs;
+  avoidOverscrollReload?: boolean;
 }
+
+interface IGameDarkSublayoutProps extends IGameDarkSublayoutInnerProps, IGameDarkSublayoutOutterProps {}
 
 interface IGameDarkSublayoutState {
-  feedback: boolean;
   menuAnchorEl: any;
-  prevBgColor: string;
 }
 
-export interface IOptionsItems {
-  text: string;
-  onClick: () => void;
-}
+const isJest = process.env.JEST_WORKER_ID !== undefined;
 
-export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
-  constructor(props: IGameDarkSublayoutProps) {
-    super(props);
-    this.state = { feedback: null, menuAnchorEl: null, prevBgColor: document.body.style.backgroundColor };
+export class GameDarkSublayoutInternal extends React.Component<IGameDarkSublayoutProps, IGameDarkSublayoutState> {
+  state = { menuAnchorEl: null };
+
+  componentDidMount() {
     document.body.style.backgroundColor = 'black';
+    if (this.props.avoidOverscrollReload) {
+      document.body.style.overscrollBehavior = 'none';
+    }
   }
 
   componentWillUnmount() {
-    document.body.style.backgroundColor = this.state.prevBgColor;
+    if (this.props.avoidOverscrollReload) {
+      document.body.style.overscrollBehavior = 'auto';
+    }
   }
 
   render() {
     const isProdChannel = process.env.NODE_ENV === 'production';
-    const gameName = GAMES_MAP[this.props.gameArgs.gameCode].name;
+    const gameName = getGameDefinition(this.props.gameArgs.gameCode).name;
     let fbgTopLeftText;
     if (isProdChannel) {
       if (gameName) {
@@ -57,100 +72,92 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
         <Typography
           variant="h6"
           gutterBottom={true}
-          style={{ float: 'left', marginTop: '10px', backgroundColor: 'red', color: 'white' }}
+          style={{
+            float: 'left',
+            marginTop: '10px',
+            backgroundColor: 'red',
+            color: 'white',
+            whiteSpace: 'nowrap',
+          }}
         >
           &nbsp;{gameName}&nbsp;
         </Typography>
       );
     }
 
-    let feedbackButtonOrText;
-    if (this.state.feedback) {
-      feedbackButtonOrText = (
-        <Typography variant="h6" gutterBottom={true} style={{ float: 'right', paddingTop: '10px', color: 'white' }}>
-          Desktop View is Experimental.
-        </Typography>
-      );
-    } else {
-      feedbackButtonOrText = (
-        <DesktopView thresholdWidth={680}>
-          <Button
-            onClick={this._toggleFeedback}
-            aria-label="Desktop View is Experimental."
-            variant="outlined"
-            style={{ float: 'right', paddingTop: '14px' }}
-          >
-            <FeedbackIcon style={{ color: 'white' }} />
-          </Button>
-        </DesktopView>
-      );
-    }
-
     return (
-      <div>
+      <>
         <div
           style={{
-            position: 'fixed',
-            top: '0',
+            display: 'flex',
+            maxWidth: this.props.maxWidth || '500px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          <Link href={() => home()}>
+            <a style={{ textDecoration: 'none', display: 'flex' }}>
+              <img src={FbgLogo} alt="FreeBoardGames.org" style={{ paddingRight: '16px' }} />
+              {fbgTopLeftText}
+            </a>
+          </Link>
+          <div style={{ flexGrow: 1 }}></div>
+          {this.renderChatButton()}
+          {this.getOptionsMenuButton()}
+          {this.getOptionsMenuItems()}
+        </div>
+        <div
+          style={{
+            position: 'relative',
             width: '100%',
-            zIndex: 1,
+            height: 'calc(100vh - 49px)',
+            textAlign: 'center',
+            lineHeight: 'calc(100vh - 49px)',
           }}
         >
           <div
             style={{
-              maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
+              position: 'relative',
+              width: '100%',
+              maxWidth: this.props.maxWidth || '500px',
+              color: 'white',
+              display: 'inline-block',
+              verticalAlign: 'middle',
+              lineHeight: 'normal',
             }}
           >
-            <Link href="/">
-              <a style={{ float: 'left', textDecoration: 'none' }}>
-                <img src={FbgLogo} alt="FreeBoardGames.org" style={{ float: 'left', paddingRight: '16px' }} />
-                {fbgTopLeftText}
-              </a>
-            </Link>
-            {this._getOptionsMenuButton()}
-            {this._getOptionsMenuItems()}
-            {feedbackButtonOrText}
+            {this.props.children}
           </div>
         </div>
-        <div
-          style={{
-            position: 'fixed',
-            width: '100%',
-            maxWidth: this.props.allowWiderScreen ? '1000px' : '500px',
-            color: 'white',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          {this.props.children}
-        </div>
+      </>
+    );
+  }
+
+  private renderChatButton() {
+    if (typeof window === 'undefined' || isJest) {
+      return null;
+    }
+    const gameArgs = this.props.gameArgs;
+    if (gameArgs.mode !== GameMode.OnlineFriend) {
+      return null;
+    }
+    const matchId = this.props.router.query.matchId as string;
+    return (
+      <div style={{ float: 'right' }}>
+        <Chat channelType="match" channelId={matchId} dispatch={this.props.dispatch} />
       </div>
     );
   }
-  _getOptionsMenuButton() {
+
+  private getOptionsMenuButton() {
     if (this.props.optionsMenuItems) {
       return (
-        <Button
-          onClick={this._openOptionsMenu}
-          aria-label="Open options"
-          variant="outlined"
-          style={{ margin: '8px', float: 'right' }}
-        >
+        <Button onClick={this._openOptionsMenu} aria-label="Open options" variant="outlined">
           <MoreVert style={{ color: 'white' }} />
         </Button>
       );
     }
   }
-
-  _toggleFeedback = () => {
-    setTimeout(() => {
-      this.setState({ feedback: false });
-    }, 5000);
-    this.setState({ feedback: !this.state.feedback });
-  };
 
   _openOptionsMenu = (event: any) => {
     this.setState({ menuAnchorEl: event.currentTarget });
@@ -166,7 +173,7 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
     onClickFunc();
   };
 
-  _getOptionsMenuItems = () => {
+  private getOptionsMenuItems() {
     if (!this.props.optionsMenuItems) {
       return;
     }
@@ -183,5 +190,19 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
         {menuItems}
       </Menu>
     );
-  };
+  }
 }
+
+/* istanbul ignore next */
+const mapStateToProps = function (state) {
+  return {
+    user: { ...state.user },
+  };
+};
+
+const enhance = compose<IGameDarkSublayoutInnerProps, IGameDarkSublayoutOutterProps>(
+  withRouter,
+  connect(mapStateToProps),
+);
+
+export const GameDarkSublayout = enhance(GameDarkSublayoutInternal);

@@ -1,26 +1,28 @@
-import * as React from 'react';
-import { IGameArgs } from 'gamesShared/definitions/game';
+import { Ctx } from 'boardgame.io';
+import { AutoHide } from 'gamesShared/components/animation/AutoHide';
+import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
+import { IGameArgs } from 'gamesShared/definitions/game';
+import AlertLayer from 'infra/common/components/alert/AlertLayer';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import * as React from 'react';
+import { compose } from 'recompose';
+import css from './board.module.css';
+import { BButtons } from './components/bbuttons';
+import { BDeck } from './components/bdeck';
+import { BHand } from './components/bhand';
+import { BLog } from './components/blog';
+import { BNameBadge } from './components/bnamebadge';
+import { BPiles } from './components/bpiles';
+import { BScore } from './components/bscore';
+import { BToken } from './components/btoken';
+import { BTrash } from './components/btrash';
+import { isWin } from './endconditions';
 import { IG } from './interfaces';
 
-import { BScore } from './components/bscore';
-import { BHand } from './components/bhand';
-import { BTrash } from './components/btrash';
-import { BPiles } from './components/bpiles';
-import { BToken } from './components/btoken';
-import { BDeck } from './components/bdeck';
-import { BButtons } from './components/bbuttons';
-import { BNameBadge } from './components/bnamebadge';
-import { BLog } from './components/blog';
-import { Ctx } from 'boardgame.io';
-import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
 
-import css from './board.css';
-import { AutoHide } from 'gamesShared/components/animation/AutoHide';
-import AlertLayer from 'infra/common/components/alert/AlertLayer';
-import { isWin } from './endconditions';
-
-interface IBoardProps {
+interface IBoardOutterProps {
   G: IG;
   ctx: Ctx;
   moves: any;
@@ -32,7 +34,7 @@ interface IBoardState {
   showLogs: boolean;
 }
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
+export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, IBoardState> {
   state: IBoardState = {
     showLogs: false,
   };
@@ -44,7 +46,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return (
       <>
         {this.renderNotification()}
-        <GameLayout gameArgs={this.props.gameArgs} allowWiderScreen={true} optionsMenuItems={this._getOptionsMenuItems}>
+        <GameLayout gameArgs={this.props.gameArgs} maxWidth="1000px" optionsMenuItems={this._getOptionsMenuItems}>
           {this.renderBoard()}
         </GameLayout>
       </>
@@ -172,7 +174,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     const options = [
       {
         onClick: this._toggleLogs,
-        text: `${this.state.showLogs ? 'Hide' : 'Show'} logs`,
+        text: this.state.showLogs ? this.props.translate('hide_logs') : this.props.translate('show_logs'),
       },
     ];
     return options;
@@ -182,3 +184,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     this.setState({ showLogs: !this.state.showLogs });
   };
 }
+
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
+
+export const Board = enhance(BoardInternal);

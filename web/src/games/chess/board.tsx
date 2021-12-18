@@ -30,13 +30,18 @@ import Rook from './pieces/rook';
 import { playSound } from './sound';
 import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
 import Typography from '@material-ui/core/Typography';
+import { isFirstPersonView } from 'gamesShared/helpers/GameUtil';
+import { WithCurrentGameTranslation, withCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
 const COL_NAMES = 'abcdefgh';
 const HIGHLIGHTED_COLOR = 'green';
 const MOVABLE_COLOR = 'palegreen';
 const MOVED_COLOR = '#CCE5FF';
 
-interface IBoardProps {
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
+interface IBoardOutterProps {
   G: any;
   ctx: any;
   moves: any;
@@ -47,7 +52,7 @@ interface IBoardProps {
   gameArgs: IGameArgs;
 }
 
-export class Board extends React.Component<IBoardProps, {}> {
+export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutterProps, {}> {
   chess = Chess();
   state = {
     selected: '',
@@ -74,9 +79,14 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
     return (
       <GameLayout optionsMenuItems={this._getOptionsMenuItems} gameArgs={this.props.gameArgs}>
-        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+        <Typography
+          data-testid="status"
+          variant="h5"
+          style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}
+        >
           {this._getStatus()}
         </Typography>
+
         <Checkerboard
           invert={this.getPlayer() === 'b'}
           highlightedSquares={this._getHighlightedSquares()}
@@ -241,11 +251,12 @@ export class Board extends React.Component<IBoardProps, {}> {
   };
 
   _getOptionsMenuItems = () => {
+    const { translate } = this.props;
     const curSoundPref = this._getSoundPref();
     const newSoundPref = !curSoundPref;
     const option: IOptionsItems = {
       onClick: this._toggleSoundPref,
-      text: `${newSoundPref ? 'Enable' : 'Disable'} sound`,
+      text: `${newSoundPref ? translate('enable') : translate('disable')} sound`,
     };
     const options = [option];
     return options;
@@ -269,51 +280,50 @@ export class Board extends React.Component<IBoardProps, {}> {
   }
 
   _getGameOver() {
-    const gameArgs = this.props.gameArgs;
+    const { ctx, gameArgs, translate } = this.props;
     const mode = gameArgs.mode;
     if (mode === GameMode.OnlineFriend || mode === GameMode.AI) {
-      if (this.props.ctx.gameover === this.getPlayer()) {
-        return 'you won';
-      } else if (this.props.ctx.gameover === 'd') {
-        return 'draw';
+      if (ctx.gameover === this.getPlayer()) {
+        return translate('you_won');
+      } else if (ctx.gameover === 'd') {
+        return translate('draw');
       } else {
-        return 'you lost';
+        return translate('you_lost');
       }
     } else {
       // Local game
-      switch (this.props.ctx.gameover) {
+      switch (ctx.gameover) {
         case 'w':
-          return 'white won';
+          return translate('white_won');
         case 'b':
-          return 'black won';
+          return translate('black_won');
         case 'd':
-          return 'draw';
+          return translate('draw');
       }
     }
   }
 
   _getStatus() {
+    const { gameArgs, playerID, translate } = this.props;
+
+    if (this.chess.in_check()) {
+      return translate('check');
+    }
+
     // Online Multiplayer or AI
-    const mode = this.props.gameArgs.mode;
-    if (this.props.gameArgs && (mode === GameMode.OnlineFriend || mode === GameMode.AI)) {
-      if (this.chess.in_check()) {
-        return 'CHECK';
-      }
+    if (isFirstPersonView(gameArgs, playerID)) {
       if (this.chess.turn() === this.getPlayer()) {
-        return 'YOUR TURN';
+        return translate('your_turn');
       } else {
-        return 'Waiting for opponent...';
+        return translate('waiting_for_opponent');
       }
     } else {
       // Local game
-      if (this.chess.in_check()) {
-        return 'CHECK';
-      }
       switch (this.chess.turn()) {
         case 'w':
-          return "White's turn";
+          return translate('white_s_turn');
         case 'b':
-          return "Black's turn";
+          return translate('black_s_turn');
       }
     }
   }
@@ -379,3 +389,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     });
   }
 }
+
+const enhance = compose<IBoardInnerProps, IBoardOutterProps>(withCurrentGameTranslation);
+
+export const Board = enhance(BoardInternal);

@@ -1,0 +1,116 @@
+.Player {
+  margin-right: 0.5em;
+  border: 2px solid transparent;
+  border-radius: 0.25em;
+  padding: 0.25em;
+}
+
+.Player.CurrentTurn {
+  border-color: var(--mergers-color);
+}
+
+.Player.YourTurn {
+  border-color: var(--mergers-highlight-green);
+}
+
+.NumberCell {
+  text-align: center;
+}
+
+.RowHeader {
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100px;
+}
+
+.ShadedRow {
+  color: var(--mergers-medium-grey);
+}
+
+.AllPlayerStateTable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.AllPlayerStateTable table {
+  border-spacing: 0px;
+}
+
+.AllPlayerStateTable table th.ChainHeader {
+  border: 2px solid var(--mergers-background-color);
+  border-radius: 8px;
+  color: var(--mergers-background-color);
+}
+
+.AllPlayerStateTable table td.BorderTop {
+  border-top: 1px solid var(--mergers-medium-grey);
+  border-radius: 0px;
+}
+
+.AllPlayerStateTable td {
+  padding: 4px 6px;
+}
+
+.AllPlayerStateTable tr.PlayerRow {
+  font-weight: bold;
+}
+
+.AllPlayerStateTable th {
+  padding: 4px 6px;
+}
+
+@media only screen and (min-width: 601px) {
+  .RowHeader { max-width: 200px; }
+}
+
+@media only screen and (max-width: 600px) {
+  .AllPlayerStateTable { font-size: 18px; }
+  .RowHeader { max-width: 88px; }
+  .AllPlayerStateTable td { padding: 4px; }
+  .AllPlayerStateTable th { padding: 4px; }
+}
+
+@media only screen and (max-width: 350px) {
+  .AllPlayerStateTable { font-size: 14px; }
+  .RowHeader { max-width: 72px; }
+  .AllPlayerStateTable td { padding: 4px; }
+  .AllPlayerStateTable th { padding: 4px; }
+}
+
+@media only screen and (max-width: 300px) {
+  .AllPlayerStateTable { font-size: 12px; }
+  .RowHeader { max-width: 60px; }
+  .AllPlayerStateTable td { padding: 4px; }
+  .AllPlayerStateTable th { padding: 4px; }
+}
+
+.Toro {
+  background-color: var(--chain-color-toro);
+}
+
+.Lucius {
+  background-color: var(--chain-color-lucius);
+}
+
+.Festivus {
+  background-color: var(--chain-color-festivus);
+}
+
+.Amore {
+  background-color: var(--chain-color-amore);
+}
+
+.Worldlywise {
+  background-color: var(--chain-color-worldlywise);
+}
+
+.Continuum {
+  background-color: var(--chain-color-continuum);
+}
+
+.Imperative {
+  background-color: var(--chain-color-imperative);
+}

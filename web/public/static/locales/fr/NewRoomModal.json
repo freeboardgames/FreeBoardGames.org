@@ -1,0 +1,8 @@
+{
+  "loading": "Chargement...",
+  "error_while_creating_room": "Erreur lors de la création d'une salle",
+  "new_room": "Salle nouvelle",
+  "game": "Jeu <b>{{ name }}</b>",
+  "cancel": "Annuler",
+  "create": "Créer"
+}

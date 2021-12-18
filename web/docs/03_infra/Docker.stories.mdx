@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Documentation/Infrastructure/Docker Setup" />
+
+# Docker Setup
+
+To build an docker image all dependencies must be installed and installed before the docker build process. Run the gameserver  once locally to compile.
+
+```bash
+yarn install && yarn run gen:games
+```
+
+First build a the common `fbg-common` docker image.
+
+```bash
+docker build -t fbg-common:latest ./common
+```
+
+Now the images from the compose file can be build.
+
+```bash
+cp docker-compose.yml.example docker-compose.yml
+docker-compose build
+```
+
+The previous steps can be also called by a setup script:
+
+```bash
+./docker-build.sh
+```
+
+
+After that you can push the images to a repository:
+
+```bash
+./docker-build.sh -p
+```
+
+After the build process the server can be started via docker compose.
+
+```bash
+docker-compose up -d
+```
+
+Usage:
+
+```bash
+Usage: ./docker-build.sh -[d|b|e|i|r|h]
+
+   -d,    Installs dependencies and run the webserver and backend.
+   -b,    Build docker image
+   -p,    Push docker images
+   -e,    Export build docker images
+   -i,    Import docker images
+   -r,    Prune docker images
+   -h,    Print this help text
+
+If the script will be called without parameters, it will run:
+    ./docker-build.sh -d -b
+```

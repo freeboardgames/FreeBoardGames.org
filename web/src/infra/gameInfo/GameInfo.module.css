@@ -1,0 +1,20 @@
+.RootWrapper {
+    padding: 18px 8px;
+    display: flex;
+}
+
+.LeftCol {
+    flex: 60%;
+    padding-right: 32px;
+    max-width: 600px;
+}
+
+.RightCol {
+    flex: 55%;
+    padding: 8px;
+}
+
+.InstructionsWrapper {
+  max-height: 400px;
+  overflow-y: auto;
+}

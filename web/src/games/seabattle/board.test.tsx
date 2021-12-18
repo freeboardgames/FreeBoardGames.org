@@ -4,10 +4,11 @@ import { SeabattleGame } from './game';
 import { Client } from 'boardgame.io/client';
 import { Client as ReactClient } from 'boardgame.io/react';
 import { GameMode } from 'gamesShared/definitions/mode';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { Battle } from './Battle';
+import { makeMount } from 'test/utils/enzymeUtil';
+import { ShipsPlacement } from './ShipsPlacement';
 
-Enzyme.configure({ adapter: new Adapter() });
+const mount = makeMount({ gameCode: 'seabattle' });
 
 const BoardTest = (props: any) => (
   <Board
@@ -27,8 +28,8 @@ test('set ships', () => {
     debug: false,
     board: BoardTest,
   }) as any;
-  const comp = Enzyme.mount(<App playerID={'0'} gameID={'foo'} />);
-  comp.find('button').at(2).simulate('click');
+  const comp = mount(<App playerID={'0'} gameID={'foo'} />);
+  comp.find('button').at(1).simulate('click');
   expect(comp.html()).toContain('Waiting');
 });
 
@@ -37,7 +38,7 @@ test('start', () => {
     game: SeabattleGame,
   });
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
+  const comp = mount(
     <Board
       G={state0.G}
       ctx={state0.ctx}
@@ -52,7 +53,7 @@ test('start', () => {
     />,
   );
   // First page must have some ships
-  expect(comp.find('ShipsPlacement').length).toEqual(1);
+  expect(comp.find(ShipsPlacement).length).toEqual(1);
   comp.find('button').at(1).simulate('click');
 });
 
@@ -62,7 +63,7 @@ test('waiting opponent', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, activePlayers: { '1': null } } };
-  const comp = Enzyme.mount(
+  const comp = mount(
     <Board
       G={state1.G}
       ctx={state1.ctx}
@@ -86,7 +87,7 @@ test('gameover - won', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
-  const comp = Enzyme.mount(
+  const comp = mount(
     <Board
       G={state1.G}
       ctx={state1.ctx}
@@ -110,7 +111,7 @@ test('gameover - lost', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
-  const comp = Enzyme.mount(
+  const comp = mount(
     <Board
       G={state1.G}
       ctx={state1.ctx}
@@ -134,7 +135,7 @@ test('battle', () => {
   });
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, phase: 'play' } };
-  const comp = Enzyme.mount(
+  const comp = mount(
     <Board
       G={state1.G}
       ctx={state1.ctx}
@@ -149,5 +150,5 @@ test('battle', () => {
     />,
   );
   // First page must have some ships
-  expect(comp.find('Battle').length).toEqual(1);
+  expect(comp.find(Battle).length).toEqual(1);
 });

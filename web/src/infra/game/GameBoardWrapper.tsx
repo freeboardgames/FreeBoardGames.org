@@ -1,44 +1,34 @@
-import React from 'react';
 import { IGameArgs } from 'gamesShared/definitions/game';
-import AlertLayer from '../common/components/alert/AlertLayer';
-import Typography from '@material-ui/core/Typography';
+import { GameMode } from 'gamesShared/definitions/mode';
+import { notifyOnTurnChange } from 'infra/notification/hoc';
+import React, { FC } from 'react';
+import { compose } from 'recompose';
+import { ConnectionLost as RawConnectionLost } from './ConnectionLost';
+import { BoardProps } from 'boardgame.io/react';
 
 export interface IBoardWrapperArgs {
   gameArgs: IGameArgs;
   board: any;
 }
 
-export function gameBoardWrapper(args: IBoardWrapperArgs) {
-  class Board extends React.Component<any, {}> {
-    render() {
-      const props: any = {
-        ...this.props,
-        gameArgs: args.gameArgs,
-      };
-      const child = React.createElement(args.board, props);
-      let alert;
-      if (!this.props.isConnected) {
-        alert = this._getConnectionLost();
-      }
-      if (!alert) {
-        return child;
-      }
-      return (
-        <div style={{ width: '100%', height: '100%' }}>
-          {child}
-          {alert}
-        </div>
-      );
-    }
+export function gameBoardWrapper({ gameArgs, board: RawBoard }: IBoardWrapperArgs) {
+  const enhance = compose<BoardProps, BoardProps>(notifyOnTurnChange(gameArgs));
 
-    _getConnectionLost() {
-      return (
-        <AlertLayer>
-          <Typography variant="h4">Connection lost</Typography>
-          <Typography variant="body1">Trying to connect...</Typography>
-        </AlertLayer>
-      );
-    }
-  }
-  return Board;
+  const ConnectionLost: FC<BoardProps> = (props) => {
+    return (
+      <div style={{ width: '100%', height: '100%' }}>
+        <RawBoard {...props} />
+        <RawConnectionLost />
+      </div>
+    );
+  };
+
+  const Board: FC<BoardProps> = (props) => {
+    const boardProps = { ...props, gameArgs };
+    const isConnectionLost = !props.isConnected && gameArgs.mode !== GameMode.LocalFriend;
+    if (isConnectionLost) return <ConnectionLost {...boardProps} />;
+    return <RawBoard {...boardProps} />;
+  };
+
+  return enhance(Board);
 }

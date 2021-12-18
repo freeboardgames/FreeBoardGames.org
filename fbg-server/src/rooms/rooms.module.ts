@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, HttpModule, Module } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoomMembershipEntity } from './db/RoomMembership.entity';
@@ -9,12 +9,15 @@ import { PubSub } from 'graphql-subscriptions';
 import { AuthModule } from '../internal/auth/auth.module';
 import { LobbyResolver } from './lobby.resolver';
 import { LobbyService } from './lobby.service';
+import { FbgPubSubModule } from '../internal/FbgPubSubModule';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([RoomMembershipEntity, RoomEntity]),
-    UsersModule,
+    forwardRef(() => UsersModule),
     AuthModule,
+    FbgPubSubModule,
+    HttpModule,
   ],
   providers: [RoomsResolver, RoomsService, LobbyResolver, LobbyService, PubSub],
   exports: [RoomsService, LobbyService],

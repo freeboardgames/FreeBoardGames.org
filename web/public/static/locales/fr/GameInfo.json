@@ -1,0 +1,5 @@
+{
+  "breadcrumb": "Jouer",
+  "play": "Jouer {{name}}",
+  "missing_translation_warning": "Ce jeu n'est pas encore entièrement traduit dans votre langue. <docs>Cliquez ici</docs> pour savoir comment nous aider à le traduire."
+}

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Release.Name }}-web
+  name: {{ .Release.Name }}-web
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: {{ .Release.Name }}-web
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

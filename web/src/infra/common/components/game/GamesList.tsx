@@ -1,81 +1,52 @@
-import React from 'react';
-import { GAMES_LIST } from 'games';
+/* eslint-disable react/prop-types */
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
+import { getAllGames } from 'infra/game';
+import { play } from 'infra/navigation';
+import React, { Fragment, useMemo, useState } from 'react';
 import { GameCard } from './GameCard';
-import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
+import { Container, Games, Header, Navigable } from './GamesList.ui';
 import SearchBox from './SearchBox';
-import { DesktopView, MobileView } from 'infra/common/device/DesktopMobileView';
-
-interface State {
-  searchQuery?: string;
-}
 
 interface Props {
   showDevOnly?: boolean;
+  gamePickedCallback?: (game: IGameDef) => void;
+  hideHeader?: boolean;
 }
 
-export class GamesList extends React.Component<Props, State> {
-  state = { searchQuery: '' };
+export function GamesList({ hideHeader, showDevOnly, gamePickedCallback }: Props) {
+  const [query, setQuery] = useState('');
+  const games = useFilteredGamesList(query, { showDevOnly });
 
-  render() {
-    const { searchQuery } = this.state;
-    let gamesList: JSX.Element[];
-    let filteredGamesList: IGameDef[];
+  const Wrapper = hideHeader ? Fragment : Container;
 
-    filteredGamesList = this.getFilteredGamesList();
+  return (
+    <Wrapper>
+      <Header showDevOnly={showDevOnly}>
+        <SearchBox onInputChange={(value: string) => setQuery(value)} />
+      </Header>
+      <Games>
+        {games.map((game) => (
+          <Navigable key={game.code} href={play(game)} onClick={gamePickedCallback?.bind(null, game)}>
+            <GameCard game={game} isLink={true} />
+          </Navigable>
+        ))}
+      </Games>
+    </Wrapper>
+  );
+}
 
-    if (searchQuery) {
-      const searchQueryL = searchQuery.toLowerCase();
-      filteredGamesList = filteredGamesList.filter((game) => {
-        const nameL = game.name.toLowerCase();
-        const descL = game.description.toLowerCase();
-        const descTagL = game.descriptionTag.toLowerCase();
-        if (nameL.includes(searchQueryL)) return true;
-        if (descL.includes(searchQueryL)) return true;
-        if (descTagL.includes(searchQueryL)) return true;
-      });
-    }
-
-    gamesList = filteredGamesList.map((game) => (
-      <Link href={`/play/[gameCode]`} as={`/play/${game.code}`} key={game.code}>
-        <a style={{ textDecoration: 'none', flex: 1, minWidth: '300px', maxWidth: '380px', margin: '8px' }}>
-          <GameCard game={game} isLink={true} />
-        </a>
-      </Link>
-    ));
-    return (
-      <div style={{ marginBottom: '16px' }}>
-        <DesktopView>
-          <div style={{ display: 'inline' }}>
-            <SearchBox handleSearchOnChange={this._handleSearchOnChange} style={{ float: 'right', width: '235px' }} />
-            <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
-              {this.getTitle()}
-            </Typography>
-          </div>
-        </DesktopView>
-
-        <MobileView>
-          <Typography component="h2" variant="h6" style={{ marginBottom: '16px', marginLeft: '6px' }}>
-            {this.getTitle()}
-          </Typography>
-          <SearchBox handleSearchOnChange={this._handleSearchOnChange} />
-        </MobileView>
-        <div style={{ margin: '0 4px', display: 'flex', flexWrap: 'wrap' }}>{gamesList}</div>
-      </div>
-    );
-  }
-  _handleSearchOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchQuery = event.target.value;
-    this.setState({ searchQuery });
-  };
-
-  getTitle() {
-    return this.props.showDevOnly ? 'Games In Development' : 'Games';
-  }
-
-  getFilteredGamesList() {
-    const status = this.props.showDevOnly ? IGameStatus.IN_DEVELOPMENT : IGameStatus.PUBLISHED;
-    return GAMES_LIST.filter((gameDef) => gameDef.status === status);
-  }
+function useFilteredGamesList(searchQuery: string, options: { showDevOnly?: boolean }) {
+  return useMemo(() => {
+    const status = options.showDevOnly ? IGameStatus.IN_DEVELOPMENT : IGameStatus.PUBLISHED;
+    return getAllGames().filter((game) => {
+      if (searchQuery) {
+        return [
+          game.name.toLowerCase(),
+          game.description.toLowerCase(),
+          game.descriptionTag.toLowerCase(),
+        ].some((text) => text.includes(searchQuery.toLowerCase()));
+      }
+      return game.status === status;
+    });
+  }, [searchQuery, options.showDevOnly]);
 }

@@ -2,20 +2,14 @@ import { moveVoteYes, moveVoteNo, moveOKVote } from './moves';
 import { IG } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
 
+/*
+NOTE: The way that players are moved into phases is very bad/confusing.
+The issue is that somehow the endIf function gets called before onBegin, and
+sometimes I had issues with no active players. Therefore there is a lot
+of explicit moving of players into phases.
+*/
+
 export let phaseVotePriest = {
-  onBegin: (G: IG, ctx: Ctx) => {
-    //- console.log('starting phaseVotePriest');
-    let activePlayers = { value: {} };
-    for (let i = 0; i < ctx.numPlayers; i++) {
-      if (i in G.deadIDs) {
-        continue;
-      } else {
-        activePlayers.value[i] = 'phaseVotePriest';
-      }
-    }
-    ctx.events.setActivePlayers(activePlayers);
-    return G;
-  },
   moves: {
     moveVoteYes: {
       move: moveVoteYes,
@@ -26,27 +20,44 @@ export let phaseVotePriest = {
       client: false,
     },
   },
-  endIf: (G: IG, ctx: Ctx) => {
-    let activePlayers = { value: {} };
-    let count = 0;
-    for (let i = 0; i < ctx.numPlayers; i++) {
-      if (i in G.deadIDs) {
-        // activePlayers.value[i] = 'waiting';
-        continue;
-      } else if (G.votesYes[i] || G.votesNo[i]) {
-        // already voted
-        continue;
-      } else {
-        count += 1;
-        activePlayers.value[i] = 'phaseVotePriest';
+  turn: {
+    onBegin: (G: IG, ctx: Ctx) => {
+      //- console.log('starting phaseVotePriest');
+      let activePlayers = { value: {} };
+
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.deadIDs.includes(i)) {
+          continue;
+        } else {
+          activePlayers.value[i] = 'phaseVotePriest';
+        }
       }
-    }
 
-    if (count > 0) {
-      // fix for not running into Issue with no active players
       ctx.events.setActivePlayers(activePlayers);
-    }
+      return G;
+    },
+    onMove: (G: IG, ctx: Ctx) => {
+      let activePlayers = { value: {} };
+      let count = 0;
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.deadIDs.includes(i)) {
+          continue;
+        } else if (G.votesYes[i] || G.votesNo[i]) {
+          // already voted
+          continue;
+        } else {
+          count += 1;
+          activePlayers.value[i] = 'phaseVotePriest';
+        }
+      }
 
+      if (count > 0) {
+        // fix for not running into Issue with no active players
+        ctx.events.setActivePlayers(activePlayers);
+      }
+    },
+  },
+  endIf: (G: IG, ctx: Ctx) => {
     let yesVotes = G.votesYes.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
@@ -81,17 +92,25 @@ export let phaseVotePriest = {
 
 export let phaseEndVotePriest = {
   turn: {
-    activePlayers: { all: 'phaseEndVotePriest', moveLimit: 1 },
+    activePlayers: { all: 'phaseEndVotePriest', maxMoves: 1 },
+    onBegin: (G, ctx) => {
+      let activePlayers = { value: {} };
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.deadIDs.includes(i)) {
+          continue;
+        }
+        if (G.voteOks[i] == true) {
+          continue;
+        }
+        activePlayers.value[i] = 'phaseEndVotePriest';
+      }
+
+      ctx.events.setActivePlayers(activePlayers);
+    },
   },
   onBegin: (G, ctx) => {
     ////- console.log('starting phaseEndVotePriest');
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
-
-    for (let i = 0; i < ctx.numPlayers; i++) {
-      if (i in G.deadIDs) {
-        G.voteOks[i] = true;
-      }
-    }
     return G;
   },
   moves: {
@@ -99,10 +118,24 @@ export let phaseEndVotePriest = {
       move: moveOKVote,
       client: false,
     },
+    onBegin: (G, ctx) => {
+      // EXPLICIT SETTING
+      let activePlayers = { value: {} };
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.deadIDs.includes(i)) {
+          continue;
+        }
+        if (G.voteOks[i] == true) {
+          continue;
+        }
+        activePlayers.value[i] = 'phaseEndVotePriest';
+      }
+      ctx.events.setActivePlayers(activePlayers);
+    },
   },
   endIf: (G: IG, ctx: Ctx) => {
     //- console.log('endIf phaseEndVotePriest');
-    let alive_players = ctx.numPlayers; //- G.deadIDs.reduce((prev: number, curr: number) => { return curr == -1 ? prev : prev + 1},0)
+    let alive_players = ctx.numPlayers - G.deadIDs.length;
     let ok_count = G.voteOks.reduce((prev: number, curr: boolean) => {
       return curr == true ? prev + 1 : prev;
     }, 0);
@@ -123,9 +156,12 @@ export let phaseEndVotePriest = {
     G.voteOks = <boolean[]>Array(ctx.numPlayers).fill(false);
     if (G.voteCountYes > G.voteCountNo) {
       G.electionTracker = 0;
+      G.lastMayorID = G.mayorID;
+      G.lastPriestID = G.priestID;
     }
     G.voteCountYes = -1;
     G.voteCountNo = -1;
+
     return G;
   },
 };

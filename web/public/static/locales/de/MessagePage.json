@@ -1,0 +1,8 @@
+{
+  "go_home": "Nach Hause",
+  "game_not_found": "Spiel nicht gefunden",
+  "invalid_game_mode": "Ungültiger Spielmodus",
+  "connecting": "Verbinde...",
+  "failed_to_download": "Fehler beim Download von {{ name }}",
+  "downloading": "Downloade {{ name }}"
+}

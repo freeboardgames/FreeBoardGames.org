@@ -17,7 +17,7 @@ export class Board extends React.Component<IBoardProps, {}> {
   render() {
     return (
       <GameLayout gameArgs={this.props.gameArgs}>
-        <ACardTable G={this.props.G} ctx={this.props.ctx} />
+        <ACardTable G={this.props.G} ctx={this.props.ctx} moves={this.props.moves} playerID={this.props.playerID} />
       </GameLayout>
     );
   }

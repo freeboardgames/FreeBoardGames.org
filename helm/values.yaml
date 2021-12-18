@@ -1,0 +1,34 @@
+domain: my-fbg.info         # For prod, use freeboardgames.org
+
+images:
+  imagePullPolicy: Never    # For prod, use Always
+  web: fbg-web              # For prod, use freeboardgames/web
+  fbgServer: fbg-server     # For prod, use freeboardgames/fbg-server
+  fbgBackuper: fbg-backuper # For prod, use freeboardgames/fbg-backuper
+
+secrets:
+  gcpCredsBase64: null      # Fill base64 encoded Google cloud credentials file.
+
+replicas:
+  web: 2
+  fbgServer: 2
+  bgio: 2
+
+fbgServer:
+  jwtSecret: SECRET_TO_SIGN_JWT
+  discordLetsPlayWebhook: https://www.freeboardgames.org # For prod, use valid webhook
+  forceDbSync: true       # For prod, use false
+
+postgresql:
+  postgresqlPostgresPassword: PG_ROOT_PASSWORD
+  postgresqlUsername: fbgUser
+  postgresqlPassword: PG_DB_PASSWORD
+  postgresqlDatabase: fbgDb
+  service:
+    port: 5432
+  volumePermissions:
+    enabled: true
+
+redis:
+  auth:
+    password: REDIS_FBG_PASSWORD
