@@ -14,7 +14,7 @@ import { WithCurrentGameTranslation, withCurrentGameTranslation } from 'infra/i1
 import { compose } from 'recompose';
 import { snakeCase } from 'lodash';
 
-interface IBoardInnerProps extends WithCurrentGameTranslation {}
+interface IBoardInnerProps extends WithCurrentGameTranslation { }
 interface IBoardOutterProps {
   G: IG;
   ctx: Ctx;
@@ -282,7 +282,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
     }
 
     // provide dummy function that accepts one argument
-    return () => {};
+    return () => { };
   };
 
   _renderPhaseReleatedMessage = () => {
@@ -417,7 +417,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
     }
 
     const typogStyles = { marginRight: '10px', marginLeft: '10px' };
-    
+
     return (
       <>
         {Object.keys(message).map((color, ic) => {
@@ -440,16 +440,16 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
                     {message[color]}
                   </Typography>
 
-		: message[color].map((m, im) => (
-                  <Typography
-                    key={`sd_mtext_${phaseName + (this.state.hintKey || '')}_${ic}_${im}`}
-                    align="left"
-                    variant="body1"
-                    style={typogStyles}
-                  >
-                    {m}
-                  </Typography>
-                ))}
+                  : message[color].map((m, im) => (
+                    <Typography
+                      key={`sd_mtext_${phaseName + (this.state.hintKey || '')}_${ic}_${im}`}
+                      align="left"
+                      variant="body1"
+                      style={typogStyles}
+                    >
+                      {m}
+                    </Typography>
+                  ))}
               </>
             </Box>
           ) : null;
