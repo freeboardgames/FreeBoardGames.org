@@ -430,16 +430,27 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
               padding="7px"
             >
               <>
-                {message[color].map((m, im) => (
+                {typeof message[color] === 'string' ? (
                   <Typography
-                    key={`sd_mtext_${phaseName + (this.state.hintKey || '')}_${ic}_${im}`}
+                    key={`sd_mtext_${phaseName + (this.state.hintKey || '')}_${ic}_${message[color]}`}
                     align="left"
                     variant="body1"
                     style={typogStyles}
                   >
-                    {m}
+                    {message[color]}
                   </Typography>
-                ))}
+                ) : (
+                  message[color].map((m, im) => (
+                    <Typography
+                      key={`sd_mtext_${phaseName + (this.state.hintKey || '')}_${ic}_${im}`}
+                      align="left"
+                      variant="body1"
+                      style={typogStyles}
+                    >
+                      {m}
+                    </Typography>
+                  ))
+                )}
               </>
             </Box>
           ) : null;

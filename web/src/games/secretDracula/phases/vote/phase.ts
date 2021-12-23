@@ -71,7 +71,6 @@ export let phaseVotePriest = {
     }
     return false;
   },
-
   onEnd: (G, ctx) => {
     //- console.log('ending phaseVotePriest');
     let yesVotes = G.votesYes.reduce((a, b) => {
