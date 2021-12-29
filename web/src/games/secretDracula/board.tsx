@@ -326,7 +326,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
           );
           message.text = translate('ok_to_continue').split('\n');
         } else {
-          message.text = translate('waiting_for_other_players_to_click_okay.').split('\n');
+          message.text = translate('phase_end_vote_priest.waiting_for_other_players_to_click_okay').split('\n');
         }
         break;
 
@@ -345,7 +345,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
             message.secondary = translate('phase_discard.priest_veto_proposal', { playerTag }).split('\n');
           }
         } else {
-          message.text = translate('phase_discard.wait_to_discard_a_sample').split('\n');
+          message.text = translate('phase_discard.wait_to_discard_a_sample', { playerTag }).split('\n');
         }
 
         break;

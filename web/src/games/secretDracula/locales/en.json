@@ -108,7 +108,7 @@
     "you_must_discard_one_sample": "As the {{ playerTag }}, you must discard one  $t(cname.sample).",
     "click_to_discard": "$t(symbol.bad_po) is for $t(cname.vampires) and $t(symbol.good_po) is for $t(cname.villagers).\nClick on the $t(cname.sample) you want to discard,",
     "priest_veto_proposal": "You may also propse a Veto.",
-    "wait_to_discard_a_sample": "Wait for the ${playerTag} to discard a $t(cname.sample)..."
+    "wait_to_discard_a_sample": "Wait for the {{ playerTag }} to discard a $t(cname.sample)..."
   },
 
   "phase_veto_mayor": {
