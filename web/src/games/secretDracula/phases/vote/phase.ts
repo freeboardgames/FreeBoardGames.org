@@ -92,7 +92,7 @@ export let phaseVotePriest = {
 
 export let phaseEndVotePriest = {
   turn: {
-    activePlayers: { all: 'phaseEndVotePriest', maxMoves: 1 },
+    // activePlayers: { all: 'phaseEndVotePriest', maxMoves: 1 },
     onBegin: (G, ctx) => {
       let activePlayers = { value: {} };
       for (let i = 0; i < ctx.numPlayers; i++) {
@@ -104,8 +104,25 @@ export let phaseEndVotePriest = {
         }
         activePlayers.value[i] = 'phaseEndVotePriest';
       }
-
       ctx.events.setActivePlayers(activePlayers);
+    },
+    onMove: (G, ctx) => {
+      let activePlayers = { value: {} };
+      let count = 0;
+
+      for (let i = 0; i < ctx.numPlayers; i++) {
+        if (G.deadIDs.includes(i)) {
+          continue;
+        }
+        if (G.voteOks[i] == true) {
+          continue;
+        }
+        count += 1;
+        activePlayers.value[i] = 'phaseEndVotePriest';
+      }
+      if (count > 0) {
+        ctx.events.setActivePlayers(activePlayers);
+      }
     },
   },
   onBegin: (G, ctx) => {
