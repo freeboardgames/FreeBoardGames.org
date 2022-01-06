@@ -29,7 +29,13 @@ export function useConfigBuilder() {
     settingsService: SettingsService,
   ): ClientConfig => {
     const buildGame = (gameAI) => {
-      if (mode === GameMode.OnlineFriend) return config.bgioGame;
+      if (mode === GameMode.OnlineFriend)
+        return {
+          ...config.bgioGame,
+          // the statistical distribution of cards on Freeboardgames.org seems to be strange,
+          // so test a different seeding approach (instead of the BGIO default based on Date.now):
+          seed: Math.random(),
+        };
 
       const customizations = settingsService.getGameSetting('customization', gameCode);
       const customization = customizations?.[mode];
