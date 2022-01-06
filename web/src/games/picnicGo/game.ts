@@ -200,7 +200,6 @@ export function confirmScore(g: IG, ctx: Ctx) {
 
 export const PicnicGoGame = {
   name: 'picnicGo',
-
   setup: (ctx) => {
     const baseState = {
       players: new Array(ctx.numPlayers).fill({
