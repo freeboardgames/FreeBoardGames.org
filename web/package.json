@@ -132,7 +132,7 @@
     "socket.io-client": "^2.3.1",
     "subscriptions-transport-ws": "^0.9.18",
     "svg-sprite-loader": "^5.0.0",
-    "three": "^0.125.0",
+    "three": "^0.137.0",
     "use-async-effect": "^2.2.3",
     "webpackbar": "^4.0.0",
     "winston": "^3.3.3",
