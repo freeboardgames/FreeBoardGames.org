@@ -106,7 +106,7 @@
     "next-redux-wrapper": "^6.0.2",
     "next-seo": "^4.13.0",
     "next-with-error": "^1.2.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "nom-ts": "^0.1.2",
     "npm-run-all": "^4.1.5",
     "path-to-regexp": "^6.2.0",
