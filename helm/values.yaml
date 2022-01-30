@@ -10,9 +10,9 @@ secrets:
   gcpCredsBase64: null      # Fill base64 encoded Google cloud credentials file.
 
 replicas:
-  web: 2
-  fbgServer: 2
-  bgio: 2
+  web: 1
+  fbgServer: 1
+  bgio: 1
 
 fbgServer:
   jwtSecret: SECRET_TO_SIGN_JWT
@@ -30,5 +30,6 @@ postgresql:
     enabled: true
 
 redis:
+  architecture: standalone
   auth:
     password: REDIS_FBG_PASSWORD
