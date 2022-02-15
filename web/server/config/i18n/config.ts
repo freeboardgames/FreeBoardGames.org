@@ -8,5 +8,5 @@ export function getI18n() {
 }
 
 function otherLanguages() {
-  return ['pt', 'de', 'fr'];
+  return ['pt', 'de', 'fr', 'it'];
 }

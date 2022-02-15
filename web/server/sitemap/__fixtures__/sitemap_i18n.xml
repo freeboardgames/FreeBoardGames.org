@@ -6,6 +6,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/pt/</loc>
@@ -13,6 +14,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/de/</loc>
@@ -20,6 +22,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/fr/</loc>
@@ -27,6 +30,15 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/" />
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/it/</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/en/about</loc>
@@ -34,6 +46,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/about" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/about" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/about" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/about" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/pt/about</loc>
@@ -41,6 +54,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/about" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/about" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/about" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/about" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/de/about</loc>
@@ -48,6 +62,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/about" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/about" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/about" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/about" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/fr/about</loc>
@@ -55,6 +70,15 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/about" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/about" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/about" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/about" />
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/it/about</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/about" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/about" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/about" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/about" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/about" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/en/play/tictactoe</loc>
@@ -62,6 +86,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/pt/jogar/jogo-da-velha</loc>
@@ -69,6 +94,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/de/spiele/tictactoe</loc>
@@ -76,6 +102,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/fr/jouer/tictactoe</loc>
@@ -83,5 +110,14 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
+    </url>
+    <url>
+        <loc>https://www.freeboardgames.org/it/gioca/tris</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.freeboardgames.org/en/play/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
+        <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
+        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
     </url>
 </urlset>
