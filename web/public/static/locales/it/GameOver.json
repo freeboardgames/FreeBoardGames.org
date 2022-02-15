@@ -1,4 +1,4 @@
 {
-  "play_again": "Play Again",
-  "game_over": "Game Over, {{ result }}!"
+  "play_again": "Gioca ancora",
+  "game_over": "Partita terminata, {{ result }}!"
 }

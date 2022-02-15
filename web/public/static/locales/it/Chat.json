@@ -1,7 +1,7 @@
 {
   "notice": {
-    "title": "*** NOTICE ***",
-    "message": "Messages will be lost after reloading. Do not provide any personal information here."
+    "title": "*** AVVISO ***",
+    "message": "I messaggi andranno persi dopo il ricaricamento della pagina. Non fornire nessuna informazione personale qui."
   },
   "chat": "Chat"
 }

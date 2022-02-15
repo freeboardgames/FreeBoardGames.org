@@ -1,12 +1,12 @@
 {
-  "you_were_removed_from_the_room": "You were removed from the room.",
-  "try_again": "Try Again",
+  "you_were_removed_from_the_room": "Sei stato rimosso dalla stanza.",
+  "try_again": "Riprova",
   "ok": "OK",
-  "change_game": "Change Game",
-  "failed_to_fetch_room_metadata": "Failed to fetch room metadata.",
-  "leave_room": "Leave room",
-  "max_players": "{{ name }} can play up to {{ max }} players, but the room has {{ current }} players.",
-  "failed_to_set_nickname": "Failed to set nickname.",
-  "failed_to_start_match": "Failed to start match",
-  "discord_link": "Looking for more players? Check <l>#lets-play</l> on our Discord!"
+  "change_game": "cambia gioco",
+  "failed_to_fetch_room_metadata": "NOn riesco a recuperare i dati della stanza.",
+  "leave_room": "Lasica stanza",
+  "max_players": "{{ name }} si può giocare fino a {{ max }} giocatori, ma la stanza ha {{ current }} giocatori.",
+  "failed_to_set_nickname": "Errore nell'impostazione del nickname.",
+  "failed_to_start_match": "Errore nell'avvio della partita",
+  "discord_link": "Cerchi altri giocatori? Contralla l'hashtag <l>#lets-play</l> sul nostro Discord!"
 }

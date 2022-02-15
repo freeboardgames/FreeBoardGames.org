@@ -1,8 +1,8 @@
 {
-  "loading": "Loading...",
-  "error_while_creating_room": "Error while creating room",
-  "new_room": "New Room",
-  "game": "Game <b>{{ name }}</b>",
-  "cancel": "Cancel",
-  "create": "Create"
+  "loading": "Caricamento...",
+  "error_while_creating_room": "Errore nella creazione della stanza",
+  "new_room": "Nuova stanza",
+  "game": "Gioco <b>{{ name }}</b>",
+  "cancel": "Annulla",
+  "create": "Crea"
 }

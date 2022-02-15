@@ -1,5 +1,5 @@
 {
-  "loading": "Loading...",
-  "could_not_load_match": "Could not load match.",
-  "match_not_found": "Match not found."
+  "loading": "Caricamento...",
+  "could_not_load_match": "Non riesco a caricare la partita.",
+  "match_not_found": "Partita non trovata."
 }

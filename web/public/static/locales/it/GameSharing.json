@@ -1,9 +1,9 @@
 {
-  "copied": "Copied!",
-  "copy_link": "Copy link",
-  "invite_your_friends": "Invite Your Friends",
-  "room": "Room: {{ name }}",
-  "share_on_facebook": "Share on Facebook",
-  "share_on_whats_app": "Share on WhatsApp",
-  "show_qr_code": "Show QR code"
+  "copied": "Copiato!",
+  "copy_link": "Copia link",
+  "invite_your_friends": "Invita i tuoi amici",
+  "room": "Stanza: {{ name }}",
+  "share_on_facebook": "Condividi su Facebook",
+  "share_on_whats_app": "Condividi su WhatsApp",
+  "show_qr_code": "Mostra un codice QR"
 }

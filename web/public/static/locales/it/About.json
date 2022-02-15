@@ -1,21 +1,21 @@
 {
-  "title": "About",
-  "description": "About FreeBoardGames.org, a free and open-source software project.",
+  "title": "Chi siamo",
+  "description": "FreeBoardGames.org, un progetto gratuito e open-source.",
   "card": {
-    "title": "About FreeBoardGames.org",
-    "description": "FreeBoardGames.org is a free (as in freedom), mobile-first, board game platform. Its goal is to popularize board games and to make them easy to play with friends, even from afar."
+    "title": "FreeBoardGames.org",
+    "description": "FreeBoardGames.org è una piattaforma di gioco da tavolo gratuita (e libera) fruibile anche da smartphone. Il suo scopo è rendere popolari i giochi da tavolo e renderli facili da giocare con gli amici, anche da lontano."
   },
   "contributors": {
-    "title": "Contributors"
+    "title": "Contributori"
   },
   "credits": {
     "title": "Credits",
-    "chess_move_sound_by_splice_sound": "Chess move sound by SpliceSound",
-    "seabattle_hit_sound_by_fridobeck": "Seabattle hit sound by fridobeck",
-    "seabattle_hit_sound_by_qubodup": "Seabattle hit sound by qubodup",
-    "seabattle_miss_sound_by_inspector_j": "Seabattle miss sound by InspectorJ",
-    "seabattle_miss_sound_by_cg_effex": "Seabattle miss sound by CGEffex",
-    "blox_font_used_in_logo_by_brian_kent": "Blox font (used in logo) by Brian Kent",
-    "bingo_thumbnail_image": "Bingo Thumbnail Image"
+    "chess_move_sound_by_splice_sound": "Suono della mossa degli scacchi di SpliceSound",
+    "seabattle_hit_sound_by_fridobeck": "Suono del colpito della battaglia navale di fridobeck",
+    "seabattle_hit_sound_by_qubodup": "Suono del colpito della battaglia navale di qubodup",
+    "seabattle_miss_sound_by_inspector_j": "Suono del mancato della battaglia navale di InspectorJ",
+    "seabattle_miss_sound_by_cg_effex": "Suono del mancato della battaglia navale di CGEffex",
+    "blox_font_used_in_logo_by_brian_kent": "Blox font (usato nel logo) di Brian Kent",
+    "bingo_thumbnail_image": "Immagine in miniatura del Bingo"
   }
 }

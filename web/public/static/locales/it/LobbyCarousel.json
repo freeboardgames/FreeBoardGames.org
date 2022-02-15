@@ -1,6 +1,6 @@
 {
-  "public_rooms": "Public rooms",
-  "new_room": "New Room",
-  "error": "An error occurred while loading the lobby. Try reloading.",
-  "no_public_room_available": "No public room available. Click on \"<b>New Room</b>\" and create one!"
+  "public_rooms": "Stanze pubbliche",
+  "new_room": "Nuova stanza",
+  "error": "C'è stato un errore nel caricamento della pagina, prova a ricaricare.",
+  "no_public_room_available": "Non ci sono stanze pubbliche disponibili. Clicca su \"<b>Nuova stanza</b>\" e creane una!"
 }

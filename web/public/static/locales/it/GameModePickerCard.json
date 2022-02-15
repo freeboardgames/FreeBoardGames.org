@@ -1,11 +1,11 @@
 {
   "computer_ai_title": "Computer (AI)",
-  "computer_ai_description": "Play against the computer in your browser.",
-  "local_friend_title": "Local Friend",
-  "local_friend_description": "Share your device and play with a friend locally.",
-  "online_friend_title": "Online Friend",
-  "online_friend_description": "Share a link and play with a friend online.",
-  "error": "Error",
-  "loading": "Loading",
-  "play": "Play"
+  "computer_ai_description": "Gioca contro il computer nel tuo browser.",
+  "local_friend_title": "Amico presente",
+  "local_friend_description": "Condividi il tuo dispositivo per giocare con un'altra persona vicina a te.",
+  "online_friend_title": "Amico online",
+  "online_friend_description": "Condividi il link per giocare con un'altra persona online.",
+  "error": "Errore",
+  "loading": "Caricamento",
+  "play": "Gioca"
 }
