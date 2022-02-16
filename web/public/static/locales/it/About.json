@@ -1,0 +1,21 @@
+{
+  "title": "Chi siamo",
+  "description": "FreeBoardGames.org, un progetto gratuito e open-source.",
+  "card": {
+    "title": "FreeBoardGames.org",
+    "description": "FreeBoardGames.org è una piattaforma di gioco da tavolo gratuita (e libera) fruibile anche da smartphone. Il suo scopo è rendere popolari i giochi da tavolo e renderli facili da giocare con gli amici, anche da lontano."
+  },
+  "contributors": {
+    "title": "Contributori"
+  },
+  "credits": {
+    "title": "Credits",
+    "chess_move_sound_by_splice_sound": "Suono della mossa degli scacchi di SpliceSound",
+    "seabattle_hit_sound_by_fridobeck": "Suono del colpito della battaglia navale di fridobeck",
+    "seabattle_hit_sound_by_qubodup": "Suono del colpito della battaglia navale di qubodup",
+    "seabattle_miss_sound_by_inspector_j": "Suono del mancato della battaglia navale di InspectorJ",
+    "seabattle_miss_sound_by_cg_effex": "Suono del mancato della battaglia navale di CGEffex",
+    "blox_font_used_in_logo_by_brian_kent": "Blox font (usato nel logo) di Brian Kent",
+    "bingo_thumbnail_image": "Immagine in miniatura del Bingo"
+  }
+}

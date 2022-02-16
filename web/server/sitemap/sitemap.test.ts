@@ -2,8 +2,8 @@ jest.mock('games', () => ({
   GAMES_LIST: [
     {
       code: 'tictactoe',
-      codes: { pt: 'jogo-da-velha', de: 'tictactoe', fr: 'tictactoe' },
-      translationStatus: { pt: 1, de: 1, fr: 1 },
+      codes: { pt: 'jogo-da-velha', de: 'tictactoe', fr: 'tictactoe', it: 'tris' },
+      translationStatus: { pt: 1, de: 1, fr: 1, it: 1 },
     },
   ],
 }));
