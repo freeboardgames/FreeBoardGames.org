@@ -1,0 +1,6 @@
+{
+  "edit_nickname": "Modifica nickname",
+  "remove_user": "Rimuovi utente",
+  "waiting_for_player": "In attesa di giocatori...",
+  "players": "Giocatori ({{ occupancy }}/{{ capacity }})"
+}

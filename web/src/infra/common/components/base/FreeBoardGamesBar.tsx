@@ -52,6 +52,7 @@ function renderLanguageSelect() {
         <MenuItem value="pt">Português</MenuItem>
         <MenuItem value="de">Deutsch</MenuItem>
         <MenuItem value="fr">Français</MenuItem>
+        <MenuItem value="it">Italiano</MenuItem>
       </Select>
     </div>
   );
