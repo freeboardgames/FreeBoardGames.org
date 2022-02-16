@@ -310,7 +310,9 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
       case 'phaseVotePriest':
         if (this._isActivePlayer() && !isDead) {
           message.primary = this.props
-            .translate('phase_vote_priest.new_priest_election', { name: this._getPlayerName(priestID) })
+            .translate('phase_vote_priest.new_priest_election', {
+              name: this._getPlayerName(priestID),
+            })
             .split('\n');
         } else {
           message.text = translate('phase_vote_priest.wait_others_to_vote').split('\n');
@@ -363,7 +365,9 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
 
       case 'phasePeekPolicy':
         if (this._isActivePlayer() && intPlayerID === mayorID) {
-          message.warning = translate('phase_peek_policy.upcoming_sample').split('\n');
+          message.warning = translate('phase_peek_policy.upcoming_sample', { text: this._getPolicyText(true) }).split(
+            '\n',
+          );
           message.text = translate('ok_to_continue').split('\n');
         } else {
           message.text = translate('phase_peek_policy.mayor_is_looking').split('\n');

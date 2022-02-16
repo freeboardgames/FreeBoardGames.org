@@ -1,0 +1,5 @@
+{
+  "your_turn": "Tocca a te in {{ name }}!",
+  "mute_session": "Silenzia notifiche",
+  "unmute_session": "Attiva notifiche"
+}
