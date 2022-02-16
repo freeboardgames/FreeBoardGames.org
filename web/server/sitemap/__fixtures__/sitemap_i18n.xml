@@ -86,7 +86,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
-        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/gioca/tris" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/pt/jogar/jogo-da-velha</loc>
@@ -94,7 +94,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
-        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/gioca/tris" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/de/spiele/tictactoe</loc>
@@ -102,7 +102,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
-        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/gioca/tris" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/fr/jouer/tictactoe</loc>
@@ -110,7 +110,7 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
-        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/gioca/tris" />
     </url>
     <url>
         <loc>https://www.freeboardgames.org/it/gioca/tris</loc>
@@ -118,6 +118,6 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://www.freeboardgames.org/pt/jogar/jogo-da-velha" />
         <xhtml:link rel="alternate" hreflang="de" href="https://www.freeboardgames.org/de/spiele/tictactoe" />
         <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/fr/jouer/tictactoe" />
-        <xhtml:link rel="alternate" hreflang="fr" href="https://www.freeboardgames.org/it/gioca/tris" />
+        <xhtml:link rel="alternate" hreflang="it" href="https://www.freeboardgames.org/it/gioca/tris" />
     </url>
 </urlset>
