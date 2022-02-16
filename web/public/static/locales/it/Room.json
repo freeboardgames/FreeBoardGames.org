@@ -4,7 +4,7 @@
   "ok": "OK",
   "change_game": "cambia gioco",
   "failed_to_fetch_room_metadata": "NOn riesco a recuperare i dati della stanza.",
-  "leave_room": "Lasica stanza",
+  "leave_room": "Lascia stanza",
   "max_players": "{{ name }} si può giocare fino a {{ max }} giocatori, ma la stanza ha {{ current }} giocatori.",
   "failed_to_set_nickname": "Errore nell'impostazione del nickname.",
   "failed_to_start_match": "Errore nell'avvio della partita",
