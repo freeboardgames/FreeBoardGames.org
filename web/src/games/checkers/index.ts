@@ -5,7 +5,7 @@ import translation from './locales/en.json';
 
 export const checkersGameDef: IGameDef = {
   code: 'checkers',
-  codes: { en: 'checkers', pt: 'damas', de: 'dame', de: 'dama' },
+  codes: { en: 'checkers', pt: 'damas', de: 'dame', it: 'dama' },
   name: translation.name,
   contributors: ['JosefKuchar', 'ProspectPyxis', 'mateusazis'],
   imageURL: Thumbnail,
