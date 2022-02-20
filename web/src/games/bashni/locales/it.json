@@ -1,0 +1,26 @@
+{
+  "name": "Bashni",
+  "description": "Conosciuto anche come dama in colonna",
+  "descriptionTag": "Gioca a Bashni, una variante della dama localmente o online con i tuoi amici!",
+  "instructions": {
+    "text": "Bashni è una variante della dama, conosciuto in Russia dal 19° secolo. Le regole sono infatti basate sulla dama russa, leggermente diversa dalla dama inglese.\n\n La maggior parte delle regole sono le stesse della classica Dama. Si gioca in una giglia 8x8, e ogni giocatore ha 12 pezzi. Un pezzo diventa un re quando raggiunge il lato opposto della plancia e, da quel momento, può muovere di qualsiasi distanza in ogni direzione. Il gioco finisce se un giocatore non può muovere e, l'altro giocatore vince la partita. La partita finisce con un pareggio se vengono effettuare 15 mosse senza che il giocatore faccia una cattura, un movimento di un pezzo non re o la stessa configurazione viene raggiunta 3 volte. L'obbligo di cattura è attivo di default ma può essere disabilitato nelle configurazioni del gioco. \n\n La più grande differenza è nelle regole sulla cattura. Per prima cosa l'obbligo di cattura è attivo di default, anche se può essere disabilitato nelle configurazioni di gioco. Secondo: tutti i pezzi possono catturare all'indietro anche quelli base. Terzo: i re possono decidere dove fermarsi dopo una cattura anziché fermarsi direttamente dietro il pezzo catturato. Quattro: i pezzi vengono rimossi solo dopo che tutte le catture sono in una sequenza di prese, non dopo ogni salto, e saltare all'indietro nella direzione da cui provieni non è permesso.\n\n La differenza principale: i pezzi non vengono mai rimossi dal gioco; un pezzo \"catturato" viene piazzato *sotto* chi l'ha catturato creando così una pila di pezzi. Le pile di pezzi muovono secondo le regole del pezzo più in alto; ad esempio, se il pezzo in cima è un re nero la pila conterà come pezzo nero e muoverà come un re indipendentemente dai pezzi al di sotto. Se una pila di pezzi viene catturata essa perde solo il pezzo più in alto, che viene messo sotto il pezzo che l'ha catturata.  I pezzi mantengono an il loro livello nella pila, ovvero un pezzo semplice rimane tale e un re rimane re. Se una pila con in cima un non re viene promossa solo il pezzo in cima diverrà re. Questo fa sì che il gioco sia molto dinamico e i pezzi possono cambiare schieramento e/o livello quando vengono catturati."
+  },
+
+  "customization": {
+    "forced_capture": "Cattura forzata"
+  },
+
+  "move_piece": "Muovi pezzo",
+  "waiting_for_opponent": "Sto aspettando l'avversario...",
+  "white_turn": "Turno del bianco",
+  "black_turn": "Turno del nero",
+
+  "game_over": {
+    "you_won": "hai vinto",
+    "you_lost": "hai perso",
+    "white_won": "il bianco ha vinto",
+    "black_won": "il nero ha vinto",
+    "draw": "pareggio",
+    "threefold_repetition": "pareggio per tripla ripetizione"
+  }
+}
