@@ -5,11 +5,15 @@ import translation from './locales/en.json';
 
 export const checkersGameDef: IGameDef = {
   code: 'checkers',
-  codes: { en: 'checkers', pt: 'damas', de: 'dame' },
+  codes: { en: 'checkers', pt: 'damas', de: 'dame', it: 'dama' },
   name: translation.name,
   contributors: ['JosefKuchar', 'ProspectPyxis', 'mateusazis'],
   imageURL: Thumbnail,
-  translationStatus: { pt: IGameTranslationStatus.DONE, de: IGameTranslationStatus.PARTIAL },
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+    it: IGameTranslationStatus.DONE,
+    de: IGameTranslationStatus.PARTIAL,
+  },
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
