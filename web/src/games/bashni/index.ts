@@ -8,7 +8,7 @@ export const bashniGameDef: IGameDef = {
   name: translation.name,
   contributors: ['ProspectPyxis', 'JosefKuchar', 'mateusazis'],
   imageURL: Thumbnail,
-  translationStatus: { pt: IGameTranslationStatus.PARTIAL },
+  translationStatus: { pt: IGameTranslationStatus.PARTIAL, it: IGameTranslationStatus.DONE },
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
