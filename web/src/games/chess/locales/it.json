@@ -1,0 +1,21 @@
+{
+  "name": "Scacchi",
+  "description": "Regole internazionali",
+  "descriptionTag": "Gioca a Scacchi nel tuo browse contro un'itelligenza artificiale. \\\\nPuoi impostare il livello di difficoltà da 1 a 8, da facile a maestro. \\\nPuoi anche condividere il link della partita a giocare online con un amico \\\noppure potete giocare in 2 sullo stesso dispositivo!",
+  "instructions": {
+    "videoId": "fKxG8KjH1Qg",
+    "text": "Scacchi è un gioco da tavolo per due giocatori. Si gioca in una plancia quadrata su cui è presente una griglia di 8x8 caselle. \n\nOgni giocatore inizia con sedici pezzi: otto pedoni, due cavalli, due alfieri, due torri, una regina e un re. Il giocatore con i bianchi muove sempre per primo. \n\nLo scopo del gioco è fare uno scacco matto al re dell'avversario. \nLo Scacco matto è una configurazione in cui il re avversario potrà essere catturato nel turno successivo e non ci sono modi per poterlo evitare. Facendo scacco matto si vince la partita. \n\n[Clicca qui per vedere come muovono i pezzi.](https://it.wikipedia.org/wiki/Scacchi#Movimento_dei_pezzi)\n"
+  },
+  "difficulty": "Difficoltà",
+  "your_turn": "IL TUO TURNO",
+  "waiting_for_opponent": "Attendo l'avversario...",
+  "white_s_turn": "Turno del bianco",
+  "black_s_turn": "Turno del nero",
+  "check": "SCACCO",
+  "you_lost": "hai perso",
+  "you_won": "hai vinto",
+  "black_won": "il nero ha vinto",
+  "white_won": "il bianco ha vinto",
+  "enable": "Abilita",
+  "disable": "Disabilita"
+}
