@@ -1,0 +1,33 @@
+{
+  "name": "Dama",
+  "description": "La classica Dama",
+  "descriptionTag": "Gioca a Dama con amici vicini o online!",
+  "instructions": {
+    "videoId": "ScKIdStgAfU",
+    "text": "La Dama è un gioco per due giocatori. Si gioca su una plancia quadrata su cui è rappresentata una griglia 8x8 di 64 caselle.\n\n Ogni giocatore inizia con lo stesso numero di pedine. Il giocatore che muove il bianco è il primo giocatore. Le pedine si possono muovere solo diagonalmente verso il lato avversario mentre le Dame possono muoversi in ogni direzione. Un giocatore può rimuovere un pezzo avversario dalla plancia scavalcandolo.\n\n Per scavalcare un pezzo avversario è necessario che lo spazio dietro di esso sia libero. Se il giocatore ha la possibilità di effettuare più salti può eseguirli nello stesso turno. Una pedina diventa Dama se raggiunge la riga opposta alla propria. Il gioco termina quando un giocatore non ha più nessuna mossa possibile oppure ha perso tutti i suoi pezzi.\n\n Dama è un gioco con molte varianti. Le impostazioni predefinite corrispondono alle regole classiche della Dama inglese, la versione più popolare in America, ma si possono modificare cliccando sull'icona a forma di ingranaggio per personaluizzare il gioco."
+  },
+
+  "customization": {
+    "pieces_per_player": "Pedine per giocatore",
+    "forced_capture": "Cattura obbligatoria",
+    "flying_kings": "Le Dame possono muovere a qualunque distanza",
+    "stop_jump_on_king": "Interrompi il salto se il pezzo viene respinto",
+    "n_move_rule": {
+      "label": "Pareggio dopo n mosse senza progressi",
+      "off": "Off"
+    }
+  },
+
+  "move_piece": "Muovi pezzo",
+  "waiting_for_opponent": "Aspetto l'avversario...",
+  "white_turn": "Turno del bianco",
+  "black_turn": "Turno del nero",
+
+  "game_over": {
+    "you_won": "hai vinto",
+    "you_lost": "hai perso",
+    "white_won": "il bianco ha vinto",
+    "black_won": "il nero ha vinto",
+    "draw": "pareggio"
+  }
+}

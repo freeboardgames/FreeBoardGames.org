@@ -1,0 +1,19 @@
+{
+  "name": "Bingo",
+  "description": "Tenta la fortuna al Bingo!",
+  "descriptionTag": "Gioca a Bingo gratuitamente online con fino a 30 persone.",
+  "instructions": {
+    "videoId": "dJ4YDTqmhJk",
+    "text": "L'obiettivo del gioco è essere il primo giocatore a completare una riga, colonna o diagonale di 5 caselle. Ogni giocatore riceve una cartella con 25 numeri organizzati in una griglia 5x5 su cui bisogna segnare i numeri estratti. Il gioco mostra un numero e ogni giocatore lo segna sulla propria cartella se presente. Se un giocatore ha completato una serie da 5 numeri chiama il “BINGO” (premendo il pulsante). \n\nCrediti immagine [Freepik](http://www.freepik.com)"
+  },
+  "player": "Giocatore {{ name }}",
+  "draw": "pesca",
+  "winner": "vincitore: {{ name }}",
+  "you_won": "hai vinto",
+  "you_lost": "hai perso (vincitore: {{ name }})",
+  "player_won": "{{ name }} ha vinto",
+  "table": "Tabellone",
+  "bingo": "Bingo! {{ stars }}",
+  "sorry_you_used_up": "<0>Mi dispiace, hai usato</0><1>tutti le tue chiamate Bingo! ☹️</1><2>Ti andrà meglio la prossima volta!</2>",
+  "starting_in": "<0>Inizia </0> <1>in...</1>"
+}
