@@ -6,10 +6,10 @@ import translation from './locales/en.json';
 export const BingoDef: IGameDef = {
   code: 'bingo',
   name: translation.name,
-  translationStatus: { 
-    pt: IGameTranslationStatus.DONE, 
-    de: IGameTranslationStatus.DONE, 
-    it: IGameTranslationStatus.DONE 
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+    de: IGameTranslationStatus.DONE,
+    it: IGameTranslationStatus.DONE,
   },
   contributors: ['gk-patel'],
   minPlayers: 2,
