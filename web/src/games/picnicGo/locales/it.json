@@ -1,0 +1,46 @@
+{
+  "name": "Pic-nic Go",
+  "description": "Simile a Sushi Go",
+  "descriptionTag": "Gioca a Picnic Go e prepara il miglior pic-nic possibile!",
+  "instructions": {
+    "text": "**Picnic Go** è un semplice gioco di deckbuilding, il cui scopo è preparare un delizioso pic-nic! Ogni giocatore sceglie una carta dalla propria mano e tutte le carte scelte vengono rivelate contemporaneamente. Le carte rimasse vengono passate al giocatore alla propria sinistra e si continua così fino all'esaurimento della mano. Dopo tre round chi ha il maggior numero di punti vince! In caso di pareggio vince chi ha più cupcake. \n\nLe carte presenti nel mazzo sono: \n- **Panini** - *Panino vegetariano* (triangolo) valgono *1 punto*. *Panino al prosciutto* (quadratp) valgono *2 punti*. *Panino alla bresaola* (circle) valgono *3 punti*. \n- **Maionese** - *Triplica* il valore del *prossimo* panino. Puoi accumulare più carte maionese ma non si impileranno, ognuna dovrà essere applicata a un diverso panino. \n- **Patatine** - Fornisce 1, 2, or 3 patatine, in funzione del numero indicato sulla carta. Alla fine del round il giocatore con più patatine riceve *6 punti*, il secondo classificato riceve *3 punti*. In caso di pareggio i giocatori si dividono i punti in palio arrotondati per difetto. \n- **Uova sode** - Ogni set di 2 carte fornisce *5 points*; le carte singole non valgono nessun punto ma si possono prendere punti per più coppie nello stesso round. \n- **Pollo fritto** - Ogni set di 3 carte fornisce *10 points*; anche in questo caso le carte che non compongono un tris non valgono nulla ma è possibile completare più set nello stesso turno. \n- **Pizza** - Un set di 1, 2, 3, 4, e 5 o più carte valgono rispettivamente *1*, *3*, *6*, *10*, e *15 points*. In ogni turno si considera un solo set di pizze quindi non è possibile fare più di 15 punti anche se si hanno più di 5 carte. \n- **Cupcake** - Vengono conservati come dolce fino alla fine della partita. Dopo i tre round di gioco il giocatore che ne ha accumulati di più riceverà *6 punti*. In caso di pareggio i punti vengono divisi fra i giocatori, eventualmente arrotondati per difetto. \n- **Forchetta** - Non vale nessun punto ma può essere utilizzata nelle mani successive dello stesso round. Usando la forchetta è possibile giocare due carte nello stesso turno dalla propria mano rimettendo la forchetta nella mano di carte. \n\nTutte le illustrazioni sono state fatte da ProspectPyxis e hanno licenza [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)."
+  },
+
+  "round": "ROUND {{ r }}",
+
+  "symbols": {
+    "waiting": "🕒",
+    "done": "✅",
+    "cupcake": "🧁",
+    "chips": "🥔"
+  },
+
+  "game_over": {
+    "win": "hai vinto",
+    "lose": "hai perso",
+    "draw": "pareggio",
+    "spectator": "punteggi finali"
+  },
+
+  "score_cupcakes": "Cupcakes",
+
+  "is_next": "(prossimo)",
+  "is_you": "(tu)",
+  "using_fork": "Usa la forchetta!",
+  "score": "Punteggio:",
+
+  "your_hand": "La tua mano",
+  "select_card": "Seleziona un'altra carta",
+  "select_card_plural": "Seleziona altre  {{ count }} carte",
+  "wait_other_players": "Sto aspettando altri giocatori",
+  "wait_next_round": "Sto aspettandoil prossimo round",
+  "use_fork": "Usa la forchetta",
+
+  "round_over_next": "Round {{ r }} finito - pronto per il prossimo round?",
+  "round_over_end": "Round {{ r }} finito - Fine della partita!",
+  "button_ready": "Pronto",
+  "button_end_game": "Fine della partita",
+
+  "scoring_end_round": "(il punteggio delle patatine verrà assegnato dopo che tutti i giocatori sono pronti)",
+  "scoring_end_game": "(il punteggio delle patatine e dei cupcake verrà assegnato dopo che tutti i giocatori sono pronti)"
+}
