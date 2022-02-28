@@ -1,6 +1,6 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
 import translation from './locales/en.json';
 
 export const picnicGoGameDef: IGameDef = {
