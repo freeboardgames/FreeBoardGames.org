@@ -1,29 +1,31 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-// import { IGameModeExtraInfoDropdown } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json';
 
 export const bullsAndCowsGameDef: IGameDef = {
   code: 'bullsAndCows',
-  name: 'Bulls & Cows',
-  contributors: ['leocaseiro'],
+  codes: { en: 'bullsAndCows', pt: 'touros-e-vacas' },
+  name: translation.name,
+  contributors: ['leocaseiro', 'Spooky-0'],
   imageURL: Thumbnail,
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+  },
   modes: [
     {
-      mode: GameMode.LocalFriend,
-      // extraInfo: { type: 'dropdown', options: ['Easy', 'Medium', 'Hard'] } as IGameModeExtraInfoDropdown,
+      mode: GameMode.AI,
     },
   ],
-  minPlayers: 1,
-  maxPlayers: 1,
-  description: 'similar to Mastermind',
-  descriptionTag: `Play Bulls and Cows (also known as Mastermind) for free online.`,
-  instructions: {
-    text: instructions,
-  },
+  minPlayers: 2,
+  maxPlayers: 2,
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
+  aiConfig: () => import('./ai'),
+  customization: () => import('./customization'),
 };
 
 export default bullsAndCowsGameDef;
