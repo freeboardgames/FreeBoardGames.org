@@ -24,7 +24,7 @@ describe('Secret', () => {
   });
 
   it('should show CODE: prefix for number', () => {
-    expect(wrapper.find('.attempt.result > .number').text()).toContain('CODE:');
+    expect(wrapper.find('.attempt.result > .number').text()).toContain('code:');
   });
 
   it('should have the total of digits from secret', () => {

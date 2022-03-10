@@ -5,7 +5,7 @@ import translation from './locales/en.json';
 
 export const bullsAndCowsGameDef: IGameDef = {
   code: 'bullsAndCows',
-  codes: { en: 'bullsAndCows', pt: 'touros-e-vacas' },
+  codes: { en: 'bullsAndCows', pt: 'senha' },
   name: translation.name,
   contributors: ['leocaseiro', 'Spooky-0'],
   imageURL: Thumbnail,

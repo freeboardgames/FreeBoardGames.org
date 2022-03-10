@@ -1,10 +1,10 @@
 {
-  "name": "Touros & Vacas",
-  "description": "parecido com Senha",
-  "descriptionTag": "Jogue Touros e Vacas (também conhecido como Senha) de graça online.",
+  "name": "Qual é a Senha?",
+  "description": "Decifre a Senha",
+  "descriptionTag": "Jogue Senha de graça online.",
   "instructions": {
     "videoId": "GG7acm844UE",
-    "text": "Touros e Vacas é um jogo rápido, divertido e inteligente, onde a sorte e o raciocínio lógico farão de você o vencedor! É um jogo rápido no qual um jogador precisa deduzir qual a seqüência correta das cores escolhidas pelo seu adversário(robô) de uma forma, divertida e inteligente. Sorte e raciocínio lógico farão de você o vencedor!"
+    "text": "Qual é Senha é um jogo rápido, divertido e inteligente, onde a sorte e o raciocínio lógico farão de você o vencedor! É um jogo rápido no qual um jogador precisa deduzir qual a seqüência correta das cores escolhidas pelo seu adversário(robô) de uma forma, divertida e inteligente. Sorte e raciocínio lógico farão de você o vencedor!"
   },
 
   "customization": {
