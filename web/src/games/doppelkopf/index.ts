@@ -11,6 +11,7 @@ export const doppelkopfDef: IGameDef = {
     de: IGameTranslationStatus.DONE,
     fr: IGameTranslationStatus.DONE,
     pt: IGameTranslationStatus.DONE,
+    it: IGameTranslationStatus.DONE,
   },
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
