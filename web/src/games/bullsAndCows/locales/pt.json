@@ -3,8 +3,8 @@
   "description": "Decifre a Senha",
   "descriptionTag": "Jogue Senha de graça online.",
   "instructions": {
-    "videoId": "GG7acm844UE",
-    "text": "Qual é Senha é um jogo rápido, divertido e inteligente, onde a sorte e o raciocínio lógico farão de você o vencedor! É um jogo rápido no qual um jogador precisa deduzir qual a seqüência correta das cores escolhidas pelo seu adversário(robô) de uma forma, divertida e inteligente. Sorte e raciocínio lógico farão de você o vencedor!"
+    "videoId": "ODHgy60q4rk",
+    "text": "Qual é a Senha (conhecido também como Touros e Vacas) é um jogo de dedução onde você precisa descobrir a senha secreta.\n\nPara cada palpite, você receberá dicas.\n\nAs dicas **✓** são chamadas de *Touros*. Para cada Touro (✓) que você recebeu como dica, significa um dígito foi decifrado na posição correta.\n\nAs dicas **X** são chamadas de *Vacas*. Para cada Vaca (X) que você recebeu como dica, significa um dígito correto, mas que foi decifrado na posição errada.\n\nSe você receber uma dica com o símbolo **∅**, significa que você usou um digito inválido que não faz parte do código secreto.\n\nA ordem das dicas não significa o dígito correspondente.\n\n> Por exemplo: para o código secreto **1356* *. Se você adivinhar **5126**, poderá receber as dicas **✓XX∅**\n>, o que significa que você tem 1 Touro (✓) para 1 único digito decifrado corretamente. 2 Vacas (X) para 2 dígitos corretos, mas ambos na posição errada cada um, e 1 digito incorreto que não deveria estar na senha.\n"
   },
 
   "customization": {
