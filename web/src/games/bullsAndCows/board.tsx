@@ -2,13 +2,17 @@ import * as React from 'react';
 
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Ctx } from 'boardgame.io';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
 import View, { IViewProps } from './components/View';
+
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
 
 export interface IBoardState {
   currentColourId: number | null;
 }
-export class Board extends React.Component<IViewProps, IBoardState> {
+export class BoardInternal extends React.Component<IViewProps & IBoardInnerProps, IBoardState> {
   constructor(props) {
     super(props);
 
@@ -23,9 +27,9 @@ export class Board extends React.Component<IViewProps, IBoardState> {
 
   getGameOverStatus = (ctx: Ctx) => {
     if (ctx && ctx.gameover && ctx.gameover.winner) {
-      return 'You win';
+      return this.props.translate('game_over.you_won');
     } else if (ctx && ctx.gameover && ctx.gameover.loose) {
-      return 'You lost';
+      return this.props.translate('game_over.you_lost');
     }
   };
 
@@ -54,3 +58,6 @@ export class Board extends React.Component<IViewProps, IBoardState> {
     );
   }
 }
+
+const enhance = compose<IViewProps & IBoardInnerProps, IBoardState>(withCurrentGameTranslation);
+export const Board = enhance(BoardInternal);

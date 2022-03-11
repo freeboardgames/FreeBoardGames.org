@@ -53,7 +53,8 @@ describe('Bulls and Cows Board', () => {
     expect(wrapper.find('.board > .attempts').exists()).toBeTrue();
     expect(wrapper.find('.board > .attempts > .guess').exists()).toBeTrue();
     expect(wrapper.find('.board > .colours').exists()).toBeTrue();
-    expect(wrapper.text()).toContain('Bulls & Cows GUESS');
+    expect(wrapper.text()).toContain('Bulls & Cows');
+    expect(wrapper.text()).toContain('guess');
     expect(wrapper.find(Secret).exists()).toBe(false);
   });
 
@@ -61,7 +62,7 @@ describe('Bulls and Cows Board', () => {
     const ctx: any = { gameover: { winner: true } };
     const wrapper = setup(ctx);
 
-    expect(wrapper.text()).toContain('Game Over, You win');
+    expect(wrapper.text()).toContain('game_over.you_won');
     expect(wrapper.find(Secret).exists()).toBe(true);
   });
 
@@ -69,7 +70,7 @@ describe('Bulls and Cows Board', () => {
     const ctx: any = { gameover: { loose: true } };
     const wrapper = setup(ctx);
 
-    expect(wrapper.text()).toContain('Game Over, You lost');
+    expect(wrapper.text()).toContain('game_over.you_lost');
     expect(wrapper.find(Secret).exists()).toBe(true);
   });
 });

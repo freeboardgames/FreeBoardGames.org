@@ -2,6 +2,7 @@ import { Ctx } from 'boardgame.io';
 
 export interface IMoves {
   setColourInPosition: (colourId: number, position: number) => void;
+  pass: () => void;
   check: () => string | void;
 }
 export interface IAttempt {

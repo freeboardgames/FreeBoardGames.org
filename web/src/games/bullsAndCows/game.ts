@@ -2,16 +2,17 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { Ctx } from 'boardgame.io';
 import { blue, green, common, yellow, brown, red, lightGreen } from '@material-ui/core/colors';
 import { IG, generateSecret, checkSecret, isVictory, isGameOver } from './service';
+import { GameCustomizationState } from 'gamesShared/definitions/customization';
+import { FullCustomizationState, DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
 export const BullsAndCowsGame = {
   name: 'bullsAndCows',
 
-  setup: (ctx: Ctx) => {
-    const secretLength = 4;
-    const limitOfAttempts = 12;
-    const allowToRepeat = true;
+  setup: (ctx: Ctx, customData: GameCustomizationState) => {
+    const fullCustomization = (customData?.full as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
+    const { allowToRepeat, secretLength, limitOfAttempts, totalOfColours } = fullCustomization;
 
-    const colours = [
+    const defaultColours = [
       { id: 1, img: 'certificate', hex: common['black'] },
       { id: 2, img: 'circle', hex: brown[800] },
       { id: 3, img: 'heart', hex: red[700] },
@@ -20,6 +21,8 @@ export const BullsAndCowsGame = {
       { id: 6, img: 'square', hex: lightGreen['A400'] },
       { id: 7, img: 'star', hex: yellow[700] },
     ];
+
+    const colours = defaultColours.slice(0, totalOfColours);
 
     const secret = generateSecret(ctx, colours, secretLength, allowToRepeat);
 
@@ -45,6 +48,9 @@ export const BullsAndCowsGame = {
   moves: {
     setColourInPosition(G: IG, ctx: Ctx, colourId: number, position: number) {
       G.current[position] = G.colours.find((c) => c.id === colourId);
+    },
+    pass(G: IG, ctx: Ctx) {
+      ctx.events.endTurn();
     },
     check(G: IG) {
       if (G.current.some((n) => n === null)) {
