@@ -1,0 +1,18 @@
+#!/bin/bash
+
+log() {
+  echo $1
+  curl -H "Content-Type: application/json" -d "{\"content\":\"$1\"}" $WEBHOOK
+}
+
+cd ./fbg-prod
+git pull || { echo "GIT PULL FAILED, EXITING"; exit 1; }
+log "Found new FBG version, updating dependencies..."
+./docker-build.sh -d || { log "Updating dependencies failed"; exit 1; }
+log "Dependencies updated succesfully, building new docker image..."
+./docker-build.sh -b || { log "Building docker images failed"; exit 1; }
+log "Docker images were built succesfully, uploading them to Dockerhub"
+./docker-build.sh -p || { log "Pushing images failed"; exit 1; }
+log "Images uploaded to Dockerhub, rolling out deployments"
+kubectl rollout restart deployment fbg-web fbg-fbg-server fbg-bgio || { log "Rollout failed"; exit 1; }
+log "Rollout succesfully requested, changes should be live in minutes"
