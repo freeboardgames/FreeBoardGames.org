@@ -158,5 +158,5 @@ export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProp
   }
 }
 
-const enhance = compose<IBoardProps & IBoardInnerProps, {}>(withCurrentGameTranslation);
+const enhance = compose<IBoardInnerProps, IBoardProps>(withCurrentGameTranslation);
 export const Board = enhance(BoardInternal);
