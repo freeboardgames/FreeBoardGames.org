@@ -1,0 +1,46 @@
+{
+  "name": "Hangman",
+  "description": "A Classic Game",
+  "descriptionTag": "Play Hangman for free online. You can either play a multi-player game against a friend online, or share your device and play locally against a friend.",
+  "instructions": {
+    "videoId": "leW9ZotUVYo",
+    "text": "Hangman is a well known two-player game. A player is asked to guess a word, given only its length and a hint. The player tries to guess the characters in the word and is allowed to make up to 10 incorrect guesses. If the player guesses the word correctly, the final score is the ratio of the number of correct guesses and the total number of guesses made. If more than 10 incorrect guesses were made, the final score is zero."
+  },
+
+  "board": {
+    "your_turn": "Your Turn to GUESS",
+    "playerName_is_guessing": "{{ playerName }} is guessing",
+    "player_turn": "Player {{ playerName }}'s turn",
+    "mistakes": "Mistakes: {{ mistakeCount }}/{{ MAX_MISTAKE_COUNT }}",
+    "see_hint": "See Hint",
+    "hint": "Hint",
+    "player_a": "A",
+    "player_b": "B",
+    "waiting_player": "Waiting for {{ playerName }} to enter a word...",
+    "player": {
+      "enter_word": "Player {{ playerName }}: Enter Word",
+      "enter_secret_word": "Enter secret word"
+    },
+    "correct": "CORRECT",
+    "incorrect": "INCORRECT",
+    "your_guess_outcome": "Your guess was {{ guessOutcome }}.",
+    "extra_your_score": "Your score is {{ score }} points.",
+    "extra_word_to_guess": "The word to be guessed was {{ secret }}.",
+    "button_next": "Next",
+    "guess_message": "{{ playerName }}'s guess was {{ guessOutcome }}.",
+    "extraMessage": "{{ playerName }} has scored {{ score }} points.",
+    "game_over": {
+      "draw": "draw",
+      "you_won": "you won",
+      "you_lost": "you lost",
+      "spectator": "see scoreboard",
+      "player_won": "Player {{ playerName }} won"
+    }
+  },
+
+  "EnterWordPrompt": {
+    "max_chars": "Word (max {{ MAX_WORD_LENGTH }} chars)",
+    "hint_max_chars": "Hint (max {{ MAX_CHARS }} chars)",
+    "play": "Play"
+  }
+}
