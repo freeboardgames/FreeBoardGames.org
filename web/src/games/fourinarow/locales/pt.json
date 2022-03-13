@@ -1,0 +1,25 @@
+{
+  "name": "Quatro em linha",
+  "description": "Parecido com Conecta 4",
+  "descriptionTag": "Jogue Quatro em linha de graça\\\nVocê pode jogar no modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.\n",
+  "instructions": {
+    "text": "Quatro em linha é um jogo de conexão para dois jogadores em que os jogadores primeiro escolhem uma cor e depois se revezam soltando um disco colorido do topo em uma grade suspensa verticalmente de sete colunas e seis linhas.\n\nAs peças caem diretamente para baixo, ocupando o menor espaço disponível dentro da coluna.\n\nO objetivo do jogo é ser o primeiro a formar uma linha horizontal, vertical ou diagonal de quatro discos da sua cor."
+  },
+
+  "board": {
+    "your_turn": "SUA VEZ",
+    "waiting_for_player": "Esperando por {{ pName }}...",
+    "player_turn": "Jogador {{ pName }}",
+    "game_over": {
+      "you_won": "você ganhou",
+      "you_lost": "você perdeu",
+      "player_won": "{{ pName }} ganhou",
+      "draw": "empate"
+    }
+  },
+
+  "local": {
+    "blue": "Azul",
+    "red": "Vermelho"
+  }
+}
