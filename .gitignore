@@ -14,3 +14,4 @@ web/src/games/index.ts
 !common/internal/empty-file-so-git-commits-directory
 helm/values.staging.yaml
 helm/values.prod.yaml
+.DS_Store
