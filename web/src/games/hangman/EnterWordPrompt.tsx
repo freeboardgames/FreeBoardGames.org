@@ -4,9 +4,12 @@ import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 import { MAX_WORD_LENGTH } from './constants';
 import { isValidWord } from './util';
 
+interface IEnterWordPromptInnerProps extends WithCurrentGameTranslation {}
 interface IEnterWordPromptProps {
   setSecret: (word: string, hint: string) => void;
   title: string;
@@ -17,7 +20,10 @@ interface IEnterWordPromptState {
   hintTextField: string;
 }
 
-export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnterWordPromptState> {
+export class EnterWordPromptInternal extends React.Component<
+  IEnterWordPromptProps & IEnterWordPromptInnerProps,
+  IEnterWordPromptState
+> {
   wordInput: HTMLDivElement;
   state = {
     wordTextField: '',
@@ -46,7 +52,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
                 autoFocus={true}
                 inputRef={(input) => (this.wordInput = input)}
                 type="text"
-                label={`Word (max ${MAX_WORD_LENGTH} chars)`}
+                label={this.props.translate('EnterWordPrompt.max_chars', { MAX_WORD_LENGTH })}
                 fullWidth
                 onChange={this._onWordChange}
                 onKeyPress={this._setEnterWordOnEnterButton}
@@ -58,7 +64,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
             <div>
               <TextField
                 type="text"
-                label="Hint (max 120 chars)"
+                label={this.props.translate('EnterWordPrompt.hint_max_chars', { MAX_CHARS: 120 })}
                 fullWidth
                 rowsMax={4}
                 onChange={this._onHintChange}
@@ -76,7 +82,7 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
               disabled={!this._wordisValid()}
               data-test-id="playButton"
             >
-              Play
+              {this.props.translate('EnterWordPrompt.play')}
             </Button>
           </CardContent>
         </Card>
@@ -121,3 +127,6 @@ export class EnterWordPrompt extends React.Component<IEnterWordPromptProps, IEnt
     });
   };
 }
+
+const enhance = compose<IEnterWordPromptInnerProps, IEnterWordPromptProps>(withCurrentGameTranslation);
+export const EnterWordPrompt = enhance(EnterWordPromptInternal);
