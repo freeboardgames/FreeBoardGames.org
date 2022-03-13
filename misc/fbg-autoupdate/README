@@ -1,0 +1,1 @@
+In order to use this, trigger ./check with a systemd timer. Make sure you have a clean copy of the FBG repo as "fbg-prod" subfolder, and a "secrets" folder with helm values to be overriden in production.

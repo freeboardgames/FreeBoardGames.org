@@ -1,6 +1,7 @@
 import { Client } from 'boardgame.io/client';
 import { BullsAndCowsGame } from './game';
 import { checkSecret, generateSecret, isVictory, isGameOver } from './service';
+import { DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
 jest.mock('./service', () => ({
   ...jest.requireActual('./service'),
@@ -27,8 +28,10 @@ describe('Bulls and Cows game', () => {
 
       expect(G.attempts).toEqual([]);
       expect(G.current).toEqual([null, null, null, null]);
-      expect(G.secretLength).toBe(4);
-      expect(G.limitOfAttempts).toBe(12);
+      expect(G.secretLength).toBe(DEFAULT_FULL_CUSTOMIZATION.secretLength);
+      expect(G.limitOfAttempts).toBe(DEFAULT_FULL_CUSTOMIZATION.limitOfAttempts);
+      expect(G.colours).toHaveLength(DEFAULT_FULL_CUSTOMIZATION.totalOfColours);
+      expect(G.allowToRepeat).toBe(DEFAULT_FULL_CUSTOMIZATION.allowToRepeat);
       expect(G.lastAttempt).toBe(null);
       if (G.allowToRepeat) {
         expect(generateSecret).toHaveBeenCalledWith(expect.anything(), G.colours, G.secretLength, true);
@@ -67,7 +70,7 @@ describe('Bulls and Cows game', () => {
         const position = 2;
 
         client.moves.setColourInPosition(colourId, position);
-        client.updatePlayerID('0');
+        client.updatePlayerID('1');
 
         const {
           G: { current, colours },
@@ -90,7 +93,7 @@ describe('Bulls and Cows game', () => {
         }) as any;
 
         client.moves.check();
-        client.updatePlayerID('0');
+        client.updatePlayerID('1');
 
         const {
           G: { attempts },
@@ -112,7 +115,7 @@ describe('Bulls and Cows game', () => {
         client.moves.setColourInPosition(2, 3);
 
         client.moves.check();
-        client.updatePlayerID('0');
+        client.updatePlayerID('1');
 
         const { G } = client.getState();
 

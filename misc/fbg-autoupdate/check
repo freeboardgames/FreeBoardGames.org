@@ -1,0 +1,24 @@
+#!/bin/bash
+if [[ -z "${WEBHOOK}" ]]; then
+    echo "ERROR: EXPECTED ENV WEBHOOK NOT SET."
+    exit 1
+fi
+
+cd ./fbg-prod
+git remote update
+UPSTREAM=${1:-'@{u}'}
+LOCAL=$(git rev-parse @)
+REMOTE=$(git rev-parse "$UPSTREAM")
+BASE=$(git merge-base @ "$UPSTREAM")
+
+if [ $LOCAL = $REMOTE ]; then
+    echo "Up-to-date"
+elif [ $LOCAL = $BASE ]; then
+    echo "Need to update"
+    cd ..
+    ./update
+else
+    echo "ERROR! Diverged"
+    exit 1
+fi
+
