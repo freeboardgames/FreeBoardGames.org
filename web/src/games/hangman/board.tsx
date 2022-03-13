@@ -11,15 +11,19 @@ import { grey } from '@material-ui/core/colors';
 import { Modal, Button } from '@material-ui/core';
 import { isPlayersTurn } from 'gamesShared/helpers/GameUtil';
 import { Ctx } from 'boardgame.io';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 import { HangmanState, PlayerState } from './definitions';
 import { getOpponent, getMistakeCount, getMaskedWord, isGuessCorrect, getScore, isDoneGuessing } from './util';
 import { ALPHABET, MAX_MISTAKE_COUNT, MAX_WORD_LENGTH } from './constants';
+
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
 
 interface IBoardState {
   showHint: boolean;
 }
 
-interface IBoardProps {
+export interface IBoardProps {
   G: HangmanState;
   ctx: Ctx;
   moves: any;
@@ -29,7 +33,7 @@ interface IBoardProps {
   events?: any;
 }
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
+export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProps, IBoardState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,12 +65,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _getStatus() {
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'Your Turn to GUESS';
+        return this.props.translate('board.your_turn');
       } else {
-        return `${this._playerName()} is guessing`;
+        return this.props.translate('board.playerName_is_guessing', { playerName: this._playerName() });
       }
     } else {
-      return 'Player ' + this._playerName() + "'s Turn";
+      return this.props.translate('board.player_turn', { playerName: this._playerName() });
     }
   }
 
@@ -124,7 +128,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
     return (
       <text key={'guess_remaining_message'} x={5} y={4.5} fontSize={0.4} textAnchor="middle" fill={textColor}>
-        {`Mistakes: ${mistakeCount}/${MAX_MISTAKE_COUNT}`}
+        {this.props.translate('board.mistakes', { mistakeCount, MAX_MISTAKE_COUNT })}
       </text>
     );
   }
@@ -184,7 +188,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       <g key={'hint_button'} onClick={() => this.setState({ showHint: true })}>
         <rect key={'hb_rect'} x={3.7} y={9} width={2.6} height={0.8} strokeWidth={0.045} stroke={grey[200]} />
         <text key={'hb_text'} x={5} y={9.55} fontSize={0.45} fill={grey[200]} textAnchor="middle">
-          {'See Hint'}
+          {this.props.translate('board.see_hint')}
         </text>
       </g>
     );
@@ -218,7 +222,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         >
           <div>
             <Typography style={{ padding: '16px' }} variant="h5" component="h3">
-              Hint
+              {this.props.translate('board.hint')}
             </Typography>
             <Typography style={{ padding: '16px' }} variant="body1">
               {this._opponentState().hint}
@@ -235,9 +239,9 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     }
     switch (this.props.ctx.currentPlayer) {
       case '0':
-        return 'A';
+        return this.props.translate('board.player_a');
       case '1':
-        return 'B';
+        return this.props.translate('board.player_b');
     }
     return '?'; // so TS doesn't think our type is string|undefined
   }
@@ -246,11 +250,12 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     if (!isPlayersTurn(this.props.playerID, this.props.ctx) && isOnlineGame(this.props.gameArgs)) {
       return (
         <Typography variant="h6" style={{ textAlign: 'center', color: 'white', margin: '16px', padding: '16px' }}>
-          Waiting for {this._playerName()} to enter a word...
+          {this.props.translate('board.waiting_player', { playerName: this._playerName() })}
         </Typography>
       );
     }
-    const title = !isOnlineGame(this.props.gameArgs) ? `Player ${this._playerName()}: Enter Word` : 'Enter secret word';
+    const translate_title_key = isOnlineGame(this.props.gameArgs) ? 'enter_secret_word' : 'enter_word';
+    const title = this.props.translate(`board.player.${translate_title_key}`, { playerName: this._playerName() });
     return <EnterWordPrompt setSecret={this._setSecret} title={title} />;
   }
 
@@ -261,11 +266,14 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _showConclusion() {
     const player = this.props.G.players[this.props.ctx.currentPlayer];
     const opponent = this._opponentState();
-    const guessOutcome = isGuessCorrect(this.props.G, this.props.ctx.currentPlayer) ? 'CORRECT' : 'INCORRECT';
-    let guessMessage = `Your guess was ${guessOutcome}.`;
+    const translate_guessOutcome_key = isGuessCorrect(this.props.G, this.props.ctx.currentPlayer)
+      ? 'correct'
+      : 'incorrect';
+    const guessOutcome = this.props.translate(`board.${translate_guessOutcome_key}`);
+    let guessMessage = this.props.translate('board.your_guess_outcome', { guessOutcome });
     let extraMessage = isGuessCorrect(this.props.G, this.props.ctx.currentPlayer)
-      ? `Your score is ${getScore(player.guesses)} points.`
-      : `The word to be guessed was ${opponent.secret.toUpperCase()}.`;
+      ? this.props.translate('board.extra_your_score', { score: getScore(player.guesses) })
+      : this.props.translate('board.extra_word_to_guess', { secret: opponent.secret.toUpperCase() });
     let nextButton = (
       <Button
         key="key_hangman_next"
@@ -276,13 +284,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
         onClick={this._changeTurn()}
         data-test-id="next-button"
       >
-        Next
+        {this.props.translate('board.button_next')}
       </Button>
     );
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.playerID !== this.props.ctx.currentPlayer) {
-        guessMessage = `${this._playerName()}'s guess was ${guessOutcome}.`;
-        extraMessage = `${this._playerName()} has scored ${getScore(player.guesses)} points.`;
+        guessMessage = this.props.translate('board.guess_message', { playerName: this._playerName(), guessOutcome });
+        extraMessage = this.props.translate('board.extraMessage', {
+          playerName: this._playerName(),
+          score: getScore(player.guesses),
+        });
         nextButton = null;
       }
     }
@@ -332,19 +343,19 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
 
   _getGameOver() {
     if (this.props.ctx.gameover.draw) {
-      return 'draw';
+      return this.props.translate('board.game_over.draw');
     }
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
-        return 'you won';
+        return this.props.translate('board.game_over.you_won');
       } else {
         if (isSpectator(this.props.playerID)) {
-          return 'see scoreboard';
+          return this.props.translate('board.game_over.spectator');
         }
-        return 'you lost';
+        return this.props.translate('board.game_over.you_lost');
       }
     } else {
-      return `Player ${this._playerName()} won`;
+      return this.props.translate('board.game_over.player_won', { playerName: this._playerName() });
     }
   }
 
@@ -372,4 +383,5 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   }
 }
 
-export default Board;
+const enhance = compose<IBoardProps, IBoardInnerProps>(withCurrentGameTranslation);
+export const Board = enhance(BoardInternal);
