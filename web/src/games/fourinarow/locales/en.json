@@ -1,0 +1,25 @@
+{
+  "name": "Four in a Row",
+  "description": "Similar to Connect Four",
+  "descriptionTag": "Play Four in a Row for free. You can play a multi-player game against a friend online, or share your device and play locally against a friend.",
+  "instructions": {
+    "text": "Connect Four é um jogo de conexão para dois jogadores em que os jogadores primeiro escolhem uma cor e depois se revezam soltando um disco colorido do topo em uma grade suspensa verticalmente de sete colunas e seis linhas.\n\nAs peças caem diretamente para baixo, ocupando o menor espaço disponível dentro da coluna.\n\nO objetivo do jogo é ser o primeiro a formar uma linha horizontal, vertical ou diagonal de quatro de seus próprios discos."
+  },
+
+  "board": {
+    "your_turn": "YOUR TURN",
+    "waiting_for_player": "Waiting for {{ pName }}...",
+    "player_turn": "{{ pName }}'s turn",
+    "game_over": {
+      "you_won": "you won",
+      "you_lost": "you lost",
+      "player_won": "{{ pName }} won",
+      "draw": "draw"
+    }
+  },
+
+  "local": {
+    "blue": "Blue",
+    "red": "Red"
+  }
+}

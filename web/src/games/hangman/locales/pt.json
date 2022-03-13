@@ -1,0 +1,46 @@
+{
+  "name": "Jogo da Forca",
+  "description": "Um Jogo Clássico",
+  "descriptionTag": "Jogar o Jogo da Forca de graça online.\n\nVocê pode jogar no modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.",
+  "instructions": {
+    "videoId": "iy-PketQCh4",
+    "text": "O Jogo da Forca é um jogo de dois jogadores bem conhecido. Um jogador é solicitado a adivinhar uma palavra, dado apenas seu comprimento e uma dica. O jogador tenta adivinhar as letras da palavra e pode fazer até 10 palpites incorretos. Se o jogador adivinhar a palavra corretamente, a pontuação final é a média entre o número de palpites corretos e o número total de palpites feitos. Se mais de 10 palpites incorretos forem feitos, a pontuação final é zero."
+  },
+
+  "board": {
+    "your_turn": "Sua vez de ADIVINHAR",
+    "playerName_is_guessing": "{{ playerName }} está adivinhando",
+    "player_turn": "Vez do Jogador {{ playerName }}",
+    "mistakes": "Erros: {{ mistakeCount }}/{{ MAX_MISTAKE_COUNT }}",
+    "see_hint": "Ver Dica",
+    "hint": "Dica",
+    "player_a": "A",
+    "player_b": "B",
+    "waiting_player": "Esperando {{ playerName }} inserir uma palavra...",
+    "player": {
+      "enter_word": "Jogador {{ playerName }}: Inserir Palavra",
+      "enter_secret_word": "Insira a palavra secreta"
+    },
+    "correct": "CORRETO",
+    "incorrect": "INCORRETO",
+    "your_guess_outcome": "Seu palpite foi {{ guessOutcome }}.",
+    "extra_your_score": "Seu resultado é de {{score}} pontos.",
+    "extra_word_to_guess": "A palavra secreta era {{ secret }}.",
+    "button_next": "Próximo",
+    "guess_message": "O palpite de {{ playerName }} foi {{ guessOutcome }}.",
+    "extraMessage": "{{ playerName }} fez {{ score }} pontos.",
+    "game_over": {
+        "draw": "empate",
+        "you_won": "você ganhou",
+        "you_lost": "você perdeu",
+        "spectator": "ver placar",
+        "player_won": "Jogador {{ playerName }} ganhou"
+    }
+  },
+
+  "EnterWordPrompt": {
+    "max_chars": "Palavra (max {{ MAX_WORD_LENGTH }} letras)",
+    "hint_max_chars": "Dica (max {{ MAX_CHARS }} letras)",
+    "play": "Jogar"
+  }
+}
