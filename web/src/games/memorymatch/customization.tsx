@@ -2,6 +2,7 @@ import React from 'react';
 import { GameCustomization, GameCustomizationProps } from 'gamesShared/definitions/customization';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 export interface FullCustomizationState {
   stayInTurnOnMatch: boolean;
@@ -24,6 +25,7 @@ const changeStayInTurnOnMatch = (
 type Props = GameCustomizationProps;
 
 const FullCustomization = ({ currentValue, onChange }: Props) => {
+  const { translate } = useCurrentGameTranslation();
   const state = (currentValue as FullCustomizationState) || DEFAULT_FULL_CUSTOMIZATION;
   return (
     <div style={{ padding: '16px' }}>
@@ -35,7 +37,7 @@ const FullCustomization = ({ currentValue, onChange }: Props) => {
             color="primary"
           />
         }
-        label="Stay In Turn On Match"
+        label={translate('customization.stay_in_turn_on_match')}
       />
     </div>
   );
