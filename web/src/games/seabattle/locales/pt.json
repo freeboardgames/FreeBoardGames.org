@@ -1,0 +1,20 @@
+{
+  "name": "Batalha Naval",
+  "description": "Jogo clássico de Batalha Naval",
+  "descriptionTag": "Jogar Batalha Naval online de graça.\n\nVocê pode jogar contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.",
+  "instructions": {
+    "text": "Batalha naval é um jogo de tabuleiro de dois jogadores, no qual os jogadores têm de adivinhar em que quadrados estão os navios do oponente. Seu objetivo é afundar os barcos do adversário, ganha quem derrubar todos os navios adversários primeiro."
+  },
+  "hit": "FOGO",
+  "miss": "ÁGUA",
+  "click_to_shoot": "CLIQUE PARA ATIRAR",
+  "waiting_for_opponent": "Esperando adversário...",
+  "you_won": "você ganhou",
+  "you_lost": "você perdeu",
+  "your_opponent_s_board": "Mapa do seu Adversário",
+  "enable_sound": "Ligar som",
+  "disable_sound": "Desligar som",
+  "drag_drop_click_to_rotate": "Arraste e solte, clique para rotacionar",
+  "invalid_positioning": "POSIÇÃO INVÁLIDA",
+  "done": "Pronto"
+}
