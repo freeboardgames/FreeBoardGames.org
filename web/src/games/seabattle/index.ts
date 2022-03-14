@@ -5,6 +5,7 @@ import translation from './locales/en.json';
 
 export const seabattleGameDef: IGameDef = {
   code: 'seabattle',
+  codes: { de: 'seabattle', en: 'seabattle', pt: 'batalha-naval' },
   translationStatus: {
     de: IGameTranslationStatus.DONE,
     pt: IGameTranslationStatus.DONE,
