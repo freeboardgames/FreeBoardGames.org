@@ -66,7 +66,7 @@ export class NewRoomModalInternal extends React.Component<
 
     return (
       <div>
-        <Trans t={t} i18nKey="game" components={{ b: <b /> }} values={{ name: game.name }} />
+        Ueh <Trans t={t} i18nKey="game" components={{ b: <b /> }} values={{ name: game.name }} />!
       </div>
     );
   }
