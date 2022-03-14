@@ -1,6 +1,6 @@
 {
   "description": "Uma nova variante com algo a mais",
-  "descriptionTag": "Jogue Tic-Tac-Toe-Plus grauitamente online.\\\nVocê pode jogar sozinho contra o computador, \\\ncontra um amigo online ou compartilhar seu\\\ndispostivo para jogar localmente contra um amigo.\\\n",
+  "descriptionTag": "Jogue Tic-Tac-Toe-Plus grauitamente online.\n\nVocê pode jogar sozinho contra o computador, \n\ncontra um amigo online ou compartilhar seu\n\ndispostivo para jogar localmente contra um amigo.\n\n",
   "instructions": {
     "text": "Tic-Tac-Toe Plus (ttt+) é uma variante 4x4 do clássico jogo da velha. Enquanto a variante 4x4 do jogo da velha é considerada viciada e frequentemente leva a empates, o Tic-Tac-Toe **Plus** introduz um símbolo curinga (que é o sinal de adição \"+\"), que pode representar tanto um círculo quanto uma cruz. \n\nA cada vez de um jogador, existe uma possibilidade de 1 em 6 para o símbolo curinga aparecer.\n\nObservação: o símbolo curinga \"+\" pode aparecer no máximo três vezes por jogo."
   },

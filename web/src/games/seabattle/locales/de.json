@@ -1,7 +1,7 @@
 {
   "name": "Sea Battle",
   "description": "Ähnlich wie Schiffe Versenken",
-  "descriptionTag": "Spiel Sea Battle, ein gratis online Spiel ähnlich \\\n wie Schiffe Versenken. Du kannst alleine gegen den Computer\\\n oder zusammen mit einem Freund online spielen.",
+  "descriptionTag": "Spiel Sea Battle, ein gratis online Spiel ähnlich \n\n wie Schiffe Versenken. Du kannst alleine gegen den Computer\n\n oder zusammen mit einem Freund online spielen.",
   "instructions": {
     "text": "Sea Battle is ein Ratespiel für zwei Spieler.  Zu Beginn platzieren die Spieler verdeckt ihre Schiffe.  Dann versuchen die Spieler, Runde für Runde alle Schiffe des Gegners zu versenken.\n"
   },
