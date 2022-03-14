@@ -1,0 +1,26 @@
+{
+  "name": "Memory Match",
+  "description": "A small game to sharpen memory",
+  "descriptionTag": "Play memory match for free online.\nYou can either play a multi-player game against a friend online, or share your device and play locally against a friend.",
+  "instructions": {
+    "videoId": "oFfYmrGeTPs",
+    "text": "This is a simple memory game where you need to match pairs of cards. Initially, all card are closed and in a given turn a player is allowed to flip two cards. The player to open the most matching pairs of card wins.\n\nImage credits [freepik.com](https://www.freepik.com/free-vector/cute-zoo-animals-card-set_4855079.htm)"
+  },
+
+  "board": {
+    "player_1": "Player 1",
+    "player_2": "Player 2",
+    "players_turn": "{{ playerName }}'s Turn",
+    "your_turn": "Your Turn",
+    "waiting_for_player": "Waiting for {{ playerName }}",
+    "draw": "draw",
+    "player_won": "{{ winnerName }} won",
+    "you_won": "you won",
+    "see_scoreboard": "see scoreboard",
+    "you_lost": "you lost"
+  },
+
+  "customization": {
+    "stay_in_turn_on_match": "stay in turn on match"
+  }
+}
