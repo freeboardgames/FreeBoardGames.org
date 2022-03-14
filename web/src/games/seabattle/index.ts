@@ -5,7 +5,10 @@ import translation from './locales/en.json';
 
 export const seabattleGameDef: IGameDef = {
   code: 'seabattle',
-  translationStatus: { de: IGameTranslationStatus.DONE },
+  translationStatus: {
+    de: IGameTranslationStatus.DONE,
+    pt: IGameTranslationStatus.DONE,
+  },
   name: translation.name,
   contributors: ['flamecoals'],
   imageURL: Thumbnail,
