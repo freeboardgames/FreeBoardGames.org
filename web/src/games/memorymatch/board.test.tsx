@@ -2,11 +2,11 @@ import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
 import { MemoryMatchGame } from './game';
 import { MemoryMatchBoard } from './board';
+import { IBoardProps } from './definations';
 import { GameMode } from 'gamesShared/definitions/mode';
 
-let wrapper: Enzyme.ReactWrapper;
+let wrapper: Enzyme.ReactWrapper<IBoardProps>;
 let client;
-let instance: any;
 let state0: any;
 
 const updateGameProps = () => {
@@ -14,7 +14,7 @@ const updateGameProps = () => {
   wrapper.setProps({ G: state.G, ctx: state.ctx, moves: client.moves });
 };
 
-describe('SoupOfLetters UI', () => {
+describe('MemoryMatch UI', () => {
   beforeEach(() => {
     client = Client({
       game: MemoryMatchGame,
@@ -37,22 +37,23 @@ describe('SoupOfLetters UI', () => {
         }}
       />,
     );
-    instance = wrapper.instance();
   });
 
   it('should render change in players turn', () => {
-    expect(wrapper.text()).toContain("Player 1's Turn");
+    expect(wrapper.text()).toContain('board.players_turn');
     // now click on two matching images
     const card = state0.G.cards[0];
+
     wrapper.find(`[data-testid="mm-card-group-${card.id}"]`).at(0).simulate('click');
     updateGameProps();
     const pair = state0.G.cards.filter((c) => c.name !== card.name)[0];
+    // console.log(wrapper.find(`[data-testid="mm-card-group-${pair.id}"]`).debug());
     wrapper.find(`[data-testid="mm-card-group-${pair.id}"]`).at(0).simulate('click');
     updateGameProps();
-    instance.props.moves.hideShownCards();
+    wrapper.props().moves.hideShownCards();
     updateGameProps();
     // now next player should be allowed to play
-    expect(wrapper.text()).toContain("Player 2's Turn");
+    expect(wrapper.text()).toContain('board.players_turn');
   });
 
   it('should declare a draw', () => {
@@ -64,14 +65,14 @@ describe('SoupOfLetters UI', () => {
       const bCards = state0.G.cards.filter((c) => c.name !== cName);
       wrapper.find(`[data-testid="mm-card-group-${bCards[0].id}"]`).at(0).simulate('click');
       updateGameProps();
-      instance.props.moves.hideShownCards();
+      wrapper.props().moves.hideShownCards();
       updateGameProps();
       wrapper.find(`[data-testid="mm-card-group-${namedCards[0].id}"]`).at(0).simulate('click');
       updateGameProps();
       wrapper.find(`[data-testid="mm-card-group-${namedCards[1].id}"]`).at(0).simulate('click');
       updateGameProps();
     });
-    expect(wrapper.text()).toContain('Game Over, draw!');
+    expect(wrapper.text()).toContain('Game Over, board.draw!');
   });
 
   it('should declare Player 2 as the winner', () => {
@@ -85,7 +86,7 @@ describe('SoupOfLetters UI', () => {
       const bCards = state0.G.cards.filter((c) => c.name !== cName);
       wrapper.find(`[data-testid="mm-card-group-${bCards[0].id}"]`).at(0).simulate('click');
       updateGameProps();
-      instance.props.moves.hideShownCards();
+      wrapper.props().moves.hideShownCards();
       updateGameProps();
       wrapper.find(`[data-testid="mm-card-group-${namedCards[0].id}"]`).at(0).simulate('click');
       updateGameProps();
@@ -97,7 +98,7 @@ describe('SoupOfLetters UI', () => {
     updateGameProps();
     wrapper.find(`[data-testid="mm-card-group-${lastCards[1].id}"]`).at(0).simulate('click');
     updateGameProps();
-    expect(wrapper.text()).toContain('Game Over, Player 2 won!');
+    expect(wrapper.text()).toContain('Game Over, board.player_won!');
   });
 
   describe('online-specific tests', () => {
@@ -133,7 +134,7 @@ describe('SoupOfLetters UI', () => {
       const ctx = { gameover: { winner: '0' }, currentPlayer: '0' };
       wrapper.setProps({ ctx });
 
-      expect(wrapper.text()).toContain('Game Over, you won!');
+      expect(wrapper.text()).toContain('Game Over, board.you_won!');
     });
 
     it('should show gameover, you lost', () => {
@@ -141,7 +142,7 @@ describe('SoupOfLetters UI', () => {
       const ctx = { gameover: { winner: '1' }, currentPlayer: '0' };
       wrapper.setProps({ ctx });
 
-      expect(wrapper.text()).toContain('Game Over, you lost!');
+      expect(wrapper.text()).toContain('Game Over, board.you_lost!');
     });
   });
 });

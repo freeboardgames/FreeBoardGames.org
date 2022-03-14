@@ -1,0 +1,26 @@
+{
+  "name": "Jogo da Memória",
+  "description": "Um joguinho para estimular a memória",
+  "descriptionTag": "Jogar o Jogo da Memória de graça online.\n\nVocê pode jogar no modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.",
+  "instructions": {
+    "videoId": "JvYtoAH_3o4",
+    "text": "Este é um jogo de memória simples onde você precisa combinar pares de cartas. Inicialmente, todas as cartas são viradas para baixo, para que não possam ser vistas. Em cada turno, o jogador pode virar duas cartas para tentar encontrar um par.\nVence o jogador que encontrar o maior número de pares de cartas iguais.\n\nCréditos de imagem [freepik.com](https://www.freepik.com/free-vector/cute-zoo-animals-card-set_4855079.htm)"
+  },
+
+  "board": {
+    "player_1": "Jogador 1",
+    "player_2": "Jogador 2",
+    "players_turn": "Vez de {{ playerName }}",
+    "your_turn": "Sua Vez",
+    "waiting_for_player": "Aguardando {{ playerName }}",
+    "draw": "empate",
+    "player_won": "{{ winnerName }} ganhou",
+    "you_won": "você ganhou",
+    "see_scoreboard": "ver resultado",
+    "you_lost": "você perdeu"
+  },
+
+  "customization": {
+    "stay_in_turn_on_match": "Continuar turno ao encontrar par"
+  }
+}
