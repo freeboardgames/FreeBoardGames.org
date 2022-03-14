@@ -1,7 +1,7 @@
 {
   "name": "Scacchi",
   "description": "Regole internazionali",
-  "descriptionTag": "Gioca a Scacchi nel tuo browse contro un'itelligenza artificiale. \\\\nPuoi impostare il livello di difficoltà da 1 a 8, da facile a maestro. \\\nPuoi anche condividere il link della partita a giocare online con un amico \\\noppure potete giocare in 2 sullo stesso dispositivo!",
+  "descriptionTag": "Gioca a Scacchi nel tuo browse contro un'itelligenza artificiale. \n\nPuoi impostare il livello di difficoltà da 1 a 8, da facile a maestro. \n\nPuoi anche condividere il link della partita a giocare online con un amico \n\noppure potete giocare in 2 sullo stesso dispositivo!",
   "instructions": {
     "videoId": "fKxG8KjH1Qg",
     "text": "Scacchi è un gioco da tavolo per due giocatori. Si gioca in una plancia quadrata su cui è presente una griglia di 8x8 caselle. \n\nOgni giocatore inizia con sedici pezzi: otto pedoni, due cavalli, due alfieri, due torri, una regina e un re. Il giocatore con i bianchi muove sempre per primo. \n\nLo scopo del gioco è fare uno scacco matto al re dell'avversario. \nLo Scacco matto è una configurazione in cui il re avversario potrà essere catturato nel turno successivo e non ci sono modi per poterlo evitare. Facendo scacco matto si vince la partita. \n\n[Clicca qui per vedere come muovono i pezzi.](https://it.wikipedia.org/wiki/Scacchi#Movimento_dei_pezzi)\n"
