@@ -14,6 +14,15 @@ describe('GamesList', () => {
   });
 
   describe('filtering', () => {
+    it.each([
+      ['Doppelkopf', { code: 'doppelkopf' }], // lowercase
+      ['sixty', { code: 'sixtysix', codes: { en: 'sixtysix' } }], // English search
+      ['piquenique', { code: 'picnicGo', codes: { pt: 'piquenique-go' } }], // Portuguese search
+    ])('should filter by code for %s', (name, GAME) => {
+      type(name);
+      expect(screen.getByTestId(`gamecard-${GAME.code}`)).toBeInTheDocument();
+    });
+
     it('should filter by name', () => {
       type(FIRST_GAME.name);
       expect(screen.getByTestId(`gamecard-${FIRST_GAME.code}`)).toBeInTheDocument();
