@@ -1,0 +1,24 @@
+{
+  "name": "Reversi",
+  "description": "Parecido Othello",
+  "descriptionTag": "Jogar Reversi de graça online, um jogo parecido com Othello.\n\nVocê pode jogar no modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.",
+  "instructions": {
+    "text": "Parecido com Rolit, este jogo é uma variação do Reversi que aceita até 4 jogadores. Existem até quatro cores e cada jogador controla uma cor.\n\nO objetivo do jogo é possuir mais quadrados do que todos os oponentes. Para fazer isso, cada jogador pode colocar uma peça em um quadrado vazio, desde que capture peças inimigas.\n\nAs peças inimigas podem ser capturadas colocando uma peça na diagonal, horizontal ou na vertical de uma peça existente da mesma cor. \n\nO jogo termina quando não há mais movimentos possíveis, que na maioria dos casos é quando o tabuleiro está cheio."
+  },
+
+  "board" : {
+    "draw": "empate",
+    "you_won": "você ganhou",
+    "you_lost": "você perdeu",
+    "see_scoreboard": "ver resultado",
+    "player": "Jogador",
+    "player_wins": "{{ playerName }} ganhou",
+    "red": "Vermelho",
+    "green": "Verde",
+    "players_turn": "Vez do {{ playerName }}",
+    "place_piece": "Coloca peça",
+    "waiting_for_opponent": "Esperando por adiversário",
+    "your_turn": "Sua vez",
+    "waiting_for_player": "Esperando por {{ playerName }}..."
+  }
+}

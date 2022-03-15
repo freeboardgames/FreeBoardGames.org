@@ -1,23 +1,24 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-import instructions from './instructions.md';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+
+import translation from './locales/en.json';
 
 export const reversiGameDef: IGameDef = {
   code: 'reversi',
-  name: 'Reversi',
+  codes: { en: 'reversi', pt: 'reversi' },
+  name: translation.name,
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+  },
   contributors: ['JosefKuchar'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 4,
-  description: 'Similar to Rollit and Othello',
-  descriptionTag: `Play Reversi, a free online game similar\
- to Rollit and Othello. You can play multi-player online or \
- share your device and play locally against a friend.`,
-  instructions: {
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   aiConfig: () => import('./ai'),

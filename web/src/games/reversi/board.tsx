@@ -9,6 +9,9 @@ import { Ctx } from 'boardgame.io';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import { isSpectator } from 'gamesShared/helpers/GameUtil';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
+
 import css from './Board.module.css';
 
 import red from '@material-ui/core/colors/red';
@@ -29,6 +32,8 @@ export interface IColorMap {
   [key: string]: string;
 }
 
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
 interface IBoardProps {
   G: IG;
   ctx: Ctx;
@@ -38,7 +43,7 @@ interface IBoardProps {
   gameArgs?: IGameArgs;
 }
 
-export class Board extends React.Component<IBoardProps, {}> {
+export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProps, {}> {
   _onClick = this.onClick.bind(this);
 
   async onClick(coords: ICoords) {
@@ -52,23 +57,24 @@ export class Board extends React.Component<IBoardProps, {}> {
   _getGameOver() {
     const scoreboard: IScore[] = this.props.ctx.gameover.scoreboard;
     if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
-      return 'draw';
+      return this.props.translate('board.draw');
     } else {
       if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
         if (isSpectator(this.props.playerID)) {
-          return 'see scoreboard';
+          return this.props.translate('board.see_scoreboard');
         }
         if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
-          return 'you won';
+          return this.props.translate('board.you_won');
         } else {
-          return 'you lost';
+          return this.props.translate('board.you_lost');
         }
       } else {
         // local game
+        const player = this.props.translate('board.player');
         if (scoreboard[0].score > scoreboard[1].score) {
-          return 'Player 1 wins';
+          return this.props.translate('board.player_wins', { playerName: `${player} 1` });
         } else {
-          return 'Player 2 wins';
+          return this.props.translate('board.player_wins', { playerName: `${player} 2` });
         }
       }
     }
@@ -95,33 +101,33 @@ export class Board extends React.Component<IBoardProps, {}> {
 
     let message = '';
     if (this.isLocalGame()) {
-      let player;
+      let playerName;
       switch (this.props.ctx.currentPlayer) {
         case '0': {
-          player = 'Red';
+          playerName = this.props.translate('board.red');
           break;
         }
         case '1': {
-          player = 'Green';
+          playerName = this.props.translate('board.green');
           break;
         }
       }
-      message = `${player}'s turn`;
+      message = this.props.translate('board.players_turn', { playerName });
     } else if (isAIGame(this.props.gameArgs)) {
       if (this.props.ctx.currentPlayer === this.props.playerID) {
-        message = 'Place piece';
+        message = this.props.translate('board.place_piece');
       } else {
-        message = 'Waiting for opponent...';
+        message = this.props.translate('board.waiting_for_opponent');
       }
     } else if (isOnlineGame(this.props.gameArgs)) {
       const playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
       if (this.props.ctx.currentPlayer === this.props.playerID) {
-        message = 'Your turn';
+        message = this.props.translate('board.your_turn');
       } else {
         if (isSpectator(this.props.playerID)) {
-          message = `${playerName}'s turn`;
+          message = this.props.translate('board.players_turn', { playerName });
         } else {
-          message = `Waiting for ${playerName}...`;
+          message = this.props.translate('board.waiting_for_player', { playerName });
         }
       }
     }
@@ -193,3 +199,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     return colorMap;
   }
 }
+
+const enhance = compose<IBoardInnerProps, IBoardProps>(withCurrentGameTranslation);
+export const Board = enhance(BoardInternal);

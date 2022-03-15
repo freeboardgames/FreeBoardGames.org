@@ -76,13 +76,13 @@ test('gameover - won', () => {
       moves={client.moves}
       playerID={'0'}
       gameArgs={{
-        gameCode: 'rolit',
+        gameCode: 'reversi',
         mode: GameMode.LocalFriend,
         players,
       }}
     />,
   );
-  expect(comp.html()).toContain('Player 1 wins');
+  expect(comp.html()).toContain('Game Over, board.player_wins!');
 });
 
 test('gameover - lost', () => {
@@ -109,13 +109,13 @@ test('gameover - lost', () => {
       moves={client.moves}
       playerID={'1'}
       gameArgs={{
-        gameCode: 'rolit',
+        gameCode: 'reversi',
         mode: GameMode.LocalFriend,
         players,
       }}
     />,
   );
-  expect(comp.html()).toContain('Player 2 wins');
+  expect(comp.html()).toContain('Game Over, board.player_wins!');
 });
 
 test('gameover - draw', () => {
@@ -142,11 +142,11 @@ test('gameover - draw', () => {
       moves={client.moves}
       playerID={'0'}
       gameArgs={{
-        gameCode: 'rolit',
+        gameCode: 'reversi',
         mode: GameMode.LocalFriend,
         players,
       }}
     />,
   );
-  expect(comp.html()).toContain('draw');
+  expect(comp.html()).toContain('Game Over, board.draw!');
 });

@@ -1,0 +1,24 @@
+{
+  "name": "Reversi",
+  "description": "Similar to Rollit and Othello",
+  "descriptionTag": "Play Reversi, a free online game similar to Rollit and Othello. You can play multi-player online or share your device and play locally against a friend.",
+  "instructions": {
+    "text": "Similar to Rolit, this game is a variation of Reversi that allows up to 4 players. There are up to four colors, and each player controls one color.\n\nThe objective of the game is to own more squares than all of your opponents. In order to do so, each player can place a piece on an empty square as long as it captures enemy pieces.\n\nEnemy pieces can be captured by placing a piece diagonally, horizontally or vertically from an existing piece of the same color.\n\nThe game ends when there are no more possible moves, which in most cases is when the board is full."
+  },
+
+  "board" : {
+    "draw": "draw",
+    "you_won": "you won",
+    "you_lost": "you lost",
+    "see_scoreboard": "see scoreboard",
+    "player": "Player",
+    "player_wins": "{{ playerName }} wins",
+    "red": "Red",
+    "green": "Green",
+    "players_turn": "{{ playerName }}'s turn",
+    "place_piece": "Place piece",
+    "waiting_for_opponent": "Waiting for opponent...",
+    "your_turn": "Your turn",
+    "waiting_for_player": "Waiting for {{ playerName }}..."
+  }
+}
