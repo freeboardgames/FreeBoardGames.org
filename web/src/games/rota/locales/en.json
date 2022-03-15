@@ -1,0 +1,26 @@
+{
+    "name": "Rota",
+    "description": "A classic Roman Game",
+    "descriptionTag": "Play Rota for free. You can play a multi-player game against a friend online, or share your device and play locally against a friend.",
+    "instructions": {
+      "videoId": "_XVs7CmSXTw",
+      "text": "Rota is a two-player game. The board has 8 cells placed equidistantly along a circle, and a 9th cell in the center. The game begins with each player having 3 pieces of their respective color. The players alternately place their 3 pieces on any of the 9 cells on the board. Once all pieces have been placed, the players move them around trying to form a line of 3 pieces either along the circumference or along the diameter. The players cannot jump over the opponent's pieces."
+    },
+
+    "board": {
+      "prefix_place_piece": "{{ prefix }} PLACE PIECE",
+      "prefix_move_piece": "{{ prefix }} MOVE PIECE",
+      "waiting_for_player": "Waiting for {{ pName }}...",
+      "player_turn": "{{ pName }}'s turn",
+      "game_over": {
+        "you_won": "you won",
+        "you_lost": "you lost",
+        "player_won": "{{ pName }} won"
+      }
+    },
+
+    "local": {
+      "blue": "Blue",
+      "red": "Red"
+    }
+  }

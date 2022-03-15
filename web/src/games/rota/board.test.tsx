@@ -33,7 +33,7 @@ describe('Rota UI', () => {
   });
 
   it('Checks if Game starts with RED in the PLACE phase', () => {
-    expect(wrapper.text()).toContain(`[${localPlayerNames['0'].toUpperCase()}] PLACE PIECE`);
+    expect(wrapper.text()).toContain(`[${localPlayerNames[0].toUpperCase()}] PLACE PIECE`);
   });
 
   it('Checks if placePiece is being called', () => {
@@ -66,7 +66,7 @@ describe('Rota UI', () => {
       updateGameProps();
     });
 
-    expect(wrapper.text()).toContain(`${localPlayerNames['0']} won!`);
+    expect(wrapper.text()).toContain(`${localPlayerNames[0]} won!`);
   });
 
   it('Checks if BLUE wins after entering the MOVE phase.', () => {
@@ -76,7 +76,7 @@ describe('Rota UI', () => {
       updateGameProps();
     });
 
-    expect(wrapper.text()).toContain(`${localPlayerNames['1']} won!`);
+    expect(wrapper.text()).toContain(`${localPlayerNames[1]} won!`);
   });
 
   it('Checks BLUE Piece cannot be moved in REDs turn.', () => {
@@ -86,7 +86,7 @@ describe('Rota UI', () => {
       updateGameProps();
     });
 
-    expect(wrapper.text()).toContain(`[${localPlayerNames['0'].toUpperCase()}] MOVE PIECE`);
+    expect(wrapper.text()).toContain(`[${localPlayerNames[0].toUpperCase()}] MOVE PIECE`);
   });
 
   describe('online-specific tests', () => {
