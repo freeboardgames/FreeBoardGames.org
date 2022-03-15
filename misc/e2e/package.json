@@ -1,0 +1,16 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "FreeBoardGames.org e2e tests",
+  "main": "main.ts",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "@types/node": "^17.0.21",
+    "puppeteer": "^13.5.1",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2"
+  },
+  "scripts": {
+    "test": "ts-node ./main.ts"
+  }
+}

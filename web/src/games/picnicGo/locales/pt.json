@@ -1,0 +1,46 @@
+{
+  "name": "Piquenique Go",
+  "description": "Parecido com Sushi Go",
+  "descriptionTag": "Jogar Piquenique Go e preparar o melhor piquenique que você puder!",
+  "instructions": {
+    "text": "**Piquenique Go** é um simples jogo de construção de baralho(deckbuilding), onde o objetivo é construir o melhor piquenique que você puder! Todos escolhem uma carta da mão, e revelam ao mesmo tempo. Então, as cartas restantes são passadas no sentido horário (ou, nesta versão online, passa-se do jogador de cima para baixo), e o jogo continua da mesma forma até acabarem as cartas. Após 2 rodadas, quem tiver o mais número de pontos é o vencedor! (Caso tenha empate, compara-se o número de bolinhos.)\n\nAs cartas disponíveis para você escolher são:\n- **Sanduíches**\n\n  * *Sanduíches de Frango* (triângulo) valem *1 ponto*.\n\n  * *Sanduíches de Porco* (quadrado) valem *2 pontos*.\n\n  * *Sanduíches de Carne* (círculo) valem *3 pontos*.\n- **Maionese** - *Triplica* o *próximo* sanduíche que você escolher. Você pode jogar várias maioneses não utilizadas, mas elas não podem ser empilhadas - apenas uma maionese permitida por sanduíche.\n- **Batatinha(s)** - Dá 1, 2 ou 3 batatinhas, de acordo com o número mostrado na carta. No final de uma rodada, o jogador com mais fichas ganha *6 pontos*, e o segundo jogador com mais batatinhas ganha *3 pontos*. Se houver empate, divida a pontuação igualmente, arredondando para baixo.\n- **Ovos Cozidos** - Cada conjunto de 2 vale *5 pontos.* Caso contrário, não vale pontos. Você pode marcar vários conjuntos de ovos cozidos em uma rodada.\n- **Coxas de Frango** - Cada conjunto de 3 vale *10 pontos.* Caso contrário, não vale pontos. Você pode ganhar vários conjuntos de coxas de frango em uma rodada.\n- **Pizza** - Um conjunto de 1, 2, 3, 4 e 5, ou mais, vale *1*, *3*, *6*, *10* e *15 pontos*, respectivamente. Você *não pode* ganhar vários conjuntos de pizzas em uma rodada - qualquer pizza que passar da quinta não tem efeito.\n- **Bolinho** - Mantenha até o final do jogo. Após todas as 3 rodadas, o jogador com mais bolinhos ganha *6 pontos*. Se jogar com mais de 2 jogadores, o jogador com menos bolinhos *perde 6 pontos.* Em caso de empate, divida a pontuação igualmente, arredondando para baixo.\n- **Garfo** - não marca nada, mas pode ser usado em até o final. Em uso, você pode escolher 2 cartas neste turno, antes de devolver o garfo para sua mão - trocando o garfo por uma carta extra naquele turno.\n\nTodas as artes das cartas foram feitas por ProspectPyxis e são licenciadas sob [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)."
+  },
+
+  "round": "RODADA {{ r }}",
+
+  "symbols": {
+    "waiting": "🕒",
+    "done": "✅",
+    "cupcake": "🧁",
+    "chips": "🥔"
+  },
+
+  "game_over": {
+    "win": "você ganhou",
+    "lose": "você perdeu",
+    "draw": "empate",
+    "spectator": "ver resultado"
+  },
+
+  "score_cupcakes": "Bolinhos",
+
+  "is_next": "(próxima)",
+  "is_you": "(você)",
+  "using_fork": "Usando o garço!",
+  "score": "Pontos:",
+
+  "your_hand": "Sua mão",
+  "select_card": "Escolha {{ count }} carta",
+  "select_card_plural": "Escolha mais {{ count }} cartas",
+  "wait_other_players": "Aguardando os outros jogadores",
+  "wait_next_round": "Aguardando a próxima rodada",
+  "use_fork": "Usar garfo",
+
+  "round_over_next": "Acabou a rodada {{ r }} - pronto para a próxima rodada?",
+  "round_over_end": "Acabou a rodada {{ r }} - fim do jogo!",
+  "button_ready": "Pronto",
+  "button_end_game": "Finalizar",
+
+  "scoring_end_round": "(batatinhas são somadas assim que todos os jogadores estiverem prontos)",
+  "scoring_end_game": "(batatinhas e bolinhos são somadas assim que todos os jogadores estiverem prontos)"
+}

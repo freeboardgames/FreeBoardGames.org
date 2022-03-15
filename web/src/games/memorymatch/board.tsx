@@ -2,6 +2,8 @@ import * as React from 'react';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { PlayerBadges } from 'gamesShared/components/badges/PlayerBadges';
 import { Scoreboard } from 'gamesShared/components/scores/Scoreboard';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 import { isOnlineGame, isLocalGame } from '../../gamesShared/helpers/gameMode';
 import Typography from '@material-ui/core/Typography';
 import { isSpectator } from 'gamesShared/helpers/GameUtil';
@@ -10,12 +12,11 @@ import CardGrid from './grid';
 import { PLAYER_COLORS } from './constants';
 import { getScoreBoard } from './utils';
 
-const localPlayerNames = {
-  '0': 'Player 1',
-  '1': 'Player 2',
-};
+const localPlayerNames = ['player_1', 'player_2'];
 
-export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> {
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
+export class MemoryMatchBoardInternal extends React.Component<IBoardProps & IBoardInnerProps, IBoardState> {
   constructor(props) {
     super(props);
     this.state = {};
@@ -35,17 +36,17 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
 
     let playerName;
     if (isLocalGame(this.props.gameArgs)) {
-      playerName = localPlayerNames[this.props.ctx.currentPlayer];
-      return playerName + "'s Turn";
+      playerName = this.props.translate(`board.${localPlayerNames[this.props.ctx.currentPlayer]}`);
+      return this.props.translate('board.players_turn', { playerName });
     } else if (isOnlineGame(this.props.gameArgs)) {
       playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
       if (this.props.ctx.currentPlayer === this.props.playerID) {
-        return 'Your Turn';
+        return this.props.translate('board.your_turn');
       } else {
         if (isSpectator(this.props.playerID)) {
-          return `${playerName}'s turn`;
+          return this.props.translate('board.players_turn', { playerName });
         }
-        return 'Waiting for ' + playerName;
+        return this.props.translate('board.waiting_for_player', { playerName });
       }
     }
   };
@@ -53,18 +54,18 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
   _getGameOverStatus = () => {
     const { gameover } = this.props.ctx;
     if (gameover.draw) {
-      return 'draw';
+      return this.props.translate('board.draw');
     }
     if (isLocalGame(this.props.gameArgs)) {
-      return localPlayerNames[gameover.winner] + ' won';
+      return this.props.translate('board.player_won', { winnerName: localPlayerNames[gameover.winner] });
     } else if (isOnlineGame(this.props.gameArgs)) {
       if (gameover.winner === this.props.playerID) {
-        return 'you won';
+        return this.props.translate('board.you_won');
       } else {
         if (isSpectator(this.props.playerID)) {
-          return 'see scoreboard';
+          return this.props.translate('board.see_scoreboard');
         }
-        return 'you lost';
+        return this.props.translate('board.you_lost');
       }
     }
   };
@@ -125,3 +126,6 @@ export class MemoryMatchBoard extends React.Component<IBoardProps, IBoardState> 
     );
   }
 }
+
+const enhance = compose<IBoardInnerProps, IBoardProps>(withCurrentGameTranslation);
+export const MemoryMatchBoard = enhance(MemoryMatchBoardInternal);

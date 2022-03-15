@@ -41,6 +41,8 @@ function useFilteredGamesList(searchQuery: string, options: { showDevOnly?: bool
     return getAllGames().filter((game) => {
       if (searchQuery) {
         return [
+          game?.code,
+          ...Object.values(game?.codes || []),
           game.name.toLowerCase(),
           game.description.toLowerCase(),
           game.descriptionTag.toLowerCase(),
