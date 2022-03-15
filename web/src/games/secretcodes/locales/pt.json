@@ -1,7 +1,7 @@
 {
   "name": "Códigos secretos",
   "description": "Similar ao Codenames",
-  "descriptionTag": "Jogue Códigos Secretos um jogo on-line gratuíto\\\nsimilar ao jogo de tabuleiro Codenames! Você pode jogar multi-jogadores\\\nde quatro e até vinte jogadores online!",
+  "descriptionTag": "Jogue Códigos Secretos um jogo on-line gratuíto\n\nsimilar ao jogo de tabuleiro Codenames! Você pode jogar multi-jogadores\n\nde quatro e até vinte jogadores online!",
   "instructions": {
     "text": "Códigos secretos é um jogo similar ao Codenames. O jogo tem dois times, azul e vermelho e cada time tem um lider.\n\nApenas os lideres sabem quais cartas precisam ser escolhidas pelo time. Entretanto, lideres podem apenas dar uma palavra e um número como pista para seus times.\n\nO objetivo do jogo é para o resto do time descobrir todas as palavras secretas antes do time adversário. E é necessário ter cuidado, pois escolher por erro a carta preta significa o fim imediato do jogo!"
   },

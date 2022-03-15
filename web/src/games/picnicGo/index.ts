@@ -9,8 +9,9 @@ export const picnicGoGameDef: IGameDef = {
   contributors: ['ProspectPyxis'],
   translationStatus: {
     it: IGameTranslationStatus.DONE,
+    pt: IGameTranslationStatus.DONE,
   },
-  codes: { it: 'pic-nicGo' },
+  codes: { it: 'pic-nicGo', pt: 'piquenique-go' },
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 2,
