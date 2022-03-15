@@ -1,12 +1,12 @@
 import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
+import { EnterWordPrompt } from './EnterWordPrompt';
 import { HangmanGame } from './game';
-import Board from './board';
+import { Board, IBoardProps } from './board';
 import { GameMode } from 'gamesShared/definitions/mode';
 
-let wrapper: Enzyme.ReactWrapper;
+let wrapper: Enzyme.ReactWrapper<IBoardProps>;
 let client;
-let instance: any;
 
 const updateGameProps = () => {
   const state = client.store.getState();
@@ -45,32 +45,54 @@ describe('Hangman UI', () => {
         }}
       />,
     );
-    instance = wrapper.instance();
   });
 
   it('should prompt player to enter word', () => {
-    expect(wrapper.find('EnterWordPrompt').exists()).toBeTruthy();
+    expect(wrapper.find(EnterWordPrompt).exists()).toBeTruthy();
   });
 
   it('sets secret for Player A', () => {
-    instance._setSecret('foo', 'bar');
+    // Player A needs to enter word
+    expect(wrapper.text()).toContain('board.player.enter_word');
+
+    wrapper.props().moves.setSecret('foo', 'bar');
     updateGameProps();
-    expect(wrapper.text()).toContain('Player B');
+
+    const { secret, hint } = wrapper.props().G.players[0];
+    expect(secret).toEqual('foo');
+    expect(hint).toEqual('bar');
+
+    // Player B needs to enter word
+    expect(wrapper.text()).toContain('board.player.enter_word');
+    expect(wrapper.text()).toContain('EnterWordPrompt.max_chars');
+    expect(wrapper.text()).toContain('EnterWordPrompt.hint_max_chars');
+    expect(wrapper.text()).toContain('EnterWordPrompt.play');
   });
 
   it('sets secret for Player B', () => {
-    instance._setSecret('foo', 'bar'); // Player A
-    instance._setSecret('bar', 'qux'); // Player B
+    // Player A needs to enter word
+    expect(wrapper.text()).toContain('board.player.enter_word');
+
+    wrapper.props().moves.setSecret('foo', 'bar'); // Player A
+    wrapper.props().moves.setSecret('bar', 'qux'); // Player B
     updateGameProps();
 
+    const { secret, hint } = wrapper.props().G.players[1];
+    expect(secret).toEqual('bar');
+    expect(hint).toEqual('qux');
+
     // Game begins
-    expect(wrapper.text()).toContain("Player A's Turn");
+    expect(wrapper.text()).not.toContain('board.player.enter_word');
+    expect(wrapper.text()).toContain('board.player_turn');
+    expect(wrapper.text()).toContain('board.mistakes');
+    expect(wrapper.text()).toContain('ABCDEFGHIJKLMNOPQRSTUVWXYZ'); // letters
+    expect(wrapper.text()).toContain('board.see_hint');
   });
 
   it('clicks letters', () => {
     // set secrets
-    instance._setSecret('foo', 'bar'); // Player A
-    instance._setSecret('bar', 'qux'); // Player B
+    wrapper.props().moves.setSecret('foo', 'bar'); // Player A
+    wrapper.props().moves.setSecret('bar', 'qux'); // Player B
     client.moves.selectLetter = jest.fn();
 
     updateGameProps();
@@ -85,8 +107,8 @@ describe('Hangman UI', () => {
 
   it('has colors for guess results', () => {
     // set secrets
-    instance._setSecret('foo', 'bar'); // Player A
-    instance._setSecret('bar', 'qux'); // Player B
+    wrapper.props().moves.setSecret('foo', 'bar'); // Player A
+    wrapper.props().moves.setSecret('bar', 'qux'); // Player B
     client.moves.selectLetter = jest.fn();
     updateGameProps();
     const G = {
@@ -127,7 +149,8 @@ describe('Hangman UI', () => {
     const G = { players: { '1': { secret: 'foo', guesses: { a: [1] } }, '0': { secret: 'bar', guesses: {} } } };
     wrapper.setProps({ G, ctx });
 
-    expect(wrapper.text()).toContain('Game Over, Player B won!');
+    expect(wrapper.text()).toContain('Game Over, board.game_over.player_won!');
+
     const scoreRows = wrapper.find('.scoreboard tbody tr');
     expect(scoreRows.at(0).text()).toContain('Player A');
     expect(scoreRows.at(0).text()).toContain('0');
@@ -136,8 +159,8 @@ describe('Hangman UI', () => {
   });
 
   it('should show that the guess was CORRECT', () => {
-    instance._setSecret('bar', 'bar'); // Player A
-    instance._setSecret('abc', 'qux'); // Player B
+    wrapper.props().moves.setSecret('bar', 'bar'); // Player A
+    wrapper.props().moves.setSecret('abc', 'qux'); // Player B
     updateGameProps();
 
     ['a', 'z', 'b', 'c'].forEach((l) => {
@@ -146,13 +169,13 @@ describe('Hangman UI', () => {
       updateGameProps();
     });
 
-    expect(wrapper.text()).toContain('Your guess was CORRECT');
-    expect(wrapper.text()).toContain('Your score is 75 points');
+    expect(wrapper.text()).toContain('board.your_guess_outcome');
+    expect(wrapper.text()).toContain('board.extra_your_score');
   });
 
   it('should show that the guess was INCORRECT', () => {
-    instance._setSecret('bar', 'bar'); // Player A
-    instance._setSecret('abc', 'qux'); // Player B
+    wrapper.props().moves.setSecret('bar', 'bar'); // Player A
+    wrapper.props().moves.setSecret('abc', 'qux'); // Player B
     updateGameProps();
 
     ['x', 'y', 'z', 'l', 'm', 'n'].forEach((l) => {
@@ -161,8 +184,8 @@ describe('Hangman UI', () => {
       updateGameProps();
     });
 
-    expect(wrapper.text()).toContain('Your guess was INCORRECT');
-    expect(wrapper.text()).toContain('The word to be guessed was ABC');
+    expect(wrapper.text()).toContain('board.your_guess_outcome');
+    expect(wrapper.text()).toContain('board.extra_word_to_guess');
   });
 
   describe('online-specific tests', () => {
@@ -210,7 +233,7 @@ describe('Hangman UI', () => {
       const G = { players: { '0': getPlayerStatus(true), '1': getPlayerStatus(true) } };
       wrapper.setProps({ G, ctx });
 
-      expect(wrapper.text()).toContain('Game Over, draw!');
+      expect(wrapper.text()).toContain('Game Over, board.game_over.draw!');
     });
 
     it('should show gameover, you won', () => {
@@ -219,7 +242,7 @@ describe('Hangman UI', () => {
       const G = { players: { '0': getPlayerStatus(true), '1': getPlayerStatus(true) } };
       wrapper.setProps({ G, ctx });
 
-      expect(wrapper.text()).toContain('Game Over, you won!');
+      expect(wrapper.text()).toContain('Game Over, board.game_over.you_won!');
     });
 
     it('should show gameover, you lost', () => {
@@ -228,7 +251,7 @@ describe('Hangman UI', () => {
       const G = { players: { '0': getPlayerStatus(true), '1': getPlayerStatus(true) } };
       wrapper.setProps({ G, ctx });
 
-      expect(wrapper.text()).toContain('Game Over, you lost!');
+      expect(wrapper.text()).toContain('Game Over, board.game_over.you_lost!');
     });
   });
 });

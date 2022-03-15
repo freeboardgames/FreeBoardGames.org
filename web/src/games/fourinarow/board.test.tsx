@@ -5,7 +5,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { ConnectFourGame } from './game';
 import { Client } from 'boardgame.io/client';
-import { localPlayerNames } from './constants';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -53,14 +52,14 @@ test("render Blue's turn - local friend", () => {
   client.moves.selectColumn(0);
   client.moves.selectColumn(0);
   const comp = getTestComp(client, GameMode.LocalFriend);
-  expect(comp.html()).toContain(localPlayerNames['0'] + "'s turn");
+  expect(comp.find('h5.MuiTypography-root').text()).toContain('board.player_turn');
 });
 
-test("render Green's turn - local friend", () => {
+test("render Red's turn - local friend", () => {
   const client = getTestClient();
   client.moves.selectColumn(0);
   const comp = getTestComp(client, GameMode.LocalFriend);
-  expect(comp.html()).toContain(localPlayerNames['1'] + "'s turn");
+  expect(comp.find('h5.MuiTypography-root').text()).toContain('board.player_turn');
 });
 
 test('render Blue wins - local friend', () => {
@@ -68,23 +67,23 @@ test('render Blue wins - local friend', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
   const comp = getTestComp(client, GameMode.LocalFriend, state1);
-  expect(comp.html()).toContain(localPlayerNames['0'] + ' won');
+  expect(comp.find(`[data-testid="gameOverText"]`).at(0).text()).toContain('board.game_over.player_won');
 });
 
-test('render Green wins - local friend', () => {
+test('render Red wins - local friend', () => {
   const client = getTestClient();
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
   const comp = getTestComp(client, GameMode.LocalFriend, state1);
-  expect(comp.html()).toContain(localPlayerNames['1'] + ' won');
+  expect(comp.find(`[data-testid="gameOverText"]`).at(0).text()).toContain('board.game_over.player_won');
 });
 
-test('render Draw - local freind', () => {
+test('render Draw - local friend', () => {
   const client = getTestClient();
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
   const comp = getTestComp(client, GameMode.LocalFriend, state1);
-  expect(comp.html()).toContain('draw');
+  expect(comp.find(`[data-testid="gameOverText"]`).at(0).text()).toContain('board.game_over.draw');
 });
 
 test('render your turn - online friend', () => {
@@ -92,14 +91,14 @@ test('render your turn - online friend', () => {
   client.moves.selectColumn(0);
   client.moves.selectColumn(0);
   const comp = getTestComp(client, GameMode.OnlineFriend);
-  expect(comp.html()).toContain('YOUR TURN');
+  expect(comp.find('h5.MuiTypography-root').text()).toContain('board.your_turn');
 });
 
 test('render your turn - online friend', () => {
   const client = getTestClient();
   client.moves.selectColumn(0);
   const comp = getTestComp(client, GameMode.OnlineFriend);
-  expect(comp.html()).toContain('Waiting for Player B...');
+  expect(comp.find('h5.MuiTypography-root').text()).toContain('board.waiting_for_player');
 });
 
 test('render you won - Online friend', () => {
@@ -107,7 +106,7 @@ test('render you won - Online friend', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '0' } } };
   const comp = getTestComp(client, GameMode.OnlineFriend, state1);
-  expect(comp.html()).toContain('you won');
+  expect(comp.find(`[data-testid="gameOverText"]`).at(0).text()).toContain('board.game_over.you_won');
 });
 
 test('render you lost - Online friend', () => {
@@ -115,13 +114,13 @@ test('render you lost - Online friend', () => {
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: '1' } } };
   const comp = getTestComp(client, GameMode.OnlineFriend, state1);
-  expect(comp.html()).toContain('you lost');
+  expect(comp.find(`[data-testid="gameOverText"]`).at(0).text()).toContain('board.game_over.you_lost');
 });
 
-test('render Draw - Online freind', () => {
+test('render Draw - Online friend', () => {
   const client = getTestClient();
   const state0 = client.store.getState();
   const state1 = { ...state0, ctx: { ...state0.ctx, gameover: { winner: undefined } } };
   const comp = getTestComp(client, GameMode.OnlineFriend, state1);
-  expect(comp.html()).toContain('draw');
+  expect(comp.find(`[data-testid="gameOverText"]`).at(0).text()).toContain('board.game_over.draw');
 });
