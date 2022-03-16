@@ -35,8 +35,8 @@ jobs:
       run: ./docker-build.sh -b
     - name: Start minikube
       uses: medyagh/setup-minikube@master
-    - name: Deploy
-      uses: deliverybot/helm@v1
+    - name: Deploy helm
+      uses: glopezep/helm@v1.7.1
       with:
         chart: ./helm
         namespace: default
