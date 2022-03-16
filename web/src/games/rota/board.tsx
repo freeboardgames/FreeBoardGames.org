@@ -25,7 +25,7 @@ interface IBoardState {
   idSelectedPoint: number;
 }
 
-export const localPlayerNames = ['local.red', 'local.blue'];
+const localPlayerNames = ['local.red', 'local.blue'];
 
 export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProps, {}> {
   state: IBoardState = { idSelectedPoint: null };

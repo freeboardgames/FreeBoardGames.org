@@ -1,7 +1,7 @@
 import Enzyme from 'enzyme';
 import { Client } from 'boardgame.io/client';
 import { RotaGame } from './game';
-import { Board, localPlayerNames } from './board';
+import { Board } from './board';
 import { GameMode } from 'gamesShared/definitions/mode';
 
 let wrapper: Enzyme.ReactWrapper;
@@ -33,7 +33,7 @@ describe('Rota UI', () => {
   });
 
   it('Checks if Game starts with RED in the PLACE phase', () => {
-    expect(wrapper.text()).toContain(`[${localPlayerNames[0].toUpperCase()}] PLACE PIECE`);
+    expect(wrapper.text()).toContain('board.prefix_place_piece');
   });
 
   it('Checks if placePiece is being called', () => {
@@ -66,7 +66,7 @@ describe('Rota UI', () => {
       updateGameProps();
     });
 
-    expect(wrapper.text()).toContain(`${localPlayerNames[0]} won!`);
+    expect(wrapper.text()).toContain('Game Over, board.game_over.player_won!');
   });
 
   it('Checks if BLUE wins after entering the MOVE phase.', () => {
@@ -76,7 +76,7 @@ describe('Rota UI', () => {
       updateGameProps();
     });
 
-    expect(wrapper.text()).toContain(`${localPlayerNames[1]} won!`);
+    expect(wrapper.text()).toContain('Game Over, board.game_over.player_won!');
   });
 
   it('Checks BLUE Piece cannot be moved in REDs turn.', () => {
@@ -86,7 +86,7 @@ describe('Rota UI', () => {
       updateGameProps();
     });
 
-    expect(wrapper.text()).toContain(`[${localPlayerNames[0].toUpperCase()}] MOVE PIECE`);
+    expect(wrapper.text()).toContain('board.prefix_move_piece');
   });
 
   describe('online-specific tests', () => {
@@ -100,13 +100,13 @@ describe('Rota UI', () => {
     });
 
     it("clicks a piece-holder when it's our turn", () => {
-      expect(wrapper.text()).toContain('PLACE PIECE');
+      expect(wrapper.text()).toContain('board.prefix_place_piece');
 
       const pieceHolder = wrapper.find(`[data-testid="rota_piece_holder_test_id_0"]`).at(0);
       pieceHolder.simulate('click');
       updateGameProps();
 
-      expect(wrapper.text()).toContain('Waiting for YYY');
+      expect(wrapper.text()).toContain('board.waiting_for_player');
     });
 
     it("click a piece-holder when it's not our turn", () => {
@@ -115,14 +115,14 @@ describe('Rota UI', () => {
       pieceHolder.simulate('click');
       updateGameProps();
 
-      expect(wrapper.text()).toContain('Waiting for YYY');
+      expect(wrapper.text()).toContain('board.waiting_for_player');
 
       //click piece at position 1
       pieceHolder = wrapper.find(`[data-testid="rota_piece_holder_test_id_1"]`).at(0);
       pieceHolder.simulate('click');
       updateGameProps();
 
-      expect(wrapper.text()).toContain('Waiting for YYY');
+      expect(wrapper.text()).toContain('board.waiting_for_player');
     });
 
     it('should show gameover, you won', () => {
@@ -130,7 +130,7 @@ describe('Rota UI', () => {
       const ctx = { gameover: { winner: '0' } };
       wrapper.setProps({ ctx });
 
-      expect(wrapper.text()).toContain('Game Over, you won!');
+      expect(wrapper.text()).toContain('Game Over, board.game_over.you_won!');
     });
 
     it('should show gameover, you lost', () => {
@@ -138,7 +138,7 @@ describe('Rota UI', () => {
       const ctx = { gameover: { winner: '1' } };
       wrapper.setProps({ ctx });
 
-      expect(wrapper.text()).toContain('Game Over, you lost!');
+      expect(wrapper.text()).toContain('Game Over, board.game_over.you_lost!');
     });
   });
 });
