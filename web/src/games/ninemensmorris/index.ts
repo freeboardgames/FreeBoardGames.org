@@ -1,24 +1,23 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-import instructions from './instructions.md';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json';
 
 export const ninemensmorrisGameDef: IGameDef = {
   code: 'ninemensmorris',
-  name: 'Nine Mens Morris',
+  codes: { en: 'ninemensmorris', pt: 'trilha' },
+  name: translation.name,
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+  },
   contributors: ['JosefKuchar'],
   imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
-  description: 'Also Known as Mills',
-  descriptionTag: `Play Nine Men's Morris, a free online game also\
- known as Mills. You can play multi-player or with your friend\
- locally!`,
-  instructions: {
-    videoId: 'zvbIKOHIkRE',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),
