@@ -14,9 +14,13 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: 14.x 
+        node-version: 14.x
+    - name: Install dependencies
+      run: yarn install
+    - name: Select Tic-Tac-Toe only
+      run: yarn run codegen tictactoe
     - name: Compile docker images
-      run: ./docker-build.sh -db
+      run: ./docker-build.sh -b
     - name: Start minikube
       uses: medyagh/setup-minikube@master
     - name: Deploy helm
