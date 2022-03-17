@@ -17,7 +17,7 @@
     "green": "Verde",
     "players_turn": "Vez do {{ playerName }}",
     "place_piece": "Coloca peça",
-    "waiting_for_opponent": "Esperando por adiversário",
+    "waiting_for_opponent": "Esperando por adversário",
     "your_turn": "Sua vez",
     "waiting_for_player": "Esperando por {{ playerName }}..."
   }

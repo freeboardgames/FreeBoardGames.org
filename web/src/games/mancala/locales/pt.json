@@ -1,0 +1,20 @@
+{
+  "name": "Mancala",
+  "description": "Clássico jogo Mancala",
+  "descriptionTag": "Jogar o Mancala de graça online.\n\nVocê pode jogar no modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.",
+  "instructions": {
+    "videoId": "Sog-iKBh6vs",
+    "text": "Seu objetivo em Mancala é marcar mais pontos que seu adversário. O número de pontos que cada jogador faz é determinado por quantas pedras estão na tigela grande do jogador quando o jogo termina.\nQuando for a sua vez, você pode selecionar uma de suas tigelas pequenas do seu lado da mesa. Todas as pedras dessa tigela serão distribuídas uma de cada vez em cada tigela seguinte. Se a última pedra foi colocada na tigela grande, você pode jogar novamente. Caso contrário, a vez é passada para o próximo jogador.\nO jogo termina quando não houver mais pedras nas tigelas pequenas e o jogador com o maior número de pedras na tigela grande vence."
+  },
+
+  "board": {
+    "player_one": "Jogador 1",
+    "player_two": "Jogador 2",
+    "game_over": {
+        "draw": "empate",
+        "you_won": "você ganhou",
+        "you_lost": "você perdeu",
+        "player_won": "{{ playerName }} ganhou"
+    }
+  }
+}
