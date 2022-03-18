@@ -95,8 +95,8 @@ export const MancalaGame: Game<IG> = {
       }
     },
   },
-  flow: {
-    movesPerTurn: 1,
+  turn: {
+    minMoves: 1,
   },
   endIf: (G) => {
     let totalStonesInPlayPlayer0 = G.playerHoles['0'].reduce((a, b) => a + b);
