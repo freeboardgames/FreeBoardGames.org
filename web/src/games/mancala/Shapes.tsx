@@ -27,6 +27,7 @@ const SeedCount = (props: IShapeProps) => (
 export const Hole = (props: IShapeProps) => (
   <g>
     <circle
+      data-testid="hole"
       key={`hole${props.x},${props.y}`}
       cx={props.x * 100 + 1.5}
       cy={props.y * 100}

@@ -1,0 +1,20 @@
+{
+  "name": "Mancala",
+  "description": "Classic game of Mancala",
+  "descriptionTag": "Play Mancala for free online. You can either play a multi-player game against a friend online, or share your device and play locally against a friend.",
+  "instructions": {
+    "videoId": "aLQX1TQjUbw",
+    "text": "Your objective in Mancala is to score more points than your opponent. The number of points each player makes is determined by how many stones are in the player's large bowl when the game ends.\nWhen it is your turn, you can select one of your small bowls on your side of the table. All stones on that bowl are going to be distributed one at a time into each next bowl. If the last stone was placed in the large bowl, you get to play again. Otherwise, the turn is passed to the next player.\nThe game ends when there are no more stones in small bowls, and the player with the largest number of stones in the large bowl wins."
+  },
+
+  "board": {
+    "player_one": "Player 1",
+    "player_two": "Player 2",
+    "game_over": {
+      "draw": "draw",
+      "you_won": "you won",
+      "you_lost": "you lost",
+      "player_won": "{{ playerName }} won"
+    }
+  }
+}

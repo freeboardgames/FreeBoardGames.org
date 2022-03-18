@@ -1,4 +1,4 @@
-import Enzyme from 'enzyme';
+import { makeRender, screen } from 'test/utils/rtl';
 import { Board } from './board';
 import { Client } from 'boardgame.io/client';
 import { MancalaGame } from './game';
@@ -10,14 +10,16 @@ describe('mancala', () => {
       game: MancalaGame,
     });
     const state0 = client.store.getState();
-    const comp = Enzyme.mount(
+
+    const render = makeRender({ gameCode: 'mancala' });
+    render(
       <Board
         G={state0.G}
         ctx={state0.ctx}
         moves={client.moves}
         playerID={'0'}
         gameArgs={{
-          gameCode: 'zooparade',
+          gameCode: 'mancala',
           mode: GameMode.LocalFriend,
           players: [
             { name: 'foo', playerID: 0 },
@@ -26,7 +28,9 @@ describe('mancala', () => {
         }}
       />,
     );
+    const holes = screen.getAllByTestId('hole');
+
     // First page must have 12 Holes
-    expect(comp.find('Hole').length).toEqual(12);
+    expect(holes).toHaveLength(12);
   });
 });

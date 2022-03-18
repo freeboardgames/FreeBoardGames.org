@@ -1,6 +1,6 @@
 import { numOfHoles, numOfSeedsPerHole, allowCapture } from './constants';
 import { INVALID_MOVE } from 'boardgame.io/core';
-import { Ctx } from 'boardgame.io';
+import { Ctx, Game } from 'boardgame.io';
 
 function generatePlayerHoles() {
   const holes = [];
@@ -15,7 +15,7 @@ export interface IG {
   playerStoreCount: Array<number>;
 }
 
-export const MancalaGame = {
+export const MancalaGame: Game<IG> = {
   name: 'mancala',
   setup: () => {
     return {
@@ -95,8 +95,8 @@ export const MancalaGame = {
       }
     },
   },
-  flow: {
-    movesPerTurn: 1,
+  turn: {
+    minMoves: 1,
   },
   endIf: (G) => {
     let totalStonesInPlayPlayer0 = G.playerHoles['0'].reduce((a, b) => a + b);
