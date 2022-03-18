@@ -1,0 +1,27 @@
+{
+  "name": "Encurralados",
+  "description": "Parecido com Blokus",
+  "descriptionTag": "Jogar Encurralados (parecido com Blokus) de graça online.\n\nVocê pode jogar no modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.",
+  "instructions": {
+    "text": "Assim como no jogo Blokus, este jogo é de dois a quatro jogadores. No caso de apenas dois ou três jogadores, duas cores serão atribuídas a um único jogador.\n\nCada cor possui 21 peças com formas distintas, e o objetivo é cobrir o máximo possível do tabuleiro. A primeira peça deve ser colocada no canto do tabuleiro em cima da cor correspondente.\n\nTodas as peças subsequentes devem encostar um canto com pelo menos uma peça da mesma cor. Compartilhar uma borda só é permitido se as peças não forem da mesma cor. O jogo termina quando ninguém pode fazer um movimento."
+  },
+
+  "board": {
+    "blue": "Azul",
+    "yellow": "Amarelo",
+    "blue_yellow": "Azul/Amarelo",
+    "red": "Vermelho",
+    "green": "Verde",
+    "red_green": "Vermelho/Verde",
+    "player_turn": "Vez de {{ playerName }}",
+    "place_piece": "Colocar peça",
+    "waiting_for_oponent": "Esperando adversário...",
+    "end_game": "Finalizar jogo",
+    "game_over": {
+        "draw": "empate",
+        "you_won": "você ganhou",
+        "you_lost": "você perdeu",
+        "player_won": "{{ playerName }} ganhou"
+    }
+  }
+}
