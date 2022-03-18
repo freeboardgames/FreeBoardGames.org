@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
 import css from './PlayerZone.module.css';
 import { PlayerStack } from './PlayerStack';
@@ -20,6 +22,8 @@ export enum PlayerStatus {
   BeingPunished,
 }
 
+interface IPlayerZoneInnerProps extends WithCurrentGameTranslation {}
+
 export interface IPlayerZoneProps {
   playerStatuses: PlayerStatus[];
   bet: number | null;
@@ -35,7 +39,7 @@ export interface IPlayerZoneProps {
   playerIsOut: boolean;
 }
 
-export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
+export class PlayerZoneInternal extends React.Component<IPlayerZoneProps & IPlayerZoneInnerProps, {}> {
   render() {
     const radius = this.getRadiusForPlayers(this.props.totalPlayers);
     const angle = (2 * Math.PI * this.props.positionIndex) / this.props.totalPlayers;
@@ -81,56 +85,56 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
     switch (status) {
       case PlayerStatus.CurrentPlayer:
         return (
-          <span key={index} title="Waiting for player's move">
+          <span key={index} title={this.props.translate('player_zone.waiting_for_players_move')}>
             🕒
           </span>
         );
 
       case PlayerStatus.HasWin:
         return (
-          <span key={index} title="Has a win">
+          <span key={index} title={this.props.translate('player_zone.has_a_win')}>
             🔥
           </span>
         );
 
       case PlayerStatus.Skipped:
         return (
-          <span key={index} title="Skipped bet">
+          <span key={index} title={this.props.translate('player_zone.skipped_bet')}>
             ❌
           </span>
         );
 
       case PlayerStatus.HasBet:
         return (
-          <span key={index} title="Has bet">
+          <span key={index} title={this.props.translate('player_zone.has_bet')}>
             ✋
           </span>
         );
 
       case PlayerStatus.HasMaxBet:
         return (
-          <span key={index} title="Has max bet">
+          <span key={index} title={this.props.translate('player_zone.has_max_bet')}>
             😰
           </span>
         );
 
       case PlayerStatus.IsOut:
         return (
-          <span key={index} title="Knocked out">
+          <span key={index} title={this.props.translate('player_zone.knocked_out')}>
             💀
           </span>
         );
 
       case PlayerStatus.Discarding:
         return (
-          <span key={index} title="Discarding">
+          <span key={index} title={this.props.translate('player_zone.discarding')}>
             🤏
           </span>
         );
 
       case PlayerStatus.BeingPunished:
         return (
-          <span key={index} title="Being punished">
+          <span key={index} title={this.props.translate('player_zone.being_punished')}>
             🙏
           </span>
         );
@@ -163,3 +167,6 @@ export class PlayerZone extends React.Component<IPlayerZoneProps, {}> {
     return MIN_PLAYER_RADIUS + ((MAX_PLAYER_RADIUS - MIN_PLAYER_RADIUS) * totalPlayers) / MAX_PLAYERS;
   }
 }
+
+const enhance = compose<IPlayerZoneInnerProps, IPlayerZoneProps>(withCurrentGameTranslation);
+export const PlayerZone = enhance(PlayerZoneInternal);

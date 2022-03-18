@@ -1,0 +1,49 @@
+{
+  "name": "Bombas & Coelhos",
+  "description": "Parecido com Skull",
+  "descriptionTag": "Jogar Bombas & Coelhos locally (parecido com Skull) de graça online.\nYou can either play a multi-player game against a friend online, or share your device and play locally against a friend.",
+  "instructions": {
+    "text": "Bombas e Coelhos é um jogo de blefe, jogos mentais e estratégia surpreendente, assim como Skull.\n\nCada rodada os jogadores vão colocar suas cartas viradas para baixo.\nAlguém pode então fazer uma aposta de quantas cartas ele pode virar sem revelar uma bomba.\nOs jogadores terão a oportunidade de aumentar ou pular a aposta.\nSe um jogador revelar uma bomba, o dono da bomba precisa descartar uma carta aleatória desse jogador.\n\nPara ganhar o jogo, um jogador deve\n- cumprir com sucesso sua aposta duas vezes\n- todos os outros jogadores ficarem sem cartas"
+  },
+
+  "bet_button": {
+    "bet": "Apostar!",
+    "cancel": "Cancelar",
+    "skip_button": "Pular"
+  },
+
+  "bet_button_component": {
+    "bet": "APOSTAR {{ bet }}"
+  },
+
+  "bet_display": {
+    "revealed_text": "{{ revealedCount }} / {{ currentBet }}"
+  },
+
+  "bet_panel": {
+    "no_bets_avaliable": "Nenhuma aposta disponível",
+    "bet": "Aposta {{ value }}"
+  },
+
+  "player_hand": {
+    "no_cards_left": "Nenhuma Carta restante..."
+  },
+
+  "player_zone": {
+    "waiting_for_players_move": "Esperando jogador",
+    "has_a_win": "Tem uma vitória",
+    "skipped_bet": "Pulou aposta",
+    "has_bet": "Tem aposta",
+    "has_max_bet": "Tem maior aposta",
+    "knocked_out": "Nocauteado",
+    "discarding": "Descartando",
+    "being_punished": "Sendo punido"
+  },
+
+  "game_over": {
+    "draw": "empate",
+    "you_won": "você ganhou",
+    "you_lost": "você perdeu",
+    "player_won": "{{ playerName }} ganhou"
+  }
+}

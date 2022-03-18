@@ -1,10 +1,13 @@
 import * as React from 'react';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
 import { CardType, CardStyle } from './shared/interfaces';
 import { BunnyCardComponent, BombCardComponent } from './CardComponent';
 
 import css from './PlayerHand.module.css';
 
+interface IPlayerHandInnerProps extends WithCurrentGameTranslation {}
 export interface IPlayerHandProps {
   playerId: string;
   hand: CardType[];
@@ -12,14 +15,14 @@ export interface IPlayerHandProps {
   selectCard?: (handIndex: number) => void;
 }
 
-export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
+export class PlayerHandInternal extends React.Component<IPlayerHandProps & IPlayerHandInnerProps, {}> {
   render() {
     return <div className={css.playerHand}>{this.renderCards()}</div>;
   }
 
   renderCards() {
     if (this.props.hand.length == 0) {
-      return <div className={css.title}>No Cards left...</div>;
+      return <div className={css.title}>{this.props.translate('player_hand.no_cards_left')}</div>;
     }
 
     const w: number = this.props.hand.length * 40 + 80;
@@ -71,3 +74,6 @@ export class PlayerHand extends React.Component<IPlayerHandProps, {}> {
     );
   }
 }
+
+const enhance = compose<IPlayerHandInnerProps, IPlayerHandProps>(withCurrentGameTranslation);
+export const PlayerHand = enhance(PlayerHandInternal);
