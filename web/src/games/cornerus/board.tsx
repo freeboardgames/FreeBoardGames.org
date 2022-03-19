@@ -4,6 +4,8 @@ import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { Grid, Token } from 'deprecated-bgio-ui';
 import { getPlayer, getValidPositions, inBounds, getAllPositions } from './game';
 import { Ctx } from 'boardgame.io';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 import { Scoreboard, IScore } from 'gamesShared/components/scores/Scoreboard';
 import { IOptionsItems } from 'gamesShared/components/fbg/GameDarkSublayout';
 
@@ -21,6 +23,8 @@ import { pieces } from './pieces';
 import { isLocalGame } from '../../gamesShared/helpers/gameMode';
 import { IG, IPiece, IColorMap, IPieceTransform } from './types';
 
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
+
 interface IBoardProps {
   G: IG;
   ctx: Ctx;
@@ -34,8 +38,8 @@ interface IBoardState {
   validTransform: boolean;
 }
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
-  constructor(props: IBoardProps) {
+export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProps, IBoardState> {
+  constructor(props: IBoardProps & IBoardInnerProps) {
     super(props);
     this.state = {
       piece: {
@@ -66,15 +70,16 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _getGameOver() {
     const scoreboard: IScore[] = this.props.ctx.gameover.scoreboard;
     if (scoreboard[0].score === scoreboard[scoreboard.length - 1].score) {
-      return 'draw';
+      return this.props.translate('board.game_over.draw');
     } else {
       if (isLocalGame(this.props.gameArgs)) {
-        return scoreboard[0].score > scoreboard[1].score ? 'blue/yellow won' : 'red/green won';
+        const playerName = scoreboard[0].score > scoreboard[1].score ? 'board.blue_yellow' : 'board.red_green';
+        return this.props.translate('board.game_over.player_won', { playerName: this.props.translate(playerName) });
       } else {
         if (scoreboard[0].score === scoreboard.find((rank) => rank.playerID === this.props.playerID).score) {
-          return 'you won';
+          return this.props.translate('board.game_over.you_won');
         } else {
-          return 'you lost';
+          return this.props.translate('board.game_over.you_lost');
         }
       }
     }
@@ -113,40 +118,40 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
       if (this.props.ctx.numPlayers !== 2) {
         switch (this.props.ctx.currentPlayer) {
           case '0': {
-            player = 'Blue';
+            player = this.props.translate('board.blue');
             break;
           }
           case '1': {
-            player = 'Yellow';
+            player = this.props.translate('board.yellow');
             break;
           }
           case '2': {
-            player = 'Red';
+            player = this.props.translate('board.red');
             break;
           }
           case '3': {
-            player = 'Green';
+            player = this.props.translate('board.green');
             break;
           }
         }
       } else {
         switch (this.props.ctx.currentPlayer) {
           case '0': {
-            player = 'Blue/yellow';
+            player = this.props.translate('board.blue_yellow');
             break;
           }
           case '1': {
-            player = 'Red/green';
+            player = this.props.translate('board.red_green');
             break;
           }
         }
       }
 
-      message = `${player}'s turn`;
+      message = this.props.translate('board.player_turn', { playerName: player });
     } else if (this.props.ctx.currentPlayer === this.props.playerID && !isLocalGame(this.props.gameArgs)) {
-      message = 'Place piece';
+      message = this.props.translate('board.place_piece');
     } else if (this.props.ctx.currentPlayer !== this.props.playerID && !isLocalGame(this.props.gameArgs)) {
-      message = 'Waiting for opponent...';
+      message = this.props.translate('board.waiting_for_oponent');
     }
     return message;
   }
@@ -168,7 +173,7 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
   _getOptionsMenuItems = () => {
     const option: IOptionsItems = {
       onClick: this._endGame,
-      text: `End game`,
+      text: this.props.translate('board.end_game'),
     };
     const options = [option];
     return options;
@@ -295,3 +300,6 @@ export class Board extends React.Component<IBoardProps, IBoardState> {
     return colorMap;
   }
 }
+
+const enhance = compose<IBoardProps, IBoardInnerProps>(withCurrentGameTranslation);
+export const Board = enhance(BoardInternal);
