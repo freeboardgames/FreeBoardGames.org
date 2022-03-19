@@ -1,22 +1,23 @@
 const Thumbnail = require('./media/thumbnail.png?lqip-colors');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json';
 
 export const mancalaGameDef: IGameDef = {
   code: 'mancala',
-  name: 'Mancala',
+  codes: { en: 'mancala', pt: 'mancala' },
+  name: translation.name,
   imageURL: Thumbnail,
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+  },
   contributors: ['pestopancake'],
   modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
-  description: 'Classic game of Mancala',
-  descriptionTag: `Play Mancala`,
-  instructions: {
-    videoId: 'aLQX1TQjUbw',
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
 };
