@@ -1,42 +1,41 @@
 import * as React from 'react';
+import { useCurrentGameTranslation } from 'infra/i18n';
 
 import css from './BetButton.module.css';
 
 interface IBetButtonProps {
   click?: () => void;
   active?: boolean;
+  text?: string;
+  activeText?: string;
+  left?: boolean;
 }
 
-class BaseButton extends React.Component<IBetButtonProps> {
-  text: string = '';
-  activeText: string = '';
-  left: boolean = false;
+function BaseButton(
+  { click, active, text, activeText, left }: IBetButtonProps = { text: '', activeText: '', left: false },
+) {
+  const availableClass = !!click ? css.available : '';
+  const activeClass = !!active ? css.active : '';
+  const direction = left ? css.left : css.right;
+  const classNames = `${css.speechBubble} ${availableClass} ${activeClass} ${direction}`;
+  const { translate } = useCurrentGameTranslation();
 
-  render() {
-    const availableClass = !!this.props.click ? css.available : '';
-    const activeClass = !!this.props.active ? css.active : '';
-    const direction = this.left ? css.left : css.right;
-    const classNames = `${css.speechBubble} ${availableClass} ${activeClass} ${direction}`;
-
-    let text = this.text;
-    if (this.props.active && this.activeText) {
-      text = this.activeText;
-    }
-
-    return (
-      <div className={classNames} onClick={this.props.click}>
-        {text}
-      </div>
-    );
+  let button_text = text;
+  if (active && activeText) {
+    button_text = activeText;
   }
+
+  return (
+    <button data-testid="base-button" className={classNames} onClick={click}>
+      {translate(button_text)}
+    </button>
+  );
 }
 
-export class BetButton extends BaseButton {
-  text = 'Bet!';
-  activeText = 'Cancel';
-  left = true;
+export function BetButton(props: IBetButtonProps) {
+  return <BaseButton {...props} text="bet_button.bet" activeText="bet_button.cancel" left={true} />;
 }
 
-export class SkipButton extends BaseButton {
-  text = 'Skip';
+export function SkipButton(props: IBetButtonProps) {
+  return <BaseButton {...props} text="bet_button.skip_button" />;
 }
