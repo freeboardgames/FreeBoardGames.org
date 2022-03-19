@@ -26,7 +26,7 @@ function BaseButton(
   }
 
   return (
-    <button className={classNames} onClick={click}>
+    <button data-testid="base-button" className={classNames} onClick={click}>
       {translate(button_text)}
     </button>
   );
