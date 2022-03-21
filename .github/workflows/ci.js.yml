@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/cache@v2
       with:
-        path: ${{github.action_path}}
+        path: ${{github.workspace}}
         key: ${{github.sha}}:codegen
     - name: Use Node.js 14.x 
       uses: actions/setup-node@v1
@@ -40,7 +40,7 @@ jobs:
     steps:
     - uses: actions/cache@v2
       with:
-        path: ${{github.action_path}}
+        path: ${{github.workspace}}
         key: ${{github.sha}}:docker-common
         restore-keys: ${{github.sha}}:codegen
     - run: docker build -t "fbg-common:latest" "common"
