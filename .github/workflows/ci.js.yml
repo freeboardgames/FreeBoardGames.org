@@ -19,8 +19,9 @@ jobs:
         node-version: 14.x
     - uses: actions/checkout@v2
     - run: yarn install --ignore-scripts
-    - run: yarn run codegen:genGames
-    - run: ./docker-build.sh -bp
+    - run: yarn run install:e2e
+    - run: yarn run codegen:tictactoe
+    - run: ./docker-build.sh -b
   unit-test:
     runs-on: ubuntu-latest
     steps:
@@ -29,5 +30,7 @@ jobs:
         node-version: 14.x
     - uses: actions/checkout@v2
     - run: yarn install
+    - run: yarn run codegen
     - run: yarn run lint 
     - run: yarn run test
+    - run: yarn run build
