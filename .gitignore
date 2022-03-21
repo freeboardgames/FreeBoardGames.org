@@ -1,3 +1,5 @@
+**/*.swp
+*.swp
 docker-compose.yml
 freeboardgames.tar
 node_modules

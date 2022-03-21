@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: yarn install --ignore-scripts
-    - run: yarn run codegen
+    - run: yarn run codegen:genGames
   install:
     runs-on: ubuntu-latest
     needs: codegen
