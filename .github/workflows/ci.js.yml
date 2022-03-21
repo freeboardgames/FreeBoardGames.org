@@ -13,6 +13,10 @@ jobs:
   codegen:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/cache@v2
+      with:
+        path: .
+        key: ${GITHUB_SHA}:codegen
     - uses: actions/checkout@v2
     - run: yarn install --ignore-scripts
     - run: yarn run codegen:genGames
@@ -44,7 +48,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: codegen
     steps:
-      - run: docker build -t "fbg-common:latest" "common"
+    - uses: actions/cache@v2
+      with:
+        path: .
+        key: ${GITHUB_SHA}:docker-common
+        restore-keys: ${GITHUB_SHA}:codegen
+    - run: docker build -t "fbg-common:latest" "common"
   docker-web:
     runs-on: ubuntu-latest
     needs: docker-common
