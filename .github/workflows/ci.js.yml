@@ -10,24 +10,24 @@ on:
     branches: [ master ]
 
 jobs:
-  docker:
+  e2e-test:
     runs-on: ubuntu-latest
     steps:
-    - name: Use Node.js 14.x 
-      uses: actions/setup-node@v1
+    - uses: medyagh/setup-minikube@master
+    - uses: actions/setup-node@v1
       with:
         node-version: 14.x
     - uses: actions/checkout@v2
     - run: yarn install --ignore-scripts
     - run: yarn run codegen:genGames
     - run: ./docker-build.sh -bp
-  test:
+  unit-test:
     runs-on: ubuntu-latest
     steps:
-    - name: Use Node.js 14.x 
-      uses: actions/setup-node@v1
+    - uses: actions/setup-node@v1
       with:
         node-version: 14.x
     - uses: actions/checkout@v2
     - run: yarn install
+    - run: yarn run lint 
     - run: yarn run test

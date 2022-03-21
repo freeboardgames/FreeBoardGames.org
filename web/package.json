@@ -16,6 +16,7 @@
     "dev:runserver": "node server/dist/server_web.js",
     "bgio:dev": "nodemon --config nodemon.bgio.json -e js,ts --exec yarn run bgio",
     "prod": "run-s build start",
+    "build:server": "webpack --mode production --color --progress --config webpack.server.config.js",
     "bgio": "run-s build:server start:bgio",
     "build": "cross-env BABEL_ENV=production NODE_ENV=production CHANNEL=production next build && yarn run build:storybook",
     "build:storybook": "cross-env BABEL_ENV=production NODE_ENV=production NODE_PATH=src/ build-storybook -o public/static/docs",
