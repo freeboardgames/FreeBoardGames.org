@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: CI
+name: FBG-CI
 
 on:
   push:
@@ -10,20 +10,20 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  codegen:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x]
-
+    steps:
+      - run: yarn install --ignore-scripts
+      - run: yarn run codegen
+  install:
+    runs-on: ubuntu-latest
+    needs: codegen
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 14.x 
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 14.x
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -35,4 +35,28 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
     - run: yarn install --frozen-lockfile --prefer-offline
-    - run: yarn run ci
+  test:
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+    - run: yarn run test
+  docker-common:
+    runs-on: ubuntu-latest
+    needs: codegen
+    steps:
+      - run: docker build -t "fbg-common:latest" "common"
+  docker-web:
+    runs-on: ubuntu-latest
+    needs: docker-common
+    steps:
+      - run: docker build -t "fbg-web" -t "freeboardgames/web:latest" "web"
+  docker-fbg-server:
+    runs-on: ubuntu-latest
+    needs: docker-common
+    steps:
+      - run: docker build -t "fbg-server" -t "freeboardgames/fbg-server:latest" "fbg-server"
+  docker-fbg-backuper:
+    runs-on: ubuntu-latest
+    needs: docker-common
+    steps:
+      - run: docker build -t "backuper" -t "freeboardgames/fbg-backuper:latest" "misc/backuper"
