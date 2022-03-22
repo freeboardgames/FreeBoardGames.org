@@ -1,0 +1,24 @@
+{
+  "name": "Trilha",
+  "description": "Também conhecido como Moinho",
+  "descriptionTag": "Jogar Trilha.\n\nVocê pode jogar no modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.",
+  "instructions": {
+    "videoId": "EzvgdQdCfAA",
+    "text": "Jogo da Trilha é um jogo clássico de tabuleiro de dois jogadores.\n\nNa primeira fase do jogo, cada jogador coloca peças nos lugares vazios. Para fazer a trilha(moinho), um jogador precisa empilhar três peças em linha, sendo assim, removendo do tabuleiro, uma peça pertencente ao seu oponente. A primeira fase termina assim que todas as peças estiverem preenchendo o tabuleiro.\n\nNa segunda fase, cada jogador pode mover uma peça para um ponto adjacente, contanto que o mesmo esteja vazio (sem pular). Como na primeira fase, formando uma trilha, removendo uma peça de seu oponente.\n\nO jogo termina quando restarem somente 2 peças de um dos jogadores."
+  },
+  "board" : {
+    "white": "branco",
+    "red": "vermelho",
+    "players_turn": "Vez do jogador {{ playerName }}",
+    "wait_for_player": "Esperando por {{ playerName }}...",
+    "waiting_for_opponent": "Esperando por adversário...",
+    "remove_piece": "{{ prefix }} REMOVER PEÇA",
+    "place_piece": "{{ prefix }} COLOCAR PEÇA",
+    "move_piece": "{{ prefix }} MOVER PEÇA",
+    "player_won": "{{ winnerName }} ganhou",
+    "white_won": "branco ganhou",
+    "red_won": "vermelho ganhou",
+    "you_won": "você ganhou",
+    "you_lost": "você perdeu"
+  }
+}

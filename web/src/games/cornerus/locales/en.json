@@ -1,0 +1,27 @@
+{
+  "name": "Cornerus",
+  "description": "Similar to Blokus",
+  "descriptionTag": "Play Cornerus, a free online game similar to Blokus. You can play multi-player online or share your device and play locally against a friend.",
+  "instructions": {
+    "text": "Similarly to Blokus, this game allows two to four players. In the case of only two or three players, two colors will be assigned to a single player.\n\nEach color has 21 tiles with distinct shapes, and the objective is to cover as much of the board as possible. The first piece must be placed on the corner of the board assigned to that color.\n\nAll subsequent pieces must share a corner with at least one piece of the same color. Sharing an edge is only allowed if the pieces are not of the same color. The game ends when nobody can make a move."
+  },
+
+  "board": {
+    "blue": "Blue",
+    "yellow": "Yellow",
+    "blue_yellow": "Blue/Yellow",
+    "red": "Red",
+    "green": "Green",
+    "red_green": "Red/Green",
+    "player_turn": "{{ playerName }}'s turn",
+    "place_piece": "Place piece",
+    "waiting_for_oponent": "Waiting for oponent...",
+    "end_game": "End game",
+    "game_over": {
+      "draw": "draw",
+      "you_won": "you won",
+      "you_lost": "you lost",
+      "player_won": "{{ playerName }} won"
+    }
+  }
+}

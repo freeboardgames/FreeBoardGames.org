@@ -1,6 +1,10 @@
 import * as React from 'react';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
 import css from './BetDisplay.module.css';
+
+interface IBetDisplayInnerProps extends WithCurrentGameTranslation {}
 
 export interface IBetDisplayProps {
   currentBet: number;
@@ -8,7 +12,7 @@ export interface IBetDisplayProps {
   isRevealing: boolean;
 }
 
-export class BetDisplay extends React.Component<IBetDisplayProps> {
+export class BetDisplayInternal extends React.Component<IBetDisplayProps & IBetDisplayInnerProps> {
   text: string = '';
   activeText: string = '';
   flip: boolean = false;
@@ -17,7 +21,10 @@ export class BetDisplay extends React.Component<IBetDisplayProps> {
     const animationStyle = this.getAnimationStyle();
     let text;
     if (this.props.isRevealing) {
-      text = `${this.props.revealedCount} / ${this.props.currentBet}`;
+      text = this.props.translate('bet_display.revealed_text', {
+        revealedCount: this.props.revealedCount,
+        currentBet: this.props.currentBet,
+      });
     } else {
       text = this.props.currentBet;
     }
@@ -46,3 +53,6 @@ export class BetDisplay extends React.Component<IBetDisplayProps> {
     return `${css.heartbeat} ${duration}s infinite`;
   }
 }
+
+const enhance = compose<IBetDisplayInnerProps, IBetDisplayProps>(withCurrentGameTranslation);
+export const BetDisplay = enhance(BetDisplayInternal);

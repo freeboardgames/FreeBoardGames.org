@@ -1,20 +1,20 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { makeRender, screen } from 'test/utils/rtl';
 import { Client } from 'boardgame.io/client';
 import { BombsAndBunniesGame } from '../game';
 
 import { BgioBoard } from '../board';
 import { GameMode } from 'gamesShared/definitions/mode';
 
-Enzyme.configure({ adapter: new Adapter() });
-
 test('game start', async () => {
   const client = Client({
     game: BombsAndBunniesGame,
   });
   const state0 = client.store.getState();
-  const comp = Enzyme.mount(
+
+  const render = makeRender({ gameCode: 'bombsAndBunnies' });
+
+  render(
     <BgioBoard
       G={state0.G}
       ctx={state0.ctx}
@@ -30,5 +30,9 @@ test('game start', async () => {
       }}
     />,
   );
-  expect(comp.html()).toContain('Bet');
+  const bet = screen.getAllByTestId('base-button');
+
+  expect(bet).toHaveLength(2);
+  expect(bet[0]).toHaveTextContent('Bet!');
+  expect(bet[1]).toHaveTextContent('Skip');
 });

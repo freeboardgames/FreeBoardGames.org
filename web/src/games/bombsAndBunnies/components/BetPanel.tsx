@@ -1,6 +1,10 @@
 import * as React from 'react';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 
 import css from './BetPanel.module.css';
+
+interface IBetPanelInnerProps extends WithCurrentGameTranslation {}
 
 export interface IBetPanelProps {
   minBet: number;
@@ -8,8 +12,8 @@ export interface IBetPanelProps {
   bet: (bet: number) => void;
 }
 
-export class BetPanel extends React.Component<IBetPanelProps, { value: number }> {
-  constructor(props: IBetPanelProps) {
+export class BetPanelInternal extends React.Component<IBetPanelProps & IBetPanelInnerProps, { value: number }> {
+  constructor(props: IBetPanelProps & IBetPanelInnerProps) {
     super(props);
     this.state = { value: props.minBet };
 
@@ -32,14 +36,14 @@ export class BetPanel extends React.Component<IBetPanelProps, { value: number }>
 
   renderBettingOptions() {
     if (this.props.maxBet < this.props.minBet) {
-      return <button disabled={true}>No bets avaliable</button>;
+      return <button disabled={true}>{this.props.translate('bet_panel.no_bets_avaliable')}</button>;
     }
 
     return (
       <div>
         {this.renderSlider()}
         <button className={css.button} onClick={() => this._bet()}>
-          Bet {this.state.value}
+          {this.props.translate('bet_panel.bet', { value: this.state.value })}
         </button>
       </div>
     );
@@ -67,3 +71,6 @@ export class BetPanel extends React.Component<IBetPanelProps, { value: number }>
     this.setState({ value: parseInt(event.target.value) });
   }
 }
+
+const enhance = compose<IBetPanelInnerProps, IBetPanelProps>(withCurrentGameTranslation);
+export const BetPanel = enhance(BetPanelInternal);

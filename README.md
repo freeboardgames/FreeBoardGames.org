@@ -2,7 +2,7 @@
 
 FOSS platform for publishing your [boardgame.io](https://boardgame.io) games. We curate high quality implementations of board games and optimize your game for delivery so you can quickly reach [thousands of players](https://stats.freeboardgames.org).
 
-Play now at [FreeBoardGames.org](https://FreeBoardGames.org/) !
+Play now at [FreeBoardGames.org](https://FreeBoardGames.org/)
 
 ## Contributing
 

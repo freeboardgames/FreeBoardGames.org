@@ -1,11 +1,12 @@
 const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
-import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
-import instructions from './instructions.md';
+import { IGameDef, IGameStatus, IGameTranslationStatus } from 'gamesShared/definitions/game';
+import translation from './locales/en.json';
 
 export const cornerusGameDef: IGameDef = {
   code: 'cornerus',
-  name: 'Cornerus',
+  codes: { en: 'cornerus', pt: 'encurralados' },
+  name: translation.name,
   imageURL: Thumbnail,
   contributors: ['JosefKuchar'],
   modes: [
@@ -17,15 +18,14 @@ export const cornerusGameDef: IGameDef = {
     { mode: GameMode.OnlineFriend },
     { mode: GameMode.LocalFriend },
   ],
+  translationStatus: {
+    pt: IGameTranslationStatus.DONE,
+  },
   minPlayers: 2,
   maxPlayers: 4,
-  description: 'Similar to Blokus',
-  descriptionTag: `Play Cornerus, a free online game similar\
- to Blokus. You can play multi-player online or\
- share your device and play locally against a friend.`,
-  instructions: {
-    text: instructions,
-  },
+  description: translation.description,
+  descriptionTag: translation.descriptionTag,
+  instructions: translation.instructions,
   status: IGameStatus.PUBLISHED,
   config: () => import('./config'),
   // aiConfig: () => import('./ai'),

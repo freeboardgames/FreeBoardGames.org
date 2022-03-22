@@ -1,0 +1,49 @@
+{
+  "name": "Bombs & Bunnies",
+  "description": "Similar to Skull",
+  "descriptionTag": "Play Bombs & Bunnies locally (similar to Skull) for free online.\nYou can either play a multi-player game against a friend online, or share your device and play locally against a friend.",
+  "instructions": {
+    "text": "Bombs and Bunnies is a game of bluffing, mind games and surprising strategy, just like Skull.\n\nEach round players will take it in turn to place their cards face down.\nSomeone can then make a bet as to how many cards they can turn over without revealing a bomb.\nPlayers will have the opportunity to raise or skip the bet.\nIf a player reveals a bomb, the bomb's owner will discard a random card of that player.\n\nTo win the game a player must either\n- Successfully meet their bet twice\n- All other players run out of cards"
+  },
+
+  "bet_button": {
+    "bet": "Bet!",
+    "cancel": "Cancel",
+    "skip_button": "Skip"
+  },
+
+  "bet_button_component": {
+    "bet": "BET {{ bet }}"
+  },
+
+  "bet_display": {
+    "revealed_text": "{{ revealedCount }} / {{ currentBet }}"
+  },
+
+  "bet_panel": {
+    "no_bets_avaliable": "No bets avaliable",
+    "bet": "Bet {{ value }}"
+  },
+
+  "player_hand": {
+    "no_cards_left": "No Cards left..."
+  },
+
+  "player_zone": {
+    "waiting_for_players_move": "Waiting for player's move",
+    "has_a_win": "Has a win",
+    "skipped_bet": "Skipped bet",
+    "has_bet": "Has bet",
+    "has_max_bet": "Has max bet",
+    "knocked_out": "Knocked out",
+    "discarding": "Discarding",
+    "being_punished": "Being punished"
+  },
+
+  "game_over": {
+    "draw": "draw",
+    "you_won": "you won",
+    "you_lost": "you lost",
+    "player_won": "{{ playerName }} won"
+  }
+}

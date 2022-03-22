@@ -1,0 +1,26 @@
+{
+  "name": "Rota",
+  "description": "Um clássico Jogo Romano",
+  "descriptionTag": "Jogar Rota de graça.\n\nVocê pode jogar no modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.",
+  "instructions": {
+    "videoId": "_XVs7CmSXTw",
+    "text": "Rota é um jogo para dois jogadores. O tabuleiro tem 8 células ao redor de um círculo e uma 9ª célula no centro. O jogo começa com cada jogador tendo 3 peças de sua respectiva cor. Os jogadores colocam alternadamente suas 3 peças em qualquer uma das 9 células do tabuleiro. Uma vez que todas as peças tenham sido colocadas, os jogadores as movem tentando formar uma linha de 3 peças ao longo da circunferência ou ao longo do diâmetro. Os jogadores não podem saltar sobre as peças do adversário."
+  },
+
+  "board": {
+    "prefix_place_piece": "{{ prefix }} COLOCAR PEÇA",
+    "prefix_move_piece": "{{ prefix }} MOVER PEÇA",
+    "waiting_for_player": "Esperando por {{ pName }}...",
+    "player_turn": "Vez de {{ pName }}",
+    "game_over": {
+      "you_won": "você ganhou",
+      "you_lost": "você perdeu",
+      "player_won": "{{ pName }} ganhou"
+    }
+  },
+
+  "local": {
+    "blue": "Azul",
+    "red": "Vermelho"
+  }
+}

@@ -9,6 +9,10 @@ import Typography from '@material-ui/core/Typography';
 import css from './Board.module.css';
 import { isOnlineGame, isAIGame, isLocalGame } from '../../gamesShared/helpers/gameMode';
 import { isSpectator } from 'gamesShared/helpers/GameUtil';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
+
+interface IBoardInnerProps extends WithCurrentGameTranslation {}
 
 interface IBoardProps {
   G: IG;
@@ -22,7 +26,7 @@ interface IBoardState {
   selected: number;
 }
 
-export class Board extends React.Component<IBoardProps, {}> {
+export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProps, {}> {
   state: IBoardState = { selected: null };
 
   _getStatus() {
@@ -31,46 +35,48 @@ export class Board extends React.Component<IBoardProps, {}> {
     }
 
     let prefix = '';
+    const WHITE = this.props.translate('board.white').toUpperCase();
+    const RED = this.props.translate('board.red').toUpperCase();
     if (isLocalGame(this.props.gameArgs)) {
-      prefix = this.props.ctx.currentPlayer === '0' ? '[WHITE]' : '[RED]';
+      prefix = this.props.ctx.currentPlayer === '0' ? `[${WHITE}]` : `[${RED}]`;
     }
 
     if (this.props.ctx.currentPlayer !== this.props.playerID && !isLocalGame(this.props.gameArgs)) {
       if (isOnlineGame(this.props.gameArgs)) {
         const playerName = this.props.gameArgs.players[this.props.ctx.currentPlayer].name;
         if (isSpectator(this.props.playerID)) {
-          return `${playerName}'s turn`;
+          return this.props.translate('board.players_turn', { playerName });
         }
-        return `Wait for ${playerName}`;
+        return this.props.translate('board.wait_for_player', { playerName });
       }
-      return 'Waiting for opponent...';
+      return this.props.translate('board.waiting_for_opponent');
     } else if (this.props.G.haveToRemovePiece) {
-      return `${prefix} REMOVE PIECE`;
+      return this.props.translate('board.remove_piece', { prefix });
     }
 
     if (this.props.ctx.phase === Phase.Place) {
-      return `${prefix} PLACE PIECE`;
+      return this.props.translate('board.place_piece', { prefix });
     } else {
-      return `${prefix} MOVE PIECE`;
+      return this.props.translate('board.move_piece', { prefix });
     }
   }
 
   _getGameOver() {
     if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
-        return 'you won';
+        return this.props.translate('board.you_won');
       } else {
         if (isOnlineGame(this.props.gameArgs) && isSpectator(this.props.playerID)) {
           const winnerName = this.props.gameArgs.players[this.props.ctx.gameover.winner].name;
-          return `${winnerName} won`;
+          return this.props.translate('board.player_won', { winnerName });
         }
-        return 'you lost';
+        return this.props.translate('board.you_lost');
       }
     } else {
       if (this.props.ctx.gameover.winner === '0') {
-        return 'white won';
+        return this.props.translate('board.white_won');
       } else {
-        return 'red won';
+        return this.props.translate('board.red_won');
       }
     }
   }
@@ -112,3 +118,6 @@ export class Board extends React.Component<IBoardProps, {}> {
     );
   }
 }
+
+const enhance = compose<IBoardInnerProps, IBoardProps>(withCurrentGameTranslation);
+export const Board = enhance(BoardInternal);

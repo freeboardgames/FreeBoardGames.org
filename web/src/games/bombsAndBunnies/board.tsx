@@ -3,6 +3,8 @@ import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import { isLocalGame, isOnlineGame } from 'gamesShared/helpers/gameMode';
 import { Ctx } from 'boardgame.io';
+import { withCurrentGameTranslation, WithCurrentGameTranslation } from 'infra/i18n';
+import { compose } from 'recompose';
 import { IScore, Scoreboard } from 'gamesShared/components/scores/Scoreboard';
 import { Board, IBoardProps } from './components/GameBoard';
 
@@ -21,6 +23,8 @@ import {
   isBeingPunished,
 } from './engine/stateExtensions';
 
+interface IBgioBoardInnerProps extends WithCurrentGameTranslation {}
+
 interface IBgioBoardProps {
   G: IG;
   ctx: Ctx;
@@ -29,7 +33,7 @@ interface IBgioBoardProps {
   gameArgs?: IGameArgs;
 }
 
-export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
+export class BgioBoardInternal extends React.Component<IBgioBoardProps & IBgioBoardInnerProps, {}> {
   _selectCard(handIndex: number) {
     this.props.moves.PlaceCard(handIndex);
   }
@@ -155,19 +159,19 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
 
   getGameOver() {
     if (this.props.ctx.gameover.draw) {
-      return 'draw';
+      return this.props.translate('game_over.draw');
     }
     if (isOnlineGame(this.props.gameArgs)) {
       if (this.props.ctx.gameover.winner === this.props.playerID) {
-        return 'you won';
+        return this.props.translate('game_over.you_won');
       } else {
-        return 'you lost';
+        return this.props.translate('game_over.you_lost');
       }
     } else {
       if (this.props.ctx.gameover.winner) {
         const winnerIndex = parseInt(this.props.ctx.gameover.winner);
         const winner = this.props.gameArgs.players.find((p) => p.playerID === winnerIndex);
-        return `${winner.name} won`;
+        return this.props.translate('game_over.player_won', { playerName: winner.name });
       }
     }
   }
@@ -192,3 +196,6 @@ export class BgioBoard extends React.Component<IBgioBoardProps, {}> {
     return null;
   }
 }
+
+const enhance = compose<IBgioBoardInnerProps, IBgioBoardProps>(withCurrentGameTranslation);
+export const BgioBoard = enhance(BgioBoardInternal);
