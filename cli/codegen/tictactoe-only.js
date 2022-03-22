@@ -1,2 +1,2 @@
 const { genGames } = require("./genGames");
-genGames(['tictactoe']);
+genGames(["tictactoe"]);
