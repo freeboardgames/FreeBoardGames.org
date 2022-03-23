@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: yarn install --ignore-scripts
     - run: yarn run install:e2e
-    - run: yarn run codegen:tictactoe
+    - run: yarn run codegen
     - name: Build docker images
       run: ./docker-build.sh -b
     - name: Test on minikube
@@ -36,4 +36,3 @@ jobs:
     - run: yarn run codegen
     - run: yarn run lint 
     - run: yarn run test
-    - run: yarn run build
