@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: yarn install --ignore-scripts
     - run: yarn run install:e2e
-    - run: yarn run codegen
+    - run: yarn run codegen:gamesOnly
     - name: Build docker images
       run: ./docker-build.sh -b
     - name: Test on minikube
