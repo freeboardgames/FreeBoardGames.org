@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+cd "$(dirname "$0")"
+cd ..
+kubectl config use-context minikube
+minikube addons enable ingress
+./docker-build.sh -m
+sleep 10
+helm install --wait fbg ./helm
+sleep 10
+INGRESS_IP=$(kubectl get ingress ingress -o json | jq -r '.status.loadBalancer.ingress[0].ip')
+if [ ${#INGRESS_IP} -le 5 ]; then
+  echo "Error: could not get ingress ip"
+  exit 1
+fi
+
+if grep my-fbg.info /etc/hosts; then
+  echo "my-fbg.info already on /etc/hosts"
+else
+  echo "Adding $INGRESS_IP to /etc/hosts"
+  sudo sh -c "echo \"$INGRESS_IP my-fbg.info\" >> /etc/hosts"
+fi
+
+cd misc/e2e
+yarn run test https://my-fbg.info

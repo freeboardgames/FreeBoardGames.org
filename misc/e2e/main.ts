@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-const USAGE = "Usage: yarn run test [DOMAIN]";
+const USAGE = "Usage: yarn run test [URL] [HOST]";
 const DEFAULT_URL = "https://www.freeboardgames.org";
 const ONLINE_FRIEND_CARD_XPATH = "//div[contains(., 'Online Friend')]";
 const PLAY_BUTTON_XPATH = "//Button[contains(., 'Play')]";
@@ -94,12 +94,18 @@ async function gameOver(page: puppeteer.Page, title: string) {
   await screenshot(page, title);
 }
 
+async function launch() {
+  const args = [ '--ignore-certificate-errors' ];
+  const params = { args, ignoreHTTPSErrors: true };
+  return puppeteer.launch(params);
+}
+
 async function testMultiplayer(url: string) {
   console.log(`testMultiplayer(${url})`);
-  const bobBrowser = await puppeteer.launch();
+  const bobBrowser = await launch();
   const bobPage = await bobBrowser.newPage();
   const roomLink = await selectGameAndCreateRoom(bobPage, url);
-  const aliceBrowser = await puppeteer.launch();
+  const aliceBrowser = await launch();
   const alicePage = await aliceBrowser.newPage();
   await joinRoomAndInputNickname(alicePage, roomLink);
   await startMatch(bobPage);

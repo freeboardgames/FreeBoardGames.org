@@ -21,7 +21,10 @@ jobs:
     - run: yarn install --ignore-scripts
     - run: yarn run install:e2e
     - run: yarn run codegen:tictactoe
-    - run: ./docker-build.sh -b
+    - name: Build docker images
+      run: ./docker-build.sh -b
+    - name: Test on minikube
+      run: ./misc/test_minikube
   unit-test:
     runs-on: ubuntu-latest
     steps:

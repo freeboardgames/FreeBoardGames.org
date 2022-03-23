@@ -79,14 +79,12 @@ prune_docker_images() {
 
 minikube_cache() {
   echo -e "Uploading $1..."
-  minikube image rm $1
-  minikube image load $1 || exit 1
+  minikube cache add $1 || exit 1
 }
 
 upload_minikube() {
     minikube_cache fbg-web
     minikube_cache fbg-server
-    minikube_cache fbg-backuper
 }
 
 exportdocker() {
