@@ -42,11 +42,11 @@ export function Board(props: IBoardProps) {
   const [selected, setSelected] = React.useState<ICartesianCoords | null>(null);
   const [validMoves, setValidMoves] = React.useState(getValidMoves(props.G, props.ctx.currentPlayer));
 
-  function isInverted() {
+  const isInverted = () => {
     return (isAIGame(props.gameArgs) || isOnlineGame(props.gameArgs)) && props.playerID === '1';
-  }
+  };
 
-  const _isSelectable = (coords: ICartesianCoords) => {
+  const isSelectable = (coords: ICartesianCoords) => {
     if (isOnlineGame(props.gameArgs) && props.playerID !== props.ctx.currentPlayer) {
       return false;
     }
@@ -54,24 +54,24 @@ export function Board(props: IBoardProps) {
     return validMoves.some((move) => equals(move.from, coords));
   };
 
-  const _onClick = (coords: IAlgebraicCoords) => {
+  const onClick = (coords: IAlgebraicCoords) => {
     const position = algebraicToCartesian(coords.square);
-    if (selected === null && _isSelectable(position)) {
+    if (selected === null && isSelectable(position)) {
       setSelected(position);
     } else {
       if (validMoves.some((move) => equals(move.to, position))) {
-        _move(position);
+        move(position);
       } else {
-        setSelected(_isSelectable(position) ? position : null);
+        setSelected(isSelectable(position) ? position : null);
       }
     }
   };
 
-  const _shouldDrag = (coords: ICartesianCoords) => {
-    return _isSelectable(applyInvertion(coords, isInverted()));
+  const shouldDrag = (coords: ICartesianCoords) => {
+    return isSelectable(applyInvertion(coords, isInverted()));
   };
 
-  const _onDrag = (coords: IOnDragData) => {
+  const onDrag = (coords: IOnDragData) => {
     const x = coords.x;
     const y = coords.y;
     const originalX = coords.originalX;
@@ -83,13 +83,13 @@ export function Board(props: IBoardProps) {
     }
   };
 
-  const _onDrop = async (coords: ICartesianCoords) => {
+  const onDrop = async (coords: ICartesianCoords) => {
     if (selected) {
-      _move(applyInvertion(roundCoords(coords), isInverted()));
+      move(applyInvertion(roundCoords(coords), isInverted()));
     }
   };
 
-  const _move = async (coords: ICartesianCoords) => {
+  const move = async (coords: ICartesianCoords) => {
     if (selected === null || coords === null) {
       return;
     }
@@ -97,13 +97,13 @@ export function Board(props: IBoardProps) {
     await props.moves.move(selected, coords);
   };
 
-  function _getPreselectedMove(validMoves: IMove[]): ICartesianCoords {
+  const getPreselectedMove = (validMoves: IMove[]): ICartesianCoords => {
     if (validMoves.length === 1 || validMoves.every((move) => equals(move.from, validMoves[0].from))) {
       const from = validMoves[0].from;
       return { x: from.x, y: from.y };
     }
     return null;
-  }
+  };
 
   React.useEffect(() => {
     const newValidMoves =
@@ -114,10 +114,10 @@ export function Board(props: IBoardProps) {
     if (newValidMoves.length === 0) return;
 
     setValidMoves(newValidMoves);
-    setSelected(_getPreselectedMove(newValidMoves));
+    setSelected(getPreselectedMove(newValidMoves));
   }, [props.ctx.turn]);
 
-  function _getHighlightedSquares() {
+  const getHighlightedSquares = () => {
     const result = {} as IColorMap;
 
     if (selected !== null) {
@@ -134,7 +134,7 @@ export function Board(props: IBoardProps) {
     }
 
     return result;
-  }
+  };
 
   const getPieces = () => {
     return props.G.board.map((piece) => {
@@ -144,9 +144,9 @@ export function Board(props: IBoardProps) {
           x={x}
           y={y}
           draggable={true}
-          shouldDrag={_shouldDrag}
-          onDrop={_onDrop}
-          onDrag={_onDrag}
+          shouldDrag={shouldDrag}
+          onDrop={onDrop}
+          onDrag={onDrag}
           animate={true}
           key={piece.id}
         >
@@ -161,7 +161,7 @@ export function Board(props: IBoardProps) {
     });
   };
 
-  function _getStatus() {
+  const getStatus = () => {
     if (isFirstPersonView(props.gameArgs, props.playerID)) {
       if (props.ctx.currentPlayer === props.playerID) {
         return translate('move_piece');
@@ -176,9 +176,9 @@ export function Board(props: IBoardProps) {
           return translate('black_turn');
       }
     }
-  }
+  };
 
-  function _getGameOver() {
+  const getGameOver = () => {
     const winner = props.ctx.gameover.winner;
     if (winner) {
       if (isFirstPersonView(props.gameArgs, props.playerID)) {
@@ -199,24 +199,20 @@ export function Board(props: IBoardProps) {
         }
       }
     }
+  };
+
+  if (props.ctx.gameover) {
+    return <GameLayout gameOver={getGameOver()} gameArgs={props.gameArgs} />;
   }
 
-  function render() {
-    if (props.ctx.gameover) {
-      return <GameLayout gameOver={_getGameOver()} gameArgs={props.gameArgs} />;
-    }
-
-    return (
-      <GameLayout gameArgs={props.gameArgs}>
-        <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
-          {_getStatus()}
-        </Typography>
-        <Checkerboard onClick={_onClick} invert={isInverted()} highlightedSquares={_getHighlightedSquares()}>
-          {getPieces()}
-        </Checkerboard>
-      </GameLayout>
-    );
-  }
-
-  return render();
+  return (
+    <GameLayout gameArgs={props.gameArgs}>
+      <Typography variant="h5" style={{ textAlign: 'center', color: 'white', marginBottom: '16px' }}>
+        {getStatus()}
+      </Typography>
+      <Checkerboard onClick={onClick} invert={isInverted()} highlightedSquares={getHighlightedSquares()}>
+        {getPieces()}
+      </Checkerboard>
+    </GameLayout>
+  );
 }
