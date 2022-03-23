@@ -36,13 +36,7 @@ function printErr(text) {
 }
 
 function checkEnvironment() {
-  if (
-    !dirExists(path.resolve(ROOT, "node_modules")) ||
-    !dirExists(
-      path.resolve(ROOT, "web", "node_modules") ||
-        !dirExists(path.resolve(ROOT, "fbg-server", "node_modules"))
-    )
-  ) {
+  if (!dirExists(path.resolve(ROOT, "node_modules"))) {
     printErr(
       `Run ${chalk.inverse(
         "yarn install"
