@@ -39,7 +39,7 @@ function roundCoords(coords: ICartesianCoords) {
 export function Board(props: IBoardProps) {
   const { translate } = useCurrentGameTranslation();
 
-  const [selected, setSelected] = React.useState(null);
+  const [selected, setSelected] = React.useState<ICartesianCoords | null>(null);
   const [validMoves, setValidMoves] = React.useState(getValidMoves(props.G, props.ctx.currentPlayer));
 
   function isInverted() {
