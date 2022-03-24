@@ -26,8 +26,9 @@ import { useCurrentGameTranslation } from 'infra/i18n';
 interface IBoardProps {
   G: IG;
   ctx: Ctx;
-  moves: any;
-  step?: any;
+  moves: {
+    move: (from: ICartesianCoords, to: ICartesianCoords) => Promise<void>;
+  };
   playerID: string;
   gameArgs?: IGameArgs;
 }
