@@ -13,6 +13,7 @@ minikube addons enable ingress
 helm install --wait fbg ./helm
 
 sleep 120
+kubectl get pods
 
 for i in {1..300}; do
   INGRESS_IP=$(kubectl get ingress ingress -o json | jq -r '.status.loadBalancer.ingress[0].ip')
@@ -41,7 +42,7 @@ for i in {1..300}; do
   echo "Waiting for bgio pods to stabilize..."
   sleep 2
 done
-
+kubectl get pods
 
 cd misc/e2e
 yarn run test https://my-fbg.info
