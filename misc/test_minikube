@@ -11,6 +11,7 @@ rm -f misc/e2e/out/*
 minikube addons enable ingress
 ./docker-build.sh -m
 helm install --wait fbg ./helm
+sleep 60
 for i in {1..300}; do
   INGRESS_IP=$(kubectl get ingress ingress -o json | jq -r '.status.loadBalancer.ingress[0].ip')
   [[ ${#INGRESS_IP} -ge 5 ]] && break
