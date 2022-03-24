@@ -6,7 +6,7 @@ set -o pipefail
 cd "$(dirname "$0")"
 cd ..
 kubectl config use-context minikube
-helm uninstall --wait fbg || return 0
+helm uninstall --wait fbg 2> /dev/null || true
 rm -f misc/e2e/out/*
 minikube addons enable ingress
 ./docker-build.sh -m
@@ -26,13 +26,15 @@ else
 fi
 
 while : ; do
-  [[ $(minikube ssh "curl $(kubectl get service fbg-fbg-server -o json | jq -r ".spec.clusterIP")/healthz" 2> /dev/null) -eq "OK" ]] > /dev/null 2>&1 && break
+  FBG_SERVER_IP=$(kubectl get service fbg-fbg-server -o json | jq -r ".spec.clusterIP")
+  [[ $(minikube ssh "curl $FBG_SERVER_IP/healthz" 2> /dev/null) -eq "OK" ]] > /dev/null 2>&1 && break
   echo "Waiting for fbg-server pods to stabilize..."
   sleep 2
 done
 
 while : ; do
-  echo $(minikube ssh "curl $(kubectl get service fbg-bgio -o json | jq -r ".spec.clusterIP")/games" 2> /dev/null) | jq > /dev/null 2>&1 && break
+  BGIO_IP=$(kubectl get service fbg-bgio -o json | jq -r ".spec.clusterIP")
+  echo $(minikube ssh "curl $BGIO_IP/games" 2> /dev/null) | jq > /dev/null 2>&1 && break
   echo "Waiting for bgio pods to stabilize..."
   sleep 2
 done
