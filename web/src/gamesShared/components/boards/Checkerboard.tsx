@@ -34,22 +34,27 @@ import { Grid } from 'deprecated-bgio-ui';
  */
 const NUM_COLS = 8;
 const NUM_ROWS = 8;
+
 export interface IAlgebraicCoords {
   square: string;
 }
+
 export interface ICartesianCoords {
   x: number;
   y: number;
 }
+
 export interface IOnDragData {
   x: number;
   y: number;
   originalX: number;
   originalY: number;
 }
+
 export interface IColorMap {
   [key: string]: string;
 }
+
 interface ICheckerboardProps {
   onClick: (coords: IAlgebraicCoords) => void;
   invert: boolean;
@@ -59,6 +64,7 @@ interface ICheckerboardProps {
   style: React.CSSProperties;
   children?: any;
 }
+
 export class Checkerboard extends React.Component<ICheckerboardProps, any> {
   static defaultProps = {
     invert: false,
@@ -118,7 +124,7 @@ export class Checkerboard extends React.Component<ICheckerboardProps, any> {
  * Given an algebraic notation, returns x and y values.
  * Example: A1 returns { x: 0, y: 0 }
  */
-export function algebraicToCartesian(square: string, invert?: boolean) {
+export function algebraicToCartesian(square: string, invert?: boolean): ICartesianCoords {
   const regexp = /([A-Za-z])([0-9]+)/g;
   const match = regexp.exec(square);
   if (match == null) {
