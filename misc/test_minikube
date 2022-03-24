@@ -26,7 +26,7 @@ else
 fi
 
 while : ; do
-  [[ $(minikube ssh "curl $(kubectl get service fbg-fbg-server -o json | jq -r ".spec.clusterIP")/healthz" 2> /dev/null) -eq "OK" ]] && break
+  [[ $(minikube ssh "curl $(kubectl get service fbg-fbg-server -o json | jq -r ".spec.clusterIP")/healthz" 2> /dev/null) -eq "OK" ]] > /dev/null 2>&1 && break
   echo "Waiting for fbg-server pods to stabilize..."
   sleep 2
 done
