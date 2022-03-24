@@ -6,23 +6,37 @@ set -o pipefail
 cd "$(dirname "$0")"
 cd ..
 kubectl config use-context minikube
+helm uninstall --wait fbg || return 0
+rm -f misc/e2e/out/*
 minikube addons enable ingress
 ./docker-build.sh -m
-sleep 10
 helm install --wait fbg ./helm
-sleep 10
-INGRESS_IP=$(kubectl get ingress ingress -o json | jq -r '.status.loadBalancer.ingress[0].ip')
-if [ ${#INGRESS_IP} -le 5 ]; then
-  echo "Error: could not get ingress ip"
-  exit 1
-fi
+while : ; do
+  INGRESS_IP=$(kubectl get ingress ingress -o json | jq -r '.status.loadBalancer.ingress[0].ip')
+  [[ ${#INGRESS_IP} -ge 5 ]] && break
+  echo "Waiting for ingress ip..."
+  sleep 2
+done
 
-if grep my-fbg.info /etc/hosts; then
+if grep my-fbg.info /etc/hosts > /dev/null 2>&1; then
   echo "my-fbg.info already on /etc/hosts"
 else
   echo "Adding $INGRESS_IP to /etc/hosts"
   sudo sh -c "echo \"$INGRESS_IP my-fbg.info\" >> /etc/hosts"
 fi
+
+while : ; do
+  [[ $(minikube ssh "curl $(kubectl get service fbg-fbg-server -o json | jq -r ".spec.clusterIP")/healthz" 2> /dev/null) -eq "OK" ]] && break
+  echo "Waiting for fbg-server pods to stabilize..."
+  sleep 2
+done
+
+while : ; do
+  echo $(minikube ssh "curl $(kubectl get service fbg-bgio -o json | jq -r ".spec.clusterIP")/games" 2> /dev/null) | jq > /dev/null 2>&1 && break
+  echo "Waiting for bgio pods to stabilize..."
+  sleep 2
+done
+
 
 cd misc/e2e
 yarn run test https://my-fbg.info
