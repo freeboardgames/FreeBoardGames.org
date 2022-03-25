@@ -7,7 +7,6 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "codegen": "node cli/codegen/cli.js",
-    "codegen:gamesOnly": "node cli/codegen/codegenGamesOnly.js",
     "test": "node cli/test/test.js",
     "lint": "node cli/lint/lint.js",
     "fix": "node cli/fix/fix.js",
