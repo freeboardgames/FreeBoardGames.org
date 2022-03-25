@@ -16,7 +16,7 @@ const ENTER_NICK_TITLE_XPATH = "//h3[contains(.,'Enter Your Nickname')]";
 let screenshotCount = 0;
 
 function highlightLog(text: string) {
-  console.log(`-=-=-=-=- ${text} -=-=-=-=-`);
+  console.log(`--> ${text}`);
 }
 
 async function waitVisible(page: puppeteer.Page, xpath: string) {
@@ -92,6 +92,7 @@ async function startMatch(page: puppeteer.Page) {
 
 async function selectSlot(page: puppeteer.Page, x: number, y: number, title: string) {
   highlightLog(`selectSlot(${x}, ${y}, ${title})`);
+  await screenshot(page, title);
   await waitVisible(page, YOUR_TURN_TITLE_XPATH);
   await screenshot(page, title);
   await page.click(`rect[x="${x}"][y="${y}"]`);
