@@ -44,4 +44,4 @@ for i in {1..300}; do
 done
 
 cd misc/e2e
-yarn run test https://my-fbg.info
+DEBUG=1 yarn run test https://my-fbg.info
