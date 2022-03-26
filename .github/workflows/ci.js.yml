@@ -18,10 +18,8 @@ jobs:
       with:
         node-version: 14.x
     - uses: actions/checkout@v2
-    - run: yarn install
-    - run: yarn run codegen
     - name: Build docker images
-      run: ./docker-build.sh -b
+      run: ./docker-build.sh -dbm
     - name: Test on minikube
       run: ./misc/test_minikube
     - name: Upload screenshots
