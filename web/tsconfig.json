@@ -23,7 +23,6 @@
     "jsx": "preserve",
     "types": [
       "expect-puppeteer",
-      "cypress",
       "jest"
     ],
     "typeRoots": [
