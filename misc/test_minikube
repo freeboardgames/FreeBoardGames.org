@@ -9,6 +9,7 @@ kubectl config use-context minikube
 helm uninstall --wait fbg 2> /dev/null || true
 rm -f misc/e2e/out/*
 minikube addons enable ingress
+./docker-build.sh -m
 helm install --wait fbg ./helm
 
 for i in {1..300}; do
