@@ -12,7 +12,7 @@
     "lint": "node cli/lint/lint.js",
     "fix": "node cli/fix/fix.js",
     "dev": "node cli/dev/cli.js",
-    "ci": "yarn run test && ./docker-build.sh -dbm && ./misc/test_minikube",
+    "ci": "yarn run test && ./docker-build.sh -db && ./misc/test_minikube",
     "build": "cd web/ && yarn run build && yarn run build:server",
     "storybook": "cd web/ && yarn run storybook",
     "dev:internal": "run-p web:dev backend:dev",
