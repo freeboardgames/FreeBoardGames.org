@@ -19,7 +19,7 @@ jobs:
         node-version: 14.x
     - uses: actions/checkout@v2
     - name: Build docker images
-      run: ./docker-build.sh -dbm
+      run: ./docker-build.sh -db
     - name: Test on minikube
       run: ./misc/test_minikube
     - name: Upload screenshots
