@@ -1,10 +1,10 @@
-const { print, cd, fbgRun } = require("../util.js");
-const chalk = require("chalk");
-const { lintAll } = require("../lint/lint_all.js");
-const { codegen } = require("../codegen/codegen");
-const shell = require("shelljs");
+import { print, cd, fbgRun } from "../util.js";
+import chalk from "chalk";
+import { lintAll } from "../lint/lint_all.js";
+import { codegen } from "../codegen/codegen.js";
+import shell from "shelljs";
 
-function testAll() {
+export function testAll() {
   print(
     `Testing ${chalk.bold(
       "EVERYTHING"
@@ -33,5 +33,3 @@ function checkCircularDependencies() {
   let cmd = "yarn madge --circular --extensions ts,tsx src/";
   fbgRun(cmd, "Circular dependencies detected (web).");
 }
-
-module.exports = { testAll };

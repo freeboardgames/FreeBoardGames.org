@@ -1,7 +1,7 @@
-const { genGames } = require("./genGames.js");
-const { cd, print, fbgRun } = require("../util");
+import { genGames } from "./genGames.js";
+import { cd, print, fbgRun } from "../util.js";
 
-function codegen(games = []) {
+export function codegen(games = []) {
   print("Generating games index...");
   genGames(games);
   print("Generating GraphQL definitions...");
@@ -10,7 +10,3 @@ function codegen(games = []) {
   print("Generating i18n translations...");
   fbgRun("yarn run i18n:copy");
 }
-
-module.exports = {
-  codegen,
-};

@@ -1,12 +1,12 @@
-const { print, cd, fbgRun } = require("../util.js");
-const chalk = require("chalk");
-const shell = require("shelljs");
+import { print, cd, fbgRun } from "../util.js";
+import chalk from "chalk";
+import shell from "shelljs";
 
 function lintFailed(linter) {
   return `Lint failed (${linter}). Try ${chalk.inverse("yarn run fix")}`;
 }
 
-function lintAll() {
+export function lintAll() {
   print(
     `Linting ${chalk.bold(
       "EVERYTHING"
@@ -25,5 +25,3 @@ function lintAll() {
   cmd = `yarn run eslint --max-warnings=0 \"{src,apps,libs,test}/**/*.ts\"`;
   fbgRun(cmd, lintFailed("eslint, fbg-server"));
 }
-
-module.exports = { lintAll };

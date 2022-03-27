@@ -1,8 +1,8 @@
-const shell = require("shelljs");
-const { print, printErr, checkEnvironment } = require("../util");
-const { testGame } = require("./test_game");
-const { testAll } = require("./test_all");
-const chalk = require("chalk");
+import shell from "shelljs";
+import { print, printErr, checkEnvironment } from "../util.js";
+import { testGame } from "./test_game.js";
+import { testAll } from "./test_all.js";
+import chalk from "chalk";
 
 const USAGE = "Usage: yarn run test [GAME CODE]";
 

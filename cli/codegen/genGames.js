@@ -1,9 +1,9 @@
-const shell = require("shelljs");
-const { cd, checkGameExists } = require("../util");
-const fs = require("fs");
-const path = require("path");
+import shell from "shelljs";
+import { cd, checkGameExists } from "../util.js";
+import fs from "fs";
+import path from "path";
 
-function genGames(games = []) {
+export function genGames(games = []) {
   cd("web/src/games");
   games.forEach((g) => checkGameExists(g));
   const finalGames = orderGames(games.length > 0 ? games : getAllGames());
@@ -65,7 +65,3 @@ function writeFile(fileContent) {
   const filePath = path.resolve(`${shell.pwd()}`, "index.ts");
   fs.writeFileSync(filePath, fileContent);
 }
-
-module.exports = {
-  genGames,
-};

@@ -1,8 +1,8 @@
-const shell = require("shelljs");
-const { print, printErr, checkEnvironment } = require("../util");
-const { lintGame } = require("./lint_game");
-const { lintAll } = require("./lint_all");
-const chalk = require("chalk");
+import shell from "shelljs";
+import { print, printErr, checkEnvironment } from "../util.js";
+import { lintGame } from "./lint_game.js";
+import { lintAll } from "./lint_all.js";
+import chalk from "chalk";
 
 const USAGE = "Usage: yarn run lint [GAME CODE]";
 
