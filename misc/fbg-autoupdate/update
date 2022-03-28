@@ -9,6 +9,7 @@ git pull || { echo "SECRETS GIT PULL FAILED, EXITING"; exit 1; }
 cd ..
 cd fbg-prod
 git pull || { echo "FBG GIT PULL FAILED, EXITING"; exit 1; }
+kubectl config use-context do-sfo3-fbg-k8s2 || exit 1
 log "Found new FBG version, pushing to production..."
 helm upgrade -f ../secrets/values.prod.yaml fbg ./helm || { log "Helm upgrade failed"; exit 1; }
 ./docker-build.sh -d || { log "Updating dependencies failed"; exit 1; }

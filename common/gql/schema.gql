@@ -2,68 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Lobby {
-  rooms: [Room!]!
-}
-
-type Match {
+type User {
   id: Int
-  playerMemberships: [MatchMembership!]!
-  gameCode: String!
-  bgioServerUrl: String!
-  bgioMatchId: String!
-  bgioSecret: String
-  bgioPlayerId: String
-}
-
-type MatchMembership {
-  user: User!
-}
-
-type Message {
-  channelType: String!
-  channelId: String!
-  userId: Float!
-  userNickname: String!
-  isoTimestamp: String!
-  message: String!
-}
-
-type Mutation {
-  newUser(user: NewUserInput!): NewUser!
-  updateUser(user: NewUserInput!): Boolean!
-  newRoom(room: NewRoomInput!): NewRoom!
-  joinRoom(roomId: String!): Room!
-  leaveRoom(roomId: String!): Boolean!
-  removeFromRoom(userIdToBeRemoved: Int!, roomId: String!): Boolean!
-  updateRoom(room: UpdateRoomInput!): Boolean!
-  nextRoom(matchId: String!): String!
-  startMatch(setupData: String!, roomId: String!): String!
-  sendMessage(message: SendMessageInput!): Boolean!
-}
-
-type NewRoom {
-  roomId: String!
-}
-
-input NewRoomInput {
-  gameCode: String!
-  capacity: Float!
-  isPublic: Boolean!
+  nickname: String!
 }
 
 type NewUser {
   jwtToken: String!
 }
 
-input NewUserInput {
-  nickname: String!
-}
-
-type Query {
+type RoomMembership {
+  isCreator: Boolean!
   user: User!
-  lobby: Lobby!
-  match(id: String!): Match!
 }
 
 type Room {
@@ -76,9 +26,70 @@ type Room {
   isPublic: Boolean!
 }
 
-type RoomMembership {
-  isCreator: Boolean!
+type NewRoom {
+  roomId: String!
+}
+
+type Lobby {
+  rooms: [Room!]!
+}
+
+type MatchMembership {
   user: User!
+}
+
+type Match {
+  id: Int
+  playerMemberships: [MatchMembership!]!
+  gameCode: String!
+  bgioServerUrl: String!
+  bgioMatchId: String!
+  bgioSecret: String
+  bgioPlayerId: String
+}
+
+type Message {
+  channelType: String!
+  channelId: String!
+  userId: Float!
+  userNickname: String!
+  isoTimestamp: String!
+  message: String!
+}
+
+type Query {
+  user: User!
+  lobby: Lobby!
+  match(id: String!): Match!
+}
+
+type Mutation {
+  newUser(user: NewUserInput!): NewUser!
+  updateUser(user: NewUserInput!): Boolean!
+  newRoom(room: NewRoomInput!): NewRoom!
+  joinRoom(roomId: String!): Room!
+  leaveRoom(roomId: String!): Boolean!
+  removeFromRoom(roomId: String!, userIdToBeRemoved: Int!): Boolean!
+  updateRoom(room: UpdateRoomInput!): Boolean!
+  nextRoom(matchId: String!): String!
+  startMatch(roomId: String!, setupData: String!): String!
+  sendMessage(message: SendMessageInput!): Boolean!
+}
+
+input NewUserInput {
+  nickname: String!
+}
+
+input NewRoomInput {
+  gameCode: String!
+  capacity: Float!
+  isPublic: Boolean!
+}
+
+input UpdateRoomInput {
+  roomId: String!
+  gameCode: String!
+  capacity: Float!
 }
 
 input SendMessageInput {
@@ -90,16 +101,5 @@ input SendMessageInput {
 type Subscription {
   roomMutated(roomId: String!): Room!
   lobbyMutated: Lobby!
-  chatMutated(channelId: String!, channelType: String!): Message!
-}
-
-input UpdateRoomInput {
-  roomId: String!
-  gameCode: String!
-  capacity: Float!
-}
-
-type User {
-  id: Int
-  nickname: String!
+  chatMutated(channelType: String!, channelId: String!): Message!
 }

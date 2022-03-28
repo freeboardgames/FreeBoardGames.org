@@ -16,7 +16,7 @@ export const FBG_PUB_SUB = 'FbgPubSub';
         }
         const options = {
           host: process.env.FBG_REDIS_HOST,
-          port: process.env.FBG_REDIS_PORT,
+          port: parseInt(process.env.FBG_REDIS_PORT, 10),
           password: process.env.FBG_REDIS_PASSWORD,
         };
 

@@ -7,7 +7,7 @@ import { HealthzController } from './healthz.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ChatModule } from './chat/chat.module';
-import { ComplexityPlugin } from './complexity.plugin';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 const CONNECTION: any = process.env.POSTGRES_URL
   ? {
@@ -27,7 +27,6 @@ const isProd = process.env.NODE_ENV === 'production';
 const forceDbSync = process.env.FORCE_DB_SYNC === 'true';
 
 @Module({
-  providers: [ComplexityPlugin],
   imports: [
     TypeOrmModule.forRoot({
       ...CONNECTION,
@@ -35,7 +34,8 @@ const forceDbSync = process.env.FORCE_DB_SYNC === 'true';
       synchronize: !isProd || forceDbSync,
       logging: false,
     }),
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
       debug: !isProd,
       playground: !isProd,
       installSubscriptionHandlers: true,
