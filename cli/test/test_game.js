@@ -1,10 +1,10 @@
-const chalk = require("chalk");
-const { print, checkGameExists, cd, fbgRun } = require("../util.js");
-const { lintGame } = require("../lint/lint_game.js");
-const { codegen } = require("../codegen/codegen");
-const shell = require("shelljs");
+import chalk from "chalk";
+import { print, checkGameExists, cd, fbgRun } from "../util.js";
+import { lintGame } from "../lint/lint_game.js";
+import { codegen } from "../codegen/codegen.js";
+import shell from "shelljs";
 
-function testGame(game, extraArgs = "") {
+export function testGame(game, extraArgs = "") {
   checkGameExists(game);
   codegen([game]);
   test(game, extraArgs);
@@ -19,5 +19,3 @@ function test(game, extraArgs = "") {
   let cmd = `yarn run jest src/games/${game}/ ${extraArgs}`.trim();
   fbgRun(cmd, `${chalk.inverse(game)}: Tests failed.`);
 }
-
-module.exports = { testGame };

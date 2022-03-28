@@ -1,17 +1,19 @@
-const shell = require("shelljs");
-const chalk = require("chalk");
-const path = require("path");
+import shell from "shelljs";
+import chalk from "chalk";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const ROOT = path.resolve(__dirname, "..");
+const thisUrl = fileURLToPath(import.meta.url);
+export const ROOT = path.resolve(path.dirname(thisUrl), "..");
 
-function fbgRun(cmd, err) {
+export function fbgRun(cmd, err) {
   if (shell.exec(cmd).code !== 0) {
     printErr(err);
     shell.exit(1);
   }
 }
 
-function cd(dir) {
+export function cd(dir) {
   if (dir) {
     shell.cd(path.resolve(ROOT, dir));
   } else {
@@ -19,23 +21,23 @@ function cd(dir) {
   }
 }
 
-function decodeCsv(csv) {
+export function decodeCsv(csv) {
   return csv.split(",").map((x) => x.trim());
 }
 
-function dirExists(dir) {
+export function dirExists(dir) {
   return shell.test("-d", dir);
 }
 
-function print(text) {
+export function print(text) {
   console.log(`${chalk.black.bgBlueBright(" FBG ")} ${text}`);
 }
 
-function printErr(text) {
+export function printErr(text) {
   console.error(`${chalk.black.bgRed(" FBG ")} ${text}`);
 }
 
-function checkEnvironment() {
+export function checkEnvironment() {
   if (!dirExists(path.resolve(ROOT, "node_modules"))) {
     printErr(
       `Run ${chalk.inverse(
@@ -46,21 +48,9 @@ function checkEnvironment() {
   }
 }
 
-function checkGameExists(game) {
+export function checkGameExists(game) {
   if (!dirExists(path.resolve(ROOT, "web", "src", "games", game))) {
     printErr(`${chalk.inverse(game)}: Game not found.`);
     shell.exit(1);
   }
 }
-
-module.exports = {
-  ROOT,
-  decodeCsv,
-  dirExists,
-  print,
-  printErr,
-  checkEnvironment,
-  cd,
-  fbgRun,
-  checkGameExists,
-};

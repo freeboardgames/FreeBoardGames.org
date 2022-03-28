@@ -1,12 +1,12 @@
-const { print, cd, fbgRun } = require("../util.js");
-const chalk = require("chalk");
-const shell = require("shelljs");
+import { print, cd, fbgRun } from "../util.js";
+import chalk from "chalk";
+import shell from "shelljs";
 
 function fixFailed(linter) {
   return `Fix failed (${linter}), you will need to manually fix these errors.`;
 }
 
-function fixAll() {
+export function fixAll() {
   print(
     `Fixing ${chalk.bold(
       "EVERYTHING"
@@ -25,5 +25,3 @@ function fixAll() {
   cmd = `yarn run eslint --max-warnings=0 --fix \"{src,apps,libs,test}/**/*.ts\"`;
   fbgRun(cmd, fixFailed("eslint, fbg-server"));
 }
-
-module.exports = { fixAll };

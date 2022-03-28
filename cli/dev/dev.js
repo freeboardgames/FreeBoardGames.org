@@ -1,9 +1,9 @@
-const { codegen } = require("../codegen/codegen");
-const { cd, print, fbgRun } = require("../util");
-const chalk = require("chalk");
-const shell = require("shelljs");
+import { codegen } from "../codegen/codegen.js";
+import { cd, print, fbgRun } from "../util.js";
+import chalk from "chalk";
+import shell from "shelljs";
 
-function dev(games) {
+export function dev(games) {
   if (games.length === 0) {
     print(
       `Running development environment for ${chalk.bold(
@@ -28,7 +28,3 @@ function dev(games) {
   let cmd = "yarn run dev:internal";
   fbgRun(cmd, "Dev failed.");
 }
-
-module.exports = {
-  dev,
-};
