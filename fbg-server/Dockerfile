@@ -1,6 +1,6 @@
 # fbg-server
 FROM fbg-common:latest AS common
-FROM node:14.15.0-alpine3.12 AS builder
+FROM node:16.14-alpine3.14 AS builder
 RUN addgroup -g 938 appuser && adduser -h /appdata -S -u 997 -G appuser appuser && rm /bin/su
 USER appuser
 WORKDIR /appdata
@@ -16,7 +16,7 @@ COPY --chown=appuser tsconfig.json tsconfig.build.json nest-cli.json /appdata/
 COPY --chown=appuser src /appdata/src
 RUN yarn run build
 
-FROM node:14.15.0-alpine3.12
+FROM node:16.14-alpine3.14
 RUN addgroup -g 938 appuser && adduser -h /appdata -S -u 997 -G appuser appuser && rm /bin/su
 USER appuser
 WORKDIR /appdata

@@ -16,7 +16,7 @@ jobs:
     - uses: medyagh/setup-minikube@master
     - uses: actions/setup-node@v1
       with:
-        node-version: 14.x
+        node-version: 16.x
     - uses: actions/checkout@v2
     - name: Build docker images
       run: ./docker-build.sh -db
@@ -34,7 +34,7 @@ jobs:
     steps:
     - uses: actions/setup-node@v1
       with:
-        node-version: 14.x
+        node-version: 16.x
     - uses: actions/checkout@v2
     - run: yarn install
     - run: yarn run codegen

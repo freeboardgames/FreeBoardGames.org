@@ -32,7 +32,7 @@ export class UsersService {
 
   /** Gets a user DB entity by id. */
   async getUserEntity(id: number): Promise<UserEntity> {
-    const userEntity = await this.usersRepository.findOne(id);
+    const userEntity = await this.usersRepository.findOneBy({ id });
     if (!userEntity) {
       throw new HttpException(
         `User id "${id}" does not exist.`,
