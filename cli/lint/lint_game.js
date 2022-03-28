@@ -1,6 +1,6 @@
-const { print, cd, fbgRun } = require("../util.js");
-const chalk = require("chalk");
-const shell = require("shelljs");
+import { print, cd, fbgRun } from "../util.js";
+import chalk from "chalk";
+import shell from "shelljs";
 
 function lintFailed(linter, game) {
   return `${chalk.inverse(game)}: Lint failed (${linter}). Try ${chalk.inverse(
@@ -8,7 +8,7 @@ function lintFailed(linter, game) {
   )}`;
 }
 
-function lintGame(game) {
+export function lintGame(game) {
   print(`Checking lint for ${chalk.inverse(game)} ...`);
   cd("web");
   shell.env["FORCE_COLOR"] = "true";
@@ -18,5 +18,3 @@ function lintGame(game) {
   cmd = `yarn run prettier --check \"${dir}.{ts,js,tsx}\"`;
   fbgRun(cmd, lintFailed("prettier", game));
 }
-
-module.exports = { lintGame };

@@ -1,6 +1,6 @@
-const shell = require("shelljs");
-const { decodeCsv, printErr, checkEnvironment } = require("../util");
-const { codegen } = require("./codegen");
+import shell from "shelljs";
+import { decodeCsv, printErr, checkEnvironment } from "../util.js";
+import { codegen } from "./codegen.js";
 
 const USAGE = "Usage: yarn run codegen game1,game2";
 
