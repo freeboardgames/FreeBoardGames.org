@@ -22,13 +22,6 @@ jobs:
       run: ./docker-build.sh -db
     - name: Test on minikube
       run: ./misc/test_minikube
-    - name: Upload screenshots
-      if: always()
-      uses: actions/upload-artifact@v3
-      with:
-        name: e2e-screenshots-${{ github.head_ref }}-${{ github.sha }}
-        path: misc/e2e/out/*.png
-        retention-days: 5
   unit-test:
     runs-on: ubuntu-latest
     steps:
