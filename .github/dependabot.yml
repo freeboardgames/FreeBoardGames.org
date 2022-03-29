@@ -10,3 +10,8 @@ updates:
     versioning-strategy: increase
     schedule:
       interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/web"
+    versioning-strategy: increase
+    schedule:
+      interval: "daily"
