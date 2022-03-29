@@ -10,13 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' || github.actor == 'vdfdev'  }}
     steps:
-      - name: Approve a PR
+      - name: Auto-approve
         run: gh pr review --approve "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Enable auto-merge for Dependabot PRs   
-        if: ${{ github.actor == 'dependabot[bot]' }}
+      - name: Auto-merge
         run: gh pr merge --auto "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
