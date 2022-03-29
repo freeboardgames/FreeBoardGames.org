@@ -22,6 +22,13 @@ jobs:
       run: ./docker-build.sh -db
     - name: Test on minikube
       run: ./misc/test_minikube
+    - name: Upload failed tests
+ #     if: ${{ failure() }}
+      uses: edunad/actions-image@v1.0.1
+      with:
+        path: ./misc/e2e/out/*.png
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        title: Failed E2E tests 🙀
   unit-test:
     runs-on: ubuntu-latest
     steps:
