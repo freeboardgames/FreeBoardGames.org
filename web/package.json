@@ -174,7 +174,7 @@
     "coveralls": "^3.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "graphql": "^15.3.0",
     "husky": "^7.0.4",
     "identity-obj-proxy": "^3.0.0",
