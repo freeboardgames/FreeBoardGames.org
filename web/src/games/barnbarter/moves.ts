@@ -48,16 +48,14 @@ export function moveBid(G: IG, ctx: Ctx, amount: number): IG {
 
   return {
     ...G,
-    players: G.players.map(
-      (player: IPlayer, id): IPlayer => {
-        return id == playerId
-          ? {
-              ...player,
-              currentBid: canBid ? (player.currentBid == -1 ? amount : player.currentBid + amount) : player.currentBid,
-            }
-          : player;
-      },
-    ),
+    players: G.players.map((player: IPlayer, id): IPlayer => {
+      return id == playerId
+        ? {
+            ...player,
+            currentBid: canBid ? (player.currentBid == -1 ? amount : player.currentBid + amount) : player.currentBid,
+          }
+        : player;
+    }),
     auction: canBid ? { ...G.auction, counter: 0, timeLastHit: Date.now() } : { ...G.auction },
     log: canBid ? ['Successfully bid', ...G.log] : ['CanBid == False', ...G.log],
   };

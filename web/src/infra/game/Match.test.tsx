@@ -1,5 +1,10 @@
 jest.mock('infra/common/services/LobbyService');
-jest.mock('infra/common/components/auth/NicknameRequired', () => ({ children }) => children);
+jest.mock(
+  'infra/common/components/auth/NicknameRequired',
+  () =>
+    ({ children }) =>
+      children,
+);
 jest.mock('infra/game/Game', () => () => <div>Mocked game</div>);
 jest.mock('infra/i18n/hocs/withRouter', () => ({
   withRouter: (C) => (p) => {
