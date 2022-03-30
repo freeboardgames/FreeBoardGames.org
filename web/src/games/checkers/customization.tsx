@@ -27,27 +27,25 @@ export const DEFAULT_FULL_CUSTOMIZATION: FullCustomizationState = {
   nMoveRule: 40,
 };
 
-const changePiecesPerPlayer = (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => (
-  event: React.ChangeEvent<{ value: PiecesPerPlayer }>,
-) => {
-  const index = event.target.value;
-  const newState: FullCustomizationState = {
-    ...state,
-    piecesPerPlayer: index,
+const changePiecesPerPlayer =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) =>
+  (event: React.ChangeEvent<{ value: PiecesPerPlayer }>) => {
+    const index = event.target.value;
+    const newState: FullCustomizationState = {
+      ...state,
+      piecesPerPlayer: index,
+    };
+    onChange(newState);
   };
-  onChange(newState);
-};
 
-const changeForcedCapture = (
-  onChange: (state?: FullCustomizationState) => void,
-  state: FullCustomizationState,
-) => () => {
-  const newState: FullCustomizationState = {
-    ...state,
-    forcedCapture: !state.forcedCapture,
+const changeForcedCapture =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => () => {
+    const newState: FullCustomizationState = {
+      ...state,
+      forcedCapture: !state.forcedCapture,
+    };
+    onChange(newState);
   };
-  onChange(newState);
-};
 
 const changeFlyingKings = (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => () => {
   const newState: FullCustomizationState = {
@@ -57,27 +55,25 @@ const changeFlyingKings = (onChange: (state?: FullCustomizationState) => void, s
   onChange(newState);
 };
 
-const changeStopJumpOnKing = (
-  onChange: (state?: FullCustomizationState) => void,
-  state: FullCustomizationState,
-) => () => {
-  const newState: FullCustomizationState = {
-    ...state,
-    stopJumpOnKing: !state.stopJumpOnKing,
+const changeStopJumpOnKing =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => () => {
+    const newState: FullCustomizationState = {
+      ...state,
+      stopJumpOnKing: !state.stopJumpOnKing,
+    };
+    onChange(newState);
   };
-  onChange(newState);
-};
 
-const changeNMoveRule = (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => (
-  event: React.ChangeEvent<{ value: number }>,
-) => {
-  const index = event.target.value;
-  const newState: FullCustomizationState = {
-    ...state,
-    nMoveRule: index,
+const changeNMoveRule =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) =>
+  (event: React.ChangeEvent<{ value: number }>) => {
+    const index = event.target.value;
+    const newState: FullCustomizationState = {
+      ...state,
+      nMoveRule: index,
+    };
+    onChange(newState);
   };
-  onChange(newState);
-};
 
 const FullCustomization = ({ currentValue, onChange }: GameCustomizationProps) => {
   const { translate } = useCurrentGameTranslation();

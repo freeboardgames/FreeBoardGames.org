@@ -23,13 +23,12 @@ const textToState = (text): FullCustomizationState | undefined => {
   return { words: text.split('\n') };
 };
 
-const changeTextValue = (onChange: (FullCustomizationState) => void) => (
-  event: React.ChangeEvent<HTMLInputElement>,
-) => {
-  const inputText = event.target.value;
-  const state = textToState(inputText);
-  onChange(state);
-};
+const changeTextValue =
+  (onChange: (FullCustomizationState) => void) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputText = event.target.value;
+    const state = textToState(inputText);
+    onChange(state);
+  };
 
 const getPredefinedWordsBucket = (state: FullCustomizationState) => {
   let i = 0;
@@ -42,19 +41,18 @@ const getPredefinedWordsBucket = (state: FullCustomizationState) => {
   return null;
 };
 
-const handlePredefinedWordChange = (onChange: (state?: FullCustomizationState) => void) => (
-  event: React.ChangeEvent<{ value: number }>,
-) => {
-  const index = event.target.value;
-  if (index === null) {
-    return;
-  }
-  if (index === 0) {
-    onChange();
-    return;
-  }
-  onChange({ words: PREDEFINED_WORDS[index].words });
-};
+const handlePredefinedWordChange =
+  (onChange: (state?: FullCustomizationState) => void) => (event: React.ChangeEvent<{ value: number }>) => {
+    const index = event.target.value;
+    if (index === null) {
+      return;
+    }
+    if (index === 0) {
+      onChange();
+      return;
+    }
+    onChange({ words: PREDEFINED_WORDS[index].words });
+  };
 
 const renderSelectValue = (index: number | null) => {
   const { translate } = useCurrentGameTranslation();

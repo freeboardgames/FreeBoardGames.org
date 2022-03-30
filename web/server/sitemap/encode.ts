@@ -8,13 +8,15 @@ const buildAlternateLinkWith = (host: string) => (alternateLink: AlternateLink) 
   return `<xhtml:link rel="alternate" hreflang="${alternateLink.hreflang}" href="${host}${alternateLink.href}" />`;
 };
 
-const buildUrlWith = (host: string) => (url: UrlTag): string => {
-  return `
+const buildUrlWith =
+  (host: string) =>
+  (url: UrlTag): string => {
+    return `
     <url>
       <loc>${host}${url.loc}</loc>
       ${url.alternateLinks.map(buildAlternateLinkWith(host)).join('\n')}
     </url>`;
-};
+  };
 
 function buildTemplateWith(urls: UrlTag[], host: string): string {
   return `

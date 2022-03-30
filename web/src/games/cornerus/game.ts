@@ -126,18 +126,20 @@ export function getValidPositions(G: IG, ctx: Ctx, piece: boolean[], transform: 
           ),
         ),
     ) ||
-    (!positions.some((
-      pos, // Check if squares are touching with corner atleast 1 time
-    ) =>
-      [
-        [-1, -1],
-        [1, -1],
-        [-1, 1],
-        [1, 1],
-      ].some(
-        (dir) =>
-          inBounds(pos.x + dir[0], pos.y + dir[1]) && G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === playerID,
-      ),
+    (!positions.some(
+      (
+        pos, // Check if squares are touching with corner atleast 1 time
+      ) =>
+        [
+          [-1, -1],
+          [1, -1],
+          [-1, 1],
+          [1, 1],
+        ].some(
+          (dir) =>
+            inBounds(pos.x + dir[0], pos.y + dir[1]) &&
+            G.board[getPosition(pos.x + dir[0], pos.y + dir[1])] === playerID,
+        ),
     ) &&
       (!isFirstTurn(ctx) ||
         !positions.some((pos) => pos.x === corners[playerID as any][0] && pos.y === corners[playerID as any][1])))

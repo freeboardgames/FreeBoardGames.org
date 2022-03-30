@@ -12,16 +12,14 @@ export const DEFAULT_FULL_CUSTOMIZATION: FullCustomizationState = {
   forcedCapture: true,
 };
 
-const changeForcedCapture = (
-  onChange: (state?: FullCustomizationState) => void,
-  state: FullCustomizationState,
-) => () => {
-  const newState: FullCustomizationState = {
-    ...state,
-    forcedCapture: !state.forcedCapture,
+const changeForcedCapture =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => () => {
+    const newState: FullCustomizationState = {
+      ...state,
+      forcedCapture: !state.forcedCapture,
+    };
+    onChange(newState);
   };
-  onChange(newState);
-};
 
 const FullCustomization = ({ currentValue, onChange }: GameCustomizationProps) => {
   const { translate } = useCurrentGameTranslation();

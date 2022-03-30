@@ -5,7 +5,7 @@ import { WithCurrentGameTranslation as TWithCurrentGameTranslation } from '../ty
 
 export const withCurrentGameTranslation = <
   P extends {},
-  C extends React.ComponentType<P & TWithCurrentGameTranslation>
+  C extends React.ComponentType<P & TWithCurrentGameTranslation>,
 >(
   Component: C,
   componentName?: string,
@@ -19,5 +19,5 @@ export const withCurrentGameTranslation = <
 
   WithNamespace.displayName = `withCurrentGameTranslation(${componentName ?? Component.displayName ?? Component.name})`;
 
-  return (hoistNonReactStatics(WithNamespace, Component) as unknown) as C;
+  return hoistNonReactStatics(WithNamespace, Component) as unknown as C;
 };

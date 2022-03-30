@@ -25,7 +25,7 @@ export interface GameCustomizationProps {
 
 export interface GameCustomization<
   TQuickCustomizationProps extends GameCustomizationProps = GameCustomizationProps,
-  TFullCustomizationProps extends GameCustomizationProps = GameCustomizationProps
+  TFullCustomizationProps extends GameCustomizationProps = GameCustomizationProps,
 > {
   QuickCustomization?: ComponentType<TQuickCustomizationProps>;
   FullCustomization?: ComponentType<TFullCustomizationProps>;

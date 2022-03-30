@@ -10,17 +10,15 @@ export interface FullCustomizationState {
 
 export const DEFAULT_FULL_CUSTOMIZATION = { stayInTurnOnMatch: true };
 
-const changeStayInTurnOnMatch = (
-  onChange: (state?: FullCustomizationState) => void,
-  state: FullCustomizationState,
-) => () => {
-  const newState = { stayInTurnOnMatch: !state.stayInTurnOnMatch };
-  if (newState.stayInTurnOnMatch === DEFAULT_FULL_CUSTOMIZATION.stayInTurnOnMatch) {
-    onChange();
-  } else {
-    onChange(newState);
-  }
-};
+const changeStayInTurnOnMatch =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => () => {
+    const newState = { stayInTurnOnMatch: !state.stayInTurnOnMatch };
+    if (newState.stayInTurnOnMatch === DEFAULT_FULL_CUSTOMIZATION.stayInTurnOnMatch) {
+      onChange();
+    } else {
+      onChange(newState);
+    }
+  };
 
 type Props = GameCustomizationProps;
 
