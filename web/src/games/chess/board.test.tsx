@@ -12,9 +12,8 @@ const players = [
 
 const mount = makeMount({ gameCode: 'chess' });
 
-const getTestBoard = (mode: GameMode) => (props: any) => (
-  <Board {...props} gameArgs={{ gameCode: 'chess', mode, players }} />
-);
+const getTestBoard = (mode: GameMode) => (props: any) =>
+  <Board {...props} gameArgs={{ gameCode: 'chess', mode, players }} />;
 
 test('render board - all states - local friend', () => {
   const moveMock = jest.fn();

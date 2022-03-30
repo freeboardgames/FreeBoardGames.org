@@ -16,5 +16,5 @@ export const withNamespaceTranslation = <P extends {}, C extends React.Component
 
   WithNamespace.displayName = `withNamespaceTranslation(${componentName ?? Component.displayName ?? Component.name})`;
 
-  return (hoistNonReactStatics(WithNamespace, Component) as unknown) as C;
+  return hoistNonReactStatics(WithNamespace, Component) as unknown as C;
 };

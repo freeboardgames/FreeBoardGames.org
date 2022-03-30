@@ -20,49 +20,47 @@ export const DEFAULT_FULL_CUSTOMIZATION = {
   totalOfColours: 6,
 };
 
-const changeAllowToRepeat = (
-  onChange: (state?: FullCustomizationState) => void,
-  state: FullCustomizationState,
-) => () => {
-  const newState: FullCustomizationState = {
-    ...state,
-    allowToRepeat: !state.allowToRepeat,
+const changeAllowToRepeat =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => () => {
+    const newState: FullCustomizationState = {
+      ...state,
+      allowToRepeat: !state.allowToRepeat,
+    };
+    onChange(newState);
   };
-  onChange(newState);
-};
 
-const changeSecretLength = (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => (
-  event: React.ChangeEvent<{ value: number }>,
-) => {
-  const index = event.target.value;
-  const newState: FullCustomizationState = {
-    ...state,
-    secretLength: index,
+const changeSecretLength =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) =>
+  (event: React.ChangeEvent<{ value: number }>) => {
+    const index = event.target.value;
+    const newState: FullCustomizationState = {
+      ...state,
+      secretLength: index,
+    };
+    onChange(newState);
   };
-  onChange(newState);
-};
 
-const changeLimitOfAttempts = (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => (
-  event: React.ChangeEvent<{ value: number }>,
-) => {
-  const index = event.target.value;
-  const newState: FullCustomizationState = {
-    ...state,
-    limitOfAttempts: index,
+const changeLimitOfAttempts =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) =>
+  (event: React.ChangeEvent<{ value: number }>) => {
+    const index = event.target.value;
+    const newState: FullCustomizationState = {
+      ...state,
+      limitOfAttempts: index,
+    };
+    onChange(newState);
   };
-  onChange(newState);
-};
 
-const changeTotalOfColours = (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) => (
-  event: React.ChangeEvent<{ value: number }>,
-) => {
-  const index = event.target.value;
-  const newState: FullCustomizationState = {
-    ...state,
-    totalOfColours: index,
+const changeTotalOfColours =
+  (onChange: (state?: FullCustomizationState) => void, state: FullCustomizationState) =>
+  (event: React.ChangeEvent<{ value: number }>) => {
+    const index = event.target.value;
+    const newState: FullCustomizationState = {
+      ...state,
+      totalOfColours: index,
+    };
+    onChange(newState);
   };
-  onChange(newState);
-};
 
 const FullCustomization = ({ currentValue, onChange }: GameCustomizationProps) => {
   const { translate } = useCurrentGameTranslation();

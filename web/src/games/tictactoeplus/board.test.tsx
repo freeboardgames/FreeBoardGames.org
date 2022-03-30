@@ -12,9 +12,8 @@ const players = [
 
 const mount = makeMount({ gameCode: 'tictactoeplus' });
 
-const getTestBoard = (mode: GameMode) => (props: any) => (
-  <Board {...props} gameArgs={{ gameCode: 'tictactoeplus', mode, players }} />
-);
+const getTestBoard = (mode: GameMode) => (props: any) =>
+  <Board {...props} gameArgs={{ gameCode: 'tictactoeplus', mode, players }} />;
 
 test('clicking a cell on the board', () => {
   const client = Client({
