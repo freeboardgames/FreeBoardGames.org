@@ -195,7 +195,7 @@
     "madge": "^4.0.2",
     "mkdirp": "^1.0.4",
     "mocked-env": "^1.3.4",
-    "move-cli": "^1.2.1",
+    "move-cli": "^2.0.0",
     "ncp": "^2.0.0",
     "next-optimized-images": "^2.6.2",
     "nodemon": "^2.0.5",
