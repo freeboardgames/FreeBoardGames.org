@@ -147,7 +147,7 @@
     "@types/enzyme": "^3.10.7",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/expect-puppeteer": "^4.4.7",
-    "@types/express": "^4.17.8",
+    "@types/express": "^4.17.13",
     "@types/glob": "^7.2.0",
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/jest": "^27.4.1",
