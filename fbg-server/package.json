@@ -81,7 +81,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
     "jest": "^27.5.1",
-    "prettier": "^2.6.1",
+    "prettier": "^2.6.2",
     "supertest": "^6.2.2",
     "ts-jest": "27.1.4",
     "ts-loader": "^9.2.8",
