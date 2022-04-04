@@ -11733,13 +11733,13 @@ expect@^26.5.3:
     jest-message-util "^26.5.2"
     jest-regex-util "^26.0.0"
 
-express-winston@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/express-winston/-/express-winston-4.0.5.tgz#de457906eb1ef71b79f7673f5c9a0c6f5acec3b6"
-  integrity sha512-n9M1imjDYqPQKp6HdHArAucfF5WNYYG4S/FQPdJTmS7sysXALosBgtWyen74WFS67WiqtbBpwNV5iX7Rk01AKw==
+express-winston@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/express-winston/-/express-winston-4.2.0.tgz#e9d535d52aa4c125a54a29cce132ae2e3633f4fa"
+  integrity sha512-EMD74g63nVHi7pFleQw7KHCxiA1pjF5uCwbCfzGqmFxs9KvlDPIVS3cMGpULm6MshExMT9TjC3SqmRGB9kb7yw==
   dependencies:
-    chalk "^2.4.1"
-    lodash "^4.17.19"
+    chalk "^2.4.2"
+    lodash "^4.17.21"
 
 express@^4.17.1, express@^4.17.3:
   version "4.17.3"
