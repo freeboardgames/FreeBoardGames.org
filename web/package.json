@@ -124,7 +124,7 @@
     "three": "^0.137.0",
     "use-async-effect": "^2.2.3",
     "webpackbar": "^4.0.0",
-    "winston": "^3.3.3",
+    "winston": "^3.7.2",
     "worker-loader": "^2.0.0",
     "yarn": "^1.22.10"
   },
