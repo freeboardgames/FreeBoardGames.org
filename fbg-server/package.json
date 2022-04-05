@@ -65,7 +65,7 @@
     "superagent": "^7.1.2",
     "ts-morph": "^14.0.0",
     "typeorm": "^0.3.4",
-    "winston": "^3.6.0"
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.4",
