@@ -159,7 +159,7 @@
     "@types/react-dom": "^16.9.14",
     "@types/react-redux": "^7.1.16",
     "@types/recompose": "^0.30.7",
-    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.4.1",
     "autoprefixer": "^9.8.6",
     "babel-jest": "^27.5.1",
