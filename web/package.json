@@ -207,7 +207,7 @@
     "redux-mock-store": "^1.5.4",
     "rimraf": "^3.0.2",
     "start-server-and-test": "^1.11.5",
-    "storybook-addon-outline": "^1.4.1",
+    "storybook-addon-outline": "^1.4.2",
     "trash-cli": "^3.1.0",
     "ts-jest": "^26.4.1",
     "ts-loader": "^8.0.5",
