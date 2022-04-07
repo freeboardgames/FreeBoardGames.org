@@ -40,7 +40,7 @@
   "dependencies": {
     "@apollo/react-components": "^4.0.0",
     "@apollo/react-hooks": "^4.0.0",
-    "@babel/plugin-transform-parameters": "^7.12.1",
+    "@babel/plugin-transform-parameters": "^7.16.7",
     "@babel/plugin-transform-react-jsx": "^7.12.1",
     "@babel/plugin-transform-react-jsx-development": "^7.12.1",
     "@babel/plugin-transform-react-jsx-self": "^7.12.1",
