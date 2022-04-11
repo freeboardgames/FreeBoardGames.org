@@ -133,7 +133,7 @@
     "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@storybook/addon-actions": "^6.4.20",
-    "@storybook/addon-controls": "^6.3.12",
+    "@storybook/addon-controls": "^6.4.21",
     "@storybook/addon-links": "^6.3.12",
     "@storybook/addon-outline": "^6.4.20",
     "@storybook/addon-storysource": "^6.3.12",
