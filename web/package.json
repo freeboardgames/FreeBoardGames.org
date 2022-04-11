@@ -61,7 +61,7 @@
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-workers": "^1.0.0",
     "add": "^2.0.6",
-    "apollo": "^2.31.0",
+    "apollo": "^2.33.10",
     "apollo-boost": "^0.4.9",
     "apollo-link-ws": "^1.0.20",
     "babel-plugin-jsx-remove-data-test-id": "^3.0.0",
