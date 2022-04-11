@@ -52,7 +52,7 @@
     "graphql-redis-subscriptions": "^2.4.2",
     "graphql-subscriptions": "^2.0.0",
     "graphql-tools": "^8.2.5",
-    "ioredis": "5.0.3",
+    "ioredis": "5.0.4",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",
