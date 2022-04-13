@@ -64,7 +64,7 @@
     "subscriptions-transport-ws": "^0.11.0",
     "superagent": "^7.1.2",
     "ts-morph": "^14.0.0",
-    "typeorm": "^0.3.5",
+    "typeorm": "^0.3.6",
     "winston": "^3.7.2"
   },
   "devDependencies": {
