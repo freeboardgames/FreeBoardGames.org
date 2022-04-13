@@ -93,7 +93,7 @@
     "next": "9.5.5",
     "next-i18next": "^7.0.1",
     "next-redux-wrapper": "^6.0.2",
-    "next-seo": "^4.13.0",
+    "next-seo": "^5.4.0",
     "next-with-error": "^1.2.0",
     "node-fetch": "^2.6.7",
     "nom-ts": "^0.1.2",
