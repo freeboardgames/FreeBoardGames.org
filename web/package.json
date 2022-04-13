@@ -198,7 +198,7 @@
     "move-cli": "^2.0.0",
     "ncp": "^2.0.0",
     "next-optimized-images": "^2.6.2",
-    "nodemon": "^2.0.5",
+    "nodemon": "^2.0.15",
     "null-loader": "^4.0.1",
     "nyc": "^15.1.0",
     "prettier": "^2.1.2",
