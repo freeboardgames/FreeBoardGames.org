@@ -19980,10 +19980,10 @@ react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-lite-youtube-embed@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/react-lite-youtube-embed/-/react-lite-youtube-embed-2.0.6.tgz#98801b57ba94e77bce0680b6f4dbfc60cff5d5aa"
-  integrity sha512-64jdCYM0ax2IrOjqccFfL10FgDtK4L6b5+W5cl+NVs33yYwXq21y85r0NRInv3JPOLrb50C/GHXdJqOx2q4APA==
+react-lite-youtube-embed@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-lite-youtube-embed/-/react-lite-youtube-embed-2.2.1.tgz#0d21dbe977dd26142cec9b82e8da8d4ec8feb83d"
+  integrity sha512-BcD1e9l3QgI+a1MhFeqCt+HoXmPIg31bwUzYdWYVfEfI7WLEA5MkDB6/XCZnkKRuSebJsFp+NV0axh9WUUGMKQ==
 
 react-markdown@^4.3.1:
   version "4.3.1"
