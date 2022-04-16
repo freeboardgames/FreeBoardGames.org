@@ -130,7 +130,7 @@
   },
   "devDependencies": {
     "@apollo/react-testing": "^4.0.0",
-    "@babel/core": "^7.12.3",
+    "@babel/core": "^7.17.9",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@storybook/addon-actions": "^6.4.20",
     "@storybook/addon-controls": "^6.4.21",
