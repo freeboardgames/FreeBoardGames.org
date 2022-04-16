@@ -138,7 +138,7 @@
     "@storybook/addon-outline": "^6.4.20",
     "@storybook/addon-storysource": "^6.3.12",
     "@storybook/addon-viewport": "^6.4.20",
-    "@storybook/addons": "^6.3.12",
+    "@storybook/addons": "^6.4.22",
     "@storybook/react": "^6.4.21",
     "@storybook/source-loader": "^6.4.20",
     "@testing-library/jest-dom": "^5.16.4",
