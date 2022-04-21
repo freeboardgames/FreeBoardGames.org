@@ -7,6 +7,8 @@ import { SendMessageInput } from './gql/SendMessageInput.gql';
 import { Message } from './gql/Message.gql';
 import Filter from 'bad-words';
 import { FBG_PUB_SUB } from '../internal/FbgPubSubModule';
+import { ChannelType } from './types';
+import { RoomEntity } from 'src/rooms/db/Room.entity';
 
 const MAX_MESSAGE_LENGTH = 280;
 
@@ -34,7 +36,7 @@ export class ChatService {
     const userNickname = user.nickname;
     const isoTimestamp = new Date().toISOString();
     let messageContent;
-    if (this.checkRoomIsPublic(messageInput.channelId)) {
+    if (await this.checkChannelIsPublic(messageInput.channelType, messageInput.channelId)) {
       try {
         messageContent = new Filter().clean(messageInput.message);
       } catch {
@@ -88,8 +90,16 @@ export class ChatService {
     }
   }
 
-  private async checkRoomIsPublic(roomId: string) {
-    const roomEntity = await this.roomsService.getRoomEntity(roomId);
+  private async checkChannelIsPublic(channelType: ChannelType, channelId: string) {
+    let roomEntity: RoomEntity;
+    if (channelType === 'match') {
+      const matchEntity = await this.matchService.getMatchEntity(channelId);
+      roomEntity = matchEntity.room;
+      if (!roomEntity)
+        return true;
+    } else { // If it's not a match, it has to be a room
+      roomEntity = await this.roomsService.getRoomEntity(channelId);
+    }
     return roomEntity.isPublic;
   }
 }
