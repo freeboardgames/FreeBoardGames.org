@@ -46,48 +46,48 @@ describe('ChatService', () => {
     let bobId, room, aliceId, channelId;
     const channelType = 'room';
     beforeAll(async () => {
-        bobId = await usersService.newUser({ nickname: 'bob' });
-        room = await roomsService.newRoom(
+      bobId = await usersService.newUser({ nickname: 'bob' });
+      room = await roomsService.newRoom(
         {
-            capacity: 2,
-            gameCode: 'checkers',
-            isPublic: false,
+          capacity: 2,
+          gameCode: 'checkers',
+          isPublic: true,
         },
         bobId,
-        );
-        channelId = room.id;
-        aliceId = await usersService.newUser({ nickname: 'alice' });
-        await roomsService.joinRoom(aliceId, room.id);
+      );
+      channelId = room.id;
+      aliceId = await usersService.newUser({ nickname: 'alice' });
+      await roomsService.joinRoom(aliceId, room.id);
     });
 
     it('should throw error for user not present', async () => {
-        const message = 'Hello, bob!';
-        const joeId = await usersService.newUser({ nickname: 'joe' });
-        const result = service.sendMessage(joeId, { channelType, channelId, message });
+      const message = 'Hello, bob!';
+      const joeId = await usersService.newUser({ nickname: 'joe' });
+      const result = service.sendMessage(joeId, { channelType, channelId, message });
 
-        await expect(result).rejects.toThrow();
+      await expect(result).rejects.toThrow();
     });
 
     it('should transmit a message succesfully', async () => {
-        const message = 'Hello, bob!';
-        jest.clearAllMocks();
-        const publish = jest.spyOn(pubSub, 'publish');
-        await service.sendMessage(aliceId, { channelType, channelId, message });
+      const message = 'Hello, bob!';
+      jest.clearAllMocks();
+      const publish = jest.spyOn(pubSub, 'publish');
+      await service.sendMessage(aliceId, { channelType, channelId, message });
 
-        const args = publish.mock.calls[0];
-        expect(args[0]).toEqual(`chat/room/${room.id}`);
-        expect(args[1].chatMutated.userNickname).toEqual('alice');
-        expect(args[1].chatMutated.message).toEqual(message);
+      const args = publish.mock.calls[0];
+      expect(args[0]).toEqual(`chat/room/${room.id}`);
+      expect(args[1].chatMutated.userNickname).toEqual('alice');
+      expect(args[1].chatMutated.message).toEqual(message);
     });
 
     it('should block bad words', async () => {
-        const message = 'Fuck!';
-        jest.clearAllMocks();
-        const publish = jest.spyOn(pubSub, 'publish');
-        await service.sendMessage(aliceId, { channelType, channelId, message });
+      const message = 'Fuck!';
+      jest.clearAllMocks();
+      const publish = jest.spyOn(pubSub, 'publish');
+      await service.sendMessage(aliceId, { channelType, channelId, message });
 
-        const args = publish.mock.calls[0];
-        expect(args[1].chatMutated.message).toEqual('****!');
+      const args = publish.mock.calls[0];
+      expect(args[1].chatMutated.message).toEqual('****!');
     });
   });
 
@@ -95,51 +95,51 @@ describe('ChatService', () => {
     let bobId, matchId, aliceId, channelId;
     const channelType = 'match';
     beforeAll(async () => {
-        const promiseMock = jest
+      const promiseMock = jest
         .fn()
         .mockReturnValueOnce(Promise.resolve({ data: { matchID: 'bgioGameId' } }))
         .mockReturnValueOnce(
-            Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
+          Promise.resolve({ data: { playerCredentials: '1stSecret' } }),
         )
         .mockReturnValueOnce(
-            Promise.resolve({ data: { playerCredentials: '2ndSecret' } }),
+          Promise.resolve({ data: { playerCredentials: '2ndSecret' } }),
         );
-        jest
+      jest
         .spyOn(httpService, 'post')
         .mockReturnValue({ toPromise: promiseMock } as any);
-        bobId = await usersService.newUser({ nickname: 'bob' });
-        const room = await roomsService.newRoom(
+      bobId = await usersService.newUser({ nickname: 'bob' });
+      const room = await roomsService.newRoom(
         {
-            capacity: 2,
-            gameCode: 'checkers',
-            isPublic: false,
+          capacity: 2,
+          gameCode: 'checkers',
+          isPublic: true,
         },
         bobId,
-        );
-        aliceId = await usersService.newUser({ nickname: 'alice' });
-        await roomsService.joinRoom(aliceId, room.id);
-        matchId = await matchService.startMatch(room.id, bobId);
-        channelId = matchId;
+      );
+      aliceId = await usersService.newUser({ nickname: 'alice' });
+      await roomsService.joinRoom(aliceId, room.id);
+      matchId = await matchService.startMatch(room.id, bobId);
+      channelId = matchId;
     });
 
     it('should throw error for user not present', async () => {
-        const message = 'Hello, bob!';
-        const joeId = await usersService.newUser({ nickname: 'joe' });
-        const result = service.sendMessage(joeId, { channelType, channelId, message });
+      const message = 'Hello, bob!';
+      const joeId = await usersService.newUser({ nickname: 'joe' });
+      const result = service.sendMessage(joeId, { channelType, channelId, message });
 
-        await expect(result).rejects.toThrow();
+      await expect(result).rejects.toThrow();
     });
 
     it('should transmit a message succesfully', async () => {
-        const message = 'Hello, bob!';
-        jest.clearAllMocks();
-        const publish = jest.spyOn(pubSub, 'publish');
-        await service.sendMessage(aliceId, { channelType, channelId, message });
+      const message = 'Hello, bob!';
+      jest.clearAllMocks();
+      const publish = jest.spyOn(pubSub, 'publish');
+      await service.sendMessage(aliceId, { channelType, channelId, message });
 
-        const args = publish.mock.calls[0];
-        expect(args[0]).toEqual(`chat/match/${matchId}`);
-        expect(args[1].chatMutated.userNickname).toEqual('alice');
-        expect(args[1].chatMutated.message).toEqual(message);
+      const args = publish.mock.calls[0];
+      expect(args[0]).toEqual(`chat/match/${matchId}`);
+      expect(args[1].chatMutated.userNickname).toEqual('alice');
+      expect(args[1].chatMutated.message).toEqual(message);
     });
   })
 });
