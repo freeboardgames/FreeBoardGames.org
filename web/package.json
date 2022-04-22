@@ -78,7 +78,7 @@
     "eslint-config-prettier": "^6.13.0",
     "eslint-plugin-react": "^7.21.4",
     "express-winston": "^4.2.0",
-    "fast-cartesian": "^5.1.0",
+    "fast-cartesian": "^6.1.0",
     "file-loader": "^6.1.1",
     "glob": "^7.1.7",
     "graphql-tag.macro": "^2.0.1",

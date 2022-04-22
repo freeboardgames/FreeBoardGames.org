@@ -12158,10 +12158,10 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
-fast-cartesian@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/fast-cartesian/-/fast-cartesian-5.1.0.tgz#496ff07b4d60d9e4ba6888d0f04a97b2115f4aca"
-  integrity sha512-sZqtZoSpvB64whoAfZYaHY2EMF4yX039MlXoL7UpXpy38OxaN2ZJcZbS1qu7hsEkPrrReqTi0EBrfx5bd+HNBQ==
+fast-cartesian@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/fast-cartesian/-/fast-cartesian-6.1.0.tgz#daa334e52034e51d94613883b4da54e4c6ded2b7"
+  integrity sha512-FHxvrmsAGV4ifDeiSEdVKyzFr12krd/NW5ou+C1FjRV+h3E0GM+c6eeZKpv+iR0IPpB2TYabBp6xrM1s/2dGJA==
 
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
