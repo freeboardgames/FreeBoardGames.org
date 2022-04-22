@@ -685,10 +685,10 @@
     retry-request "^4.1.1"
     teeny-request "^7.0.0"
 
-"@google-cloud/logging-winston@^4.2.2":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@google-cloud/logging-winston/-/logging-winston-4.2.2.tgz#372b5c17a3ab00a9628c5ae4924f564829c0b3bb"
-  integrity sha512-KUg1VIrUjPyK1+mWNrKjcjCBoMONZSK0qYbGb41WYnhPAECKvjeWDXumO/Zwr66qa7ktvQDnFKRk7ASVmUPWrg==
+"@google-cloud/logging-winston@^4.2.3":
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/@google-cloud/logging-winston/-/logging-winston-4.2.3.tgz#1a8700b93c8f0eb7da1735b7ff94a0956d5d7da6"
+  integrity sha512-Fzooan8C14yK10TCam3gf5jjo5sdXNF82yk6EmcqgZcsoU+AdsmMTnWjRcXCOcU/IHrMY/TlE2+yd8kMqESN8Q==
   dependencies:
     "@google-cloud/logging" "^9.6.9"
     google-auth-library "^7.0.0"
@@ -5039,22 +5039,7 @@ google-auth-library@^6.1.1:
     jws "^4.0.0"
     lru-cache "^6.0.0"
 
-google-auth-library@^7.0.0:
-  version "7.0.4"
-  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-7.0.4.tgz#610cb010de71435dca47dfbe8dc7fbff23055d2c"
-  integrity sha512-o8irYyeijEiecTXeoEe8UKNEzV1X+uhR4b2oNdapDMZixypp0J+eHimGOyx5Joa3UAeokGngdtDLXtq9vDqG2Q==
-  dependencies:
-    arrify "^2.0.0"
-    base64-js "^1.3.0"
-    ecdsa-sig-formatter "^1.0.11"
-    fast-text-encoding "^1.0.0"
-    gaxios "^4.0.0"
-    gcp-metadata "^4.2.0"
-    gtoken "^5.0.4"
-    jws "^4.0.0"
-    lru-cache "^6.0.0"
-
-google-auth-library@^7.14.0:
+google-auth-library@^7.0.0, google-auth-library@^7.14.0:
   version "7.14.1"
   resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-7.14.1.tgz#e3483034162f24cc71b95c8a55a210008826213c"
   integrity sha512-5Rk7iLNDFhFeBYc3s8l1CqzbEBcdhwR193RlD4vSNFajIcINKI8W8P0JLmBpwymHqqWbX34pJDQu39cSy/6RsA==
