@@ -38,7 +38,7 @@ export function QrCodePopup(props: IQrCodePopupProps) {
         <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
           {t('scan_qr_code')}
         </Typography>
-        <QRCodeSVG value={props.url} size={500} style={style as any} renderAs="svg" />
+        <QRCodeSVG value={props.url} size={500} style={style as any} />
         <Button variant="contained" color="primary" style={{ marginBottom: '16px' }} onClick={props.toggleQrCode}>
           {t('done')}
         </Button>
