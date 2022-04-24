@@ -42,7 +42,7 @@ describe('ChatService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('room', () => {
+  describe('public room', () => {
     let bobId, room, aliceId, channelId;
     const channelType = 'room';
     beforeAll(async () => {
@@ -88,6 +88,35 @@ describe('ChatService', () => {
 
       const args = publish.mock.calls[0];
       expect(args[1].chatMutated.message).toEqual('****!');
+    });
+  });
+
+  describe('private room', () => {
+    let bobId, room, aliceId, channelId;
+    const channelType = 'room';
+    beforeAll(async () => {
+      bobId = await usersService.newUser({ nickname: 'bob' });
+      room = await roomsService.newRoom(
+        {
+          capacity: 2,
+          gameCode: 'checkers',
+          isPublic: false,
+        },
+        bobId,
+      );
+      channelId = room.id;
+      aliceId = await usersService.newUser({ nickname: 'alice' });
+      await roomsService.joinRoom(aliceId, room.id);
+    });
+
+    it('should NOT block bad words', async () => {
+      const message = 'Fuck!';
+      jest.clearAllMocks();
+      const publish = jest.spyOn(pubSub, 'publish');
+      await service.sendMessage(aliceId, { channelType, channelId, message });
+
+      const args = publish.mock.calls[0];
+      expect(args[1].chatMutated.message).toEqual('Fuck!');
     });
   });
 
