@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { useTranslation } from 'infra/i18n';
-const QrCode = require('qrcode.react');
+import { QRCodeSVG } from 'qrcode.react';
 
 interface IQrCodePopupProps {
   url: string;
@@ -38,7 +38,7 @@ export function QrCodePopup(props: IQrCodePopupProps) {
         <Typography style={{ paddingTop: '16px' }} variant="h5" component="h3">
           {t('scan_qr_code')}
         </Typography>
-        <QrCode value={props.url} size={500} style={style as any} renderAs="svg" />
+        <QRCodeSVG value={props.url} size={500} style={style as any} />
         <Button variant="contained" color="primary" style={{ marginBottom: '16px' }} onClick={props.toggleQrCode}>
           {t('done')}
         </Button>
