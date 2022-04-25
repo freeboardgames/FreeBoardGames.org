@@ -175,7 +175,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "express": "^4.17.3",
-    "graphql": "^15.3.0",
+    "graphql": "^16.3.0",
     "husky": "^7.0.4",
     "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
@@ -220,7 +220,7 @@
     "webpack-node-externals": "^2.5.2"
   },
   "resolutions": {
-    "graphql": "15.3.0"
+    "graphql": "16.3.0"
   },
   "nyc": {
     "report-dir": "coverage-e2e"
