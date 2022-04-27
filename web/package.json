@@ -122,7 +122,7 @@
     "subscriptions-transport-ws": "^0.9.18",
     "svg-sprite-loader": "^5.0.0",
     "three": "^0.139.2",
-    "use-async-effect": "^2.2.3",
+    "use-async-effect": "^2.2.5",
     "webpackbar": "^4.0.0",
     "winston": "^3.7.2",
     "worker-loader": "^2.0.0",
