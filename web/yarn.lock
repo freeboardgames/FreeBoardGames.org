@@ -9224,10 +9224,10 @@ cheerio@^1.0.0-rc.3:
     lodash "^4.15.0"
     parse5 "^3.0.1"
 
-chess.js@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-0.11.0.tgz#e1802179b944eab5daf11b5d4bce08cdcadbeffa"
-  integrity sha512-yTpi6XbRMkBtnjSvbt6wEp9Y7JzhJl1MC3GNn67q5ClyccXxCRf5cMPSUg4OblrUapg1kLHm7WzxxEVp20NK1Q==
+chess.js@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-0.13.1.tgz#16bd3df823d7175539fe64acb62fd8227d977ea4"
+  integrity sha512-jPCnPCeShpLVoPo+8fu19oawhdboOwJInobAH+2YJAZZpi8/U+nQHCBCN6F1MKlLh5g6a/mkFTGxuc03Qg/UFw==
 
 chokidar@*, chokidar@^3.4.1, chokidar@^3.4.2, chokidar@^3.5.1, chokidar@^3.5.2:
   version "3.5.3"
