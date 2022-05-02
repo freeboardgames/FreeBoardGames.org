@@ -92,7 +92,6 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     const selectedCards = canDiscard ? player.discardSelection : [];
     return (
       <Hand
-        playerId={player.id}
         hand={ctx.phase == Phases.round_end ? playerHands[+player.id] : player.hand}
         pattern={Pattern.Skat}
         selectable={selectableCards}
@@ -221,9 +220,15 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     let red = [true, false];
     if (player.id != G.holderId) {
       click = [
-        () => moves.MakeBid(0),
+        () => {
+          moves.MakeBid(0);
+          setSelectedBid_i(0);
+        },
         selectedBid_i <= 0 ? null : () => setSelectedBid_i(selectedBid_i - 1),
-        () => moves.MakeBid(selectedBid),
+        () => {
+          moves.MakeBid(selectedBid);
+          setSelectedBid_i(0);
+        },
         selectedBid_i >= possible_bids.length ? null : () => setSelectedBid_i(selectedBid_i + 1),
       ];
       texts = [translate('bid_pass'), '<', selectedBid.toString(), '>'];

@@ -85,7 +85,6 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
     }
     return (
       <Hand
-        playerId={player.id}
         hand={ctx.phase == Phases.round_end ? playerHands[+player.id] : player.hand}
         pattern={Pattern.Franconian}
         selectable={selectableCards}

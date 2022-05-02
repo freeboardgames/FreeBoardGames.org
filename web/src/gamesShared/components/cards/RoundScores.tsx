@@ -4,8 +4,8 @@ import { useCurrentGameTranslation } from 'infra/i18n';
 import css from './RoundScores.module.css';
 
 export interface IRoundDetail {
-  description: string;
-  values: string[];
+  description: JSX.Element | string;
+  values: (JSX.Element | string)[];
 }
 
 export interface IRoundSummary {

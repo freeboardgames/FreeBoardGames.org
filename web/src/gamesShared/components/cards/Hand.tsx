@@ -5,12 +5,12 @@ import { Card } from 'gamesShared/components/cards/Card';
 import css from './Hand.module.css';
 
 export function Hand(props: {
-  playerId: string;
   hand: ICard[];
   pattern: Pattern;
   selection: number[];
   selectable: boolean[];
   selectCards?: (handIndex: number[]) => void;
+  placement?: 'top' | 'bottom';
 }) {
   if (props.hand.length == 0) return null;
 
@@ -27,7 +27,7 @@ export function Hand(props: {
       visible_ratio = 0.6;
     }
     let width = scale * width_min + (1 - scale) * width_max;
-    if (i == props.hand.length - 1) {
+    if (i == (props.placement == 'top' ? 0 : props.hand.length - 1)) {
       width = width / visible_ratio;
     }
     const style = {
@@ -61,5 +61,7 @@ export function Hand(props: {
     props.selectCards(new_selection);
   }
 
-  return <div className={css.hand}>{props.hand.map(renderCard)}</div>;
+  return (
+    <div className={[css.hand, props.placement == 'top' ? css.top : ''].join(' ')}>{props.hand.map(renderCard)}</div>
+  );
 }
