@@ -71,7 +71,7 @@
     "@nestjs/cli": "^8.2.5",
     "@nestjs/schematics": "^8.0.10",
     "@nestjs/testing": "^8.4.4",
-    "@types/jest": "27.4.1",
+    "@types/jest": "27.5.0",
     "@types/node": "^17.0.31",
     "@types/passport-jwt": "^3.0.6",
     "@types/supertest": "^2.0.12",
