@@ -20,6 +20,7 @@ export function PlayerZones(props: {
   announcementStyles?: React.CSSProperties[];
   names: string[];
   hands: ICard[][];
+  handExposed?: boolean[];
   pattern: Pattern;
   isActive: boolean[];
   markActive: boolean[];
@@ -32,6 +33,7 @@ export function PlayerZones(props: {
 }) {
   const { translate } = useCurrentGameTranslation();
   const numPlayers = props.names.length;
+  const handExposed = props.handExposed || props.names.map(() => false);
 
   function renderZone(index: number) {
     const perspectiveIndex = +props.perspectivePlayerId;
@@ -61,23 +63,28 @@ export function PlayerZones(props: {
               </div>
               <div className={props.bidPass[index] ? css.pass : ''}>{props.bids[index]}</div>
             </div>
-            {!props.hands[index] ? null : (
-              <div className={css.hand}>
-                {props.hands[index].map((C, i) => {
-                  return (
-                    <div key={i} className={css.arrangeCard}>
-                      <Card pattern={props.pattern} type={C} width={70} />
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+            {!props.hands[index] ? null : renderHand(index)}
             <div className={css.statuses}>
               <div className={css.name}>{props.names[index]}</div>
               {renderStatuses(index)}
             </div>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  function renderHand(index: number) {
+    const width = handExposed[index] ? 80 : 70;
+    return (
+      <div className={[css.hand, handExposed[index] ? css.exposed : ''].join(' ')}>
+        {props.hands[index].map((C, i) => {
+          return (
+            <div key={i} className={css.arrangeCard}>
+              <Card pattern={props.pattern} type={C} width={width} />
+            </div>
+          );
+        })}
       </div>
     );
   }

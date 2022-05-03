@@ -8,7 +8,7 @@ function mod(n: number, m: number): number {
   return ((n % m) + m) % m;
 }
 
-const SuitSymbols = {
+export const SuitSymbols = {
   Spades: <>&#x2660;&#xFE0F;</>,
   Hearts: <>&#x2665;&#xFE0F;</>,
   Diamonds: <>&#x2666;&#xFE0F;</>,
@@ -42,17 +42,19 @@ export function PreviousTrick(props: {
     let symbol = <></>;
     if (card) {
       text = card.value.toString();
+      const isAce = props.pattern == Pattern.English && card.value == 1;
+      const cardValue = isAce ? 14 : card.value;
       if (card.suit == Suit.Excuse) {
         text = '★';
-      } else if (card.suit != Suit.Trumps && card.value > 10) {
+      } else if (card.suit != Suit.Trumps && cardValue > 10) {
         if (props.pattern == Pattern.Franconian) {
-          text = ['U', 'O', 'K', 'A'][card.value - 11];
+          text = ['U', 'O', 'K', 'A'][cardValue - 11];
         } else if (props.pattern == Pattern.Tarot) {
-          text = ['V', 'C', 'D', 'R'][card.value - 11];
-        } else if (props.pattern == Pattern.Skat) {
-          text = ['J', 'Q', 'K', 'A'][card.value - 11];
+          text = ['V', 'C', 'D', 'R'][cardValue - 11];
         } else if (props.pattern == Pattern.Tarock) {
-          text = ['J', 'C', 'Q', 'K'][card.value - 11];
+          text = ['J', 'C', 'Q', 'K'][cardValue - 11];
+        } else {
+          text = ['J', 'Q', 'K', 'A'][cardValue - 11];
         }
       }
       symbol = SuitSymbols[Suit[card.suit]];

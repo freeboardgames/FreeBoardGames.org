@@ -66,7 +66,7 @@ export function card2str(C: ICard, pattern?: Pattern): string {
 }
 
 export function str2cards(s: string): ICard[] {
-  return s.split(' ').map(str2card);
+  return s.trim().split(' ').map(str2card);
 }
 
 export function str2trick(s: string, players: string[]): ITrick {
@@ -74,13 +74,16 @@ export function str2trick(s: string, players: string[]): ITrick {
     return { cards: str2cards(s) };
   }
   let leaderPos = 0;
-  const cards = s.split(' ').map((card_s, i) => {
-    if (card_s[0] == '!') {
-      leaderPos = i;
-      card_s = card_s.substr(1);
-    }
-    return str2card(card_s);
-  });
+  const cards = s
+    .trim()
+    .split(' ')
+    .map((card_s, i) => {
+      if (card_s[0] == '!') {
+        leaderPos = i;
+        card_s = card_s.substr(1);
+      }
+      return str2card(card_s);
+    });
   return {
     cards: cards.slice(leaderPos).concat(cards.slice(0, leaderPos)),
     leaderId: players[leaderPos],

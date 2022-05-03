@@ -1,0 +1,49 @@
+.board {
+  position: relative;
+  overflow: auto;
+  height: calc(100vh - 49px);
+  max-height: 800px;
+  font-family: sans-serif;
+  border-radius: 20px;
+  text-align: center;
+  background-color: #795f5e;
+  background-image: url("./media/wood-pattern.png");
+}
+
+.upperBoard {
+  position: relative;
+  height: calc(100% - 180px);
+}
+
+.upperBoard .dummyHand {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 140px;
+}
+
+.lowerBoard {
+  position: relative;
+  height: 180px;
+}
+
+@media only screen and (max-height: 600px) {
+.upperBoard { height: calc(100% - 130px); }
+.lowerBoard { height: 130px; }
+}
+
+@media only screen and (min-height: 700px) {
+.upperBoard { height: calc(100% - 280px); }
+.lowerBoard { height: 280px; }
+}
+
+.lowerBoard .spectatorMsg {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 0, 0, 0.5);
+  border-radius: 0.5em;
+  padding: 0.5em;
+}
