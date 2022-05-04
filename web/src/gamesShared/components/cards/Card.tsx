@@ -85,7 +85,7 @@ export function Card(props: {
       cardBack = [4, 4];
       cardBlank = [3, 4];
       suits = [Suit.Spades, Suit.Hearts, Suit.Diamonds, Suit.Clubs];
-      values = [[[], 1, 13]];
+      values = [[[], 1, 14]];
       numCols = 13;
       colOffset = 1;
       cardSize = [360, 540];
@@ -122,6 +122,10 @@ export function Card(props: {
       });
       if (text == '') {
         col = C.value - colOffset;
+        if (props.pattern == Pattern.English && col == 13) {
+          // alternative numeral representation of Ace as 14 (instead of 1)
+          col = 0;
+        }
         row = suits.indexOf(C.suit) + Math.floor(col / numCols);
         col = col % numCols;
       }

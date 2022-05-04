@@ -14,14 +14,27 @@
   white-space: nowrap;
 }
 
+.hand.top {
+  padding: 0;
+  direction: rtl;
+}
+
 .hand .arrangeCard {
   display: inline-block;
   width: 34px;
   transform: translate(0, 1px);
 }
 
+.hand.top .arrangeCard {
+  transform: rotate(180deg) translate(0, 190px);
+}
+
 .hand .arrangeCard.selected {
   transform: translate(0, -30px);
   background-color: rgba(0, 144, 0, 0.3);
   box-shadow: 0px 0px 40px #090;
+}
+
+.hand.top .arrangeCard.selected {
+  transform: translate(0, 30px);
 }

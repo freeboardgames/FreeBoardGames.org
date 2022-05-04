@@ -22,6 +22,20 @@
 @media only screen and (max-width: 850px) {
   .i2 { bottom: 15em; right: 2em; transform: translate(40%, 100%) rotate(-90deg); }
   .p3.i3, .p4.i4, .p5.i5 { bottom: 15em; left: 2em; transform: translate(-40%, 100%) rotate(90deg); }
+
+  .playerZone.p3.i2 .hand.exposed,
+  .playerZone.p4.i2 .hand.exposed,
+  .playerZone.p5.i2 .hand.exposed {
+    transform: translate(63px, 20px);
+    z-index: -1;
+  }
+
+  .playerZone.p3.i3 .hand.exposed,
+  .playerZone.p4.i4 .hand.exposed,
+  .playerZone.p5.i5 .hand.exposed {
+    transform: translate(-87px, 20px);
+    z-index: -1;
+  }
 }
 
 @media only screen and (max-width: 650px) and (max-height: 700px) {
@@ -157,4 +171,29 @@
 
 .hand:hover {
   z-index: 10000;
+}
+
+.p3.i2 .hand.exposed,
+.p4.i2 .hand.exposed,
+.p5.i2 .hand.exposed {
+  transform: translate(-80px, 0) rotate(-90deg) translate(0, 30px);
+}
+
+.p3.i3 .hand.exposed,
+.p4.i4 .hand.exposed,
+.p5.i5 .hand.exposed {
+  left: 0;
+  right: auto;
+  transform: translate(80px, 0) rotate(90deg) translate(0, 30px);
+}
+
+.hand.exposed {
+  height: 123px;
+  width: 390px;
+  text-align: center;
+  padding-right: 25px;
+}
+
+.hand.exposed .arrangeCard {
+  width: 25px;
 }
