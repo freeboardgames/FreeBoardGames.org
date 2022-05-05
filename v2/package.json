@@ -1,0 +1,4 @@
+{
+  "private": true,
+  "workspaces": ["fbg-games", "fbg-web"]
+}
