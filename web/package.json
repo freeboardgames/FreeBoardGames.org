@@ -132,7 +132,7 @@
     "@apollo/react-testing": "^4.0.0",
     "@babel/core": "^7.17.9",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@storybook/addon-actions": "^6.4.20",
+    "@storybook/addon-actions": "^6.4.22",
     "@storybook/addon-controls": "^6.4.21",
     "@storybook/addon-links": "^6.4.22",
     "@storybook/addon-outline": "^6.4.20",
