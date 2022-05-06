@@ -11,7 +11,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "npm"
-    directory: "/web"
+    directory: "/v2"
     versioning-strategy: increase
     schedule:
       interval: "daily"
