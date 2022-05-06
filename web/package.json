@@ -55,7 +55,7 @@
     "@sentry/browser": "^5.26.0",
     "@storybook/addon-backgrounds": "^6.3.12",
     "@storybook/addon-docs": "^6.4.19",
-    "@tweenjs/tween.js": "^18.6.0",
+    "@tweenjs/tween.js": "^18.6.4",
     "@types/js-cookie": "^3.0.1",
     "@types/socket.io-client": "^3.0.0",
     "@zeit/next-css": "^1.0.1",
