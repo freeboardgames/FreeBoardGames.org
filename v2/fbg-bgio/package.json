@@ -1,0 +1,15 @@
+{
+  "name": "fbg-bgio",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "ts-node main.ts",
+    "fbg-games": "1.0.0"
+  },
+  "dependencies": {
+    "@types/node": "^17.0.31",
+    "ts-node": "^10.7.0",
+    "typescript": "4.6.4"
+  }
+}
