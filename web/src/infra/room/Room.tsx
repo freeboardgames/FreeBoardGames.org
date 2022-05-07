@@ -139,6 +139,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
                 <ListPlayers
                   roomMetadata={room}
                   editNickname={this._toggleEditingName}
+                  moveUpUser={this._moveUpUser}
                   removeUser={this._removeUser}
                   changeCapacity={this._changeCapacity}
                   userId={this.state.userId}
@@ -358,6 +359,11 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   _removeUser = (userIdToBeRemoved: number) => () => {
     const dispatch = (this.props as any).dispatch;
     LobbyService.removeUser(dispatch, userIdToBeRemoved, this._roomId());
+  };
+
+  _moveUpUser = (userIdToBeMovedUp: number) => () => {
+    const dispatch = (this.props as any).dispatch;
+    LobbyService.moveUpUser(dispatch, userIdToBeMovedUp, this._roomId());
   };
 
   _setNickname = (nickname: string) => {

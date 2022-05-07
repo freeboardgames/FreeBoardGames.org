@@ -16,6 +16,7 @@ import { NextRoom, NextRoomVariables } from 'gqlTypes/NextRoom';
 import gql from 'graphql-tag.macro';
 import { JoinRoom, JoinRoomVariables } from 'gqlTypes/JoinRoom';
 import { RemoveUserFromRoom, RemoveUserFromRoomVariables } from 'gqlTypes/RemoveUserFromRoom';
+import { MoveUserUp, MoveUserUpVariables } from 'gqlTypes/MoveUserUp';
 import { UpdateRoomInput } from 'gqlTypes/globalTypes';
 
 const FBG_NICKNAME_KEY = 'fbgNickname2';
@@ -220,6 +221,24 @@ export class LobbyService {
           }
         `,
         variables: { roomId, userIdToBeRemoved },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
+  }
+
+  public static async moveUpUser(
+    dispatch: Dispatch<SyncUserAction>,
+    userIdToBeMovedUp: number,
+    roomId: string,
+  ): Promise<void> {
+    const client = this.getClient();
+    await client
+      .mutate<MoveUserUp, MoveUserUpVariables>({
+        mutation: gql`
+          mutation MoveUserUp($roomId: String!, $userIdToBeMovedUp: Int!) {
+            moveUserUp(userIdToBeMovedUp: $userIdToBeMovedUp, roomId: $roomId)
+          }
+        `,
+        variables: { roomId, userIdToBeMovedUp },
       })
       .catch(this.catchUnauthorizedGql(dispatch));
   }

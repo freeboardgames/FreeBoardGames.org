@@ -116,6 +116,23 @@ export class RoomsService {
     });
   }
 
+  /** Moves user up one position in players list. */
+  async moveUserUp(
+    userIdOfCaller: number,
+    userIdToBeMovedUp: number,
+    roomId: string,
+  ): Promise<RoomEntity> {
+    return await inTransaction(this.connection, async (queryRunner) => {
+      const room = await this.getRoomEntity(roomId);
+      if (room.match) {
+        return room;
+      }
+      await this.checkIsOwner(userIdOfCaller, room);
+      await this.moveUpMembership(queryRunner, userIdToBeMovedUp, room);
+      return room;
+    });
+  }
+
   /** Updates room metadata (capacity and game). */
   async updateRoom(
     userIdOfCaller: number,
@@ -204,13 +221,42 @@ export class RoomsService {
       // room at capacity
       return;
     }
+
+    let lastPosition = 0;
+    if (memberships.length > 0) {
+      lastPosition = Math.max(...memberships.map((m) => m.position));
+    }
     const membership = new RoomMembershipEntity();
     membership.user = user;
     membership.room = room;
     membership.lastSeen = Date.now();
     membership.isCreator = memberships.length === 0;
+    membership.position = lastPosition + 1;
     await queryRunner.manager.save(membership);
     room.userMemberships = [...memberships, membership];
+    await this.notifyRoomUpdate(room);
+  }
+
+  private async moveUpMembership(
+    queryRunner: QueryRunner,
+    userId: number,
+    room: RoomEntity,
+  ) {
+    const memberships = room.userMemberships || [];
+    memberships.sort((m1, m2) => m1.position - m2.position);
+    const userMembershipPos = memberships.findIndex((m) => m.user.id === userId);
+    if (userMembershipPos <= 0) {
+      // user already in top position (or not in room)
+      return;
+    }
+    const userMembership = memberships[userMembershipPos];
+    const prevMembership = memberships[userMembershipPos - 1];
+    [userMembership.position,
+     prevMembership.position] = [
+     prevMembership.position,
+     userMembership.position];
+    await queryRunner.manager.save(userMembership);
+    await queryRunner.manager.save(prevMembership);
     await this.notifyRoomUpdate(room);
   }
 
@@ -249,13 +295,13 @@ export class RoomsService {
       .where('user.id = :userId', { userId })
       .andWhere('room.match IS NULL')
       .orderBy({
-        'userMemberships.id': 'ASC',
+        'userMemberships.position': 'ASC',
       })
       .getMany();
     return rooms.map(r => r.id);
-  } 
+  }
 
-  private async maybeNotifyDiscord(user: UserEntity, roomEntity: RoomEntity) { 
+  private async maybeNotifyDiscord(user: UserEntity, roomEntity: RoomEntity) {
     const webhookUrl = process.env.DISCORD_LETS_PLAY_WEBHOOK;
     if (!webhookUrl) {
       return;

@@ -18,6 +18,10 @@ export class RoomMembershipEntity extends BaseEntity {
   @Column({ type: 'double precision' })
   public lastSeen!: number;
 
+  @Index()
+  @Column({ type: 'integer', default: 0 })
+  public position!: number;
+
   @Column({ default: false })
   public isCreator!: boolean;
 
