@@ -182,6 +182,7 @@ export class LobbyService {
               userId
               userMemberships {
                 isCreator
+                position
                 user {
                   id
                   nickname
@@ -286,6 +287,7 @@ export class LobbyService {
               capacity
               userMemberships {
                 isCreator
+                position
               }
             }
           }

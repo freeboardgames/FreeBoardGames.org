@@ -74,6 +74,7 @@ function getResultMock() {
     userMemberships: [
       {
         isCreator: true,
+        position: 1,
         user: { nickname: 'Bob', id: 1 },
       },
     ],

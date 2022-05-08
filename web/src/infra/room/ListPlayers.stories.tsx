@@ -14,6 +14,7 @@ const roomMetadata: JoinRoom_joinRoom = {
     {
       __typename: 'RoomMembership' as const,
       isCreator: true,
+      position: 1,
       user: {
         __typename: 'User' as const,
         id: 0,
@@ -23,6 +24,7 @@ const roomMetadata: JoinRoom_joinRoom = {
     {
       __typename: 'RoomMembership' as const,
       isCreator: false,
+      position: 2,
       user: {
         __typename: 'User' as const,
         id: 1,

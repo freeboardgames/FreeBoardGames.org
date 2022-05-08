@@ -17,6 +17,7 @@ describe('Room Start Match Button', () => {
         {
           __typename: 'RoomMembership' as const,
           isCreator: true,
+          position: 1,
           user: { nickname: 'Bob', id: 1, __typename: 'User' as const },
         },
       ],
@@ -40,11 +41,13 @@ describe('Room Start Match Button', () => {
         {
           __typename: 'RoomMembership' as const,
           isCreator: true,
+          position: 1,
           user: { nickname: 'foo', id: 1, __typename: 'User' as const },
         },
         {
           __typename: 'RoomMembership' as const,
           isCreator: false,
+          position: 2,
           user: { nickname: 'foo', id: 2, __typename: 'User' as const },
         },
       ],
@@ -68,11 +71,13 @@ describe('Room Start Match Button', () => {
         {
           __typename: 'RoomMembership' as const,
           isCreator: true,
+          position: 1,
           user: { nickname: 'foo', id: 1, __typename: 'User' as const },
         },
         {
           __typename: 'RoomMembership' as const,
           isCreator: false,
+          position: 2,
           user: { nickname: 'foo', id: 2, __typename: 'User' as const },
         },
       ],

@@ -24,6 +24,7 @@ export const LOBBIES_SUBSCRIPTION = gql`
         capacity
         userMemberships {
           isCreator
+          position
         }
       }
     }

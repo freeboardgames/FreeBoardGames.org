@@ -10,6 +10,7 @@
 export interface GetLobby_lobby_rooms_userMemberships {
   __typename: "RoomMembership";
   isCreator: boolean;
+  position: number;
 }
 
 export interface GetLobby_lobby_rooms {

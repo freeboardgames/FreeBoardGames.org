@@ -63,7 +63,7 @@ describe('RoomsService', () => {
     );
     const newRoom = await service.getRoomEntity(room.id);
     expect(newRoom.userMemberships).toMatchObject([
-      { isCreator: true, user: { id: bobId, nickname: 'bob' } },
+      { isCreator: true, position: 1, user: { id: bobId, nickname: 'bob' } },
     ]);
   });
 

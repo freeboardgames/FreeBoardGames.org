@@ -2,18 +2,19 @@ import { Controller, Get, HttpService } from '@nestjs/common';
 import { PORT } from './constants';
 
 const LOBBY_QUERY = `
-  query GetLobby { 
-    lobby { 
-      rooms { 
-        gameCode, 
-        capacity, 
-        userMemberships { 
-          isCreator, 
-          __typename 
-        }, 
-        __typename 
-      }, 
-      __typename 
+  query GetLobby {
+    lobby {
+      rooms {
+        gameCode,
+        capacity,
+        userMemberships {
+          isCreator,
+          position,
+          __typename
+        },
+        __typename
+      },
+      __typename
     }
   }
 `;
