@@ -130,7 +130,7 @@ export class MatchService {
     newMatch.bgioMatchId = bgioMatchId;
     await queryRunner.manager.insert(MatchEntity, newMatch);
     let index = 0;
-    let memberships = room.userMemberships.slice();
+    const memberships = room.userMemberships.slice();
     if (shuffleUsers) {
       shuffleArray(memberships);
     } else {

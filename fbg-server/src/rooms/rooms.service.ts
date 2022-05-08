@@ -262,7 +262,7 @@ export class RoomsService {
       // nothing to do
       return;
     }
-    let newPositions = Array(memberships.length).fill(0).map((_, i) => i);
+    const newPositions = Array(memberships.length).fill(0).map((_, i) => i);
     shuffleArray(newPositions);
     memberships.forEach((m, i) => {
         m.position = newPositions[i];
