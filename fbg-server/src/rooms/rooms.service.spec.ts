@@ -169,7 +169,7 @@ describe('RoomsService', () => {
 
   it('should move up user successfully', async () => {
     const bobId = await usersService.newUser({ nickname: 'bob' });
-    const room = await service.newRoom(
+    let room = await service.newRoom(
       {
         capacity: 3,
         gameCode: 'checkers',
@@ -178,11 +178,21 @@ describe('RoomsService', () => {
       bobId,
     );
     const aliceId = await usersService.newUser({ nickname: 'alice' });
+
     await service.joinRoom(aliceId, room.id);
+    room = await service.getRoomEntity(room.id);
+    expect(room.userMemberships.length).toEqual(2);
+    expect(room.userMemberships[0].position).toEqual(1);
+    expect(room.userMemberships[0].user.id).toEqual(bobId);
+    expect(room.userMemberships[1].position).toEqual(2);
+    expect(room.userMemberships[1].user.id).toEqual(aliceId);
+
     await service.moveUserUp(bobId, aliceId, room.id);
     const newRoom = await service.getRoomEntity(room.id);
     expect(newRoom.userMemberships.length).toEqual(2);
-    expect(newRoom.userMemberships[0].user.id).toEqual(aliceId);
+    expect(newRoom.userMemberships[0].position).toEqual(1);
+    expect(newRoom.userMemberships[0].user.id).toEqual(aliceId);;
+    expect(newRoom.userMemberships[1].position).toEqual(2);
     expect(newRoom.userMemberships[1].user.id).toEqual(bobId);
   });
 

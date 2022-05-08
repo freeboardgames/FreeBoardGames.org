@@ -194,7 +194,7 @@ export class RoomsService {
       .leftJoinAndSelect('userMemberships.user', 'user')
       .where('room.id = :roomId', { roomId })
       .orderBy({
-        'userMemberships.id': 'ASC',
+        'userMemberships.position': 'ASC',
       })
       .getOne();
     if (!roomEntity) {
