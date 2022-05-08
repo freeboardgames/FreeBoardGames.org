@@ -16,6 +16,7 @@ export interface JoinRoom_joinRoom_userMemberships_user {
 export interface JoinRoom_joinRoom_userMemberships {
   __typename: "RoomMembership";
   isCreator: boolean;
+  position: number;
   user: JoinRoom_joinRoom_userMemberships_user;
 }
 
