@@ -3,6 +3,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ShuffleIcon from '@material-ui/icons/Shuffle';
 import EditIcon from '@material-ui/icons/Edit';
 import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 import AddIcon from '@material-ui/icons/Add';
@@ -31,6 +32,7 @@ interface IListPlayersOutterProps {
   roomMetadata: JoinRoom_joinRoom;
   userId?: number;
   editNickname: () => void;
+  shuffleUsers: () => () => void;
   moveUpUser: (userId: number) => () => void;
   removeUser: (userId: number) => () => void;
   changeCapacity: (delta: number) => () => void;
@@ -136,6 +138,7 @@ export const ListPlayers = enhance(
     }
 
     renderCapacityButtons() {
+      const t = this.props.t;
       const metadata = this.props.roomMetadata;
       let allDisabled = false;
       if (!isCreator(metadata, this.props.userId)) {
@@ -146,8 +149,19 @@ export const ListPlayers = enhance(
       const minCapacity = Math.max(gameDef.minPlayers, occupancy);
       const maxCapacity = gameDef.maxPlayers;
       const capacity = metadata.capacity;
+      let shuffleButton;
+      if (isCreator(metadata, this.props.userId)) {
+        shuffleButton = (
+          <Tooltip title={t('shuffle_users')} placement="top">
+            <Button data-testid="shuffleUsers" onClick={this.props.shuffleUsers()}>
+              <ShuffleIcon />
+            </Button>
+          </Tooltip>
+        );
+      }
       return (
         <ButtonGroup size="small" style={{ top: '8px', right: '8px', position: 'absolute', zIndex: 10 }}>
+          {shuffleButton}
           <Button onClick={this.props.changeCapacity(-1)} disabled={allDisabled || capacity - 1 < minCapacity}>
             <RemoveIcon />
           </Button>

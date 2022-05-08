@@ -26,6 +26,7 @@ export function roomMembershipEntityToRoomMembership(
 ): RoomMembership {
   return {
     isCreator: roomMembershipEntity.isCreator,
+    position: roomMembershipEntity.position,
     user: roomMembershipEntity.user
       ? userEntityToUser(roomMembershipEntity.user)
       : undefined,

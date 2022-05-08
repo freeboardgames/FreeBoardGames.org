@@ -2,6 +2,7 @@
   "edit_nickname": "Edit nickname",
   "remove_user": "Remove user",
   "move_up_user": "Move user up",
+  "shuffle_users": "Shuffle user ordering",
   "waiting_for_player": "Waiting for player...",
   "players": "Players ({{ occupancy }}/{{ capacity }})"
 }

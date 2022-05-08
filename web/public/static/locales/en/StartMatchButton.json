@@ -1,5 +1,6 @@
 {
   "not_enough_players": "Not enough players.",
   "only_creator_can_start": "Only {{ name }} can start.",
-  "start_match": "Start match"
+  "start_match": "Start match",
+  "start_match_shuffle": "Start match with shuffled user ordering"
 }

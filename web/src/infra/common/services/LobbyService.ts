@@ -17,6 +17,7 @@ import gql from 'graphql-tag.macro';
 import { JoinRoom, JoinRoomVariables } from 'gqlTypes/JoinRoom';
 import { RemoveUserFromRoom, RemoveUserFromRoomVariables } from 'gqlTypes/RemoveUserFromRoom';
 import { MoveUserUp, MoveUserUpVariables } from 'gqlTypes/MoveUserUp';
+import { ShuffleUsers, ShuffleUsersVariables } from 'gqlTypes/ShuffleUsers';
 import { UpdateRoomInput } from 'gqlTypes/globalTypes';
 
 const FBG_NICKNAME_KEY = 'fbgNickname2';
@@ -91,9 +92,11 @@ export class LobbyService {
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data;
   }
+
   public static async startMatch(
     dispatch: Dispatch<SyncUserAction>,
     roomId: string,
+    shuffleUsers?: boolean,
     rawSetupData?: unknown,
   ): Promise<string> {
     const client = this.getClient();
@@ -101,11 +104,11 @@ export class LobbyService {
     const result = await client
       .mutate<StartMatch, StartMatchVariables>({
         mutation: gql`
-          mutation StartMatch($roomId: String!, $setupData: String!) {
-            startMatch(roomId: $roomId, setupData: $setupData)
+          mutation StartMatch($roomId: String!, $shuffleUsers: Boolean!, $setupData: String!) {
+            startMatch(roomId: $roomId, shuffleUsers: $shuffleUsers, setupData: $setupData)
           }
         `,
-        variables: { roomId, setupData },
+        variables: { roomId, shuffleUsers, setupData },
       })
       .catch(this.catchUnauthorizedGql(dispatch));
     return result.data.startMatch;
@@ -239,6 +242,20 @@ export class LobbyService {
           }
         `,
         variables: { roomId, userIdToBeMovedUp },
+      })
+      .catch(this.catchUnauthorizedGql(dispatch));
+  }
+
+  public static async shuffleUsers(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<void> {
+    const client = this.getClient();
+    await client
+      .mutate<ShuffleUsers, ShuffleUsersVariables>({
+        mutation: gql`
+          mutation ShuffleUsers($roomId: String!) {
+            shuffleUsers(roomId: $roomId)
+          }
+        `,
+        variables: { roomId },
       })
       .catch(this.catchUnauthorizedGql(dispatch));
   }

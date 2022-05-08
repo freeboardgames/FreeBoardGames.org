@@ -16,6 +16,7 @@ export interface RoomMutated_roomMutated_userMemberships_user {
 export interface RoomMutated_roomMutated_userMemberships {
   __typename: "RoomMembership";
   isCreator: boolean;
+  position: number;
   user: RoomMutated_roomMutated_userMemberships_user;
 }
 

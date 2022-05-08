@@ -84,7 +84,12 @@ export class MatchService {
   }
 
   /** Starts a new match given a room. */
-  public async startMatch(roomId: string, userId: number, setupData?: string): Promise<string> {
+  public async startMatch(
+    roomId: string,
+    userId: number,
+    shuffleUsers?: boolean,
+    setupData?: string
+  ): Promise<string> {
     return await inTransaction(this.connection, async (queryRunner) => {
       const room = await this.roomsService.getRoomEntity(roomId);
       const userMembership = room.userMemberships.find(
@@ -99,13 +104,14 @@ export class MatchService {
       if (room.capacity !== room.userMemberships.length) {
         throw new HttpException('Room is not full yet', HttpStatus.BAD_REQUEST);
       }
-      return await this.createMatch(queryRunner, room, setupData);
+      return await this.createMatch(queryRunner, room, shuffleUsers, setupData);
     });
   }
 
   private async createMatch(
     queryRunner: QueryRunner,
     room: RoomEntity,
+    shuffleUsers?: boolean,
     setupData?: string
   ): Promise<string> {
     const bgioServerUrl = getBgioServerUrl();
@@ -124,7 +130,13 @@ export class MatchService {
     newMatch.bgioMatchId = bgioMatchId;
     await queryRunner.manager.insert(MatchEntity, newMatch);
     let index = 0;
-    for (const userMembership of room.userMemberships) {
+    let memberships = room.userMemberships.slice();
+    if (shuffleUsers) {
+      shuffleArray(memberships);
+    } else {
+      memberships.sort((m1, m2) => m1.position - m2.position);
+    }
+    for (const userMembership of memberships) {
       // These requests to BGIO server need to be in serial b/c of race condition inside it.
       const matchMembership = await this.roomToMatchMembership(
         userMembership,
@@ -184,5 +196,12 @@ export class MatchService {
       )
       .toPromise();
     return response.data.playerCredentials;
+  }
+}
+
+function shuffleArray(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
 }

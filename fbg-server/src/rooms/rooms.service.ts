@@ -133,6 +133,22 @@ export class RoomsService {
     });
   }
 
+  /** Shuffles the list of players. */
+  async shuffleUsers(
+    userIdOfCaller: number,
+    roomId: string,
+  ): Promise<RoomEntity> {
+    return await inTransaction(this.connection, async (queryRunner) => {
+      const room = await this.getRoomEntity(roomId);
+      if (room.match) {
+        return room;
+      }
+      await this.checkIsOwner(userIdOfCaller, room);
+      await this.shuffleMemberships(queryRunner, room);
+      return room;
+    });
+  }
+
   /** Updates room metadata (capacity and game). */
   async updateRoom(
     userIdOfCaller: number,
@@ -237,6 +253,26 @@ export class RoomsService {
     await this.notifyRoomUpdate(room);
   }
 
+  private async shuffleMemberships(
+    queryRunner: QueryRunner,
+    room: RoomEntity,
+  ) {
+    const memberships = room.userMemberships || [];
+    if (memberships.length <= 1) {
+      // nothing to do
+      return;
+    }
+    let newPositions = Array(memberships.length).fill(0).map((_, i) => i);
+    shuffleArray(newPositions);
+    memberships.forEach((m, i) => {
+        m.position = newPositions[i];
+    });
+    memberships.sort((m1, m2) => m1.position - m2.position);
+    await queryRunner.manager.save(memberships);
+    room.userMemberships = memberships;
+    await this.notifyRoomUpdate(room);
+  }
+
   private async moveUpMembership(
     queryRunner: QueryRunner,
     userId: number,
@@ -255,8 +291,9 @@ export class RoomsService {
      prevMembership.position] = [
      prevMembership.position,
      userMembership.position];
-    await queryRunner.manager.save(userMembership);
-    await queryRunner.manager.save(prevMembership);
+    memberships.sort((m1, m2) => m1.position - m2.position);
+    room.userMemberships = memberships;
+    await queryRunner.manager.save([userMembership, prevMembership]);
     await this.notifyRoomUpdate(room);
   }
 
@@ -323,5 +360,12 @@ export class RoomsService {
         ]
       }
     ).toPromise();
+  }
+}
+
+function shuffleArray(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
 }

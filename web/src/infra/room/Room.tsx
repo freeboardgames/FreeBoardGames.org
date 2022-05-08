@@ -41,6 +41,7 @@ export const ROOM_SUBSCRIPTION = gql`
       userId
       userMemberships {
         isCreator
+        position
         user {
           id
           nickname
@@ -139,6 +140,7 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
                 <ListPlayers
                   roomMetadata={room}
                   editNickname={this._toggleEditingName}
+                  shuffleUsers={this._shuffleUsers}
                   moveUpUser={this._moveUpUser}
                   removeUser={this._removeUser}
                   changeCapacity={this._changeCapacity}
@@ -366,6 +368,11 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
     LobbyService.moveUpUser(dispatch, userIdToBeMovedUp, this._roomId());
   };
 
+  _shuffleUsers = () => () => {
+    const dispatch = (this.props as any).dispatch;
+    LobbyService.shuffleUsers(dispatch, this._roomId());
+  };
+
   _setNickname = (nickname: string) => {
     const { t } = this.props;
     this._toggleEditingName();
@@ -391,10 +398,10 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
     return this.props.router.query.roomID as string;
   }
 
-  _startMatch = () => {
+  _startMatch = (shuffleUsers: boolean) => () => {
     const { t } = this.props;
     this.setState({ partialLoading: true });
-    LobbyService.startMatch(this.props.dispatch, this._roomId(), this.getSetupData()).then(
+    LobbyService.startMatch(this.props.dispatch, this._roomId(), shuffleUsers, this.getSetupData()).then(
       (matchId) => {
         this.redirectToMatch(matchId);
       },

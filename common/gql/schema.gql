@@ -13,6 +13,7 @@ type NewUser {
 
 type RoomMembership {
   isCreator: Boolean!
+  position: Float!
   user: User!
 }
 
@@ -71,9 +72,10 @@ type Mutation {
   leaveRoom(roomId: String!): Boolean!
   removeFromRoom(roomId: String!, userIdToBeRemoved: Int!): Boolean!
   moveUserUp(roomId: String!, userIdToBeMovedUp: Int!): Boolean!
+  shuffleUsers(roomId: String!): Boolean!
   updateRoom(room: UpdateRoomInput!): Boolean!
   nextRoom(matchId: String!): String!
-  startMatch(roomId: String!, setupData: String!): String!
+  startMatch(roomId: String!, shuffleUsers: Boolean!, setupData: String!): String!
   sendMessage(message: SendMessageInput!): Boolean!
 }
 
