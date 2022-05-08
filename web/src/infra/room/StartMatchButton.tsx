@@ -1,6 +1,8 @@
 import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 import React from 'react';
+import ShuffleIcon from '@material-ui/icons/Shuffle';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Tooltip from '@material-ui/core/Tooltip';
 import { WithTranslation, withTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
@@ -10,7 +12,7 @@ export interface IStartMatchButtonInnerProps extends WithTranslation {}
 export interface IStartMatchButtonOutterProps {
   roomMetadata?: JoinRoom_joinRoom;
   userId: number;
-  startMatch: () => void;
+  startMatch: (boolean) => () => void;
 }
 
 const enhance = compose<IStartMatchButtonInnerProps, IStartMatchButtonOutterProps>(withTranslation('StartMatchButton'));
@@ -28,25 +30,35 @@ export const StartMatchButton = enhance(
         disabled = true;
         explanation = this.props.t('only_creator_can_start', { name: creator.user.nickname });
       }
-      const button = (
+      let button = (
         <Button
           variant="outlined"
           color="primary"
           disabled={disabled}
-          onClick={this.props.startMatch}
+          onClick={this.props.startMatch(false)}
           data-testid="startButton"
         >
           {this.props.t('start_match')}
         </Button>
       );
       if (disabled) {
-        return (
-          <Tooltip title={explanation}>
-            <span>{button}</span>
-          </Tooltip>
-        );
+        button = <Tooltip title={explanation}>{button}</Tooltip>;
       }
-      return button;
+      return (
+        <ButtonGroup>
+          {button}
+          <Tooltip title={this.props.t('start_match_shuffle')}>
+            <Button
+              color="primary"
+              disabled={disabled}
+              onClick={this.props.startMatch(true)}
+              data-testid="startButtonWithShuffle"
+            >
+              <ShuffleIcon />
+            </Button>
+          </Tooltip>
+        </ButtonGroup>
+      );
     }
   },
 );

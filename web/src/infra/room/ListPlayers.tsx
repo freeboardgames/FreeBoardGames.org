@@ -2,6 +2,8 @@ import React from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ShuffleIcon from '@material-ui/icons/Shuffle';
 import EditIcon from '@material-ui/icons/Edit';
 import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
 import AddIcon from '@material-ui/icons/Add';
@@ -30,6 +32,8 @@ interface IListPlayersOutterProps {
   roomMetadata: JoinRoom_joinRoom;
   userId?: number;
   editNickname: () => void;
+  shuffleUsers: () => () => void;
+  moveUpUser: (userId: number) => () => void;
   removeUser: (userId: number) => () => void;
   changeCapacity: (delta: number) => () => void;
 }
@@ -58,12 +62,25 @@ export const ListPlayers = enhance(
 
     renderPlayersList() {
       const { t, roomMetadata: metadata } = this.props;
+      const currentUserIsCreator = isCreator(metadata, this.props.userId);
+      metadata.userMemberships.sort((m1, m2) => m1.position - m2.position);
 
       return metadata.userMemberships.map((membership, idx: number) => {
         let secondaryAction;
+        let moveUpButton;
+        if (idx > 0 && currentUserIsCreator) {
+          moveUpButton = (
+            <Tooltip title={t('move_up_user')} placement="top">
+              <Button data-testid="moveUpUser" onClick={this.props.moveUpUser(membership.user.id)}>
+                <ArrowUpwardIcon />
+              </Button>
+            </Tooltip>
+          );
+        }
         if (membership.user.id == this.props.userId) {
           secondaryAction = (
             <ListItemSecondaryAction>
+              {moveUpButton}
               <Tooltip title={t('edit_nickname')} placement="top">
                 <Button data-testid="editNickname" onClick={this.props.editNickname}>
                   <EditIcon />
@@ -71,9 +88,10 @@ export const ListPlayers = enhance(
               </Tooltip>
             </ListItemSecondaryAction>
           );
-        } else if (isCreator(metadata, this.props.userId)) {
+        } else if (currentUserIsCreator) {
           secondaryAction = (
             <ListItemSecondaryAction>
+              {moveUpButton}
               <Tooltip title={t('remove_user')} placement="top">
                 <Button data-testid="removeUser" onClick={this.props.removeUser(membership.user.id)}>
                   <RemoveCircleIcon />
@@ -120,6 +138,7 @@ export const ListPlayers = enhance(
     }
 
     renderCapacityButtons() {
+      const t = this.props.t;
       const metadata = this.props.roomMetadata;
       let allDisabled = false;
       if (!isCreator(metadata, this.props.userId)) {
@@ -130,8 +149,19 @@ export const ListPlayers = enhance(
       const minCapacity = Math.max(gameDef.minPlayers, occupancy);
       const maxCapacity = gameDef.maxPlayers;
       const capacity = metadata.capacity;
+      let shuffleButton;
+      if (isCreator(metadata, this.props.userId)) {
+        shuffleButton = (
+          <Tooltip title={t('shuffle_users')} placement="top">
+            <Button data-testid="shuffleUsers" onClick={this.props.shuffleUsers()}>
+              <ShuffleIcon />
+            </Button>
+          </Tooltip>
+        );
+      }
       return (
         <ButtonGroup size="small" style={{ top: '8px', right: '8px', position: 'absolute', zIndex: 10 }}>
+          {shuffleButton}
           <Button onClick={this.props.changeCapacity(-1)} disabled={allDisabled || capacity - 1 < minCapacity}>
             <RemoveIcon />
           </Button>

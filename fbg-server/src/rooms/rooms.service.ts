@@ -116,6 +116,39 @@ export class RoomsService {
     });
   }
 
+  /** Moves user up one position in players list. */
+  async moveUserUp(
+    userIdOfCaller: number,
+    userIdToBeMovedUp: number,
+    roomId: string,
+  ): Promise<RoomEntity> {
+    return await inTransaction(this.connection, async (queryRunner) => {
+      const room = await this.getRoomEntity(roomId);
+      if (room.match) {
+        return room;
+      }
+      await this.checkIsOwner(userIdOfCaller, room);
+      await this.moveUpMembership(queryRunner, userIdToBeMovedUp, room);
+      return room;
+    });
+  }
+
+  /** Shuffles the list of players. */
+  async shuffleUsers(
+    userIdOfCaller: number,
+    roomId: string,
+  ): Promise<RoomEntity> {
+    return await inTransaction(this.connection, async (queryRunner) => {
+      const room = await this.getRoomEntity(roomId);
+      if (room.match) {
+        return room;
+      }
+      await this.checkIsOwner(userIdOfCaller, room);
+      await this.shuffleMemberships(queryRunner, room);
+      return room;
+    });
+  }
+
   /** Updates room metadata (capacity and game). */
   async updateRoom(
     userIdOfCaller: number,
@@ -161,7 +194,7 @@ export class RoomsService {
       .leftJoinAndSelect('userMemberships.user', 'user')
       .where('room.id = :roomId', { roomId })
       .orderBy({
-        'userMemberships.id': 'ASC',
+        'userMemberships.position': 'ASC',
       })
       .getOne();
     if (!roomEntity) {
@@ -204,13 +237,63 @@ export class RoomsService {
       // room at capacity
       return;
     }
+
+    let lastPosition = 0;
+    if (memberships.length > 0) {
+      lastPosition = Math.max(...memberships.map((m) => m.position));
+    }
     const membership = new RoomMembershipEntity();
     membership.user = user;
     membership.room = room;
     membership.lastSeen = Date.now();
     membership.isCreator = memberships.length === 0;
+    membership.position = lastPosition + 1;
     await queryRunner.manager.save(membership);
     room.userMemberships = [...memberships, membership];
+    await this.notifyRoomUpdate(room);
+  }
+
+  private async shuffleMemberships(
+    queryRunner: QueryRunner,
+    room: RoomEntity,
+  ) {
+    const memberships = room.userMemberships || [];
+    if (memberships.length <= 1) {
+      // nothing to do
+      return;
+    }
+    const newPositions = Array(memberships.length).fill(0).map((_, i) => i);
+    shuffleArray(newPositions);
+    memberships.forEach((m, i) => {
+        m.position = newPositions[i];
+    });
+    memberships.sort((m1, m2) => m1.position - m2.position);
+    await queryRunner.manager.save(memberships);
+    room.userMemberships = memberships;
+    await this.notifyRoomUpdate(room);
+  }
+
+  private async moveUpMembership(
+    queryRunner: QueryRunner,
+    userId: number,
+    room: RoomEntity,
+  ) {
+    const memberships = room.userMemberships || [];
+    memberships.sort((m1, m2) => m1.position - m2.position);
+    const userMembershipPos = memberships.findIndex((m) => m.user.id === userId);
+    if (userMembershipPos <= 0) {
+      // user already in top position (or not in room)
+      return;
+    }
+    const userMembership = memberships[userMembershipPos];
+    const prevMembership = memberships[userMembershipPos - 1];
+    [userMembership.position,
+     prevMembership.position] = [
+     prevMembership.position,
+     userMembership.position];
+    memberships.sort((m1, m2) => m1.position - m2.position);
+    room.userMemberships = memberships;
+    await queryRunner.manager.save([userMembership, prevMembership]);
     await this.notifyRoomUpdate(room);
   }
 
@@ -249,13 +332,13 @@ export class RoomsService {
       .where('user.id = :userId', { userId })
       .andWhere('room.match IS NULL')
       .orderBy({
-        'userMemberships.id': 'ASC',
+        'userMemberships.position': 'ASC',
       })
       .getMany();
     return rooms.map(r => r.id);
-  } 
+  }
 
-  private async maybeNotifyDiscord(user: UserEntity, roomEntity: RoomEntity) { 
+  private async maybeNotifyDiscord(user: UserEntity, roomEntity: RoomEntity) {
     const webhookUrl = process.env.DISCORD_LETS_PLAY_WEBHOOK;
     if (!webhookUrl) {
       return;
@@ -277,5 +360,12 @@ export class RoomsService {
         ]
       }
     ).toPromise();
+  }
+}
+
+function shuffleArray(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
 }

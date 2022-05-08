@@ -4,15 +4,14 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: StartMatch
+// GraphQL mutation operation: MoveUserUp
 // ====================================================
 
-export interface StartMatch {
-  startMatch: string;
+export interface MoveUserUp {
+  moveUserUp: boolean;
 }
 
-export interface StartMatchVariables {
+export interface MoveUserUpVariables {
   roomId: string;
-  shuffleUsers: boolean;
-  setupData: string;
+  userIdToBeMovedUp: number;
 }

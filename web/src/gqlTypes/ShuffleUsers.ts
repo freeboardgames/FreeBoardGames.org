@@ -4,15 +4,13 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: StartMatch
+// GraphQL mutation operation: ShuffleUsers
 // ====================================================
 
-export interface StartMatch {
-  startMatch: string;
+export interface ShuffleUsers {
+  shuffleUsers: boolean;
 }
 
-export interface StartMatchVariables {
+export interface ShuffleUsersVariables {
   roomId: string;
-  shuffleUsers: boolean;
-  setupData: string;
 }

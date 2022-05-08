@@ -5,6 +5,7 @@ import { mount } from 'enzyme';
 const user1membership = {
   user: { nickname: 'foo', id: 123, __typename: 'User' as const },
   isCreator: true,
+  position: 1,
   __typename: 'RoomMembership' as const,
 };
 

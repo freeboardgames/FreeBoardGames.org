@@ -65,6 +65,35 @@ export class RoomsResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
+  async moveUserUp(
+    @CurrentUser() currentUser: User,
+    @Args({ name: 'roomId', type: () => String }) roomId: string,
+    @Args({ name: 'userIdToBeMovedUp', type: () => Int })
+    userIdToBeMovedUp: number,
+  ): Promise<boolean> {
+    await this.roomsService.moveUserUp(
+      currentUser.id,
+      userIdToBeMovedUp,
+      roomId,
+    );
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async shuffleUsers(
+    @CurrentUser() currentUser: User,
+    @Args({ name: 'roomId', type: () => String }) roomId: string,
+  ): Promise<boolean> {
+    await this.roomsService.shuffleUsers(
+      currentUser.id,
+      roomId,
+    );
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
   async updateRoom(
     @CurrentUser() currentUser: User,
     @Args({ name: 'room', type: () => UpdateRoomInput }) room: UpdateRoomInput,
