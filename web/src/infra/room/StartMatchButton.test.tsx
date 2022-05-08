@@ -22,9 +22,10 @@ describe('Room Start Match Button', () => {
       ],
     };
     const wrapper = mount(<StartMatchButton roomMetadata={metadata} userId={1} startMatch={() => {}} />);
-    expect(wrapper.find(Button).getDOMNode()).toBeDisabled();
-    expect(wrapper.find(Button).text()).toBe('Start match');
-    expect(wrapper.find(Tooltip).prop('title')).toBe('Not enough players.');
+    expect(wrapper.find(Button).at(1).getDOMNode()).toBeDisabled();
+    expect(wrapper.find(Button).at(0).getDOMNode()).toBeDisabled();
+    expect(wrapper.find(Button).first().text()).toBe('Start match');
+    expect(wrapper.find(Tooltip).first().prop('title')).toBe('Not enough players.');
   });
 
   it('should show disabled button if not the creator', async () => {
@@ -49,9 +50,10 @@ describe('Room Start Match Button', () => {
       ],
     };
     const wrapper = mount(<StartMatchButton roomMetadata={metadata} userId={2} startMatch={() => {}} />);
-    expect(wrapper.find(Button).getDOMNode()).toBeDisabled();
-    expect(wrapper.find(Button).text()).toBe('Start match');
-    expect(wrapper.find(Tooltip).prop('title')).toBe('Only foo can start.');
+    expect(wrapper.find(Button).at(1).getDOMNode()).toBeDisabled();
+    expect(wrapper.find(Button).at(0).getDOMNode()).toBeDisabled();
+    expect(wrapper.find(Button).first().text()).toBe('Start match');
+    expect(wrapper.find(Tooltip).first().prop('title')).toBe('Only foo can start.');
   });
 
   it('should show enabled button if creator and full', async () => {
@@ -76,7 +78,8 @@ describe('Room Start Match Button', () => {
       ],
     };
     const wrapper = mount(<StartMatchButton roomMetadata={metadata} userId={1} startMatch={() => {}} />);
-    expect(wrapper.find(Button).getDOMNode()).toBeEnabled();
-    expect(wrapper.find(Button).text()).toBe('Start match');
+    expect(wrapper.find(Button).at(0).getDOMNode()).toBeEnabled();
+    expect(wrapper.find(Button).at(1).getDOMNode()).toBeEnabled();
+    expect(wrapper.find(Button).first().text()).toBe('Start match');
   });
 });

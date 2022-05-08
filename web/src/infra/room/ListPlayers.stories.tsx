@@ -36,6 +36,14 @@ const editNickname = () => {
   alert('editNickname called');
 };
 
+const shuffleUsers = () => () => {
+  alert('shuffleUsers called');
+};
+
+const moveUpUser = () => () => {
+  alert('moveUpUser called');
+};
+
 const removeUser = () => () => {
   alert('removeUser called');
 };
@@ -49,6 +57,8 @@ export const example = () => (
     changeCapacity={changeCapacity}
     roomMetadata={roomMetadata}
     editNickname={editNickname}
+    shuffleUsers={shuffleUsers}
+    moveUpUser={moveUpUser}
     removeUser={removeUser}
     userId={1}
   />
@@ -58,6 +68,8 @@ export const isCreator = () => (
     changeCapacity={changeCapacity}
     roomMetadata={roomMetadata}
     editNickname={editNickname}
+    shuffleUsers={shuffleUsers}
+    moveUpUser={moveUpUser}
     removeUser={removeUser}
     userId={0}
   />

@@ -1,5 +1,6 @@
 {
   "not_enough_players": "Nicht genügend Spieler.",
-  "only_creator_can_start": "Nur {{ name }} kann Starten.",
-  "start_match": "Partie Starten"
+  "only_creator_can_start": "Nur {{ name }} kann das Spiel starten.",
+  "start_match": "Spiel starten",
+  "start_match_shuffle": "Mit zufälliger Spielerreihenfolge starten"
 }

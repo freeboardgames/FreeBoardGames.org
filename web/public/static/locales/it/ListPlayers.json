@@ -1,6 +1,8 @@
 {
   "edit_nickname": "Modifica nickname",
   "remove_user": "Rimuovi utente",
+  "move_up_user": "Sposta l'utente in alto",
+  "shuffle_users": "Mischiare gli utenti",
   "waiting_for_player": "In attesa di giocatori...",
   "players": "Giocatori ({{ occupancy }}/{{ capacity }})"
 }

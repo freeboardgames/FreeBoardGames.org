@@ -1,5 +1,6 @@
 {
   "not_enough_players": "Non ci sono abbastanza giocatori.",
   "only_creator_can_start": "Solo {{ name }} può avviare la partita.",
-  "start_match": "Inizia la partita"
+  "start_match": "Inizia la partita",
+  "start_match_shuffle": "Iniziare con utenti mischiati"
 }
