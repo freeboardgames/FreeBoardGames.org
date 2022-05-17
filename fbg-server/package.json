@@ -53,7 +53,7 @@
     "graphql-subscriptions": "^2.0.0",
     "graphql-tools": "^8.2.9",
     "ioredis": "5.0.4",
-    "passport": "^0.5.2",
+    "passport": "^0.5.3",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
