@@ -17,3 +17,4 @@ helm upgrade -f ../secrets/values.prod.yaml fbg ./helm || { log "Helm upgrade fa
 ./docker-build.sh -p || { log "Pushing images failed"; exit 1; }
 kubectl rollout restart deployment fbg-web fbg-fbg-server fbg-bgio || { log "Rollout failed"; exit 1; }
 log "Success! Changes should be live in minutes"
+docker system prune --volumes -f
