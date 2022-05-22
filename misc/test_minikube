@@ -34,8 +34,7 @@ for i in {1..300}; do
 done
 
 for i in {1..300}; do
-  PODS=$(kubectl get pods) || true
-  echo $PODS
+  kubectl get pods || true 
   BGIO_SERVICE=$(kubectl get service fbg-bgio -o json) || true
   echo "BGIO_SERVICE: $BGIO_SERVICE" || true
   BGIO_IP=$(echo $BGIO_SERVICE | jq -r ".spec.clusterIP") || true
