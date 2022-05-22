@@ -34,8 +34,15 @@ for i in {1..300}; do
 done
 
 for i in {1..300}; do
-  BGIO_IP=$(kubectl get service fbg-bgio -o json | jq -r ".spec.clusterIP")
-  echo $(minikube ssh "curl $BGIO_IP/games" 2> /dev/null) | jq > /dev/null 2>&1 && break
+  PODS=$(kubectl get pods) || true
+  echo $PODS
+  BGIO_SERVICE=$(kubectl get service fbg-bgio -o json) || true
+  echo "BGIO_SERVICE: $BGIO_SERVICE" || true
+  BGIO_IP=$(echo $BGIO_SERVICE | jq -r ".spec.clusterIP") || true
+  echo "BGIO_IP: $BGIO_IP" || true
+  CURL_GAMES=$(minikube ssh "curl $BGIO_IP/games" 2> /dev/null) || true
+  echo "CURL_GAMES: $CURL_GAMES"
+  echo $CURL_GAMES | jq > /dev/null 2>&1 && break
   echo "Waiting for bgio pods to stabilize..."
   sleep 2
 done
