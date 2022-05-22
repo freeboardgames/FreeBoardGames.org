@@ -33,6 +33,9 @@ async function screenshot(page: puppeteer.Page, name: string) {
 async function openHome(page: puppeteer.Page, url: string) {
   highlightLog(`openHome(${url})`);
   await page.goto(url);
+  await page.waitForTimeout(5000);
+  const html = await page.content();
+  console.log("HOME HTML: " + html);
   await waitVisible(page, GAMES_TITLE_XPATH); 
   await screenshot(page, 'home');
 }
@@ -110,7 +113,6 @@ async function launch() {
 }
 
 async function setupPage(page: puppeteer.Page, tag: string) {
-  if (!process.env.DEBUG) { return }
   page
     .on('console', message =>
       console.log(`<${tag}, console> ${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))

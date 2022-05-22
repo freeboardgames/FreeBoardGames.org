@@ -10,7 +10,7 @@
 export interface SubscribeToLobby_lobbyMutated_rooms_userMemberships {
   __typename: "RoomMembership";
   isCreator: boolean;
-  position: boolean;
+  position: number;
 }
 
 export interface SubscribeToLobby_lobbyMutated_rooms {
