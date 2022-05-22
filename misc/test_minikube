@@ -36,8 +36,9 @@ done
 for i in {1..300}; do
   kubectl get pods || true 
   BGIO_SERVICE=$(kubectl get service fbg-bgio -o json) || true
-  echo "BGIO_SERVICE: $BGIO_SERVICE" || true
   BGIO_IP=$(echo $BGIO_SERVICE | jq -r ".spec.clusterIP") || true
+  BGIO_POD=$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | grep bgio) || true
+  kubectl logs $BGIO_POD || true
   echo "BGIO_IP: $BGIO_IP" || true
   CURL_GAMES=$(minikube ssh "curl $BGIO_IP/games" 2> /dev/null) || true
   echo "CURL_GAMES: $CURL_GAMES"
