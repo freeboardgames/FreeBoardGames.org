@@ -47,6 +47,9 @@ for i in {1..300}; do
   CURL_WEB=$(minikube ssh "curl -o /dev/null -s -w "%{http_code}" $FBG_WEB_IP/en" 2> /dev/null)
   echo $CURL_WEB
   [[ $CURL_WEB == "200" ]] > /dev/null 2>&1 && break
+  kubectl get pods || true
+  WEB_POD=$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | grep web) || true
+  kubectl logs $WEB_POD || true  
   echo "Waiting for fbg-web pods to stabilize..."
   sleep 2
 done
