@@ -42,14 +42,23 @@ for i in {1..300}; do
   sleep 2
 done
 
-for i in {1...300}; do
-  HTTP_STATUS=$(curl --insecure -s -w "%{http_code}" https://my-fbf.info/en) || true
+for i in {1..300}; do
+  FBG_WEB_IP=$(kubectl get service fbg-web -o json | jq -r ".spec.clusterIP") 
+  CURL_WEB=$(minikube ssh "curl -o /dev/null -s -w "%{http_code}" $FBG_WEB_IP/en" 2> /dev/null)
+  echo $CURL_WEB
+  [[ $CURL_WEB == "200" ]] > /dev/null 2>&1 && break
+  echo "Waiting for fbg-web pods to stabilize..."
+  sleep 2
+done
+
+for i in {1..300}; do
+  HTTP_STATUS=$(curl --insecure -o /dev/null -s -w "%{http_code}" https://my-fbg.info/en) || true
   curl --insecure https://my-fbg.info/en || true
   kubectl get ingress -o json || true
   kubectl get ingress || true
   echo $HTTP_STATUS
   sleep 2
-  [[ $HTTP_STATUS -eq 200 ]] && break
+  [[ "$HTTP_STATUS" == "200" ]] && break
 done
 
 cd misc/e2e
