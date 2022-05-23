@@ -42,11 +42,14 @@ for i in {1..300}; do
   sleep 2
 done
 
-sleep 60
-
-WEB_POD=$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | grep web) || true
-kubectl get pods || true 
-kubectl logs $WEB_POD || true
+for i in {1...300}; do
+  HTTP_STATUS=$(curl --insecure -s -o /dev/null -w "%{http_code}" https://my-fbf.info) || true
+  kubectl get ingress -o json || true
+  kubectl get ingress || true
+  echo $HTTP_STATUS
+  sleep 2
+  [[ "$HTTP_STATUS" -eq "200" ]] && break || true
+done
 
 cd misc/e2e
 yarn run test https://my-fbg.info
