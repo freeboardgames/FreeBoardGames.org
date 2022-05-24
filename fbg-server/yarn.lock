@@ -9,18 +9,6 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@angular-devkit/core@13.3.2":
-  version "13.3.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-13.3.2.tgz#b2e7a9a6457d587a59d5f6df799bebb6930a5ddc"
-  integrity sha512-wav5plcnlxQAfZ+0EUt3dvVTJnJ1au2TlKVQ0jSQJdR1LA6N7QUI49N2Ua6ZnDMwruQaQkoynitMW2l1it3qYQ==
-  dependencies:
-    ajv "8.9.0"
-    ajv-formats "2.1.1"
-    fast-json-stable-stringify "2.1.0"
-    magic-string "0.25.7"
-    rxjs "6.6.7"
-    source-map "0.7.3"
-
 "@angular-devkit/core@13.3.5":
   version "13.3.5"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-13.3.5.tgz#c5f32f4f99b5cad8df9cf3cf4da9c4b1335c1155"
@@ -33,28 +21,17 @@
     rxjs "6.6.7"
     source-map "0.7.3"
 
-"@angular-devkit/schematics-cli@13.3.2":
-  version "13.3.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics-cli/-/schematics-cli-13.3.2.tgz#50607314ee19828d9bd3fb7cb1e3ab2b480ae934"
-  integrity sha512-cUHZFNq2kaCaReJAU28MSu2D+WDFTqt2v03U79TryOutYdF8BV4FyfvKqCSW6WXna219GXSXPepVqDYcjvn7/w==
+"@angular-devkit/schematics-cli@13.3.5":
+  version "13.3.5"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics-cli/-/schematics-cli-13.3.5.tgz#e9b6199189d6e5d8e08bb53e2c9cac45314513c8"
+  integrity sha512-ARX20ebtfwzef8GdXIcB6uv0sjTsaEniZyXBFchEKD6kR5EYZVaBL+ZVUbmsU1d0XY///WzW7pqwCyu5H1u+vw==
   dependencies:
-    "@angular-devkit/core" "13.3.2"
-    "@angular-devkit/schematics" "13.3.2"
+    "@angular-devkit/core" "13.3.5"
+    "@angular-devkit/schematics" "13.3.5"
     ansi-colors "4.1.1"
     inquirer "8.2.0"
     minimist "1.2.6"
     symbol-observable "4.0.0"
-
-"@angular-devkit/schematics@13.3.2":
-  version "13.3.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-13.3.2.tgz#ae5f4f68af852d56b9ceda4e878cceb1b4558dec"
-  integrity sha512-XCLb23jmqHN0gJg9ZlICaFgfpfnCufIQp5SOsRKMKRkhjKycvDmKnfBTKDlkzb1IaUl6wQwP5k7Z69b9EX+CQw==
-  dependencies:
-    "@angular-devkit/core" "13.3.2"
-    jsonc-parser "3.0.0"
-    magic-string "0.25.7"
-    ora "5.4.1"
-    rxjs "6.6.7"
 
 "@angular-devkit/schematics@13.3.5":
   version "13.3.5"
@@ -157,7 +134,7 @@
     "@apollo/utils.stripsensitiveliterals" "^1.2.0"
     apollo-reporting-protobuf "^3.3.1"
 
-"@apollographql/apollo-tools@^0.5.3", "@apollographql/apollo-tools@^0.5.4":
+"@apollographql/apollo-tools@0.5.4", "@apollographql/apollo-tools@^0.5.3", "@apollographql/apollo-tools@^0.5.4":
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/@apollographql/apollo-tools/-/apollo-tools-0.5.4.tgz#cb3998c6cf12e494b90c733f44dd9935e2d8196c"
   integrity sha512-shM3q7rUbNyXVVRkQJQseXv6bnYM3BUma/eZhwXR4xsuM+bqWnJKvW7SAfRjP7LuSCocrexa5AXhjjawNHrIlw==
@@ -1178,20 +1155,20 @@
     lodash.omit "4.5.0"
     tslib "2.4.0"
 
-"@nestjs/cli@^8.2.5":
-  version "8.2.5"
-  resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-8.2.5.tgz#02094177f4eac576d1a559b259d541393e49e0bb"
-  integrity sha512-b5DzZ08q/6iWvLz+n2DhEyZ3rsOurN1ec1jYQaWC5DCVQoZCwyOew48bVf01kevTK4eZyQxPwuErf7HnFAc0oQ==
+"@nestjs/cli@^8.2.6":
+  version "8.2.6"
+  resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-8.2.6.tgz#915aef9c1c025280ab8ebc915530fa0090bcbe49"
+  integrity sha512-uvwKbUZJmgdJu1D24e+uUqHnwoB/0R9hLfUJjr5pTvLlP/RJugHAdJr7m1dQe92Xzdyi36kBN4Id3RXHgfz1UA==
   dependencies:
-    "@angular-devkit/core" "13.3.2"
-    "@angular-devkit/schematics" "13.3.2"
-    "@angular-devkit/schematics-cli" "13.3.2"
+    "@angular-devkit/core" "13.3.5"
+    "@angular-devkit/schematics" "13.3.5"
+    "@angular-devkit/schematics-cli" "13.3.5"
     "@nestjs/schematics" "^8.0.3"
     chalk "3.0.0"
     chokidar "3.5.3"
-    cli-table3 "0.6.1"
+    cli-table3 "0.6.2"
     commander "4.1.1"
-    fork-ts-checker-webpack-plugin "7.2.3"
+    fork-ts-checker-webpack-plugin "7.2.11"
     inquirer "7.3.3"
     node-emoji "1.11.0"
     ora "5.4.1"
@@ -1202,8 +1179,8 @@
     tree-kill "1.2.2"
     tsconfig-paths "3.14.1"
     tsconfig-paths-webpack-plugin "3.5.2"
-    typescript "4.6.2"
-    webpack "5.71.0"
+    typescript "4.6.4"
+    webpack "5.72.1"
     webpack-node-externals "3.0.0"
 
 "@nestjs/common@^8.4.5":
@@ -2437,7 +2414,7 @@ anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apollo-codegen-core@^0.40.9:
+apollo-codegen-core@0.40.9, apollo-codegen-core@^0.40.9:
   version "0.40.9"
   resolved "https://registry.yarnpkg.com/apollo-codegen-core/-/apollo-codegen-core-0.40.9.tgz#88a12219964c13a6576797c95cc906799958075f"
   integrity sha512-AiynL9PWGZ9zXq9gbJENGixrbmJTORjg8T15gXlPbFcXJzVlQ8+gGuBcHMjBBFBtqb1ZhXN2IZ6udzrRHCB+ag==
@@ -2451,7 +2428,7 @@ apollo-codegen-core@^0.40.9:
     common-tags "^1.5.1"
     recast "^0.21.0"
 
-apollo-codegen-flow@^0.38.9:
+apollo-codegen-flow@0.38.9:
   version "0.38.9"
   resolved "https://registry.yarnpkg.com/apollo-codegen-flow/-/apollo-codegen-flow-0.38.9.tgz#e49ba4356cd524c166076433ae6b62bdf54cdbec"
   integrity sha512-w02FRiDCfFH7FxRqKZlnmH6q4URT3hlrGvizaRKirEyFQWH7OSEE4osYhSCU+dcRru+NuWtPVrMh3LTB7NinSQ==
@@ -2463,7 +2440,7 @@ apollo-codegen-flow@^0.38.9:
     common-tags "^1.5.1"
     inflected "^2.0.3"
 
-apollo-codegen-scala@^0.39.9:
+apollo-codegen-scala@0.39.9:
   version "0.39.9"
   resolved "https://registry.yarnpkg.com/apollo-codegen-scala/-/apollo-codegen-scala-0.39.9.tgz#704657954278b9d977b53a33f5cc3f05dccf5db9"
   integrity sha512-Dtpg8m3MgJ5RIlkPfGDOclsZro1scR32AQY517uA3QdUHa/R+XxU9CQ2bnPnI7BtzuUsrTiJnBXQSulfxrdDOQ==
@@ -2473,7 +2450,7 @@ apollo-codegen-scala@^0.39.9:
     common-tags "^1.5.1"
     inflected "^2.0.3"
 
-apollo-codegen-swift@^0.40.9:
+apollo-codegen-swift@0.40.9:
   version "0.40.9"
   resolved "https://registry.yarnpkg.com/apollo-codegen-swift/-/apollo-codegen-swift-0.40.9.tgz#c65bed20f3d6a2131f1d27c14fd1375d581f65d9"
   integrity sha512-Ghk0ef4//QOUdJ80kheD7Q20o9UDrXQVWXz8lWUM88w1cba5LBLXz+CeeQ+VyUHrnFO9XqkimqyPZSDpDmHUSA==
@@ -2483,7 +2460,7 @@ apollo-codegen-swift@^0.40.9:
     common-tags "^1.5.1"
     inflected "^2.0.3"
 
-apollo-codegen-typescript@^0.40.9:
+apollo-codegen-typescript@0.40.9:
   version "0.40.9"
   resolved "https://registry.yarnpkg.com/apollo-codegen-typescript/-/apollo-codegen-typescript-0.40.9.tgz#7d505c8863317f0668d2761e5fa225ad7c1f7f34"
   integrity sha512-koOS3ZbU8UNoZwl87WBxpo+3t0e/iIIkbgYg9zOVKnHCYHi2/CbSE7rq3uAM99QmvcE62wrIoFjpBQADJq78Dw==
@@ -2503,7 +2480,7 @@ apollo-datasource@^3.0.0, apollo-datasource@^3.3.1:
     apollo-server-caching "^3.3.0"
     apollo-server-env "^4.2.1"
 
-apollo-env@^0.10.2:
+apollo-env@0.10.2, apollo-env@^0.10.2:
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/apollo-env/-/apollo-env-0.10.2.tgz#d67da1f21e070dd3fab4ad7a65a37b711c1a0c4d"
   integrity sha512-DlB3ZE0j4eFWAVi14pONNPR6h54FlJwerQeuYAxXm0kPA4sGaScsGDRLsIVMP81JxjjDDmWukw5jp9H+zy39hA==
@@ -2513,7 +2490,7 @@ apollo-env@^0.10.2:
     node-fetch "^2.6.1"
     sha.js "^2.4.11"
 
-apollo-graphql@^0.9.3, apollo-graphql@^0.9.7:
+apollo-graphql@0.9.7, apollo-graphql@^0.9.3, apollo-graphql@^0.9.7:
   version "0.9.7"
   resolved "https://registry.yarnpkg.com/apollo-graphql/-/apollo-graphql-0.9.7.tgz#33185093b497a578f2df61ab8ecc6447d700ae64"
   integrity sha512-bezL9ItUWUGHTm1bI/XzIgiiZbhXpsC7uxk4UxFPmcVJwJsDc3ayZ99oXxAaK+3Rbg/IoqrHckA6CwmkCsbaSA==
@@ -2522,7 +2499,7 @@ apollo-graphql@^0.9.3, apollo-graphql@^0.9.7:
     lodash.sortby "^4.7.0"
     sha.js "^2.4.11"
 
-apollo-language-server@^1.26.9:
+apollo-language-server@1.26.9, apollo-language-server@^1.26.9:
   version "1.26.9"
   resolved "https://registry.yarnpkg.com/apollo-language-server/-/apollo-language-server-1.26.9.tgz#d721be8cd5b573ada88c168be92fd0327df9dc3a"
   integrity sha512-+moe6KfDPPHUaC5Te4x9O5OqBPTZmkNRfjM4kb3XRb3ve8tUeKdye5lIANU+XCv7aZ6G68PHozrO5/Tj1X8Qcw==
@@ -2701,12 +2678,12 @@ apollo-utilities@^1.3.0:
     ts-invariant "^0.4.0"
     tslib "^1.10.0"
 
-apollo@^2.33.11:
-  version "2.33.11"
-  resolved "https://registry.yarnpkg.com/apollo/-/apollo-2.33.11.tgz#abab2ed0f1b2e994e42b83c23945e7efd1f6b912"
-  integrity sha512-dvb7UQHndPEdHE11XlRtzOVx4dDwymZSL9QrtkY9UUh/0pMUFI1XJM8RwCysKnNsgBAFVowuIwPKViQonzYIyA==
+apollo@^2.34.0:
+  version "2.34.0"
+  resolved "https://registry.yarnpkg.com/apollo/-/apollo-2.34.0.tgz#ffd5578e24f4f1840fc56ac047c4080c4104fdc3"
+  integrity sha512-gDH+WBN+b6TA/tIrIuAyO6Df4tsHwAA/t3NZqUitOM0gKo/nXNOUZzskAFTjErL6fgp5+kYIP3rZ+bIleqXAKg==
   dependencies:
-    "@apollographql/apollo-tools" "^0.5.4"
+    "@apollographql/apollo-tools" "0.5.4"
     "@oclif/command" "1.8.16"
     "@oclif/config" "1.18.3"
     "@oclif/errors" "1.3.5"
@@ -2715,14 +2692,14 @@ apollo@^2.33.11:
     "@oclif/plugin-not-found" "2.3.1"
     "@oclif/plugin-plugins" "2.1.0"
     "@oclif/plugin-warn-if-update-available" "2.0.4"
-    apollo-codegen-core "^0.40.9"
-    apollo-codegen-flow "^0.38.9"
-    apollo-codegen-scala "^0.39.9"
-    apollo-codegen-swift "^0.40.9"
-    apollo-codegen-typescript "^0.40.9"
-    apollo-env "^0.10.2"
-    apollo-graphql "^0.9.7"
-    apollo-language-server "^1.26.9"
+    apollo-codegen-core "0.40.9"
+    apollo-codegen-flow "0.38.9"
+    apollo-codegen-scala "0.39.9"
+    apollo-codegen-swift "0.40.9"
+    apollo-codegen-typescript "0.40.9"
+    apollo-env "0.10.2"
+    apollo-graphql "0.9.7"
+    apollo-language-server "1.26.9"
     chalk "4.1.2"
     cli-ux "6.0.9"
     env-ci "7.1.0"
@@ -3370,14 +3347,14 @@ cli-spinners@^2.5.0:
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.6.0.tgz#36c7dc98fb6a9a76bd6238ec3f77e2425627e939"
   integrity sha512-t+4/y50K/+4xcCRosKkA7W4gTr1MySvLV0q+PxmG7FJ5g+66ChKurYjxBCjHggHH3HA5Hh9cy+lcUGWDqVH+4Q==
 
-cli-table3@0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/cli-table3/-/cli-table3-0.6.1.tgz#36ce9b7af4847f288d3cdd081fbd09bf7bd237b8"
-  integrity sha512-w0q/enDHhPLq44ovMGdQeeDLvwxwavsJX7oQGYt/LrBlYsyaxyDnp6z3QzFut/6kLLKnlcUVJLrpB7KBfgG/RA==
+cli-table3@0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/cli-table3/-/cli-table3-0.6.2.tgz#aaf5df9d8b5bf12634dc8b3040806a0c07120d2a"
+  integrity sha512-QyavHCaIC80cMivimWu4aWHilIpiDpfm3hGmqAmXVL1UsnbLuBSMd21hTX6VY4ZSDSM73ESLeF8TOYId3rBTbw==
   dependencies:
     string-width "^4.2.0"
   optionalDependencies:
-    colors "1.4.0"
+    "@colors/colors" "1.5.0"
 
 cli-truncate@^0.2.1:
   version "0.2.1"
@@ -3508,11 +3485,6 @@ color@3.0.x:
   dependencies:
     color-convert "^1.9.1"
     color-string "^1.5.2"
-
-colors@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
-  integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==
 
 colorspace@1.1.x:
   version "1.1.2"
@@ -4013,7 +3985,7 @@ end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   dependencies:
     once "^1.4.0"
 
-enhanced-resolve@^5.0.0, enhanced-resolve@^5.7.0, enhanced-resolve@^5.9.2, enhanced-resolve@^5.9.3:
+enhanced-resolve@^5.0.0, enhanced-resolve@^5.7.0, enhanced-resolve@^5.9.3:
   version "5.9.3"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.9.3.tgz#44a342c012cbc473254af5cc6ae20ebd0aae5d88"
   integrity sha512-Bq9VSor+kjvW3f9/MiiR4eE3XYgOl7/rS8lnSxbRbF3kS0B2r+Y9w5krBWxZgDxASVZbdYrn5wT4j/Wb0J9qow==
@@ -4595,10 +4567,10 @@ for-each@^0.3.3:
   dependencies:
     is-callable "^1.1.3"
 
-fork-ts-checker-webpack-plugin@7.2.3:
-  version "7.2.3"
-  resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-7.2.3.tgz#978dbc0b601556552a5a274a8984ec5dd8de56a3"
-  integrity sha512-9v308zIFTIFkWJBN/4N1A5oqm/ed9hWG6GH+KYTCBjYCEJOmHoVtDIWpfrJ0eD6cPB7V53HEVoJ6bL2In8QRaw==
+fork-ts-checker-webpack-plugin@7.2.11:
+  version "7.2.11"
+  resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-7.2.11.tgz#aff3febbc11544ba3ad0ae4d5aa4055bd15cd26d"
+  integrity sha512-2e5+NyTUTE1Xq4fWo7KFEQblCaIvvINQwUX3jRmEGlgCTc1Ecqw/975EfQrQ0GEraxJTnp8KB9d/c8hlCHUMJA==
   dependencies:
     "@babel/code-frame" "^7.16.7"
     chalk "^4.1.2"
@@ -6249,7 +6221,7 @@ json-bigint@^1.0.0:
   dependencies:
     bignumber.js "^9.0.0"
 
-json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
+json-parse-better-errors@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
   integrity sha512-mrqyZKfX5EhL7hvqcV6WG1yYjnjeuYDzDhhcAAUrq8Po85NBQBJP+ZDUT75qZQ98IkUoBqdkExkukOU7Ts2wrw==
@@ -8978,12 +8950,7 @@ typeorm@^0.3.6:
     xml2js "^0.4.23"
     yargs "^17.3.1"
 
-typescript@4.6.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.2.tgz#fe12d2727b708f4eef40f51598b3398baa9611d4"
-  integrity sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==
-
-typescript@^4.6.4:
+typescript@4.6.4, typescript@^4.6.4:
   version "4.6.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.4.tgz#caa78bbc3a59e6a5c510d35703f6a09877ce45e9"
   integrity sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==
@@ -9220,36 +9187,6 @@ webpack-sources@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.3.tgz#2d4daab8451fd4b240cc27055ff6a0c2ccea0cde"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
-
-webpack@5.71.0:
-  version "5.71.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.71.0.tgz#b01fcf379570b8c5ee06ca06c829ca168c951884"
-  integrity sha512-g4dFT7CFG8LY0iU5G8nBL6VlkT21Z7dcYDpJAEJV5Q1WLb9UwnFbrem1k7K52ILqEmomN7pnzWFxxE6SlDY56A==
-  dependencies:
-    "@types/eslint-scope" "^3.7.3"
-    "@types/estree" "^0.0.51"
-    "@webassemblyjs/ast" "1.11.1"
-    "@webassemblyjs/wasm-edit" "1.11.1"
-    "@webassemblyjs/wasm-parser" "1.11.1"
-    acorn "^8.4.1"
-    acorn-import-assertions "^1.7.6"
-    browserslist "^4.14.5"
-    chrome-trace-event "^1.0.2"
-    enhanced-resolve "^5.9.2"
-    es-module-lexer "^0.9.0"
-    eslint-scope "5.1.1"
-    events "^3.2.0"
-    glob-to-regexp "^0.4.1"
-    graceful-fs "^4.2.9"
-    json-parse-better-errors "^1.0.2"
-    loader-runner "^4.2.0"
-    mime-types "^2.1.27"
-    neo-async "^2.6.2"
-    schema-utils "^3.1.0"
-    tapable "^2.1.1"
-    terser-webpack-plugin "^5.1.3"
-    watchpack "^2.3.1"
-    webpack-sources "^3.2.3"
 
 webpack@5.72.1:
   version "5.72.1"
