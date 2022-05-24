@@ -28,16 +28,40 @@ fi
 
 for i in {1..300}; do
   FBG_SERVER_IP=$(kubectl get service fbg-fbg-server -o json | jq -r ".spec.clusterIP")
-  [[ $(minikube ssh "curl $FBG_SERVER_IP/healthz" 2> /dev/null) -eq "OK" ]] > /dev/null 2>&1 && break
+  [[ $(minikube ssh "curl $FBG_SERVER_IP/healthz" 2> /dev/null) == "OK" ]] > /dev/null 2>&1 && break
   echo "Waiting for fbg-server pods to stabilize..."
   sleep 2
 done
 
 for i in {1..300}; do
-  BGIO_IP=$(kubectl get service fbg-bgio -o json | jq -r ".spec.clusterIP")
-  echo $(minikube ssh "curl $BGIO_IP/games" 2> /dev/null) | jq > /dev/null 2>&1 && break
+  BGIO_SERVICE=$(kubectl get service fbg-bgio -o json) || true
+  BGIO_IP=$(echo $BGIO_SERVICE | jq -r ".spec.clusterIP") || true
+  CURL_GAMES=$(minikube ssh "curl $BGIO_IP/games" 2> /dev/null) || true
+  echo $CURL_GAMES | jq > /dev/null 2>&1 && break
   echo "Waiting for bgio pods to stabilize..."
   sleep 2
+done
+
+for i in {1..300}; do
+  FBG_WEB_IP=$(kubectl get service fbg-web -o json | jq -r ".spec.clusterIP") 
+  CURL_WEB=$(minikube ssh "curl -o /dev/null -s -w "%{http_code}" $FBG_WEB_IP/en" 2> /dev/null)
+  echo $CURL_WEB
+  [[ $CURL_WEB == "200" ]] > /dev/null 2>&1 && break
+  kubectl get pods || true
+  WEB_POD=$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | grep web) || true
+  kubectl logs $WEB_POD || true  
+  echo "Waiting for fbg-web pods to stabilize..."
+  sleep 2
+done
+
+for i in {1..300}; do
+  HTTP_STATUS=$(curl --insecure -o /dev/null -s -w "%{http_code}" https://my-fbg.info/en) || true
+  curl --insecure https://my-fbg.info/en || true
+  kubectl get ingress -o json || true
+  kubectl get ingress || true
+  echo $HTTP_STATUS
+  sleep 2
+  [[ "$HTTP_STATUS" == "200" ]] && break
 done
 
 cd misc/e2e

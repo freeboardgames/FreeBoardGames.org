@@ -110,7 +110,6 @@ async function launch() {
 }
 
 async function setupPage(page: puppeteer.Page, tag: string) {
-  if (!process.env.DEBUG) { return }
   page
     .on('console', message =>
       console.log(`<${tag}, console> ${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
