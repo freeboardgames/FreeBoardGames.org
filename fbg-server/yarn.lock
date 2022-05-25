@@ -725,41 +725,41 @@
     retry-request "^4.1.1"
     teeny-request "^7.0.0"
 
-"@google-cloud/logging-winston@^4.2.3":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/@google-cloud/logging-winston/-/logging-winston-4.2.3.tgz#1a8700b93c8f0eb7da1735b7ff94a0956d5d7da6"
-  integrity sha512-Fzooan8C14yK10TCam3gf5jjo5sdXNF82yk6EmcqgZcsoU+AdsmMTnWjRcXCOcU/IHrMY/TlE2+yd8kMqESN8Q==
+"@google-cloud/logging-winston@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/logging-winston/-/logging-winston-5.0.0.tgz#ac9bb1dadcc9aef6d762c056951a5ef36eb79416"
+  integrity sha512-Ky7aYIr79LsdE6UFumP3UK+UpW1BNbg1x4z+MkMjxoGO2i+D4y2o2L3OMB9Q7DYcdUnKgN6p5/+i+6RUQXP9og==
   dependencies:
-    "@google-cloud/logging" "^9.6.9"
-    google-auth-library "^7.0.0"
+    "@google-cloud/logging" "^10.0.0"
+    google-auth-library "^8.0.2"
     lodash.mapvalues "^4.6.0"
     winston-transport "^4.3.0"
 
-"@google-cloud/logging@^9.6.9":
-  version "9.8.0"
-  resolved "https://registry.yarnpkg.com/@google-cloud/logging/-/logging-9.8.0.tgz#e2bc70ad133db28d76ecc9d1c3d4950ee549f6e1"
-  integrity sha512-lfVp42fa/h2pWraLhmPh3JdDIIFoeS5CuZaHdfXswsN9eMmiwZI4WigqWd/d606kjMc9iZcw0r5Y4mtyY+At2g==
+"@google-cloud/logging@^10.0.0":
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/@google-cloud/logging/-/logging-10.0.1.tgz#2b19b48f93810b460b384c92d3bbbc32bf6f199a"
+  integrity sha512-rTej2oZ6ph967gdG8LuOClep7JQZAy03k2EcGpvaWfTBrFNjJtmZbN3FP4WIyJj8XP49V7uMKouEWFMSpPo5og==
   dependencies:
     "@google-cloud/common" "^3.4.1"
-    "@google-cloud/paginator" "^3.0.0"
+    "@google-cloud/paginator" "^4.0.0"
     "@google-cloud/projectify" "^2.0.0"
-    "@google-cloud/promisify" "^2.0.0"
+    "@google-cloud/promisify" "^3.0.0"
     arrify "^2.0.1"
     dot-prop "^6.0.0"
     eventid "^2.0.0"
     extend "^3.0.2"
     gcp-metadata "^4.0.0"
-    google-auth-library "^7.0.0"
-    google-gax "^2.24.1"
+    google-auth-library "^8.0.2"
+    google-gax "^3.0.1"
     on-finished "^2.3.0"
     pumpify "^2.0.1"
     stream-events "^1.0.5"
     uuid "^8.0.0"
 
-"@google-cloud/paginator@^3.0.0":
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/@google-cloud/paginator/-/paginator-3.0.5.tgz#9d6b96c421a89bd560c1bc2c197c7611ef21db6c"
-  integrity sha512-N4Uk4BT1YuskfRhKXBs0n9Lg2YTROZc6IMpkO/8DIHODtm5s3xY8K5vVBo23v/2XulY3azwITQlYWgT4GdLsUw==
+"@google-cloud/paginator@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/paginator/-/paginator-4.0.0.tgz#9c3e01544717aecb9a922b4269ff298f30a0f1bb"
+  integrity sha512-wNmCZl+2G2DmgT/VlF+AROf80SoaC/CwS8trwmjNaq26VRNK8yPbU5F/Vy+R9oDAGKWQU2k8+Op5H4kFJVXFaQ==
   dependencies:
     arrify "^2.0.0"
     extend "^3.0.2"
@@ -773,6 +773,11 @@
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@google-cloud/promisify/-/promisify-2.0.3.tgz#f934b5cdc939e3c7039ff62b9caaf59a9d89e3a8"
   integrity sha512-d4VSA86eL/AFTe5xtyZX+ePUjE8dIFu2T8zmdeNBSa5/kNgXPCx/o/wbFNHAGLJdGnk1vddRuMESD9HbOC8irw==
+
+"@google-cloud/promisify@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/promisify/-/promisify-3.0.0.tgz#5cd6941fc30c4acac18051706aa5af96069bd3e3"
+  integrity sha512-91ArYvRgXWb73YvEOBMmOcJc0bDRs5yiVHnqkwoG0f3nm7nZuipllz6e7BvFESBvjkDTBC0zMD8QxedUwNLc1A==
 
 "@graphql-tools/merge@8.2.12":
   version "8.2.12"
@@ -864,15 +869,26 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
   integrity sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==
 
-"@grpc/grpc-js@~1.5.0":
-  version "1.5.10"
-  resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.5.10.tgz#12f0b33b338fad5a0e48ee1d5999b5b08da60bcc"
-  integrity sha512-++oAubX/7rJzlqH0ShyzDENNNDHYrlttdc3NM40KlaVQDcgGqQknuPoavmyTC+oNUDyxPCX5dHceKhfcgN3tiw==
+"@grpc/grpc-js@~1.6.0":
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.6.7.tgz#4c4fa998ff719fe859ac19fe977fdef097bb99aa"
+  integrity sha512-eBM03pu9hd3VqDQG+kHahiG1x80RGkkqqRb1Pchcwqej/KkAH95gAvKs6laqaHCycYaPK+TKuNQnOz9UXYA8qw==
   dependencies:
     "@grpc/proto-loader" "^0.6.4"
     "@types/node" ">=12.12.47"
 
-"@grpc/proto-loader@^0.6.1", "@grpc/proto-loader@^0.6.4":
+"@grpc/proto-loader@^0.6.12":
+  version "0.6.12"
+  resolved "https://registry.yarnpkg.com/@grpc/proto-loader/-/proto-loader-0.6.12.tgz#459b619b8b9b67794bf0d1cb819653a38c63e164"
+  integrity sha512-filTVbETFnxb9CyRX98zN18ilChTuf/C5scZ2xyaOTp0EHGq0/ufX8rjqXUcSb1Gpv7eZq4M2jDvbh9BogKnrg==
+  dependencies:
+    "@types/long" "^4.0.1"
+    lodash.camelcase "^4.3.0"
+    long "^4.0.0"
+    protobufjs "^6.10.0"
+    yargs "^16.2.0"
+
+"@grpc/proto-loader@^0.6.4":
   version "0.6.9"
   resolved "https://registry.yarnpkg.com/@grpc/proto-loader/-/proto-loader-0.6.9.tgz#4014eef366da733f8e04a9ddd7376fe8a58547b7"
   integrity sha512-UlcCS8VbsU9d3XTXGiEVFonN7hXk+oMXZtoHHG2oSA1/GcDP1q6OUgs20PzHDGizzyi8ufGSUDlk3O2NyY7leg==
@@ -4731,6 +4747,17 @@ gaxios@^4.0.0:
     is-stream "^2.0.0"
     node-fetch "^2.3.0"
 
+gaxios@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-5.0.0.tgz#df11e5d0a45831dd39eb5fbbba0d6a6b09815e70"
+  integrity sha512-VD/yc5ln6XU8Ch1hyYY6kRMBE0Yc2np3fPyeJeYHhrPs1i8rgnsApPMWyrugkl7LLoSqpOJVBWlQIa87OAvt8Q==
+  dependencies:
+    abort-controller "^3.0.0"
+    extend "^3.0.2"
+    https-proxy-agent "^5.0.0"
+    is-stream "^2.0.0"
+    node-fetch "^2.6.7"
+
 gaze@1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/gaze/-/gaze-1.1.3.tgz#c441733e13b927ac8c0ff0b4c3b033f28812924a"
@@ -4746,12 +4773,12 @@ gcp-metadata@^4.0.0, gcp-metadata@^4.1.0:
     gaxios "^3.0.0"
     json-bigint "^1.0.0"
 
-gcp-metadata@^4.2.0:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-4.2.1.tgz#31849fbcf9025ef34c2297c32a89a1e7e9f2cd62"
-  integrity sha512-tSk+REe5iq/N+K+SK1XjZJUrFPuDqGZVzCy2vocIHIGmPlTGsa8owXMJwGkrXr73NO0AzhPW4MF2DEHz7P2AVw==
+gcp-metadata@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-5.0.0.tgz#a00f999f60a4461401e7c515f8a3267cfb401ee7"
+  integrity sha512-gfwuX3yA3nNsHSWUL4KG90UulNiq922Ukj3wLTrcnX33BB7PwB1o0ubR8KVvXu9nJH+P5w1j2SQSNNqto+H0DA==
   dependencies:
-    gaxios "^4.0.0"
+    gaxios "^5.0.0"
     json-bigint "^1.0.0"
 
 gensync@^1.0.0-beta.1:
@@ -4969,39 +4996,39 @@ google-auth-library@^6.1.1:
     jws "^4.0.0"
     lru-cache "^6.0.0"
 
-google-auth-library@^7.0.0, google-auth-library@^7.14.0:
-  version "7.14.1"
-  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-7.14.1.tgz#e3483034162f24cc71b95c8a55a210008826213c"
-  integrity sha512-5Rk7iLNDFhFeBYc3s8l1CqzbEBcdhwR193RlD4vSNFajIcINKI8W8P0JLmBpwymHqqWbX34pJDQu39cSy/6RsA==
+google-auth-library@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-8.0.2.tgz#5fa0f2d3795c3e4019d2bb315ade4454cc9c30b5"
+  integrity sha512-HoG+nWFAThLovKpvcbYzxgn+nBJPTfAwtq0GxPN821nOO+21+8oP7MoEHfd1sbDulUFFGfcjJr2CnJ4YssHcyg==
   dependencies:
     arrify "^2.0.0"
     base64-js "^1.3.0"
     ecdsa-sig-formatter "^1.0.11"
     fast-text-encoding "^1.0.0"
-    gaxios "^4.0.0"
-    gcp-metadata "^4.2.0"
-    gtoken "^5.0.4"
+    gaxios "^5.0.0"
+    gcp-metadata "^5.0.0"
+    gtoken "^5.3.2"
     jws "^4.0.0"
     lru-cache "^6.0.0"
 
-google-gax@^2.24.1:
-  version "2.30.1"
-  resolved "https://registry.yarnpkg.com/google-gax/-/google-gax-2.30.1.tgz#57a2826d53837bc74b071c3d27355c7bed5a9939"
-  integrity sha512-AR00wrunctUqwKQFl15Yq5bo9NuFLnT0zguZYCf8eAqoOUMbxn9V1L0ONCtV4+P9z7sLu+cjtgl+5b4eRZvktg==
+google-gax@^3.0.1:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/google-gax/-/google-gax-3.0.2.tgz#27db6a6a00ebc925a972416a601c8e994e3c415b"
+  integrity sha512-V7ZBy8+g4p49+x7UCrNDylTdKl6vyVdEeYsrEfC+fDqGacAlKfpQ1zwwzRdYcMmov/De0xwWYrf9YWMAjClzXA==
   dependencies:
-    "@grpc/grpc-js" "~1.5.0"
-    "@grpc/proto-loader" "^0.6.1"
+    "@grpc/grpc-js" "~1.6.0"
+    "@grpc/proto-loader" "^0.6.12"
     "@types/long" "^4.0.0"
     abort-controller "^3.0.0"
     duplexify "^4.0.0"
     fast-text-encoding "^1.0.3"
-    google-auth-library "^7.14.0"
+    google-auth-library "^8.0.2"
     is-stream-ended "^0.1.4"
     node-fetch "^2.6.1"
     object-hash "^3.0.0"
-    proto3-json-serializer "^0.1.8"
-    protobufjs "6.11.2"
-    retry-request "^4.0.0"
+    proto3-json-serializer "^1.0.0"
+    protobufjs "6.11.3"
+    retry-request "^5.0.0"
 
 google-p12-pem@^3.0.3:
   version "3.0.3"
@@ -5009,6 +5036,13 @@ google-p12-pem@^3.0.3:
   integrity sha512-wS0ek4ZtFx/ACKYF3JhyGe5kzH7pgiQ7J5otlumqR9psmWMYc+U9cErKlCYVYHoUaidXHdZ2xbo34kB+S+24hA==
   dependencies:
     node-forge "^0.10.0"
+
+google-p12-pem@^3.1.3:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/google-p12-pem/-/google-p12-pem-3.1.4.tgz#123f7b40da204de4ed1fbf2fd5be12c047fc8b3b"
+  integrity sha512-HHuHmkLgwjdmVRngf5+gSmpkyaRI6QmOg77J8tkNBHhNEI62sGHyw4/+UkgyZEI7h84NbWprXDJ+sa3xOYFvTg==
+  dependencies:
+    node-forge "^1.3.1"
 
 graceful-fs@4.1.15:
   version "4.1.15"
@@ -5084,6 +5118,15 @@ gtoken@^5.0.4:
     google-p12-pem "^3.0.3"
     jws "^4.0.0"
     mime "^2.2.0"
+
+gtoken@^5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/gtoken/-/gtoken-5.3.2.tgz#deb7dc876abe002178e0515e383382ea9446d58f"
+  integrity sha512-gkvEKREW7dXWF8NV8pVrKfW7WqReAmjjkMBh6lNCCGOM4ucS0r0YyXXl0r/9Yj8wcW/32ISkfc8h5mPTDbtifQ==
+  dependencies:
+    gaxios "^4.0.0"
+    google-p12-pem "^3.1.3"
+    jws "^4.0.0"
 
 has-ansi@^2.0.0:
   version "2.0.0"
@@ -6963,6 +7006,11 @@ node-forge@^0.10.0:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
   integrity sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
 
+node-forge@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.3.1.tgz#be8da2af243b2417d5f646a770663a92b7e9ded3"
+  integrity sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==
+
 node-gyp@8.x:
   version "8.4.1"
   resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-8.4.1.tgz#3d49308fc31f768180957d6b5746845fbd429937"
@@ -7608,14 +7656,33 @@ prop-types@^15.7.2:
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
-proto3-json-serializer@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/proto3-json-serializer/-/proto3-json-serializer-0.1.8.tgz#f80f9afc1efe5ed9a9856bbbd17dc7cabd7ce9a3"
-  integrity sha512-ACilkB6s1U1gWnl5jtICpnDai4VCxmI9GFxuEaYdxtDG2oVI3sVFIUsvUZcQbJgtPM6p+zqKbjTKQZp6Y4FpQw==
+proto3-json-serializer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/proto3-json-serializer/-/proto3-json-serializer-1.0.0.tgz#4c87b06f5788cb3c9d94be7e0c6ef2420c020146"
+  integrity sha512-uEylKn4a7I6ZtLZ0fwCJCdQqr2vMsGtxxwKZIoqy4VwYeK9HKpCiG8WMBdtodV+1UO5YHHvHvb39b5CyRWT+9g==
   dependencies:
     protobufjs "^6.11.2"
 
-protobufjs@6.11.2, protobufjs@^6.10.0, protobufjs@^6.11.2:
+protobufjs@6.11.3:
+  version "6.11.3"
+  resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-6.11.3.tgz#637a527205a35caa4f3e2a9a4a13ddffe0e7af74"
+  integrity sha512-xL96WDdCZYdU7Slin569tFX712BxsxslWwAfAhCYjQKGTq7dAU91Lomy6nLLhh/dyGhk/YH4TwTSRxTzhuHyZg==
+  dependencies:
+    "@protobufjs/aspromise" "^1.1.2"
+    "@protobufjs/base64" "^1.1.2"
+    "@protobufjs/codegen" "^2.0.4"
+    "@protobufjs/eventemitter" "^1.1.0"
+    "@protobufjs/fetch" "^1.1.0"
+    "@protobufjs/float" "^1.0.2"
+    "@protobufjs/inquire" "^1.1.0"
+    "@protobufjs/path" "^1.1.2"
+    "@protobufjs/pool" "^1.1.0"
+    "@protobufjs/utf8" "^1.1.0"
+    "@types/long" "^4.0.1"
+    "@types/node" ">=13.7.0"
+    long "^4.0.0"
+
+protobufjs@^6.10.0, protobufjs@^6.11.2:
   version "6.11.2"
   resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-6.11.2.tgz#de39fabd4ed32beaa08e9bb1e30d08544c1edf8b"
   integrity sha512-4BQJoPooKJl2G9j3XftkIXjoC9C0Av2NOrWmbLWT1vH32GcSUHjM0Arra6UfTsVyfMAuFzaLucXn1sadxJydAw==
@@ -7870,12 +7937,20 @@ restore-cursor@^3.1.0:
     onetime "^5.1.0"
     signal-exit "^3.0.2"
 
-retry-request@^4.0.0, retry-request@^4.1.1:
+retry-request@^4.1.1:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/retry-request/-/retry-request-4.1.3.tgz#d5f74daf261372cff58d08b0a1979b4d7cab0fde"
   integrity sha512-QnRZUpuPNgX0+D1xVxul6DbJ9slvo4Rm6iV/dn63e048MvGbUZiKySVt6Tenp04JqmchxjiLltGerOJys7kJYQ==
   dependencies:
     debug "^4.1.1"
+
+retry-request@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/retry-request/-/retry-request-5.0.0.tgz#886ff8ec0e77fffbe66a4d5e90fd8f6646b6eae4"
+  integrity sha512-vBZdBxUordje9253imlmGtppC5gdcwZmNz7JnU2ui+KKFPk25keR+0c020AVV20oesYxIFOI0Kh3HE88/59ieg==
+  dependencies:
+    debug "^4.1.1"
+    extend "^3.0.2"
 
 retry@0.12.0, retry@^0.12.0:
   version "0.12.0"
