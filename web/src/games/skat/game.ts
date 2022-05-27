@@ -53,6 +53,7 @@ export const SkatGame: Game<IG> = {
         Object.assign(G, {
           ...DefaultIG,
           players: G.players,
+          kittyPrev: G.kittyPrev,
           deck: ctx.random.Shuffle(getSortedDeck()),
           holderId: util.mod(dealerId + 1, G.players.length).toString(),
           bidderId: util.mod(dealerId + 2, G.players.length).toString(),
@@ -83,25 +84,24 @@ export const SkatGame: Game<IG> = {
 
       endIf: (G: IG) => {
         if (G.players[0].hand.length == 0) return;
-        const bidder = util.getPlayerById(G, G.bidderId);
-        const holder = util.getPlayerById(G, G.holderId);
-        if (bidder.bid != 0 && holder.bid != 0) return;
-        if (bidder.isDealer) {
-          return { next: bidder.bid <= 1 && holder.bid <= 1 ? Phases.bidding : Phases.discard };
-        }
+        if (G.players.some((P) => P.bid == 1)) return;
+        const n_pass = G.players.filter((P) => P.bid == 0).length;
+        if (n_pass == 1) return;
+        return { next: n_pass == 3 ? Phases.bidding : Phases.discard };
       },
 
       onEnd: (G: IG, ctx: Ctx) => {
-        const bidder = util.getPlayerById(G, G.bidderId);
-        const holder = util.getPlayerById(G, G.holderId);
-        const taker = bidder.bid == 0 ? holder : bidder;
-        if (taker.bid <= 1) {
+        if (G.players.every((P) => P.bid <= 1)) {
           const dealer = G.players.find((P) => P.isDealer);
           dealer.isDealer = false;
           G.players[util.mod(+dealer.id + 1, ctx.numPlayers)].isDealer = true;
           G.kittyPrev = G.kitty;
+          G.players.forEach((P) => {
+            P.hand = [];
+          });
           return;
         }
+        const taker = G.players.find((P) => P.bid > 1);
         G.kittyPrev = [];
         G.bidderId = null;
         G.holderId = null;
@@ -182,6 +182,7 @@ export const SkatGame: Game<IG> = {
       endIf: (G: IG) => G.players.every((P) => P.isReady),
       onEnd: (G: IG, ctx: Ctx) => {
         G.kitty = [];
+        G.kittyPrev = [];
         G.resolvedTricks = [];
         const dealerPos = G.players.findIndex((P) => P.isDealer);
         const newDealerPos = util.mod(dealerPos + 1, ctx.numPlayers);
