@@ -10,12 +10,10 @@ export const Moves = {
     const player = util.getPlayerById(G, ctx.currentPlayer);
     player.bid = value;
     if (value == 0) {
-      const bidder = util.getPlayerById(G, G.bidderId);
-      if (!bidder.isDealer) {
-        const holder = util.getPlayerById(G, G.holderId);
-        G.holderId = bidder.bid == 0 ? holder.id : bidder.id;
-        G.bidderId = G.players.find((P) => P.isDealer).id;
-      }
+      // bidder is passed on
+      G.bidderId = util.mod(+G.bidderId + 1, ctx.numPlayers).toString();
+      // holder is the remaining player that hasn't passed yet (if any)
+      G.holderId = G.players.find((P) => P.bid != 0 && P.id != G.bidderId)?.id;
     }
     return G;
   },
