@@ -1,4 +1,4 @@
-const Thumbnail = require('./media/thumbnail.png?lqip-colors');
+const Thumbnail = require('./media/thumbnail.jpg');
 import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 import instructions from './instructions.md';
