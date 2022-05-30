@@ -1,8 +1,7 @@
 import './_app.css'
 import type { AppProps } from 'next/app'
+import { appWithTranslation } from 'next-i18next';
 
-function FbgApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+const MyApp = ({ Component, pageProps }: AppProps) => <Component {...pageProps} />;
 
-export default FbgApp
+export default appWithTranslation(MyApp);
