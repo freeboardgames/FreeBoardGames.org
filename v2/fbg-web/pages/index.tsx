@@ -1,44 +1,25 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import gamesJson from 'fbg-games/games.json';
-import { loadGameYaml } from '../infra/games/GameLoader';
-import { parseGameSummary, GameSummary } from '../infra/games/GameSummaryParser';
+import { loadI18nConfig } from "../infra/i18n/I18nConfigLoader";
+import { I18nConfig, parseI18nConfig } from "../infra/i18n/I18nConfigParser";
+import languages from '../public/locales/languages.json';
 
-interface HomeProps {
-  gameSummaries: GameSummary[];
+interface StaticProps {
+  i18nConfig: I18nConfig;
 }
 
-// Hard coded values for now
-const PLAY = 'play';
-const GAME = 'tictactoe';
-const LANG = 'en'; 
-
-const Home: NextPage<HomeProps> = (props: HomeProps) => {
-  const summaries = props.gameSummaries;
-  const links = summaries.map((g) => { 
-   const link = `/${LANG}/${PLAY}/${GAME}`;
-   return <li key={g.id}><a href={link}>{g.name}: {g.callout}</a></li>;
-  });
-  return (
-    <>
-      <h1>Games</h1>
-      <ul>
-        {links}
-      </ul>
-    </>
-  )
+function Index(props: StaticProps) {
+  const i18nChoices = languages.map((lang) => (
+    <li key={lang}><a href={`/${lang}`}>{props.i18nConfig[lang].name}</a></li> 
+  ));
+  return <>
+  <h1>Select Language</h1>
+  <ul>
+    {i18nChoices}
+  </ul>
+  </>;
 }
 
-export async function getStaticProps(): Promise<{ props: HomeProps }> {
-  const gameSummaries = await Promise.all(gamesJson.map(async (gameId) => { 
-    const gameYaml = await loadGameYaml(gameId);
-    return parseGameSummary(gameYaml, LANG, gameId);
-  }));
-  return {
-    props: {
-      gameSummaries
-    },
-  }
-}
+ export async function getStaticProps(): Promise<{ props: StaticProps }> {
+    return { props: { i18nConfig: parseI18nConfig(await loadI18nConfig()) } };
+ }
 
-export default Home;
+export default Index;

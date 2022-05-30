@@ -1,4 +1,3 @@
-import gamesJson from 'fbg-games/games.json';
 import YAML from 'yaml';
 
 export interface GameSummary {
