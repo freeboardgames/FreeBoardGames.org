@@ -725,20 +725,20 @@
     retry-request "^4.1.1"
     teeny-request "^7.0.0"
 
-"@google-cloud/logging-winston@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@google-cloud/logging-winston/-/logging-winston-5.0.0.tgz#ac9bb1dadcc9aef6d762c056951a5ef36eb79416"
-  integrity sha512-Ky7aYIr79LsdE6UFumP3UK+UpW1BNbg1x4z+MkMjxoGO2i+D4y2o2L3OMB9Q7DYcdUnKgN6p5/+i+6RUQXP9og==
+"@google-cloud/logging-winston@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/logging-winston/-/logging-winston-5.1.0.tgz#db32b98c0c1619e0a1ae9405a722b7eafd14d5d4"
+  integrity sha512-1oIeonY4YrzOK96t4awcV6/cGs6XIbJYDxDg4+YVQzhLJeF+qZHd7WmteEHljVpC/d+Viy0CIOKBoz/PnShGYQ==
   dependencies:
-    "@google-cloud/logging" "^10.0.0"
+    "@google-cloud/logging" "^10.0.1"
     google-auth-library "^8.0.2"
     lodash.mapvalues "^4.6.0"
     winston-transport "^4.3.0"
 
-"@google-cloud/logging@^10.0.0":
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/@google-cloud/logging/-/logging-10.0.1.tgz#2b19b48f93810b460b384c92d3bbbc32bf6f199a"
-  integrity sha512-rTej2oZ6ph967gdG8LuOClep7JQZAy03k2EcGpvaWfTBrFNjJtmZbN3FP4WIyJj8XP49V7uMKouEWFMSpPo5og==
+"@google-cloud/logging@^10.0.1":
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/@google-cloud/logging/-/logging-10.0.2.tgz#f1aaaffa2f1735f91b8d7a8c4f7f96da0417b05c"
+  integrity sha512-41kqEqTnWXf9B8yPRMHsfKlDCq312O4egIB0AfLc34y3ap4ieh88kuo2qXqfrBv/sy0MZlFleCUpSALdU2lncA==
   dependencies:
     "@google-cloud/common" "^3.4.1"
     "@google-cloud/paginator" "^4.0.0"
