@@ -1137,10 +1137,10 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@nestjs/apollo@^10.0.13":
-  version "10.0.13"
-  resolved "https://registry.yarnpkg.com/@nestjs/apollo/-/apollo-10.0.13.tgz#0726559f9d2f03d3003638d1dbf0b8f25aa72621"
-  integrity sha512-XSlPOrPhNgnZHcSnbbx5GSP2+CMW15ueYu0/5/u2F9Cid/2cfg+xJ9uiWZg2QGH6wQcd5YlK3vNu+X/QhsLH2g==
+"@nestjs/apollo@^10.0.14":
+  version "10.0.14"
+  resolved "https://registry.yarnpkg.com/@nestjs/apollo/-/apollo-10.0.14.tgz#8f7d0479b4fb14657942586750f6eab954bad660"
+  integrity sha512-lLKnlR30ALBKWzo9BD/0CWBVo3c1rvC6vycKpCMjnLj+LR8I7NQ92ol7sbVQ0gr0PANEH0az4HlPjAtfFLUYfQ==
   dependencies:
     iterall "1.3.0"
     lodash.omit "4.5.0"
