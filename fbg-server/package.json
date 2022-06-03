@@ -29,7 +29,7 @@
     "@nestjs/apollo": "^10.0.14",
     "@nestjs/common": "^8.4.6",
     "@nestjs/core": "^8.4.6",
-    "@nestjs/graphql": "^10.0.14",
+    "@nestjs/graphql": "^10.0.15",
     "@nestjs/jwt": "^8.0.1",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.4.6",
