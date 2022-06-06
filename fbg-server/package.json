@@ -63,7 +63,7 @@
     "sqlite3": "^5.0.8",
     "subscriptions-transport-ws": "^0.11.0",
     "superagent": "^7.1.6",
-    "ts-morph": "^15.0.0",
+    "ts-morph": "^15.1.0",
     "typeorm": "^0.3.6",
     "winston": "^3.7.2"
   },
