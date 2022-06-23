@@ -7,6 +7,9 @@ import { parseI18nConfig } from '../../../../infra/i18n/I18nConfigParser';
 import { GameSummary, parseGameSummary } from '../../../../infra/games/GameSummaryParser';
 import { GameDetails, GameInstructions, GameMode, parseGameDetails } from '../../../../infra/games/GameDetailsParser';
 import { ReactElement } from 'react';
+import { getGameIdFromCode } from '../../../../infra/i18n/I18nGetGameId';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 interface GameInfoProps { 
   summary: GameSummary;
@@ -54,6 +57,7 @@ const gameModeToCard = function(mode: GameMode): ReactElement {
 }
 
 const GameInfo: NextPage<GameInfoProps> = function(props: GameInfoProps) {
+  const { t } = useTranslation('GameInfo');
   const modeCards = props.details.modes.map(gameModeToCard);
   const instructions = gameInstructionToCard(props.details.instructions);
   const contributors = props.details.contributors.map((contributor) => (
@@ -65,17 +69,16 @@ const GameInfo: NextPage<GameInfoProps> = function(props: GameInfoProps) {
   ));
   return (
     <>
-      <h1>Play {props.summary.name}</h1>
+      <h1>{t('play', {'name': props.summary.name})}</h1>
       <div>
-        <h2>Game Modes</h2>
+        <h2>{t('choose_game_mode')}</h2>
         <ul>{modeCards}</ul>
       </div>
       <div>
-        <h2>Instructions</h2>
         {instructions}
       </div>
       <div>
-        <h2>Contributors</h2>
+        <h2>{t('by')}</h2>
         <ul>
           {contributors}
         </ul>
@@ -86,10 +89,17 @@ const GameInfo: NextPage<GameInfoProps> = function(props: GameInfoProps) {
 
 export async function getStaticProps(path: UrlPath): Promise<{ props: GameInfoProps }> {
   const { lang, gameCode } = path.params;
-  const gameYaml = await loadGameYaml(gameCode);
+  const gameId = await getGameIdFromCode(lang, gameCode);
+  const gameYaml = await loadGameYaml(gameId);
   const summary = parseGameSummary(gameYaml, lang, gameCode);
   const details = parseGameDetails(gameYaml, lang, gameCode);
-  return { props: { summary, details } };
+  return { 
+    props: { 
+      summary, 
+      details, 
+      ...await serverSideTranslations(lang, ['GameInfo']),
+    } 
+  };
 }
 
 export async function getStaticPaths() {
