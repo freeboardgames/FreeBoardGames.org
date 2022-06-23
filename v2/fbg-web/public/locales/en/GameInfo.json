@@ -1,0 +1,9 @@
+{
+  "breadcrumb": "Play",
+  "play": "Play {{name}}",
+  "video_instructions": "Video Instructions",
+  "watch": "Watch",
+  "missing_translation_warning": "This game is not fully translated to your language yet. <docs>Click here</docs> to learn how to help us translating it.",
+  "choose_game_mode": "Choose game mode",
+  "by": "by" 
+}
