@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     ROOT: __dirname,
-  }  
-}
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

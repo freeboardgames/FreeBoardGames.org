@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build && next export",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "prettier --write \"**/*.{ts,tsx,js}\" && next lint",
     "prod": "npm run build && cd out && http-server -p 3000"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",
     "http-server": "^14.1.1",
+    "prettier": "^2.7.1",
     "typescript": "4.7.4"
   }
 }

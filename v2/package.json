@@ -1,4 +1,7 @@
 {
   "private": true,
-  "workspaces": ["fbg-games", "fbg-web", "fbg-bgio"]
+  "workspaces": ["fbg-games", "fbg-web", "fbg-bgio"],
+  "scripts": {
+    "lint": "cd fbg-web && yarn run lint"
+  }
 }
