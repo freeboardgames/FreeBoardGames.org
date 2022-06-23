@@ -1,4 +1,4 @@
-import YAML from 'yaml';
+import YAML from "yaml";
 
 export interface GameSummary {
   id: string;
@@ -7,13 +7,17 @@ export interface GameSummary {
   callout: string;
 }
 
-export const parseGameSummary = function (gameYaml: string, lang: string, id: string): GameSummary {
+export const parseGameSummary = function (
+  gameYaml: string,
+  lang: string,
+  id: string
+): GameSummary {
   const gameDef = YAML.parse(gameYaml);
   const localizedGameDef = gameDef[lang];
   return {
     id,
     code: localizedGameDef.code,
     name: localizedGameDef.name,
-    callout: localizedGameDef.callout
+    callout: localizedGameDef.callout,
   };
-}
+};
