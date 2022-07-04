@@ -8541,23 +8541,6 @@ subscriptions-transport-ws@0.11.0, subscriptions-transport-ws@^0.11.0:
     symbol-observable "^1.0.4"
     ws "^5.2.0 || ^6.0.0 || ^7.0.0"
 
-superagent@^7.1.3:
-  version "7.1.6"
-  resolved "https://registry.yarnpkg.com/superagent/-/superagent-7.1.6.tgz#64f303ed4e4aba1e9da319f134107a54cacdc9c6"
-  integrity sha512-gZkVCQR1gy/oUXr+kxJMLDjla434KmSOKbx5iGD30Ql+AkJQ/YlPKECJy2nhqOsHLjGHzoDTXNSjhnvWhzKk7g==
-  dependencies:
-    component-emitter "^1.3.0"
-    cookiejar "^2.1.3"
-    debug "^4.3.4"
-    fast-safe-stringify "^2.1.1"
-    form-data "^4.0.0"
-    formidable "^2.0.1"
-    methods "^1.1.2"
-    mime "2.6.0"
-    qs "^6.10.3"
-    readable-stream "^3.6.0"
-    semver "^7.3.7"
-
 superagent@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/superagent/-/superagent-8.0.0.tgz#2ea4587df4b81ef023ec01ebc6e1bcb9e2344cb6"
@@ -8575,13 +8558,13 @@ superagent@^8.0.0:
     readable-stream "^3.6.0"
     semver "^7.3.7"
 
-supertest@^6.2.3:
-  version "6.2.3"
-  resolved "https://registry.yarnpkg.com/supertest/-/supertest-6.2.3.tgz#291b220126e5faa654d12abe1ada3658757c8c67"
-  integrity sha512-3GSdMYTMItzsSYjnIcljxMVZKPW1J9kYHZY+7yLfD0wpPwww97GeImZC1oOk0S5+wYl2niJwuFusBJqwLqYM3g==
+supertest@^6.2.4:
+  version "6.2.4"
+  resolved "https://registry.yarnpkg.com/supertest/-/supertest-6.2.4.tgz#3dcebe42f7fd6f28dd7ac74c6cba881f7101b2f0"
+  integrity sha512-M8xVnCNv+q2T2WXVzxDECvL2695Uv2uUj2O0utxsld/HRyJvOU8W9f1gvsYxSNU4wmIe0/L/ItnpU4iKq0emDA==
   dependencies:
     methods "^1.1.2"
-    superagent "^7.1.3"
+    superagent "^8.0.0"
 
 supports-color@^2.0.0:
   version "2.0.0"
