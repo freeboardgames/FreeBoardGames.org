@@ -1,4 +1,4 @@
-import YAML from "yaml";
+import YAML from "js-yaml";
 
 export interface GameSummary {
   id: string;
@@ -12,7 +12,7 @@ export const parseGameSummary = function (
   lang: string,
   id: string
 ): GameSummary {
-  const gameDef = YAML.parse(gameYaml);
+  const gameDef = YAML.load(gameYaml) as any;
   const localizedGameDef = gameDef[lang];
   return {
     id,

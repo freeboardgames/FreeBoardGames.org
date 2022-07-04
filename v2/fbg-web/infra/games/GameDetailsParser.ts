@@ -1,4 +1,4 @@
-import YAML from "yaml";
+import YAML from "js-yaml";
 
 export enum GameMode {
   OnlineFriend,
@@ -85,7 +85,7 @@ export const parseGameDetails = function (
   lang: string,
   gameId: string
 ): GameDetails {
-  const gameDef = YAML.parse(gameYaml);
+  const gameDef = YAML.load(gameYaml) as any;
   const modes = parseGameModes(gameDef, gameId);
   const contributors = parseGameContributors(gameDef, gameId);
   const instructions = parseGameInstructions(gameDef, lang, gameId);
