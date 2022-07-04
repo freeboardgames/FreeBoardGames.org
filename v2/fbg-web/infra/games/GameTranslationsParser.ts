@@ -1,4 +1,4 @@
-import YAML from "yaml";
+import YAML from "js-yaml";
 
 export enum GameTranslationStatus {
   PARTIAL,
@@ -13,7 +13,7 @@ export const parseGameTranslations = function (
   gameYaml: string,
   id: string
 ): GameTranslations {
-  const gameDef = YAML.parse(gameYaml);
+  const gameDef = YAML.load(gameYaml) as any;
   const translations = gameDef.translations || {};
   const result = {} as GameTranslations;
   for (const lang of Object.keys(translations)) {
