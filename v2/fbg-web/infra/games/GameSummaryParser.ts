@@ -20,6 +20,6 @@ export const parseGameSummary = function (
     code: localizedGameDef.code,
     name: localizedGameDef.name,
     callout: localizedGameDef.callout,
-    lang
+    lang,
   };
 };

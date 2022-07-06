@@ -1,4 +1,5 @@
-import { GameMode, parseGameDetails } from "./GameDetailsParser";
+import { parseGameDetails } from "./GameDetailsParser";
+import { GameMode } from "fbg-games/gamesShared/definitions/mode";
 
 describe("GameDetailsParser", () => {
   it("parses details correctly in portuguese", () => {

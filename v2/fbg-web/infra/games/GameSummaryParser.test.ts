@@ -16,6 +16,7 @@ pt:
       callout: "Um jogo clássico",
       code: "jogo-da-velha",
       id: "checkers",
+      lang: "pt",
       name: "Jogo da velha",
     });
   });

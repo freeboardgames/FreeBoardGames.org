@@ -1,5 +1,5 @@
 import YAML from "js-yaml";
-import { GameMode } from 'fbg-games/gamesShared/definitions/mode';
+import { GameMode } from "fbg-games/gamesShared/definitions/mode";
 
 export interface GameInstructions {
   text: string;

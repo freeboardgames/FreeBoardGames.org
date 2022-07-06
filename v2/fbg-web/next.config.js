@@ -1,7 +1,5 @@
-const withPlugins = require('next-compose-plugins');
-const withTM = require('next-transpile-modules')([
-  'fbg-games',
-]);
+const withPlugins = require("next-compose-plugins");
+const withTM = require("next-transpile-modules")(["fbg-games"]);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
