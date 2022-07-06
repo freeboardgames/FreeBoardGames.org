@@ -9,3 +9,5 @@ export const CheckersGame: Game<any> = {
       maxMoves: 1,
     },
   };
+
+export default CheckersGame;

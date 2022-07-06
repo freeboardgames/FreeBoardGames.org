@@ -12,7 +12,6 @@ modes:
 
 translations:
   pt: DONE
-  de: DONE
 
 en:
   code: tictactoe
@@ -37,14 +36,3 @@ pt:
     text: |
       O jogo da velha (ou jogo do galo) é um jogo clássico para dois jogadores. Este jogo tem uma tabuleiro de 3x3 e, por sua vez, cada jogador coloca seu marcador (X ou O) em uma célula dessa grade.
       Para ganhar, um jogador deve completar uma linha horizontal, vertical ou diagonal com o seu marcador. Se todas as células forem preenchidas e nenhum jogador conseguir fazer isso, é um empate.
-
-de:
-  code: tictactoe
-  name: Tic-Tac-Toe
-  callout: Ein klassisches Spiel
-  descriptionTag: |
-    Spiele Tic-Tac-Toe (Drei Gewinnt) gratis online. Du kannst entweder alleine gegen den Computer spielen, oder gegen einen Freund, online oder auf deinem Gerät.
-  instructions:
-    text: |
-      Tic-tac-toe is a classic two-player game. This game has a 3x3 grid, and in their turn, each player places their marker (X or O) on a cell in this grid.
-      In order to win, a player has to complete a full horizontal, vertical, or diagonal line with their marker. If all cells are filled and no player managed to do this, it is a draw.

@@ -11,8 +11,6 @@ import { listGameSummaries } from "infra/games/ListGameSummaries";
 import { gameBoardWrapper } from "infra/games/GameBoardWrapper";
 import { IGameArgs } from "fbg-games/gamesShared/definitions/game";
 import { useTranslation } from "next-i18next";
-import { Board } from "fbg-games/tictactoe/board";
-import { CheckersGame } from "fbg-games/tictactoe/game";
 
 interface LocalGameProps {
   gameId: string;
@@ -30,8 +28,8 @@ const LocalGame: NextPage<any> = function (props: LocalGameProps) {
     mode: GameMode.LocalFriend,
     players,
   };
-  const board = Board;
-  const game = CheckersGame;
+  const board = require(`fbg-games/${props.gameId}/board`).default;
+  const game = require(`fbg-games/${props.gameId}/game`).default;
   const App = Client({
     board: gameBoardWrapper({ gameArgs, board }),
     game,
