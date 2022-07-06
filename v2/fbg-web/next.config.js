@@ -4,6 +4,7 @@ const withTM = require("next-transpile-modules")(["fbg-games"]);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  trailingSlash: true,
   env: {
     ROOT: __dirname,
   },
