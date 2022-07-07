@@ -1,4 +1,4 @@
-import YAML from "yaml";
+import YAML from "js-yaml";
 
 export interface I18nConfig {
   [languageCode: string]: {
@@ -8,5 +8,5 @@ export interface I18nConfig {
 }
 
 export const parseI18nConfig = function (i18nYaml: string): I18nConfig {
-  return YAML.parse(i18nYaml);
+  return YAML.load(i18nYaml) as I18nConfig;
 };

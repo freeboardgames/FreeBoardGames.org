@@ -1,10 +1,5 @@
 import YAML from "js-yaml";
-
-export enum GameMode {
-  OnlineFriend,
-  LocalFriend,
-  AI,
-}
+import { GameMode } from "fbg-games/gamesShared/definitions/mode";
 
 export interface GameInstructions {
   text: string;

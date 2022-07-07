@@ -4,5 +4,13 @@
   "scripts": {
     "lint": "cd fbg-web && yarn run lint",
     "test": "cd fbg-web && yarn run test"
+  },
+  "devDependencies": {
+    "@types/node": "18.0.1",
+    "@types/react": "18.0.14",
+    "@types/react-dom": "18.0.5",
+    "@types/glob": "^7.2.0",
+    "@types/js-yaml": "^4.0.5",
+    "typescript": "4.7.4"
   }
 }

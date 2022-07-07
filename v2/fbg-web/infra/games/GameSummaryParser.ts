@@ -3,6 +3,7 @@ import YAML from "js-yaml";
 export interface GameSummary {
   id: string;
   code: string;
+  lang: string;
   name: string;
   callout: string;
 }
@@ -19,5 +20,6 @@ export const parseGameSummary = function (
     code: localizedGameDef.code,
     name: localizedGameDef.name,
     callout: localizedGameDef.callout,
+    lang,
   };
 };
