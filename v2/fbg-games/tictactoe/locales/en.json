@@ -1,0 +1,20 @@
+{
+  "name": "Tic-Tac-Toe",
+  "description": "A Classic Game",
+  "descriptionTag": "Play Tic-Tac-Toe (also called Noughts and Crosses) for\n\nfree online. You can either play a single-player game against the computer,\n\na multi-player game against a friend online, or share your device and play\n\nlocally against a friend.",
+  "instructions": {
+    "videoId": "USEjXNCTvcc",
+    "text": "Tic-tac-toe is a classic two-player game. This game has a 3x3 grid, and in their turn, each player places their marker (X or O) on a cell in this grid.\n\nIn order to win, a player has to complete a full horizontal, vertical, or diagonal line with their marker. If all cells are filled and no player managed to do this, it is a draw.\n"
+  },
+  "easy": "Easy",
+  "hard": "Hard",
+  "your_turn": "YOUR TURN",
+  "waiting_for_opponent": "Waiting for opponent...",
+  "red_s_turn": "Red's turn",
+  "green_s_turn": "Green's turn",
+  "you_won": "you won",
+  "you_lost": "you lost",
+  "red_won": "red won",
+  "green_won": "green won",
+  "draw": "draw"
+}

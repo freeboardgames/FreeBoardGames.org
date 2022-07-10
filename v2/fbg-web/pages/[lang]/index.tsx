@@ -10,6 +10,7 @@ import { parseI18nConfig } from "../../infra/i18n/I18nConfigParser";
 import languages from "../../public/locales/languages.json";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Link from "next/link";
 
 interface HomeProps {
   lang: string;
@@ -24,9 +25,11 @@ const Home: NextPage<HomeProps> = function (props: HomeProps) {
     const link = `/${props.lang}/${props.playVerb}/${g.code}`;
     return (
       <li key={g.id}>
-        <a href={link}>
-          {g.name}: {g.callout}
-        </a>
+        <Link href={link}>
+          <a>
+            {g.name}: {g.callout}
+          </a>
+        </Link>
       </li>
     );
   });

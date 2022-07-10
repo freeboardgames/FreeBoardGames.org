@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "license": "AGPL-3.0-or-later",
   "peerDependencies": {
-    "typescript": "*"
+    "typescript": "*",
+    "@mui/material": "*",
+    "@emotion/react": "*",
+    "@emotion/styled": "*",
+    "recompose": "*",
+    "@types/recompose": "*"
   }  
 }

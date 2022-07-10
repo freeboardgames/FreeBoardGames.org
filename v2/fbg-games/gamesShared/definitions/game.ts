@@ -5,15 +5,10 @@ import { GameCustomizationState } from './customization';
 export interface IGameArgs {
   gameCode: string;
   mode: GameMode;
+  name: string;
+  lang: string;
   matchCode?: string;
   players?: IPlayerInRoom[];
-}
-
-export interface IGameConfig {
-  bgioGame: any;
-  bgioBoard: any;
-  enhancers?: any;
-  debug?: boolean;
 }
 
 export interface IAIConfig {

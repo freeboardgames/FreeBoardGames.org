@@ -1,24 +1,22 @@
 import type { NextPage } from "next";
-import gamesJson from "fbg-games/games.json";
-import { loadGameYaml } from "../../../../infra/games/GameLoader";
-import { parseGameTranslations } from "../../../../infra/games/GameTranslationsParser";
-import { loadI18nConfig } from "../../../../infra/i18n/I18nConfigLoader";
-import { parseI18nConfig } from "../../../../infra/i18n/I18nConfigParser";
-import {
-  GameSummary,
-  parseGameSummary,
-} from "../../../../infra/games/GameSummaryParser";
+import { loadGameYaml } from "infra/games/GameLoader";
+import { loadI18nConfig } from "infra/i18n/I18nConfigLoader";
+import { parseI18nConfig } from "infra/i18n/I18nConfigParser";
+import { GameSummary, parseGameSummary } from "infra/games/GameSummaryParser";
 import { GameMode } from "fbg-games/gamesShared/definitions/mode";
 import {
   GameDetails,
   GameInstructions,
   parseGameDetails,
-} from "../../../../infra/games/GameDetailsParser";
+} from "infra/games/GameDetailsParser";
 import { ReactElement } from "react";
-import { getGameIdFromCode } from "../../../../infra/i18n/I18nGetGameId";
+import { getGameIdFromCode } from "infra/i18n/I18nGetGameId";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import { listGameSummaries } from "../../../../infra/games/ListGameSummaries";
+import { listGameSummaries } from "infra/games/ListGameSummaries";
+import Link from "next/link";
+import fs from "fs";
+import path from "path";
 
 interface GameInfoProps {
   summary: GameSummary;
@@ -72,19 +70,28 @@ const gameModeToCard = function (
     case GameMode.AI:
       return (
         <li>
-          AI: <a href={`${baseUrl}/ai`}>Play!</a>
+          AI:{" "}
+          <Link href={`${baseUrl}/ai`}>
+            <a>Play!</a>
+          </Link>
         </li>
       );
     case GameMode.OnlineFriend:
       return (
         <li>
-          Online Friend: <a href={`${baseUrl}/online`}>Play!</a>
+          Online Friend:{" "}
+          <Link href={`${baseUrl}/online`}>
+            <a>Play!</a>
+          </Link>
         </li>
       );
     case GameMode.LocalFriend:
       return (
         <li>
-          Local Friend: <a href={`${baseUrl}/local`}>Play!</a>
+          Local Friend:{" "}
+          <Link href={`${baseUrl}/local`}>
+            <a>Play!</a>
+          </Link>
         </li>
       );
   }
@@ -148,9 +155,24 @@ export async function getStaticPaths() {
     const lang = gameSummary.lang;
     const gameId = gameSummary.id;
     const playVerb = i18nConfig[lang].playVerb;
+    setI18nSymlink(lang, gameId);
     return { params: { lang, playVerb, gameCode, gameId } };
   });
   return { paths, fallback: false };
+}
+
+function setI18nSymlink(lang: string, gameId: string) {
+  const symlinkPath = path.join(
+    process.env.ROOT!,
+    `./public/locales/${lang}/game-${gameId}.json`
+  );
+  const destPath = path.join(
+    `../../../../fbg-games/${gameId}/locales/${lang}.json`
+  );
+  if (fs.existsSync(symlinkPath)) {
+    return;
+  }
+  fs.symlinkSync(destPath, symlinkPath, "file");
 }
 
 export default GameInfo;
