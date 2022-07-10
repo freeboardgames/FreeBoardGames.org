@@ -1,4 +1,11 @@
 {
+  "name": "Jogo da velha",
+  "description": "Um jogo clássico",
+  "descriptionTag": "Jogue o Jogo da Velha (ou jogo do galo) online gratuitamente.\n\nVocê pode jogar nos modo de jogador úncio contra o computador,\n\nmodo de multi-jogador contra um amigo online, ou compartilhar\n\nseu dispositivo e jogar localmente contra um amigo.",
+  "instructions": {
+    "videoId": "USEjXNCTvcc",
+    "text": "O jogo da velha (ou jogo do galo) é um jogo clássico para dois jogadores. Este jogo tem uma tabuleiro de 3x3 e, por sua vez, cada jogador coloca seu marcador (X ou O) em uma célula dessa grade.\n\nPara ganhar, um jogador deve completar uma linha horizontal, vertical ou diagonal com o seu marcador. Se todas as células forem preenchidas e nenhum jogador conseguir fazer isso, é um empate."
+  },
   "easy": "Fácil",
   "hard": "Difícil",
   "your_turn": "SUA VEZ",
