@@ -3,6 +3,7 @@ import { GameMode } from "fbg-games/gamesShared/definitions/mode";
 import React, { FC } from "react";
 import { ConnectionLost as RawConnectionLost } from "./ConnectionLost";
 import { BoardProps } from "boardgame.io/react";
+import { useTranslation } from "next-i18next";
 
 export interface IBoardWrapperArgs {
   gameArgs: IGameArgs;
@@ -24,7 +25,8 @@ export function gameBoardWrapper({
   };
 
   const Board: FC<BoardProps> = (props) => {
-    const boardProps = { ...props, gameArgs };
+    const translate = useTranslation(`game-${gameArgs.gameCode}`).t;
+    const boardProps = { ...props, gameArgs, translate };
     const isConnectionLost =
       !props.isConnected && gameArgs.mode !== GameMode.LocalFriend;
     if (isConnectionLost) return <ConnectionLost {...boardProps} />;

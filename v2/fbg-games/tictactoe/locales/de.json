@@ -1,0 +1,20 @@
+{
+  "name": "Tic-Tac-Toe",
+  "description": "Ein klassisches Spiel",
+  "descriptionTag": "Spiele Tic-Tac-Toe (Drei Gewinnt) \n\ngratis online. Du kannst entweder alleine gegen den Computer spielen,\n\noder gegen einen Freund, online oder auf deinem Gerät.",
+  "instructions": {
+    "videoId": "USEjXNCTvcc",
+    "text": "Tic-tac-toe is a classic two-player game. This game has a 3x3 grid, and in their turn, each player places their marker (X or O) on a cell in this grid.\n\nIn order to win, a player has to complete a full horizontal, vertical, or diagonal line with their marker. If all cells are filled and no player managed to do this, it is a draw.\n"
+  },
+  "easy": "Einfach",
+  "hard": "Schwer",
+  "your_turn": "DEIN ZUG",
+  "waiting_for_opponent": "Warte auf Gegner...",
+  "red_s_turn": "Roter Zug",
+  "green_s_turn": "Grüner Zug",
+  "you_won": "du hast gewonnen",
+  "you_lost": "du hast verloren",
+  "red_won": "Rot hat gewonnen",
+  "green_won": "Grün hat gewonnen",
+  "draw": "Unentschieden"
+}
