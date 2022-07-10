@@ -12,13 +12,14 @@ modes:
 
 translations:
   pt: DONE
+  de: DONE
 
 en:
   code: tictactoe
   name: Tic-Tac-Toe
   callout: A Classic Game
   descriptionTag: |
-      Play Tic-Tac-Toe (also called Noughts and Crosses) for free online. You can either play a single-player game against the computer, a multi-player game against a friend online, or share your device and play locally against a friend.
+    Play Tic-Tac-Toe (also called Noughts and Crosses) for free online. You can either play a single-player game against the computer, a multi-player game against a friend online, or share your device and play locally against a friend.
   instructions:
     videoId: USEjXNCTvcc
     text: |
@@ -30,9 +31,21 @@ pt:
   name: Jogo da velha
   callout: Um jogo clássico
   descriptionTag: |
-      Jogue o Jogo da Velha (ou jogo do galo) online gratuitamente. Você pode jogar nos modo de jogador úncio contra o computador, modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.
+    Jogue o Jogo da Velha (ou jogo do galo) online gratuitamente. Você pode jogar nos modo de jogador úncio contra o computador, modo de multi-jogador contra um amigo online, ou compartilhar seu dispositivo e jogar localmente contra um amigo.
   instructions:
     videoId: USEjXNCTvcc
     text: |
       O jogo da velha (ou jogo do galo) é um jogo clássico para dois jogadores. Este jogo tem uma tabuleiro de 3x3 e, por sua vez, cada jogador coloca seu marcador (X ou O) em uma célula dessa grade.
       Para ganhar, um jogador deve completar uma linha horizontal, vertical ou diagonal com o seu marcador. Se todas as células forem preenchidas e nenhum jogador conseguir fazer isso, é um empate.
+
+de:
+  code: tictactoe
+  name: Tic-Tac-Toe
+  callout: Ein klassisches Spiel
+  descriptionTag: |
+    Spiele Tic-Tac-Toe (Drei Gewinnt) gratis online. Du kannst entweder alleine gegen den Computer spielen, oder gegen einen Freund, online oder auf deinem Gerät.
+  instructions:
+    videoId: USEjXNCTvcc
+    text: |
+      Tic-Tac-Toe ist ein klassisches Spiel für zwei Spieler. Dieses Spiel hat ein 3x3-Raster, und jeder Spieler platziert seinerseits seinen Marker (X oder O) auf einem Feld in diesem Raster.
+      Um zu gewinnen, muss ein Spieler mit seinem Marker eine vollständige horizontale, vertikale oder diagonale Linie vervollständigen. Wenn alle Zellen gefüllt sind und dies keinem Spieler gelungen ist, steht es unentschieden. 
