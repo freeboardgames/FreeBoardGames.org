@@ -1224,10 +1224,10 @@
     uuid "8.3.2"
     ws "8.8.0"
 
-"@nestjs/jwt@^8.0.1":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/jwt/-/jwt-8.0.1.tgz#e00f6810705a75d5680903241f4e07272e59e6d5"
-  integrity sha512-9WGfgngX8aclC/MC+CH35Ooo4iPVKc+7xLXaBV6o4ty8g2uZdPomry7cSdK/e6Lv623O/84WapThnPoAtW/jvA==
+"@nestjs/jwt@^9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/jwt/-/jwt-9.0.0.tgz#73e01338d2853a55033528b540cfd92c7996bae9"
+  integrity sha512-ZsXGY/wMYKzEhymw2+dxiwrHTRKIKrGszx6r2EjQqNLypdXMQu0QrujwZJ8k3+XQV4snmuJwwNakQoA2ILfq8w==
   dependencies:
     "@types/jsonwebtoken" "8.5.8"
     jsonwebtoken "8.5.1"
