@@ -732,10 +732,10 @@
     retry-request "^4.1.1"
     teeny-request "^7.0.0"
 
-"@google-cloud/logging-winston@^5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@google-cloud/logging-winston/-/logging-winston-5.1.0.tgz#db32b98c0c1619e0a1ae9405a722b7eafd14d5d4"
-  integrity sha512-1oIeonY4YrzOK96t4awcV6/cGs6XIbJYDxDg4+YVQzhLJeF+qZHd7WmteEHljVpC/d+Viy0CIOKBoz/PnShGYQ==
+"@google-cloud/logging-winston@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@google-cloud/logging-winston/-/logging-winston-5.1.1.tgz#8e25de69d2ce8c3e89cb62b4a50db50900c3d867"
+  integrity sha512-KvZjQgFOHGUS1xLgGIcbQmRrniX1MLr9jevz3LUvt/c2uZJYw+DeYedRnr8AzFy9askpoKbEDkDBSTnATXEqsg==
   dependencies:
     "@google-cloud/logging" "^10.0.1"
     google-auth-library "^8.0.2"
