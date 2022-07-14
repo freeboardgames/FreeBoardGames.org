@@ -1,3 +1,4 @@
+name: Deploy to GitHub page
 on:
   push:
     branches: [ master ]
@@ -10,17 +11,15 @@ jobs:
       with:
         node-version: 16.x
     - uses: actions/checkout@v2
-    - run: cd v2
-    - run: yarn install
-    - run: cd fbg-web
-    - run: yarn run build
+    - run: cd v2 && yarn install
+    - run: cd v2/fbg-web && yarn run build
     - name: Pushes to another repository
       id: push_directory
       uses: cpina/github-action-push-to-another-repository@ssh-deploy-key
       env:
         SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
       with:
-        source-directory: out/
+        source-directory: v2/fbg-web/out/
         destination-github-username: 'freeboardgames'
         destination-repository-name: 'github-page'
         user-email: robot@FreeBoardGames.org
