@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: cd v2 && yarn install
     - run: cd v2/fbg-web && yarn run build
-    - name: Pushes to another repository
+    - name: Pushes to github page repository
       id: push_directory
       uses: cpina/github-action-push-to-another-repository@ssh-deploy-key
       env:
@@ -21,7 +21,7 @@ jobs:
       with:
         source-directory: v2/fbg-web/out/
         destination-github-username: 'freeboardgames'
-        destination-repository-name: 'github-page'
+        destination-repository-name: 'v2.freeboardgames.org'
         user-email: robot@FreeBoardGames.org
         commit-message: See ORIGIN_COMMIT from $GITHUB_REF
         target-branch: main
