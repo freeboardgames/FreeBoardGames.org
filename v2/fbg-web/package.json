@@ -14,7 +14,7 @@
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.9.0",
+    "@mui/material": "^5.9.1",
     "@types/recompose": "^0.30.10",
     "boardgame.io": "^0.49.12",
     "fbg-games": "*",
