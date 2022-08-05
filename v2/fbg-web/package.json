@@ -29,7 +29,7 @@
     "recompose": "^0.30.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "eslint": "8.21.0",
     "eslint-config-next": "12.2.4",
