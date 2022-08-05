@@ -20,7 +20,7 @@
     "fbg-games": "*",
     "glob": "^8.0.3",
     "js-yaml": "^4.1.0",
-    "next": "12.2.3",
+    "next": "12.2.4",
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^11.3.0",
     "next-transpile-modules": "^9.0.0",
