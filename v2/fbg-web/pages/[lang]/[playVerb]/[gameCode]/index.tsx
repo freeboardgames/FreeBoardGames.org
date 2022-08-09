@@ -17,6 +17,12 @@ import { listGameSummaries } from "infra/games/ListGameSummaries";
 import Link from "next/link";
 import fs from "fs";
 import path from "path";
+import { FreeBoardGamesBar } from 'fbg-games/gamesShared/components/fbg/FreeBoardGamesBar';
+import { DesktopView, MobileView } from 'fbg-games/gamesShared/components/fbg/DesktopMobileView';
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
+import css from './index.module.css';
+import { BreadcrumbJsonLd } from 'next-seo';
 
 interface GameInfoProps {
   summary: GameSummary;
@@ -102,31 +108,83 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
   const modeCards = props.details.modes.map((mode) =>
     gameModeToCard(props.urlParams, mode)
   );
-  const instructions = gameInstructionToCard(props.details.instructions);
-  const contributors = props.details.contributors.map((contributor) => (
-    <li key={contributor}>
-      <a
-        href={`https://github.com/${contributor}`}
-        rel="noreferrer"
-        target="_blank"
-      >
-        {contributor}
-      </a>
-    </li>
-  ));
+  const instructions = props.details.instructions;
+  const gameVideoInstructions = instructions.videoId ? <GameInstructionsVideo videoId={instructions.videoId} /> : null;
+
+  const gameTextInstructions = instructions.text ? <GameInstructionsText text={instructions.text} /> : null;
+  const playTitle = t("play", { name: props.summary.name });
+  const urlParams = props.urlParams;
+
   return (
-    <>
-      <h1>{t("play", { name: props.summary.name })}</h1>
-      <div>
-        <h2>{t("choose_game_mode")}</h2>
-        <ul>{modeCards}</ul>
-      </div>
-      <div>{instructions}</div>
-      <div>
-        <h2>{t("by")}</h2>
-        <ul>{contributors}</ul>
-      </div>
-    </>
+    <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView lang={props.summary.lang}>
+      <SEO
+        title={`${playTitle}, ${props.summary.callout}`}
+        description={props.details.descriptionTag}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: urlParams.playVerb,
+            item: `/${urlParams.lang}/${urlParams.playVerb}`,
+          },
+          {
+            position: 2,
+            name: props.summary.name,
+            item: `/${urlParams.lang}/${urlParams.playVerb}/${urlParams.gameCode}`,
+          },
+        ]}
+      />
+      <DesktopView>
+        <div className={css.RootWrapper} data-testid={'TabletViewDiv'}>
+          <div className={css.LeftCol}>
+            <Typography variant="h4" component="h1">
+              {props.urlParams.playVerb}
+            </Typography>
+            <GameContributors game={gameDef} />
+            <GameModePicker gameDef={gameDef} />
+          </div>
+          <div className={css.RightCol}>
+            <GameCard game={gameDef} />
+            <div style={{ marginTop: '16px' }}>
+              {!isFullyTranslated(gameDef) && (
+                <Alert severity="warning">
+                  <Trans
+                    t={t}
+                    i18nKey="missing_translation_warning"
+                    components={{
+                      docs: (
+                        <a
+                          aria-label="translation docs"
+                          target="_blank"
+                          href="/docs?path=/story/documentation-game-translation--page"
+                        />
+                      ),
+                    }}
+                  />
+                </Alert>
+              )}
+              <div className={css.InstructionsWrapper}>
+                {gameTextInstructions}
+              </div>
+            </div>
+            <div style={{ marginTop: '32px' }}>{gameVideoInstructions}</div>
+          </div>
+        </div>
+      </DesktopView>
+      <MobileView>
+        <GameCard game={gameDef} />
+        <div style={{ padding: '8px' }} data-testid={'MobileViewDiv'}>
+          <Typography variant="h5" component="h1">
+            {playTitle}
+          </Typography>
+          <GameContributors game={gameDef} />
+          <GameModePicker gameDef={gameDef} />
+          {gameVideoInstructions}
+          {gameTextInstructions}
+        </div>
+      </MobileView>
+    </FreeBoardGamesBar>
   );
 };
 
