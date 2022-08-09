@@ -1,5 +1,4 @@
 import React from 'react';
-import { GameMode } from 'fbg-games/gamesShared/definitions/mode';
 import { IGameArgs } from 'fbg-games/gamesShared/definitions/game';
 import { FreeBoardGamesBar } from './FreeBoardGamesBar';
 import Typography from '@mui/material/Typography';
@@ -13,7 +12,11 @@ export interface GameOverProps {
   extraCardContent?: React.ReactNode;
 }
 
-function ExtraCardContent(props) {
+export interface ExtraCardContentProps {
+  extraCardContent?: React.ReactNode;
+}
+
+function ExtraCardContent(props: ExtraCardContentProps) {
   if (!props.extraCardContent) {
     return null;
   }

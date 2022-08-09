@@ -9,6 +9,7 @@ export interface GameInstructions {
 export interface GameDetails {
   contributors: string[];
   instructions: GameInstructions;
+  descriptionTag: string;
   modes: GameMode[];
 }
 
@@ -52,6 +53,24 @@ const parseGameContributors = function (
   return result;
 };
 
+const parseGameDescriptionTag = function (
+  gameDef: any,
+  lang: string,
+  gameId: string
+) {
+  const i18nGame = gameDef[lang];
+  if (!("descriptionTag" in i18nGame)) {
+    throw new Error(
+      `description tag missing for ${gameId} and ${lang}`
+    );
+  }
+  const text = i18nGame.descriptionTag;
+  if (typeof text !== "string" || text.length === 0) {
+    throw new Error(`Invalid description tag text for ${gameId} and ${lang}`);
+  }
+  return text;
+};
+
 const parseGameModes = function (gameDef: any, gameId: string): GameMode[] {
   if (!("modes" in gameDef)) {
     throw new Error(`modes configuration missing for ${gameId}`);
@@ -84,9 +103,11 @@ export const parseGameDetails = function (
   const modes = parseGameModes(gameDef, gameId);
   const contributors = parseGameContributors(gameDef, gameId);
   const instructions = parseGameInstructions(gameDef, lang, gameId);
+  const descriptionTag = parseGameDescriptionTag(gameDef, lang, gameId);
   return {
     modes,
     contributors,
     instructions,
+    descriptionTag,
   };
 };

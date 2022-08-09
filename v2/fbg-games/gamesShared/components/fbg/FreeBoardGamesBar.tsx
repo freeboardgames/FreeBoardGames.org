@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import FbgLogo from './fbg_logo_white_48.png';
 import Link from 'next/link'
-import { makeStyles } from '@mui/core';
 import LanguageIcon from '@mui/icons-material/Language';
 
 interface FBGBarProps {
   lang: string;
   FEATURE_FLAG_readyForDesktopView?: boolean;
   toolbarContent?: React.ReactNode;
+  children: React.ReactNode;
 };
 
 function LanguageButton() {
