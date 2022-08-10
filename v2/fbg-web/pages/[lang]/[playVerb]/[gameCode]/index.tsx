@@ -9,7 +9,7 @@ import {
 } from "infra/games/GameDetailsParser";
 import { getGameIdFromCode } from "infra/i18n/I18nGetGameId";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
+import { useTranslation, Trans } from "next-i18next";
 import { listGameSummaries } from "infra/games/ListGameSummaries";
 import fs from "fs";
 import path from "path";
@@ -22,6 +22,10 @@ import { BreadcrumbJsonLd } from 'next-seo';
 import SEO from 'fbg-web/infra/misc/SEO';
 import { parseGameTranslations, GameTranslations, GameTranslationStatus } from "fbg-web/infra/games/GameTranslationsParser";
 import { GameCard } from 'fbg-web/infra/widgets/GameCard';
+import { GameInstructionsText } from 'fbg-web/infra/widgets/GameInstructionsText';
+import { GameInstructionsVideo } from 'fbg-web/infra/widgets/GameInstructionsVideo';
+import { GameContributors } from 'fbg-web/infra/widgets/GameContributors';
+import { GameModePicker } from 'fbg-web/infra/widgets/GameModePicker';
 
 interface GameInfoProps {
   summary: GameSummary;
@@ -77,8 +81,8 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
             <Typography variant="h4" component="h1">
               {props.urlParams.playVerb}
             </Typography>
-            <GameContributors game={gameDef} />
-            <GameModePicker gameDef={gameDef} />
+            <GameContributors details={props.details} />
+            <GameModePicker details={props.details} summary={props.summary} />
           </div>
           <div className={css.RightCol}>
             <GameCard gameSummary={props.summary} gameTranslations={props.translations}  />
@@ -114,8 +118,8 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
           <Typography variant="h5" component="h1">
             {playTitle}
           </Typography>
-          <GameContributors game={gameDef} />
-          <GameModePicker gameDef={gameDef} />
+          <GameContributors details={props.details} />
+          <GameModePicker details={props.details} summary={props.summary} />
           {gameVideoInstructions}
           {gameTextInstructions}
         </div>
@@ -132,12 +136,12 @@ export async function getStaticProps(
   const gameYaml = await loadGameYaml(gameId);
   const summary = parseGameSummary(gameYaml, lang, gameCode);
   const details = parseGameDetails(gameYaml, lang, gameCode);
-  const gameTranslations = parseGameTranslations(gameYaml, gameId);
+  const translations = parseGameTranslations(gameYaml, gameId);
   return {
     props: {
       summary,
       details,
-      gameTranslations,
+      translations,
       urlParams: path.params,
       ...(await serverSideTranslations(lang, ["GameInfo"])),
     },
