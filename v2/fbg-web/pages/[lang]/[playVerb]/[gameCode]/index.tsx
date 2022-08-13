@@ -3,130 +3,147 @@ import { loadGameYaml } from "infra/games/GameLoader";
 import { loadI18nConfig } from "infra/i18n/I18nConfigLoader";
 import { parseI18nConfig } from "infra/i18n/I18nConfigParser";
 import { GameSummary, parseGameSummary } from "infra/games/GameSummaryParser";
-import { GameMode } from "fbg-games/gamesShared/definitions/mode";
-import {
-  GameDetails,
-  GameInstructions,
-  parseGameDetails,
-} from "infra/games/GameDetailsParser";
-import { ReactElement } from "react";
+import { GameDetails, parseGameDetails } from "infra/games/GameDetailsParser";
 import { getGameIdFromCode } from "infra/i18n/I18nGetGameId";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
+import { useTranslation, Trans } from "next-i18next";
 import { listGameSummaries } from "infra/games/ListGameSummaries";
-import Link from "next/link";
 import fs from "fs";
 import path from "path";
+import { FreeBoardGamesBar } from "fbg-games/gamesShared/components/fbg/FreeBoardGamesBar";
+import {
+  DesktopView,
+  MobileView,
+} from "fbg-games/gamesShared/components/fbg/DesktopMobileView";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
+import css from "./index.module.css";
+import { BreadcrumbJsonLd } from "next-seo";
+import SEO from "fbg-web/infra/misc/SEO";
+import {
+  parseGameTranslations,
+  GameTranslations,
+  GameTranslationStatus,
+} from "fbg-web/infra/games/GameTranslationsParser";
+import { GameCard } from "fbg-web/infra/widgets/GameCard";
+import { GameInstructionsText } from "fbg-web/infra/widgets/GameInstructionsText";
+import { GameInstructionsVideo } from "fbg-web/infra/widgets/GameInstructionsVideo";
+import { GameContributors } from "fbg-web/infra/widgets/GameContributors";
+import { GameModePicker } from "fbg-web/infra/widgets/GameModePicker";
+import { GameInfoUrlParams } from "../../../../infra/misc/definitions";
 
 interface GameInfoProps {
   summary: GameSummary;
   details: GameDetails;
-  urlParams: UrlParams;
-}
-
-interface UrlParams {
-  lang: string;
-  playVerb: string;
-  gameCode: string;
-  gameId: string;
+  urlParams: GameInfoUrlParams;
+  translations: GameTranslations;
 }
 
 interface UrlPath {
-  params: UrlParams;
+  params: GameInfoUrlParams;
 }
-
-const gameInstructionToCard = function (
-  instructions: GameInstructions
-): ReactElement {
-  let video = null;
-  const videoId = instructions.videoId;
-  if (videoId) {
-    video = (
-      <p>
-        <a
-          href={`https://www.youtube.com/watch?v=${videoId}`}
-          rel="noreferrer"
-          target="_blank"
-        >
-          Watch video
-        </a>
-      </p>
-    );
-  }
-  return (
-    <>
-      <p>{instructions.text}</p>
-      {video}
-    </>
-  );
-};
-
-const gameModeToCard = function (
-  params: UrlParams,
-  mode: GameMode
-): ReactElement {
-  const baseUrl = `/${params.lang}/${params.playVerb}/${params.gameCode}`;
-  switch (mode) {
-    case GameMode.AI:
-      return (
-        <li>
-          AI:{" "}
-          <Link href={`${baseUrl}/ai`}>
-            <a>Play!</a>
-          </Link>
-        </li>
-      );
-    case GameMode.OnlineFriend:
-      return (
-        <li>
-          Online Friend:{" "}
-          <Link href={`${baseUrl}/online`}>
-            <a>Play!</a>
-          </Link>
-        </li>
-      );
-    case GameMode.LocalFriend:
-      return (
-        <li>
-          Local Friend:{" "}
-          <Link href={`${baseUrl}/local`}>
-            <a>Play!</a>
-          </Link>
-        </li>
-      );
-  }
-};
 
 const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
   const { t } = useTranslation("GameInfo");
-  const modeCards = props.details.modes.map((mode) =>
-    gameModeToCard(props.urlParams, mode)
+
+  const isFullyTranslated =
+    props.translations[props.summary.lang] === GameTranslationStatus.DONE;
+  const instructions = props.details.instructions;
+  const gameVideoInstructions = instructions.videoId ? (
+    <GameInstructionsVideo videoId={instructions.videoId} />
+  ) : null;
+
+  const gameTextInstructions = instructions.text ? (
+    <GameInstructionsText text={instructions.text} />
+  ) : null;
+  const playTitle = t("play_game", { name: props.summary.name });
+  const urlParams = props.urlParams;
+  const translationWarning = !isFullyTranslated && (
+    <Alert severity="warning">
+      <Trans
+        t={t}
+        i18nKey="missing_translation_warning"
+        components={{
+          docs: (
+            <a
+              aria-label="translation docs"
+              target="_blank"
+              href="/docs?path=/story/documentation-game-translation--page"
+            />
+          ),
+        }}
+      />
+    </Alert>
   );
-  const instructions = gameInstructionToCard(props.details.instructions);
-  const contributors = props.details.contributors.map((contributor) => (
-    <li key={contributor}>
-      <a
-        href={`https://github.com/${contributor}`}
-        rel="noreferrer"
-        target="_blank"
-      >
-        {contributor}
-      </a>
-    </li>
-  ));
   return (
-    <>
-      <h1>{t("play", { name: props.summary.name })}</h1>
-      <div>
-        <h2>{t("choose_game_mode")}</h2>
-        <ul>{modeCards}</ul>
-      </div>
-      <div>{instructions}</div>
-      <div>
-        <h2>{t("by")}</h2>
-        <ul>{contributors}</ul>
-      </div>
-    </>
+    <FreeBoardGamesBar
+      FEATURE_FLAG_readyForDesktopView
+      lang={props.summary.lang}
+    >
+      <SEO
+        title={`${playTitle}, ${props.summary.callout}`}
+        description={props.details.descriptionTag}
+      />
+      <BreadcrumbJsonLd
+        itemListElements={[
+          {
+            position: 1,
+            name: urlParams.playVerb,
+            item: `/${urlParams.lang}/${urlParams.playVerb}`,
+          },
+          {
+            position: 2,
+            name: props.summary.name,
+            item: `/${urlParams.lang}/${urlParams.playVerb}/${urlParams.gameCode}`,
+          },
+        ]}
+      />
+      <DesktopView>
+        <div className={css.RootWrapper} data-testid={"TabletViewDiv"}>
+          <div className={css.LeftCol}>
+            <Typography variant="h4" component="h1">
+              {playTitle}
+            </Typography>
+            <GameContributors
+              details={props.details}
+              params={props.urlParams}
+            />
+            <GameModePicker
+              details={props.details}
+              summary={props.summary}
+              params={props.urlParams}
+            />
+          </div>
+          <div className={css.RightCol}>
+            <GameCard gameSummary={props.summary} />
+            <div style={{ marginTop: "16px" }}>
+              {translationWarning}
+              <div className={css.InstructionsWrapper}>
+                {gameTextInstructions}
+              </div>
+            </div>
+            <div style={{ marginTop: "32px" }}>{gameVideoInstructions}</div>
+          </div>
+        </div>
+      </DesktopView>
+      <MobileView>
+        <GameCard gameSummary={props.summary} />
+        <div style={{ padding: "8px" }} data-testid={"MobileViewDiv"}>
+          <Typography variant="h5" component="h1">
+            {playTitle}
+          </Typography>
+          <GameContributors details={props.details} params={props.urlParams} />
+          {translationWarning}
+          <GameModePicker
+            details={props.details}
+            summary={props.summary}
+            params={props.urlParams}
+          />
+          {gameVideoInstructions}
+          {gameTextInstructions}
+        </div>
+      </MobileView>
+    </FreeBoardGamesBar>
   );
 };
 
@@ -136,12 +153,14 @@ export async function getStaticProps(
   const { lang, gameCode } = path.params;
   const gameId = await getGameIdFromCode(lang, gameCode);
   const gameYaml = await loadGameYaml(gameId);
-  const summary = parseGameSummary(gameYaml, lang, gameCode);
-  const details = parseGameDetails(gameYaml, lang, gameCode);
+  const summary = parseGameSummary(gameYaml, lang, gameId);
+  const details = parseGameDetails(gameYaml, lang, gameId);
+  const translations = parseGameTranslations(gameYaml, gameId);
   return {
     props: {
       summary,
       details,
+      translations,
       urlParams: path.params,
       ...(await serverSideTranslations(lang, ["GameInfo"])),
     },
@@ -156,7 +175,7 @@ export async function getStaticPaths() {
     const gameId = gameSummary.id;
     const playVerb = i18nConfig[lang].playVerb;
     setI18nSymlink(lang, gameId);
-    return { params: { lang, playVerb, gameCode, gameId } };
+    return { params: { lang, playVerb, gameCode } };
   });
   return { paths, fallback: false };
 }

@@ -1,9 +1,18 @@
 {
   "breadcrumb": "Play",
-  "play": "Play {{name}}",
+  "play_game": "Play {{name}}",
   "video_instructions": "Video Instructions",
   "watch": "Watch",
   "missing_translation_warning": "This game is not fully translated to your language yet. <docs>Click here</docs> to learn how to help us translating it.",
   "choose_game_mode": "Choose game mode",
-  "by": "by" 
+  "by": "by",
+  "computer_ai_title": "Computer (AI)",
+  "computer_ai_description": "Play against the computer in your browser.",
+  "local_friend_title": "Local Friend",
+  "local_friend_description": "Share your device and play with a friend locally.",
+  "online_friend_title": "Online Friend",
+  "online_friend_description": "Share a link and play with a friend online.",
+  "error": "Error",
+  "loading": "Loading",
+  "play": "Play"
 }

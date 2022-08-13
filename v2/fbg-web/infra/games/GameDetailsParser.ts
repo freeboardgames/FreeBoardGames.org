@@ -6,10 +6,17 @@ export interface GameInstructions {
   videoId?: string;
 }
 
+export interface GamePlayerCount {
+  min: number;
+  max: number;
+}
+
 export interface GameDetails {
   contributors: string[];
   instructions: GameInstructions;
+  descriptionTag: string;
   modes: GameMode[];
+  playerCount: GamePlayerCount;
 }
 
 const parseGameInstructions = function (
@@ -52,6 +59,43 @@ const parseGameContributors = function (
   return result;
 };
 
+const parseGamePlayerCount = function (
+  gameDef: any,
+  gameId: string
+): GamePlayerCount {
+  if (!("players" in gameDef)) {
+    throw new Error(`players count configuration missing for ${gameId}`);
+  }
+  let min: number;
+  let max: number;
+  if (typeof gameDef.players === "number") {
+    min = gameDef.players as number;
+    max = gameDef.players as number;
+  } else if (typeof gameDef.players === "object") {
+    min = parseInt(gameDef.players.min, 10);
+    max = parseInt(gameDef.players.max, 10);
+  } else {
+    throw new Error(`Invalid players count configuration for ${gameId}`);
+  }
+  return { min, max };
+};
+
+const parseGameDescriptionTag = function (
+  gameDef: any,
+  lang: string,
+  gameId: string
+) {
+  const i18nGame = gameDef[lang];
+  if (!("descriptionTag" in i18nGame)) {
+    throw new Error(`description tag missing for ${gameId} and ${lang}`);
+  }
+  const text = i18nGame.descriptionTag;
+  if (typeof text !== "string" || text.length === 0) {
+    throw new Error(`Invalid description tag text for ${gameId} and ${lang}`);
+  }
+  return text;
+};
+
 const parseGameModes = function (gameDef: any, gameId: string): GameMode[] {
   if (!("modes" in gameDef)) {
     throw new Error(`modes configuration missing for ${gameId}`);
@@ -84,9 +128,13 @@ export const parseGameDetails = function (
   const modes = parseGameModes(gameDef, gameId);
   const contributors = parseGameContributors(gameDef, gameId);
   const instructions = parseGameInstructions(gameDef, lang, gameId);
+  const descriptionTag = parseGameDescriptionTag(gameDef, lang, gameId);
+  const playerCount = parseGamePlayerCount(gameDef, gameId);
   return {
     modes,
     contributors,
     instructions,
+    descriptionTag,
+    playerCount,
   };
 };
