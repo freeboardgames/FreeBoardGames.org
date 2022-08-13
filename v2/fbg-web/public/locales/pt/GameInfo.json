@@ -1,9 +1,18 @@
 {
   "breadcrumb": "Jogar",
-  "play": "Jogar {{name}}",
+  "play_game": "Jogar {{name}}",
   "video_instructions": "Instruções",
   "watch": "Assistir",
   "missing_translation_warning": "Este jogo ainda não foi traduzido completamente para o seu idioma. Ajude-nos a terminá-lo aprendendo como traduzir um jogo <docs>clicando aqui</docs>.",
   "choose_game_mode": "Escolha o modo de jogo",
-  "by": "por" 
+  "by": "por",
+  "computer_ai_title": "Computador (IA)",
+  "computer_ai_description": "Jogue contra o computador no seu navegador.",
+  "local_friend_title": "Com amigo (Local)",
+  "local_friend_description": "Compartilhe seu dispositivo e jogo localmente com um amigo.",
+  "online_friend_title": "Com amigo (Online)",
+  "online_friend_description": "Compartilhe um link e jogue online com um amigo.",
+  "error": "Erro",
+  "loading": "Carregando",
+  "play": "Jogar"
 }

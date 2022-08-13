@@ -1,12 +1,9 @@
 import { GameSummary } from 'fbg-web/infra/games/GameSummaryParser';
-import { GameTranslations, GameTranslationStatus } from 'fbg-web/infra/games/GameTranslationsParser';
-import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import WarningIcon from '@mui/icons-material/Warning';
 import React, { HTMLAttributes } from 'react';
-import { useTranslation } from "next-i18next";
 import ButtonBase from '@mui/material/ButtonBase';
 
 const PANEL_STYLES = {
@@ -17,20 +14,17 @@ const PANEL_STYLES = {
 
 interface IGameCardProps {
   gameSummary: GameSummary,
-  gameTranslations: GameTranslations,
   isLink?: boolean;
 }
 export function GameCard({ 
   gameSummary,
-  gameTranslations,
   isLink,
 }: IGameCardProps) {
-  const isFullyTranslated = gameTranslations[gameSummary.lang] === GameTranslationStatus.DONE;
-  const { t } = useTranslation('GameCard');
+  const thumbnail = require(`fbg-games/${gameSummary.id}/thumbnail.jpg`).default.src; 
   return (
     <div
       style={{
-            backgroundImage: `url(${gameSummary.id}.png)`,
+            backgroundImage: `url(${thumbnail})`,
             position: 'relative',
             height: '250px',
             width: '100%',
@@ -46,19 +40,6 @@ export function GameCard({
     >
       <Heading>
         <Title>{gameSummary.name}</Title>
-
-        {!isFullyTranslated && (
-          <Tooltip title={t('missing_translation_warning')} placement="top">
-            <a
-              href="/docs?path=/story/documentation-game-translation--page"
-              aria-label="translation docs"
-              target="_blank"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Warning />
-            </a>
-          </Tooltip>
-        )}
       </Heading>
 
       <Description>

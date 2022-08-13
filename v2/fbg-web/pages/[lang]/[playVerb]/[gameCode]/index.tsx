@@ -26,23 +26,18 @@ import { GameInstructionsText } from 'fbg-web/infra/widgets/GameInstructionsText
 import { GameInstructionsVideo } from 'fbg-web/infra/widgets/GameInstructionsVideo';
 import { GameContributors } from 'fbg-web/infra/widgets/GameContributors';
 import { GameModePicker } from 'fbg-web/infra/widgets/GameModePicker';
+import { GameInfoUrlParams } from "../../../../infra/misc/definitions";
 
 interface GameInfoProps {
   summary: GameSummary;
   details: GameDetails;
-  urlParams: UrlParams;
+  urlParams: GameInfoUrlParams;
   translations: GameTranslations;
 }
 
-interface UrlParams {
-  lang: string;
-  playVerb: string;
-  gameCode: string;
-  gameId: string;
-}
-
 interface UrlPath {
-  params: UrlParams;}
+  params: GameInfoUrlParams;
+}
 
 const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
   const { t } = useTranslation("GameInfo");
@@ -52,9 +47,25 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
   const gameVideoInstructions = instructions.videoId ? <GameInstructionsVideo videoId={instructions.videoId} /> : null;
 
   const gameTextInstructions = instructions.text ? <GameInstructionsText text={instructions.text} /> : null;
-  const playTitle = t("play", { name: props.summary.name });
+  const playTitle = t("play_game", { name: props.summary.name });
   const urlParams = props.urlParams;
-
+  const translationWarning = !isFullyTranslated && (
+                <Alert severity="warning">
+                  <Trans
+                    t={t}
+                    i18nKey="missing_translation_warning"
+                    components={{
+                      docs: (
+                        <a
+                          aria-label="translation docs"
+                          target="_blank"
+                          href="/docs?path=/story/documentation-game-translation--page"
+                        />
+                      ),
+                    }}
+                  />
+                </Alert>
+              );
   return (
     <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView lang={props.summary.lang}>
       <SEO
@@ -79,31 +90,15 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
         <div className={css.RootWrapper} data-testid={'TabletViewDiv'}>
           <div className={css.LeftCol}>
             <Typography variant="h4" component="h1">
-              {props.urlParams.playVerb}
+              {playTitle}
             </Typography>
-            <GameContributors details={props.details} />
-            <GameModePicker details={props.details} summary={props.summary} />
+            <GameContributors details={props.details} params={props.urlParams} />
+            <GameModePicker details={props.details} summary={props.summary} params={props.urlParams} />
           </div>
           <div className={css.RightCol}>
-            <GameCard gameSummary={props.summary} gameTranslations={props.translations}  />
+            <GameCard gameSummary={props.summary} />
             <div style={{ marginTop: '16px' }}>
-              {!isFullyTranslated && (
-                <Alert severity="warning">
-                  <Trans
-                    t={t}
-                    i18nKey="missing_translation_warning"
-                    components={{
-                      docs: (
-                        <a
-                          aria-label="translation docs"
-                          target="_blank"
-                          href="/docs?path=/story/documentation-game-translation--page"
-                        />
-                      ),
-                    }}
-                  />
-                </Alert>
-              )}
+              {translationWarning}
               <div className={css.InstructionsWrapper}>
                 {gameTextInstructions}
               </div>
@@ -113,13 +108,14 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
         </div>
       </DesktopView>
       <MobileView>
-        <GameCard gameSummary={props.summary} gameTranslations={props.translations}  />
+        <GameCard gameSummary={props.summary}  />
         <div style={{ padding: '8px' }} data-testid={'MobileViewDiv'}>
           <Typography variant="h5" component="h1">
             {playTitle}
           </Typography>
-          <GameContributors details={props.details} />
-          <GameModePicker details={props.details} summary={props.summary} />
+          <GameContributors details={props.details} params={props.urlParams} />
+          {translationWarning}
+          <GameModePicker details={props.details} summary={props.summary} params={props.urlParams} />
           {gameVideoInstructions}
           {gameTextInstructions}
         </div>
@@ -134,8 +130,8 @@ export async function getStaticProps(
   const { lang, gameCode } = path.params;
   const gameId = await getGameIdFromCode(lang, gameCode);
   const gameYaml = await loadGameYaml(gameId);
-  const summary = parseGameSummary(gameYaml, lang, gameCode);
-  const details = parseGameDetails(gameYaml, lang, gameCode);
+  const summary = parseGameSummary(gameYaml, lang, gameId);
+  const details = parseGameDetails(gameYaml, lang, gameId);
   const translations = parseGameTranslations(gameYaml, gameId);
   return {
     props: {
@@ -156,7 +152,7 @@ export async function getStaticPaths() {
     const gameId = gameSummary.id;
     const playVerb = i18nConfig[lang].playVerb;
     setI18nSymlink(lang, gameId);
-    return { params: { lang, playVerb, gameCode, gameId } };
+    return { params: { lang, playVerb, gameCode } };
   });
   return { paths, fallback: false };
 }

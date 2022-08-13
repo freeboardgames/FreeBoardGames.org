@@ -14,24 +14,26 @@ import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/Person';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import Link from 'next/link';
 import css from './GameModePicker.module.css';
 import { GameSummary } from 'infra/games/GameSummaryParser';
+import { GameInfoUrlParams } from 'fbg-web/infra/misc/definitions';
 
 export interface GameModePickerProps {
   details: GameDetails;
   summary: GameSummary;
+  params: GameInfoUrlParams;
 }
 
 export function GameModePicker(props: GameModePickerProps) {
-   const { t } = useTranslation('GameModePicker');
+   const { t } = useTranslation('GameInfo');
    const cards = props.details.modes.map((mode) => (
         <GameModePickerCard   
           mode={mode}
           key={mode}
           {...props}
         />
-   )); 
+   ));
     return (
       <div style={{ marginTop: '8px', maxWidth: '500px' }}>
         <Typography variant="h6" component="h2" style={{ marginBottom: '16px' }}>
@@ -46,10 +48,11 @@ interface GameModePickerCardProps {
   mode: GameMode;
   details: GameDetails;
   summary: GameSummary;
+  params: GameInfoUrlParams;
 }
 
 function GameModePickerCard(props: GameModePickerCardProps) {
-   const { t } = useTranslation('GameModePickerCard');
+   const { t } = useTranslation('GameInfo');
    let title;
    let description;
    let icon;
@@ -70,8 +73,7 @@ function GameModePickerCard(props: GameModePickerCardProps) {
         icon = <WifiIcon />;
         break;
     }
-    return (
-      <>
+    return ( 
         <Card key={title} style={{ margin: '0 0 16px 0' }}>
           <CardHeader avatar={<Avatar aria-label={title}>{icon}</Avatar>} title={title} />
           <CardContent>
@@ -81,8 +83,7 @@ function GameModePickerCard(props: GameModePickerCardProps) {
             <CustomizationActions {...props} />
             <PlayButton {...props} />
           </CardActions>
-        </Card>
-      </>
+        </Card> 
     );
 }
 
@@ -110,7 +111,7 @@ interface OccupancySelectProps {
 }
 
 function OccupancySelect(props: OccupancySelectProps) {
-  const { t } = useTranslation('OccupancySelect');
+  const { t } = useTranslation('GameInfo');
   const options = [];
  for (let i = props.playerCount.min; i <= props.playerCount.max; i++) {
     options.push(
@@ -131,17 +132,19 @@ function OccupancySelect(props: OccupancySelectProps) {
 }
 
 function PlayButton(props: GameModePickerCardProps) {
-  const { t } = useTranslation('GameModePickerCard');
+  const { t } = useTranslation('GameInfo');
+  const params = props.params;
+  const baseUrl = `/${params.lang}/${params.playVerb}/${params.gameCode}`;
   let link: string;
   switch (props.mode) {
     case GameMode.AI:
-      link = '/ai';
+      link = `${baseUrl}/ai`;
       break;
     case GameMode.LocalFriend:
-      link = '/local';
+      link = `${baseUrl}/local`;
       break;
     case GameMode.OnlineFriend:
-      link = '/online';
+      link = `${baseUrl}/online`;
       break;
   }
   return (
