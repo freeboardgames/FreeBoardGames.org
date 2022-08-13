@@ -1,15 +1,18 @@
-import React from 'react';
-import { NextSeo, NextSeoProps } from 'next-seo';
+import React from "react";
+import { NextSeo, NextSeoProps } from "next-seo";
 
 /* istanbul ignore next */
-const GLOBAL_NOINDEX = process.env.NODE_ENV !== 'production';
+const GLOBAL_NOINDEX = process.env.NODE_ENV !== "production";
 
 interface SeoProps {
   overrideTitle?: string;
 }
 
 function getDefaultValues() {
-  const defaults: NextSeoProps = { noindex: GLOBAL_NOINDEX, nofollow: GLOBAL_NOINDEX };
+  const defaults: NextSeoProps = {
+    noindex: GLOBAL_NOINDEX,
+    nofollow: GLOBAL_NOINDEX,
+  };
   return defaults;
 }
 

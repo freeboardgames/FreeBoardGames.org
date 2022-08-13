@@ -66,7 +66,11 @@ export async function getStaticProps(
       gameId,
       params: path.params,
       name: summary.name,
-      ...(await serverSideTranslations(lang, ["Game", "GameOver", `game-${gameId}`])),
+      ...(await serverSideTranslations(lang, [
+        "Game",
+        "GameOver",
+        `game-${gameId}`,
+      ])),
     },
   };
 }

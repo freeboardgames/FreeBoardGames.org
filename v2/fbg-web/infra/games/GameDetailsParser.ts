@@ -68,18 +68,17 @@ const parseGamePlayerCount = function (
   }
   let min: number;
   let max: number;
-  if (typeof gameDef.players === 'number') {
+  if (typeof gameDef.players === "number") {
     min = gameDef.players as number;
     max = gameDef.players as number;
-  } else if (typeof gameDef.players === 'object') {
-    min = parseInt(gameDef.players.min,10);
-    max = parseInt(gameDef.players.max,10);
+  } else if (typeof gameDef.players === "object") {
+    min = parseInt(gameDef.players.min, 10);
+    max = parseInt(gameDef.players.max, 10);
   } else {
     throw new Error(`Invalid players count configuration for ${gameId}`);
   }
   return { min, max };
 };
-
 
 const parseGameDescriptionTag = function (
   gameDef: any,
@@ -88,9 +87,7 @@ const parseGameDescriptionTag = function (
 ) {
   const i18nGame = gameDef[lang];
   if (!("descriptionTag" in i18nGame)) {
-    throw new Error(
-      `description tag missing for ${gameId} and ${lang}`
-    );
+    throw new Error(`description tag missing for ${gameId} and ${lang}`);
   }
   const text = i18nGame.descriptionTag;
   if (typeof text !== "string" || text.length === 0) {
@@ -132,12 +129,12 @@ export const parseGameDetails = function (
   const contributors = parseGameContributors(gameDef, gameId);
   const instructions = parseGameInstructions(gameDef, lang, gameId);
   const descriptionTag = parseGameDescriptionTag(gameDef, lang, gameId);
-  const playerCount = parseGamePlayerCount(gameDef, gameId);;
+  const playerCount = parseGamePlayerCount(gameDef, gameId);
   return {
     modes,
     contributors,
     instructions,
     descriptionTag,
-    playerCount
+    playerCount,
   };
 };
