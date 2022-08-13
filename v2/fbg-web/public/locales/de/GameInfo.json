@@ -1,6 +1,16 @@
 {
   "breadcrumb": "Spiele",
-  "play": "Spiele {{name}}",
+  "play_game": "Spiele {{name}}",
   "missing_translation_warning": "Dieses Spiel ist noch nicht komplett in deine Sprache übersetzt worden.<docs>Klicke hier</docs> um zu lernen, wie Du uns bei der Übersetzung helfen kannst.",
-  "choose_game_mode": "Wähle Spielmodus"
+  "choose_game_mode": "Wähle Spielmodus",
+  "computer_ai_title": "Computer (AI)",
+  "computer_ai_description": "Spiele gegen den Computer in deinem Browser.",
+  "local_friend_title": "Lokaler Freund",
+  "local_friend_description": "Teile dein Gerät und spiele lokal mit einem Freund.",
+  "online_friend_title": "Online Freund",
+  "online_friend_description": "Spiel online mit einem Freund über einen Link, den du teilen kannst.",
+  "error": "Fehler",
+  "loading": "Laden",
+  "play": "Spielen",
+  "by": "von"
 }
