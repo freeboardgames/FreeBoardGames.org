@@ -1,6 +1,5 @@
 import { GameSummary } from 'fbg-web/infra/games/GameSummaryParser';
 import { GameTranslations, GameTranslationStatus } from 'fbg-web/infra/games/GameTranslationsParser';
-import { Box } from '@mui/system';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -29,9 +28,9 @@ export function GameCard({
   const isFullyTranslated = gameTranslations[gameSummary.lang] === GameTranslationStatus.DONE;
   const { t } = useTranslation('GameCard');
   return (
-    <Box
-      component="div"
-      sx={{
+    <div
+      style={{
+            backgroundImage: `url(${gameSummary.id}.png)`,
             position: 'relative',
             height: '250px',
             width: '100%',
@@ -43,7 +42,6 @@ export function GameCard({
             borderRadius: '8px',
             }),
         }}
-      style={{ backgroundImage: `url(${gameSummary.id}.png)` }}
       data-testid={`gamecard-${gameSummary.id}`}
     >
       <Heading>
@@ -68,15 +66,14 @@ export function GameCard({
       </Description>
 
       {isLink && <NavigateButton />}
-    </Box>
+    </div>
   );
 }
 
 export const Heading = ({ children }: HTMLAttributes<HTMLDivElement>) => { 
   return (
-    <Box 
-      component="div" 
-      sx={{
+    <div
+      style={{
         position: 'absolute',
         display: 'flex',
         flexWrap: 'wrap',
@@ -85,15 +82,14 @@ export const Heading = ({ children }: HTMLAttributes<HTMLDivElement>) => {
         left: '8px',
       }}>
       {children}
-    </Box>
+    </div>
   );
 };
 
 export const Title = ({ children, ...props }: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <Box 
-      component="div" 
-      sx={{
+    <div
+      style={{
         ...PANEL_STYLES,
         display: 'flex',
         flexWrap: 'wrap',
@@ -106,7 +102,7 @@ export const Title = ({ children, ...props }: HTMLAttributes<HTMLDivElement>) =>
       <Typography gutterBottom={false} variant="h4" component="h2" style={{ fontWeight: 300 }}>
         {children}
       </Typography>
-    </Box>
+    </div>
   );
 };
 
@@ -118,9 +114,8 @@ export const Warning = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEl
       borderRadius: '8px',
       minHeight: '42px',
     }}>
-      <Box 
-        component="div" 
-        sx={{
+      <div
+        style={{
             ...PANEL_STYLES,
             flexShrink: '0',
             height: '100%',
@@ -133,55 +128,51 @@ export const Warning = React.forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEl
             height: '100%',
             padding: '0 4px'
         }} />
-      </Box>
+      </div>
     </ButtonBase>
   );
 });
 
 export const Description = ({ children, ...props }: HTMLAttributes<HTMLDivElement>) => { 
   return (
-    <Box 
-      component="div" 
-      sx={{
+    <div
+      style={{
         position: 'absolute',
         bottom: '12px',
         left: '8px',
       }} {...props}>
-      <Box 
-      component="div" 
-      sx={{
+      <div 
+      style={{
           ...PANEL_STYLES,
           padding: '0px 8px',
       }}>
         <Typography gutterBottom={false} variant="overline" component="h5">
           {children}
         </Typography>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
 export const NavigateButton = (props: HTMLAttributes<HTMLDivElement>) => { 
   return (
-    <Box 
-      component="div" 
-      sx={{
+    <div
+      style={{
         position: 'absolute',
         bottom: '12px',
         right: '8px',
         padding: '0',
       }}
       {...props}>
-    <Box 
-      component="div" 
-      sx={{
+    <div 
+      style={{
         ...PANEL_STYLES,
         borderRadius: '32px',
       }}>
         <IconButton aria-label="Next">
           <NavigateNextIcon />
         </IconButton>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
