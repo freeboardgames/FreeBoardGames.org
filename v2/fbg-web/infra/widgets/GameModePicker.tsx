@@ -28,6 +28,7 @@ export function GameModePicker(props: GameModePickerProps) {
    const cards = props.details.modes.map((mode) => (
         <GameModePickerCard   
           mode={mode}
+          key={mode}
           {...props}
         />
    )); 
