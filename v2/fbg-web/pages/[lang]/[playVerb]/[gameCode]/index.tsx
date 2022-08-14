@@ -31,6 +31,7 @@ import { GameInstructionsVideo } from "fbg-web/infra/widgets/GameInstructionsVid
 import { GameContributors } from "fbg-web/infra/widgets/GameContributors";
 import { GameModePicker } from "fbg-web/infra/widgets/GameModePicker";
 import { GameInfoUrlParams } from "../../../../infra/misc/definitions";
+import Card from "@mui/material/Card";
 
 interface GameInfoProps {
   summary: GameSummary;
@@ -45,9 +46,9 @@ interface UrlPath {
 
 const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
   const { t } = useTranslation("GameInfo");
-
-  const isFullyTranslated =
-    props.translations[props.summary.lang] === GameTranslationStatus.DONE;
+  const lang = props.summary.lang;
+  const isFullyTranslated = (lang == 'en' ||
+    props.translations[lang] === GameTranslationStatus.DONE);
   const instructions = props.details.instructions;
   const gameVideoInstructions = instructions.videoId ? (
     <GameInstructionsVideo videoId={instructions.videoId} />
@@ -78,7 +79,7 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
   return (
     <FreeBoardGamesBar
       FEATURE_FLAG_readyForDesktopView
-      lang={props.summary.lang}
+      lang={lang}
     >
       <SEO
         title={`${playTitle}, ${props.summary.callout}`}
@@ -89,12 +90,12 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
           {
             position: 1,
             name: urlParams.playVerb,
-            item: `/${urlParams.lang}/${urlParams.playVerb}`,
+            item: `/${lang}/${urlParams.playVerb}`,
           },
           {
             position: 2,
             name: props.summary.name,
-            item: `/${urlParams.lang}/${urlParams.playVerb}/${urlParams.gameCode}`,
+            item: `/${lang}/${urlParams.playVerb}/${urlParams.gameCode}`,
           },
         ]}
       />
@@ -140,7 +141,9 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
             params={props.urlParams}
           />
           {gameVideoInstructions}
-          {gameTextInstructions}
+          <Card style={{ marginBottom: 16 }}>
+            {gameTextInstructions}
+          </Card>
         </div>
       </MobileView>
     </FreeBoardGamesBar>
