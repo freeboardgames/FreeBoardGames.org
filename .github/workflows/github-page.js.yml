@@ -1,8 +1,9 @@
 name: Deploy to GitHub page
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
+  pull_request:
+    types: [ closed ]
 
 jobs:
   deploy:
