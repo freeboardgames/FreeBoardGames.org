@@ -2,9 +2,6 @@ name: Deploy to GitHub page
 on:
   push:
     branches: [ master ]
-  pull_request:
-    types: [ closed ]
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
