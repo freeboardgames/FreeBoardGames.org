@@ -11,6 +11,10 @@ import languages from "../../public/locales/languages.json";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
+import { FreeBoardGamesBar } from "fbg-games/gamesShared/components/fbg/FreeBoardGamesBar";
+import { GameCard } from "fbg-web/infra/widgets/GameCard";
+import css from "./index.module.css";
+import { Typography } from "@mui/material";
 
 interface HomeProps {
   lang: string;
@@ -21,23 +25,25 @@ interface HomeProps {
 const Home: NextPage<HomeProps> = function (props: HomeProps) {
   const { t } = useTranslation("Home");
   const summaries = props.gameSummaries;
-  const links = summaries.map((g) => {
+  const games = summaries.map((g) => {
     const link = `/${props.lang}/${props.playVerb}/${g.code}`;
     return (
-      <li key={g.id}>
+      <div className={css.Card} key={g.id}>
         <Link href={link}>
-          <a>
-            {g.name}: {g.callout}
+          <a href="#">
+            <GameCard gameSummary={g} isLink={true} />
           </a>
         </Link>
-      </li>
+      </div>
     );
   });
   return (
-    <>
-      <h1>{t("title")}</h1>
-      <ul>{links}</ul>
-    </>
+    <FreeBoardGamesBar lang={props.lang}>
+      <Typography component="h1" variant="h4" className={css.Header}>
+        {t("games")}
+      </Typography>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>{games}</div>
+    </FreeBoardGamesBar>
   );
 };
 

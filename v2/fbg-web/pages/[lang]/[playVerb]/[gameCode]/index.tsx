@@ -47,8 +47,8 @@ interface UrlPath {
 const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
   const { t } = useTranslation("GameInfo");
   const lang = props.summary.lang;
-  const isFullyTranslated = (lang == 'en' ||
-    props.translations[lang] === GameTranslationStatus.DONE);
+  const isFullyTranslated =
+    lang == "en" || props.translations[lang] === GameTranslationStatus.DONE;
   const instructions = props.details.instructions;
   const gameVideoInstructions = instructions.videoId ? (
     <GameInstructionsVideo videoId={instructions.videoId} />
@@ -77,10 +77,7 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
     </Alert>
   );
   return (
-    <FreeBoardGamesBar
-      FEATURE_FLAG_readyForDesktopView
-      lang={lang}
-    >
+    <FreeBoardGamesBar lang={props.urlParams.lang}>
       <SEO
         title={`${playTitle}, ${props.summary.callout}`}
         description={props.details.descriptionTag}
@@ -141,9 +138,7 @@ const GameInfo: NextPage<GameInfoProps> = function (props: GameInfoProps) {
             params={props.urlParams}
           />
           {gameVideoInstructions}
-          <Card style={{ marginBottom: 16 }}>
-            {gameTextInstructions}
-          </Card>
+          <Card style={{ marginBottom: 16 }}>{gameTextInstructions}</Card>
         </div>
       </MobileView>
     </FreeBoardGamesBar>

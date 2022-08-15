@@ -1,0 +1,12 @@
+.Card {
+  text-decoration: none;
+  flex: 1;
+  min-width: 300px;
+  max-width: 380px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+}
+
+.Header {
+  margin: 18px 0 8px !important;
+}
