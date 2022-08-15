@@ -2,15 +2,8 @@ import { GameSummary } from "fbg-web/infra/games/GameSummaryParser";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import WarningIcon from "@mui/icons-material/Warning";
 import React, { HTMLAttributes } from "react";
-import ButtonBase from "@mui/material/ButtonBase";
-
-const PANEL_STYLES = {
-  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
-  borderRadius: "8px",
-  backgroundColor: "white",
-};
+import css from "./GameCard.module.css";
 
 interface IGameCardProps {
   gameSummary: GameSummary;
@@ -19,22 +12,11 @@ interface IGameCardProps {
 export function GameCard({ gameSummary, isLink }: IGameCardProps) {
   const thumbnail = require(`fbg-games/${gameSummary.id}/thumbnail.jpg`).default
     .src;
+  const cardLinkCss = isLink ? css.CardLink : "";
   return (
     <div
-      style={{
-        backgroundImage: `url(${thumbnail})`,
-        position: "relative",
-        height: "250px",
-        width: "100%",
-        backgroundPosition: "left center",
-        backgroundSize: "cover",
-        color: "black",
-        ...(isLink && {
-          boxShadow:
-            "0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)",
-          borderRadius: "8px",
-        }),
-      }}
+      className={`${css.Card} ${cardLinkCss}`}
+      style={{ backgroundImage: `url(${thumbnail})` }}
       data-testid={`gamecard-${gameSummary.id}`}
     >
       <Heading>
@@ -51,20 +33,7 @@ export function GameCard({ gameSummary, isLink }: IGameCardProps) {
 }
 
 export const Heading = ({ children }: HTMLAttributes<HTMLDivElement>) => {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        display: "flex",
-        flexWrap: "wrap",
-        gridGap: "8px",
-        top: "12px",
-        left: "8px",
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <div className={css.Heading}>{children}</div>;
 };
 
 export const Title = ({
@@ -72,19 +41,7 @@ export const Title = ({
   ...props
 }: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div
-      style={{
-        ...PANEL_STYLES,
-        display: "flex",
-        flexWrap: "wrap",
-        gridGap: "8px",
-        top: "12px",
-        left: "8px",
-        padding: "0px 8px",
-        paddingTop: "4px",
-      }}
-      {...props}
-    >
+    <div className={`${css.Panel} ${css.Title}`} {...props}>
       <Typography
         gutterBottom={false}
         variant="h4"
@@ -97,61 +54,13 @@ export const Title = ({
   );
 };
 
-export const Warning = React.forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->((props, ref) => {
-  return (
-    <ButtonBase
-      sx={{
-        alignItems: "center",
-        height: "100%",
-        borderRadius: "8px",
-        minHeight: "42px",
-      }}
-    >
-      <div
-        style={{
-          ...PANEL_STYLES,
-          flexShrink: "0",
-          height: "100%",
-          minHeight: "45px",
-          minWidth: "45px",
-        }}
-        {...props}
-        ref={ref}
-      >
-        <WarningIcon
-          sx={{
-            width: "32px",
-            height: "100%",
-            padding: "0 4px",
-          }}
-        />
-      </div>
-    </ButtonBase>
-  );
-});
-
 export const Description = ({
   children,
   ...props
 }: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div
-      style={{
-        position: "absolute",
-        bottom: "12px",
-        left: "8px",
-      }}
-      {...props}
-    >
-      <div
-        style={{
-          ...PANEL_STYLES,
-          padding: "0px 8px",
-        }}
-      >
+    <div className={css.Description} {...props}>
+      <div className={`${css.Panel} ${css.DescriptionInner}`}>
         <Typography gutterBottom={false} variant="overline" component="h5">
           {children}
         </Typography>
@@ -162,21 +71,8 @@ export const Description = ({
 
 export const NavigateButton = (props: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div
-      style={{
-        position: "absolute",
-        bottom: "12px",
-        right: "8px",
-        padding: "0",
-      }}
-      {...props}
-    >
-      <div
-        style={{
-          ...PANEL_STYLES,
-          borderRadius: "32px",
-        }}
-      >
+    <div className={css.Navigation} {...props}>
+      <div className={`${css.Panel} ${css.NavigationInner}`}>
         <IconButton aria-label="Next">
           <NavigateNextIcon />
         </IconButton>

@@ -8,7 +8,6 @@ import LanguageIcon from '@mui/icons-material/Language';
 
 interface FBGBarProps {
   lang: string;
-  FEATURE_FLAG_readyForDesktopView?: boolean;
   toolbarContent?: React.ReactNode;
   children: React.ReactNode;
 };
@@ -26,7 +25,6 @@ function LanguageButton() {
 }
 
 export const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
-  const maxWidth = props.FEATURE_FLAG_readyForDesktopView ? '1200px' : '500px';
   return (
     <>
       <div
@@ -51,7 +49,7 @@ export const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
       </div>
       <div
         style={{
-          maxWidth,
+          maxWidth: '1200px',
           marginLeft: 'auto',
           marginRight: 'auto',
         }}

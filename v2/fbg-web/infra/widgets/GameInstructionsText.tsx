@@ -13,11 +13,11 @@ export class GameInstructionsText extends React.Component<
 > {
   render() {
     return (
-        <div style={{ padding: "0 8px" }}>
-          <Typography variant="body1" component="div">
-            <ReactMarkdown linkTarget="_blank">{this.props.text}</ReactMarkdown>
-          </Typography>
-        </div>
+      <div style={{ padding: "0 8px" }}>
+        <Typography variant="body1" component="div">
+          <ReactMarkdown linkTarget="_blank">{this.props.text}</ReactMarkdown>
+        </Typography>
+      </div>
     );
   }
 }

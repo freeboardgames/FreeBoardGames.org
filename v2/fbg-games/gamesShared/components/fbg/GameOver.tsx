@@ -41,7 +41,7 @@ export function GameOver(props: GameOverProps) {
     </div>
   );
   return (
-    <FreeBoardGamesBar FEATURE_FLAG_readyForDesktopView lang={props.gameArgs.lang}>
+    <FreeBoardGamesBar lang={props.gameArgs.lang}>
       <Typography
         variant="h6"
         gutterBottom={true}

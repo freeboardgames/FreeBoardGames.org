@@ -1,0 +1,66 @@
+.Card {
+  position: relative;
+  height: 250px;
+  width: 100%;
+  background-position: left center;
+  background-size: cover;
+  color: black;
+}
+
+.CardLink {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 8px;
+}
+
+.Heading {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 8px;
+  top: 12px;
+  left: 8px;
+}
+
+.Panel {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 8px;
+  background-color: white;
+}
+
+.Title {
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 8px;
+  top: 12px;
+  left: 8px;
+  padding: 0px 8px;
+  padding-top: 4px;
+}
+
+.Description {
+  position: absolute;
+  bottom: 12px;
+  left: 8px;
+}
+
+.DescriptionInner {
+  padding: 0px 8px;
+}
+
+.Navigation {
+  position: absolute;
+  bottom: 12px;
+  right: 8px;
+  padding: 0;
+}
+
+.NavigationInner {
+  border-radius: 32px;
+}
+
+.ButtonBase {
+  align-items: center;
+  height: 100%;
+  border-radius: 8px;
+  min-height: 42px;
+}
