@@ -56,11 +56,11 @@
 .button {
   width: 48px;
   height: 48px;
-  color: black;
-  margin-right: 8px
+  margin-right: 8px;
 }
 
 .button > svg {
   width: 32px;
   height: 32px;
+  color: black;
 }
