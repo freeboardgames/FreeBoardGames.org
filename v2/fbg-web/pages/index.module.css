@@ -1,0 +1,66 @@
+.wrapper {
+    width: 100vw;
+    position: relative;
+}
+
+.content {
+  position: absolute;
+  text-align: center;
+  max-width: 384px;
+}
+@media all and (min-width: 768px) {
+  .wrapper {
+    height: 100vh;
+  }
+  .content {
+    top: calc(50%);
+    left: calc(50%);
+    transform: translate(-50%, -50%);
+  }
+}
+@media all and (max-width: 768px) {
+  .content {
+    top: 0;
+    left: calc(50%);
+    transform: translateX(-50%);
+  }
+}
+
+.logo {
+  width: 256px;
+  height: 256px;
+}
+
+.langLink {
+  color: #1a0dab;
+}
+
+.langContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 8px 0;
+  justify-content: center;
+}
+
+.langBox {
+  width: 128px;
+  height: 76px;
+}
+
+.button {
+  width: 48px;
+  height: 48px;
+  color: black;
+  margin-right: 8px
+}
+
+.button > svg {
+  width: 32px;
+  height: 32px;
+}

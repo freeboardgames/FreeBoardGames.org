@@ -4,6 +4,7 @@ export interface I18nConfig {
   [languageCode: string]: {
     name: string;
     playVerb: string;
+    xGames: string;
   };
 }
 
