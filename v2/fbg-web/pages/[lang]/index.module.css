@@ -3,10 +3,11 @@
   flex: 1;
   min-width: 300px;
   max-width: 380px;
-  margin-right: 16px;
-  margin-bottom: 16px;
+  margin: 8px 8px;
 }
 
-.Header {
-  margin: 18px 0 8px !important;
+.Wrapper {
+  display: flex; 
+  flex-wrap: wrap;
+  margin: 16px 0;
 }

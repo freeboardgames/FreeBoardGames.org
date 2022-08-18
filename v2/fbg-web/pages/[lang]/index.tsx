@@ -14,7 +14,10 @@ import Link from "next/link";
 import { FreeBoardGamesBar } from "fbg-games/gamesShared/components/fbg/FreeBoardGamesBar";
 import { GameCard } from "fbg-web/infra/widgets/GameCard";
 import css from "./index.module.css";
-import { Typography } from "@mui/material";
+import {
+  GameTranslationStatus,
+  parseGameTranslations,
+} from "infra/games/GameTranslationsParser";
 
 interface HomeProps {
   lang: string;
@@ -38,11 +41,8 @@ const Home: NextPage<HomeProps> = function (props: HomeProps) {
     );
   });
   return (
-    <FreeBoardGamesBar lang={props.lang}>
-      <Typography component="h1" variant="h4" className={css.Header}>
-        {t("games")}
-      </Typography>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>{games}</div>
+    <FreeBoardGamesBar>
+      <div className={css.Wrapper}>{games}</div>
     </FreeBoardGamesBar>
   );
 };
@@ -52,12 +52,20 @@ export async function getStaticProps({
 }: {
   params: { lang: string };
 }): Promise<{ props: HomeProps }> {
-  const gameSummaries = await Promise.all(
-    gamesJson.map(async (gameId) => {
-      const gameYaml = await loadGameYaml(gameId);
-      return parseGameSummary(gameYaml, params.lang, gameId);
-    })
-  );
+  const gameSummaries = [];
+  for (const gameId of gamesJson) {
+    const gameYaml = await loadGameYaml(gameId);
+    const translations = parseGameTranslations(gameYaml, gameId);
+    const status = translations[params.lang];
+    if (
+      status != GameTranslationStatus.DONE &&
+      status != GameTranslationStatus.PARTIAL &&
+      params.lang != "en"
+    ) {
+      continue;
+    }
+    gameSummaries.push(parseGameSummary(gameYaml, params.lang, gameId));
+  }
   const langDetails = parseI18nConfig(await loadI18nConfig())[params.lang];
   return {
     props: {
