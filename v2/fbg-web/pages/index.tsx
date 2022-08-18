@@ -16,11 +16,14 @@ import {
   parseGameSummary,
   GameSummary,
 } from "../infra/games/GameSummaryParser";
-import { GameTranslationStatus, parseGameTranslations } from "infra/games/GameTranslationsParser";
+import {
+  GameTranslationStatus,
+  parseGameTranslations,
+} from "infra/games/GameTranslationsParser";
 
 interface StaticProps {
   i18nConfig: I18nConfig;
-  gameCountByLang: {[lang:string]: number};
+  gameCountByLang: { [lang: string]: number };
 }
 
 function Index(props: StaticProps) {
@@ -34,7 +37,10 @@ function Index(props: StaticProps) {
         </Typography>
       </Link>
       <Typography component="span" variant="subtitle1">
-        {props.i18nConfig[lang].xGames.replace('{{x}}', `${props.gameCountByLang[lang]}`)} 
+        {props.i18nConfig[lang].xGames.replace(
+          "{{x}}",
+          `${props.gameCountByLang[lang]}`
+        )}
       </Typography>
     </div>
   ));
@@ -91,18 +97,20 @@ function Index(props: StaticProps) {
   );
 }
 
-async function getGameCountByLang(): Promise<{[lang:string]: number}> {
-  const result:{[lang:string]: number} = {};
-  result['en'] = gamesJson.length;
+async function getGameCountByLang(): Promise<{ [lang: string]: number }> {
+  const result: { [lang: string]: number } = {};
+  result["en"] = gamesJson.length;
   for (const gameId of gamesJson) {
     const gameYaml = await loadGameYaml(gameId);
     const translations = parseGameTranslations(gameYaml, gameId);
     for (const lang of Object.keys(translations)) {
-      if (translations[lang] == GameTranslationStatus.PARTIAL
-          || translations[lang] == GameTranslationStatus.DONE) {
+      if (
+        translations[lang] == GameTranslationStatus.PARTIAL ||
+        translations[lang] == GameTranslationStatus.DONE
+      ) {
         result[lang] = (result[lang] || 0) + 1;
-      } 
-    } 
+      }
+    }
   }
   return result;
 }
