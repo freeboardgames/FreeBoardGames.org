@@ -7,7 +7,7 @@ import Link from 'next/link'
 import LanguageIcon from '@mui/icons-material/Language';
 
 interface FBGBarProps {
-  lang: string;
+  lang?: string;
   toolbarContent?: React.ReactNode;
   children: React.ReactNode;
 };
@@ -24,7 +24,7 @@ function LanguageButton() {
   );
 }
 
-export const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
+export const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => { 
   return (
     <>
       <div
@@ -35,7 +35,7 @@ export const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
       >
         <AppBar position="sticky">
           <Toolbar>
-            <Link href={`/${props.lang}`}>
+            <Link href={`/${props.lang ?? ''}`}>
               <a style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                 <img style={{ marginRight: '8px' }} width="48" height="48" src={FbgLogo.src} alt="FbG" />
                 <Typography component="h1" variant="h6" style={{ color: 'white' }}>
