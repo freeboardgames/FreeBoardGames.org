@@ -3,7 +3,7 @@ import ForumIcon from "@mui/icons-material/Forum";
 import IconButton from "@mui/material/IconButton";
 import SubjectIcon from "@mui/icons-material/Subject";
 import InfoIcon from "@mui/icons-material/Info";
-import css from './FbgMetaButtons.module.css';
+import css from "./FbgMetaButtons.module.css";
 import Link from "next/link";
 
 interface FbgMetaButtonsProps {
@@ -48,14 +48,14 @@ export function FbgMetaButtons(props: FbgMetaButtonsProps) {
   ];
   if (!props.omitAbout) {
     buttons.push(
-    <Link href="/en/about" key="about">
-      <a href="#" title="About">
-        <IconButton className={css.button}>
-          <InfoIcon />
-        </IconButton>
-      </a>
-    </Link>,
+      <Link href="/en/about" key="about">
+        <a href="#" title="About">
+          <IconButton className={css.button}>
+            <InfoIcon />
+          </IconButton>
+        </a>
+      </Link>
     );
   }
   return <div className={css.buttonsContainer}>{buttons}</div>;
-} 
+}
