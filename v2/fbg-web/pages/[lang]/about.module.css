@@ -1,0 +1,14 @@
+.Card {
+  margin: 8px;
+}
+
+.ContributorsCard {
+    min-width: 400px;
+}
+
+@media all and (min-width: 768px) {
+  .ContributorsCard {
+    float: right;
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "About",
+  "description": "About FreeBoardGames.org, a free and open-source software project.",
+  "card": {
+    "title": "About FreeBoardGames.org",
+    "description": "FreeBoardGames.org is a free (as in freedom), mobile-first, board game platform. Its goal is to popularize board games and to make them easy to play with friends, even from afar."
+  },
+  "contributors": {
+    "title": "Contributors"
+  },
+  "credits": {
+    "title": "Credits",
+    "chess_move_sound_by_splice_sound": "Chess move sound by SpliceSound",
+    "seabattle_hit_sound_by_fridobeck": "Seabattle hit sound by fridobeck",
+    "seabattle_hit_sound_by_qubodup": "Seabattle hit sound by qubodup",
+    "seabattle_miss_sound_by_inspector_j": "Seabattle miss sound by InspectorJ",
+    "seabattle_miss_sound_by_cg_effex": "Seabattle miss sound by CGEffex",
+    "blox_font_used_in_logo_by_brian_kent": "Blox font (used in logo) by Brian Kent",
+    "bingo_thumbnail_image": "Bingo Thumbnail Image"
+  }
+}
