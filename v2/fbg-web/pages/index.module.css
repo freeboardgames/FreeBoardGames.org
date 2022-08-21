@@ -41,26 +41,7 @@
   margin-top: auto;
 }
 
-.buttonsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 8px 0;
-  justify-content: center;
-}
-
 .langBox {
   width: 128px;
   height: 76px;
-}
-
-.button {
-  width: 48px;
-  height: 48px;
-  margin-right: 8px;
-}
-
-.button > svg {
-  width: 32px;
-  height: 32px;
-  color: black;
 }
