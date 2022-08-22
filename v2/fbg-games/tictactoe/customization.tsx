@@ -1,8 +1,8 @@
 import React from 'react';
-import { GameCustomization, GameCustomizationProps } from 'gamesShared/definitions/customization';
-import Dropdown from 'gamesShared/components/customization/Dropdown';
-import { GameMode } from 'gamesShared/definitions/mode';
-import { useCurrentGameTranslation } from 'infra/i18n';
+import { GameCustomization, GameCustomizationProps } from 'fbg-games/gamesShared/definitions/customization';
+import Dropdown from 'fbg-games/gamesShared/components/customization/Dropdown';
+import { GameMode } from 'fbg-games/gamesShared/definitions/mode';
+import { useTranslation } from "next-i18next";
 
 export enum TicTacToeDifficulty {
   EASY = 0,
@@ -16,7 +16,7 @@ export interface QuickCustomizationState {
 export const DEFAULT_QUICK_CUSTOMIZATION = { difficulty: TicTacToeDifficulty.EASY };
 
 const QuickCustomization = ({ mode, currentValue, onChange }: GameCustomizationProps) => {
-  const { translate } = useCurrentGameTranslation();
+  const { t } = useTranslation('game-tictactoe');
 
   if (mode != GameMode.AI) {
     return null;
@@ -26,7 +26,7 @@ const QuickCustomization = ({ mode, currentValue, onChange }: GameCustomizationP
 
   return (
     <Dropdown
-      options={[translate('easy'), translate('hard')]}
+      options={[t('easy'), t('hard')]}
       selectedIdx={state.difficulty}
       callback={(difficulty) => {
         onChange({ difficulty });
