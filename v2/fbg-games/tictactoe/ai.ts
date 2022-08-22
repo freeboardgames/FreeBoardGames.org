@@ -1,6 +1,6 @@
-import { IAIConfig } from 'gamesShared/definitions/game';
+import { IAIConfig } from 'fbg-games/gamesShared/definitions/game';
 import { MCTSBot } from 'boardgame.io/ai';
-import { GameCustomizationState } from 'gamesShared/definitions/customization';
+import { GameCustomizationState } from 'fbg-games/gamesShared/definitions/customization';
 import { DEFAULT_QUICK_CUSTOMIZATION, QuickCustomizationState, TicTacToeDifficulty } from './customization';
 
 interface IPlayState {

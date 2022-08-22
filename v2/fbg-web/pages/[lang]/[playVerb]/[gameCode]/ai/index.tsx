@@ -1,43 +1,52 @@
 import { loadGameYaml } from "infra/games/GameLoader";
 import { getGameIdFromCode } from "infra/i18n/I18nGetGameId";
-import { Client } from "boardgame.io/react";
-import { GameMode } from "fbg-games/gamesShared/definitions/mode";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import type { NextPage } from "next";
-import { gameBoardWrapper } from "infra/games/GameBoardWrapper";
-import { IGameArgs } from "fbg-games/gamesShared/definitions/game";
-import { useTranslation } from "next-i18next";
 import { parseGameSummary } from "infra/games/GameSummaryParser";
 import { getGameStaticPaths } from "infra/misc/gameStaticPaths";
+import { Client } from "boardgame.io/react";
+import { GameMode } from "fbg-games/gamesShared/definitions/mode";
+import { useTranslation } from "next-i18next";
+import { IGameArgs } from "fbg-games/gamesShared/definitions/game";
+import { gameBoardWrapper } from "infra/games/GameBoardWrapper";
+import { Local } from "boardgame.io/multiplayer";
 
-interface LocalGameProps {
+interface AiGameProps {
   gameId: string;
   params: UrlParams;
   name: string;
 }
 
-const LocalGame: NextPage<any> = function (props: LocalGameProps) {
-  // TODO(vdf): Add customization back #launch-blocker
+const AiGame: NextPage<any> = function (props: AiGameProps) {
   const t = useTranslation("Game").t;
   const players = [
-    { playerID: 0, name: t("player_1") },
-    { playerID: 1, name: t("player_2") },
+    { playerID: 0, name: t("computer") },
+    { playerID: 1, name: t("you") },
   ];
   const gameArgs: IGameArgs = {
     gameCode: props.gameId,
-    mode: GameMode.LocalFriend,
+    mode: GameMode.AI,
     lang: props.params.lang,
     name: props.name,
     players,
   };
   const board = require(`fbg-games/${props.gameId}/board`).default;
   const game = require(`fbg-games/${props.gameId}/game`).default;
+  const aiConfig = require(`fbg-games/${props.gameId}/ai`).default;
+  // TODO(vdf): Add customization back #launch-blocker
+  const customization = {};
+  const gameAIConfig = aiConfig?.bgioAI(customization);
+  const ai = gameAIConfig?.ai || gameAIConfig?.bot || gameAIConfig;
   const App = Client({
     board: gameBoardWrapper({ gameArgs, board }),
-    game,
+    multiplayer: Local({ bots: { "0": gameAIConfig.type || ai } }),
+    game: {
+      ...game,
+      ai,
+    },
     debug: false,
   });
-  return <App />;
+  return <App playerID={"1"} />;
 };
 
 interface UrlParams {
@@ -53,7 +62,7 @@ interface UrlPath {
 
 export async function getStaticProps(
   path: UrlPath
-): Promise<{ props: LocalGameProps }> {
+): Promise<{ props: AiGameProps }> {
   const { lang, gameCode } = path.params;
   const gameId = await getGameIdFromCode(lang, gameCode);
   const gameYaml = await loadGameYaml(gameId);
@@ -74,4 +83,4 @@ export async function getStaticProps(
 
 export const getStaticPaths = getGameStaticPaths;
 
-export default LocalGame;
+export default AiGame;
