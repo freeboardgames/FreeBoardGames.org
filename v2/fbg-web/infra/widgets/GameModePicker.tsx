@@ -18,6 +18,7 @@ import Link from "next/link";
 import css from "./GameModePicker.module.css";
 import { GameSummary } from "infra/games/GameSummaryParser";
 import { GameInfoUrlParams } from "fbg-web/infra/misc/definitions";
+import CustomizationBar from "fbg-web/infra/settings/CustomizationBar";
 
 export interface GameModePickerProps {
   details: GameDetails;
@@ -98,8 +99,12 @@ function CustomizationActions(props: GameModePickerCardProps) {
       );
     }
   }
-  // TODO(vdfdev): Add CustomizationBar back #launch-blocker
-  return <>{numPlayers}</>;
+  return (
+    <>
+      <CustomizationBar gameId={props.summary.id} mode={props.mode} />
+      {numPlayers}
+    </>
+  );
 }
 
 interface OccupancySelectProps {

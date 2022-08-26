@@ -1,0 +1,44 @@
+.CustomizationCard {
+  padding: 16px;
+  max-width: 90vw;
+  max-height: 90vh;
+  text-align: left;
+ }
+
+.DialogClose {
+  float: right;
+  position: relative;
+  left: 12px;
+}
+
+.DialogTitleWrapper {
+  padding-bottom: 16px;
+}
+
+.DialogContentWrapper {
+ text-align: left;
+ overflow-y: auto;
+ overflow-x: hidden;
+ height: calc(100% - 48px);
+}
+
+.DialogTitle {
+  position: relative;
+  top: 9px;
+  padding-bottom: 8px;
+}
+
+.BarWrapperWrapper {
+  height: 48px;
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+}
+
+.BarWrapper {
+  display: flex;
+  flex-grow: 1;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
