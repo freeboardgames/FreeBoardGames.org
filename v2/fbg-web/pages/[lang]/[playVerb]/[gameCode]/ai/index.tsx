@@ -10,6 +10,10 @@ import { useTranslation } from "next-i18next";
 import { IGameArgs } from "fbg-games/gamesShared/definitions/game";
 import { gameBoardWrapper } from "infra/games/GameBoardWrapper";
 import { Local } from "boardgame.io/multiplayer";
+import { useEffect, useState } from "react";
+import { GameCustomizationState } from "fbg-games/gamesShared/definitions/customization";
+import { getGameCustomization } from "infra/settings/GameCustomization";
+import { LoadingMessage } from "infra/alert/LoadingMessage";
 
 interface AiGameProps {
   gameId: string;
@@ -17,8 +21,25 @@ interface AiGameProps {
   name: string;
 }
 
+interface AiGamePropsState {
+  customization: GameCustomizationState|null; 
+}
+
 const AiGame: NextPage<any> = function (props: AiGameProps) {
+  const initialState: AiGamePropsState = { customization: null };
+  const [state, setState] = useState(initialState);
   const t = useTranslation("Game").t;
+  const board = require(`fbg-games/${props.gameId}/board`).default;
+  const game = require(`fbg-games/${props.gameId}/game`).default;
+  const aiConfig = require(`fbg-games/${props.gameId}/ai`).default;
+  useEffect(() => {
+    const newState = { customization: getGameCustomization(props.gameId).AI }; 
+    setState(() => newState);
+  }, []);
+  if (!state.customization) {
+    return <LoadingMessage />;
+  }
+  const customization = state.customization;
   const players = [
     { playerID: 0, name: t("computer") },
     { playerID: 1, name: t("you") },
@@ -30,11 +51,6 @@ const AiGame: NextPage<any> = function (props: AiGameProps) {
     name: props.name,
     players,
   };
-  const board = require(`fbg-games/${props.gameId}/board`).default;
-  const game = require(`fbg-games/${props.gameId}/game`).default;
-  const aiConfig = require(`fbg-games/${props.gameId}/ai`).default;
-  // TODO(vdf): Add customization back #launch-blocker
-  const customization = {};
   const gameAIConfig = aiConfig?.bgioAI(customization);
   const ai = gameAIConfig?.ai || gameAIConfig?.bot || gameAIConfig;
   const App = Client({
@@ -75,6 +91,7 @@ export async function getStaticProps(
       ...(await serverSideTranslations(lang, [
         "Game",
         "GameOver",
+        "LoadingMessage",
         `game-${gameId}`,
       ])),
     },

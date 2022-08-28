@@ -1,37 +1,35 @@
 import css from "./CustomizationBar.module.css";
 import {
-  GameCustomization,
   FullGameCustomizationState,
-  CustomizationType,
   GameCustomizationState,
+  CustomizationType,
+  EMPTY_FULL_GAME_CUSTOMIZATION_STATE,
 } from "fbg-games/gamesShared/definitions/customization";
 import { GameMode } from "fbg-games/gamesShared/definitions/mode";
 import IconButton from "@mui/material/IconButton";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useState } from "react";
-import { useSettingsService } from "./SettingsService";
+import { useEffect, useState } from "react";
+import { getGameCustomization, setGameCustomization } from "./GameCustomization";
 
 export interface CustomizationBarProps {
   gameId: string;
   mode: GameMode;
 }
 
-interface CustomizationState {
-  showDialog: boolean;
-  customizationState: FullGameCustomizationState;
-}
-
 const CustomizationBar = function (
-  props: CustomizationBarProps,
-  state: CustomizationState
+  props: CustomizationBarProps
 ) {
-  const { settingsService } = useSettingsService();
-  const [customizationState, setState] = useState(() =>
-    settingsService.getGameSetting("customization", props.gameId)
-  );
-  const modeState: GameCustomizationState =
-    (customizationState || {})[props.mode] || {};
-  const dialog = state.showDialog ? (
+  const [customizationState, setCustomizationState] = useState(EMPTY_FULL_GAME_CUSTOMIZATION_STATE);
+  const [showDialog, setShowDialog] = useState(false);
+  useEffect(() => {
+    setCustomizationState(getGameCustomization(props.gameId));
+  }, []);
+  const onChange = (customizationType: CustomizationType) => (value?: unknown) => {
+    const newState = setGameCustomization(props.gameId, props.mode, customizationType, value);
+    setCustomizationState(newState);
+  };
+  const modeState: GameCustomizationState = customizationState[props.mode] || {};
+  const dialog = showDialog ? (
     <FullCustomizationDialog gameId={props.gameId} fullState={modeState.full} />
   ) : null;
   return (
@@ -40,12 +38,15 @@ const CustomizationBar = function (
       <div className={css.BarWrapper}>
         <QuickCustommizationBar
           gameId={props.gameId}
+          mode={props.mode}
           quickState={modeState.quick}
+          onChange={onChange}
         />
       </div>
       <FullCustomizationButton
         gameId={props.gameId}
         fullState={modeState.full}
+        setShowDialog={setShowDialog}
       />
     </div>
   );
@@ -54,6 +55,7 @@ const CustomizationBar = function (
 interface FullCustomizationButtonProps {
   gameId: string;
   fullState?: unknown;
+  setShowDialog: (showDialog: boolean) => void;
 }
 
 const FullCustomizationButton = function (props: FullCustomizationButtonProps) {
@@ -62,11 +64,13 @@ const FullCustomizationButton = function (props: FullCustomizationButtonProps) {
   if (!customization || !customization.FullCustomization) {
     return null;
   }
+  const onClick = () => {
+    props.setShowDialog(true)
+  };
   return (
     <IconButton
       aria-label="Customize game"
-      // TODO
-      // onClick={this.toggleFullCustomizationDialog}
+      onClick={onClick}
       style={{ height: "48px", width: "48px", marginLeft: "auto" }}
     >
       <SettingsIcon
@@ -78,12 +82,26 @@ const FullCustomizationButton = function (props: FullCustomizationButtonProps) {
 
 interface QuickCustomizationBarProps {
   gameId: string;
+  mode: GameMode;
   quickState?: unknown;
+  onChange: (type: CustomizationType) => (value: unknown) => void;
 }
 
-const QuickCustommizationBar = function (props: QuickCustomizationBarProps) {
-  // TODO
-  return null;
+const QuickCustommizationBar = function (props: QuickCustomizationBarProps) { 
+  const customization = require(`fbg-games/${props.gameId}/customization`).default;
+  if (!customization || !customization.QuickCustomization) {
+    return null;
+  }
+
+  const { QuickCustomization } = customization; 
+
+  const childProps = {
+    mode: props.mode,
+    currentValue: props.quickState,
+    onChange: props.onChange(CustomizationType.QUICK),
+  };
+
+  return <QuickCustomization {...childProps} />; 
 };
 
 interface FullCustomizationDialogProps {

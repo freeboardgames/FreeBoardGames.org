@@ -35,7 +35,7 @@ class TictactoeRandomBot {
 }
 const config: IAIConfig = {
   bgioAI: (customization: GameCustomizationState) => {
-    const quickCustomizationState = (customization?.quick as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
+    const quickCustomizationState = (customization.quick as QuickCustomizationState) || DEFAULT_QUICK_CUSTOMIZATION;
     const difficulty = quickCustomizationState.difficulty;
     if (difficulty === TicTacToeDifficulty.HARD) {
       return {

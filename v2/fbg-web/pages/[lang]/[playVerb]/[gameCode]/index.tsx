@@ -160,7 +160,7 @@ export async function getStaticProps(
       details,
       translations,
       urlParams: path.params,
-      ...(await serverSideTranslations(lang, ["GameInfo"])),
+      ...(await serverSideTranslations(lang, ["GameInfo", `game-${gameId}`])),
     },
   };
 }

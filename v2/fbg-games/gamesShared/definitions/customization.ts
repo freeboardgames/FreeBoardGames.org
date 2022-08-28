@@ -2,19 +2,25 @@ import { ComponentType } from 'react';
 import { GameMode } from './mode';
 
 export enum CustomizationType {
-  QUICK,
-  FULL,
+  QUICK = 'quick',
+  FULL = 'full',
 }
 
 export interface GameCustomizationState {
-  quick?: unknown;
-  full?: unknown;
+  quick: any;
+  full: any;
 }
 
 export interface FullGameCustomizationState {
-  local?: GameCustomizationState;
-  online?: GameCustomizationState;
-  AI?: GameCustomizationState;
+  local: GameCustomizationState;
+  online: GameCustomizationState;
+  AI: GameCustomizationState;
+}
+
+export const EMPTY_FULL_GAME_CUSTOMIZATION_STATE = {
+  local: { quick: null, full: null },
+  online: { quick: null, full: null },
+  AI: { quick: null, full: null }
 }
 
 export interface GameCustomizationProps {
