@@ -5193,10 +5193,10 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-graphql-query-complexity@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.11.0.tgz#6078e72a39a410bb5285673077565ec8ee127c6b"
-  integrity sha512-1Ns64a41XYLehYFxZwoEn7i7myUQPd/fLRZPZ73ULjln4VBWMwptzB8LiPWNaRHsTjLMkecZPeqmuKYNXrFIGA==
+graphql-query-complexity@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.12.0.tgz#5f636ccc54da82225f31e898e7f27192fe074b4c"
+  integrity sha512-fWEyuSL6g/+nSiIRgIipfI6UXTI7bAxrpPlCY1c0+V3pAEUo1ybaKmSBgNr1ed2r+agm1plJww8Loig9y6s2dw==
   dependencies:
     lodash.get "^4.4.2"
 
