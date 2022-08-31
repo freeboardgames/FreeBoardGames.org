@@ -12,7 +12,7 @@ export interface ChatUserSettings {
 }
 
 export class SettingsService {
-  setUserSetting<K extends keyof UserSettings>(key: K, value: UserSettings[K]) { 
+  setUserSetting<K extends keyof UserSettings>(key: K, value: UserSettings[K]) {
     localStorage.setItem(`${key}-setting`, JSON.stringify(value));
   }
 
