@@ -26,8 +26,25 @@ export interface GameModePickerProps {
   params: GameInfoUrlParams;
 }
 
+const GAME_MODE_ORDER = [
+  GameMode.AI,
+  GameMode.OnlineFriend,
+  GameMode.LocalFriend,
+];
+
 export function GameModePicker(props: GameModePickerProps) {
   const { t } = useTranslation("GameInfo");
+  props.details.modes.sort((x, y) => {
+    const xIndex = GAME_MODE_ORDER.indexOf(x);
+    const yIndex = GAME_MODE_ORDER.indexOf(y);
+    if (xIndex < yIndex) {
+      return -1;
+    }
+    if (xIndex > yIndex) {
+      return 1;
+    }
+    return 0;
+  });
   const cards = props.details.modes.map((mode) => (
     <GameModePickerCard mode={mode} key={mode} {...props} />
   ));

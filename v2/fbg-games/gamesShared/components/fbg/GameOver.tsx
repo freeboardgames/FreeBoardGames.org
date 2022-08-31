@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { useTranslation } from "next-i18next";
+import { GameMode } from "fbg-games/gamesShared/definitions/mode";
+import { useRouter, NextRouter } from 'next/router';
 
 export interface GameOverProps {
   result: string;
@@ -26,12 +28,22 @@ function ExtraCardContent(props: ExtraCardContentProps) {
   return otherPlayerCard;
 };
 
+const playAgainHandle = (router: NextRouter, args: IGameArgs) => () => {
+  if (args.mode === GameMode.AI || args.mode === GameMode.LocalFriend) {
+    router.push(window.location.pathname);
+  } else {
+    alert('TODO before launch');
+  }
+};
+
 export function GameOver(props: GameOverProps) {
+  const router = useRouter();
   const { t } = useTranslation("GameOver");
   const extraCardContent = (<ExtraCardContent extraCardContent={props.extraCardContent} />);
   const playAgain = (
     <div style={{ textAlign: 'center' }}>
       <Button
+        onClick={playAgainHandle(router, props.gameArgs)}
         variant="outlined"
         style={{ marginRight: 'auto', marginLeft: 'auto', marginBottom: '24px' }}
       >

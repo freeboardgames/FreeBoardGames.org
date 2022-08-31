@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { GameCustomizationState } from "fbg-games/gamesShared/definitions/customization";
 import { getGameCustomization } from "infra/settings/GameCustomization";
 import { LoadingMessage } from "infra/alert/LoadingMessage";
+import { Ctx } from "boardgame.io";
 
 interface AiGameProps {
   gameId: string;
@@ -21,21 +22,21 @@ interface AiGameProps {
   name: string;
 }
 
-interface AiGamePropsState {
-  customization: GameCustomizationState|null; 
+interface AiGameState {
+  customization: GameCustomizationState | null;
 }
 
 const AiGame: NextPage<any> = function (props: AiGameProps) {
-  const initialState: AiGamePropsState = { customization: null };
+  const initialState: AiGameState = { customization: null };
   const [state, setState] = useState(initialState);
   const t = useTranslation("Game").t;
   const board = require(`fbg-games/${props.gameId}/board`).default;
   const game = require(`fbg-games/${props.gameId}/game`).default;
   const aiConfig = require(`fbg-games/${props.gameId}/ai`).default;
   useEffect(() => {
-    const newState = { customization: getGameCustomization(props.gameId).AI }; 
+    const newState = { customization: getGameCustomization(props.gameId).AI };
     setState(() => newState);
-  }, []);
+  }, [props.gameId]);
   if (!state.customization) {
     return <LoadingMessage />;
   }
@@ -53,12 +54,14 @@ const AiGame: NextPage<any> = function (props: AiGameProps) {
   };
   const gameAIConfig = aiConfig?.bgioAI(customization);
   const ai = gameAIConfig?.ai || gameAIConfig?.bot || gameAIConfig;
+  const setup = (ctx: Ctx) => game.setup?.(ctx, customization);
   const App = Client({
     board: gameBoardWrapper({ gameArgs, board }),
     multiplayer: Local({ bots: { "0": gameAIConfig.type || ai } }),
     game: {
       ...game,
       ai,
+      setup,
     },
     debug: false,
   });
