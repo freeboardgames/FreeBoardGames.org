@@ -21,7 +21,7 @@
     "fbg-games": "*",
     "glob": "^8.0.3",
     "js-yaml": "^4.1.0",
-    "next": "12.3.0",
+    "next": "12.3.1",
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^12.0.1",
     "next-seo": "^5.5.0",
