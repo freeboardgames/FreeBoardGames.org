@@ -8,7 +8,11 @@ import { gameBoardWrapper } from "infra/games/GameBoardWrapper";
 import { IGameArgs } from "fbg-games/gamesShared/definitions/game";
 import { useTranslation } from "next-i18next";
 import { parseGameSummary } from "infra/games/GameSummaryParser";
-import { getGameStaticPaths } from "infra/misc/gameStaticPaths";
+import {
+  GameUrlParams,
+  GameUrlPath,
+  getGameStaticPaths,
+} from "infra/misc/gameStaticPaths";
 import { GameCustomizationState } from "fbg-games/gamesShared/definitions/customization";
 import { useEffect, useState } from "react";
 import { getGameCustomization } from "infra/settings/GameCustomization";
@@ -17,7 +21,7 @@ import { Ctx } from "boardgame.io";
 
 interface LocalGameProps {
   gameId: string;
-  params: UrlParams;
+  params: GameUrlParams;
   name: string;
 }
 
@@ -61,19 +65,8 @@ const LocalGame: NextPage<any> = function (props: LocalGameProps) {
   return <App />;
 };
 
-interface UrlParams {
-  lang: string;
-  playVerb: string;
-  gameCode: string;
-  gameId: string;
-}
-
-interface UrlPath {
-  params: UrlParams;
-}
-
 export async function getStaticProps(
-  path: UrlPath
+  path: GameUrlPath
 ): Promise<{ props: LocalGameProps }> {
   const { lang, gameCode } = path.params;
   const gameId = await getGameIdFromCode(lang, gameCode);

@@ -5,6 +5,17 @@ import { parseGameDetails } from "infra/games/GameDetailsParser";
 import { loadGameYaml } from "infra/games/GameLoader";
 import { GameMode } from "fbg-games/gamesShared/definitions/mode";
 
+export interface GameUrlParams {
+  lang: string;
+  playVerb: string;
+  gameCode: string;
+  gameId: string;
+}
+
+export interface GameUrlPath {
+  params: GameUrlParams;
+}
+
 export async function getGameStaticPaths() {
   const i18nConfig = parseI18nConfig(await loadI18nConfig());
   const paths = [];

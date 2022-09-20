@@ -3,7 +3,11 @@ import { getGameIdFromCode } from "infra/i18n/I18nGetGameId";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import type { NextPage } from "next";
 import { parseGameSummary } from "infra/games/GameSummaryParser";
-import { getGameStaticPaths } from "infra/misc/gameStaticPaths";
+import {
+  GameUrlParams,
+  GameUrlPath,
+  getGameStaticPaths,
+} from "infra/misc/gameStaticPaths";
 import { Client } from "boardgame.io/react";
 import { GameMode } from "fbg-games/gamesShared/definitions/mode";
 import { useTranslation } from "next-i18next";
@@ -18,7 +22,7 @@ import { Ctx } from "boardgame.io";
 
 interface AiGameProps {
   gameId: string;
-  params: UrlParams;
+  params: GameUrlParams;
   name: string;
 }
 
@@ -68,19 +72,8 @@ const AiGame: NextPage<any> = function (props: AiGameProps) {
   return <App playerID={"1"} />;
 };
 
-interface UrlParams {
-  lang: string;
-  playVerb: string;
-  gameCode: string;
-  gameId: string;
-}
-
-interface UrlPath {
-  params: UrlParams;
-}
-
 export async function getStaticProps(
-  path: UrlPath
+  path: GameUrlPath
 ): Promise<{ props: AiGameProps }> {
   const { lang, gameCode } = path.params;
   const gameId = await getGameIdFromCode(lang, gameCode);
