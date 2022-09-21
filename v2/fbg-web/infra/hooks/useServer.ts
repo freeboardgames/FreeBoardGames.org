@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const FBG_SERVERS = ["charizard", "pikachu"];
 
-const LOCAL_SERVERS = ["localhost", "foo", "bar"];
+const LOCAL_SERVERS = ["localhost:8001"];
 
 export interface FbgServer {
   resolved: boolean;
@@ -43,9 +43,20 @@ function getServerList() {
   if (location.hostname.toLowerCase() != "www.freeboardgames.org") {
     return LOCAL_SERVERS;
   }
-  return FBG_SERVERS.map((x) => `${x}.freeboardgames.org`);
+  return FBG_SERVERS.map((x) => `${x}.freeboardgames.org:8001`);
 }
 
-async function isServerUp(server: string): Promise<boolean> {
-  return false;
+async function isServerUp(hostname: string): Promise<boolean> {
+  const protocol = location.protocol || "http:";
+  let response;
+  try {
+    response = await fetch(`${protocol}//${hostname}/open`);
+  } catch (e) {
+    return false;
+  }
+  if (!response.ok) {
+    return false;
+  }
+  const text = await response.text();
+  return text === "open";
 }
