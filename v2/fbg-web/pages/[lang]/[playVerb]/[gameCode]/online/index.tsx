@@ -7,6 +7,7 @@ import {
 import { getGameIdFromCode } from "infra/i18n/I18nGetGameId";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useServer } from "infra/hooks/useServer";
+import { useLogin } from "infra/hooks/useLogin";
 
 export const getStaticPaths = getGameStaticPaths;
 
@@ -16,12 +17,20 @@ interface NewGameProps {
 }
 
 const NewGame: NextPage<any> = function (props: NewGameProps) {
+  const [login, setLogin] = useLogin();
   const server = useServer();
+  if (!login.loggedIn) {
+    return <h1>NOT LOGGED IN!</h1>;
+  }
+  const nickname = login.nickname!;
   return (
-    <h1>
-      resolved: {JSON.stringify(server.resolved)} serversDown:{" "}
-      {JSON.stringify(server.serversDown)} hostname: {server.hostname}
-    </h1>
+    <>
+      <p>nickname: {nickname}</p>
+      <p>resolved: {JSON.stringify(server.resolved)}</p>
+      <p>serversDown: {JSON.stringify(server.serversDown)}</p>
+      <p>hostname: {server.hostname}</p>
+      <p>index: {server.index}</p>
+    </>
   );
 };
 
