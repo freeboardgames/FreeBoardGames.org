@@ -1,0 +1,8 @@
+.NicknameCard {
+    margin-top: 16px;
+    white-space: nowrap;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
