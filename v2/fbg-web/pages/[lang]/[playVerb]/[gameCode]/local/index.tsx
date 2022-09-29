@@ -80,6 +80,7 @@ export async function getStaticProps(
       ...(await serverSideTranslations(lang, [
         "Game",
         "GameOver",
+        "LoadingMessage",
         `game-${gameId}`,
       ])),
     },
