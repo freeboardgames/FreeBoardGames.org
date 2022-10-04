@@ -131,7 +131,8 @@ export const Kriegspiel: Game<GameState> = {
       G.editMode = b;
     },
     load: (G, ctx, fen: string) => {
-      return loadGame(fen, ctx);
+      const isEdit = G.editMode;
+      return { ...loadGame(fen, ctx), editMode: isEdit };
     },
     merge: (G, ctx, fen: string) => {
       const addCells = loadGame(fen, ctx).cells;
