@@ -246,7 +246,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
             return (
               lines.length > 1 &&
               gTranslate(
-                drawLine(lineLst[0], lineLst[lineLst.length - 1], fictionColor('0'), 0.05, [0.5, 0.1]),
+                drawLine(lineLst[0], lineLst[lineLst.length - 1], fictionColor('0'), 0.05, '0.5, 0.1'),
                 -0.05,
                 -0.05,
               )
@@ -258,7 +258,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
             return (
               lines.length > 1 &&
               gTranslate(
-                drawLine(lineLst[0], lineLst[lineLst.length - 1], fictionColor('1'), 0.05, [0.5, 0.1]),
+                drawLine(lineLst[0], lineLst[lineLst.length - 1], fictionColor('1'), 0.05, '0.5, 0.1'),
                 0.05,
                 0.05,
               )
@@ -273,8 +273,8 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
           G.places,
         )}
         {/* move indication */}
-        {G.moveRecords['0'].map(([st, ed]) => drawLine(st, ed, pico8Palette.dark_blue, 0.5, [0.3, 0.1]))}
-        {G.moveRecords['1'].map(([st, ed]) => drawLine(st, ed, pico8Palette.brown, 0.5, [0.3, 0.1]))}
+        {G.moveRecords['0'].map(([st, ed]) => drawLine(st, ed, pico8Palette.dark_blue, 0.5, '0.3, 0.1'))}
+        {G.moveRecords['1'].map(([st, ed]) => drawLine(st, ed, pico8Palette.brown, 0.5, '0.3, 0.1'))}
 
         {/* piece */}
         {renderLayer(
@@ -452,13 +452,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
           } else {
             return (
               <>
-                <rect
-                  width="1"
-                  height="1"
-                  fill={pico8Palette.red}
-                  stroke={pico8Palette.dark_grey}
-                  strokeWidth="0.05"
-                />
+                <rect width="1" height="1" fill={pico8Palette.red} stroke={pico8Palette.dark_grey} strokeWidth="0.05" />
                 {atk && (atk[1] === 'Arsenal' ? renderStr('🎪') : renderPiece(atk[1]))}
               </>
             );
@@ -722,7 +716,7 @@ function gTranslate(jsx: JSX.Element | JSX.Element[], x = 0, y = 0) {
   return <g transform={`translate(${x} ${y})`}>{jsx}</g>;
 }
 
-function drawLine(stCId: CellID, edCId: CellID, color: string = 'black', width: number = 0.1, dash: number[] = []) {
+function drawLine(stCId: CellID, edCId: CellID, color: string = 'black', width: number = 0.1, dash: string = '') {
   const stPos = CId2Pos(stCId);
   const edPos = CId2Pos(edCId);
   return (
