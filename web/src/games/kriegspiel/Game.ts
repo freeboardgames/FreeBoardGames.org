@@ -129,6 +129,11 @@ export const Kriegspiel: Game<GameState> = {
     load: (G, ctx, fen: string) => {
       return loadGame(fen, ctx);
     },
+    merge: (G, ctx, fen: string) => {
+      const addCells = loadGame(fen, ctx).cells;
+      const newCells = G.cells.map((obj, id) => (addCells[id] ? addCells[id] : obj));
+      G.cells = newCells;
+    },
     editCells: (G, ctx, CId: CellID, element: ObjInstance | null) => {
       G.cells[CId] = element;
       update(G, ctx);

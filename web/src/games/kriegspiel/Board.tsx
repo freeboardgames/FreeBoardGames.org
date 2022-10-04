@@ -614,6 +614,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
 
         <input type="button" value="Export Game" onClick={() => setGameData(exportGame(G))} />
         <input type="button" value="Load Game" onClick={() => moves.load(gameData)} />
+        <input type="button" value="Merge Game" onClick={() => moves.merge(gameData)} />
         <input
           type="button"
           value="Copy Data"
