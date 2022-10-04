@@ -8,7 +8,7 @@ export const kriegspielGameDef: IGameDef = {
   name: "Guy Debord's Kriegspiel",
   contributors: ['iamcxds'],
   imageURL: Thumbnail,
-  modes: [{ mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
+  modes: [{ mode: GameMode.AI }, { mode: GameMode.OnlineFriend }, { mode: GameMode.LocalFriend }],
   minPlayers: 2,
   maxPlayers: 2,
   description: 'Le Jeu de la Guerre',
@@ -18,6 +18,7 @@ export const kriegspielGameDef: IGameDef = {
     text: instructions,
   },
   status: IGameStatus.IN_DEVELOPMENT,
+  aiConfig: () => import('./ai'),
   config: () => import('./config'),
 };
 

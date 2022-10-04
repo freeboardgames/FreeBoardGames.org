@@ -23,6 +23,34 @@ export function dualPlayerID(id: P_ID) {
       return '0';
   }
 }
+export const aiConfig = {
+  enumerate: (G: GameState, ctx: Ctx) => {
+    let evts = [{ event: 'endTurn', args: [] }];
+    const CIdLst = Array.from(Array(BoardSize.mx * BoardSize.my).keys());
+    const cPlayer = ctx.currentPlayer as P_ID;
+    //const myPieceId = filterCId(G.cells,(obj)=>obj.belong===cPlayer)
+    //const opPieceId = filterCId(G.cells,(obj)=>obj.belong!==cPlayer)
+    let atks = CIdLst.filter((id) => canAttack(G, ctx, id)[0]).map((id) => {
+      return { move: 'attack', args: [id] };
+    });
+    let moves = CIdLst.filter((stCId) => canPick(G, ctx, stCId)).flatMap((stCId) => {
+      //simply predict supply line after move
+      const newG: GameState = { ...G, cells: G.cells.map((obj, CId) => (CId === stCId ? null : obj)) };
+      const suppPred = getSuppliedCells(newG, cPlayer);
+      const dirSuppPred = getDirSuppliedLines(newG, cPlayer)[0];
+      //move to dir supplied or close friendly units.
+      return CIdLst.filter(
+        (edCId) => canPut(G, ctx, stCId, edCId) && (dirSuppPred.includes(edCId) || ptSetDisLessThan(suppPred, edCId)),
+      ).map((edCId) => {
+        return { move: 'movePiece', args: [stCId, edCId] };
+      });
+    });
+    let result = [...evts, ...atks, ...moves];
+    return result;
+  },
+  //objectives: (G,ctx)=>{}
+};
+
 export const Kriegspiel: Game<GameState> = {
   setup: (ctx) => {
     return loadGame(game1, ctx);
@@ -118,33 +146,7 @@ export const Kriegspiel: Game<GameState> = {
     }
   },
 
-  ai: {
-    enumerate: (G, ctx) => {
-      let evts = [{ event: 'endTurn', args: [] }];
-      const CIdLst = Array.from(Array(BoardSize.mx * BoardSize.my).keys());
-      const cPlayer = ctx.currentPlayer as P_ID;
-      //const myPieceId = filterCId(G.cells,(obj)=>obj.belong===cPlayer)
-      //const opPieceId = filterCId(G.cells,(obj)=>obj.belong!==cPlayer)
-      let atks = CIdLst.filter((id) => canAttack(G, ctx, id)[0]).map((id) => {
-        return { move: 'attack', args: [id] };
-      });
-      let moves = CIdLst.filter((stCId) => canPick(G, ctx, stCId)).flatMap((stCId) => {
-        //simply predict supply line after move
-        const newG: GameState = { ...G, cells: G.cells.map((obj, CId) => (CId === stCId ? null : obj)) };
-        const suppPred = getSuppliedCells(newG, cPlayer);
-        const dirSuppPred = getDirSuppliedLines(newG, cPlayer)[0];
-        //move to dir supplied or close friendly units.
-        return CIdLst.filter(
-          (edCId) => canPut(G, ctx, stCId, edCId) && (dirSuppPred.includes(edCId) || ptSetDisLessThan(suppPred, edCId)),
-        ).map((edCId) => {
-          return { move: 'movePiece', args: [stCId, edCId] };
-        });
-      });
-      let result = [...evts, ...atks, ...moves];
-      return result;
-    },
-    //objectives: (G,ctx)=>{}
-  },
+  ai: aiConfig,
 };
 
 //data save and load board use FEN
