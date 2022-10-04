@@ -145,7 +145,7 @@ export const Kriegspiel: Game<GameState> = {
   },
 
   endIf: (G, ctx) => {
-    if (!G.cells.some((obj, id) => canPick(G, ctx, id) || canAttack(G, ctx, id))) {
+    if (!G.cells.some((obj, id) => canPick(G, ctx, id) || canAttack(G, ctx, id)[0])) {
       const cPlayer = ctx.currentPlayer as P_ID;
       return { winner: dualPlayerID(cPlayer), loser: cPlayer };
     }

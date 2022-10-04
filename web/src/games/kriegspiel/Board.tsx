@@ -24,10 +24,9 @@ import { Ctx } from 'boardgame.io';
 
 //import { useGesture } from '@use-gesture/react'
 
-const getWinner = (ctx: Ctx): string | null => {
+const getWinner = (ctx: Ctx) => {
   if (!ctx.gameover) return null;
-  if (ctx.gameover.draw) return 'Draw';
-  return `Player ${ctx.gameover.winner} wins!`;
+  else return spanBGColor(<>The winner is Player {ctx.gameover.winner}!</>, fictionColor(ctx.gameover.winner));
 };
 
 interface GameProps extends BoardProps<GameState> {}
@@ -518,7 +517,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
       {/* battle factor */}
       {battleFactorTable(pickedID)}
 
-      <label>{winner && `Winner is ${winner}!`}</label>
+      <p>{winner && { winner }}</p>
     </div>
   );
   // editor
