@@ -8,6 +8,7 @@ export type CellID = number;
 export interface GameState {
   //myID:P_ID,
   //opponentID:P_ID,
+  editMode: boolean;
   cells: (ObjInstance | null)[];
   places: (Stronghold | null)[];
   inSupply: { [key in P_ID]: CellID[] };
@@ -126,6 +127,9 @@ export const Kriegspiel: Game<GameState> = {
         update(G, ctx);
       } else return INVALID_MOVE;
     },
+    setEditMode: (G, ctx, b: boolean) => {
+      G.editMode = b;
+    },
     load: (G, ctx, fen: string) => {
       return loadGame(fen, ctx);
     },
@@ -145,7 +149,7 @@ export const Kriegspiel: Game<GameState> = {
   },
 
   endIf: (G, ctx) => {
-    if (!G.cells.some((obj, id) => canPick(G, ctx, id) || canAttack(G, ctx, id)[0])) {
+    if (!G.editMode && !G.cells.some((obj, id) => canPick(G, ctx, id) || canAttack(G, ctx, id)[0])) {
       const cPlayer = ctx.currentPlayer as P_ID;
       return { winner: dualPlayerID(cPlayer), loser: cPlayer };
     }
@@ -220,6 +224,7 @@ function loadGame(fen: string, ctx: Ctx): GameState {
     return data ? decodeStrong(data) : null;
   });
   let myGame: GameState = {
+    editMode: false,
     cells: deCells,
     places: dePlaces,
     inSupply: {
