@@ -20,19 +20,18 @@ import {
   getSuppliedCells,
   exportGame,
 } from './Game';
-import { Ctx } from 'boardgame.io';
 
 //import { useGesture } from '@use-gesture/react'
 
-const getWinner = (ctx: Ctx) => {
+/* const getWinner = (ctx: Ctx) => {
   if (!ctx.gameover) return null;
   else return spanBGColor(<>The winner is Player {ctx.gameover.winner}!</>, fictionColor(ctx.gameover.winner));
-};
+}; */
 
 interface GameProps extends BoardProps<GameState> {}
 
 export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) => {
-  let winner = getWinner(ctx);
+  //let winner = getWinner(ctx);
   const myID = (props.playerID !== null ? props.playerID : ctx.currentPlayer) as P_ID;
   const opponentID = dualPlayerID(myID);
   const currentPlayer = ctx.currentPlayer as P_ID;
@@ -480,12 +479,15 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
                   <>
                     {spanBGColor(
                       <>
-                        {obj.objRender + obj.typeName},<br /> offense:{' '}
-                        {obj.objType === 'Cavalry' ? '4(+3)' : obj.offense}, defense: {obj.defense},<br /> range:{' '}
-                        {obj.range}, speed: {obj.speed}
+                        {obj.objRender + obj.typeName},<br />
+                        <span title="Attack">⚔️: {obj.objType === 'Cavalry' ? '4(+3)' : obj.offense} </span>
+                        <span title="Defense">🛡️: {obj.defense} </span>
+                        <span title="Range">🎯: {obj.range} </span>
+                        <span title="Speed">🐴: {obj.speed} </span>
                       </>,
                       fictionColor(obj.belong),
                     )}
+                    <br />
                     <button
                       disabled={!(isActive && canAttack(G, ctx, pickedID)[0])}
                       onClick={() => {
@@ -503,7 +505,13 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
                     {spanBGColor(
                       <>
                         {str.placeRender + str.placeType}
-                        {str.defenseAdd > 0 ? ', additional defense: ' + str.defenseAdd : ''}
+                        {str.defenseAdd > 0 ? (
+                          <>
+                            , <span title="Additional Defense"> 🛡️+: {str.defenseAdd} </span>{' '}
+                          </>
+                        ) : (
+                          ''
+                        )}
                       </>,
                       str.belong ? fictionColor(str.belong) : '',
                     )}{' '}
@@ -516,8 +524,6 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
 
       {/* battle factor */}
       {battleFactorTable(pickedID)}
-
-      <p>{winner && { winner }}</p>
     </div>
   );
   // editor
@@ -636,8 +642,8 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
       <div style={{ height: 'auto', fontFamily: "'Lato', sans-serif", clear: 'both', display: 'flex' }}>
         <div
           style={{
-            height: '95vh',
-            width: '115vh',
+            height: '99vh',
+            width: '122vh',
             float: 'left',
             border: `2px solid ${pico8Palette.dark_green}`,
             backgroundColor: `${pico8Palette.white}`,

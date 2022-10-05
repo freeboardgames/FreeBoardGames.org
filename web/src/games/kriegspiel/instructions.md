@@ -31,6 +31,8 @@ Why emoji? there is nothing more appropriate than emoji to illustrate the Specta
 - Battle related symbols
   - ⚔️ Attack
   - 🛡️ Defense
+  - 🎯 Combat Range
+  - 🐴 Move Speed
   - ⚡ Cavalry Charge
   - 🏃‍♂️ Retreat
   - 💀 Captured

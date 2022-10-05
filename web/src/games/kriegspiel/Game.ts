@@ -54,7 +54,7 @@ export const aiConfig = {
 
 export const Kriegspiel: Game<GameState> = {
   setup: (ctx) => {
-    return loadGame(game1, ctx);
+    return loadGame(game1, ctx.currentPlayer as P_ID);
   },
   /* playerView: (G, ctx, playerID) => {
     return {...G, myID: playerID, opponentID:dualPlayerID(playerID as P_ID)};
@@ -106,7 +106,7 @@ export const Kriegspiel: Game<GameState> = {
           G.forcedRetreat[cPlayer] = [null, edCId];
         }
 
-        update(G, ctx);
+        update(G, cPlayer);
       } else return INVALID_MOVE;
     },
     attack: (G, ctx, CId: CellID) => {
@@ -124,7 +124,7 @@ export const Kriegspiel: Game<GameState> = {
         else {
           G.cells[CId] = null;
         }
-        update(G, ctx);
+        update(G, cPlayer);
       } else return INVALID_MOVE;
     },
     setEditMode: (G, ctx, b: boolean) => {
@@ -132,20 +132,22 @@ export const Kriegspiel: Game<GameState> = {
     },
     load: (G, ctx, fen: string) => {
       const isEdit = G.editMode;
-      return { ...loadGame(fen, ctx), editMode: isEdit };
+      return { ...loadGame(fen, ctx.currentPlayer as P_ID), editMode: isEdit };
     },
     merge: (G, ctx, fen: string) => {
-      const addCells = loadGame(fen, ctx).cells;
+      const addCells = loadGame(fen, ctx.currentPlayer as P_ID).cells;
       const newCells = G.cells.map((obj, id) => (addCells[id] ? addCells[id] : obj));
       G.cells = newCells;
     },
     editCells: (G, ctx, CId: CellID, element: ObjInstance | null) => {
+      const cPlayer = ctx.currentPlayer as P_ID;
       G.cells[CId] = element;
-      update(G, ctx);
+      update(G, cPlayer);
     },
     editPlaces: (G, ctx, CId: CellID, element: Stronghold | null) => {
+      const cPlayer = ctx.currentPlayer as P_ID;
       G.places[CId] = element;
-      update(G, ctx);
+      update(G, cPlayer);
     },
   },
 
@@ -212,18 +214,25 @@ export function exportGame(G: GameState): string {
   });
 }
 
-function loadGame(fen: string, ctx: Ctx): GameState {
-  const deCells = FEN2board(fen, (str) => {
+export function loadPieces(fen: string) {
+  return FEN2board(fen, (str) => {
+    //💂‍♂️.0/🎪.0
     const data = str.split('/')[0];
-
     return data ? decodeObj(data) : null;
   });
-  const dePlaces = FEN2board(fen, (str) => {
+}
+function loadPlaces(fen: string) {
+  return FEN2board(fen, (str) => {
     //💂‍♂️.0/🎪.0
     const dLst = str.split('/');
     const data = dLst[dLst.length - 1];
     return data ? decodeStrong(data) : null;
   });
+}
+
+export function loadGame(fen: string, cPlayer: P_ID): GameState {
+  const deCells = loadPieces(fen);
+  const dePlaces = loadPlaces(fen);
   let myGame: GameState = {
     editMode: false,
     cells: deCells,
@@ -236,7 +245,7 @@ function loadGame(fen: string, ctx: Ctx): GameState {
     attackRecords: { 0: null, 1: null },
     forcedRetreat: { 0: [null, null], 1: [null, null] },
   };
-  update(myGame, ctx);
+  update(myGame, cPlayer);
   return myGame;
 }
 //💂‍♂️.0->newPiece
@@ -284,14 +293,18 @@ function decodeStrong(s: string): Stronghold | null {
 }
 export const onlyMap =
   '|32|🏰|6|🎪.0|19|⛰️|⛰️|⛰️|⛰️|19|🎪.0|1|⛰️|24|⛰️|24|🛣️|24|⛰️|24|⛰️|10|🏰|13|⛰️|2|🏰|76|🏰|12|🏰|32|⛰️|⛰️|⛰️|⛰️|⛰️|⛰️|24|🛣️|6|🏰|17|⛰️|24|⛰️|24|⛰️|36|🎪.1|19|🎪.1|';
+
 const game1 =
   '|32|🏰|6|🎪.0|19|⛰️|⛰️|⛰️|⛰️|14|🚩.0|4|🎪.0|1|⛰️|24|⛰️|19|🚚.0|4|💂.0/🛣️.0|17|🏇.0|🏇.0|1|💂.0|💂.0|🎉.0|💂.0|⛰️|17|🏇.0|🏇.0|💂.0|🚀.0|💂.0|💂.0|💂.0|⛰️|10|🏰|9|💂.0|3|⛰️|2|🏰|51|💂.1|💂.1|💂.1|🎉.1|🏇.1|20|💂.1/🏰.1|💂.1|💂.1|🏇.1|🏇.1|8|🏰|11|💂.1|💂.1|💂.1|🏇.1|17|⛰️|⛰️|⛰️|⛰️|⛰️|⛰️|🚚.1|23|🚀.1/🛣️.1|6|🚩.1/🏰.1|17|⛰️|24|⛰️|24|⛰️|36|🎪.1|19|🎪.1|';
-//const game2 = "|32|🏰|6|🎪.0|19|⛰️|⛰️|⛰️|⛰️|19|🎪.0|1|⛰️|24|⛰️|24|🛣️|20|🏇.0|1|🚀.0|1|⛰️|21|💂.0|2|⛰️|10|🎉.0/🏰.0|💂.0|8|💂.0|1|🚩.0|1|⛰️|2|💂.0/🏰.0|💂.0|6|💂.0|💂.0|🏇.0|🚚.0|21|💂.0|💂.0|🏇.0|🏇.0|40|🚩.1/🏰.1|12|💂.1/🏰.1|💂.1|9|💂.1|1|💂.1|12|🏇.1|6|⛰️|⛰️|⛰️|⛰️|⛰️|⛰️|7|💂.1|3|🎉.1|4|🚀.1|2|💂.1|💂.1|3|🛣️|6|💂.1/🏰.1|11|🚚.1|🏇.1|💂.1|3|⛰️|19|🏇.1|🏇.1|3|⛰️|24|⛰️|36|🎪.1|19|🎪.1|"
+const game2 =
+  '|32|🏰|6|🎪.0|19|⛰️|⛰️|⛰️|⛰️|19|🎪.0|1|⛰️|24|⛰️|24|🛣️|20|🏇.0|1|🚀.0|1|⛰️|21|💂.0|2|⛰️|10|🎉.0/🏰.0|💂.0|8|💂.0|1|🚩.0|1|⛰️|2|💂.0/🏰.0|💂.0|6|💂.0|💂.0|🏇.0|🚚.0|21|💂.0|💂.0|🏇.0|🏇.0|40|🚩.1/🏰.1|12|💂.1/🏰.1|💂.1|9|💂.1|1|💂.1|12|🏇.1|6|⛰️|⛰️|⛰️|⛰️|⛰️|⛰️|7|💂.1|3|🎉.1|4|🚀.1|2|💂.1|💂.1|3|🛣️|6|💂.1/🏰.1|11|🚚.1|🏇.1|💂.1|3|⛰️|19|🏇.1|🏇.1|3|⛰️|24|⛰️|36|🎪.1|19|🎪.1|';
+
+export const gameList = [game1, game2];
+
 //update game
-function update(G: GameState, ctx: Ctx) {
+function update(G: GameState, cPlayer: P_ID) {
   //check supply
   //console.log("update")
-  let cPlayer = ctx.currentPlayer as P_ID;
   updateSuppliedCells(G, cPlayer);
   updateSuppliedCells(G, dualPlayerID(cPlayer));
   //check update of the stronghold
@@ -774,7 +787,7 @@ export const objDataList: Type2ObjData = {
     objType: 'Relay',
     objRender: '🚩',
     speed: 1,
-    range: 2,
+    range: 0,
     offense: 0,
     defense: 1,
     canAddDef: false,
@@ -784,7 +797,7 @@ export const objDataList: Type2ObjData = {
     objType: 'Relay',
     objRender: '🚚',
     speed: 2,
-    range: 2,
+    range: 0,
     offense: 0,
     defense: 1,
     canAddDef: false,
