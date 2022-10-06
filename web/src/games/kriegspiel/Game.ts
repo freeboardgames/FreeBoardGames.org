@@ -53,6 +53,7 @@ export const aiConfig = {
 };
 
 export const Kriegspiel: Game<GameState> = {
+  name: 'kriegspiel',
   setup: (ctx) => {
     return loadGame(game1, ctx.currentPlayer as P_ID);
   },
