@@ -8,7 +8,7 @@ export type CellID = number;
 export interface GameState {
   //myID:P_ID,
   //opponentID:P_ID,
-  editMode: boolean;
+  //editMode: boolean;
   cells: (ObjInstance | null)[];
   places: (Stronghold | null)[];
   inSupply: { [key in P_ID]: CellID[] };
@@ -49,7 +49,6 @@ export const aiConfig = {
     let result = [...evts, ...atks, ...moves];
     return result;
   },
-  //objectives: (G,ctx)=>{}
 };
 
 export const Kriegspiel: Game<GameState> = {
@@ -57,9 +56,7 @@ export const Kriegspiel: Game<GameState> = {
   setup: (ctx) => {
     return loadGame(game1, ctx.currentPlayer as P_ID);
   },
-  /* playerView: (G, ctx, playerID) => {
-    return {...G, myID: playerID, opponentID:dualPlayerID(playerID as P_ID)};
-  }, */
+
   turn: {
     onBegin(G, ctx) {
       const cPlayer = ctx.currentPlayer as P_ID;
@@ -85,6 +82,30 @@ export const Kriegspiel: Game<GameState> = {
           G.forcedRetreat[cPlayer] = [null, null];
         }
       }
+    },
+    stages: {
+      edition: {
+        moves: {
+          load: (G, ctx, fen: string) => {
+            return loadGame(fen, ctx.currentPlayer as P_ID);
+          },
+          merge: (G, ctx, fen: string) => {
+            const addCells = loadGame(fen, ctx.currentPlayer as P_ID).cells;
+            const newCells = G.cells.map((obj, id) => (addCells[id] ? addCells[id] : obj));
+            G.cells = newCells;
+          },
+          editCells: (G, ctx, CId: CellID, element: ObjInstance | null) => {
+            const cPlayer = ctx.currentPlayer as P_ID;
+            G.cells[CId] = element;
+            update(G, cPlayer);
+          },
+          editPlaces: (G, ctx, CId: CellID, element: Stronghold | null) => {
+            const cPlayer = ctx.currentPlayer as P_ID;
+            G.places[CId] = element;
+            update(G, cPlayer);
+          },
+        },
+      },
     },
   },
 
@@ -128,36 +149,15 @@ export const Kriegspiel: Game<GameState> = {
         update(G, cPlayer);
       } else return INVALID_MOVE;
     },
-    setEditMode: (G, ctx, b: boolean) => {
-      G.editMode = b;
-    },
-    load: (G, ctx, fen: string) => {
-      const isEdit = G.editMode;
-      return { ...loadGame(fen, ctx.currentPlayer as P_ID), editMode: isEdit };
-    },
-    merge: (G, ctx, fen: string) => {
-      const addCells = loadGame(fen, ctx.currentPlayer as P_ID).cells;
-      const newCells = G.cells.map((obj, id) => (addCells[id] ? addCells[id] : obj));
-      G.cells = newCells;
-    },
-    editCells: (G, ctx, CId: CellID, element: ObjInstance | null) => {
-      const cPlayer = ctx.currentPlayer as P_ID;
-      G.cells[CId] = element;
-      update(G, cPlayer);
-    },
-    editPlaces: (G, ctx, CId: CellID, element: Stronghold | null) => {
-      const cPlayer = ctx.currentPlayer as P_ID;
-      G.places[CId] = element;
-      update(G, cPlayer);
-    },
   },
 
-  /* endIf: (G, ctx) => {
-    if (!G.editMode && !G.cells.some((obj, id) => canPick(G, ctx, id) || canAttack(G, ctx, id)[0])) {
-      const cPlayer = ctx.currentPlayer as P_ID;
+  endIf: (G, ctx) => {
+    const cPlayer = ctx.currentPlayer as P_ID;
+    const arsenals = filterCId(G.places, (str) => str.placeType === 'Arsenal' && str.belong === cPlayer);
+    if (G.places.filter((str) => str).length !== 0 && arsenals.length === 0) {
       return { winner: dualPlayerID(cPlayer), loser: cPlayer };
     }
-  }, */
+  },
 
   ai: aiConfig,
 };
@@ -235,7 +235,6 @@ export function loadGame(fen: string, cPlayer: P_ID): GameState {
   const deCells = loadPieces(fen);
   const dePlaces = loadPlaces(fen);
   let myGame: GameState = {
-    editMode: false,
     cells: deCells,
     places: dePlaces,
     inSupply: {
@@ -410,23 +409,6 @@ export function ptSetDisLessThan(set: CellID[], pt: CellID, dis: number = 1): bo
     return set.some((CId) => NaiveDistance(CId2Pos(pt), CId2Pos(CId)) <= dis);
   } else return false;
 }
-
-/* function largerSet(set: CellID[], dis: number = 1): CellID[] {
-  return removeDup(set.flatMap((CId)=>{
-    const pos = CId2Pos(CId);
-    let result=[]
-    for (let i = -dis; i <= dis; i++) {
-      for (let j = -dis; j <= dis; i++){
-        const nx=pos.x+i;
-        const ny=pos.y+j;
-        const nId=Pos2CId(nx,ny);
-        if(nId>-1)
-        {result.push(nId)}
-      }
-    }
-    return result
-    }))
-} */
 
 function connectedComponents(set: CellID[], pts: CellID[]): CellID[] {
   //use CId
@@ -726,11 +708,8 @@ interface ObjData {
   readonly speed: number;
   readonly range: number;
   readonly offense: number;
-  //readonly offenseOnCharge?:number, +3 for "Cavalry"
   readonly defense: number;
   readonly canAddDef: boolean;
-  //readonly defenseInMountain:number, +2 for "Infantry" and "Artillery"
-  //readonly defenseInFort:number +4
 }
 export interface ObjInstance extends ObjData {
   //entity: Entity,
