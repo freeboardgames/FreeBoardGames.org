@@ -328,7 +328,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
     );
     const myDefTd = (
       <td style={{ backgroundColor: fictionColor(myID) }}>
-        MyDef: {MyDef} {defState(RelDef)}{' '}
+        MyDef: {MyDef} {defState(RelDef)}
       </td>
     );
     const eDefTd = (
@@ -601,6 +601,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps) 
             setEditFiction(dualPlayerID(editFiction));
           }}
         />
+        <input type="button" value="Undo" onClick={props.undo} />
         <input type="button" value="Reset Board" onClick={() => moves.load(Game.onlyMap)} />
       </div>
       {/* Game Data */}
