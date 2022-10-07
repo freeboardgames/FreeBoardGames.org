@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { BoardProps } from 'boardgame.io/react';
 import { IGameArgs } from 'gamesShared/definitions/game';
+import { GameMode } from 'gamesShared/definitions/mode';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
 import * as Game from './Game';
 import {
@@ -37,7 +38,8 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
   const opponentID = dualPlayerID(myID);
   const currentPlayer = ctx.currentPlayer as P_ID;
   const [pickedID, pickUpID] = useState<CellID | null>(null);
-  const [editMode, setEditMode] = useState<boolean>(false);
+  const editMode = ctx.activePlayers?.[myID] === 'edition';
+  const opEditMode = ctx.activePlayers?.[opponentID] === 'edition';
 
   function pickedData(pId: CellID | null) {
     if (pId !== null && canPick(G, ctx, pId) && isActive) {
@@ -68,6 +70,9 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
           break;
         case id:
+          if (canAttack(G, ctx, id)[0]) {
+            moves.attack(id);
+          }
           pickUpID(null);
           break;
         default:
@@ -302,7 +307,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
         ))}
         {/* control */}
         {renderLayer((_, id) => (
-          <rect onClick={() => myOnClick(id)} width="1" height="1" fillOpacity="0" />
+          <rect cursor="pointer" onClick={() => myOnClick(id)} width="1" height="1" fillOpacity="0" />
         ))}
       </g>
     </svg>
@@ -423,7 +428,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
       {/* action info */}
       <label>My Moves and Attack:</label>
-      <svg viewBox="-0.1 -0.1 6.2 1.2" onClick={props.undo}>
+      <svg viewBox="-0.1 -0.1 6.2 1.2" onClick={props.undo} cursor="pointer">
         {renderLayer((_, id) => {
           const moveEdRec = G.moveRecords[myID].map((p) => p[1]);
           const atk = G.attackRecords[myID];
@@ -540,53 +545,36 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
         setEditState(id);
     }
   }
+  function editorCells(id: number, render: string) {
+    return (
+      <g
+        cursor="pointer"
+        onClick={() => {
+          editorClick(id);
+        }}
+      >
+        <rect
+          width="0.9"
+          height="0.9"
+          x="0.05"
+          y="0.05"
+          fill={fictionColor(editFiction)}
+          stroke={id === editState ? pico8Palette.red : pico8Palette.dark_grey}
+          strokeWidth={id === editState ? 0.15 : 0.05}
+        />
+        {renderStr(render)}
+      </g>
+    );
+  }
+
   const sideBarEdit = (
     <div id="EditUI">
       {/* Editor */}
       <div>
         <svg viewBox="-0.1 -0.2 6.2 2.2">
-          {renderLayer((type, id) => {
-            return (
-              <g
-                onClick={() => {
-                  editorClick(id);
-                }}
-              >
-                <rect
-                  width="0.9"
-                  height="0.9"
-                  x="0.05"
-                  y="0.05"
-                  fill={fictionColor(editFiction)}
-                  stroke={id === editState ? pico8Palette.red : pico8Palette.dark_grey}
-                  strokeWidth={id === editState ? 0.15 : 0.05}
-                />
-                {renderStr(Game.objDataList[type].objRender)}
-              </g>
-            );
-          }, objTypeList)}
+          {renderLayer((type, id) => editorCells(id, Game.objDataList[type].objRender), objTypeList)}
           {gTranslate(
-            renderLayer((type, oid) => {
-              const id = oid + 6;
-              return (
-                <g
-                  onClick={() => {
-                    editorClick(id);
-                  }}
-                >
-                  <rect
-                    width="0.9"
-                    height="0.9"
-                    x="0.05"
-                    y="0.05"
-                    fill={fictionColor(editFiction)}
-                    stroke={id === editState ? pico8Palette.red : pico8Palette.dark_grey}
-                    strokeWidth={id === editState ? 0.15 : 0.05}
-                  />
-                  {renderStr(Game.renderPlaceByType(type)[0])}
-                </g>
-              );
-            }, strongholdTypeList),
+            renderLayer((type, oid) => editorCells(oid + 6, Game.renderPlaceByType(type)[0]), strongholdTypeList),
             0,
             1,
           )}
@@ -667,9 +655,8 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
             style={{
               maxHeight: '100vh',
               minWidth: '50vw',
-              flex: '3',
+              flex: '4',
               maxWidth: '122vh',
-
               border: `2px solid ${pico8Palette.dark_green}`,
               backgroundColor: `${pico8Palette.white}`,
               touchAction: 'none',
@@ -684,10 +671,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
             style={{
               minWidth: '250px',
               flex: '1',
-              maxWidth: '100vmin',
-              //minWidth:'100vmin',
-
-              //flexGrow:1,
+              maxWidth: '100vw',
               border: `2px solid ${pico8Palette.dark_green}`,
               backgroundColor: `${pico8Palette.white}`,
             }}
@@ -695,17 +679,26 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
             {editMode ? sideBarEdit : sideBarPlay}
 
             <p>
+              {opEditMode && (
+                <>
+                  Other player is editing.
+                  <br />
+                </>
+              )}
               More information <a href="https://github.com/iamcxds/kriegspiel">here</a>.{' '}
               <input
                 type="button"
                 value="Edit Mode"
                 onClick={() => {
                   if (!editMode) {
-                    events.setStage('edition');
+                    if (props.gameArgs.mode === GameMode.OnlineFriend) {
+                      events.setActivePlayers({ all: 'edition' });
+                    } else {
+                      events.setStage('edition');
+                    }
                   } else {
                     events.endStage();
                   }
-                  setEditMode(!editMode);
                 }}
               />
             </p>
