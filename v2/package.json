@@ -6,7 +6,7 @@
     "test": "cd fbg-web && yarn run test"
   },
   "devDependencies": {
-    "@types/node": "18.8.2",
+    "@types/node": "18.8.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "@types/glob": "^8.0.0",
