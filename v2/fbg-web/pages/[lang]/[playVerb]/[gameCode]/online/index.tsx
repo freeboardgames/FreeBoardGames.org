@@ -11,38 +11,58 @@ import { useLogin } from "infra/hooks/useLogin";
 import { NicknamePrompt } from "infra/widgets/NicknamePrompt";
 import { FreeBoardGamesBar } from "fbg-games/gamesShared/components/fbg/FreeBoardGamesBar";
 import { LoadingMessage } from "infra/alert/LoadingMessage";
+import { useNewRoom } from "infra/hooks/useNewRoom";
+import MessagePage from "infra/alert/MessagePage";
 
 export const getStaticPaths = getGameStaticPaths;
 
-interface NewGameProps {
+interface NewRoomProps {
   gameId: string;
   params: GameUrlParams;
 }
 
-const NewGame: NextPage<any> = function (props: NewGameProps) {
-  const [login, setLogin] = useLogin();
+const NewRoom: NextPage<any> = function (props: NewRoomProps) {
   const server = useServer();
-  if (!login.loaded) {
+  const [login, setLogin] = useLogin();
+  const [newRoom, createNewRoom] = useNewRoom();
+  console.log(`
+      nickname: ${login.nickname}
+      resolved: ${JSON.stringify(server.resolved)}
+      serversDown: ${JSON.stringify(server.serversDown)}
+      hostname: ${server.hostname}
+      index: ${server.index}
+      newRoom Successs: ${newRoom.success}
+      roomId: ${newRoom.roomId}
+  `);
+  if (!login.loaded || !server.resolved) {
     return <LoadingMessage />;
+  }
+  if (server.serversDown) {
+    return <MessagePage type="error" message={`Servers down: ${server.serversDown.join(', ')}`} />;
   }
   if (!login.loggedIn) {
     return <FreeBoardGamesBar><NicknamePrompt setNickname={setLogin} /></FreeBoardGamesBar>;
   }
   const nickname = login.nickname!;
+  if (!newRoom.loaded) {
+    const hostname = server.hostname!;
+    const gameId = props.gameId;
+    const numPlayers = 2; // TODO: FIX THIS
+    createNewRoom({ nickname, gameId, hostname, numPlayers });
+  }
+  if (!newRoom.success) {
+    return <MessagePage type="error" message={`Failed to create room`} />; 
+  }
+  
   return (
     <>
-      <p>nickname: {nickname}</p>
-      <p>resolved: {JSON.stringify(server.resolved)}</p>
-      <p>serversDown: {JSON.stringify(server.serversDown)}</p>
-      <p>hostname: {server.hostname}</p>
-      <p>index: {server.index}</p>
     </>
   );
 };
 
 export async function getStaticProps(
   path: GameUrlPath
-): Promise<{ props: NewGameProps }> {
+): Promise<{ props: NewRoomProps }> {
   const { lang, gameCode } = path.params;
   const gameId = await getGameIdFromCode(lang, gameCode);
   return {
@@ -54,4 +74,4 @@ export async function getStaticProps(
   };
 }
 
-export default NewGame;
+export default NewRoom;
