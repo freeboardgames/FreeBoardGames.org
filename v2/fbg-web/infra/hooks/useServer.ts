@@ -33,7 +33,7 @@ export function useServer(i?: number): FbgServer {
       const serversDown = serverList
         .filter((x) => x.hostname !== null)
         .map((x) => x.hostname!);
-      setServer({ resolved: false, serversDown });
+      setServer({ resolved: true, serversDown });
     })();
     return () => {};
   }, []);
