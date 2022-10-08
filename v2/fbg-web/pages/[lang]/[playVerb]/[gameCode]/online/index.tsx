@@ -42,6 +42,9 @@ const NewRoom: NextPage<any> = function (props: NewRoomProps) {
     console.log("B");
     return <LoadingMessage />;
   }
+  if (server.serversDown) {
+    return <MessagePage type="error" message={`Servers down: ${server.serversDown.join(', ')}`} />;
+  }
   if (!login.loggedIn) {
     return (
       <FreeBoardGamesBar>
@@ -60,6 +63,15 @@ const NewRoom: NextPage<any> = function (props: NewRoomProps) {
   }
   Router.push(
     `/${props.params.lang}/room?s=${server.index}&i=${newRoom.roomId}`
+  }
+  if (!newRoom.success) {
+    return <MessagePage type="error" message={`Failed to create room`} />; 
+  }
+  
+  return (
+    <>
+    </>
+>>>>>>> 043b04c83f8a68483c0a664be48314bf12d27b3b
   );
   console.log("C");
   return <LoadingMessage />;

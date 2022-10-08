@@ -13,7 +13,9 @@ export function useLogin(): [FbgLogin, (nickname: string) => void] {
   const [login, setLogin] = useState(initialState);
   useEffect(() => {
     const savedNickname = localStorage.getItem(LOCALSTORAGE_KEY);
+    console.log("NICKNAME: " + savedNickname);
     if (savedNickname) {
+      console.log("loggedIn!");
       setLogin({ loaded: true, loggedIn: true, nickname: savedNickname });
     } else {
       setLogin({ loaded: true, loggedIn: false });
