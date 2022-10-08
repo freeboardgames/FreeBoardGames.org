@@ -14,13 +14,6 @@
   dependencies:
     "@use-gesture/core" "10.2.20"
 
-"@use-gesture/vanilla@^10.2.20":
-  version "10.2.20"
-  resolved "https://registry.yarnpkg.com/@use-gesture/vanilla/-/vanilla-10.2.20.tgz#3c7ca11be9dc7d985613e0e34de98046bcbfb7dc"
-  integrity sha512-qAGRiEN79WBtpqKRCwI0UO9XcOlegof729RmbgAUivvpg2pS+WhNwZgTa2w6L3bv+I0VCCwpv/tvlYtWpgxVGQ==
-  dependencies:
-    "@use-gesture/core" "10.2.20"
-
 ansi-styles@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"

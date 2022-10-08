@@ -167,7 +167,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
   const boardRef = useRef(null);
 
   //map move ui
-  /* const [mapPos, setMapPos] = useState<Position>({ x: 0, y: 0 })
+  /*  /*  const [mapPos, setMapPos] = useState<Game.Position>({ x: 0, y: 0 })
   const [mapScale, setMapScale] = useState<number>(1)
   
   
@@ -586,7 +586,6 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
             setEditFiction(dualPlayerID(editFiction));
           }}
         />
-        <input type="button" value="Undo" onClick={props.undo} />
         <input type="button" value="Reset Board" onClick={() => moves.load(Game.onlyMap)} />
       </div>
       {/* Game Data */}
@@ -654,7 +653,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           <div
             style={{
               maxHeight: '100vh',
-              minWidth: '50vw',
+              minWidth: '55vw',
               flex: '4',
               maxWidth: '122vh',
               border: `2px solid ${pico8Palette.dark_green}`,
