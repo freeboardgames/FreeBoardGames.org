@@ -27,7 +27,6 @@ const NewRoom: NextPage<any> = function (props: NewRoomProps) {
   const [login, setLogin] = useLogin();
   const [newRoom, createNewRoom] = useNewRoom();
   if (!server.resolved) {
-    console.log("A");
     return <LoadingMessage />;
   }
   if (server.serversDown) {
@@ -39,11 +38,7 @@ const NewRoom: NextPage<any> = function (props: NewRoomProps) {
     );
   }
   if (!login.loaded) {
-    console.log("B");
     return <LoadingMessage />;
-  }
-  if (server.serversDown) {
-    return <MessagePage type="error" message={`Servers down: ${server.serversDown.join(', ')}`} />;
   }
   if (!login.loggedIn) {
     return (
@@ -58,22 +53,14 @@ const NewRoom: NextPage<any> = function (props: NewRoomProps) {
     const gameId = props.gameId;
     const numPlayers = 2; // TODO: FIX THIS
     createNewRoom({ nickname, gameId, hostname, numPlayers });
-  } else if (!newRoom.success) {
+    return <LoadingMessage />;
+  }
+  if (!newRoom.success || !newRoom.roomId) {
     return <MessagePage type="error" message={`Failed to create room`} />;
   }
-  Router.push(
+  Router.replace(
     `/${props.params.lang}/room?s=${server.index}&i=${newRoom.roomId}`
-  }
-  if (!newRoom.success) {
-    return <MessagePage type="error" message={`Failed to create room`} />; 
-  }
-  
-  return (
-    <>
-    </>
->>>>>>> 043b04c83f8a68483c0a664be48314bf12d27b3b
   );
-  console.log("C");
   return <LoadingMessage />;
 };
 
