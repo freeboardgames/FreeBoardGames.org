@@ -22,6 +22,7 @@ interface ICardContainerProps {
       stage?: stageEnum;
       phase?: phaseEnum;
       cutTie?: boolean;
+      currentDealer?: playerEnum;
     };
   };
 
@@ -38,9 +39,11 @@ function valuetext(value?: number) {
 }
 const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardContainerProps) => {
   let tileData = props.cards;
+  let view = props.flipped;
   let stage: stageEnum = props.collaborator.gameState.stage;
   let name = props.name;
   let playerID: playerEnum = props.collaborator.gameState.playerID;
+  let currentDealer = props.collaborator.gameState.currentDealer;
 
   const handleDeal = props.collaborator.handlers.handleDeal;
   const handleCrib = props.collaborator.handlers.handleCrib;
@@ -53,31 +56,14 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   const [selectedValue, setSelectedValue] = React.useState(19);
 
   const isClickAllowed = (parentContainer: string): boolean => {
+    // eslint-disable-next-line no-console
+    console.log(
+      `stage ${stage} parentContainer ${parentContainer} playerID ${playerID} currentDealer ${currentDealer}`,
+    );
     if (stage && parentContainer) {
       switch (stage) {
-        case stageEnum.cuttingForDeal: {
-          return name === 'Deck'; //&& currentPlayer === eventClicker;
-        }
-        case stageEnum.thePlay: {
-          return (
-            (name === 'North Hand' && playerID === playerEnum.north) ||
-            (name === 'South Hand' && playerID === playerEnum.south)
-          );
-        }
-        case stageEnum.putToCrib: {
-          return (
-            (name === 'North Hand' && playerID === playerEnum.north) ||
-            (name === 'South Hand' && playerID === playerEnum.south)
-          );
-        }
-        case stageEnum.dealHand: {
-          return name === 'Deck'; //&& playerID matches dealer
-        }
-        case stageEnum.cutForTurn: {
-          return name === 'Deck'; //&& playerID matches non-dealer
-        }
         case stageEnum.theCount: {
-          return name === 'Crib' || name === 'Deck';
+          return currentDealer === playerID;
         }
         default:
           return false;
@@ -160,7 +146,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     <Card
       key={tile.id}
       click={() => handleClick(index, name)}
-      type={tile.faced ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
+      type={!view ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
       pattern={Pattern.English}
       height={80}
     />

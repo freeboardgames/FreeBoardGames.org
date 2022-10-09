@@ -19,6 +19,7 @@ interface ICardContainerProps {
     };
     gameState: {
       playerID?: playerEnum;
+      currentDealer?: playerEnum;
       stage?: stageEnum;
       phase?: phaseEnum;
       cutTie?: boolean;
@@ -36,18 +37,17 @@ interface ICardContainerProps {
 function valuetext(value?: number) {
   return `${value}`;
 }
-const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardContainerProps) => {
+const DeckContainer: FunctionComponent<ICardContainerProps> = (props: ICardContainerProps) => {
   let tileData = props.cards;
+  let view = !props.concealed && props.turn;
   let stage: stageEnum = props.collaborator.gameState.stage;
   let name = props.name;
   let playerID: playerEnum = props.collaborator.gameState.playerID;
+  let currentDealer = props.collaborator.gameState.currentDealer;
 
   const handleDeal = props.collaborator.handlers.handleDeal;
-  const handleCrib = props.collaborator.handlers.handleCrib;
   const handleCutDeal = props.collaborator.handlers.handleCutDeal;
   const handleCutTurn = props.collaborator.handlers.handleCutTurn;
-  const handlePlay = props.collaborator.handlers.handlePlay;
-  const handleFlip = props.collaborator.handlers.handleFlip;
   const handleRotate = props.collaborator.handlers.handleRotateTurn;
   const [isOpen, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(19);
@@ -56,28 +56,16 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     if (stage && parentContainer) {
       switch (stage) {
         case stageEnum.cuttingForDeal: {
-          return name === 'Deck'; //&& currentPlayer === eventClicker;
-        }
-        case stageEnum.thePlay: {
-          return (
-            (name === 'North Hand' && playerID === playerEnum.north) ||
-            (name === 'South Hand' && playerID === playerEnum.south)
-          );
-        }
-        case stageEnum.putToCrib: {
-          return (
-            (name === 'North Hand' && playerID === playerEnum.north) ||
-            (name === 'South Hand' && playerID === playerEnum.south)
-          );
+          return name === 'Deck';
         }
         case stageEnum.dealHand: {
-          return name === 'Deck'; //&& playerID matches dealer
+          return playerID === currentDealer;
         }
         case stageEnum.cutForTurn: {
-          return name === 'Deck'; //&& playerID matches non-dealer
+          return name === 'Deck' && playerID != currentDealer; //&& playerID matches non-dealer
         }
         case stageEnum.theCount: {
-          return name === 'Crib' || name === 'Deck';
+          return name === 'Deck' && playerID === currentDealer;
         }
         default:
           return false;
@@ -97,24 +85,12 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
           setOpen(true);
           break;
         }
-        case 'putToCrib': {
-          handleCrib(idx);
-          break;
-        }
         case 'dealHand': {
           handleDeal();
           break;
         }
-        case 'thePlay': {
-          handlePlay(idx);
-          break;
-        }
         case 'theCount': {
-          if (props.name === 'Deck') {
-            handleRotate();
-          } else {
-            handleFlip();
-          }
+          handleRotate();
           break;
         }
         default:
@@ -160,7 +136,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     <Card
       key={tile.id}
       click={() => handleClick(index, name)}
-      type={tile.faced ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
+      type={!view ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
       pattern={Pattern.English}
       height={80}
     />
@@ -205,4 +181,4 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   );
 };
 
-export default CardContainer;
+export default DeckContainer;
