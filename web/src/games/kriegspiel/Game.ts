@@ -63,9 +63,9 @@ export const Kriegspiel: Game<GameState> = {
       G.moveRecords[cPlayer] = [];
       G.attackRecords[cPlayer] = null;
       const retreatSt = G.forcedRetreat[cPlayer][0];
-      //if nowhere to retreat
-      if (retreatSt !== null && moveRange(G, retreatSt, 1).length === 0) {
-        //capture
+      //if nowhere to retreat or out of supply
+      if (retreatSt !== null && (moveRange(G, retreatSt, 1).length === 0 || !G.cells[retreatSt]?.supplied)) {
+        //then be captured
         G.cells[retreatSt] = null;
         G.forcedRetreat[cPlayer] = [null, null];
       }
