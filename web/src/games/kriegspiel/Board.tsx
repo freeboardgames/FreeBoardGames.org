@@ -24,7 +24,7 @@ import {
   exportGame,
 } from './Game';
 
-//import { useGesture } from '@use-gesture/react'
+import { useGesture } from '@use-gesture/react';
 
 interface GameProps extends BoardProps<GameState> {}
 
@@ -167,55 +167,52 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
   const boardRef = useRef(null);
 
   //map move ui
-  /*  /*  const [mapPos, setMapPos] = useState<Game.Position>({ x: 0, y: 0 })
-  const [mapScale, setMapScale] = useState<number>(1)
-  
-  
-  
-  const gestureBind = useGesture(
+  const [mapPos, setMapPos] = useState<Game.Position>({ x: 0, y: 0 });
+  const [mapScale, setMapScale] = useState<number>(1);
+
+  useGesture(
     {
       onDrag: (state) => {
-        const e = state.event
-        const svg = e.target as SVGAElement
-        const CTM = svg.getScreenCTM()
+        const e = state.event;
+        const svg = e.target as SVGAElement;
+        const CTM = svg.getScreenCTM();
         if (CTM) {
-          const move = state.offset
-          const dx = move[0] / (CTM.a)
-          const dy = move[1] / (CTM.d)
+          const move = state.offset;
+          const dx = move[0] / CTM.a;
+          const dy = move[1] / CTM.d;
           setMapPos({ x: dx, y: dy });
         }
       },
       onWheel: (state) => {
-        const evt =state.event;
+        const evt = state.event;
         evt.preventDefault();
-        const spd = 0.0007
-        
-        const newScale = mapScale * (1 - spd * state.movement[1])
-        
+        const spd = 0.0007;
+
+        const newScale = mapScale * (1 - spd * state.movement[1]);
+
         setMapScale(newScale);
       },
       onPinch: (state) => {
-
-        const newScale = state.offset[0]
-        
+        const newScale = state.offset[0];
 
         setMapScale(newScale);
       },
-
     },
     {
       target: boardRef,
       eventOptions: { passive: false },
       preventDefault: true,
-    }
-  ); */
+    },
+  );
 
   //render Main board
 
   const gameBoard = (
     <svg viewBox={`-0.6 -0.6 ${BoardSize.mx + 1.2} ${BoardSize.my + 1.2}`} ref={boardRef}>
       <g
-      //transform={`translate(${BoardSize.mx / 2} ${BoardSize.my / 2})  scale(${mapScale}) translate(${mapPos.x - BoardSize.mx / 2} ${mapPos.y - BoardSize.my / 2})`}
+        transform={`translate(${BoardSize.mx / 2} ${BoardSize.my / 2})  scale(${mapScale}) translate(${
+          mapPos.x - BoardSize.mx / 2
+        } ${mapPos.y - BoardSize.my / 2})`}
       >
         <rect
           x={-0.6}
@@ -427,7 +424,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       </p>
 
       {/* action info */}
-      <label>My Moves and Attack:</label>
+      <label title="Click below to undo.">My Moves and Attack:</label>
       <svg viewBox="-0.1 -0.1 6.2 1.2" onClick={props.undo} cursor="pointer">
         {renderLayer((_, id) => {
           const moveEdRec = G.moveRecords[myID].map((p) => p[1]);
@@ -594,7 +591,6 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
         <textarea
           name="gameData"
           id="gameData"
-          //cols={20}
           rows={10}
           style={{ width: '90%', height: '60%', resize: 'vertical' }}
           value={gameData}
@@ -647,7 +643,6 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
             fontFamily: "'Lato', sans-serif",
             display: 'flex',
             flexWrap: 'wrap',
-            //alignItems: 'center',
           }}
         >
           <div

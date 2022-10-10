@@ -6,9 +6,6 @@ export type P_ID = '0' | '1';
 export type CellID = number;
 
 export interface GameState {
-  //myID:P_ID,
-  //opponentID:P_ID,
-  //editMode: boolean;
   cells: (ObjInstance | null)[];
   places: (Stronghold | null)[];
   inSupply: { [key in P_ID]: CellID[] };
@@ -29,8 +26,6 @@ export const aiConfig = {
     let evts = [{ event: 'endTurn', args: [] }];
     const CIdLst = Array.from(Array(BoardSize.mx * BoardSize.my).keys());
     const cPlayer = ctx.currentPlayer as P_ID;
-    //const myPieceId = filterCId(G.cells,(obj)=>obj.belong===cPlayer)
-    //const opPieceId = filterCId(G.cells,(obj)=>obj.belong!==cPlayer)
     let atks = CIdLst.filter((id) => canAttack(G, ctx, id)[0]).map((id) => {
       return { move: 'attack', args: [id] };
     });
@@ -304,7 +299,6 @@ export const gameList = [game1, game2];
 //update game
 function update(G: GameState, cPlayer: P_ID) {
   //check supply
-  //console.log("update")
   updateSuppliedCells(G, cPlayer);
   updateSuppliedCells(G, dualPlayerID(cPlayer));
   //check update of the stronghold
@@ -320,7 +314,6 @@ function update(G: GameState, cPlayer: P_ID) {
         G.attackRecords[cPlayer] = [CId, 'Arsenal'];
 
         G.places[CId] = null;
-        //strong.placeRender="🏳️"
         //then add 1 atk action
       }
     } else {
@@ -336,23 +329,18 @@ function update(G: GameState, cPlayer: P_ID) {
 
 function updateSuppliedCells(G: GameState, player?: P_ID) {
   if (player !== '1') {
-    //console.log("SCupdate 0")
     const SuppliedCells0 = getSuppliedCells(G, '0');
     G.inSupply[0] = SuppliedCells0;
-    // G.inSupply[0].map((_, id) => SuppliedCells0.includes(id));
   }
 
   if (player !== '0') {
-    //console.log("SCupdate 1")
     const SuppliedCells1 = getSuppliedCells(G, '1');
 
     G.inSupply[1] = SuppliedCells1;
-    //G.inSupply[1].map((_, id) => SuppliedCells1.includes(id));
   }
   updateSuppliedObj(G);
 }
 function updateSuppliedObj(G: GameState) {
-  //console.log("SOupdate")
   G.cells = G.cells.map((obj, id) => {
     if (obj) {
       return { ...obj, supplied: G.inSupply[obj.belong].includes(id) };
@@ -417,9 +405,7 @@ function connectedComponents(set: CellID[], pts: CellID[]): CellID[] {
 
   do {
     //new pts are not in old, and distance is less than 1
-    newSet = set.filter(
-      (CId) => !oldSet.includes(CId) && /* largerSet(oldSet).includes(CId) */ ptSetDisLessThan(oldSet, CId),
-    );
+    newSet = set.filter((CId) => !oldSet.includes(CId) && ptSetDisLessThan(oldSet, CId));
     oldSet = oldSet.concat(newSet);
   } while (newSet.length > 0);
   return oldSet;
@@ -467,7 +453,6 @@ function moveRange(G: GameState, stCId: CellID, speed: number = 1): CellID[] {
     //for each steps target cell is empty and is not mountain,
     // first filter out further cells
     // let result be 1 block larger
-    //result = largerSet(result).filter((CId)=>G.cells[CId] === null && G.places[CId]?.placeType !== "Mountain")
     result = G.cells
       .map((obj, id) =>
         NaiveDistance(CId2Pos(stCId), CId2Pos(id)) <= speed &&
@@ -524,7 +509,6 @@ function searchInMiShape(
           let cObj = G.cells[cCId];
           //!!!filter here
           //and also filter the case that is out of board
-          //cx>=0&&cx<BoardSize.mx&&cy>=0&&cy<BoardSize.my
           if (cObj !== undefined && filter(cObj, cCId)) {
             relPosLine.push({ x: n * i, y: n * j });
             aCIdLine.push(cCId);
@@ -557,7 +541,7 @@ export function getChargedCavalries(G: GameState, CId: CellID): Position[][] {
       G,
       CId,
       (cObj, cCId) =>
-        //!!!check cObj is a cavalry, a enemy, supplied,not retreating , not in a fortress
+        //check cObj is a cavalry, a enemy, supplied,not retreating , not in a fortress
         cObj !== null &&
         cObj.objType === 'Cavalry' &&
         cObj.belong !== belong &&
@@ -576,7 +560,7 @@ export function getBattleFactor(G: GameState, player: P_ID, isOffense: boolean, 
   const pos = CId2Pos(CId);
   const targetObj = G.cells[CId];
   // filter the unit in 米 shape in its range
-  //first filter Out the mountain block,
+  // first filter Out the mountain block,
   let effectingObjs = removeDup(
     searchInMiShape(G, CId, (obj, id) => G.places[id]?.placeType !== 'Mountain', 0, 3)[0].flat(),
   ).filter((id) => {
@@ -591,12 +575,6 @@ export function getBattleFactor(G: GameState, player: P_ID, isOffense: boolean, 
       !(isOffense && (obj.retreating || obj.offense === 0))
     );
   });
-  /* filterCId(G.cells,(obj,id)=>
-  //obj is in range, supplied, belongs to the chosen player,
-  (isInRange(pos,CId2Pos(id),obj)&&obj.supplied&&obj.belong===player)
-  //filter out retreating units in offense
-  &&!(isOffense&&obj.retreating)
-  ) */
 
   //filter the effecting strongholds
   const effectingStronghold = effectingObjs
@@ -683,14 +661,11 @@ export function getSuppliedCells(G: GameState, player: P_ID): CellID[] {
   const myPieceDirSupplied = myPieceLst.filter((id) => dirSupplied.includes(id));
 
   const mySuppliedPieces = connectedComponents(myPieceLst, myPieceDirSupplied);
-  //supplied=dirSupplied+ dis<1 of supplied pieces
-  //const suppliedCells= removeDup(G.cells.map((_,id)=>id).filter((_,id) =>ptSetDisLessThan(myPieceDirSupplied,id)).concat(dirSupplied));
   return mySuppliedPieces;
 }
 
 //Game Object
 
-//type Entity = number
 type ObjType = 'Infantry' | 'Cavalry' | 'Artillery' | 'Swift_Artillery' | 'Relay' | 'Swift_Relay';
 
 export const objTypeList: readonly ObjType[] = [
@@ -712,7 +687,6 @@ interface ObjData {
   readonly canAddDef: boolean;
 }
 export interface ObjInstance extends ObjData {
-  //entity: Entity,
   belong: P_ID;
   supplied: boolean;
   retreating: boolean;
@@ -788,7 +762,6 @@ export function newPiece(type: ObjType, be: P_ID): ObjInstance {
   const objData = objDataList[type];
   return {
     ...objData,
-    //entity:ent,
     belong: be,
     supplied: true,
     retreating: false,
