@@ -52,7 +52,7 @@ export function GameCardInternal({
         {!isFullyTranslated(game) && (
           <Tooltip title={t('missing_translation_warning')} placement="top">
             <a
-              href="/docs?path=/story/documentation-game-translation--page"
+              href="/docs/?path=/story/documentation-how-to-translation-game-translation--page"
               aria-label="translation docs"
               target="_blank"
               onClick={(e) => e.stopPropagation()}
