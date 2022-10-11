@@ -15,8 +15,9 @@ export function useLogin(): [FbgLogin, (nickname: string) => void] {
     const savedNickname = localStorage.getItem(LOCALSTORAGE_KEY);
     if (savedNickname) {
       setLogin({ loaded: true, loggedIn: true, nickname: savedNickname });
+    } else {
+      setLogin({ loaded: true, loggedIn: false });
     }
-    setLogin({ loaded: true, loggedIn: false });
   }, []);
   const setAndSaveLogin = (nickname: string) => {
     localStorage.setItem(LOCALSTORAGE_KEY, nickname);

@@ -1,7 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import { IG, IScoreKeeper, playerEnum, stageEnum, phaseEnum } from './game';
 import css from './ACardTable.module.css';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import CardContainer from './CardContainer';
+import CribContainer from './CribContainer';
+import DeckContainer from './DeckContainer';
 import { Ctx } from 'boardgame.io';
 import CribbageBoardB from './CribbageBoardB';
 
@@ -15,6 +19,8 @@ type IACardTableProps = {
 
 const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps) => {
   let { G } = props;
+  let { ctx } = props;
+  let { currentPlayer } = ctx;
   let thescore: IScoreKeeper = G.score;
   let pegPointsMove = props.moves.pegPoints;
   let stageStr = props.ctx.activePlayers ? props.ctx.activePlayers[props.ctx.playerID === '0' ? 0 : 1] : null;
@@ -23,6 +29,7 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
   let cribFlipped = G.hands.east.cribFlipped ? { flipped: true } : {};
   let theTurn = props.G.deck.length === 1 ? { turn: true } : { concealed: true };
   let playerIDStr: string = props.playerID;
+  let currentDealer = currentPlayer as playerEnum;
   let playerID: playerEnum = playerIDStr as playerEnum;
 
   const collaborator = {
@@ -35,22 +42,25 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
       handleFlip: props.moves.flipCrib,
       handleRotateTurn: props.moves.rotateTurnToDeal,
     },
-    gameState: { playerID: playerID, phase: phaseEnum[props.ctx.phase], stage: stage, cutTie: G.cutTie },
+    gameState: { playerID: playerID, phase: phaseEnum[props.ctx.phase], stage: stage, cutTie: G.cutTie, currentDealer },
   };
 
+  const topDeal = currentDealer === playerEnum.south ? <ArrowUpward /> : null;
+  const bottomDeal = currentDealer === playerEnum.north ? <ArrowDownward /> : null;
   return (
     <div className={css.grid}>
       <div className={css.opponent_hand}>
+        {topDeal}
         <CardContainer name="South Hand" cards={G.hands.south.held} collaborator={collaborator} />
       </div>
       <div className={css.opponent}>
         <CardContainer collaborator={collaborator} name="South" cards={G.hands.south.played} />
       </div>
       <div className={css.crib}>
-        <CardContainer name="Crib" collaborator={collaborator} concealed cards={crib} {...cribFlipped} />
+        <CribContainer name="Crib" collaborator={collaborator} cards={crib} {...cribFlipped} />
       </div>
       <div className={css.deck}>
-        <CardContainer name="Deck" cards={G.deck} deck {...theTurn} collaborator={collaborator} />
+        <DeckContainer name="Deck" cards={G.deck} deck {...theTurn} collaborator={collaborator} />
       </div>
       <div className={css.cribbageboard}>
         <CribbageBoardB score={thescore} updateScore={pegPointsMove} />
@@ -59,6 +69,7 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
         <CardContainer name="North" collaborator={collaborator} cards={G.hands.north.played} />
       </div>
       <div className={css.player_hand}>
+        {bottomDeal}
         <CardContainer name="North Hand" cards={G.hands.north.held} collaborator={collaborator} />
       </div>
       <div>

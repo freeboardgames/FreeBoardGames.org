@@ -19,6 +19,7 @@ interface ICardContainerProps {
     };
     gameState: {
       playerID?: playerEnum;
+      currentDealer?: playerEnum;
       stage?: stageEnum;
       phase?: phaseEnum;
       cutTie?: boolean;
@@ -36,58 +37,49 @@ interface ICardContainerProps {
 function valuetext(value?: number) {
   return `${value}`;
 }
-const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardContainerProps) => {
+const DeckContainer: FunctionComponent<ICardContainerProps> = (props: ICardContainerProps) => {
   let tileData = props.cards;
+  let view = !props.concealed && props.turn;
   let stage: stageEnum = props.collaborator.gameState.stage;
-  let name = props.name;
   let playerID: playerEnum = props.collaborator.gameState.playerID;
+  let currentDealer = props.collaborator.gameState.currentDealer;
 
   const handleDeal = props.collaborator.handlers.handleDeal;
-  const handleCrib = props.collaborator.handlers.handleCrib;
   const handleCutDeal = props.collaborator.handlers.handleCutDeal;
   const handleCutTurn = props.collaborator.handlers.handleCutTurn;
-  const handlePlay = props.collaborator.handlers.handlePlay;
-  const handleFlip = props.collaborator.handlers.handleFlip;
   const handleRotate = props.collaborator.handlers.handleRotateTurn;
   const [isOpen, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(19);
 
-  const isClickAllowed = (parentContainer: string): boolean => {
-    if (stage && parentContainer) {
+  const isClickAllowed = (): boolean => {
+    let result = false;
+    if (stage) {
       switch (stage) {
         case stageEnum.cuttingForDeal: {
-          return name === 'Deck'; //&& currentPlayer === eventClicker;
-        }
-        case stageEnum.thePlay: {
-          return (
-            (name === 'North Hand' && playerID === playerEnum.north) ||
-            (name === 'South Hand' && playerID === playerEnum.south)
-          );
-        }
-        case stageEnum.putToCrib: {
-          return (
-            (name === 'North Hand' && playerID === playerEnum.north) ||
-            (name === 'South Hand' && playerID === playerEnum.south)
-          );
+          result = true;
+          break;
         }
         case stageEnum.dealHand: {
-          return name === 'Deck'; //&& playerID matches dealer
+          result = playerID === currentDealer;
+          break;
         }
         case stageEnum.cutForTurn: {
-          return name === 'Deck'; //&& playerID matches non-dealer
+          result = playerID != currentDealer;
+          break;
         }
         case stageEnum.theCount: {
-          return name === 'Crib' || name === 'Deck';
+          result = playerID === currentDealer;
+          break;
         }
         default:
-          return false;
+          result = false;
       }
     }
+    return result;
   };
 
-  const handleClick = (idx?: number, name?: string) => {
-    let allowed: boolean = isClickAllowed(name);
-    if (stage && allowed) {
+  const handleClick = () => {
+    if (stage && isClickAllowed()) {
       switch (stage) {
         case 'cutForTurn': {
           setOpen(true);
@@ -97,28 +89,16 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
           setOpen(true);
           break;
         }
-        case 'putToCrib': {
-          handleCrib(idx);
-          break;
-        }
         case 'dealHand': {
           handleDeal();
           break;
         }
-        case 'thePlay': {
-          handlePlay(idx);
-          break;
-        }
         case 'theCount': {
-          if (props.name === 'Deck') {
-            handleRotate();
-          } else {
-            handleFlip();
-          }
+          handleRotate();
           break;
         }
         default:
-          alert(`got a click at: ${idx}`);
+          break;
       }
     }
   };
@@ -156,11 +136,11 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     }
   };
 
-  let tileList = tileData.map((tile, index) => (
+  let tileList = tileData.map((tile) => (
     <Card
       key={tile.id}
-      click={() => handleClick(index, name)}
-      type={tile.faced ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
+      click={() => handleClick()}
+      type={!view ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
       pattern={Pattern.English}
       height={80}
     />
@@ -205,4 +185,4 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   );
 };
 
-export default CardContainer;
+export default DeckContainer;
