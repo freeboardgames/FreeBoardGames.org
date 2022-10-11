@@ -93,7 +93,7 @@ class GameInfo extends React.Component<GameInfoInnerProps & GameInfoOutterProps,
                           <a
                             aria-label="translation docs"
                             target="_blank"
-                            href="/docs?path=/story/documentation-game-translation--page"
+                            href="/docs/?path=/story/documentation-how-to-translation-game-translation--page"
                           />
                         ),
                       }}
