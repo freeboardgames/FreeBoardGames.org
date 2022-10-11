@@ -259,6 +259,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
         />
         {/* supply line */}
 
+
         {drawAllSupplyLines('0')}
         {drawAllSupplyLines('1')}
 
