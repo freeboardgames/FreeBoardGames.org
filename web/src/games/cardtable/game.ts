@@ -80,15 +80,11 @@ export interface ICardMove {
   to: ILocation;
 }
 
-const mapForPlayer = (G: IG, ctx: Ctx, id: string) => {
-  // eslint-disable-next-line no-console
-  console.log(`ID: ${id} typeof ID ${typeof id}`);
+const mapForPlayer = (G: IG) => {
   return G;
 };
 
 const maskForPlayer = (G: IG, ctx: Ctx, id: string) => {
-  // eslint-disable-next-line no-console
-  console.log(`ID: ${id} typeof ID ${typeof id}`);
   let result: IG = null;
   let { hands } = G;
 
@@ -106,7 +102,7 @@ const maskForPlayer = (G: IG, ctx: Ctx, id: string) => {
 };
 
 const playerView = (G: IG, ctx: Ctx, id: string) => {
-  let temp: IG = mapForPlayer(G, ctx, id);
+  let temp: IG = mapForPlayer(G);
   return maskForPlayer(temp, ctx, id);
 };
 
@@ -305,8 +301,6 @@ const rotateTurnToDeal = (G: IG, ctx: Ctx) => {
   G.bestCut = null;
   G.cutTie = false;
 
-  // eslint-disable-next-line no-console
-  console.log(`ctx.currentPlayer ${ctx.currentPlayer}`);
   let nextPlayer = ctx.currentPlayer === '0' ? '1' : '0';
   ctx.events.endTurn({ next: nextPlayer });
 };

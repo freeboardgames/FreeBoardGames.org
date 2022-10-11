@@ -41,7 +41,6 @@ const DeckContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   let tileData = props.cards;
   let view = !props.concealed && props.turn;
   let stage: stageEnum = props.collaborator.gameState.stage;
-  let name = props.name;
   let playerID: playerEnum = props.collaborator.gameState.playerID;
   let currentDealer = props.collaborator.gameState.currentDealer;
 
@@ -52,30 +51,35 @@ const DeckContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   const [isOpen, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(19);
 
-  const isClickAllowed = (parentContainer: string): boolean => {
-    if (stage && parentContainer) {
+  const isClickAllowed = (): boolean => {
+    let result = false;
+    if (stage) {
       switch (stage) {
         case stageEnum.cuttingForDeal: {
-          return name === 'Deck';
+          result = true;
+          break;
         }
         case stageEnum.dealHand: {
-          return playerID === currentDealer;
+          result = playerID === currentDealer;
+          break;
         }
         case stageEnum.cutForTurn: {
-          return name === 'Deck' && playerID != currentDealer; //&& playerID matches non-dealer
+          result = playerID != currentDealer;
+          break;
         }
         case stageEnum.theCount: {
-          return name === 'Deck' && playerID === currentDealer;
+          result = playerID === currentDealer;
+          break;
         }
         default:
-          return false;
+          result = false;
       }
     }
+    return result;
   };
 
-  const handleClick = (idx?: number, name?: string) => {
-    let allowed: boolean = isClickAllowed(name);
-    if (stage && allowed) {
+  const handleClick = () => {
+    if (stage && isClickAllowed()) {
       switch (stage) {
         case 'cutForTurn': {
           setOpen(true);
@@ -94,7 +98,7 @@ const DeckContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
           break;
         }
         default:
-          alert(`got a click at: ${idx}`);
+          break;
       }
     }
   };
@@ -132,10 +136,10 @@ const DeckContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     }
   };
 
-  let tileList = tileData.map((tile, index) => (
+  let tileList = tileData.map((tile) => (
     <Card
       key={tile.id}
-      click={() => handleClick(index, name)}
+      click={() => handleClick()}
       type={!view ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
       pattern={Pattern.English}
       height={80}

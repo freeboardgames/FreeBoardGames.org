@@ -41,71 +41,22 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   let tileData = props.cards;
   let view = props.flipped;
   let stage: stageEnum = props.collaborator.gameState.stage;
-  let name = props.name;
   let playerID: playerEnum = props.collaborator.gameState.playerID;
   let currentDealer = props.collaborator.gameState.currentDealer;
 
-  const handleDeal = props.collaborator.handlers.handleDeal;
-  const handleCrib = props.collaborator.handlers.handleCrib;
   const handleCutDeal = props.collaborator.handlers.handleCutDeal;
   const handleCutTurn = props.collaborator.handlers.handleCutTurn;
-  const handlePlay = props.collaborator.handlers.handlePlay;
   const handleFlip = props.collaborator.handlers.handleFlip;
-  const handleRotate = props.collaborator.handlers.handleRotateTurn;
   const [isOpen, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(19);
 
-  const isClickAllowed = (parentContainer: string): boolean => {
-    // eslint-disable-next-line no-console
-    console.log(
-      `stage ${stage} parentContainer ${parentContainer} playerID ${playerID} currentDealer ${currentDealer}`,
-    );
-    if (stage && parentContainer) {
-      switch (stage) {
-        case stageEnum.theCount: {
-          return currentDealer === playerID;
-        }
-        default:
-          return false;
-      }
-    }
+  const isClickAllowed = (): boolean => {
+    return stage && stageEnum.theCount === stage && currentDealer === playerID;
   };
 
-  const handleClick = (idx?: number, name?: string) => {
-    let allowed: boolean = isClickAllowed(name);
-    if (stage && allowed) {
-      switch (stage) {
-        case 'cutForTurn': {
-          setOpen(true);
-          break;
-        }
-        case 'cuttingForDeal': {
-          setOpen(true);
-          break;
-        }
-        case 'putToCrib': {
-          handleCrib(idx);
-          break;
-        }
-        case 'dealHand': {
-          handleDeal();
-          break;
-        }
-        case 'thePlay': {
-          handlePlay(idx);
-          break;
-        }
-        case 'theCount': {
-          if (props.name === 'Deck') {
-            handleRotate();
-          } else {
-            handleFlip();
-          }
-          break;
-        }
-        default:
-          alert(`got a click at: ${idx}`);
-      }
+  const handleClick = () => {
+    if (stage && stage === stageEnum.theCount && isClickAllowed()) {
+      handleFlip();
     }
   };
 
@@ -142,10 +93,10 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     }
   };
 
-  let tileList = tileData.map((tile, index) => (
+  let tileList = tileData.map((tile) => (
     <Card
       key={tile.id}
-      click={() => handleClick(index, name)}
+      click={() => handleClick()}
       type={!view ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
       pattern={Pattern.English}
       height={80}
