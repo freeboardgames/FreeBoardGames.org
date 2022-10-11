@@ -80,6 +80,32 @@ export interface ICardMove {
   to: ILocation;
 }
 
+const mapForPlayer = (G: IG) => {
+  return G;
+};
+
+const maskForPlayer = (G: IG, ctx: Ctx, id: string) => {
+  let result: IG = null;
+  let { hands } = G;
+
+  if (id && id === '1') {
+    let { north } = hands;
+    let temp: ICard[] = north.held.map((e) => ({ ...e, faced: true }));
+    result = { ...G, hands: { ...hands, north: { ...north, held: temp } } };
+  }
+  if (id && id === '0') {
+    let { south } = hands;
+    let temp: ICard[] = south.held.map((e) => ({ ...e, faced: true }));
+    result = { ...G, hands: { ...hands, south: { ...south, held: temp } } };
+  }
+  return result;
+};
+
+const playerView = (G: IG, ctx: Ctx, id: string) => {
+  let temp: IG = mapForPlayer(G);
+  return maskForPlayer(temp, ctx, id);
+};
+
 const doesCutResolve = (G: IG, ctx: Ctx) => {
   let myCard = ctx.playerID === '0' ? G.hands.north.played[0] : G.hands.south.played[0];
   let theirCard = ctx.playerID === '0' ? G.hands.south.played[0] : G.hands.north.played[0];
@@ -274,7 +300,9 @@ const rotateTurnToDeal = (G: IG, ctx: Ctx) => {
   G.deck.push(G.deck[0]); //kludge to face the turn
   G.bestCut = null;
   G.cutTie = false;
-  ctx.events.endTurn();
+
+  let nextPlayer = ctx.currentPlayer === '0' ? '1' : '0';
+  ctx.events.endTurn({ next: nextPlayer });
 };
 const cutShowTurn = (G: IG, ctx: Ctx, idx: number) => {
   cutDeck(G, ctx, idx);
@@ -398,6 +426,8 @@ export const CardTableGame = {
     },
     stock: [],
   }),
+
+  playerView,
 
   moves,
 
