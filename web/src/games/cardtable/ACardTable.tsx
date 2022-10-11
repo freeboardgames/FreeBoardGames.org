@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { IG, IScoreKeeper, playerEnum, stageEnum, phaseEnum } from './game';
 import css from './ACardTable.module.css';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import ArrowDownward from '@material-ui/icons/arrowDownward';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import CardContainer from './CardContainer';
 import CribContainer from './CribContainer';
 import DeckContainer from './DeckContainer';
