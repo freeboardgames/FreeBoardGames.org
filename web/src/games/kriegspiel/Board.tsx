@@ -343,7 +343,9 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     );
 
     return (
+
       <table style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+
         {obj?.belong === opponentID ? (
           <>
             <tr>
@@ -522,8 +524,10 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           })(pickedID)}
       </p>
 
+
       {/* combat factors */}
       <label>Total Combat Factors:</label>
+
       {battleFactorTable(pickedID)}
     </div>
   );
@@ -590,6 +594,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       {/* Game Data */}
       <form>
         <label>GameData:</label>
+
         <select onChange={(e) => setGameData(e.target.value)}>
           {Game.gameList.map((option) => (
             <option key={option.name} value={option.data}>
@@ -597,6 +602,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
             </option>
           ))}
         </select>
+
         <textarea
           name="gameData"
           id="gameData"
