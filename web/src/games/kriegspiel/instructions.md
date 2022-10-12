@@ -47,7 +47,9 @@ You can also refer to the more detailed [rules](http://r-s-g.org/kriegspiel/rule
 
 This game is a simulation of the battle in the Napoleonic Wars. Two armies with a limited amount of units fight on a 25⨉20 board. The game ends by occupying(thus destroying) the enemy's all 🎪Arsenals.
 
-Each player can move up 5 units and attack 1 enemy per turn. The 🐴speed affects the unit's movement range in one turn.
+
+Each player can move up to 5 units and attack 1 enemy per turn. The 🐴speed affects the unit's movement range in one turn.
+
 
 ![move](media/move.png)
 
@@ -57,9 +59,10 @@ Notice "adjacent" in this game means all 8 direction
 
 ### Combat
 
-There is no randomness in combat, and combat does not depend on single units. The game stress arranging and cooperating units to achieve high battle factors(i.e. ⚔️Attack and 🛡️Defense), which decide the combat.
+There is no randomness in combat, and combat does not depend on single units. The game stress arranging and cooperating units to achieve high combat factors(i.e. ⚔️Attack and 🛡️Defense), which decide the combat.
 
-Every unit radiates its factor in 米 shape within its 🎯combat range. You can see the units that provide ⚔️Atk and 🛡️Def. The total values are the battle factor at that point. Some strongholds 🏰Fortress and 🛣️Mountain Pass can provide extra defense if they are occupied by 💂Infantry or 🎉🚀Artillery.
+Every unit radiates its factor in 米 shape within its 🎯combat range. You can see the units that provide ⚔️Atk and 🛡️Def. The total values are the combat factor at that point. Some strongholds 🏰Fortress and 🛣️Mountain Pass can provide extra defense if they are occupied by 💂Infantry or 🎉🚀Artillery.
+
 
 To attack an enemy you need to have a higher ⚔️Atk than its 🛡️Def at that point, and if just higher than 1, the enemy has to 🏃‍♂️retreat this unit; otherwise, it will be 💀captured.
 
@@ -77,7 +80,9 @@ There are also some restrictions about the ⚡charge, such as one can not charge
 
 ### Supply
 
-Units highly rely on supply, the unit 😅out of supply can not move nor provide battle factors. Notice that supply could be cut by the enemy.
+
+Units highly rely on supply, the unit 😅out of supply can not move nor provide combat factors. Notice that supply could be cut by the enemy.
+
 
 ![supply](media/supply.png)
 
