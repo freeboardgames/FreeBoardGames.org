@@ -76,7 +76,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           pickUpID(null);
           break;
         default:
-          if (pickedData(pickedID) !== null) {
+          if (pickedData(pickedID) !== null && canPut(G, ctx, pickedID, id)) {
             pickUpID(null);
             moves.movePiece(pickedID, id);
           } else {
@@ -410,13 +410,13 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       {/* turn info */}
       <p>
         {spanBGColor(<>It is {currentPlayer === myID ? 'my' : "opponent's"} turn.</>, fictionColor(currentPlayer))}
-        <button disabled={!isActive} onClick={props.undo}>
-          Undo
-        </button>
         <button
           disabled={!isActive}
           onClick={() => {
-            events.endTurn && events.endTurn();
+            let text = 'End Turn?';
+            if (confirm(text)) {
+              events.endTurn && events.endTurn();
+            }
           }}
         >
           End Turn
@@ -424,7 +424,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       </p>
 
       {/* action info */}
-      <label title="Click below to undo.">My Moves and Attack:</label>
+      <label>My Moves and Attack:</label>
       <svg viewBox="-0.1 -0.1 6.2 1.2" onClick={props.undo} cursor="pointer">
         {renderLayer((_, id) => {
           const moveEdRec = G.moveRecords[myID].map((p) => p[1]);
@@ -456,6 +456,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           }
         }, Array(6).fill(null))}
       </svg>
+      <label>(click above to undo)</label>
       {/* retreat info */}
       {G.forcedRetreat[currentPlayer][0] !== null && <p>🏃‍♂️💥 I must retreat my unit from attack first.</p>}
 
