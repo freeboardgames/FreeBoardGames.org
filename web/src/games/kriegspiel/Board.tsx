@@ -343,18 +343,18 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
     return (
       <table style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-        {obj?.belong !== myID ? (
-          // if choose enemy unit or empty place
-          <tr>
-            {myOffTd}
-            {eDefTd}
-          </tr>
-        ) : null}
         {obj?.belong !== opponentID ? (
           // if choose my unit or empty place
           <tr>
             {myDefTd}
             {eOffTd}
+          </tr>
+        ) : null}
+        {obj?.belong !== myID ? (
+          // if choose enemy unit or empty place
+          <tr>
+            {myOffTd}
+            {eDefTd}
           </tr>
         ) : null}
       </table>
