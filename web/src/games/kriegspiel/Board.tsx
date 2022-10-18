@@ -93,6 +93,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
   }
 
   function getCellColor(id: CellID) {
+    const strongholdColor = G.places[id]?.belong;
     if (id === pickedID) {
       return pico8Palette.dark_purple;
     } else if (isAvailable(id)) {
@@ -112,6 +113,8 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       }
     } else if (turfMode) {
       return pico8Palette.white;
+    } else if (typeof strongholdColor === 'string') {
+      return fictionColor(strongholdColor);
     } else {
       const pos = CId2Pos(id);
       const colorCase = (pos.x + pos.y) % 2 === 0;
@@ -119,47 +122,45 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     }
   }
 
-  function getRelDef(CId: CellID, belong: P_ID) {
-    return getBattleFactor(G, belong, false, CId)[0] - getBattleFactor(G, dualPlayerID(belong), true, CId)[0];
-  }
   function renderEffectedTurf(belong: P_ID) {
-    return renderLayer((_, id) => {
-      const relDef = getRelDef(id, belong);
+    return renderLayer((area) => {
+      const relDef = area[belong];
+      const control = area.control;
       return (
-        relDef > 0 &&
-        G.cells[id]?.belong !== dualPlayerID(belong) && (
-          <rect width="1" height="1" fillOpacity={relDef / 50} fill={fictionColor(belong)} />
-        )
+        relDef >= 0 &&
+        control === belong && <rect width="1" height="1" fillOpacity={(relDef + 5) / 50} fill={fictionColor(belong)} />
       );
-    });
+    }, G.controlArea);
   }
 
-  function renderBattleEffect(CId: CellID, selected: boolean) {
+  function renderCombatEffect(CId: CellID) {
     const obj = G.cells[CId];
-    let result: JSX.Element[] = [];
     if (obj) {
       const belong = obj.belong;
       const fireRange = Game.fireRange(G, CId, obj.range);
-      const [off, offLst] = getBattleFactor(G, dualPlayerID(belong), true, CId);
-      const [def, defLst] = getBattleFactor(G, belong, false, CId);
-      const relDef = def - off;
+      const offLst = getBattleFactor(G, dualPlayerID(belong), true, CId)[1];
+      const defLst = getBattleFactor(G, belong, false, CId)[1];
       //show the detailed info for selected cell, otherwise only cell in danger
-      if (selected) {
-        result = result
-          .concat(offLst.map((id) => gTranslate(renderStr('⚔️', 0.4), CId2Pos(id).x - 0.3, CId2Pos(id).y - 0.3)))
-          .concat(defLst.map((id) => gTranslate(renderStr('🛡️', 0.4), CId2Pos(id).x - 0.3, CId2Pos(id).y - 0.3)));
-        if (obj.supplied) {
-          result = result.concat(
-            fireRange.map((id) => gTranslate(renderStr('🎯', 0.3), CId2Pos(id).x + 0.3, CId2Pos(id).y + 0.3)),
-          );
-        }
-      }
-      if (relDef < 0) {
+
+      let result = offLst
+        .map((id) => gTranslate(renderStr('⚔️', 0.4), CId2Pos(id).x - 0.3, CId2Pos(id).y - 0.3))
+        .concat(defLst.map((id) => gTranslate(renderStr('🛡️', 0.4), CId2Pos(id).x - 0.3, CId2Pos(id).y - 0.3)));
+      if (obj.supplied) {
         result = result.concat(
-          gTranslate(renderStr(defState(relDef), 0.4), CId2Pos(CId).x + 0.3, CId2Pos(CId).y - 0.3),
+          fireRange.map((id) => gTranslate(renderStr('🎯', 0.3), CId2Pos(id).x + 0.3, CId2Pos(id).y + 0.3)),
         );
       }
+
       return result;
+    }
+  }
+  function renderCombatResult(CId: CellID) {
+    const obj = G.cells[CId];
+    if (obj) {
+      const relDef = G.controlArea[CId][obj.belong];
+      return (
+        obj && relDef < 0 && gTranslate(renderStr(defState(relDef), 0.4), CId2Pos(CId).x + 0.3, CId2Pos(CId).y - 0.3)
+      );
     }
   }
 
@@ -322,8 +323,9 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           G.cells,
         )}
         {/* battle info indication */}
+        {renderCombatEffect(pickedID)}
         {G.cells.map((_, id) => (
-          <>{renderBattleEffect(id, id === pickedID)}</>
+          <>{renderCombatResult(id)}</>
         ))}
         {/* control */}
         {renderLayer((_, id) => (

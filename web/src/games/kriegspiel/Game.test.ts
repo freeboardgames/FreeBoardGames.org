@@ -61,7 +61,7 @@ it('attack scenario', () => {
     '|32|🏰|6|🎪.0|19|⛰️|⛰️|⛰️|⛰️|19|🎪.0|1|⛰️|24|⛰️|24|🛣️|24|⛰️|4|💂.0|🏇.1|🏇.1|17|⛰️|10|🏰|13|⛰️|2|🏰|24|💂.1|🏇.0|50|🏰|12|🏰|32|⛰️|⛰️|⛰️|⛰️|⛰️|⛰️|24|🛣️|6|🏰|17|⛰️|24|⛰️|24|⛰️|36|🎪.1|19|🎪.1|';
   const atkScenario = {
     ...Game.Kriegspiel,
-    setup: () => Game.loadGame(atkScenarioData, '0'),
+    setup: (ctx) => Game.loadGame(atkScenarioData, ctx),
   };
   const client = Client({ game: atkScenario });
 
