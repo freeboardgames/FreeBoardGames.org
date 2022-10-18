@@ -532,7 +532,7 @@ function searchInMiShape(
           let cObj = G.cells[cCId];
           //!!!filter here
           //and also filter the case that is out of board
-          if (cObj !== undefined && filter(cObj, cCId)) {
+          if (cCId !== -1 && cObj !== undefined && filter(cObj, cCId)) {
             relPosLine.push({ x: n * i, y: n * j });
             aCIdLine.push(cCId);
           } else {
@@ -578,15 +578,17 @@ export function getChargedCavalries(G: GameState, CId: CellID): Position[][] {
   }
 }
 
+export function fireRange(G: GameState, CId: CellID, range: number): CellID[] {
+  return removeDup(searchInMiShape(G, CId, (obj, id) => G.places[id]?.placeType !== 'Mountain', 0, range)[0].flat());
+}
+
 export function getBattleFactor(G: GameState, player: P_ID, isOffense: boolean, CId: CellID): [number, CellID[]] {
   //type: true->offense, false->defense
   const pos = CId2Pos(CId);
   const targetObj = G.cells[CId];
   // filter the unit in 米 shape in its range
   // first filter Out the mountain block,
-  let effectingObjs = removeDup(
-    searchInMiShape(G, CId, (obj, id) => G.places[id]?.placeType !== 'Mountain', 0, 3)[0].flat(),
-  ).filter((id) => {
+  let effectingObjs = fireRange(G, CId, 3).filter((id) => {
     let obj = G.cells[id];
     //obj is in range, supplied, belongs to the chosen player,
     return (
