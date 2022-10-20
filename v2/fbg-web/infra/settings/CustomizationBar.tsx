@@ -28,6 +28,7 @@ const CustomizationBar = function (props: CustomizationBarProps) {
     EMPTY_FULL_GAME_CUSTOMIZATION_STATE
   );
   const [showDialog, setShowDialog] = useState(false);
+  // TODO: refactor this into useCustomization hook
   useEffect(() => {
     setCustomizationState(getGameCustomization(props.gameId));
   }, []);

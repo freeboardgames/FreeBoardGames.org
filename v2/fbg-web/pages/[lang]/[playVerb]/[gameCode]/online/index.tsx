@@ -58,9 +58,10 @@ const NewRoom: NextPage<any> = function (props: NewRoomProps) {
   if (!newRoom.success || !newRoom.roomId) {
     return <MessagePage type="error" message={`Failed to create room`} />;
   }
-  Router.replace(
-    `/${props.params.lang}/room?s=${server.index}&i=${newRoom.roomId}`
-  );
+  Router.replace({
+    pathname: `/${props.params.lang}/room`,
+    query: { s: server.index, i: newRoom.roomId },
+  });
   return <LoadingMessage />;
 };
 

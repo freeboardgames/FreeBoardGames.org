@@ -20,7 +20,7 @@ export function useNewRoom(): [
   const initialState: FbgNewRoomResult = { loaded: false };
   const [newRoom, setNewRoom] = useState(initialState);
   const createNewRoom = (input: FbgNewRoomInput) => {
-    const data = { numPlayers: input.numPlayers };
+    const data = { numPlayers: input.numPlayers, unlisted: true };
     fetch(
       `${location.protocol}//${input.hostname}/games/${input.gameId}/create`,
       {
