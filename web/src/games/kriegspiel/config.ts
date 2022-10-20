@@ -5,7 +5,7 @@ import { Board } from './Board';
 const config: IGameConfig = {
   bgioGame: Kriegspiel,
   bgioBoard: Board,
-  debug: true,
+  debug: false,
 };
 
 export default config;

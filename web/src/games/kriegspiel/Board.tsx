@@ -29,7 +29,7 @@ import { useGesture } from '@use-gesture/react';
 interface GameProps extends BoardProps<GameState> {}
 
 interface OutterProps {
-  gameArgs?: IGameArgs;
+  gameArgs: IGameArgs;
   step?: any;
 }
 
@@ -221,7 +221,6 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     {
       target: boardRef,
       eventOptions: { passive: false },
-      preventDefault: true,
     },
   );
 
@@ -323,7 +322,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           G.cells,
         )}
         {/* battle info indication */}
-        {renderCombatEffect(pickedID)}
+        {pickedID !== null && renderCombatEffect(pickedID)}
         {G.cells.map((_, id) => (
           <>{renderCombatResult(id)}</>
         ))}
@@ -433,7 +432,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           disabled={!isActive}
           onClick={() => {
             let text = 'End Turn?';
-            if (confirm(text)) {
+            if (window.confirm(text)) {
               events.endTurn && events.endTurn();
             }
           }}
@@ -714,12 +713,12 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
                 onClick={() => {
                   if (!editMode) {
                     if (props.gameArgs.mode === GameMode.OnlineFriend) {
-                      events.setActivePlayers({ all: 'edition' });
+                      events.setActivePlayers && events.setActivePlayers({ all: 'edition' });
                     } else {
-                      events.setStage('edition');
+                      events.setStage && events.setStage('edition');
                     }
                   } else {
-                    events.endStage();
+                    events.endStage && events.endStage();
                   }
                 }}
               />
