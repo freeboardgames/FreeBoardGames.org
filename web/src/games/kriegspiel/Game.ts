@@ -26,12 +26,12 @@ export const aiConfig = {
   enumerate: (G: GameState, ctx: Ctx) => {
     let evts = [{ event: 'endTurn', args: [] }];
     const CIdLst = Array.from(Array(BoardSize.mx * BoardSize.my).keys());
-    const cPlayer = ctx.currentPlayer as P_ID;
     let atks = CIdLst.filter((id) => canAttack(G, ctx, id)[0]).map((id) => {
       return { move: 'attack', args: [id] };
     });
     let moves = CIdLst.filter((stCId) => canPick(G, ctx, stCId)).flatMap((stCId) => {
       //simply predict supply line after move
+      const cPlayer = ctx.currentPlayer as P_ID;
       const newG: GameState = { ...G, cells: G.cells.map((obj, CId) => (CId === stCId ? null : obj)) };
       const suppPred = getSuppliedCells(newG, cPlayer);
       const dirSuppPred = getDirSuppliedLines(newG, cPlayer)[0];
@@ -430,17 +430,6 @@ function NaiveDistance(p1: Position, p2: Position): number {
   return Math.max(Math.abs(p1.x - p2.x), Math.abs(p1.y - p2.y));
 }
 
-/* //filter the 米 like targets and distances
-function DirectDistance(p1: Position, p2: Position): null | number {
-  const dx = Math.abs(p1.x - p2.x);
-  const dy = Math.abs(p1.y - p2.y);
-  if (dx === dy || dx === 0 || dy === 0) {
-    return Math.max(dx, dy);
-  } else {
-    return null;
-  }
-} */
-
 export function ptSetDisLessThan(set: CellID[], pt: CellID, dis: number = 1): boolean {
   if (set && set.length > 0) {
     return set.some((CId) => NaiveDistance(CId2Pos(pt), CId2Pos(CId)) <= dis);
@@ -669,11 +658,6 @@ export function getBattleFactor(G: GameState, player: P_ID, isOffense: boolean, 
   ];
 }
 
-/* function isInRange(pos: Position, oPos: Position, obj: ObjInstance): boolean {
-  const dirDis = DirectDistance(pos, oPos);
-  return NaiveDistance(pos, oPos) <= 3 && dirDis !== null && dirDis <= obj.range;
-} */
-
 //Supply
 
 export function dirSupplyFrom(G: GameState, CId: CellID, player: P_ID) {
@@ -821,7 +805,7 @@ export function newPiece(type: ObjType, be: P_ID): ObjInstance {
   };
 }
 
-type StrongholdType = 'Arsenal' | 'Pass' | 'Fortress' | 'Mountain';
+type StrongholdType = 'Arsenal' | 'Fortress' | 'Pass' | 'Mountain';
 export const strongholdTypeList: readonly StrongholdType[] = ['Arsenal', 'Fortress', 'Pass', 'Mountain'];
 interface Stronghold {
   readonly placeType: StrongholdType;
