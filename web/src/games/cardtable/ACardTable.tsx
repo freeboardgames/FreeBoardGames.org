@@ -7,7 +7,7 @@ import CardContainer from './CardContainer';
 import CribContainer from './CribContainer';
 import DeckContainer from './DeckContainer';
 import { Ctx } from 'boardgame.io';
-import CribbageBoardB from './CribbageBoardB';
+import CribbageBoard from './CribbageBoard';
 
 type IACardTableProps = {
   G?: IG;
@@ -45,12 +45,11 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
     gameState: { playerID: playerID, phase: phaseEnum[props.ctx.phase], stage: stage, cutTie: G.cutTie, currentDealer },
   };
 
-  const topDeal = currentDealer === playerEnum.south ? <ArrowUpward /> : null;
-  const bottomDeal = currentDealer === playerEnum.north ? <ArrowDownward /> : null;
+  const turnArrow = currentDealer === playerEnum.south ? <ArrowUpward /> : <ArrowDownward />;
+  const grid = currentDealer === playerEnum.north ? css.gridmine : css.gridtheirs;
   return (
-    <div className={css.grid}>
+    <div className={grid}>
       <div className={css.opponent_hand}>
-        {topDeal}
         <CardContainer name="South Hand" cards={G.hands.south.held} collaborator={collaborator} />
       </div>
       <div className={css.opponent}>
@@ -62,14 +61,14 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
       <div className={css.deck}>
         <DeckContainer name="Deck" cards={G.deck} deck {...theTurn} collaborator={collaborator} />
       </div>
-      <div className={css.cribbageboard}>
-        <CribbageBoardB score={thescore} updateScore={pegPointsMove} />
+      <div className={css.turnarrow}>{turnArrow}</div>
+      <div className={css.cribbageboardbutton}>
+        <CribbageBoard score={thescore} updateScore={pegPointsMove} />
       </div>
       <div className={css.player}>
         <CardContainer name="North" collaborator={collaborator} cards={G.hands.north.played} />
       </div>
       <div className={css.player_hand}>
-        {bottomDeal}
         <CardContainer name="North Hand" cards={G.hands.north.held} collaborator={collaborator} />
       </div>
       <div>

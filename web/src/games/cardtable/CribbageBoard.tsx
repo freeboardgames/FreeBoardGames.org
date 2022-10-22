@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import css from './CribbageBoardB.module.css';
+import css from './CribbageBoard.module.css';
 import { IScore, IScoreKeeper } from './game';
 import Dialog from '@material-ui/core/Dialog';
 import Slider from '@material-ui/core/Slider';
@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import Popover from '@material-ui/core/Popover';
 
 interface PegholeProps {
   idx: number;
@@ -134,15 +135,24 @@ type CribbageBoardProps = {
   updateScore?: (idx: number) => void;
 };
 
-const CribbageBoardB: FunctionComponent<CribbageBoardProps> = ({
+const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
   score: { north, south },
   updateScore,
 }: CribbageBoardProps) => {
+  const [cribOpen, setCribOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const divRef = React.useRef();
   const [isOpen, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(1);
 
+  function handleCribToggle(): void {
+    setAnchorEl(divRef.current);
+    setCribOpen(!cribOpen);
+  }
   function handlePegPoints(idx: number): void {
     updateScore(idx);
+    //setCribOpen(false);
+    //setAnchorEl(null);
   }
 
   function handleClickOpen(evt: React.MouseEvent) {
@@ -168,43 +178,63 @@ const CribbageBoardB: FunctionComponent<CribbageBoardProps> = ({
     return `${value}`;
   }
 
+  const AnchorButton = (
+    <div>
+      <Button id="anchor-button" onClick={handleCribToggle}>
+        PEG
+      </Button>
+    </div>
+  );
+
   return (
-    <div
-      className={css.CribbageBoardB}
-      onClick={(evt) => {
-        handleClickOpen(evt);
-      }}
-    >
-      <CribbagePlayer start={1} score={south} opponent={true} />
-      <CribbagePlayer start={1} invert={true} score={north} />
-      <Dialog open={isOpen}>
-        <DialogTitle id="form-dialog-title">{`Peg ${selectedValue}`}</DialogTitle>
-        <DialogContent>
-          <Slider
-            defaultValue={1}
-            value={selectedValue}
-            getAriaValueText={valuetext}
-            onChange={(event, values) => {
-              event.stopPropagation();
-              event.preventDefault();
-              let value = typeof values === 'number' ? values : values[0];
-              setSelectedValue(value);
+    <div className={css.CribDrawer}>
+      <React.Fragment>
+        {AnchorButton}
+        <Popover
+          open={cribOpen}
+          onClose={handleCribToggle}
+          anchorEl={anchorEl}
+          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+        >
+          <div
+            className={css.CribbageBoard}
+            onClick={(evt) => {
+              handleClickOpen(evt);
             }}
-            aria-labelledby="form-dialog-title"
-            step={1}
-            marks
-            min={1}
-            max={+29}
-            valueLabelDisplay="auto"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={(evt) => handleCancel(evt)}>Cancel</Button>
-          <Button onClick={(evt) => handleClose(evt)}>Peg Points</Button>
-        </DialogActions>
-      </Dialog>
+          >
+            <CribbagePlayer start={1} score={south} opponent={true} />
+            <CribbagePlayer start={1} invert={true} score={north} />
+            <Dialog open={isOpen}>
+              <DialogTitle id="form-dialog-title">{`Peg ${selectedValue}`}</DialogTitle>
+              <DialogContent>
+                <Slider
+                  defaultValue={1}
+                  value={selectedValue}
+                  getAriaValueText={valuetext}
+                  onChange={(event, values) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    let value = typeof values === 'number' ? values : values[0];
+                    setSelectedValue(value);
+                  }}
+                  aria-labelledby="form-dialog-title"
+                  step={1}
+                  marks
+                  min={1}
+                  max={+29}
+                  valueLabelDisplay="auto"
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={(evt) => handleCancel(evt)}>Cancel</Button>
+                <Button onClick={(evt) => handleClose(evt)}>Peg Points</Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        </Popover>
+      </React.Fragment>
     </div>
   );
 };
 
-export default CribbageBoardB;
+export default CribbageBoard;
