@@ -12,6 +12,7 @@ export interface GameState {
   moveRecords: { [key in P_ID]: [CellID, CellID][] }; //(stCId,edCId)
   attackRecords: { [key in P_ID]: [CellID, ObjInstance | 'Arsenal'] | null };
   forcedRetreat: { [key in P_ID]: [CellID | null, CellID | null] }; //the start and end of retreat CId,
+  controlArea: { control: P_ID; '0': number; '1': number }[]; //control player, reldef of players
 }
 export function dualPlayerID(id: P_ID) {
   switch (id) {
@@ -25,12 +26,12 @@ export const aiConfig = {
   enumerate: (G: GameState, ctx: Ctx) => {
     let evts = [{ event: 'endTurn', args: [] }];
     const CIdLst = Array.from(Array(BoardSize.mx * BoardSize.my).keys());
-    const cPlayer = ctx.currentPlayer as P_ID;
     let atks = CIdLst.filter((id) => canAttack(G, ctx, id)[0]).map((id) => {
       return { move: 'attack', args: [id] };
     });
     let moves = CIdLst.filter((stCId) => canPick(G, ctx, stCId)).flatMap((stCId) => {
       //simply predict supply line after move
+      const cPlayer = ctx.currentPlayer as P_ID;
       const newG: GameState = { ...G, cells: G.cells.map((obj, CId) => (CId === stCId ? null : obj)) };
       const suppPred = getSuppliedCells(newG, cPlayer);
       const dirSuppPred = getDirSuppliedLines(newG, cPlayer)[0];
@@ -56,7 +57,7 @@ export const aiConfig = {
 export const Kriegspiel: Game<GameState> = {
   name: 'kriegspiel',
   setup: (ctx) => {
-    return loadGame(game0, ctx.currentPlayer as P_ID);
+    return loadGame(game0, ctx);
   },
 
   turn: {
@@ -71,6 +72,7 @@ export const Kriegspiel: Game<GameState> = {
         G.cells[retreatSt] = null;
         G.forcedRetreat[cPlayer] = [null, null];
       }
+      update(G, ctx);
     },
     onEnd(G, ctx) {
       const cPlayer = ctx.currentPlayer as P_ID;
@@ -84,27 +86,27 @@ export const Kriegspiel: Game<GameState> = {
           G.forcedRetreat[cPlayer] = [null, null];
         }
       }
+      update(G, ctx);
     },
     stages: {
       edition: {
         moves: {
           load: (G, ctx, fen: string) => {
-            return loadGame(fen, ctx.currentPlayer as P_ID);
+            return loadGame(fen, ctx);
           },
           merge: (G, ctx, fen: string) => {
-            const addCells = loadGame(fen, ctx.currentPlayer as P_ID).cells;
+            const addCells = loadPieces(fen);
             const newCells = G.cells.map((obj, id) => (addCells[id] ? addCells[id] : obj));
             G.cells = newCells;
+            update(G, ctx);
           },
           editCells: (G, ctx, CId: CellID, element: ObjInstance | null) => {
-            const cPlayer = ctx.currentPlayer as P_ID;
             G.cells[CId] = element;
-            update(G, cPlayer);
+            update(G, ctx);
           },
           editPlaces: (G, ctx, CId: CellID, element: Stronghold | null) => {
-            const cPlayer = ctx.currentPlayer as P_ID;
             G.places[CId] = element;
-            update(G, cPlayer);
+            update(G, ctx);
           },
         },
       },
@@ -130,7 +132,7 @@ export const Kriegspiel: Game<GameState> = {
           G.forcedRetreat[cPlayer] = [null, edCId];
         }
 
-        update(G, cPlayer);
+        update(G, ctx);
       } else return INVALID_MOVE;
     },
     attack: (G, ctx, CId: CellID) => {
@@ -148,7 +150,7 @@ export const Kriegspiel: Game<GameState> = {
         else {
           G.cells[CId] = null;
         }
-        update(G, cPlayer);
+        update(G, ctx);
       } else return INVALID_MOVE;
     },
   },
@@ -233,7 +235,7 @@ function loadPlaces(fen: string) {
   });
 }
 
-export function loadGame(fen: string, cPlayer: P_ID): GameState {
+export function loadGame(fen: string, ctx: Ctx): GameState {
   const deCells = loadPieces(fen);
   const dePlaces = loadPlaces(fen);
   let myGame: GameState = {
@@ -246,8 +248,11 @@ export function loadGame(fen: string, cPlayer: P_ID): GameState {
     moveRecords: { 0: [], 1: [] },
     attackRecords: { 0: null, 1: null },
     forcedRetreat: { 0: [null, null], 1: [null, null] },
+    controlArea: Array((BoardSize.mx * BoardSize.my) / 2)
+      .fill({ control: '0', '0': 0, '1': 0 })
+      .concat(Array((BoardSize.mx * BoardSize.my) / 2).fill({ control: '1', '0': 0, '1': 0 })),
   };
-  update(myGame, cPlayer);
+  update(myGame, ctx);
   return myGame;
 }
 //💂‍♂️.0->newPiece
@@ -320,7 +325,8 @@ export const gameList = [
 ];
 
 //update game
-function update(G: GameState, cPlayer: P_ID) {
+function update(G: GameState, ctx: Ctx) {
+  const cPlayer = ctx.currentPlayer as P_ID;
   //check supply
   updateSuppliedCells(G, cPlayer);
   updateSuppliedCells(G, dualPlayerID(cPlayer));
@@ -348,6 +354,7 @@ function update(G: GameState, cPlayer: P_ID) {
       }
     }
   });
+  updateControlArea(G);
 }
 
 function updateSuppliedCells(G: GameState, player?: P_ID) {
@@ -370,6 +377,25 @@ function updateSuppliedObj(G: GameState) {
     } else {
       return null;
     }
+  });
+}
+function updateControlArea(G: GameState) {
+  const oldArea = G.controlArea;
+  G.controlArea = oldArea.map((area, CId) => {
+    const relDef0 = getRelDef(G, CId, '0');
+    const relDef1 = getRelDef(G, CId, '1');
+    let newControl = area.control;
+    if (relDef0 > relDef1) {
+      newControl = '0';
+    }
+    if (relDef1 > relDef0) {
+      newControl = '1';
+    }
+    const obj = G.cells[CId];
+    if (obj) {
+      newControl = obj.belong;
+    }
+    return { control: newControl, '0': relDef0, '1': relDef1 };
   });
 }
 
@@ -402,17 +428,6 @@ export function CId2Pos(id: CellID): Position {
 
 function NaiveDistance(p1: Position, p2: Position): number {
   return Math.max(Math.abs(p1.x - p2.x), Math.abs(p1.y - p2.y));
-}
-
-//filter the 米 like targets and distances
-function DirectDistance(p1: Position, p2: Position): null | number {
-  const dx = Math.abs(p1.x - p2.x);
-  const dy = Math.abs(p1.y - p2.y);
-  if (dx === dy || dx === 0 || dy === 0) {
-    return Math.max(dx, dy);
-  } else {
-    return null;
-  }
 }
 
 export function ptSetDisLessThan(set: CellID[], pt: CellID, dis: number = 1): boolean {
@@ -532,7 +547,7 @@ function searchInMiShape(
           let cObj = G.cells[cCId];
           //!!!filter here
           //and also filter the case that is out of board
-          if (cObj !== undefined && filter(cObj, cCId)) {
+          if (cCId !== -1 && cObj !== undefined && filter(cObj, cCId)) {
             relPosLine.push({ x: n * i, y: n * j });
             aCIdLine.push(cCId);
           } else {
@@ -578,20 +593,24 @@ export function getChargedCavalries(G: GameState, CId: CellID): Position[][] {
   }
 }
 
+export function fireRange(G: GameState, CId: CellID, range: number): CellID[] {
+  return removeDup(searchInMiShape(G, CId, (obj, id) => G.places[id]?.placeType !== 'Mountain', 0, range)[0].flat());
+}
+function getRelDef(G: GameState, CId: CellID, belong: P_ID) {
+  return getBattleFactor(G, belong, false, CId)[0] - getBattleFactor(G, dualPlayerID(belong), true, CId)[0];
+}
 export function getBattleFactor(G: GameState, player: P_ID, isOffense: boolean, CId: CellID): [number, CellID[]] {
   //type: true->offense, false->defense
   const pos = CId2Pos(CId);
   const targetObj = G.cells[CId];
   // filter the unit in 米 shape in its range
   // first filter Out the mountain block,
-  let effectingObjs = removeDup(
-    searchInMiShape(G, CId, (obj, id) => G.places[id]?.placeType !== 'Mountain', 0, 3)[0].flat(),
-  ).filter((id) => {
+  let effectingObjs = fireRange(G, CId, 3).filter((id) => {
     let obj = G.cells[id];
     //obj is in range, supplied, belongs to the chosen player,
     return (
       obj &&
-      isInRange(pos, CId2Pos(id), obj) &&
+      NaiveDistance(pos, CId2Pos(id)) <= obj.range &&
       obj.supplied &&
       obj.belong === player &&
       //filter out retreating units in offense
@@ -637,11 +656,6 @@ export function getBattleFactor(G: GameState, player: P_ID, isOffense: boolean, 
       .reduce((a, b) => a + b, addValue),
     effectingObjs,
   ];
-}
-
-function isInRange(pos: Position, oPos: Position, obj: ObjInstance): boolean {
-  const dirDis = DirectDistance(pos, oPos);
-  return NaiveDistance(pos, oPos) <= 3 && dirDis !== null && dirDis <= obj.range;
 }
 
 //Supply
@@ -791,7 +805,7 @@ export function newPiece(type: ObjType, be: P_ID): ObjInstance {
   };
 }
 
-type StrongholdType = 'Arsenal' | 'Pass' | 'Fortress' | 'Mountain';
+type StrongholdType = 'Arsenal' | 'Fortress' | 'Pass' | 'Mountain';
 export const strongholdTypeList: readonly StrongholdType[] = ['Arsenal', 'Fortress', 'Pass', 'Mountain'];
 interface Stronghold {
   readonly placeType: StrongholdType;
