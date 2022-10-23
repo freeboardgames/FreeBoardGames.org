@@ -1,7 +1,7 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import CribbageBoardB from './CribbageBoardB';
+import CribbageBoard from './CribbageBoard';
 import { CardTableGame } from './game';
 import { Client } from 'boardgame.io/client';
 
@@ -32,8 +32,10 @@ test('test a peg { f: 59, b:58} +1', () => {
   client.moves.pegPoints(1);
   client.moves.pegPoints(1);
 
-  const board = Enzyme.mount(<CribbageBoardB score={store.getState().G.score} />);
+  const board = Enzyme.mount(<CribbageBoard score={store.getState().G.score} />);
   // should be ignored
+  let cribButton = board.find('button#anchor-button');
+  cribButton.simulate('click');
   let front = board.find('Peghole[idx=60]').not('[opponent]').childAt(0);
   let back = board.find('Peghole[idx=59]').not('[opponent]').childAt(0);
 
