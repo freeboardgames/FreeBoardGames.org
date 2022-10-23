@@ -139,9 +139,9 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
   score: { north, south },
   updateScore,
 }: CribbageBoardProps) => {
+  const divRef = React.useRef();
   const [cribOpen, setCribOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const divRef = React.useRef();
   const [isOpen, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(1);
 
@@ -180,7 +180,7 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
 
   const AnchorButton = (
     <div>
-      <Button id="anchor-button" onClick={handleCribToggle}>
+      <Button id="anchor-button" onClick={handleCribToggle} ref={divRef.current}>
         PEG
       </Button>
     </div>

@@ -3,113 +3,113 @@ import { Local } from 'boardgame.io/multiplayer';
 import { CardTableGame } from './game';
 import { cardEnum } from './deals';
 
-// describe('deck moves', () => {
-//   test('cutDeck(1) should rotate deck by one card', () => {
-//     let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
-//     client.start();
-//     client.events.setPhase(null);
-//     client.moves.cutDeck(1);
-//     const { G } = client.store.getState();
+describe('deck moves', () => {
+  test('cutDeck(1) should rotate deck by one card', () => {
+    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    client.start();
+    client.events.setPhase(null);
+    client.moves.cutDeck(1);
+    const { G } = client.store.getState();
 
-//     expect(G.deck[0]).toEqual({ id: cardEnum.SK, rank: 13, faced: false });
-//     expect(G.deck[1]).toEqual({ id: cardEnum.SJ, rank: 11, faced: false });
-//     expect(G.deck[2]).toEqual({ id: cardEnum.H9, rank: 48, faced: false });
-//     expect(G.deck[3]).toEqual({ id: cardEnum.H2, rank: 41, faced: false });
-//   });
+    expect(G.deck[0]).toEqual({ id: cardEnum.SK, rank: 13, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.SJ, rank: 11, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.H9, rank: 48, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.H2, rank: 41, faced: false });
+  });
 
-//   test('cutDeck(-3) should rotate deck by one card', () => {
-//     let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
-//     client.start();
-//     client.events.setPhase(null);
-//     client.moves.cutDeck(-3);
-//     const { G } = client.store.getState();
-//     expect(G.deck[0]).toEqual({ id: cardEnum.SQ, rank: 12, faced: false });
-//     expect(G.deck[1]).toEqual({ id: cardEnum.D9, rank: 35, faced: false });
-//     expect(G.deck[2]).toEqual({ id: cardEnum.DA, rank: 27, faced: false });
-//     expect(G.deck[3]).toEqual({ id: cardEnum.D6, rank: 32, faced: false });
-//   });
+  test('cutDeck(-3) should rotate deck by one card', () => {
+    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    client.start();
+    client.events.setPhase(null);
+    client.moves.cutDeck(-3);
+    const { G } = client.store.getState();
+    expect(G.deck[0]).toEqual({ id: cardEnum.SQ, rank: 12, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.D9, rank: 35, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.DA, rank: 27, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.D6, rank: 32, faced: false });
+  });
 
-//   test('cutDeck(2) should rotate deck by two cards', () => {
-//     let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
-//     client.start();
-//     client.events.setPhase(null);
-//     client.moves.cutDeck(-3);
-//     const { G } = client.store.getState();
-//     expect(G.deck[0]).toEqual({ id: cardEnum.SQ, rank: 12, faced: false });
-//     expect(G.deck[1]).toEqual({ id: cardEnum.D9, rank: 35, faced: false });
-//     expect(G.deck[2]).toEqual({ id: cardEnum.DA, rank: 27, faced: false });
-//     expect(G.deck[3]).toEqual({ id: cardEnum.D6, rank: 32, faced: false });
-//   });
+  test('cutDeck(2) should rotate deck by two cards', () => {
+    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    client.start();
+    client.events.setPhase(null);
+    client.moves.cutDeck(-3);
+    const { G } = client.store.getState();
+    expect(G.deck[0]).toEqual({ id: cardEnum.SQ, rank: 12, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.D9, rank: 35, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.DA, rank: 27, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.D6, rank: 32, faced: false });
+  });
 
-//   test('cutDeck(-11) should rotate deck by one card', () => {
-//     let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
-//     client.start();
-//     client.events.setPhase(null);
-//     client.moves.cutDeck(-11);
-//     const { G } = client.store.getState();
-//     expect(G.deck[0]).toEqual({ id: cardEnum.C5, rank: 18, faced: false });
-//     expect(G.deck[1]).toEqual({ id: cardEnum.C2, rank: 15, faced: false });
-//     expect(G.deck[2]).toEqual({ id: cardEnum.DJ, rank: 37, faced: false });
-//     expect(G.deck[3]).toEqual({ id: cardEnum.C10, rank: 23, faced: false });
-//   });
+  test('cutDeck(-11) should rotate deck by one card', () => {
+    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    client.start();
+    client.events.setPhase(null);
+    client.moves.cutDeck(-11);
+    const { G } = client.store.getState();
+    expect(G.deck[0]).toEqual({ id: cardEnum.C5, rank: 18, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.C2, rank: 15, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.DJ, rank: 37, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.C10, rank: 23, faced: false });
+  });
 
-//   test('cutDeck(5) should rotate deck by one card', () => {
-//     let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
-//     client.start();
-//     client.events.setPhase(null);
-//     client.moves.cutDeck(5);
-//     const { G } = client.store.getState();
-//     expect(G.deck[0]).toEqual({ id: cardEnum.C7, rank: 20, faced: false });
-//     expect(G.deck[1]).toEqual({ id: cardEnum.C6, rank: 19, faced: false });
-//     expect(G.deck[2]).toEqual({ id: cardEnum.D10, rank: 36, faced: false });
-//     expect(G.deck[3]).toEqual({ id: cardEnum.D5, rank: 31, faced: false });
-//   });
-// });
+  test('cutDeck(5) should rotate deck by one card', () => {
+    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    client.start();
+    client.events.setPhase(null);
+    client.moves.cutDeck(5);
+    const { G } = client.store.getState();
+    expect(G.deck[0]).toEqual({ id: cardEnum.C7, rank: 20, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.C6, rank: 19, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.D10, rank: 36, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.D5, rank: 31, faced: false });
+  });
+});
 
-// describe('moveCard(ICardMove) consistent state changes to G', () => {
-//   test('move from deck[0] to deck[1]', () => {
-//     let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
-//     client.start();
-//     client.events.setPhase(null);
-//     client.moves.moveCards({
-//       from: { container: 'deck', ordinal: 0 },
-//       to: { container: 'deck', ordinal: 1 },
-//     });
-//     const { G } = client.store.getState();
-//     expect(G.deck[0].id).toEqual(cardEnum.SK);
-//     expect(G.deck[1].id).toEqual(cardEnum.D6);
-//   });
+describe('moveCard(ICardMove) consistent state changes to G', () => {
+  test('move from deck[0] to deck[1]', () => {
+    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    client.start();
+    client.events.setPhase(null);
+    client.moves.moveCards({
+      from: { container: 'deck', ordinal: 0 },
+      to: { container: 'deck', ordinal: 1 },
+    });
+    const { G } = client.store.getState();
+    expect(G.deck[0].id).toEqual(cardEnum.SK);
+    expect(G.deck[1].id).toEqual(cardEnum.D6);
+  });
 
-//   test('move from deck[0-2] to hands.east.private[0]', () => {
-//     let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
-//     client.start();
-//     client.events.setPhase(null);
-//     client.moves.moveCards({
-//       from: { container: 'deck', ordinal: 0, cardcount: 3 },
-//       to: { container: 'hands.east.private', ordinal: 0 },
-//     });
-//     const { G } = client.store.getState();
-//     expect(G.deck.length).toEqual(49);
+  test('move from deck[0-2] to hands.east.private[0]', () => {
+    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    client.start();
+    client.events.setPhase(null);
+    client.moves.moveCards({
+      from: { container: 'deck', ordinal: 0, cardcount: 3 },
+      to: { container: 'hands.east.private', ordinal: 0 },
+    });
+    const { G } = client.store.getState();
+    expect(G.deck.length).toEqual(49);
 
-//     expect(G.hands.east.private).toEqual([
-//       {
-//         id: cardEnum.D6,
-//         rank: 32,
-//         faced: false,
-//       },
-//       {
-//         id: cardEnum.SK,
-//         rank: 13,
-//         faced: false,
-//       },
-//       {
-//         id: cardEnum.SJ,
-//         rank: 11,
-//         faced: false,
-//       },
-//     ]);
-//   });
-// });
+    expect(G.hands.east.private).toEqual([
+      {
+        id: cardEnum.D6,
+        rank: 32,
+        faced: false,
+      },
+      {
+        id: cardEnum.SK,
+        rank: 13,
+        faced: false,
+      },
+      {
+        id: cardEnum.SJ,
+        rank: 11,
+        faced: false,
+      },
+    ]);
+  });
+});
 
 describe('deal() consistent state changes to G', () => {
   const customGameSetup = {
