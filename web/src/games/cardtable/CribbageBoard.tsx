@@ -141,12 +141,10 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
 }: CribbageBoardProps) => {
   const divRef = React.useRef();
   const [cribOpen, setCribOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [isOpen, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(1);
 
   function handleCribToggle(): void {
-    setAnchorEl(divRef.current);
     setCribOpen(!cribOpen);
   }
   function handlePegPoints(idx: number): void {
@@ -180,7 +178,7 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
 
   const AnchorButton = (
     <div>
-      <Button id="anchor-button" onClick={handleCribToggle} ref={divRef.current}>
+      <Button id="anchor-button" onClick={handleCribToggle} ref={divRef}>
         PEG
       </Button>
     </div>
@@ -193,8 +191,9 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
         <Popover
           open={cribOpen}
           onClose={handleCribToggle}
-          anchorEl={anchorEl}
-          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+          anchorReference="anchorEl"
+          anchorOrigin={{ horizontal: 'center', vertical: 'center' }}
+          transformOrigin={{ horizontal: 'center', vertical: 'bottom' }}
         >
           <div
             className={css.CribbageBoard}

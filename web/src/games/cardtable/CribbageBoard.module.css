@@ -62,7 +62,7 @@
 
 .Peghole_opegged {
     composes: Peghole;
-    background-color: red;
+    background-color: lightsalmon;
 }
 
 .Peghole:hover {
@@ -115,7 +115,7 @@
     flex-direction: column;
     flex: 1 1 0;
     width: 100%;
-    max-width: 600px;
-    min-width: 600px;
+    max-width: 100%;
+    min-width: 100%;
     margin-right: 9px;
 }

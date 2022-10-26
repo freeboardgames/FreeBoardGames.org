@@ -1,6 +1,6 @@
 .grid {
-    min-height: 500px;
-    max-height: 500px;
+    min-height: 400px;
+    max-height: 400px;
     min-width: 700px;
     max-width: 700px;
     display: grid;
@@ -15,13 +15,13 @@
 }
 
 .gridmine {
-    min-height: 500px;
-    max-height: 500px;
+    min-height: 400px;
+    max-height: 400px;
     min-width: 700px;
     max-width: 700px;
     display: grid;
-    grid-template-columns: 30% 20% 20% 30%;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 100px 1fr 100px 100px;
     grid-template-areas:
         "oplay oplay ohand ohand"
         "cboard cboard cboard cboard"
@@ -32,13 +32,13 @@
 }
 
 .gridtheirs {
-    min-height: 500px;
-    max-height: 500px;
+    min-height: 400px;
+    max-height: 400px;
     min-width: 700px;
     max-width: 700px;
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
-    grid-template-rows: 30% 20% 20% 30%;
+    grid-template-rows: 100px 100px 1fr 100px;
     grid-template-areas:
         "oplay oplay ohand ohand"
         "crib crib deck arr"
@@ -51,7 +51,7 @@
 
 .opponent_hand {
     min-width: 50%;
-    min-height: 87px;
+    min-height: 100px;
     background-color: rgb(29, 90, 29);
     grid-area: ohand;
 
@@ -59,14 +59,14 @@
 
 .opponent {
     min-width: 50%;
-    min-height: 87px;
+    min-height: 100px;
     background-color: rgb(29, 90, 29);
     grid-area: oplay
 }
 
 .player {
     min-width: 50%;
-    min-height: 87px;
+    min-height: 120px;
     background-color: rgb(29, 90, 29);
     grid-area: pplay;
 
@@ -74,7 +74,7 @@
 
 .player_hand {
     min-width: 50%;
-    min-height: 87px;
+    min-height: 120px;
     background-color: rgb(29, 90, 29);
     grid-area: phand;
 
@@ -82,25 +82,51 @@
 
 .crib {
     min-width: 50%;
-    min-height: 87px;
+    min-height: 120px;
     background-color: rgb(29, 90, 29);
     grid-area: crib;
+    justify-content: space-around;
 
 }
 
 .deck {
     min-width: 25%;
-    min-height: 87px;
+    min-height: 120px;
     background-color: rgb(29, 90, 29);
     grid-area: deck;
 
 }
 
 .cribbageboardbutton {
+    justify-content: space-around;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-area: cboard;
     min-width: 40px;
-    min-height: 30%;
-    max-height: 30%;
-    background-color: rgb(222, 124, 4);
+    min-height: 40px;
+    max-height: 40px;
+    background-color: rgb(144, 143, 99);
     color: brown;
+}
+
+.gamestate {
+    font-family: 'Arial';
+    font-size: medium;
+    margin: auto;
+    justify-content: center;
+    color: brown;
+}
+
+.scorewhite {
+    margin: auto;
+    font-family: 'Arial';
+    font-size: x-large;
+    color: white;
+}
+
+.scorered {
+    margin: auto;
+    font-family: 'Arial';
+    font-size: x-large;
+    color: lightsalmon;
 }

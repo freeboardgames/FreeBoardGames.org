@@ -63,18 +63,19 @@ const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps
       </div>
       <div className={css.turnarrow}>{turnArrow}</div>
       <div className={css.cribbageboardbutton}>
+        <div className={css.gamestate}>
+          {collaborator.gameState.phase}:{collaborator.gameState.stage}
+        </div>
+        <div className={css.scorewhite}>{thescore.north.front}</div>
         <CribbageBoard score={thescore} updateScore={pegPointsMove} />
+        <div className={css.scorered}>{thescore.south.front}</div>
+        <div></div>
       </div>
       <div className={css.player}>
         <CardContainer name="North" collaborator={collaborator} cards={G.hands.north.played} />
       </div>
       <div className={css.player_hand}>
         <CardContainer name="North Hand" cards={G.hands.north.held} collaborator={collaborator} />
-      </div>
-      <div>
-        <h5>
-          {collaborator.gameState.phase}:{collaborator.gameState.stage}
-        </h5>
       </div>
     </div>
   );

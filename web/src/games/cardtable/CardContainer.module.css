@@ -1,5 +1,5 @@
 .cardcontainer {
-  min-width: 200px;
+  min-width: 350px;
   min-height: min-content;
   display: 'inline-grid';
   justify-content: 'center';
@@ -9,14 +9,14 @@
 
 .grid {
   display: inline-grid;
-  grid-template-columns: repeat(6, 14%);
+  grid-template-columns: repeat(6, 1fr);
 }
 
 .gridreverse {
   display: inline-grid;
   direction: rtl;
   overflow-x: visible;
-  grid-template-columns: repeat(6, 20%);
+  grid-template-columns: repeat(6, 1fr);
 }
 
 .topcropcard {
