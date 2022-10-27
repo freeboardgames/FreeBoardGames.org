@@ -1367,10 +1367,15 @@
   dependencies:
     next-seo "*"
 
-"@types/node@*", "@types/node@18.11.5", "@types/node@>=10.0.0", "@types/node@^18.11.5":
+"@types/node@*", "@types/node@18.11.5", "@types/node@>=10.0.0":
   version "18.11.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.5.tgz#1bc94cf2f9ab5fe33353bc7c79c797dcc5325bef"
   integrity sha512-3JRwhbjI+cHLAkUorhf8RnqUbFXajvzX4q6fMn5JwkgtuwfYtRQYI3u4V92vI6NJuTsbBQWWh3RZjFsuevyMGQ==
+
+"@types/node@^18.11.7":
+  version "18.11.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.7.tgz#8ccef136f240770c1379d50100796a6952f01f94"
+  integrity sha512-LhFTglglr63mNXUSRYD8A+ZAIu5sFqNJ4Y2fPuY7UlrySJH87rRRlhtVmMHplmfk5WkoJGmDjE9oiTfyX94CpQ==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -1836,10 +1841,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-boardgame.io@^0.50.0:
-  version "0.50.0"
-  resolved "https://registry.yarnpkg.com/boardgame.io/-/boardgame.io-0.50.0.tgz#c4db8b5c3e100a0a07feea925e66d84a92955c6a"
-  integrity sha512-zcaH7PqY9JxvgwMSMQc0dyxEAFFvSN4NVOBRJwiHzak3SOQGiknmkTh3FD+ti0HO/Jmj9KN/Z0AfTY0NnRi07A==
+boardgame.io@^0.50.1:
+  version "0.50.1"
+  resolved "https://registry.yarnpkg.com/boardgame.io/-/boardgame.io-0.50.1.tgz#1fead654213f68f6e94cd6934aae7be0c628981e"
+  integrity sha512-FyOwA2IzZ3B/2sRjkWiaZzTAmm37DtXT5Rzr7uThiHKxbBl9uUMQjd+YnRFKUUkbhJdjY2cu7++7L6iiTzVcSg==
   dependencies:
     "@koa/cors" "^3.1.0"
     "@koa/router" "^10.1.1"
@@ -4679,10 +4684,10 @@ next-i18next@^12.1.0:
     i18next-fs-backend "^1.1.5"
     react-i18next "^11.18.4"
 
-next-seo@*, next-seo@^5.8.0:
-  version "5.8.0"
-  resolved "https://registry.yarnpkg.com/next-seo/-/next-seo-5.8.0.tgz#c71c791971e030af448cae61dc1ece5e79da1790"
-  integrity sha512-V5W/JwqdoX6/0zG4S7m5g8zNajYffytWigkPo2hrbHhLD18yGFBU9607OPhvbI9zX3QjWQFMBSmlUY456xt9cA==
+next-seo@*, next-seo@^5.9.0:
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/next-seo/-/next-seo-5.9.0.tgz#1bc68a25677f0459609c587264c5ee90a2a00730"
+  integrity sha512-GsPXIDC9EFoFM6pkigSGMzuD/PelL8TFPlD5rKQCZfwkDNhs0unkW8sOMZ2u4RnEfxb/BBpEjQxtEeYQcgQ8jQ==
 
 next-transpile-modules@^9.1.0:
   version "9.1.0"
