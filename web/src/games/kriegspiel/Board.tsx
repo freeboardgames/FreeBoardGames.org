@@ -3,6 +3,7 @@ import { BoardProps } from 'boardgame.io/react';
 import { IGameArgs } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
 import { GameLayout } from 'gamesShared/components/fbg/GameLayout';
+import styles from './Board.module.css';
 import * as Game from './Game';
 import {
   objTypeList,
@@ -20,7 +21,7 @@ import {
   getBattleFactor,
   getChargedCavalries,
   getDirSuppliedLines,
-  getSuppliedCells,
+  supplyPrediction,
   exportGame,
 } from './Game';
 
@@ -71,7 +72,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
           break;
         case id:
-          if (canAttack(G, ctx, id)[0]) {
+          if (canAttack(G, ctx, id)[0] && isActive) {
             moves.attack(id);
           }
           pickUpID(null);
@@ -96,17 +97,10 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     const strongholdColor = G.places[id]?.belong;
     if (id === pickedID) {
       return pico8Palette.dark_purple;
-    } else if (isAvailable(id)) {
+    } else if (pickedID !== null && isAvailable(id)) {
       //predict supply after moving
-      if (
-        getSuppliedCells(
-          {
-            ...G,
-            cells: G.cells.map((obj, CId) => (CId === pickedID ? null : CId === id ? pickedData(pickedID) : obj)),
-          },
-          currentPlayer,
-        ).includes(id)
-      ) {
+      const suppPred = supplyPrediction(G, ctx, pickedID);
+      if (suppPred(id)) {
         return pico8Palette.green;
       } else {
         return pico8Palette.yellow;
@@ -119,6 +113,22 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       const pos = CId2Pos(id);
       const colorCase = (pos.x + pos.y) % 2 === 0;
       return colorCase ? pico8Palette.light_grey : pico8Palette.white;
+    }
+  }
+
+  function getCursor(id: CellID) {
+    if (id === pickedID && canAttack(G, ctx, id)[0] && isActive) {
+      return styles.attackCursor;
+    } else if (pickedID !== null && isAvailable(id)) {
+      //predict supply after moving
+      const suppPred = supplyPrediction(G, ctx, pickedID);
+      if (suppPred(id)) {
+        return styles.moveCursor;
+      } else {
+        return styles.noSupplyCursor;
+      }
+    } else {
+      return styles.pointer;
     }
   }
 
@@ -227,7 +237,11 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
   //render Main board
 
   const gameBoard = (
-    <svg viewBox={`-0.6 -0.6 ${BoardSize.mx + 1.2} ${BoardSize.my + 1.2}`} ref={boardRef}>
+    <svg
+      viewBox={`-0.6 -0.6 ${BoardSize.mx + 1.2} ${BoardSize.my + 1.2}`}
+      style={{ touchAction: 'none' }}
+      ref={boardRef}
+    >
       <g
         transform={`translate(${BoardSize.mx / 2} ${BoardSize.my / 2})  scale(${mapScale}) translate(${
           mapPos.x - BoardSize.mx / 2
@@ -328,7 +342,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
         ))}
         {/* control */}
         {renderLayer((_, id) => (
-          <rect cursor="pointer" onClick={() => myOnClick(id)} width="1" height="1" fillOpacity="0" />
+          <rect className={getCursor(id)} onClick={() => myOnClick(id)} width="1" height="1" fillOpacity="0" />
         ))}
       </g>
     </svg>
@@ -367,20 +381,22 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
     return (
       <table style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-        {obj?.belong !== opponentID ? (
-          // if choose my unit or empty place
-          <tr>
-            {myDefTd}
-            {eOffTd}
-          </tr>
-        ) : null}
-        {obj?.belong !== myID ? (
-          // if choose enemy unit or empty place
-          <tr>
-            {myOffTd}
-            {eDefTd}
-          </tr>
-        ) : null}
+        <tbody>
+          {obj?.belong !== opponentID ? (
+            // if choose my unit or empty place
+            <tr>
+              {myDefTd}
+              {eOffTd}
+            </tr>
+          ) : null}
+          {obj?.belong !== myID ? (
+            // if choose enemy unit or empty place
+            <tr>
+              {myOffTd}
+              {eDefTd}
+            </tr>
+          ) : null}
+        </tbody>
       </table>
     );
   }
@@ -409,21 +425,21 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     <div id="PlayUI">
       {/* how many units left */}
 
-      <p>
-        <label>Over All:</label>
+      <div>
+        <label>Turn {ctx.turn} Over All:</label>
 
         <div
           onClick={() => {
             setTurfMode(!turfMode);
           }}
-          style={{ cursor: 'pointer' }}
+          className={styles.turfCursor}
         >
           {overAllUnits(myID)}
           <br />
           {overAllUnits(opponentID)}
         </div>
-        <label>(click to toggle Turf View)</label>
-      </p>
+        <label>(👆 click to toggle Turf View)</label>
+      </div>
 
       {/* turn info */}
       <p>
@@ -431,8 +447,10 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
         <button
           disabled={!isActive}
           onClick={() => {
-            let text = 'End Turn?';
-            if (window.confirm(text)) {
+            const noMoreAct =
+              G.cells.filter((_, CId) => canAttack(G, ctx, CId)[0] || canPick(G, ctx, CId)).length === 0;
+            const text = 'There are still moves or attacks available, end turn anyway?';
+            if (noMoreAct || window.confirm(text)) {
               events.endTurn && events.endTurn();
             }
           }}
@@ -443,7 +461,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
       {/* action info */}
       <label>My Moves and Attack:</label>
-      <svg viewBox="-0.1 -0.1 6.2 1.2" onClick={props.undo} cursor="pointer">
+      <svg viewBox="-0.1 -0.1 6.2 1.2" onClick={props.undo} className={styles.undoCursor}>
         {renderLayer((_, id) => {
           const moveEdRec = G.moveRecords[myID].map((p) => p[1]);
           const atk = G.attackRecords[myID];
@@ -474,7 +492,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           }
         }, Array(6).fill(null))}
       </svg>
-      <label>(click to undo)</label>
+      <label>(👆 click to undo)</label>
       {/* retreat info */}
       {G.forcedRetreat[currentPlayer][0] !== null && <p>🏃‍♂️💥 I must retreat my unit from attack first.</p>}
 
@@ -498,7 +516,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
                     {spanBGColor(
                       <>
                         {obj.objRender + obj.typeName},<br />
-                        <span title="Attack">⚔️: {obj.objType === 'Cavalry' ? '4(+3)' : obj.offense} </span>
+                        <span title="Attack">⚔️: {obj.objType === 'Cavalry' ? '4(⚡: 7)' : obj.offense} </span>
                         <span title="Defense">🛡️: {obj.defense} </span>
                         <span title="Range">🎯: {obj.range} </span>
                         <span title="Speed">🐴: {obj.speed} </span>
@@ -640,6 +658,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
             navigator.clipboard.writeText(gameData);
           }}
         />
+
         <input type="button" value="Remove Data" onClick={() => setGameData('')} />
       </form>
     </div>
@@ -667,6 +686,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           style={{
             height: 'auto',
             color: 'black',
+            textAlign: 'center',
             fontFamily: "'Lato', sans-serif",
             display: 'flex',
             flexWrap: 'wrap',
@@ -680,7 +700,6 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
               maxWidth: '122vh',
               border: `2px solid ${pico8Palette.dark_green}`,
               backgroundColor: `${pico8Palette.white}`,
-              touchAction: 'none',
             }}
           >
             {/* svg Game Board */}
@@ -720,6 +739,13 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
                   } else {
                     events.endStage && events.endStage();
                   }
+                }}
+              />
+              <input
+                type="button"
+                value="Export and Copy Game Data"
+                onClick={() => {
+                  navigator.clipboard.writeText(exportGame(G));
                 }}
               />
             </p>
