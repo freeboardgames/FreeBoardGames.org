@@ -11,10 +11,10 @@ describe('deck moves', () => {
     client.moves.cutDeck(1);
     const { G } = client.store.getState();
 
-    expect(G.deck[0]).toEqual({ id: cardEnum.SK, rank: 13, faced: false });
-    expect(G.deck[1]).toEqual({ id: cardEnum.SJ, rank: 11, faced: false });
-    expect(G.deck[2]).toEqual({ id: cardEnum.H9, rank: 48, faced: false });
-    expect(G.deck[3]).toEqual({ id: cardEnum.H2, rank: 41, faced: false });
+    expect(G.deck[0]).toEqual({ id: cardEnum.SK, rank: cardEnum.SK, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.SJ, rank: cardEnum.SJ, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.H9, rank: cardEnum.H9, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.H2, rank: cardEnum.H2, faced: false });
   });
 
   test('cutDeck(-3) should rotate deck by one card', () => {
@@ -23,10 +23,10 @@ describe('deck moves', () => {
     client.events.setPhase(null);
     client.moves.cutDeck(-3);
     const { G } = client.store.getState();
-    expect(G.deck[0]).toEqual({ id: cardEnum.SQ, rank: 12, faced: false });
-    expect(G.deck[1]).toEqual({ id: cardEnum.D9, rank: 35, faced: false });
-    expect(G.deck[2]).toEqual({ id: cardEnum.DA, rank: 27, faced: false });
-    expect(G.deck[3]).toEqual({ id: cardEnum.D6, rank: 32, faced: false });
+    expect(G.deck[0]).toEqual({ id: cardEnum.SQ, rank: cardEnum.SQ, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.D9, rank: cardEnum.D9, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.DA, rank: cardEnum.DA, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.D6, rank: cardEnum.D6, faced: false });
   });
 
   test('cutDeck(2) should rotate deck by two cards', () => {
@@ -35,10 +35,10 @@ describe('deck moves', () => {
     client.events.setPhase(null);
     client.moves.cutDeck(-3);
     const { G } = client.store.getState();
-    expect(G.deck[0]).toEqual({ id: cardEnum.SQ, rank: 12, faced: false });
-    expect(G.deck[1]).toEqual({ id: cardEnum.D9, rank: 35, faced: false });
-    expect(G.deck[2]).toEqual({ id: cardEnum.DA, rank: 27, faced: false });
-    expect(G.deck[3]).toEqual({ id: cardEnum.D6, rank: 32, faced: false });
+    expect(G.deck[0]).toEqual({ id: cardEnum.SQ, rank: cardEnum.SQ, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.D9, rank: cardEnum.D9, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.DA, rank: cardEnum.DA, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.D6, rank: cardEnum.D6, faced: false });
   });
 
   test('cutDeck(-11) should rotate deck by one card', () => {
@@ -47,10 +47,10 @@ describe('deck moves', () => {
     client.events.setPhase(null);
     client.moves.cutDeck(-11);
     const { G } = client.store.getState();
-    expect(G.deck[0]).toEqual({ id: cardEnum.C5, rank: 18, faced: false });
-    expect(G.deck[1]).toEqual({ id: cardEnum.C2, rank: 15, faced: false });
-    expect(G.deck[2]).toEqual({ id: cardEnum.DJ, rank: 37, faced: false });
-    expect(G.deck[3]).toEqual({ id: cardEnum.C10, rank: 23, faced: false });
+    expect(G.deck[0]).toEqual({ id: cardEnum.C5, rank: cardEnum.C5, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.C2, rank: cardEnum.C2, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.DJ, rank: cardEnum.DJ, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.C10, rank: cardEnum.C10, faced: false });
   });
 
   test('cutDeck(5) should rotate deck by one card', () => {
@@ -59,10 +59,10 @@ describe('deck moves', () => {
     client.events.setPhase(null);
     client.moves.cutDeck(5);
     const { G } = client.store.getState();
-    expect(G.deck[0]).toEqual({ id: cardEnum.C7, rank: 20, faced: false });
-    expect(G.deck[1]).toEqual({ id: cardEnum.C6, rank: 19, faced: false });
-    expect(G.deck[2]).toEqual({ id: cardEnum.D10, rank: 36, faced: false });
-    expect(G.deck[3]).toEqual({ id: cardEnum.D5, rank: 31, faced: false });
+    expect(G.deck[0]).toEqual({ id: cardEnum.C7, rank: cardEnum.C7, faced: false });
+    expect(G.deck[1]).toEqual({ id: cardEnum.C6, rank: cardEnum.C6, faced: false });
+    expect(G.deck[2]).toEqual({ id: cardEnum.D10, rank: cardEnum.D10, faced: false });
+    expect(G.deck[3]).toEqual({ id: cardEnum.D5, rank: cardEnum.D5, faced: false });
   });
 });
 
@@ -94,17 +94,17 @@ describe('moveCard(ICardMove) consistent state changes to G', () => {
     expect(G.hands.east.private).toEqual([
       {
         id: cardEnum.D6,
-        rank: 32,
+        rank: cardEnum.D6,
         faced: false,
       },
       {
         id: cardEnum.SK,
-        rank: 13,
+        rank: cardEnum.SK,
         faced: false,
       },
       {
         id: cardEnum.SJ,
-        rank: 11,
+        rank: cardEnum.SJ,
         faced: false,
       },
     ]);
@@ -305,8 +305,8 @@ describe('state model changes', () => {
 
     expect(Gn.hands.north.played[0]).toEqual(Gs.hands.north.played[0]);
     expect(Gn.hands.south.played[0]).toEqual(Gs.hands.south.played[0]);
-    expect(Gn.bestCut).toEqual(7);
-    expect(Gs.bestCut).toEqual(7);
+    expect(Gn.bestCut).toEqual(6);
+    expect(Gs.bestCut).toEqual(6);
     expect(Gs.cutTie).toEqual(true);
     expect(Gn.cutTie).toEqual(true);
 
@@ -328,8 +328,8 @@ describe('state model changes', () => {
 
     expect(Gn.hands.north.played[0]).toEqual(Gs.hands.north.played[0]);
     expect(Gn.hands.south.played[0]).toEqual(Gs.hands.south.played[0]);
-    expect(Gn.bestCut).toEqual(2);
-    expect(Gs.bestCut).toEqual(2);
+    expect(Gn.bestCut).toEqual(1);
+    expect(Gs.bestCut).toEqual(1);
     expect(Gs.cutTie).toBeFalsy();
     expect(Gn.cutTie).toBeFalsy();
     expect(Gn.chosenDealer).toEqual(1);
