@@ -49,11 +49,9 @@ export function FbgMetaButtons(props: FbgMetaButtonsProps) {
   if (!props.omitAbout) {
     buttons.push(
       <Link href="/en/about" key="about" href="#" title="About">
-
         <IconButton className={css.button}>
           <InfoIcon />
         </IconButton>
-
       </Link>
     );
   }
