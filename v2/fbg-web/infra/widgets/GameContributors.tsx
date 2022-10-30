@@ -20,7 +20,7 @@ export function GameContributors({ details, params }: GameContributorsProps) {
       style={{ marginRight: "4px" }}
       target="_blank"
       rel="noreferrer"
-    >
+      legacyBehavior>
       <Typography
         variant="body2"
         component="span"
