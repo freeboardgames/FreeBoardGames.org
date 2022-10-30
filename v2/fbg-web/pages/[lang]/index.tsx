@@ -32,10 +32,10 @@ const Home: NextPage<HomeProps> = function (props: HomeProps) {
     const link = `/${props.lang}/${props.playVerb}/${g.code}`;
     return (
       <div className={css.Card} key={g.id}>
-        <Link href={link}>
-          <a href="#">
-            <GameCard gameSummary={g} isLink={true} />
-          </a>
+        <Link href={link} href="#">
+
+          <GameCard gameSummary={g} isLink={true} />
+
         </Link>
       </div>
     );
