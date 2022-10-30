@@ -40,7 +40,6 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   let tileData = props.cards;
   let stage: stageEnum = props.collaborator.gameState.stage;
   let name = props.name;
-  let playerID: playerEnum = props.collaborator.gameState.playerID;
 
   const handleDeal = props.collaborator.handlers.handleDeal;
   const handleCrib = props.collaborator.handlers.handleCrib;
@@ -59,16 +58,10 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
           return name === 'Deck'; //&& currentPlayer === eventClicker;
         }
         case stageEnum.thePlay: {
-          return (
-            (name === 'North Hand' && playerID === playerEnum.north) ||
-            (name === 'South Hand' && playerID === playerEnum.south)
-          );
+          return name === 'Low Hand';
         }
         case stageEnum.putToCrib: {
-          return (
-            (name === 'North Hand' && playerID === playerEnum.north) ||
-            (name === 'South Hand' && playerID === playerEnum.south)
-          );
+          return name === 'Low Hand';
         }
         case stageEnum.dealHand: {
           return name === 'Deck'; //&& playerID matches dealer
