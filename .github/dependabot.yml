@@ -10,23 +10,3 @@ updates:
     versioning-strategy: increase
     schedule:
       interval: "daily"
-  - package-ecosystem: "npm"
-    directory: "/v2"
-    versioning-strategy: increase
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "npm"
-    directory: "/v2/fbg-web"
-    versioning-strategy: increase
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "npm"
-    directory: "/v2/fbg-bgio"
-    versioning-strategy: increase
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "npm"
-    directory: "/v2/fbg-games"
-    versioning-strategy: increase
-    schedule:
-      interval: "daily"

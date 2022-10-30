@@ -9,7 +9,9 @@ modes:
   - OnlineFriend
 contributors:
   - jasonharrison
+players: 2
 pt: 
+  descriptionTag: Foo
   instructions:
     text: foo
     `,
@@ -17,11 +19,17 @@ pt:
       "checkers"
     );
     expect(result).toEqual({
+      descriptionTag: "Foo",
       contributors: ["jasonharrison"],
       instructions: {
         text: "foo",
+        videoId: undefined
       },
       modes: [GameMode.OnlineFriend],
+      playerCount: {
+        max: 2,
+        min: 2
+      }
     });
   });
 });
