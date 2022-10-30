@@ -23,13 +23,13 @@ pt:
       contributors: ["jasonharrison"],
       instructions: {
         text: "foo",
-        videoId: undefined
+        videoId: undefined,
       },
       modes: [GameMode.OnlineFriend],
       playerCount: {
         max: 2,
-        min: 2
-      }
+        min: 2,
+      },
     });
   });
 });
