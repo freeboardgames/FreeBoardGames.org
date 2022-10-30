@@ -18,9 +18,7 @@ function LanguageButton() {
       <Link
         href={`/`}
         style={{ textDecoration: 'none', display: 'flex', color: 'white' }}>
-
         <LanguageIcon />
-
       </Link>
     </div>
   );
@@ -39,12 +37,10 @@ export const FreeBoardGamesBar: React.FC<FBGBarProps> = (props) => {
           <Link
             href={`/${props.lang ?? ''}`}
             style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-
             <img style={{ marginRight: '8px' }} width="48" height="48" src={FbgLogo.src} alt="FbG" />
             <Typography component="h1" variant="h6" style={{ color: 'white' }}>
               FreeBoardGames.org
             </Typography>
-
           </Link>
           {props.toolbarContent ?? <LanguageButton />}
         </Toolbar>

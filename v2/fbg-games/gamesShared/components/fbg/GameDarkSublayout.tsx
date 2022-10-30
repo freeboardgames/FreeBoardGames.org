@@ -85,10 +85,8 @@ export class GameDarkSublayout extends React.Component<IGameDarkSublayoutProps, 
           <Link
             href={`/${this.props.gameArgs.lang}`}
             style={{ textDecoration: 'none', display: 'flex' }}>
-
             <img src={FbgLogo.src} alt="FreeBoardGames.org" style={{ paddingRight: '16px' }} />
             {fbgTopLeftText}
-
           </Link>
           <div style={{ flexGrow: 1 }}></div>
           {this.renderChatButton()}
