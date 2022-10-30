@@ -14,7 +14,6 @@ interface PegholeProps {
   className: string;
   score: IScore;
   opponent: boolean;
-  color: string;
 }
 
 export function Peghole(props: PegholeProps) {
