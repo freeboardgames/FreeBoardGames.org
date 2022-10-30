@@ -21,7 +21,7 @@ interface StaticProps {
 function Index(props: StaticProps) {
   const i18nChoices = languages.map((lang) => (
     <div key={lang} className={css.langBox}>
-      <Link href={`/${lang}`}>
+      <Link href={`/${lang}`} legacyBehavior>
         <Typography component="h2" variant="h5">
           <a href="#" className={css.langLink}>
             {props.i18nConfig[lang].name}

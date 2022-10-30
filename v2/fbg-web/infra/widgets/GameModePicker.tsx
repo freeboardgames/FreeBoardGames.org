@@ -167,7 +167,7 @@ function PlayButton(props: GameModePickerCardProps) {
       break;
   }
   return (
-    <Link href={link}>
+    <Link href={link} legacyBehavior>
       <Button
         data-testid={`playbutton-${props.summary.id}-${props.mode}`}
         component={"a"}
