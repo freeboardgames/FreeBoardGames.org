@@ -39,6 +39,8 @@ export interface ITable {
   south: IHand;
   east: IHand;
   west: IHand;
+  top?: IHand;
+  low?: IHand;
 }
 
 export interface ICard {
@@ -73,6 +75,8 @@ export type IScoreKeeper = {
   south: IScore;
   east: IScore;
   west: IScore;
+  near?: IScore;
+  far?: IScore;
 };
 
 export interface ICardMove {
@@ -80,30 +84,33 @@ export interface ICardMove {
   to: ILocation;
 }
 
-const mapForPlayer = (G: IG) => {
-  return G;
+const mapForPlayer = (G: IG, ctx: Ctx, id: string) => {
+  let { hands, score } = G;
+  let near = id && id === '1' ? score.south : score.north;
+  let far = id && id === '1' ? score.north : score.south;
+  let top = id && id === '1' ? hands.north : hands.south;
+  let low = id && id === '1' ? hands.south : hands.north;
+  let myHands = { ...hands, low, top };
+  let myScore = { ...score, near, far };
+  let result: IG = { ...G, hands: myHands, score: myScore };
+  return result;
 };
 
-const maskForPlayer = (G: IG, ctx: Ctx, id: string) => {
+const maskForPlayer = (G: IG) => {
   let result: IG = null;
   let { hands } = G;
 
-  if (id && id === '1') {
-    let { north } = hands;
-    let temp: ICard[] = north.held.map((e) => ({ ...e, faced: true }));
-    result = { ...G, hands: { ...hands, north: { ...north, held: temp } } };
-  }
-  if (id && id === '0') {
-    let { south } = hands;
-    let temp: ICard[] = south.held.map((e) => ({ ...e, faced: true }));
-    result = { ...G, hands: { ...hands, south: { ...south, held: temp } } };
-  }
+  let { top, low } = hands;
+  let tempTop: ICard[] = top.held.map((e) => ({ ...e, faced: true }));
+  let tempLow: ICard[] = low.held.map((e) => ({ ...e, faced: false }));
+  result = { ...G, hands: { ...hands, low: { ...low, held: tempLow }, top: { ...top, held: tempTop } } };
+
   return result;
 };
 
 const playerView = (G: IG, ctx: Ctx, id: string) => {
-  let temp: IG = mapForPlayer(G);
-  return maskForPlayer(temp, ctx, id);
+  let temp: IG = mapForPlayer(G, ctx, id);
+  return maskForPlayer(temp);
 };
 
 const doesCutResolve = (G: IG, ctx: Ctx) => {
@@ -410,6 +417,8 @@ export const CardTableGame = {
       south: { front: 0, back: -1, game: 0 },
       east: { front: 0, back: -1, game: 0 },
       west: { front: 0, back: -1, game: 0 },
+      far: { front: 0, back: -1, game: 0 },
+      near: { front: 0, back: -1, game: 0 },
     },
     count: 0,
     deck: [

@@ -14,6 +14,7 @@ interface PegholeProps {
   className: string;
   score: IScore;
   opponent: boolean;
+  color: string;
 }
 
 export function Peghole(props: PegholeProps) {
@@ -133,11 +134,15 @@ const CribbagePlayer: FunctionComponent<CribbagePlayerProps> = ({
 type CribbageBoardProps = {
   score: IScoreKeeper;
   updateScore?: (idx: number) => void;
+  resetGame?: () => void;
+  playerID: string;
 };
 
 const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
-  score: { north, south },
+  score: { near, far },
   updateScore,
+  resetGame,
+  playerID,
 }: CribbageBoardProps) => {
   const divRef = React.useRef();
   const [cribOpen, setCribOpen] = React.useState(false);
@@ -146,6 +151,17 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
 
   function handleCribToggle(): void {
     setCribOpen(!cribOpen);
+  }
+
+  function handleDecrement(evt: React.MouseEvent): void {
+    evt.stopPropagation();
+    evt.preventDefault();
+    setSelectedValue(selectedValue > 0 ? selectedValue - 1 : selectedValue);
+  }
+  function handleIncrement(evt): void {
+    evt.stopPropagation();
+    evt.preventDefault();
+    setSelectedValue(selectedValue < 29 ? selectedValue + 1 : selectedValue);
   }
   function handlePegPoints(idx: number): void {
     updateScore(idx);
@@ -172,6 +188,12 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
     handlePegPoints(selectedValue);
   }
 
+  function handleGameReset(evt: React.MouseEvent) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    resetGame();
+  }
+
   function valuetext(value?: number) {
     return `${value}`;
   }
@@ -181,9 +203,24 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
       <Button id="anchor-button" onClick={handleCribToggle} ref={divRef}>
         PEG
       </Button>
+      <Button id="reset-button" onClick={handleGameReset}>
+        RESET
+      </Button>
     </div>
   );
 
+  let opponentNear = playerID === '1' ? true : false;
+  let opponentFar = playerID === '1' ? false : true;
+  let playerNear = opponentNear ? (
+    <CribbagePlayer start={1} score={near} opponent={true} />
+  ) : (
+    <CribbagePlayer start={1} score={near} />
+  );
+  let playerFar = opponentFar ? (
+    <CribbagePlayer start={1} score={far} opponent={true} />
+  ) : (
+    <CribbagePlayer start={1} score={far} />
+  );
   return (
     <div className={css.CribDrawer}>
       <React.Fragment>
@@ -201,8 +238,8 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
               handleClickOpen(evt);
             }}
           >
-            <CribbagePlayer start={1} score={south} opponent={true} />
-            <CribbagePlayer start={1} invert={true} score={north} />
+            {playerFar}
+            {playerNear}
             <Dialog open={isOpen}>
               <DialogTitle id="form-dialog-title">{`Peg ${selectedValue}`}</DialogTitle>
               <DialogContent>
@@ -225,6 +262,8 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
                 />
               </DialogContent>
               <DialogActions>
+                <Button onClick={(evt) => handleDecrement(evt)}>-</Button>
+                <Button onClick={(evt) => handleIncrement(evt)}>+</Button>
                 <Button onClick={(evt) => handleCancel(evt)}>Cancel</Button>
                 <Button onClick={(evt) => handleClose(evt)}>Peg Points</Button>
               </DialogActions>
