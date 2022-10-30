@@ -162,7 +162,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
       click={() => handleClick(index, name)}
       type={tile.faced ? deckAssets[cardEnum.GB] : deckAssets[tile.id]}
       pattern={Pattern.English}
-      height={80}
+      height={85}
     />
   ));
   if (props.deck) {

@@ -29,7 +29,7 @@ import { useGesture } from '@use-gesture/react';
 interface GameProps extends BoardProps<GameState> {}
 
 interface OutterProps {
-  gameArgs?: IGameArgs;
+  gameArgs: IGameArgs;
   step?: any;
 }
 
@@ -40,6 +40,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
   const [pickedID, pickUpID] = useState<CellID | null>(null);
   const editMode = ctx.activePlayers?.[myID] === 'edition';
   const opEditMode = ctx.activePlayers?.[opponentID] === 'edition';
+  const [turfMode, setTurfMode] = useState(false);
 
   function pickedData(pId: CellID | null) {
     if (pId !== null && canPick(G, ctx, pId) && isActive) {
@@ -76,7 +77,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           pickUpID(null);
           break;
         default:
-          if (pickedData(pickedID) !== null) {
+          if (pickedData(pickedID) !== null && canPut(G, ctx, pickedID, id)) {
             pickUpID(null);
             moves.movePiece(pickedID, id);
           } else {
@@ -110,6 +111,8 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       } else {
         return pico8Palette.yellow;
       }
+    } else if (turfMode) {
+      return pico8Palette.white;
     } else if (typeof strongholdColor === 'string') {
       return fictionColor(strongholdColor);
     } else {
@@ -119,28 +122,45 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     }
   }
 
-  function renderBattleEffect(CId: CellID, selected: boolean) {
+  function renderEffectedTurf(belong: P_ID) {
+    return renderLayer((area) => {
+      const relDef = area[belong];
+      const control = area.control;
+      return (
+        relDef >= 0 &&
+        control === belong && <rect width="1" height="1" fillOpacity={(relDef + 5) / 50} fill={fictionColor(belong)} />
+      );
+    }, G.controlArea);
+  }
+
+  function renderCombatEffect(CId: CellID) {
     const obj = G.cells[CId];
-    let result: JSX.Element[] = [];
     if (obj) {
       const belong = obj.belong;
-      const [off, offLst] = getBattleFactor(G, dualPlayerID(belong), true, CId);
-      const [def, defLst] = getBattleFactor(G, belong, false, CId);
-      const relDef = def - off;
+      const fireRange = Game.fireRange(G, CId, obj.range);
+      const offLst = getBattleFactor(G, dualPlayerID(belong), true, CId)[1];
+      const defLst = getBattleFactor(G, belong, false, CId)[1];
       //show the detailed info for selected cell, otherwise only cell in danger
-      if (selected) {
+
+      let result = offLst
+        .map((id) => gTranslate(renderStr('⚔️', 0.4), CId2Pos(id).x - 0.3, CId2Pos(id).y - 0.3))
+        .concat(defLst.map((id) => gTranslate(renderStr('🛡️', 0.4), CId2Pos(id).x - 0.3, CId2Pos(id).y - 0.3)));
+      if (obj.supplied) {
         result = result.concat(
-          offLst
-            .map((id) => gTranslate(renderStr('⚔️', 0.4), CId2Pos(id).x - 0.3, CId2Pos(id).y - 0.3))
-            .concat(defLst.map((id) => gTranslate(renderStr('🛡️', 0.4), CId2Pos(id).x - 0.3, CId2Pos(id).y - 0.3))),
+          fireRange.map((id) => gTranslate(renderStr('🎯', 0.3), CId2Pos(id).x + 0.3, CId2Pos(id).y + 0.3)),
         );
       }
-      if (relDef < 0) {
-        result = result.concat(
-          gTranslate(renderStr(defState(relDef), 0.4), CId2Pos(CId).x + 0.3, CId2Pos(CId).y - 0.3),
-        );
-      }
+
       return result;
+    }
+  }
+  function renderCombatResult(CId: CellID) {
+    const obj = G.cells[CId];
+    if (obj) {
+      const relDef = G.controlArea[CId][obj.belong];
+      return (
+        obj && relDef < 0 && gTranslate(renderStr(defState(relDef), 0.4), CId2Pos(CId).x + 0.3, CId2Pos(CId).y - 0.3)
+      );
     }
   }
 
@@ -201,7 +221,6 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     {
       target: boardRef,
       eventOptions: { passive: false },
-      preventDefault: true,
     },
   );
 
@@ -257,6 +276,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           stroke={pico8Palette.lavender}
           strokeWidth="0.2"
         />
+
         {/* supply line */}
 
         {drawAllSupplyLines('0')}
@@ -269,6 +289,9 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           ),
           G.places,
         )}
+        {/* show effected turf */}
+        {turfMode && renderEffectedTurf('0').concat(renderEffectedTurf('1'))}
+
         {/* move indication */}
         {G.moveRecords['0'].map(([st, ed]) => drawLine(st, ed, pico8Palette.dark_blue, 0.5, '0.3, 0.1'))}
         {G.moveRecords['1'].map(([st, ed]) => drawLine(st, ed, pico8Palette.brown, 0.5, '0.3, 0.1'))}
@@ -299,8 +322,9 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           G.cells,
         )}
         {/* battle info indication */}
+        {pickedID !== null && renderCombatEffect(pickedID)}
         {G.cells.map((_, id) => (
-          <>{renderBattleEffect(id, id === pickedID)}</>
+          <>{renderCombatResult(id)}</>
         ))}
         {/* control */}
         {renderLayer((_, id) => (
@@ -342,30 +366,21 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     );
 
     return (
-      <table>
-        {obj?.belong === opponentID ? (
-          <>
-            <tr>
-              {eDefTd}
-              {myOffTd}
-            </tr>
-            <tr>
-              {eOffTd}
-              {myDefTd}
-            </tr>
-          </>
-        ) : (
-          <>
-            <tr>
-              {myDefTd}
-              {eOffTd}
-            </tr>
-            <tr>
-              {myOffTd}
-              {eDefTd}
-            </tr>
-          </>
-        )}
+      <table style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+        {obj?.belong !== opponentID ? (
+          // if choose my unit or empty place
+          <tr>
+            {myDefTd}
+            {eOffTd}
+          </tr>
+        ) : null}
+        {obj?.belong !== myID ? (
+          // if choose enemy unit or empty place
+          <tr>
+            {myOffTd}
+            {eDefTd}
+          </tr>
+        ) : null}
       </table>
     );
   }
@@ -378,6 +393,17 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     else if (n === -1) return '🏃‍♂️';
     else return '💀';
   }
+  function overAllUnits(belong: P_ID) {
+    return spanBGColor(
+      <>
+        {objTypeList.map((type) => {
+          const num = Game.filterCId(G.cells, (obj) => obj.typeName === type && obj.belong === belong).length;
+          return Game.objDataList[type].objRender + num;
+        })}
+      </>,
+      fictionColor(belong),
+    );
+  }
 
   const sideBarPlay = (
     <div id="PlayUI">
@@ -385,38 +411,30 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
       <p>
         <label>Over All:</label>
-        <br />
-        {spanBGColor(
-          <>
-            {objTypeList.map((type) => {
-              const num = Game.filterCId(G.cells, (obj) => obj.typeName === type && obj.belong === myID).length;
-              return Game.objDataList[type].objRender + num;
-            })}
-          </>,
-          fictionColor(myID),
-        )}
-        <br />
-        {spanBGColor(
-          <>
-            {objTypeList.map((type) => {
-              const num = Game.filterCId(G.cells, (obj) => obj.typeName === type && obj.belong === opponentID).length;
-              return Game.objDataList[type].objRender + num;
-            })}
-          </>,
-          fictionColor(opponentID),
-        )}
+
+        <div
+          onClick={() => {
+            setTurfMode(!turfMode);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
+          {overAllUnits(myID)}
+          <br />
+          {overAllUnits(opponentID)}
+        </div>
+        <label>(click to toggle Turf View)</label>
       </p>
 
       {/* turn info */}
       <p>
-        {spanBGColor(<>It is {currentPlayer === myID ? 'my' : "opponent's"} turn.</>, fictionColor(currentPlayer))}
-        <button disabled={!isActive} onClick={props.undo}>
-          Undo
-        </button>
+        {spanBGColor(<>It is {currentPlayer === myID ? 'my' : "opponent's"} turn. </>, fictionColor(currentPlayer))}
         <button
           disabled={!isActive}
           onClick={() => {
-            events.endTurn && events.endTurn();
+            let text = 'End Turn?';
+            if (window.confirm(text)) {
+              events.endTurn && events.endTurn();
+            }
           }}
         >
           End Turn
@@ -424,7 +442,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       </p>
 
       {/* action info */}
-      <label title="Click below to undo.">My Moves and Attack:</label>
+      <label>My Moves and Attack:</label>
       <svg viewBox="-0.1 -0.1 6.2 1.2" onClick={props.undo} cursor="pointer">
         {renderLayer((_, id) => {
           const moveEdRec = G.moveRecords[myID].map((p) => p[1]);
@@ -456,6 +474,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           }
         }, Array(6).fill(null))}
       </svg>
+      <label>(click to undo)</label>
       {/* retreat info */}
       {G.forcedRetreat[currentPlayer][0] !== null && <p>🏃‍♂️💥 I must retreat my unit from attack first.</p>}
 
@@ -521,7 +540,8 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           })(pickedID)}
       </p>
 
-      {/* battle factor */}
+      {/* combat factors */}
+      <label>Total Combat Factors:</label>
       {battleFactorTable(pickedID)}
     </div>
   );
@@ -588,6 +608,13 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       {/* Game Data */}
       <form>
         <label>GameData:</label>
+        <select onChange={(e) => setGameData(e.target.value)}>
+          {Game.gameList.map((option) => (
+            <option key={option.name} value={option.data}>
+              {option.name}
+            </option>
+          ))}
+        </select>
         <textarea
           name="gameData"
           id="gameData"
@@ -686,12 +713,12 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
                 onClick={() => {
                   if (!editMode) {
                     if (props.gameArgs.mode === GameMode.OnlineFriend) {
-                      events.setActivePlayers({ all: 'edition' });
+                      events.setActivePlayers && events.setActivePlayers({ all: 'edition' });
                     } else {
-                      events.setStage('edition');
+                      events.setStage && events.setStage('edition');
                     }
                   } else {
-                    events.endStage();
+                    events.endStage && events.endStage();
                   }
                 }}
               />
@@ -704,7 +731,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 };
 
 function renderLayer<T>(
-  objRender: (a: T, b: CellID) => JSX.Element | JSX.Element[],
+  objRender: (a: T, b: CellID) => React.ReactNode,
   objLst: readonly T[] = Array(BoardSize.mx * BoardSize.my).fill(null),
 ) {
   return objLst.map((obj, id) => {
@@ -739,7 +766,7 @@ function renderStr(str: string, size: number = 0.5) {
   );
 }
 
-function gTranslate(jsx: JSX.Element | JSX.Element[], x = 0, y = 0) {
+function gTranslate(jsx: React.ReactNode, x = 0, y = 0) {
   return <g transform={`translate(${x} ${y})`}>{jsx}</g>;
 }
 
@@ -759,7 +786,7 @@ function drawLine(stCId: CellID, edCId: CellID, color: string = 'black', width: 
   );
 }
 
-function spanBGColor(jsx: JSX.Element | JSX.Element[], color: string) {
+function spanBGColor(jsx: React.ReactNode, color: string) {
   return <span style={{ backgroundColor: color, whiteSpace: 'normal' }}>{jsx}</span>;
 }
 

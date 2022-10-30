@@ -1,13 +1,28 @@
-    .cardcontainer {
-      min-width: 200px;
-      min-height: 25%;
-      display: 'inline-grid';
-      justify-content: 'center';
-      overflow: 'visible';
-      background-color: rgb(29, 90, 29);
-    }
+.cardcontainer {
+  min-width: 350px;
+  min-height: min-content;
+  display: 'inline-grid';
+  justify-content: 'center';
+  overflow: 'visible';
+  background-color: rgb(29, 90, 29);
+}
 
-    .grid {
-      display: inline-grid;
-      grid-template-columns: repeat(6, 14%);
-    }
+.grid {
+  display: inline-grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.gridreverse {
+  display: inline-grid;
+  direction: rtl;
+  overflow-x: visible;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.topcropcard {
+  margin-top: -70%;
+}
+
+.cropcard {
+  margin-bottom: -70%;
+}

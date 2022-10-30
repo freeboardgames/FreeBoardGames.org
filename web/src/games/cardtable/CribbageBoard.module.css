@@ -1,8 +1,8 @@
 .Pegstreet {
     display: flex;
-    flex:2 2 100%;
+    flex: 2 2 100%;
     flex-direction: row;
-    justify-content:space-around;
+    justify-content: space-around;
     width: 100%;
 }
 
@@ -29,7 +29,7 @@
     flex: 1 2 110px;
     justify-content: space-evenly;
     flex-direction: row;
-    border-color: rgba(0,0,0,0.01);
+    border-color: rgba(0, 0, 0, 0.01);
     border-style: solid;
     padding: 5px;
 }
@@ -39,13 +39,13 @@
     flex: 2 2 110px;
     justify-content: space-evenly;
     flex-direction: row-reverse;
-    border-color: rgba(0,0,0,0.01);
+    border-color: rgba(0, 0, 0, 0.01);
     border-style: solid;
     padding: 5px;
 }
 
 .Peghole {
-    color:rebeccapurple;
+    color: rebeccapurple;
     flex: 0 2 9px;
     height: 9px;
     width: 9px;
@@ -62,7 +62,7 @@
 
 .Peghole_opegged {
     composes: Peghole;
-    background-color: red;
+    background-color: lightsalmon;
 }
 
 .Peghole:hover {
@@ -74,9 +74,9 @@
     position: relative;
     display: inline-block;
     border-bottom: 1px dotted black;
-  }
-  
-  .tooltip .tooltiptext {
+}
+
+.tooltip .tooltiptext {
     visibility: hidden;
     width: 30px;
     background-color: cornflowerblue;
@@ -84,38 +84,38 @@
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-    
+
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
     top: 10px;
     left: 10%;
-  }
-  
-  .tooltip:hover .tooltiptext {
+}
+
+.tooltip:hover .tooltiptext {
     visibility: visible;
-  }
+}
 
-  .CribbagePlayer {
+.CribbagePlayer {
     flex: 2 2 100%;
-    display:flex;
-    flex-direction:column
-  }
+    display: flex;
+    flex-direction: column
+}
 
-  .CribbagePlayer_inverted {
-      composes: CribbagePlayer;
-      flex-direction: column-reverse;
-  }
+.CribbagePlayer_inverted {
+    composes: CribbagePlayer;
+    flex-direction: column-reverse;
+}
 
-  .CribbageBoardB {
+.CribbageBoard {
     background-color: brown;
     min-height: inherit;
-    max-height: inherit;
+    max-height: 180px;
     display: flex;
     flex-direction: column;
     flex: 1 1 0;
     width: 100%;
-    max-width: 600px;
-    min-width: 600px;
+    max-width: 100%;
+    min-width: 100%;
     margin-right: 9px;
 }

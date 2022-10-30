@@ -47,7 +47,7 @@ test('game state UX no foreign clickers', () => {
   const cards = Enzyme.mount(<CardContainer cards={testCards} name="North Hand" collaborator={collaborator} />);
 
   // UI should not allow clicks from other containers to activate the cut
-  let card = cards.find(`.${css.grid} > :first-child`);
+  let card = cards.find(`.${css.grid} Card`);
   card.simulate('click');
 
   //only clicks originating from cards in the deck should invoke hCutForDeal
