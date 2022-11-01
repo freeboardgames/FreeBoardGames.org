@@ -1,0 +1,24 @@
+
+
+
+
+.pointer{
+  cursor:pointer
+}
+.undoCursor{
+  cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='25' height='30' viewport='0 0 100 100' style='fill:black;font-size:15px;'><text y='50%'>🔙</text></svg>") 16 0,auto; /*!emojicursor.app*/
+}
+.turfCursor{
+  cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='25' height='30' viewport='0 0 100 100' style='fill:black;font-size:15px;'><text y='50%'>🗺️</text></svg>") 16 0,auto; /*!emojicursor.app*/
+}
+.moveCursor{
+  cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='25' height='30' viewport='0 0 100 100' style='fill:black;font-size:15px;'><text y='50%'>🐴</text></svg>") 16 0,auto; /*!emojicursor.app*/
+}
+.noSupplyCursor{
+  cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='25' height='30' viewport='0 0 100 100' style='fill:black;font-size:15px;'><text y='50%'>😅</text></svg>") 16 0,auto; /*!emojicursor.app*/
+}
+.attackCursor{
+  cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='25' height='30' viewport='0 0 100 100' style='fill:black;font-size:15px;'><text y='50%'>💥</text></svg>") 16 0,auto; /*!emojicursor.app*/
+}
+
+
