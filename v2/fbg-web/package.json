@@ -17,7 +17,7 @@
     "@mui/material": "^5.10.11",
     "@types/next-seo": "^2.1.2",
     "@types/recompose": "^0.30.10",
-    "boardgame.io": "^0.50.1",
+    "boardgame.io": "^0.49.13",
     "fbg-games": "*",
     "glob": "^8.0.3",
     "js-yaml": "^4.1.0",
