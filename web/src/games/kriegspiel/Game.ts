@@ -701,6 +701,16 @@ export function getSuppliedCells(G: GameState, player: P_ID): CellID[] {
   return mySuppliedPieces;
 }
 
+export function supplyPrediction(G: GameState, ctx: Ctx, stCId: CellID) {
+  //simply predict supply line after move
+  const cPlayer = ctx.currentPlayer as P_ID;
+  const newG: GameState = { ...G, cells: G.cells.map((obj, CId) => (CId === stCId ? null : obj)) };
+  const suppPred = getSuppliedCells(newG, cPlayer);
+  const dirSuppPred = getDirSuppliedLines(newG, cPlayer)[0];
+  //wether move to dir supplied or close friendly units.
+  return (edCId: CellID) => dirSuppPred.includes(edCId) || ptSetDisLessThan(suppPred, edCId);
+}
+
 //Game Object
 
 type ObjType = 'Infantry' | 'Cavalry' | 'Artillery' | 'Swift_Artillery' | 'Relay' | 'Swift_Relay';

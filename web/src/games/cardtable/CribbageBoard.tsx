@@ -211,9 +211,9 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
   let opponentNear = playerID === '1' ? true : false;
   let opponentFar = playerID === '1' ? false : true;
   let playerNear = opponentNear ? (
-    <CribbagePlayer start={1} score={near} opponent={true} />
+    <CribbagePlayer start={1} score={near} opponent={true} invert={true} />
   ) : (
-    <CribbagePlayer start={1} score={near} />
+    <CribbagePlayer start={1} score={near} invert={true} />
   );
   let playerFar = opponentFar ? (
     <CribbagePlayer start={1} score={far} opponent={true} />
