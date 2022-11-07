@@ -19,7 +19,13 @@ const Room: NextPage<RoomProps> = function (props: RoomProps) {
   const i = router.query.i;
   const server = useServer(s);
   const [login, setLogin] = useLogin();
-  const room = useRoom();
+  const room = useRoom({
+    gameId: 'tictactoe', // TODO: use await getGameIdFromCode(lang, gameCode); 
+    roomId: router.query.i as string,
+    nickname: login.nickname!,
+    serverId: server.index!, 
+    hostname: server.hostname! 
+  });
   if (!server.resolved || !login.loaded) {
     return <LoadingMessage />;
   }
@@ -39,10 +45,12 @@ const Room: NextPage<RoomProps> = function (props: RoomProps) {
   }
   return (
     <h1>
-      <>
-        ROOM lang: {props.lang} i: {i} server: {server.hostname} nickname:{" "}
+      <pre>
+        ROOM lang: {props.lang} i: {i} server: {server.hostname} nickname:
         {login.nickname}
-      </>
+
+        {JSON.stringify(room, null, 2)}
+      </pre>
     </h1>
   );
 };

@@ -30,7 +30,13 @@ export function useNewRoom(): [
           "Content-Type": "application/json",
         },
       }
-    )
+    ) 
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`New Room failed: ${response.status}, ${response.body}`);
+        }
+        return response;
+      })
       .then((response) => response.json())
       .then(
         (responseJson) => {
