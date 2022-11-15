@@ -5,10 +5,10 @@ const FBG_SERVERS = [null, "charizard", "pikachu"];
 const LOCAL_SERVERS = wrapWithIndex([null, "localhost:8001"]);
 
 export interface FbgServer {
-  resolved: boolean;
-  serversDown?: string[];
+  resolved: boolean; 
   hostname?: string;
   index?: number;
+  error?: string;
 }
 
 export function useServer(i?: number): FbgServer {
@@ -16,32 +16,34 @@ export function useServer(i?: number): FbgServer {
   const [server, setServer] = useState(initialState);
 
   useEffect(() => {
-    (async () => {
-      let serverList = getServerList();
-      if (i) {
-        setServer(getFbgServer(serverList[i]));
-        return;
-      }
-      serverList.sort(() => Math.random() - 0.5);
-      for (const server of serverList) {
-        if (await isServerUp(server.hostname)) {
-          setServer(getFbgServer(server));
-          return;
-        }
-      }
-      serverList.sort();
-      const serversDown = serverList
-        .filter((x) => x.hostname !== null)
-        .map((x) => x.hostname!);
-      setServer({ resolved: true, serversDown });
-    })();
-    return () => {};
+    const abortController = new AbortController();
+    getServer(abortController.signal, i).then((server) => {
+      setServer(server);
+    }, (error) => {
+      setServer({ resolved: true, error: error.toString() })
+    })
+    return () => { abortController.abort(); };
   }, []);
 
   return server;
 }
 
-function getFbgServer(server: {
+export async function getServer(signal: AbortSignal, i?: number): Promise<FbgServer> {
+  let serverList = getServerList();
+  if (i) {
+    return convertServer(serverList[i]);
+  }
+  serverList.sort(() => Math.random() - 0.5);
+  for (const server of serverList) {
+    if (await isServerUp(signal, server.hostname)) {
+      return convertServer(server);
+    }
+  }
+  serverList.sort();
+  throw new Error("All servers are offline.");
+} 
+
+function convertServer(server: {
   hostname: string | null;
   index: number;
 }): FbgServer {
@@ -71,14 +73,14 @@ function wrapWithIndex(
   return serverList.map((hostname, index) => ({ hostname, index }));
 }
 
-async function isServerUp(hostname: string | null): Promise<boolean> {
+async function isServerUp(signal: AbortSignal, hostname: string | null): Promise<boolean> {
   if (!hostname) {
     return false;
   }
   const protocol = location.protocol || "http:";
   let response;
   try {
-    response = await fetch(`${protocol}//${hostname}/open`);
+    response = await fetch(`${protocol}//${hostname}/open`, {signal});
   } catch (e) {
     return false;
   }

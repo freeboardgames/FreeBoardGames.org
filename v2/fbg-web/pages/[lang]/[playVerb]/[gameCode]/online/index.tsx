@@ -29,11 +29,11 @@ const NewRoom: NextPage<any> = function (props: NewRoomProps) {
   if (!server.resolved) {
     return <LoadingMessage />;
   }
-  if (server.serversDown) {
+  if (server.error) {
     return (
       <MessagePage
         type="error"
-        message={`Servers down: ${server.serversDown.join(", ")}`}
+        message={server.error}
       />
     );
   }
