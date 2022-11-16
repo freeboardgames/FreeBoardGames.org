@@ -1,53 +1,49 @@
+import { getNickname } from "infra/misc/login";
+import {
+  FbgNewRoomInput,
+  FbgNewRoomResult,
+  getNewRoom,
+} from "infra/promises/getNewRoom";
 import { useState, useEffect } from "react";
 
-export interface FbgNewRoomResult {
-  loaded: boolean;
-  success?: boolean;
-  roomId?: string;
+export interface NewRoomState {
+  resolved: boolean;
+  result?: FbgNewRoomResult;
+  error?: string;
 }
 
-export interface FbgNewRoomInput {
-  hostname: string;
+export function useNewRoom({
+  gameId,
+  numPlayers,
+  nickname,
+}: {
   gameId: string;
-  nickname: string;
   numPlayers: number;
-}
-
-export function useNewRoom(): [
-  FbgNewRoomResult,
-  (input: FbgNewRoomInput) => void
-] {
-  const initialState: FbgNewRoomResult = { loaded: false };
+  nickname?: string;
+}): NewRoomState {
+  const initialState: NewRoomState = { resolved: false };
   const [newRoom, setNewRoom] = useState(initialState);
-  const createNewRoom = (input: FbgNewRoomInput) => {
-    const data = { numPlayers: input.numPlayers, unlisted: true };
-    fetch(
-      `${location.protocol}//${input.hostname}/games/${input.gameId}/create`,
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
+  useEffect(() => {
+    if (!nickname) {
+      return;
+    }
+    const abortController = new AbortController();
+    getNewRoom({
+      signal: abortController.signal,
+      gameId,
+      numPlayers,
+      nickname,
+    }).then(
+      (result) => {
+        setNewRoom({ resolved: true, result });
+      },
+      (error) => {
+        setNewRoom({ resolved: true, error: error.toString() });
       }
-    ) 
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`New Room failed: ${response.status}, ${response.body}`);
-        }
-        return response;
-      })
-      .then((response) => response.json())
-      .then(
-        (responseJson) => {
-          const roomId = responseJson["matchID"];
-          setNewRoom({ loaded: true, success: true, roomId });
-        },
-        (error) => {
-          console.error(error);
-          setNewRoom({ loaded: true, success: false });
-        }
-      );
-  };
-  return [newRoom, createNewRoom];
+    );
+    return () => {
+      abortController.abort();
+    };
+  }, [nickname]);
+  return newRoom;
 }

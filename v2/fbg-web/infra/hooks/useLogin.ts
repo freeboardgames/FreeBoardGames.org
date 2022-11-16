@@ -1,28 +1,26 @@
+import { getNickname, setNickname } from "infra/misc/login";
 import { useState, useEffect } from "react";
 
-const LOCALSTORAGE_KEY = "fbgNickname2";
-
 export interface FbgLogin {
-  loaded: boolean;
-  loggedIn: boolean;
+  resolved: boolean;
   nickname?: string;
 }
 
 export function useLogin(): [FbgLogin, (nickname: string) => void] {
-  const initialState: FbgLogin = { loaded: false, loggedIn: false };
+  const initialState: FbgLogin = { resolved: false };
   const [login, setLogin] = useState(initialState);
   useEffect(() => {
-    const savedNickname = localStorage.getItem(LOCALSTORAGE_KEY);
+    const savedNickname = getNickname();
     if (savedNickname) {
-      setLogin({ loaded: true, loggedIn: true, nickname: savedNickname });
+      setLogin({ resolved: true, nickname: savedNickname });
     } else {
-      setLogin({ loaded: true, loggedIn: false });
+      setLogin({ resolved: true });
     }
     return () => {};
   }, []);
   const setAndSaveLogin = (nickname: string) => {
-    localStorage.setItem(LOCALSTORAGE_KEY, nickname);
-    setLogin({ loaded: true, loggedIn: true, nickname });
+    setNickname(nickname);
+    setLogin({ resolved: true, nickname });
   };
   return [login, setAndSaveLogin];
 }

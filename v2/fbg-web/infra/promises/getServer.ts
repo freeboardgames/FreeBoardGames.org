@@ -1,38 +1,19 @@
-import { useState, useEffect } from "react";
-
 const FBG_SERVERS = [null, "charizard", "pikachu"];
 
 const LOCAL_SERVERS = wrapWithIndex([null, "localhost:8001"]);
 
 export interface FbgServer {
-  resolved: boolean; 
-  hostname?: string;
-  index?: number;
-  error?: string;
+  hostname: string;
+  index: number;
 }
 
-export function useServer(i?: number): FbgServer {
-  const initialState: FbgServer = { resolved: false };
-  const [server, setServer] = useState(initialState);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    getServer(abortController.signal, i).then((server) => {
-      setServer(server);
-    }, (error) => {
-      setServer({ resolved: true, error: error.toString() })
-    })
-    return () => { abortController.abort(); };
-  }, []);
-
-  return server;
-}
-
-export async function getServer(signal: AbortSignal, i?: number): Promise<FbgServer> {
+export function getServerByIndex(i: number) {
   let serverList = getServerList();
-  if (i) {
-    return convertServer(serverList[i]);
-  }
+  return convertServer(serverList[i]);
+}
+
+export async function getServer(signal: AbortSignal): Promise<FbgServer> {
+  let serverList = getServerList();
   serverList.sort(() => Math.random() - 0.5);
   for (const server of serverList) {
     if (await isServerUp(signal, server.hostname)) {
@@ -41,7 +22,7 @@ export async function getServer(signal: AbortSignal, i?: number): Promise<FbgSer
   }
   serverList.sort();
   throw new Error("All servers are offline.");
-} 
+}
 
 function convertServer(server: {
   hostname: string | null;
@@ -49,7 +30,7 @@ function convertServer(server: {
 }): FbgServer {
   const hostname = server.hostname!;
   const index = server.index;
-  return { resolved: true, hostname, index };
+  return { hostname, index };
 }
 
 function getServerList() {
@@ -73,14 +54,17 @@ function wrapWithIndex(
   return serverList.map((hostname, index) => ({ hostname, index }));
 }
 
-async function isServerUp(signal: AbortSignal, hostname: string | null): Promise<boolean> {
+async function isServerUp(
+  signal: AbortSignal,
+  hostname: string | null
+): Promise<boolean> {
   if (!hostname) {
     return false;
   }
   const protocol = location.protocol || "http:";
   let response;
   try {
-    response = await fetch(`${protocol}//${hostname}/open`, {signal});
+    response = await fetch(`${protocol}//${hostname}/open`, { signal });
   } catch (e) {
     return false;
   }

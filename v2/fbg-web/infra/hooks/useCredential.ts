@@ -29,31 +29,34 @@ export function useCredential(input: FbgCredentialInput): FbgCredentialResult {
       setCredential({ loaded: true, credential });
       return;
     }
-    join(input).then((credential) => {
-      setCredential({ loaded: true, credential });
-    }, (error: any) => {
-      setCredential({ loaded: true, error: `${error}`});
-    });
+    join(input).then(
+      (credential) => {
+        setCredential({ loaded: true, credential });
+      },
+      (error: any) => {
+        setCredential({ loaded: true, error: `${error}` });
+      }
+    );
   });
   return credential;
 }
 
 function getKey(input: FbgCredentialInput) {
-  return `credential-${input.serverId}-${input.roomId}`
+  return `credential-${input.serverId}-${input.roomId}`;
 }
 
 async function join(input: FbgCredentialInput): Promise<Credential> {
   const protocol = location.protocol || "http:";
   const url = `${protocol}//${input.hostname}/games/${input.gameId}/${input.roomId}/join`;
   const response = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      playerID: '1', // TODO new to detect next playerID
-      playerName: input.nickname
-    })
+      playerID: "1", // TODO new to detect next playerID
+      playerName: input.nickname,
+    }),
   });
   if (!response.ok) {
     const text = await response.text();
