@@ -1,9 +1,4 @@
-import { getNickname } from "infra/misc/login";
-import {
-  FbgNewRoomInput,
-  FbgNewRoomResult,
-  getNewRoom,
-} from "infra/promises/getNewRoom";
+import { FbgNewRoomResult, getNewRoom } from "infra/promises/getNewRoom";
 import { useState, useEffect } from "react";
 
 export interface NewRoomState {
