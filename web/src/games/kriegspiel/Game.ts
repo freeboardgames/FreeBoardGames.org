@@ -5,6 +5,12 @@ export type P_ID = '0' | '1';
 
 export type CellID = number;
 
+interface GameSettings {
+  curtain: boolean;
+  criticalInfo: boolean;
+  hardcore: boolean;
+}
+
 export interface GameState {
   cells: (ObjInstance | null)[];
   places: (Stronghold | null)[];
@@ -13,6 +19,8 @@ export interface GameState {
   attackRecords: { [key in P_ID]: [CellID, ObjInstance | 'Arsenal'] | null };
   forcedRetreat: { [key in P_ID]: [CellID | null, CellID | null] }; //the start and end of retreat CId,
   controlArea: { control: P_ID; '0': number; '1': number }[]; //control player, reldef of players
+
+  settings: GameSettings;
 }
 export function dualPlayerID(id: P_ID) {
   switch (id) {
@@ -92,7 +100,8 @@ export const Kriegspiel: Game<GameState> = {
       edition: {
         moves: {
           load: (G, ctx, fen: string) => {
-            return loadGame(fen, ctx);
+            const oldSettings = G.settings;
+            return { ...loadGame(fen, ctx), settings: oldSettings };
           },
           merge: (G, ctx, fen: string) => {
             const addCells = loadPieces(fen);
@@ -107,6 +116,9 @@ export const Kriegspiel: Game<GameState> = {
           editPlaces: (G, ctx, CId: CellID, element: Stronghold | null) => {
             G.places[CId] = element;
             update(G, ctx);
+          },
+          changeSetting: (G, ctx, name: keyof GameSettings, value: boolean) => {
+            G.settings[name] = value;
           },
         },
       },
@@ -152,6 +164,15 @@ export const Kriegspiel: Game<GameState> = {
         }
         update(G, ctx);
       } else return INVALID_MOVE;
+    },
+    resign: (G, ctx) => {
+      const cPlayer = ctx.currentPlayer as P_ID;
+      G.places.forEach((str, CId) => {
+        if (str && str.placeType === 'Arsenal' && str.belong === cPlayer) {
+          G.places[CId] = null;
+        }
+      });
+      update(G, ctx);
     },
   },
 
@@ -251,6 +272,11 @@ export function loadGame(fen: string, ctx: Ctx): GameState {
     controlArea: Array((BoardSize.mx * BoardSize.my) / 2)
       .fill({ control: '0', '0': 0, '1': 0 })
       .concat(Array((BoardSize.mx * BoardSize.my) / 2).fill({ control: '1', '0': 0, '1': 0 })),
+    settings: {
+      curtain: false,
+      criticalInfo: true,
+      hardcore: false,
+    },
   };
   update(myGame, ctx);
   return myGame;

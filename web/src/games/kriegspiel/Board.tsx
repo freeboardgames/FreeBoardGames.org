@@ -42,6 +42,8 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
   const editMode = ctx.activePlayers?.[myID] === 'edition';
   const opEditMode = ctx.activePlayers?.[opponentID] === 'edition';
   const [turfMode, setTurfMode] = useState(false);
+  const hideCriticalInfo = !G.settings.criticalInfo;
+  const hardcore = G.settings.hardcore; //G.settings.hardcore
 
   function pickedData(pId: CellID | null) {
     if (pId !== null && canPick(G, ctx, pId) && isActive) {
@@ -97,7 +99,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     const strongholdColor = G.places[id]?.belong;
     if (id === pickedID) {
       return pico8Palette.dark_purple;
-    } else if (pickedID !== null && isAvailable(id)) {
+    } else if (pickedID !== null && isAvailable(id) && !hardcore) {
       //predict supply after moving
       const suppPred = supplyPrediction(G, ctx, pickedID);
       if (suppPred(id)) {
@@ -117,7 +119,9 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
   }
 
   function getCursor(id: CellID) {
-    if (id === pickedID && canAttack(G, ctx, id)[0] && isActive) {
+    if (hardcore) {
+      return styles.pointer;
+    } else if (!hideCriticalInfo && id === pickedID && canAttack(G, ctx, id)[0] && isActive) {
       return styles.attackCursor;
     } else if (pickedID !== null && isAvailable(id)) {
       //predict supply after moving
@@ -130,6 +134,26 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
     } else {
       return styles.pointer;
     }
+  }
+
+  function renderPiece(obj: ObjInstance) {
+    return (
+      <>
+        {
+          <circle
+            cx="0.5"
+            cy="0.5"
+            r="0.4"
+            stroke={pico8Palette.dark_grey}
+            strokeWidth="0.05"
+            fill={fictionColor(obj.belong)}
+          />
+        }
+        {renderStr(obj.objRender)}
+        {!hardcore && !obj.supplied && renderStr('😅', 0.4)}
+        {obj.retreating && renderStr('🏃‍♂️', 0.4)}
+      </>
+    );
   }
 
   function renderEffectedTurf(belong: P_ID) {
@@ -293,8 +317,14 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
         {/* supply line */}
 
-        {drawAllSupplyLines('0')}
-        {drawAllSupplyLines('1')}
+        {!hardcore &&
+          ['0', '1'].map((pId) => {
+            if (G.settings.curtain && myID !== pId) {
+              return null;
+            } else {
+              return drawAllSupplyLines(pId as P_ID);
+            }
+          })}
 
         {/* stronghold */}
         {renderLayer(
@@ -304,7 +334,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           G.places,
         )}
         {/* show effected turf */}
-        {turfMode && renderEffectedTurf('0').concat(renderEffectedTurf('1'))}
+        {!hideCriticalInfo && turfMode && renderEffectedTurf('0').concat(renderEffectedTurf('1'))}
 
         {/* move indication */}
         {G.moveRecords['0'].map(([st, ed]) => drawLine(st, ed, pico8Palette.dark_blue, 0.5, '0.3, 0.1'))}
@@ -322,28 +352,35 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           (atk) => atk !== null && gTranslate(renderStr('💥', 0.7), CId2Pos(atk[0]).x, CId2Pos(atk[0]).y),
         )}
         {/* charge */}
-        {renderLayer(
-          (obj, id) => (
-            <>
-              {obj &&
-                getChargedCavalries(G, id).map((chargeRow) =>
-                  chargeRow.map((pos, id, row) =>
-                    gTranslate(renderStr('⚡'), pos.x - 0.5 * row[0].x, pos.y - 0.5 * row[0].y),
-                  ),
-                )}
-            </>
-          ),
-          G.cells,
-        )}
+        {!hardcore &&
+          renderLayer(
+            (obj, id) => (
+              <>
+                {obj &&
+                  getChargedCavalries(G, id).map((chargeRow) =>
+                    chargeRow.map((pos, id, row) =>
+                      gTranslate(renderStr('⚡'), pos.x - 0.5 * row[0].x, pos.y - 0.5 * row[0].y),
+                    ),
+                  )}
+              </>
+            ),
+            G.cells,
+          )}
         {/* battle info indication */}
-        {pickedID !== null && renderCombatEffect(pickedID)}
-        {G.cells.map((_, id) => (
-          <>{renderCombatResult(id)}</>
-        ))}
+        {!hardcore && pickedID !== null && renderCombatEffect(pickedID)}
+        {!hideCriticalInfo && G.cells.map((_, id) => <>{renderCombatResult(id)}</>)}
         {/* control */}
         {renderLayer((_, id) => (
           <rect className={getCursor(id)} onClick={() => myOnClick(id)} width="1" height="1" fillOpacity="0" />
         ))}
+        {/* curtain */}
+        {G.settings.curtain &&
+          ['0', '1'].map(
+            (pId) =>
+              myID === pId && (
+                <rect y={pId === '0' ? 10 : 0} width="25" height="10" fill={pico8Palette.lavender} strokeWidth="0" />
+              ),
+          )}
       </g>
     </svg>
   );
@@ -450,7 +487,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
             const noMoreAct =
               G.cells.filter((_, CId) => canAttack(G, ctx, CId)[0] || canPick(G, ctx, CId)).length === 0;
             const text = 'There are still moves or attacks available, end turn anyway?';
-            if (noMoreAct || window.confirm(text)) {
+            if (hideCriticalInfo || noMoreAct || window.confirm(text)) {
               events.endTurn && events.endTurn();
             }
           }}
@@ -524,15 +561,17 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
                       fictionColor(obj.belong),
                     )}
                     <br />
-                    <button
-                      disabled={!(isActive && canAttack(G, ctx, pickedID)[0])}
-                      onClick={() => {
-                        pickUpID(null);
-                        moves.attack(pickedID);
-                      }}
-                    >
-                      💥Attack!
-                    </button>
+                    {obj.belong !== myID && (
+                      <button
+                        disabled={!(isActive && (canAttack(G, ctx, pickedID)[0] || hideCriticalInfo))}
+                        onClick={() => {
+                          pickUpID(null);
+                          moves.attack(pickedID);
+                        }}
+                      >
+                        💥Attack!
+                      </button>
+                    )}
                   </>
                 )}
                 {str && (
@@ -559,8 +598,21 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
       </p>
 
       {/* combat factors */}
-      <label>Total Combat Factors:</label>
-      {battleFactorTable(pickedID)}
+      {!hideCriticalInfo && (
+        <>
+          <label>Total Combat Factors:</label>
+          {battleFactorTable(pickedID)}
+        </>
+      )}
+      {/* resign */}
+      <button
+        disabled={!isActive}
+        onClick={() => {
+          if (window.confirm('Are you sure to resign?')) moves.resign();
+        }}
+      >
+        🏳️Resign!
+      </button>
     </div>
   );
   // editor
@@ -623,9 +675,39 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
         />
         <input type="button" value="Reset Board" onClick={() => moves.load(Game.onlyMap)} />
       </div>
+      {/* Game Setting */}
+      <p>
+        <label>Game Settings: </label>
+        <input
+          disabled={G.settings.curtain}
+          type="button"
+          value="Draw Curtain"
+          onClick={() => moves.changeSetting('curtain', true)}
+        />
+        <div>
+          <input
+            type="checkbox"
+            checked={G.settings.criticalInfo}
+            onChange={(e) => {
+              moves.changeSetting('criticalInfo', e.target.checked);
+            }}
+          />
+          Show Critical Info{' '}
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={G.settings.hardcore}
+            onChange={(e) => {
+              moves.changeSetting('hardcore', e.target.checked);
+            }}
+          />
+          Hardcore Mode{' '}
+        </div>
+      </p>
       {/* Game Data */}
       <form>
-        <label>GameData:</label>
+        <label>GameData: </label>
         <select onChange={(e) => setGameData(e.target.value)}>
           {Game.gameList.map((option) => (
             <option key={option.name} value={option.data}>
@@ -644,7 +726,6 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
         <input type="button" value="Export Game" onClick={() => setGameData(exportGame(G))} />
         <input type="button" value="Load Game" onClick={() => moves.load(gameData)} />
-        <input type="button" value="Merge Game" onClick={() => moves.merge(gameData)} />
         <input
           type="button"
           value="Copy Data"
@@ -678,7 +759,7 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
   // render all
 
   if (winner) {
-    return <GameLayout gameOver={winner} gameArgs={props.gameArgs} />;
+    return <GameLayout gameOver={winner} extraCardContent={gameBoard} gameArgs={props.gameArgs} />;
   } else {
     return (
       <GameLayout maxWidth="100%" gameArgs={props.gameArgs}>
@@ -737,6 +818,9 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
                       events.setStage && events.setStage('edition');
                     }
                   } else {
+                    if (G.settings.curtain && !opEditMode) {
+                      moves.changeSetting('curtain', false);
+                    }
                     events.endStage && events.endStage();
                   }
                 }}
@@ -765,25 +849,7 @@ function renderLayer<T>(
     return gTranslate(objRender(obj, id), pos.x, pos.y);
   });
 }
-function renderPiece(obj: ObjInstance) {
-  return (
-    <>
-      {
-        <circle
-          cx="0.5"
-          cy="0.5"
-          r="0.4"
-          stroke={pico8Palette.dark_grey}
-          strokeWidth="0.05"
-          fill={fictionColor(obj.belong)}
-        />
-      }
-      {renderStr(obj.objRender)}
-      {!obj.supplied && renderStr('😅', 0.4)}
-      {obj.retreating && renderStr('🏃‍♂️', 0.4)}
-    </>
-  );
-}
+
 function renderStr(str: string, size: number = 0.5) {
   return (
     <text fontSize={`${size}`} x="0.5" y="0.5" dominantBaseline="middle" textAnchor="middle">
