@@ -317,7 +317,14 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
 
         {/* supply line */}
 
-        {!hardcore && ['0', '1'].map((pId) => drawAllSupplyLines(pId as P_ID))}
+        {!hardcore &&
+          ['0', '1'].map((pId) => {
+            if (G.settings.curtain && myID !== pId) {
+              return null;
+            } else {
+              return drawAllSupplyLines(pId as P_ID);
+            }
+          })}
 
         {/* stronghold */}
         {renderLayer(
@@ -367,9 +374,13 @@ export const Board = ({ G, ctx, moves, isActive, events, ...props }: GameProps &
           <rect className={getCursor(id)} onClick={() => myOnClick(id)} width="1" height="1" fillOpacity="0" />
         ))}
         {/* curtain */}
-        {G.settings.curtain && (
-          <rect y={myID === '0' ? 10 : 0} width="25" height="10" fill={pico8Palette.lavender} strokeWidth="0" />
-        )}
+        {G.settings.curtain &&
+          ['0', '1'].map(
+            (pId) =>
+              myID === pId && (
+                <rect y={pId === '0' ? 10 : 0} width="25" height="10" fill={pico8Palette.lavender} strokeWidth="0" />
+              ),
+          )}
       </g>
     </svg>
   );
