@@ -9100,10 +9100,10 @@ ts-loader@^9.4.1:
     micromatch "^4.0.0"
     semver "^7.3.4"
 
-ts-morph@^17.0.0:
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/ts-morph/-/ts-morph-17.0.0.tgz#e27610dfed49bdf92e465a4cc64b7bf8e02d0be2"
-  integrity sha512-EJxyHTpBXsYnOgV6UpYs4vjhMS/8IZXg5kkGcM9+b8SygMmmOoeWOpaSG8E4puhewjkIbUObodGhfJkBoFX3og==
+ts-morph@^17.0.1:
+  version "17.0.1"
+  resolved "https://registry.yarnpkg.com/ts-morph/-/ts-morph-17.0.1.tgz#d85df4fcf9a1fcda1b331d52c00655f381c932d1"
+  integrity sha512-10PkHyXmrtsTvZSL+cqtJLTgFXkU43Gd0JCc0Rw6GchWbqKe0Rwgt1v3ouobTZwQzF1mGhDeAlWYBMGRV7y+3g==
   dependencies:
     "@ts-morph/common" "~0.18.0"
     code-block-writer "^11.0.3"
