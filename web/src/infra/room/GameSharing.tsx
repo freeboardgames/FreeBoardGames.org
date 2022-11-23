@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FacebookIcon from './icons/FacebookIcon';
 import WhatsAppIcon from './icons/WhatsAppIcon';
 import QrCodeIcon from './icons/QrCodeIcon';
+import ShareIcon from './icons/ShareIcon';
 import copy from 'copy-to-clipboard';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -33,6 +34,7 @@ interface IGameSharingOutterProps {
   gameCode: string;
   roomID: string;
   isPublic: boolean;
+  gameName: string;
 }
 
 interface IGameSharingState {
@@ -57,6 +59,19 @@ export class GameSharingInternal extends React.Component<
     } else {
       copyButtonText = t('copy_link');
       copyButtonColor = 'primary';
+    }
+    let shareButton;
+
+    if (navigator.canShare && navigator.canShare(this._getShareData())) {
+      shareButton = (
+        <Tooltip title={t('share')} aria-label="Share">
+          <IconButton onClick={this._share}>
+            <ShareIcon />
+          </IconButton>
+        </Tooltip>
+      );
+    } else {
+      shareButton = null;
     }
 
     return (
@@ -96,6 +111,7 @@ export class GameSharingInternal extends React.Component<
                   <QrCodeIcon />
                 </IconButton>
               </Tooltip>
+              {shareButton}
               <Button
                 variant="contained"
                 color={copyButtonColor}
@@ -143,6 +159,14 @@ export class GameSharingInternal extends React.Component<
     this._toggleShowingQrCode();
   };
 
+  _share = () => {
+    try {
+      navigator.share(this._getShareData());
+    } catch (err) {
+      //Some user agents throw an exception on user cancellation, which is not really exceptional
+    }
+  };
+
   _toggleShowingQrCode = () => {
     if (!this.state.showingQrCode) {
       window.scrollTo(0, 0);
@@ -155,6 +179,16 @@ export class GameSharingInternal extends React.Component<
     const origin = window.location.origin;
     const href = room(roomID)(i18n.language);
     return new URL(href, origin).toString();
+  };
+
+  _getShareData = () => {
+    const { t } = this.props;
+    let textAndTitle = t('play_game', { name: this.props.gameName });
+    return {
+      title: textAndTitle,
+      text: textAndTitle,
+      url: this._getLink(),
+    };
   };
 }
 

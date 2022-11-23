@@ -5,5 +5,6 @@
   "room": "Salle: {{ name }}",
   "share_on_facebook": "Partager en Facebook",
   "share_on_whats_app": "Partager en WhatsApp",
-  "show_qr_code": "Afficher le code QR"
+  "show_qr_code": "Afficher le code QR",
+  "share" : "Share with Share Sheet"
 }
