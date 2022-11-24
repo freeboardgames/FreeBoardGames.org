@@ -5,5 +5,7 @@
   "room": "Room: {{ name }}",
   "share_on_facebook": "Share on Facebook",
   "share_on_whats_app": "Share on WhatsApp",
-  "show_qr_code": "Show QR code"
+  "show_qr_code": "Show QR code",
+  "share" : "Share with Share Sheet",
+  "play_game": "Play {{name}}"
 }

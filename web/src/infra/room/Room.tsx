@@ -389,8 +389,14 @@ class Room extends React.Component<InnerProps & OutterProps, State> {
   };
 
   _getGameSharing = () => {
+    const gameDef = getGameDefinition(this.gameCode());
     return (
-      <GameSharing gameCode={this.gameCode()} roomID={this._roomId()} isPublic={this.state.roomMetadata.isPublic} />
+      <GameSharing
+        gameCode={this.gameCode()}
+        roomID={this._roomId()}
+        isPublic={this.state.roomMetadata.isPublic}
+        gameName={gameDef.name}
+      />
     );
   };
 
