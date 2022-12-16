@@ -5211,14 +5211,12 @@ graphql-query-complexity@^0.12.0:
   dependencies:
     lodash.get "^4.4.2"
 
-graphql-redis-subscriptions@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/graphql-redis-subscriptions/-/graphql-redis-subscriptions-2.5.0.tgz#edc50d46122bc1491e37cd29b484f15c73653764"
-  integrity sha512-l7Sc1gXdgNUGFlgWOpqh14ZDm6bM2PPCvMprSt/myZAhTjE2u5Gw5F4ndanS0JqRtO/QhzoZCqio7ewDHa9P3w==
-  dependencies:
-    iterall "^1.3.0"
+graphql-redis-subscriptions@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/graphql-redis-subscriptions/-/graphql-redis-subscriptions-2.6.0.tgz#c733e97a39acf02c2345dc7e971fca5c9fe6c06d"
+  integrity sha512-hWAPkCNSFKpEOJBMLAcbpGl/gv+s1Yho2JIwP9MK2RlvqlWiqhAYqjA/HVRK86nkYsRkBwGgqvaNxtV1fAexBQ==
   optionalDependencies:
-    ioredis "^5.1.0"
+    ioredis "^5.2.4"
 
 graphql-subscriptions@^2.0.0:
   version "2.0.0"
@@ -5580,7 +5578,7 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-ioredis@5.2.4, ioredis@^5.1.0:
+ioredis@5.2.4, ioredis@^5.2.4:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-5.2.4.tgz#9e262a668bc29bae98f2054c1e0d7efd86996b96"
   integrity sha512-qIpuAEt32lZJQ0XyrloCRdlEdUUNGG9i0UOk6zgzK6igyudNWqEBxfH6OlbnOOoBBvr1WB02mm8fR55CnikRng==
