@@ -58,7 +58,7 @@
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.6.0",
+    "rxjs": "^7.8.0",
     "shortid": "^2.2.16",
     "sqlite3": "^5.1.4",
     "subscriptions-transport-ws": "^0.11.0",
