@@ -32,6 +32,6 @@ export function selectableCards(G: IG, playerId: string): boolean[] {
     if (!has_called_card || lead_is_trump || lead_suit != calledCard.suit) {
       return is_lead_suit[i];
     }
-    return called_has_run || C.value == calledCard.value;
+    return is_lead_suit[i] && (called_has_run || C.value == calledCard.value);
   });
 }
