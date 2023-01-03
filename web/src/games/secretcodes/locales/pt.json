@@ -5,7 +5,6 @@
   "instructions": {
     "text": "Códigos secretos é um jogo similar ao Codenames. O jogo tem dois times, azul e vermelho e cada time tem um lider.\n\nApenas os lideres sabem quais cartas precisam ser escolhidas pelo time. Entretanto, lideres podem apenas dar uma palavra e um número como pista para seus times.\n\nO objetivo do jogo é para o resto do time descobrir todas as palavras secretas antes do time adversário. E é necessário ter cuidado, pois escolher por erro a carta preta significa o fim imediato do jogo!"
   },
-  "distributePlayers": "Distribuir jogadores aleatoriamente",
   "select_teams": "Escolha os times",
   "winners": "Ganhadores",
   "red_team_select_cards": "<strong>Time Vermelho</strong> escolha as cartas!",
@@ -18,6 +17,8 @@
   "red_team": "Time Vermelho",
   "unassigned": "Sem time",
   "in_order_to_start": "Para iniciar o jogo, todos os jogadores precisam escolher um time e ambos times precisam de um lider.",
+  "removePlayersFromTeams": "Esvazie times",
+  "distributePlayers": "Distribuir jogadores aleatoriamente",
   "play": "Pronto, jogar!",
   "s": "[L] ",
   "make_spymaster": "Fazer Lider",

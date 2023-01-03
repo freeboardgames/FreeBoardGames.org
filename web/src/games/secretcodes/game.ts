@@ -12,6 +12,7 @@ import {
   makeSpymaster,
   makeTeam,
   pass,
+  removePlayersFromTeams,
   startGame,
   switchTeam,
 } from './util';
@@ -66,6 +67,7 @@ const GameConfig: Game<IG> = {
     [Phases.lobby]: {
       start: true,
       moves: {
+        removePlayersFromTeams,
         distributePlayers,
         switchTeam,
         makeSpymaster,

@@ -27,11 +27,18 @@ function movePlayerToTeam(G: IG, ctx: Ctx, playerID: string, teamColor: TeamColo
 export function makeSpymaster(G: IG, ctx: Ctx, playerID: string) {
   const team = getPlayerTeam(G, playerID);
   const pID = parseInt(playerID);
-  if (ctx.playerID !== '0' || pID < 0 || pID >= ctx.numPlayers || !team) {
+  if (ctx.playerID !== '0' || pID < 0 || !team) {
     return INVALID_MOVE;
   }
 
   team.spymasterID = playerID;
+}
+
+export function removePlayersFromTeams(G: IG) {
+  G.teams.forEach((team) => {
+    team.playersID = [];
+    team.spymasterID = null;
+  });
 }
 
 export function distributePlayers(G: IG, ctx: Ctx, players: IPlayerInRoom[]) {

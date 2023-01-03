@@ -22,12 +22,16 @@ interface ILobbyProps {
 
 export function Lobby({ G, ctx, moves, playerID, gameArgs, isHost }: ILobbyProps) {
   const { translate } = useCurrentGameTranslation();
+  const { players } = gameArgs;
 
   const startGame = () => {
     moves.startGame();
   };
+  const removePlayersFromTeams = () => {
+    moves.removePlayersFromTeams();
+  };
   const distributePlayers = () => {
-    moves.distributePlayers(gameArgs.players);
+    moves.distributePlayers(players);
   };
 
   React.useEffect(() => {
@@ -41,8 +45,6 @@ export function Lobby({ G, ctx, moves, playerID, gameArgs, isHost }: ILobbyProps
     [TeamColor.Red]: [],
     unassigned: [],
   };
-
-  const { players } = gameArgs;
 
   for (const playerID in players) {
     const item = (
@@ -83,27 +85,38 @@ export function Lobby({ G, ctx, moves, playerID, gameArgs, isHost }: ILobbyProps
 
       {!gameCanStart(G, ctx) ? <p className={css.text}>{translate('in_order_to_start')}</p> : null}
 
-      {isHost ? (
-        <Button
-          style={{ float: 'left' }}
-          onClick={distributePlayers}
-          color="primary"
-        >
-          {translate('distributePlayers')}
-        </Button>
-      ) : null}
+      <div className={css.controls}>
+        {isHost ? (
+          <Button
+            onClick={removePlayersFromTeams}
+            color="primary"
+            variant="contained"
+          >
+            {translate('removePlayersFromTeams')}
+          </Button>
+        ) : null}
 
-      {isHost ? (
-        <Button
-          style={{ float: 'right' }}
-          variant="contained"
-          onClick={startGame}
-          color="primary"
-          disabled={!gameCanStart(G, ctx)}
-        >
-          {translate('play')}
-        </Button>
-      ) : null}
+        {isHost ? (
+          <Button
+            onClick={distributePlayers}
+            color="primary"
+            variant="contained"
+          >
+            {translate('distributePlayers')}
+          </Button>
+        ) : null}
+
+        {isHost ? (
+          <Button
+            onClick={startGame}
+            color="primary"
+            variant="contained"
+            disabled={!gameCanStart(G, ctx)}
+          >
+            {translate('play')}
+          </Button>
+        ) : null}
+      </div>
     </div>
   );
 }
