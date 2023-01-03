@@ -5,6 +5,7 @@
   "instructions": {
     "text": "Secret codes is a game similar to codenames. The game has two teams, blue and red, and within each team there is a leader.\n\nOnly the leaders know which cards need to be selected by their teammates. However, leaders can only give a word and a number as a clue to their team\n\nThe objective is for the rest of the team to figure out all their secret words before the competing team does. And they need to be careful, choosing a black card will lead to immediately losing the game!"
   },
+  "distributePlayers": "Spieler zufällig verteilen",
   "select_teams": "Wähle Teams",
   "winners": "Gewinner",
   "red_team_select_cards": "<strong>Rotes Team</strong> wählt Karten!",

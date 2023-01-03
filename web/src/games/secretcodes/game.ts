@@ -3,6 +3,7 @@ import { Ctx, Game } from 'boardgame.io';
 import { Card, CardColor, IG, Phases, TeamColor } from './definitions';
 import {
   chooseCard,
+  distributePlayers,
   getActivePlayersWithoutSpymaster,
   getCurrentTeam,
   getOtherTeam,
@@ -65,6 +66,7 @@ const GameConfig: Game<IG> = {
     [Phases.lobby]: {
       start: true,
       moves: {
+        distributePlayers,
         switchTeam,
         makeSpymaster,
         startGame,

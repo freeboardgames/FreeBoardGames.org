@@ -1,6 +1,6 @@
 {
   "public_rooms": "Salles publiques",
   "new_room": "Nouvelle salle",
-  "error": "Une erreur s'est produite lors du chargement du lobby. Essayez de recharger.",
+  "error": "Une erreur s'est produite lors du chargement du lobby. Essayez de recharger la page.",
   "no_public_room_available": "Aucune salle publique disponible. Cliquez sur \"<b>Nouvelle salle</b>\" pour en créer une nouvelle !"
 }

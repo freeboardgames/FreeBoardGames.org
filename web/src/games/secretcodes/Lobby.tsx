@@ -26,6 +26,9 @@ export function Lobby({ G, ctx, moves, playerID, gameArgs, isHost }: ILobbyProps
   const startGame = () => {
     moves.startGame();
   };
+  const distributePlayers = () => {
+    moves.distributePlayers(gameArgs.players);
+  };
 
   React.useEffect(() => {
     if (isLocalGame(gameArgs) && gameCanStart(G, ctx)) {
@@ -79,6 +82,16 @@ export function Lobby({ G, ctx, moves, playerID, gameArgs, isHost }: ILobbyProps
       </div>
 
       {!gameCanStart(G, ctx) ? <p className={css.text}>{translate('in_order_to_start')}</p> : null}
+
+      {isHost ? (
+        <Button
+          style={{ float: 'left' }}
+          onClick={distributePlayers}
+          color="primary"
+        >
+          {translate('distributePlayers')}
+        </Button>
+      ) : null}
 
       {isHost ? (
         <Button
