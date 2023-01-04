@@ -25,7 +25,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@google-cloud/logging-winston": "^5.2.3",
+    "@google-cloud/logging-winston": "^5.3.0",
     "@nestjs/apollo": "^10.1.7",
     "@nestjs/common": "^8.4.7",
     "@nestjs/core": "^8.4.7",
