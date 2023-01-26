@@ -62,7 +62,7 @@
     "shortid": "^2.2.16",
     "sqlite3": "^5.1.4",
     "subscriptions-transport-ws": "^0.11.0",
-    "superagent": "^8.0.8",
+    "superagent": "^8.0.9",
     "ts-morph": "^17.0.1",
     "typeorm": "^0.3.11",
     "winston": "^3.8.2"
