@@ -55,7 +55,7 @@
     "ioredis": "5.3.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
-    "pg": "^8.8.0",
+    "pg": "^8.9.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^4.1.2",
     "rxjs": "^7.8.0",
