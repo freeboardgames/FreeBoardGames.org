@@ -1309,10 +1309,10 @@
   resolved "https://registry.yarnpkg.com/@nestjs/mapped-types/-/mapped-types-1.2.2.tgz#d9ddb143776e309dbc1a518ac1607fddac1e140e"
   integrity sha512-3dHxLXs3M0GPiriAcCFFJQHoDFUuzTD5w6JDhE7TyfT89YKpe6tcCCIqOZWdXmt9AZjjK30RkHRSFF+QEnWFQg==
 
-"@nestjs/passport@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-9.0.1.tgz#6c02ff8daee98ae280a388b48cde98ff3f40bce4"
-  integrity sha512-WhT0yhpMp1B8b1OdQdPv/rd2O8V0HUmoGsWFzJKPsALuaxozjem2WotUEy1GV/TT8kvfC4ok7tECjRAArO+I8Q==
+"@nestjs/passport@^9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-9.0.2.tgz#26d3f02ee314451b87173eede6273f9b7ad6b1d1"
+  integrity sha512-L+hLH1+yQPr0cW83AZ2Suho/hQuN8OFCV6XxLknuzVW6hWReraPjgjxrz+8fFnOEOSyt3KnwUDULvuqEqgETaA==
 
 "@nestjs/platform-express@^8.4.7":
   version "8.4.7"
