@@ -9,17 +9,6 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@angular-devkit/core@15.0.4":
-  version "15.0.4"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-15.0.4.tgz#257ba1d76cd106216d0150f480d0062e726af996"
-  integrity sha512-4ITpRAevd652SxB+qNesIQ9qfbm7wT5UBU5kJOPPwGL77I21g8CQpkmV1n5VSacPvC9Zbz90feOWexf7w7JzcA==
-  dependencies:
-    ajv "8.11.0"
-    ajv-formats "2.1.1"
-    jsonc-parser "3.2.0"
-    rxjs "6.6.7"
-    source-map "0.7.4"
-
 "@angular-devkit/core@15.2.4":
   version "15.2.4"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-15.2.4.tgz#f7696f09c66d01568a07f0e71672e887fdf57280"
@@ -42,17 +31,6 @@
     inquirer "8.2.4"
     symbol-observable "4.0.0"
     yargs-parser "21.1.1"
-
-"@angular-devkit/schematics@15.0.4":
-  version "15.0.4"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-15.0.4.tgz#64de42f9100d7080bc3c59bb06d1e4f6f15a088e"
-  integrity sha512-/gXiLFS0+xFdx6wPoBpe/c6/K9I5edMpaASqPf4XheKtrsSvL+qTlIi3nsbfItzOiDXbaBmlbxGfkMHz/yg0Ig==
-  dependencies:
-    "@angular-devkit/core" "15.0.4"
-    jsonc-parser "3.2.0"
-    magic-string "0.26.7"
-    ora "5.4.1"
-    rxjs "6.6.7"
 
 "@angular-devkit/schematics@15.2.4":
   version "15.2.4"
@@ -1360,14 +1338,13 @@
     multer "1.4.4-lts.1"
     tslib "2.4.0"
 
-"@nestjs/schematics@^9.0.4":
-  version "9.0.4"
-  resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-9.0.4.tgz#ab612f5a8e006ca1d617eddc8143ee00b766312b"
-  integrity sha512-egurCfAc4e5i1r2TmeAF0UrOKejFmT5oTdv4b7HcOVPupc3QGU7CbEfGleL3mkM5AjrixTQeMxU9bJ00ttAbGg==
+"@nestjs/schematics@^9.0.4", "@nestjs/schematics@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-9.1.0.tgz#8afc4b1e7c7988c18d3ab44cffe56773b7507272"
+  integrity sha512-/7CyMTnPJSK9/xD9CkCqwuHPOlHVlLC2RDnbdCJ7mIO07SdbBbY14msTqtYW9VRQtsjZPLh1GTChf7ryJUImwA==
   dependencies:
-    "@angular-devkit/core" "15.0.4"
-    "@angular-devkit/schematics" "15.0.4"
-    fs-extra "11.1.0"
+    "@angular-devkit/core" "15.2.4"
+    "@angular-devkit/schematics" "15.2.4"
     jsonc-parser "3.2.0"
     pluralize "8.0.0"
 
@@ -2427,16 +2404,6 @@ ajv-keywords@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.5.2.tgz#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
   integrity sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ==
-
-ajv@8.11.0:
-  version "8.11.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.11.0.tgz#977e91dd96ca669f54a11e23e378e33b884a565f"
-  integrity sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==
-  dependencies:
-    fast-deep-equal "^3.1.1"
-    json-schema-traverse "^1.0.0"
-    require-from-string "^2.0.2"
-    uri-js "^4.2.2"
 
 ajv@8.12.0, ajv@^8.0.0, ajv@^8.0.1:
   version "8.12.0"
@@ -4912,15 +4879,6 @@ fromentries@^1.3.2:
   resolved "https://registry.yarnpkg.com/fromentries/-/fromentries-1.3.2.tgz#e4bca6808816bf8f93b52750f1127f5a6fd86e3a"
   integrity sha512-cHEpEQHUg0f8XdtZCc2ZAhrHzKzT0MrFUTcvx+hfxYu7rGMDc5SKoXFh+n4YigxsHXRzc6OrCshdR1bWH6HHyg==
 
-fs-extra@11.1.0:
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.1.0.tgz#5784b102104433bb0e090f48bfc4a30742c357ed"
-  integrity sha512-0rcTq621PD5jM/e0a3EJoGC/1TC5ZBCERW82LQuwfGnCa1V8w7dpYH1yNu+SLb6E5dkeCBzKEyLGlFrnr+dUyw==
-  dependencies:
-    graceful-fs "^4.2.0"
-    jsonfile "^6.0.1"
-    universalify "^2.0.0"
-
 fs-extra@^10.0.0:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-10.1.0.tgz#02873cfbc4084dde127eaa5f9905eef2325d1abf"
@@ -7040,13 +6998,6 @@ macos-release@^2.5.0:
   resolved "https://registry.yarnpkg.com/macos-release/-/macos-release-2.5.0.tgz#067c2c88b5f3fb3c56a375b2ec93826220fa1ff2"
   integrity sha512-EIgv+QZ9r+814gjJj0Bt5vSLJLzswGmSUbUpbi9AIr/fsN2IWFBl2NucV9PAiek+U1STK468tEkxmVYUtuAN3g==
 
-magic-string@0.26.7:
-  version "0.26.7"
-  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.26.7.tgz#caf7daf61b34e9982f8228c4527474dac8981d6f"
-  integrity sha512-hX9XH3ziStPoPhJxLq1syWuZMxbDvGNbVchfrdCtanC7D13888bMFow61x8axrx+GfHLtVeAx2kxL7tTGRl+Ow==
-  dependencies:
-    sourcemap-codec "^1.4.8"
-
 magic-string@0.29.0:
   version "0.29.0"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.29.0.tgz#f034f79f8c43dba4ae1730ffb5e8c4e084b16cf3"
@@ -8784,11 +8735,6 @@ source-map@^0.7.3:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
-
-sourcemap-codec@^1.4.8:
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
-  integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
 
 split@^1.0.0:
   version "1.0.1"
