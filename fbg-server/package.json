@@ -31,7 +31,7 @@
     "@nestjs/core": "^9.0.5",
     "@nestjs/graphql": "^10.2.0",
     "@nestjs/jwt": "^10.1.0",
-    "@nestjs/passport": "^9.0.3",
+    "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "^8.4.7",
     "@nestjs/typeorm": "^9.0.1",
     "@types/shortid": "^0.0.29",
