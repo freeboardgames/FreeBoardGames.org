@@ -20,13 +20,24 @@
     rxjs "7.8.1"
     source-map "0.7.4"
 
-"@angular-devkit/schematics-cli@16.1.0":
-  version "16.1.0"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics-cli/-/schematics-cli-16.1.0.tgz#060714d8c9b8ed2787a4fe16f763163348840a34"
-  integrity sha512-siBpRDmMMV7NB+NvaDHeJ4doHoSkFwIywwFj8GXnBCtobyxrBl1EyG1cKK+FHRydYtyYIk8FEoOpJA9oE9S2hg==
+"@angular-devkit/core@16.1.3":
+  version "16.1.3"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-16.1.3.tgz#51bceb2d3472b0458ab197ddfae3c2138120b86f"
+  integrity sha512-cFhNdJHumNMZGD3NYxOtNuMGRQXeDnKbwvK+IJmKAttXt8na6EvURR/ZxZOI7rl/YRVX+vcNSdtXz3hE6g+Isw==
   dependencies:
-    "@angular-devkit/core" "16.1.0"
-    "@angular-devkit/schematics" "16.1.0"
+    ajv "8.12.0"
+    ajv-formats "2.1.1"
+    jsonc-parser "3.2.0"
+    rxjs "7.8.1"
+    source-map "0.7.4"
+
+"@angular-devkit/schematics-cli@16.1.3":
+  version "16.1.3"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics-cli/-/schematics-cli-16.1.3.tgz#ef6d84d280cd1759795d3ee544728b48a3377282"
+  integrity sha512-uZAi5xrvZLgQkqVsR0wxbUZgiMHVNstOnNm446Bs69iadbLymvWvdg95hYPL3IWAlYrNiwwGNSjyp6JS0Qn06Q==
+  dependencies:
+    "@angular-devkit/core" "16.1.3"
+    "@angular-devkit/schematics" "16.1.3"
     ansi-colors "4.1.3"
     inquirer "8.2.4"
     symbol-observable "4.0.0"
@@ -38,6 +49,17 @@
   integrity sha512-LM35PH9DT3eQRSZgrkk2bx1ZQjjVh8BCByTlr37/c+FnF9mNbeBsa1YkxrlsN/CwO+045OwEwRHnkM9Zcx0U/A==
   dependencies:
     "@angular-devkit/core" "16.1.0"
+    jsonc-parser "3.2.0"
+    magic-string "0.30.0"
+    ora "5.4.1"
+    rxjs "7.8.1"
+
+"@angular-devkit/schematics@16.1.3":
+  version "16.1.3"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-16.1.3.tgz#150f1531d3b7932698c0f1bd0cba59dbc9b54c82"
+  integrity sha512-hWEuQnfQOgcSs4YX6iF4QR/34ROeSPaMi7lQOYg33hStg+pnk/JDdIU0f2nrIIz3t0jqAj+5VXVLBJvOCd84vg==
+  dependencies:
+    "@angular-devkit/core" "16.1.3"
     jsonc-parser "3.2.0"
     magic-string "0.30.0"
     ora "5.4.1"
@@ -1273,14 +1295,14 @@
     lodash.omit "4.5.0"
     tslib "2.5.0"
 
-"@nestjs/cli@^10.0.5":
-  version "10.0.5"
-  resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-10.0.5.tgz#eeff9e6e54eedea2927bd4a83993b59d2557ec13"
-  integrity sha512-Btc1lzAkm4j+af9YA0Kv+6N2x7vDneEhsozzEp87kHZrONYNS8zg/SBFTRx5b/e6g0MJshv6vP56PVrdNZy3kA==
+"@nestjs/cli@^10.1.0":
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-10.1.0.tgz#f06405c0b8966b7c89b6e5df016212856463d2da"
+  integrity sha512-R/n+cFIvK3YbFSU9t7NFyBgXJRDK1biCZgz1VqYdpZj4JmIj8RmllA9Fp3YZUg98D8K7T4HoIuVFUAkEFSSLTg==
   dependencies:
-    "@angular-devkit/core" "16.1.0"
-    "@angular-devkit/schematics" "16.1.0"
-    "@angular-devkit/schematics-cli" "16.1.0"
+    "@angular-devkit/core" "16.1.3"
+    "@angular-devkit/schematics" "16.1.3"
+    "@angular-devkit/schematics-cli" "16.1.3"
     "@nestjs/schematics" "^10.0.1"
     chalk "4.1.2"
     chokidar "3.5.3"
@@ -1297,8 +1319,8 @@
     tree-kill "1.2.2"
     tsconfig-paths "4.2.0"
     tsconfig-paths-webpack-plugin "4.0.1"
-    typescript "5.1.3"
-    webpack "5.87.0"
+    typescript "5.1.6"
+    webpack "5.88.1"
     webpack-node-externals "3.0.0"
 
 "@nestjs/common@^8.4.7":
@@ -9656,10 +9678,10 @@ typeorm@^0.3.17:
     uuid "^9.0.0"
     yargs "^17.6.2"
 
-typescript@5.1.3:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.3.tgz#8d84219244a6b40b6fb2b33cc1c062f715b9e826"
-  integrity sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw==
+typescript@5.1.6:
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.6.tgz#02f8ac202b6dad2c0dd5e0913745b47a37998274"
+  integrity sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==
 
 typescript@^4.9.5:
   version "4.9.5"
@@ -9923,36 +9945,6 @@ webpack-sources@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.3.tgz#2d4daab8451fd4b240cc27055ff6a0c2ccea0cde"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
-
-webpack@5.87.0:
-  version "5.87.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.87.0.tgz#df8a9c094c6037f45e0d77598f9e59d33ca3a98c"
-  integrity sha512-GOu1tNbQ7p1bDEoFRs2YPcfyGs8xq52yyPBZ3m2VGnXGtV9MxjrkABHm4V9Ia280OefsSLzvbVoXcfLxjKY/Iw==
-  dependencies:
-    "@types/eslint-scope" "^3.7.3"
-    "@types/estree" "^1.0.0"
-    "@webassemblyjs/ast" "^1.11.5"
-    "@webassemblyjs/wasm-edit" "^1.11.5"
-    "@webassemblyjs/wasm-parser" "^1.11.5"
-    acorn "^8.7.1"
-    acorn-import-assertions "^1.9.0"
-    browserslist "^4.14.5"
-    chrome-trace-event "^1.0.2"
-    enhanced-resolve "^5.15.0"
-    es-module-lexer "^1.2.1"
-    eslint-scope "5.1.1"
-    events "^3.2.0"
-    glob-to-regexp "^0.4.1"
-    graceful-fs "^4.2.9"
-    json-parse-even-better-errors "^2.3.1"
-    loader-runner "^4.2.0"
-    mime-types "^2.1.27"
-    neo-async "^2.6.2"
-    schema-utils "^3.2.0"
-    tapable "^2.1.1"
-    terser-webpack-plugin "^5.3.7"
-    watchpack "^2.4.0"
-    webpack-sources "^3.2.3"
 
 webpack@5.88.1:
   version "5.88.1"
