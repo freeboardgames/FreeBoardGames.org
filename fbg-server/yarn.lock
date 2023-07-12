@@ -1300,10 +1300,10 @@
     lodash.omit "4.5.0"
     tslib "2.5.0"
 
-"@nestjs/cli@^10.1.7":
-  version "10.1.7"
-  resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-10.1.7.tgz#8f708086acedb3a8287969d7fc02b8b593157ba1"
-  integrity sha512-YybaBuZpVhdT/ouVNnVUdpoPiuZ108GhY5eMuQJmMpA8FWLvLhyho0cSL36JCmqguyoQUMjZ+BeqaOAUgBRVuA==
+"@nestjs/cli@^10.1.8":
+  version "10.1.8"
+  resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-10.1.8.tgz#8b64797c256d81b39047f26ed8cb2b647f7ec19f"
+  integrity sha512-ge9NQdnDKc9ANKA+1xEckOWgGe3bnuWhQagpnhrspV0lMi+LZm6a0XF8ptVdJB3Ghclbfdh+1XF5XlieIcbVRw==
   dependencies:
     "@angular-devkit/core" "16.1.3"
     "@angular-devkit/schematics" "16.1.3"
