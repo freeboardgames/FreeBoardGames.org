@@ -34,7 +34,7 @@
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^8.4.7",
     "@nestjs/typeorm": "^10.0.0",
-    "@types/shortid": "^0.0.30",
+    "@types/shortid": "^0.0.31",
     "@types/superagent": "^4.1.19",
     "apollo": "^2.34.0",
     "apollo-server-core": "^3.12.1",
