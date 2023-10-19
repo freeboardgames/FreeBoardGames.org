@@ -2112,10 +2112,10 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
-"@types/shortid@^0.0.30":
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/@types/shortid/-/shortid-0.0.30.tgz#28e56a2b71e3ba46c9220e3dfbc845412871fbb7"
-  integrity sha512-b2KUSSggK7MKGwnl82P3qQt/pC5kdmzMYLm5GBKIVHTi7Cic4etapUyqKi2qNWdIC4h9TCsfMJJGd/klplAPLQ==
+"@types/shortid@^0.0.31":
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/@types/shortid/-/shortid-0.0.31.tgz#d97dcce0fd149915e51ccba01cf78fea1d7c170f"
+  integrity sha512-Ftfjb0YCx3ZKqOicoX/UsbuC5kpxqCN7k41rs1JYPQoe+sUsLhugfb3ow0MJ/pt4aPNlX5X9o084HSoVteoNmA==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.0"
