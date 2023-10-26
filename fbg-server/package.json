@@ -72,7 +72,7 @@
     "@nestjs/schematics": "^10.0.2",
     "@nestjs/testing": "^8.4.7",
     "@types/jest": "27.5.0",
-    "@types/node": "^20.8.8",
+    "@types/node": "^20.8.9",
     "@types/passport-jwt": "^3.0.11",
     "@types/supertest": "^2.0.15",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
