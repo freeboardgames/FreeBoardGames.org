@@ -6,7 +6,6 @@ import {
 } from "infra/misc/gameStaticPaths";
 import { getGameIdFromCode } from "infra/i18n/I18nGetGameId";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useServer } from "infra/hooks/useServer";
 import { useLogin } from "infra/hooks/useLogin";
 import { NicknamePrompt } from "infra/widgets/NicknamePrompt";
 import { FreeBoardGamesBar } from "fbg-games/gamesShared/components/fbg/FreeBoardGamesBar";
@@ -23,44 +22,37 @@ interface NewRoomProps {
 }
 
 const NewRoom: NextPage<any> = function (props: NewRoomProps) {
-  const server = useServer();
   const [login, setLogin] = useLogin();
-  const [newRoom, createNewRoom] = useNewRoom();
-  if (!server.resolved) {
+  const newRoom = useNewRoom({
+    nickname: login.nickname,
+    numPlayers: 2,
+    gameId: props.gameId,
+  });
+  if (!login.resolved) {
     return <LoadingMessage />;
   }
-  if (server.serversDown) {
-    return (
-      <MessagePage
-        type="error"
-        message={`Servers down: ${server.serversDown.join(", ")}`}
-      />
-    );
-  }
-  if (!login.loaded) {
-    return <LoadingMessage />;
-  }
-  if (!login.loggedIn) {
+  if (!login.nickname) {
     return (
       <FreeBoardGamesBar>
         <NicknamePrompt setNickname={setLogin} />
       </FreeBoardGamesBar>
     );
   }
-  const nickname = login.nickname!;
-  if (!newRoom.loaded) {
-    const hostname = server.hostname!;
-    const gameId = props.gameId;
-    const numPlayers = 2; // TODO: FIX THIS
-    createNewRoom({ nickname, gameId, hostname, numPlayers });
+  if (!newRoom.resolved) {
     return <LoadingMessage />;
   }
-  if (!newRoom.success || !newRoom.roomId) {
-    return <MessagePage type="error" message={`Failed to create room`} />;
+  if (newRoom.error || !newRoom.result) {
+    return (
+      <MessagePage
+        type="error"
+        message={`Failed to create room: ${newRoom.error}`}
+      />
+    );
   }
-  Router.replace(
-    `/${props.params.lang}/room?s=${server.index}&i=${newRoom.roomId}`
-  );
+  Router.replace({
+    pathname: `/${props.params.lang}/room`,
+    query: { s: newRoom.result.serverIndex, i: newRoom.result.roomID },
+  });
   return <LoadingMessage />;
 };
 
