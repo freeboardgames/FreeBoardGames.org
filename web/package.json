@@ -93,7 +93,7 @@
     "lodash": "^4.17.21",
     "lodash.omit": "^4.5.0",
     "mobile-detect": "^1.4.5",
-    "next": "9.5.5",
+    "next": "13.5.0",
     "next-i18next": "^7.0.1",
     "next-redux-wrapper": "^6.0.2",
     "next-seo": "^5.4.0",
