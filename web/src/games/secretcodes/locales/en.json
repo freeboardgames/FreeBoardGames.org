@@ -17,6 +17,8 @@
   "red_team": "Red Team",
   "unassigned": "Unassigned",
   "in_order_to_start": "In order to start the game all players need to join a team and each team must have a spymaster.",
+  "removePlayersFromTeams": "Reset teams",
+  "distributePlayers": "Distribute players randomly",
   "play": "Done, play!",
   "s": "[S] ",
   "make_spymaster": "Make Spymaster",

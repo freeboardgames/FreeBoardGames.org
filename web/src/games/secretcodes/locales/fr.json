@@ -1,0 +1,30 @@
+{
+  "name": "Codes Secrets",
+  "description": "Similaire à CodeNames",
+  "descriptionTag": "Jouer à Codes Secrets, un jeu en ligne gratuit\n\nsimilaire au jeu de société CodeNames! Vous pouvez y jouer\n\nen ligne avec quatre à vingt joueurs !",
+  "instructions": {
+    "text": "Codes Secrets est un jeu similaire à CodeNames. Il y a deux équipes, une bleue et une rouge, et dans chacune un Espion.\n\nOnly the leaders know which cards need to be selected by their teammates. However, leaders can only give a word and a number as a clue to their team\n\nThe objective is for the rest of the team to figure out all their secret words before the competing team does. And they need to be careful, choosing a black card will lead to immediately losing the game!"
+  },
+  "select_teams": "Choisisez les équipes",
+  "winners": "Gagnants",
+  "red_team_select_cards": "<strong>Équipe rouge</strong> choisisez vos cartes !",
+  "blue_team_select_cards": "<strong>Équipe bleue</strong> choisisez vos cartes !",
+  "blue_team_wins": "L'équipe bleue gagne",
+  "red_team_wins": "L'équipe rouge gagne",
+  "custom": "Customisé",
+  "words": "Mots ({{ size }})",
+  "blue_team": "Équipe bleue",
+  "red_team": "Équipe rouge",
+  "unassigned": "Non assignés",
+  "in_order_to_start": "Pour débuter la partie, tous les joueurs doivent rejoindre une équipe et chaque équipe doit avoir un Espion.",
+  "removePlayersFromTeams": "Vider les équipes",
+  "distributePlayers": "Répartir les joueurs aléatoirement",
+  "play": "C'est parti !",
+  "s": "[Espion] ",
+  "make_spymaster": "Désigner comme Espion",
+  "select": "Choisir",
+  "toggle_view_spymaster": "Basculer en vue normale",
+  "toggle_view_normal": "Basculer en vue Espion",
+  "pass": "Passer",
+  "spymaster_give_clue": "<strong>{{ name }}</strong> donne un indice, "
+}

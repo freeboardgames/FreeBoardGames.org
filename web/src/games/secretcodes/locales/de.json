@@ -17,6 +17,8 @@
   "red_team": "Rotes Team",
   "unassigned": "Nicht zugewiesen",
   "in_order_to_start": "Um zu Starten muss jeder Spieler einem Team zugewiesen sein und jedes Team braucht einen Spymaster.",
+  "removePlayersFromTeams": "Teams zurücksetzen",
+  "distributePlayers": "Spieler zufällig verteilen",
   "play": "Fertig, spielen!",
   "s": "[S] ",
   "make_spymaster": "Mache zum Spymaster",

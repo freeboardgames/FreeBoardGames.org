@@ -19,7 +19,7 @@ export function LobbyPlayer({ G, moves, playerID, players, isHost }: ILobbyPlaye
     moves.makeSpymaster(playerID);
   };
 
-  const isPlayerInTeam = (): boolean => {
+  const isPlayerAssignedToATeam = (): boolean => {
     return getPlayerTeam(G, playerID) !== undefined;
   };
 
@@ -27,7 +27,7 @@ export function LobbyPlayer({ G, moves, playerID, players, isHost }: ILobbyPlaye
     <li>
       {isPlayerSpymaster(G, playerID) ? <span>{translate('s')}</span> : ''}
       {players[playerID].name}
-      {!isPlayerSpymaster(G, playerID) && isHost && isPlayerInTeam() ? (
+      {isHost && !isPlayerSpymaster(G, playerID) && isPlayerAssignedToATeam() ? (
         <button className={[css.btn, css.btnSpymaster].join(' ')} onClick={() => makeSpymaster(playerID)}>
           {translate('make_spymaster')}
         </button>
