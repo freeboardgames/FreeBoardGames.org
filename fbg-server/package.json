@@ -74,7 +74,7 @@
     "@types/jest": "27.5.0",
     "@types/node": "^20.8.10",
     "@types/passport-jwt": "^3.0.12",
-    "@types/supertest": "^2.0.15",
+    "@types/supertest": "^2.0.16",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "eslint": "^8.53.0",
