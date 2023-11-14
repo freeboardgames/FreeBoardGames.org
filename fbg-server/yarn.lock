@@ -2828,10 +2828,10 @@ apollo-reporting-protobuf@^3.3.1, apollo-reporting-protobuf@^3.4.0:
   dependencies:
     "@apollo/protobufjs" "1.2.6"
 
-apollo-server-core@^3.12.1:
-  version "3.12.1"
-  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-3.12.1.tgz#ba255c37345db29c48a2e0c064c519a8d62eb5af"
-  integrity sha512-9SF5WAkkV0FZQ2HVUWI9Jada1U0jg7e8NCN9EklbtvaCeUlOLyXyM+KCWuZ7+dqHxjshbtcwylPHutt3uzoNkw==
+apollo-server-core@^3.12.1, apollo-server-core@^3.13.0:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-3.13.0.tgz#ad6601fbb34cc97eedca27a9fb0b5738d11cd27d"
+  integrity sha512-v/g6DR6KuHn9DYSdtQijz8dLOkP78I5JSVJzPkARhDbhpH74QNwrQ2PP2URAPPEDJ2EeZNQDX8PvbYkAKqg+kg==
   dependencies:
     "@apollo/utils.keyvaluecache" "^1.0.1"
     "@apollo/utils.logger" "^1.0.0"
