@@ -37,7 +37,7 @@
     "@types/shortid": "^0.0.32",
     "@types/superagent": "^4.1.21",
     "apollo": "^2.34.0",
-    "apollo-server-core": "^3.12.1",
+    "apollo-server-core": "^3.13.0",
     "apollo-server-express": "3",
     "bad-words": "^3.0.4",
     "class-transformer": "^0.5.1",
