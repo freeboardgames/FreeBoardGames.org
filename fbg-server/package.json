@@ -33,7 +33,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^8.4.7",
-    "@nestjs/typeorm": "^10.0.0",
+    "@nestjs/typeorm": "^10.0.1",
     "@types/shortid": "^0.0.32",
     "@types/superagent": "^4.1.21",
     "apollo": "^2.34.0",
