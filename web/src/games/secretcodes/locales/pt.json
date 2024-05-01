@@ -17,6 +17,8 @@
   "red_team": "Time Vermelho",
   "unassigned": "Sem time",
   "in_order_to_start": "Para iniciar o jogo, todos os jogadores precisam escolher um time e ambos times precisam de um lider.",
+  "removePlayersFromTeams": "Esvazie times",
+  "distributePlayers": "Distribuir jogadores aleatoriamente",
   "play": "Pronto, jogar!",
   "s": "[L] ",
   "make_spymaster": "Fazer Lider",

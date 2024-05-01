@@ -2,7 +2,7 @@
   "go_home": "À la page d'accueil",
   "game_not_found": "Jeu introuvable",
   "invalid_game_mode": "Mode de jeu invalide",
-  "connecting": "Connecter...",
+  "connecting": "Connexion...",
   "failed_to_download": "Échec du téléchargement de {{ name }}",
   "downloading": "Télécharger {{ name }}"
 }

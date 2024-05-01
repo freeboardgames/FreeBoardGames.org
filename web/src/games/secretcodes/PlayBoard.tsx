@@ -99,7 +99,7 @@ export class PlayBoardInternal extends React.Component<IPlayBoardInnerProps & IP
     let spymasterInstructions;
     if (this.props.gameArgs.mode === GameMode.OnlineFriend) {
       const spymasterName = this.props.gameArgs.players[this._currentPlayerTeam().spymasterID].name;
-      spymasterInstructions = <>{this.props.translate('spymaster_give_clue', { name: spymasterName })}</>;
+      spymasterInstructions = <Trans t={this.props.translate} i18nKey="spymaster_give_clue" components={{ name: spymasterName, strong: <strong /> }} />;
     }
 
     instruction = (
