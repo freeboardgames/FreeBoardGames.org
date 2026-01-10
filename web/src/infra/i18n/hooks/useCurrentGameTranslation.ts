@@ -4,15 +4,13 @@ import { useTranslation } from './useTranslation';
 
 export const useCurrentGameTranslation = () => {
   const { game } = useCurrentGame();
-  
+
   // Ensure we always have a valid namespace string - never null/undefined
   const namespace = game?.code ? getGameCodeNamespace(game.code) : 'common';
-  
-  console.log("namespace:", namespace);
 
   // Use the ready flag to ensure translations are loaded
-  const { t, ready } = useTranslation(namespace, { 
-    useSuspense: false 
+  const { t, ready } = useTranslation(namespace, {
+    useSuspense: false,
   });
 
   return { translate: t, namespace, ready };

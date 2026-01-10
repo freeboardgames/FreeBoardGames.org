@@ -6,7 +6,6 @@ import { TGameCode } from 'infra/types';
 import dynamic from 'next/dynamic';
 import Error from 'next/error';
 import React from 'react';
-import { getGameDefinition } from './utils';
 
 const Game = dynamic(import('infra/game/Game'), {
   ssr: false,
@@ -19,7 +18,7 @@ interface AILocalGameProps {
   mode: GameMode.AI | GameMode.LocalFriend;
 }
 
-export default class AILocalGame extends React.Component<AILocalGameProps, {}> {
+export default class AILocalGame extends React.Component<AILocalGameProps, object> {
   render() {
     if (this.props.gameDef) {
       return (
@@ -29,18 +28,7 @@ export default class AILocalGame extends React.Component<AILocalGameProps, {}> {
         </React.Fragment>
       );
     } else {
-      return <Error />;
+      return <Error statusCode={404} />;
     }
-  }
-
-  static async getInitialProps(router) {
-    const gameCode = router.query.gameCode;
-    const gameDef: IGameDef = getGameDefinition(gameCode);
-    if (!gameDef && router.res) {
-      router.res.statusCode = 404;
-      router.res.end();
-    }
-    const mode = router.query.mode;
-    return { gameDef, gameCode, mode };
   }
 }
