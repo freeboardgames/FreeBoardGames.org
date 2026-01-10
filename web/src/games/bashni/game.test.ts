@@ -4,7 +4,7 @@ import { BashniGame, IG, move, INITIAL_BOARD, convertStringToBoard } from './gam
 import { Local } from 'boardgame.io/multiplayer';
 
 test('invalid moves', () => {
-  let G: IG = {
+  const G: IG = {
     board: convertStringToBoard(INITIAL_BOARD),
     jumping: null,
     moveCount: 0,

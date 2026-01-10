@@ -90,7 +90,7 @@ export function PlayerZones(props: {
   }
 
   function renderStatuses(index: number) {
-    let statuses = [
+    const statuses = [
       <span key="score" className={css.score} title={translate('status_score')}>
         &#x1F4B0; {props.scores[index]}
       </span>,

@@ -10,7 +10,7 @@ describe('Bulls and Cows Service', () => {
       },
     };
 
-    let colours: any = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+    const colours: any = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
     beforeEach(() => {
       jest.clearAllMocks();
@@ -153,7 +153,7 @@ describe('Bulls and Cows Service', () => {
 });
 
 it('should work for the issue posted', () => {
-  let secret = <IColour[]>[{ id: 5 }, { id: 4 }, { id: 6 }, { id: 1 }];
+  const secret = <IColour[]>[{ id: 5 }, { id: 4 }, { id: 6 }, { id: 1 }];
 
   let current = <IColour[]>[{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
   let result = checkSecret(current, secret);

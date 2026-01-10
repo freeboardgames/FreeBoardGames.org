@@ -127,7 +127,7 @@ export class PlayBoardInternal extends React.Component<IPlayBoardInnerProps & IP
   };
 
   _renderCardGrid = () => {
-    let board = [];
+    const board = [];
 
     for (let i = 0; i < 25; i += 1) {
       const card = this.props.G.cards[i];

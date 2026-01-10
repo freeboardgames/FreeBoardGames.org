@@ -226,7 +226,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
 
   _getBoard() {
     // score board to be shown at the end of the game
-    let scoreBoard = this.props.ctx.gameover ? (
+    const scoreBoard = this.props.ctx.gameover ? (
       <Scoreboard
         scoreboard={this._getPlayerScores()}
         players={this.props.gameArgs.players}

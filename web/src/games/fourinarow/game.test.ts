@@ -23,7 +23,7 @@ function getTestClient(grid: any) {
 it('should declare player 0 as the winner', () => {
   const client = getTestClient(generateGrid());
 
-  for (var i = 0; i < neededToWin - 1; i++) {
+  for (let i = 0; i < neededToWin - 1; i++) {
     client.moves.selectColumn(10);
     client.moves.selectColumn(20);
   }
@@ -39,7 +39,7 @@ it('should declare player 0 as the winner', () => {
 it('should declare player 1 as the winner', () => {
   const client = getTestClient(generateGrid());
 
-  for (var i = 0; i < neededToWin - 1; i++) {
+  for (let i = 0; i < neededToWin - 1; i++) {
     client.moves.selectColumn(10);
     client.moves.selectColumn(20);
   }

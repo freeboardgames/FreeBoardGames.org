@@ -103,7 +103,7 @@ export class PlayerZones extends React.Component<IPlayerZonesProps, {}> {
   }
 
   getPlayerStatuses(player: IPlayerProps): PlayerStatus[] {
-    let statuses: PlayerStatus[] = [];
+    const statuses: PlayerStatus[] = [];
     if (player.isOut) return [PlayerStatus.IsOut];
 
     if (player.id === this.props.currentPlayerId) statuses.push(PlayerStatus.CurrentPlayer);

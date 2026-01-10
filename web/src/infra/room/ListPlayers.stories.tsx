@@ -1,9 +1,9 @@
 import { ListPlayers } from './ListPlayers';
-import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
+import { JoinRoomMutation } from 'gqlTypes/generated';
 export default {
   title: 'Infrastructure/Room/ListPlayers',
 };
-const roomMetadata: JoinRoom_joinRoom = {
+const roomMetadata: JoinRoomMutation['joinRoom'] = {
   __typename: 'Room' as const,
   gameCode: 'secretcodes',
   capacity: 4,

@@ -14,7 +14,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 let wrapper: ShallowWrapper | ReactWrapper;
 let props: IViewProps;
-let ctx: any = {};
+const ctx: any = {};
 
 const mockColours: IColour[] = [
   { id: 1, img: 'a', hex: '#111' }, // 0

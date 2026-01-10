@@ -16,7 +16,7 @@ export function finished(G: IG, ctx: Ctx) {
     });
 
     for (const j in animals) {
-      let len = G.players[i].cards.filter((card) => {
+      const len = G.players[i].cards.filter((card) => {
         return card.name == animals[j];
       }).length;
       if (len < 4) {
@@ -41,7 +41,7 @@ export function score(G: IG, ctx: Ctx) {
       return animals.indexOf(value) == ind ? true : false;
     });
 
-    let score =
+    const score =
       animals.length *
       animals.reduce((accum, value) => {
         return value + accum;
@@ -60,7 +60,7 @@ export function canMakeNoMoves(G: IG) {
     return false;
   }
 
-  let i = G.playerTurnId;
+  const i = G.playerTurnId;
   let animals = G.players[i].cards.map((card) => {
     return card.name;
   });
@@ -70,7 +70,7 @@ export function canMakeNoMoves(G: IG) {
   });
 
   for (const j in animals) {
-    let len = G.players[i].cards.filter((card) => {
+    const len = G.players[i].cards.filter((card) => {
       return card.name == animals[j];
     }).length;
     if (len < 4) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Carousel } from 'infra/common/components/carousel/Carousel';
 import { GameCardWithOverlay } from './GameCardWithOverlay';
 import { gql, useSubscription } from '@apollo/client';
-import { GetLobby, GetLobby_lobby } from 'gqlTypes/GetLobby';
+import { GetLobbyQuery, GetLobbyQueryVariables } from 'gqlTypes/generated';
 import { Typography, CircularProgress } from '@mui/material';
 import { getGroupedRoomsDisplay, orderCurrentGameFirst } from './LobbyUtil';
 import { NewRoomModal } from './NewRoomModal';
@@ -38,7 +38,7 @@ const LobbyCarousel: React.FC<Props> = ({ t, game }) => {
   const [showNewRoomModal, setShowNewRoomModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
-  const [lobby, setLobby] = useState<GetLobby_lobby | undefined>();
+  const [lobby, setLobby] = useState<GetLobbyQuery['lobby'] | undefined>();
 
   const { data: subscriptionData } = useSubscription(LOBBIES_SUBSCRIPTION);
 
@@ -50,7 +50,7 @@ const LobbyCarousel: React.FC<Props> = ({ t, game }) => {
     return game && game.modes.map((modeInfo) => modeInfo.mode).includes(GameMode.OnlineFriend);
   };
 
-  const renderCarouselContent = (lobby: GetLobby_lobby) => {
+  const renderCarouselContent = (lobby: GetLobbyQuery['lobby']) => {
     if (loading) {
       return <CircularProgress className={css.carouselCenter} />;
     } else if (error) {
@@ -68,7 +68,7 @@ const LobbyCarousel: React.FC<Props> = ({ t, game }) => {
     );
   };
 
-  const renderCards = (lobby: GetLobby_lobby) => {
+  const renderCards = (lobby: GetLobbyQuery['lobby']) => {
     const grouped = getGroupedRoomsDisplay(lobby);
     const result = [];
     const roomsEntries = orderCurrentGameFirst(grouped, game?.code);
@@ -89,7 +89,7 @@ const LobbyCarousel: React.FC<Props> = ({ t, game }) => {
 
   const _loadLobby = () => {
     LobbyService.getLobby().then(
-      (queryResult: GetLobby) => {
+      (queryResult: GetLobbyQuery) => {
         setLoading(false);
         setLobby(queryResult.lobby);
       },

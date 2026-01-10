@@ -12,7 +12,7 @@ export interface IG {
 const cardTypes = [0, 5, 15, 20, 26, 38, 46, 60, 74, 88, 98, 104, 108];
 
 function countPicnicGoCards(numPlayers: number): number[] {
-  let cardCounts = new Array(12).fill(0);
+  const cardCounts = new Array(12).fill(0);
   const client = Client({
     game: PicnicGoGame,
     numPlayers,
@@ -44,7 +44,7 @@ export function shuffleStatistics(g: IG, ctx: Ctx) {
   for (let n = 0; n < N; n++) {
     let deck = new Array(108).fill(0).map((_, i) => i);
     deck = ctx.random.Shuffle(deck).slice(-nCards);
-    let cardCounts = new Array(12).fill(0);
+    const cardCounts = new Array(12).fill(0);
     for (let i = 0; i < cardCounts.length; i++) {
       cardCounts[i] += deck.filter((e) => cardTypes[i] <= e && e < cardTypes[i + 1]).length;
     }

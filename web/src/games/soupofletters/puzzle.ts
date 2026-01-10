@@ -37,7 +37,7 @@ export const orientations = {
 // Determines if an orientation is possible given the starting square (x,y),
 // the height (h) and width (w) of the puzzle, and the length of the word (l).
 // Returns true if the word will fit starting at the square provided using the specified orientation.
-let checkOrientations = {
+const checkOrientations = {
   horizontal: function (x, y, h, w, l) {
     return w >= x + l;
   },
@@ -144,14 +144,14 @@ const fillPuzzle = function (words, options) {
  */
 const placeWordInPuzzle = function (puzzle, options, word) {
   // find all of the best locations where this word would fit
-  let locations = findBestLocations(puzzle, options, word);
+  const locations = findBestLocations(puzzle, options, word);
 
   if (locations.length === 0) {
     return false;
   }
 
   // select a location at random and place the word there
-  let sel = locations[Math.floor(Math.random() * locations.length)];
+  const sel = locations[Math.floor(Math.random() * locations.length)];
   placeWord(puzzle, word, sel.x, sel.y, orientations[sel.orientation]);
 
   return true;
@@ -191,7 +191,7 @@ const findBestLocations = function (puzzle, options, word) {
       // see if this orientation is even possible at this location
       if (check(x, y, height, width, wordLength)) {
         // determine if the word fits at the current position
-        let overlap = calcOverlap(word, puzzle, x, y, next);
+        const overlap = calcOverlap(word, puzzle, x, y, next);
 
         // if the overlap was bigger than previous overlaps that we've seen
         if (overlap >= maxOverlap || (!options.preferOverlap && overlap > -1)) {
@@ -208,7 +208,7 @@ const findBestLocations = function (puzzle, options, word) {
         // if current cell is invalid, then skip to the next cell where
         // this orientation is possible. this greatly reduces the number
         // of checks that we have to do overall
-        let nextPossible = skipTo(x, y, wordLength);
+        const nextPossible = skipTo(x, y, wordLength);
         x = nextPossible.x;
         y = nextPossible.y;
       }
@@ -238,7 +238,7 @@ const calcOverlap = function (word, puzzle, x, y, fnGetSquare) {
 
   // traverse the squares to determine if the word fits
   for (let i = 0, len = word.length; i < len; i++) {
-    let next = fnGetSquare(x, y, i),
+    const next = fnGetSquare(x, y, i),
       square = puzzle[next.y][next.x];
 
     // if the puzzle square already contains the letter we
@@ -269,7 +269,7 @@ const calcOverlap = function (word, puzzle, x, y, fnGetSquare) {
  * @param {int} overlap: The required level of overlap
  */
 const pruneLocations = function (locations, overlap) {
-  let pruned = [];
+  const pruned = [];
   for (let i = 0, len = locations.length; i < len; i++) {
     if (locations[i].overlap >= overlap) {
       pruned.push(locations[i]);
@@ -290,7 +290,7 @@ const pruneLocations = function (locations, overlap) {
  */
 const placeWord = function (puzzle, word, x, y, fnGetSquare) {
   for (let i = 0, len = word.length; i < len; i++) {
-    let next = fnGetSquare(x, y, i);
+    const next = fnGetSquare(x, y, i);
     puzzle[next.y][next.x] = word[i];
   }
 };
@@ -322,10 +322,10 @@ export interface IpuzzleSettings {
 // Fill empty spaces in the puzzle
 const fillBlanks = function (puzzle) {
   for (let i = 0, height = puzzle.length; i < height; i++) {
-    let row = puzzle[i];
+    const row = puzzle[i];
     for (let j = 0, width = row.length; j < width; j++) {
       if (!puzzle[i][j]) {
-        let randomLetter = Math.floor(Math.random() * letters.length);
+        const randomLetter = Math.floor(Math.random() * letters.length);
         puzzle[i][j] = letters[randomLetter];
       }
     }
@@ -345,7 +345,7 @@ export const newPuzzle = function (words: string[], settings: IpuzzleSettings) {
   });
 
   // initialize the options
-  let options: IpuzzleSettings = {
+  const options: IpuzzleSettings = {
     height: opts.height, //|| wordList[0].length
     width: opts.width, // || wordList[0].length
     orientations: opts.orientations,
@@ -394,7 +394,7 @@ export const newPuzzle = function (words: string[], settings: IpuzzleSettings) {
  * @api public
  */
 export const solvepuzzle = function (puzzle, words, validOrientations) {
-  let options = {
+  const options = {
       height: puzzle.length,
       width: puzzle[0].length,
       orientations: validOrientations,
@@ -404,7 +404,7 @@ export const solvepuzzle = function (puzzle, words, validOrientations) {
     notFound = [];
 
   for (let i = 0, len = words.length; i < len; i++) {
-    let word = words[i],
+    const word = words[i],
       locations = findBestLocations(puzzle, options, word);
 
     if (locations.length > 0 && locations[0].overlap === word.length) {
@@ -437,7 +437,7 @@ export const solvepuzzle = function (puzzle, words, validOrientations) {
 export const printPuzzle = function (puzzle) {
   let puzzleString = '';
   for (let i = 0, height = puzzle.length; i < height; i++) {
-    let row = puzzle[i];
+    const row = puzzle[i];
     for (let j = 0, width = row.length; j < width; j++) {
       puzzleString += (row[j] === '' ? ' ' : row[j]) + ' ';
     }

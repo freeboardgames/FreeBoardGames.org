@@ -59,7 +59,7 @@ export class BCard extends React.Component<InnerWrapper, {}> {
       cardDisplayValue = '';
       image = white;
     } else {
-      let cardValue = this.props.card.value;
+      const cardValue = this.props.card.value;
       cardDisplayValue = String(cardValue !== null ? cardValue + 1 : '');
       switch (this.props.card.color) {
         case 0:

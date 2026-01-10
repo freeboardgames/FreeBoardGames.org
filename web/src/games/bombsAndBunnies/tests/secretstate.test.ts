@@ -46,11 +46,11 @@ it('p1 consecutive wins with early betting and everyone else skips', () => {
 
   // I really don't know how javescript works :()
   var { G } = Utilities.getTypedState(p1);
-  var G1 = G;
+  const G1 = G;
   var { G } = Utilities.getTypedState(p2);
-  var G2 = G;
+  const G2 = G;
   var { G } = Utilities.getTypedState(p3);
-  var G3 = G;
+  const G3 = G;
 
   expect(G1.players[0].hand).toEqual(<CardType[]>[CardType.Bunny]);
   expect(G2.players[0].hand).toEqual(<CardType[]>[CardType.Bunny]);

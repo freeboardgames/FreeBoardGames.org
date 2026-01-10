@@ -39,7 +39,7 @@ export class BMoney extends React.Component<InnerWrapper, {}> {
   _click(index: number) {
     //TODO: Make sure this only works appropriatley
 
-    let selected = this.state.selected;
+    const selected = this.state.selected;
     selected[index] += 1;
     selected[index] %= 2;
     this.setState({ selected: selected });

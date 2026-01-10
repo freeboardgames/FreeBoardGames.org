@@ -1,4 +1,4 @@
-import { GetLobby_lobby } from 'gqlTypes/GetLobby';
+import { GetLobbyQuery } from 'gqlTypes/generated';
 import { RoomDisplay } from './GameCardWithOverlay';
 
 const SHORT_ID_CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
@@ -43,7 +43,7 @@ export function orderCurrentGameFirst(grouped: GroupedRoomDisplay, gameCode?: st
   return [[gameCode, grouped[gameCode]], ...filteredEntries];
 }
 
-export function getGroupedRoomsDisplay(lobby: GetLobby_lobby): GroupedRoomDisplay {
+export function getGroupedRoomsDisplay(lobby: GetLobbyQuery['lobby']): GroupedRoomDisplay {
   const result: GroupedRoomDisplay = {};
   for (const room of lobby.rooms) {
     if (!(room.gameCode in result)) {

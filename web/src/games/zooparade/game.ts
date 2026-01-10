@@ -9,7 +9,7 @@ import { UNKNOWN_MASK } from './constants';
 // Setup
 function setup(ctx: Ctx): IG {
   // Create Deck
-  var deckindex = 49;
+  let deckindex = 49;
   var deck = Array(50).fill(null);
   for (var i = 0; i < 50; i++) {
     deck[i] = <ICard>{
@@ -19,23 +19,23 @@ function setup(ctx: Ctx): IG {
     };
   }
   var deck = ctx.random.Shuffle(deck);
-  var piles: ICard[][] = Array(5).fill(null);
+  const piles: ICard[][] = Array(5).fill(null);
   for (var i = 0; i < 5; i++) {
     piles[i] = Array(0);
   }
-  var trash: ICard[] = Array(0);
+  const trash: ICard[] = Array(0);
 
   // Create Player Hands
-  var nrCards: number;
+  let nrCards: number;
   if (ctx.numPlayers === 2 || ctx.numPlayers === 3) {
     nrCards = 5;
   } else {
     // 4 or 5 players
     nrCards = 4;
   }
-  var hands = Array(ctx.numPlayers).fill(null);
+  const hands = Array(ctx.numPlayers).fill(null);
 
-  for (var j = 0; j < ctx.numPlayers; j++) {
+  for (let j = 0; j < ctx.numPlayers; j++) {
     hands[j] = <IHand>{ player: j, cards: Array(nrCards).fill(null), hints: Array(nrCards).fill(null) };
     for (var i = 0; i < nrCards; i++) {
       hands[j].cards[i] = deck[deckindex];
@@ -45,10 +45,10 @@ function setup(ctx: Ctx): IG {
   }
 
   // Rest
-  var countdown = 3;
-  var treats = 8;
+  const countdown = 3;
+  const treats = 8;
 
-  var finalG = <IG>{
+  const finalG = <IG>{
     deck: deck,
     deckindex: deckindex,
     trash: trash,
@@ -70,7 +70,7 @@ export const ZooParadeGame = {
 
   playerView: (G, ctx, playerID) => {
     // Hide your own cards
-    var id = parseInt(playerID);
+    const id = parseInt(playerID);
 
     if (isNaN(id)) {
       // However, if this is not a multiplayer then this is NaN.

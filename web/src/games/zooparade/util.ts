@@ -3,7 +3,7 @@ export function idToColor(id: number) {
 }
 
 export function idToValue(id: number) {
-  var rem = id % 10;
+  const rem = id % 10;
   if (rem === 9) {
     return 4;
   }

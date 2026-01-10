@@ -70,9 +70,9 @@ describe('Memory Match Game Rules', () => {
   });
 
   it('should declare draw when equal images are found', () => {
-    let { cards } = client.getState().G;
-    let cardNames = new Set(cards.map((c) => c.name));
-    let counter = cardNames.size;
+    const { cards } = client.getState().G;
+    const cardNames = new Set(cards.map((c) => c.name));
+    const counter = cardNames.size;
     let total = 0;
     cardNames.forEach((cName) => {
       total += 1;
@@ -92,8 +92,8 @@ describe('Memory Match Game Rules', () => {
   });
 
   it('should declare player 1 as the winner', () => {
-    let { cards } = client.getState().G;
-    let cardNames = Array.from(new Set(cards.map((c) => c.name)));
+    const { cards } = client.getState().G;
+    const cardNames = Array.from(new Set(cards.map((c) => c.name)));
     const aCards = cards.filter((c) => c.name === cardNames[0]);
     client.moves.cardClicked(aCards[0].id);
     client.moves.cardClicked(aCards[1].id);
@@ -116,8 +116,8 @@ describe('Memory Match Game Rules', () => {
     client = Client({
       game: gameWithSetupData({ ...MemoryMatchGame }, undefined, { stayInTurnOnMatch: false }),
     }) as any;
-    let { cards } = client.getState().G;
-    let cardNames = Array.from(new Set(cards.map((c) => c.name)));
+    const { cards } = client.getState().G;
+    const cardNames = Array.from(new Set(cards.map((c) => c.name)));
     // remove first and third try and add it end
     cardNames.push(cardNames[0]);
     cardNames.push(cardNames[2]);

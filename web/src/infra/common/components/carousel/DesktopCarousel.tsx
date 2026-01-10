@@ -6,6 +6,7 @@ import css from './DesktopCarousel.module.css';
 
 interface DesktopCarouselProps {
   height?: string;
+  children?: React.ReactNode;
 }
 
 interface DesktopCarouselState {

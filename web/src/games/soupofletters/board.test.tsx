@@ -46,8 +46,8 @@ describe('SoupOfLetters UI', () => {
     expect(wrapper.text()).toContain('Turn Player 1');
     expect(wrapper.text()).toContain('seconds');
 
-    for (let r of state0.G.puzzle) {
-      for (let c of r) {
+    for (const r of state0.G.puzzle) {
+      for (const c of r) {
         expect(wrapper.text()).toContain(c);
       }
     }

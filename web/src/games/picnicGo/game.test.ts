@@ -174,7 +174,7 @@ test('cupcakes scoring', () => {
 });
 
 test('win by score', () => {
-  let g = {
+  const g = {
     players: [
       {
         ...basePlayer,
@@ -199,7 +199,7 @@ test('win by score', () => {
 });
 
 test('win by cupcakes', () => {
-  let g = {
+  const g = {
     players: [
       {
         ...basePlayer,

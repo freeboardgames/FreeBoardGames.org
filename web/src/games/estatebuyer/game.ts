@@ -65,7 +65,7 @@ function PutBuildingInPlayerHand(G: IG, playerIndex, cost) {
 }
 
 function DealBuildingCards(G: IG, ctx: Ctx) {
-  let dealtCards = G.buildings.splice(0, ctx.numPlayers);
+  const dealtCards = G.buildings.splice(0, ctx.numPlayers);
   G.cardsontable = dealtCards.map((c) => ({ ...c, showing: true })).sort((a, b) => a.value - b.value);
 }
 
@@ -79,7 +79,7 @@ export function HighestBid(players): number {
 }
 
 function AwardBuildingToRemainingPlayer(G: IG) {
-  let remainingPlayer = G.players.reduce(
+  const remainingPlayer = G.players.reduce(
     (remaining, player, currentIndex) => (player.passed ? remaining : { playerIndex: currentIndex }),
     { playerIndex: -1 },
   );
@@ -88,7 +88,7 @@ function AwardBuildingToRemainingPlayer(G: IG) {
 }
 
 function DealCheckCards(G: IG, ctx: Ctx) {
-  let dealtCards = G.checks.splice(0, ctx.numPlayers);
+  const dealtCards = G.checks.splice(0, ctx.numPlayers);
   G.cardsontable = dealtCards.map((c) => ({ ...c, showing: true })).sort((a, b) => a.value - b.value);
 }
 

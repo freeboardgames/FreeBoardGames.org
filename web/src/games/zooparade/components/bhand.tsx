@@ -18,15 +18,15 @@ interface InnerWrapper {
 
 export class BHand extends React.Component<InnerWrapper, {}> {
   render() {
-    var hand = this.props.hand;
+    const hand = this.props.hand;
     return (
       <div className={style.hand}>
         {hand.cards.map((card, card_index) => {
           // If player, then 'overwrite' the card with the info from the hint
           const hint = this.props.hand.hints[card_index];
 
-          var newCard: ICard;
-          var empty: number = null;
+          let newCard: ICard;
+          let empty: number = null;
 
           if (this.props.me) {
             const valueIndex = hint.value.indexOf(IHintMask.YES);

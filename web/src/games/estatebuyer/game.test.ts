@@ -26,7 +26,7 @@ const defaultG: IG = {
 };
 
 test('getting scoreboard', () => {
-  let G: IG = {
+  const G: IG = {
     ...defaultG,
     players: [
       {
@@ -85,7 +85,7 @@ test('getting scoreboard', () => {
 });
 
 test('highest bid', () => {
-  let players: any = [
+  const players: any = [
     {
       ...defaultPlayer,
       bid: 1,

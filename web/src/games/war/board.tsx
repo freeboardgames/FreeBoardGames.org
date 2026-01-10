@@ -52,7 +52,7 @@ export class Board extends React.Component<IBoardProps, {}> {
     const boardStyle = {
       width: '60%',
     };
-    let tbody = [];
+    const tbody = [];
     tbody.push(
       <tr style={messageRowStyle}>
         <td key="message">

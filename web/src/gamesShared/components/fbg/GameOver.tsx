@@ -9,7 +9,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import getMessagePage from 'infra/common/factories/MessagePage';
 import { LobbyService } from 'infra/common/services/LobbyService';
 import Router from 'next/router';
-import { WithTranslation, withTranslation } from 'infra/i18n';
+import { WithTranslation, withTranslation, Language } from 'infra/i18n';
 import { room } from 'infra/navigation';
 import { compose } from 'recompose';
 
@@ -85,7 +85,7 @@ export class GameOverInternal extends React.Component<IGameOverInnerProps & IGam
       this.setState({ loading: true });
       const matchId = Router.query.matchId as string;
       const nextRoomId = await LobbyService.getPlayAgainNextRoom(matchId);
-      Router.push(room(nextRoomId)(i18n.language));
+      Router.push(room(nextRoomId)(i18n.language as Language));
     }
   };
 }

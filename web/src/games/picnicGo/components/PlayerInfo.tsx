@@ -62,7 +62,7 @@ export function PlayerInfo(props: InnerWrapper) {
   }
 
   function _getCupcakeDisplayColor() {
-    let playerDesserts = [];
+    const playerDesserts = [];
 
     for (let i = 0; i < players.length; i++) {
       playerDesserts.push(players[i].dessertsCount);
@@ -104,13 +104,13 @@ export function PlayerInfo(props: InnerWrapper) {
   }
 
   function _getCardsList() {
-    let mayoAndSandwiches = [];
-    let chips = [];
-    let deviledEggs = [];
-    let friedChickens = [];
-    let pizzas = [];
-    let cupcakes = [];
-    let forks = [];
+    const mayoAndSandwiches = [];
+    const chips = [];
+    const deviledEggs = [];
+    const friedChickens = [];
+    const pizzas = [];
+    const cupcakes = [];
+    const forks = [];
 
     for (let i = 0; i < players[props.playerID].playedCards.length; i++) {
       const c = players[props.playerID].playedCards[i];
@@ -147,7 +147,7 @@ export function PlayerInfo(props: InnerWrapper) {
 
     chips.sort((a, b) => a - b);
 
-    let combinedArray = [mayoAndSandwiches, chips, deviledEggs, friedChickens, pizzas, cupcakes, forks];
+    const combinedArray = [mayoAndSandwiches, chips, deviledEggs, friedChickens, pizzas, cupcakes, forks];
 
     return (
       <div className={css.PlayedCards}>

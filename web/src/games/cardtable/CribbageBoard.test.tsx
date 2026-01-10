@@ -35,14 +35,14 @@ test('test a peg { f: 59, b:58} +1', () => {
   client.moves.pegPoints(29);
   client.moves.pegPoints(1);
   client.moves.pegPoints(1);
-  let { G, ctx } = store.getState();
+  const { G, ctx } = store.getState();
 
   const board = Enzyme.mount(<CribbageBoard score={G.score} playerID={ctx.currentPlayer} />);
   // should be ignored
-  let cribButton = board.find('button#anchor-button');
+  const cribButton = board.find('button#anchor-button');
   cribButton.simulate('click');
-  let front = board.find('Peghole[idx=60]').not('[opponent]').childAt(0);
-  let back = board.find('Peghole[idx=59]').not('[opponent]').childAt(0);
+  const front = board.find('Peghole[idx=60]').not('[opponent]').childAt(0);
+  const back = board.find('Peghole[idx=59]').not('[opponent]').childAt(0);
 
   expect(back.prop('className')).toEqual('Peghole_pegged');
   expect(front.prop('className')).toEqual('Peghole_pegged');

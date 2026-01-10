@@ -47,7 +47,7 @@ export function _setup(ctx: Ctx, randomPlayers: boolean, randomDeck: boolean): I
     playerIDToGameID = ctx.random.Shuffle(playerIDToGameID);
   }
   // chose dracula
-  let draculaID = playerIDToGameID[0];
+  const draculaID = playerIDToGameID[0];
   let vampireCount;
   if (ctx.numPlayers <= 2) {
     // This is never the case in a real game, just in '1v1 with bot' for debug
@@ -61,10 +61,10 @@ export function _setup(ctx: Ctx, randomPlayers: boolean, randomDeck: boolean): I
   } else {
     vampireCount = 4;
   }
-  let vampireIDs = [...(<number[]>playerIDToGameID.slice(0, vampireCount))];
-  let humanIDs = playerIDToGameID.slice(vampireCount, ctx.numPlayers);
+  const vampireIDs = [...(<number[]>playerIDToGameID.slice(0, vampireCount))];
+  const humanIDs = playerIDToGameID.slice(vampireCount, ctx.numPlayers);
 
-  let finalG = <IG>{
+  const finalG = <IG>{
     policyHand: <IPolicy[]>Array(0).fill(null),
     policyDraw: policyDeck,
     policyDiscard: <IPolicy[]>Array(0).fill(null),
@@ -113,7 +113,7 @@ export const SecretDraculaGame = {
   setup: setup,
 
   playerView: (G: IG, ctx: Ctx, playerID: string) => {
-    let playerIDInt = parseInt(playerID);
+    const playerIDInt = parseInt(playerID);
 
     if (isNaN(playerIDInt)) {
       // However, if this is not a multiplayer then this is NaN.
@@ -225,7 +225,7 @@ export const SecretDraculaGame = {
             G.policyDraw.push(...G.policyDiscard);
             G.policyDiscard = <IPolicy[]>Array(0);
           }
-          let topCard = G.policyDraw.pop();
+          const topCard = G.policyDraw.pop();
           G.policyBoardVampire.push(topCard);
 
           G.lastMayorID = -1; // any mayor priest combi allowed again.

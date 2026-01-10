@@ -42,7 +42,7 @@ export function Trick(props: {
   numPlayers: number;
 }) {
   const clockwise = props.pattern != Pattern.Tarot;
-  let inumPlayers = Math.max(0, props.numPlayers - 2);
+  const inumPlayers = Math.max(0, props.numPlayers - 2);
 
   function arrangeTrickCard(i: number, card: ICard) {
     const index = relativePos(props.leaderPos + i);

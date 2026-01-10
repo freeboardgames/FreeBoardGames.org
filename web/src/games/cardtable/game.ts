@@ -85,37 +85,37 @@ export interface ICardMove {
 }
 
 const mapForPlayer = (G: IG, ctx: Ctx, id: string) => {
-  let { hands, score } = G;
-  let near = id && id === '1' ? score.south : score.north;
-  let far = id && id === '1' ? score.north : score.south;
-  let top = id && id === '1' ? hands.north : hands.south;
-  let low = id && id === '1' ? hands.south : hands.north;
-  let myHands = { ...hands, low, top };
-  let myScore = { ...score, near, far };
-  let result: IG = { ...G, hands: myHands, score: myScore };
+  const { hands, score } = G;
+  const near = id && id === '1' ? score.south : score.north;
+  const far = id && id === '1' ? score.north : score.south;
+  const top = id && id === '1' ? hands.north : hands.south;
+  const low = id && id === '1' ? hands.south : hands.north;
+  const myHands = { ...hands, low, top };
+  const myScore = { ...score, near, far };
+  const result: IG = { ...G, hands: myHands, score: myScore };
   return result;
 };
 
 const maskForPlayer = (G: IG) => {
   let result: IG = null;
-  let { hands } = G;
+  const { hands } = G;
 
-  let { top, low } = hands;
-  let tempTop: ICard[] = top.held.map((e) => ({ ...e, faced: true }));
-  let tempLow: ICard[] = low.held.map((e) => ({ ...e, faced: false }));
+  const { top, low } = hands;
+  const tempTop: ICard[] = top.held.map((e) => ({ ...e, faced: true }));
+  const tempLow: ICard[] = low.held.map((e) => ({ ...e, faced: false }));
   result = { ...G, hands: { ...hands, low: { ...low, held: tempLow }, top: { ...top, held: tempTop } } };
 
   return result;
 };
 
 const playerView = (G: IG, ctx: Ctx, id: string) => {
-  let temp: IG = mapForPlayer(G, ctx, id);
+  const temp: IG = mapForPlayer(G, ctx, id);
   return maskForPlayer(temp);
 };
 
 const doesCutResolve = (G: IG, ctx: Ctx) => {
-  let myCard = ctx.playerID === '0' ? G.hands.north.played[0] : G.hands.south.played[0];
-  let theirCard = ctx.playerID === '0' ? G.hands.south.played[0] : G.hands.north.played[0];
+  const myCard = ctx.playerID === '0' ? G.hands.north.played[0] : G.hands.south.played[0];
+  const theirCard = ctx.playerID === '0' ? G.hands.south.played[0] : G.hands.north.played[0];
   let response = false;
   if (myCard && theirCard && myCard.rank % 13 !== theirCard.rank % 13) {
     response = true;
@@ -124,8 +124,8 @@ const doesCutResolve = (G: IG, ctx: Ctx) => {
 };
 
 const doesCutResolveSelf = (G: IG, ctx: Ctx) => {
-  let myCard = ctx.playerID === '0' ? G.hands.north.played[0] : G.hands.south.played[0];
-  let theirCard = ctx.playerID === '0' ? G.hands.south.played[0] : G.hands.north.played[0];
+  const myCard = ctx.playerID === '0' ? G.hands.north.played[0] : G.hands.south.played[0];
+  const theirCard = ctx.playerID === '0' ? G.hands.south.played[0] : G.hands.north.played[0];
   let response = false;
   if (myCard && theirCard) {
     response = myCard.rank % 13 < theirCard.rank % 13;
@@ -139,9 +139,9 @@ const doesCutResolveSelf = (G: IG, ctx: Ctx) => {
 const moveCards = (G: IG, ctx: Ctx, cm: ICardMove) => {
   if (cm.from && cm.to) {
     //this uses Immer mutability under the hood
-    let source: ICard[] = getNamedContainer(G, cm.from.container);
-    let target: ICard[] = getNamedContainer(G, cm.to.container);
-    let moving: ICard[] = source.splice(cm.from.ordinal, cm.from.cardcount ? cm.from.cardcount : 1);
+    const source: ICard[] = getNamedContainer(G, cm.from.container);
+    const target: ICard[] = getNamedContainer(G, cm.to.container);
+    const moving: ICard[] = source.splice(cm.from.ordinal, cm.from.cardcount ? cm.from.cardcount : 1);
     target.splice(cm.to.ordinal, 0, ...moving);
   } else return INVALID_MOVE;
 };
@@ -149,9 +149,9 @@ const moveCards = (G: IG, ctx: Ctx, cm: ICardMove) => {
 const cloneCardAt = (G: IG, ctx: Ctx, cm: ICardMove) => {
   if (cm.from && cm.to) {
     //this uses Immer mutability under the hood
-    let source: ICard[] = getNamedContainer(G, cm.from.container);
-    let target: ICard[] = getNamedContainer(G, cm.to.container);
-    let moving: ICard[] = source.slice(
+    const source: ICard[] = getNamedContainer(G, cm.from.container);
+    const target: ICard[] = getNamedContainer(G, cm.to.container);
+    const moving: ICard[] = source.slice(
       cm.from.ordinal,
       cm.from.cardcount ? cm.from.cardcount + cm.from.ordinal : 1 + cm.from.ordinal,
     );
@@ -163,10 +163,10 @@ const cutDeck = (G: IG, ctx: Ctx, depth: number) => {
   // by convention top card is at 0
   //depth can never be greater than G.deck.length
   //normalize to a value < G.deck.length
-  var ndepth = depth % G.deck.length;
+  const ndepth = depth % G.deck.length;
 
-  let top: ICard[] = ndepth > 0 ? G.deck.slice(0, ndepth) : G.deck.slice(0, G.deck.length + ndepth);
-  let bottom: ICard[] = ndepth > 0 ? G.deck.slice(ndepth, G.deck.length) : G.deck.slice(ndepth);
+  const top: ICard[] = ndepth > 0 ? G.deck.slice(0, ndepth) : G.deck.slice(0, G.deck.length + ndepth);
+  const bottom: ICard[] = ndepth > 0 ? G.deck.slice(ndepth, G.deck.length) : G.deck.slice(ndepth);
   top.unshift(...bottom);
   return { ...G, deck: top };
 };
@@ -185,15 +185,15 @@ const resetMatchPegs = (G: IG) => {
 
 const deal = (G: IG, ctx: Ctx) => {
   let fresh: ICard[] = dealCribbage.fresh.slice(0);
-  let { pattern } = dealCribbage;
+  const { pattern } = dealCribbage;
   //player 0 sits north, player 1 sits south
-  let dealer = ctx.playerID;
+  const dealer = ctx.playerID;
   fresh = ctx.random.Shuffle(fresh);
-  let draftNorth = [];
-  let draftSouth = [];
-  let holders = dealer === '1' ? [draftNorth, draftSouth] : [draftSouth, draftNorth];
-  for (var i = 0; i < pattern.hand; i++) {
-    for (var j = 0; j < pattern.players; j++) {
+  const draftNorth = [];
+  const draftSouth = [];
+  const holders = dealer === '1' ? [draftNorth, draftSouth] : [draftSouth, draftNorth];
+  for (let i = 0; i < pattern.hand; i++) {
+    for (let j = 0; j < pattern.players; j++) {
       holders[j % pattern.players].push(fresh.pop());
     }
   }
@@ -222,10 +222,10 @@ const deal = (G: IG, ctx: Ctx) => {
 };
 
 const putToCrib = (G: IG, ctx: Ctx, idx: number) => {
-  let who = ctx.playerID;
-  let playFrom: ILocation = findFromForPlayer(G, ctx, idx, who);
-  let playTo: ILocation = findCribForPlayer();
-  let cribMove = {
+  const who = ctx.playerID;
+  const playFrom: ILocation = findFromForPlayer(G, ctx, idx, who);
+  const playTo: ILocation = findCribForPlayer();
+  const cribMove = {
     from: playFrom,
     to: playTo,
   };
@@ -256,7 +256,7 @@ const assignIfCutBetter = (G: IG, ctx: Ctx) => {
       }
     }
   } else {
-    let { container } = findPlayedForPlayer(G, ctx, ctx.playerID);
+    const { container } = findPlayedForPlayer(G, ctx, ctx.playerID);
     G.bestCut = getNamedContainer(G, container)[0].rank % 13;
   }
 };
@@ -269,13 +269,13 @@ const cutForDeal = (G: IG, ctx: Ctx, idx: number) => {
     G.hands.south.played = [];
     G.bestCut = null;
   }
-  let who = ctx.playerID;
-  let cloneFrom: ILocation = {
+  const who = ctx.playerID;
+  const cloneFrom: ILocation = {
     container: 'deck',
     ordinal: idx,
   };
-  let playTo: ILocation = findPlayedForPlayer(G, ctx, who);
-  let cutClone = {
+  const playTo: ILocation = findPlayedForPlayer(G, ctx, who);
+  const cutClone = {
     from: cloneFrom,
     to: playTo,
   };
@@ -284,10 +284,10 @@ const cutForDeal = (G: IG, ctx: Ctx, idx: number) => {
 };
 
 const play = (G: IG, ctx: Ctx, idx: number) => {
-  let who = ctx.playerID;
-  let playFrom: ILocation = findFromForPlayer(G, ctx, idx, who);
-  let playTo: ILocation = findPlayedForPlayer(G, ctx, who);
-  let playMove = {
+  const who = ctx.playerID;
+  const playFrom: ILocation = findFromForPlayer(G, ctx, idx, who);
+  const playTo: ILocation = findPlayedForPlayer(G, ctx, who);
+  const playMove = {
     from: playFrom,
     to: playTo,
   };
@@ -308,7 +308,7 @@ const rotateTurnToDeal = (G: IG, ctx: Ctx) => {
   G.bestCut = null;
   G.cutTie = false;
 
-  let nextPlayer = ctx.currentPlayer === '0' ? '1' : '0';
+  const nextPlayer = ctx.currentPlayer === '0' ? '1' : '0';
   ctx.events.endTurn({ next: nextPlayer });
 };
 const cutShowTurn = (G: IG, ctx: Ctx, idx: number) => {
@@ -325,9 +325,9 @@ const pegPoints = (G: IG, ctx: Ctx, score: number) => {
   //pegs are as a back, and fwd peg
   //as score ensues, back2front+score,
   //is the general behavior
-  let playerScore: IScore = findPegLaneForPlayer(G, ctx);
+  const playerScore: IScore = findPegLaneForPlayer(G, ctx);
   let { front, back } = playerScore;
-  let temp = front;
+  const temp = front;
   front = front + score;
   back = temp;
   playerScore.front = front;
@@ -369,8 +369,8 @@ export const moves = {
 //   return G.hands.north.played[0].rank % 13 > G.hands.north.played[0].rank % 13;
 // }
 
-const getNamedContainer = (G: IG, name: String) => {
-  let path: string[] = name.split('.');
+const getNamedContainer = (G: IG, name: string) => {
+  const path: string[] = name.split('.');
   let container: ICard[] = null;
   if (path.length === 1) {
     container = G[path[0]];
@@ -383,28 +383,28 @@ const getNamedContainer = (G: IG, name: String) => {
   return container;
 };
 
-const findFromForPlayer = (G: IG, ctx: Ctx, idx: number, who: String) => {
-  let path = who === '0' ? 'hands.north.held' : 'hands.south.held';
-  let myCardsLocation: ILocation = { container: path, ordinal: idx };
+const findFromForPlayer = (G: IG, ctx: Ctx, idx: number, who: string) => {
+  const path = who === '0' ? 'hands.north.held' : 'hands.south.held';
+  const myCardsLocation: ILocation = { container: path, ordinal: idx };
   return myCardsLocation;
 };
 
 const findPegLaneForPlayer = (G: IG, ctx: Ctx) => {
-  let who: string = ctx.playerID;
-  let path = who === '0' ? 'north' : 'south';
-  let myPegLane: IScore = G.score[path];
+  const who: string = ctx.playerID;
+  const path = who === '0' ? 'north' : 'south';
+  const myPegLane: IScore = G.score[path];
   return myPegLane;
 };
 
-const findPlayedForPlayer = (G: IG, ctx: Ctx, who: String) => {
-  let path = who === '0' ? 'hands.north.played' : 'hands.south.played';
-  let myPlayedLocation: ILocation = { container: path, ordinal: 53 }; //any number larger than container size will append
+const findPlayedForPlayer = (G: IG, ctx: Ctx, who: string) => {
+  const path = who === '0' ? 'hands.north.played' : 'hands.south.played';
+  const myPlayedLocation: ILocation = { container: path, ordinal: 53 }; //any number larger than container size will append
   return myPlayedLocation;
 };
 
 const findCribForPlayer = () => {
-  let path = 'hands.east.private';
-  let myPlayedLocation: ILocation = { container: path, ordinal: 53 }; //any number larger than container size will append
+  const path = 'hands.east.private';
+  const myPlayedLocation: ILocation = { container: path, ordinal: 53 }; //any number larger than container size will append
   return myPlayedLocation;
 };
 

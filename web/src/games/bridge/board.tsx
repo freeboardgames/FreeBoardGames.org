@@ -289,7 +289,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
       selContr_i >= allowed_contracts.length ? null : () => setSelContr_i(selContr_i + 1),
     ]);
 
-    let red = Array(click.length).fill(false);
+    const red = Array(click.length).fill(false);
     red[0] = true;
 
     return <ButtonBar click={click} texts={texts} red={red} />;

@@ -105,7 +105,7 @@ export function Board(props: IBoardProps) {
 
   function _getPlayersInfo() {
     let p = (parseInt(props.playerID, 10) + 1) % props.ctx.numPlayers;
-    let players = [];
+    const players = [];
 
     for (let i = 0; i < props.ctx.numPlayers; i++) {
       const playerName = props.gameArgs.players.find((e) => e.playerID === p).name;

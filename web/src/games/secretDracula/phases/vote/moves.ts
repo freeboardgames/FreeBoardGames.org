@@ -41,7 +41,7 @@ export function moveVoteNo(G: IG, ctx: Ctx, me: number): IG | 'INVALID_MOVE' {
 }
 
 export function moveOKVote(G: IG, ctx: Ctx, me: number): IG {
-  let myId = parseInt(ctx.playerID);
+  const myId = parseInt(ctx.playerID);
 
   return {
     ...G,

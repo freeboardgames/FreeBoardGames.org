@@ -4,9 +4,9 @@ import { Local } from 'boardgame.io/multiplayer';
 import { ReversiGame, IG, placePiece } from './game';
 
 test('invalid moves', () => {
-  let points = new Array(64).fill(null);
+  const points = new Array(64).fill(null);
   points[0] = '0';
-  let G: IG = {
+  const G: IG = {
     points,
   };
 

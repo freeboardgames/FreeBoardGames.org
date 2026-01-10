@@ -43,7 +43,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
     if (!this._isFirstPerson()) {
       return false;
     }
-    var activePlayers = this.props.ctx.activePlayers !== null ? this.props.ctx.activePlayers : [];
+    const activePlayers = this.props.ctx.activePlayers !== null ? this.props.ctx.activePlayers : [];
     return (playerID === null ? parseInt(this._getPlayerID()) : playerID) in activePlayers;
   };
 
@@ -286,7 +286,7 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
   };
 
   _renderPhaseReleatedMessage = () => {
-    let message: any = { error: [], success: [] };
+    const message: any = { error: [], success: [] };
     const { translate } = this.props;
     const intPlayerID = parseInt(this._getPlayerID());
     const { mayorID, priestID } = this.props.G;

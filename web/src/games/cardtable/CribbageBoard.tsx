@@ -20,12 +20,12 @@ export function Peghole(props: PegholeProps) {
   let clazz = css.Peghole;
 
   const isPegged = (idx: number) => {
-    let front = props.score.front < 61 ? props.score.front : props.score.front % 60 === 0 ? 60 : props.score.front % 60;
-    let back = props.score.back < 61 ? props.score.back : props.score.back % 60 === 0 ? 60 : props.score.back % 60;
+    const front = props.score.front < 61 ? props.score.front : props.score.front % 60 === 0 ? 60 : props.score.front % 60;
+    const back = props.score.back < 61 ? props.score.back : props.score.back % 60 === 0 ? 60 : props.score.back % 60;
     return front === idx || back === idx;
   };
 
-  let pegged = isPegged(props.idx);
+  const pegged = isPegged(props.idx);
 
   if (pegged) {
     clazz = props.opponent ? css.Peghole_opegged : css.Peghole_pegged;
@@ -92,7 +92,7 @@ type HomestreetProps = {
 const Homestreet: FunctionComponent<HomestreetProps> = ({ start, className, score, opponent }: HomestreetProps) => {
   //alert(`Homestreet ${ JSON.stringify(score, null, 4) }`);
 
-  let homeHole =
+  const homeHole =
     start < 31 ? (
       <Peghole className={`${css.Peghole} ${css.tooltip} home`} opponent={opponent} idx={0} score={score} />
     ) : (
@@ -120,7 +120,7 @@ const CribbagePlayer: FunctionComponent<CribbagePlayerProps> = ({
   score,
   opponent,
 }: CribbagePlayerProps) => {
-  let clazz = invert ? css.CribbagePlayer_inverted : css.CribbagePlayer;
+  const clazz = invert ? css.CribbagePlayer_inverted : css.CribbagePlayer;
 
   return (
     <div className={clazz}>
@@ -208,14 +208,14 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
     </div>
   );
 
-  let opponentNear = playerID === '1' ? true : false;
-  let opponentFar = playerID === '1' ? false : true;
-  let playerNear = opponentNear ? (
+  const opponentNear = playerID === '1' ? true : false;
+  const opponentFar = playerID === '1' ? false : true;
+  const playerNear = opponentNear ? (
     <CribbagePlayer start={1} score={near} opponent={true} invert={true} />
   ) : (
     <CribbagePlayer start={1} score={near} invert={true} />
   );
-  let playerFar = opponentFar ? (
+  const playerFar = opponentFar ? (
     <CribbagePlayer start={1} score={far} opponent={true} />
   ) : (
     <CribbagePlayer start={1} score={far} />
@@ -249,7 +249,7 @@ const CribbageBoard: FunctionComponent<CribbageBoardProps> = ({
                   onChange={(event, values) => {
                     event.stopPropagation();
                     event.preventDefault();
-                    let value = typeof values === 'number' ? values : values[0];
+                    const value = typeof values === 'number' ? values : values[0];
                     setSelectedValue(value);
                   }}
                   aria-labelledby="form-dialog-title"

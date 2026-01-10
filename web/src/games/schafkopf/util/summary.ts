@@ -67,7 +67,7 @@ function countRunning(G: IG, takers: string[]) {
   const opponentCards = Array.prototype.concat(...opponentHands);
 
   let ranks = takerCards.map((C) => util.cardRank(G.contract, G.trumpSuit, C)).sort((a, b) => b - a);
-  let highest_trump = ranks[0];
+  const highest_trump = ranks[0];
   let sign = 1;
   if (highest_trump != all_trumps[0]) {
     sign = -1;

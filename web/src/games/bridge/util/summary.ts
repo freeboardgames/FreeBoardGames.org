@@ -83,7 +83,7 @@ function undertrickPenalty(G: IG, reTricks: number) {
     if (reVulnerable) {
       undertricks += 1;
     }
-    let penalty_per_trick = Array(13).fill(150);
+    const penalty_per_trick = Array(13).fill(150);
     penalty_per_trick[0] = 50;
     penalty_per_trick[1] = 100;
     penalty_per_trick[2] = 100;

@@ -51,7 +51,7 @@ const GameConfig: Game<IG> = {
     return {
       ...G,
       cards: cards.map((card: Card) => {
-        let c: Card = {
+        const c: Card = {
           word: card.word,
           revealed: card.revealed,
         };

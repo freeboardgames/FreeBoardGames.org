@@ -1,4 +1,4 @@
-import * as Types from '../../gqlTypes/globalTypes';
+import * as Types from '../../gqlTypes/generated';
 
 export type ChatMutatedSubscriptionVariables = Types.Exact<{
   channelType: Types.Scalars['String']['input'];

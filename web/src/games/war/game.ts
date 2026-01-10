@@ -27,14 +27,14 @@ export interface IG {
 let deck: Array<Card> = initDeck();
 const players: Array<Player> = Array(0);
 for (let i = 0; i < PLAYER_COUNT; i++) {
-  let player: Player = {
+  const player: Player = {
     id: i,
     hand: Array(0),
     drawPile: Array(0),
     discardPile: Array(0),
   };
   for (let j = 0; j < DRAW_PILE_SIZE; j++) {
-    let draw = drawCard(deck);
+    const draw = drawCard(deck);
     deck = draw.deck;
     player.drawPile.push(draw.card[0]);
   }
@@ -42,7 +42,7 @@ for (let i = 0; i < PLAYER_COUNT; i++) {
 }
 
 function initDeck() {
-  let deck = new Array(DECK_SIZE);
+  const deck = new Array(DECK_SIZE);
   let iterator = 0;
   suits.forEach((suit) => {
     ranks.forEach((rank, i) => {
@@ -83,9 +83,9 @@ const GameConfig = {
       onBegin: (G) => {
         G.players.forEach((player, i) => {
           if (player.drawPile.length === 0) {
-            let drawPileSize = player.discardPile.length;
+            const drawPileSize = player.discardPile.length;
             for (let j = 0; j < drawPileSize; j++) {
-              let draw = drawCard(G.players[i].discardPile);
+              const draw = drawCard(G.players[i].discardPile);
               G.players[i].discardPile = draw.deck;
               G.players[i].drawPile.push(draw.card[0]);
             }
@@ -100,7 +100,7 @@ const GameConfig = {
       moves: {
         battle: (G, ctx) => {
           if (G.players[0].hand[0].value !== G.players[1].hand[0].value) {
-            let winner = G.players.reduce(
+            const winner = G.players.reduce(
               (a, b) => {
                 if (a.hand.length === 0 || b.hand[0].value > a.hand[0].value) {
                   a = b;
@@ -135,12 +135,12 @@ const GameConfig = {
       if (id == ctx.currentPlayer) {
         if (G.war === true) {
           for (let i = 0; i <= 2; i++) {
-            let draw = drawCard(G.players[ctx.currentPlayer].drawPile);
+            const draw = drawCard(G.players[ctx.currentPlayer].drawPile);
             G.players[ctx.currentPlayer].drawPile = draw.deck;
             G.players[ctx.currentPlayer].hand.push(draw.card[0]);
           }
         }
-        let draw = drawCard(G.players[ctx.currentPlayer].drawPile);
+        const draw = drawCard(G.players[ctx.currentPlayer].drawPile);
         G.players[ctx.currentPlayer].drawPile = draw.deck;
         G.players[ctx.currentPlayer].hand.push(draw.card[0]);
 

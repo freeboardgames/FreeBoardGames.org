@@ -37,9 +37,9 @@ function valuetext(value?: number) {
   return `${value}`;
 }
 const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardContainerProps) => {
-  let tileData = props.cards;
-  let stage: stageEnum = props.collaborator.gameState.stage;
-  let name = props.name;
+  const tileData = props.cards;
+  const stage: stageEnum = props.collaborator.gameState.stage;
+  const name = props.name;
 
   const handleDeal = props.collaborator.handlers.handleDeal;
   const handleCrib = props.collaborator.handlers.handleCrib;
@@ -79,7 +79,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
   };
 
   const handleClick = (idx?: number, name?: string) => {
-    let allowed: boolean = isClickAllowed(name);
+    const allowed: boolean = isClickAllowed(name);
     if (stage && allowed) {
       switch (stage) {
         case 'cutForTurn': {
@@ -149,7 +149,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     }
   };
 
-  let tileList = tileData.map((tile, index) => (
+  const tileList = tileData.map((tile, index) => (
     <Card
       key={tile.id}
       click={() => handleClick(index, name)}
@@ -162,8 +162,8 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     tileList.length = 1;
   }
 
-  let dialogTitle = props.collaborator.gameState.cutTie ? `Tie! Recut at ${selectedValue}` : `Cut at ${selectedValue}`;
-  let closeText = props.collaborator.gameState.stage === 'cuttingForDeal' ? 'Cut for deal' : 'Cut for turn';
+  const dialogTitle = props.collaborator.gameState.cutTie ? `Tie! Recut at ${selectedValue}` : `Cut at ${selectedValue}`;
+  const closeText = props.collaborator.gameState.stage === 'cuttingForDeal' ? 'Cut for deal' : 'Cut for turn';
 
   return (
     <div className={css.cardcontainer}>
@@ -177,7 +177,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
             onChange={(event, values) => {
               event.stopPropagation();
               event.preventDefault();
-              let value = typeof values === 'number' ? values : values[0];
+              const value = typeof values === 'number' ? values : values[0];
               setSelectedValue(value);
             }}
             aria-labelledby="form-dialog-title"

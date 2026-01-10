@@ -13,7 +13,7 @@ import {
 
 import { canMakeNoMoves } from './helpers';
 
-export let phaseStart = {
+export const phaseStart = {
   start: true,
   onBegin: (G: IG, ctx: Ctx) => {
     G.log = ['onbegin phaseStart', ...G.log];
@@ -75,7 +75,7 @@ export let phaseStart = {
   },
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
-      let activePlayers = { value: {} };
+      const activePlayers = { value: {} };
       for (let i = 0; i < ctx.numPlayers; i++) {
         if (G.playerTurnId == i) {
           activePlayers.value[i] = { stage: 'phaseStart' };
@@ -103,7 +103,7 @@ export let phaseStart = {
   },
 };
 
-export let phaseAuction = {
+export const phaseAuction = {
   onBegin: (G: IG) => {
     if (G.moveToPhase == 'phaseAuction') {
       if (G.cards.length == 0) {
@@ -137,7 +137,7 @@ export let phaseAuction = {
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
       if (G.moveToPhase == 'phaseAuction') {
-        let activePlayers = { value: {} };
+        const activePlayers = { value: {} };
         for (let i = 0; i < ctx.numPlayers; i++) {
           if (G.playerTurnId == i) {
             activePlayers.value[i] = { stage: 'stageAuctionSell' };
@@ -147,7 +147,7 @@ export let phaseAuction = {
         }
         ctx.events.setActivePlayers(activePlayers);
       } else {
-        let activePlayers = { value: {} };
+        const activePlayers = { value: {} };
         for (let i = 0; i < ctx.numPlayers; i++) {
           if (G.playerTurnId == i) {
             activePlayers.value[i] = { stage: 'stageAuctionSell' };
@@ -199,7 +199,7 @@ export let phaseAuction = {
   },
 };
 
-export let phaseAuctionPay = {
+export const phaseAuctionPay = {
   onBegin: (G: IG, ctx: Ctx) => {
     if (true) {
       // coming from auction is only way
@@ -230,7 +230,7 @@ export let phaseAuctionPay = {
 
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
-      let activePlayers = { value: {} };
+      const activePlayers = { value: {} };
       for (let i = 0; i < ctx.numPlayers; i++) {
         if (G.auction.payingPlayerID == i) {
           activePlayers.value[i] = 'phaseAuctionPay';
@@ -258,7 +258,7 @@ export let phaseAuctionPay = {
   },
 };
 
-export let phaseTradeFirst = {
+export const phaseTradeFirst = {
   onBegin: (G: IG) => {
     G.log = ['onBegin phaseTradeFirst', ...G.log];
 
@@ -267,7 +267,7 @@ export let phaseTradeFirst = {
   },
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
-      let activePlayers = { value: {} };
+      const activePlayers = { value: {} };
       for (let i = 0; i < ctx.numPlayers; i++) {
         if (G.playerTurnId == i) {
           activePlayers.value[i] = { stage: 'phaseTradeFirst' };
@@ -296,7 +296,7 @@ export let phaseTradeFirst = {
   },
 };
 
-export let phaseTradeSecond = {
+export const phaseTradeSecond = {
   onBegin: (G: IG) => {
     G.log = ['onBegin phaseTradeSecond', ...G.log];
     return G;
@@ -304,7 +304,7 @@ export let phaseTradeSecond = {
 
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
-      let activePlayers = { value: {} };
+      const activePlayers = { value: {} };
       for (let i = 0; i < ctx.numPlayers; i++) {
         if (G.trade.counterPlayerId == i) {
           activePlayers.value[i] = { stage: 'phaseTradeSecond' };

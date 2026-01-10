@@ -171,7 +171,7 @@ it('p1 continues play after p2 is knocked out after repeatedly picking p1 skull'
   Utilities.getTypedMoves(p2).Reveal(p1.playerID);
   Utilities.getTypedMoves(p1).Discard(p2.playerID, 0); // p2 is knocked out
 
-  var { G, ctx } = Utilities.getTypedState(p1);
+  const { G, ctx } = Utilities.getTypedState(p1);
   expect(G.players[1].isOut).toEqual(true);
   expect(ctx.currentPlayer).toEqual(p1.playerID);
 
@@ -226,7 +226,7 @@ it('p3 continues play after p2 is knocked out after repeatedly picking p3 skull'
   Utilities.getTypedMoves(p2).Reveal(p3.playerID);
   Utilities.getTypedMoves(p3).Discard(p2.playerID, 0); // p2 is knocked out
 
-  var { G, ctx } = Utilities.getTypedState(p1);
+  const { G, ctx } = Utilities.getTypedState(p1);
   expect(G.players[1].isOut).toEqual(true);
   expect(ctx.currentPlayer).toEqual(p3.playerID);
 
@@ -277,7 +277,7 @@ it('p1 continues play after p3 knocks themself out by repeatedly revealing their
   Utilities.getTypedMoves(p3).Reveal(p3.playerID);
   Utilities.DiscardOwnBombCard(p3); // p3 is knocked out
 
-  var { G, ctx } = Utilities.getTypedState(p1);
+  const { G, ctx } = Utilities.getTypedState(p1);
   expect(G.players[2].isOut).toEqual(true);
   expect(ctx.currentPlayer).toEqual(p1.playerID);
 

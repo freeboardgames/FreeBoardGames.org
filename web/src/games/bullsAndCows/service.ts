@@ -68,13 +68,13 @@ export const checkSecret = (current: IColour[], secret: IColour[]): IAttempt => 
     return secretToCheck[index] == -1 ? -1 : value;
   });
 
-  var cowCount = 0;
+  let cowCount = 0;
   for (let i = currentToCompare.length; i >= 0; i--) {
     if (currentToCompare[i] == -1) {
       // this color has already been used.
       continue;
     }
-    let indexInSecret = secretToCheck.indexOf(currentToCompare[i]);
+    const indexInSecret = secretToCheck.indexOf(currentToCompare[i]);
     if (indexInSecret >= 0) {
       cowCount += 1;
       secretToCheck[indexInSecret] = -1; // This value has already been account for as a Cow

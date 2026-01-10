@@ -98,11 +98,11 @@ export const BridgeGame: Game<IG> = {
           G.players[util.mod(dealerPos + 1, ctx.numPlayers)].isDealer = true;
           return;
         }
-        let declarer = util.getPlayerById(G, G.declarerId);
+        const declarer = util.getPlayerById(G, G.declarerId);
         declarer.isDeclarer = true;
-        let partner = util.getPlayerById(G, G.partnerId);
+        const partner = util.getPlayerById(G, G.partnerId);
         partner.isDeclarer = true;
-        let leader = G.players[util.mod(+G.partnerId - 1, ctx.numPlayers)];
+        const leader = G.players[util.mod(+G.partnerId - 1, ctx.numPlayers)];
         G.trick.leaderId = leader.id;
         const cmpCards = util.get_cmpCards(G.contract.trumps);
         G.players.forEach((P) => {
@@ -121,7 +121,7 @@ export const BridgeGame: Game<IG> = {
         stages: { select_dummy_card: { moves: { SelectDummyCards: Moves.SelectDummyCards } } },
         onBegin: (G, ctx) => {
           if (G.partnerId == ctx.playOrderPos.toString()) {
-            let activePlayers = {
+            const activePlayers = {
               value: {},
               minMoves: 1,
               maxMoves: 1,
@@ -189,7 +189,7 @@ export function resolveTrick(G: IG): boolean {
 
 export function getTrickWinnerId(trumpSuit: Suit, T: ITrick): string {
   const leaderId = +T.leaderId;
-  let is_trump = T.cards.map((C) => C.suit == trumpSuit);
+  const is_trump = T.cards.map((C) => C.suit == trumpSuit);
   let ranks = T.cards.map((C) => util.cardRank(trumpSuit, C));
   if (is_trump.some((v) => v)) {
     ranks = ranks.map((R, i) => (is_trump[i] ? R : -1));
@@ -202,7 +202,7 @@ export function getTrickWinnerId(trumpSuit: Suit, T: ITrick): string {
 
 export function getSortedDeck(): ICard[] {
   let deck: ICard[] = [];
-  for (let suit of ['Hearts', 'Diamonds', 'Spades', 'Clubs']) {
+  for (const suit of ['Hearts', 'Diamonds', 'Spades', 'Clubs']) {
     deck = deck.concat(
       Array(13)
         .fill(0)

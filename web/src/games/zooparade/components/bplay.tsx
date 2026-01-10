@@ -8,7 +8,7 @@ interface InnerWrapper {
   myTurn: boolean;
 }
 
-let buttonStyle = {
+const buttonStyle = {
   background: 'none',
   border: '0',
   padding: '0',
@@ -16,7 +16,7 @@ let buttonStyle = {
   width: '50%',
 };
 
-let imageStyle = {
+const imageStyle = {
   height: '100%',
   width: '100%',
 };

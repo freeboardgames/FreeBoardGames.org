@@ -29,7 +29,7 @@ export function cardRank(contract: Contract, trumpSuit: Suit, card: ICard): numb
   if (contract != Contract.Wenz && card.suit == trumpSuit) {
     suit_rank = 5;
   }
-  let val_order: number[] = contract == Contract.Wenz ? [7, 8, 9, 12, 13, 10, 14] : [7, 8, 9, 13, 10, 14];
+  const val_order: number[] = contract == Contract.Wenz ? [7, 8, 9, 12, 13, 10, 14] : [7, 8, 9, 13, 10, 14];
   return 100 * suit_rank + val_order.indexOf(card.value);
 }
 

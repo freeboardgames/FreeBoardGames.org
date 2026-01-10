@@ -20,7 +20,7 @@ export function setupRound(g: IG, ctx: Ctx) {
     dessertsPlayed += g.players[i].dessertsCount;
   }
 
-  let unshuffledDeck = defaultDeck;
+  const unshuffledDeck = defaultDeck;
   for (let i = 0; i < dessertsPlayed; i++) {
     unshuffledDeck.splice(
       unshuffledDeck.findIndex((e) => getCardTypeFromNumber(e) === cardEnum.cake),
@@ -28,7 +28,7 @@ export function setupRound(g: IG, ctx: Ctx) {
     );
   }
 
-  let deck = ctx.random.Shuffle(unshuffledDeck);
+  const deck = ctx.random.Shuffle(unshuffledDeck);
 
   g.hands = new Array(ctx.numPlayers).fill(0).map((_, i) => ({
     currentOwner: i.toString(),

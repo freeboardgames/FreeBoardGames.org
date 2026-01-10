@@ -272,7 +272,7 @@ export function getTrickWinnerId(contract: Contract, trumpSuit: Suit, T: ITrick)
 
 export function getSortedDeck(numPlayers: number): ICard[] {
   let deck: ICard[] = [];
-  for (let suit of ['Schell', 'Herz', 'Gras', 'Eichel']) {
+  for (const suit of ['Schell', 'Herz', 'Gras', 'Eichel']) {
     deck = deck.concat(
       Array(numPlayers == 3 ? 6 : 8)
         .fill(0)

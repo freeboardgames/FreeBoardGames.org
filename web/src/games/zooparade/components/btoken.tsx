@@ -11,8 +11,8 @@ interface InnerWrapper {
 
 export class BToken extends React.Component<InnerWrapper, {}> {
   render() {
-    var imagetreat = require('./media/treat.png');
-    var imagecountdown: any;
+    const imagetreat = require('./media/treat.png');
+    let imagecountdown: any;
 
     if (this.props.countdown === 3) {
       imagecountdown = countdown3;

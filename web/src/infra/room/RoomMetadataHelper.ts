@@ -1,17 +1,17 @@
-import { JoinRoom_joinRoom, JoinRoom_joinRoom_userMemberships } from 'gqlTypes/JoinRoom';
+import { JoinRoomMutation } from 'gqlTypes/generated';
 
-export function getCreator(metadata: JoinRoom_joinRoom) {
+export function getCreator(metadata: JoinRoomMutation['joinRoom']) {
   return metadata.userMemberships.find((membership) => membership.isCreator);
 }
 
-export function isCreator(metadata: JoinRoom_joinRoom, userId: number) {
+export function isCreator(metadata: JoinRoomMutation['joinRoom'], userId: number) {
   return getCreator(metadata).user.id === userId;
 }
 
-export function getPlayerIds(memberships: JoinRoom_joinRoom_userMemberships[]) {
+export function getPlayerIds(memberships: JoinRoomMutation['joinRoom']['userMemberships']) {
   return memberships.flatMap((m) => m.user.id);
 }
 
-export function getPlayerNicknames(memberships: JoinRoom_joinRoom_userMemberships[]) {
+export function getPlayerNicknames(memberships: JoinRoomMutation['joinRoom']['userMemberships']) {
   return memberships.flatMap((m) => m.user.nickname);
 }

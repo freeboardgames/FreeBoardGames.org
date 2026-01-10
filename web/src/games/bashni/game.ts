@@ -52,7 +52,7 @@ export const INITIAL_BOARD: string = '1p1p1p1pp1p1p1p11p1p1p1p88P1P1P1P11P1P1P1P
 // Inspired by chess FEN notation
 export function convertStringToBoard(str: string): IPieceStack[] {
   let index = 0;
-  let board: IPieceStack[] = [];
+  const board: IPieceStack[] = [];
   let position = 0;
   for (let i = 0; i < str.length; i++) {
     if (isNaN(parseInt(str[i], 10))) {
@@ -230,7 +230,7 @@ export function move(G: IG, ctx: Ctx, from: ICoord, to: ICoord): IG | string {
 
   G.moveCount = irreversible ? 0 : G.moveCount + 1;
 
-  let newStack = {
+  const newStack = {
     ...stack,
     pos: indexTo,
   };

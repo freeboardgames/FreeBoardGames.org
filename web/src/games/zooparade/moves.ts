@@ -11,13 +11,13 @@ export function movePlay(G: IG, ctx: Ctx, IDInHand: number): IG | 'INVALID_MOVE'
     return INVALID_MOVE;
   }
 
-  let currentPl: number = parseInt(ctx.currentPlayer);
+  const currentPl: number = parseInt(ctx.currentPlayer);
 
   // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
   // However, the game automatically ends, once all players couldn't pick up a card, thus
   // you always have max_cards in hand, and can never play a 'null'.
-  let card = G.hands[currentPl].cards[IDInHand];
-  let moveLog: Log = {
+  const card = G.hands[currentPl].cards[IDInHand];
+  const moveLog: Log = {
     player: ctx.currentPlayer,
     move: Moves.movePlay,
     cardColor: card.color,
@@ -106,13 +106,13 @@ export function moveDiscard(G: IG, ctx: Ctx, IDInHand: number): IG | 'INVALID_MO
     return INVALID_MOVE;
   }
 
-  let currentPl: number = parseInt(ctx.currentPlayer);
+  const currentPl: number = parseInt(ctx.currentPlayer);
 
   // NOTE! This does not exclude the possiblity of playing a 'null' card, once all cards have been picked up.
   // However, the game automatically ends, once all players couldn't pick up a card, thus
   // you always have max_cards in hand, and can never play a 'null'.
-  let card = G.hands[currentPl].cards[IDInHand];
-  let moveLog: Log = {
+  const card = G.hands[currentPl].cards[IDInHand];
+  const moveLog: Log = {
     player: ctx.currentPlayer,
     move: Moves.moveDiscard,
     cardColor: card.color,
@@ -157,7 +157,7 @@ export function moveDiscard(G: IG, ctx: Ctx, IDInHand: number): IG | 'INVALID_MO
 }
 
 export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: number): IG | 'INVALID_MOVE' {
-  let currentPl: number = parseInt(ctx.currentPlayer);
+  const currentPl: number = parseInt(ctx.currentPlayer);
   if (isNaN(IDPlayer)) {
     return INVALID_MOVE;
   } else if (IDPlayer < 0 || IDPlayer >= ctx.numPlayers) {
@@ -175,7 +175,7 @@ export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: nu
     return INVALID_MOVE;
   }
 
-  let moveLog: Log = {
+  const moveLog: Log = {
     player: ctx.currentPlayer,
     move: Moves.moveHintValue,
     hintReceiver: IDPlayer,
@@ -204,7 +204,7 @@ export function moveHintValue(G: IG, ctx: Ctx, IDPlayer: number, IDHintValue: nu
 }
 
 export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: number): IG | 'INVALID_MOVE' {
-  let currentPl: number = parseInt(ctx.currentPlayer);
+  const currentPl: number = parseInt(ctx.currentPlayer);
   if (isNaN(IDPlayer)) {
     return INVALID_MOVE;
   } else if (IDPlayer < 0 || IDPlayer >= ctx.numPlayers) {
@@ -222,7 +222,7 @@ export function moveHintColor(G: IG, ctx: Ctx, IDPlayer: number, IDHintColor: nu
     return INVALID_MOVE;
   }
 
-  let moveLog: Log = {
+  const moveLog: Log = {
     player: ctx.currentPlayer,
     move: Moves.moveHintColor,
     hintReceiver: IDPlayer,
@@ -257,7 +257,7 @@ function hintify(real: number, hinted: number, hints: IHintMask[]): IHintMask[] 
       return index === hinted ? IHintMask.YES : IHintMask.NO;
     });
   } else {
-    let result = [...hints];
+    const result = [...hints];
     result[hinted] = IHintMask.NO;
     if (result.reduce((sum, current) => sum + current) === 1 - result.length) {
       return result.map((trueness: number) => {

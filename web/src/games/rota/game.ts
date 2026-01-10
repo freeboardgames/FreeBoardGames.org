@@ -147,7 +147,7 @@ const GameConfig: Game = {
      * |  -1,-1---0,-1-- 1,-1 |
      */
 
-    let points: Point[] = [];
+    const points: Point[] = [];
     for (let x = -1; x < 2; x++) {
       for (let y = -1; y < 2; y++) {
         points.push({ x, y, playerID: null, pieceID: null });

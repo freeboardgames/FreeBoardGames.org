@@ -19,7 +19,7 @@ export const withNotificationsUiProvider = (Component) => {
   return WrappedComponent;
 };
 
-export const NotificationsUiProvider: FC = ({ children }) => {
+export const NotificationsUiProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [muted, toggleMuted] = useToggleState(false);
 
   useEffect(() => {

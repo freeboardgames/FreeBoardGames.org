@@ -12,16 +12,16 @@ export function getTypedState(player: _ClientImpl<any>): { G: IG; ctx: Ctx } {
 }
 
 export function getBombHandIndex(player: _ClientImpl<any>): number {
-  var { G } = getTypedState(player);
+  const { G } = getTypedState(player);
 
-  var gamePlayer = getPlayerById(G, player.playerID);
+  const gamePlayer = getPlayerById(G, player.playerID);
   return gamePlayer.hand.findIndex((c) => c == CardType.Bomb);
 }
 
 export function getBunnyHandIndex(player: _ClientImpl<any>): number {
-  var { G } = getTypedState(player);
+  const { G } = getTypedState(player);
 
-  var gamePlayer = getPlayerById(G, player.playerID);
+  const gamePlayer = getPlayerById(G, player.playerID);
   return gamePlayer.hand.findIndex((c) => c == CardType.Bunny);
 }
 

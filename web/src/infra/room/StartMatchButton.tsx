@@ -1,4 +1,4 @@
-import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
+import { JoinRoomMutation } from 'gqlTypes/generated';
 import React from 'react';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import Button from '@mui/material/Button';
@@ -10,7 +10,7 @@ import { compose } from 'recompose';
 export interface IStartMatchButtonInnerProps extends WithTranslation {}
 
 export interface IStartMatchButtonOutterProps {
-  roomMetadata?: JoinRoom_joinRoom;
+  roomMetadata?: JoinRoomMutation['joinRoom'];
   userId: number;
   startMatch: (boolean) => () => void;
 }

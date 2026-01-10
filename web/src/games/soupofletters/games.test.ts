@@ -3,7 +3,7 @@ import { DRAW_AFTER_N_TIMERS } from './constants';
 import { SoupOfLettersGame } from './game';
 
 let client;
-let numPlayers: number = 2;
+const numPlayers: number = 2;
 
 describe('SoupOfLetter Rules', () => {
   beforeEach(() => {

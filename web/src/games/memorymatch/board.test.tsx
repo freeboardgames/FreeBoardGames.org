@@ -77,8 +77,8 @@ describe('MemoryMatch UI', () => {
 
   it('should declare Player 2 as the winner', () => {
     const cardNames = new Set(state0.G.cards.map((c) => c.name));
-    let names = [...cardNames];
-    let lastName = names.pop();
+    const names = [...cardNames];
+    const lastName = names.pop();
     names.forEach((cName) => {
       const namedCards = state0.G.cards.filter((c) => c.name === cName);
       wrapper.find(`[data-testid="mm-card-group-${namedCards[0].id}"]`).at(0).simulate('click');

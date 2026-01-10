@@ -1,7 +1,7 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { IGameDef } from 'gamesShared/definitions/game';
 import PersonIcon from '@mui/icons-material/Person';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { withTranslation, WithTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
@@ -11,7 +11,7 @@ interface OccupancySelectInnerProps extends WithTranslation {}
 interface OccupancySelectOutterProps {
   game: IGameDef;
   value: number;
-  onChange: (e: ChangeEvent<{ value: number }>) => void;
+  onChange: (e: SelectChangeEvent<number>) => void;
   className?: string;
   selectClassName?: string;
 }

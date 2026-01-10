@@ -6,18 +6,30 @@ import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
 import { ApolloClient, ApolloError, InMemoryCache, createHttpLink, gql } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { NewUser, NewUserVariables } from 'gqlTypes/NewUser';
-import { NewRoom, NewRoomVariables } from 'gqlTypes/NewRoom';
-import { SendMessage, SendMessageVariables } from 'gqlTypes/SendMessage';
-import { GetMatch, GetMatchVariables } from 'gqlTypes/GetMatch';
-import { GetLobby } from 'gqlTypes/GetLobby';
-import { StartMatch, StartMatchVariables } from 'gqlTypes/StartMatch';
-import { NextRoom, NextRoomVariables } from 'gqlTypes/NextRoom';
-import { JoinRoom, JoinRoomVariables } from 'gqlTypes/JoinRoom';
-import { RemoveUserFromRoom, RemoveUserFromRoomVariables } from 'gqlTypes/RemoveUserFromRoom';
-import { MoveUserUp, MoveUserUpVariables } from 'gqlTypes/MoveUserUp';
-import { ShuffleUsers, ShuffleUsersVariables } from 'gqlTypes/ShuffleUsers';
-import { UpdateRoomInput } from 'gqlTypes/globalTypes';
+import {
+  NewUserMutation,
+  NewUserMutationVariables,
+  NewRoomMutation,
+  NewRoomMutationVariables,
+  SendMessageMutation,
+  SendMessageMutationVariables,
+  GetMatchQuery,
+  GetMatchQueryVariables,
+  GetLobbyQuery,
+  StartMatchMutation,
+  StartMatchMutationVariables,
+  NextRoomMutation,
+  NextRoomMutationVariables,
+  JoinRoomMutation,
+  JoinRoomMutationVariables,
+  RemoveUserFromRoomMutation,
+  RemoveUserFromRoomMutationVariables,
+  MoveUserUpMutation,
+  MoveUserUpMutationVariables,
+  ShuffleUsersMutation,
+  ShuffleUsersMutationVariables,
+  UpdateRoomInput,
+} from 'gqlTypes/generated';
 import { isUnauthorizedApolloError } from './isUnauthorized';
 
 const FBG_NICKNAME_KEY = 'fbgNickname2';
@@ -40,7 +52,7 @@ export class LobbyService {
   /** sends user's nickname to backend.  backend returns the jwt token.  */
   public static async newUser(nickname: string): Promise<string> {
     const client = this.getClient();
-    const result = await client.mutate<NewUser, NewUserVariables>({
+    const result = await client.mutate<NewUserMutation, NewUserMutationVariables>({
       mutation: gql`
         mutation NewUser($user: NewUserInput!) {
           newUser(user: $user) {
@@ -66,10 +78,10 @@ export class LobbyService {
     localStorage.setItem(FBG_USER_TOKEN_KEY, jwtToken);
   }
 
-  public static async getMatch(dispatch: Dispatch<SyncUserAction>, matchId: string): Promise<GetMatch> {
+  public static async getMatch(dispatch: Dispatch<SyncUserAction>, matchId: string): Promise<GetMatchQuery> {
     const client = this.getClient();
     const result = await client
-      .query<GetMatch, GetMatchVariables>({
+      .query<GetMatchQuery, GetMatchQueryVariables>({
         query: gql`
           query GetMatch($matchId: String!) {
             match(id: $matchId) {
@@ -102,7 +114,7 @@ export class LobbyService {
     const client = this.getClient();
     const setupData = rawSetupData ? JSON.stringify(rawSetupData) : '';
     const result = await client
-      .mutate<StartMatch, StartMatchVariables>({
+      .mutate<StartMatchMutation, StartMatchMutationVariables>({
         mutation: gql`
           mutation StartMatch($roomId: String!, $shuffleUsers: Boolean!, $setupData: String!) {
             startMatch(roomId: $roomId, shuffleUsers: $shuffleUsers, setupData: $setupData)
@@ -119,10 +131,10 @@ export class LobbyService {
     gameCode: string,
     capacity: number,
     isPublic: boolean = false,
-  ): Promise<NewRoom> {
+  ): Promise<NewRoomMutation> {
     const client = this.getClient();
     const result = await client
-      .mutate<NewRoom, NewRoomVariables>({
+      .mutate<NewRoomMutation, NewRoomMutationVariables>({
         mutation: gql`
           mutation NewRoom($room: NewRoomInput!) {
             newRoom(room: $room) {
@@ -168,10 +180,10 @@ export class LobbyService {
       .catch(this.catchUnauthorizedGql(dispatch));
   }
 
-  public static async joinRoom(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<JoinRoom> {
+  public static async joinRoom(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<JoinRoomMutation> {
     const client = this.getClient();
     const result = await client
-      .mutate<JoinRoom, JoinRoomVariables>({
+      .mutate<JoinRoomMutation, JoinRoomMutationVariables>({
         mutation: gql`
           mutation JoinRoom($roomId: String!) {
             joinRoom(roomId: $roomId) {
@@ -218,7 +230,7 @@ export class LobbyService {
   ): Promise<void> {
     const client = this.getClient();
     await client
-      .mutate<RemoveUserFromRoom, RemoveUserFromRoomVariables>({
+      .mutate<RemoveUserFromRoomMutation, RemoveUserFromRoomMutationVariables>({
         mutation: gql`
           mutation RemoveUserFromRoom($roomId: String!, $userIdToBeRemoved: Int!) {
             removeFromRoom(userIdToBeRemoved: $userIdToBeRemoved, roomId: $roomId)
@@ -236,7 +248,7 @@ export class LobbyService {
   ): Promise<void> {
     const client = this.getClient();
     await client
-      .mutate<MoveUserUp, MoveUserUpVariables>({
+      .mutate<MoveUserUpMutation, MoveUserUpMutationVariables>({
         mutation: gql`
           mutation MoveUserUp($roomId: String!, $userIdToBeMovedUp: Int!) {
             moveUserUp(userIdToBeMovedUp: $userIdToBeMovedUp, roomId: $roomId)
@@ -250,7 +262,7 @@ export class LobbyService {
   public static async shuffleUsers(dispatch: Dispatch<SyncUserAction>, roomId: string): Promise<void> {
     const client = this.getClient();
     await client
-      .mutate<ShuffleUsers, ShuffleUsersVariables>({
+      .mutate<ShuffleUsersMutation, ShuffleUsersMutationVariables>({
         mutation: gql`
           mutation ShuffleUsers($roomId: String!) {
             shuffleUsers(roomId: $roomId)
@@ -264,7 +276,7 @@ export class LobbyService {
   // TODO dispatch/catchUnauthorized
   public static async getPlayAgainNextRoom(matchId: string): Promise<string> {
     const client = this.getClient();
-    const result = await client.mutate<NextRoom, NextRoomVariables>({
+    const result = await client.mutate<NextRoomMutation, NextRoomMutationVariables>({
       mutation: gql`
         mutation NextRoom($matchId: String!) {
           nextRoom(matchId: $matchId)
@@ -275,9 +287,9 @@ export class LobbyService {
     return result.data.nextRoom;
   }
 
-  public static async getLobby() {
+  public static async getLobby(): Promise<GetLobbyQuery> {
     const client = this.getClient();
-    const result = await client.query<GetLobby, {}>({
+    const result = await client.query<GetLobbyQuery, Record<string, never>>({
       query: gql`
         query GetLobby {
           lobby {
@@ -302,10 +314,10 @@ export class LobbyService {
     channelType: 'room' | 'match',
     channelId: string,
     message: string,
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     const client = this.getClient();
     const result = await client
-      .mutate<SendMessage, SendMessageVariables>({
+      .mutate<SendMessageMutation, SendMessageMutationVariables>({
         mutation: gql`
           mutation SendMessage($channelType: String!, $channelId: String!, $message: String!) {
             sendMessage(message: { channelType: $channelType, channelId: $channelId, message: $message })

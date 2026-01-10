@@ -5,7 +5,7 @@ import { Local } from 'boardgame.io/multiplayer';
 import { DEFAULT_FULL_CUSTOMIZATION } from './customization';
 
 test('invalid moves', () => {
-  let G: IG = {
+  const G: IG = {
     board: convertStringToBoard(INITIAL_BOARD[0]),
     jumping: null,
     moveCount: 0,
@@ -18,7 +18,7 @@ test('invalid moves', () => {
 });
 
 test('move validity with flying kings off/on', () => {
-  let G: IG = {
+  const G: IG = {
     board: convertStringToBoard('82p584K38888'),
     jumping: null,
     moveCount: 0,
@@ -34,7 +34,7 @@ test('move validity with flying kings off/on', () => {
 });
 
 test('forced capture on/off', () => {
-  let G: IG = {
+  const G: IG = {
     board: convertStringToBoard('8884p33P4888'),
     jumping: null,
     moveCount: 0,

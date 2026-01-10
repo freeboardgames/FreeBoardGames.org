@@ -138,7 +138,7 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
 
   function renderStock() {
     const isRoundEnd = ctx.phase == Phases.round_end;
-    let stock = isRoundEnd ? G.deck.slice(-12) : G.stock;
+    const stock = isRoundEnd ? G.deck.slice(-12) : G.stock;
     if (!stock || stock.length === 0) return;
     return (
       <div className={[css.stock, isRoundEnd ? css.roundEnd : ''].join(' ')}>
@@ -177,8 +177,8 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
 
   function renderButtonsTurn() {
     if (playerPhase != Phases.placement || G.trick.cards.length != 0) return;
-    let texts: (JSX.Element | string)[] = G.resolvedTricks.length > 0 ? [translate('button_out')] : [];
-    let click = G.resolvedTricks.length > 0 ? [() => moves.GoOut()] : [];
+    const texts: (JSX.Element | string)[] = G.resolvedTricks.length > 0 ? [translate('button_out')] : [];
+    const click = G.resolvedTricks.length > 0 ? [() => moves.GoOut()] : [];
     if (!G.closed) {
       if (player.hand.length < 6) {
         texts.push(translate('button_draw'));

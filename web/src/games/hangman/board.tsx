@@ -81,17 +81,17 @@ export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProp
     const cells = [];
 
     // max 2 lines are allowed, each with BREAK_LEN characters
-    for (var y = 0; y < 2; y++) {
+    for (let y = 0; y < 2; y++) {
       // decide the offset based on number of letters in current line
-      let charsOnLine = opponent.secretLength - y * BREAK_LEN;
-      let xOffset = 5 - (charsOnLine < BREAK_LEN ? charsOnLine : BREAK_LEN) / 2;
-      let numOfLines = Math.ceil(opponent.secretLength / BREAK_LEN);
-      let yOffset = 1.5 + (1 + y) * 0.3 + (numOfLines === 1 ? 1.5 : 0);
+      const charsOnLine = opponent.secretLength - y * BREAK_LEN;
+      const xOffset = 5 - (charsOnLine < BREAK_LEN ? charsOnLine : BREAK_LEN) / 2;
+      const numOfLines = Math.ceil(opponent.secretLength / BREAK_LEN);
+      const yOffset = 1.5 + (1 + y) * 0.3 + (numOfLines === 1 ? 1.5 : 0);
 
-      for (var x = 0; x < BREAK_LEN; x++) {
+      for (let x = 0; x < BREAK_LEN; x++) {
         const idx = y * BREAK_LEN + x;
         if (idx >= opponent.secretLength) break;
-        var letter = getMaskedWord(player.guesses, this._opponentState().secretLength)[idx];
+        const letter = getMaskedWord(player.guesses, this._opponentState().secretLength)[idx];
         cells.push(
           <g key={'word_group' + idx}>
             <text
@@ -135,7 +135,7 @@ export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProp
 
   _getAlphabets() {
     const cells = [];
-    for (var i = 0; i < ALPHABET.length; i++) {
+    for (let i = 0; i < ALPHABET.length; i++) {
       const letter = ALPHABET[i];
       let backgroundColor = null;
       let textColor: any = grey[100];
@@ -150,9 +150,9 @@ export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProp
         backgroundColor = '#ff1744';
         textColor = grey[100];
       }
-      let lineNo = Math.floor(i / 9);
+      const lineNo = Math.floor(i / 9);
       let x = (i - 9 * lineNo) * 1.1 + 0.1;
-      let y = 5 + lineNo * 1.2;
+      const y = 5 + lineNo * 1.2;
       if (i >= 18) {
         x = (i - 18) * 1.1 + 0.6;
       }

@@ -13,7 +13,7 @@ export const notify = async (title: string, options?: Options) => {
 
 function buildNotification(permission: string, title: string, options?: NotificationOptions) {
   if (permission === 'granted') {
-    var notification = new Notification(title, options);
+    const notification = new Notification(title, options);
     return notification;
   }
 }

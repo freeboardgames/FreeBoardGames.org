@@ -32,12 +32,12 @@ export function dualPlayerID(id: P_ID) {
 }
 export const aiConfig = {
   enumerate: (G: GameState, ctx: Ctx) => {
-    let evts = [{ event: 'endTurn', args: [] }];
+    const evts = [{ event: 'endTurn', args: [] }];
     const CIdLst = Array.from(Array(BoardSize.mx * BoardSize.my).keys());
-    let atks = CIdLst.filter((id) => canAttack(G, ctx, id)[0]).map((id) => {
+    const atks = CIdLst.filter((id) => canAttack(G, ctx, id)[0]).map((id) => {
       return { move: 'attack', args: [id] };
     });
-    let moves = CIdLst.filter((stCId) => canPick(G, ctx, stCId)).flatMap((stCId) => {
+    const moves = CIdLst.filter((stCId) => canPick(G, ctx, stCId)).flatMap((stCId) => {
       //simply predict supply line after move
       const cPlayer = ctx.currentPlayer as P_ID;
       const newG: GameState = { ...G, cells: G.cells.map((obj, CId) => (CId === stCId ? null : obj)) };
@@ -191,7 +191,7 @@ export const Kriegspiel: Game<GameState> = {
 //date like "💂‍♂️.0/🎪.0|8|"
 
 function board2FEN<T>(board: (T | null)[], encode: (t: T, id: CellID) => string): string {
-  let result: string[] = [];
+  const result: string[] = [];
   let emptyCells = 0;
   board.forEach((obj, id) => {
     if (obj === null) {
@@ -207,8 +207,8 @@ function board2FEN<T>(board: (T | null)[], encode: (t: T, id: CellID) => string)
   return '|' + result.join('|') + '|';
 }
 function FEN2board<T>(fen: string, decode: (str: string) => T | null): (T | null)[] {
-  let data: string[] = fen.split('|');
-  let result = Array(BoardSize.mx * BoardSize.my).fill(null);
+  const data: string[] = fen.split('|');
+  const result = Array(BoardSize.mx * BoardSize.my).fill(null);
   let pointer = 0;
   data.forEach((str) => {
     if (isNaN(Number(str))) {
@@ -259,7 +259,7 @@ function loadPlaces(fen: string) {
 export function loadGame(fen: string, ctx: Ctx): GameState {
   const deCells = loadPieces(fen);
   const dePlaces = loadPlaces(fen);
-  let myGame: GameState = {
+  const myGame: GameState = {
     cells: deCells,
     places: dePlaces,
     inSupply: {
@@ -501,7 +501,7 @@ export function canPick(G: GameState, ctx: Ctx, CId: CellID) {
   else if (retreatSt !== null) {
     return CId === retreatSt;
   } else {
-    let obj = G.cells[CId];
+    const obj = G.cells[CId];
     //obj belongs to player, and must be supplied, except relays
     return obj !== null && obj.belong === cPlayer && (obj.supplied || obj.objType === 'Relay');
   }
@@ -562,15 +562,15 @@ function searchInMiShape(
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
       if (i !== 0 || j !== 0) {
-        let relPosLine: Position[] = [];
-        let aCIdLine: CellID[] = [];
+        const relPosLine: Position[] = [];
+        const aCIdLine: CellID[] = [];
         //check on 1 direction, distance from min to max
         for (let n = min; n <= max; n++) {
           //get the cells on direction
-          let cx = pos.x + n * i;
-          let cy = pos.y + n * j;
-          let cCId = Pos2CId(cx, cy);
-          let cObj = G.cells[cCId];
+          const cx = pos.x + n * i;
+          const cy = pos.y + n * j;
+          const cCId = Pos2CId(cx, cy);
+          const cObj = G.cells[cCId];
           //!!!filter here
           //and also filter the case that is out of board
           if (cCId !== -1 && cObj !== undefined && filter(cObj, cCId)) {
@@ -632,7 +632,7 @@ export function getBattleFactor(G: GameState, player: P_ID, isOffense: boolean, 
   // filter the unit in 米 shape in its range
   // first filter Out the mountain block,
   let effectingObjs = fireRange(G, CId, 3).filter((id) => {
-    let obj = G.cells[id];
+    const obj = G.cells[id];
     //obj is in range, supplied, belongs to the chosen player,
     return (
       obj &&
@@ -658,12 +658,12 @@ export function getBattleFactor(G: GameState, player: P_ID, isOffense: boolean, 
   const chargedCavalries = getChargedCavalries(G, CId)
     .flat()
     .map((rPos) => {
-      let aCId = Pos2CId(pos.x + rPos.x, pos.y + rPos.y);
+      const aCId = Pos2CId(pos.x + rPos.x, pos.y + rPos.y);
       return aCId;
     });
   const chargedAmount = chargedCavalries.length;
 
-  var addValue = 0;
+  let addValue = 0;
   //if it is offensive, merge objs in range and in charge
   if (targetObj && targetObj.belong !== player && isOffense) {
     // add and merge cavalries
@@ -687,7 +687,7 @@ export function getBattleFactor(G: GameState, player: P_ID, isOffense: boolean, 
 //Supply
 
 export function dirSupplyFrom(G: GameState, CId: CellID, player: P_ID) {
-  let result = searchInMiShape(
+  const result = searchInMiShape(
     G,
     CId,
     (obj, id) =>

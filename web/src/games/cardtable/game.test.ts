@@ -5,7 +5,7 @@ import { cardEnum } from './deals';
 
 describe('deck moves', () => {
   test('cutDeck(1) should rotate deck by one card', () => {
-    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase(null);
     client.moves.cutDeck(1);
@@ -18,7 +18,7 @@ describe('deck moves', () => {
   });
 
   test('cutDeck(-3) should rotate deck by one card', () => {
-    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase(null);
     client.moves.cutDeck(-3);
@@ -30,7 +30,7 @@ describe('deck moves', () => {
   });
 
   test('cutDeck(2) should rotate deck by two cards', () => {
-    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase(null);
     client.moves.cutDeck(-3);
@@ -42,7 +42,7 @@ describe('deck moves', () => {
   });
 
   test('cutDeck(-11) should rotate deck by one card', () => {
-    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase(null);
     client.moves.cutDeck(-11);
@@ -54,7 +54,7 @@ describe('deck moves', () => {
   });
 
   test('cutDeck(5) should rotate deck by one card', () => {
-    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase(null);
     client.moves.cutDeck(5);
@@ -68,7 +68,7 @@ describe('deck moves', () => {
 
 describe('moveCard(ICardMove) consistent state changes to G', () => {
   test('move from deck[0] to deck[1]', () => {
-    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase(null);
     client.moves.moveCards({
@@ -81,7 +81,7 @@ describe('moveCard(ICardMove) consistent state changes to G', () => {
   });
 
   test('move from deck[0-2] to hands.east.private[0]', () => {
-    let client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: { ...CardTableGame, seed: 327 }, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase(null);
     client.moves.moveCards({
@@ -118,7 +118,7 @@ describe('deal() consistent state changes to G', () => {
   };
 
   test('deal() should create a hand --seed 327 passed into client creation scenario', () => {
-    let client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase('gamePlay');
     client.moves.deal();
@@ -139,7 +139,7 @@ describe('play() state changes to played storage', () => {
   };
 
   test('play(0) from the north context --seed 327 passed into client creation scenario', () => {
-    let client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase('gamePlay');
     client.moves.deal();
@@ -161,7 +161,7 @@ describe('putToCrib(idx) state changes to crib storage', () => {
   };
 
   test('putToCrib(0) from the north context --seed 327 passed into client creation scenario', () => {
-    let client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase('gamePlay');
     client.moves.deal();
@@ -182,7 +182,7 @@ describe('cutForTurn(idx) changes game state', () => {
   };
 
   test('cutShowTurn by North Player', () => {
-    let client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase('gamePlay');
     client.moves.deal();
@@ -201,7 +201,7 @@ describe('flipCrib() changes game state', () => {
   };
 
   test('default value of cribFlipped s/b false after deal', () => {
-    let client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase('gamePlay');
     client.moves.deal();
@@ -210,7 +210,7 @@ describe('flipCrib() changes game state', () => {
   });
 
   test('after initial flipCrib call, cribFlipped s/b true', () => {
-    let client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
     client.start();
     client.events.setPhase('gamePlay');
     client.moves.deal();
@@ -227,9 +227,9 @@ describe('pegScore game state changes', () => {
   };
 
   test('testing pegging state changes', () => {
-    let client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
+    const client = Client({ game: customGameSetup, playerID: '0', multiplayer: Local() });
     client.start();
-    let playerPath: string = client.playerID === '0' ? 'north' : 'south';
+    const playerPath: string = client.playerID === '0' ? 'north' : 'south';
     client.moves.pegPoints(4);
     const { G } = client.store.getState();
     const { score } = G;
@@ -240,8 +240,8 @@ describe('pegScore game state changes', () => {
   });
 
   test('pegging ensues, after player passes turn', () => {
-    let client = Client({ game: customGameSetup, playerID: '0' });
-    let playerPath: string = client.playerID === '0' ? 'north' : 'south';
+    const client = Client({ game: customGameSetup, playerID: '0' });
+    const playerPath: string = client.playerID === '0' ? 'north' : 'south';
     client.moves.pegPoints(5);
     client.moves.pegPoints(3);
     const { G } = client.store.getState();
@@ -254,12 +254,12 @@ describe('pegScore game state changes', () => {
   });
 
   test('reset cribbage board game score', () => {
-    let client = Client({ game: customGameSetup, playerID: '0' });
+    const client = Client({ game: customGameSetup, playerID: '0' });
     client.moves.pegPoints(5);
     client.moves.pegPoints(3);
     client.moves.resetGamePegs();
-    let { G } = client.store.getState();
-    let { score } = G;
+    const { G } = client.store.getState();
+    const { score } = G;
     expect(score.north.front).toEqual(0);
     expect(score.north.back).toEqual(-1);
     expect(score.north.game).toEqual(0);
@@ -274,34 +274,34 @@ describe('state model changes', () => {
   };
 
   test('cut for deal state changes', () => {
-    let matchID = 'boomer';
-    let clientN = Client({ game: customGameSetup, playerID: '0', multiplayer: Local(), matchID });
+    const matchID = 'boomer';
+    const clientN = Client({ game: customGameSetup, playerID: '0', multiplayer: Local(), matchID });
     clientN.start();
-    let clientS = Client({ game: customGameSetup, playerID: '1', multiplayer: Local(), matchID });
+    const clientS = Client({ game: customGameSetup, playerID: '1', multiplayer: Local(), matchID });
     clientS.start();
     clientN.moves.cutForDeal(1);
-    let { G: gN, ctx: cN } = clientN.store.getState();
-    let { G: gS, ctx: cS } = clientS.store.getState();
-    let { activePlayers: actN } = cN;
-    let { activePlayers: actS } = cS;
-    let { hands: hN } = gN;
-    let { hands: hS } = gS;
+    const { G: gN, ctx: cN } = clientN.store.getState();
+    const { G: gS, ctx: cS } = clientS.store.getState();
+    const { activePlayers: actN } = cN;
+    const { activePlayers: actS } = cS;
+    const { hands: hN } = gN;
+    const { hands: hS } = gS;
     expect(actN).toEqual(actS);
     expect(hN.north.played[0].id).toEqual(cardEnum.SK);
     expect(hS.north.played[0].id).toEqual(cardEnum.SK);
   });
 
   test('cut for deal state changes north cuts, south cuts same', () => {
-    let matchID = 'oofda';
-    let clientN = Client({ game: customGameSetup, playerID: '0', multiplayer: Local(), matchID });
+    const matchID = 'oofda';
+    const clientN = Client({ game: customGameSetup, playerID: '0', multiplayer: Local(), matchID });
     clientN.start();
-    let clientS = Client({ game: customGameSetup, playerID: '1', multiplayer: Local(), matchID });
+    const clientS = Client({ game: customGameSetup, playerID: '1', multiplayer: Local(), matchID });
     clientS.start();
     clientN.moves.cutForDeal(5);
     clientS.moves.cutForDeal(5);
 
-    let { G: Gn } = clientN.store.getState();
-    let { G: Gs } = clientS.store.getState();
+    const { G: Gn } = clientN.store.getState();
+    const { G: Gs } = clientS.store.getState();
 
     expect(Gn.hands.north.played[0]).toEqual(Gs.hands.north.played[0]);
     expect(Gn.hands.south.played[0]).toEqual(Gs.hands.south.played[0]);
@@ -315,16 +315,16 @@ describe('state model changes', () => {
   });
 
   test('cut for deal state changes north cuts, south cuts different', () => {
-    let matchID = 'oopsie';
-    let clientN = Client({ game: customGameSetup, playerID: '0', multiplayer: Local(), matchID });
-    let clientS = Client({ game: customGameSetup, playerID: '1', multiplayer: Local(), matchID });
+    const matchID = 'oopsie';
+    const clientN = Client({ game: customGameSetup, playerID: '0', multiplayer: Local(), matchID });
+    const clientS = Client({ game: customGameSetup, playerID: '1', multiplayer: Local(), matchID });
     clientN.start();
     clientS.start();
     clientN.moves.cutForDeal(5);
     clientS.moves.cutForDeal(4);
 
-    let { G: Gn } = clientN.store.getState();
-    let { G: Gs } = clientS.store.getState();
+    const { G: Gn } = clientN.store.getState();
+    const { G: Gs } = clientS.store.getState();
 
     expect(Gn.hands.north.played[0]).toEqual(Gs.hands.north.played[0]);
     expect(Gn.hands.south.played[0]).toEqual(Gs.hands.south.played[0]);

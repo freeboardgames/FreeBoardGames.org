@@ -16,8 +16,8 @@ export const BombsAndBunniesGame: Game<IG> = {
         maxMoves: 1,
         order: {
           first: (G: IG, ctx: Ctx) => {
-            var oldPlayOrder = ctx.playOrder;
-            var newPlayOrder = StateExtensions.getPlayOrder(G, ctx);
+            const oldPlayOrder = ctx.playOrder;
+            const newPlayOrder = StateExtensions.getPlayOrder(G, ctx);
 
             // If a bomb was revealed last round
             if (G.bombPlayerId !== null) {
@@ -26,15 +26,15 @@ export const BombsAndBunniesGame: Game<IG> = {
                 return newPlayOrder.findIndex((id) => id === G.bombPlayerId);
               } else {
                 // Otherwise the next player starts
-                var oldBombOrderPos = oldPlayOrder.findIndex((id) => id === G.bombPlayerId);
-                var nextPlayerId = oldPlayOrder[(oldBombOrderPos + 1) % oldPlayOrder.length];
+                const oldBombOrderPos = oldPlayOrder.findIndex((id) => id === G.bombPlayerId);
+                const nextPlayerId = oldPlayOrder[(oldBombOrderPos + 1) % oldPlayOrder.length];
 
                 return newPlayOrder.findIndex((id) => id === nextPlayerId);
               }
             }
 
             if (G.lastWinningPlayerId !== null) {
-              var winningPlayerIndex = oldPlayOrder.findIndex((id) => id === G.lastWinningPlayerId);
+              const winningPlayerIndex = oldPlayOrder.findIndex((id) => id === G.lastWinningPlayerId);
               return (winningPlayerIndex + 1) % oldPlayOrder.length;
             }
 
@@ -182,7 +182,7 @@ export const BombsAndBunniesGame: Game<IG> = {
   },
 
   playerView: (G: IG, ctx: Ctx, playerID: string) => {
-    let playerIDInt = parseInt(playerID);
+    const playerIDInt = parseInt(playerID);
 
     if (isNaN(playerIDInt)) {
       // This never happens in real play - just in testing.

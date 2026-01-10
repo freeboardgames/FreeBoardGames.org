@@ -87,7 +87,7 @@ it('p1 consecutive wins with early betting and everyone else skips', () => {
   Utilities.getTypedMoves(p1).Reveal(p3.playerID);
   Utilities.getTypedMoves(p3).Discard(p1.playerID, 0); // discard last card
 
-  var { ctx } = Utilities.getTypedState(p1);
+  const { ctx } = Utilities.getTypedState(p1);
 
   expect(ctx.phase).toEqual(Phases.initial_placement);
   expect(ctx.currentPlayer).toEqual(p3.playerID); // bomb player starts

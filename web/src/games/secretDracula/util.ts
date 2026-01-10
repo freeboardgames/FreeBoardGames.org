@@ -2,7 +2,7 @@ import { IG, IPolicy } from './interfaces';
 import { Ctx } from 'boardgame.io';
 
 export function getTopN(G: IG, ctx: Ctx, n: number): [IG, IPolicy[]] {
-  let out = <IPolicy[]>Array(n).fill(null);
+  const out = <IPolicy[]>Array(n).fill(null);
 
   for (let i = 0; i < n; i++) {
     let topdeck = G.policyDraw.reduce((prev, curr) => {

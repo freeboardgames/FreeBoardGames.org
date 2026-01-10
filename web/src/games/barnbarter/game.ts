@@ -28,7 +28,7 @@ export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
   }
 
   // Money in the Bank
-  let moneys = [].concat(
+  const moneys = [].concat(
     ...[
       <ICard[]>Array(ctx.numPlayers).fill(<ICard>{ value: 500 }),
       <ICard[]>Array(ctx.numPlayers).fill(<ICard>{ value: 200 }),
@@ -37,7 +37,7 @@ export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
     ],
   );
 
-  let players = Array(ctx.numPlayers);
+  const players = Array(ctx.numPlayers);
 
   for (let i = 0; i < ctx.numPlayers; i++) {
     players[i] = { money: [], cards: [], currentBid: -1, moneyRevealed: false };
@@ -67,7 +67,7 @@ export function _setup(ctx: Ctx, shuffle: boolean, timeoutMS: number): IG {
     player.money.push(<IMoney>{ value: 50 });
   });
 
-  let G = <IG>{
+  const G = <IG>{
     log: [],
     players: players,
     cards: cards,
@@ -146,7 +146,7 @@ export const BarnBarterGame = {
   },
   endIf: (G: IG, ctx: Ctx) => {
     if (finished(G, ctx)) {
-      let scoreId = score(G, ctx);
+      const scoreId = score(G, ctx);
       return { winner: scoreId };
     }
   },

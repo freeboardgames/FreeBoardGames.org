@@ -435,6 +435,6 @@ it('Bad user input testing', () => {
   //valid
   clients[0].moves.moveAnswerTrade([]);
 
-  let { ctx } = clients[0].getState();
+  const { ctx } = clients[0].getState();
   expect(ctx.phase).toEqual('phaseStart');
 });

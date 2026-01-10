@@ -4,7 +4,7 @@ import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer';
 
 test('invalid moves', () => {
-  let G: any = {
+  const G: any = {
     haveToRemovePiece: false,
     points: [{ piece: null }],
   };

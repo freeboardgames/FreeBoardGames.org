@@ -37,7 +37,7 @@ const oSpecialValues = {
 export function str2card(s: string): ICard {
   const [sSuit, sValue] = s.match(/([A-Z][a-z]*)([A-Z0-9]*)/).slice(1);
   const suit = oStr2Suit[sSuit];
-  let value = suit == Suit.Excuse ? 0 : oSpecialValues[sValue] || +sValue;
+  const value = suit == Suit.Excuse ? 0 : oSpecialValues[sValue] || +sValue;
   return { suit: suit, value: value };
 }
 

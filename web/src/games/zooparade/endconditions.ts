@@ -3,7 +3,7 @@ import { Ctx } from 'boardgame.io';
 
 // End Conditions
 export function isWin(G: IG) {
-  for (var i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     if (G.piles[i] === null) {
       return false;
     }

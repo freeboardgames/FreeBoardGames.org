@@ -177,7 +177,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
     }
 
     const highlightLetter = { x, y, letter };
-    let probableWords = [...this.state.probableWords];
+    const probableWords = [...this.state.probableWords];
 
     if (probableWords.length > 0) {
       // check if the same players is still playing, else remove selections
@@ -194,7 +194,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
       let isNextLetter = false;
       let probableWord = null;
       for (const pWord of probableWords) {
-        let nextSl = orientations[pWord.orientation](lastSl.x, lastSl.y, 1);
+        const nextSl = orientations[pWord.orientation](lastSl.x, lastSl.y, 1);
         if (nextSl.x == x && nextSl.y == y) {
           isNextLetter = true;
           // compare the entire list of selected letters to the probable word
@@ -214,7 +214,7 @@ export class Soup extends React.Component<ISoupProps, ISoupState> {
       if (!isNextLetter) {
         if (callType === 'start') {
           // do nothing, if the letter has already been included in the list of selected letter
-          for (let sl of selectedLetters) {
+          for (const sl of selectedLetters) {
             if (sl.x === x && sl.y === y) {
               return;
             }

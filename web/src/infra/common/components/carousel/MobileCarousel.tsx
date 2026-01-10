@@ -2,6 +2,7 @@ import React from 'react';
 
 interface MobileCarouselProps {
   height?: string;
+  children?: React.ReactNode;
 }
 
 export class MobileCarousel extends React.Component<MobileCarouselProps, {}> {

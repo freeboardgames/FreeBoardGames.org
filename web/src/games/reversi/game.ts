@@ -14,7 +14,7 @@ function inBounds(x: number, y: number) {
 }
 
 export function getValidMoves(G: IG, playerID: string) {
-  let validMoves: Set<number> = new Set();
+  const validMoves: Set<number> = new Set();
   G.points
     .map((player, position) => ({ player, position }))
     .filter((point) => point.player === playerID)
@@ -83,7 +83,7 @@ export function placePiece(G: IG, ctx: Ctx, x: number, y: number) {
     return INVALID_MOVE;
   }
 
-  let changed: number[] = [toPosition(x, y)]; // Changed positions
+  const changed: number[] = [toPosition(x, y)]; // Changed positions
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
       if (i === 0 && j === 0) {
@@ -91,7 +91,7 @@ export function placePiece(G: IG, ctx: Ctx, x: number, y: number) {
       }
 
       let valid = false;
-      let update = [];
+      const update = [];
       let currX = x + i;
       let currY = y + j;
       for (let k = 2; inBounds(currX, currY) && G.points[toPosition(currX, currY)] !== null; k++) {
@@ -140,7 +140,7 @@ export function placePiece(G: IG, ctx: Ctx, x: number, y: number) {
 }
 
 export function getScoreBoard(G: IG, ctx: Ctx) {
-  let scoreBoard = new Array(ctx.numPlayers).fill(0);
+  const scoreBoard = new Array(ctx.numPlayers).fill(0);
   G.points
     .filter((point) => point !== null && parseInt(point) < ctx.numPlayers)
     .forEach((point) => scoreBoard[point as any]++);
@@ -162,7 +162,7 @@ const GameConfig: Game<IG> = {
     placePiece,
   },
   setup: (ctx): IG => {
-    let points = Array(64).fill(null);
+    const points = Array(64).fill(null);
     if (ctx.numPlayers === 2) {
       points[toPosition(4, 4)] = '1';
       points[toPosition(4, 3)] = '2';

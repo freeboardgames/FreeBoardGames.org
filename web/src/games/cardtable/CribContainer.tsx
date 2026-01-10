@@ -38,11 +38,11 @@ function valuetext(value?: number) {
   return `${value}`;
 }
 const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardContainerProps) => {
-  let tileData = props.cards;
-  let view = props.flipped;
-  let stage: stageEnum = props.collaborator.gameState.stage;
-  let playerID: playerEnum = props.collaborator.gameState.playerID;
-  let currentDealer = props.collaborator.gameState.currentDealer;
+  const tileData = props.cards;
+  const view = props.flipped;
+  const stage: stageEnum = props.collaborator.gameState.stage;
+  const playerID: playerEnum = props.collaborator.gameState.playerID;
+  const currentDealer = props.collaborator.gameState.currentDealer;
 
   const handleCutDeal = props.collaborator.handlers.handleCutDeal;
   const handleCutTurn = props.collaborator.handlers.handleCutTurn;
@@ -93,7 +93,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     }
   };
 
-  let tileList = tileData.map((tile) => (
+  const tileList = tileData.map((tile) => (
     <Card
       key={tile.id}
       click={() => handleClick()}
@@ -106,8 +106,8 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
     tileList.length = 1;
   }
 
-  let dialogTitle = props.collaborator.gameState.cutTie ? `Tie! Recut at ${selectedValue}` : `Cut at ${selectedValue}`;
-  let closeText = props.collaborator.gameState.stage === 'cuttingForDeal' ? 'Cut for deal' : 'Cut for turn';
+  const dialogTitle = props.collaborator.gameState.cutTie ? `Tie! Recut at ${selectedValue}` : `Cut at ${selectedValue}`;
+  const closeText = props.collaborator.gameState.stage === 'cuttingForDeal' ? 'Cut for deal' : 'Cut for turn';
 
   return (
     <div className={css.cardcontainer}>
@@ -121,7 +121,7 @@ const CardContainer: FunctionComponent<ICardContainerProps> = (props: ICardConta
             onChange={(event, values) => {
               event.stopPropagation();
               event.preventDefault();
-              let value = typeof values === 'number' ? values : values[0];
+              const value = typeof values === 'number' ? values : values[0];
               setSelectedValue(value);
             }}
             aria-labelledby="form-dialog-title"

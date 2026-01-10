@@ -1,10 +1,10 @@
 import { MakeStore, createWrapper } from 'next-redux-wrapper';
-import { createStore } from 'redux';
+import { createStore, Store } from 'redux';
 import { reducer } from './reducer';
 import { ReduxState } from './definitions';
 
-const makeStore: MakeStore<ReduxState> = () => {
+const makeStore: MakeStore<Store<ReduxState>> = () => {
   return createStore(reducer);
 };
 
-export const wrapper = createWrapper<ReduxState>(makeStore, { debug: false });
+export const wrapper = createWrapper<Store<ReduxState>>(makeStore, { debug: false });

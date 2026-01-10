@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { GetMatch_match } from 'gqlTypes/GetMatch';
+import { GetMatchQuery } from 'gqlTypes/generated';
 import MessagePage from 'infra/common/components/alert/MessagePage';
 import { withNickNameRequired } from 'infra/common/components/auth/hocs/withNickNameRequired';
 import { LobbyService } from 'infra/common/services/LobbyService';
@@ -20,7 +20,7 @@ interface MatchInnerProps extends WithTranslation {
 
 interface MatchState {
   loading: boolean;
-  match: GetMatch_match;
+  match: GetMatchQuery['match'];
   error: boolean;
 }
 

@@ -151,7 +151,7 @@ export function getTrickWinnerId(trumpSuit: Suit, T: ITrick): string {
 
 export function getSortedDeck(): ICard[] {
   let deck: ICard[] = [];
-  for (let suit of ['Diamonds', 'Hearts', 'Spades', 'Clubs']) {
+  for (const suit of ['Diamonds', 'Hearts', 'Spades', 'Clubs']) {
     deck = deck.concat(
       Array(6)
         .fill(0)

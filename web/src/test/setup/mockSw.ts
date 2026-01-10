@@ -1,6 +1,6 @@
 if (typeof window !== 'undefined') {
-  let swRegisterMock = jest.fn();
-  let mockPromise = new Promise(function (resolve) {
+  const swRegisterMock = jest.fn();
+  const mockPromise = new Promise(function (resolve) {
     resolve({ update: jest.fn() });
   });
   swRegisterMock.mockReturnValue(mockPromise);

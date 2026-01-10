@@ -66,7 +66,7 @@ export const BingoGame: Game<IGameState> = {
       // check if any columns (5), rows (5) or diagonals (2) are complete
       let found, xPos, yPos, marked;
       found = new Array(12).fill(0);
-      for (let n of numbers) {
+      for (const n of numbers) {
         xPos = Math.floor(n.id / GRID_SIZE);
         yPos = n.id % GRID_SIZE;
         marked = (n.marked && numbersShown.includes(n.value)) || n.value === WILDCARD_NUM;

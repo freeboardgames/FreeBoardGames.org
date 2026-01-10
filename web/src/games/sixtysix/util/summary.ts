@@ -3,17 +3,17 @@ import { ITrick, ICard } from 'gamesShared/definitions/cards';
 import { IG, IRoundSummary } from '../types';
 
 export function getRoundSummary(G: IG): IRoundSummary {
-  let points = countPoints(
+  const points = countPoints(
     G.resolvedTricks,
     G.players.map((P) => P.id),
   );
-  let scoring = G.players.map(() => 0);
+  const scoring = G.players.map(() => 0);
   let schneider = NaN;
   let schwarz = NaN;
   let againstClose = NaN;
   let againstOut = NaN;
 
-  let closerId = getCloser(G);
+  const closerId = getCloser(G);
 
   G.players.forEach((P, i) => {
     if (!G.resolvedTricks.some((T) => T.winnerId == P.id)) return;

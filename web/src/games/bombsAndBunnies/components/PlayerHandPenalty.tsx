@@ -79,7 +79,7 @@ export class PlayerHandPenalty extends React.Component<IPlayerHandPenaltyProps, 
 
   getShuffledHandIndexes(hand: CardType[]): number[] {
     const indexes = hand.map((_, index) => index);
-    let shuffledIndexes = [];
+    const shuffledIndexes = [];
 
     while (indexes.length > 0) {
       const randomIndex = Math.floor(Math.random() * indexes.length);

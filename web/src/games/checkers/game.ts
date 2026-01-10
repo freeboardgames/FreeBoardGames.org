@@ -41,7 +41,7 @@ export const INITIAL_BOARD: string[] = [
 // Inspired by chess FEN notation
 export function convertStringToBoard(str: string): ICheckerPiece[] {
   let index = 0;
-  let board: Piece[] = [];
+  const board: Piece[] = [];
   let position = 0;
   for (let i = 0; i < str.length; i++) {
     if (isNaN(parseInt(str[i], 10))) {
@@ -88,7 +88,7 @@ export function getPieceFromPos(board: Piece[], pos: number): Piece {
 
 export function checkPosition(G: IG, playerID: string, piece: ICheckerPiece): { moves: IMove[]; jumped: boolean } {
   const dirs = piece.isKing ? KING_DIRS : MAN_DIRS[playerID as any];
-  let moves: IMove[] = [];
+  const moves: IMove[] = [];
   let jumped = false;
   const infiniteDistance: boolean = piece.isKing && G.config.flyingKings;
   const coord = fromPosition(piece.pos);

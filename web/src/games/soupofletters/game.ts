@@ -63,7 +63,7 @@ export function isVictory(G) {
   });
 
   // determine max score
-  var maxScore = 0;
+  let maxScore = 0;
   Object.values(playerScores).forEach((score: number) => {
     maxScore = Math.max(maxScore, score);
   });
@@ -102,7 +102,7 @@ function initialSetup(ctx, wordList = globalWordList, allowedOrientations = vali
     });
     // if puzzle, try to solve it
     if (puzzle) {
-      let { found, notFound } = solvepuzzle(puzzle, randWords, allowedOrientations);
+      const { found, notFound } = solvepuzzle(puzzle, randWords, allowedOrientations);
       // if some words not found, then reset puzzle and try again with less words
       if (notFound.length !== 0) {
         puzzle = null;

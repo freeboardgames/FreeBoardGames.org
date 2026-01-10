@@ -9,7 +9,7 @@ sometimes I had issues with no active players. Therefore there is a lot
 of explicit moving of players into phases.
 */
 
-export let phaseVotePriest = {
+export const phaseVotePriest = {
   moves: {
     moveVoteYes: {
       move: moveVoteYes,
@@ -23,7 +23,7 @@ export let phaseVotePriest = {
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
       //- console.log('starting phaseVotePriest');
-      let activePlayers = { value: {} };
+      const activePlayers = { value: {} };
 
       for (let i = 0; i < ctx.numPlayers; i++) {
         if (G.deadIDs.includes(i)) {
@@ -37,7 +37,7 @@ export let phaseVotePriest = {
       return G;
     },
     onMove: (G: IG, ctx: Ctx) => {
-      let activePlayers = { value: {} };
+      const activePlayers = { value: {} };
       let count = 0;
       for (let i = 0; i < ctx.numPlayers; i++) {
         if (G.deadIDs.includes(i)) {
@@ -58,13 +58,13 @@ export let phaseVotePriest = {
     },
   },
   endIf: (G: IG, ctx: Ctx) => {
-    let yesVotes = G.votesYes.reduce((a, b) => {
+    const yesVotes = G.votesYes.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
-    let noVotes = G.votesNo.reduce((a, b) => {
+    const noVotes = G.votesNo.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
-    var deadCount = G.deadIDs.length;
+    const deadCount = G.deadIDs.length;
     if (yesVotes + noVotes == ctx.numPlayers - deadCount) {
       // Successful Vote
       return { next: 'phaseEndVotePriest' };
@@ -73,10 +73,10 @@ export let phaseVotePriest = {
   },
   onEnd: (G, ctx) => {
     //- console.log('ending phaseVotePriest');
-    let yesVotes = G.votesYes.reduce((a, b) => {
+    const yesVotes = G.votesYes.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
-    let noVotes = G.votesNo.reduce((a, b) => {
+    const noVotes = G.votesNo.reduce((a, b) => {
       return b == true ? a + 1 : a;
     }, 0);
 
@@ -90,11 +90,11 @@ export let phaseVotePriest = {
   },
 };
 
-export let phaseEndVotePriest = {
+export const phaseEndVotePriest = {
   turn: {
     // activePlayers: { all: 'phaseEndVotePriest', maxMoves: 1 },
     onBegin: (G, ctx) => {
-      let activePlayers = { value: {} };
+      const activePlayers = { value: {} };
       for (let i = 0; i < ctx.numPlayers; i++) {
         if (G.deadIDs.includes(i)) {
           continue;
@@ -107,7 +107,7 @@ export let phaseEndVotePriest = {
       ctx.events.setActivePlayers(activePlayers);
     },
     onMove: (G, ctx) => {
-      let activePlayers = { value: {} };
+      const activePlayers = { value: {} };
       let count = 0;
 
       for (let i = 0; i < ctx.numPlayers; i++) {
@@ -137,7 +137,7 @@ export let phaseEndVotePriest = {
     },
     onBegin: (G, ctx) => {
       // EXPLICIT SETTING
-      let activePlayers = { value: {} };
+      const activePlayers = { value: {} };
       for (let i = 0; i < ctx.numPlayers; i++) {
         if (G.deadIDs.includes(i)) {
           continue;
@@ -152,8 +152,8 @@ export let phaseEndVotePriest = {
   },
   endIf: (G: IG, ctx: Ctx) => {
     //- console.log('endIf phaseEndVotePriest');
-    let alive_players = ctx.numPlayers - G.deadIDs.length;
-    let ok_count = G.voteOks.reduce((prev: number, curr: boolean) => {
+    const alive_players = ctx.numPlayers - G.deadIDs.length;
+    const ok_count = G.voteOks.reduce((prev: number, curr: boolean) => {
       return curr == true ? prev + 1 : prev;
     }, 0);
 

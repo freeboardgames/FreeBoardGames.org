@@ -27,10 +27,10 @@ export function moveBid(G: IG, ctx: Ctx, amount: number): IG {
   //TODO: Betting 0 resets the counter, should only reset on first 0 bet
   //TODO: Who wins when ppl bet the same value?
 
-  let playerId = Number(ctx.playerID);
+  const playerId = Number(ctx.playerID);
 
   // Only false if player is revelead, and bids over own wealth.
-  let canBid = G.players[playerId].moneyRevealed
+  const canBid = G.players[playerId].moneyRevealed
     ? // money revealed
       // enough money for current bid
       G.players[playerId].currentBid == -1
@@ -237,15 +237,15 @@ export function moveAnswerTrade(G: IG, ctx: Ctx, counterBid: number[]): IG | 'IN
     return INVALID_MOVE;
   }
 
-  let valueAttacker = G.players[G.playerTurnId].money.reduce((accum, card, index) => {
+  const valueAttacker = G.players[G.playerTurnId].money.reduce((accum, card, index) => {
     return G.trade.bid.indexOf(index) > -1 ? accum + card.value : accum;
   }, 0);
 
-  let valueDefender = G.players[G.trade.counterPlayerId].money.reduce((accum, card, index) => {
+  const valueDefender = G.players[G.trade.counterPlayerId].money.reduce((accum, card, index) => {
     return counterBid.indexOf(index) > -1 ? accum + card.value : accum;
   }, 0);
 
-  let attackerWin = valueAttacker >= valueDefender;
+  const attackerWin = valueAttacker >= valueDefender;
   return {
     ...G,
     players: G.players.map((player, index) => {

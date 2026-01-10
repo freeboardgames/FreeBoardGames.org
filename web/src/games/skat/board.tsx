@@ -283,9 +283,9 @@ export function BgioBoard(props: { G: IG; ctx: Ctx; moves: IGameMoves; playerID:
 
   function renderButtonsAnnounce() {
     if (playerStage != Stages.announce) return;
-    let click = [() => moves.Announce(Announcement.None), () => moves.Announce(Announcement.Ouvert)];
-    let texts = [translate('announce_none'), translate('announce_ouvert')];
-    let red = [true, false];
+    const click = [() => moves.Announce(Announcement.None), () => moves.Announce(Announcement.Ouvert)];
+    const texts = [translate('announce_none'), translate('announce_ouvert')];
+    const red = [true, false];
     if (G.contract != Contract.Null) {
       click.splice(
         1,

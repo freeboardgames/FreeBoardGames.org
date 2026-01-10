@@ -48,7 +48,7 @@ function getMills(G: IG) {
 }
 
 function isTherePieceOutsideMill(G: IG, ctx: Ctx) {
-  let points = G.points.map((point) => ({ data: point, safe: true }));
+  const points = G.points.map((point) => ({ data: point, safe: true }));
   G.mills
     .map((mill, index) => ({ owner: mill, index }))
     .filter((mill) => mill.owner !== null && mill.owner !== ctx.playerID)

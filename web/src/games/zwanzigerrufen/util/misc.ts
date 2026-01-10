@@ -57,7 +57,7 @@ export function allowedAnnouncements(G: IG, playerId: string): [Announcement, bo
   const isTaker = player.isTaker || G.partnerId == player.id;
   const own = isTaker ? G.announcementsRe : G.announcementsContra;
   const others = isTaker ? G.announcementsContra : G.announcementsRe;
-  let result: [Announcement, boolean][] = [[Announcement.None, false]];
+  const result: [Announcement, boolean][] = [[Announcement.None, false]];
   if (isTaker && [2, 8].includes(own.Game)) {
     result.push([Announcement.Game, false]);
   } else if (!isTaker && [1, 4].includes(others.Game)) {

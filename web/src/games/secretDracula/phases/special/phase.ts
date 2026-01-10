@@ -7,7 +7,7 @@ import { moveInvestigateEnd } from './moves';
 import { IG, IPolicy } from './../../interfaces';
 import { Ctx } from 'boardgame.io';
 
-export let phasePeekPolicy = {
+export const phasePeekPolicy = {
   onBegin: (G: IG) => {
     //- console.log('starting phasePeekPolicy');
     if (G.policyDraw.length < 3) {
@@ -22,8 +22,8 @@ export let phasePeekPolicy = {
   },
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
-      let p = G.lastMayorID;
-      let activePlayers = { value: {} };
+      const p = G.lastMayorID;
+      const activePlayers = { value: {} };
       activePlayers.value[p] = 'phasePeekPolicy';
       ctx.events.setActivePlayers(activePlayers);
     },
@@ -46,12 +46,12 @@ export let phasePeekPolicy = {
   },
 };
 
-export let phaseInvestigate1 = {
+export const phaseInvestigate1 = {
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
       //- console.log('starting phaseInvestigate1');
-      let p = G.lastMayorID;
-      let activePlayers = { value: {} };
+      const p = G.lastMayorID;
+      const activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseInvestigate1';
       ctx.events.setActivePlayers(activePlayers);
     },
@@ -74,12 +74,12 @@ export let phaseInvestigate1 = {
   },
 };
 
-export let phaseInvestigate2 = {
+export const phaseInvestigate2 = {
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
       //- console.log('starting phaseInvestigate2');
-      let p = G.lastMayorID;
-      let activePlayers = { value: {} };
+      const p = G.lastMayorID;
+      const activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseInvestigate2';
       ctx.events.setActivePlayers(activePlayers);
     },
@@ -102,7 +102,7 @@ export let phaseInvestigate2 = {
   },
 };
 
-export let phaseSpecialElection = {
+export const phaseSpecialElection = {
   onBegin: (G: IG) => {
     G.specialElection = -1;
     return G;
@@ -110,8 +110,8 @@ export let phaseSpecialElection = {
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
       //- console.log('starting phaseSpecialElection');
-      let p = G.lastMayorID;
-      let activePlayers = { value: {} };
+      const p = G.lastMayorID;
+      const activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseSpecialElection';
       ctx.events.setActivePlayers(activePlayers);
     },
@@ -137,12 +137,12 @@ export let phaseSpecialElection = {
   },
 };
 
-export let phaseExecution = {
+export const phaseExecution = {
   turn: {
     onBegin: (G: IG, ctx: Ctx) => {
       //- console.log('starting phaseExecution');
-      let p = G.lastMayorID;
-      let activePlayers = { value: {} };
+      const p = G.lastMayorID;
+      const activePlayers = { value: {} };
       activePlayers.value[p] = 'phaseExecution';
       ctx.events.setActivePlayers(activePlayers);
     },

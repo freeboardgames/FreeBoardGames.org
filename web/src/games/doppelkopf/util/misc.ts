@@ -85,7 +85,7 @@ export function announceRank(A: Announcement): number {
 export function allowedBids(P: IPlayer, numBidders: number): Contract[] {
   if (P.bid == Contract.None) return [Contract.Pass, Contract.Some];
   const numOlds = P.hand.filter(isOld).length;
-  let allowed = [Contract.SoloTrump, Contract.SoloQueen, Contract.SoloJack, Contract.SoloAce];
+  const allowed = [Contract.SoloTrump, Contract.SoloQueen, Contract.SoloJack, Contract.SoloAce];
   if (numOlds == 2 && numBidders == 1) return [Contract.Marriage].concat(allowed);
   if (numOlds == 2 && numBidders > 1) return [Contract.Pass].concat(allowed);
   if (numOlds < 2) return allowed;

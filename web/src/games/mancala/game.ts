@@ -27,7 +27,7 @@ export const MancalaGame: Game<IG> = {
     sowSeeds(G: IG, ctx: Ctx, playerId: string, holeId: number) {
       if (playerId != ctx.currentPlayer) return INVALID_MOVE;
 
-      let seedCount = G.playerHoles[ctx.currentPlayer][holeId];
+      const seedCount = G.playerHoles[ctx.currentPlayer][holeId];
 
       if (!seedCount) return INVALID_MOVE;
 
@@ -39,7 +39,7 @@ export const MancalaGame: Game<IG> = {
       let lastHoleId: number;
       let lastPlayerId: string;
 
-      for (var seedsInHandCount = seedCount; seedsInHandCount > 0; --seedsInHandCount) {
+      for (let seedsInHandCount = seedCount; seedsInHandCount > 0; --seedsInHandCount) {
         lastHoleId = sowToHoleId;
         lastPlayerId = sowToPlayerId;
         if (sowToPlayerId === ctx.currentPlayer && sowToHoleId === numOfHoles) {
@@ -66,8 +66,8 @@ export const MancalaGame: Game<IG> = {
         lastHoleId < numOfHoles &&
         G.playerHoles[lastPlayerId][lastHoleId] === 1
       ) {
-        let otherPlayerId = lastPlayerId === '0' ? '1' : '0';
-        let stolenSeedsCount = G.playerHoles[otherPlayerId][numOfHoles - 1 - lastHoleId];
+        const otherPlayerId = lastPlayerId === '0' ? '1' : '0';
+        const stolenSeedsCount = G.playerHoles[otherPlayerId][numOfHoles - 1 - lastHoleId];
         if (stolenSeedsCount > 0) {
           G.playerHoles[lastPlayerId === '0' ? '1' : '0'][numOfHoles - 1 - lastHoleId] = 0;
           G.playerHoles[lastPlayerId][lastHoleId] = 0;
@@ -76,8 +76,8 @@ export const MancalaGame: Game<IG> = {
       }
 
       // if a player has run out of stones then move all stones off the board
-      let totalStonesInPlayPlayer0 = G.playerHoles['0'].reduce((a, b) => a + b);
-      let totalStonesInPlayPlayer1 = G.playerHoles['1'].reduce((a, b) => a + b);
+      const totalStonesInPlayPlayer0 = G.playerHoles['0'].reduce((a, b) => a + b);
+      const totalStonesInPlayPlayer1 = G.playerHoles['1'].reduce((a, b) => a + b);
       if (totalStonesInPlayPlayer0 < 1 || totalStonesInPlayPlayer1 < 1) {
         if (totalStonesInPlayPlayer0) {
           G.playerHoles['0'].fill(0);
@@ -99,8 +99,8 @@ export const MancalaGame: Game<IG> = {
     minMoves: 1,
   },
   endIf: (G) => {
-    let totalStonesInPlayPlayer0 = G.playerHoles['0'].reduce((a, b) => a + b);
-    let totalStonesInPlayPlayer1 = G.playerHoles['1'].reduce((a, b) => a + b);
+    const totalStonesInPlayPlayer0 = G.playerHoles['0'].reduce((a, b) => a + b);
+    const totalStonesInPlayPlayer1 = G.playerHoles['1'].reduce((a, b) => a + b);
     if (totalStonesInPlayPlayer0 < 1 || totalStonesInPlayPlayer1 < 1) {
       if (G.playerStoreCount['0'] === G.playerStoreCount['1']) return { draw: true };
       return {

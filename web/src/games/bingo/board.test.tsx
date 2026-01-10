@@ -44,7 +44,7 @@ describe('Bingo UI', () => {
 
   test('all numbers are being renders', () => {
     expect(wrapper.text()).toContain('Starting');
-    for (let n of state0.G.players['0'].numbers) {
+    for (const n of state0.G.players['0'].numbers) {
       if (n.value !== INITIAL_WAIT_REF_NUM && n.value !== WILDCARD_NUM) {
         expect(wrapper.text()).toContain(n.value.toString());
       }

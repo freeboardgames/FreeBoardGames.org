@@ -5,7 +5,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import EditIcon from '@mui/icons-material/Edit';
-import { JoinRoom_joinRoom } from 'gqlTypes/JoinRoom';
+import { JoinRoomMutation } from 'gqlTypes/generated';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { isCreator } from './RoomMetadataHelper';
@@ -29,7 +29,7 @@ import { compose } from 'recompose';
 interface IListPlayersInnerProps extends WithTranslation {}
 
 interface IListPlayersOutterProps {
-  roomMetadata: JoinRoom_joinRoom;
+  roomMetadata: JoinRoomMutation['joinRoom'];
   userId?: number;
   editNickname: () => void;
   shuffleUsers: () => () => void;

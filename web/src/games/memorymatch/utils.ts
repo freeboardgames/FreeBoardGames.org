@@ -1,9 +1,9 @@
 import { IGameState } from './definations';
 
 export function shuffleArray(array) {
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
     array[i] = array[j];
     array[j] = temp;
   }
@@ -11,7 +11,7 @@ export function shuffleArray(array) {
 }
 
 export function getScoreBoard(G: IGameState, ctx) {
-  let scoreBoard = new Array(ctx.numPlayers).fill(0);
+  const scoreBoard = new Array(ctx.numPlayers).fill(0);
   G.cards
     .filter((c) => c.openedBy)
     .forEach((c) => {

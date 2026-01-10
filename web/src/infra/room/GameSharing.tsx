@@ -183,7 +183,7 @@ export class GameSharingInternal extends React.Component<
 
   _getShareData = () => {
     const { t } = this.props;
-    let textAndTitle = t('play_game', { name: this.props.gameName });
+    const textAndTitle = t('play_game', { name: this.props.gameName });
     return {
       title: textAndTitle,
       text: textAndTitle,

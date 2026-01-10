@@ -5,7 +5,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import { gql } from '@apollo/client';
 import { IGameDef } from 'gamesShared/definitions/game';
 import { GameMode } from 'gamesShared/definitions/mode';
-import { JoinRoom_joinRoom, JoinRoom_joinRoom_userMemberships } from 'gqlTypes/JoinRoom';
+import { JoinRoomMutation } from 'gqlTypes/generated';
 import AlertLayer from 'infra/common/components/alert/AlertLayer';
 import { LoadingMessage } from 'infra/common/components/alert/LoadingMessage';
 import MessagePage from 'infra/common/components/alert/MessagePage';
@@ -64,7 +64,7 @@ interface InnerProps extends WithTranslation {
 interface OutterProps {}
 
 interface State {
-  roomMetadata?: JoinRoom_joinRoom;
+  roomMetadata?: JoinRoomMutation['joinRoom'];
   nameTextField?: string;
   userId?: number;
   loading: boolean;
@@ -76,7 +76,7 @@ interface State {
 }
 
 const Room: React.FC<InnerProps & OutterProps> = ({ t, router, user, dispatch, settingsService }) => {
-  const [roomMetadata, setRoomMetadata] = useState<JoinRoom_joinRoom | undefined>();
+  const [roomMetadata, setRoomMetadata] = useState<JoinRoomMutation['joinRoom'] | undefined>();
   const [nameTextField, setNameTextField] = useState<string | undefined>();
   const [userId, setUserId] = useState<number | undefined>();
   const [loading, setLoading] = useState(true);
@@ -133,7 +133,7 @@ const Room: React.FC<InnerProps & OutterProps> = ({ t, router, user, dispatch, s
     );
   };
 
-  const shouldUpdateMetadata = (room: JoinRoom_joinRoom, oldRoom: JoinRoom_joinRoom) => {
+  const shouldUpdateMetadata = (room: JoinRoomMutation['joinRoom'], oldRoom: JoinRoomMutation['joinRoom']) => {
     const currentPlayersIds = getPlayerIds(room.userMemberships).join(',');
     const oldPlayersIds = getPlayerIds(oldRoom.userMemberships).join(',');
     const currentPlayersNicks = getPlayerNicknames(room.userMemberships).join(',');
@@ -202,7 +202,7 @@ const Room: React.FC<InnerProps & OutterProps> = ({ t, router, user, dispatch, s
   }
 
   const currentUserInMetadata = room.userMemberships.find(
-    (membership: JoinRoom_joinRoom_userMemberships) => membership.user.id === userId,
+    (membership: JoinRoomMutation['joinRoom']['userMemberships'][0]) => membership.user.id === userId,
   );
   if (!currentUserInMetadata) {
     return <MessagePage type={'error'} message={t('you_were_removed_from_the_room')} skipFbgBar={true} />;
@@ -210,7 +210,7 @@ const Room: React.FC<InnerProps & OutterProps> = ({ t, router, user, dispatch, s
 
   const gameDef = getGameDefinition(room.gameCode);
 
-  const renderBottomBar = (room: JoinRoom_joinRoom, gameDef: IGameDef) => {
+  const renderBottomBar = (room: JoinRoomMutation['joinRoom'], gameDef: IGameDef) => {
     const isAdmin = isCreator(room, userId);
     const customizationBar = <CustomizationBar gameDef={gameDef} info={{ mode: GameMode.OnlineFriend }} />;
     const placeholder = <div style={{ flexGrow: 1, display: 'flex' }}></div>;
@@ -224,7 +224,7 @@ const Room: React.FC<InnerProps & OutterProps> = ({ t, router, user, dispatch, s
     );
   };
 
-  const renderGameCard = (room: JoinRoom_joinRoom, gameDef: IGameDef) => {
+  const renderGameCard = (room: JoinRoomMutation['joinRoom'], gameDef: IGameDef) => {
     const changeGameEnabled = isCreator(room, userId);
     const backgroundColor = changeGameEnabled ? 'rgb(220, 0, 78)' : '#e0e0e0';
     const color = changeGameEnabled ? 'white' : 'darkgrey';
@@ -377,7 +377,7 @@ const Room: React.FC<InnerProps & OutterProps> = ({ t, router, user, dispatch, s
     );
   };
 
-  const _getGameSharing = (room: JoinRoom_joinRoom) => {
+  const _getGameSharing = (room: JoinRoomMutation['joinRoom']) => {
     const gameDef = getGameDefinition(room.gameCode);
     return (
       <GameSharing

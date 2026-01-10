@@ -18,20 +18,20 @@ type IACardTableProps = {
 };
 
 const ACardTable: FunctionComponent<IACardTableProps> = (props: IACardTableProps) => {
-  let { G } = props;
-  let { ctx } = props;
-  let { currentPlayer } = ctx;
-  let thescore: IScoreKeeper = G.score;
-  let pegPointsMove = props.moves.pegPoints;
-  let resetScore = props.moves.resetGamePegs;
-  let stageStr = props.ctx.activePlayers ? props.ctx.activePlayers[props.ctx.playerID === '0' ? 0 : 1] : null;
-  let stage: stageEnum = stageEnum[stageStr];
-  let crib = G.hands.east.private;
-  let cribFlipped = G.hands.east.cribFlipped ? { flipped: true } : {};
-  let theTurn = props.G.deck.length === 1 ? { turn: true } : { concealed: true };
-  let playerIDStr: string = props.playerID;
-  let currentDealer = currentPlayer as playerEnum;
-  let playerID: playerEnum = playerIDStr as playerEnum;
+  const { G } = props;
+  const { ctx } = props;
+  const { currentPlayer } = ctx;
+  const thescore: IScoreKeeper = G.score;
+  const pegPointsMove = props.moves.pegPoints;
+  const resetScore = props.moves.resetGamePegs;
+  const stageStr = props.ctx.activePlayers ? props.ctx.activePlayers[props.ctx.playerID === '0' ? 0 : 1] : null;
+  const stage: stageEnum = stageEnum[stageStr];
+  const crib = G.hands.east.private;
+  const cribFlipped = G.hands.east.cribFlipped ? { flipped: true } : {};
+  const theTurn = props.G.deck.length === 1 ? { turn: true } : { concealed: true };
+  const playerIDStr: string = props.playerID;
+  const currentDealer = currentPlayer as playerEnum;
+  const playerID: playerEnum = playerIDStr as playerEnum;
 
   const collaborator = {
     handlers: {

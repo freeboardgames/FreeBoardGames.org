@@ -164,7 +164,7 @@ describe('Hangman UI', () => {
     updateGameProps();
 
     ['a', 'z', 'b', 'c'].forEach((l) => {
-      let letter = wrapper.find(`[data-testid="letter-${l}-cir"]`).at(0);
+      const letter = wrapper.find(`[data-testid="letter-${l}-cir"]`).at(0);
       letter.simulate('click');
       updateGameProps();
     });
@@ -179,7 +179,7 @@ describe('Hangman UI', () => {
     updateGameProps();
 
     ['x', 'y', 'z', 'l', 'm', 'n'].forEach((l) => {
-      let letter = wrapper.find(`[data-testid="letter-${l}-cir"]`).at(0);
+      const letter = wrapper.find(`[data-testid="letter-${l}-cir"]`).at(0);
       letter.simulate('click');
       updateGameProps();
     });

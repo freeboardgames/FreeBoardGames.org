@@ -91,16 +91,16 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
   }
 
   renderHands() {
-    var me = this.props.playerID ? parseInt(this.props.playerID) : 1; // TODO : Local Fix - defaults to player 1
-    var playerID = this.props.playerID ? this.props.playerID : '1'; // TODO : Local Fix
+    const me = this.props.playerID ? parseInt(this.props.playerID) : 1; // TODO : Local Fix - defaults to player 1
+    const playerID = this.props.playerID ? this.props.playerID : '1'; // TODO : Local Fix
 
-    let hands = this.props.G.hands;
-    let rotatedHands = hands.slice(me + 1, hands.length).concat(hands.slice(0, me + 1));
+    const hands = this.props.G.hands;
+    const rotatedHands = hands.slice(me + 1, hands.length).concat(hands.slice(0, me + 1));
 
     return (
       <div className={css.hands}>
         {rotatedHands.map((hand) => {
-          let index = hand.player;
+          const index = hand.player;
           return (
             <div className={css.hand} key={'Board' + index.toString()}>
               {index === me ? null : (

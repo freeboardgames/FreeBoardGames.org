@@ -124,7 +124,7 @@ const ChatInternal: React.FC<ChatInnerProps & ChatOutterProps> = ({ channelType,
 
   const renderInnerPanel = (messages: Message[], isDesktop: boolean) => {
     let className = '';
-    let closeButton = renderMobileHeader();
+    const closeButton = renderMobileHeader();
     if (isDesktop) {
       className = css.DesktopInput;
     }
