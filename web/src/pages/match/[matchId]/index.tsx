@@ -26,13 +26,16 @@ const Match: NextPage = () => {
   return <GameMatch />;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params, locale }) => {
+  const matchId = params?.matchId as string;
+
   // Get all game namespaces since we can't determine the game server-side
   const allGames = getAllGames();
-  const gameNamespaces = allGames.map(game => getGameCodeNamespace(game.code));
-  
+  const gameNamespaces = allGames.map((game) => getGameCodeNamespace(game.code));
+
   return {
     props: {
+      matchId, // Pass matchId to GameProvider via _app.tsx
       ...(await serverSideTranslations(locale!, [
         'Match',
         'Chat',

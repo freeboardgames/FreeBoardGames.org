@@ -41,6 +41,12 @@ export const Game: VFC<IGameProps> = (props) => {
   if (status === 'loading' || status === 'idle') return <Downloading name={gameDef.name} />;
   if (status === 'error') return <FailedDownload name={gameDef.name} />;
 
+  // For online games, ensure match data is fully loaded before proceeding
+  // This prevents SocketIO from being called with undefined serverUrl (causing GET /null)
+  if (mode === GameMode.OnlineFriend && (!props.match?.bgioServerUrl || !props.match?.bgioMatchId)) {
+    return <Downloading name={gameDef.name} />;
+  }
+
   const [aiConfig, rawConfig] = configs;
   const matchCode = props.match?.bgioMatchId;
   const playerID = getPlayerID(props.match, mode);

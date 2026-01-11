@@ -5,6 +5,7 @@ import React, { createContext, FC, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAsyncEffect } from 'use-async-effect';
 import { getGameDefinition } from './utils';
+
 const Context = createContext<GameContext>({} as GameContext);
 
 export const useCurrentGame = () => useContext(Context);
@@ -17,19 +18,32 @@ type Props = {
 
 export const GameProvider: FC<Props> = ({ children, gameCode, matchId }) => {
   const [matchGameCode, setMatchGameCode] = useState<string>();
+  // Track loading state: we're loading if we have matchId but no gameCode yet
+  const [loading, setLoading] = useState(!gameCode && !!matchId);
   const dispatch = useDispatch();
 
   useAsyncEffect(async () => {
-    if (gameCode || !matchId) return;
-    const { match } = await LobbyService.getMatch(dispatch, matchId);
-    setMatchGameCode(match.gameCode);
-  }, [matchId]);
+    if (gameCode || !matchId) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    try {
+      const { match } = await LobbyService.getMatch(dispatch, matchId);
+      setMatchGameCode(match.gameCode);
+    } finally {
+      setLoading(false);
+    }
+  }, [matchId, gameCode]);
+
+  const resolvedGameCode = matchGameCode || gameCode;
 
   return (
     <Context.Provider
       value={{
-        game: getGameDefinition(matchGameCode || gameCode),
-        gameCode: matchGameCode || gameCode,
+        game: resolvedGameCode ? getGameDefinition(resolvedGameCode) : undefined,
+        gameCode: resolvedGameCode,
+        loading,
       }}
     >
       {children}
@@ -40,4 +54,5 @@ export const GameProvider: FC<Props> = ({ children, gameCode, matchId }) => {
 export interface GameContext {
   game?: IGameDef;
   gameCode?: string;
+  loading?: boolean;
 }
