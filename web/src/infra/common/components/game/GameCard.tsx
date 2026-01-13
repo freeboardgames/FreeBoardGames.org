@@ -31,7 +31,7 @@ export function GameCardInternal({
         display: 'block',
         height: '250px',
         width: '100%',
-        backgroundImage: `url(${game.imageURL})`,
+        backgroundImage: game?.imageURL ? `url(${game.imageURL})` : 'none',
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
         color: 'black',
@@ -41,7 +41,7 @@ export function GameCardInternal({
           boxShadow: '0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)',
         }),
       }}
-      data-testid={`gamecard-${game.code}`}
+      data-testid={`gamecard-${game?.code}`}
     >
       <Heading>
         <Title>{isLink ? t('play', { name: gameName }) : gameName}</Title>

@@ -22,8 +22,8 @@ export const GameCardWithOverlay = function GameCardWithOverlay({ game, rooms }:
   return (
     <div
       className={css.wrapper}
-      style={{ backgroundImage: `url(${game.imageURL})` }}
-      data-testid={`gamecard-${game.code}`}
+      style={{ backgroundImage: game?.imageURL ? `url(${game.imageURL})` : 'none' }}
+      data-testid={`gamecard-${game?.code}`}
     >
       <div className={css.heading}>
         <Typography gutterBottom={false} variant="h4" component="h2" style={{ fontWeight: 300 }}>

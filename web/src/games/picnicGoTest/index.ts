@@ -1,11 +1,15 @@
 import { GameMode } from 'gamesShared/definitions/mode';
 import { IGameDef, IGameStatus } from 'gamesShared/definitions/game';
 
+// Use the same thumbnail as picnicGo since this is a test variant
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const Thumbnail = require('../picnicGo/media/thumbnail.jpg');
+
 export const picnicGoTGameDef: IGameDef = {
   code: 'picnicGoT',
   name: 'Picnic Go Test',
   contributors: ['tuxor1337'],
-  imageURL: null,
+  imageURL: Thumbnail,
   modes: [{ mode: GameMode.OnlineFriend }],
   minPlayers: 2,
   maxPlayers: 2,

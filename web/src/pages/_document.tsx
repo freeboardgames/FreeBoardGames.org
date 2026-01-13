@@ -64,7 +64,7 @@ MyDocument.getInitialProps = async (ctx: DocumentContext): Promise<MyDocumentPro
     });
 
   const initialProps = await Document.getInitialProps(ctx);
-  
+
   // This is important. It prevents Emotion from rendering invalid HTML.
   // See https://github.com/mui/material-ui/issues/26561#issuecomment-855286153
   const emotionStyles = extractCriticalToChunks(initialProps.html);
@@ -82,8 +82,8 @@ MyDocument.getInitialProps = async (ctx: DocumentContext): Promise<MyDocumentPro
   // NOT during the Docker build phase. The Coolify environment variables
   // (FBG_API_URL, FBG_WS_URL) are available in the running container's process.env
   const runtimeConfig = {
-    apiUrl: process.env.FBG_API_URL || process.env.FBG_BACKEND_TARGET || 'http://localhost:3001',
-    wsUrl: process.env.FBG_WS_URL || 'http://localhost:8001',
+    apiUrl: process.env.FBG_API_URL || process.env.FBG_BACKEND_TARGET,
+    wsUrl: process.env.FBG_WS_URL,
   };
 
   return {
