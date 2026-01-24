@@ -54,6 +54,11 @@ export class BingoBoardInternal extends React.Component<IBoardInnerProps & IBoar
 
   _markLocallySelectedNumbers = (gameOver: boolean) => {
     if (gameOver) {
+      // Handle draw case - show current player's board
+      if (this.props.ctx.gameover.draw || !this.props.ctx.gameover.winner) {
+        return this.props.G.players[this._getPlayerID()].numbers;
+      }
+      // Show winner's board
       return this.props.G.players[this.props.ctx.gameover.winner].numbers;
     } else {
       return this.props.G.players[this._getPlayerID()].numbers.map((n) => ({
@@ -212,7 +217,7 @@ export class BingoBoardInternal extends React.Component<IBoardInnerProps & IBoar
       return (
         <GameLayout
           gameOver={this._gameOverStatus()}
-          extraCardContent={this.props.ctx.gameover.draw ? null : this._renderBoard(true)}
+          extraCardContent={this.props.ctx.gameover.draw || !this.props.ctx.gameover.winner ? null : this._renderBoard(true)}
           gameArgs={this.props.gameArgs}
         />
       );
