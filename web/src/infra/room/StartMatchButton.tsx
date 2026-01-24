@@ -6,56 +6,63 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Tooltip from '@mui/material/Tooltip';
 import { WithTranslation, withTranslation } from 'infra/i18n';
 import { compose } from 'recompose';
-
-export interface IStartMatchButtonInnerProps extends WithTranslation {}
+import { getCreator, isCreator } from './RoomMetadataHelper';
 
 export interface IStartMatchButtonOutterProps {
   roomMetadata?: JoinRoomMutation['joinRoom'];
-  userId: number;
-  startMatch: (boolean) => () => void;
+  userId?: number;
+  startMatch: (shuffleUsers: boolean) => () => void;
 }
 
-const enhance = compose<IStartMatchButtonInnerProps, IStartMatchButtonOutterProps>(withTranslation('StartMatchButton'));
+const enhance = compose<WithTranslation, IStartMatchButtonOutterProps>(withTranslation('StartMatchButton'));
 
 export const StartMatchButton = enhance(
-  class StartMatchButton extends React.Component<IStartMatchButtonInnerProps & IStartMatchButtonOutterProps, {}> {
+  class StartMatchButton extends React.Component<
+    WithTranslation & IStartMatchButtonOutterProps,
+    Record<string, never>
+  > {
     render() {
-      const creator = this.props.roomMetadata.userMemberships.find((membership) => membership.isCreator);
+      const { roomMetadata, userId, t } = this.props;
+      const creator = getCreator(roomMetadata);
       let disabled = false;
-      let explanation;
-      if (this.props.roomMetadata.capacity > this.props.roomMetadata.userMemberships.length) {
+      let explanation: string | undefined;
+
+      if (roomMetadata.capacity > roomMetadata.userMemberships.length) {
         disabled = true;
-        explanation = this.props.t('not_enough_players');
-      } else if (creator.user.id !== this.props.userId) {
+        explanation = t('not_enough_players');
+      } else if (!isCreator(roomMetadata, userId)) {
+        // Only the room creator can start the match
         disabled = true;
-        explanation = this.props.t('only_creator_can_start', { name: creator.user.nickname });
+        explanation = t('only_creator_can_start', { name: creator.user.nickname });
       }
-      let button = (
-        <Button
-          variant="outlined"
-          color="primary"
-          disabled={disabled}
-          onClick={this.props.startMatch(false)}
-          data-testid="startButton"
-        >
-          {this.props.t('start_match')}
-        </Button>
-      );
-      if (disabled) {
-        button = <Tooltip title={explanation}>{button}</Tooltip>;
-      }
+
+      // Always use contained variant for consistent sizing
+      // Disabled state will naturally show as muted
       return (
-        <ButtonGroup>
-          {button}
-          <Tooltip title={this.props.t('start_match_shuffle')}>
-            <Button
-              color="primary"
-              disabled={disabled}
-              onClick={this.props.startMatch(true)}
-              data-testid="startButtonWithShuffle"
-            >
-              <ShuffleIcon />
-            </Button>
+        <ButtonGroup variant="contained" disableElevation>
+          <Tooltip title={disabled ? explanation : ''} placement="top">
+            <span style={{ display: 'inline-flex' }}>
+              <Button
+                color="primary"
+                disabled={disabled}
+                onClick={disabled ? undefined : this.props.startMatch(false)}
+                data-testid="startButton"
+              >
+                {t('start_match')}
+              </Button>
+            </span>
+          </Tooltip>
+          <Tooltip title={disabled ? explanation : t('start_match_shuffle')} placement="top">
+            <span style={{ display: 'inline-flex' }}>
+              <Button
+                color="primary"
+                disabled={disabled}
+                onClick={disabled ? undefined : this.props.startMatch(true)}
+                data-testid="startButtonWithShuffle"
+              >
+                <ShuffleIcon />
+              </Button>
+            </span>
           </Tooltip>
         </ButtonGroup>
       );

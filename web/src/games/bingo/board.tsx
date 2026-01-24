@@ -73,10 +73,12 @@ export class BingoBoardInternal extends React.Component<IBoardInnerProps & IBoar
   };
 
   _getPlayerName = (playerID = null) => {
+    const pID = playerID === null ? this.props.ctx.currentPlayer : playerID;
     if (isOnlineGame(this.props.gameArgs)) {
-      return this.props.gameArgs.players[playerID === null ? this.props.ctx.currentPlayer : playerID].name;
+      const player = this.props.gameArgs.players.find((p) => p.playerID === parseInt(pID));
+      return player?.name || `Player ${parseInt(pID) + 1}`;
     }
-    return this.props.translate('player', { name: this.props.ctx.currentPlayer });
+    return this.props.translate('player', { name: parseInt(pID) + 1 });
   };
 
   _gameOverStatus = () => {
@@ -217,7 +219,9 @@ export class BingoBoardInternal extends React.Component<IBoardInnerProps & IBoar
       return (
         <GameLayout
           gameOver={this._gameOverStatus()}
-          extraCardContent={this.props.ctx.gameover.draw || !this.props.ctx.gameover.winner ? null : this._renderBoard(true)}
+          extraCardContent={
+            this.props.ctx.gameover.draw || !this.props.ctx.gameover.winner ? null : this._renderBoard(true)
+          }
           gameArgs={this.props.gameArgs}
         />
       );
