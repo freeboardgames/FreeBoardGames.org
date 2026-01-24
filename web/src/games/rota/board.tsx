@@ -81,10 +81,14 @@ export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProp
 
   _getGameOver() {
     if (isFirstPersonView(this.props.gameArgs, this.props.playerID)) {
-      if (this.props.ctx.gameover.winner === this.props.playerID) {
-        return this.props.translate('board.game_over.you_won');
+      if (this.props.ctx.gameover.winner !== undefined) {
+        if (this.props.ctx.gameover.winner === this.props.playerID) {
+          return this.props.translate('board.game_over.you_won');
+        } else {
+          return this.props.translate('board.game_over.you_lost');
+        }
       } else {
-        return this.props.translate('board.game_over.you_lost');
+        return this.props.translate('board.game_over.draw');
       }
     } else if (this.props.ctx.gameover.winner) {
       if (isLocalGame(this.props.gameArgs)) {
@@ -96,6 +100,8 @@ export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProp
           pName: this._playerInRoom(this.props.ctx.gameover.winner).name,
         });
       }
+    } else {
+      return this.props.translate('board.game_over.draw');
     }
   }
 

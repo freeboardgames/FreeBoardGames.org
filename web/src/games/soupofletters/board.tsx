@@ -215,11 +215,14 @@ export class BoardInternal extends React.Component<IBoardInnerProps & IBoardOutt
         return this.props.translate('you_lost');
       }
     } else {
+      // Local game
       if (this.props.ctx.gameover.winner) {
         return this.props.translate('player_won', {
-          player: parseInt(this.props.ctx.currentPlayer) + 1,
+          player: parseInt(this.props.ctx.gameover.winner) + 1,
           name: this.localPlayerNames[this.props.ctx.gameover.winner],
         });
+      } else {
+        return this.props.translate('draw');
       }
     }
   }

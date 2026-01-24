@@ -63,20 +63,28 @@ export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProp
 
   _getGameOver() {
     if (isOnlineGame(this.props.gameArgs) || isAIGame(this.props.gameArgs)) {
-      if (this.props.ctx.gameover.winner === this.props.playerID) {
-        return this.props.translate('board.you_won');
-      } else {
-        if (isOnlineGame(this.props.gameArgs) && isSpectator(this.props.playerID)) {
-          const winnerName = this.props.gameArgs.players[this.props.ctx.gameover.winner].name;
-          return this.props.translate('board.player_won', { winnerName });
+      if (this.props.ctx.gameover.winner !== undefined) {
+        if (this.props.ctx.gameover.winner === this.props.playerID) {
+          return this.props.translate('board.you_won');
+        } else {
+          if (isOnlineGame(this.props.gameArgs) && isSpectator(this.props.playerID)) {
+            const winnerName = this.props.gameArgs.players[this.props.ctx.gameover.winner].name;
+            return this.props.translate('board.player_won', { winnerName });
+          }
+          return this.props.translate('board.you_lost');
         }
-        return this.props.translate('board.you_lost');
+      } else {
+        return this.props.translate('board.draw');
       }
     } else {
-      if (this.props.ctx.gameover.winner === '0') {
-        return this.props.translate('board.white_won');
-      } else {
-        return this.props.translate('board.red_won');
+      // Local game
+      switch (this.props.ctx.gameover.winner) {
+        case '0':
+          return this.props.translate('board.white_won');
+        case '1':
+          return this.props.translate('board.red_won');
+        default:
+          return this.props.translate('board.draw');
       }
     }
   }

@@ -168,10 +168,13 @@ export class BgioBoardInternal extends React.Component<IBgioBoardProps & IBgioBo
         return this.props.translate('game_over.you_lost');
       }
     } else {
+      // Local game
       if (this.props.ctx.gameover.winner) {
         const winnerIndex = parseInt(this.props.ctx.gameover.winner);
         const winner = this.props.gameArgs.players.find((p) => p.playerID === winnerIndex);
         return this.props.translate('game_over.player_won', { playerName: winner.name });
+      } else {
+        return this.props.translate('game_over.draw');
       }
     }
   }

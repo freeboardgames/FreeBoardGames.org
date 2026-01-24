@@ -76,11 +76,10 @@ export class BoardInternal extends React.Component<IBoardProps & IBoardInnerProp
       }
     } else {
       // Local game
-      const winner_pName = this.props.translate(localPlayerNames[this.props.ctx.gameover.winner]);
-
       switch (this.props.ctx.gameover.winner) {
         case '0':
         case '1':
+          const winner_pName = this.props.translate(localPlayerNames[this.props.ctx.gameover.winner]);
           return this.props.translate('board.game_over.player_won', { pName: winner_pName });
         case undefined:
           return this.props.translate('board.game_over.draw');
