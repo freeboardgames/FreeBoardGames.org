@@ -44,7 +44,7 @@ export function GameCardInternal({
       data-testid={`gamecard-${game?.code}`}
     >
       <Heading>
-        <Title>{isLink ? t('play', { name: gameName }) : gameName}</Title>
+        <Title>{isLink ? `${t('play')} ${gameName}` : gameName}</Title>
 
         {!isFullyTranslated(game) && (
           <Tooltip title={t('missing_translation_warning')} placement="top">
