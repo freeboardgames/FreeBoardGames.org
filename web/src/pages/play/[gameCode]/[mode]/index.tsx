@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, locale, r
 
   const gameNamespace = getGameCodeNamespace(gameCode);
 
-  const namespaces = ['common', 'GameBoardWrapper', gameNamespace];
+  const namespaces = ['common', 'GameBoardWrapper', 'GameOver', gameNamespace];
 
   return {
     props: {

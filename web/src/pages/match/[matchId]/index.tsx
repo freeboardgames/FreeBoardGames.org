@@ -45,6 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, locale })
         'NicknamePrompt',
         'Game',
         'ConnectionLost',
+        'GameOver',
         ...gameNamespaces,
       ])),
     },
