@@ -1,5 +1,5 @@
 import AIOrLocalGame from 'infra/game/AIOrLocalGame';
-import { getGameDefinition, getGameCodeNamespace } from 'infra/game';
+import { getGameDefinition, getGameCodeNamespace, getSerializableGameDef } from 'infra/game';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -19,12 +19,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params, locale, r
 
   const gameNamespace = getGameCodeNamespace(gameCode);
 
-  const namespaces = ['common', 'GameBoardWrapper', 'GameOver', gameNamespace];
+  const namespaces = ['common', 'GameBoardWrapper', 'GameOver', 'LoadingMessage', gameNamespace];
+
+  // Only pass serializable parts of gameDef (exclude function properties)
+  const serializableGameDef = getSerializableGameDef(gameDef);
 
   return {
     props: {
       gameCode,
-      gameDef,
+      gameDef: serializableGameDef,
       mode,
       ...(await serverSideTranslations(locale!, namespaces)),
     },

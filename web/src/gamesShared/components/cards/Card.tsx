@@ -3,6 +3,27 @@ import { ICard, Suit, Pattern } from 'gamesShared/definitions/cards';
 
 import css from './Card.module.css';
 
+// Import card images directly so webpack processes them
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const cardsEnglish = require('./media/cards_english.svg') as string;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const cardsSkat = require('./media/cards_skat.jpg') as string;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const cardsTarot = require('./media/cards_tarot.jpg') as string;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const cardsTarock = require('./media/cards_tarock.jpg') as string;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const cardsFranconian = require('./media/cards_franconian.jpg') as string;
+
+// Map patterns to imported images
+const patternImages: Record<Pattern, string> = {
+  [Pattern.English]: cardsEnglish,
+  [Pattern.Skat]: cardsSkat,
+  [Pattern.Tarot]: cardsTarot,
+  [Pattern.Tarock]: cardsTarock,
+  [Pattern.Franconian]: cardsFranconian,
+};
+
 const supportedPatterns = [Pattern.English, Pattern.Skat, Pattern.Tarot, Pattern.Tarock, Pattern.Franconian];
 
 export function Card(props: {
@@ -23,7 +44,6 @@ export function Card(props: {
   let cardSize: number[];
   let backgroundSize: number[];
   let borderRadius: number;
-  let bgClass = css.tarot;
   switch (props.pattern) {
     case Pattern.Tarot:
       cardBack = [8, 5];
@@ -37,7 +57,6 @@ export function Card(props: {
       colOffset = 1;
       cardSize = [320, 596];
       backgroundSize = [4480, 3576];
-      bgClass = css.tarot;
       borderRadius = 55;
       break;
     case Pattern.Tarock:
@@ -52,7 +71,6 @@ export function Card(props: {
       colOffset = C && C.suit == Suit.Trumps ? 1 : 7;
       cardSize = [236, 424];
       backgroundSize = [1888, 2968];
-      bgClass = css.tarock;
       borderRadius = 25;
       break;
     case Pattern.Franconian:
@@ -64,7 +82,6 @@ export function Card(props: {
       colOffset = 6;
       cardSize = [320, 596];
       backgroundSize = [3200, 2384];
-      bgClass = css.franconian;
       borderRadius = 45;
       break;
     case Pattern.Skat:
@@ -76,7 +93,6 @@ export function Card(props: {
       colOffset = 7;
       cardSize = [314, 483];
       backgroundSize = [2826, 1932];
-      bgClass = css.skat;
       borderRadius = 25;
       break;
     case Pattern.English:
@@ -90,7 +106,6 @@ export function Card(props: {
       colOffset = 1;
       cardSize = [360, 540];
       backgroundSize = [4680, 2700];
-      bgClass = css.english;
       borderRadius = 30;
       break;
   }
@@ -141,10 +156,14 @@ export function Card(props: {
   const scaledSize = [(cardSize[0] - 2) * scale, (cardSize[1] - 2) * scale];
   const scaledPos = [-(col * cardSize[0] + 1) * scale, -(row * cardSize[1] + 1) * scale];
 
+  // Get the background image from our imported images
+  const backgroundImage = patternImages[props.pattern] || patternImages[Pattern.English];
+
   return (
     <div
-      className={[css.card, props.inactive ? css.inactive : '', bgClass, props.click ? css.selectable : ''].join(' ')}
+      className={[css.card, props.inactive ? css.inactive : '', props.click ? css.selectable : ''].join(' ')}
       style={{
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: `${scale * backgroundSize[0]}px ${scale * backgroundSize[1]}px`,
         backgroundPosition: `${scaledPos[0]}px ${scaledPos[1]}px`,
         width: `${scaledSize[0]}px`,
