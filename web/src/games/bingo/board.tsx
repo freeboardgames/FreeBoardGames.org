@@ -61,7 +61,9 @@ export class BingoBoardInternal extends React.Component<IBoardInnerProps & IBoar
       // Show winner's board
       return this.props.G.players[this.props.ctx.gameover.winner].numbers;
     } else {
-      return this.props.G.players[this._getPlayerID()].numbers.map((n) => ({
+      // Use persisted marked state from game state, but allow local changes
+      const gameStateNumbers = this.props.G.players[this._getPlayerID()].numbers;
+      return gameStateNumbers.map((n) => ({
         ...n,
         marked: this.state.idNumbersSelected.includes(n.id),
       }));

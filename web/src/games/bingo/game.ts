@@ -63,9 +63,12 @@ export const BingoGame: Game<IGameState> = {
         marked: idNumbersSelected.includes(n.id),
       }));
 
+      // Always persist the marked numbers to game state
+      G.players[playerID].numbers = numbers;
+
       // check if any columns (5), rows (5) or diagonals (2) are complete
-      let found, xPos, yPos, marked;
-      found = new Array(12).fill(0);
+      let xPos, yPos, marked;
+      const found = new Array(12).fill(0);
       for (const n of numbers) {
         xPos = Math.floor(n.id / GRID_SIZE);
         yPos = n.id % GRID_SIZE;
@@ -84,7 +87,6 @@ export const BingoGame: Game<IGameState> = {
       }
 
       if (found.includes(GRID_SIZE)) {
-        G.players[playerID].numbers = numbers;
         G.players[playerID].isWinner = true;
       } else {
         G.players[playerID].shoutCount -= 1;

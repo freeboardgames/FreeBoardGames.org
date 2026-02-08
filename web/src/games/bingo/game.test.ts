@@ -63,4 +63,41 @@ describe('Bingo Game Rules', () => {
     }
     expect(client.getState().ctx.gameover).toEqual({ draw: true });
   });
+
+  it('should persist marked numbers after failed shout', () => {
+    // call out some numbers
+    for (let i = 0; i < 10; i++) {
+      client.moves.incrementCallRef('0', false);
+    }
+    // make a failed shout with some marked numbers
+    const markedIds = [0, 1, 2];
+    client.moves.playerShouted('0', markedIds);
+
+    // verify marked numbers are persisted in game state
+    const player0Numbers = client.getState().G.players['0'].numbers;
+    markedIds.forEach((id) => {
+      expect(player0Numbers[id].marked).toBe(true);
+    });
+
+    // verify player is not a winner and lost one shout
+    expect(client.getState().G.players['0'].isWinner).toBe(false);
+    expect(client.getState().G.players['0'].shoutCount).toBe(MAX_BINGO_CALLS - 1);
+  });
+
+  it('should win after failed attempts with persisted marks', () => {
+    // call out all numbers
+    for (let i = 0; i < GRID_SIZE * COL_DELTA; i++) {
+      client.moves.incrementCallRef('0', false);
+    }
+
+    // first failed shout with partial marks
+    client.moves.playerShouted('0', [0, 1, 2]);
+    expect(client.getState().G.players['0'].isWinner).toBe(false);
+    expect(client.getState().G.players['0'].shoutCount).toBe(MAX_BINGO_CALLS - 1);
+
+    // second shout with complete row (top row: 0,1,2,3,4)
+    client.moves.playerShouted('0', [0, 1, 2, 3, 4]);
+    expect(client.getState().G.players['0'].isWinner).toBe(true);
+    expect(client.getState().ctx.gameover).toEqual({ winner: '0' });
+  });
 });
