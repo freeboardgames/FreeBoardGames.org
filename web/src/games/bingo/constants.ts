@@ -1,6 +1,6 @@
 export const GRID_SIZE = 5;
 export const COL_DELTA = 15;
-export const TIME_OUT = 5000; // time in ms (reduced from 10000 for better game pacing)
+export const TIME_OUT = 8000; // time in ms (reduced from 10000 for better game pacing)
 export const TIME_BUFF = 1000; // time in ms
 export const WILDCARD_NUM = -100;
 export const INITIAL_WAIT_REF_NUM = -1;
